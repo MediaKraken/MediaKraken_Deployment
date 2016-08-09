@@ -4,3 +4,12 @@
 [submodule "MediaKraken_Testing"]
 	path = MediaKraken_Testing
 	url = ../MediaKraken_Testing
+[submodule "MediaKraken_Server"]
+	path = MediaKraken_Server
+	url = ../MediaKraken_Server
+[submodule "MediaKraken_Slave"]
+	path = MediaKraken_Slave
+	url = ../MediaKraken_Slave
+[submodule "MediaKraken_Theater"]
+	path = MediaKraken_Theater
+	url = ../MediaKraken_Theater
