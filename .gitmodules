@@ -19,3 +19,12 @@
 [submodule "MediaKraken_Roku"]
 	path = MediaKraken_Roku
 	url = ../MediaKraken_Roku
+[submodule "MediaKraken_Kodi"]
+	path = MediaKraken_Kodi
+	url = ../MediaKraken_Kodi
+[submodule "MediaKraken_Build"]
+	path = MediaKraken_Build
+	url = ../MediaKraken_Build
+[submodule "MediaKraken_Octmote"]
+	path = MediaKraken_Octmote
+	url = ../MediaKraken_Octmote
