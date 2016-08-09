@@ -13,3 +13,6 @@
 [submodule "MediaKraken_Theater"]
 	path = MediaKraken_Theater
 	url = ../MediaKraken_Theater
+[submodule "MediaKraken_Tizen"]
+	path = MediaKraken_Tizen
+	url = ../MediaKraken_Tizen
