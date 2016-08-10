@@ -10,6 +10,3 @@
 [submodule "MediaKraken_Build"]
 	path = MediaKraken_Build
 	url = ../MediaKraken_Build
-[submodule "MediaKraken_Octmote"]
-	path = MediaKraken_Octmote
-	url = ../MediaKraken_Octmote
