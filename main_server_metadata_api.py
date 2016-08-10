@@ -34,7 +34,7 @@ try:
     import cPickle as pickle
 except:
     import pickle
-sys.path.append("../MediaKraken_Common")
+sys.path.append("./MediaKraken_Common")
 sys.path.append("./")  # for db import
 sys.path.append("./metadata")
 import database as database_base

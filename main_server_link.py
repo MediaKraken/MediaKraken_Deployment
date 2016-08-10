@@ -33,7 +33,7 @@ except:
     import pickle
 import sys
 import logging
-sys.path.append("../MediaKraken_Common")
+sys.path.append("./MediaKraken_Common")
 import MK_Common_Logging
 import MK_Common_System
 sys.path.append("./") # for db import

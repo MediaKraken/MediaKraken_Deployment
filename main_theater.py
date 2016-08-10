@@ -27,7 +27,7 @@ except:
     import pickle
 import logging
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("./MediaKraken_Common")
 import MK_Common_Logging
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
