@@ -1,9 +1,3 @@
-[submodule "MediaKraken_Common"]
-	path = MediaKraken_Common
-	url = ../MediaKraken_Common
-[submodule "MediaKraken_Testing"]
-	path = MediaKraken_Testing
-	url = ../MediaKraken_Testing
 [submodule "MediaKraken_Server"]
 	path = MediaKraken_Server
 	url = ../MediaKraken_Server
