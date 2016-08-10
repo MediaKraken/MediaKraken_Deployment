@@ -26,14 +26,15 @@ except:
     import pickle
 from twisted.web.static import File
 from klein import Klein
-import database as database_base
 import json
 import datetime
 import signal
 import logging
 import sys
 sys.path.append("./MediaKraken_Common")
+sys.path.append("./MediaKraken_Server")
 import MK_Common_Logging
+import database as database_base
 
 
 __version__ = json.dumps({"Version": "0.0.1"})

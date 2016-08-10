@@ -35,8 +35,8 @@ try:
 except:
     import pickle
 sys.path.append("./MediaKraken_Common")
-sys.path.append("./")  # for db import
-sys.path.append("./metadata")
+sys.path.append("./MediaKraken_Server")
+sys.path.append("./MediaKraken_Server/metadata")
 import database as database_base
 import metadata_anime
 import metadata_game

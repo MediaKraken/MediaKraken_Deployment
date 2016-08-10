@@ -26,6 +26,7 @@ import signal
 import logging
 import os
 sys.path.append("./MediaKraken_Common")
+sys.path.append("./MediaKraken_Server")
 import MK_Common_Logging
 import MK_Common_Watchdog
 rmda_enabled_os = False
