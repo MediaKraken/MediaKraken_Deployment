@@ -1,0 +1,92 @@
+'''
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+import sys
+import logging
+import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
+from psycopg2.extras import DictCursor
+import db_base_postgresql_ext
+
+
+# open database and pull in config from sqlite and create db if not exist
+def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    # setup for unicode
+    psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
+    psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
+    #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
+    #psycopg2.extras.register_default_json(loads=lambda x: x)    
+    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+    self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+    self.sql3_cursor.execute(u"SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
+    if self.sql3_cursor.fetchone()['a'] == 0:
+        logging.critical("Database is not populated!")
+        sys.exit()
+
+
+# open database and pull in config from sqlite and create db if not exist
+def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    # setup for unicode
+    psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
+    psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
+    #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
+    #psycopg2.extras.register_default_json(loads=lambda x: x)
+    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+    self.sql3_cursor.execute(u"SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
+    if self.sql3_cursor.fetchone()['a'] == 0:
+        logging.critical("Database is not populated!")
+        sys.exit()
+
+
+# close main db file
+def MK_Server_Database_Close(self):
+    self.sql3_conn.close()
+
+
+# commit changes to media database
+def MK_Server_Database_Commit(self):
+    self.sql3_conn.commit()
+
+
+# rollback
+def MK_Server_Database_Rollback(self):
+    self.sql3_conn.rollback()
+
+
+# check for table or index
+def MK_Server_Database_Table_Index_Check(self, resource_name):
+    self.sql3_cursor.execute(u'SELECT to_regclass(\'public.%s\')', (resource_name,))
+    return self.sql3_cursor.fetchone()[0]
+
+
+# return count of records in table
+def MK_Server_Database_Table_Count(self, table_name):
+    self.sql3_cursor.execute(u'select count(*) from ' + table_name) # can't %s due to ' inserted
+    return self.sql3_cursor.fetchone()[0]
+
+
+# general run anything
+def MK_Server_Database_Query(self, query_string):
+    logging.debug("query: %s", query_string)
+    self.sql3_cursor.execute(query_string)
+    return self.sql3_cursor.fetchall()

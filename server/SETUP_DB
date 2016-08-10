@@ -1,0 +1,35 @@
+The following steps shoule be performed to create the databases and data for MetaMan.
+
+cd setup
+# create all the tables for Postgresql 9.4 (must use 9.4 or higher for jsonb key support)
+python db_setup.py
+
+#
+# optional bulk load of datasets from freedb, themoviedb, etc
+#
+
+#import thetvdb datadump
+wget http://www.hero6.com/tvdb/Jan-22-2015.rar
+mv Jan-22-2015.rar Jan-22-2015.7z
+sudo apt-get install p7zip mysql-server python-mysqldb
+p7zip -d Jan-22-2015.7z
+# create db
+# add "use db" to thetvdbpublic.sql
+mysql -u root -p < thetvdbpublic.sql
+python db_setup_bulk_thetvdb.py
+
+# download all entries from themoviedb doing a call every second (will take weeks)
+python db_setup_bulk_themoviedb.py
+
+# load the freedb database
+grab the newest dump from http://ftp.freedb.org/pub/freedb/
+unarchive to /home/spoot/nfsmount/SQL_Dump/FreeDB (if different local, must change python code)
+this will create about 3.5M rows in the db for discid match
+python db_setup_bulk_freedb.py
+
+# setup a mediabrainz server using the latest db dump
+https://musicbrainz.org/doc/MusicBrainz_Server/Setup
+follow from "from source"
+plackup -Ilib -r
+
+

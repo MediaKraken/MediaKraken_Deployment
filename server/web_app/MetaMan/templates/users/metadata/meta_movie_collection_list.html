@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <script src="../../static/js/jquery.min.js"></script>
+        <script src="../../static/context/jquery.contextmenu.js"></script>
+        <script src="../../static/js/metaman.js"></script>
+        <link rel="stylesheet" href="../../static/context/jquery.contextmenu.css">
+        <link rel="stylesheet" href="../../static/css/metaman_layout.css" media="all" rel="stylesheet" type="text/css"/>
+    </head>
+    {% if media %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div id="the-node">
+        {% for row_data in media %}
+        <div class="main_photo">
+            <div class="media_context_right" data-id={{row_data[0]}}>
+                {% if row_data[2] == "" or row_data[2] == None %}
+                <a href= {{ "../meta_movie_collection_detail/" + row_data[0] }} >
+                <img src= "../../static/images/Movie-icon.png" height="300" width="200"></a>
+                <div class="description">
+                    <p class="description_content_left">{{row_data[1]}}</p>
+                </div>
+                {% else %}
+                <a href= {{ "../meta_movie_collection_detail/" + row_data[0] }} >
+                <img src= {{ "../../static/meta/images/" + row_data[2].replace('../','') }} height="300" width="200">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No collections found.</p>
+    {% endif %}
+</body>
+{% endblock %}

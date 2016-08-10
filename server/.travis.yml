@@ -1,0 +1,14 @@
+language: python
+python:
+  - "2.7"
+# command to install dependencies
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y build-essential libibverbs-dev python-dev nbd-client nfs-common python-cddb libffi-dev nginx cython python-redis redis-server ack-grep libxml2-dev libxslt-dev lib32z1-dev libsnmp-dev libpcre3 libpcre3-dev cifs-utils yasm autoconf automake autoconf autogen shtool libtool libsmbclient-dev cmake unzip libhdhomerun-dev ntp
+install:
+  - pip install setuptools==24.0.3
+  - pip install --upgrade -r requirements.txt
+# command to run tests
+script: nosetests
+after_success:
+  - coveralls

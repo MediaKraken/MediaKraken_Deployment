@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block style %}
+{{ super() }}
+{% for widget in manager.get_widgets('style') %}
+<link rel="stylesheet" type="text/css" href="{{ widget.href }}"/>
+{% endfor %}
+{% endblock %}
+{% block header %}
+<h1>
+    {% for parent in file_parent %}
+    <a href="{{ url_for('admins.admin_fs_browse', path=parent[0]) }}">{{ parent[1] }}</a>
+    <span> / </span>
+    {% endfor %}
+    {{ file.name }}
+</h1>
+{% endblock %}
+{% block content %}
+{% if file %}
+<table class="browser">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in file %}
+        <tr>
+            <td>
+                <a href="{{ url_for('admins.admin_fs_browse', path=f[0][1:]) }}">{{ f[0] }}</a>
+            </td>
+            <td>{{ f[1] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p><input class="btn btn-default btn-submit" type="submit" name="select" value="Select Directory"></p>
+{% else %}
+<p>No files in directory</p>
+{% endif %}
+{% endblock %}

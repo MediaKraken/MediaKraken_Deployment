@@ -1,0 +1,9 @@
+*.db
+/cache.pickle
+/failed.txt
+/xiph.pickle
+*.backup
+*.INSTALL.swp
+/INSTALL~
+*.md~
+*.sh~
