@@ -1,0 +1,46 @@
+'''
+  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+
+import pytest
+import sys
+sys.path.append("../MediaKraken_Common")
+from MK_Common_Hardware_NEST import *
+
+
+# connect to NEST device
+# def MK_NEST_Device_Connect(user_name, password):
+
+
+# grab structures and the devices
+# def MK_NEST_Device_Structures(nest_device):
+
+
+# temp conversion
+@pytest.mark.parametrize(("temp_data"), [
+    (-7),
+    (36)])
+def test_MK_NEST_C_to_F(temp_data):
+    MK_NEST_C_to_F(temp_data)
+
+
+@pytest.mark.parametrize(("temp_data"), [
+    (-7),
+    (60)])
+def test_MK_NEST_F_to_C(temp_data):
+    MK_NEST_F_to_C(temp_data)

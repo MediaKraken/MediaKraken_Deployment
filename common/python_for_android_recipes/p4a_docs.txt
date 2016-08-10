@@ -1,0 +1,1 @@
+comment out termios.so in blacklisted.txt

@@ -1,0 +1,140 @@
+'''
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+from __future__ import unicode_literals
+import logging
+import os
+import time
+import scandir
+try:
+    import cPickle as pickle
+except:
+    import pickle
+import MK_Common_String
+
+junk_files = []
+junk_files.append(u'(gameplay)')
+junk_files.append(u'official gameplay')
+junk_files.append(u'movie clip')
+junk_files.append(u'fan made')
+junk_files.append(u'review -')
+junk_files.append(u'full movie')
+junk_files.append(u'full album')
+junk_files.append(u'full length')
+junk_files.append(u'deleted scene')
+
+
+# return file modfication date in datetime format
+def MK_Common_File_Modification_Timestamp(file_name):
+    if os.path.exists(file_name):
+        return os.path.getmtime(file_name)
+    else:
+        return None
+
+
+# save data as file
+def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False, file_ext=None):
+    file_handle = None
+    if with_timestamp:
+        file_handle = open(file_name + '_' + time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
+    else:
+        file_handle = open(file_name, 'w+')
+    if as_pickle:
+        #file_handle.write(pickle.dump(data_block))
+        pickle.dump(data_block, file_handle)
+    else:
+        file_handle.write(data_block)
+    file_handle.close()
+
+
+# load file as data
+def MK_Common_File_Load_Data(file_name, as_pickle=False):
+    file_handle = open(file_name, "r")
+    if as_pickle:
+        data_block = pickle.loads(file_handle.read())
+    else:
+        data_block = file_handle.read()
+    file_handle.close()
+    return data_block
+
+
+# find all filters files in directory
+def MK_Common_File_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False, directory_only=False):
+    if os.path.isdir(dir_name):
+        match_list = []
+        if not walk_dir:
+            if filter_text is not None:
+                for file_name in os.listdir(dir_name):
+                    # filter text such as '.txt'
+                    if file_name.rsplit('.', 1)[1] in filter_text:
+                    #if file_name.endswith(filter_text):
+                        match_list.append(os.path.join(dir_name, file_name))
+            else:
+                for file_name in os.listdir(dir_name):
+                    if directory_only:
+                        if os.path.isdir(os.path.join(dir_name, file_name)):
+                            match_list.append(os.path.join(dir_name, file_name))
+                    else:
+                        match_list.append(os.path.join(dir_name, file_name))
+        else:
+            for root, dirs, files in scandir.walk(dir_name):
+                for file_name in files:
+                    if filter_text is not None:
+                        if file_name.endswith(filter_text):
+                            #logging.debug(os.path.join(root, file_name))
+                            match_list.append(os.path.join(root, file_name))
+                    else:
+                        if directory_only:
+                            if os.path.isdir(os.path.join(dir_name, file_name)):
+                                match_list.append(os.path.join(dir_name, file_name))
+                        else:
+                            match_list.append(os.path.join(root, file_name))
+        if skip_junk and len(match_list) > 0:
+            match_list = MK_Common_File_Remove_Junk(match_list)
+        if file_size:
+            match_list_size = []
+            for row_data in match_list:
+                match_list_size.append((row_data, MK_Common_String.bytes2human(os.path.getsize(row_data))))
+            return match_list_size
+        return match_list
+    else:
+        return None
+
+
+# throw out junk entries in files list
+def MK_Common_File_Remove_Junk(file_list):
+    for file_name in file_list:
+        for search_string in junk_files:
+            try:
+                if file_name.lower().find(search_string) != -1:
+                    file_list.remove(file_name)
+                    break
+            except:
+                pass
+    return file_list
+
+
+# see if file is junk
+def MK_Common_File_Is_Junk(file_name):
+    for search_string in junk_files:
+        try:
+            if file_name.lower().find(search_string) != -1:
+                return True
+        except:
+            pass
+    return False

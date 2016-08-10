@@ -1,0 +1,23 @@
+15.10 mini Ubuntu
+system/software update
+upgrade to 16.04
+sudo apt-get install python-pip phantomjs firefox 
+sudo pip install -r pip_requirements.txt
+
+browse to https://www.google.com/intl/en-US/chrome/browser/desktop/index.html
+download and install
+
+browse to http://www.opera.com/
+download and install
+
+git clone testing
+py.test test_web
+
+
+copy the chrome, opera and gecko drivers to /usr/bin/.
+had to chmod x operadriver
+
+install chromium web browser with software app
+
+install firebug plugin in for firefox
+

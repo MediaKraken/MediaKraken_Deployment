@@ -1,0 +1,145 @@
+'''
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+import json
+import logging
+from xml.dom import minidom
+import MK_Common_File
+import MK_Common_Metadata
+import MK_Common_Network
+from pytvdbapi import api
+
+
+class MK_Common_TheTVDB_API:
+    def __init__(self):
+        # pull in the ini file config
+        import ConfigParser
+        Config = ConfigParser.ConfigParser()
+        Config.read("MediaKraken.ini")
+        # setup connection
+        self.tvdb_connection = api.TVDB(Config.get('API', 'theTVdb').strip(), actors=True, ignore_case=True)
+
+
+    # get show information
+    def MK_Common_TheTVDB_Show_Info(self, show_title, show_language):
+        return MK_Common_TheTVDB_Show_Details(MK_Common_TheTVDB_Search(self.tvdb_connection, show_title, show_language))
+
+
+    # search for show
+    def MK_Common_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+        if show_id is not None:
+            show_data = self.tvdb_connection.get_series(show_id, show_language)
+        else:
+            if show_year is not None:
+                logging.debug("bah2 %s", show_title + ' ' + str(show_year))
+                # this generally fails if I include year....
+                show_data = self.tvdb_connection.search(show_title, show_language)
+            else:
+                show_data = self.tvdb_connection.search(show_title, show_language)
+        logging.debug("tvdb search: %s", show_data)
+        if len(show_data) > 0:
+            show = show_data[0]
+            return show.SeriesID
+            #show.update()
+#            print "show update:", show
+#            # save to local cache for future reference
+#            if save_db:
+#                metadata_uuid = MK_Common_TheTVDB_Show_DB_Save(show)
+#                return metadata_uuid
+#            else:
+#                show_dict = MK_Common_TheTVDB_Show_Details(show_data)
+#                MK_Common_File.MK_Common_File_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
+#                return show_dict
+        return None
+
+
+    # save entire show info
+    def MK_Common_TheTVDB_Show_DB_Save(self, show_data):
+        show_data.update()
+        # store the show data
+        json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID, 'zap2it':show_data.zap2it_id})
+        # start saving pictures (if available)
+        banner_path = None
+        fanart_path = None
+        poster_path = None
+        json_media_json = json.dumps({'Overview':show_data.Overview, 'AliasNames':show_data.AliasNames, 'Language':show_data.language, 'FirstAired':show_data.FirstAired, 'Status':show_data.Status, 'ContentRating':show_data.ContentRating, 'Rating':show_data.Rating, 'RatingCount':show_data.RatingCount, 'Airs_DayOfWeek':show_data.Airs_DayOfWeek, 'Airs_Time':show_data.Airs_Time, 'Runtime':show_data.Runtime, 'LastUpdate':show_data.lastupdated, 'Network':show_data.Network, 'Network_ID_thetvdb':show_data.NetworkID})
+
+    #    print "show:",show.seriesid,show.id
+    #    print "genre", show.Genre
+    #    print "act:", show.actor_objects
+    #    print "banner:", show.banner_objects
+    #    print "lang:", show.lang
+
+        # download the images if links exist
+        update_json = False
+        banner_path, fanart_path, poster_path = None
+        if len(show_data.banner) > 0:
+            banner_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'banner', 'thetvdb', show_data.banner)
+            update_json = True
+        if len(show_data.fanart) > 0:
+            fanart_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'fanart', 'thetvdb', show_data.fanart)
+            update_json = True
+        if len(show_data.poster) > 0:
+            poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'poster', 'thetvdb', show_data.poster)
+            update_json = True
+        if update_json:
+            json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path, 'Poster':poster_path}})
+        # save the show data
+        MK_Common_Database.MK_Server_Database_Metadata_Save_Show(show_data.SeriesName, json_media_id, json_media_json)
+
+        # store the season data
+    # atm not using season data anyways
+    #    json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+    #    MK_Server_Database_Metadata_Save_Season(self,season_json):
+    #    sql_params = str(uuid.uuid4()),season_json
+    #    self.sql3_cursor.execute(u'insert into mm_media_seasons (mm_media_seasons_guid, mm_media_season_json) values (%s,%s)',sql_params)
+
+        # store the episode data
+        json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+    #    MK_Server_Database_Metadata_Save_Episode(self,episode_id_json, episode_name, episode_json)
+    #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
+    #    self.sql3_cursor.execute(u'insert into mm_metadata (mm_metadata_guid, mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
+        return metadata_uuid
+
+
+
+    # get episode information
+    def MK_Common_TheTVDB_Episode_Info(self, show_language, episode_id):
+        return self.tvdb_connection.get_episode(show_language, episodeid=episode_id)
+
+
+    # get episode information by season and episode
+    def MK_Common_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
+        return self.tvdb_connection.get_episode(show_language, season_no, ep_no, show_id)
+
+
+    # show data from result
+    def MK_Common_TheTVDB_Show_Details(self, show_data):
+        show_dict = {}
+        show = show_data[0]
+        show_number_seasons = len(show)
+        # loop through the season
+        for show_ndx in range(0, show_number_seasons):
+            season = show[show_ndx]
+            show_number_episodes = len(season)
+            # loop through the episodes
+            for ep_ndx in range(0, show_number_episodes):
+                episode = season[ep_ndx]
+                logging.debug(episode.EpisodeNumber)
+                logging.debug(episode.EpisodeName)
+        return show_dict

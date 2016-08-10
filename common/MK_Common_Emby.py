@@ -1,0 +1,93 @@
+'''
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+import sys
+import logging
+import platform
+import os
+import uuid
+import MK_Common_File
+import MK_Common_System
+
+
+# determine install directory
+def MK_Common_Emby_Installed_Directory(dir_name = None):
+    if dir_name is None:
+        # windows
+        if str.upper(sys.platform[0:3])=='WIN' \
+        or str.upper(sys.platform[0:3])=='CYG':
+            if os.path.isdir("C:/Users/" + db_username_dir + "/AppData/Roaming/Emby-Server/"):
+                dir_name = "C:/Users/" + db_username_dir + "/AppData/Roaming/Emby-Server/"
+            elif os.path.isdir("C:/Users/" + db_username_dir + "/AppData/Roaming/MediaBrowser-Server/"):
+                dir_name = "C:/Users/" + db_username_dir + "/AppData/Roaming/MediaBrowser-Server/"
+        # mac
+        elif str.upper(sys.platform[0:3])=='DAR':
+            if os.path.isdir("/Users/" + db_username_dir + "/EmbyServer/ProgramData-Server/"):
+                dir_name = "/Users/" + db_username_dir + "/EmbyServer/ProgramData-Server/"
+            elif os.path.isdir("/Users/" + db_username_dir + "/MediaBrowser/ProgramData-Server/"):
+                dir_name = "/Users/" + db_username_dir + "/MediaBrowser/ProgramData-Server/"
+        else:
+            # xubuntu
+            if os.path.isdir("/var/lib/emby-server"):
+                dir_name = "/var/lib/emby-server/"
+            elif os.path.isdir("/var/lib/mediabrowser/"):
+                dir_name = "/var/lib/mediabrowser/"
+            else:
+                # centos 6.x
+                if os.path.isdir("/var/opt/MediaBrowser/MediaBrowserServer/"):
+                    dir_name = '/var/opt/MediaBrowser/MediaBrowserServer/'
+    return dir_name
+
+
+# fetch library list
+def MK_Common_Emby_Library_List(dir_name = None):
+    if dir_name is None:
+        dir_name = os.path.join(MK_Common_Emby_Installed_Directory(), 'root', 'default')
+    # grab dir and files
+    library_list = {}
+    if dir_name is not None:
+        for dir_path in MK_Common_File.MK_Common_File_Dir_List(dir_name, None, False, False):
+            logging.debug("main dir: %s", dir_path)
+            lib_file_path = []
+            for file_list in MK_Common_File.MK_Common_File_Dir_List(os.path.join(dir_name, dir_path, None, False, False)):
+                logging.debug("file: %s", file_list)
+                if file_list.endswith('.mblink'): # only grab "link" files for path
+                    lib_file_path.append(MK_Common_File.MK_Common_File_Load_Data(os.path.join(dir_name, dir_path, file_list), False))
+            library_list[dir_path] = lib_file_path
+    return library_list
+
+
+# check for running instance
+def MK_Common_Emby_Check_Instance():
+    name_check = 'emby-server'
+    if str.upper(sys.platform[0:3])=='WIN' \
+    or str.upper(sys.platform[0:3])=='CYG':
+        name_check += '.exe'
+    if MK_Common_System.MK_Common_Process_List(name_check):
+        logging.critical("Please shutdown Emby server first")
+        sys.exit(-1)
+
+
+# C# guid to text
+def MK_Common_Emby_GUID_To_UUID(emby_guid):
+    return uuid.UUID(bytes=emby_guid)
+
+
+# text uuid to C# guid
+def MK_Common_Emby_UUID_to_GUID(emby_guid):
+    return emby_guid.bytes
