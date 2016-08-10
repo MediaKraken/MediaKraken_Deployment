@@ -1,0 +1,103 @@
+'''
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+# pull in the ini file config
+import ConfigParser
+Config = ConfigParser.ConfigParser()
+Config.read("MediaKraken.ini")
+import sys
+sys.path.append("../MediaKraken_Common")
+import MK_Common_Logging
+import subprocess
+import signal
+import logging
+import os
+import time
+import database as database_base
+try:
+    import cPickle as pickle
+except:
+    import pickle
+
+
+def signal_receive(signum, frame):
+    print 'CHILD Main Trigger: Received USR1'
+    os.kill(proc_trigger.pid, signal.SIGTERM)
+    # cleanup db
+    db.MK_Server_Database_Rollback()
+    # log stop
+    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
+    db.MK_Server_Database_Close()
+    sys.stdout.flush()
+    sys.exit(0)
+
+
+# store pid for initd
+pid = os.getpid()
+op = open("/var/mm_server_trigger.pid", "w")
+op.write("%s" % pid)
+op.close()
+
+
+# start logging
+MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Trigger')
+
+
+# open the database
+db = database_base.MK_Server_Database()
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+
+
+db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Start', None, u'System: Trigger Start', u'ServerTriggerStart', None, None, u'System')
+
+
+if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
+else:
+    signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
+    signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+
+
+while True:
+    # check for new "triggers"
+    for row_data in db.MK_Server_Database_Triggers_Read():
+        # fire up cron service
+        command_list = []
+        for command_data in pickle.loads(str(row_data[1])):
+            command_list.append(command_data)
+        proc_trigger = subprocess.Popen(command_list, shell=False)
+        logging.debug("Trigger PID: %s", proc_trigger.pid)
+        # remove trigger from DB
+        db.MK_Server_Database_Triggers_Delete(row_data[0])
+    time.sleep(1)
+
+
+# log stop
+db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
+
+
+# commit
+db.MK_Server_Database_Commit()
+
+
+# close the database
+db.MK_Server_Database_Close()
+
+
+# stop children
+os.kill(proc_trigger.pid, signal.SIGTERM)
