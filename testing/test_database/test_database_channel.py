@@ -18,8 +18,8 @@
 
 
 import sys
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")  # for db import
+sys.path.append("../common")
+sys.path.append("../server") # for db import
 import database as database_base
 
 

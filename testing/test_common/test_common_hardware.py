@@ -21,7 +21,7 @@ vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 import pytest
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 from MK_Common_Hardware import *
 
 

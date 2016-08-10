@@ -20,7 +20,7 @@
 import os
 import pytest
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 from MK_Common_Backup_Backblaze import *
 
 
