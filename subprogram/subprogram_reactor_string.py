@@ -28,7 +28,7 @@ import logging
 import sys
 sys.path.append("./network")
 import network_base_string as network_base
-sys.path.append("./") # for db import
+sys.path.append("../MediaKraken_Server")
 import database as database_base
 sys.path.append("../MediaKraken_Common")
 import MK_Common_File

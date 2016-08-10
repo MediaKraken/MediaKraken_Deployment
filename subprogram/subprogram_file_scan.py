@@ -23,7 +23,7 @@ Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 import MK_Common_CIFS
 import MK_Common_FFMPEG
 import MK_Common_File

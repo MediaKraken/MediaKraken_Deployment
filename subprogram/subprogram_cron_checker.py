@@ -22,7 +22,7 @@ Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
 import logging
 import sys
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
 import MK_Common_File
 import MK_Common_Logging

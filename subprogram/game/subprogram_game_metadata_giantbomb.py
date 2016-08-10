@@ -20,7 +20,7 @@ import sys
 import os
 import signal
 sys.path.append("../MediaKraken_Common")
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 import MK_Common_File
 import MK_Common_Network
 import database as database_base

@@ -24,7 +24,7 @@ import time
 import sys
 import os
 import logging
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
 import MK_Common_Cloud
 import MK_Common_Logging

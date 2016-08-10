@@ -18,7 +18,7 @@
 
 import sys
 sys.path.append("../MediaKraken_Common")
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 import MK_Common_File
 import MK_Common_Logging
 import MK_Common_Twitch

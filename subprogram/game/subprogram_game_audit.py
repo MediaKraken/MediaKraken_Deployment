@@ -31,7 +31,7 @@ from Queue import Queue
 import hashlib
 SHA1 = hashlib.sha1()
 import os.path
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 import database as database_base
 sys.path.append("../MediaKraken_Common")
 import MK_Common_File

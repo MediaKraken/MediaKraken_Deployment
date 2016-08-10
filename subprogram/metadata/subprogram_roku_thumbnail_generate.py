@@ -27,7 +27,7 @@ import signal
 sys.path.append("../MediaKraken_Common")
 import MK_Common_Logging
 import MK_Common_Roku
-sys.path.append("./")  # for db import
+sys.path.append("../MediaKraken_Server")
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
