@@ -27,7 +27,6 @@ import logging
 def main(argv):
     # start logging
     MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Cron')
-
     inputfile = None
     outputfile = None
     vid_codec = []
@@ -56,6 +55,7 @@ def main(argv):
     proc = subprocess.Popen(['ffmpeg', subproccess_args], shell=False)
     logging.debug("FFMpeg PID %s:", proc.pid)
     proc.wait()
+
 
 if __name__ == "__main__":
    main(sys.argv[1:])

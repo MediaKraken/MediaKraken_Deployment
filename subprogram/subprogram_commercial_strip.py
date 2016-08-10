@@ -49,7 +49,6 @@ import MK_Common_Logging
 def main(argv):
     # start logging
     MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Commercial_Strip')
-
     inputfile = None
     outputfile = None
     try:
