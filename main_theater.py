@@ -287,11 +287,11 @@ class MediaKrakenApp(App):
 
 
     def build_settings(self, settings):
-        settings.add_json_panel('MediaKraken', self.config, data=metaman_settings_base_json)
-        settings.add_json_panel('Audio', self.config, data=metaman_settings_audio_json)
-        settings.add_json_panel('Video', self.config, data=metaman_settings_video_json)
-        settings.add_json_panel('Library', self.config, data=metaman_settings_library_json)
-        settings.add_json_panel('Playback', self.config, data=metaman_settings_playback_json)
+        settings.add_json_panel('MediaKraken', self.config, data=mediakraken_settings_base_json)
+        settings.add_json_panel('Audio', self.config, data=mediakraken_settings_audio_json)
+        settings.add_json_panel('Video', self.config, data=mediakraken_settings_video_json)
+        settings.add_json_panel('Library', self.config, data=mediakraken_settings_library_json)
+        settings.add_json_panel('Playback', self.config, data=mediakraken_settings_playback_json)
 
 
     def on_config_change(self, config, section, key, value):
@@ -532,14 +532,14 @@ class MediaKrakenApp(App):
         self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    def main_metaman_event_button_video_play(self, *args):
+    def main_mediakraken_event_button_video_play(self, *args):
         logging.debug("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
         networkProtocol.sendString(msg)
 
 
-    def main_metaman_event_button_home(self, *args):
+    def main_mediakraken_event_button_home(self, *args):
         global networkProtocol
         msg = args[0]
         logging.debug("home press: %s", args)

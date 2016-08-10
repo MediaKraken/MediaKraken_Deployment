@@ -180,7 +180,7 @@ for link_data in db.MK_Server_Database_Link_List():
 
 
 # fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http', '--chdir=./web_app', '--ini', './web_app/metaman_uwsgi.ini'], shell=False)
+proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http', '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
 
 
 # hold here
