@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Network_CIFS import *
+from common_network_CIFS import *
 
 
-class Test_MK_Common_CIFS_Share_URL_API:
+class Test_common_cifs_Share_URL_API:
 
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Network_CIFS.MK_Common_CIFS_Share_URL_API()
+        self.db = common_network_CIFS.common_cifs_Share_URL_API()
 
 
     @classmethod
@@ -37,21 +37,21 @@ class Test_MK_Common_CIFS_Share_URL_API:
         pass
 
 
-# def MK_Common_CIFS_URL_Director(self, connect_string):
+# def common_cifs_URL_Director(self, connect_string):
 
 
-# def MK_Common_CIFS_URL_Download(self, connect_string):
+# def common_cifs_URL_Download(self, connect_string):
 
 
-# def MK_Common_CIFS_URL_Upload(self, file_path, connect_string):
+# def common_cifs_URL_Upload(self, file_path, connect_string):
 
 
-class Test_MK_Common_CIFS_Share_API:
+class Test_common_cifs_Share_API:
 
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Network_CIFS.MK_Common_CIFS_Share_API()
+        self.db = common_network_CIFS.common_cifs_Share_API()
 
 
     @classmethod
@@ -60,42 +60,42 @@ class Test_MK_Common_CIFS_Share_API:
 
 
 # connect
-# def MK_Common_CIFS_Connect(self, ip_addr, user_name='guest', user_password=''):
+# def common_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
 
 
     # list shares
-    def test_MK_Common_CIFS_Share_List_By_Connection(self):
-        MK_Common_CIFS_Share_List_By_Connection()
+    def test_common_cifs_Share_List_By_Connection(self):
+        common_cifs_Share_List_By_Connection()
 
 
 # list files in share
-# def MK_Common_CIFS_Share_File_List_By_Share(self, share_name, path_text='/'):
+# def common_cifs_Share_File_List_By_Share(self, share_name, path_text='/'):
 
 
 # verify smb directory
-# def MK_Common_CIFS_Share_Directory_Check(self, share_name, dir_path):
+# def common_cifs_Share_Directory_Check(self, share_name, dir_path):
 
 
 # get specific path/file info
-# def MK_Common_CIFS_Share_File_Dir_Info(self, share_name, file_path):
+# def common_cifs_Share_File_Dir_Info(self, share_name, file_path):
 
 
 # upload file to smb
-# def MK_Common_CIFS_Share_File_Upload(self, file_path):
+# def common_cifs_Share_File_Upload(self, file_path):
 
 
 # download from smb
-# def MK_Common_CIFS_Share_File_Download(self, file_path):
+# def common_cifs_Share_File_Download(self, file_path):
 
 
 # delete from smb
-# def MK_Common_CIFS_Share_File_Delete(self, share_name, file_path):
+# def common_cifs_Share_File_Delete(self, share_name, file_path):
 
 
     # close connection
-    def test_MK_Common_CIFS_Close(self):
-        MK_Common_CIFS_Close()
+    def test_common_cifs_Close(self):
+        common_cifs_Close()
 
 
 # cifs directory walk
-# def MK_Common_CIFS_Walk(self, share_name, file_path='/'):
+# def common_cifs_Walk(self, share_name, file_path='/'):

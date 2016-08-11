@@ -65,7 +65,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start()
+common_logging.common_logging_Start()
 
 # store pid for initd
 pid = os.getpid()

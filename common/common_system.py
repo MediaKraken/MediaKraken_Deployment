@@ -21,7 +21,7 @@ import logging
 import subprocess
 import sys
 import psutil
-import MK_Common_String
+import common_string
 
 
 def pprint_ntuple(nt, return_value=None):
@@ -29,14 +29,14 @@ def pprint_ntuple(nt, return_value=None):
     for name in nt._fields:
         value = getattr(nt, name)
         if name != 'percent':
-            value = MK_Common_String.bytes2human(value)
+            value = common_string.bytes2human(value)
         logging.debug('%-10s : %7s' % (name.capitalize(), value))
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
         return tuple_print
 
 
-def MK_Common_System_Virtual_Memory(attribute_list=None):
+def common_system_Virtual_Memory(attribute_list=None):
     """
     Return virtual memory
     """
@@ -48,13 +48,13 @@ def MK_Common_System_Virtual_Memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = MK_Common_String.bytes2human(value)
+                value = common_string.bytes2human(value)
             logging.debug('%-10s : %7s' % (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
 
-def MK_Common_System_SWAP_Memory(attribute_list=None):
+def common_system_SWAP_Memory(attribute_list=None):
     """
     Return swap memory
     """
@@ -66,88 +66,88 @@ def MK_Common_System_SWAP_Memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = MK_Common_String.bytes2human(value)
+                value = common_string.bytes2human(value)
             logging.debug('%-10s : %7s' % (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
 
-def MK_Common_System_CPU_Count():
+def common_system_CPU_Count():
     """
     Return cpu count
     """
     return psutil.cpu_count()
 
 
-def MK_Common_System_Partitions():
+def common_system_Partitions():
     """
     Return partitions
     """
     return psutil.disk_partitions()
 
 
-def MK_Common_System_Boot_Time():
+def common_system_Boot_Time():
     """
     Get boot time
     """
     return psutil.boot_time()
 
 
-def MK_Common_System_Users():
+def common_system_Users():
     """
     Get users
     """
     return psutil.users()
 
 
-def MK_Common_System_CPU_Usage(per_cpu=False):
+def common_system_CPU_Usage(per_cpu=False):
     """
     Get cpu percentage
     """
     return psutil.cpu_times_percent(interval=1, percpu=per_cpu)
 
 
-def MK_Common_System_CPU_Times():
+def common_system_CPU_Times():
     """
     Get cpu times
     """
     return psutil.cpu_times()
 
 
-def MK_Common_System_Disk_Usage(file_path='/'):
+def common_system_Disk_Usage(file_path='/'):
     """
     Get disk usage for specified path
     """
     return psutil.disk_usage(file_path)
 
 
-def MK_Common_System_Disk_Usage_All(human_readable=False):
+def common_system_Disk_Usage_All(human_readable=False):
     """
     Get disk usage of all partitions
     """
     disk_usage_data = []
-    for row_data in MK_Common_System_Partitions():
+    for row_data in common_system_Partitions():
         if human_readable:
             formatted_list = []
-            for space_value in MK_Common_System_Disk_Usage(row_data[1]):
+            for space_value in common_system_Disk_Usage(row_data[1]):
                 if len(formatted_list) == 3:
                     formatted_list.append(space_value)
                 else:
-                    formatted_list.append(MK_Common_String.bytes2human(space_value))
+                    formatted_list.append(common_string.bytes2human(space_value))
             disk_usage_data.append((row_data[1], formatted_list))
         else:
-            disk_usage_data.append((row_data[1], MK_Common_System_Disk_Usage(row_data[1])))
+            disk_usage_data.append((row_data[1], common_system_Disk_Usage(row_data[1])))
     return disk_usage_data
 
 
-def MK_Common_System_Disk_IO(per_disk=False):
+def common_system_Disk_IO(per_disk=False):
     """
     Get disk IO
     """
     return psutil.disk_io_counters(perdisk=per_disk)
 
 
-def MK_Common_System_Uptime():
+def common_system_Uptime():
     """
     Get system uptime
     """

@@ -48,11 +48,11 @@ import metadata_periodicals
 import metadata_person
 import metadata_sports
 import metadata_tv
-import MK_Common_File
+import common_file
 import MK_Common_Hash
 import MK_Common_ISBNdb
 from MK_Common_Metadata_Limiter import *
-import MK_Common_Logging
+import common_logging
 import MK_Common_Metadata
 import MK_Common_Metadata_IMVDb
 import MK_Common_Metadata_Limiter
@@ -69,8 +69,8 @@ import MK_Common_Metadata_TMDB
 import MK_Common_Metadata_TV_Intro
 import MK_Common_Metadata_TV_Theme
 import MK_Common_Metadata_TVMaze
-import MK_Common_Network
-import MK_Common_System
+import common_network
+import common_system
 import MK_Common_TheTVDB
 from concurrent import futures
 import locale
@@ -98,7 +98,7 @@ op.close()
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Metadata_API')
+common_logging.common_logging_Start('./log/MediaKraken_Metadata_API')
 
 
 # open the database

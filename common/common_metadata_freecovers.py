@@ -26,7 +26,7 @@ import logging
 import urllib2
 import urllib
 from xml.dom.minidom import parse
-import MK_Common_Network
+import common_network
 
 '''
 Anime DVD
@@ -55,7 +55,7 @@ Xbox 360
 
 # general freecovers search
 def MK_Common_FreeCovers_Search(search_string, search_categories):
-    #xml_data = parse(MK_Common_Network.MK_Network_Fetch_From_URL('http://www.freecovers.net/api/search/' + search_string, None))
+    #xml_data = parse(common_network.MK_Network_Fetch_From_URL('http://www.freecovers.net/api/search/' + search_string, None))
     #for node in xml_data.getElementsByTagName('name'):
     request = urllib2.Request('http://www.freecovers.net/api/search/', urllib.urlencode({'search': search_string}))
     handler = urllib2.urlopen(request)

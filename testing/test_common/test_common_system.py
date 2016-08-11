@@ -21,51 +21,51 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_System import *
+from common_system import *
 
 
 # def pprint_ntuple(nt, return_value=None):
 
 
 # return virtual memory
-# def MK_Common_System_Virtual_Memory(attribute_list=None):
+# def common_system_Virtual_Memory(attribute_list=None):
 
 
 # return swap memory
-# def MK_Common_System_SWAP_Memory(attribute_list=None):
+# def common_system_SWAP_Memory(attribute_list=None):
 
 
 # return cpu count
-def test_MK_Common_System_CPU_Count():
-    assert MK_Common_System_CPU_Count() == 8
+def test_common_system_CPU_Count():
+    assert common_system_CPU_Count() == 8
 
 
 # return partitions
-def test_MK_Common_System_Partitions():
-    MK_Common_System_Partitions()
+def test_common_system_Partitions():
+    common_system_Partitions()
 
 
 # get boot time
-def test_MK_Common_System_Boot_Time():
-    MK_Common_System_Boot_Time()
+def test_common_system_Boot_Time():
+    common_system_Boot_Time()
 
 
 # get users 
-def test_MK_Common_System_Users():
-    MK_Common_System_Users()
+def test_common_system_Users():
+    common_system_Users()
 
 
 # get cpu percentage
 @pytest.mark.parametrize(("per_cpu"), [
     (True),
     (False)])
-def test_MK_Common_System_CPU_Usage(per_cpu):
-    MK_Common_System_CPU_Usage(per_cpu)
+def test_common_system_CPU_Usage(per_cpu):
+    common_system_CPU_Usage(per_cpu)
 
 
 # get cpu times
-def test_MK_Common_System_CPU_Times():
-    MK_Common_System_CPU_Times()
+def test_common_system_CPU_Times():
+    common_system_CPU_Times()
 
 
 # get disk usage
@@ -73,29 +73,29 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     path = 'C:'
 else:
     path = '/'
-def test_MK_Common_System_Disk_Usage():
-    MK_Common_System_Disk_Usage(path)
+def test_common_system_Disk_Usage():
+    common_system_Disk_Usage(path)
 
 
 # get disk usage of all partitions
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
-def test_MK_Common_System_Disk_Usage_All(human_readable):
-    MK_Common_System_Disk_Usage_All(human_readable)
+def test_common_system_Disk_Usage_All(human_readable):
+    common_system_Disk_Usage_All(human_readable)
 
 
 # get disk IO
 @pytest.mark.parametrize(("per_disk"), [
     (True),
     (False)])
-def test_MK_Common_System_Disk_IO(per_disk):
-    MK_Common_System_Disk_IO(per_disk)
+def test_common_system_Disk_IO(per_disk):
+    common_system_Disk_IO(per_disk)
 
 
 # get system uptime
-def test_MK_Common_System_Uptime():
-    MK_Common_System_Uptime()
+def test_common_system_Uptime():
+    common_system_Uptime()
 
 
 # get processes and optionally check for one

@@ -21,14 +21,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_String import *
+from common_string import *
 
 
 # def repl_func(m):
 
 
 # def capitalize first letter of each word and handling quotes
-# def MK_Common_String_Title(title_string):
+# def common_string_Title(title_string):
 
 
 # readable numbers for bytes to G, T, etc
@@ -52,8 +52,8 @@ def test_bytes2human(n, expected_result):
     ("Password", "1.5K"),
     ("sRji#234", "1.4M"),
     ("jfioj23$29#DFWEWFWE454938", "1.2Y")])
-def test_MK_Common_String_Password_Test(password_text, expected_result):
-    assert MK_Common_String_Password_Test(password_text) == expected_result
+def test_common_string_Password_Test(password_text, expected_result):
+    assert common_string_Password_Test(password_text) == expected_result
 
 
 # def ip_ascii_to_int(ip):

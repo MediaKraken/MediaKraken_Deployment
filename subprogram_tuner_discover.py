@@ -24,10 +24,10 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_File
+import common_file
 import MK_Common_HDHomeRun
-import MK_Common_Logging
-import MK_Common_String
+import common_logging
+import common_string
 import os
 import json
 import signal
@@ -39,7 +39,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Tuner_Scan', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Tuner_Scan', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -56,7 +56,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Tuner_Discovery')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Tuner_Discovery')
 
 
 # open the database
@@ -85,7 +85,7 @@ for row_tuner in tuner_api.MK_Common_HDHomeRun_List():
     json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
         'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\
-        'IP': MK_Common_String.ip_int_to_ascii(row_tuner.get_device_ip()),\
+        'IP': common_string.ip_int_to_ascii(row_tuner.get_device_ip()),\
         'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
     current_data = db.MK_Server_Database_Tuner_By_Serial(str(hex(row_tuner.get_device_id())))

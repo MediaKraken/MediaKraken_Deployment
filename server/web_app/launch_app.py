@@ -12,10 +12,10 @@ if BASE_DIR not in sys.path:
 from MediaKraken.app import create_app
 
 sys.path.append("../../MediaKraken_Common")
-import MK_Common_Logging
+import common_logging
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('../log/MediaKraken_WebApp')
+common_logging.common_logging_Start('../log/MediaKraken_WebApp')
 logging.info('Creating webapp instance')
 # defaults to PROD config
 application = create_app()

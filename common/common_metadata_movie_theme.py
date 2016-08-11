@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from bs4 import BeautifulSoup
-import MK_Common_Network
-import MK_Common_String
+import common_network
+import common_string
 
 
 # http://www.musicpophits.com/MainPages/MovieThemes.htm

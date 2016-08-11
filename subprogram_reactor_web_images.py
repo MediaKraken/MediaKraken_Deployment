@@ -25,8 +25,8 @@ import signal
 import os
 import sys
 sys.path.append("../MediaKraken_Common")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor
@@ -34,7 +34,7 @@ from twisted.internet import ssl
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Web_Image', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Web_Image', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
 
 # simple reactor to present images to clients

@@ -22,15 +22,15 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import MK_Common_File
-import MK_Common_Network
+import common_file
+import common_network
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'GiantBomb_Downloader', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'GiantBomb_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Giant Bomb: Received USR1')

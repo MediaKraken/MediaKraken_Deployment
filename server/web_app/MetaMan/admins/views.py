@@ -30,15 +30,15 @@ import sys
 sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
-import MK_Common_CIFS
-import MK_Common_Cloud
-import MK_Common_File
-import MK_Common_Network
-import MK_Common_Pagination
-import MK_Common_String
-import MK_Common_System
-import MK_Common_Transmission
-import MK_Common_ZFS
+import common_cifs
+import common_cloud
+import common_file
+import common_network
+import common_pagination
+import common_string
+import common_system
+import common_transmission
+import common_zfs
 
 # import localization
 import locale
@@ -78,11 +78,11 @@ def admin_required(fn):
 def admins():
     global outside_ip
     if outside_ip is None:
-        outside_ip = MK_Common_Network.MK_Network_Get_Outside_IP()
+        outside_ip = common_network.MK_Network_Get_Outside_IP()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
-    for key, value in MK_Common_Network.MK_Network_IP_Addr().iteritems():
+    for key, value in common_network.MK_Network_IP_Addr().iteritems():
         nic_data.append(key + ' ' + value[0][1])
     data_alerts_dismissable = []
     data_alerts = []
@@ -107,14 +107,14 @@ def admins():
                            data_server_info_server_port = Config.get('MediaKrakenServer','ListenPort').strip(),
                            data_server_info_server_ip_external = outside_ip,
                            data_server_info_server_version = '0.1.4',
-                           data_server_uptime = MK_Common_System.MK_Common_System_Uptime(),
+                           data_server_uptime = common_system.common_system_Uptime(),
                            data_active_streams = locale.format('%d', 0, True),
                            data_alerts_dismissable = data_alerts_dismissable,
                            data_alerts = data_alerts,
                            data_count_media_files = locale.format('%d', g.db.MK_Server_Database_Known_Media_Count(), True),
                            data_count_matched_media = locale.format('%d', g.db.MK_Server_Database_Matched_Media_Count(), True),
                            data_count_streamed_media = locale.format('%d', 0, True),
-                           data_zfs_active = MK_Common_ZFS.MK_Common_ZFS_Available(),
+                           data_zfs_active = common_zfs.common_zfs_Available(),
                            data_library = locale.format('%d', g.db.MK_Server_Database_Audit_Paths_Count(), True),
                            data_transmission_active = data_transmission_active,
                            data_scan_info = data_scan_info,
@@ -127,8 +127,8 @@ def admins():
 @login_required
 @admin_required
 def admin_users():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_User_List_Name_Count(),
                                 record_name='users',
@@ -163,8 +163,8 @@ def admin_user_detail(guid):
 @login_required
 @admin_required
 def admin_cron_display_all():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Cron_List_Count(False),
                                 record_name='Cron Jobs',
@@ -214,11 +214,11 @@ def admin_nas():
 @login_required
 @admin_required
 def admin_transmission():
-    trans_connection = MK_Common_Transmission.MK_Common_Transmission_API()
+    trans_connection = common_transmission.common_transmission_API()
     transmission_data = []
     if trans_connection is not None:
         torrent_no = 1
-        for torrent in trans_connection.MK_Common_Transmission_Get_Torrent_List():
+        for torrent in trans_connection.common_transmission_Get_Torrent_List():
             transmission_data.append((locale.format('%d', torrent_no, True), torrent.name, torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
     return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
@@ -250,8 +250,8 @@ def admin_library():
     if request.method == 'POST':
         g.db.MK_Server_Database_Trigger_Insert(('python', './subprogram/subprogram_file_scan.py'))
         flash("Scheduled media scan.")
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Audit_Paths_Count(),
                                 record_name='library dir(s)',
@@ -276,20 +276,20 @@ def admin_library_edit_page():
             if request.form['action_type'] == 'Add':
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
-                    addr, share, path = MK_Common_String.UNC_To_Addr_Share_Path(request.form['library_path'])
-                    smb_stuff = MK_Common_CIFS.MK_Common_CIFS_Share_API()
-                    smb_stuff.MK_Common_CIFS_Connect(addr)
-                    if not smb_stuff.MK_Common_CIFS_Share_Directory_Check(share, path):
-                        smb_stuff.MK_Common_CIFS_Close()
+                    addr, share, path = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
+                    smb_stuff = common_cifs.common_cifs_Share_API()
+                    smb_stuff.common_cifs_Connect(addr)
+                    if not smb_stuff.common_cifs_Share_Directory_Check(share, path):
+                        smb_stuff.common_cifs_Close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))                      
-                    smb_stuff.MK_Common_CIFS_Close()
+                    smb_stuff.common_cifs_Close()
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO                    
-                    smb_stuff = MK_Common_CIFS.MK_Common_CIFS_Share_API()
-                    smb_stuff.MK_Common_CIFS_Connect(ip_addr, user_name='guest', user_password='')
-                    smb_stuff.MK_Common_CIFS_Share_Directory_Check(share_name, dir_path)
-                    smb_stuff.MK_Common_CIFS_Close()
+                    smb_stuff = common_cifs.common_cifs_Share_API()
+                    smb_stuff.common_cifs_Connect(ip_addr, user_name='guest', user_password='')
+                    smb_stuff.common_cifs_Share_Directory_Check(share_name, dir_path)
+                    smb_stuff.common_cifs_Close()
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))
@@ -357,7 +357,7 @@ def admin_backup_delete_page():
     if file_type == "Local":
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
-        MK_Common_Cloud.MK_Common_Cloud_File_Delete('awss3', file_path, True)
+        common_cloud.common_cloud_File_Delete('awss3', file_path, True)
     return json.dumps({'status':'OK'})
 
 
@@ -378,13 +378,13 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in MK_Common_File.MK_Common_File_Dir_List(Config.get('MediaKrakenServer','BackupLocal').strip(), 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local', MK_Common_String.bytes2human(backup_local[1])))
+    for backup_local in common_file.common_file_Dir_List(Config.get('MediaKrakenServer','BackupLocal').strip(), 'dump', False, False, True):
+        backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in MK_Common_Cloud.MK_Common_Cloud_Backup_List():
-        backup_files.append((backup_cloud.name, backup_cloud.type, MK_Common_String.bytes2human(backup_cloud.size)))
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    for backup_cloud in common_cloud.common_cloud_Backup_List():
+        backup_files.append((backup_cloud.name, backup_cloud.type, common_string.bytes2human(backup_cloud.size)))
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=len(backup_files),
                                 record_name='backups',
@@ -394,7 +394,7 @@ def admin_backup():
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=MK_Common_Cloud.cloud_backup_class,
+                           data_class=common_cloud.cloud_backup_class,
                            data_enabled=backup_enabled,
                            page=page,
                            per_page=per_page,
@@ -415,9 +415,9 @@ def ffmpeg_stat():
 @login_required
 @admin_required
 def admin_server_stat():
-    return render_template("admin/admin_server_stats.html", data_disk=MK_Common_System.MK_Common_System_Disk_Usage_All(True),
-                           data_cpu_usage=MK_Common_System.MK_Common_System_CPU_Usage(True),
-                           data_mem_usage=MK_Common_System.MK_Common_System_Virtual_Memory(None))
+    return render_template("admin/admin_server_stats.html", data_disk=common_system.common_system_Disk_Usage_All(True),
+                           data_cpu_usage=common_system.common_system_CPU_Usage(True),
+                           data_mem_usage=common_system.common_system_Virtual_Memory(None))
 
 
 @blueprint.route("/server_stat_slave")
@@ -425,9 +425,9 @@ def admin_server_stat():
 @login_required
 @admin_required
 def admin_server_stat_slave():
-    return render_template("admin/admin_server_stats_slave.html", data_disk=MK_Common_System.MK_Common_System_Disk_Usage_All(True),
-                           data_cpu_usage=MK_Common_System.MK_Common_System_CPU_Usage(True),
-                           data_mem_usage=MK_Common_System.MK_Common_System_Virtual_Memory(None))
+    return render_template("admin/admin_server_stats_slave.html", data_disk=common_system.common_system_Disk_Usage_All(True),
+                           data_cpu_usage=common_system.common_system_CPU_Usage(True),
+                           data_mem_usage=common_system.common_system_Virtual_Memory(None))
 
 
 @blueprint.route("/settings")
@@ -443,7 +443,7 @@ def admin_server_settings():
 @login_required
 @admin_required
 def admin_server_zfs():
-    return render_template("admin/admin_server_zfs.html", data_zpool=MK_Common_ZFS.MK_Common_ZFS_Zpool_List())
+    return render_template("admin/admin_server_zfs.html", data_zpool=common_zfs.common_zfs_Zpool_List())
 
 
 @blueprint.route("/link_server")
@@ -451,8 +451,8 @@ def admin_server_zfs():
 @login_required
 @admin_required
 def admin_server_link_server():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Link_List_Count(),
                                 record_name='linked servers',
@@ -558,7 +558,7 @@ def admin_database_statistics():
 @login_required
 @admin_required
 def admin_fs_browse(path):
-    browse_file = MK_Common_File.MK_Common_File_Dir_List('/' + path, None, False, False, True, True)
+    browse_file = common_file.common_file_Dir_List('/' + path, None, False, False, True, True)
     browse_parent = []
     build_path = ''
     for path_part in path.split('/'):

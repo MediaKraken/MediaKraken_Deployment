@@ -23,33 +23,33 @@ import urllib2
 from smb.SMBConnection import SMBConnection
 
 
-class MK_Common_CIFS_Share_URL_API:
+class common_cifs_Share_URL_API:
     def __init__(self):
         pass
 
 
-    def MK_Common_CIFS_URL_Director(self, connect_string):
+    def common_cifs_URL_Director(self, connect_string):
         self.director = urllib2.build_opener(SMBHandler)
 
 
-    def MK_Common_CIFS_URL_Download(self, connect_string):
+    def common_cifs_URL_Download(self, connect_string):
         # For paths/files with unicode characters, simply pass in the URL as an unicode string
         file_con = self.director.open('smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
         # Process file_con like a file-like object and then close it.
         file_con.close()
 
 
-    def MK_Common_CIFS_URL_Upload(self, file_path, connect_string):
+    def common_cifs_URL_Upload(self, file_path, connect_string):
         file_con = self.director.open('smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat', data = open(file_path, 'rb'))
         file_con.close()
 
 
-class MK_Common_CIFS_Share_API:
+class common_cifs_Share_API:
     def __init__(self):
         pass
 
 
-    def MK_Common_CIFS_Connect(self, ip_addr, user_name='guest', user_password=''):
+    def common_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
         """
         Connect to share
         """
@@ -59,7 +59,7 @@ class MK_Common_CIFS_Share_API:
         self.smb_conn.connect(ip_addr, 139)
 
 
-    def MK_Common_CIFS_Share_List_By_Connection(self):
+    def common_cifs_Share_List_By_Connection(self):
         """
         List shares
         """
@@ -69,7 +69,7 @@ class MK_Common_CIFS_Share_API:
         return share_names
 
 
-    def MK_Common_CIFS_Share_File_List_By_Share(self, share_name, path_text='/'):
+    def common_cifs_Share_File_List_By_Share(self, share_name, path_text='/'):
         """
         List files in share
         """
@@ -80,7 +80,7 @@ class MK_Common_CIFS_Share_API:
         return file_names
 
 
-    def MK_Common_CIFS_Share_Directory_Check(self, share_name, dir_path):
+    def common_cifs_Share_Directory_Check(self, share_name, dir_path):
         """
         Verify smb directory
         """
@@ -92,42 +92,42 @@ class MK_Common_CIFS_Share_API:
         return False
 
 
-    def MK_Common_CIFS_Share_File_Dir_Info(self, share_name, file_path):
+    def common_cifs_Share_File_Dir_Info(self, share_name, file_path):
         """
         Get specific path/file info
         """
         return self.smb_conn.getAttributes(share_name, file_path)
 
 
-    def MK_Common_CIFS_Share_File_Upload(self, file_path):
+    def common_cifs_Share_File_Upload(self, file_path):
         """
         Upload file to smb
         """
         self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path,'rb'))
 
 
-    def MK_Common_CIFS_Share_File_Download(self, file_path):
+    def common_cifs_Share_File_Download(self, file_path):
         """
         Download from smb
         """
         self.smb_conn.retrieveFile(self.sharename, open(file_path, 'wb'))
 
 
-    def MK_Common_CIFS_Share_File_Delete(self, share_name, file_path):
+    def common_cifs_Share_File_Delete(self, share_name, file_path):
         """
         Delete from smb
         """
         self.smb_conn.deleteFiles(share_name, '/' + file_path)
 
 
-    def MK_Common_CIFS_Close(self):
+    def common_cifs_Close(self):
         """
         Close connection
         """
         self.smb_conn.close()
 
 
-    def MK_Common_CIFS_Walk(self, share_name, file_path='/'):
+    def common_cifs_Walk(self, share_name, file_path='/'):
         """
         cifs directory walk
         """
@@ -141,7 +141,7 @@ class MK_Common_CIFS_Share_API:
         yield file_path, dirs, nondirs
         for name in dirs:
             new_path = file_path + '\\' + name
-            for x in self.MK_Common_CIFS_Walk(share_name, new_path):
+            for x in self.common_cifs_Walk(share_name, new_path):
                 yield x
 
-#    ans = MK_Common_CIFS_Walk(conn, 'SHARE_FOLDER',file_path= '/')
+#    ans = common_cifs_Walk(conn, 'SHARE_FOLDER',file_path= '/')

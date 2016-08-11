@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import MK_Common_Network_Telnet
+import common_network_Telnet
 
 
 class common_tivo_api:

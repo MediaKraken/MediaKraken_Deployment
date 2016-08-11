@@ -25,8 +25,8 @@ import logging
 import sys
 sys.path.append("../server")
 sys.path.append("../common")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import database as database_base
 import datetime
 import time
@@ -38,7 +38,7 @@ import signal
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Cron_Checker', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Cron_Checker', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Cron: Received USR1')
@@ -62,7 +62,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Cron')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Cron')
 
 
 # open the database

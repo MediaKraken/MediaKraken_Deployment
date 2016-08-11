@@ -6,7 +6,7 @@ import sys
 sys.path.append('./MediaKraken_Common')
 sys.path.append('../MediaKraken_Common')
 sys.path.append('../../MediaKraken_Common')
-import MK_Common_File
+import common_file
 
 # pull in the ini file config
 import ConfigParser
@@ -18,8 +18,8 @@ class Config(object):
         pass
     else:
         data = os.urandom(24).encode('hex')
-        MK_Common_File.MK_Common_File_Save_Data('web_secret_key.txt', data, False)
-    SECRET_KEY = os_env.get('METAMAN_SECRET', MK_Common_File.MK_Common_File_Load_Data('web_secret_key.txt', False))
+        common_file.common_file_Save_Data('web_secret_key.txt', data, False)
+    SECRET_KEY = os_env.get('METAMAN_SECRET', common_file.common_file_Load_Data('web_secret_key.txt', False))
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BCRYPT_LOG_ROUNDS = 13

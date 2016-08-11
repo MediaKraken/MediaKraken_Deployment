@@ -22,7 +22,7 @@ import os
 import re
 import random
 import string
-import MK_Common_Network
+import common_network
 
 
 # pull in the ini file config
@@ -118,5 +118,5 @@ def common_metaData_image_path(media_name, media_type, source_link, source_file)
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):
-        MK_Common_Network.MK_Network_Fetch_From_URL(url + source_file, file_path)
+        common_network.MK_Network_Fetch_From_URL(url + source_file, file_path)
     return file_path

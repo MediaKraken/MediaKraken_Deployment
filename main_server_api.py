@@ -55,7 +55,7 @@ class MediaKrakenAPI(object):
         self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
         self.user_xref = []
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_API')
+        common_logging.common_logging_Start('./log/MediaKraken_API')
 
 
     @app.route('/')

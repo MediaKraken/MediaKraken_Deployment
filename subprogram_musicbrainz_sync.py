@@ -27,14 +27,14 @@ import signal
 import json
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import database as database_base
 import db_base_brainz as database_base_brainz
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Musicbrainz_Sync', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Mbrainz Sync: Received USR1')
@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_MusicBrainz_Sync')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_MusicBrainz_Sync')
 
 
 # open the database

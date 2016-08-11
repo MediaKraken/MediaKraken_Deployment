@@ -24,9 +24,9 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
-import MK_Common_File
-import MK_Common_Logging
-import MK_Common_Network_Radio
+import common_file
+import common_logging
+import common_network_Radio
 import os
 import signal
 import database as database_base
@@ -34,7 +34,7 @@ import database as database_base
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_iRadio', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_iRadio', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Cron: Received USR1')
@@ -54,7 +54,7 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_IRadio')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_IRadio')
 
 # open the database
 db = database_base.MK_Server_Database()
@@ -65,15 +65,15 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
-#MK_Common_Network_Radio.MK_Common_Network_Radio()
+#common_network_Radio.common_network_Radio()
 
 # load the cache files and compare to db
-radio_cache = MK_Common_File.MK_Common_File_Load_Data('./cache.pickle', True)
+radio_cache = common_file.common_file_Load_Data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
     db.MK_Server_Database_iRadio_Insert(row_data)
 
-#radio_xiph = MK_Common_File.MK_Common_File_Load_Data('./xiph.pickle', True)
+#radio_xiph = common_file.common_file_Load_Data('./xiph.pickle', True)
 
 # log end
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server iRadio Stop', None,\

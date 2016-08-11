@@ -25,7 +25,7 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import MK_Common_String
+import common_string
 
 junk_files = []
 junk_files.append('(gameplay)')
@@ -39,7 +39,7 @@ junk_files.append('full length')
 junk_files.append('deleted scene')
 
 
-def MK_Common_File_Modification_Timestamp(file_name):
+def common_file_Modification_Timestamp(file_name):
     """
     Return file modfication date in datetime format
     """
@@ -49,7 +49,7 @@ def MK_Common_File_Modification_Timestamp(file_name):
         return None
 
 
-def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False, file_ext=None):
+def common_file_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False, file_ext=None):
     """
     Save data as file
     """
@@ -66,7 +66,7 @@ def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timest
     file_handle.close()
 
 
-def MK_Common_File_Load_Data(file_name, as_pickle=False):
+def common_file_Load_Data(file_name, as_pickle=False):
     """
     Load data from file as ascii or pickle
     """
@@ -79,7 +79,7 @@ def MK_Common_File_Load_Data(file_name, as_pickle=False):
     return data_block
 
 
-def MK_Common_File_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False, directory_only=False):
+def common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False, directory_only=False):
     """
     Find all filtered files in directory
     """
@@ -113,18 +113,18 @@ def MK_Common_File_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, fil
                         else:
                             match_list.append(os.path.join(root, file_name))
         if skip_junk and len(match_list) > 0:
-            match_list = MK_Common_File_Remove_Junk(match_list)
+            match_list = common_file_Remove_Junk(match_list)
         if file_size:
             match_list_size = []
             for row_data in match_list:
-                match_list_size.append((row_data, MK_Common_String.bytes2human(os.path.getsize(row_data))))
+                match_list_size.append((row_data, common_string.bytes2human(os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:
         return None
 
 
-def MK_Common_File_Remove_Junk(file_list):
+def common_file_Remove_Junk(file_list):
     """
     Throw out junk entries in files list
     """
@@ -139,7 +139,7 @@ def MK_Common_File_Remove_Junk(file_list):
     return file_list
 
 
-def MK_Common_File_Is_Junk(file_name):
+def common_file_Is_Junk(file_name):
     """
     See if file is junk
     """

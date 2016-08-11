@@ -32,13 +32,13 @@ import sys
 sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
-import MK_Common_File
+import common_file
 import MK_Common_Google
-import MK_Common_Network_Twitch
-import MK_Common_Network_Vimeo
-import MK_Common_Network_Youtube
-import MK_Common_Pagination
-import MK_Common_String
+import common_network_Twitch
+import common_network_Vimeo
+import common_network_Youtube
+import common_pagination
+import common_string
 
 
 def flash_errors(form):
@@ -66,8 +66,8 @@ def upload_image():
 @login_required
 def members():
     resume_list = []
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Read_Media_New_Count(7),
                                 record_name='new and hot',
@@ -111,7 +111,7 @@ def user_internet_vimeo():
 @blueprint.route('/internet/internet_twitch/')
 @login_required
 def user_internet_twitch():
-    twitch_api = MK_Common_Network_Twitch.MK_Common_Twitch_API()
+    twitch_api = common_network_Twitch.MK_Common_Twitch_API()
     twitch_media = []
     for stream_data in twitch_api.MK_Common_Twitch_Get_Featured_Streams()['featured']:
         logging.debug("stream: %s", stream_data)
@@ -127,7 +127,7 @@ def user_internet_twitch():
 @blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>/')
 @login_required
 def user_internet_twitch_stream_detail(stream_name):
-    #twitch_api = MK_Common_Network_Twitch.MK_Common_Twitch_API()
+    #twitch_api = common_network_Twitch.MK_Common_Twitch_API()
     #media = twitch_api.MK_Common_Twitch_Channel_By_Name(stream_name)
     #logging.debug("str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
@@ -177,8 +177,8 @@ def user_3d_list():
 @blueprint.route('/music_video_list/')
 @login_required
 def user_music_video_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_music_video'),
                                 record_name='music video',
@@ -197,11 +197,11 @@ def user_music_video_list():
 @blueprint.route("/sports/")
 @login_required
 def user_sports_page():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.MK_Server_Database_Metadata_Sports_List(offset, per_page):
         media.append((row_data['mm_metadata_sports_guid'],row_data['mm_metadata_sports_name']))
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Metadata_Sports_List_Count(),
                                 record_name='sporting events',
@@ -247,7 +247,7 @@ def user_sports_detail_page(guid):
 @blueprint.route("/tv/")
 @login_required
 def user_tv_page():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     for row_data in g.db.MK_Server_Database_Web_TVMedia_List('TV Show', None, per_page, False, offset):
@@ -256,7 +256,7 @@ def user_tv_page():
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'], row_data['mm_metadata_tvshow_localimage_json'].replace(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(), ''), locale.format('%d', row_data['mm_count'], True)))
         except:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'], None, locale.format('%d', row_data['mm_count'], True)))
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Web_TVMedia_List_Count('TV Show', None, None),
                                 record_name='media',
@@ -685,7 +685,7 @@ def user_movie_genre_page():
 @blueprint.route("/movie/<genre>/")
 @login_required
 def user_movie_page(genre):
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media = []
     image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     for row_data in g.db.MK_Server_Database_Web_Media_List(g.db.MK_Server_Database_Media_UUID_By_Class('Movie'), list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False, offset=offset, include_remote=True):
@@ -723,7 +723,7 @@ def user_movie_page(genre):
         else:
             media.append((row_data[mm_media_name], row_data[mm_media_guid], None, watched_status, sync_status, poo_status, favorite_status, match_status))
     total = g.db.MK_Server_Database_Web_Media_List_Count(g.db.MK_Server_Database_Media_UUID_By_Class('Movie'), list_type='movie', list_genre=genre, group_collection=False, include_remote=True)
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=total,
                                 record_name='media',
@@ -797,9 +797,9 @@ def movie_detail(guid):
             # aspect ratio
             aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],json_ffmpeg['streams'][0]['height'])).replace('/',':')
             # bitrate
-            bitrate = MK_Common_String.bytes2human(float(json_ffmpeg['format']['bit_rate']))
+            bitrate = common_string.bytes2human(float(json_ffmpeg['format']['bit_rate']))
             # file size
-            file_size = MK_Common_String.bytes2human(float(json_ffmpeg['format']['size']))
+            file_size = common_string.bytes2human(float(json_ffmpeg['format']['size']))
             # calculate a better runtime
             m, s = divmod(float(json_ffmpeg['format']['duration']), 60)
             #m, s = divmod(json_metadata['runtime'], 60)
@@ -910,7 +910,7 @@ def movie_detail(guid):
 #@blueprint.route("/video/")
 #@login_required
 #def user_video_page():
-#    page, per_page, offset = MK_Common_Pagination.get_page_items()
+#    page, per_page, offset = common_pagination.get_page_items()
 #    media = []
 #    # class_guid, list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
 #    media.append((g.db.MK_Server_Database_Web_Media_List(xxxx, 'in_progress', None, per_page, False, offset))) # extra parans so adds list
@@ -919,7 +919,7 @@ def movie_detail(guid):
 #    total += g.db.MK_Server_Database_Web_Media_List_Count(xxxx, 'recent_addition', None, False)
 #    media.append((g.db.MK_Server_Database_Web_Media_List(xxxx, 'video', None, per_page, False, offset)))
 #    total += g.db.MK_Server_Database_Web_Media_List_Count(xxxx, 'video', None, False)
-#    pagination = MK_Common_Pagination.get_pagination(page=page,
+#    pagination = common_pagination.get_pagination(page=page,
 #                                per_page=per_page,
 #                                total=total,
 #                                record_name='Media',
@@ -944,14 +944,14 @@ def user_audio_page():
 @blueprint.route("/album_list/")
 @login_required
 def user_album_list_page():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.MK_Server_Database_Media_Album_List(offset, per_page):
         try:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'], row_data['mm_metadata_album_json'].replace(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(), '')))
         except:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'], None))
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Media_Album_Count(),
                                 record_name='music albums',
@@ -990,11 +990,11 @@ def search(name):
         total = g.cur.fetchone()[0]
     except:
         total = 0
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     sql = 'select * from users where name like %s limit {}, {}'
     g.cur.execute(sql.format(offset, per_page), args)
     users = g.cur.fetchall()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=total,
                                 record_name='Users',
@@ -1024,9 +1024,9 @@ def upload():
 @blueprint.route('/sync/')
 @login_required
 def sync_display_all():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Sync_List_Count(),
                                 record_name='Sync Jobs',
@@ -1067,8 +1067,8 @@ def admin_sync_delete_page():
 @blueprint.route('/class/')
 @login_required
 def class_display_all():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Media_Class_List_Count(),
                                 record_name='Media Class',
@@ -1086,8 +1086,8 @@ def class_display_all():
 @blueprint.route('/report_duplicate/')
 @login_required
 def report_display_all_duplicates():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Media_Duplicate_Count(),
                                 record_name='All Duplicate Media',
@@ -1105,7 +1105,7 @@ def report_display_all_duplicates():
 @blueprint.route('/report_duplicate_detail/<guid>')
 @login_required
 def report_display_all_duplicates_detail(guid):
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media = []
     for media_data in g.db.MK_Server_Database_Media_Duplicate_Detail(guid, offset, per_page):
         logging.debug("media: %s", media_data['mm_media_ffprobe_json'])
@@ -1113,7 +1113,7 @@ def report_display_all_duplicates_detail(guid):
             if stream_data['codec_type'] == 'video':
                 media.append((media_data['mm_media_guid'], media_data['mm_media_path'], str(stream_data['width']) + 'x' + str(stream_data['height']), media_data['mm_media_ffprobe_json']['format']['duration']))
                 break
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Media_Duplicate_Detail_Count(guid)[0],
                                 record_name='copies',
@@ -1131,11 +1131,11 @@ def report_display_all_duplicates_detail(guid):
 @blueprint.route('/report_all/')
 @login_required
 def report_display_all_media():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media_data = []
     for row_data in g.db.MK_Server_Database_Known_Media(offset, per_page):
-        media_data.append((row_data['mm_media_path'], MK_Common_String.bytes2human(os.path.getsize(row_data['mm_media_path']))))
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+        media_data.append((row_data['mm_media_path'], common_string.bytes2human(os.path.getsize(row_data['mm_media_path']))))
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Known_Media_Count(),
                                 record_name='All Media',
@@ -1153,8 +1153,8 @@ def report_display_all_media():
 @blueprint.route('/report_known_video/')
 @login_required
 def report_display_all_media_known_video():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Web_Media_List_Count(g.db.MK_Server_Database_Media_UUID_By_Class('Movie')),
                                 record_name='Known Videos',
@@ -1214,8 +1214,8 @@ def metadata_person_detail(guid):
 @blueprint.route('/meta_person_list/')
 @login_required
 def metadata_person_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_person'),
                                 record_name='People',
@@ -1233,8 +1233,8 @@ def metadata_person_list():
 @blueprint.route('/metadata_music_list/')
 @login_required
 def metadata_music_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_music'),
                                 record_name='music',
@@ -1252,8 +1252,8 @@ def metadata_music_list():
 @blueprint.route('/metadata_music_video_list/')
 @login_required
 def metadata_music_video_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_music_video'),
                                 record_name='music video',
@@ -1271,8 +1271,8 @@ def metadata_music_video_list():
 @blueprint.route('/metadata_music_album_list/')
 @login_required
 def metadata_music_album_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_music_album'),
                                 record_name='music album',
@@ -1340,8 +1340,8 @@ def metadata_movie_detail(guid):
 @blueprint.route('/meta_movie_list/')
 @login_required
 def metadata_movie_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_movie'),
                                 record_name='Movies',
@@ -1360,14 +1360,14 @@ def metadata_movie_list():
 @blueprint.route('/metadata_movie_collection_list/')
 @login_required
 def metadata_movie_collection_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.MK_Server_Database_Collection_List(offset, per_page):
         try:
             media.append((row_data['mm_metadata_collection_guid'],row_data['mm_metadata_collection_name'],row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(Config.get('MediaKrakenServer','MetadataImageLocal').strip(),'')))
         except:
             media.append((row_data['mm_metadata_collection_guid'],row_data['mm_metadata_collection_name'],None))
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_collection'),
                                 record_name='movie collection(s)',
@@ -1617,7 +1617,7 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
 @blueprint.route('/meta_tvshow_list/')
 @login_required
 def metadata_tvshow_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
+    page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
     for row_data in g.db.MK_Server_Database_Metadata_TVShow_List(offset, per_page):
@@ -1627,7 +1627,7 @@ def metadata_tvshow_list():
         except:
             pass
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'], row_data['mm_metadata_tvshow_name'], row_data[2], image_data))  # TODO dictcursor
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Metadata_TVShow_List_Count(),
                                 record_name='TV Shows',
@@ -1645,8 +1645,8 @@ def metadata_tvshow_list():
 @blueprint.route('/meta_game_list/')
 @login_required
 def metadata_game_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Table_Count('mm_metadata_game_software_info'),
                                 record_name='Games',
@@ -1673,8 +1673,8 @@ def metadata_game_detail(guid):
 @blueprint.route('/meta_game_system_list/')
 @login_required
 def metadata_game_system_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Metadata_Game_System_List_Count(),
                                 record_name='Game Systems',
@@ -1700,8 +1700,8 @@ def metadata_game_system_detail(guid):
 @blueprint.route('/meta_sports_list/')
 @login_required
 def metadata_sports_list():
-    page, per_page, offset = MK_Common_Pagination.get_page_items()
-    pagination = MK_Common_Pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.MK_Server_Database_Metadata_Sports_List_Count(),
                                 record_name='sporting events',

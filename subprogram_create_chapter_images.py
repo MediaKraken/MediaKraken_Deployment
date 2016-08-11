@@ -29,10 +29,10 @@ import subprocess
 import os
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import MK_Common_Metadata
-#import MK_Common_System
+#import common_system
 from concurrent import futures
 import database as database_base
 import locale
@@ -40,7 +40,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Chapter_Images', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Chapter_Images', False, False, None)
 
 # set before everything else
 total_images_created = 0
@@ -100,7 +100,7 @@ def worker(worker_file_list):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
 
 
 # open the database

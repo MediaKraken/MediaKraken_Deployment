@@ -28,8 +28,8 @@ import json
 import time
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import MK_Common_Schedules_Direct
 import database as database_base
 import locale
@@ -37,7 +37,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Schedules Direct Update', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Schedules Direct Update', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -68,7 +68,7 @@ def MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Schedules_Direct_Updates')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Schedules_Direct_Updates')
 
 
 # open the database

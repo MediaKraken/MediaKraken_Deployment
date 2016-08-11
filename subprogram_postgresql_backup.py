@@ -26,12 +26,12 @@ import sys
 import os
 sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
-import MK_Common_Cloud
-import MK_Common_Logging
+import common_cloud
+import common_logging
 import database as database_base
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Postgresql_Backup')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Postgresql_Backup')
 
 # open the database
 db = database_base.MK_Server_Database()
@@ -52,7 +52,7 @@ os.system('PGPASSWORD=' + Config.get('DB Connections', 'PostDBPass').strip() + '
 # grab settings and options
 option_json = db.MK_Server_Database_Option_Status_Read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
-    MK_Common_Cloud.MK_Common_Cloud_File_Store(option_json['Backup']['BackupType'], Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name, backup_file_name, True)
+    common_cloud.common_cloud_File_Store(option_json['Backup']['BackupType'], Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name, backup_file_name, True)
 
 # log end
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Stop', None,\

@@ -22,12 +22,12 @@ import sys
 import os
 import signal
 sys.path.append("../common")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Subtitle_Down', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Subtitle_Down', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Subtitle: Received USR1')
@@ -39,6 +39,7 @@ def signal_receive(signum, frame):
     sys.stdout.flush()
     sys.exit(0)
 
+
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
 else:
@@ -47,7 +48,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Subtitle_Downloader')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Subtitle_Downloader')
 
 
 total_download_attempts = 0
@@ -57,7 +58,7 @@ def main(argv):
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files
-    for media_row in MK_Common_File.MK_Common_File_Dir_List('/nfsmount/TV_Shows_Misc/', ('avi', 'mkv', 'mp4', 'm4v'), True):
+    for media_row in common_file.common_file_Dir_List('/nfsmount/TV_Shows_Misc/', ('avi', 'mkv', 'mp4', 'm4v'), True):
         # run the subliminal fetch for episode
         logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
         # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt") and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")

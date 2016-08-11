@@ -35,7 +35,7 @@ except:
 import sys
 sys.path.append("./common")
 import common_logging
-import MK_Common_System
+import common_system
 sys.path.append("./server")
 import database as database_base
 
@@ -119,7 +119,7 @@ class MediaKrakenApp():
         root = MediaKrakenApp()
         metaapp = self
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Link')
+        common_logging.common_logging_Start('./log/MediaKraken_Link')
         # open the database
         self.db = database_base.MK_Server_Database()
         self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())

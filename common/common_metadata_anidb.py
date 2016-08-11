@@ -22,8 +22,8 @@ import gzip
 import time
 import sys
 import MK_Common_Database_Octmote
-import MK_Common_File
-import MK_Common_Network
+import common_file
+import common_network
 sys.path.append("../../common/lib")
 import adba
 
@@ -45,7 +45,7 @@ class MK_Common_Metadata_AniDB_API:
             data_file = 'http://anidb.net/api/anime-titles.dat.gz'
         else:
             data_file = 'http://anidb.net/api/anime-titles.xml.gz'
-        MK_Common_Network.MK_Network_Fetch_From_URL(data_file, './Temp_AniDB_Titles.gz')
+        common_network.MK_Network_Fetch_From_URL(data_file, './Temp_AniDB_Titles.gz')
 
 
     def MK_Network_AniDB_Save_Title_Data_To_DB(self, title_file):
@@ -73,7 +73,7 @@ class MK_Common_Metadata_AniDB_API:
         local_db_result = MK_Common_Database_Octmote.MK_Database_Sqlite3_AniDB_Title_Search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
-            if MK_Common_File.MK_Common_File_Modification_Timestamp(title_to_search) \
+            if common_file.common_file_Modification_Timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
                 MK_Network_AniDB_Fetch_Titles_File('dat')
                 # since new titles file....recheck by title

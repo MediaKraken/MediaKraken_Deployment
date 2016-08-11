@@ -23,16 +23,16 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import MK_Common_File
+import common_file
 import MK_Common_Chart_Lyrics
-improt MK_Common_Logging
+improt common_logging
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Lyrics_Downloader', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Lyrics_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Lyrics: Received USR1')
@@ -52,7 +52,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Lyrics_Download')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Lyrics_Download')
 
 
 total_download_attempts = 0
@@ -62,7 +62,7 @@ def main(argv):
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files
-    for media_row in MK_Common_File.MK_Common_File_Dir_List():
+    for media_row in common_file.common_file_Dir_List():
         logging.debug(media_row)
 
 

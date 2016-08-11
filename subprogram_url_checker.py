@@ -26,8 +26,8 @@ import os
 import signal
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import database as database_base
 
 def signal_receive(signum, frame):
@@ -47,7 +47,7 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_URL_Checker')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_URL_Checker')
 
 # open the database
 db = database_base.MK_Server_Database()

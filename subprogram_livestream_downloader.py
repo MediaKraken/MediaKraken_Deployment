@@ -21,8 +21,8 @@ import logging
 import sys
 sys.path.append("../common")
 sys.path.append("../server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import MK_Common_Twitch
 import os
 import signal
@@ -33,7 +33,7 @@ import datetime
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'LiveStream', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'LiveStream', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -50,7 +50,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_LiveStream')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_LiveStream')
 
 
 # open the database

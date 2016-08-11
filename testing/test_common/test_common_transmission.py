@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Transmission import *
+from common_transmission import *
 
 
-class Test_MK_Common_Transmission_API:
+class Test_common_transmission_API:
 
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Transmission.MK_Common_Transmission_API()
+        self.db = common_transmission.common_transmission_API()
 
 
     @classmethod
@@ -37,23 +37,23 @@ class Test_MK_Common_Transmission_API:
         pass
 
 
-    def test_MK_Common_Transmission_Get_Torrent_List(self):
-        MK_Common_Transmission_Get_Torrent_List()
+    def test_common_transmission_Get_Torrent_List(self):
+        common_transmission_Get_Torrent_List()
 
 
-#    def MK_Common_Transmission_Add_Torrent(self, torrent_path):
+#    def common_transmission_Add_Torrent(self, torrent_path):
 
 
-#    def MK_Common_Transmission_Remove_Torrent(self, torrent_hash):
+#    def common_transmission_Remove_Torrent(self, torrent_hash):
 
 
 #    def MK_Common_Trnasmission_Name(self, torrent_no):
 
 
-#    def MK_Common_Transmission_Torrent_Detail(self, torrent_no):
+#    def common_transmission_Torrent_Detail(self, torrent_no):
 
 
-#    def MK_Common_Transmission_Torrent_Start(self, torrent_no):
+#    def common_transmission_Torrent_Start(self, torrent_no):
 
 
-#    def MK_Common_Transmission_Torrent_Stop(self, torrent_no):
+#    def common_transmission_Torrent_Stop(self, torrent_no):

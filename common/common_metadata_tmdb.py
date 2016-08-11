@@ -22,7 +22,7 @@ import re
 import os
 import json
 import MK_Common_Metadata
-import MK_Common_Network
+import common_network
 import tmdbsimple as tmdb
 
 
@@ -153,7 +153,7 @@ class MK_Common_Metadata_TMDB_API:
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
             if not os.path.isfile(file_path):
-                MK_Common_Network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['poster_path'], file_path)
+                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
         file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(result_json['title'], 'backdrop')
@@ -161,7 +161,7 @@ class MK_Common_Metadata_TMDB_API:
         if result_json['backdrop_path'] is not None:
             file_path += result_json['backdrop_path']
             if not os.path.isfile(file_path):
-                MK_Common_Network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['backdrop_path'], file_path)
+                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case
         series_id_json = json.dumps({'IMDB':result_json['imdb_id'], 'TMDB':str(result_json['id'])})

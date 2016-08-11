@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Network_Telnet import *
+from common_network_Telnet import *
 
 
 class Test_MK_Common_Telnet_API:
@@ -29,7 +29,7 @@ class Test_MK_Common_Telnet_API:
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Network_Telnet.MK_Common_Telnet_API()
+        self.db = common_network_Telnet.MK_Common_Telnet_API()
 
 
     @classmethod

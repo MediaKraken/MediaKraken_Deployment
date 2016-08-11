@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Cloud_OneDrive import *
+from common_cloud_OneDrive import *
 
 
-class Test_MK_Common_Cloud_OneDrive_API:
+class Test_common_cloud_OneDrive_API:
 
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Cloud_OneDrive.MK_Common_Cloud_OneDrive_API()
+        self.db = common_cloud_OneDrive.common_cloud_OneDrive_API()
 
 
     @classmethod

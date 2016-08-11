@@ -57,7 +57,7 @@ op.close()
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Trigger')
+common_logging.common_logging_Start('./log/MediaKraken_Trigger')
 
 
 # open the database

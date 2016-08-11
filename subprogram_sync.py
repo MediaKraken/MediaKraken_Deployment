@@ -24,9 +24,9 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../common")
 sys.path.append("../server")
-import MK_Common_File
-import MK_Common_Logging
-import MK_Common_System
+import common_file
+import common_logging
+import common_system
 import os
 import signal
 import database as database_base
@@ -37,7 +37,7 @@ from datatime import timedelta
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Sync', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Sync', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -99,7 +99,7 @@ def worker(row_data):
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Sync')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Sync')
 
 
 # open the database

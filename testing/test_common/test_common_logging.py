@@ -21,13 +21,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Logging import *
+from common_logging import *
 
 
-# def MK_Common_Logging_Start(log_name="./log/MediaKraken_Main"):
+# def common_logging_Start(log_name="./log/MediaKraken_Main"):
 @pytest.mark.parametrize(("log_name"), [
     (None),
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
-def test_MK_Common_Logging_Start(log_name):
-    MK_Common_Logging_Start(log_name)
+def test_common_logging_Start(log_name):
+    common_logging_Start(log_name)

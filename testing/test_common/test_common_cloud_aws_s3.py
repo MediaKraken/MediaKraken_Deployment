@@ -22,10 +22,10 @@ import os
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Cloud_AWS_S3 import *
+from common_cloud_AWS_S3 import *
 
 
-class Test_MK_Common_Cloud_AWS_S3:
+class Test_common_cloud_AWS_S3:
 
 
     @classmethod

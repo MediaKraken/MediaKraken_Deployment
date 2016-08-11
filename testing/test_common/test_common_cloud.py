@@ -21,32 +21,32 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Cloud import *
+from common_cloud import *
 
 
 # get list of all backups
-def test_MK_Common_Cloud_Backup_List():
-    MK_Common_Cloud_Backup_List()
+def test_common_cloud_Backup_List():
+    common_cloud_Backup_List()
 
 
 # store file in cloud
-# def MK_Common_Cloud_File_Store(cloud_type, file_path_name, file_save_name, backup_bucket=False):
+# def common_cloud_File_Store(cloud_type, file_path_name, file_save_name, backup_bucket=False):
 
 
 # delete file in cloud
-# def MK_Common_Cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
+# def common_cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
 
 
 # list files in cloud
-# def MK_Common_Cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
+# def common_cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
 
 
 # fetch file from cloud
-# def MK_Common_Cloud_File_Retrieve(cloud_type, file_name, file_location):
+# def common_cloud_File_Retrieve(cloud_type, file_name, file_location):
 
 
 # rename file on cloud
-# def MK_Common_Cloud_File_Rename(cloud_type, file_from, file_to):
+# def common_cloud_File_Rename(cloud_type, file_from, file_to):
 
 
 # create direcgtory in cloud
@@ -61,5 +61,5 @@ def test_MK_Common_Cloud_Backup_List():
     ("local", "dir_test"), # dupe test
     ("onedrive", "dir_test"),
     ("onedrive", "dir_test")]) # dupe test
-def test_MK_Common_Cloud_Create_Folder(self, cloud_type, dir_name):
-    MK_Common_Cloud_Create_Folder(cloud_type, dir_name)
+def test_common_cloud_Create_Folder(self, cloud_type, dir_name):
+    common_cloud_Create_Folder(cloud_type, dir_name)

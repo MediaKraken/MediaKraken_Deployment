@@ -164,7 +164,7 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Theater')
+        common_logging.common_logging_Start('./log/MediaKraken_Theater')
         return root
 
 

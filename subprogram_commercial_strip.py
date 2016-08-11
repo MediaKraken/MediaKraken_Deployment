@@ -43,12 +43,12 @@ import sys
 import getopt
 import sys
 sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
+import common_logging
 
 
 def main(argv):
     # start logging
-    MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Commercial_Strip')
+    common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:

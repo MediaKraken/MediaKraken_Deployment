@@ -23,7 +23,7 @@ import transmissionrpc
 
 
 # transmission class
-class MK_Common_Transmission_API:
+class common_transmission_API:
     """
     Class for interfacing with transmission bitorrent server
     """
@@ -38,14 +38,14 @@ class MK_Common_Transmission_API:
         self.tc = transmissionrpc.Client(Config.get('Transmission', 'Host').strip(), int(Config.get('Transmission', 'Port').strip()))
 
 
-    def MK_Common_Transmission_Get_Torrent_List(self):
+    def common_transmission_Get_Torrent_List(self):
         """
         Get torrent list
         """
         return self.tc.get_torrents()
 
 
-    def MK_Common_Transmission_Add_Torrent(self, torrent_path):
+    def common_transmission_Add_Torrent(self, torrent_path):
         """
         Add torrent by file path
         """
@@ -53,7 +53,7 @@ class MK_Common_Transmission_API:
         self.tc.add_torrent(torrent_path)
 
 
-    def MK_Common_Transmission_Remove_Torrent(self, torrent_hash):
+    def common_transmission_Remove_Torrent(self, torrent_hash):
         """
         Remove torrent
         """
@@ -64,7 +64,7 @@ class MK_Common_Transmission_API:
         return self.tc.get_torrent(torrent_no)
 
 
-    def MK_Common_Transmission_Torrent_Detail(self, torrent_no):
+    def common_transmission_Torrent_Detail(self, torrent_no):
         """
         Get torrent detail
         """
@@ -72,14 +72,14 @@ class MK_Common_Transmission_API:
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
 
-    def MK_Common_Transmission_Torrent_Start(self, torrent_no):
+    def common_transmission_Torrent_Start(self, torrent_no):
         """
         Start the specified torrent
         """
         self.tc.start_torrent(torrent_no)
 
 
-    def MK_Common_Transmission_Torrent_Stop(self, torrent_no):
+    def common_transmission_Torrent_Stop(self, torrent_no):
         """
         Stop the specified torrent
         """

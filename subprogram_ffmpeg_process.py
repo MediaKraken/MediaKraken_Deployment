@@ -21,13 +21,13 @@ import logging
 import subprocess
 import sys
 sys.path.append("../common")
-import MK_Common_Logging
+import common_logging
 import getopt
 
 
 def main(argv):
     # start logging
-    MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Cron')
+    common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Cron')
     inputfile = None
     outputfile = None
     vid_codec = []

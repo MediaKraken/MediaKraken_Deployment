@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import sys
 from xml.dom import minidom
-import MK_Common_File
-import MK_Common_Network
+import common_file
+import common_network
 from imdbpie import Imdb
 
 

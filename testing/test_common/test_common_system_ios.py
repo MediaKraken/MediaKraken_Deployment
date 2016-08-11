@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_System_iOS import *
+from common_system_iOS import *
 
 
 class Test_MK_iOS_Hardware_Instance:
@@ -29,7 +29,7 @@ class Test_MK_iOS_Hardware_Instance:
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_System_iOS.MK_iOS_Hardware_Instance()
+        self.db = common_system_iOS.MK_iOS_Hardware_Instance()
 
 
     @classmethod

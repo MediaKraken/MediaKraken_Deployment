@@ -27,8 +27,8 @@ import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Common/lib")
 import ip2country
-import MK_Common_Logging
-import MK_Common_Network
+import common_logging
+import common_network
 import subprocess
 try:
     import cPickle as pickle
@@ -49,7 +49,7 @@ class Metaman_Network_Events(Int32StringReceiver):
         self.user_user_name = None
         self.user_slave = False
         self.user_verified = 0
-        self.server_ip = MK_Common_Network.MK_Network_Get_Default_IP()
+        self.server_ip = common_network.MK_Network_Get_Default_IP()
         # pull in the ini file config
         import ConfigParser
         self.config = ConfigParser.ConfigParser()
@@ -107,7 +107,7 @@ class Metaman_Network_Events(Int32StringReceiver):
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
                     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i', media_path, http_link], shell=False)
-                    http_link = 'http://' + MK_Common_Network.MK_Network_Get_Default_IP() + ':' + self.server_port_ffmpeg + '/stream.ffm'
+                    http_link = 'http://' + common_network.MK_Network_Get_Default_IP() + ':' + self.server_port_ffmpeg + '/stream.ffm'
                 else:
                     # tell slave to fire up the media
                     http_link = None

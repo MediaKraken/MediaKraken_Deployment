@@ -25,5 +25,5 @@ from MK_Common_Radio import *
 
 
 # create the cache file for import
-def test_MK_Common_Network_Radio():
-    MK_Common_Network_Radio()
+def test_common_network_Radio():
+    common_network_Radio()

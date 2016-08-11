@@ -21,7 +21,7 @@ import logging
 import os
 import sys
 import re
-import MK_Common_File
+import common_file
 import MK_Common_Hash
 sys.path.append("../../MediaKraken_Common/lib")
 from babelfish import Language

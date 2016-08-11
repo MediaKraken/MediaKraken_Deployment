@@ -24,17 +24,17 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 import MK_Common_Metadata
-import MK_Common_Network
+import common_network
 import MK_Common_TheLogoDB
 import database as database_base
 
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Logo_Downloader', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Logo_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Logo: Received USR1')
@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
 logo_connection = MK_Common_TheLogoDB.MK_Common_TheLogoDB_API()
@@ -65,7 +65,7 @@ def main(argv):
         # fetch and store logo image
         image_file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(channel_info['strChannel'], 'logo')
         loggin.debug("image: %s", image_file_path)
-        MK_Common_Network.MK_Network_Fetch_From_URL(channel_info['strLogoWide'], image_file_path)
+        common_network.MK_Network_Fetch_From_URL(channel_info['strLogoWide'], image_file_path)
 
 # {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,","strLyngsat":null,"strCountry":"United Kingdom","strLyngsatLogo":null,"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png","strLogoWideBW":null,"strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,"dateModified":"2016-01-20 18:35:55"}
 

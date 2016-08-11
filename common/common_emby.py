@@ -22,8 +22,8 @@ import sys
 import platform
 import os
 import uuid
-import MK_Common_File
-import MK_Common_System
+import common_file
+import common_system
 
 
 def MK_Common_Emby_Installed_Directory(dir_name = None):
@@ -66,13 +66,13 @@ def MK_Common_Emby_Library_List(dir_name = None):
     # grab dir and files
     library_list = {}
     if dir_name is not None:
-        for dir_path in MK_Common_File.MK_Common_File_Dir_List(dir_name, None, False, False):
+        for dir_path in common_file.common_file_Dir_List(dir_name, None, False, False):
             logging.debug("main dir: %s", dir_path)
             lib_file_path = []
-            for file_list in MK_Common_File.MK_Common_File_Dir_List(os.path.join(dir_name, dir_path, None, False, False)):
+            for file_list in common_file.common_file_Dir_List(os.path.join(dir_name, dir_path, None, False, False)):
                 logging.debug("file: %s", file_list)
                 if file_list.endswith('.mblink'): # only grab "link" files for path
-                    lib_file_path.append(MK_Common_File.MK_Common_File_Load_Data(os.path.join(dir_name, dir_path, file_list), False))
+                    lib_file_path.append(common_file.common_file_Load_Data(os.path.join(dir_name, dir_path, file_list), False))
             library_list[dir_path] = lib_file_path
     return library_list
 
@@ -85,7 +85,7 @@ def MK_Common_Emby_Check_Instance():
     if str.upper(sys.platform[0:3])=='WIN' \
     or str.upper(sys.platform[0:3])=='CYG':
         name_check += '.exe'
-    if MK_Common_System.MK_Common_Process_List(name_check):
+    if common_system.MK_Common_Process_List(name_check):
         logging.critical("Please shutdown Emby server first")
         sys.exit(-1)
 

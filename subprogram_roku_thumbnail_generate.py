@@ -25,7 +25,7 @@ import sys
 import os
 import signal
 sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
+import common_logging
 import MK_Common_Roku
 sys.path.append("../MediaKraken_Server")
 import database as database_base
@@ -49,7 +49,7 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Roku_Thumbnail')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Roku_Thumbnail')
 
 # open the database
 db = database_base.MK_Server_Database()

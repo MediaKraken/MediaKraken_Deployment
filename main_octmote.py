@@ -28,7 +28,7 @@ import MK_Common_Database_Octmote
 import MK_Common_ISCP
 import MK_Common_LIRC
 import MK_Common_Emby_Network
-import MK_Common_Network
+import common_network
 import MK_Common_Roku_Network
 import MK_Common_Serial
 import MK_Common_SSDP
@@ -151,7 +151,7 @@ class OctMoteApp(App):
 
 
     def MediaKraken_Find_Server_List(self):
-        self.server_list = MK_Common_MediaKraken.MK_Common_Network_MediaKraken_Find_Server()
+        self.server_list = MK_Common_MediaKraken.common_network_MediaKraken_Find_Server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1], group='mediakraken_server',)
@@ -163,7 +163,7 @@ class OctMoteApp(App):
 
 
     def Emby_Find_Server_List(self):
-        self.server_list = MK_Common_Emby_Network.MK_Common_Network_Emby_Find_Server()
+        self.server_list = MK_Common_Emby_Network.common_network_Emby_Find_Server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
@@ -175,7 +175,7 @@ class OctMoteApp(App):
 
 
     def Emby_Event_Button_Server_Select(self, server_addr, *args):
-        self.server_user_list = MK_Common_Emby_Network.MK_Common_Network_Emby_Find_Users(server_addr)
+        self.server_user_list = MK_Common_Emby_Network.common_network_Emby_Find_Users(server_addr)
         self.root.ids.user_list_layout.clear_widgets()
         self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
         for found_user in self.server_user_list:
@@ -196,7 +196,7 @@ class OctMoteApp(App):
 
     def Emby_Event_Button_User_Select_Login(self, *args):
         self.dismiss_popup()
-        self.emby_user_connection_json = MK_Common_Emby_Network.MK_Common_Network_Emby_User_Login(self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
+        self.emby_user_connection_json = MK_Common_Emby_Network.common_network_Emby_User_Login(self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
         # build header parameters to url
         user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         self.global_url_headers = {'User-Agent' : user_agent,
@@ -325,7 +325,7 @@ class OctMoteApp(App):
             elif json_data["Protocol"]["Method"].lower() == "kivy":
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.kivy_lan_devices_dict:
                     self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])] = (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])
-                MK_Common_Kodi.MK_Common_Network_Kodi_Command(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                MK_Common_Kodi.common_network_Kodi_Command(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
                 pass
             else:

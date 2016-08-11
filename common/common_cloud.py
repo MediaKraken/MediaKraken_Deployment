@@ -45,9 +45,9 @@ def common_cloud_backup_list():
     """
     backup_files = []
     for backup_class in cloud_backup_class:    
-        for backup_cloud in MK_Common_Cloud_File_List(backup_class[0], None, True):
+        for backup_cloud in common_cloud_File_List(backup_class[0], None, True):
             loggging.debug("cloud back: %s",backup_cloud)
-            backup_files.append((backup_cloud.name, backup_class[1], MK_Common_String.bytes2human(backup_cloud.size)))
+            backup_files.append((backup_cloud.name, backup_class[1], common_string.bytes2human(backup_cloud.size)))
     return backup_files
 
 
@@ -63,10 +63,10 @@ def common_cloud_file_store(cloud_type, file_path_name, file_save_name, backup_b
             awss3.MK_Common_AWS_S3_Upload(file_path_name, file_save_name, backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
-            MK_Common_Cloud_Dropbox.dropbox_upload(file_path_name, file_save_name)
+            common_cloud_Dropbox.dropbox_upload(file_path_name, file_save_name)
     elif cloud_type == "onedrive":
         if onedrive.active:
-            MK_Common_Cloud_OneDrive.MK_OneDrive_Update(file_path_name, file_save_name)
+            common_cloud_OneDrive.MK_OneDrive_Update(file_path_name, file_save_name)
     else:
         return None
 
@@ -103,7 +103,7 @@ def common_cloud_file_list(cloud_type, file_path=None, backup_bucket=False):
             return awss3.MK_Common_AWS_S3_Bucket_List(backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
-            return MK_Common_Cloud_Dropbox.dropbox_list(file_path)
+            return common_cloud_Dropbox.dropbox_list(file_path)
     elif cloud_type == "onedrive":
         if onedrive.active:
             pass
@@ -122,10 +122,10 @@ def common_cloud_file_retrieve(cloud_type, file_name, file_location):
             awss3.MK_Common_AWS_S3_Download(file_name, file_location)
     elif cloud_type == "dropbox":
         if dropbox.active:
-            MK_Common_Cloud_Dropbox.dropbox_download(file_name, file_location)
+            common_cloud_Dropbox.dropbox_download(file_name, file_location)
     elif cloud_type == "onedrive":
         if onedrive.active:
-            MK_Common_Cloud_OneDrive.MK_OneDrive_Download(file_name, file_location)
+            common_cloud_OneDrive.MK_OneDrive_Download(file_name, file_location)
     else:
         return None
 

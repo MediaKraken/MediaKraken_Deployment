@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_FFMPEG import *
+from common_ffmpeg import *
 
 
 # determine video attributes
@@ -29,5 +29,5 @@ from MK_Common_FFMPEG import *
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_MK_Common_FFMPEG_Media_Attr(file_path):
-    MK_Common_FFMPEG_Media_Attr(file_path)
+def test_common_ffmpeg_Media_Attr(file_path):
+    common_ffmpeg_Media_Attr(file_path)

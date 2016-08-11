@@ -3,8 +3,8 @@ import logging
 import socket
 import sys
 sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
-import MK_Common_Network
+import common_logging
+import common_network
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -17,7 +17,7 @@ server_socket.bind(address)
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Broadcast')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Broadcast')
 
 
 # begin loop to respond to all broastcast messages

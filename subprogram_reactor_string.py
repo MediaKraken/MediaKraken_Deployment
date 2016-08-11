@@ -31,8 +31,8 @@ import network_base_string as network_base
 sys.path.append("../MediaKraken_Server")
 import database as database_base
 sys.path.append("../MediaKraken_Common")
-import MK_Common_File
-import MK_Common_Logging
+import common_file
+import common_logging
 from time import time
 import time  # yes, use both otherwise some time code below breaks
 import os
@@ -41,7 +41,7 @@ import signal
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Reactor_String', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'Sub_Reactor_String', False, False, None)
 
 
 def signal_receive(signum, frame):
@@ -58,7 +58,7 @@ def signal_receive(signum, frame):
 class MediaKrakenServerApp(Factory):
     def __init__(self):
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Reactor_String')
+        common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Reactor_String')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances

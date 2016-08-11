@@ -24,5 +24,5 @@ sys.path.append("../common")
 from MK_Common_MediaKraken import *
 
 
-def test_MK_Common_Network_MediaKraken_Find_Server():
-    MK_Common_Network_MediaKraken_Find_Server()
+def test_common_network_MediaKraken_Find_Server():
+    common_network_MediaKraken_Find_Server()

@@ -26,13 +26,13 @@ import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import database as database_base
-import MK_Common_File
-import MK_Common_Logging
-import MK_Common_ZFS
+import common_file
+import common_logging
+import common_zfs
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-MK_Common_File.MK_Common_File_Save_Data(pid_file, 'ZFS_Health_Scan', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'ZFS_Health_Scan', False, False, None)
 
 def signal_receive(signum, frame):
     global global_end_program
@@ -47,7 +47,7 @@ def signal_receive(signum, frame):
     sys.exit(0)
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_ZFS_Check')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_ZFS_Check')
 
 # open the database
 db = database_base.MK_Server_Database()
@@ -58,7 +58,7 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS Health Start', Non
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
-for read_line in MK_Common_ZFS.MK_Common_ZFS_Health_Check():
+for read_line in common_zfs.common_zfs_Health_Check():
     if read_line.find('ONLINE') != -1:
         db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS ERROR!', None,\
             'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Network_SSDP import *
+from common_network_SSDP import *
 
 
 class Test_SSDPResponse:
@@ -29,7 +29,7 @@ class Test_SSDPResponse:
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Network_SSDP.SSDPResponse()
+        self.db = common_network_SSDP.SSDPResponse()
 
 
     @classmethod
