@@ -16,13 +16,15 @@
   MA 02110-1301, USA.
 '''
 
+import logging
 import subprocess
 import platform
-import logging
 
 
-# check for ZFS compat
-def MK_Common_ZFS_Available():
+def common_zfs_available():
+    """
+    Check for ZFS compat
+    """
     if platform.system() == "Linux" or platform.system() == "FreeBSD":
         try:
             subprocess.check_call(["zfs", "-h"])
@@ -33,14 +35,18 @@ def MK_Common_ZFS_Available():
         return False
 
 
-# get zpool list
-def MK_Common_ZFS_Zpool_List():
+def common_zfs_zpool_list():
+    """
+    Get zpool list
+    """
     proc = subprocess.Popen(['zpool', 'list'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# get zpool status
-def MK_Common_ZFS_Zpool_Status(zpool=None):
+def common_zfs_zpool_status(zpool=None):
+    """
+    Get zpool status
+    """
     if zpool is not None:
         proc = subprocess.Popen(['zpool', 'status', zpool], stdout=subprocess.PIPE)
     else:
@@ -48,8 +54,10 @@ def MK_Common_ZFS_Zpool_Status(zpool=None):
     return proc.stdout.read()
 
 
-# list snapshot
-def MK_Common_ZFS_Snapshot_List(zpool=None):
+def common_zfs_snapshot_list(zpool=None):
+    """
+    List snapshot
+    """
     if zpool is not None:
         proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot', zpool], stdout=subprocess.PIPE)
     else:
@@ -57,20 +65,26 @@ def MK_Common_ZFS_Snapshot_List(zpool=None):
     return proc.stdout.read()
 
 
-# delete snapshot
-def MK_Common_ZFS_Snapshot_Delete(snapshot):
+def common_zfs_snapshot_delete(snapshot):
+    """
+    Delete snapshot
+    """
     proc = subprocess.Popen(['zfs', 'destroy', snapshot], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# delete pool
-def MK_Common_ZFS_Zpool_Delete(zpool):
+def common_zfs_zpool_delete(zpool):
+    """
+    Delete pool
+    """
     proc = subprocess.Popen(['zpool', 'destroy', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# scrub pool
-def MK_Common_ZFS_Zpool_Scrub(zpool=None):
+def common_zfs_zpool_scrub(zpool=None):
+    """
+    Scrub pool
+    """
     if zpool is not None:
         proc = subprocess.Popen(['zpool', 'scrub', zpool], stdout=subprocess.PIPE)
     else:
@@ -78,35 +92,45 @@ def MK_Common_ZFS_Zpool_Scrub(zpool=None):
     return proc.stdout.read()
 
 
-# replace drive in pool
-def MK_Common_ZFS_Zpool_Replace_Drive(zpool, target_drive, replacement_drive):
+def common_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
+    """
+    Replace drive in pool
+    """
     proc = subprocess.Popen(['zpool', 'replace', zpool, target_drive, replacement_drive], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# create pool
-def MK_Common_ZFS_Zpool_Create(zpool, zpool_type, zpool_drives):
+def common_zfs_zpool_create(zpool, zpool_type, zpool_drives):
+    """
+    Create pool
+    """
     proc = subprocess.Popen(['zpool', 'create', zpool, zpool_type, zpool_drives], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
 # pool stats
 
-# set compression
-def MK_Common_ZFS_Zpool_Compression(zpool, zpool_compression, zpool_rate):
+def common_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
+    """
+    Set compression
+    """
     proc = subprocess.Popen(['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE)
     proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# get compression
-def MK_Common_ZFS_Zpool_Compression(zpool):
+def common_zfs_zpool_compression(zpool):
+    """
+    Get compression
+    """
     proc = subprocess.Popen(['zfs', 'get', 'compressratio', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# set deduplication
-def MK_Common_ZFS_Zpool_Deduplication(zpool, zpool_dedup):
+def common_zfs_zpool_deduplication(zpool, zpool_dedup):
+    """
+    Set deduplication
+    """
     if zpool_dedup:
         proc = subprocess.Popen(['zfs', 'set', 'dedup=on', zpool], stdout=subprocess.PIPE)
     else:
@@ -114,30 +138,40 @@ def MK_Common_ZFS_Zpool_Deduplication(zpool, zpool_dedup):
     return proc.stdout.read()
 
 
-# send snapshot
-def MK_Common_ZFS_Zpool_Snapshot_Send(snapshot_begin, snapshot_end, receive_ip, port_no):
+def common_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, port_no):
+    """
+    Send snapshot
+    """
     proc = subprocess.Popen(['zfs send -R -i storage_pool@-2015-11-11 storage_pool@-2015-11-21  | mbuffer -s 128k -m 1G -O 10.1.0.7:9191'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# receive snapshot
-def MK_Common_ZFS_Zpool_Snapshot_Receive(zpool_location, port_no):
+def common_zfs_zpool_snapshot_receive(zpool_location, port_no):
+    """
+    Receive snapshot
+    """
     proc = subprocess.Popen(['mbuffer', '-s', '128k', '-m', '1G', '-I', port_no, '|', 'zfs', 'receive', '-Fudv', zpool_location], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# set cache drive
-def MK_Common_ZFS_Zpool_Cache_Drive(zpool):
+def common_zfs_zpool_cache_drive(zpool):
+    """
+    Set cache drive
+    """
     return proc.stdout.read()
 
 
-# set larc2 drive
-def MK_Common_ZFS_Zpool_L2ARC(zpool):
+def common_zfs_zpool_l2arc(zpool):
+    """
+    Set larc2 drive
+    """
     return proc.stdout.read()
 
 
-# quota set for pool
-def MK_Common_ZFS_Zpool_Quota(zpool, quota_level):
+def common_zfs_zpool_quota(zpool, quota_level):
+    """
+    Quota set for pool
+    """
 # TODO by user and groups?
 # zfs create students/compsci
 # zfs set userquota@student1=10G students/compsci
@@ -145,20 +179,26 @@ def MK_Common_ZFS_Zpool_Quota(zpool, quota_level):
     return proc.stdout.read()
 
 
-# iostat, pool and interval
-def MK_Common_ZFS_Zpool_IOStat(zpool, interval):
+def common_zfs_zpool_iostat(zpool, interval):
+    """
+    iostat, pool and interval
+    """
     proc = subprocess.Popen(['zpool', 'iostat', zpool, interval], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# export zpool
-def MK_Common_ZFS_Zpool_Export(zpool):
+def common_zfs_zpool_export(zpool):
+    """
+    Export zpool
+    """
     proc = subprocess.Popen(['zpool', 'export', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# import pool
-def MK_Common_ZFS_Zpool_Import(zpool, zpool_new_name=None):
+def common_zfs_zpool_import(zpool, zpool_new_name=None):
+    """
+    Import pool
+    """
     if zpool_new_name is not None:
         proc = subprocess.Popen(['zpool', 'import', zpool, zpool_new_name], stdout=subprocess.PIPE)
     else:
@@ -166,19 +206,25 @@ def MK_Common_ZFS_Zpool_Import(zpool, zpool_new_name=None):
     return proc.stdout.read()
 
 
-# rename zfs
-def MK_Common_ZFS_Rename(zpool, zpool_new_name):
+def common_zfs_rename(zpool, zpool_new_name):
+    """
+    Rename zfs
+    """
     proc = subprocess.Popen(['zfs', 'rename', zpool, zpool_new_name], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# clone pool
-def MK_Common_ZFS_Clone(zpool_snap, zpool_clone):
+def common_zfs_clone(zpool_snap, zpool_clone):
+    """
+    Clone pool
+    """
     proc = subprocess.Popen(['zfs', 'clone', zpool_snap, zpool_clone], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
-# health check
-def MK_Common_ZFS_Health_Check():
+def common_zfs_health_check():
+    """
+    Health check
+    """
     proc = subprocess.Popen(['zpool', 'list', '-H', '-o', 'health'], stdout=subprocess.PIPE)
     return proc.stdout.read()

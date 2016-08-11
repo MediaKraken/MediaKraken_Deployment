@@ -166,7 +166,7 @@ def MK_Common_System_Uptime():
     return out
 
 
-def MK_Common_Process_List(process_name=None):
+def common_process_list(process_name=None):
     """
     Get processes and optionally check for one
     """

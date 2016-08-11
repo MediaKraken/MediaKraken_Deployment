@@ -28,19 +28,25 @@ class MK_Android_Hardware_Instance:
         self.Android_Hardware = autoclass('org.renpy.android.Hardware')
 
 
-    # return the dpi for the device
     def MK_Android_Get_DPI(self):
+        """
+        Return the dpi for the device
+        """
         logging.debug('DPI is', self.Android_Hardware.getDPI())
         return self.Android_Hardware.getDPI()
 
 
-    # vibrate the device
     def MK_Android_Vibrate(self, vibrate_time):
+        """
+        Vibrate the device
+        """
         self.Android_Hardware.vibrate(vibrate_time)
 
 
-    # return data from the motion controller
     def MK_Android_Motion(self, time_range):
+        """
+        Return data from the motion controller
+        """
         self.Android_Hardware.accelerometerEnable(True)
         accel_data = []
         for x in xrange(time_range):

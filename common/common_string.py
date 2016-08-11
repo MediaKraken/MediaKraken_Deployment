@@ -22,19 +22,19 @@ import passwordmeter
 from socket import inet_ntoa
 
 
-def repl_func(m):
+def common_string_repl_func(m):
     """process regular expression match groups for word upper-casing problem"""
     return m.group(1) + m.group(2).upper()
 
 
-def MK_Common_String_Title(title_string):
+def common_string_title(title_string):
     """
     capitalize first letter of each word and handling quotes
     """
     return re.sub("(^|\s)(\S)", repl_func, title_string)
 
 
-def bytes2human(n):
+def common_string_bytes2human(n):
     """
     Readable numbers for bytes to G, T, etc
     """
@@ -52,7 +52,7 @@ def bytes2human(n):
     return "%sB" % n
 
 
-def MK_Common_String_Password_Test(password_text):
+def common_string_password_test(password_text):
     """
     Test password strength
     """
@@ -66,11 +66,15 @@ def MK_Common_String_Password_Test(password_text):
       'Very strong',
     )
     strength, improvements = passwordmeter.test(password_text)
-    logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1, int(strength * len(ratings)))])))
+    logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,\
+            int(strength * len(ratings)))])))
     return (strength, improvements)
 
 
-def ip_ascii_to_int(ip):
+def common_string_ip_ascii_to_int(ip):
+    """
+    Return int from ascii IP
+    """
     octets = [int(octet) for octet in ip.split('.')]
     if len(octets) != 4:
         raise Exception("IP [%s] does not have four octets." % (ip))
@@ -78,11 +82,14 @@ def ip_ascii_to_int(ip):
     return int(encoded, 16)
 
 
-def ip_int_to_ascii(ip_int):
+def common_string_ip_int_to_ascii(ip_int):
+    """
+    Return ascii from IP integer
+    """
     return inet_ntoa(hex(ip_int)[2:-1].zfill(8).decode('hex'))
 
 
-def UNC_To_Addr_Share_Path(unc_path):
+def common_string_unc_to_addr_share_path(unc_path):
     """
     Break up unc to parts
     """

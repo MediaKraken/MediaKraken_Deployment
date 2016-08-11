@@ -16,8 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-import isoparser
 import logging
+import isoparser
 
 
 class common_iso_api:
