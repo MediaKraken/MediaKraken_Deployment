@@ -1,6 +1,7 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 from flask import request, current_app
 from flask_paginate import Pagination
-import logging
 
 
 def get_css_framework():

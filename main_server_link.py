@@ -17,7 +17,8 @@
 '''
 
 __version__ = '0.1.0'
-
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 # pull in the ini file config
 import ConfigParser
 Config = ConfigParser.ConfigParser()
@@ -32,7 +33,6 @@ try:
 except:
     import pickle
 import sys
-import logging
 sys.path.append("./common")
 import common_logging
 import MK_Common_System

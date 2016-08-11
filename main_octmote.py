@@ -17,7 +17,7 @@
 '''
 
 __version__ = '0.1.6'
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 # import plyer to fetch UID of devices
 from plyer import uniqueid
 import json

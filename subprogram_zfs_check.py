@@ -16,12 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
 import os
-import logging
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")

@@ -16,10 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import os
 import urllib2
 from smb.SMBConnection import SMBConnection
-import logging
 
 
 class MK_Common_CIFS_Share_URL_API:

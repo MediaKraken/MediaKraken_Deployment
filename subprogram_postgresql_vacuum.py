@@ -1,11 +1,11 @@
 # based on code from
 # http://rendykstan.github.io/blog/2013/04/04/postgresql-vacuum-and-analyze-maintenance-and-performance/
 
-# pull in the ini file config
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
-import logging
 import sys
 sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")

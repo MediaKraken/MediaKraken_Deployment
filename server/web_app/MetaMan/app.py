@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
+from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask, render_template
 from flask_moment import Moment
 from flask_sslify import SSLify

@@ -16,9 +16,10 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import os
 import dropbox
-import logging
 
 
 class common_cloud_dropbox_api:

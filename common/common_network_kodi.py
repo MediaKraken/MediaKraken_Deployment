@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import socket
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import socket
 
 
 # send commands to kodi via raw tcp and json

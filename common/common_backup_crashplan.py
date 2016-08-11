@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import requests
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import requests
 
 
 class common_backup_crashplan_api:

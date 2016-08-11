@@ -35,12 +35,12 @@
 #done
 #rm blacks.txt
 #ffmpeg -f concat -i ace-files.txt -c copy ace.tvshow
-
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import subprocess
 import os
 import sys
 import getopt
-import logging
 import sys
 sys.path.append("../MediaKraken_Common")
 import MK_Common_Logging

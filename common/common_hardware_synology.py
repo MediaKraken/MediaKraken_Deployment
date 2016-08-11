@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from synolopy import NasApi
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+from synolopy import NasApi
 
 
 class common_synology_api():

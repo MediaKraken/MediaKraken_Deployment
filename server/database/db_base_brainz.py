@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import psycopg2
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import psycopg2
 
 
 class MK_Server_Database_Brainz:

@@ -16,11 +16,12 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
 import os
 import signal
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import MK_Common_File
 import MK_Common_Network
 import database as database_base

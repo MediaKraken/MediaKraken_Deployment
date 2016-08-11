@@ -16,10 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 from time import sleep
 import android
 from jnius import autoclass
-import logging
 
 
 class MK_Android_Hardware_Instance:

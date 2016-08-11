@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import gzip
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import gzip
 import time
 import sys
 import MK_Common_Database_Octmote

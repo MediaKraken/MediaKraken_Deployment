@@ -16,20 +16,20 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
 import sys
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import MK_Common_File
 import MK_Common_Logging
 import MK_Common_System
 import os
 import signal
 import database as database_base
-import logging
 from concurrent import futures
 import subprocess
 from datatime import timedelta

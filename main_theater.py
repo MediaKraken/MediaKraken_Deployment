@@ -18,6 +18,8 @@
 
 __version__ = '0.1.6'
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import common_logging
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import platform
@@ -28,7 +30,6 @@ except:
 import logging
 import sys
 sys.path.append("./common")
-import common_logging
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder

@@ -16,10 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import sys
 sys.path.append("../common")
 from guessit import guessit
-import logging
 
 
 def metadata_anime_lookup(db, media_file_path, download_que_id):

@@ -1,8 +1,9 @@
 # from psycopg2 documentation
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import psycopg2
 import psycopg2.extensions
-import logging
 
 
 class LoggingCursor(psycopg2.extensions.cursor):

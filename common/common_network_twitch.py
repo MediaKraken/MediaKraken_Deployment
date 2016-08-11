@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from twitch.api import v3 as twitch
 from twitch.scraper import get_json, download

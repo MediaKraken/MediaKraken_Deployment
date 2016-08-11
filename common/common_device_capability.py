@@ -16,6 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
+
 # put the "preferred" item first in the array, as it will default to that on no match
 device_compatibility = {
     'ATV': {

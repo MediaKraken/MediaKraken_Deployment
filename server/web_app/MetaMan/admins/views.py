@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, url_for, redirect, session
 from flask_login import login_required
 from flask_paginate import Pagination

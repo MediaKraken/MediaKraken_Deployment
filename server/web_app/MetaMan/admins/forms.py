@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired, Email, EqualTo, Length

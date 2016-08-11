@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import MK_Common_File
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import MK_Common_File
 
 # global statics
 M3U_HEADER = 'EXTM3U\n'

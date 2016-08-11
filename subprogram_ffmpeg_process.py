@@ -16,12 +16,13 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import subprocess
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_Logging
 import getopt
-import logging
 
 
 def main(argv):

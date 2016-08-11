@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function, unicode_literals
 import datetime as dt
-
 from flask_login import UserMixin
 from sqlalchemy.dialects.postgresql import JSON
 from MediaKraken.extensions import bcrypt

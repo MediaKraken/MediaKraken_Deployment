@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import os
 import re
@@ -39,7 +39,7 @@ else:
     base_image_path += '/'
 
 
-def MK_Common_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_year):
+def common_metadata_calc_trailer_weight(trailer_file_list, title_name, title_year):
     """
     Determine "weight" of file to download for trailer
     """
@@ -66,7 +66,7 @@ def MK_Common_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_
     return best_match, old_weight
 
 
-def MK_Common_Metadata_Image_File_Path(media_name, media_type):
+def common_metadata_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
@@ -82,7 +82,7 @@ def MK_Common_Metadata_Image_File_Path(media_name, media_type):
     return file_path
 
 
-def MK_Common_MetaData_Image_Path(media_name, media_type, source_link, source_file):
+def common_metaData_image_path(media_name, media_type, source_link, source_file):
     """
     determine image location
     media name - used to determine a-z dir
@@ -90,7 +90,7 @@ def MK_Common_MetaData_Image_Path(media_name, media_type, source_link, source_fi
     source_link - the website/host to use
     source_file - the "file name" on the url
     """
-    file_path = MK_Common_Metadata_Image_File_Path(media_name, media_type)
+    file_path = common_metadata_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == "tmdb":
         url = 'https://image.tmdb.org/'

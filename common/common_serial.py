@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import time
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import time
 from kivy.utils import platform
 # import the pyserial library for use in rs232c communications
 if platform != 'android':

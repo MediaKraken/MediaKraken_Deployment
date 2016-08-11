@@ -16,7 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -24,7 +25,6 @@ from twisted.internet import ssl
 from twisted.internet import reactor
 from twisted.internet import protocol
 from twisted.internet.protocol import Factory
-import logging
 import sys
 sys.path.append("./network")
 import network_base_string as network_base

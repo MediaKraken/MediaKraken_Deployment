@@ -16,12 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import sys
 import os
-import logging
 import signal
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_File
 import MK_Common_Logging
 

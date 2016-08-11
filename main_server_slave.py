@@ -18,6 +18,8 @@
 
 __version__ = '0.1.0'
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 # pull in the ini file config
 import ConfigParser
 Config = ConfigParser.ConfigParser()
@@ -25,7 +27,6 @@ Config.read("MediaKraken_Slave.ini")
 import os
 import platform
 import subprocess
-import logging
 from threading import Timer
 from threading import Event, Thread
 try:

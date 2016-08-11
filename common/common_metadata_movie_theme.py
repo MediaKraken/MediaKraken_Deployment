@@ -16,10 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 from bs4 import BeautifulSoup
 import MK_Common_Network
 import MK_Common_String
-import logging
 
 
 # http://www.musicpophits.com/MainPages/MovieThemes.htm

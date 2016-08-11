@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import urllib
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import urllib
 
 
 def MK_Common_Metadata_Chart_Lyrics(artist_name, song_name):

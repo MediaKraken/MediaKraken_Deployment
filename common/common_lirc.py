@@ -16,31 +16,28 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from kivy.utils import platform
 if platform != 'android':
     import pylirc as lirc
 
 
-sockid = None
-
-
-def MK_LIRC_Init(app_string="OctMote"):
+def common_lirc_init(app_string="OctMote"):
     """
     Initialize LIRC
     """
-    sockid = lirc.init(app_string)
-    return sockid
+    return lirc.init(app_string)
 
 
-def MK_LIRC_Load_Config(config_file):
+def common_lirc_load_config(config_file):
     """
     Load config file for LIRC
     """
     lirc.load_config_file(config_file)
 
 
-def MK_LIRC_Close():
+def common_lirc_close():
     """
     Shutdown LIRC
     """

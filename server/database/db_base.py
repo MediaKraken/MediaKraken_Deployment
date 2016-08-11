@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import sys
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default

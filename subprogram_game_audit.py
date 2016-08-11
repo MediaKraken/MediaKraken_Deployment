@@ -16,13 +16,14 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging
 import sys
 import threading
 import os
 import copy
 import zipfile
 import time
-import logging
 import signal
 from StringIO import StringIO
 import multiprocessing
@@ -31,9 +32,9 @@ from Queue import Queue
 import hashlib
 SHA1 = hashlib.sha1()
 import os.path
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../server")
 import database as database_base
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_File
 import pylzma
 if str.upper(sys.platform[0:3]) == 'WIN' \

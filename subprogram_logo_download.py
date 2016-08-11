@@ -17,12 +17,13 @@
 '''
 
 # import modules
-import sys
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import sys
 import os
 import signal
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import MK_Common_File
 import MK_Common_Logging
 import MK_Common_Metadata

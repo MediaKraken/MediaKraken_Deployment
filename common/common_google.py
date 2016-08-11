@@ -20,8 +20,9 @@
 # https://developers.google.com/youtube/v3/code_samples/python#upload_a_video
 # https://github.com/youtube/api-samples/tree/master/python
 
-import sys
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import sys
 # pull in the ini file config
 import ConfigParser
 Config = ConfigParser.ConfigParser()

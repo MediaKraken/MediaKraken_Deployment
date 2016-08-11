@@ -1,9 +1,9 @@
 # Carlos A. Ibarra
 # http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm/667706#667706
 
-from __future__ import division
-import time
+from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import time
 
 
 # calls per second

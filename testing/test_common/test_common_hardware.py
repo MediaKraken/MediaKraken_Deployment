@@ -17,6 +17,8 @@
 '''
 
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 import pytest
