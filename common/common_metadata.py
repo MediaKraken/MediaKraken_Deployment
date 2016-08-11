@@ -49,11 +49,11 @@ def common_metadata_calc_trailer_weight(trailer_file_list, title_name, title_yea
     for file_name in trailer_file_list:
         # compute the weight
         weight = 0
-        if file_name.lower().find(u'official trailer') != -1:
+        if file_name.lower().find('official trailer') != -1:
             weight += 3
         if file_name.lower().find(title_name.lower()) != -1:
             weight += 10
-        if file_name.find(u'HD') != -1:
+        if file_name.find('HD') != -1:
             weight += 1
         if file_name.find(title_year) != -1:
             weight += 5

@@ -28,15 +28,15 @@ except:
 import MK_Common_String
 
 junk_files = []
-junk_files.append(u'(gameplay)')
-junk_files.append(u'official gameplay')
-junk_files.append(u'movie clip')
-junk_files.append(u'fan made')
-junk_files.append(u'review -')
-junk_files.append(u'full movie')
-junk_files.append(u'full album')
-junk_files.append(u'full length')
-junk_files.append(u'deleted scene')
+junk_files.append('(gameplay)')
+junk_files.append('official gameplay')
+junk_files.append('movie clip')
+junk_files.append('fan made')
+junk_files.append('review -')
+junk_files.append('full movie')
+junk_files.append('full album')
+junk_files.append('full length')
+junk_files.append('deleted scene')
 
 
 def MK_Common_File_Modification_Timestamp(file_name):

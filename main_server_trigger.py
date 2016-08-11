@@ -42,7 +42,8 @@ def signal_receive(signum, frame):
     # cleanup db
     db.MK_Server_Database_Rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
+    db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Stop', None,\
+        'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
     db.MK_Server_Database_Close()
     sys.stdout.flush()
     sys.exit(0)
@@ -64,7 +65,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Start', None, u'System: Trigger Start', u'ServerTriggerStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+    'ServerTriggerStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -89,7 +91,8 @@ while True:
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Stop', None,\
+    'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
 # commit

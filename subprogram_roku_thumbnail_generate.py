@@ -56,7 +56,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Roku Thumbnail Generate Start', None, u'System: Server Roku Thumbnail Generate Start', u'ServerRokuThumbStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
+    'System: Server Roku Thumbnail Generate Start', 'ServerRokuThumbStart', None, None, 'System')
 
 # go through ALL known media files
 thumbnails_generated = 0
@@ -73,7 +74,8 @@ if thumbnails_generated > 0:
     db.MK_Server_Database_Notification_Insert(locale.format('%d', thumbnails_generated, True) + " Roku thumbnail(s) generated.", True)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Roku Thumbnail Generate Stop', None, u'System: Server Roku Thumbnail Generate Stop', u'ServerRokuThumbStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
+    'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 # commit all changes
 db.MK_Server_Database_Commit()

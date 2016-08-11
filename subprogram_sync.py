@@ -89,7 +89,8 @@ def worker(row_data):
         else:
             break
     ffmpeg_pid.wait()
-    thread_db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Sync', None, u'System: Server Sync', u'ServerSync', None, None, u'System')
+    thread_db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync', None,\
+        'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.MK_Server_Database_Sync_Delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
     thread_db.MK_Server_Database_Commit()
@@ -107,7 +108,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Sync Start', None, u'System: Server Sync Start', u'ServerSyncStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync Start', None,\
+    'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
 
 
 # grab some dirs to scan and thread out the scans
@@ -127,7 +129,8 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Sync Stop', None, u'System: Server Sync Stop', u'ServerSyncStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync Stop', None,\
+    'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes
 db.MK_Server_Database_Commit()

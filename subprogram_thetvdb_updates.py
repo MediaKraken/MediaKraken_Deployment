@@ -70,7 +70,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server theTVDB Update Start', None, u'System: Server theTVDB Start', u'ServertheTVDBStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Update Start', None,\
+    'System: Server theTVDB Start', 'ServertheTVDBStart', None, None, 'System')
 
 
 # grab the data
@@ -114,13 +115,16 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 #db.MK_Server_Database_Option_Status_Update(row_data[0], status_json)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server theTVDB Update Stop', None, u'System: Server theTVDB Stop', u'ServertheTVDBStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Update Stop', None,\
+    'System: Server theTVDB Stop', 'ServertheTVDBStop', None, None, 'System')
 
 # send notications
 if tvshow_updated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True) + " TV show(s) metadata updated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+        + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True) + " TV show(s) metadata added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+        + " TV show(s) metadata added.", True)
 
 
 # commit all changes

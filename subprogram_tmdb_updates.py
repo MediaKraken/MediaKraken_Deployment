@@ -66,7 +66,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TMDB Update Start', None, u'System: Server TMDB Start', u'ServertheTMDBStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TMDB Update Start', None,\
+    'System: Server TMDB Start', 'ServertheTMDBStart', None, None, 'System')
 
 
 # grab the data
@@ -122,7 +123,8 @@ for tv_change in tmdb.MK_Common_TMDB_Metadata_Changes_TV()['results']:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TMDB Update Stop', None, u'System: Server TMDB Stop', u'ServertheTMDBStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TMDB Update Stop', None,\
+    'System: Server TMDB Stop', 'ServertheTMDBStop', None, None, 'System')
 
 
 create_collection_trigger = False

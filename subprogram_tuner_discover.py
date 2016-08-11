@@ -65,7 +65,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Tuner Scan Start', None, u'System: Server Tuner Scan Start', u'ServerTunerScanStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Tuner Scan Start', None,\
+    'System: Server Tuner Scan Start', 'ServerTunerScanStart', None, None, 'System')
 
 
 # grab some dirs to scan and thread out the scans
@@ -81,7 +82,11 @@ tuners_added = 0
 tuner_api = MK_Common_HDHomeRun.MK_Common_HDHomeRun_API()
 tuner_api.MK_Common_HDHomeRun_Discover()
 for row_tuner in tuner_api.MK_Common_HDHomeRun_List():
-    json_data = {'Model': row_tuner.get_var(item='/sys/model'), 'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(), 'ID': str(hex(row_tuner.get_device_id())), 'IP': MK_Common_String.ip_int_to_ascii(row_tuner.get_device_ip()), 'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
+    json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
+        'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
+        'ID': str(hex(row_tuner.get_device_id())),\
+        'IP': MK_Common_String.ip_int_to_ascii(row_tuner.get_device_ip()),\
+        'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
     current_data = db.MK_Server_Database_Tuner_By_Serial(str(hex(row_tuner.get_device_id())))
     if current_data is not None:
@@ -92,11 +97,13 @@ for row_tuner in tuner_api.MK_Common_HDHomeRun_List():
 
 
 if tuners_added > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tuners_added, True) + " tuners added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tuners_added, True)\
+        + " tuners added.", True)
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Tuner Scan Stop', None, u'System: Server Tuner Scan Stop', u'ServerTunerScanStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Tuner Scan Stop', None,\
+    'System: Server Tuner Scan Stop', 'ServerTunerScanStop', None, None, 'System')
 
 # commit
 db.MK_Server_Database_Commit()

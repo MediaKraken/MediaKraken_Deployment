@@ -36,7 +36,7 @@ def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute(u"SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
+    self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
     if self.sql3_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
@@ -53,7 +53,7 @@ def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName, 
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute(u"SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
+    self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
     if self.sql3_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
@@ -76,13 +76,13 @@ def MK_Server_Database_Rollback(self):
 
 # check for table or index
 def MK_Server_Database_Table_Index_Check(self, resource_name):
-    self.sql3_cursor.execute(u'SELECT to_regclass(\'public.%s\')', (resource_name,))
+    self.sql3_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
     return self.sql3_cursor.fetchone()[0]
 
 
 # return count of records in table
 def MK_Server_Database_Table_Count(self, table_name):
-    self.sql3_cursor.execute(u'select count(*) from ' + table_name) # can't %s due to ' inserted
+    self.sql3_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
     return self.sql3_cursor.fetchone()[0]
 
 

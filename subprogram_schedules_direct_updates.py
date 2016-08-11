@@ -77,7 +77,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Schedules Direct Update Start', None, u'System: Server Schedules Direct Start', u'ServerSchedulesDirectStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Update Start', None,\
+    'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
 sd = MK_Common_Schedules_Direct.MK_Common_Schedules_Direct_API()
@@ -159,7 +160,8 @@ if len(meta_program_fetch) > 0:
 # TODO, go grab images for blank logos
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Schedules Direct Update Stop', None, u'System: Server Schedules Direct Stop', u'ServerSchedulesDirectStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Update Stop', None,\
+    'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 
 # commit all changes to db

@@ -23,7 +23,7 @@ import uuid
 
 # count nass
 def MK_Server_Database_Device_Count(self):
-    self.sql3_cursor.execute(u'select count(*) from mm_device')
+    self.sql3_cursor.execute('select count(*) from mm_device')
     return self.sql3_cursor.fetchone()[0]
 
 
@@ -31,35 +31,35 @@ def MK_Server_Database_Device_Count(self):
 def MK_Server_Database_Device_List(self, device_type=None, offset=None, records=None):
     if device_type is None:
         if offset is None:
-            self.sql3_cursor.execute(u'select mm_device_id, mm_device_type, mm_device_json from mm_device')
+            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json from mm_device')
         else:
-            self.sql3_cursor.execute(u'select mm_device_id, mm_device_type, mm_device_json from mm_device offset %s limit %s', (offset, records))
+            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json from mm_device offset %s limit %s', (offset, records))
     else:
         if offset is None:
-            self.sql3_cursor.execute(u'select mm_device_id, mm_device_type, mm_device_json from mm_device where mm_device_type = %s', (device_type,))
+            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json from mm_device where mm_device_type = %s', (device_type,))
         else:
-            self.sql3_cursor.execute(u'select mm_device_id, mm_device_type, mm_device_json from mm_device where mm_device_type = %s offset %s limit %s', (device_type, offset, records))
+            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json from mm_device where mm_device_type = %s offset %s limit %s', (device_type, offset, records))
     return self.sql3_cursor.fetchall()
 
 
 # insert record
 def MK_Server_Database_Device_Insert(self, device_type, device_json):
-    self.sql3_cursor.execute(u'insert into mm_device (mm_device_id, mm_device_type, mm_device_json) values (%s,%s,%s)', (str(uuid.uuid4()), device_type, device_json))
+    self.sql3_cursor.execute('insert into mm_device (mm_device_id, mm_device_type, mm_device_json) values (%s,%s,%s)', (str(uuid.uuid4()), device_type, device_json))
 
 
 # update record
 def MK_Server_Database_Device_Update(self, guid, device_type, device_json):
-    self.sql3_cursor.execute(u'update mm_device set mm_device_type = %s, mm_device_json = %s where mm_device_id = %s', (device_type, device_json, guid))
+    self.sql3_cursor.execute('update mm_device set mm_device_type = %s, mm_device_json = %s where mm_device_id = %s', (device_type, device_json, guid))
 
 
 # delete record
 def MK_Server_Database_Device_Delete(self, guid):
-    self.sql3_cursor.execute(u'delete from mm_device where mm_device_id = %s', (guid,))
+    self.sql3_cursor.execute('delete from mm_device where mm_device_id = %s', (guid,))
 
 
 # find detials by id
 def MK_Server_Database_Device_Read(self, guid):
-    self.sql3_cursor.execute(u'select mm_device_type, mm_device_json from mm_device where mm_device_id = %s', (guid,))
+    self.sql3_cursor.execute('select mm_device_type, mm_device_json from mm_device where mm_device_id = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:

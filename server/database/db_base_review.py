@@ -23,16 +23,16 @@ import uuid
 
 # count reviews for media
 def MK_Server_Database_Review_Count(self, metadata_id):
-    self.sql3_cursor.execute(u'select count(*) from mm_review where mm_review_metadata_guid = %s', (metadata_id,))
+    self.sql3_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s', (metadata_id,))
     return self.sql3_cursor.fetchone()[0]
 
 
 # grab reviews for metadata
 def MK_Server_Database_Review_List_By_TMDB_GUID(self, metadata_id):
-    self.sql3_cursor.execute(u'select mm_review_guid,mm_review_json from mm_review where mm_review_metadata_id->\'TMDB\' ? %s', (metadata_id,))
+    self.sql3_cursor.execute('select mm_review_guid,mm_review_json from mm_review where mm_review_metadata_id->\'TMDB\' ? %s', (metadata_id,))
     return self.sql3_cursor.fetchall()
 
 
 # insert record
 def MK_Server_Database_Review_Insert(self, metadata_id, review_json):
-    self.sql3_cursor.execute(u'insert into mm_review (mm_review_guid, mm_review_metadata_id, mm_review_json) values (%s,%s,%s)', (str(uuid.uuid4()), metadata_id, review_json))
+    self.sql3_cursor.execute('insert into mm_review (mm_review_guid, mm_review_metadata_id, mm_review_json) values (%s,%s,%s)', (str(uuid.uuid4()), metadata_id, review_json))

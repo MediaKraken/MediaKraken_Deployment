@@ -98,4 +98,4 @@ class Test_MK_Common_CIFS_Share_API:
 
 
 # cifs directory walk
-# def MK_Common_CIFS_Walk(self, share_name, file_path=u'/'):
+# def MK_Common_CIFS_Walk(self, share_name, file_path='/'):

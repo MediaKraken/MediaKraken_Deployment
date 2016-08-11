@@ -31,7 +31,7 @@ import subliminal
 # fetch subtitles
 def MK_Common_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
     #file_hash = MK_Common_Hash.MK_Common_Hash_TheSubDB(file_name)
-    f = os.popen(u"subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
+    f = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
     cmd_output = f.read()
     return cmd_output
 

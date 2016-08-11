@@ -83,7 +83,8 @@ def signal_receive(signum, frame):
     # cleanup db
     db.MK_Server_Database_Rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Metadata API Stop', None, u'System: Metadata API Stop', u'ServerMetadataAPIStop', None, None, u'System')
+    db.MK_Server_Database_Activity_Insert('MediaKraken_Metadata API Stop', None,\
+        'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
     db.MK_Server_Database_Close()
     sys.stdout.flush()
     sys.exit(0)
@@ -105,7 +106,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Metadata API Start', None, u'System: Metadata API Start', u'ServerMetadataAPIStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Metadata API Start', None,\
+     'System: Metadata API Start', 'ServerMetadataAPIStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -403,7 +405,8 @@ with futures.ThreadPoolExecutor(len(MK_Common_Metadata_Limiter.API_Limit.keys())
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Metadata API Stop', None, u'System: Metadata API Stop', u'ServerMetadataAPIStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Metadata API Stop', None,\
+     'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
 
 
 # commit

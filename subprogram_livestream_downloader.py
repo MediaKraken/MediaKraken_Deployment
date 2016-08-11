@@ -59,7 +59,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server LiveStream Start', None, u'System: Server LiveStream Start', u'ServerLiveStreamStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server LiveStream Start', None,\
+    'System: Server LiveStream Start', 'ServerLiveStreamStart', None, None, 'System')
 
 
 # grab some dirs to scan and thread out the scans
@@ -77,7 +78,8 @@ subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server LiveStream Stop', None, u'System: Server LiveStream Stop', u'ServerLiveStreamStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server LiveStream Stop', None,\
+    'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
 # commit all changes
 db.MK_Server_Database_Commit()

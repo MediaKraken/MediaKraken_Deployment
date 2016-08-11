@@ -58,7 +58,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_TVMaze_Updates')       
+MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_TVMaze_Updates')
 
 
 # open the database
@@ -67,7 +67,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TVMaze Update Start', None, u'System: Server TVMaze Start', u'ServertheTVMazeStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Start', None,\
+    'System: Server TVMaze Start', 'ServertheTVMazeStart', None, None, 'System')
 
 
 # grab the show data and update/insert respecitivey
@@ -135,7 +136,8 @@ for tvmaze_id, tvmaze_time in result.items():
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TVMaze Update Stop', None, u'System: Server TVMaze Stop', u'ServertheTVMazeStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Stop', None,\
+    'System: Server TVMaze Stop', 'ServertheTVMazeStop', None, None, 'System')
 
 
 # send notications

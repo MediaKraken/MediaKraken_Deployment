@@ -27,5 +27,5 @@ def MK_Common_Media_Images_List_Count(self):
 
 # images list
 def MK_Common_Media_Images_List(self, offset=None, records=None):
-    self.sql3_cursor.execute(u'select mm_media_path from mm_media,mm_media_class where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid and mm_media_class_type = \'Picture\'')
+    self.sql3_cursor.execute('select mm_media_path from mm_media,mm_media_class where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid and mm_media_class_type = \'Picture\'')
     return self.sql3_cursor.fetchall()

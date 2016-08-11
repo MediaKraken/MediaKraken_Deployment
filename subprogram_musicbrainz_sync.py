@@ -66,7 +66,8 @@ db_brainz = database_base_brainz.MK_Server_Database_Brainz()
 db_brainz.MK_Server_Database_Open(Config.get('MediaBrainz', 'BrainzDBHost').strip(), Config.get('MediaBrainz', 'BrainzDBPort').strip(), Config.get('MediaBrainz', 'BrainzDBName').strip(), Config.get('MediaBrainz', 'BrainzDBUser').strip(), Config.get('MediaBrainz', 'BrainzDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server MusicBrainz Start', None, u'System: Server MusicBrainz Start', u'ServerMusicBrainzStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Start', None,\
+    'System: Server MusicBrainz Start', 'ServerMusicBrainzStart', None, None, 'System')
 
 # fetch all the artists from brainz
 for row_data in db_brainz.MK_Server_Database_Brainz_All_Artists():
@@ -84,7 +85,8 @@ for row_data in db_brainz.MK_Server_Database_Brainz_All_Artists():
 '''
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server MusicBrainz Stop', None, u'System: Server MusicBrainz Stop', u'ServerMusicBrainzStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Stop', None,\
+    'System: Server MusicBrainz Stop', 'ServerMusicBrainzStop', None, None, 'System')
 
 # commit all changes to db
 db.MK_Server_Database_Commit()

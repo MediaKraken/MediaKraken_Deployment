@@ -22,7 +22,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open_Isolation(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Postgresql Vacuum Start', None, u'System: Server DB Vacuum Start', u'ServerVacuumStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Vacuum Start', None,\
+    'System: Server DB Vacuum Start', 'ServerVacuumStart', None, None, 'System')
 
 
 # vacuum all the tables
@@ -33,7 +34,8 @@ for row in db.MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(1):
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Postgresql Vacuum Stop', None, u'System: Server DB Vacuum Stop', u'ServerVacuumStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Vacuum Stop', None,\
+    'System: Server DB Vacuum Stop', 'ServerVacuumStop', None, None, 'System')
 
 
 # commit records

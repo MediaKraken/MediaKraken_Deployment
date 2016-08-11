@@ -53,7 +53,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Anime Scudlee Start', None, u'System: Server Anime Scudlee Start', u'ServerAnimeScudleeStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Anime Scudlee Start', None,\
+    'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
@@ -94,7 +95,8 @@ for row_data in MK_Common_Scudlee.MK_Scudlee_Anime_Set_Parse():
         store_update_record(db, row_data[0], row_data[1])
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Anime Scudlee Stop', None, u'System: Server Anime Scudlee Stop',  u'ServerAnimeScudleeStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Anime Scudlee Stop', None,\
+    'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 # commit all changes to db
 db.MK_Server_Database_Commit()
 # close the database

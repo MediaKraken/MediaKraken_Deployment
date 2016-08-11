@@ -61,21 +61,23 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server iRadio Start', None, u'System: Server iRadio Start', u'ServeriRadioStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server iRadio Start', None,\
+    'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
 #MK_Common_Network_Radio.MK_Common_Network_Radio()
 
 # load the cache files and compare to db
-radio_cache = MK_Common_File.MK_Common_File_Load_Data(u'./cache.pickle', True)
+radio_cache = MK_Common_File.MK_Common_File_Load_Data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
     db.MK_Server_Database_iRadio_Insert(row_data)
 
-#radio_xiph = MK_Common_File.MK_Common_File_Load_Data(u'./xiph.pickle', True)
+#radio_xiph = MK_Common_File.MK_Common_File_Load_Data('./xiph.pickle', True)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server iRadio Stop', None, u'System: Server iRadio Stop', u'ServeriRadioStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server iRadio Stop', None,\
+    'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
 
 # commit
 db.MK_Server_Database_Commit()

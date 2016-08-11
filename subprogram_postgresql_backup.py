@@ -38,7 +38,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Postgresql Backup Start', None, u'System: Server DB Backup Start', u'ServerBackupStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Start', None,\
+    'System: Server DB Backup Start', 'ServerBackupStart', None, None, 'System')
 
 # popen appears to be trying to execute pgpassword
 #proc_back = subprocess.Popen(['PGPASSWORD=' + Config.get('DB Connections','PostDBPass').strip(), 'pg_dump', '-U', Config.get('DB Connections','PostDBUser').strip(), Config.get('DB Connections','PostDBName').strip(), '-F', 'c', '-f', Config.get('MediaKrakenServer','BackupLocal').strip() + '/MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'], shell=False)
@@ -54,7 +55,8 @@ if option_json['Backup']['BackupType'] != 'local':
     MK_Common_Cloud.MK_Common_Cloud_File_Store(option_json['Backup']['BackupType'], Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name, backup_file_name, True)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Postgresql Backup Stop', None, u'System: Server DB Backup Stop', u'ServerBackupStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Stop', None,\
+    'System: Server DB Backup Stop', 'ServerBackupStop', None, None, 'System')
 
 # commit records
 db.MK_Server_Database_Commit()

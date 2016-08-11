@@ -23,7 +23,7 @@ import uuid
 
 # return count of sync jobs
 def MK_Server_Database_Link_List_Count(self):
-    self.sql3_cursor.execute(u'select count(*) from mm_link')
+    self.sql3_cursor.execute('select count(*) from mm_link')
     return self.sql3_cursor.fetchone()[0]
 
 
@@ -31,17 +31,17 @@ def MK_Server_Database_Link_List_Count(self):
 def MK_Server_Database_Link_List(self, offset=None, records=None):
     # complete list for admins
     if offset is None:
-        self.sql3_cursor.execute(u'select mm_link_guid, mm_link_name, mm_link_json from mm_link')
+        self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link')
     else:
-        self.sql3_cursor.execute(u'select mm_link_guid, mm_link_name, mm_link_json from mm_link where mm_link_guid in (select mm_link_guid from mm_link offset %s limit %s)', (offset, records))
+        self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link where mm_link_guid in (select mm_link_guid from mm_link offset %s limit %s)', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
 # insert sync job
 def MK_Server_Database_Link_Insert(self, link_json):
-    self.sql3_cursor.execute(u'insert into mm_link (mm_link_guid, mm_link_options_json) values (%s, %s)', (str(uuid.uuid4()), link_json))
+    self.sql3_cursor.execute('insert into mm_link (mm_link_guid, mm_link_options_json) values (%s, %s)', (str(uuid.uuid4()), link_json))
 
 
 # delete sync job
 def MK_Server_Database_Link_Delete(self, sync_guid):
-    self.sql3_cursor.execute(u'delete from mm_link where mm_link_guid = %s', (sync_guid,))
+    self.sql3_cursor.execute('delete from mm_link where mm_link_guid = %s', (sync_guid,))

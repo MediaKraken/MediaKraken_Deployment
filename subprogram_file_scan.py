@@ -224,7 +224,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server File Scan Start', None, u'System: Server File Scan Start', u'ServerFileScanStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server File Scan Start', None,\
+    'System: Server File Scan Start', 'ServerFileScanStart', None, None, 'System')
 
 
 # load in all media from DB
@@ -284,7 +285,8 @@ if len(audit_directories) > 0:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server File Scan Stop', None, u'System: Server File Scan Stop', u'ServerFileScanStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server File Scan Stop', None,\
+    'System: Server File Scan Stop', 'ServerFileScanStop', None, None, 'System')
 
 
 # commit

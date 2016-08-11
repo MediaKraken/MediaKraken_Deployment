@@ -23,29 +23,29 @@ import logging
 # return tables sizes (includex indexes, etc)
 # query provided by postgresql wiki
 def MK_Server_Database_Postgresql_Table_Sizes(self):
-    self.sql3_cursor.execute(u'SELECT nspname || \'.\' || relname AS "relation", pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\' AND nspname !~ \'^pg_toast\' ORDER BY pg_total_relation_size(C.oid) DESC')
+    self.sql3_cursor.execute('SELECT nspname || \'.\' || relname AS "relation", pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\' AND nspname !~ \'^pg_toast\' ORDER BY pg_total_relation_size(C.oid) DESC')
     return self.sql3_cursor.fetchall()
 
 
 # return tables and row count
 # query provided by postgresql wiki
 def MK_Server_Database_Postgresql_Row_Count(self):
-    self.sql3_cursor.execute(u'SELECT schemaname,relname,n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
+    self.sql3_cursor.execute('SELECT schemaname,relname,n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
     return self.sql3_cursor.fetchall()
 
 
 # vacuum stats by day list
 def MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(self, days=1):
     if days == 0:
-        self.sql3_cursor.execute(u'SELECT relname FROM pg_stat_all_tables WHERE schemaname = \'public\'')
+        self.sql3_cursor.execute('SELECT relname FROM pg_stat_all_tables WHERE schemaname = \'public\'')
     else:
-        self.sql3_cursor.execute(u'SELECT relname FROM pg_stat_all_tables WHERE schemaname = \'public\' AND ((last_analyze is NULL AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze OR last_analyze is null) AND last_autoanalyze < now() - interval %s) OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null) AND last_analyze < now() - interval %s));', [str(days) + ' day', str(days) + ' day'])
+        self.sql3_cursor.execute('SELECT relname FROM pg_stat_all_tables WHERE schemaname = \'public\' AND ((last_analyze is NULL AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze OR last_analyze is null) AND last_autoanalyze < now() - interval %s) OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null) AND last_analyze < now() - interval %s));', [str(days) + ' day', str(days) + ' day'])
     return self.sql3_cursor.fetchall()
 
 
 # vacuum table
 def MK_Server_Database_Postgresql_Vacuum_Table(self, table_name):
-    self.sql3_cursor.execute(u'VACUUM ANALYZE ' + table_name)
+    self.sql3_cursor.execute('VACUUM ANALYZE ' + table_name)
 
 
 # set isolation level

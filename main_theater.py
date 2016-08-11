@@ -379,12 +379,12 @@ class MediaKrakenApp(App):
             #self.root.ids.theater_media_video_rating = row_data[3]['']
             self.root.ids.theater_media_video_runtime.text = str(metadata_json['runtime'])
             self.root.ids.theater_media_video_overview.text = metadata_json['overview']
-            genres_list = u''
+            genres_list = ''
             for ndx in range(0, len(metadata_json['genres'])):
                 genres_list += (metadata_json['genres'][ndx]['name'] + ', ')
             self.root.ids.theater_media_video_genres.text = genres_list[:-2]
 #"LocalImages": {"Banner": "", "Fanart": "", "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
-            production_list = u''
+            production_list = ''
             for ndx in range(0, len(metadata_json['production_companies'])):
                 production_list += (metadata_json['production_companies'][ndx]['name'] + ', ')
             self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
@@ -416,10 +416,10 @@ class MediaKrakenApp(App):
                     logging.debug('sub')
             # populate the audio streams to select
             self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
-            self.root.ids.theater_media_video_audio_spinner.text = u'None'
+            self.root.ids.theater_media_video_audio_spinner.text = 'None'
             # populate the subtitle options
             self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
-            self.root.ids.theater_media_video_subtitle_spinner.text = u'None'
+            self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
 #            # populate the chapter grid
 #            for chapter_info in ffprobe_json['chapters']:
 #                # media_json['ChapterImages']

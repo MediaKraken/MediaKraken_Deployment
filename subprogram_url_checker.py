@@ -54,7 +54,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server URL Scan Start', None, u'System: Server URL Scan Start', u'ServerURLScanStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server URL Scan Start', None,\
+    'System: Server URL Scan Start', 'ServerURLScanStart', None, None, 'System')
 
 # go through ALL known media files
 for row_data in db.MK_Server_Database_Known_Media():
@@ -66,7 +67,8 @@ for row_data in db.MK_Server_Database_Known_Media():
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server URL Scan Stop', None, u'System: Server URL Scan Stop', u'ServerURLScanStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server URL Scan Stop', None,\
+    'System: Server URL Scan Stop', 'ServerURLScanStop', None, None, 'System')
 
 # commit all changes to db
 db.MK_Server_Database_Commit()

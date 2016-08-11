@@ -21,7 +21,7 @@ import logging
 
 
 def MK_Server_Database_Metadata_Movie_Update_CastCrew(self, tmdb_id, cast_crew_json):
-    self.sql3_cursor.execute(u'select mm_metadata_json from mm_metadata_movie where mm_metadata_media_id->\'TMDB\' ? %s', (tmdb_id,))
+    self.sql3_cursor.execute('select mm_metadata_json from mm_metadata_movie where mm_metadata_media_id->\'TMDB\' ? %s', (tmdb_id,))
     cast_crew_json = self.sql3_cursor.fetchone()['mm_metadata_json'].update({'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
-    self.sql3_cursor.execute(u'update mm_metadata_movie set mm_metadata_json = %s where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
+    self.sql3_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
     self.MK_Server_Database_Commit()

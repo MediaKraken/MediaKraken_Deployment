@@ -65,7 +65,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Chromecast Scan Start', None, u'System: Server Chromecast Scan Start', u'ServerChromecastScanStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Chromecast Scan Start', None,\
+    'System: Server Chromecast Scan Start', 'ServerChromecastScanStart', None, None, 'System')
 
 
 # grab some dirs to scan and thread out the scans
@@ -93,11 +94,13 @@ for row_data in chrome.MK_Chromecast_Discover_Dict():
 
 
 if devices_added > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', devices_added, True) + " Chromecast added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', devices_added, True)\
+        + " Chromecast added.", True)
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Chromecast Scan Stop', None, u'System: Server Chromecast Scan Stop', u'ServerChromecastScanStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Chromecast Scan Stop', None,\
+    'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
 # commit
 db.MK_Server_Database_Commit()

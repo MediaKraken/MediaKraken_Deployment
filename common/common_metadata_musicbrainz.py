@@ -40,7 +40,7 @@ class MK_Common_Musicbrainz_API:
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
         musicbrainzngs.set_useragent("MediaKraken_Server", "0.0.6", "spootdev@gmail.com https://github.com/MediaKraken_)
         # If you are connecting to a development server
-        if Config.get('MediaBrainz', 'Host').strip() != u'None':
+        if Config.get('MediaBrainz', 'Host').strip() != 'None':
             #musicbrainzngs.set_hostname(Config.get('MediaBrainz','Host').strip())
             musicbrainzngs.set_hostname(Config.get('MediaBrainz', 'Host').strip() + ':' + Config.get('MediaBrainz', 'Port').strip())
 

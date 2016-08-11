@@ -44,7 +44,7 @@ import MK_Common_String
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
-            flash(u"Error in the %s field - %s" % (
+            flash("Error in the %s field - %s" % (
                 getattr(form, field).label.text,
                 error
             ))
@@ -305,7 +305,7 @@ def user_tv_show_detail_page(guid):
             else:
                 data_overview = None
             # build gen list
-            data_genres_list = u''
+            data_genres_list = ''
             if 'genres' in json_metadata['Meta']['TVMaze']:
                 for ndx in json_metadata['Meta']['TVMaze']['genres']:
                     data_genres_list += (ndx + ', ')
@@ -327,7 +327,7 @@ def user_tv_show_detail_page(guid):
             else:
                 data_overview = None
             # build gen list
-            data_genres_list = u''
+            data_genres_list = ''
             if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
                 for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                     data_genres_list += (ndx + ', ')
@@ -338,7 +338,7 @@ def user_tv_show_detail_page(guid):
         data_vote_count = 0 # locale.format('%d', json_metadata['vote_count'], True)
 
         # build production list
-        production_list = u''
+        production_list = ''
         #for ndx in range(0,len(json_metadata['production_companies'])):
         #    production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
         image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
@@ -412,7 +412,7 @@ def user_tv_season_detail_page(guid, season):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'genres' in json_metadata['Meta']['TVMaze']:
             for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
@@ -434,7 +434,7 @@ def user_tv_season_detail_page(guid, season):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
             for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
@@ -771,11 +771,11 @@ def movie_detail(guid):
         # vote count format
         data_vote_count = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
         # build gen list
-        genres_list = u''
+        genres_list = ''
         for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
             genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
         # build production list
-        production_list = u''
+        production_list = ''
         for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
             production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
         # budget format
@@ -1296,11 +1296,11 @@ def metadata_movie_detail(guid):
     # vote count format
     data_vote_count = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
     # build gen list
-    genres_list = u''
+    genres_list = ''
     for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
         genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
     # build production list
-    production_list = u''
+    production_list = ''
     for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
         production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
@@ -1437,7 +1437,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'genres' in json_metadata['Meta']['TVMaze']:
             for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
@@ -1459,7 +1459,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
             for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
@@ -1481,7 +1481,7 @@ def metadata_tvshow_detail(guid):
         data_background_image = None
     data_season_data = g.db.MK_Server_Database_Read_TVMetadata_Eps_Season(guid)
 #    # build production list
-#    production_list = u''
+#    production_list = ''
 #    for ndx in range(0,len(json_metadata['production_companies'])):
 #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
     return render_template('users/metadata/meta_tvshow_detail.html',
@@ -1524,7 +1524,7 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'genres' in json_metadata['Meta']['TVMaze']:
             for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
@@ -1546,7 +1546,7 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_overview = None
         # build gen list
-        data_genres_list = u''
+        data_genres_list = ''
         if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
             for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')

@@ -58,7 +58,8 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Create Collection Start', None, u'System: Server Create Collection Start', u'ServerCreateCollectionStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Collection Start', None,\
+    'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
@@ -92,12 +93,12 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
         if poster_path is not None:
             image_poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(collection_name, 'poster', 'tmdb', poster_path)
         else:
-            image_poster_path = u''
+            image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
             image_backdrop_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(collection_name, 'backdrop', 'tmdb', backdrop_path)
         else:
-            image_backdrop_path = u''
+            image_backdrop_path = ''
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
         db.MK_Server_Database_Collection_Insert(collection_name, guid_list, collection_meta, localimage_json)
         # commit all changes to db
@@ -110,7 +111,7 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
 
 
 # pull in all metadata with part of collection in metadata
-old_collection_name = u''
+old_collection_name = ''
 old_poster_path = None
 old_backdrop_path = None
 old_id= None
@@ -138,7 +139,8 @@ if total_collections_downloaded > 0:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Create Collection Stop', None, u'System: Server Create Collection Stop', u'ServerCreateCollectionStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Collection Stop', None,\
+    'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db
 db.MK_Server_Database_Commit()

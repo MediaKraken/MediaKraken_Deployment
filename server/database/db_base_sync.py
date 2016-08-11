@@ -23,7 +23,7 @@ import uuid
 
 # return count of sync jobs
 def MK_Server_Database_Sync_List_Count(self):
-    self.sql3_cursor.execute(u'select count(*) from mm_sync')
+    self.sql3_cursor.execute('select count(*) from mm_sync')
     return self.sql3_cursor.fetchone()[0]
 
 
@@ -32,27 +32,27 @@ def MK_Server_Database_Sync_List(self, offset=None, records=None, user_guid=None
     if user_guid is None:
         # complete list for admins
         if offset is None:
-            self.sql3_cursor.execute(u'select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync order by mm_sync_options_json->\'Priority\' desc, mm_sync_path')
+            self.sql3_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync order by mm_sync_options_json->\'Priority\' desc, mm_sync_path')
         else:
-            self.sql3_cursor.execute(u'select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_guid in (select mm_sync_guid from mm_sync order by mm_sync_options_json->\'Priority\' desc, mm_sync_path offset %s limit %s) order by mm_sync_options_json->\'Priority\' desc, mm_sync_path', (offset, records))
+            self.sql3_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_guid in (select mm_sync_guid from mm_sync order by mm_sync_options_json->\'Priority\' desc, mm_sync_path offset %s limit %s) order by mm_sync_options_json->\'Priority\' desc, mm_sync_path', (offset, records))
     else:
         if offset is None:
-            self.sql3_cursor.execute(u'select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_options_json->\'User\' ? %s order by mm_sync_options_json->\'Priority\' desc, mm_sync_path')
+            self.sql3_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_options_json->\'User\' ? %s order by mm_sync_options_json->\'Priority\' desc, mm_sync_path')
         else:
-            self.sql3_cursor.execute(u'select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_guid in (select mm_sync_guid from mm_sync where mm_sync_options_json->\'User\' ? %s order by mm_sync_options_json->\'Priority\' desc, mm_sync_path offset %s limit %s) order by mm_sync_options_json->\'Priority\' desc, mm_sync_path', (user_guid, offset, records))
+            self.sql3_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to, mm_sync_options_json from mm_sync where mm_sync_guid in (select mm_sync_guid from mm_sync where mm_sync_options_json->\'User\' ? %s order by mm_sync_options_json->\'Priority\' desc, mm_sync_path offset %s limit %s) order by mm_sync_options_json->\'Priority\' desc, mm_sync_path', (user_guid, offset, records))
     return self.sql3_cursor.fetchall()
 
 
 # insert sync job
 def MK_Server_Database_Sync_Insert(self, sync_path, sync_path_to, sync_json):
-    self.sql3_cursor.execute(u'insert into mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_options_json) values (%s, %s, %s, %s)', (str(uuid.uuid4()), sync_path, sync_path_to, sync_json))
+    self.sql3_cursor.execute('insert into mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_options_json) values (%s, %s, %s, %s)', (str(uuid.uuid4()), sync_path, sync_path_to, sync_json))
 
 
 # delete sync job
 def MK_Server_Database_Sync_Delete(self, sync_guid):
-    self.sql3_cursor.execute(u'delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
+    self.sql3_cursor.execute('delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
 
 
 # update progress
 def MK_Server_Database_Sync_Progress_Update(self, sync_guid, sync_percent):
-    self.sql3_cursor.execute(u'update mm_sync set mm_sync_options_json->\'Progress\' = %s where mm_sync_guid = %', (sync_percent, sync_guid))
+    self.sql3_cursor.execute('update mm_sync set mm_sync_options_json->\'Progress\' = %s where mm_sync_guid = %', (sync_percent, sync_guid))

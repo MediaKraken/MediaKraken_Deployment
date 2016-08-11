@@ -55,7 +55,8 @@ def signal_receive(signum, frame):
     # cleanup db
     db.MK_Server_Database_Rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop', u'ServerStop', None, None, u'System')
+    db.MK_Server_Database_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+        'ServerStop', None, None, 'System')
     # commit
     db.MK_Server_Database_Commit()
     db.MK_Server_Database_Close()
@@ -111,8 +112,8 @@ except:
     sys.exit()
 
 
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Start', None, u'System: Server Start',\
-        u'ServerStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Start', None, 'System: Server Start',\
+        'ServerStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -195,8 +196,8 @@ watchdog.MK_Common_Watchdog_Stop()
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop',\
-         u'ServerStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+         'ServerStop', None, None, 'System')
 
 # commit
 db.MK_Server_Database_Commit()

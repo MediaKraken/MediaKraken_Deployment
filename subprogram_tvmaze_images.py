@@ -63,7 +63,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TVMaze Images Start', None, u'System: Server TVMaze Images Start', u'ServerTVMazeImagesStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Images Start', None,\
+    'System: Server TVMaze Images Start', 'ServerTVMazeImagesStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -131,7 +132,8 @@ if total_episode_images > 0:
     db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True) + " new TV episode image(s) added.", True)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server TVMaze Images Stop', None, u'System: Server TVMaze Images Stop', u'ServerTVMazeImagesStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Images Stop', None,\
+    'System: Server TVMaze Images Stop', 'ServerTVMazeImagesStop', None, None, 'System')
 
 # commit all changes
 db.MK_Server_Database_Commit()

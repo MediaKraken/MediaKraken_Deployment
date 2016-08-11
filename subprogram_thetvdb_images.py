@@ -63,7 +63,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server theTVDB Images Start', None, u'System: Server TVMaze Images Start', u'ServerTVDBImagesStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Images Start', None,\
+    'System: Server TVMaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -113,7 +114,8 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
                 logging.debug("wha: %s", cast_member)
                 if cast_member['Image'] is not None:
                     # determine path and fetch image/save
-                    cast_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(cast_member['Name'], 'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
+                    cast_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(cast_member['Name'],\
+                        'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
                     logging.debug("one: %s", cast_image_local)
                     MK_Common_Network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + cast_member['Image'], cast_image_local)
                     json_image_data['Images']['theTVDB']['Cast'][cast_member['id']] = cast_image_local
@@ -125,9 +127,11 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
         for episode_info in row_data['mm_metadata_tvshow_json']['Meta']['Episode']:
             logging.debug("episode: %s", episode_info)
             if episode_info['filename'] is not None:
-                eps_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(episode_info['EpisodeName'], 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['filename'].rsplit('.', 1)[1]))
+                eps_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(episode_info['EpisodeName'],\
+                'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
-                MK_Common_Network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + episode_info['filename'], eps_image_local)
+                MK_Common_Network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/"\
+                    + episode_info['filename'], eps_image_local)
                 json_image_data['Images']['theTVDB']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
     db.MK_Server_Database_Metadata_TVShow_Update_Image(json.dumps(json_image_data), row_data[1])
@@ -137,12 +141,15 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
 
 # send notifications
 if total_cast_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_cast_images, True) + " new TV cast image(s) added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_cast_images, True)\
+        + " new TV cast image(s) added.", True)
 if total_episode_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True) + " new TV episode image(s) added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True)\
+        + " new TV episode image(s) added.", True)
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server theTVDB Images Stop', None, u'System: Server theTVDB Images Stop', u'ServerTVDBImagesStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Images Stop', None,\
+    'System: Server theTVDB Images Stop', 'ServerTVDBImagesStop', None, None, 'System')
 
 # commit all changes
 db.MK_Server_Database_Commit()

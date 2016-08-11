@@ -109,7 +109,8 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), C
 
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Create Chapter Start', None, u'System: Server Create Chapter Start', u'ServerCreateChapterStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Chapter Start', None,\
+    'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -142,7 +143,8 @@ if total_images_created > 0:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Create Chapter Stop', None, u'System: Server Create Chapter Stop', u'ServerCreateChapterStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Chapter Stop', None,\
+    'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
 
 
 # commit all changes

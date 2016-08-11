@@ -65,7 +65,7 @@ def main(argv):
             # change working dir so srt is saved in the right spot
             total_download_attempts += 1
             os.chdir(media_row.rsplit('/', 1)[0])
-            f = os.popen(u"subliminal -l " + sub_lang + " -- \"" + media_row.encode("utf8") + "\"")
+            f = os.popen("subliminal -l " + sub_lang + " -- \"" + media_row.encode("utf8") + "\"")
             cmd_output = f.read()
             loggin.debug("Download Status: %s", cmd_output)
 

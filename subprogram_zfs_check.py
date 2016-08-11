@@ -54,17 +54,20 @@ db = database_base.MK_Server_Database()
 db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server ZFS Health Start', None, u'System: Server ZFS Health Start', u'ServerZFSScanStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS Health Start', None,\
+    'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
 for read_line in MK_Common_ZFS.MK_Common_ZFS_Health_Check():
     if read_line.find('ONLINE') != -1:
-        db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server ZFS ERROR!', None, u'System: ZFS Health ERROR!', u'ServerZFSERROR', None, None, u'System')
+        db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS ERROR!', None,\
+            'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')
         db.MK_Server_Database_Notification_Insert("ZFS zpool(s) degraded or offline!", True)
         break
 
 # log end
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server ZFS Health Stop', None, u'System: Server ZFS Health Stop', u'ServerZFSScanStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS Health Stop', None,\
+    'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
 # commit
 db.MK_Server_Database_Commit()

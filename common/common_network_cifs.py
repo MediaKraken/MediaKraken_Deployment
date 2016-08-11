@@ -34,7 +34,7 @@ class MK_Common_CIFS_Share_URL_API:
 
     def MK_Common_CIFS_URL_Download(self, connect_string):
         # For paths/files with unicode characters, simply pass in the URL as an unicode string
-        file_con = self.director.open(u'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
+        file_con = self.director.open('smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
         # Process file_con like a file-like object and then close it.
         file_con.close()
 
@@ -127,14 +127,14 @@ class MK_Common_CIFS_Share_API:
         self.smb_conn.close()
 
 
-    def MK_Common_CIFS_Walk(self, share_name, file_path=u'/'):
+    def MK_Common_CIFS_Walk(self, share_name, file_path='/'):
         """
         cifs directory walk
         """
         dirs , nondirs = [], []
         for name in self.smb_conn.listPath(share_name, file_path):
             if name.isDirectory:
-                if name.filename not in [u'.', u'..']:
+                if name.filename not in ['.', '..']:
                     dirs.append(name.filename)
             else:
                 nondirs.append(name.filename)
