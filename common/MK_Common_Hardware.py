@@ -40,7 +40,7 @@ def MK_Hardware_Accelerometer_Off():
 # get accelerometer data
 def MK_Get_Acceleration(dt):
     val = accelerometer.acceleration[:3]
-    if(not val == (None, None, None)):
+    if not val == (None, None, None):
         #ids.x_label.text = "X: " + str(val[0])
         #ids.y_label.text = "Y: " + str(val[1])
         #ids.z_label.text = "Z: " + str(val[2])

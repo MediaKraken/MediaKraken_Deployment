@@ -24,7 +24,7 @@ import logging
 # check for ZFS compat
 def MK_Common_ZFS_Available():
     if platform.system() == "Linux" or platform.system() == "FreeBSD":
-        try:        
+        try:
             subprocess.check_call(["zfs", "-h"])
         except:
             return False
