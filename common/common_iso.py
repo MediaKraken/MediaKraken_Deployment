@@ -22,11 +22,12 @@ import logging
 
 class common_iso_api:
     def __init__(self):
-        pass
+        self.iso = None
 
 
     def common_iso_load(self, url_file):
         """
         Open the iso file for parsing (url or file)
         """
+        logging.debug("iso url/file: %s", url_file)
         self.iso = isoparser.parse(url_file)
