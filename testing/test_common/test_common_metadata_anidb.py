@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_AniDB import *
+from common_metadata_anidb import *
 
 
-class Test_MK_Common_Metadata_AniDB:
+class Test_common_metadata_anidb:
 
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MK_Common_Metadata_AniDB_API()
+        self.db = database_base.common_metadata_anidb_API()
 
 
     @classmethod

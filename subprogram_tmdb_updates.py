@@ -30,7 +30,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Metadata_TMDB
+import common_metadata_tmdb
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -113,7 +113,7 @@ def movie_fetch_save(tmdb_id):
 
 
 # grab the updated data
-tmdb = MK_Common_TMDB.MK_Common_Metadata_TMDB_API()
+tmdb = MK_Common_TMDB.common_metadata_tmdb_API()
 for movie_change in tmdb.MK_Common_TMDB_Metadata_Changes_Movie()['results']:
     logging.debug("mov: %s", movie_change['id'])
     movie_fetch_save(movie_change['id'])

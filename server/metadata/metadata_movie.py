@@ -24,14 +24,14 @@ import uuid
 from guessit import guessit
 import sys
 sys.path.append("../common")
-import MK_Common_Metadata_AniDB
-import MK_Common_Metadata_IMDB
-import MK_Common_Metadata_Movie_Theme
-import MK_Common_Metadata_Movie_Trailer
-import MK_Common_Metadata_NetflixRoulette
-import MK_Common_Metadata_OMDb
-import MK_Common_Metadata_Rotten_Tomatoes
-import MK_Common_Metadata_TMDB
+import common_metadata_anidb
+import common_metadata_imdb
+import common_metadata_movie_theme
+import common_metadata_movie_trailer
+import common_metadata_netflixroulette
+import common_metadata_omdb
+import common_metadata_rotten_tomatoes
+import common_metadata_tmdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -41,7 +41,7 @@ import metadata_nfo_xml
 # verify themovietb key exists
 if Config.get('API', 'theMovieDB').strip() != 'None':
     # setup the thmdb class
-    TMDB_API_Connection = MK_Common_Metadata_TMDB.MK_Common_Metadata_TMDB_API()
+    TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
     TMDB_API_Connection = None
 
@@ -123,25 +123,29 @@ def movie_fetch_save_tmdb_review(db, tmdb_id):
 
 def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_id):
     if not hasattr(metadata_movie_lookup, "metadata_last_id"):
-         metadata_movie_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
-         metadata_movie_lookup.metadata_last_title = None
-         metadata_movie_lookup.metadata_last_year = None
-         metadata_movie_lookup.metadata_last_imdb = None
-         metadata_movie_lookup.metadata_last_tmdb = None
-         metadata_movie_lookup.metadata_last_rt = None
+        metadata_movie_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        metadata_movie_lookup.metadata_last_title = None
+        metadata_movie_lookup.metadata_last_year = None
+        metadata_movie_lookup.metadata_last_imdb = None
+        metadata_movie_lookup.metadata_last_tmdb = None
+        metadata_movie_lookup.metadata_last_rt = None
     # determine file name/etc for handling name/year skips
     file_name = guessit(media_file_path)
     # check for dupes by name/year
     if 'year' in file_name:
-        if file_name['title'] == metadata_movie_lookup.metadata_last_title and file_name['year'] == metadata_movie_lookup.metadata_last_year:
+        if file_name['title'] == metadata_movie_lookup.metadata_last_title\
+            and file_name['year'] == metadata_movie_lookup.metadata_last_year:
             return metadata_movie_lookup.metadata_last_id
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         return metadata_movie_lookup.metadata_last_id
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id)
-    logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id, metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb, metadata_movie_lookup.metadata_last_rt)
+    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db, nfo_data,\
+        xml_data, download_que_json, download_que_id)
+    logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id,\
+        metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
+        metadata_movie_lookup.metadata_last_rt)
     if metadata_uuid is None:
         # if same as last, return last id and save lookup
         # check these dupes as the nfo/xml files might not exist to pull the metadata id from
@@ -155,7 +159,8 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
         logging.debug("movie db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db.MK_Server_Database_Find_Metadata_GUID(file_name['title'], file_name['year'])
+            metadata_uuid = db.MK_Server_Database_Find_Metadata_GUID(file_name['title'],\
+                file_name['year'])
         else:
             metadata_uuid = db.MK_Server_Database_Find_Metadata_GUID(file_name['title'], None)
         logging.debug("movie db meta: %s", metadata_uuid)

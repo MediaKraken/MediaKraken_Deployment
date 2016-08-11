@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_IMDB import *
+from common_metadata_imdb import *
 
 
 class Test_MK_Common_IMDB_API:
@@ -29,7 +29,7 @@ class Test_MK_Common_IMDB_API:
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Metadata_IMDB.MK_Common_IMDB_API()
+        self.db = common_metadata_imdb.MK_Common_IMDB_API()
 
 
     @classmethod

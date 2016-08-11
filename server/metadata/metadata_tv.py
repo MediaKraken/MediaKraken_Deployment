@@ -23,9 +23,9 @@ from guessit import guessit
 import sys
 sys.path.append("../common")
 import MK_Common_TheTVDB
-import MK_Common_Metadata_AniDB
-import MK_Common_Metadata_IMDB
-import MK_Common_Metadata_NetflixRoulette
+import common_metadata_anidb
+import common_metadata_imdb
+import common_metadata_netflixroulette
 import MK_Common_Metadata_TheTVDB
 import MK_Common_Metadata_TV_Intro
 import MK_Common_Metadata_TV_Theme

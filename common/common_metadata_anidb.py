@@ -29,7 +29,7 @@ import adba
 
 
 # http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
-class MK_Common_Metadata_AniDB_API:
+class common_metadata_anidb_API:
     """
     Class for interfacing with anidb
     """

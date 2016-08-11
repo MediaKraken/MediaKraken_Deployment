@@ -31,7 +31,7 @@ import common_file
 import common_logging
 import MK_Common_Metadata
 import common_network
-import MK_Common_Metadata_TMDB
+import common_metadata_tmdb
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -71,7 +71,7 @@ else:
 # verify themovietb key exists
 if Config.get('API', 'theMovieDB').strip() != 'None':
     # setup the thmdb class
-    TMDB_API_Connection = MK_Common_Metadata_TMDB.MK_Common_Metadata_TMDB_API()
+    TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
     TMDB_API_Connection = None
     logging.critical("theMovieDB API not available. Exiting program...")

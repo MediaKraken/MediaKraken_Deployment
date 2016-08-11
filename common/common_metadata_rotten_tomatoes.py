@@ -24,7 +24,7 @@ Config.read("MediaKraken.ini")
 import rtsimple as rt
 
 
-class MK_Common_Metadata_Rotten_Tomatoes_API:
+class common_metadata_rotten_tomatoes_API:
     """
     Class for interfacing with rotten tomatoes
     """

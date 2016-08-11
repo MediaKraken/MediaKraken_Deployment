@@ -21,14 +21,18 @@ import logging
 import uuid
 
 
-# count tuners
 def MK_Server_Database_Tuner_Count(self):
+    """
+    Return count of tuners in database
+    """
     self.sql3_cursor.execute('select count(*) from mm_tuner')
     return self.sql3_cursor.fetchone()[0]
 
 
-# read tuners
 def MK_Server_Database_Tuner_List(self, offset=None, records=None):
+    """
+    Return list of tuners in the database
+    """
     if offset is None:
         self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
     else:
@@ -36,23 +40,31 @@ def MK_Server_Database_Tuner_List(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-# insert record
 def MK_Server_Database_Tuner_Insert(self, tuner_json):
+    """
+    Insert tuner into the database
+    """
     self.sql3_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)', (str(uuid.uuid4()), tuner_json))
 
 
-# update record
 def MK_Server_Database_Tuner_Update(self, guid, tuner_json):
+    """
+    Update tuner record in the database
+    """
     self.sql3_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s', (tuner_json, guid))
 
 
-# delete record
 def MK_Server_Database_Tuner_Delete(self, guid):
+    """
+    Remove tuner from the database
+    """
     self.sql3_cursor.execute('delete from mm_tuner where mm_tuner_id = %s', (guid,))
 
 
-# find detials by hardware id (serial)
 def MK_Server_Database_Tuner_By_Serial(self, serial_no):
+    """
+    Find detials by hardware id (serial)
+    """
     self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner where mm_tuner_json->\'ID\' ? %s', (serial_no,))
     try:
         return self.sql3_cursor.fetchone()
