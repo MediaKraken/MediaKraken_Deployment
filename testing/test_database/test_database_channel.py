@@ -18,8 +18,8 @@
 
 
 import sys
-sys.path.append("../common")
-sys.path.append("../server") # for db import
+sys.path.append("./common")
+sys.path.append("./server") # for db import
 import database as database_base
 
 
