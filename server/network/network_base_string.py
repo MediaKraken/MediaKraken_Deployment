@@ -37,6 +37,9 @@ except:
 
 
 class Metaman_Network_Events(Int32StringReceiver):
+    """
+    Process the network events for the server
+    """
     # init is called on every connection
     def __init__(self, users, db, genre_list):
         self.MAX_LENGTH = 32000000
@@ -61,17 +64,26 @@ class Metaman_Network_Events(Int32StringReceiver):
 
 
     def connectionMade(self):
+        """
+        Network connection made from client so ask for ident
+        """
         logging.info('Got Connection')
         self.sendString('IDENT')
 
 
     def connectionLost(self, reason):
+        """
+        Network connection dropped so remove client
+        """
         logging.info('Lost Connection')
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
 
 
     def stringReceived(self, data):
+        """
+        Message received from client
+        """
         msg = None
         messageWords = data.split(' ')
         logging.debug('GOT Data: %s', data)
