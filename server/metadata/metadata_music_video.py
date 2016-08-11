@@ -20,7 +20,7 @@ import os
 import logging
 import json
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_Metadata_IMVDb
 import ConfigParser
 Config = ConfigParser.ConfigParser()

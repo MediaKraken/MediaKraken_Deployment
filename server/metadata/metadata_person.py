@@ -17,5 +17,5 @@
 '''
 
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import logging

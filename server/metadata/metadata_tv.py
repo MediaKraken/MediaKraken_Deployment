@@ -20,7 +20,7 @@ import json
 import logging
 from guessit import guessit
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_TheTVDB
 import MK_Common_Metadata_AniDB
 import MK_Common_Metadata_IMDB

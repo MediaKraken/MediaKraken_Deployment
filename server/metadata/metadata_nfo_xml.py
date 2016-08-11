@@ -18,8 +18,8 @@
 
 import os
 import sys
-sys.path.append("./")  # for db import
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
+sys.path.append("../server") # for db import
 import MK_Common_File
 import logging
 import xmltodict

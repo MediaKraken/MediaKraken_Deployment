@@ -19,7 +19,7 @@
 import os
 import logging
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_Hash
 sys.path.append("./metadata")
 import metadata_anime

@@ -17,13 +17,15 @@
 '''
 
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 from guessit import guessit
 import logging
 
 
 def metadata_anime_lookup(db, media_file_path, download_que_id):
-    # check tv show data
+    """
+    Check for anime in tv sections of the metadata providers
+    """
     metadata_uuid, imdb_id, tmdb_id = nfo_xml_db_lookup_tv(db, nfo_data, xml_data)
     if metadata_uuid is None:
         metadata_uuid = tveps_lookup(guessit(media_file_path), imdb_id, tvdb_id, 'en')

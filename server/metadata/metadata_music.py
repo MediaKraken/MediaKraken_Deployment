@@ -19,7 +19,7 @@
 
 import logging
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_Metadata_MusicBrainz
 import ConfigParser
 Config = ConfigParser.ConfigParser()
