@@ -26,17 +26,17 @@ class MK_Common_Hardware_HDHomeRun_API:
         pass
 
 
-    # discover items
     def MK_Common_HDHomeRun_Discover(self):
+        """
+        Discover hdhomerun devices
+        """
         self.devices = Device.discover()
 
 
-    # item list
     def MK_Common_HDHomeRun_List(self):
         return self.devices
 
 
-    # item detail
     def MK_Common_HDHomeRun_Detail(self, ndx):
         print 'Model: ' + self.devices[ndx].get_var(item='/sys/model')
         print 'HWModel: ' + self.devices[ndx].get_var(item='/sys/hwmodel')

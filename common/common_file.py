@@ -39,8 +39,10 @@ junk_files.append(u'full length')
 junk_files.append(u'deleted scene')
 
 
-# return file modfication date in datetime format
 def MK_Common_File_Modification_Timestamp(file_name):
+    """
+    Return file modfication date in datetime format
+    """
     if os.path.exists(file_name):
         return os.path.getmtime(file_name)
     else:
@@ -64,6 +66,9 @@ def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timest
 
 # load file as data
 def MK_Common_File_Load_Data(file_name, as_pickle=False):
+    """
+    Load data from file as ascii or pickle
+    """
     file_handle = open(file_name, "r")
     if as_pickle:
         data_block = pickle.loads(file_handle.read())
@@ -116,8 +121,10 @@ def MK_Common_File_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, fil
         return None
 
 
-# throw out junk entries in files list
 def MK_Common_File_Remove_Junk(file_list):
+    """
+    Throw out junk entries in files list
+    """
     for file_name in file_list:
         for search_string in junk_files:
             try:
@@ -129,8 +136,10 @@ def MK_Common_File_Remove_Junk(file_list):
     return file_list
 
 
-# see if file is junk
 def MK_Common_File_Is_Junk(file_name):
+    """
+    See if file is junk
+    """
     for search_string in junk_files:
         try:
             if file_name.lower().find(search_string) != -1:

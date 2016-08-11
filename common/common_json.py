@@ -51,8 +51,10 @@ def MK_Json_Import(file_name):
             pass
 
 
-# load file as json data
 def MK_Json_Load_Json(file_name):
+    """
+    Load file as json data
+    """
     file_handle = open(file_name, 'r')
     json_data = json.loads(file_handle.read())
     file_handle.close()

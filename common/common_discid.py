@@ -23,6 +23,9 @@ import discid
 
 # grab discid from default device
 def MK_Common_DiscID_Default_Device():
+    """
+    Determine default rom drive to use
+    """
     discid.get_default_device()
     disc = discid.read()
     logging.debug("id: %s" % disc.id)
@@ -32,6 +35,9 @@ def MK_Common_DiscID_Default_Device():
 
 # calculate discid from directory
 def MK_Common_DiskID_Caclulate_Dir(dir_to_calculate):
+    """
+    Calculate the discid from specified directory
+    """
     last = 15  # number of files in directory could be used
     sectors = 258725
     offsets = [150, 17510, 235590]

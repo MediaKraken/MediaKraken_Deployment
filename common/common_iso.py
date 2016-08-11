@@ -25,6 +25,8 @@ class MK_Common_ISO_API:
         pass
 
 
-    # open the osi file for parsing (url or file)
     def MK_Common_ISO_Load(self, url_file):
+        """
+        Open the iso file for parsing (url or file)
+        """
         self.iso = isoparser.parse(url_file)

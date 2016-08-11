@@ -35,7 +35,9 @@ import MK_Common_Network
 # Address = Id, Name
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
 def MK_Common_Network_Emby_Find_Server():
-    # search for servers for one second
+    """
+    Search for servers for one second
+    """
     t_end = time.time() + 1
     # create upd socket
     try:
@@ -69,6 +71,9 @@ def MK_Common_Network_Emby_Find_Server():
 # Name = Id, PrimaryImageTag (or NULL)
 # https://github.com/MediaBrowser/Emby/wiki/Authentication
 def MK_Common_Network_Emby_Find_Users(host_server):
+    """
+    Return user list from specified server
+    """
     found_users = {}
     for user_data in json.loads(urllib2.urlopen(host_server + '/Users/Public?format=json').read()):
         user_image_id = None
@@ -84,6 +89,9 @@ def MK_Common_Network_Emby_Find_Users(host_server):
 
 # https://github.com/MediaBrowser/Emby/wiki/Authentication
 def MK_Common_Network_Emby_User_Login(host_server, user_name, user_password):
+    """
+    Login with specified user/name/pass
+    """
     json_response = None
     # sha1 hash the password
     password_hash_object = hashlib.sha1(user_password)
@@ -111,7 +119,9 @@ def MK_Common_Network_Emby_User(host_server, user_id, headers):
 
 # fetch list of open sessions for user
 def MK_Common_Network_Emby_Sessions_List_Open(host_server, user_id):
-    # if the user id is passed only return sessions it can control otherwise return all sessions
+    """
+    If the user id is passed only return sessions it can control otherwise return all sessions
+    """
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     if user_id is not None:
         req = urllib2.Request(host_server + '/Sessions?format=json', headers)

@@ -26,12 +26,13 @@ class MK_Common_Hardware_HDHomeRun_API_Py:
         pass
 
 
-    # discover items
     def MK_Common_HDHomeRun_Discover(self):
+        """
+        Look for hdhomerun divices
+        """
         self.devices = HdhrUtility.discover_find_devices_custom()
 
 
-    # item list
     def MK_Common_HDHomeRun_List(self):
         return self.devices
 
@@ -57,7 +58,9 @@ class MK_Common_Hardware_HDHomeRun_API_Py:
 
 
     def scan(self, device_adapter):
-        # generator for scan
+        """
+        Generator for scan by channel map
+        """
         device_adapter.scan_channels(MAP_US_BCAST)
 
 

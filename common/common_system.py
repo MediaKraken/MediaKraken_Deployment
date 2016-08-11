@@ -35,8 +35,10 @@ def pprint_ntuple(nt, return_value=None):
         return tuple_print
 
 
-# return virtual memory
 def MK_Common_System_Virtual_Memory(attribute_list=None):
+    """
+    Return virtual memory
+    """
     return_list = []
     if attribute_list is None:
         return pprint_ntuple(psutil.virtual_memory(), True)
@@ -51,8 +53,10 @@ def MK_Common_System_Virtual_Memory(attribute_list=None):
     return return_list
 
 
-# return swap memory
 def MK_Common_System_SWAP_Memory(attribute_list=None):
+    """
+    Return swap memory
+    """
     return_list = []
     if attribute_list is None:
         pprint_ntuple(psutil.swap_memory())
@@ -67,43 +71,59 @@ def MK_Common_System_SWAP_Memory(attribute_list=None):
     return return_list
 
 
-# return cpu count
 def MK_Common_System_CPU_Count():
+    """
+    Return cpu count
+    """
     return psutil.cpu_count()
 
 
-# return partitions
 def MK_Common_System_Partitions():
+    """
+    Return partitions
+    """
     return psutil.disk_partitions()
 
 
-# get boot time
 def MK_Common_System_Boot_Time():
+    """
+    Get boot time
+    """
     return psutil.boot_time()
 
 
-# get users 
 def MK_Common_System_Users():
+    """
+    Get users
+    """
     return psutil.users()
 
 
-# get cpu percentage
 def MK_Common_System_CPU_Usage(per_cpu=False):
+    """
+    Get cpu percentage
+    """
     return psutil.cpu_times_percent(interval=1, percpu=per_cpu)
 
 
-# get cpu times
 def MK_Common_System_CPU_Times():
+    """
+    Get cpu times
+    """
     return psutil.cpu_times()
 
 
-# get disk usage
 def MK_Common_System_Disk_Usage(file_path='/'):
+    """
+    Get disk usage for specified path
+    """
     return psutil.disk_usage(file_path)
 
 
-# get disk usage of all partitions
 def MK_Common_System_Disk_Usage_All(human_readable=False):
+    """
+    Get disk usage of all partitions
+    """
     disk_usage_data = []
     for row_data in MK_Common_System_Partitions():
         if human_readable:
@@ -119,13 +139,17 @@ def MK_Common_System_Disk_Usage_All(human_readable=False):
     return disk_usage_data
 
 
-# get disk IO
 def MK_Common_System_Disk_IO(per_disk=False):
+    """
+    Get disk IO
+    """
     return psutil.disk_io_counters(perdisk=per_disk)
 
 
-# get system uptime
 def MK_Common_System_Uptime():
+    """
+    Get system uptime
+    """
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
         uptime_proc = subprocess.Popen(['net', 'statistics', 'server'], stdout=subprocess.PIPE)
         out, err = uptime_proc.communicate()
@@ -142,8 +166,10 @@ def MK_Common_System_Uptime():
     return out
 
 
-# get processes and optionally check for one
 def MK_Common_Process_List(process_name=None):
+    """
+    Get processes and optionally check for one
+    """
     if process_name is not None:
         if process_name in psutil.process_iter():
             return True

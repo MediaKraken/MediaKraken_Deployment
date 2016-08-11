@@ -35,6 +35,8 @@ class MK_Common_TheLogoDB_API:
         self.API_KEY = Config.get('API', 'TheLogoDB').strip()
 
 
-    # grab newest releases
     def MK_Common_TheLogoDB_Fetch_Latest(self):
+        """
+        Grab newest releases
+        """
         return json.loads(MK_Common_Network.MK_Network_Fetch_From_URL('http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

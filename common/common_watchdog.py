@@ -49,7 +49,9 @@ class MK_Watchdog_Handler(FileSystemEventHandler):
 # define watchdog class
 class MK_Common_Watchdog_API:
     def MK_Common_Watchdog_Start(self, paths_to_watch):
-        # start watchdog
+        """
+        Start watchdog on specified list of paths(s)
+        """
         event_handler = MK_Watchdog_Handler()
         self.observer = Observer()
         # pull in all the audit dirs
@@ -60,7 +62,9 @@ class MK_Common_Watchdog_API:
         self.observer.start()
 
 
-# stop watchdog
     def MK_Common_Watchdog_Stop(self):
+        """
+        Stop watchdog
+        """
         self.observer.stop()
         self.observer.join()

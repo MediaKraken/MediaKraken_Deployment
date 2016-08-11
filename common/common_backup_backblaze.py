@@ -27,15 +27,24 @@ class MK_Common_Backup_Backblaze_API:
 
 
     def MK_Common_Backup_Backblaze_Bucket_List(self):
+        """
+        Return list of buckets in Backblaze
+        """
         return self.b2.list_buckets()
 
 
     def MK_Common_Backup_Backblaze_Bucket_Create(self, bucket_name):
+        """
+        Create specified bucket name
+        """
         response = self.b2.create_bucket(bucket_name, bucket_type='allPrivate')
         logging.debug("b2 create: %s", response)
 
 
     def MK_Common_Backup_Backblaze_Upload_File(self, file_name, bucket_name, file_password=None):
+        """
+        Upload file into specified bucket
+        """
         if file_password is None:
             self.b2.upload_file(file_name, bucket_name=bucket_name)
         else:
@@ -43,6 +52,9 @@ class MK_Common_Backup_Backblaze_API:
 
 
     def MK_Common_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name, dir_password=None):
+        """
+        Upload entire directory into specified bucket
+        """
         if dir_password is None:
             self.b2.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
         else:
@@ -50,6 +62,9 @@ class MK_Common_Backup_Backblaze_API:
 
 
     def MK_Common_Backup_Backblaze_Download_File(self, file_name, local_file_name, file_password):
+        """
+        Download specified file
+        """
         if file_password is None:
             response = self.b2.download_file_by_name(file_name, local_file_name)
         else:

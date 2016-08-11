@@ -30,6 +30,9 @@ class MK_Common_Serial_API:
 
 
     def MK_Serial_Open_Device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits, dev_bytesize):
+        """
+        Open serial device for read/write
+        """
         self.ser_device = serial.Serial(
             #port='/dev/ttyUSB1',
             port=dev_port,
@@ -47,6 +50,9 @@ class MK_Common_Serial_API:
 
 
     def MK_Serial_Read_Device(self):
+        """
+        Read data from serial device
+        """
         time.sleep(1)
         read_data = ''
         while self.ser_device.inWaiting() > 0:
@@ -55,8 +61,14 @@ class MK_Common_Serial_API:
 
 
     def MK_Serial_Close_Device(self):
+        """
+        Close serial device
+        """
         self.ser_device.close()
 
 
     def MK_Serial_Write_Device(self, message):
+        """
+        Send data to serial device
+        """
         self.ser_device.write(message)
