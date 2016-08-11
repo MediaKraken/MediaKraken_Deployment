@@ -21,3 +21,27 @@ install chromium web browser with software app
 
 install firebug plugin in for firefox
 
+***********
+jenkins
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+
+http://10.0.0.184:8080
+let it install the base plugins
+
+installed proxmox and vmware plugins
+installed Cobertura violations githubpullrequestbuilder githubpullrequestplugin violationcommentstogithub
+installed plugin python
+
+auto-refresh in top right
+
+
+custom project
+github project to MKdeployment
+build when change posted
+run build pulled down source
+
+
