@@ -16,14 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.0.1'
+__version__ = '0.1.6'
 
 # import plyer to fetch UID of devices
 from plyer import uniqueid
 import json
 import sys
 import os
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import MK_Common_Database_Octmote
 import MK_Common_ISCP
 import MK_Common_LIRC

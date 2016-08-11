@@ -28,7 +28,7 @@ cloud_backup_class = (('awss3', 'AWS S3'),
     ('dropbox', 'Dropbox'),
     ('google', 'Google Drive'),
     ('local', 'Local Filesystem'),
-    ('onedrive', 'Microsoft OneDrive')
+    ('onedrive', 'Microsoft OneDrive'),
     )
 
 
@@ -38,8 +38,10 @@ google = MK_Common_Cloud_Google_Drive.MK_Common_Google_Drive_API()
 onedrive = MK_Common_Cloud_OneDrive.MK_Common_OneDrive_API()
 
 
-# get list of all backups
 def MK_Common_Cloud_Backup_List():
+    """
+    Get list of all backups
+    """
     backup_files = []
     for backup_class in cloud_backup_class:    
         for backup_cloud in MK_Common_Cloud_File_List(backup_class[0], None, True):
@@ -48,8 +50,10 @@ def MK_Common_Cloud_Backup_List():
     return backup_files
 
 
-# store file in cloud
 def MK_Common_Cloud_File_Store(cloud_type, file_path_name, file_save_name, backup_bucket=False):
+    """
+    Store file in cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass
@@ -66,8 +70,10 @@ def MK_Common_Cloud_File_Store(cloud_type, file_path_name, file_save_name, backu
         return None
 
 
-# delete file in cloud
 def MK_Common_Cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
+    """
+    Delete file in cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass
@@ -84,8 +90,10 @@ def MK_Common_Cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
         return None
 
 
-# list files in cloud
 def MK_Common_Cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
+    """
+    List files in cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass
@@ -101,8 +109,10 @@ def MK_Common_Cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
     return []
 
 
-# fetch file from cloud
 def MK_Common_Cloud_File_Retrieve(cloud_type, file_name, file_location):
+    """
+    Fetch file from cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass
@@ -119,8 +129,10 @@ def MK_Common_Cloud_File_Retrieve(cloud_type, file_name, file_location):
         return None
 
 
-# rename file on cloud
 def MK_Common_Cloud_File_Rename(cloud_type, file_from, file_to):
+    """
+    Rename file on cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass
@@ -137,8 +149,10 @@ def MK_Common_Cloud_File_Rename(cloud_type, file_from, file_to):
         return None
 
 
-# create direcgtory in cloud
 def MK_Common_Cloud_Create_Folder(cloud_type, dir_name):
+    """
+    Create directory in cloud
+    """
     if cloud_type == "google":
         if google.active:
             pass

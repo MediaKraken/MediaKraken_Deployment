@@ -31,9 +31,9 @@ import datetime
 import signal
 import logging
 import sys
-sys.path.append("./MediaKraken_Common")
-sys.path.append("./MediaKraken_Server")
-import MK_Common_Logging
+sys.path.append("./common")
+sys.path.append("./server")
+import common_logging
 import database as database_base
 
 

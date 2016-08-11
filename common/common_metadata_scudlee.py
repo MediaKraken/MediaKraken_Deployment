@@ -25,8 +25,10 @@ import MK_Common_File
 import MK_Common_Network
 
 
-# def fetch the anime list by scudlee for thetvdb crossreference
 def MK_Scudlee_Fetch_XML():
+    """
+    Fetch the anime list by scudlee for thetvdb crossreference
+    """
     # grab from github via direct raw link
     if not os.path.isfile('./cache/anime-list.xml') or MK_Common_File.MK_Common_File_Modification_Timestamp('./cache/anime-list.xml') < (time.time() - (30 * 86400)):
         MK_Common_Network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml', './cache/anime-list.xml')
@@ -34,8 +36,10 @@ def MK_Scudlee_Fetch_XML():
         MK_Common_Network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml', './cache/anime-movieset-list.xml')
 
 
-# parse the anime list
 def MK_Scudlee_Anime_List_Parse(file_name=None):
+    """
+    Parse the anime list
+    """
     anime_cross_reference = []
     if file_name is None:
         file_name = './cache/anime-list.xml'
@@ -58,8 +62,10 @@ def MK_Scudlee_Anime_List_Parse(file_name=None):
     return anime_cross_reference
 
 
-# parse the movieset list
 def MK_Scudlee_Anime_Set_Parse(file_name=None):
+    """
+    Parse the movieset list
+    """
     if file_name is None:
         file_name = './cache/anime-movieset-list.xml'
     itemlist = minidom.parse(file_name).getElementsByTagName('set')

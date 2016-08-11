@@ -49,8 +49,10 @@ def MK_Common_File_Modification_Timestamp(file_name):
         return None
 
 
-# save data as file
 def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False, file_ext=None):
+    """
+    Save data as file
+    """
     file_handle = None
     if with_timestamp:
         file_handle = open(file_name + '_' + time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
@@ -64,7 +66,6 @@ def MK_Common_File_Save_Data(file_name, data_block, as_pickle=False, with_timest
     file_handle.close()
 
 
-# load file as data
 def MK_Common_File_Load_Data(file_name, as_pickle=False):
     """
     Load data from file as ascii or pickle
@@ -78,8 +79,10 @@ def MK_Common_File_Load_Data(file_name, as_pickle=False):
     return data_block
 
 
-# find all filters files in directory
 def MK_Common_File_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False, directory_only=False):
+    """
+    Find all filtered files in directory
+    """
     if os.path.isdir(dir_name):
         match_list = []
         if not walk_dir:

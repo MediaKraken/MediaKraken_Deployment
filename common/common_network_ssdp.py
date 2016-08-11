@@ -36,7 +36,10 @@ class SSDPResponse(object):
         return "<SSDPResponse({location}, {st}, {usn})>".format(**self.__dict__)
 
 
-def Roku_Discover(service, timeout=2, retries=1):
+def roku_discover(service, timeout=2, retries=1):
+    """
+    Discover Roku devices
+    """
     group = ("239.255.255.250", 1900)
     message = "\r\n".join([
         'M-SEARCH * HTTP/1.1',

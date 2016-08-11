@@ -34,9 +34,9 @@ try:
     import cPickle as pickle
 except:
     import pickle
-sys.path.append("./MediaKraken_Common")
-sys.path.append("./MediaKraken_Server")
-sys.path.append("./MediaKraken_Server/metadata")
+sys.path.append("./common")
+sys.path.append("./server")
+sys.path.append("./server/metadata")
 import database as database_base
 import metadata_anime
 import metadata_game
@@ -328,6 +328,9 @@ def tvshowtime(thread_db, download_data):
 
 
 def worker(content_providers):
+    """
+    Worker thread for limiter
+    """
     logging.debug("name: %s", content_providers)
     thread_db = database_base.MK_Server_Database()
     thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())

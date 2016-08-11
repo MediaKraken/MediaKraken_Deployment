@@ -20,7 +20,7 @@
 import logging
 import sys
 sys.path.append("../common")
-import MK_Common_Metadata_MusicBrainz
+import common_metadata_musicbrainz
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -28,13 +28,15 @@ Config.read("MediaKraken.ini")
 
 if Config.get('API', 'MediaBrainz').strip() != 'None':
     # setup the mediabrainz class
-    MBrainz_API_Connection = MK_Common_Metadata_MusicBrainz.MK_Common_Musicbrainz_API()
+    MBrainz_API_Connection = common_metadata_musicbrainz.MK_Common_Musicbrainz_API()
 else:
     MBrainz_API_Connection = None
 
 
 def metadata_music_lookup(db, media_file_path, download_que_id):
-    # search musicbrainz
+    """
+    Search musicbrainz
+    """
     # 0-mm_media_guid uuid NOT NULL,
     # 1-mm_media_class_guid uuid,
     # 2-mm_media_metadata_guid uuid,

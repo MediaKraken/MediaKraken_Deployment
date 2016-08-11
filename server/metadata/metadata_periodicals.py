@@ -20,7 +20,7 @@ import os
 import logging
 import sys
 sys.path.append("../common")
-import MK_Common_ISBNdb
+import common_isbndb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -28,12 +28,15 @@ Config.read("MediaKraken.ini")
 
 if Config.get('API', 'ISBNdb').strip() != 'None':
     # setup the isbndb class
-    ISBNdb_API_Connection = MK_Common_ISBNdb.MK_Common_ISBNdb_API()
+    ISBNdb_API_Connection = common_isbndb.MK_Common_ISBNdb_API()
 else:
     ISBNdb_API_Connection = None
 
 
 def metadata_periodicals_lookup(db, media_file_path, download_que_id):
+    """
+    Lookup via isdb and then name
+    """
     metadata_uuid = None
     # try to pull isbn out..might not be long enough, so try
     try:

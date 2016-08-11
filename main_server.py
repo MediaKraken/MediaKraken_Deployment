@@ -25,9 +25,9 @@ import subprocess
 import signal
 import logging
 import os
-sys.path.append("./MediaKraken_Common")
-sys.path.append("./MediaKraken_Server")
-import MK_Common_Logging
+sys.path.append("./common")
+sys.path.append("./server")
+import common_logging
 import MK_Common_Watchdog
 rmda_enabled_os = False
 try:
@@ -111,7 +111,8 @@ except:
     sys.exit()
 
 
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Start', None, u'System: Server Start', u'ServerStart', None, None, u'System')
+db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Start', None, u'System: Server Start',\
+        u'ServerStart', None, None, u'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -181,7 +182,8 @@ for link_data in db.MK_Server_Database_Link_List():
 
 
 # fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http', '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
+proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
+        '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
 
 
 # hold here
@@ -193,7 +195,8 @@ watchdog.MK_Common_Watchdog_Stop()
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop', u'ServerStop', None, None, u'System')
+db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop',\
+         u'ServerStop', None, None, u'System')
 
 # commit
 db.MK_Server_Database_Commit()

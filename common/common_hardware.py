@@ -25,20 +25,26 @@ from plyer import accelerometer
 from plyer import gps
 
 
-# turn on accelerometer
 def MK_Hardware_Accelerometer_On():
+    """
+    Turn on accelerometer
+    """
     accelerometer.enable()
     Clock.schedule_interval(MK_Get_Acceleration, 1 / 20.)
 
 
-# turn off accelerometer
 def MK_Hardware_Accelerometer_Off():
+    """
+    Turn off accelerometer
+    """
     accelerometer.disable()
     Clock.unschedule(MK_Get_Acceleration)
 
 
-# get accelerometer data
 def MK_Get_Acceleration(dt):
+    """
+    Get accelerometer data
+    """
     val = accelerometer.acceleration[:3]
     if not val == (None, None, None):
         #ids.x_label.text = "X: " + str(val[0])
@@ -47,23 +53,31 @@ def MK_Get_Acceleration(dt):
         return val
 
 
-# setup off the vibration via pattern
 def MK_Hardware_Vibration(pattern_string):
+    """
+    Setup of the vibration via pattern
+    """
     vibrator.pattern([float(n) for n in ti.text.split(',')])
 
 
-# vibration via time
 def MK_Hardware_Vibration_Time(seconds_to_vibrate):
+    """
+    Vibration via time
+    """
     vibrator.vibrate(seconds_to_vibrate)
 
 
-# stop vibration
 def MK_Hardware_Vibration_Stop():
+    """
+    Stop vibration
+    """
     vibrator.cancel()
 
 
-# gps setup
 def MK_Hardware_GPS_On():
+    """
+    gps setup
+    """
     self.gps = gps
     try:
         self.gps.configure(on_location=self.on_location, on_status=self.on_status)
@@ -73,11 +87,15 @@ def MK_Hardware_GPS_On():
     return self.gps
 
 
-# gps location
 def on_location(self, **kwargs):
+    """
+    gps location
+    """
     return '\n'.join(['{}={}'.format(k, v) for k, v in kwargs.items()])
 
 
-# gps status
 def on_status(self, stype, status):
+    """
+    gps status
+    """
     return 'type={}\n{}'.format(stype, status)

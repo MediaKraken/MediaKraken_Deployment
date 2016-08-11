@@ -21,7 +21,7 @@ import logging
 import json
 import sys
 sys.path.append("../common")
-import MK_Common_Metadata_TheSportsDB
+import common_metadata_thesportsdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -29,12 +29,15 @@ Config.read("MediaKraken.ini")
 
 # verify thesportsdb key exists
 if Config.get('API', 'TheSportsDB').strip() != 'None':
-    TheSportsDB_API_Connection = MK_Common_Metadata_TheSportsDB.MK_Common_Metadata_TheSportsDB_API()
+    TheSportsDB_API_Connection = common_metadata_thesportsdb.MK_Common_Metadata_TheSportsDB_API()
 else:
     TheSportsDB_API_Connection = None
 
 
 def metadata_sports_lookup(db, media_file_path, download_que_id):
+    """
+    Lookup sporting event by name
+    """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(',1)[0].strip())
     metadata_uuid = db.MK_Server_Database_Metadata_Sports_GUID_By_Event_Name(stripped_name)
     if metadata_uuid is None and TheSportsDB_API_Connection is not None:

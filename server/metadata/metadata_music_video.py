@@ -21,7 +21,7 @@ import logging
 import json
 import sys
 sys.path.append("../common")
-import MK_Common_Metadata_IMVDb
+import common_metadata_imvdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -29,13 +29,16 @@ Config.read("MediaKraken.ini")
 
 # verify imvdb key exists
 if Config.get('API', 'IMVDb').strip() != 'None':
-    IMVDB_API_Connection = MK_Common_Metadata_IMVDb.MK_Common_IMVDb_API(Config.get('API', 'IMVDb').strip())
+    IMVDB_API_Connection = common_metadata_imvdb.MK_Common_IMVDb_API(Config.get('API', 'IMVDb').strip())
 else:
     IMVDB_API_Connection = None
 
 
 # imvdb look
 def imvdb_lookup(db, file_name):
+    """
+    Lookup by name on music video database
+    """
     # check for same show variables
     if not hasattr(imvdb_lookup, "metadata_last_id"):
        imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it

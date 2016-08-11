@@ -22,8 +22,10 @@ import MK_Common_Network
 import MK_Common_String
 
 
-# try to grab theme from tvtunes
 def MK_Common_TVTheme_Download(media_name):
+    """
+    Try to grab theme from tvtunes
+    """
     data = BeautifulSoup(MK_Common_Network.MK_Network_Fetch_From_URL("http://www.televisiontunes.com/" + MK_Common_String.MK_Common_String_Title(media_name).replace(' ','_') + ".html", None)).find(id="download_song")
     if data is not None:
         logging.debug('href: %s', data['href'])

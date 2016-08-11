@@ -29,36 +29,54 @@ from selenium.webdriver.common.by import By
 
 
 def test_main_index(driver):
+    """
+    Display main page
+    """
     driver.get(TEST_TARGET)
     assert 'MediaKraken' in driver.title
 
 
 def test_main_login(driver):
+    """
+    Login into main page
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('main_username').send_keys('metaman')
     driver.find_element_by_id('main_password').send_keys('metaman')
     driver.find_element_by_id('main_button_login').click()
-    
+
 
 def test_main_menu_metaman(driver):
+    """
+    Click home page link
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('menu_home').click()
     assert 'MediaKraken' in driver.title
 
 
 def test_main_menu_media(driver):
+    """
+    Click media on nav menu
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('menu_media').click()
     assert 'MediaKraken' in driver.title
 
 
 def test_main_menu_sync(driver):
+    """
+    Click sync on nav menu
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('menu_sync').click()
     assert 'MediaKraken' in driver.title
 
 
 def test_main_menu_metadata_movies(driver):
+    """
+    Click metadata movies on nav menu
+    """
     driver.get(TEST_TARGET)  
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -68,6 +86,9 @@ def test_main_menu_metadata_movies(driver):
 
 
 def test_main_menu_metadata_movie_collection(driver):
+    """
+    Click metadata movies collection on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -77,6 +98,9 @@ def test_main_menu_metadata_movie_collection(driver):
 
 
 def test_main_menu_metadata_tv_shows(driver):
+    """
+    Click metadata tv shows on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()   
@@ -86,6 +110,9 @@ def test_main_menu_metadata_tv_shows(driver):
 
 
 def test_main_menu_metadata_music(driver):
+    """
+    Click metadata music on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -95,6 +122,9 @@ def test_main_menu_metadata_music(driver):
 
 
 def test_main_menu_metadata_music_albums(driver):
+    """
+    Click metadata music albums on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -104,6 +134,9 @@ def test_main_menu_metadata_music_albums(driver):
 
 
 def test_main_menu_metadata_music_videos(driver):
+    """
+    Click metadata music videos on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -113,6 +146,9 @@ def test_main_menu_metadata_music_videos(driver):
 
 
 def test_main_menu_metadata_sports(driver):
+    """
+    Click metadata sports on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -122,6 +158,9 @@ def test_main_menu_metadata_sports(driver):
 
 
 def test_main_menu_metadata_games(driver):
+    """
+    Click metadata games on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -131,6 +170,9 @@ def test_main_menu_metadata_games(driver):
 
 
 def test_main_menu_metadata_game_systems(driver):
+    """
+    Click metadata game systems on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -140,6 +182,9 @@ def test_main_menu_metadata_game_systems(driver):
 
 
 def test_main_menu_metadata_people(driver):
+    """
+    Click metadata people on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -149,6 +194,9 @@ def test_main_menu_metadata_people(driver):
 
 
 def test_main_menu_metadata_metadata_class_list(driver):
+    """
+    Click metadata class list on nav menu
+    """
     driver.get(TEST_TARGET)
     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
     hov.perform()
@@ -158,17 +206,26 @@ def test_main_menu_metadata_metadata_class_list(driver):
 
 
 def test_main_menu_server(driver):
+    """
+    Click server on nav menu
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('menu_server').click()
     assert 'MediaKraken' in driver.title
 
 
 def test_main_menu_about(driver):
+    """
+    Click about on nav menu
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_id('menu_about').click()
     assert 'MediaKraken' in driver.title
 
 
 def test_main_menu_contact(driver):
+    """
+    Click contact on footer
+    """
     driver.get(TEST_TARGET)
     driver.find_element_by_link_text('Contact').click()

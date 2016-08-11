@@ -35,15 +35,24 @@ class MK_Common_Transmission_API:
 
 
     def MK_Common_Transmission_Get_Torrent_List(self):
+        """
+        Get torrent list
+        """
         return self.tc.get_torrents()
 
 
     def MK_Common_Transmission_Add_Torrent(self, torrent_path):
+        """
+        Add torrent by file path
+        """
         #tc.add_torrent('http://releases.ubuntu.com/8.10/ubuntu-8.10-desktop-i386.iso.torrent')
         self.tc.add_torrent(torrent_path)
 
 
     def MK_Common_Transmission_Remove_Torrent(self, torrent_hash):
+        """
+        Remove torrent
+        """
         self.tc.remove_torrent(torrent_hash)
 
 
@@ -52,13 +61,22 @@ class MK_Common_Transmission_API:
 
 
     def MK_Common_Transmission_Torrent_Detail(self, torrent_no):
+        """
+        Get torrent detail
+        """
         torrent = self.tc.get_torrent(torrent_no)[1]
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
 
     def MK_Common_Transmission_Torrent_Start(self, torrent_no):
+        """
+        Start the specified torrent
+        """
         self.tc.start_torrent(torrent_no)
 
 
     def MK_Common_Transmission_Torrent_Stop(self, torrent_no):
+        """
+        Stop the specified torrent
+        """
         self.tc.stop_torrent(torrent_no)

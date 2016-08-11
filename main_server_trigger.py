@@ -21,9 +21,9 @@ import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
 import sys
-sys.path.append("./MediaKraken_Common")
-sys.path.append("./MediaKraken_Server")
-import MK_Common_Logging
+sys.path.append("./common")
+sys.path.append("./server")
+import common_logging
 import subprocess
 import signal
 import logging

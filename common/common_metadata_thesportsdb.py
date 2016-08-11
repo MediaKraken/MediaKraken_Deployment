@@ -33,9 +33,10 @@ class MK_Common_Metadata_TheSportsDB_API:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
         self.TheSportsDB_API_Key = Config.get('API', 'TheSportsDB').strip()
 
-    # team and player looksup
-
     def MK_Common_Metadata_TheSportsDB_Search_Team_By_Name(self, team_name):
+        """
+        Team and player looksup
+        """
         return MK_Common_Network.MK_Network_Fetch_From_URL('http://www.thesportsdb.com/api/v1/json/' + self.TheSportsDB_API_Key + '/searchteams.php?t=' + team_name.replace(' ','%20'), None)
 
 

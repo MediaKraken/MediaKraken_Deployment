@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
+__version__ = '0.1.6'
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -27,8 +27,8 @@ except:
     import pickle
 import logging
 import sys
-sys.path.append("./MediaKraken_Common")
-import MK_Common_Logging
+sys.path.append("./common")
+import common_logging
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
@@ -252,6 +252,9 @@ class MediaKrakenApp(App):
 
 
     def build_config(self, config):
+        """
+        Build base config
+        """
         config.setdefaults('MediaKrakenServer', {
             'Host': '127.0.0.1',
             'Port': 8098})
@@ -329,6 +332,9 @@ class MediaKrakenApp(App):
 
 
     def process_message(self, server_msg):
+        """
+        Process network message from server
+        """
         messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
         if messageWords[0] != "IMAGE":
             logging.debug("Got Message: %s", server_msg)
@@ -470,23 +476,34 @@ class MediaKrakenApp(App):
             logging.error("unknown message type")
 
 
-    # image loaders
     def _image_loaded_detail_movie(self, proxyImage):
+        """
+        Load movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.theater_media_video_poster.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_demo(self, proxyImage):
+        """
+        Load home image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_movie(self, proxyImage):
+        """
+        Load home movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_new_movie(self, proxyImage):
+        """
+        Load new movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
 
@@ -521,6 +538,9 @@ class MediaKrakenApp(App):
 
 
     def dismiss_notification_popup(self):
+        """
+        Dismiss notification popup
+        """
         self._notification_popup.dismiss()
 
 

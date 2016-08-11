@@ -33,8 +33,8 @@ try:
 except:
     import pickle
 import sys
-sys.path.append("./MediaKraken_Common")
-import MK_Common_Logging
+sys.path.append("./common")
+import common_logging
 import MK_Common_System
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
@@ -149,11 +149,17 @@ class MediaKrakenApp():
 
 
     def connect_to_server(self):
+        """
+        Connect to media server
+        """
         reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(), int(self.config.get('MediaKrakenServer', 'Port').strip()), TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
     def process_message(self, server_msg):
+        """
+        Process network message from server
+        """
         global proc_ffserver
         messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
         logging.debug('message: %s', messageWords[0])

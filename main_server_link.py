@@ -33,10 +33,10 @@ except:
     import pickle
 import sys
 import logging
-sys.path.append("./MediaKraken_Common")
-import MK_Common_Logging
+sys.path.append("./common")
+import common_logging
 import MK_Common_System
-sys.path.append("./MediaKraken_Server")
+sys.path.append("./server")
 import database as database_base
 
 # import twisted files that are required
@@ -128,11 +128,17 @@ class MediaKrakenApp():
 
 
     def connect_to_server(self):
+        """
+        Connect to media server
+        """
         reactor.connectSSL(sys.argv[1], int(sys.argv[2]), TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
     def process_message(self, server_msg):
+        """
+        Process network message from server
+        """
         messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
         logging.debug('message: %s', messageWords[0])
         logging.debug("len: %s", len(server_msg))

@@ -23,7 +23,7 @@ import sys
 import MK_Common_Database_Octmote
 import MK_Common_File
 import MK_Common_Network
-sys.path.append("../../MediaKraken_Common/lib")
+sys.path.append("../../common/lib")
 import adba
 
 
@@ -33,8 +33,10 @@ class MK_Common_Metadata_AniDB_API:
         pass
 
 
-    # fetch the tarball of anime titles
     def MK_Network_AniDB_Fetch_Titles_File(self, data_type='dat'):
+        """
+        Fetch the tarball of anime titles
+        """
         if data_type == "dat":
             data_file = 'http://anidb.net/api/anime-titles.dat.gz'
         else:
@@ -42,8 +44,10 @@ class MK_Common_Metadata_AniDB_API:
         MK_Common_Network.MK_Network_Fetch_From_URL(data_file, './Temp_AniDB_Titles.gz')
 
 
-    # save anidb title data to database
     def MK_Network_AniDB_Save_Title_Data_To_DB(self, title_file):
+        """
+        Save anidb title data to database
+        """
         file_handle = gzip.open(title_file, 'rb')
         file_content = file_handle.read()
         file_handle.close()
@@ -57,13 +61,16 @@ class MK_Common_Metadata_AniDB_API:
         MK_Common_Database_Octmote.MK_Database_Sqlite3_AniDB_Title_Insert(sql_params_list)
 
 
-    # find AID by title
     def MK_Network_AniDB_AID_By_Title(self, title_to_search):
+        """
+        Find AID by title
+        """
         # check the local DB
         local_db_result = MK_Common_Database_Octmote.MK_Database_Sqlite3_AniDB_Title_Search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
-            if MK_Common_File.MK_Common_File_Modification_Timestamp(title_to_search) < (time.time() - (1 * 86400)):
+            if MK_Common_File.MK_Common_File_Modification_Timestamp(title_to_search) \
+                    < (time.time() - (1 * 86400)):
                 MK_Network_AniDB_Fetch_Titles_File('dat')
                 # since new titles file....recheck by title
                 MK_Network_AniDB_AID_By_Title(title_to_search)
@@ -73,8 +80,10 @@ class MK_Common_Metadata_AniDB_API:
             return local_db_result
 
 
-    # remote api calls
     def MK_Network_AniDB_Connect(self, user_name, user_password):
+        """
+        Remote api calls
+        """
         self.connection = adba.Connection(log=True)
         try:
             self.connection.auth(user_name, user_password)
@@ -84,13 +93,17 @@ class MK_Common_Metadata_AniDB_API:
         return self.connection
 
 
-    # logout of AniDB
     def MK_Network_AniDB_Logout(self):
+        """
+        Logout of AniDB
+        """
         self.connection.logout()
 
 
-    # close the AniDB connect and stop the thread
     def MK_Network_AniDB_Stop(self):
+        """
+        Close the AniDB connect and stop the thread
+        """
         self.connection.stop()
 
 

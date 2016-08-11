@@ -23,9 +23,11 @@ import sys
 import time
 
 
-# create dictionary containing
-# Address = Id, Name
 def MK_Common_Network_MediaKraken_Find_Server():
+    """
+    # create dictionary containing
+    # Address = Id, Name
+    """
     # search for servers for one second
     t_end = time.time() + 1
     # create upd socket

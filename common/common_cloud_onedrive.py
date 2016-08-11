@@ -94,7 +94,9 @@ class MK_Common_OneDrive_API(object):
 
 
     def MK_OneDrive_Page(self):
-        # page through collection
+        """
+        page through collection
+        """
         #get the top three elements of root, leaving the next page for more elements
         collection = client.item(drive="me", id="root").children.request(top=3).get()
         #get the first item in the collection

@@ -28,10 +28,16 @@ class MK_Common_Twitch_API:
 
 
     def MK_Common_Twitch_Get_All_Streams(self, stream_limit):
+        """
+        Get all streams
+        """
         return twitch.streams.all(limit=stream_limit)
 
 
     def MK_Common_Twitch_Get_Featured_Streams(self):
+        """
+        Get featured streams
+        """
         return twitch.streams.featured()
 
 

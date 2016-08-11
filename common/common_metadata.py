@@ -39,8 +39,10 @@ else:
     base_image_path += '/'
 
 
-# determine "weight" of file to download for trailer
 def MK_Common_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_year):
+    """
+    Determine "weight" of file to download for trailer
+    """
     old_weight = 0
     best_match = None
     weight = 0
@@ -64,8 +66,10 @@ def MK_Common_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_
     return best_match, old_weight
 
 
-# determine file path of images
 def MK_Common_Metadata_Image_File_Path(media_name, media_type):
+    """
+    Determine file path of images
+    """
     logging.debug("filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
@@ -78,12 +82,14 @@ def MK_Common_Metadata_Image_File_Path(media_name, media_type):
     return file_path
 
 
-# determine image location
-# media name - used to determine a-z dir
-# media_type - banner, poster, etc
-# source_link - the website/host to use
-# source_file - the "file name" on the url
 def MK_Common_MetaData_Image_Path(media_name, media_type, source_link, source_file):
+    """
+    determine image location
+    media name - used to determine a-z dir
+    media_type - banner, poster, etc
+    source_link - the website/host to use
+    source_file - the "file name" on the url
+    """
     file_path = MK_Common_Metadata_Image_File_Path(media_name, media_type)
     # determine url and such
     if source_link == "tmdb":

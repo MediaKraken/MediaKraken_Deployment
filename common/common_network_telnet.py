@@ -28,21 +28,30 @@ class MK_Common_Telnet_API:
 
 
     def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
+        """
+        Open device via telnet
+        """
         self.telnet_device = telnetlib.Telnet(telnet_host, telnet_port)
         if telnet_user is not None:
             self.telnet_device.read_until("login: ")
             self.telnet_device.write(telnet_user + newline)
             self.telnet_device.read_until("Password: ")
             self.telnet_device.write(telnet_password + newline)
-    
-    
+
+
     def MK_Telnet_Read_Device(self):
+        """
+        Read data from telnet device
+        """
         time.sleep(1)
         read_data = ''
         while self.telnet_device.inWaiting() > 0:
             read_data += self.telnet_device.read_all()
         return read_data
-    
-    
+
+
     def MK_Telnet_Write_Device(self, telnet_message):
+        """
+        Send data to telnet device
+        """
         self.telnet_device.write(telnet_message + newline)

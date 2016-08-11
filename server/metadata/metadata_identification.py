@@ -33,6 +33,9 @@ import metadata_tv
 
 
 def metadata_identification(db, class_text, media_file_path, download_que_json, download_que_id):
+    """
+    Determine which provider to start lookup via class text
+    """
     logging.debug("Ident: %s %s %s %s", class_text, media_file_path, download_que_json, download_que_id)
     metadata_uuid = None
     # find data by class type
