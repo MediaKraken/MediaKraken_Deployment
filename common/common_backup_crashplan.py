@@ -22,6 +22,9 @@ import requests
 
 
 class common_backup_crashplan_api:
+    """
+    Class for interfacing with crashplan
+    """
     def __init__(self, user_name, user_password):
         crash_resp = requests.get('https://master-server.example.com:4285/api/Computer',\
                 auth=(user_name, user_password))

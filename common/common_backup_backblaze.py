@@ -23,6 +23,9 @@ from backblazeb2 import BackBlazeB2
 
 
 class common_backup_backblaze_api:
+    """
+    Class for interfacing with backblaze
+    """
     def __init__(self, account_id, app_key):
         self.b2 = BackBlazeB2(account_id, app_key)
 
