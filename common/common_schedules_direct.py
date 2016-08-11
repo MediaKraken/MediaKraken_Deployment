@@ -28,7 +28,7 @@ from StringIO import StringIO
 
 class MK_Common_Schedules_Direct_API:
     def __init__(self):
-        self.headers = {'User-Agent': 'MediaKraken_0.1.0',
+        self.headers = {'User-Agent': 'MediaKraken_0.1.6',
                         'Accept-Encoding': 'gzip, deflate'}
         self.BASE_API_URL = 'https://json.schedulesdirect.org/20141201'
 
@@ -49,7 +49,7 @@ class MK_Common_Schedules_Direct_API:
 
 
     def MK_Common_Schedules_Direct_Client_Version(self):
-        resp = requests.get(self.BASE_API_URL + "/version/MediaKraken_)
+        resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
         logging.debug("SD Version: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -64,7 +64,8 @@ class MK_Common_Schedules_Direct_API:
 
 
     def MK_Common_Schedules_Direct_Headends(self, country_code, postal_code):
-        resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code + "&postalcode=" + postal_code, headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code
+                + "&postalcode=" + postal_code, headers=self.headers)
         logging.debug("SD Headends: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -117,7 +118,8 @@ class MK_Common_Schedules_Direct_API:
 
     # this one is only for EP types, not MV
     def MK_Common_Schedules_Direct_Program_Desc(self, program_ids):
-        resp = requests.post(self.BASE_API_URL + "/metadata/description", headers=self.headers, data=program_ids)
+        resp = requests.post(self.BASE_API_URL + "/metadata/description",\
+                headers=self.headers, data=program_ids)
         logging.debug("Header: %s", resp.headers)
         logging.debug("Text: %s", resp.text)
         logging.debug("SD Program Desc: %s-%s", resp.status_code, resp.json())
@@ -125,28 +127,29 @@ class MK_Common_Schedules_Direct_API:
 
 
     def MK_Common_Schedules_Direct_Schedules_By_StationID(self, station_ids):
-        resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers, data=station_ids)
+        resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers,\
+                data=station_ids)
         logging.debug("SD Station: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
-# TODO test
     def MK_Common_Schedules_Direct_MD5(self, station_ids):
-        resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers, data=program_ids)
+        resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers,\
+                data=program_ids)
         logging.debug("SD MD5: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
-# TODO test
     def MK_Common_Schedules_Still_Running(self, program_id):
-        resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id), headers=self.headers)
+        resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id),\
+                headers=self.headers)
         logging.debug("SD Running: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
-# TODO test
     def MK_Common_Schedules_Program_Metadata(self, program_ids):
-        resp = requests.post(self.BASE_API_URL + "/metadata/programs/", headers=self.headers, data=program_ids)
+        resp = requests.post(self.BASE_API_URL + "/metadata/programs/", headers=self.headers,\
+                data=program_ids)
         logging.debug("SD Program Meta: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
