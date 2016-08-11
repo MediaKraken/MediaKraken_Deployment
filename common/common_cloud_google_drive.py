@@ -75,7 +75,7 @@ class common_cloud_google_drive_api:
                 credentials = tools.run_flow(flow, store, flags)
             else: # Needed only for compatability with Python 2.6
                 credentials = tools.run(flow, store)
-            print('Storing credentials to ' + credential_path)
+            print('Storing credentials to %s', credential_path)
         return credentials
 
 

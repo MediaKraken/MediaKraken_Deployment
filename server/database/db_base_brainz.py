@@ -39,7 +39,6 @@ class MK_Server_Database_Brainz:
         self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
 #        self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
 #        if self.sql3_cursor.fetchone()[0] == 0:
-#            print "Cannot connect to database!"
 #            exit(1)
 
 

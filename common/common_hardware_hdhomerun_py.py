@@ -80,19 +80,19 @@ for device in devices:
     i += 1
 
 first_device_str = ("%s-%d" % (devices[0].nice_device_id, 1))
-print "str: ", first_device_str
+print("str: %s", first_device_str)
 hd = HdhrUtility.device_create_from_str(first_device_str)
 
 device_adapter = HdhrDeviceQuery(hd)
-print "supported: ", test_class.get_supported(device_adapter)
+print("supported: %s", test_class.get_supported(device_adapter))
 
-print "scan: ", test_class.scan(device_adapter)
+print("scan: %s", test_class.scan(device_adapter))
 #status = test_class.get_tuner_vstatus(device_adapter)
 #print("Status: %s" % (status))
 
 #device_adapter.set_tuner_vchannel(13)
 #device_adapter.set_tuner_target('rtp://192.168.5.13:7891')
 #device_adapter.set_tuner_target(None)
-print "channel count:", test_class.get_count()
-#print test_class.scan(device_adapter)
+print("channel count: %s", test_class.get_count())
+#print(test_class.scan(device_adapter))
 '''

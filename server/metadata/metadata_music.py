@@ -48,7 +48,6 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
     pass
     # see if record is stored locally
 #                if row_data[4] is not None:
-#                    print "music data:", row_data[4]
 #                    ffmpeg_data_json = row_data[4]
 #                    print "what:", ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE']
 #                    db_result = db.MK_Server_Database_Music_Lookup(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'])
@@ -57,7 +56,6 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
 #                            # look at musicbrainz server
 #                            brainz_id = None
 #                            music_data = MBrainz_API_Connection.MK_Common_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
-#                            print "brainz:", music_data
 #                            # TODO  if not, store it
 #                            # TODO  use the metadata id for record update
 #                            metadata_uuid = music_data

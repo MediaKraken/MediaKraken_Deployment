@@ -57,7 +57,6 @@ class MK_Common_TheTVDB_API:
             show = show_data[0]
             return show.SeriesID
             #show.update()
-#            print "show update:", show
 #            # save to local cache for future reference
 #            if save_db:
 #                metadata_uuid = MK_Common_TheTVDB_Show_DB_Save(show)

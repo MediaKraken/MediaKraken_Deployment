@@ -59,7 +59,7 @@ def MK_Common_FreeCovers_Search(search_string, search_categories):
     #for node in xml_data.getElementsByTagName('name'):
     request = urllib2.Request('http://www.freecovers.net/api/search/', urllib.urlencode({'search': search_string}))
     handler = urllib2.urlopen(request)
-    print handler.read()
+    print(handler.read())
 
 
 MK_Common_FreeCovers_Search('Megadeath', None):

@@ -27,11 +27,11 @@ class MK_Common_LDAP_API:
         try:
             self.con = ldap.initialize('ldap://%s', ldap_server)
         except ldap.LDAPError, e:
-            print e.message['info']
+            print(e.message['info'])
             if type(e.message) == dict and e.message.has_key('desc'):
-                print e.message['desc']
+                print(e.message['desc'])
             else:
-                print e
+                print(e)
         # Bind to the server (ie. actually connect) - not needed as simple_bind for check
         #self.con.simple_bind("ou=People,dc=hotbot,dc=com")
         self.ou_name = ou_name
@@ -48,11 +48,11 @@ class MK_Common_LDAP_API:
         except ldap.INVALID_CREDENTIALS, e:
             return "INVALID_LOGIN"
         except ldap.LDAPError, e:
-            print e.message['info']
+            print(e.message['info'])
             if type(e.message) == dict and e.message.has_key('desc'):
-                print e.message['desc']
+                print(e.message['desc'])
             else:
-                print e
+                print(e)
 
 
     def MK_Common_LDAP_Close(self):

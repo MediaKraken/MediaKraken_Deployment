@@ -68,7 +68,7 @@ class MK_Common_Metadata_GamesDB_API:
         """
         platform_list = self.gamesdb_api.get_platforms_list()
         for platform in platform_list:
-            print platform.id, "-", platform.name, "-", platform.alias
+            print(platform.id, "-", platform.name, "-", platform.alias)
         return platform_list
 
 
@@ -77,8 +77,8 @@ class MK_Common_Metadata_GamesDB_API:
         Platform info by id
         """
         game_platform = self.gamesdb_api.get_platform(platform_id)
-        print game_platform.name
-        print game_platform.overview
+        print(game_platform.name)
+        print(game_platform.overview)
         return game_platform
 
 
@@ -87,9 +87,9 @@ class MK_Common_Metadata_GamesDB_API:
         # 'mega man' as mega OR man
         """
         for game in self.gamesdb_api.get_game(name=game_name):
-            print game.title
-            print game.platform
-            print game.release_date
+            print(game.title)
+            print(game.platform)
+            print(game.release_date)
 
 
     def MK_Common_Metadata_GamesDB_Games_By_Name_And(self, game_name):
@@ -97,9 +97,9 @@ class MK_Common_Metadata_GamesDB_API:
         # 'mega man' as mega AND man
         """
         for game in self.gamesdb_api.get_games_list(name=game_name):
-            print game.title
-            print game.platform
-            print game.release_date
+            print(game.title)
+            print(game.platform)
+            print(game.release_date)
 
 
     def MK_Common_Metadata_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
@@ -107,8 +107,8 @@ class MK_Common_Metadata_GamesDB_API:
         Fetch games by name OR platform
         """
         for game in self.gamesdb_api.get_game(name=game_name, platform=platform_name, genre=game_genre):
-            print game.title
-            print game.platform
+            print(game.title)
+            print(game.platform)
 
 
     def MK_Common_Metadata_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
@@ -116,8 +116,8 @@ class MK_Common_Metadata_GamesDB_API:
         Fetch games by name AND platform
         """
         for game in self.gamesdb_api.get_games_list(name=game_name, platform=platform_name, genre=game_genre):
-            print game.title
-            print game.platform
+            print(game.title)
+            print(game.platform)
 
 
     def MK_Common_Metadata_GamesDB_Games_By_Platform_ID(self, platform_id):
@@ -125,7 +125,7 @@ class MK_Common_Metadata_GamesDB_API:
         Games by platform id
         """
         for game in self.gamesdb_api.get_platform_games(platform_id):
-            print game.id, "-", game.title, "-", game.release_date
+            print(game.id, "-", game.title, "-", game.release_date)
 
 
     def MK_Common_Metadata_GamesDB_Games_By_ID(self, game_id):
@@ -133,8 +133,8 @@ class MK_Common_Metadata_GamesDB_API:
         Games by game id
         """
         game = self.gamesdb_api.get_game(id=game_id)
-        print game.title
-        print game.overview
-        print game.genres
-        print game.developer
+        print(game.title)
+        print(game.overview)
+        print(game.genres)
+        print(game.developer)
         return game

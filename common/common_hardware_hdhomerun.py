@@ -39,13 +39,13 @@ class MK_Common_Hardware_HDHomeRun_API:
 
 
     def MK_Common_HDHomeRun_Detail(self, ndx):
-        print 'Model: ' + self.devices[ndx].get_var(item='/sys/model')
-        print 'HWModel: ' + self.devices[ndx].get_var(item='/sys/hwmodel')
-        print 'Name: ' + self.devices[ndx].get_name()
-        print 'Device ID: %08X' % self.devices[ndx].get_device_id()
-        print 'Device IP: %08X' % self.devices[ndx].get_device_ip()
-        print 'Stream info: %s' % self.devices[ndx].get_tuner_streaminfo()
-        print 'Versions: %s %d' % self.devices[ndx].get_version()
+        print('Model: %s', self.devices[ndx].get_var(item='/sys/model'))
+        print('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel'))
+        print('Name: %s', self.devices[ndx].get_name())
+        print('Device ID: %08X' % self.devices[ndx].get_device_id())
+        print('Device IP: %08X' % self.devices[ndx].get_device_ip())
+        print('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo())
+        print('Versions: %s %d' % self.devices[ndx].get_version())
 
 
     # firmware upgrade
@@ -88,9 +88,9 @@ class MK_Common_Hardware_HDHomeRun_API:
         #print 'Tuner 2 vchannel: ' + self.devices[0].get_var(item='/tuner2/vchannel')
         #print 'Tuner 2 channel: ' + self.devices[0].get_var(item='/tuner2/channel')
         #print 'Tuner 2 channelmap: ' + self.devices[0].get_var(item='/tuner2/channelmap')
-        print self.devices[0].get_tuner_filter()
-        print self.devices[0].get_tuner_program()
-        print self.devices[0].get_tuner_target()
+        print(self.devices[0].get_tuner_filter())
+        print(self.devices[0].get_tuner_program())
+        print(self.devices[0].get_tuner_target())
         #print 'OOB status: ' + str(self.devices[0].get_oob_status())
         #print 'Supported: %s' % self.devices[0].get_supported(prefix='tuner')
         #print self.devices[0].get_tuner_plotsample()
