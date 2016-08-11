@@ -45,7 +45,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Chromecast_Scan', False, Fals
 def signal_receive(signum, frame):
     global global_end_program
     global_end_program = True
-    print 'CHILD Tuner Scan: Received USR1'
+    print('CHILD Tuner Scan: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -89,7 +89,7 @@ for row_data in chrome.MK_Chromecast_Discover_Dict():
     logging.debug("Connected!")
     cast_json = chrome.MK_Chromecast_Info()
     logging.debug("Cast: %s", cast_json)
-    print "status:", chrome.MK_Chromecast_Status()
+    print("status: %s", chrome.MK_Chromecast_Status())
     db.MK_Server_Database_Device_Insert('cast', json.dumps({cast_json}))
 
 

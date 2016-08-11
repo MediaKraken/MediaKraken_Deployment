@@ -40,7 +40,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'TMDB Update', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD TMDB Update: Received USR1'
+    print('CHILD TMDB Update: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

@@ -36,7 +36,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Anime_Match', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Anime: Received USR1'
+    print('CHILD Anime: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

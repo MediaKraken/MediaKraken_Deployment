@@ -103,7 +103,7 @@ MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_File_Sca
 
 
 def signal_receive(signum, frame):
-    print 'CHILD File Scan: Received USR1'
+    print('CHILD File Scan: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

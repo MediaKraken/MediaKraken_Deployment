@@ -37,7 +37,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'ZFS_Health_Scan', False, Fals
 def signal_receive(signum, frame):
     global global_end_program
     global_end_program = True
-    print 'CHILD ZFS Health Scan: Received USR1'
+    print('CHILD ZFS Health Scan: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

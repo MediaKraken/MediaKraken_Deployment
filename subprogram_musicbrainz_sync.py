@@ -37,7 +37,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Mbrainz Sync: Received USR1'
+    print('CHILD Mbrainz Sync: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

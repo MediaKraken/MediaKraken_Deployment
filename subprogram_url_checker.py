@@ -31,7 +31,7 @@ import MK_Common_Logging
 import database as database_base
 
 def signal_receive(signum, frame):
-    print 'CHILD URL Check: Received USR1'
+    print('CHILD URL Check: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

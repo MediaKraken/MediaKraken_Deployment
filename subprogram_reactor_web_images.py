@@ -38,7 +38,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Web_Image', False, False,
 
 
 def signal_receive(signum, frame):
-    print 'Web Image CHILD: Received USR1'
+    print('Web Image CHILD: Received USR1')
     # remove pid
     os.remove(pid_file)
     sys.stdout.flush()

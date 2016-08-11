@@ -47,7 +47,7 @@ total_images_created = 0
 
 
 def signal_receive(signum, frame):
-    print 'CHILD Chapter Image: Received USR1'
+    print('CHILD Chapter Image: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

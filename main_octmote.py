@@ -138,7 +138,7 @@ class OctMoteApp(App):
 
 
     def on_connection(self, connection):
-        print "Connected succesfully to OctMote server!"
+        print("Connected succesfully to OctMote server!")
         self.connection = connection
         # load control layout
 
@@ -186,7 +186,7 @@ class OctMoteApp(App):
 
 
     def Emby_Event_Button_User_Select(self, server_user, *args):
-        print "button server user", server_user
+        print("button server user %s", server_user)
         self.global_selected_user_id = server_user
         self.login_password = ''
         content = OctMoteLoginScreen(login_password=self.login_password, cancel=self.dismiss_popup)
@@ -329,7 +329,7 @@ class OctMoteApp(App):
             elif json_data["Protocol"]["Method"].lower() == "emby":
                 pass
             else:
-                print "Unhandled Protocol Method", json_data["Protocol"]["Method"]
+                print("Unhandled Protocol Method %s", json_data["Protocol"]["Method"])
         except:
             pass
 

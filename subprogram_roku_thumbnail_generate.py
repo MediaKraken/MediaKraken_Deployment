@@ -33,7 +33,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 def signal_receive(signum, frame):
-    print 'CHILD Roku Thumbnail: Received USR1'
+    print('CHILD Roku Thumbnail: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

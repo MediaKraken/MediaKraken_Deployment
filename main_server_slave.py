@@ -72,7 +72,7 @@ class RepeatTimer(Thread):
 
 def signal_receive(signum, frame):
     global proc_ffserver
-    print 'CHILD Slave: Received USR1'
+    print('CHILD Slave: Received USR1')
     os.kill(proc_ffserver.pid)
     sys.stdout.flush()
     sys.exit(0)

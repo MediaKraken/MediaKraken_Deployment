@@ -45,7 +45,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Reactor_String', False, F
 
 
 def signal_receive(signum, frame):
-    print 'CHILD Reactor String: Received USR1'
+    print('CHILD Reactor String: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

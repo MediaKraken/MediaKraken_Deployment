@@ -40,7 +40,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'TVMaze Update', False, False,
 
 
 def signal_receive(signum, frame):
-    print 'CHILD TVMaze Update: Received USR1'
+    print('CHILD TVMaze Update: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

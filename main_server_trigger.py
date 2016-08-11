@@ -37,7 +37,7 @@ except:
 
 
 def signal_receive(signum, frame):
-    print 'CHILD Main Trigger: Received USR1'
+    print('CHILD Main Trigger: Received USR1')
     os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
     db.MK_Server_Database_Rollback()

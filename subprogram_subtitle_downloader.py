@@ -30,7 +30,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Subtitle_Down', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Subtitle: Received USR1'
+    print('CHILD Subtitle: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -71,6 +71,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print 'Total subtitle download attempts:', total_download_attempts
+    print('Total subtitle download attempts: %s', total_download_attempts)
     # remove pid
     os.remove(pid_file)

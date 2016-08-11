@@ -48,7 +48,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Game_Audit', False, False
 def signal_receive(signum, frame):
     global global_end_program
     global_end_program = True
-    print 'CHILD %6s: Received USR1' % pid
+    print('CHILD %6s: Received USR1' % pid)
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -156,7 +156,7 @@ class HashGenerate(Thread):
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict = {}
                     hash_dict[os.path.basename(self.file_name)] = sha1_hash_data
-                    print "single: ", self.file_name, sha1_hash_data
+                    print("single: %s", self.file_name, sha1_hash_data)
                 except:
                     lock.acquire()
                     Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error on SHA1 of file")

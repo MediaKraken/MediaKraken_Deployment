@@ -41,7 +41,7 @@ __version__ = json.dumps({"Version": "0.0.1"})
 
 
 def signal_receive(signum, frame):
-    print 'CHILD Main API: Received USR1'
+    print('CHILD Main API: Received USR1')
     sys.stdout.flush()
     sys.exit(0)
 

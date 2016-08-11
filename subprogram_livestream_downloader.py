@@ -39,7 +39,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'LiveStream', False, False, No
 def signal_receive(signum, frame):
     global global_end_program
     global_end_program = True
-    print 'CHILD LiveStream: Received USR1'
+    print('CHILD LiveStream: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

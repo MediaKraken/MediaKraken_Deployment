@@ -43,7 +43,7 @@ MK_Common_File.MK_Common_File_Save_Data(pid_file, 'TVDB_Images_Known', False, Fa
 
 
 def signal_receive(signum, frame):
-    print 'CHILD theTVDB Images: Received USR1'
+    print('CHILD theTVDB Images: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db

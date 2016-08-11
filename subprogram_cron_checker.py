@@ -41,7 +41,7 @@ pid_file = './pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Cron_Checker', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Cron: Received USR1'
+    print('CHILD Cron: Received USR1')
     # term all running crons
     if row_data[1] in pid_dict:
         os.kill(row_data[1], signal.SIGTERM)

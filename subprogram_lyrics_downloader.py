@@ -35,7 +35,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Sub_Lyrics_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Lyrics: Received USR1'
+    print('CHILD Lyrics: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -67,7 +67,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print 'Total lyrics download attempts:', total_download_attempts
+    print('Total lyrics download attempts: %s', total_download_attempts)
     # send notications
     if total_download_attempts > 0:
         db.MK_Server_Database_Notification_Insert(locale.format('%d', total_download_attempts, True) + " lyric(s) downloaded.", True)

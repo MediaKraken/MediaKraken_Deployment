@@ -37,7 +37,7 @@ pid_file = '../pid/' + str(os.getpid())
 MK_Common_File.MK_Common_File_Save_Data(pid_file, 'Logo_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
-    print 'CHILD Logo: Received USR1'
+    print('CHILD Logo: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Logo_Download')       
+MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
 logo_connection = MK_Common_TheLogoDB.MK_Common_TheLogoDB_API()
@@ -73,7 +73,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print 'Total logo download attempts:', total_download_attempts
+    print('Total logo download attempts: %s', total_download_attempts)
     # send notications
 #    if total_download_attempts > 0:
 #        db.MK_Server_Database_Notification_Insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
