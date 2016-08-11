@@ -38,7 +38,9 @@ class MK_Common_LDAP_API:
 
 
     def MK_Common_LDAP_Logon(self, user_name, user_password):
-        # ldap logon check
+        """
+        Ldap logon check
+        """
         try:
             dn = "sAMAccountName=" + user_name + ",dc=" + dc_name + ",dc=local"
             self.con.simple_bind_s(dn, user_password)
@@ -53,5 +55,7 @@ class MK_Common_LDAP_API:
 
 
     def MK_Common_LDAP_Close(self):
-        # Close the connection
+        """
+        Close the connection
+        """
         self.con.unbind_s()

@@ -17,11 +17,11 @@
 '''
 
 import logging
-import MK_Common_Cloud_AWS_S3
-import MK_Common_Cloud_Dropbox
-import MK_Common_Cloud_Google_Drive
-import MK_Common_Cloud_OneDrive
-import MK_Common_String
+import common_cloud_aws_s3
+import common_cloud_dropbox
+import common_cloud_google_drive
+import common_cloud_onedrive
+import common_string
 
 
 cloud_backup_class = (('awss3', 'AWS S3'),
@@ -32,13 +32,13 @@ cloud_backup_class = (('awss3', 'AWS S3'),
     )
 
 
-awss3 = MK_Common_Cloud_AWS_S3.MK_Common_AWS_S3_API()
-dropbox = MK_Common_Cloud_Dropbox.MK_Common_DropBox_API()
-google = MK_Common_Cloud_Google_Drive.MK_Common_Google_Drive_API()
-onedrive = MK_Common_Cloud_OneDrive.MK_Common_OneDrive_API()
+awss3 = common_cloud_aws_s3.MK_Common_AWS_S3_API()
+dropbox = common_cloud_dropbox.MK_Common_DropBox_API()
+google = common_cloud_google_drive.MK_Common_Google_Drive_API()
+onedrive = common_cloud_onedrive.MK_Common_OneDrive_API()
 
 
-def MK_Common_Cloud_Backup_List():
+def common_cloud_backup_list():
     """
     Get list of all backups
     """
@@ -50,7 +50,7 @@ def MK_Common_Cloud_Backup_List():
     return backup_files
 
 
-def MK_Common_Cloud_File_Store(cloud_type, file_path_name, file_save_name, backup_bucket=False):
+def common_cloud_file_store(cloud_type, file_path_name, file_save_name, backup_bucket=False):
     """
     Store file in cloud
     """
@@ -70,7 +70,7 @@ def MK_Common_Cloud_File_Store(cloud_type, file_path_name, file_save_name, backu
         return None
 
 
-def MK_Common_Cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
+def common_cloud_file_delete(cloud_type, file_name, backup_bucket=False):
     """
     Delete file in cloud
     """
@@ -90,7 +90,7 @@ def MK_Common_Cloud_File_Delete(cloud_type, file_name, backup_bucket=False):
         return None
 
 
-def MK_Common_Cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
+def common_cloud_file_list(cloud_type, file_path=None, backup_bucket=False):
     """
     List files in cloud
     """
@@ -109,7 +109,7 @@ def MK_Common_Cloud_File_List(cloud_type, file_path=None, backup_bucket=False):
     return []
 
 
-def MK_Common_Cloud_File_Retrieve(cloud_type, file_name, file_location):
+def common_cloud_file_retrieve(cloud_type, file_name, file_location):
     """
     Fetch file from cloud
     """
@@ -129,7 +129,7 @@ def MK_Common_Cloud_File_Retrieve(cloud_type, file_name, file_location):
         return None
 
 
-def MK_Common_Cloud_File_Rename(cloud_type, file_from, file_to):
+def common_cloud_file_rename(cloud_type, file_from, file_to):
     """
     Rename file on cloud
     """
@@ -149,7 +149,7 @@ def MK_Common_Cloud_File_Rename(cloud_type, file_from, file_to):
         return None
 
 
-def MK_Common_Cloud_Create_Folder(cloud_type, dir_name):
+def common_cloud_create_folder(cloud_type, dir_name):
     """
     Create directory in cloud
     """

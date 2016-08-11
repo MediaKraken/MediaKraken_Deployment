@@ -27,13 +27,15 @@ import sys
 from plyer import email
 import psutil
 import ipgetter
-sys.path.append("../MediaKraken_Common/lib")
-sys.path.append("../../MediaKraken_Common/lib")
+sys.path.append("../common/lib")
+sys.path.append("../../common/lib")
 import wol
 
 
-# download image file from specified url to save in specific directory
 def MK_Network_Fetch_From_URL(url, directory=None):
+    """
+    Download image file from specified url to save in specific directory
+    """
     try:
         imageFile = urllib2.urlopen(url)
         if directory is not None:
@@ -48,31 +50,41 @@ def MK_Network_Fetch_From_URL(url, directory=None):
         return imageFile.read()
 
 
-# send wake on lan even to mac address
 def MK_Network_WOL(mac_address):
+    """
+    Send wake on lan even to mac address
+    """
     wol.send_magic_packet(mac_address)
 
 
-# send email
 def MK_Network_Send_Email(email_receipient, email_subject, email_body):
+    """
+    Send email
+    """
     email.send(recipient=email_receipient, subject=email_subject, text=email_body, create_chooser=True)
 
 
-# get MAC address
 def MK_Network_Get_MAC():
+    """
+    Get MAC address
+    """
     from uuid import getnode
     return ':'.join(("%012X" % getnode())[i:i+2] for i in range(0, 12, 2))
 
 
-# get outside ip addy
 def MK_Network_Get_Outside_IP():
+    """
+    Get outside ip addy
+    """
     #whatismyip = 'http://checkip.dyndns.org/'
     #return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
     return ipgetter.myip()
 
 
-# get default ip address
 def MK_Network_Get_Default_IP():
+    """
+    Get default ip address
+    """
     oct_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     oct_socket.connect(('8.8.8.8', 80))
     return_data = (oct_socket.getsockname()[0])
@@ -103,8 +115,10 @@ class pingit(Thread):
                self.status = int(igot[0])
 
 
-# ping host list
 def MK_Network_Ping_List(host_list):
+    """
+    Ping host list
+    """
     pingit.lifeline = re.compile(r"(\d) received")
     report = ("No response", "Partial Response", "Alive")
     pinglist = []
@@ -117,21 +131,29 @@ def MK_Network_Ping_List(host_list):
        logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
 
 
-# get network io
 def MK_Network_IO_Counter(show_nic=False):
+    """
+    Get network io
+    """
     return psutil.net_io_counters(pernic=show_nic)
 
 
-# show network connections
 def MK_Network_Connections():
+    """
+    Show network connections
+    """
     return psutil.net_connections()
 
 
-# show ip addys
 def MK_Network_IP_Addr():
+    """
+    Show ip addys
+    """
     return psutil.net_if_addrs()
 
 
-# show netowrk stats
 def MK_Network_Stats():
+    """
+    Show netowrk stats
+    """
     return psutil.net_if_stats()

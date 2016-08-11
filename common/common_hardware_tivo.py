@@ -20,10 +20,13 @@ import logging
 import MK_Common_Network_Telnet
 
 
-class MK_Common_Tivo_API:
+class common_tivo_api:
     def __init__(self):
         pass
 
 
-    def MK_Common_Tivo_Connect(self, telnet_host, telnet_port=31339):
+    def common_tivo_connect(self, telnet_host, telnet_port=31339):
+        """
+        Connect to specified tivo
+        """
         self.tivo_device = MK_Telnet_Open_Device(telnet_host, telnet_port)

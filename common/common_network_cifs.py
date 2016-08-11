@@ -48,24 +48,30 @@ class MK_Common_CIFS_Share_API:
         pass
 
 
-    # connect
     def MK_Common_CIFS_Connect(self, ip_addr, user_name='guest', user_password=''):
+        """
+        Connect to share
+        """
         server_name = 'Server'
         client_name = 'My Computer'
         self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name, use_ntlm_v2 = True)
         self.smb_conn.connect(ip_addr, 139)
 
 
-    # list shares
     def MK_Common_CIFS_Share_List_By_Connection(self):
+        """
+        List shares
+        """
         share_names = []
         for row_data in self.smb_conn.listShares():
             share_names.append(row_data.name)
         return share_names
 
 
-    # list files in share
     def MK_Common_CIFS_Share_File_List_By_Share(self, share_name, path_text='/'):
+        """
+        List files in share
+        """
         file_names = []
         for row_data in self.smb_conn.listPath(share_name, path_text):
             logging.debug(row_data.filename)
@@ -73,8 +79,10 @@ class MK_Common_CIFS_Share_API:
         return file_names
 
 
-    # verify smb directory
     def MK_Common_CIFS_Share_Directory_Check(self, share_name, dir_path):
+        """
+        Verify smb directory
+        """
         # try due to fact invalid file/path freaks out the connection
         try:
             return self.smb_conn.getAttributes(share_name, dir_path).isDirectory
@@ -83,33 +91,45 @@ class MK_Common_CIFS_Share_API:
         return False
 
 
-    # get specific path/file info
     def MK_Common_CIFS_Share_File_Dir_Info(self, share_name, file_path):
+        """
+        Get specific path/file info
+        """
         return self.smb_conn.getAttributes(share_name, file_path)
 
 
-    # upload file to smb
     def MK_Common_CIFS_Share_File_Upload(self, file_path):
+        """
+        Upload file to smb
+        """
         self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path,'rb'))
 
 
-    # download from smb
     def MK_Common_CIFS_Share_File_Download(self, file_path):
+        """
+        Download from smb
+        """
         self.smb_conn.retrieveFile(self.sharename, open(file_path, 'wb'))
 
 
-    # delete from smb
     def MK_Common_CIFS_Share_File_Delete(self, share_name, file_path):
+        """
+        Delete from smb
+        """
         self.smb_conn.deleteFiles(share_name, '/' + file_path)
 
 
-    # close connection
     def MK_Common_CIFS_Close(self):
+        """
+        Close connection
+        """
         self.smb_conn.close()
 
 
-    # cifs directory walk
     def MK_Common_CIFS_Walk(self, share_name, file_path=u'/'):
+        """
+        cifs directory walk
+        """
         dirs , nondirs = [], []
         for name in self.smb_conn.listPath(share_name, file_path):
             if name.isDirectory:

@@ -21,7 +21,7 @@ import boto
 from boto.s3.key import Key
 
 
-class MK_Common_AWS_S3_API:
+class common_aws_s3_api:
     def __init__(self):
         import os
         # set active false so if following falls
@@ -46,8 +46,10 @@ class MK_Common_AWS_S3_API:
             self.active = True
 
 
-    # upload file to S3
-    def MK_Common_AWS_S3_Upload(self, source_path, destination_filename, backup_bucket = False):
+    def common_aws_s3_upload(self, source_path, destination_filename, backup_bucket = False):
+        """
+        Upload file to S3
+        """
         if not backup_bucket:
             k = Key(self.bucket)
         else:
@@ -56,8 +58,10 @@ class MK_Common_AWS_S3_API:
         k.set_contents_from_filename(source_path)
 
 
-    # download from s3
-    def MK_Common_AWS_S3_Download(self, source_key, destination_filename, backup_bucket = False):
+    def common_aws_s3_download(self, source_key, destination_filename, backup_bucket = False):
+        """
+        Download from s3
+        """
         if not backup_bucket:
             k = Key(self.bucket)
         else:
@@ -66,16 +70,20 @@ class MK_Common_AWS_S3_API:
         k.get_contents_to_filename(destination_filename)
 
 
-    # delete
-    def MK_Common_AWS_S3_Delete(self, key, backup_bucket = False):
+    def common_aws_s3_delete(self, key, backup_bucket = False):
+        """
+        Delete
+        """
         if not backup_bucket:
             self.bucket.delete_key(key)
         else:
             self.bucket_backup.delete_key(key)
 
 
-    # remove old database backups
-    def MK_Common_AWS_S3_Backup_Purge(self, days_to_keep):
+    def common_aws_s3_backup_purge(self, days_to_keep):
+        """
+        Remove old database backups
+        """
         # Delete files older than days to keep.
         for key in self.bucket_backup.list():
             timestamp = datetime.strptime(key.last_modified, '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -83,8 +91,10 @@ class MK_Common_AWS_S3_API:
                 self.bucket_backup.delete_key(key)
 
 
-    # bucket list (ha)
-    def MK_Common_AWS_S3_Bucket_List(self, backup_bucket = False):
+    def common_aws_s3_bucket_list(self, backup_bucket = False):
+        """
+        Bucket list (ha)
+        """
         if not backup_bucket:
             return self.bucket.list()
         else:

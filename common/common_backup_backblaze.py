@@ -21,19 +21,19 @@ import logging
 from backblazeb2 import BackBlazeB2
 
 
-class MK_Common_Backup_Backblaze_API:
+class common_backup_backblaze_api:
     def __init__(self, account_id, app_key):
         self.b2 = BackBlazeB2(account_id, app_key)
 
 
-    def MK_Common_Backup_Backblaze_Bucket_List(self):
+    def common_backup_backblaze_bucket_list(self):
         """
         Return list of buckets in Backblaze
         """
         return self.b2.list_buckets()
 
 
-    def MK_Common_Backup_Backblaze_Bucket_Create(self, bucket_name):
+    def common_backup_backblaze_bucket_create(self, bucket_name):
         """
         Create specified bucket name
         """
@@ -41,7 +41,7 @@ class MK_Common_Backup_Backblaze_API:
         logging.debug("b2 create: %s", response)
 
 
-    def MK_Common_Backup_Backblaze_Upload_File(self, file_name, bucket_name, file_password=None):
+    def common_backup_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
         """
         Upload file into specified bucket
         """
@@ -51,22 +51,24 @@ class MK_Common_Backup_Backblaze_API:
             self.b2.upload_file(file_name, bucket_name=bucket_name, password=file_password)
 
 
-    def MK_Common_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name, dir_password=None):
+    def common_backup_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
         """
         Upload entire directory into specified bucket
         """
         if dir_password is None:
             self.b2.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
         else:
-            self.b2.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True, password=dir_password)
+            self.b2.recursive_upload(dir_name, bucket_name=bucket_name,\
+                    multithread=True, password=dir_password)
 
 
-    def MK_Common_Backup_Backblaze_Download_File(self, file_name, local_file_name, file_password):
+    def common_backup_backblaze_download_File(self, file_name, local_file_name, file_password):
         """
         Download specified file
         """
         if file_password is None:
             response = self.b2.download_file_by_name(file_name, local_file_name)
         else:
-            response = self.b2.download_file_by_name(file_name, local_file_name, password=file_password)
+            response = self.b2.download_file_by_name(file_name, local_file_name,\
+                    password=file_password)
         logging.debug("b2 down: %s", response)

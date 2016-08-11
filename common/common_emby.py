@@ -25,8 +25,10 @@ import MK_Common_File
 import MK_Common_System
 
 
-# determine install directory
 def MK_Common_Emby_Installed_Directory(dir_name = None):
+    """
+    Determine install directory
+    """
     if dir_name is None:
         # windows
         if str.upper(sys.platform[0:3])=='WIN' \
@@ -54,8 +56,10 @@ def MK_Common_Emby_Installed_Directory(dir_name = None):
     return dir_name
 
 
-# fetch library list
 def MK_Common_Emby_Library_List(dir_name = None):
+    """
+    Fetch library list
+    """
     if dir_name is None:
         dir_name = os.path.join(MK_Common_Emby_Installed_Directory(), 'root', 'default')
     # grab dir and files
@@ -72,8 +76,10 @@ def MK_Common_Emby_Library_List(dir_name = None):
     return library_list
 
 
-# check for running instance
 def MK_Common_Emby_Check_Instance():
+    """
+    Check for running instance
+    """
     name_check = 'emby-server'
     if str.upper(sys.platform[0:3])=='WIN' \
     or str.upper(sys.platform[0:3])=='CYG':
@@ -83,11 +89,15 @@ def MK_Common_Emby_Check_Instance():
         sys.exit(-1)
 
 
-# C# guid to text
 def MK_Common_Emby_GUID_To_UUID(emby_guid):
+    """
+    C# guid to text
+    """
     return uuid.UUID(bytes=emby_guid)
 
 
-# text uuid to C# guid
 def MK_Common_Emby_UUID_to_GUID(emby_guid):
+    """
+    Text uuid to C# guid
+    """
     return emby_guid.bytes

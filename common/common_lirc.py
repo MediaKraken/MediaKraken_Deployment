@@ -26,13 +26,22 @@ sockid = None
 
 
 def MK_LIRC_Init(app_string="OctMote"):
+    """
+    Initialize LIRC
+    """
     sockid = lirc.init(app_string)
     return sockid
 
 
 def MK_LIRC_Load_Config(config_file):
+    """
+    Load config file for LIRC
+    """
     lirc.load_config_file(config_file)
 
 
 def MK_LIRC_Close():
+    """
+    Shutdown LIRC
+    """
     lirc.deinit()

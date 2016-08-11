@@ -21,7 +21,10 @@ import logging
 from PIL import Image
 
 
-def ResizeImageCalc(img_size, size):
+def common_resizeimagecalc(img_size, size):
+    """
+    Scale image keeping aspect ratio
+    """
     picWidth = img_size[0]
     picHeight = img_size[1]
     scaleWidth =  float(size[0] / picWidth)
@@ -35,7 +38,10 @@ def ResizeImageCalc(img_size, size):
     return (NewWidth, NewHeight)
 
 
-def ResizeImage(file_name, image_size):
+def common_resizeimage(file_name, image_size):
+    """
+    Resize and save image
+    """
     im = Image.open(file_name)
-    im.thumbnail(ResizeImageCalc(im.size, image_size), Image.BICUBIC)
+    im.thumbnail(common_resizeimagecalc(im.size, image_size), Image.BICUBIC)
     im.save(file_name + 'thumb', "PNG")

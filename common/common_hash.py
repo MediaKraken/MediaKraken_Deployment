@@ -33,6 +33,9 @@ if str.upper(sys.platform[0:3])=='WIN' or str.upper(sys.platform[0:3])=='CYG':
 
 
 def MK_Common_Hash_SHA1_By_Filename(file_name):
+    """
+    Generate sha1 has by filename
+    """
     if file_name.endswith('zip'):
         zip = zipfile.ZipFile(file_name,'r')  # issues if u do RB
         hash_dict = {}
@@ -44,7 +47,8 @@ def MK_Common_Hash_SHA1_By_Filename(file_name):
                 sha1_hash_data = SHA1.hexdigest()
                 hash_dict[zippedFile] = sha1_hash_data
             except:
-                Client_GlobalData.skipped_files.append(os.path.normpath(file_name) + "|Error on SHA1 of file")
+                Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
+                        + "|Error on SHA1 of file")
         zip.close()
         if len(hash_dict) > 0:
             if len(hash_dict) == 1:
@@ -70,7 +74,8 @@ def MK_Common_Hash_SHA1_By_Filename(file_name):
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict[filename] = sha1_hash_data
                 except:
-                    Client_GlobalData.skipped_files.append(os.path.normpath(file_name) + "|Error on SHA1 of file")
+                    Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
+                            + "|Error on SHA1 of file")
             fp.close()
             if len(hash_dict) > 0:
                 if len(hash_dict) == 1:
@@ -81,7 +86,8 @@ def MK_Common_Hash_SHA1_By_Filename(file_name):
                     fileHASHNameList.append(os.path.normpath(file_name))
                 return hash_dict
         except:
-            Client_GlobalData.skipped_files.append(os.path.normpath(file_name) + "|Error reading 7z")
+            Client_GlobalData.skipped_files.append(os.path.normpath(file_name)
+                    + "|Error reading 7z")
         return None
     else:
         sha1_hash_data = None
@@ -98,8 +104,10 @@ def MK_Common_Hash_SHA1_By_Filename(file_name):
         return sha1_hash_data
 
 
-# c call for sha1 hash
 def MK_Common_Hash_SHA1_C(file_name):
+    """
+    c call for sha1 hash generation by file name
+    """
     num = 0
     while 1:
         zip = zipfile.ZipFile(file_name,'r')  # issues if u do RB
@@ -114,8 +122,10 @@ def MK_Common_Hash_SHA1_C(file_name):
             break
 
 
-# caclucate crc32 for file
 def MK_Common_Hash_CRC32(file_name):
+    """
+    Caclucate crc32 for file
+    """
     file_pointer = open(file_name, 'rb')
     CRC = zlib.crc32(file_pointer.read(1024*1024))
     while True:
@@ -150,8 +160,10 @@ def MK_Common_Hash_ed2k(filePath):
         else: return md4_hash(reduce(lambda a,d: a + d, hashes, "")).hexdigest()
 
 
-# hash for thesubdb
 def MK_Common_Hash_TheSubDB(file_name):
+    """
+    Hash for thesubdb
+    """
     readsize = 64 * 1024
     with open(file_name, 'rb') as f:
         size = os.path.getsize(file_name)
@@ -161,9 +173,11 @@ def MK_Common_Hash_TheSubDB(file_name):
     return hashlib.md5(data).hexdigest()
 
 
-# hash for opensubtiles.org
-# folling routine is provided by opensubtitles.org website for api calls
 def MK_Common_Hash_OpenSubtitles(file_name):
+    """
+    hash for opensubtiles.org
+    folling routine is provided by opensubtitles.org website for api calls
+    """
     try:
         longlongformat = '<q'  # little-endian long long
         bytesize = struct.calcsize(longlongformat)
@@ -171,18 +185,18 @@ def MK_Common_Hash_OpenSubtitles(file_name):
         filesize = os.path.getsize(file_name)
         hash = filesize
         if filesize < 65536 * 2:
-               return "SizeError"
+            return "SizeError"
         for x in range(65536/bytesize):
-                buffer = f.read(bytesize)
-                (l_value,)= struct.unpack(longlongformat, buffer)
-                hash += l_value
-                hash = hash & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
+            buffer = f.read(bytesize)
+            (l_value,)= struct.unpack(longlongformat, buffer)
+            hash += l_value
+            hash = hash & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
         f.seek(max(0,filesize-65536),0)
         for x in range(65536/bytesize):
-                buffer = f.read(bytesize)
-                (l_value,)= struct.unpack(longlongformat, buffer)
-                hash += l_value
-                hash = hash & 0xFFFFFFFFFFFFFFFF
+            buffer = f.read(bytesize)
+            (l_value,)= struct.unpack(longlongformat, buffer)
+            hash += l_value
+            hash = hash & 0xFFFFFFFFFFFFFFFF
         f.close()
         returnedhash =  "%016x" % hash
         return returnedhash

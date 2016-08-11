@@ -26,10 +26,16 @@ import MK_Common_Network_SSDP
 
 
 def MK_Roku_Network_Discovery():
+    """
+    Discover Roku device(s)
+    """
     return MK_Common_Network_SSDP.discover("roku:ecp")
 
 
 def MK_Roku_Network_Command(roku_addr, roku_port, roku_command, roku_command_seconds):
+    """
+    Send comment to roku device
+    """
     #urllib2.post('http://' + self.roku_address + "/keypress/" + roku_command)
     if roku_command_seconds > 0:
         response = urllib2.urlopen(roku_addr + ':' + roku_port + '/keydown/' + roku_command)

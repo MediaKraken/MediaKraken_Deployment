@@ -20,12 +20,12 @@ import isoparser
 import logging
 
 
-class MK_Common_ISO_API:
+class common_iso_api:
     def __init__(self):
         pass
 
 
-    def MK_Common_ISO_Load(self, url_file):
+    def common_iso_load(self, url_file):
         """
         Open the iso file for parsing (url or file)
         """

@@ -27,13 +27,17 @@ def repl_func(m):
     return m.group(1) + m.group(2).upper()
 
 
-# def capitalize first letter of each word and handling quotes
 def MK_Common_String_Title(title_string):
+    """
+    capitalize first letter of each word and handling quotes
+    """
     return re.sub("(^|\s)(\S)", repl_func, title_string)
 
 
-# readable numbers for bytes to G, T, etc
 def bytes2human(n):
+    """
+    Readable numbers for bytes to G, T, etc
+    """
     # http://code.activestate.com/recipes/578019
     if n == 0 or type(n) == str:
         return '0B'
@@ -48,8 +52,10 @@ def bytes2human(n):
     return "%sB" % n
 
 
-# test password
 def MK_Common_String_Password_Test(password_text):
+    """
+    Test password strength
+    """
     ratings = (
       'Infinitely weak',
       'Extremely weak',
@@ -76,6 +82,8 @@ def ip_int_to_ascii(ip_int):
     return inet_ntoa(hex(ip_int)[2:-1].zfill(8).decode('hex'))
 
 
-# break up unc to parts
 def UNC_To_Addr_Share_Path(unc_path):
+    """
+    Break up unc to parts
+    """
     return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3], '\\'.join(unc_path.split('\\', 5)[4:]))

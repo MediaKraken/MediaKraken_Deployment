@@ -20,8 +20,9 @@ import requests
 import logging
 
 
-class MK_Common_Backup_Crashplan_API:
+class common_backup_crashplan_api:
     def __init__(self, user_name, user_password):
-        crash_resp = requests.get('https://master-server.example.com:4285/api/Computer', auth=(user_name, user_password))
+        crash_resp = requests.get('https://master-server.example.com:4285/api/Computer',\
+                auth=(user_name, user_password))
         logging.debug("resp: %s", crash_resp.status_code)
         logging.debug("text: %s", crash_resp.text)

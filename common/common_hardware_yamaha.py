@@ -20,7 +20,10 @@ import logging
 import rxv
 
 
-def MK_Common_Hardware_Yamaha_Find():
+def common_hardware_yamaha_find():
+    """
+    Discover Yamaha receivers
+    """
     receivers = rxv.find()
     print receivers
     return receivers

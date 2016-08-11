@@ -23,8 +23,10 @@ from kivy import platform
 import MK_Common_Database_Octmote
 
 
-# check for new json files for device/layout/etc
 def MK_Json_Find():
+    """
+    Check for new json files for device/layout/etc
+    """
     if platform == 'android':
         file_path = '/mnt/extsd/OctMote_Json/'
     else:
@@ -34,8 +36,10 @@ def MK_Json_Find():
         MK_Json_Import(file_name)
 
 
-# import new jsons into database or update them if found
 def MK_Json_Import(file_name):
+    """
+    Import new jsons into database or update them if found
+    """
     logging.debug("json import: %s", file_name)
     file_handle = open(file_name, 'r')
     json_data = file_handle.read()

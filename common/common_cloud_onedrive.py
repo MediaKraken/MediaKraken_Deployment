@@ -32,7 +32,7 @@ from onedrivesdk.model.item_reference import ItemReference
 #        print(drive.id)
 
 
-class MK_Common_OneDrive_API(object):
+class common_cloud_onedrive_api(object):
     def __init__(self):
         # set active false so if following falls
         self.active = False
@@ -57,18 +57,26 @@ class MK_Common_OneDrive_API(object):
         #self.active = True
 
 
-    def MK_OneDrive_Update(self, file_name, file_path):
-        # upload
+    def common_cloud_onedrive_update(self, file_name, file_path):
+        """
+        upload
+        """
         returned_item = client.item(drive="me", id="root").children["newfile.txt"].upload("./path_to_file.txt")
 
 
-    def MK_OneDrive_Download(self, file_name, file_path):
+    def common_cloud_onedrive_download(self, file_name, file_path):
+        """
+        Download
+        """
         root_folder = client.item(drive="me", id="root").children.get()
         id_of_file = root_folder[0].id
         client.item(drive="me", id=id_of_file).download("./path_to_download_to.txt")
 
 
-    def MK_OneDrive_Add_Folder(self, folder_name):
+    def common_cloud_onedrive_add_folder(self, folder_name):
+        """
+        Add folder
+        """
         f = onedrivesdk.Folder()
         i = onedrivesdk.Item()
         i.name = folder_name
@@ -76,7 +84,7 @@ class MK_Common_OneDrive_API(object):
         returned_item = client.item(drive="me", id="root").children.add(i)
 
 
-    def MK_OneDrive_Copy(self, file_from, file_to):
+    def common_cloud_onedrive_copy(self, file_from, file_to):
         ref = ItemReference()
         ref.id = "yourparent!id" #path also supported
         copy_operation = client.item(drive="me", id="youritemtocopy!id").copy(name="new copied name", parent_reference=ref).post()
@@ -86,14 +94,14 @@ class MK_Common_OneDrive_API(object):
         copy_operation.poll_until_complete()
 
 
-    def MK_OneDrive_Name(self, file_from, file_to):
+    def common_cloud_onedrive_name(self, file_from, file_to):
         renamed_item = onedrivesdk.Item()
         renamed_item.name = "NewItemName"
         renamed_item.id = "youritemtorename!id"
         new_item = client.item(drive="me", id=renamed_item.id).update(renamed_item)
 
 
-    def MK_OneDrive_Page(self):
+    def common_cloud_onedrive_page(self):
         """
         page through collection
         """

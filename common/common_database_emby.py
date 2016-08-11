@@ -28,8 +28,10 @@ class MK_Common_Database_Emby:
     def __init__(self):
         pass
 
-    # attach rest of databases so I can query them
     def MK_Database_Sqlite3_Attach_Emby(self, dir_path):
+        """
+        Attach rest of databases so I can query them
+        """
         # user activity - start/stop, errors and info
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/activitylog.db' as 'activitylog'")
         # access tokens for devices
@@ -64,8 +66,10 @@ class MK_Common_Database_Emby:
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/users.db' as 'users'")
 
 
-    # open database and pull in config from sqlite and create db if not exist
     def MK_Database_Sqlite3_Open_Emby(self, db_file_name = None, db_username_dir = os.environ.get("USERNAME"), attach_other_db = False):
+        """
+        Open database and pull in config from sqlite and create db if not exist
+        """
         # if not specified....then try to find the default
         if db_file_name is None:
             # windows
@@ -86,11 +90,16 @@ class MK_Common_Database_Emby:
 
 
     def MK_Database_Sqlite3_Close_Emby(self):
+        """
+        Close connection to emby database
+        """
         self.sql3_emby_conn.close()
 
 
-    # grab all movies in emby database
     def MK_Database_Sqlite3_Movie_List_Emby(self, offset = None, records = None):
+        """
+        Grab all movies in emby database
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from TypedBaseItems where type = "MediaBrowser.Controller.Entities.Movies.Movie"')
         else:
@@ -98,14 +107,18 @@ class MK_Common_Database_Emby:
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab all movies in emby database count
     def MK_Database_Sqlite3_Movie_List_Emby_Count(self):
+        """
+        Grab all movies in emby database count
+        """
         self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type = "MediaBrowser.Controller.Entities.Movies.Movie"')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab all the tv episodes in the emby database
     def MK_Database_Sqlite3_TV_List_Emby(self, offset = None, records = None):
+        """
+        Grab all the tv episodes in the emby database
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from TypedBaseItems where type = "MediaBrowser.Controller.Entities.TV.Episode"')
         else:
@@ -113,14 +126,18 @@ class MK_Common_Database_Emby:
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab all the tv episodes in the emby database count
     def MK_Database_Sqlite3_TV_List_Emby_Count(self):
+        """
+        Grab all the tv episodes in the emby database count
+        """
         self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type = "MediaBrowser.Controller.Entities.TV.Episode"')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab all the tv episodes and movies in the emby database
     def MK_Database_Sqlite3_TV_Movie_List_Emby(self, offset = None, records = None):
+        """
+        Grab all the tv episodes and movies in the emby database
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from TypedBaseItems where type IN ("MediaBrowser.Controller.Entities.TV.Episode" "MediaBrowser.Controller.Entities.Movies.Movie")')
         else:
@@ -128,14 +145,18 @@ class MK_Common_Database_Emby:
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab all the tv episodes and movies in the emby database count
     def MK_Database_Sqlite3_TV_Movie_List_Emby_Count(self):
+        """
+        Grab all the tv episodes and movies in the emby database count
+        """
         self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type IN ("MediaBrowser.Controller.Entities.TV.Episode" "MediaBrowser.Controller.Entities.Movies.Movie")')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab all users from database
     def MK_Database_Sqlite3_Users_List(self, offset = None, records = None, play_stats = None):
+        """
+        Grab all users from database
+        """
         if play_stats is None:
             if offset is None:
                 self.sql3_emby_cursor.execute('select users.users.guid, users.users.data from users.users')
@@ -149,14 +170,18 @@ class MK_Common_Database_Emby:
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab count of all users
     def MK_Database_Sqlite3_Users_List_Count(self):
+        """
+        Grab count of all users
+        """
         self.sql3_emby_cursor.execute('select count(*) from users.users')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab last IP
     def MK_Database_Sqlite3_User_Last_IP(self, user_id):
+        """
+        Grab last IP
+        """
         self.sql3_emby_cursor.execute('select ShortOverview from ActivityLogEntries where UserId = ? and ShortOverview LIKE \'Ip address%\' order by DateCreated desc limit 1', (user_id,))
         row_data = self.sql3_emby_cursor.fetchone() # don't auto [0] since could be None
         if row_data is None:
@@ -165,8 +190,10 @@ class MK_Common_Database_Emby:
             return row_data[0].split(':')[1].strip()
 
 
-    # get all the media files that match directory
     def MK_Database_Sqlite3_Media_In_Dir(self, dir_name):
+        """
+        Get all the media files that match directory
+        """
         # query by video will grab "home videos" type
         self.sql3_emby_cursor.execute('select * from TypedBaseItems where type = "MediaBrowser.Controller.Entities.Video"')
         file_in_path = []
@@ -181,53 +208,70 @@ class MK_Common_Database_Emby:
         return file_in_path
 
 
-    # grab all activity data
     def MK_Database_Sqlite3_Emby_Activity_List(self, offset = None, records = None):
+        """
+        Grab all activity data
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from ActivityLogEntries')
         else:
-            self.sql3_emby_cursor.execute('select * from ActivityLogEntries limit ? offset ?', (records, offset))
+            self.sql3_emby_cursor.execute('select * from ActivityLogEntries limit ? offset ?',\
+                    (records, offset))
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab all activity data count
     def MK_Database_Sqlite3_Emby_Activity_List_Count(self):
+        """
+        Grab all activity data count
+        """
         self.sql3_emby_cursor.execute('select count(*) from ActivityLogEntries')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab all notifications
     def MK_Databas_Sqlite3_Emby_Notification_List(self, offset = None, records = None):
+        """
+        Grab all notifications
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from Notifications')
         else:
-            self.sql3_emby_cursor.execute('select * from Notifications limit ? offset ?', (records, offset))
+            self.sql3_emby_cursor.execute('select * from Notifications limit ? offset ?',\
+                    (records, offset))
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab notification  data count
     def MK_Database_Sqlite3_Emby_Notification_List_Count(self):
+        """
+        Grab notification  data count
+        """
         self.sql3_emby_cursor.execute('select count(*) from Notifications')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # grab all notifications
     def MK_Database_Sqlite3_Emby_Sync_List(self, offset = None, records = None):
+        """
+        Grab all notifications
+        """
         if offset is None:
             self.sql3_emby_cursor.execute('select * from SyncJobs')
         else:
-            self.sql3_emby_cursor.execute('select * from SyncJobs limit ? offset ?', (records, offset))
+            self.sql3_emby_cursor.execute('select * from SyncJobs limit ? offset ?',\
+                    (records, offset))
         return self.sql3_emby_cursor.fetchall()
 
 
-    # grab notification  data count
     def MK_Database_Sqlite3_Emby_Sync_List_Count(self):
+        """
+        Grab notification  data count
+        """
         self.sql3_emby_cursor.execute('select count(*) from SyncJobs')
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    # get id to lookup from metadata
     def MK_Database_Sqlite3_Media_By_Guid(self, guid):
+        """
+        Get id to lookup from metadata
+        """
         self.sql3_emby_cursor.execute('select * from TypedBaseItems where guid = ?', (guid,))
         try:
             return self.sql3_cursor.fetchone()[0]
@@ -235,7 +279,9 @@ class MK_Common_Database_Emby:
             return None
 
 
-    # all data from users for playback
     def MK_Database_Sqlite3_User_Play_Data(self):
+        """
+        All data from users for playback
+        """
         self.sql3_emby_cursor.execute('select * from userdata')
         return self.sql3_emby_cursor.fetchall()

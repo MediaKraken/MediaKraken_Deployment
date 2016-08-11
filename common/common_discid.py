@@ -21,10 +21,10 @@ import discid
 
 # uh, what about the python-cddb stuff I have
 
-# grab discid from default device
-def MK_Common_DiscID_Default_Device():
+
+def common_discid_default_device():
     """
-    Determine default rom drive to use
+    Determine default rom drive to use and grab the discid from inserted disc
     """
     discid.get_default_device()
     disc = discid.read()
@@ -33,8 +33,7 @@ def MK_Common_DiscID_Default_Device():
     return discid
 
 
-# calculate discid from directory
-def MK_Common_DiskID_Caclulate_Dir(dir_to_calculate):
+def common_diskid_caclulate_dir(dir_to_calculate):
     """
     Calculate the discid from specified directory
     """

@@ -29,8 +29,10 @@ class MK_Common_Database_Octmote:
         pass
 
 
-    # open database and pull in config from sqlite and create db if not exist
     def MK_Database_Sqlite3_Open(self, db_file = None):
+        """
+        Open database and pull in config from sqlite and create db if not exist
+        """
         create_db = False
         if db_file is None:
             if not os.path.isfile("OctMote.db"):
@@ -95,11 +97,16 @@ class MK_Common_Database_Octmote:
 
 
     def MK_Database_Sqlite3_Close():
+        """
+        Close sqlite3 database
+        """
         self.sql3_conn.close()
 
 
-    # insert new layout config into database
     def MK_Database_Sqlite3_Layout_Config_Insert(self, layout_record_name, layout_record_json):
+        """
+        Insert new layout config into database
+        """
         self.sql3_cursor.execute("insert into octmote_layout (layout_guid, layout_name, layout_json) values (?,?,?)", (uuid.uuid4(), layout_record_name, layout_record_json))
         self.sql3_conn.commit()
 
@@ -114,8 +121,10 @@ class MK_Common_Database_Octmote:
         return self.sql3_cursor
 
 
-    # insert new device type into database
     def MK_Database_Sqlite3_Device_Insert(self, device_record_name, device_record_description):
+        """
+        Insert new device type into database
+        """
         self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name, device_record_description))
         self.sql3_conn.commit()
         self.sql3_cursor.execute("select device_guid from octmote_device where rowid = ?", (self.sql3_cursor.lastrowid,))
@@ -132,8 +141,10 @@ class MK_Common_Database_Octmote:
         return self.sql3_cursor
 
 
-    # insert new item into database
     def MK_Database_Sqlite3_Item_Insert(self, item_record_json):
+        """
+        Insert new item into database
+        """
         json_data = json.loads(item_record_json)
         # find all the models and store a record for each
         for model_number in json_data["Model Support"]:
@@ -153,20 +164,26 @@ class MK_Common_Database_Octmote:
         return self.sql3_cursor
 
 
-    # do general query
     def MK_Database_Sqlite3_General_Query(self, sql_command):
+        """
+        Do general query
+        """
         self.sql3_cursor.execute(sql_command)
         return self.sql3_cursor.fetchall()
 
 
-    # do general insert
     def MK_Database_Sqlite3_General_Insert(self, sql_command):
+        """
+        Do general insert
+        """
         self.sql3_cursor.execute(sql_command)
         self.sql3_conn.commit()
 
 
-    # insert new anidb entries into database
     def MK_Database_Sqlite3_AniDB_Title_Insert(self, sql_params_list):
+        """
+        Insert new anidb entries into database
+        """
         self.sql3_cursor.execute("delete from octmote_anidb")
         for sql_params in sql_params_list:
             self.sql3_cursor.execute("insert into octmote_anidb (anidb_aid, anidb_type, anidb_language, anidb_title) values (?,?,?,?)", sql_params)

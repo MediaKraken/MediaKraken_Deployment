@@ -31,7 +31,7 @@ except ImportError:
     flags = None
 
 
-class MK_Common_Google_Drive_API:
+class common_cloud_google_drive_api:
     def __init__(self):
         # set active false so if following falls
         self.active = False
@@ -50,14 +50,14 @@ class MK_Common_Google_Drive_API:
     SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'
     CLIENT_SECRET_FILE = 'client_secret.json'
     APPLICATION_NAME = 'Drive API Python Quickstart'
-    
-    
+
+
     def get_credentials():
         """Gets valid user credentials from storage.
-    
+
         If nothing has been stored, or if the stored credentials are invalid,
         the OAuth2 flow is completed to obtain the new credentials.
-    
+
         Returns:
             Credentials, the obtained credential.
         """
@@ -77,11 +77,11 @@ class MK_Common_Google_Drive_API:
                 credentials = tools.run(flow, store)
             print('Storing credentials to ' + credential_path)
         return credentials
-    
-    
+
+
     def main():
         """Shows basic usage of the Google Drive API.
-    
+
         Creates a Google Drive API service object and outputs the names and IDs
         for up to 10 files.
         """
@@ -96,6 +96,6 @@ class MK_Common_Google_Drive_API:
             for item in items:
                 print('{0} ({1})'.format(item['title'], item['id']))
 
-    
+
     if __name__ == '__main__':
         main()

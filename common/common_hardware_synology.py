@@ -20,21 +20,27 @@ from synolopy import NasApi
 import logging
 
 
-class MK_Common_Synology_API():
+class common_synology_api():
     def __init__(self):
         pass
 
 
-    # connect to synology    
-    def MK_Common_Synology_Connect(self, addr, user_name, user_password):
+    def common_synology_connect(self, addr, user_name, user_password):
+        """
+        Connect to synology
+        """
         self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
 
 
-    # get nas info
-    def MK_Common_Synology_Info(self):
+    def common_synology_info(self):
+        """
+        Get nas info
+        """
         return self.synology_nas.downloadstation.info.request('getinfo')
 
 
-    # get share list
-    def MK_Common_Synology_Shares_List(self):
+    def common_synology_shares_list(self):
+        """
+        Get share list
+        """
         return self.synology_nas.filestation.file_share.request('list_share', additional='real_path')

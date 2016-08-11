@@ -21,7 +21,7 @@ import dropbox
 import logging
 
 
-class MK_Common_DropBox_API:
+class common_cloud_dropbox_api:
     def __init__(self):
         # set active false so if following falls
         self.active = False
@@ -37,8 +37,10 @@ class MK_Common_DropBox_API:
             self.active = True
 
 
-    def dropbox_user_auth(self):
-        # Have the user sign in and authorize this token
+    def common_cloud_dropbox_user_auth(self):
+        """
+        Have the user sign in and authorize this token
+        """
         authorize_url = flow.start()
         print '1. Go to: ' + authorize_url
         print '2. Click "Allow" (you might have to log in first)'
@@ -50,18 +52,27 @@ class MK_Common_DropBox_API:
         print 'linked account: ', client.account_info()
 
 
-    def dropbox_upload(self, file_name, file_save_name):
+    def common_cloud_dropbox_upload(self, file_name, file_save_name):
+        """
+        Upload
+        """
         f = open(file_name, 'rb')
         response = client.put_file(file_save_name, f)
         print 'uploaded: ', response
 
 
-    def dropbox_list(self, dir_name = '/'):
+    def common_cloud_dropbox_list(self, dir_name = '/'):
+        """
+        List files in folder
+        """
         folder_metadata = client.metadata(dir_name)
         print 'metadata: ', folder_metadata
 
 
-    def dropbox_download(self, file_name, file_save_name ):
+    def common_cloud_dropbox_download(self, file_name, file_save_name ):
+        """
+        Download file from dropbox
+        """
         f, metadata = client.get_file_and_metadata(file_name)
         out = open(file_save_name, 'wb')
         out.write(f.read())

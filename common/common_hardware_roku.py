@@ -74,7 +74,6 @@ def extractImages(videoFile, directory, interval, mode=0, offset=0):
 def makeBIF(filename, directory, interval):
     """
     Build a .bif file for the Roku Player Tricks Mode
-
     @param filename name of .bif file to create
     @param directory Directory of image files 00000001.jpg
     @param interval Time, in seconds, between the images
@@ -122,6 +121,9 @@ def makeBIF(filename, directory, interval):
 
 
 def MK_Common_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+    """
+    Create BIF
+    """
     # help="(0=SD) 4:3 1=HD 4:3 2=SD 16:9 3=HD 16:9") - option_mode
     # Get info about the video file
     videoInfo = getMP4Info(videoFile)
