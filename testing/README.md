@@ -7,7 +7,7 @@ from main dir......to grab all the source code
 py.test --cov=. testing/test_database/
 coverage report
 
-
+pip pylint
 
 sudo pip install -r req.txt
 
