@@ -49,17 +49,11 @@ def MK_Common_ZFS_Zpool_Status(zpool=None):
 
 
 # list snapshot
-def MK_Common_ZFS_Snapshot_List():
-    proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot'], stdout=subprocess.PIPE)
-    return proc.stdout.read()
-
-
-# list snapshot
 def MK_Common_ZFS_Snapshot_List(zpool=None):
     if zpool is not None:
-        proc = subprocess.Popen(['zfs', 'list', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot', zpool], stdout=subprocess.PIPE)
     else:
-        proc = subprocess.Popen(['zfs', 'list'], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
