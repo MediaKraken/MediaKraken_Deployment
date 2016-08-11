@@ -29,6 +29,9 @@ A recording is an entity in MusicBrainz which can be linked to tracks on release
 
 
 class MK_Common_Musicbrainz_API:
+    """
+    Class for interfacing with musicbrainz
+    """
     def __init__(self):
         global musicbrainzngs
         # pull in the ini file config

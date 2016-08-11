@@ -26,6 +26,9 @@ if platform != 'android':
 
 
 class common_serial_api:
+    """
+    Class for interfacing via serial devices
+    """
     def __init__(self):
         pass
 

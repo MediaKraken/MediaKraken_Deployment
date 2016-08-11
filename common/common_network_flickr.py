@@ -22,6 +22,9 @@ import flickrapi
 
 
 class MK_Common_Flickr_API:
+    """
+    Class for interfacing with Flickr
+    """
     def __init__(self, api_key, api_secret):
         self.flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
 

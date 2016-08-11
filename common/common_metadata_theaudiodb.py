@@ -21,6 +21,9 @@ import logging
 
 
 class MK_Common_TheAudioDB_API:
+    """
+    Class for interfacing with TheAudioDB
+    """
     def __init__(self):
         pass
 

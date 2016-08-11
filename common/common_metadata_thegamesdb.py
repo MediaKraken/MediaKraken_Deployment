@@ -58,6 +58,9 @@ Platform
 
 # setup class so I don't define the api resource unless I'm doing a lookup
 class MK_Common_Metadata_GamesDB_API:
+    """
+    Class for interfacing with GamesDB
+    """
     def __init__(self):
         self.gamesdb_api = API()
 

@@ -22,6 +22,9 @@ import pitchfork
 
 
 class MK_Common_Pitchfork_API:
+    """
+    Class for interfacing with pitchfork
+    """
     def __init__(self):
         pass
 

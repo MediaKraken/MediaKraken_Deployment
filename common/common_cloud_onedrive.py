@@ -34,6 +34,9 @@ from onedrivesdk.model.item_reference import ItemReference
 
 
 class common_cloud_onedrive_api(object):
+    """
+    Class for interfacing with onedrive
+    """
     def __init__(self):
         # set active false so if following falls
         self.active = False

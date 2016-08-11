@@ -22,6 +22,9 @@ import isoparser
 
 
 class common_iso_api:
+    """
+    Class for interfacing with iso images
+    """
     def __init__(self):
         self.iso = None
 

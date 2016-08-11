@@ -26,6 +26,9 @@ import MK_Common_Network
 
 
 class MK_Common_Metadata_TVMaze_API:
+    """
+    Class for interfacing with TVMaze
+    """
     def __init__(self):
         pass
 

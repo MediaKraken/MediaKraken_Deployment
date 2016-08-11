@@ -24,6 +24,9 @@ from twitch.exceptions import ResourceUnavailableException
 
 
 class MK_Common_Twitch_API:
+    """
+    Class for interfacing with TwitchTV
+    """
     def __init__(self):
         pass
 

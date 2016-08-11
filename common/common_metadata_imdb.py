@@ -26,6 +26,9 @@ from imdbpie import Imdb
 
 
 class MK_Common_IMDB_API:
+    """
+    Class for interfacing with imdb
+    """
     def __init__(self, cache, cache_location):
         # open connection to IMDB
         if cache is not None:

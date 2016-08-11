@@ -39,6 +39,9 @@ from googleapiclient.discovery import build
 
 
 class MK_Common_Google_API:
+    """
+    Class for interfacing with google api
+    """
     def __init__(self):
         self.DEVELOPER_KEY = Config.get('API', 'Google').strip()
         self.YOUTUBE_API_SERVICE_NAME = "youtube"

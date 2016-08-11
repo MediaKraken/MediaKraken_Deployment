@@ -34,6 +34,9 @@ http://www.thetvdb.com/wiki/index.php/Programmers_API
 
 
 class MK_Common_Metadata_TheTVDB_API:
+    """
+    Class for interfacing with TheTVDB
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

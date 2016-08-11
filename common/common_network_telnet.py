@@ -24,6 +24,9 @@ newline = "\n"
 
 
 class MK_Common_Telnet_API:
+    """
+    Class for interfacing with telnet protocol
+    """
     def __init__(self):
         pass
 

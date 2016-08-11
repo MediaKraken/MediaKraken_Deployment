@@ -23,6 +23,9 @@ from pyhdhomerun.constants import MAP_US_BCAST
 
 
 class MK_Common_Hardware_HDHomeRun_API_Py:
+    """
+    Class for interfacing with hdhomerun
+    """
     def __init__(self):
         pass
 

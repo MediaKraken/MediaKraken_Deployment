@@ -22,6 +22,9 @@ import MK_Common_Network_Telnet
 
 
 class common_tivo_api:
+    """
+    Class for interfacing with tivo device
+    """
     def __init__(self):
         pass
 

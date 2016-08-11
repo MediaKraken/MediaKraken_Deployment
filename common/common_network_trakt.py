@@ -33,6 +33,9 @@ from trakt.users import User
 
 
 class MK_Common_Trakt_API:
+    """
+    Class for interfacing with Trakt
+    """
     def __init__(self, response):
         # setup login/user info
         trakt.configuration.defaults.client(

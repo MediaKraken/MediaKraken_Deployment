@@ -24,6 +24,9 @@ from jnius import autoclass
 
 
 class MK_Android_Hardware_Instance:
+    """
+    Class for interfacing with android hardware
+    """
     def __init__(self):
         # get hardware instance of device
         self.Android_Hardware = autoclass('org.renpy.android.Hardware')

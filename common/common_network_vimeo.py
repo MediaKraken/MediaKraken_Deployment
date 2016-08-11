@@ -22,6 +22,9 @@ import vimeo
 
 
 class MK_Common_Vimeo_API:
+    """
+    Class for interfacing with Vimeo
+    """
     def __init__(self):
         import os
         import ConfigParser

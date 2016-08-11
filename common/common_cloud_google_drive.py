@@ -32,6 +32,9 @@ except ImportError:
 
 
 class common_cloud_google_drive_api:
+    """
+    Class for interfacing with google drive
+    """
     def __init__(self):
         # set active false so if following falls
         self.active = False

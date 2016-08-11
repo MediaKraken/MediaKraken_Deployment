@@ -28,6 +28,9 @@ from StringIO import StringIO
 
 
 class MK_Common_Schedules_Direct_API:
+    """
+    Class for interfacing with Schedules Direct
+    """
     def __init__(self):
         self.headers = {'User-Agent': 'MediaKraken_0.1.6',
                         'Accept-Encoding': 'gzip, deflate'}

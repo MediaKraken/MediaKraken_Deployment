@@ -23,6 +23,9 @@ import dropbox
 
 
 class common_cloud_dropbox_api:
+    """
+    Class for interfacing with dropbox
+    """
     def __init__(self):
         # set active false so if following falls
         self.active = False

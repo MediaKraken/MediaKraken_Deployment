@@ -24,6 +24,9 @@ import MK_Common_Network
 
 # http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
 class MK_Common_Metadata_TheSportsDB_API:
+    """
+    Class for interfacing with TheSportsDB
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

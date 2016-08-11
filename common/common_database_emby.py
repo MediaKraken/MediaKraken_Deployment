@@ -26,6 +26,9 @@ import MK_Common_Emby
 
 
 class MK_Common_Database_Emby:
+    """
+    Class for interfacing with emby server database
+    """
     def __init__(self):
         pass
 

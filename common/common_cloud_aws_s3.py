@@ -23,6 +23,9 @@ from boto.s3.key import Key
 
 
 class common_aws_s3_api:
+    """
+    Class for interfacing with aws s3
+    """
     def __init__(self):
         import os
         # set active false so if following falls

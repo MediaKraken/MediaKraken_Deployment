@@ -23,6 +23,9 @@ from hdhomerun import Device, DeviceError
 
 
 class MK_Common_Hardware_HDHomeRun_API:
+    """
+    Class for interfacing with hdhomerun
+    """
     def __init__(self):
         pass
 

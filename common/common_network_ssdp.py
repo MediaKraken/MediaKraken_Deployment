@@ -20,6 +20,9 @@ import StringIO
 
 
 class SSDPResponse(object):
+    """
+    Class for interfacing via SSDP
+    """
     class _FakeSocket(StringIO.StringIO):
         def makefile(self, *args, **kw):
             return self

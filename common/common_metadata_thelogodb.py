@@ -25,6 +25,9 @@ import MK_Common_Network
 
 
 class MK_Common_TheLogoDB_API:
+    """
+    Class for interfacing with TheLogoDB
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

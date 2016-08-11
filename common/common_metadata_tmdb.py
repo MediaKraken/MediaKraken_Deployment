@@ -27,6 +27,9 @@ import tmdbsimple as tmdb
 
 
 class MK_Common_Metadata_TMDB_API:
+    """
+    Class for interfacing with TMDB
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

@@ -24,6 +24,9 @@ from watchdog.events import FileSystemEventHandler
 
 
 class MK_Watchdog_Handler(FileSystemEventHandler):
+    """
+    Class for handling watchdog events
+    """
     def on_modified(self, event):
         logging.info("Modifed: %s", event.src_path)
 
@@ -49,6 +52,9 @@ class MK_Watchdog_Handler(FileSystemEventHandler):
 
 # define watchdog class
 class MK_Common_Watchdog_API:
+    """
+    Class for starting up watchdog
+    """
     def MK_Common_Watchdog_Start(self, paths_to_watch):
         """
         Start watchdog on specified list of paths(s)

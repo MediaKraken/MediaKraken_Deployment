@@ -26,6 +26,9 @@ import MK_Common_Network_IRDB
 
 
 class MK_Common_Database_Octmote:
+    """
+    Class for interfacing with database of Octmote
+    """
     def __init__(self):
         pass
 

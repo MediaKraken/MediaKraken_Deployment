@@ -23,6 +23,9 @@ import requests
 
 
 class MK_Common_IMVDb_API:
+    """
+    Class for interfacing with imvdb
+    """
     def __init__(self, imvdb_api_key):
         self.headers = {'User-Agent': 'MediaKraken_0.1.1',
                         'IMVDB-APP-KEY': imvdb_api_key,

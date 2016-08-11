@@ -22,6 +22,9 @@ import MK_Common_Network
 
 
 class MK_Common_ISBNdb_API:
+    """
+    Class for interfacing with isbndb
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

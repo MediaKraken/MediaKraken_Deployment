@@ -24,6 +24,9 @@ import omdb
 
 
 class MK_Common_OMDb_API:
+    """
+    Class for interfacing with OMDb
+    """
     def __init__(self):
         pass
 

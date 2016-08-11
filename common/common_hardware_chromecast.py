@@ -27,6 +27,9 @@ from pychromecast.controllers import BaseController
 
 
 class MK_Common_Hardware_Chromecast_API:
+    """
+    Class for interfacing with chromecast
+    """
     def __init__(self):
         pass
 

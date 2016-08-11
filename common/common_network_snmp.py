@@ -22,6 +22,9 @@ from easysnmp import Session
 
 
 class MK_Common_SNMP:
+    """
+    Class for interfacing via SNMP
+    """
     def __init__(self):
         # Create an SNMP session to be used for all our requests
         self.session = Session(hostname='localhost', community='public', version=2)

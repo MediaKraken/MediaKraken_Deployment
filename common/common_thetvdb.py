@@ -27,6 +27,9 @@ from pytvdbapi import api
 
 
 class MK_Common_TheTVDB_API:
+    """
+    Class for interfacing with theTVDB
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

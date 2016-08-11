@@ -24,6 +24,9 @@ from nest import utils as nest_utils
 
 # connect to NEST device
 def MK_NEST_Device_Connect(user_name, password):
+    """
+    Connect to NEST
+    """
     nest_device = nest.Nest(user_name, password)
     return nest_device
 
@@ -39,10 +42,15 @@ def MK_NEST_Device_Structures(nest_device):
             logging.info('Temp: %0.1f' % device.temperature)
 
 
-# temp conversion
 def MK_NEST_C_to_F(temp_data):
+    """
+    C to F temp conversion
+    """
     return nest_utils.c_to_f(temp_data)
 
 
 def MK_NEST_F_to_C(temp_data):
+    """
+    F to C temp conversion
+    """
     return nest_utils.f_to_c(temp_data)

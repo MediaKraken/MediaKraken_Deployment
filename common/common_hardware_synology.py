@@ -22,6 +22,9 @@ from synolopy import NasApi
 
 
 class common_synology_api():
+    """
+    Class for interfacing with synology nas
+    """
     def __init__(self):
         pass
 

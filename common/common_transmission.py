@@ -24,6 +24,9 @@ import transmissionrpc
 
 # transmission class
 class MK_Common_Transmission_API:
+    """
+    Class for interfacing with transmission bitorrent server
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

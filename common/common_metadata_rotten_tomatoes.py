@@ -25,6 +25,9 @@ import rtsimple as rt
 
 
 class MK_Common_Metadata_Rotten_Tomatoes_API:
+    """
+    Class for interfacing with rotten tomatoes
+    """
     def __init__(self):
         # pull in the ini file config
         import ConfigParser

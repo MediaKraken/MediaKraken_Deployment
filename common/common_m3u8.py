@@ -31,8 +31,10 @@ mp3/3rd Bass/3rd bass - Al z A-B-Cee z.mp3
 '''
 
 
-# write out m3u from list
 def MK_Common_M3U_Write(playlist_data, m3u_file_name):
+    """
+    Write out m3u from list
+    """
     m3u_data = M3U_HEADER
     for playlist_item_seconds, playlist_item_name, playlist_item_filename in playlist_data:
         m3u_data += M3U_LINE_HEADER + playlist_item_seconds + ',' + playlist_item_name + '\n' + playlist_item_filename + '\n'

@@ -22,6 +22,9 @@ from pyobjus import autoclass
 
 
 class MK_iOS_Hardware_Instance:
+    """
+    Class for interfacing with iOS hardware
+    """
     def __init__(self):
 # get hardware instance of device
         self.iOS_Hardware = autoclass('bridge')

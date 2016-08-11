@@ -22,6 +22,9 @@ import ldap
 
 
 class MK_Common_LDAP_API:
+    """
+    Class for interfacing with ldap server
+    """
     def __init__(self, ldap_server, ou_name, dc_name):
         # Initialize connection
         try:
