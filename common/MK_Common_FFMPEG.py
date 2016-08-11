@@ -29,6 +29,6 @@ def MK_Common_FFMPEG_Media_Attr(file_path):
     try:
         media_json = subprocess.check_output(['ffprobe', '-show_format', '-show_streams', \
             '-show_chapters', '-loglevel', 'quiet', '-print_format', 'json', file_path])
-    except:
+    except Exception:
         media_json = None
     return media_json
