@@ -66,7 +66,8 @@ def MK_Server_Database_Metadata_Person_ID_Count(self, host_type, guid):
 
 
 # insert person
-def MK_Server_Database_Metdata_Person_Insert(self, person_name, media_id_json, person_json, image_json=None):
+def MK_Server_Database_Metdata_Person_Insert(self, person_name, media_id_json, person_json,\
+        image_json=None):
     self.sql3_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name, mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)', (str(uuid.uuid4()), person_name, media_id_json, person_json, image_json))
 
 

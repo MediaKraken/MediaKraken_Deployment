@@ -21,15 +21,19 @@ import logging
 import uuid
 
 
-# return count of sync jobs
 def MK_Server_Database_Link_List_Count(self):
+    """
+    Return count of linked servers
+    """
     self.sql3_cursor.execute('select count(*) from mm_link')
     return self.sql3_cursor.fetchone()[0]
 
 
-# return list of sync jobs
 def MK_Server_Database_Link_List(self, offset=None, records=None):
-    # complete list for admins
+    """
+    Return list of linked server
+    Complete list for admins
+    """
     if offset is None:
         self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link')
     else:
@@ -37,11 +41,15 @@ def MK_Server_Database_Link_List(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-# insert sync job
 def MK_Server_Database_Link_Insert(self, link_json):
+    """
+    Insert linked server
+    """
     self.sql3_cursor.execute('insert into mm_link (mm_link_guid, mm_link_options_json) values (%s, %s)', (str(uuid.uuid4()), link_json))
 
 
-# delete sync job
 def MK_Server_Database_Link_Delete(self, sync_guid):
+    """
+    Delete server link
+    """
     self.sql3_cursor.execute('delete from mm_link where mm_link_guid = %s', (sync_guid,))

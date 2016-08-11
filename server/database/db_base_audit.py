@@ -57,7 +57,8 @@ def MK_Server_Database_Audit_Path_Add(self, dir_path, class_guid):
 
 # lib path check (dupes)
 def MK_Server_Database_Audit_Path_Check(self, dir_path):
-    self.sql3_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s', (dir_path,))
+    self.sql3_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s',\
+        (dir_path,))
     return self.sql3_cursor.fetchone()[0]
 
 

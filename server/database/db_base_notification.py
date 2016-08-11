@@ -37,5 +37,6 @@ def MK_Server_Database_Notification_Read(self, offset=None, records=None):
 
 # remove noticications
 def MK_Server_Database_Notification_Delete(self, notification_uuid):
-    self.sql3_cursor.execute('delete from mm_notification where mm_notification_guid = %s', (notification_uuid,))
+    self.sql3_cursor.execute('delete from mm_notification where mm_notification_guid = %s',\
+        (notification_uuid,))
     self.sql3_cursor.commit()

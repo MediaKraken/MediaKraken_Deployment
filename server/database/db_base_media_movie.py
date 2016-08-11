@@ -22,12 +22,15 @@ import datetime
 
 # TODO subselect speed
 
-# find random movie
 def MK_Server_Database_Media_Random(self, return_image_type=False):
+    """
+    Find random movie
+    """
     if not return_image_type:
         self.sql3_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid and random() < 0.01 limit 1')
     else:
-        self.sql3_cursor.execute('select mm_metadata_localimage_json->\'LocalImages\'->>' + return_image_type + ',mm_media_guid from mm_media,mm_metadata where mm_media_metadata_guid = mm_metadata_guid and mm_metadata_localimage_json->\'LocalImages\'->>' + return_image_type + ' > \'\' and random() < 0.01 limit 1')
+        self.sql3_cursor.execute('select mm_metadata_localimage_json->\'LocalImages\'->>'\
+            + return_image_type + ',mm_media_guid from mm_media,mm_metadata where mm_media_metadata_guid = mm_metadata_guid and mm_metadata_localimage_json->\'LocalImages\'->>' + return_image_type + ' > \'\' and random() < 0.01 limit 1')
     try:
         return self.sql3_cursor.fetchone()
     except:
@@ -41,7 +44,8 @@ def MK_Server_Database_Media_Movie_Count_By_Genre(self, class_guid):
 
 
 # web media count
-def MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type=None, list_genre='All', group_collection=False, include_remote=False):
+def MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type=None, list_genre='All',
+        group_collection=False, include_remote=False):
     logging.debug("classuid: %s %s", class_guid, list_type)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
@@ -85,7 +89,8 @@ def MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type=None, li
 
 
 # web media return
-def MK_Server_Database_Web_Media_List(self, class_guid, list_type=None, list_genre='All', list_limit=0, group_collection=False, offset=0, include_remote=False):
+def MK_Server_Database_Web_Media_List(self, class_guid, list_type=None, list_genre='All',\
+        list_limit=0, group_collection=False, offset=0, include_remote=False):
     logging.debug("classuid: %s %s %s", class_guid, list_type, list_genre)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':

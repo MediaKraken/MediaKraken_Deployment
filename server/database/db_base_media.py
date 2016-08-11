@@ -24,7 +24,8 @@ import datetime
 
 
 # insert media into database
-def MK_Server_Database_Insert_Media(self, media_uuid, media_path, media_class_uuid, media_metadata_uuid, media_ffprobe_json, media_json):
+def MK_Server_Database_Insert_Media(self, media_uuid, media_path, media_class_uuid,\
+        media_metadata_uuid, media_ffprobe_json, media_json):
     self.sql3_cursor.execute("insert into mm_media (mm_media_guid, mm_media_class_guid, mm_media_path, mm_media_metadata_guid, mm_media_ffprobe_json, mm_media_json) values (%s,%s,%s,%s,%s,%s)", (media_uuid, media_class_uuid, media_path, media_metadata_uuid, media_ffprobe_json, media_json))
 
 
@@ -95,7 +96,8 @@ def MK_Server_Database_Media_Duplicate(self, offset=None, records=None):
 
 # duplicate detail count
 def MK_Server_Database_Media_Duplicate_Detail_Count(self, guid):
-    self.sql3_cursor.execute('select count(*) from mm_media where mm_media_metadata_guid = %s', (guid,))
+    self.sql3_cursor.execute('select count(*) from mm_media where mm_media_metadata_guid = %s',\
+        (guid,))
     return self.sql3_cursor.fetchall()
 
 
@@ -110,7 +112,8 @@ def MK_Server_Database_Media_Duplicate_Detail(self, guid, offset=None, records=N
 
 # find path for media by uuid
 def MK_Server_Database_Media_Path_By_UUID(self, media_uuid):
-    self.sql3_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s', (media_uuid,))
+    self.sql3_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s',\
+        (media_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_media_path']
     except:
@@ -121,7 +124,8 @@ def MK_Server_Database_Media_Path_By_UUID(self, media_uuid):
 def MK_Server_Database_Media_Watched_Status_Update(self, media_guid, user_id, status_bool):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
-    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s', (media_guid,))
+    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
+        (media_guid,))
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
     self.MK_Server_Database_Update_Media_JSON(media_guid, json.dumps(json_data))
@@ -132,7 +136,8 @@ def MK_Server_Database_Media_Watched_Status_Update(self, media_guid, user_id, st
 def MK_Server_Database_Media_Favorite_Status_Update(self, media_guid, user_id, status_bool):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
-    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s', (media_guid,))
+    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
+        (media_guid,))
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
     self.MK_Server_Database_Update_Media_JSON(media_guid, json.dumps(json_data))
@@ -143,7 +148,8 @@ def MK_Server_Database_Media_Favorite_Status_Update(self, media_guid, user_id, s
 def MK_Server_Database_Media_Poo_Status_Update(self, media_guid, user_id, status_bool):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
-    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s', (media_guid,))
+    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+        (media_guid,))
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
     self.MK_Server_Database_Update_Media_JSON(media_guid, json.dumps(json_data))
@@ -154,7 +160,8 @@ def MK_Server_Database_Media_Poo_Status_Update(self, media_guid, user_id, status
 def MK_Server_Database_Media_Mismatch_Status_Update(self, media_guid, user_id, status_bool):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
-    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s', (media_guid,))
+    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
+        (media_guid,))
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
     self.MK_Server_Database_Update_Media_JSON(media_guid, json.dumps(json_data))
@@ -165,7 +172,8 @@ def MK_Server_Database_Media_Mismatch_Status_Update(self, media_guid, user_id, s
 def MK_Server_Database_Media_Watched_Checkpoint_Update(self, media_guid, user_id, ffmpeg_time):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
-    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s', (media_guid,))
+    self.sql3_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
+        (media_guid,))
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
     self.MK_Server_Database_Update_Media_JSON(media_guid, json.dumps(json_data))
@@ -180,7 +188,8 @@ def MK_Server_Database_Update_Media_ID(self, media_guid, metadata_guid):
 
 # update the mediajson
 def MK_Server_Database_Update_Media_JSON(self, media_guid, mediajson):
-    self.sql3_cursor.execute('update mm_media set mm_media_json = %s where mm_media_guid = %s', (mediajson, media_guid))
+    self.sql3_cursor.execute('update mm_media set mm_media_json = %s where mm_media_guid = %s',\
+        (mediajson, media_guid))
     self.MK_Server_Database_Commit()
 
 

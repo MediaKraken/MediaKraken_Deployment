@@ -22,7 +22,8 @@ import logging
 
 # return game system data
 def MK_Server_Database_Metadata_Game_System_By_GUID(self, guid):
-    self.sql3_cursor.execute('select * from mm_metadata_game_systems_info where gs_id = %s', (guid,))
+    self.sql3_cursor.execute('select * from mm_metadata_game_systems_info where gs_id = %s',\
+        (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:

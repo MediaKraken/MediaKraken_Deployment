@@ -29,7 +29,8 @@ def MK_Server_Database_Insert_Remote_Media(self, media_link_uuid, media_uuid, me
 # read in all media unless guid specified
 def MK_Server_Database_Read_Remote_Media(self, media_guid=None):
     if media_guid is not None:
-        self.sql3_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s", (media_guid,))
+        self.sql3_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
+            (media_guid,))
         try:
             return self.sql3_cursor.fetchone()
         except:

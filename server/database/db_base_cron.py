@@ -22,8 +22,10 @@ import json
 import datetime
 
 
-# return cron count
 def MK_Server_Database_Cron_List_Count(self, enabled_only=False):
+    """
+    Return number of cron jobs
+    """
     if not enabled_only:
         self.sql3_cursor.execute('select count(*) from mm_cron')
     else:
@@ -31,8 +33,10 @@ def MK_Server_Database_Cron_List_Count(self, enabled_only=False):
     return self.sql3_cursor.fetchone()[0]
 
 
-# return cron list
 def MK_Server_Database_Cron_List(self, enabled_only=False, offset=None, records=None):
+    """
+    Return cron list
+    """
     if offset is None:
         if not enabled_only:
             self.sql3_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path from mm_cron order by mm_cron_name')
@@ -46,6 +50,8 @@ def MK_Server_Database_Cron_List(self, enabled_only=False, offset=None, records=
     return self.sql3_cursor.fetchall()
 
 
-# update cron run date
 def MK_Server_Database_Cron_Time_Update(self, cron_type):
+    """
+    Update the datetime in which a cron job was run
+    """
     self.sql3_cursor.execute('update mm_cron set mm_cron_last_run = %s where mm_cron_name = %s', (datetime.datetime.now(), cron_type))

@@ -46,7 +46,8 @@ def MK_Server_Database_Metadata_Musician_Add(self, data_name, data_id, data_json
 
 # return album data by guid
 def MK_Server_Database_Metadata_Album_By_GUID(self, guid):
-    self.sql3_cursor.execute('select * from mm_metadata_album where mm_metadata_album_guid = %s', (guid,))
+    self.sql3_cursor.execute('select * from mm_metadata_album where mm_metadata_album_guid = %s',\
+        (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
@@ -60,7 +61,8 @@ def MK_Server_Database_Metadata_Album_Add(self, data_name, data_id, data_json):
 
 # return song data by guid
 def MK_Server_Database_Metadata_Song_By_GUID(self, guid):
-    self.sql3_cursor.execute('select * from mm_metadata_music where mm_metadata_music_guid = %s', (guid,))
+    self.sql3_cursor.execute('select * from mm_metadata_music where mm_metadata_music_guid = %s',\
+        (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
