@@ -19,11 +19,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import sys
-import platform
 import os
 import uuid
-import common.common_file
-import common.common_system
+from common import common_file
+from common import common_system
 
 
 def com_emby_installed_directory(dir_name=None):
