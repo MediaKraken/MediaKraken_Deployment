@@ -22,7 +22,7 @@ import sqlite3
 import uuid
 import os
 import json
-import com_network_IRDB
+import common_network_IRDB
 
 
 class CommonDatabaseOctmote(object):

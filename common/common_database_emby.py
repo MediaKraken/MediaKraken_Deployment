@@ -22,7 +22,7 @@ import sqlite3
 import json
 import sys
 import os
-import com_emby
+import common_emby
 
 
 class CommonDatabaseEmby(object):

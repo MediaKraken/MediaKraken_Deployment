@@ -22,8 +22,8 @@ import sys
 import time
 import os
 from xml.dom import minidom
-import com_file
-import com_network
+import common_file
+import common_network
 
 
 def MK_Scudlee_Fetch_XML():

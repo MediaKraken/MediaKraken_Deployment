@@ -20,9 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import json
 from xml.dom import minidom
-import com_file
+import common_file
 import MK_Common_Metadata
-import com_network
+import common_network
 from pytvdbapi import api
 
 

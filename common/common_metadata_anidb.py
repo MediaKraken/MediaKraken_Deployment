@@ -22,8 +22,8 @@ import gzip
 import time
 import sys
 import MK_Common_Database_Octmote
-import com_file
-import com_network
+import common_file
+import common_network
 sys.path.append("../../common/lib")
 import adba
 

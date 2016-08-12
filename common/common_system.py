@@ -21,7 +21,7 @@ import logging
 import subprocess
 import sys
 import psutil
-import com_string
+import common_string
 
 
 def pprint_ntuple(nt, return_value=None):

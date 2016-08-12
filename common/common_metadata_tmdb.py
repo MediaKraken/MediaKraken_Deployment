@@ -22,7 +22,7 @@ import re
 import os
 import json
 import MK_Common_Metadata
-import com_network
+import common_network
 import tmdbsimple as tmdb
 
 
