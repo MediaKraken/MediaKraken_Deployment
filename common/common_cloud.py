@@ -18,19 +18,19 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common_cloud_aws_s3
-import common_cloud_dropbox
-import common_cloud_google_drive
-import common_cloud_onedrive
-import common_string
+import .common_cloud_aws_s3
+import .common_cloud_dropbox
+import .common_cloud_google_drive
+import .common_cloud_onedrive
+import .common_string
 
 
-cloud_backup_class = (('awss3', 'AWS S3'),
-    ('dropbox', 'Dropbox'),
-    ('google', 'Google Drive'),
-    ('local', 'Local Filesystem'),
-    ('onedrive', 'Microsoft OneDrive'),
-    )
+CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
+                    ('dropbox', 'Dropbox'),
+                    ('google', 'Google Drive'),
+                    ('local', 'Local Filesystem'),
+                    ('onedrive', 'Microsoft OneDrive'),
+                    )
 
 
 awss3 = com_cloud_aws_s3.MK_Common_AWS_S3_API()
@@ -44,7 +44,7 @@ def com_cloud_backup_list():
     Get list of all backups
     """
     backup_files = []
-    for backup_class in cloud_backup_class:    
+    for backup_class in CLOUD_BACKUP_CLASS:    
         for backup_cloud in com_cloud_File_List(backup_class[0], None, True):
             loggging.debug("cloud back: %s",backup_cloud)
             backup_files.append((backup_cloud.name, backup_class[1],\
