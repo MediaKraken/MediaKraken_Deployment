@@ -59,7 +59,7 @@ class CommonDatabaseEmby(object):
         # if not specified....then try to find the default
         if db_file_name is None:
             # windows
-            db_file_name = os.join(MK_Common_Emby.MK_Common_Emby_Installed_Directory,\
+            db_file_name = os.path.join(MK_Common_Emby.MK_Common_Emby_Installed_Directory,\
                 '/data/library.db')
         # verify it found a file
         if db_file_name is None:
