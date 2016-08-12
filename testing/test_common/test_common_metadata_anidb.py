@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_anidb import *
 
 
-class test_common_metadata_anidb:
+class Test_common_metadata_anidb:
 
 
     @classmethod
@@ -54,11 +54,11 @@ class test_common_metadata_anidb:
 
 
     # logout of AniDB
-    def test_MK_Network_AniDB_Logout(self):
+    def Test_MK_Network_AniDB_Logout(self):
         MK_Network_AniDB_Logout()
 
 
     # close the AniDB connect and stop the thread
-    def test_MK_Network_AniDB_Stop(self):
+    def Test_MK_Network_AniDB_Stop(self):
         MK_Network_AniDB_Stop()
 

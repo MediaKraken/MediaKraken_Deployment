@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Trakt import *
 
 
-class test_MK_Common_Trakt_API:
+class Test_MK_Common_Trakt_API:
 
 
     @classmethod
@@ -45,7 +45,7 @@ class test_MK_Common_Trakt_API:
     @pytest.mark.parametrize(("day_count"), [
         (7),
         (400)])
-    def test_MK_Common_Trakt_Calendar_By_Days(self, day_count):
+    def Test_MK_Common_Trakt_Calendar_By_Days(self, day_count):
         MK_Common_Trakt_Calendar_By_Days(day_count)
 
 

@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Twitch import *
 
 
-class test_MK_Common_Twitch_API:
+class Test_MK_Common_Twitch_API:
 
 
     @classmethod
@@ -40,19 +40,19 @@ class test_MK_Common_Twitch_API:
     @pytest.mark.parametrize(("stream_limit"), [
         (0),
         (5)])
-    def test_MK_Common_Twitch_Get_All_Streams(self, stream_limit):
+    def Test_MK_Common_Twitch_Get_All_Streams(self, stream_limit):
         self.db.MK_Common_Twitch_Get_All_Streams(stream_limit)
 
 
-    def test_MK_Common_Twitch_Get_Featured_Streams(self):
+    def Test_MK_Common_Twitch_Get_Featured_Streams(self):
         self.db.MK_Common_Twitch_Get_Featured_Streams()
 
 
-    def test_MK_Common_Twitch_Get_Summary(self):
+    def Test_MK_Common_Twitch_Get_Summary(self):
         self.db.MK_Common_Twitch_Get_Summary()
 
 
-    def test_MK_Common_Twitch_Get_Summary_Viewers(self):
+    def Test_MK_Common_Twitch_Get_Summary_Viewers(self):
         self.db.MK_Common_Twitch_Get_Summary_Viewers()
 
 

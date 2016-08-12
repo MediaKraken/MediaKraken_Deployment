@@ -28,12 +28,12 @@ from MK_Common_Hardware import *
 
 
 # turn on accelerometer
-def test_MK_Hardware_Accelerometer_On():
+def Test_MK_Hardware_Accelerometer_On():
     MK_Hardware_Accelerometer_On()
 
 
 # turn off accelerometer
-def test_MK_Hardware_Accelerometer_Off():
+def Test_MK_Hardware_Accelerometer_Off():
     MK_Hardware_Accelerometer_Off()
 
 
@@ -42,7 +42,7 @@ def test_MK_Hardware_Accelerometer_Off():
 
 
 # setup off the vibration via pattern
-def test_MK_Hardware_Vibration():
+def Test_MK_Hardware_Vibration():
     MK_Hardware_Vibration(pattern_string)
 
 
@@ -50,17 +50,17 @@ def test_MK_Hardware_Vibration():
 @pytest.mark.parametrize(("seconds_to_vibrate"), [
     ("0.5"),
     ("2")])
-def test_MK_Hardware_Vibration_Time(seconds_to_vibrate):
+def Test_MK_Hardware_Vibration_Time(seconds_to_vibrate):
     MK_Hardware_Vibration_Time(seconds_to_vibrate)
 
 
 # stop vibration
-def test_MK_Hardware_Vibration_Stop():
+def Test_MK_Hardware_Vibration_Stop():
     MK_Hardware_Vibration_Stop()
 
 
 # gps setup
-def test_MK_Hardware_GPS_On():
+def Test_MK_Hardware_GPS_On():
     MK_Hardware_GPS_On()
 
 

@@ -73,9 +73,9 @@ class MK_Common_Hardware_HDHomeRun_API_Py:
 
 
 '''
-test_class = MK_Common_HDHomeRun_API_Py()
-test_class.MK_Common_HDHomeRun_Discover()
-devices = test_class.MK_Common_HDHomeRun_List()
+Test_class = MK_Common_HDHomeRun_API_Py()
+Test_class.MK_Common_HDHomeRun_Discover()
+devices = Test_class.MK_Common_HDHomeRun_List()
 
 i = 0
 for device in devices:
@@ -87,15 +87,15 @@ print("str: %s", first_device_str)
 hd = HdhrUtility.device_create_from_str(first_device_str)
 
 device_adapter = HdhrDeviceQuery(hd)
-print("supported: %s", test_class.get_supported(device_adapter))
+print("supported: %s", Test_class.get_supported(device_adapter))
 
-print("scan: %s", test_class.scan(device_adapter))
-#status = test_class.get_tuner_vstatus(device_adapter)
+print("scan: %s", Test_class.scan(device_adapter))
+#status = Test_class.get_tuner_vstatus(device_adapter)
 #print("Status: %s" % (status))
 
 #device_adapter.set_tuner_vchannel(13)
 #device_adapter.set_tuner_target('rtp://192.168.5.13:7891')
 #device_adapter.set_tuner_target(None)
-print("channel count: %s", test_class.get_count())
-#print(test_class.scan(device_adapter))
+print("channel count: %s", Test_class.get_count())
+#print(Test_class.scan(device_adapter))
 '''

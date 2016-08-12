@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_usage:
+class Test_database_usage:
 
 
     @classmethod
@@ -39,21 +39,21 @@ class test_database_usage:
         self.db.MK_Server_Database_Close()
 
 
-    def test_MK_Server_Database_Usage_Top10_AllTime(self):
+    def Test_MK_Server_Database_Usage_Top10_AllTime(self):
         self.db.MK_Server_Database_Usage_Top10_AllTime()
         self.db.MK_Server_Database_Rollback()
 
 
-    def test_MK_Server_Database_Usage_Top10_Movie(self):
+    def Test_MK_Server_Database_Usage_Top10_Movie(self):
         self.db.MK_Server_Database_Usage_Top10_Movie()
         self.db.MK_Server_Database_Rollback()
 
 
-    def test_MK_Server_Database_Usage_Top10_TV_Show(self):
+    def Test_MK_Server_Database_Usage_Top10_TV_Show(self):
         self.db.MK_Server_Database_Usage_Top10_TV_Show()
         self.db.MK_Server_Database_Rollback()
 
 
-    def test_MK_Server_Database_Usage_Top10_TV_Episode(self):
+    def Test_MK_Server_Database_Usage_Top10_TV_Episode(self):
         self.db.MK_Server_Database_Usage_Top10_TV_Episode()
         self.db.MK_Server_Database_Rollback()

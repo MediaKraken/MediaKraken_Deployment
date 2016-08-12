@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_tv_schedule:
+class Test_database_tv_schedule:
 
 
     @classmethod
@@ -40,13 +40,13 @@ class test_database_tv_schedule:
 
 
     # read the stations
-    def test_MK_Server_Database_TV_Stations_Read(self):
+    def Test_MK_Server_Database_TV_Stations_Read(self):
         self.db.MK_Server_Database_TV_Stations_Read()
         self.db.MK_Server_Database_Rollback()
 
 
     # read the stationid list
-    def test_MK_Server_Database_TV_Stations_Read_StationID_List(self):
+    def Test_MK_Server_Database_TV_Stations_Read_StationID_List(self):
         self.db.MK_Server_Database_TV_Stations_Read_StationID_List()
         self.db.MK_Server_Database_Rollback()
 

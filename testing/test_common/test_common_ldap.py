@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_LDAP import *
 
 
-class test_MK_Common_LDAP_API:
+class Test_MK_Common_LDAP_API:
 
 
     @classmethod
@@ -45,14 +45,14 @@ class test_MK_Common_LDAP_API:
         ("metaman", "metaman", True),
         ("metaman", "metaman_fake", False),
         ("metaman_fake", "metaman_fake", False)])
-    def test_MK_Common_LDAP_Logon(self, user_name, user_password, expected_result):
+    def Test_MK_Common_LDAP_Logon(self, user_name, user_password, expected_result):
         """
         Test ldap login
         """
         MK_Common_LDAP_Logon(user_name, user_password, expected_result)
 
 
-    def test_MK_Common_LDAP_Close(self):
+    def Test_MK_Common_LDAP_Close(self):
         """
         Test ldap close
         """

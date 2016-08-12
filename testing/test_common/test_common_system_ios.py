@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_system_iOS import *
 
 
-class test_MK_iOS_Hardware_Instance:
+class Test_MK_iOS_Hardware_Instance:
 
 
     @classmethod
@@ -41,7 +41,7 @@ class test_MK_iOS_Hardware_Instance:
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Motion(self, time_range):
+    def Test_MK_iOS_Motion(self, time_range):
         MK_iOS_Motion(time_range)
 
 
@@ -49,7 +49,7 @@ class test_MK_iOS_Hardware_Instance:
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Gyro(self, time_range):
+    def Test_MK_iOS_Gyro(self, time_range):
         MK_iOS_Gyro(time_range)
 
 
@@ -57,5 +57,5 @@ class test_MK_iOS_Hardware_Instance:
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Magnetometer(self, time_range):
+    def Test_MK_iOS_Magnetometer(self, time_range):
         MK_iOS_Magnetometer(time_range)

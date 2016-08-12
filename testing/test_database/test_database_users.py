@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_users:
+class Test_database_users:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_users:
 
 
     # return user count
-    def test_MK_Server_Database_User_List_Name_Count(self):
+    def Test_MK_Server_Database_User_List_Name_Count(self):
         self.db.MK_Server_Database_User_List_Name_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -50,7 +50,7 @@ class test_database_users:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_User_List_Name(self, offset, records):
+    def Test_MK_Server_Database_User_List_Name(self, offset, records):
         self.db.MK_Server_Database_User_List_Name(offset, records)
         self.db.MK_Server_Database_Rollback()
 

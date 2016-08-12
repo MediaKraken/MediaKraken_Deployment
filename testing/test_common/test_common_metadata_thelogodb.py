@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheLogoDB import *
 
 
-class test_MK_Common_TheLogoDB_API:
+class Test_MK_Common_TheLogoDB_API:
 
 
     @classmethod
@@ -38,5 +38,5 @@ class test_MK_Common_TheLogoDB_API:
 
 
     # grab newest releases
-    def test_MK_Common_TheLogoDB_Fetch_Latest(self):
+    def Test_MK_Common_TheLogoDB_Fetch_Latest(self):
         MK_Common_TheLogoDB_Fetch_Latest()

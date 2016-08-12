@@ -28,7 +28,7 @@ from common_system_Sound import *
 @pytest.mark.parametrize(("message_to_speak"), [
     ("first test"),
     ("can you hear me again")])
-def test_MK_Sound_Text_To_Speech(message_to_speak):
+def Test_MK_Sound_Text_To_Speech(message_to_speak):
     MK_Sound_Text_To_Speech(message_to_speak)
 
 
@@ -36,10 +36,10 @@ def test_MK_Sound_Text_To_Speech(message_to_speak):
 @pytest.mark.parametrize(("file_name"), [
     ("./cache/250Hz_44100Hz_16bit_05sec.wav"),
     ("./cache/250Hz_44100Hz_16bit_05sec.mp3")])
-def test_MK_Sound_Play_File(file_name):
+def Test_MK_Sound_Play_File(file_name):
     MK_Sound_Play_File(file_name)
 
 
 # list devices via pyaudio
-def test_MK_Common_Audio_Pyaudio_List_Devices():
+def Test_MK_Common_Audio_Pyaudio_List_Devices():
     MK_Common_Audio_Pyaudio_List_Devices()

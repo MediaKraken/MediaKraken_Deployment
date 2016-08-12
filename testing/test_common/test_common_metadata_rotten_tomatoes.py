@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_rotten_tomatoes import *
 
 
-class test_common_metadata_rotten_tomatoes_API:
+class Test_common_metadata_rotten_tomatoes_API:
 
 
     @classmethod
@@ -42,5 +42,5 @@ class test_common_metadata_rotten_tomatoes_API:
         ("Robocop", None),
         ("Robocop", 1987),
         ("Fake", None)])
-    def test_MK_Common_RT_Search(self, movie_title, movie_year):
+    def Test_MK_Common_RT_Search(self, movie_title, movie_year):
         MK_Common_RT_Search(movie_title, movie_year)

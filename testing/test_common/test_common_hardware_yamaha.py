@@ -24,5 +24,5 @@ sys.path.append("../common")
 from MK_Common_Hardware_Yamaha import *
 
 
-def test_MK_Common_Hardware_Yamaha_Find():
+def Test_MK_Common_Hardware_Yamaha_Find():
     MK_Common_Hardware_Yamaha_Find()

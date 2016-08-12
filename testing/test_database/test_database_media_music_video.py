@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media_music_video:
+class Test_database_media_music_video:
 
 
     @classmethod

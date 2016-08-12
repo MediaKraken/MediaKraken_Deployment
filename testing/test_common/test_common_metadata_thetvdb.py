@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheTVDB import *
 
 
-class test_MK_Common_Metadata_TheTVDB_API:
+class Test_MK_Common_Metadata_TheTVDB_API:
 
 
     @classmethod
@@ -43,7 +43,7 @@ class test_MK_Common_Metadata_TheTVDB_API:
 # def MK_Common_Metadata_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
 
 
-    def test_MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
+    def Test_MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
         MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time()
 
 

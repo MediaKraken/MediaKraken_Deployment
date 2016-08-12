@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_CIFS import *
 
 
-class test_common_cifs_Share_URL_API:
+class Test_common_cifs_Share_URL_API:
 
 
     @classmethod
@@ -46,7 +46,7 @@ class test_common_cifs_Share_URL_API:
 # def common_cifs_URL_Upload(self, file_path, connect_string):
 
 
-class test_common_cifs_Share_API:
+class Test_common_cifs_Share_API:
 
 
     @classmethod
@@ -64,7 +64,7 @@ class test_common_cifs_Share_API:
 
 
     # list shares
-    def test_common_cifs_Share_List_By_Connection(self):
+    def Test_common_cifs_Share_List_By_Connection(self):
         common_cifs_Share_List_By_Connection()
 
 
@@ -93,7 +93,7 @@ class test_common_cifs_Share_API:
 
 
     # close connection
-    def test_common_cifs_Close(self):
+    def Test_common_cifs_Close(self):
         common_cifs_Close()
 
 

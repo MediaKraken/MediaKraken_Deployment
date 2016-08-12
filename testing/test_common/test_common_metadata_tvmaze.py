@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TVMaze import *
 
 
-class test_MK_Common_Metadata_TVMaze_API:
+class Test_MK_Common_Metadata_TVMaze_API:
 
 
     @classmethod
@@ -42,7 +42,7 @@ class test_MK_Common_Metadata_TVMaze_API:
 
 
     # show when last updated
-    def test_MK_Common_Metadata_TheMaze_Show_Updated(self):
+    def Test_MK_Common_Metadata_TheMaze_Show_Updated(self):
         self.db.MK_Common_Metadata_TheMaze_Show_Updated()
 
 

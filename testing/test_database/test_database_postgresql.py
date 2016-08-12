@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_postgresql:
+class Test_database_postgresql:
 
 
     @classmethod
@@ -41,14 +41,14 @@ class test_database_postgresql:
 
     # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
-    def test_MK_Server_Database_Postgresql_Table_Sizes(self):
+    def Test_MK_Server_Database_Postgresql_Table_Sizes(self):
         self.db.MK_Server_Database_Postgresql_Table_Sizes()
         self.db.MK_Server_Database_Rollback()
 
 
     # return tables and row count
     # query provided by postgresql wiki
-    def test_MK_Server_Database_Postgresql_Row_Count(self):
+    def Test_MK_Server_Database_Postgresql_Row_Count(self):
         self.db.MK_Server_Database_Postgresql_Row_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -57,7 +57,7 @@ class test_database_postgresql:
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
-    def test_MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(self, days):
+    def Test_MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(self, days):
         self.db.MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(days)
         self.db.MK_Server_Database_Rollback()
 
@@ -66,7 +66,7 @@ class test_database_postgresql:
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
-    def test_MK_Server_Database_Postgresql_Vacuum_Table(self, table_name):
+    def Test_MK_Server_Database_Postgresql_Vacuum_Table(self, table_name):
         self.db.MK_Server_Database_Postgresql_Vacuum_Table(table_name)
         self.db.MK_Server_Database_Rollback()
 

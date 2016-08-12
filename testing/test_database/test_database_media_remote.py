@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media_remote:
+class Test_database_media_remote:
 
 
     @classmethod
@@ -50,7 +50,7 @@ class test_database_media_remote:
 
 
     # count known media
-    def test_MK_Server_Database_Known_Remote_Media_Count(self):
+    def Test_MK_Server_Database_Known_Remote_Media_Count(self):
         self.db.MK_Server_Database_Known_Remote_Media_Count()
         self.db.MK_Server_Database_Rollback()
 

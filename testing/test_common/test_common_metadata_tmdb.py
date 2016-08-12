@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_tmdb import *
 
 
-class test_common_metadata_tmdb_API:
+class Test_common_metadata_tmdb_API:
 
 
     @classmethod
@@ -54,17 +54,17 @@ class test_common_metadata_tmdb_API:
 
 
     # movie changes since date within 24 hours
-    def test_MK_Common_TMDB_Metadata_Changes_Movie(self):
+    def Test_MK_Common_TMDB_Metadata_Changes_Movie(self):
         MK_Common_TMDB_Metadata_Changes_Movie()
 
 
     # tv changes since date within 24 hours
-    def test_MK_Common_TMDB_Metadata_Changes_TV(self):
+    def Test_MK_Common_TMDB_Metadata_Changes_TV(self):
         MK_Common_TMDB_Metadata_Changes_TV()
 
 
     # person changes since date within 24 hours
-    def test_MK_Common_TMDB_Metadata_Changes_Person(self):
+    def Test_MK_Common_TMDB_Metadata_Changes_Person(self):
         MK_Common_TMDB_Metadata_Changes_Person()
 
 

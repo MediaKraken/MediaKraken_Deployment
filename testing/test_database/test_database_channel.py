@@ -24,7 +24,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_channel:
+class Test_database_channel:
 
 
     @classmethod

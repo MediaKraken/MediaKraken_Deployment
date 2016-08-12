@@ -36,22 +36,22 @@ from common_system import *
 
 
 # return cpu count
-def test_common_system_CPU_Count():
+def Test_common_system_CPU_Count():
     assert common_system_CPU_Count() == 8
 
 
 # return partitions
-def test_common_system_Partitions():
+def Test_common_system_Partitions():
     common_system_Partitions()
 
 
 # get boot time
-def test_common_system_Boot_Time():
+def Test_common_system_Boot_Time():
     common_system_Boot_Time()
 
 
 # get users 
-def test_common_system_Users():
+def Test_common_system_Users():
     common_system_Users()
 
 
@@ -59,12 +59,12 @@ def test_common_system_Users():
 @pytest.mark.parametrize(("per_cpu"), [
     (True),
     (False)])
-def test_common_system_CPU_Usage(per_cpu):
+def Test_common_system_CPU_Usage(per_cpu):
     common_system_CPU_Usage(per_cpu)
 
 
 # get cpu times
-def test_common_system_CPU_Times():
+def Test_common_system_CPU_Times():
     common_system_CPU_Times()
 
 
@@ -73,7 +73,7 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     path = 'C:'
 else:
     path = '/'
-def test_common_system_Disk_Usage():
+def Test_common_system_Disk_Usage():
     common_system_Disk_Usage(path)
 
 
@@ -81,7 +81,7 @@ def test_common_system_Disk_Usage():
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
-def test_common_system_Disk_Usage_All(human_readable):
+def Test_common_system_Disk_Usage_All(human_readable):
     common_system_Disk_Usage_All(human_readable)
 
 
@@ -89,12 +89,12 @@ def test_common_system_Disk_Usage_All(human_readable):
 @pytest.mark.parametrize(("per_disk"), [
     (True),
     (False)])
-def test_common_system_Disk_IO(per_disk):
+def Test_common_system_Disk_IO(per_disk):
     common_system_Disk_IO(per_disk)
 
 
 # get system uptime
-def test_common_system_Uptime():
+def Test_common_system_Uptime():
     common_system_Uptime()
 
 
@@ -103,5 +103,5 @@ def test_common_system_Uptime():
     (None),
     ('init'),
     ('fakeprocessname')])
-def test_MK_Common_Process_List(process_name):
+def Test_MK_Common_Process_List(process_name):
     MK_Common_Process_List(process_name)

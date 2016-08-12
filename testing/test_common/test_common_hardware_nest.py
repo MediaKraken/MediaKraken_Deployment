@@ -36,12 +36,12 @@ from MK_Common_Hardware_NEST import *
 @pytest.mark.parametrize(("temp_data"), [
     (-7),
     (36)])
-def test_MK_NEST_C_to_F(temp_data):
+def Test_MK_NEST_C_to_F(temp_data):
     MK_NEST_C_to_F(temp_data)
 
 
 @pytest.mark.parametrize(("temp_data"), [
     (-7),
     (60)])
-def test_MK_NEST_F_to_C(temp_data):
+def Test_MK_NEST_F_to_C(temp_data):
     MK_NEST_F_to_C(temp_data)

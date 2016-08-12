@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media:
+class Test_database_media:
 
 
     @classmethod
@@ -45,7 +45,7 @@ class test_database_media:
 
 
     # read in all media unless guid specified
-    def test_MK_Server_Database_Read_Media(self):
+    def Test_MK_Server_Database_Read_Media(self):
         self.db.MK_Server_Database_Read_Media()
         self.db.MK_Server_Database_Rollback()
 
@@ -53,13 +53,13 @@ class test_database_media:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_MK_Server_Database_Read_Media_Guid(self, media_guid):
+    def Test_MK_Server_Database_Read_Media_Guid(self, media_guid):
         self.db.MK_Server_Database_Read_Media(media_guid)
         self.db.MK_Server_Database_Rollback()
 
 
     # count known media
-    def test_MK_Server_Database_Known_Media_Count(self):
+    def Test_MK_Server_Database_Known_Media_Count(self):
         self.db.MK_Server_Database_Known_Media_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -69,19 +69,19 @@ class test_database_media:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Known_Media(self, offset, records):
+    def Test_MK_Server_Database_Known_Media(self, offset, records):
         self.db.MK_Server_Database_Known_Media(offset, records)
         self.db.MK_Server_Database_Rollback()
 
 
     # count matched media
-    def test_MK_Server_Database_Matched_Media_Count(self):
+    def Test_MK_Server_Database_Matched_Media_Count(self):
         self.db.MK_Server_Database_Matched_Media_Count()
         self.db.MK_Server_Database_Rollback()
 
 
     # count all media that is NULL for meatadata match
-    def test_MK_Server_Database_Known_Media_All_Unmatched_Count(self):
+    def Test_MK_Server_Database_Known_Media_All_Unmatched_Count(self):
         self.db.MK_Server_Database_Known_Media_All_Unmatched_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -91,13 +91,13 @@ class test_database_media:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Known_Media_All_Unmatched(self, offset, records):
+    def Test_MK_Server_Database_Known_Media_All_Unmatched(self, offset, records):
         self.db.MK_Server_Database_Known_Media_All_Unmatched(offset, records)
         self.db.MK_Server_Database_Rollback()
 
 
     # count the duplicates for pagination
-    def test_MK_Server_Database_Media_Duplicate_Count(self):
+    def Test_MK_Server_Database_Media_Duplicate_Count(self):
         self.db.MK_Server_Database_Media_Duplicate_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -107,7 +107,7 @@ class test_database_media:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Media_Duplicate(self, offset, records):
+    def Test_MK_Server_Database_Media_Duplicate(self, offset, records):
         self.db.MK_Server_Database_Media_Duplicate(offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -116,7 +116,7 @@ class test_database_media:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_MK_Server_Database_Media_Duplicate_Detail_Count(self, media_guid):
+    def Test_MK_Server_Database_Media_Duplicate_Detail_Count(self, media_guid):
         self.db.MK_Server_Database_Media_Duplicate_Detail_Count(media_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -129,7 +129,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', None, None),       # not exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 100, 100),         # not exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 100000000, 1000)]) # not exists
-    def test_MK_Server_Database_Media_Duplicate_Detail(self, media_guid, offset, records):
+    def Test_MK_Server_Database_Media_Duplicate_Detail(self, media_guid, offset, records):
         self.db.MK_Server_Database_Media_Duplicate_Detail(media_guid, offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -138,7 +138,7 @@ class test_database_media:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_MK_Server_Database_Media_Path_By_UUID(self, media_guid):
+    def Test_MK_Server_Database_Media_Path_By_UUID(self, media_guid):
         self.db.MK_Server_Database_Media_Path_By_UUID(media_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -149,7 +149,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_MK_Server_Database_Media_Watched_Status_Update(self, media_guid, user_id, status_bool):
+    def Test_MK_Server_Database_Media_Watched_Status_Update(self, media_guid, user_id, status_bool):
         self.db.MK_Server_Database_Media_Watched_Status_Update(media_guid, user_id, status_bool)
         self.db.MK_Server_Database_Rollback()
 
@@ -160,7 +160,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found    
-    def test_MK_Server_Database_Media_Favorite_Status_Update(self, media_guid, user_id, status_bool):
+    def Test_MK_Server_Database_Media_Favorite_Status_Update(self, media_guid, user_id, status_bool):
         self.db.MK_Server_Database_Media_Favorite_Status_Update(media_guid, user_id, status_bool)
         self.db.MK_Server_Database_Rollback()
 
@@ -171,7 +171,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_MK_Server_Database_Media_Poo_Status_Update(self, media_guid, user_id, status_bool):
+    def Test_MK_Server_Database_Media_Poo_Status_Update(self, media_guid, user_id, status_bool):
         self.db.MK_Server_Database_Media_Poo_Status_Update(media_guid, user_id, status_bool)
         self.db.MK_Server_Database_Rollback()
 
@@ -182,7 +182,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_MK_Server_Database_Media_Mismatch_Status_Update(self, media_guid, user_id, status_bool):
+    def Test_MK_Server_Database_Media_Mismatch_Status_Update(self, media_guid, user_id, status_bool):
         self.db.MK_Server_Database_Media_Mismatch_Status_Update(media_guid, user_id, status_bool)
         self.db.MK_Server_Database_Rollback()
 
@@ -193,7 +193,7 @@ class test_database_media:
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, 100),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, 1000000000),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, 1000000000)])  # not found
-    def test_MK_Server_Database_Media_Watched_Checkpoint_Update(self, media_guid, user_id, ffmpeg_time):
+    def Test_MK_Server_Database_Media_Watched_Checkpoint_Update(self, media_guid, user_id, ffmpeg_time):
         self.db.MK_Server_Database_Media_Watched_Checkpoint_Update(media_guid, user_id, ffmpeg_time)
         self.db.MK_Server_Database_Rollback()
 
@@ -209,7 +209,7 @@ class test_database_media:
 
 
     # return all media which needs chapter images created
-    def test_MK_Server_Database_Known_Media_Chapter_Scan(self):
+    def Test_MK_Server_Database_Known_Media_Chapter_Scan(self):
         self.db.MK_Server_Database_Known_Media_Chapter_Scan()
         self.db.MK_Server_Database_Rollback()
 
@@ -218,7 +218,7 @@ class test_database_media:
     @pytest.mark.parametrize(("metadata_guid"), [
         ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4d'),  # exists
         ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4e')])  # not found    
-    def test_MK_Server_Database_Media_By_Metadata_Guid(self, metadata_guid):
+    def Test_MK_Server_Database_Media_By_Metadata_Guid(self, metadata_guid):
         self.db.MK_Server_Database_Media_By_Metadata_Guid(metadata_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -227,7 +227,7 @@ class test_database_media:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_MK_Server_Database_Media_Image_Path(self, media_guid):
+    def Test_MK_Server_Database_Media_Image_Path(self, media_guid):
         self.db.MK_Server_Database_Media_Image_Path(media_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -236,7 +236,7 @@ class test_database_media:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
-    def test_MK_Server_Database_Read_Media_Metadata_Both(self, media_guid):
+    def Test_MK_Server_Database_Read_Media_Metadata_Both(self, media_guid):
         self.db.MK_Server_Database_Read_Media_Metadata_Both(media_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -250,7 +250,7 @@ class test_database_media:
     @pytest.mark.parametrize(("new_days"), [
         (7),
         (400)])
-    def test_MK_Server_Database_Read_Media_New_Count(self, new_days):
+    def Test_MK_Server_Database_Read_Media_New_Count(self, new_days):
         self.db.MK_Server_Database_Read_Media_New_Count(new_days)
         self.db.MK_Server_Database_Rollback()
 
@@ -261,6 +261,6 @@ class test_database_media:
         (400, None, None),
         (400, 100, 100),
         (400, 10000000, 1000)])
-    def test_MK_Server_Database_Read_Media_New(self, new_days, offset, records):
+    def Test_MK_Server_Database_Read_Media_New(self, new_days, offset, records):
         self.db.MK_Server_Database_Read_Media_New(new_days, offset, records)
         self.db.MK_Server_Database_Rollback()

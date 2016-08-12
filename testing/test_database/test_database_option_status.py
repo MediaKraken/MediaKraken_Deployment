@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_option_status:
+class Test_database_option_status:
 
 
     @classmethod
@@ -39,7 +39,7 @@ class test_database_option_status:
         self.db.MK_Server_Database_Close()
 
 
-    def test_MK_Server_Database_Option_Status_Read(self):
+    def Test_MK_Server_Database_Option_Status_Read(self):
         self.db.MK_Server_Database_Option_Status_Read()
         self.db.MK_Server_Database_Rollback()
 

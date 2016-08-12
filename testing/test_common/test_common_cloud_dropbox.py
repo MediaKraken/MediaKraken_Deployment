@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_cloud_Dropbox import *
 
 
-class test_MK_Common_DropBox_API:
+class Test_MK_Common_DropBox_API:
 
 
     @classmethod
@@ -37,14 +37,14 @@ class test_MK_Common_DropBox_API:
         pass
 
 
-    def test_dropbox_user_auth(self):
+    def Test_dropbox_user_auth(self):
         dropbox_user_auth()
 
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("./cache/HashCalc.txt", "HashCalc.txt"),
         ("./cache/HashCalcfake.txt", "HashCalcfake.txt")])
-    def test_dropbox_upload(self, file_name, file_save_name):
+    def Test_dropbox_upload(self, file_name, file_save_name):
         dropbox_upload(file_name, file_save_name)
 
 
@@ -52,12 +52,12 @@ class test_MK_Common_DropBox_API:
         ("/"),
         ("metaman"),
         ("fakedir")])
-    def test_dropbox_list(self, dir_name = '/'):
+    def Test_dropbox_list(self, dir_name = '/'):
         dropbox_list(dir_name):
 
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("HashCalc.txt", "./cache/HashCalcDown.txt"),
         ("HashCalcfake.txt", "./cache/HashCalcDown2.txt")])
-    def test_dropbox_download(self, file_name, file_save_name):
+    def Test_dropbox_download(self, file_name, file_save_name):
         dropbox_download(file_name, file_save_name)

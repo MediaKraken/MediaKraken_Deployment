@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media_games:
+class Test_database_media_games:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_media_games:
 
 
     # audited system list count
-    def test_MK_Common_Media_Game_System_List_Count(self):
+    def Test_MK_Common_Media_Game_System_List_Count(self):
         self.db.MK_Common_Media_Game_System_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -50,7 +50,7 @@ class test_database_media_games:
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_MK_Common_Media_Game_System_List(self, offset, records):
+    def Test_MK_Common_Media_Game_System_List(self, offset, records):
         self.db.MK_Common_Media_Game_System_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -66,7 +66,7 @@ class test_database_media_games:
 
 
     # audited games list count
-    def test_MK_Common_Media_Game_List_Count(self):
+    def Test_MK_Common_Media_Game_List_Count(self):
         self.db.MK_Common_Media_Game_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -76,6 +76,6 @@ class test_database_media_games:
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_MK_Common_Media_Game_List(self, offset, records):
+    def Test_MK_Common_Media_Game_List(self, offset, records):
         self.db.MK_Common_Media_Game_List(offset, records)
         self.db.MK_Server_Database_Rollback()

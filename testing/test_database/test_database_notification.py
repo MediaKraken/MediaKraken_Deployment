@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_notification:
+class Test_database_notification:
 
 
     @classmethod
@@ -49,7 +49,7 @@ class test_database_notification:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Notification_Read(self, offset, records):
+    def Test_MK_Server_Database_Notification_Read(self, offset, records):
         self.db.MK_Server_Database_Notification_Read(offset, records)
         self.db.MK_Server_Database_Rollback()
 

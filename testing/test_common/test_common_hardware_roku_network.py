@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Roku_Network import *
 
 
-def test_MK_Roku_Network_Discovery():
+def Test_MK_Roku_Network_Discovery():
     MK_Roku_Network_Discovery()
 
 

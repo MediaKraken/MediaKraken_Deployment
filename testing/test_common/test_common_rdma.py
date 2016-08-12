@@ -25,5 +25,5 @@ from MK_Common_RDMA import *
 
 
 # get list of RDMA devices
-def test_MK_RDMA_Get_Devices():
+def Test_MK_RDMA_Get_Devices():
     MK_RDMA_Get_Devices()

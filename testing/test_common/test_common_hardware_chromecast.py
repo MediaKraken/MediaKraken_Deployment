@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Chromecast import *
 
 
-class test_MK_Common_Hardware_Chromecast_API:
+class Test_MK_Common_Hardware_Chromecast_API:
 
 
     @classmethod
@@ -38,17 +38,17 @@ class test_MK_Common_Hardware_Chromecast_API:
 
 
     # find chromecast as dict
-    def test_MK_Chromecast_Discover_Dict(self):
+    def Test_MK_Chromecast_Discover_Dict(self):
         MK_Chromecast_Discover_Dict()
 
 
     # get detail by name
-    def test_MK_Chromecast_Info(self):
+    def Test_MK_Chromecast_Info(self):
         MK_Chromecast_Info()
 
 
     # get status by name
-    def test_MK_Chromecast_Status(self):
+    def Test_MK_Chromecast_Status(self):
         MK_Chromecast_Status()
 
 
@@ -68,6 +68,6 @@ class test_MK_Common_Hardware_Chromecast_API:
 #    def MK_Chromecast_Device_Command(self, command):
 
 
-    def test_MK_Chromecast_Device_Close(self):
+    def Test_MK_Chromecast_Device_Close(self):
         MK_Chromecast_Device_Close()
 

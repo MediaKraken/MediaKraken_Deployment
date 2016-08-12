@@ -27,7 +27,7 @@ from MK_Common_Hash import *
 @pytest.mark.parametrize(("file_name", "expected_result"), [
     ('./cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
     ('./fakedirzz', None)])
-def test_MK_Common_Hash_SHA1_By_Filename(file_name, expected_result):
+def Test_MK_Common_Hash_SHA1_By_Filename(file_name, expected_result):
     assert MK_Common_Hash_SHA1_By_Filename(file_name) == expected_result
 
 
@@ -38,7 +38,7 @@ def test_MK_Common_Hash_SHA1_By_Filename(file_name, expected_result):
     ('./cache/HashCalc.txt.tar', None),
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
-def test_MK_Common_Hash_SHA1_C(file_name, expected_result):
+def Test_MK_Common_Hash_SHA1_C(file_name, expected_result):
     assert MK_Common_Hash_SHA1_C(file_name) == expected_result
 
 
@@ -49,7 +49,7 @@ def test_MK_Common_Hash_SHA1_C(file_name, expected_result):
     ('./cache/HashCalc.txt.tar', None),
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
-def test_MK_Common_Hash_CRC32(file_name, expected_result):
+def Test_MK_Common_Hash_CRC32(file_name, expected_result):
     assert MK_Common_Hash_CRC32(file_name) == expected_result
 
 
@@ -81,7 +81,7 @@ def test_MK_Common_Hash_CRC32(file_name, expected_result):
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_MK_Common_Hash_TheSubDB(file_name):
+def Test_MK_Common_Hash_TheSubDB(file_name):
     MK_Common_Hash_TheSubDB(file_name)
 
 
@@ -90,5 +90,5 @@ def test_MK_Common_Hash_TheSubDB(file_name):
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_MK_Common_Hash_OpenSubtitles(file_name)"
+def Test_MK_Common_Hash_OpenSubtitles(file_name)"
     MK_Common_Hash_OpenSubtitles(file_name)

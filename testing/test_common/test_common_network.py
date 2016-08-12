@@ -37,22 +37,22 @@ from common_network import *
     ('spootdevfake@gmail.com', "test1", "body"),
     ('spootdev@gmail.com', "test2", "body"),
     ('spootdev@fakegmail.com', "test3", "body")])
-def test_MK_Network_Send_Email(email_receipient, email_subject, email_body):
+def Test_MK_Network_Send_Email(email_receipient, email_subject, email_body):
     MK_Network_Send_Email(email_receipient, email_subject, email_body)
 
 
 # get MAC address
-def test_MK_Network_Get_MAC():
+def Test_MK_Network_Get_MAC():
     MK_Network_Get_MAC()
 
 
 # get outside ip addy
-def test_MK_Network_Get_Outside_IP():
+def Test_MK_Network_Get_Outside_IP():
     MK_Network_Get_Outside_IP()
 
 
 # get default ip address
-def test_MK_Network_Get_Default_IP():
+def Test_MK_Network_Get_Default_IP():
     MK_Network_Get_Default_IP()
 
 
@@ -81,7 +81,7 @@ def test_MK_Network_Get_Default_IP():
 
 # ping host list
 host_list = ('www.yahoo.com', 'www.cnn.com', '8.8.8.8')
-def test_MK_Network_Ping_List():
+def Test_MK_Network_Ping_List():
     MK_Network_Ping_List(host_list)
 
 
@@ -89,20 +89,20 @@ def test_MK_Network_Ping_List():
 @pytest.mark.parametrize(("show_nic"), [
     (False),
     (True)])
-def test_MK_Network_IO_Counter(show_nic):
+def Test_MK_Network_IO_Counter(show_nic):
     MK_Network_IO_Counter(show_nic)
 
 
 # show network connections
-def test_MK_Network_Connections():
+def Test_MK_Network_Connections():
     MK_Network_Connections()
 
 
 # show ip addys
-def test_MK_Network_IP_Addr():
+def Test_MK_Network_IP_Addr():
     MK_Network_IP_Addr()
 
 
 # show netowrk stats
-def test_MK_Network_Stats():
+def Test_MK_Network_Stats():
     MK_Network_Stats()

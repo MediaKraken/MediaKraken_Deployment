@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media_class:
+class Test_database_media_class:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_media_class:
 
 
     # count media class
-    def test_MK_Server_Database_Media_Class_List_Count(self):
+    def Test_MK_Server_Database_Media_Class_List_Count(self):
         self.db.MK_Server_Database_Media_Class_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -50,7 +50,7 @@ class test_database_media_class:
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_MK_Server_Database_Media_Class_List(self, offset, records):
+    def Test_MK_Server_Database_Media_Class_List(self, offset, records):
         self.db.MK_Server_Database_Media_Class_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -59,7 +59,7 @@ class test_database_media_class:
     @pytest.mark.parametrize(("class_uuid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exist
         ('928c56c3-253d-4e30-924e-5698be6d3d37')])  # not exist
-    def test_MK_Server_Database_Media_Class_By_UUID(self, class_uuid):
+    def Test_MK_Server_Database_Media_Class_By_UUID(self, class_uuid):
         self.db.MK_Server_Database_Media_Class_By_UUID(class_uuid)
         self.db.MK_Server_Database_Rollback()
 
@@ -68,6 +68,6 @@ class test_database_media_class:
     @pytest.mark.parametrize(("class_text"), [
         ('Movie'),
         ('fakestuff')])
-    def test_MK_Server_Database_Media_UUID_By_Class(self, class_text):
+    def Test_MK_Server_Database_Media_UUID_By_Class(self, class_text):
         self.db.MK_Server_Database_Media_UUID_By_Class(class_text)
         self.db.MK_Server_Database_Rollback()

@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_triggers:
+class Test_database_triggers:
 
 
     @classmethod
@@ -45,7 +45,7 @@ class test_database_triggers:
 
 
     # read the triggers
-    def test_MK_Server_Database_Triggers_Read(self):
+    def Test_MK_Server_Database_Triggers_Read(self):
         self.db.MK_Server_Database_Triggers_Read()
         self.db.MK_Server_Database_Rollback()
 

@@ -25,7 +25,7 @@ from MK_Common_DISCID import *
 
 
 # grab discid from default device
-def test_MK_Common_DiscID_Default_Device():
+def Test_MK_Common_DiscID_Default_Device():
     MK_Common_DiscID_Default_Device()
 
 
@@ -33,5 +33,5 @@ def test_MK_Common_DiscID_Default_Device():
 @pytest.mark.parametrize(("dir_to_calculate"), [
     ("./cache"),
     ("./cache_fake")])
-def test_MK_Common_DiskID_Caclulate_Dir(dir_to_calculate):
+def Test_MK_Common_DiskID_Caclulate_Dir(dir_to_calculate):
     MK_Common_DiskID_Caclulate_Dir(dir_to_calculate)

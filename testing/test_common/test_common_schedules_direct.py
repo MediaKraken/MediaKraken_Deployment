@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Schedules_Direct import *
 
 
-class test_MK_Common_Schedules_Direct_API:
+class Test_MK_Common_Schedules_Direct_API:
 
 
     @classmethod
@@ -40,11 +40,11 @@ class test_MK_Common_Schedules_Direct_API:
 #    def MK_Common_Schedules_Direct_Login(self, user_name, user_password):
 
 
-    def test_MK_Common_Schedules_Direct_Status(self):
+    def Test_MK_Common_Schedules_Direct_Status(self):
         MK_Common_Schedules_Direct_Status()
 
 
-    def test_MK_Common_Schedules_Direct_Client_Version(self):
+    def Test_MK_Common_Schedules_Direct_Client_Version(self):
         MK_Common_Schedules_Direct_Client_Version()
 
 
@@ -57,7 +57,7 @@ class test_MK_Common_Schedules_Direct_API:
 #    def MK_Common_Schedules_Direct_Lineup_Add(self, lineup_id):
 
 
-    def test_MK_Common_Schedules_Direct_Lineup_List(self):
+    def Test_MK_Common_Schedules_Direct_Lineup_List(self):
         MK_Common_Schedules_Direct_Lineup_List()
 
 

@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Serial import *
 
 
-class test_MK_Common_Serial_API:
+class Test_MK_Common_Serial_API:
 
 
     @classmethod
@@ -40,13 +40,13 @@ class test_MK_Common_Serial_API:
 #    def MK_Serial_Open_Device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits, dev_bytesize):
 
 
-    def test_MK_Serial_Read_Device(self):
+    def Test_MK_Serial_Read_Device(self):
         self.db.MK_Serial_Read_Device()
 
 
-    def test_MK_Serial_Close_Device(self):
+    def Test_MK_Serial_Close_Device(self):
         self.db.MK_Serial_Close_Device()
 
 
-    def test_MK_Serial_Write_Device(self):
+    def Test_MK_Serial_Write_Device(self):
         self.db.MK_Serial_Write_Device("Test serial message")

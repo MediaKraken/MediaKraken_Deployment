@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_metadata:
+class Test_database_metadata:
 
 
     @classmethod
@@ -43,7 +43,7 @@ class test_database_metadata:
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
-    def test_MK_Server_Database_Read_Media_Metadata(self, media_guid):
+    def Test_MK_Server_Database_Read_Media_Metadata(self, media_guid):
         self.db.MK_Server_Database_Read_Media_Metadata(media_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -54,7 +54,7 @@ class test_database_metadata:
 
 
     # count all the generes
-    def test_MK_Server_Database_Metadata_Genre_List_Count(self):
+    def Test_MK_Server_Database_Metadata_Genre_List_Count(self):
         self.db.MK_Server_Database_Metadata_Genre_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -64,13 +64,13 @@ class test_database_metadata:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Metadata_Genre_List(self, offset, records):
+    def Test_MK_Server_Database_Metadata_Genre_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Genre_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
 
     # movie count by genre
-    def test_MK_Server_Database_Metadata_Movie_Count_By_Genre(self):
+    def Test_MK_Server_Database_Metadata_Movie_Count_By_Genre(self):
         self.db.MK_Server_Database_Metadata_Movie_Count_By_Genre()
         self.db.MK_Server_Database_Rollback()
 
@@ -79,7 +79,7 @@ class test_database_metadata:
     @pytest.mark.parametrize(("uuid"), [
         ('tt0215948'),
         ('fakeid')])
-    def test_MK_Server_Database_Metadata_GUID_By_IMDB(self, uuid):
+    def Test_MK_Server_Database_Metadata_GUID_By_IMDB(self, uuid):
         self.db.MK_Server_Database_Metadata_GUID_By_IMDB(uuid)
         self.db.MK_Server_Database_Rollback()
 
@@ -93,7 +93,7 @@ class test_database_metadata:
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def test_MK_Server_Database_Metadata_GUID_By_TMDB(self, uuid):
+    def Test_MK_Server_Database_Metadata_GUID_By_TMDB(self, uuid):
         self.db.MK_Server_Database_Metadata_GUID_By_TMDB(uuid)
         self.db.MK_Server_Database_Rollback()
 
@@ -112,7 +112,7 @@ class test_database_metadata:
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def test_MK_Server_Database_Metadata_TMDB_Count(self, uuid):
+    def Test_MK_Server_Database_Metadata_TMDB_Count(self, uuid):
         self.db.MK_Server_Database_Metadata_TMDB_Count(uuid)
         self.db.MK_Server_Database_Rollback()
 
@@ -122,7 +122,7 @@ class test_database_metadata:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Metadata_Movie_List(self, offset, records):
+    def Test_MK_Server_Database_Metadata_Movie_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Movie_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -136,7 +136,7 @@ class test_database_metadata:
         ('Robocop', '1987'),
         ('Robocop', '2020'),
         ('FakeZZ', '2050')])
-    def test_MK_Server_Database_Find_Metadata_GUID(self, media_name, media_year):
+    def Test_MK_Server_Database_Find_Metadata_GUID(self, media_name, media_year):
         self.db.MK_Server_Database_Find_Metadata_GUID(media_name, media_year)
         self.db.MK_Server_Database_Rollback()
 

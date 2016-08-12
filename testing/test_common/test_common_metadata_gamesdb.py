@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_GamesDB import *
 
 
-class test_MK_Common_Metadata_GamesDB_API:
+class Test_MK_Common_Metadata_GamesDB_API:
 
 
     @classmethod
@@ -37,7 +37,7 @@ class test_MK_Common_Metadata_GamesDB_API:
         pass
 
 
-    def test_MK_Common_Metadata_GamesDB_Platform_List(self):
+    def Test_MK_Common_Metadata_GamesDB_Platform_List(self):
         MK_Common_Metadata_GamesDB_Platform_List()
 
 
@@ -45,12 +45,12 @@ class test_MK_Common_Metadata_GamesDB_API:
 
 
     # 'mega man' as mega OR man
-    def test_MK_Common_Metadata_GamesDB_Games_By_Name_Or(self):
+    def Test_MK_Common_Metadata_GamesDB_Games_By_Name_Or(self):
         MK_Common_Metadata_GamesDB_Games_By_Name_Or("Mega Man")
 
 
     # 'mega man' as mega AND man
-    def test_MK_Common_Metadata_GamesDB_Games_By_Name_And(self):
+    def Test_MK_Common_Metadata_GamesDB_Games_By_Name_And(self):
         MK_Common_Metadata_GamesDB_Games_By_Name_And("Mega Man")
 
 

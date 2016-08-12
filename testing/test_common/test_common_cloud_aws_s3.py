@@ -25,7 +25,7 @@ sys.path.append("../common")
 from common_cloud_AWS_S3 import *
 
 
-class test_common_cloud_AWS_S3:
+class Test_common_cloud_AWS_S3:
 
 
     @classmethod
@@ -44,7 +44,7 @@ class test_common_cloud_AWS_S3:
         ("./cache/HashCalc.txt", "HashCalc.txt", True),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", False),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
-    def test_MK_Common_AWS_S3_Upload(self, source_path, destination_filename,\
+    def Test_MK_Common_AWS_S3_Upload(self, source_path, destination_filename,\
             backup_bucket = False):
         MK_Common_AWS_S3_Upload(source_path, destination_filename, backup_bucket)
 
@@ -54,7 +54,7 @@ class test_common_cloud_AWS_S3:
     @pytest.mark.parametrize(("source_key", "destination_filename", "backup_bucket"), [
         ("HashCalc.txt", "./cache/HashCalcDown.txt", False),
         ("HashCalc.txt", "./cache/HashCalcDown2.txt", True)])
-    def test_MK_Common_AWS_S3_Download(self, source_key, destination_filename, backup_bucket):
+    def Test_MK_Common_AWS_S3_Download(self, source_key, destination_filename, backup_bucket):
         MK_Common_AWS_S3_Download(source_key, destination_filename, backup_bucket = False)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
@@ -64,7 +64,7 @@ class test_common_cloud_AWS_S3:
     @pytest.mark.parametrize(("key", "backup_bucket"), [
         ("HashCalc.txt", False),
         ("HashCalc.txt", True)])
-    def test_MK_Common_AWS_S3_Delete(self, key, backup_bucket):
+    def Test_MK_Common_AWS_S3_Delete(self, key, backup_bucket):
         MK_Common_AWS_S3_Delete(key, backup_bucket)
 
 
@@ -72,7 +72,7 @@ class test_common_cloud_AWS_S3:
     @pytest.mark.parametrize(("days_to_keep"), [
         (7),
         (400)])
-    def test_MK_Common_AWS_S3_Backup_Purge(self, days_to_keep):
+    def Test_MK_Common_AWS_S3_Backup_Purge(self, days_to_keep):
         self.awss3.MK_Common_AWS_S3_Backup_Purge(days_to_keep)
 
 
@@ -80,5 +80,5 @@ class test_common_cloud_AWS_S3:
     @pytest.mark.parametrize(("backup_bucket"), [
         (True),
         (False)])
-    def test_MK_Common_AWS_S3_Bucket_List(self, backup_bucket):
+    def Test_MK_Common_AWS_S3_Bucket_List(self, backup_bucket):
         self.awss3.MK_Common_AWS_S3_Bucket_List(backup_bucket)

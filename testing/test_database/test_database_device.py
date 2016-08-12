@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_devices:
+class Test_database_devices:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_devices:
 
 
     # count device
-    def test_MK_Server_Database_Device_Count(self):
+    def Test_MK_Server_Database_Device_Count(self):
         self.db.MK_Server_Database_Device_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -53,7 +53,7 @@ class test_database_devices:
         ('Nas', None, None),
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
-    def test_MK_Server_Database_Device_List(self, device_type, offset, records):
+    def Test_MK_Server_Database_Device_List(self, device_type, offset, records):
         self.db.MK_Server_Database_Device_List(device_type, offset, records)
         self.db.MK_Server_Database_Rollback()
 

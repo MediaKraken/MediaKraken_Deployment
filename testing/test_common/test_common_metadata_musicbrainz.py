@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_MusicBrainz import *
 
 
-class test_MK_Common_Musicbrainz_API:
+class Test_MK_Common_Musicbrainz_API:
 
 
     @classmethod

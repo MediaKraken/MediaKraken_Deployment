@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_imdb import *
 
 
-class test_MK_Common_IMDB_API:
+class Test_MK_Common_IMDB_API:
 
 
     @classmethod
@@ -38,7 +38,7 @@ class test_MK_Common_IMDB_API:
 
 
     # fetch info from title
-    def test_MK_Common_IMDB_Title_Search(self):
+    def Test_MK_Common_IMDB_Title_Search(self):
         MK_Common_IMDB_Title_Search("Robocop")
 
 

@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_link:
+class Test_database_link:
 
 
     @classmethod
@@ -39,7 +39,7 @@ class test_database_link:
         self.db.MK_Server_Database_Close()
 
 
-    def test_MK_Server_Database_Link_List_Count(self):
+    def Test_MK_Server_Database_Link_List_Count(self):
         self.db.MK_Server_Database_Link_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -49,7 +49,7 @@ class test_database_link:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Link_List(self, offset, records):
+    def Test_MK_Server_Database_Link_List(self, offset, records):
         self.db.MK_Server_Database_Link_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 

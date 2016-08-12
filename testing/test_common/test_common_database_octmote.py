@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Database_Octmote import *
 
 
-class test_common_database_octmote:
+class Test_common_database_octmote:
 
 
     @classmethod
@@ -41,7 +41,7 @@ class test_common_database_octmote:
 #def MK_Database_Sqlite3_Layout_Config_Insert(layout_record_name, layout_record_json):
 
 
-    def test_MK_Database_Sqlite3_Layout_List(self):
+    def Test_MK_Database_Sqlite3_Layout_List(self):
         MK_Database_Sqlite3_Layout_List()
 
 
@@ -52,7 +52,7 @@ class test_common_database_octmote:
 #def MK_Database_Sqlite3_Device_Insert(device_record_name, device_record_description):
 
 
-    def test_MK_Database_Sqlite3_Device_List(self):
+    def Test_MK_Database_Sqlite3_Device_List(self):
         self.db.MK_Database_Sqlite3_Device_List()
 
 
@@ -63,7 +63,7 @@ class test_common_database_octmote:
 #def MK_Database_Sqlite3_Item_Insert(item_record_json):
 
 
-    def test_MK_Database_Sqlite3_Item_List(self):
+    def Test_MK_Database_Sqlite3_Item_List(self):
         self.db.MK_Database_Sqlite3_Item_List()
 
 

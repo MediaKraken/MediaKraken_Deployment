@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_metadata_people:
+class Test_database_metadata_people:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_metadata_people:
 
 
     # count person metadata
-    def test_MK_Server_Database_Metadata_Person_List_Count(self):
+    def Test_MK_Server_Database_Metadata_Person_List_Count(self):
         self.db.MK_Server_Database_Metadata_Person_List_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -50,7 +50,7 @@ class test_database_metadata_people:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Metadata_Person_List(self, offset, records):
+    def Test_MK_Server_Database_Metadata_Person_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Person_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 

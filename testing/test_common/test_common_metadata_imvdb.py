@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_IMVDb import *
 
 
-class test_MK_Common_IMVDb_API:
+class Test_MK_Common_IMVDb_API:
 
 
     @classmethod
@@ -44,7 +44,7 @@ class test_MK_Common_IMVDb_API:
         ('Megadeath', 'Trust'),
         ('Garbage', 'Empty'),
         ('fake', 'fake')])
-    def test_MK_Common_IMVDb_Search_Video(self, artist_name, song_title):
+    def Test_MK_Common_IMVDb_Search_Video(self, artist_name, song_title):
         MK_Common_IMVDb_Search_Video(artist_name, song_title)
 
 
@@ -52,5 +52,5 @@ class test_MK_Common_IMVDb_API:
         ('Megadeath'),
         ('Garbage'),
         ('fake')])
-    def test_MK_Common_IMVDb_Search_Entities(self, artist_name):
+    def Test_MK_Common_IMVDb_Search_Entities(self, artist_name):
         MK_Common_IMVDb_Search_Entities(artist_name)

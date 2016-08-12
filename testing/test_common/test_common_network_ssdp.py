@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_SSDP import *
 
 
-class test_SSDPResponse:
+class Test_SSDPResponse:
 
 
     @classmethod

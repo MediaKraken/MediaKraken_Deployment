@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheSportsDB import *
 
 
-class test_MK_Common_Metadata_TheSportsDB_API:
+class Test_MK_Common_Metadata_TheSportsDB_API:
 
 
     @classmethod
@@ -42,7 +42,7 @@ class test_MK_Common_Metadata_TheSportsDB_API:
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def test_MK_Common_Metadata_TheSportsDB_Search_Team_By_Name(self, team_name):
+    def Test_MK_Common_Metadata_TheSportsDB_Search_Team_By_Name(self, team_name):
         MK_Common_Metadata_TheSportsDB_Search_Team_By_Name(team_name)
 
 
@@ -50,7 +50,7 @@ class test_MK_Common_Metadata_TheSportsDB_API:
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def test_MK_Common_Metadata_TheSportsDB_Search_Players_By_Team(self, team_name):
+    def Test_MK_Common_Metadata_TheSportsDB_Search_Players_By_Team(self, team_name):
         MK_Common_Metadata_TheSportsDB_Search_Players_By_Team(team_name)
 
 

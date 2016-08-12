@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_activity:
+class Test_database_activity:
 
 
     @classmethod
@@ -47,6 +47,6 @@ class test_database_activity:
     @pytest.mark.parametrize(("days_old"), [
         (7),
         (400)])
-    def test_MK_Server_Database_Activity_Purge(self, days_old):
+    def Test_MK_Server_Database_Activity_Purge(self, days_old):
         self.db.MK_Server_Database_Activity_Purge(days_old)
         self.db.MK_Server_Database_Rollback()

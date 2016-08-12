@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_system_Android import *
 
 
-class test_MK_Android_Hardware_Instance:
+class Test_MK_Android_Hardware_Instance:
 
 
     @classmethod
@@ -38,7 +38,7 @@ class test_MK_Android_Hardware_Instance:
 
 
     # return the dpi for the device
-    def test_MK_Android_Get_DPI(self):
+    def Test_MK_Android_Get_DPI(self):
         MK_Android_Get_DPI()
 
 
@@ -46,7 +46,7 @@ class test_MK_Android_Hardware_Instance:
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def test_MK_Android_Vibrate(self, vibrate_time):
+    def Test_MK_Android_Vibrate(self, vibrate_time):
         MK_Android_Vibrate(vibrate_time)
 
 
@@ -54,5 +54,5 @@ class test_MK_Android_Hardware_Instance:
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def test_MK_Android_Motion(self, time_range):
+    def Test_MK_Android_Motion(self, time_range):
         MK_Android_Motion(time_range)

@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_audit:
+class Test_database_audit:
 
 
     @classmethod
@@ -40,7 +40,7 @@ class test_database_audit:
 
 
     ## read scan status
-    def test_MK_Server_Database_Audit_Path_Status(self):
+    def Test_MK_Server_Database_Audit_Path_Status(self):
         self.db.MK_Server_Database_Audit_Path_Status()
         self.db.MK_Server_Database_Rollback()
 
@@ -51,7 +51,7 @@ class test_database_audit:
 
 
     ## read the paths to audit
-    def test_MK_Server_Database_Audit_Paths_Count(self):
+    def Test_MK_Server_Database_Audit_Paths_Count(self):
         self.db.MK_Server_Database_Audit_Paths_Count()
         self.db.MK_Server_Database_Rollback()
 
@@ -75,7 +75,7 @@ class test_database_audit:
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
-    def test_MK_Server_Database_Audit_Path_Check(self, dir_path):
+    def Test_MK_Server_Database_Audit_Path_Check(self, dir_path):
         self.db.MK_Server_Database_Audit_Path_Check(dir_path)
         self.db.MK_Server_Database_Rollback()
 
@@ -90,7 +90,7 @@ class test_database_audit:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Audit_Paths(self, offset, records):
+    def Test_MK_Server_Database_Audit_Paths(self, offset, records):
         self.db.MK_Server_Database_Audit_Paths(offset, records)
         self.db.MK_Server_Database_Rollback()
 

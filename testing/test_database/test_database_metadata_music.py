@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_metadata_music:
+class Test_database_metadata_music:
 
 
     @classmethod
@@ -84,7 +84,7 @@ class test_database_metadata_music:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Metadata_Album_List(self, offset, records):
+    def Test_MK_Server_Database_Metadata_Album_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Album_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
@@ -94,6 +94,6 @@ class test_database_metadata_music:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Metadata_Muscian_List(self, offset, records):
+    def Test_MK_Server_Database_Metadata_Muscian_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Muscian_List(offset, records)
         self.db.MK_Server_Database_Rollback()

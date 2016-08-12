@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_transmission import *
 
 
-class test_common_transmission_API:
+class Test_common_transmission_API:
 
 
     @classmethod
@@ -37,7 +37,7 @@ class test_common_transmission_API:
         pass
 
 
-    def test_common_transmission_Get_Torrent_List(self):
+    def Test_common_transmission_Get_Torrent_List(self):
         common_transmission_Get_Torrent_List()
 
 

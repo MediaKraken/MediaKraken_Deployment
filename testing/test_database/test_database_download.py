@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_download:
+class Test_database_download:
 
 
     @classmethod
@@ -46,7 +46,7 @@ class test_database_download:
 
 #    ## read the download
 # this no longer exists
-#    def test_MK_Server_Database_Download_Read(self):
+#    def Test_MK_Server_Database_Download_Read(self):
 #        self.db.MK_Server_Database_Download_Read()
 #        self.db.MK_Server_Database_Rollback()
 
@@ -55,7 +55,7 @@ class test_database_download:
     @pytest.mark.parametrize(("provider_name"), [
         ('theMovieDB'),
         ('fakeprovider')])
-    def test_MK_Server_Database_Download_Read_By_Provider(self, provider_name):
+    def Test_MK_Server_Database_Download_Read_By_Provider(self, provider_name):
         self.db.MK_Server_Database_Download_Read_By_Provider(provider_name)
         self.db.MK_Server_Database_Rollback()
 

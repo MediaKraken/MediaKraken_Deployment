@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Telnet import *
 
 
-class test_MK_Common_Telnet_API:
+class Test_MK_Common_Telnet_API:
 
 
     @classmethod
@@ -40,10 +40,10 @@ class test_MK_Common_Telnet_API:
 #    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
 
 
-    def test_MK_Telnet_Read_Device(self):
+    def Test_MK_Telnet_Read_Device(self):
         MK_Telnet_Read_Device()
 
 
-    def test_MK_Telnet_Write_Device(self):
+    def Test_MK_Telnet_Write_Device(self):
         MK_Telnet_Write_Device("Telnet test message")
 

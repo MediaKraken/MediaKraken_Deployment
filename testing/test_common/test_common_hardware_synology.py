@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Synology import *
 
 
-class test_MK_Common_Synology_API:
+class Test_MK_Common_Synology_API:
 
 
     @classmethod
@@ -42,11 +42,11 @@ class test_MK_Common_Synology_API:
 
 
     # get nas info
-    def test_MK_Common_Synology_Info(self):
+    def Test_MK_Common_Synology_Info(self):
         MK_Common_Synology_Info()
 
 
     # get share list
-    def test_MK_Common_Synology_Shares_List(self):
+    def Test_MK_Common_Synology_Shares_List(self):
         MK_Common_Synology_Shares_List()
 

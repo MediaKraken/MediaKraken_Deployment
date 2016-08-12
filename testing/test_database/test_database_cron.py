@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_cron:
+class Test_database_cron:
 
 
     @classmethod
@@ -40,17 +40,17 @@ class test_database_cron:
 
 
     # return cron count
-    def test_MK_Server_Database_Cron_List_Count(self):
+    def Test_MK_Server_Database_Cron_List_Count(self):
         self.db.MK_Server_Database_Cron_List_Count()
         self.db.MK_Server_Database_Rollback()
 
 
-    def test_MK_Server_Database_Cron_List_Count_False(self):
+    def Test_MK_Server_Database_Cron_List_Count_False(self):
         self.db.MK_Server_Database_Cron_List_Count(False)
         self.db.MK_Server_Database_Rollback()
 
 
-    def test_MK_Server_Database_Cron_List_Count_True(self):
+    def Test_MK_Server_Database_Cron_List_Count_True(self):
         self.db.MK_Server_Database_Cron_List_Count(True)
         self.db.MK_Server_Database_Rollback()
 
@@ -63,7 +63,7 @@ class test_database_cron:
         (True, None, None),
         (True, 100, 100),
         (True, 100000000, 1000)])
-    def test_MK_Server_Database_Cron_List(self, enabled_only, offset, records):
+    def Test_MK_Server_Database_Cron_List(self, enabled_only, offset, records):
         self.db.MK_Server_Database_Cron_List(enabled_only, offset, records)
         self.db.MK_Server_Database_Rollback()
 

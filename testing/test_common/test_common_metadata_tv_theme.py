@@ -28,5 +28,5 @@ from MK_Common_Metadata_TV_Theme import *
 @pytest.mark.parametrize(("show_name", "expected_results"), [
     ("V", True),
     ("FAKETITLE", False)])
-def test_MK_Common_TVTheme_Download(show_name, expected_results):
+def Test_MK_Common_TVTheme_Download(show_name, expected_results):
     assert MK_Common_TVTheme_Download(show_name) == expected_results

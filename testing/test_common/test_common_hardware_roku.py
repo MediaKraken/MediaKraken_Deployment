@@ -28,7 +28,7 @@ from MK_Common_Hardware_Roku import *
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_getMP4Info(filename):
+def Test_getMP4Info(filename):
     getMP4Info(filename)
 
 

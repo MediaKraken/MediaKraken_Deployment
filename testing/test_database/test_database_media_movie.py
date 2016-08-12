@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_media_movie:
+class Test_database_media_movie:
 
 
     @classmethod
@@ -43,7 +43,7 @@ class test_database_media_movie:
     @pytest.mark.parametrize(("image_type"), [
         (True),
         (False)])
-    def test_MK_Server_Database_Media_Random(self, image_type):
+    def Test_MK_Server_Database_Media_Random(self, image_type):
         self.db.MK_Server_Database_Media_Random(image_type)
         self.db.MK_Server_Database_Rollback()
 
@@ -52,7 +52,7 @@ class test_database_media_movie:
     @pytest.mark.parametrize(("class_guid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30')])  # no exist
-    def test_MK_Server_Database_Media_Movie_Count_By_Genre(self, class_guid):
+    def Test_MK_Server_Database_Media_Movie_Count_By_Genre(self, class_guid):
         self.db.MK_Server_Database_Media_Movie_Count_By_Genre(class_guid)
         self.db.MK_Server_Database_Rollback()
 
@@ -67,7 +67,7 @@ class test_database_media_movie:
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', True, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False, False)])  # no exist
-    def test_MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type, list_genre,\
+    def Test_MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type, list_genre,\
             group_collection, include_remote):
         self.db.MK_Server_Database_Web_Media_List_Count(class_guid, list_type, list_genre,\
             group_collection, include_remote)
@@ -84,7 +84,7 @@ class test_database_media_movie:
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, False, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0, False)])  # no exist
-    def test_MK_Server_Database_Web_Media_List(self, class_guid, list_type, list_genre,\
+    def Test_MK_Server_Database_Web_Media_List(self, class_guid, list_type, list_genre,\
             list_limit, group_collection, offset, include_remote):
         self.db.MK_Server_Database_Web_Media_List(class_guid, list_type, list_genre, list_limit,\
             group_collection, offset, include_remote)

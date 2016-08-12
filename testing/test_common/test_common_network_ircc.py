@@ -25,7 +25,7 @@ from common_network_IRCC import *
 
 
 # ircc device discovery via ssdp
-def test_MK_Network_IRCC_Discover():
+def Test_MK_Network_IRCC_Discover():
     MK_Network_IRCC_Discover()
 
 

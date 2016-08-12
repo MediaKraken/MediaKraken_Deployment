@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_collection:
+class Test_database_collection:
 
 
     @classmethod
@@ -44,13 +44,13 @@ class test_database_collection:
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_MK_Server_Database_Collection_List(self, offset, records):
+    def Test_MK_Server_Database_Collection_List(self, offset, records):
         self.db.MK_Server_Database_Collection_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
 
     # read collection data from json metadata
-    def test_MK_Server_Database_Media_Collection_Scan(self):
+    def Test_MK_Server_Database_Media_Collection_Scan(self):
         self.db.MK_Server_Database_Media_Collection_Scan()
         self.db.MK_Server_Database_Rollback()
 
@@ -59,7 +59,7 @@ class test_database_collection:
     @pytest.mark.parametrize(("collection_name"), [
         ('Darko Collection'),
         ('fakecollectionstuff')])
-    def test_MK_Server_Database_Collection_GUID_By_Name(self, collection_name):
+    def Test_MK_Server_Database_Collection_GUID_By_Name(self, collection_name):
         self.db.MK_Server_Database_Collection_GUID_By_Name(collection_name)
         self.db.MK_Server_Database_Rollback()
 

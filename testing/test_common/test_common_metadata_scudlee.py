@@ -25,7 +25,7 @@ from MK_Common_Metadata_Scudlee import *
 
 
 # def fetch the anime list by scudlee for thetvdb crossreference
-def test_MK_Scudlee_Fetch_XML():
+def Test_MK_Scudlee_Fetch_XML():
     MK_Scudlee_Fetch_XML()
 
 

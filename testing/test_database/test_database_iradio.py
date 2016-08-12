@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class test_database_iradio:
+class Test_database_iradio:
 
 
     @classmethod
@@ -48,7 +48,7 @@ class test_database_iradio:
     @pytest.mark.parametrize(("active_station"), [
         (True,),
         (False)])
-    def test_MK_Server_Database_iRadio_List_Count(self, active_station):
+    def Test_MK_Server_Database_iRadio_List_Count(self, active_station):
         self.db.MK_Server_Database_iRadio_List_Count(active_station)
         self.db.MK_Server_Database_Rollback()
 
@@ -61,6 +61,6 @@ class test_database_iradio:
         (False, None, None),
         (False, 100, 100),
         (False, 100000000, 1000)])
-    def test_MK_Server_Database_iRadio_List(self, active_station, offset, records):
+    def Test_MK_Server_Database_iRadio_List(self, active_station, offset, records):
         self.db.MK_Server_Database_iRadio_List(active_station, offset, records)
         self.db.MK_Server_Database_Rollback()

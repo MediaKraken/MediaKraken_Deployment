@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Backup_Crashplan import *
 
 
-class test_MK_Common_Backup_Crashplan_API:
+class Test_MK_Common_Backup_Crashplan_API:
 
 
     @classmethod

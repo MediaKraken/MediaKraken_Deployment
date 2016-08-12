@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_HDHomeRun import *
 
 
-class test_MK_Common_Hardware_HDHomeRun_API:
+class Test_MK_Common_Hardware_HDHomeRun_API:
 
 
     @classmethod
@@ -38,12 +38,12 @@ class test_MK_Common_Hardware_HDHomeRun_API:
 
 
     # discover items
-    def test_MK_Common_HDHomeRun_Discover(self):
+    def Test_MK_Common_HDHomeRun_Discover(self):
         MK_Common_HDHomeRun_Discover()
 
 
     # item list
-    def test_MK_Common_HDHomeRun_List(self):
+    def Test_MK_Common_HDHomeRun_List(self):
         MK_Common_HDHomeRun_List()
 
 
