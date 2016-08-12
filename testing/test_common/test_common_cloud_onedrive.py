@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_cloud_OneDrive import *
 
 
-class Test_common_cloud_OneDrive_API:
+class test_common_cloud_OneDrive_API:
 
 
     @classmethod

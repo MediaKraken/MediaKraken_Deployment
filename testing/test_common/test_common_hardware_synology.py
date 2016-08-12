@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Synology import *
 
 
-class Test_MK_Common_Synology_API:
+class test_MK_Common_Synology_API:
 
 
     @classmethod

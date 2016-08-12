@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Flickr import *
 
 
-class Test_MK_Common_Flickr_API:
+class test_MK_Common_Flickr_API:
 
 
     @classmethod

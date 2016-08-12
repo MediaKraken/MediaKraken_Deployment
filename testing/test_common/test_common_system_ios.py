@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_system_iOS import *
 
 
-class Test_MK_iOS_Hardware_Instance:
+class test_MK_iOS_Hardware_Instance:
 
 
     @classmethod

@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Chromecast import *
 
 
-class Test_MK_Common_Hardware_Chromecast_API:
+class test_MK_Common_Hardware_Chromecast_API:
 
 
     @classmethod

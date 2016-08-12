@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Trakt import *
 
 
-class Test_MK_Common_Trakt_API:
+class test_MK_Common_Trakt_API:
 
 
     @classmethod

@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Telnet import *
 
 
-class Test_MK_Common_Telnet_API:
+class test_MK_Common_Telnet_API:
 
 
     @classmethod

@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_tmdb import *
 
 
-class Test_common_metadata_tmdb_API:
+class test_common_metadata_tmdb_API:
 
 
     @classmethod

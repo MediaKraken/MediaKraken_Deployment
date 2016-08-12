@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_transmission import *
 
 
-class Test_common_transmission_API:
+class test_common_transmission_API:
 
 
     @classmethod

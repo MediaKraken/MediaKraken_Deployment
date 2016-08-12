@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_Pitchfork import *
 
 
-class Test_MK_Common_Pitchfork_API:
+class test_MK_Common_Pitchfork_API:
 
 
     @classmethod

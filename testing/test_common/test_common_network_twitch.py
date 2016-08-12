@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Twitch import *
 
 
-class Test_MK_Common_Twitch_API:
+class test_MK_Common_Twitch_API:
 
 
     @classmethod

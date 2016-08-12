@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_TheTVDB import *
 
 
-class Test_MK_Common_TheTVDB_API:
+class test_MK_Common_TheTVDB_API:
 
 
     @classmethod

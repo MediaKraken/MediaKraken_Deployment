@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_ISO import *
 
 
-class Test_MK_Common_ISO_API:
+class test_MK_Common_ISO_API:
 
 
     @classmethod

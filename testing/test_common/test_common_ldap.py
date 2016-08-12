@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_LDAP import *
 
 
-class Test_MK_Common_LDAP_API:
+class test_MK_Common_LDAP_API:
 
 
     @classmethod

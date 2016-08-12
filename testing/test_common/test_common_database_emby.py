@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Database_Emby import *
 
 
-class Test_common_database_emby:
+class test_common_database_emby:
 
 
     @classmethod

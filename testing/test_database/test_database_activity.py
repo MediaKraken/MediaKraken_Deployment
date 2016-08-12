@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class Test_database_activity:
+class test_database_activity:
 
 
     @classmethod

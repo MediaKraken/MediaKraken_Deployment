@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheLogoDB import *
 
 
-class Test_MK_Common_TheLogoDB_API:
+class test_MK_Common_TheLogoDB_API:
 
 
     @classmethod
