@@ -25,12 +25,12 @@ from common_zfs import *
 
 
 # check for ZFS compat
-def Test_common_zfs_Available():
+def test_common_zfs_available():
     common_zfs_Available()
 
 
 # get zpool list
-def Test_common_zfs_Zpool_List():
+def test_common_zfs_zpool_list():
     common_zfs_Zpool_List()
 
 
@@ -39,12 +39,12 @@ def Test_common_zfs_Zpool_List():
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def Test_common_zfs_Zpool_Status(zpool):
+def test_common_zfs_zpool_status(zpool):
     common_zfs_Zpool_Status(zpool)
 
 
 # list snapshot
-def Test_common_zfs_Snapshot_List():
+def test_common_zfs_snapshot_list():
     common_zfs_Snapshot_List()
 
 
@@ -53,7 +53,7 @@ def Test_common_zfs_Snapshot_List():
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def Test_common_zfs_Snapshot_List(zpool):
+def test_common_zfs_snapshot_list(zpool):
     common_zfs_Snapshot_List(zpool)
 
 
@@ -66,7 +66,7 @@ def Test_common_zfs_Snapshot_List(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def Test_common_zfs_Zpool_Delete(zpool):
+def test_common_zfs_zpool_delete(zpool):
     common_zfs_Zpool_Delete(zpool)
 
 
@@ -75,7 +75,7 @@ def Test_common_zfs_Zpool_Delete(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def Test_common_zfs_Zpool_Scrub(zpool):
+def test_common_zfs_zpool_scrub(zpool):
     common_zfs_Zpool_Scrub(zpool)
 
 
@@ -98,7 +98,7 @@ def Test_common_zfs_Zpool_Scrub(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def Test_common_zfs_Zpool_Compression(zpool):
+def test_common_zfs_zpool_compression(zpool):
     common_zfs_Zpool_Compression(zpool)
 
 
@@ -147,5 +147,5 @@ def Test_common_zfs_Zpool_Compression(zpool):
 
 
 # health check
-def Test_common_zfs_Health_Check():
+def test_common_zfs_health_check():
     common_zfs_Health_Check()

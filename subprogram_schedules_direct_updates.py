@@ -58,13 +58,13 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 
-def MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch):
+def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.debug("array: %s", meta_program_fetch)
     meta_program_json = sd.com_Schedules_Direct_Program_Info(json.dumps(meta_program_fetch))
     logging.debug("result: %s", meta_program_json)
 #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
-        db.srv_db_TV_Program_Insert(program_json['programID'], json.dumps(program_data))
+        db.srv_db_tv_program_insert(program_json['programID'], json.dumps(program_data))
 
 
 # start logging
@@ -118,19 +118,19 @@ else:
 #    logging.debug("Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
 #        logging.debug("mapchannel: %s", channel_id)
-#        db.srv_db_TV_Station_Insert(channel_id['stationID'], channel_id['channel'])
+#        db.srv_db_tv_station_insert(channel_id['stationID'], channel_id['channel'])
 #    logging.debug("Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
 #        logging.debug("stationschannel: %s", channel_meta)
-#        db.srv_db_TV_Station_Update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
+#        db.srv_db_tv_station_update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
 
 
 # TODO downloading a generic description of a program - good for what the show is......not an episode itself
 
 station_fetch = []
-logging.debug("list: %s", db.srv_db_TV_Stations_Read_StationID_List())
+logging.debug("list: %s", db.srv_db_tv_stations_read_StationID_List())
 # grab all stations in DB
-for station_id in db.srv_db_TV_Stations_Read_StationID_List():
+for station_id in db.srv_db_tv_stations_read_StationID_List():
     # fetch all schedules for station
     station_fetch.append(station_id['mv_tv_station_id'])
 
@@ -149,19 +149,19 @@ elif len(station_fetch > 0:
        # for each program in station schedule result
         for program_json in station_json['programs']:
             # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}], u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000, u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z', u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
-            db.srv_db_TV_Schedule_Insert(station_json['stationID'],\
+            db.srv_db_tv_schedule_insert(station_json['stationID'],\
                 program_json['airDateTime'], json.dumps(program_json))
             logging.debug("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])
             if len(meta_program_fetch) >= 500:
-                MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch)
+                mk_schedules_direct_program_info_fetch(meta_program_fetch)
                 meta_program_fetch = []
 
 
 # TODO check to see if meta array has unstored data
 if len(meta_program_fetch) > 0:
-    MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch)
+    mk_schedules_direct_program_info_fetch(meta_program_fetch)
 
 # TODO, go grab images for blank logos
 

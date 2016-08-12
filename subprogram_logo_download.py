@@ -28,7 +28,7 @@ import common.common_file
 import common.common_logging
 import common.common_Metadata
 import common.common_network
-import common.common_TheLogoDB
+import common.common_thelogodb
 import database as database_base
 
 
@@ -57,15 +57,15 @@ else:
 common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
-logo_connection = com_TheLogoDB.com_TheLogoDB_API()
+logo_connection = com_thelogodb.com_thelogodb_API()
 total_download_attempts = 0
 # main code
 def main(argv):
-    for channel_info in logo_connection.com_TheLogoDB_Fetch_Latest()['channels']:
+    for channel_info in logo_connection.com_thelogodb_Fetch_Latest()['channels']:
         # fetch and store logo image
         image_file_path = com_Metadata.com_Metadata_Image_File_Path(channel_info['strChannel'], 'logo')
         loggin.debug("image: %s", image_file_path)
-        common_network.MK_Network_Fetch_From_URL(channel_info['strLogoWide'], image_file_path)
+        common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 
 # {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,","strLyngsat":null,"strCountry":"United Kingdom","strLyngsatLogo":null,"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png","strLogoWideBW":null,"strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,"dateModified":"2016-01-20 18:35:55"}
 

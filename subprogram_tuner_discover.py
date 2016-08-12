@@ -92,11 +92,11 @@ for row_tuner in tuner_api.com_HDHomeRun_List():
         'IP': common_string.ip_int_to_ascii(row_tuner.get_device_ip()),\
         'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
-    current_data = db.srv_db_Tuner_By_Serial(str(hex(row_tuner.get_device_id())))
+    current_data = db.srv_db_tuner_by_serial(str(hex(row_tuner.get_device_id())))
     if current_data is not None:
-        db.srv_db_Tuner_Update(current_data['mm_tuner_id'], json.dumps(json_data))
+        db.srv_db_tuner_update(current_data['mm_tuner_id'], json.dumps(json_data))
     else:
-        db.srv_db_Tuner_Insert(json.dumps(json_data))
+        db.srv_db_tuner_insert(json.dumps(json_data))
     tuners_added += 1
 
 

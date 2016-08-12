@@ -29,5 +29,5 @@ from common_logging import *
     (None),
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
-def Test_common_logging_Start(log_name):
+def test_common_logging_start(log_name):
     common_logging_Start(log_name)

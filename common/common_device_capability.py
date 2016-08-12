@@ -47,7 +47,7 @@ device_compatibility = {
 }
 
 
-def com_Device_Compatibility_Best_Fit(device_type, device_model, video_container,\
+def com_device_compatibility_best_fit(device_type, device_model, video_container,\
         video_codec, audio_codec, audio_channels):
     """
     Determine best "fit" for video

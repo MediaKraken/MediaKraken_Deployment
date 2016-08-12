@@ -39,7 +39,7 @@ def srv_db_review_list_by_tmdb_guid(self, metadata_id):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_Review_Insert(self, metadata_id, review_json):
+def srv_db_review_insert(self, metadata_id, review_json):
     """
     # insert record
     """

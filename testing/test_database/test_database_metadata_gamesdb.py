@@ -40,5 +40,5 @@ class TestDatabaseMetadataGamesdb(object):
 
 
     # insert gamesdb game system
-    # def srv_db_Metadata_GamesDB_System_Insert(self, platform_id, platform_name, platform_alias, platform_json=None):
+    # def srv_db_metadata_gamesdb_system_insert(self, platform_id, platform_name, platform_alias, platform_json=None):
 #        self.db.srv_db_Rollback()

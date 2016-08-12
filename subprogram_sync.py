@@ -61,7 +61,7 @@ def worker(row_data):
         Config.get('DB Connections', 'PostDBPass').strip())
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['ffmpeg', '-i', thread_db.srv_db_Media_Path_By_UUID(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
+    ffmpeg_params = ['ffmpeg', '-i', thread_db.srv_db_media_path_by_uuid(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs', row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":

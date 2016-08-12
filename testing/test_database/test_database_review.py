@@ -50,5 +50,5 @@ class TestDatabaseReview(object):
 
 
     # insert record
-    # def srv_db_Review_Insert(self, metadata_id, review_json):
+    # def srv_db_review_insert(self, metadata_id, review_json):
 #         self.db.srv_db_Rollback()

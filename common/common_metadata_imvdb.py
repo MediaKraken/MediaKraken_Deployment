@@ -22,7 +22,7 @@ import json
 import requests
 
 
-class CommonIMVDb(object):
+class Commonimvdb(object):
     """
     Class for interfacing with imvdb
     """
@@ -36,7 +36,7 @@ class CommonIMVDb(object):
     def com_imvdb_video_info(self, video_id):
         resp = requests.post(self.BASE_API_URL + "/video/" + video_id\
             + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
-        logging.debug("IMVDb Info Status: %s-%s", resp.status_code, resp.json())
+        logging.debug("imvdb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
@@ -47,7 +47,7 @@ class CommonIMVDb(object):
         resp = requests.post(self.BASE_API_URL + "/search/videos?q="\
             + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),\
             headers=self.headers)
-        logging.debug("IMVDb Video Status: %s-%s", resp.status_code, resp.json())
+        logging.debug("imvdb Video Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
@@ -57,5 +57,5 @@ class CommonIMVDb(object):
         """
         resp = requests.post(self.BASE_API_URL + "/search/entities?q="\
             + artist_name.replace(' ', '+'), headers=self.headers)
-        logging.debug("IMVDb Entities Status: %s-%s", resp.status_code, resp.json())
+        logging.debug("imvdb Entities Status: %s-%s", resp.status_code, resp.json())
         return resp.json()

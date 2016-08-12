@@ -84,7 +84,7 @@ def com_metadata_image_file_path(media_name, media_type):
     return file_path
 
 
-def com_metaData_image_path(media_name, media_type, source_link, source_file):
+def com_metadata_image_path(media_name, media_type, source_link, source_file):
     """
     determine image location
     media name - used to determine a-z dir
@@ -120,5 +120,5 @@ def com_metaData_image_path(media_name, media_type, source_link, source_file):
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):
-        com_network.MK_Network_Fetch_From_URL(url + source_file, file_path)
+        com_network.mk_network_fetch_from_url(url + source_file, file_path)
     return file_path

@@ -19,7 +19,7 @@ from time import time, sleep
 import aniDBfileInfo as fileInfo
 import xml.etree.cElementTree as etree
 import os, re, string
-from aniDBmaper import AniDBMaper
+from aniDBmaper import anidbMaper
 from aniDBtvDBmaper import TvDBMap
 from aniDBerrors import *
 
@@ -105,7 +105,7 @@ class aniDBabstractObject(object):
 class Anime(aniDBabstractObject):
     def __init__(self, aniDB, name=None, aid=None, tvdbid=None, paramsA=None, autoCorrectName=False, load=False):
 
-        self.maper = AniDBMaper()
+        self.maper = anidbMaper()
         self.tvDBMap = TvDBMap()
         self.allAnimeXML = None
 
@@ -117,7 +117,7 @@ class Anime(aniDBabstractObject):
             self.aid = self.tvDBMap.get_anidb_for_tvdb(self.tvdb_id)
 
         if not (self.name or self.aid):
-            raise AniDBIncorrectParameterError("No aid or name available")
+            raise anidbIncorrectParameterError("No aid or name available")
 
         if not self.aid:
             self.aid = self._get_aid_from_xml(self.name)
@@ -227,7 +227,7 @@ class Episode(aniDBabstractObject):
         if not aniDB and not number and not epid and not file and not fid:
             return None
 
-        self.maper = AniDBMaper()
+        self.maper = anidbMaper()
         self.epid = epid
         self.filePath = filePath
         self.fid = fid

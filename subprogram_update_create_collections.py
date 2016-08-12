@@ -74,12 +74,12 @@ else:
 
 
 # verify themovietb key exists
-if Config.get('API', 'theMovieDB').strip() != 'None':
+if Config.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
     TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
     TMDB_API_Connection = None
-    logging.critical("theMovieDB API not available. Exiting program...")
+    logging.critical("themoviedb API not available. Exiting program...")
     sys.exit(0)
 
 
@@ -88,7 +88,7 @@ total_collections_downloaded = 0
 def store_update_record(db, collection_name, guid_list, poster_path, backdrop_path, collection_id):
     global total_collections_downloaded
     # store/update the record
-    collection_guid = db.srv_db_Collection_By_TMDB(collection_id) # don't string this since it's a pure result store
+    collection_guid = db.srv_db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
@@ -107,14 +107,14 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
         else:
             image_backdrop_path = ''
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
-        db.srv_db_Collection_Insert(collection_name, guid_list,\
+        db.srv_db_collection_insert(collection_name, guid_list,\
             collection_meta, localimage_json)
         # commit all changes to db
         db.srv_db_Commit()
         total_collections_downloaded += 1
     else:
         # update
-        #db.srv_db_Collection_Update(collection_guid, guid_list)
+        #db.srv_db_collection_update(collection_guid, guid_list)
         pass
 
 
@@ -125,7 +125,7 @@ old_backdrop_path = None
 old_id= None
 guid_list = []
 first_record = True
-for row_data in db.srv_db_Media_Collection_Scan():
+for row_data in db.srv_db_media_collection_scan():
     #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
     if old_collection_name != row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']:
         if not first_record:

@@ -25,11 +25,11 @@ from common_network import *
 
 
 # download image file from specified url to save in specific directory
-# def MK_Network_Fetch_From_URL(url, directory=None):
+# def mk_network_fetch_from_url(url, directory=None):
 
 
 # send wake on lan even to mac address
-# def MK_Network_WOL(mac_address):
+# def mk_network_wol(mac_address):
 
 
 # send email
@@ -37,23 +37,23 @@ from common_network import *
     ('spootdevfake@gmail.com', "test1", "body"),
     ('spootdev@gmail.com', "test2", "body"),
     ('spootdev@fakegmail.com', "test3", "body")])
-def Test_MK_Network_Send_Email(email_receipient, email_subject, email_body):
-    MK_Network_Send_Email(email_receipient, email_subject, email_body)
+def test_mk_network_send_email(email_receipient, email_subject, email_body):
+    mk_network_send_email(email_receipient, email_subject, email_body)
 
 
 # get MAC address
-def Test_MK_Network_Get_MAC():
-    MK_Network_Get_MAC()
+def test_mk_network_get_mac():
+    mk_network_get_mac()
 
 
 # get outside ip addy
-def Test_MK_Network_Get_Outside_IP():
-    MK_Network_Get_Outside_IP()
+def test_mk_network_get_outside_ip():
+    mk_network_get_outside_ip()
 
 
 # get default ip address
-def Test_MK_Network_Get_Default_IP():
-    MK_Network_Get_Default_IP()
+def test_mk_network_get_default_ip():
+    mk_network_get_default_ip()
 
 
 # ping modules
@@ -81,28 +81,28 @@ def Test_MK_Network_Get_Default_IP():
 
 # ping host list
 host_list = ('www.yahoo.com', 'www.cnn.com', '8.8.8.8')
-def Test_MK_Network_Ping_List():
-    MK_Network_Ping_List(host_list)
+def test_mk_network_ping_list():
+    mk_network_ping_list(host_list)
 
 
 # get network io
 @pytest.mark.parametrize(("show_nic"), [
     (False),
     (True)])
-def Test_MK_Network_IO_Counter(show_nic):
-    MK_Network_IO_Counter(show_nic)
+def test_mk_network_io_counter(show_nic):
+    mk_network_io_counter(show_nic)
 
 
 # show network connections
-def Test_MK_Network_Connections():
-    MK_Network_Connections()
+def test_mk_network_connections():
+    mk_network_connections()
 
 
 # show ip addys
-def Test_MK_Network_IP_Addr():
-    MK_Network_IP_Addr()
+def test_mk_network_ip_addr():
+    mk_network_ip_addr()
 
 
 # show netowrk stats
-def Test_MK_Network_Stats():
-    MK_Network_Stats()
+def test_mk_network_stats():
+    mk_network_stats()

@@ -29,7 +29,7 @@ from com_Emby import *
     (None),
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
-def Test_com_Emby_Installed_Directory(dir_name):
+def test_com_emby_installed_directory(dir_name):
     com_Emby_Installed_Directory(dir_name)
 
 
@@ -38,12 +38,12 @@ def Test_com_Emby_Installed_Directory(dir_name):
     (None),
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
-def Test_com_Emby_Library_List(dir_name):
+def test_com_emby_library_list(dir_name):
     com_Emby_Library_List(dir_name)
 
 
 # check for running instance
-def Test_com_Emby_Check_Instance():
+def test_com_emby_check_instance():
     com_Emby_Check_Instance()
 
 

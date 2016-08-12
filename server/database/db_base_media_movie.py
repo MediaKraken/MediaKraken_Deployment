@@ -22,7 +22,7 @@ import datetime
 
 # TODO subselect speed
 
-def srv_db_Media_Random(self, return_image_type=False):
+def srv_db_media_random(self, return_image_type=False):
     """
     Find random movie
     """
@@ -38,13 +38,13 @@ def srv_db_Media_Random(self, return_image_type=False):
 
 
 # movie count by genre
-def srv_db_Media_Movie_Count_By_Genre(self, class_guid):
+def srv_db_media_movie_count_by_genre(self, class_guid):
     self.sql3_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\') from ((select distinct on (mm_media_metadata_guid) mm_metadata_json from mm_media, mm_metadata_movie where mm_media_class_guid = %s and mm_media_metadata_guid = mm_metadata_guid) union (select distinct on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote, mm_metadata_movie where mmr_media_class_guid = %s and mmr_media_metadata_guid = mm_metadata_guid)) as temp group by gen', (class_guid, class_guid))
     return self.sql3_cursor.fetchall()
 
 
 # web media count
-def srv_db_Web_Media_List_Count(self, class_guid, list_type=None, list_genre='All',
+def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
         group_collection=False, include_remote=False):
     logging.debug("classuid: %s %s", class_guid, list_type)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
@@ -89,7 +89,7 @@ def srv_db_Web_Media_List_Count(self, class_guid, list_type=None, list_genre='Al
 
 
 # web media return
-def srv_db_Web_Media_List(self, class_guid, list_type=None, list_genre='All',\
+def srv_db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
         list_limit=0, group_collection=False, offset=0, include_remote=False):
     logging.debug("classuid: %s %s %s", class_guid, list_type, list_genre)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':

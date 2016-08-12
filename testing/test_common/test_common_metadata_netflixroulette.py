@@ -29,7 +29,7 @@ from common_metadata_netflixroulette import *
     ("fakezzzzzz", None),
     ("Red", None),
     ("Robocop", 1987)])
-def Test_common_metadata_netflixroulette_Get_All_Data(media_title, media_year):
+def test_common_metadata_netflixroulette_get_all_data(media_title, media_year):
     common_metadata_netflixroulette_Get_All_Data(media_title, media_year)
 
 
@@ -37,7 +37,7 @@ def Test_common_metadata_netflixroulette_Get_All_Data(media_title, media_year):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Id(media_title):
+def test_common_metadata_netflixroulette_get_id(media_title):
     common_metadata_netflixroulette_Get_Id(media_title)
 
 
@@ -45,7 +45,7 @@ def Test_common_metadata_netflixroulette_Get_Id(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Director(media_title):
+def test_common_metadata_netflixroulette_get_director(media_title):
     common_metadata_netflixroulette_Get_Director(media_title)
 
 
@@ -53,7 +53,7 @@ def Test_common_metadata_netflixroulette_Get_Director(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Summary(media_title):
+def test_common_metadata_netflixroulette_get_summary(media_title):
     common_metadata_netflixroulette_Get_Summary(media_title)
 
 
@@ -61,7 +61,7 @@ def Test_common_metadata_netflixroulette_Get_Summary(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Category(media_title):
+def test_common_metadata_netflixroulette_get_category(media_title):
     common_metadata_netflixroulette_Get_Category(media_title)
 
 
@@ -69,7 +69,7 @@ def Test_common_metadata_netflixroulette_Get_Category(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Cast(media_title):
+def test_common_metadata_netflixroulette_get_cast(media_title):
     common_metadata_netflixroulette_Get_Cast(media_title)
 
 
@@ -77,7 +77,7 @@ def Test_common_metadata_netflixroulette_Get_Cast(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Release_Year(media_title):
+def test_common_metadata_netflixroulette_get_release_year(media_title):
     common_metadata_netflixroulette_Get_Release_Year(media_title)
 
 
@@ -85,7 +85,7 @@ def Test_common_metadata_netflixroulette_Get_Release_Year(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Type(media_title):
+def test_common_metadata_netflixroulette_get_type(media_title):
     common_metadata_netflixroulette_Get_Type(media_title)
 
 
@@ -93,7 +93,7 @@ def Test_common_metadata_netflixroulette_Get_Type(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Media_Poster(media_title):
+def test_common_metadata_netflixroulette_get_media_poster(media_title):
     common_metadata_netflixroulette_Get_Media_Poster(media_title)
 
 
@@ -101,10 +101,10 @@ def Test_common_metadata_netflixroulette_Get_Media_Poster(media_title):
     ("Die Hard"),
     ("fakezzzzzz"),
     ("Red")])
-def Test_common_metadata_netflixroulette_Get_Rating(media_title):
+def test_common_metadata_netflixroulette_get_rating(media_title):
     common_metadata_netflixroulette_Get_Rating(media_title)
 
 
-def Test_common_metadata_netflixroulette_Get_Version():
+def test_common_metadata_netflixroulette_get_version():
     common_metadata_netflixroulette_Get_Version()
 

@@ -36,22 +36,22 @@ from common_system import *
 
 
 # return cpu count
-def Test_common_system_CPU_Count():
+def test_common_system_cpu_count():
     assert common_system_CPU_Count() == 8
 
 
 # return partitions
-def Test_common_system_Partitions():
+def test_common_system_partitions():
     common_system_Partitions()
 
 
 # get boot time
-def Test_common_system_Boot_Time():
+def test_common_system_boot_time():
     common_system_Boot_Time()
 
 
 # get users 
-def Test_common_system_Users():
+def test_common_system_users():
     common_system_Users()
 
 
@@ -59,12 +59,12 @@ def Test_common_system_Users():
 @pytest.mark.parametrize(("per_cpu"), [
     (True),
     (False)])
-def Test_common_system_CPU_Usage(per_cpu):
+def test_common_system_cpu_usage(per_cpu):
     common_system_CPU_Usage(per_cpu)
 
 
 # get cpu times
-def Test_common_system_CPU_Times():
+def test_common_system_cpu_times():
     common_system_CPU_Times()
 
 
@@ -73,7 +73,7 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     path = 'C:'
 else:
     path = '/'
-def Test_common_system_Disk_Usage():
+def test_common_system_disk_usage():
     common_system_Disk_Usage(path)
 
 
@@ -81,7 +81,7 @@ def Test_common_system_Disk_Usage():
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
-def Test_common_system_Disk_Usage_All(human_readable):
+def test_common_system_disk_usage_All(human_readable):
     common_system_Disk_Usage_All(human_readable)
 
 
@@ -89,12 +89,12 @@ def Test_common_system_Disk_Usage_All(human_readable):
 @pytest.mark.parametrize(("per_disk"), [
     (True),
     (False)])
-def Test_common_system_Disk_IO(per_disk):
+def test_common_system_disk_io(per_disk):
     common_system_Disk_IO(per_disk)
 
 
 # get system uptime
-def Test_common_system_Uptime():
+def test_common_system_uptime():
     common_system_Uptime()
 
 
@@ -103,5 +103,5 @@ def Test_common_system_Uptime():
     (None),
     ('init'),
     ('fakeprocessname')])
-def Test_com_Process_List(process_name):
+def test_com_process_list(process_name):
     com_Process_List(process_name)

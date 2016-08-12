@@ -33,7 +33,7 @@ sys.path.append("../../common/lib")
 import wol
 
 
-def MK_Network_Fetch_From_URL(url, directory=None):
+def mk_network_fetch_from_url(url, directory=None):
     """
     Download image file from specified url to save in specific directory
     """
@@ -51,14 +51,14 @@ def MK_Network_Fetch_From_URL(url, directory=None):
         return imageFile.read()
 
 
-def MK_Network_WOL(mac_address):
+def mk_network_wol(mac_address):
     """
     Send wake on lan even to mac address
     """
     wol.send_magic_packet(mac_address)
 
 
-def MK_Network_Send_Email(email_receipient, email_subject, email_body):
+def mk_network_send_email(email_receipient, email_subject, email_body):
     """
     Send email
     """
@@ -66,7 +66,7 @@ def MK_Network_Send_Email(email_receipient, email_subject, email_body):
         create_chooser=True)
 
 
-def MK_Network_Get_MAC():
+def mk_network_get_mac():
     """
     Get MAC address
     """
@@ -74,7 +74,7 @@ def MK_Network_Get_MAC():
     return ':'.join(("%012X" % getnode())[i:i+2] for i in range(0, 12, 2))
 
 
-def MK_Network_Get_Outside_IP():
+def mk_network_get_outside_ip():
     """
     Get outside ip addy
     """
@@ -83,7 +83,7 @@ def MK_Network_Get_Outside_IP():
     return ipgetter.myip()
 
 
-def MK_Network_Get_Default_IP():
+def mk_network_get_default_ip():
     """
     Get default ip address
     """
@@ -117,7 +117,7 @@ class PingIt(Thread):
                self.status = int(igot[0])
 
 
-def MK_Network_Ping_List(host_list):
+def mk_network_ping_list(host_list):
     """
     Ping host list
     """
@@ -133,28 +133,28 @@ def MK_Network_Ping_List(host_list):
        logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
 
 
-def MK_Network_IO_Counter(show_nic=False):
+def mk_network_io_counter(show_nic=False):
     """
     Get network io
     """
     return psutil.net_io_counters(pernic=show_nic)
 
 
-def MK_Network_Connections():
+def mk_network_connections():
     """
     Show network connections
     """
     return psutil.net_connections()
 
 
-def MK_Network_IP_Addr():
+def mk_network_ip_addr():
     """
     Show ip addys
     """
     return psutil.net_if_addrs()
 
 
-def MK_Network_Stats():
+def mk_network_stats():
     """
     Show netowrk stats
     """

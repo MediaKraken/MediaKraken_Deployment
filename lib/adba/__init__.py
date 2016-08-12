@@ -18,7 +18,7 @@ import threading
 from time import time, sleep, strftime, localtime
 from types import *
 
-from aniDBlink import AniDBLink
+from aniDBlink import anidbLink
 from aniDBcommands import *
 from aniDBerrors import *
 from aniDBAbstracter import Anime, Episode
@@ -39,7 +39,7 @@ class Connection(threading.Thread):
             self.log = self.print_log_dummy
 
 
-        self.link = AniDBLink(server, port, myport, self.log, logPrivate=self.logPrivate)
+        self.link = anidbLink(server, port, myport, self.log, logPrivate=self.logPrivate)
         self.link.session = session
 
         self.clientname = clientname
@@ -121,7 +121,7 @@ class Connection(threading.Thread):
                 command.resp
             except:
                 self.lock.release()
-                raise AniDBCommandTimeoutError, "Command has timed out"
+                raise anidbCommandTimeoutError, "Command has timed out"
 
             self.handle_response(command.resp)
             self.lock.release()
@@ -176,7 +176,7 @@ class Connection(threading.Thread):
 
     def auth(self, username, password, nat=None, mtu=None, callback=None):
         """
-        Login to AniDB UDP API
+        Login to anidb UDP API
         
         parameters:
         username - your anidb username
@@ -205,7 +205,7 @@ class Connection(threading.Thread):
 
     def logout(self, cutConnection=False, callback=None):
         """
-        Log out from AniDB UDP API
+        Log out from anidb UDP API
         
         """
         result = self.handle(LogoutCommand(), callback)
@@ -708,7 +708,7 @@ class Connection(threading.Thread):
 
     def ping(self, callback=None):
         """
-        Test connectivity to AniDB UDP API
+        Test connectivity to anidb UDP API
         
         """
         return self.handle(PingCommand(), callback)
@@ -747,7 +747,7 @@ class Connection(threading.Thread):
         it's better that way, let it go as utf8 to databases etc. because then you've the real data stored
         
         """
-        raise AniDBStupidUserError, "pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding"
+        raise anidbStupidUserError, "pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding"
         return self.handle(EncodingCommand(name), callback)
 
     def sendmsg(self, to, title, body, callback=None):

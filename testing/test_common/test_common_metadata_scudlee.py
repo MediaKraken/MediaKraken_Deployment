@@ -25,13 +25,13 @@ from com_Metadata_Scudlee import *
 
 
 # def fetch the anime list by scudlee for thetvdb crossreference
-def Test_MK_Scudlee_Fetch_XML():
-    MK_Scudlee_Fetch_XML()
+def test_mk_scudlee_fetch_xml():
+    mk_scudlee_fetch_xml()
 
 
 # parse the anime list
-# def MK_Scudlee_Anime_List_Parse(file_name=None):
+# def mk_scudlee_anime_list_parse(file_name=None):
 
 
 # parse the movieset list
-# def MK_Scudlee_Anime_Set_Parse(file_name=None):
+# def mk_scudlee_anime_set_parse(file_name=None):

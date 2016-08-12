@@ -40,10 +40,10 @@ class TestDatabaseMediaTV(object):
 
 
     # grab tv data
-    # def srv_db_Web_TVMedia_List(self, list_type, genre_type=None, list_limit=None, group_collection=False, offset=None):
+    # def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None, group_collection=False, offset=None):
 #        self.db.srv_db_Rollback()
 
 
     # grab tv data count
-    # def srv_db_Web_TVMedia_List_Count(self, list_type, genre_type=None, group_collection=False):
+    # def srv_db_web_tvmedia_list_Count(self, list_type, genre_type=None, group_collection=False):
 #        self.db.srv_db_Rollback()

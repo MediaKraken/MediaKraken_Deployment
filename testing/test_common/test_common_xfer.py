@@ -24,7 +24,7 @@ sys.path.append("../common")
 from com_Xfer import *
 
 
-# def getAllBytes(con, bytesLeft):
+# def getallbytes(con, bytesLeft):
 
 
 # class FileSenderThread(threading.Thread):

@@ -25,7 +25,7 @@ from common_network_IRDB import *
 
 
 # get brand list
-def Test_com_IRDB_Brand_List():
+def test_com_irdb_brand_list():
     com_IRDB_Brand_List()
 
 
@@ -34,7 +34,7 @@ def Test_com_IRDB_Brand_List():
     ("Pioneer"),
     ("Sony"),
     ("FakeBrand")])
-def Test_com_IRDB_Device_Types_By_Brand(brand_text):
+def test_com_irdb_device_types_by_brand(brand_text):
     com_IRDB_Device_Types_By_Brand(brand_text)
 
 

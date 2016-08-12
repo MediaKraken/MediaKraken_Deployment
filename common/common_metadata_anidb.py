@@ -37,7 +37,7 @@ class CommonMetadataANIdb(object):
         pass
 
 
-    def MK_Network_AniDB_Fetch_Titles_File(self, data_type='dat'):
+    def MK_Network_anidb_Fetch_Titles_File(self, data_type='dat'):
         """
         Fetch the tarball of anime titles
         """
@@ -45,10 +45,10 @@ class CommonMetadataANIdb(object):
             data_file = 'http://anidb.net/api/anime-titles.dat.gz'
         else:
             data_file = 'http://anidb.net/api/anime-titles.xml.gz'
-        com_network.MK_Network_Fetch_From_URL(data_file, './Temp_AniDB_Titles.gz')
+        com_network.mk_network_fetch_from_url(data_file, './Temp_anidb_Titles.gz')
 
 
-    def MK_Network_AniDB_Save_Title_Data_To_DB(self, title_file):
+    def MK_Network_anidb_Save_Title_Data_To_DB(self, title_file):
         """
         Save anidb title data to database
         """
@@ -62,29 +62,29 @@ class CommonMetadataANIdb(object):
                 # not a comment so try to split the file via pipes with a limit of three fields
                 sql_fields = ani_line.split('|', 3)
                 sql_params_list.append(sql_fields)
-        com_Database_Octmote.MK_Database_Sqlite3_AniDB_Title_Insert(sql_params_list)
+        com_Database_Octmote.MK_Database_Sqlite3_anidb_Title_Insert(sql_params_list)
 
 
-    def MK_Network_AniDB_AID_By_Title(self, title_to_search):
+    def MK_Network_anidb_AID_By_Title(self, title_to_search):
         """
         Find AID by title
         """
         # check the local DB
-        local_db_result = com_Database_Octmote.MK_Database_Sqlite3_AniDB_Title_Search(title_to_search)
+        local_db_result = com_Database_Octmote.MK_Database_Sqlite3_anidb_Title_Search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
             if com_file.com_file_Modification_Timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
-                MK_Network_AniDB_Fetch_Titles_File('dat')
+                MK_Network_anidb_Fetch_Titles_File('dat')
                 # since new titles file....recheck by title
-                MK_Network_AniDB_AID_By_Title(title_to_search)
+                MK_Network_anidb_AID_By_Title(title_to_search)
             else:
                 return None
         else:
             return local_db_result
 
 
-    def MK_Network_AniDB_Connect(self, user_name, user_password):
+    def MK_Network_anidb_Connect(self, user_name, user_password):
         """
         Remote api calls
         """
@@ -97,25 +97,25 @@ class CommonMetadataANIdb(object):
         return self.connection
 
 
-    def MK_Network_AniDB_Logout(self):
+    def MK_Network_anidb_Logout(self):
         """
-        Logout of AniDB
+        Logout of anidb
         """
         self.connection.logout()
 
 
-    def MK_Network_AniDB_Stop(self):
+    def MK_Network_anidb_Stop(self):
         """
-        Close the AniDB connect and stop the thread
+        Close the anidb connect and stop the thread
         """
         self.connection.stop()
 
 
 # expericment code
-# works MK_Network_AniDB_Fetch_Titles_File('dat')
+# works MK_Network_anidb_Fetch_Titles_File('dat')
 
 ''' # works
 com_Database_Octmote.MK_Database_Sqlite3_Open()
-MK_Network_AniDB_Save_Title_Data_To_DB('./Temp_AniDB_Titles.gz')
+MK_Network_anidb_Save_Title_Data_To_DB('./Temp_anidb_Titles.gz')
 com_Database_Octmote.MK_Database_Sqlite3_Close()
 '''

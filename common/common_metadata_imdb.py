@@ -25,12 +25,12 @@ import common.common_network
 from imdbpie import Imdb
 
 
-class CommonIMDB(object):
+class Commonimdb(object):
     """
     Class for interfacing with imdb
     """
     def __init__(self, cache, cache_location):
-        # open connection to IMDB
+        # open connection to imdb
         if cache is not None:
             if cache_location is not None:
                 self.imdb = Imdb(cache=True, cache_dir=cache_location)

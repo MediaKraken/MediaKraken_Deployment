@@ -20,14 +20,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def com_Media_Images_List_Count(self):
+def com_media_images_list_count(self):
     """
     Images list count
     """
     pass
 
 
-def com_Media_Images_List(self, offset=None, records=None):
+def com_media_images_list(self, offset=None, records=None):
     """
     Images list
     """

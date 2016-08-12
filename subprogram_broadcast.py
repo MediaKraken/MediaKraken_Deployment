@@ -25,6 +25,6 @@ while True:
     recv_data, addr = server_socket.recvfrom(2048)
     logging.debug(str(addr) + ': %s', recv_data)
     if recv_data == "who is MediaKrakenServer?":
-        # TODO   MK_Network_IP_Addr()
+        # TODO   mk_network_ip_addr()
         server_socket.sendto("http:localhost:"\
             + Config.get('MediaKrakenServer', 'APIPort').strip(), addr)

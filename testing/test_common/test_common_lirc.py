@@ -25,12 +25,12 @@ from com_LIRC import *
 
 
 # def MK_LIRC_Init(app_string="OctMote"):
-def Test_MK_LIRC_Init():
+def test_mk_lirc_init():
     MK_LIRC_Init()
 
 
 # def MK_LIRC_Load_Config(config_file):
 
 
-def Test_MK_LIRC_Close():
+def test_mk_lirc_close():
     MK_LIRC_Close()

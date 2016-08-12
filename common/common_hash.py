@@ -33,7 +33,7 @@ if str.upper(sys.platform[0:3])=='WIN' or str.upper(sys.platform[0:3])=='CYG':
     from py7zlib import Archive7z
 
 
-def com_Hash_SHA1_By_Filename(file_name):
+def com_hash_sha1_by_filename(file_name):
     """
     Generate sha1 has by filename
     """
@@ -105,7 +105,7 @@ def com_Hash_SHA1_By_Filename(file_name):
         return sha1_hash_data
 
 
-def com_Hash_SHA1_C(file_name):
+def com_hash_sha1_c(file_name):
     """
     c call for sha1 hash generation by file name
     """
@@ -123,7 +123,7 @@ def com_Hash_SHA1_C(file_name):
             break
 
 
-def com_Hash_CRC32(file_name):
+def com_hash_crc32(file_name):
     """
     Caclucate crc32 for file
     """
@@ -139,7 +139,7 @@ def com_Hash_CRC32(file_name):
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
-def com_Hash_ed2k(filePath):
+def com_hash_ed2k(filePath):
     """ Returns the ed2k hash of a given file."""
     md4 = hashlib.new('md4').copy
     def gen(f):
@@ -161,7 +161,7 @@ def com_Hash_ed2k(filePath):
         else: return md4_hash(reduce(lambda a,d: a + d, hashes, "")).hexdigest()
 
 
-def com_Hash_TheSubDB(file_name):
+def com_hash_thesubdb(file_name):
     """
     Hash for thesubdb
     """
@@ -174,7 +174,7 @@ def com_Hash_TheSubDB(file_name):
     return hashlib.md5(data).hexdigest()
 
 
-def com_Hash_OpenSubtitles(file_name):
+def com_hash_opensubtitles(file_name):
     """
     hash for opensubtiles.org
     folling routine is provided by opensubtitles.org website for api calls
