@@ -63,7 +63,11 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        Config.get('DB Connections', 'PostDBPort').strip(),\
+        Config.get('DB Connections', 'PostDBName').strip(),\
+        Config.get('DB Connections', 'PostDBUser').strip(),\
+        Config.get('DB Connections', 'PostDBPass').strip())
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
@@ -105,7 +109,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -139,7 +147,8 @@ if len(file_list) > 0:
 
 # send notications
 if total_images_created > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_images_created, True) + " chapter image(s) generated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_images_created, True)\
+        + " chapter image(s) generated.", True)
 
 
 # log end

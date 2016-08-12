@@ -103,7 +103,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Metadata_API')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 db.MK_Server_Database_Activity_Insert('MediaKraken_Metadata API Start', None,\
@@ -335,7 +339,11 @@ def worker(content_providers):
     """
     logging.debug("name: %s", content_providers)
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        Config.get('DB Connections', 'PostDBPort').strip(),\
+        Config.get('DB Connections', 'PostDBName').strip(),\
+        Config.get('DB Connections', 'PostDBUser').strip(),\
+        Config.get('DB Connections', 'PostDBPass').strip())
 #    while True:
     for row_data in thread_db.MK_Server_Database_Download_Read_By_Provider(content_providers):
         logging.debug("row: %s", row_data)
@@ -379,10 +387,14 @@ def worker(content_providers):
         elif content_providers == 'tvshowtime':
             tvshowtime(thread_db, row_data)
         elif content_providers == 'Z':
-            metadata_uuid = metadata_identification.metadata_identification(thread_db, class_text_dict[row_data['mdq_download_json']['ClassID']], row_data['mdq_download_json']['Path'], row_data['mdq_download_json'], row_data['mdq_id'])
+            metadata_uuid = metadata_identification.metadata_identification(thread_db,\
+                class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                row_data['mdq_download_json']['Path'], row_data['mdq_download_json'],\
+                row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
-                logging.debug("update: %s %s", row_data['mdq_download_json']['MediaID'], metadata_uuid)
+                logging.debug("update: %s %s",\
+                    row_data['mdq_download_json']['MediaID'], metadata_uuid)
                 thread_db.MK_Server_Database_Update_Media_ID(row_data['mdq_download_json']['MediaID'], metadata_uuid)
                 thread_db.MK_Server_Database_Download_Delete(row_data['mdq_id'])
     time.sleep(1)

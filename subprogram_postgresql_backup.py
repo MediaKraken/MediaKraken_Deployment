@@ -35,7 +35,12 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Postgresql_Bac
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
+
 
 # log start
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Start', None,\
@@ -47,12 +52,17 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Star
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
-os.system('PGPASSWORD=' + Config.get('DB Connections', 'PostDBPass').strip() + ' pg_dump -U ' + Config.get('DB Connections', 'PostDBUser').strip() + ' ' + Config.get('DB Connections', 'PostDBName').strip() + ' -F c -f ' + Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name)
+os.system('PGPASSWORD=' + Config.get('DB Connections', 'PostDBPass').strip() + ' pg_dump -U '\
+    + Config.get('DB Connections', 'PostDBUser').strip() + ' '\
+    + Config.get('DB Connections', 'PostDBName').strip() + ' -F c -f '\
+    + Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name)
 
 # grab settings and options
 option_json = db.MK_Server_Database_Option_Status_Read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
-    common_cloud.common_cloud_File_Store(option_json['Backup']['BackupType'], Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name, backup_file_name, True)
+    common_cloud.common_cloud_File_Store(option_json['Backup']['BackupType'],\
+    Config.get('MediaKrakenServer', 'BackupLocal').strip() + '/'\
+    + backup_file_name, backup_file_name, True)
 
 # log end
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Backup Stop', None,\

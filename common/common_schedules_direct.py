@@ -38,7 +38,9 @@ class MK_Common_Schedules_Direct_API:
 
 
     def MK_Common_Schedules_Direct_Login(self, user_name, user_password):
-        resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers, data=json.dumps({"password": hashlib.sha1(user_password.encode('utf-8')).hexdigest(), "username": user_name})).json()
+        resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers,\
+            data=json.dumps({"password": hashlib.sha1(user_password.encode('utf-8')).hexdigest(),\
+            "username": user_name})).json()
         if resp['code'] != 3000:
             logging.debug("SD login response: %s-%s", resp['code'], resp['token'])
             self.headers['token'] = resp['token']
@@ -113,7 +115,8 @@ class MK_Common_Schedules_Direct_API:
 
 
     def MK_Common_Schedules_Direct_Program_Info(self, program_ids):
-        resp = requests.post(self.BASE_API_URL + "/programs", headers=self.headers, data=program_ids)
+        resp = requests.post(self.BASE_API_URL + "/programs", headers=self.headers,\
+            data=program_ids)
         logging.debug("Header: %s", resp.headers)
         logging.debug("Text: %s", resp.text)
         logging.debug("SD Program Info: %s", resp.status_code)

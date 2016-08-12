@@ -115,12 +115,14 @@ def signal_receive(signum, frame):
 
 # TODO move this into worker function......no reason for this to be seperate anymore
 # perform media scan
-def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known_media_file, dir_guid, class_text_dict):
+def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known_media_file,\
+        dir_guid, class_text_dict):
     total_files = 0
     logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.MK_Server_Database_Audit_Directory_Timestamp_Update(dir_path)
-    thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid, json.dumps({'Status': 'File scan', 'Pct': 100}))
+    thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid,\
+        json.dumps({'Status': 'File scan', 'Pct': 100}))
     thread_db.MK_Server_Database_Commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
@@ -130,7 +132,8 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
         smb_stuff.common_cifs_Connect(addr)
         for dir_data in smb_stuff.common_cifs_Walk(share, path):
             for file_name in dir_data[2]:
-                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0] + '\\' + file_name)
+                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]\
+                    + '\\' + file_name)
         smb_stuff.common_cifs_Close()
     else:
         file_data = common_file.common_file_Dir_List(dir_path, None, True, False)
@@ -160,14 +163,19 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                 elif fileExtension.lower() in media_extension_skip_ffmpeg:
                     media_ffprobe_json = None
                 else:
-                    if file_name.find('/trailers/') != -1 or file_name.find('/theme.mp3') != -1 or file_name.find('/theme.mp4') != -1 or file_name.find('\\trailers\\') != -1 or file_name.find('\\theme.mp3') != -1 or file_name.find('\\theme.mp4') != -1:
+                    if file_name.find('/trailers/') != -1 or file_name.find('/theme.mp3') != -1\
+                            or file_name.find('/theme.mp4') != -1\
+                            or file_name.find('\\trailers\\') != -1\
+                            or file_name.find('\\theme.mp3') != -1\
+                            or file_name.find('\\theme.mp4') != -1:
                         media_class_text = thread_db.MK_Server_Database_Media_Class_By_UUID(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Trailer']
                             else:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
-                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' or media_class_text == 'TV Season':
+                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode'\
+                                or media_class_text == 'TV Season':
                             if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['TV Trailer']
                             else:
@@ -184,13 +192,18 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                         file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                     media_ffprobe_json = common_ffmpeg.common_ffmpeg_Media_Attr(file_name)
                 # create media_json data
-                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"), 'ChapterScan': True})
+                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
+                    'ChapterScan': True})
                 media_id = str(uuid.uuid4())
-                thread_db.MK_Server_Database_Insert_Media(media_id, file_name, new_class_type_uuid, None, media_ffprobe_json, media_json)
+                thread_db.MK_Server_Database_Insert_Media(media_id, file_name,\
+                    new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # media id begin and download que insert
                 thread_db.MK_Server_Database_Download_Insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
-        thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid, json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True) + ' / ' + locale.format('%d', total_file_in_dir, True), 'Pct': (total_scanned / total_file_in_dir) * 100}))
+        thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid,\
+            json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
+                + ' / ' + locale.format('%d', total_file_in_dir, True),\
+                'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.MK_Server_Database_Commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
     thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid, None) # set to none so it doens't show up
@@ -203,9 +216,11 @@ def worker(audit_directory):
     thread_db = database_base.MK_Server_Database()
     thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
-    total_files = MK_Server_Media_Scan_Audit(thread_db, data1, data2, global_known_media, dir_guid, class_text_dict)
+    total_files = MK_Server_Media_Scan_Audit(thread_db, data1, data2, global_known_media,\
+        dir_guid, class_text_dict)
     if total_files > 0:
-        thread_db.MK_Server_Database_Notification_Insert(locale.format('%d', total_files, True) + " file(s) added from " + data1, True)
+        thread_db.MK_Server_Database_Notification_Insert(locale.format('%d', total_files, True)\
+            + " file(s) added from " + data1, True)
     thread_db.MK_Server_Database_Commit()
     thread_db.MK_Server_Database_Close()
     return
@@ -220,7 +235,11 @@ else:
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -257,18 +276,22 @@ for row_data in db.MK_Server_Database_Audit_Paths():
         if smb_stuff.common_cifs_Share_Directory_Check(share, path):
             if datetime.strptime(time.ctime(smb_stuff.common_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'], json.dumps({'Status': 'Added to scan', 'Pct': 100}))
+                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                    json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
-            db.MK_Server_Database_Notification_Insert(('UNC Library path not found: %s', (row_data['mm_media_dir_path'],)), True)
+            db.MK_Server_Database_Notification_Insert(('UNC Library path not found: %s',\
+                (row_data['mm_media_dir_path'],)), True)
         smb_stuff.common_cifs_Close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
-            db.MK_Server_Database_Notification_Insert(('Library path not found: %s', (row_data['mm_media_dir_path'],)), True)
+            db.MK_Server_Database_Notification_Insert(('Library path not found: %s',\
+                (row_data['mm_media_dir_path'],)), True)
         else:
             # verify the directory inodes has changed
             if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'], json.dumps({'Status': 'Added to scan', 'Pct': 100}))
+                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                    json.dumps({'Status': 'Added to scan', 'Pct': 100}))
 
 
 # commit

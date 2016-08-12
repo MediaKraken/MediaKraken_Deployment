@@ -58,7 +58,8 @@ def main(argv):
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files
-    for media_row in common_file.common_file_Dir_List('/nfsmount/TV_Shows_Misc/', ('avi', 'mkv', 'mp4', 'm4v'), True):
+    for media_row in common_file.common_file_Dir_List('/nfsmount/TV_Shows_Misc/',\
+            ('avi', 'mkv', 'mp4', 'm4v'), True):
         # run the subliminal fetch for episode
         logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
         # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt") and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")

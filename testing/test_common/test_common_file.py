@@ -31,7 +31,8 @@ from common_file import *
     ("./cache/cache_fake.iso")])
 def test_common_file_Modification_Timestamp(file_name):
         if file_name == "./cache/cache.iso":
-            assert isinstance(common_file_Modification_Timestamp(file_name), datetime.datetime) == True
+            assert isinstance(common_file_Modification_Timestamp(file_name),\
+                datetime.datetime) == True
         else:
             assert common_file_Modification_Timestamp(file_name) is None
 
@@ -61,7 +62,8 @@ def test_common_file_Load_Data(file_name, as_pickle):
 
 
 # find all filters files in directory
-@pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size", "directory_only"), [
+@pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size",\
+        "directory_only"), [
     ('./cachenotfound', None, False, False, False, False),
     ('./cache', None, False, False, False, False),
     ('./cache', None, True, False, False, False),
@@ -86,7 +88,8 @@ def test_common_file_Load_Data(file_name, as_pickle):
     ('./cache', "waffle", False, True, True, True),
     ('./cache', "waffle", True, True, False, True),
     ('./cache', "waffle", True, True, True, True)])
-def test_common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size, directory_only):
+def test_common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size,\
+        directory_only):
     common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size, directory_only)
 
 

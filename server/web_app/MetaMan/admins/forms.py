@@ -78,8 +78,11 @@ class UserEditForm(Form):
 class AdminSettingsForm(Form):
     servername = TextField('Server Name', validators=[DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
-    activity_purge_interval = SelectField('Purge Activity Data Older Than', choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'), ('Quarter', 'Quarter'), ('6 Months', '6 Months'), ('Year', 'Year')])
-    user_password_lock = SelectField('Lock account after failed attempts', choices=[('Never', 'Never'), ('3', '3'), ('5', '5'), ('10', '10')])
+    activity_purge_interval = SelectField('Purge Activity Data Older Than',\
+        choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'),\
+        ('Quarter', 'Quarter'), ('6 Months', '6 Months'), ('Year', 'Year')])
+    user_password_lock = SelectField('Lock account after failed attempts',\
+        choices=[('Never', 'Never'), ('3', '3'), ('5', '5'), ('10', '10')])
     metadata_download_metadata = BooleanField('Download Metadata')
     metadata_artwork_with_media = BooleanField('Download Artwork')
     #language = SelectField('Interval', choices=[('Hours', 'Hours'), ('Days', 'Days'), ('Weekly', 'Weekly')])
@@ -102,7 +105,8 @@ class AdminSettingsForm(Form):
     metadata_source_down_pitchfork = BooleanField('Pitchfork')
     metadata_source_down_imvdb = BooleanField('IMVDb')
     metadata_source_down_netflixroulette = BooleanField('NetflixRoulette')
-    metadata_sync_path = TextField('Metadata Sync Path', validators=[DataRequired(), Length(min=1, max=250)])
+    metadata_sync_path = TextField('Metadata Sync Path',\
+        validators=[DataRequired(), Length(min=1, max=250)])
 
 
     def __init__(self, *args, **kwargs):
@@ -120,7 +124,8 @@ class CronEditForm(Form):
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
-    interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'), ('Days', 'Days'), ('Weekly', 'Weekly')])
+    interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),\
+        ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places = 2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
 

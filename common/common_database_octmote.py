@@ -121,7 +121,8 @@ class MK_Common_Database_Octmote:
 
 
     def MK_Database_Sqlite3_Layout_Detail(self, guid):
-        self.sql3_cursor.execute("select layout_json from octmote_layout where layout_guid = ?", (guid,))
+        self.sql3_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
+            (guid,))
         return self.sql3_cursor
 
 
@@ -131,7 +132,8 @@ class MK_Common_Database_Octmote:
         """
         self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name, device_record_description))
         self.sql3_conn.commit()
-        self.sql3_cursor.execute("select device_guid from octmote_device where rowid = ?", (self.sql3_cursor.lastrowid,))
+        self.sql3_cursor.execute("select device_guid from octmote_device where rowid = ?",\
+            (self.sql3_cursor.lastrowid,))
         return self.sql3_cursor
 
 
@@ -154,7 +156,8 @@ class MK_Common_Database_Octmote:
         for model_number in json_data["Model Support"]:
             self.sql3_cursor.execute("insert into octmote_item (item_guid, item_type, item_manufacturer, item_model_number, item_json) values (?,?,?,?,?)", (str(uuid.uuid4()), json_data["Item Type"], json_data["Manufacturer"], model_number, item_record_json))
         self.sql3_conn.commit()
-        self.sql3_cursor.execute("select item_guid from octmote_item where rowid = ?", (self.sql3_cursor.lastrowid,))
+        self.sql3_cursor.execute("select item_guid from octmote_item where rowid = ?",\
+            (self.sql3_cursor.lastrowid,))
         return self.sql3_cursor
 
 

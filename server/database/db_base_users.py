@@ -52,7 +52,8 @@ def MK_Server_Database_User_Delete(self, user_guid):
 # verify user logon
 def MK_Server_Database_User_Login_Kodi(self, user_data):
     user_data = json.loads(user_data)
-    self.sql3_cursor.execute('select id,password from mm_user where username = %s', (user_data['username'],))
+    self.sql3_cursor.execute('select id,password from mm_user where username = %s',\
+        (user_data['username'],))
     result = self.sql3_cursor.fetchone()
     logging.debug("what: $s", result)
     if result is not None:

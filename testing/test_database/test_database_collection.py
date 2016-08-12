@@ -42,8 +42,8 @@ class Test_database_collection:
     # find all known media
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Collection_List(self, offset, records):
         self.db.MK_Server_Database_Collection_List(offset, records)
         self.db.MK_Server_Database_Rollback()

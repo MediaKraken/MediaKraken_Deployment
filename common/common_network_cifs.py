@@ -55,7 +55,8 @@ class common_cifs_Share_API:
         """
         server_name = 'Server'
         client_name = 'My Computer'
-        self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name, use_ntlm_v2 = True)
+        self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,\
+            use_ntlm_v2 = True)
         self.smb_conn.connect(ip_addr, 139)
 
 

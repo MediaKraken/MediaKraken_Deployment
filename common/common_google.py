@@ -46,28 +46,35 @@ class MK_Common_Google_API:
         self.DEVELOPER_KEY = Config.get('API', 'Google').strip()
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
-        self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+        self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,\
+            developerKey=DEVELOPER_KEY)
 
 
     # query youtube via search
     def MK_Common_Google_Youtube_Search(search_term, max_results):
-        search_response = self.youtube.search().list(q=search_term, part="id,snippet", maxResults=max_results).execute()
+        search_response = self.youtube.search().list(q=search_term, part="id,snippet",\
+            maxResults=max_results).execute()
         videos = []
         channels = []
         playlists = []
         for search_result in search_response.get("items", []):
             if search_result["id"]["kind"] == "youtube#video":
-              videos.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["videoId"]))
+              videos.append("%s (%s)" % (search_result["snippet"]["title"],\
+                  search_result["id"]["videoId"]))
             elif search_result["id"]["kind"] == "youtube#channel":
-              channels.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["channelId"]))
+              channels.append("%s (%s)" % (search_result["snippet"]["title"],\
+                  search_result["id"]["channelId"]))
             elif search_result["id"]["kind"] == "youtube#playlist":
-              playlists.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["playlistId"]))
+              playlists.append("%s (%s)" % (search_result["snippet"]["title"],\
+                  search_result["id"]["playlistId"]))
         return (videos, channels, playlists)
 
 
     # info of particular video
     def MK_Common_Google_Youtube_Info(video_url):
-        return common_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/' + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
+        return common_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/'\
+            + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url\
+            + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 
 
     # add a subscription to the specified channel.

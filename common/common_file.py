@@ -49,7 +49,8 @@ def common_file_Modification_Timestamp(file_name):
         return None
 
 
-def common_file_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False, file_ext=None):
+def common_file_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False,\
+        file_ext=None):
     """
     Save data as file
     """
@@ -79,7 +80,8 @@ def common_file_Load_Data(file_name, as_pickle=False):
     return data_block
 
 
-def common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False, directory_only=False):
+def common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,\
+        directory_only=False):
     """
     Find all filtered files in directory
     """
@@ -117,7 +119,8 @@ def common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_s
         if file_size:
             match_list_size = []
             for row_data in match_list:
-                match_list_size.append((row_data, common_string.bytes2human(os.path.getsize(row_data))))
+                match_list_size.append((row_data,\
+                    common_string.bytes2human(os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:

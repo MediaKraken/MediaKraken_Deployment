@@ -37,15 +37,18 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
     """
     Determine which provider to start lookup via class text
     """
-    logging.debug("Ident: %s %s %s %s", class_text, media_file_path, download_que_json, download_que_id)
+    logging.debug("Ident: %s %s %s %s", class_text, media_file_path, download_que_json,\
+        download_que_id)
     metadata_uuid = None
     # find data by class type
     if class_text == "Adult":
         pass
     elif class_text == "Anime":
-        metadata_uuid = metadata_anime.metadata_anime_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_anime.metadata_anime_lookup(db, media_file_path,
+            download_que_json, download_que_id)
     elif class_text == "Book":
-        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Game CHD":
         metadata_uuid = MK_Server_Database_Metadata_Game_By_Name_And_System(os.path.basename(os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
@@ -66,9 +69,11 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
     elif class_text == "Home Movie":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Magazine":
-        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Movie":
-        metadata_uuid = metadata_movie.metadata_movie_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_movie.metadata_movie_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Movie Theme":
         guid = db.MK_Server_Database_Read_Media_Path_Like(os.path.dirname(os.path.abspath(media_file_path.replace('/theme/', ''))))
         if guid is not None:
@@ -86,21 +91,25 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
         else:
             pass  # TODO lookup properly
     elif class_text == "Music":
-        metadata_uuid = metadata_music.metadata_music_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_music.metadata_music_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
     elif class_text == "Music Video":
-        metadata_uuid = metadata_music_video.metadata_music_video_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_music_video.metadata_music_video_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Picture":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":
-        metadata_uuid = metadata_sports.metadata_sports_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_sports.metadata_sports_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
     elif class_text == "TV Show":
-        metadata_uuid = metadata_tv.metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id)
+        metadata_uuid = metadata_tv.metadata_tv_lookup(db, media_file_path,\
+            download_que_json, download_que_id)
     elif class_text == "TV Theme":
         guid = db.MK_Server_Database_Read_Media_Path_Like(os.path.dirname(os.path.abspath(media_file_path.replace('/theme/', ''))))
         if guid is not None:

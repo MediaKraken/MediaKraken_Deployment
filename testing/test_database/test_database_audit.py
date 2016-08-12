@@ -88,8 +88,8 @@ class Test_database_audit:
     ## read the paths to audit
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Audit_Paths(self, offset, records):
         self.db.MK_Server_Database_Audit_Paths(offset, records)
         self.db.MK_Server_Database_Rollback()

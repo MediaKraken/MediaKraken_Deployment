@@ -11,7 +11,7 @@ from MediaKraken.user.models import User
 from MediaKraken.settings import DevConfig, ProdConfig
 from MediaKraken.database import db
 
-if os.environ.get("METAMAN_ENV") == 'prod':
+if os.environ.get("MEDIAKRAKEN_ENV") == 'prod':
     app = create_app(ProdConfig)
 else:
     app = create_app(DevConfig)

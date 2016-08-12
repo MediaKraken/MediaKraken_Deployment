@@ -60,7 +60,8 @@ def common_zfs_snapshot_list(zpool=None):
     List snapshot
     """
     if zpool is not None:
-        proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot', zpool],\
+            stdout=subprocess.PIPE)
     else:
         proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot'], stdout=subprocess.PIPE)
     return proc.stdout.read()
@@ -97,7 +98,8 @@ def common_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
     """
     Replace drive in pool
     """
-    proc = subprocess.Popen(['zpool', 'replace', zpool, target_drive, replacement_drive], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['zpool', 'replace', zpool, target_drive, replacement_drive],\
+        stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -105,7 +107,8 @@ def common_zfs_zpool_create(zpool, zpool_type, zpool_drives):
     """
     Create pool
     """
-    proc = subprocess.Popen(['zpool', 'create', zpool, zpool_type, zpool_drives], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['zpool', 'create', zpool, zpool_type, zpool_drives],\
+        stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -116,7 +119,8 @@ def common_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     Set compression
     """
     proc = subprocess.Popen(['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE)
-    proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool],\
+        stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 

@@ -32,7 +32,8 @@ class MK_Common_OMDb_API:
 
 
     def MK_Common_OMDb_Get(self, media_title, media_year, media_fullplot, media_tomatoes):
-        omdb.get(title=media_title, year=media_year, fullplot=media_fullplot, tomatoes=media_tomatoes)
+        omdb.get(title=media_title, year=media_year, fullplot=media_fullplot,\
+            tomatoes=media_tomatoes)
 
 
     def MK_Common_OMDb_Search(self, media_title):

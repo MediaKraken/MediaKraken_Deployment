@@ -52,8 +52,8 @@ class Test_database_metadata_sports:
     # return list of game systems
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Metadata_Sports_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Sports_List(offset, records)
         self.db.MK_Server_Database_Rollback()

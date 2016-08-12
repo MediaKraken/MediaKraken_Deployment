@@ -24,7 +24,9 @@ sys.path.append("../../MediaKraken_Common/lib")
 
 # ircc device discovery via ssdp
 def MK_Network_IRCC_Discover():
-    SSDP_MSearch.search(cbFoundDevice=MK_Network_IRCC_Found_Device, cbFinishedSearching=MK_Network_IRCC_Finished_Searching, target='urn:schemas-sony-com:service:IRCC:1')
+    SSDP_MSearch.search(cbFoundDevice=MK_Network_IRCC_Found_Device,\
+        cbFinishedSearching=MK_Network_IRCC_Finished_Searching,\
+        target='urn:schemas-sony-com:service:IRCC:1')
 
 
 # filler found device

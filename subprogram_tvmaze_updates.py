@@ -63,7 +63,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TVMaze_Updates
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -98,17 +102,22 @@ def update_insert_show(tvmaze_id, update_rec=None):
             imdb_id = str(show_detail['externals']['imdb'])
         except:
             imdb_id = None
-        series_id_json = json.dumps({'TVMaze':str(tvmaze_id), 'TVRage':tvrage_id, 'IMDB':imdb_id, 'theTVDB':thetvdb_id})
+        series_id_json = json.dumps({'TVMaze':str(tvmaze_id), 'TVRage':tvrage_id,\
+            'IMDB':imdb_id, 'theTVDB':thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'TVMaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db.MK_Server_Database_MetadataTVMaze_Insert(series_id_json, tvmaze_name, json.dumps(show_full_json), json.dumps(image_json))
+            db.MK_Server_Database_MetadataTVMaze_Insert(series_id_json, tvmaze_name,\
+                json.dumps(show_full_json), json.dumps(image_json))
         else:
-            db.MK_Server_Database_MetadataTVMaze_Update(series_id_json, tvmaze_name, json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
+            db.MK_Server_Database_MetadataTVMaze_Update(series_id_json, tvmaze_name,\
+                json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['TVMaze']['_embedded']:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze', show_full_json['Meta']['TVMaze']['_embedded']['cast'])
+            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze',\
+                show_full_json['Meta']['TVMaze']['_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['TVMaze']['_embedded']:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze', show_full_json['Meta']['TVMaze']['_embedded']['crew'])
+            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze',\
+                show_full_json['Meta']['TVMaze']['_embedded']['crew'])
         db.MK_Server_Database_Commit()
 
 
@@ -142,9 +151,11 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Stop', N
 
 # send notications
 if tvshow_updated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True) + " TV show(s) metadata updated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+        + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True) + " TV show(s) metadata added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+        + " TV show(s) metadata added.", True)
 
 
 # commit all changes to db

@@ -73,7 +73,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Schedules_Dire
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -82,7 +86,8 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Updat
 
 
 sd = MK_Common_Schedules_Direct.MK_Common_Schedules_Direct_API()
-sd.MK_Common_Schedules_Direct_Login(Config.get('SD', 'User').strip(), Config.get('SD', 'Password').strip())
+sd.MK_Common_Schedules_Direct_Login(Config.get('SD', 'User').strip(),\
+    Config.get('SD', 'Password').strip())
 status_data = sd.MK_Common_Schedules_Direct_Status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
@@ -144,7 +149,8 @@ elif len(station_fetch > 0:
        # for each program in station schedule result
         for program_json in station_json['programs']:
             # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}], u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000, u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z', u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
-            db.MK_Server_Database_TV_Schedule_Insert(station_json['stationID'], program_json['airDateTime'], json.dumps(program_json))
+            db.MK_Server_Database_TV_Schedule_Insert(station_json['stationID'],\
+                program_json['airDateTime'], json.dumps(program_json))
             logging.debug("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])

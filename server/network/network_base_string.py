@@ -118,8 +118,10 @@ class Metaman_Network_Events(Int32StringReceiver):
                 if True:
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i', media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.MK_Network_Get_Default_IP() + ':' + self.server_port_ffmpeg + '/stream.ffm'
+                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',\
+                        media_path, http_link], shell=False)
+                    http_link = 'http://' + common_network.MK_Network_Get_Default_IP() + ':'\
+                        + self.server_port_ffmpeg + '/stream.ffm'
                 else:
                     # tell slave to fire up the media
                     http_link = None
@@ -148,7 +150,9 @@ class Metaman_Network_Events(Int32StringReceiver):
                 except:
                     pass
             if lookup_id is not None:
-                msg = "IMAGE " + pickle.dumps((messageWords[1], 'https://' + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/' + lookup_id.replace('../images/', ''), media_id))
+                msg = "IMAGE " + pickle.dumps((messageWords[1], 'https://'\
+                    + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/'\
+                    + lookup_id.replace('../images/', ''), media_id))
         # general data
         elif messageWords[0] == "GENRELIST":
             msg = "GENRELIST " + pickle.dumps(self.genre_list)

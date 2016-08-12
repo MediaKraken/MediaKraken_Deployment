@@ -58,7 +58,8 @@ class Test_database_media_movie:
 
 
     # web media count
-    @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "group_collection", "include_remote"), [
+    @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "group_collection",\
+        "include_remote"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False, False),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', True, True),   # exists
@@ -66,13 +67,16 @@ class Test_database_media_movie:
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', True, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False, False)])  # no exist
-    def test_MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type, list_genre, group_collection, include_remote):
-        self.db.MK_Server_Database_Web_Media_List_Count(class_guid, list_type, list_genre, group_collection, include_remote)
+    def test_MK_Server_Database_Web_Media_List_Count(self, class_guid, list_type, list_genre,\
+            group_collection, include_remote):
+        self.db.MK_Server_Database_Web_Media_List_Count(class_guid, list_type, list_genre,\
+            group_collection, include_remote)
         self.db.MK_Server_Database_Rollback()
 
 
     # web media return
-    @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "list_limit", "group_collection", "offset", "include_remote"), [
+    @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "list_limit",\
+            "group_collection", "offset", "include_remote"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0, False),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, True, 0, True),   # exists
@@ -80,6 +84,8 @@ class Test_database_media_movie:
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, False, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0, False)])  # no exist
-    def test_MK_Server_Database_Web_Media_List(self, class_guid, list_type, list_genre, list_limit, group_collection, offset, include_remote):
-        self.db.MK_Server_Database_Web_Media_List(class_guid, list_type, list_genre, list_limit, group_collection, offset, include_remote)
+    def test_MK_Server_Database_Web_Media_List(self, class_guid, list_type, list_genre,\
+            list_limit, group_collection, offset, include_remote):
+        self.db.MK_Server_Database_Web_Media_List(class_guid, list_type, list_genre, list_limit,\
+            group_collection, offset, include_remote)
         self.db.MK_Server_Database_Rollback()

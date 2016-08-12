@@ -41,7 +41,8 @@ def metadata_periodicals_lookup(db, media_file_path, download_que_id):
     metadata_uuid = None
     # try to pull isbn out..might not be long enough, so try
     try:
-        metadata_uuid = db.MK_Server_Database_MetadataBook_GUID_By_ISBN(media_file_path[-10:], media_file_path[-13:])
+        metadata_uuid = db.MK_Server_Database_MetadataBook_GUID_By_ISBN(media_file_path[-10:],\
+            media_file_path[-13:])
     except:
         pass
     if metadata_uuid is None:

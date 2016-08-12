@@ -33,4 +33,6 @@ class MK_Common_Vimeo_API:
             Config.read("MediaKraken.ini")
         else:
             Config.read("../MediaKraken.ini")
-        self.vimeo_instance = vimeo.VimeoClient(token=Config.get('Vimeo', 'AccessToken').strip(), key=Config.get('Vimeo', 'ClientID').strip(), secret=Config.get('Vimeo', 'ClientSecret').strip())
+        self.vimeo_instance = vimeo.VimeoClient(token=Config.get('Vimeo', 'AccessToken').strip(),\
+            key=Config.get('Vimeo', 'ClientID').strip(),\
+            secret=Config.get('Vimeo', 'ClientSecret').strip())

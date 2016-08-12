@@ -33,7 +33,8 @@ def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)    
-    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
+        % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
     self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
@@ -43,13 +44,15 @@ def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser
 
 
 # open database and pull in config from sqlite and create db if not exist
-def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName,\
+        PostDBUser, PostDBPass):
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
-    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
+        % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")

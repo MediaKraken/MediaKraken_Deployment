@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
+__version__ = '0.1.6'
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 # pull in the ini file config
@@ -122,7 +122,11 @@ class MediaKrakenApp():
         common_logging.common_logging_Start('./log/MediaKraken_Link')
         # open the database
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+            Config.get('DB Connections', 'PostDBPort').strip(),\
+            Config.get('DB Connections', 'PostDBName').strip(),\
+            Config.get('DB Connections', 'PostDBUser').strip(),\
+            Config.get('DB Connections', 'PostDBPass').strip())
         self.connect_to_server()
         return root
 
@@ -131,7 +135,8 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL(sys.argv[1], int(sys.argv[2]), TheaterFactory(self), ssl.ClientContextFactory())
+        reactor.connectSSL(sys.argv[1], int(sys.argv[2]),\
+            TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
@@ -183,7 +188,9 @@ class MediaKrakenApp():
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
-                self.db.MK_Server_Database_Insert_Remote_Media(link_server, new_media[0], self.db.MK_Server_Database_Media_UUID_By_Class(new_media[1]), new_media[2], metadata_guid)
+                self.db.MK_Server_Database_Insert_Remote_Media(link_server, new_media[0],\
+                    self.db.MK_Server_Database_Media_UUID_By_Class(new_media[1]),\
+                    new_media[2], metadata_guid)
             self.db.MK_Server_Database_Commit()
         else:
             logging.debug("unknown message type")

@@ -66,7 +66,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_theTVDB_Update
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -91,8 +95,10 @@ for row_data in update_item['Data']['Series']:
         xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API_Connection.MK_Common_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
         # insert
         image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'IMDB':xml_show_data['Data']['Series']['IMDB_ID'], 'theTVDB':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
-        db.MK_Server_Database_MetadataTVDB_Insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
+        series_id_json = json.dumps({'IMDB':xml_show_data['Data']['Series']['IMDB_ID'],\
+            'theTVDB':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
+        db.MK_Server_Database_MetadataTVDB_Insert(series_id_json,\
+            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
             db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('theTVDB', xml_actor_data['Actor'])

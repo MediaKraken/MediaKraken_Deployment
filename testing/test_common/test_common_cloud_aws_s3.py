@@ -44,7 +44,8 @@ class Test_common_cloud_AWS_S3:
         ("./cache/HashCalc.txt", "HashCalc.txt", True),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", False),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
-    def test_MK_Common_AWS_S3_Upload(self, source_path, destination_filename, backup_bucket = False):
+    def test_MK_Common_AWS_S3_Upload(self, source_path, destination_filename,\
+            backup_bucket = False):
         MK_Common_AWS_S3_Upload(source_path, destination_filename, backup_bucket)
 
 

@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
+__version__ = '0.1.6'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
@@ -144,7 +144,8 @@ class MediaKrakenApp():
         metaapp = self
         self.connect_to_server()
         # start up the cpu timer
-        status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE ' + pickle.dumps(common_system.common_system_CPU_Usage(False))))
+        status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\
+            + pickle.dumps(common_system.common_system_CPU_Usage(False))))
         status_timer.start()
         return root
 
@@ -153,7 +154,9 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(), int(self.config.get('MediaKrakenServer', 'Port').strip()), TheaterFactory(self), ssl.ClientContextFactory())
+        reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
+            int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+            TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
@@ -186,7 +189,9 @@ class MediaKrakenApp():
         elif messageWords[0] == "MEMUSAGE":
             msg = 'MEMUSAGE ' + pickle.dumps(common_system.common_system_Virtual_Memory(False))
         elif messageWords[0] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((common_system.common_system_CPU_Usage(True), common_system.common_system_Disk_Usage_All(True), common_system.common_system_Virtual_Memory(False)))
+            msg = 'SYSSTATS ' + pickle.dumps((common_system.common_system_CPU_Usage(True),\
+                common_system.common_system_Disk_Usage_All(True),\
+                common_system.common_system_Virtual_Memory(False)))
         elif messageWords[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
             status_timer.cancel()

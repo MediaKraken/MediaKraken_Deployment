@@ -94,7 +94,8 @@ logging.info("Validate Paths")
 # keep the checks split so user can be told which one is wrong
 if not os.path.isdir(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()):
     logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s", Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())
+    logging.critical("Invalid Path: %s",\
+        Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())
     sys.exit()
 if not os.path.isdir(Config.get('MediaKrakenServer', 'BackupLocal').strip()):
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
@@ -106,7 +107,11 @@ logging.info("Open DB")
 # open the database
 db = database_base.MK_Server_Database()
 try:
-    db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        Config.get('DB Connections', 'PostDBPort').strip(),\
+        Config.get('DB Connections', 'PostDBName').strip(),\
+        Config.get('DB Connections', 'PostDBUser').strip(),\
+        Config.get('DB Connections', 'PostDBPass').strip())
 except:
     logging.critical("Cannot open database. Exiting...")
     sys.exit()
@@ -142,7 +147,8 @@ logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram/subprogram_reactor_web_images.py'], shell=False)
+proc_image = subprocess.Popen(['python', './subprogram/subprogram_reactor_web_images.py'],\
+    shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
@@ -177,7 +183,8 @@ logging.info("API PID: %s", proc_api.pid)
 # fire up link servers
 link_pid = {}
 for link_data in db.MK_Server_Database_Link_List():
-    proc_link = subprocess.Popen(['python', 'main_link.py', link_data[2]['IP'], str(link_data[2]['Port'])], shell=False)
+    proc_link = subprocess.Popen(['python', 'main_link.py', link_data[2]['IP'],\
+        str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
 

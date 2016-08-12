@@ -23,7 +23,8 @@ import uuid
 
 # count reviews for media
 def MK_Server_Database_Review_Count(self, metadata_id):
-    self.sql3_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s', (metadata_id,))
+    self.sql3_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s',\
+        (metadata_id,))
     return self.sql3_cursor.fetchone()[0]
 
 

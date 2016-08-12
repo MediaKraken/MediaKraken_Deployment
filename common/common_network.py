@@ -62,7 +62,8 @@ def MK_Network_Send_Email(email_receipient, email_subject, email_body):
     """
     Send email
     """
-    email.send(recipient=email_receipient, subject=email_subject, text=email_body, create_chooser=True)
+    email.send(recipient=email_receipient, subject=email_subject, text=email_body,\
+        create_chooser=True)
 
 
 def MK_Network_Get_MAC():

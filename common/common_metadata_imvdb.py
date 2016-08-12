@@ -34,18 +34,22 @@ class MK_Common_IMVDb_API:
 
 
     def MK_Common_IMVDb_Video_Info(self, video_id):
-        resp = requests.post(self.BASE_API_URL + "/video/" + video_id + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
+        resp = requests.post(self.BASE_API_URL + "/video/" + video_id\
+            + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
         logging.debug("IMVDb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
     def MK_Common_IMVDb_Search_Video(self, artist_name, song_title):
-        resp = requests.post(self.BASE_API_URL + "/search/videos?q=" + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')), headers=self.headers)
+        resp = requests.post(self.BASE_API_URL + "/search/videos?q="\
+            + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),\
+            headers=self.headers)
         logging.debug("IMVDb Video Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
     def MK_Common_IMVDb_Search_Entities(self, artist_name):
-        resp = requests.post(self.BASE_API_URL + "/search/entities?q=" + artist_name.replace(' ', '+'), headers=self.headers)
+        resp = requests.post(self.BASE_API_URL + "/search/entities?q="\
+            + artist_name.replace(' ', '+'), headers=self.headers)
         logging.debug("IMVDb Entities Status: %s-%s", resp.status_code, resp.json())
         return resp.json()

@@ -35,7 +35,8 @@ class common_transmission_API:
             Config.read("MediaKraken.ini")
         else:
             Config.read("../MediaKraken.ini")
-        self.tc = transmissionrpc.Client(Config.get('Transmission', 'Host').strip(), int(Config.get('Transmission', 'Port').strip()))
+        self.tc = transmissionrpc.Client(Config.get('Transmission', 'Host').strip(),\
+            int(Config.get('Transmission', 'Port').strip()))
 
 
     def common_transmission_Get_Torrent_List(self):

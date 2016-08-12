@@ -89,9 +89,11 @@ def admins():
     # read in the notifications
     for row_data in g.db.MK_Server_Database_Notification_Read():
         if row_data['mm_notification_dismissable']: # check for dismissable
-            data_alerts_dismissable.append((row_data['mm_notification_guid'],row_data['mm_notification_text'],row_data['mm_notification_time']))
+            data_alerts_dismissable.append((row_data['mm_notification_guid'],\
+                row_data['mm_notification_text'],row_data['mm_notification_time']))
         else:
-            data_alerts.append((row_data['mm_notification_guid'],row_data['mm_notification_text'],row_data['mm_notification_time']))
+            data_alerts.append((row_data['mm_notification_guid'],\
+                row_data['mm_notification_text'],row_data['mm_notification_time']))
     # TODO temp
     data_transmission_active = True
     # set the scan info
@@ -101,7 +103,8 @@ def admins():
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db.MK_Server_Database_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
-    return render_template("admin/admins.html", data_user_count = locale.format('%d', g.db.MK_Server_Database_User_List_Name_Count(), True),
+    return render_template("admin/admins.html", 
+                           data_user_count = locale.format('%d', g.db.MK_Server_Database_User_List_Name_Count(), True),
                            data_server_info_server_name = data_server_info_server_name,
                            data_server_info_server_ip = nic_data,
                            data_server_info_server_port = Config.get('MediaKrakenServer','ListenPort').strip(),
@@ -135,7 +138,8 @@ def admin_users():
                                 format_total=True,
                                 format_number=True,
                                 )
-    return render_template('admin/admin_users.html', users=g.db.MK_Server_Database_User_List_Name(offset, per_page),
+    return render_template('admin/admin_users.html',
+                           users=g.db.MK_Server_Database_User_List_Name(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -147,7 +151,8 @@ def admin_users():
 @login_required
 @admin_required
 def admin_user_detail(guid):
-    return render_template('admin/admin_user_detail.html', data_user=g.db.MK_Server_Database_User_Detail(guid))
+    return render_template('admin/admin_user_detail.html',\
+        data_user=g.db.MK_Server_Database_User_Detail(guid))
 
 
 #@blueprint.route("/dlna")
@@ -171,7 +176,8 @@ def admin_cron_display_all():
                                 format_total=True,
                                 format_number=True,
                                 )
-    return render_template('admin/admin_cron.html', media_cron=g.db.MK_Server_Database_Cron_List(False, offset, per_page),
+    return render_template('admin/admin_cron.html',
+                           media_cron=g.db.MK_Server_Database_Cron_List(False, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -196,7 +202,9 @@ def admin_cron_edit(guid):
 def admin_tvtuners():
     tv_tuners = []
     for row_data in g.db.MK_Server_Database_Tuner_List():
-        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel'] + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'], row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
+        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
+        + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],\
+        row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
     return render_template("admin/admin_tvtuners.html", data_tuners = tv_tuners)
 
 
@@ -219,7 +227,8 @@ def admin_transmission():
     if trans_connection is not None:
         torrent_no = 1
         for torrent in trans_connection.common_transmission_Get_Torrent_List():
-            transmission_data.append((locale.format('%d', torrent_no, True), torrent.name, torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
+            transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,\
+                torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
     return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
 
@@ -258,7 +267,8 @@ def admin_library():
                                 format_total=True,
                                 format_number=True,
                                 )
-    return render_template("admin/admin_library.html", media_dir=g.db.MK_Server_Database_Audit_Paths(offset, per_page),
+    return render_template("admin/admin_library.html",
+                           media_dir=g.db.MK_Server_Database_Audit_Paths(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -329,14 +339,16 @@ def admin_library_delete_page():
 @admin_required
 def getLibraryById():
     result = g.db.MK_Server_Database_Audit_Path_By_UUID(request.form['id'])
-    return json.dumps({'Id': result['mm_media_dir_guid'],'Path': result['mm_media_dir_path'],'Media Class': result['mm_media_dir_class_type']})
+    return json.dumps({'Id': result['mm_media_dir_guid'],\
+        'Path': result['mm_media_dir_path'],'Media Class': result['mm_media_dir_class_type']})
 
 
 @blueprint.route('/updateLibrary', methods=['POST'])
 @login_required
 @admin_required
 def updateLibrary():
-    g.db.MK_Server_Database_Audit_Path_Update_By_UUID(request.form['new_path'], request.form['new_class'], request.form['id'])
+    g.db.MK_Server_Database_Audit_Path_Update_By_UUID(request.form['new_path'],\
+        request.form['new_class'], request.form['id'])
     return json.dumps({'status':'OK'})
 
 
@@ -372,7 +384,8 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db.MK_Server_Database_Trigger_Insert(('python', './subprogram/subprogram_postgresql_backup.py')) # this commits
+                g.db.MK_Server_Database_Trigger_Insert(('python',\
+                    './subprogram/subprogram_postgresql_backup.py')) # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:
             flash_errors(form)
@@ -382,7 +395,8 @@ def admin_backup():
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.common_cloud_Backup_List():
-        backup_files.append((backup_cloud.name, backup_cloud.type, common_string.bytes2human(backup_cloud.size)))
+        backup_files.append((backup_cloud.name, backup_cloud.type,\
+            common_string.bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -415,7 +429,8 @@ def ffmpeg_stat():
 @login_required
 @admin_required
 def admin_server_stat():
-    return render_template("admin/admin_server_stats.html", data_disk=common_system.common_system_Disk_Usage_All(True),
+    return render_template("admin/admin_server_stats.html", 
+                           data_disk=common_system.common_system_Disk_Usage_All(True),
                            data_cpu_usage=common_system.common_system_CPU_Usage(True),
                            data_mem_usage=common_system.common_system_Virtual_Memory(None))
 
@@ -425,7 +440,8 @@ def admin_server_stat():
 @login_required
 @admin_required
 def admin_server_stat_slave():
-    return render_template("admin/admin_server_stats_slave.html", data_disk=common_system.common_system_Disk_Usage_All(True),
+    return render_template("admin/admin_server_stats_slave.html",
+                           data_disk=common_system.common_system_Disk_Usage_All(True),
                            data_cpu_usage=common_system.common_system_CPU_Usage(True),
                            data_mem_usage=common_system.common_system_Virtual_Memory(None))
 
@@ -435,7 +451,8 @@ def admin_server_stat_slave():
 @login_required
 @admin_required
 def admin_server_settings():
-    return render_template("admin/admin_server_settings.html", form=AdminSettingsForm(request.form))
+    return render_template("admin/admin_server_settings.html",
+                           form=AdminSettingsForm(request.form))
 
 
 @blueprint.route("/zfs")
@@ -443,7 +460,8 @@ def admin_server_settings():
 @login_required
 @admin_required
 def admin_server_zfs():
-    return render_template("admin/admin_server_zfs.html", data_zpool=common_zfs.common_zfs_Zpool_List())
+    return render_template("admin/admin_server_zfs.html",
+                           data_zpool=common_zfs.common_zfs_Zpool_List())
 
 
 @blueprint.route("/link_server")
@@ -459,7 +477,8 @@ def admin_server_link_server():
                                 format_total=True,
                                 format_number=True,
                                 )
-    return render_template("admin/admin_link.html", data=g.db.MK_Server_Database_Link_List(offset, per_page),
+    return render_template("admin/admin_link.html",
+                           data=g.db.MK_Server_Database_Link_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination)
@@ -548,7 +567,8 @@ def admin_database_statistics():
     db_stats_count = []
     for row_data in g.db.MK_Server_Database_Postgresql_Row_Count():
         db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
-    return render_template("admin/admin_server_database_stats.html", data_db_size=g.db.MK_Server_Database_Postgresql_Table_Sizes(),
+    return render_template("admin/admin_server_database_stats.html", 
+                           data_db_size=g.db.MK_Server_Database_Postgresql_Table_Sizes(),
                            data_db_count=db_stats_count)
 
 
@@ -568,7 +588,8 @@ def admin_fs_browse(path):
             else:
                 build_path += '/' + path_part 
             browse_parent.append((build_path, path_part))
-    return render_template("admin/admin_fs_browse.html", file=browse_file, file_parent=browse_parent)
+    return render_template("admin/admin_fs_browse.html", file=browse_file,
+                           file_parent=browse_parent)
 
 
 @blueprint.before_request

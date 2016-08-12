@@ -47,7 +47,8 @@ class common_metadata_tmdb_API:
         search = tmdb.Search()
         response = search.movie(query=movie_title)
         for s in search.results:
-            logging.debug("result: %s %s %s", s['title'], s['id'], s['release_date'].split('-', 1)[0])
+            logging.debug("result: %s %s %s", s['title'], s['id'],\
+                s['release_date'].split('-', 1)[0])
             # TODO   this should be year =, up and down
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                         or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
@@ -148,24 +149,29 @@ class common_metadata_tmdb_API:
     def MK_Common_TMDB_MetaData_Info_Build(self, result_json):
         logging.debug('tmdb info build: %s', result_json)
         # create file path for poster
-        file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(result_json['title'], 'poster')
+        file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(result_json['title'],\
+            'poster')
         poster_file_path = None
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
             if not os.path.isfile(file_path):
-                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['poster_path'], file_path)
+                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                    + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
-        file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(result_json['title'], 'backdrop')
+        file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(result_json['title'],\
+            'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             file_path += result_json['backdrop_path']
             if not os.path.isfile(file_path):
-                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original' + result_json['backdrop_path'], file_path)
+                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                    + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case
         series_id_json = json.dumps({'IMDB':result_json['imdb_id'], 'TMDB':str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'TMDB':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}}})
+        image_json = ({'Images': {'TMDB':{'Backdrop':backdrop_file_path,\
+            'Poster':poster_file_path}}})
         #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

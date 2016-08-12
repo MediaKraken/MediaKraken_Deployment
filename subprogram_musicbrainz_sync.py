@@ -25,8 +25,8 @@ import sys
 import os
 import signal
 import json
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import common_file
 import common_logging
 import database as database_base
@@ -59,7 +59,12 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_MusicBrainz_Sy
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
+
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.MK_Server_Database_Brainz()
@@ -71,11 +76,19 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Start', No
 
 # fetch all the artists from brainz
 for row_data in db_brainz.MK_Server_Database_Brainz_All_Artists():
-    db.MK_Server_Database_Metadata_Musician_Add(row_data['name'], json.dumps({'MusicBrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'], 'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':' + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])), 'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':' + str(row_data['end_date_day']))}))
+    db.MK_Server_Database_Metadata_Musician_Add(row_data['name'],\
+        json.dumps({'MusicBrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],\
+        'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'\
+        + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),\
+        'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':'\
+        + str(row_data['end_date_day']))}))
     logging.debug(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.MK_Server_Database_Brainz_All_Albums_By_Artist(row_data['id']):
-        db.MK_Server_Database_Metadata_Album_Add(row_data_album['name'], json.dumps({'MusicBrainz':row_data_album['gid']}), json.dumps({'Commment':row_data_album['comment'], 'Language':row_data_album['language'], 'Barcode':row_data_album['barcode']}))
+        db.MK_Server_Database_Metadata_Album_Add(row_data_album['name'],\
+            json.dumps({'MusicBrainz':row_data_album['gid']}),\
+            json.dumps({'Commment':row_data_album['comment'],\
+            'Language':row_data_album['language'], 'Barcode':row_data_album['barcode']}))
         logging.debug(row_data_album)
 '''
         # fetch all the songs from brainz

@@ -11,7 +11,7 @@ if BASE_DIR not in sys.path:
 
 from MediaKraken.app import create_app
 
-sys.path.append("../../MediaKraken_Common")
+sys.path.append("../../common")
 import common_logging
 
 # start logging

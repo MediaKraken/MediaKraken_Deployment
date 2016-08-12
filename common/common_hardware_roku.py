@@ -137,7 +137,8 @@ def MK_Common_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10
     tmpDirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
     extractImages(videoFile, tmpDirectory, image_interval, option_mode, first_image_offset)
-    bifFile = "%s-%s.bif" % (os.path.basename(videoFile).rsplit('.', 1)[0], modeExtension[option_mode])
+    bifFile = "%s-%s.bif" % (os.path.basename(videoFile).rsplit('.', 1)[0],\
+        modeExtension[option_mode])
     # Create the BIF file
     makeBIF(bifFile, tmpDirectory, image_interval)
     # Clean up the temporary directory

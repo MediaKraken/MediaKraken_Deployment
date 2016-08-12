@@ -93,7 +93,8 @@ def MK_Server_Database_Metadata_GUID_By_RT(self, rt_uuid):
 
 
 # insert metadata from themoviedb
-def MK_Server_Database_Metadata_Insert_TMDB(self, uuid_id, series_id, data_title, data_json, data_image_json):
+def MK_Server_Database_Metadata_Insert_TMDB(self, uuid_id, series_id, data_title, data_json,\
+        data_image_json):
     self.sql3_cursor.execute('insert into mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_name, mm_metadata_json, mm_metadata_localimage_json) values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title, data_json, data_image_json))
     self.MK_Server_Database_Commit()
 
@@ -115,7 +116,8 @@ def MK_Server_Database_Metadata_Movie_List(self, offset=None, records=None):
 
 
 # grab the current metadata json id
-def MK_Server_Database_Metadata_Fetch_Media_ID_Json(self, media_id_type, media_id_id, collection_media=False):
+def MK_Server_Database_Metadata_Fetch_Media_ID_Json(self, media_id_type, media_id_id,\
+        collection_media=False):
     if not collection_media:
         self.sql3_cursor.execute('select mm_metadata_guid, mm_metadata_media_id from mm_metadata_movie where mm_metadata_media_id->>%s = %s', (media_id_type, media_id_id))
     else:
@@ -126,7 +128,8 @@ def MK_Server_Database_Metadata_Fetch_Media_ID_Json(self, media_id_type, media_i
         return None
 
 
-def MK_Server_Database_Metadata_Fetch_Series_Media_ID_Json(self, media_id_type, media_id_id, collection_media=False):
+def MK_Server_Database_Metadata_Fetch_Series_Media_ID_Json(self, media_id_type, media_id_id,\
+        collection_media=False):
     if not collection_media:
         self.sql3_cursor.execute('select mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id from mm_metadata_tvshow where mm_metadata_media_tvshow_id->>%s = %s', (media_id_type, media_id_id))
         try:
@@ -150,7 +153,8 @@ def MK_Server_Database_Find_Metadata_GUID(self, media_name, media_release_year):
 
 
 # update the mediaid in metadata
-def MK_Server_Database_Metadata_Update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid, media_aniid):
+def MK_Server_Database_Metadata_Update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,\
+        media_aniid):
     # do tvdb first due to datadump
     if media_tvid is not None:
         media_type = 'theTVDB'

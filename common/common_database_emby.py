@@ -37,7 +37,8 @@ class MK_Common_Database_Emby:
         Attach rest of databases so I can query them
         """
         # user activity - start/stop, errors and info
-        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/activitylog.db' as 'activitylog'")
+        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path\
+            + "/activitylog.db' as 'activitylog'")
         # access tokens for devices
         #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/authentication.db' as 'authentication'")
         #drwxrwxr-x.   2 MediaBrowserServer media      4096 Mar 29  2015 camerauploads
@@ -54,7 +55,8 @@ class MK_Common_Database_Emby:
         # data about media, codecs, lang, channels, bitrate, path, etc - no longer in BETA version
         #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/mediainfo.db' as 'mediainfo'")
         # notifications/spam etc from Emby team
-        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/notifications.db' as 'notifications'")
+        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path\
+            + "/notifications.db' as 'notifications'")
         #drwxrwxr-x.   2 MediaBrowserServer media      4096 Mar 29  2015 playlists
         # metadata status such as when it was refreshed last
         #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/refreshinfo.db' as 'refreshinfo'")
@@ -65,19 +67,22 @@ class MK_Common_Database_Emby:
         # contains info on sync jobs
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/sync14.db' as 'sync14'")
         # user info for favs, played, etc
-        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/userdata_v2.db' as 'userdata_v2'")
+        self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path\
+            + "/userdata_v2.db' as 'userdata_v2'")
         # list of users along with json info
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/users.db' as 'users'")
 
 
-    def MK_Database_Sqlite3_Open_Emby(self, db_file_name = None, db_username_dir = os.environ.get("USERNAME"), attach_other_db = False):
+    def MK_Database_Sqlite3_Open_Emby(self, db_file_name = None,\
+            db_username_dir = os.environ.get("USERNAME"), attach_other_db = False):
         """
         Open database and pull in config from sqlite and create db if not exist
         """
         # if not specified....then try to find the default
         if db_file_name is None:
             # windows
-            db_file_name = os.join(MK_Common_Emby.MK_Common_Emby_Installed_Directory, '/data/library.db')
+            db_file_name = os.join(MK_Common_Emby.MK_Common_Emby_Installed_Directory,\
+                '/data/library.db')
         # verify it found a file
         if db_file_name is None:
             logging.critical("Cannot find database file.  Exiting.")

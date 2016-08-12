@@ -67,8 +67,8 @@ class Test_database_media:
     # find all known media
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Known_Media(self, offset, records):
         self.db.MK_Server_Database_Known_Media(offset, records)
         self.db.MK_Server_Database_Rollback()
@@ -89,8 +89,8 @@ class Test_database_media:
     # read all media that is NULL for metadata match
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Known_Media_All_Unmatched(self, offset, records):
         self.db.MK_Server_Database_Known_Media_All_Unmatched(offset, records)
         self.db.MK_Server_Database_Rollback()
@@ -105,8 +105,8 @@ class Test_database_media:
     # list duplicates
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Media_Duplicate(self, offset, records):
         self.db.MK_Server_Database_Media_Duplicate(offset, records)
         self.db.MK_Server_Database_Rollback()

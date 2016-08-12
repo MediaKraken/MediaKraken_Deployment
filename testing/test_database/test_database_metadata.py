@@ -62,8 +62,8 @@ class Test_database_metadata:
     # grab all the generes
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Metadata_Genre_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Genre_List(offset, records)
         self.db.MK_Server_Database_Rollback()
@@ -120,8 +120,8 @@ class Test_database_metadata:
     # return list of movies
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Metadata_Movie_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Movie_List(offset, records)
         self.db.MK_Server_Database_Rollback()

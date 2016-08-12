@@ -52,7 +52,11 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
                 # TODO "find" the rigth event by name?  if multiples?
                 metadata_uuid = db.MK_Server_Database_MetadataSports_GUID_By_TheSportsDB(thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
-                    image_json = {'Images': {'TheSportsDB': {'Characters': {}, 'Banner': None, 'Poster': None, 'Backdrop': None, "Redo": True}}}
-                    media_id_json = json.dumps({'TheSportsDB': str(thesportsdb_data['event'][0]['idEvent'])})
-                    db.MK_Server_Database_MetadataTheSportsDB_Insert(media_id_json, thesportsdb_data['event'][0]['strFilename'], json.dumps(thesportsdb_data), json.dumps(image_json))
+                    image_json = {'Images': {'TheSportsDB': {'Characters': {}, 'Banner': None,\
+                        'Poster': None, 'Backdrop': None, "Redo": True}}}
+                    media_id_json = json.dumps({'TheSportsDB':\
+                        str(thesportsdb_data['event'][0]['idEvent'])})
+                    db.MK_Server_Database_MetadataTheSportsDB_Insert(media_id_json,\
+                        thesportsdb_data['event'][0]['strFilename'], json.dumps(thesportsdb_data),\
+                        json.dumps(image_json))
     return metadata_uuid

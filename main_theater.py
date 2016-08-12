@@ -81,12 +81,14 @@ class TheaterFactory(ClientFactory):
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error', 'Lost connection to MediaKraken_server.')
+        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error',\
+            'Lost connection to MediaKraken_server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error', 'Could not connect to MediaKraken_server.')
+        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error',\
+            'Could not connect to MediaKraken_server.')
 
 
     def buildProtocol(self, addr):
@@ -209,7 +211,15 @@ class MediaKrakenApp(App):
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
             elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
+            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
                 self.root.ids._screen_manager.current = 'Main_Theater_Home'
             pass
         elif keycode[1] == 'enter':
@@ -304,7 +314,9 @@ class MediaKrakenApp(App):
 
     def connect_to_server(self):
         if self.config is not None:
-            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(), int(self.config.get('MediaKrakenServer', 'Port').strip()), TheaterFactory(self), ssl.ClientContextFactory())
+            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
+                int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+                TheaterFactory(self), ssl.ClientContextFactory())
             reactor.run()
 
 
@@ -347,7 +359,8 @@ class MediaKrakenApp(App):
         except:
             pickle_data = None
         if messageWords[0] == "IDENT":
-            networkProtocol.sendString("VALIDATE " + "admin" + " " + "password" + " " + platform.node())
+            networkProtocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
+                + platform.node())
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         # after login receive the list of users to possibly login with
@@ -360,11 +373,14 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif messageWords[0] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index, rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter, cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+            args_converter = lambda row_index,\
+                rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
+            list_adapter = ListAdapter(data=data, args_converter=args_converter,\
+                cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
             list_view = ListView(adapter=list_adapter)
             for video_list in pickle_data:
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list', size_hint_y=None, width=self.root.ids.theater_media_video_list_scrollview.width, height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
+                    size_hint_y=None, width=self.root.ids.theater_media_video_list_scrollview.width, height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Video_Select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "VIDEODETAIL":
@@ -443,7 +459,8 @@ class MediaKrakenApp(App):
             logging.debug("gen")
             for genre_list in pickle_data:
                 logging.debug("genlist: %s", genre_list)
-                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list', size_hint_y=None, width=self.root.ids.theater_media_genre_list_scrollview.width, height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
+                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',\
+                    size_hint_y=None, width=self.root.ids.theater_media_genre_list_scrollview.width, height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "PERSONLIST":
@@ -564,7 +581,8 @@ class MediaKrakenApp(App):
         global networkProtocol
         msg = args[0]
         logging.debug("home press: %s", args)
-        if args[0] == 'in_progress' or args[0] == 'recent_addition' or args[0] == 'movie' or args[0] == 'video':
+        if args[0] == 'in_progress' or args[0] == 'recent_addition'\
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'

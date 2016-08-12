@@ -36,12 +36,14 @@ class MK_Common_TheTVDB_API:
         Config = ConfigParser.ConfigParser()
         Config.read("MediaKraken.ini")
         # setup connection
-        self.tvdb_connection = api.TVDB(Config.get('API', 'theTVdb').strip(), actors=True, ignore_case=True)
+        self.tvdb_connection = api.TVDB(Config.get('API', 'theTVdb').strip(), actors=True,\
+            ignore_case=True)
 
 
     # get show information
     def MK_Common_TheTVDB_Show_Info(self, show_title, show_language):
-        return MK_Common_TheTVDB_Show_Details(MK_Common_TheTVDB_Search(self.tvdb_connection, show_title, show_language))
+        return MK_Common_TheTVDB_Show_Details(MK_Common_TheTVDB_Search(self.tvdb_connection,\
+            show_title, show_language))
 
 
     # search for show
@@ -75,12 +77,20 @@ class MK_Common_TheTVDB_API:
     def MK_Common_TheTVDB_Show_DB_Save(self, show_data):
         show_data.update()
         # store the show data
-        json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID, 'zap2it':show_data.zap2it_id})
+        json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID,
+            'zap2it':show_data.zap2it_id})
         # start saving pictures (if available)
         banner_path = None
         fanart_path = None
         poster_path = None
-        json_media_json = json.dumps({'Overview':show_data.Overview, 'AliasNames':show_data.AliasNames, 'Language':show_data.language, 'FirstAired':show_data.FirstAired, 'Status':show_data.Status, 'ContentRating':show_data.ContentRating, 'Rating':show_data.Rating, 'RatingCount':show_data.RatingCount, 'Airs_DayOfWeek':show_data.Airs_DayOfWeek, 'Airs_Time':show_data.Airs_Time, 'Runtime':show_data.Runtime, 'LastUpdate':show_data.lastupdated, 'Network':show_data.Network, 'Network_ID_thetvdb':show_data.NetworkID})
+        json_media_json = json.dumps({'Overview':show_data.Overview,\
+            'AliasNames':show_data.AliasNames, 'Language':show_data.language,\
+            'FirstAired':show_data.FirstAired, 'Status':show_data.Status,\
+            'ContentRating':show_data.ContentRating, 'Rating':show_data.Rating,\
+            'RatingCount':show_data.RatingCount, 'Airs_DayOfWeek':show_data.Airs_DayOfWeek,\
+            'Airs_Time':show_data.Airs_Time, 'Runtime':show_data.Runtime,\
+            'LastUpdate':show_data.lastupdated, 'Network':show_data.Network,\
+            'Network_ID_thetvdb':show_data.NetworkID})
 
     #    print "show:",show.seriesid,show.id
     #    print "genre", show.Genre
@@ -92,18 +102,23 @@ class MK_Common_TheTVDB_API:
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'banner', 'thetvdb', show_data.banner)
+            banner_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+                'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'fanart', 'thetvdb', show_data.fanart)
+            fanart_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+                'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName, 'poster', 'thetvdb', show_data.poster)
+            poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+                'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:
-            json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path, 'Poster':poster_path}})
+            json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
+                'Poster':poster_path}})
         # save the show data
-        MK_Common_Database.MK_Server_Database_Metadata_Save_Show(show_data.SeriesName, json_media_id, json_media_json)
+        MK_Common_Database.MK_Server_Database_Metadata_Save_Show(show_data.SeriesName,
+            json_media_id, json_media_json)
 
         # store the season data
     # atm not using season data anyways
@@ -113,7 +128,8 @@ class MK_Common_TheTVDB_API:
     #    self.sql3_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid, mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
-        json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+        json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'',\
+            'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    MK_Server_Database_Metadata_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
     #    self.sql3_cursor.execute('insert into mm_metadata (mm_metadata_guid, mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)

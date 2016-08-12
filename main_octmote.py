@@ -134,7 +134,8 @@ class OctMoteApp(App):
 
 
     def connect_to_server(self):
-        reactor.connectSSL(self.OctMote_Server_Connection_Data[0], self.OctMote_Server_Connection_Data[1], EchoFactory(self), ssl.ClientContextFactory())
+        reactor.connectSSL(self.OctMote_Server_Connection_Data[0],\
+            self.OctMote_Server_Connection_Data[1], EchoFactory(self), ssl.ClientContextFactory())
 
 
     def on_connection(self, connection):
@@ -154,7 +155,8 @@ class OctMoteApp(App):
         self.server_list = MK_Common_MediaKraken.common_network_MediaKraken_Find_Server()
         if self.server_list is not None:
             for found_server in self.server_list:
-                btn1 = ToggleButton(text=self.server_list[found_server][1], group='mediakraken_server',)
+                btn1 = ToggleButton(text=self.server_list[found_server][1],\
+                    group='mediakraken_server',)
                 btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select, found_server))
                 self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
         else:
@@ -190,7 +192,8 @@ class OctMoteApp(App):
         self.global_selected_user_id = server_user
         self.login_password = ''
         content = OctMoteLoginScreen(login_password=self.login_password, cancel=self.dismiss_popup)
-        self._popup = Popup(title="Emby Login", content=content, size_hint=(None, None), size=(425, 250))
+        self._popup = Popup(title="Emby Login", content=content,\
+            size_hint=(None, None), size=(425, 250))
         self._popup.open()
 
 

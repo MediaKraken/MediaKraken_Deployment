@@ -31,7 +31,8 @@ class MK_Common_Telnet_API:
         pass
 
 
-    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
+    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None,\
+            telnet_password=None):
         """
         Open device via telnet
         """

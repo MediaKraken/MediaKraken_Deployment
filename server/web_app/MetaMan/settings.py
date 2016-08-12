@@ -3,9 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 os_env = os.environ
 import sys
-sys.path.append('./MediaKraken_Common')
-sys.path.append('../MediaKraken_Common')
-sys.path.append('../../MediaKraken_Common')
+sys.path.append('./common')
+sys.path.append('../common')
+sys.path.append('../../common')
 import common_file
 
 # pull in the ini file config
@@ -19,7 +19,8 @@ class Config(object):
     else:
         data = os.urandom(24).encode('hex')
         common_file.common_file_Save_Data('web_secret_key.txt', data, False)
-    SECRET_KEY = os_env.get('METAMAN_SECRET', common_file.common_file_Load_Data('web_secret_key.txt', False))
+    SECRET_KEY = os_env.get('MEDIAKRAKEN_SECRET',\
+        common_file.common_file_Load_Data('web_secret_key.txt', False))
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BCRYPT_LOG_ROUNDS = 13
@@ -34,7 +35,11 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + ConfigFile.get('DB Connections','PostDBUser') + ':' + ConfigFile.get('DB Connections','PostDBPass').strip() + '@' + ConfigFile.get('DB Connections','PostDBHost').strip() + '/' + ConfigFile.get('DB Connections','PostDBName').strip()
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://'\
+        + ConfigFile.get('DB Connections','PostDBUser') + ':'\
+        + ConfigFile.get('DB Connections','PostDBPass').strip() + '@'\
+        + ConfigFile.get('DB Connections','PostDBHost').strip() + '/'\
+        + ConfigFile.get('DB Connections','PostDBName').strip()
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
 
 
@@ -43,7 +48,11 @@ class DevConfig(Config):
     """Development configuration."""
     ENV = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + ConfigFile.get('DB Connections','PostDBUser') + ':' + ConfigFile.get('DB Connections','PostDBPass').strip() + '@' + ConfigFile.get('DB Connections','PostDBHost').strip() + '/' + ConfigFile.get('DB Connections','PostDBName').strip()
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://'\
+        + ConfigFile.get('DB Connections','PostDBUser') + ':'\
+        + ConfigFile.get('DB Connections','PostDBPass').strip() + '@'\
+        + ConfigFile.get('DB Connections','PostDBHost').strip() + '/'\
+        + ConfigFile.get('DB Connections','PostDBName').strip()
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.

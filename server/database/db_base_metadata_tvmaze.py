@@ -32,13 +32,15 @@ def MK_Server_Database_MetadataTVMaze_Changed_UUID(self, maze_uuid):
 
 
 # insert
-def MK_Server_Database_MetadataTVMaze_Insert(self, series_id_json, tvmaze_name, show_detail, image_json):
+def MK_Server_Database_MetadataTVMaze_Insert(self, series_id_json, tvmaze_name, show_detail,\
+        image_json):
     new_uuid = str(uuid.uuid4())
     self.sql3_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json, mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)', (new_uuid, series_id_json, tvmaze_name, show_detail, image_json))
     return new_uuid
 
 
 # updated
-def MK_Server_Database_MetadataTVMaze_Update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
+def MK_Server_Database_MetadataTVMaze_Update(self, series_id_json, tvmaze_name, show_detail,\
+        tvmaze_id):
     #self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s, mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s where mm_metadata_media_tvshow_id->\'TVMaze\' ? %s', (series_id_json, tvmaze_name, show_detail, tvmaze_id))
     pass

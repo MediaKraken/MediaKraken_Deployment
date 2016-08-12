@@ -37,7 +37,7 @@ import common_logging
 import database as database_base
 
 
-__version__ = json.dumps({"Version": "0.0.1"})
+__version__ = json.dumps({"Version": "0.1.6"})
 
 
 def signal_receive(signum, frame):
@@ -52,7 +52,11 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+            Config.get('DB Connections', 'PostDBPort').strip(),\
+            Config.get('DB Connections', 'PostDBName').strip(),\
+            Config.get('DB Connections', 'PostDBUser').strip(),\
+            Config.get('DB Connections', 'PostDBPass').strip())
         self.user_xref = []
         # start logging
         common_logging.common_logging_Start('./log/MediaKraken_API')
@@ -126,7 +130,11 @@ class MediaKrakenAPI(object):
             items_added = []
             for row_data in self.db.MK_Server_Database_Kodi_User_Sync_List_Added(synctime):
                 items_added.append(row_data[0])
-            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""], "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0, "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int", "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False, "Key": "", "ItemId": ""}]}
+            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],\
+                "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,\
+                "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int",\
+                "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False,\
+                "Key": "", "ItemId": ""}]}
             return pickle.dumps(sync_json)
 
 

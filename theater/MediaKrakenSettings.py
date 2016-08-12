@@ -117,7 +117,8 @@ metaman_settings_video_json = json.dumps([
      'desc': 'Set resolution for GUI and playback',
      'section': 'Video',
      'key': 'Resolution',
-     'options': ['Window Size', 'Screen Size', '(4k) 3840 x 2160', '1920x1080p', '1920x1080i', '1280x720p', '1280x720i']},
+     'options': ['Window Size', 'Screen Size', '(4k) 3840 x 2160', '1920x1080p', '1920x1080i',\
+         '1280x720p', '1280x720i']},
     {'type': 'options',
      'title': 'Main Display',
      'desc': 'Select main screen for GUI and playback',

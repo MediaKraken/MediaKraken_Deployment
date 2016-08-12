@@ -94,7 +94,9 @@ def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_
                 if self.MK_Server_Database_Metadata_Person_ID_Count(meta_type, person_id) > 0:
                     logging.debug("skippy")
                 else:
-                    self.MK_Server_Database_Metdata_Person_Insert(person_name, json.dumps({'Host': meta_type, 'id': person_id}), None, json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))       
+                    self.MK_Server_Database_Metdata_Person_Insert(person_name,\
+                        json.dumps({'Host': meta_type, 'id': person_id}), None,\
+                        json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))       
     except:
         if meta_type == "TVMaze":
             person_id = person_json['person']['id']
@@ -112,7 +114,9 @@ def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_
             if self.MK_Server_Database_Metadata_Person_ID_Count(meta_type, person_id) > 0:
                 logging.debug("skippy")
             else:
-                self.MK_Server_Database_Metdata_Person_Insert(person_name, json.dumps({'Host': meta_type, 'id': person_id}), None, json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
+                self.MK_Server_Database_Metdata_Person_Insert(person_name,\
+                    json.dumps({'Host': meta_type, 'id': person_id}), None,\
+                    json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
 
 
 # find other media for person

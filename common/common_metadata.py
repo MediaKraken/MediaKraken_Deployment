@@ -74,9 +74,11 @@ def common_metadata_image_file_path(media_name, media_type):
     pattern = r'[^\.a-zA-Z]'
     try:
         if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename
-            file_path = os.path.join(base_image_path, media_type, random.choice(string.ascii_lowercase))
+            file_path = os.path.join(base_image_path, media_type,\
+                random.choice(string.ascii_lowercase))
         else:
-            file_path = os.path.join(base_image_path, media_type, os.path.basename(media_name)[0].lower())
+            file_path = os.path.join(base_image_path, media_type,\
+                os.path.basename(media_name)[0].lower())
     except:
         file_path = os.path.join(base_image_path, media_type, random.choice(string.ascii_lowercase))       
     return file_path

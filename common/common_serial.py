@@ -33,7 +33,8 @@ class common_serial_api:
         pass
 
 
-    def common_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits, dev_bytesize):
+    def common_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
+            dev_bytesize):
         """
         Open serial device for read/write
         """

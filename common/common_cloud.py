@@ -47,7 +47,8 @@ def common_cloud_backup_list():
     for backup_class in cloud_backup_class:    
         for backup_cloud in common_cloud_File_List(backup_class[0], None, True):
             loggging.debug("cloud back: %s",backup_cloud)
-            backup_files.append((backup_cloud.name, backup_class[1], common_string.bytes2human(backup_cloud.size)))
+            backup_files.append((backup_cloud.name, backup_class[1],\
+                common_string.bytes2human(backup_cloud.size)))
     return backup_files
 
 

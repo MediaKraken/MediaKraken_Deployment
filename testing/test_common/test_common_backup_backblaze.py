@@ -63,7 +63,8 @@ class Test_MK_Common_Backup_Backblaze_API:
         ("./cache", "bucket_upload", None),
         ("./cachefake", "bucket_upload_fake", None),
         ("./cache", "bucket_test", "test")])
-    def test_MK_Common_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name, dir_password=None):
+    def test_MK_Common_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name,\
+            dir_password=None):
         MK_Common_Backup_Backblaze_Upload_Directory(dir_name, bucket_name, dir_password)
 
 

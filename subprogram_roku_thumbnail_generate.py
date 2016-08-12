@@ -53,7 +53,12 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Roku_Thumbnail
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
+
 
 # log start
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
@@ -71,7 +76,8 @@ for row_data in db.MK_Server_Database_Known_Media():
 
 # send notications
 if thumbnails_generated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', thumbnails_generated, True) + " Roku thumbnail(s) generated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', thumbnails_generated, True)\
+        + " Roku thumbnail(s) generated.", True)
 
 # log end
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\

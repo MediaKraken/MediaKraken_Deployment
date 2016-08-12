@@ -50,7 +50,12 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Anime_Scudlee'
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
+
 
 # log start
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Anime Scudlee Start', None,\
@@ -80,11 +85,13 @@ for row_data in MK_Common_Scudlee.MK_Scudlee_Anime_List_Parse():
     logging.debug("row: %s", row_data)
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
-        if (row_data[1] == "OVA" or row_data[1] == "movie" or row_data[1] == "hentai" or row_data[1] == "web") and row_data[2] is None:
+        if (row_data[1] == "OVA" or row_data[1] == "movie" or row_data[1] == "hentai"\
+                or row_data[1] == "web") and row_data[2] is None:
             pass
         else:
             # should be valid data, do the update
-            db.MK_Server_Database_Metadata_Update_Media_ID_From_Scudlee(row_data[1], row_data[2], row_data[0])
+            db.MK_Server_Database_Metadata_Update_Media_ID_From_Scudlee(row_data[1],\
+                row_data[2], row_data[0])
 
 # begin the collections match/create/update
 for row_data in MK_Common_Scudlee.MK_Scudlee_Anime_Set_Parse():

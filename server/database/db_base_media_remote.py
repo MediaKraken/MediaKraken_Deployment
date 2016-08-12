@@ -22,7 +22,8 @@ import uuid
 
 
 # insert media into database
-def MK_Server_Database_Insert_Remote_Media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
+def MK_Server_Database_Insert_Remote_Media(self, media_link_uuid, media_uuid, media_class_uuid,\
+        media_metadata_uuid, media_ffprobe_json):
     self.sql3_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json) values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json))
 
 
@@ -84,7 +85,8 @@ def MK_Server_Database_Known_Remote_Media_Count(self):
 
 
 # new media for link
-def MK_Server_Database_Media_Remote_Read_New(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+def MK_Server_Database_Media_Remote_Read_New(self, date_last_sync, sync_movie=None, sync_tv=None,\
+        sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
     sql_params = date_last_sync,
     first_query = True
     sync_query = ""

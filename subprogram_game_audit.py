@@ -94,7 +94,8 @@ class HashGenerate(Thread):
                         hash_dict[zippedFile] = sha1_hash_data
                     except:
                         lock.acquire()
-                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error on SHA1 of file")
+                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                            + "|Error on SHA1 of file")
                         lock.release()
                 zip.close()
                 if len(hash_dict) > 0:
@@ -107,7 +108,8 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error reading zip")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                    + "|Error reading zip")
                 lock.release()
         elif self.file_name[-2:] == '7z':
             #Need to unpack the 7z and check all files inside it
@@ -128,7 +130,8 @@ class HashGenerate(Thread):
                         #self.hash_result = self.file_name,fileHash,sha1_hash_data
                     except:
                         lock.acquire()
-                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error on SHA1 of file")
+                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                            + "|Error on SHA1 of file")
                         lock.release()
                 if len(hash_dict) > 0:
                     if len(hash_dict) == 1:
@@ -141,7 +144,8 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error reading 7z")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                    + "|Error reading 7z")
                 lock.release()
         else:
             try:
@@ -159,7 +163,8 @@ class HashGenerate(Thread):
                     print("single: %s", self.file_name, sha1_hash_data)
                 except:
                     lock.acquire()
-                    Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error on SHA1 of file")
+                    Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                        + "|Error on SHA1 of file")
                     lock.release()
                 if len(hash_dict) > 0:
                     fileHASHListSingle.append(hash_dict.values()[0])
@@ -168,7 +173,8 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) + "|Error reading file")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
+                    + "|Error reading file")
                 lock.release()
 
 class HashScanner(object):
@@ -219,7 +225,8 @@ class HashScanner(object):
         # start the audit threads
         audit_q = Queue(multiprocessing.cpu_count() * 1)
         prod_thread = threading.Thread(target=self.calc_hash, args=(audit_q, files_to_hash))
-        cons_thread = threading.Thread(target=self.get_hash_result, args=(audit_q, len(files_to_hash)))
+        cons_thread = threading.Thread(target=self.get_hash_result,\
+            args=(audit_q, len(files_to_hash)))
         prod_thread.start()
         cons_thread.start()
         prod_thread.join()
@@ -273,7 +280,8 @@ class ROMFileParser(object):
             rom_hash_length = len(rom_hash_data)
             for db_hash_dict in db_full_hash_dict:
                 # in theory all crc32 and sha1 should match here for mame roms
-                if rom_hash_length == len(db_hash_dict[1]) and cmp(rom_hash_data, db_hash_dict[1]) == 0:
+                if rom_hash_length == len(db_hash_dict[1])\
+                        and cmp(rom_hash_data, db_hash_dict[1]) == 0:
                     Client_GlobalData.found_rom_ids.append(db_hash_dict[0])
                     Client_GlobalData.found_rom_paths.append(fileHASHNameList[item_ndx])
                     db_full_hash_dict.remove(db_hash_dict)
@@ -349,7 +357,11 @@ class GameAuditer(threading.Thread):
         logging.debug("loading roms from db")
         # open the database
         db = database_base.MK_Server_Database()
-        db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections',' PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+            Config.get('DB Connections', 'PostDBPort').strip(),\
+            Config.get('DB Connections',' PostDBName').strip(),\
+            Config.get('DB Connections', 'PostDBUser').strip(),\
+            Config.get('DB Connections', 'PostDBPass').strip())
 
         # read all the audited games
         conn_game = connect('db/game_database.db')
@@ -403,7 +415,8 @@ class GameAuditer(threading.Thread):
                     Client_GlobalData.audit_gameList[old_system_long_name].sort()
                 old_system_long_name = sql_row[0]
                 game_info = {}
-            game_info[game_name] = game_times_played, game_time_played, game_monitor, game_players, str(sql_row[3]), game_category
+            game_info[game_name] = game_times_played, game_time_played, game_monitor,\
+                game_players, str(sql_row[3]), game_category
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
             Client_GlobalData.audit_gameList[old_system_long_name] = copy.deepcopy(game_info.items())
@@ -428,7 +441,9 @@ class GameAuditer(threading.Thread):
         for gameSystem in Client_GlobalData.audit_gameList.iteritems():
             # need to break down gameSystem as technically it's all the systems and data underneath it
             for gameData in gameSystem[1]:
-                if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal" and gameData[1][2] != "Horizontal") or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical" and gameData[1][2] != "Vertical") or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
+                if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal"\
+                    and gameData[1][2] != "Horizontal")\
+                    or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical" and gameData[1][2] != "Vertical") or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
                     pass
                 else:
                     if first_record:
@@ -437,7 +452,8 @@ class GameAuditer(threading.Thread):
                     if subString in gameData[0].lower():
                         if gameSystem[0] not in gameList:
                             gameList[gameSystem[0]] = []
-                        game_info[gameData[0]] = gameData[1][0], gameData[1][1], gameData[1][2], gameData[1][3], gameData[1][4], gameData[1][5]
+                        game_info[gameData[0]] = gameData[1][0], gameData[1][1],\
+                            gameData[1][2], gameData[1][3], gameData[1][4], gameData[1][5]
                     if old_system_long_name != gameSystem[0]:
                         if len(game_info) > 0:
                             gameList[old_system_long_name] = copy.deepcopy(game_info.items())

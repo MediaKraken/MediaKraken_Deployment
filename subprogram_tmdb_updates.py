@@ -62,7 +62,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TMDB_Updates')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -88,7 +92,8 @@ def movie_fetch_save(tmdb_id):
         series_id_json, result_json, image_json = tmdb.MK_Common_TMDB_MetaData_Info_Build(result_json)
         cast_json = tmdb.MK_Common_TMDB_Metadata_Cast_By_ID(tmdb_id)
         # set and insert the record
-        meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'], 'Crew': cast_json['crew']}}})
+        meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'],\
+            'Crew': cast_json['crew']}}})
         # check for previous record
         if db.MK_Server_Database_Metadata_TMDB_Count(result_json['id']) > 0:
             # TODO if this is > 0......MUST use series id from DB.......so, stuff doesn't get wiped
@@ -105,10 +110,12 @@ def movie_fetch_save(tmdb_id):
             if review_json['total_results'] > 0:
                 review_json_id = ({'TMDB': str(review_json['id'])})
                 logging.debug("review: %s", review_json_id)
-                db.MK_Server_Database_Review_Insert(json.dumps(review_json_id), json.dumps({'TMDB': review_json}))
+                db.MK_Server_Database_Review_Insert(json.dumps(review_json_id),\
+                    json.dumps({'TMDB': review_json}))
             # set and insert the record
             metadata_uuid = str(uuid.uuid4())
-            db.MK_Server_Database_Metadata_Insert_TMDB(metadata_uuid, series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+            db.MK_Server_Database_Metadata_Insert_TMDB(metadata_uuid, series_id_json,\
+                result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     return metadata_uuid
 
 
@@ -130,16 +137,20 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server TMDB Update Stop', Non
 create_collection_trigger = False
 # send notications
 if tvshow_updated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True) + " TV show(s) metadata updated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+        + " TV show(s) metadata updated.", True)
     create_collection_trigger = True
 if tvshow_inserted > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True) + " TV show(s) metadata added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+        + " TV show(s) metadata added.", True)
     create_collection_trigger = True
 if movie_updated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', movie_updated, True) + " movie metadata updated.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', movie_updated, True)\
+        + " movie metadata updated.", True)
     create_collection_trigger = True
 if movie_inserted > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', movie_inserted, True) + " movie metadata added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', movie_inserted, True)\
+        + " movie metadata added.", True)
     create_collection_trigger = True
 # update collection
 if create_collection_trigger:

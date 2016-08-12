@@ -59,7 +59,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TVMaze_Images'
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -125,11 +129,14 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('TVMaze')
 
 # send notifications
 if total_cast_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_cast_images, True) + " new TV cast image(s) added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_cast_images, True)\
+        + " new TV cast image(s) added.", True)
 if total_char_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_char_images, True) + " new TV character image(s) added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_char_images, True)\
+        + " new TV character image(s) added.", True)
 if total_episode_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True) + " new TV episode image(s) added.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True)\
+        + " new TV episode image(s) added.", True)
 
 # log end
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Images Stop', None,\

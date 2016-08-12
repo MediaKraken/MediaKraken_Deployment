@@ -32,10 +32,13 @@ def MK_RDMA_Get_Devices():
     logging.info("RDMA devices: %s", rdma_device_list)
     for rdma_device in rdma_device_list:
         logging.info("RDMA Device '%s'"%(rdma_device.name))
-        for rdma_node in ['node_type', 'fw_ver', 'node_guid', 'node_desc', 'sys_image_guid', 'board_id', 'hw_ver']:
+        for rdma_node in ['node_type', 'fw_ver', 'node_guid', 'node_desc', 'sys_image_guid',\
+                'board_id', 'hw_ver']:
             logginf.info("    %s: %s"%(rdma_node, repr(getattr(rdma_device, rdma_node))))
         for rdma_device_end_port in rdma_device.end_ports:
             logging.info("    port: %u"%(rdma_device_end_port.port_id))
-            for rdma_attr in ['lid', 'lmc', 'phys_state', 'state', 'sm_lid', 'sm_sl', 'gids', 'pkeys']:
-                logging.info("        %s: %s"%(rdma_attr, repr(getattr(rdma_device_end_port, rdma_attr))))
+            for rdma_attr in ['lid', 'lmc', 'phys_state', 'state', 'sm_lid', 'sm_sl', 'gids',\
+                    'pkeys']:
+                logging.info("        %s: %s"%(rdma_attr,\
+                    repr(getattr(rdma_device_end_port, rdma_attr))))
     return rdma_device_list

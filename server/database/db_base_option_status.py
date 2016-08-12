@@ -49,5 +49,6 @@ def MK_Server_Database_Option_Status_Update_Scan_Json_Rec(self, dir_path, scan_s
 #    json_data = json.dumps(json_data)
 
     # no need for where clause as it's only the one record
-    self.sql3_cursor.execute('update mm_options_and_status set mm_status_json = %s', (json.dumps(status_json),))
+    self.sql3_cursor.execute('update mm_options_and_status set mm_status_json = %s',\
+        (json.dumps(status_json),))
     # 'update objects set mm_options_and_status=jsonb_set(mm_options_and_status, '{name}', '"Mary"', true)' 

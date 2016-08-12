@@ -31,7 +31,9 @@ def MK_Scudlee_Fetch_XML():
     Fetch the anime list by scudlee for thetvdb crossreference
     """
     # grab from github via direct raw link
-    if not os.path.isfile('./cache/anime-list.xml') or common_file.common_file_Modification_Timestamp('./cache/anime-list.xml') < (time.time() - (30 * 86400)):
+    if not os.path.isfile('./cache/anime-list.xml')\
+            or common_file.common_file_Modification_Timestamp('./cache/anime-list.xml')\
+            < (time.time() - (30 * 86400)):
         common_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml', './cache/anime-list.xml')
     if not os.path.isfile('./cache/anime-movieset-list.xml') or common_file.common_file_Modification_Timestamp('./cache/anime-movieset-list.xml') < (time.time() - (30 * 86400)):
         common_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml', './cache/anime-movieset-list.xml')

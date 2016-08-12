@@ -47,8 +47,8 @@ class Test_database_notification:
     # read all notifications
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Notification_Read(self, offset, records):
         self.db.MK_Server_Database_Notification_Read(offset, records)
         self.db.MK_Server_Database_Rollback()

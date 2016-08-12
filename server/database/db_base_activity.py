@@ -23,7 +23,9 @@ import datetime
 import json
 
 
-def MK_Server_Database_Activity_Insert(self, activity_name, activity_overview, activity_short_overview, activity_type, activity_itemid, activity_userid, activity_log_severity):
+def MK_Server_Database_Activity_Insert(self, activity_name, activity_overview,\
+        activity_short_overview, activity_type, activity_itemid, activity_userid,\
+        activity_log_severity):
     """
     Insert server or user activity record
     """

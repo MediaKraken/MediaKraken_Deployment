@@ -35,12 +35,14 @@ def MK_Server_Database_NAS_List(self):
 
 # insert record
 def MK_Server_Database_NAS_Insert(self, nas_json):
-    self.sql3_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)', (str(uuid.uuid4()), nas_json))
+    self.sql3_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)',\
+        (str(uuid.uuid4()), nas_json))
 
 
 # update record
 def MK_Server_Database_NAS_Update(self, guid, nas_json):
-    self.sql3_cursor.execute('update mm_nas set mm_nas_json = %s where mm_nas_id = %s', (nas_json, guid))
+    self.sql3_cursor.execute('update mm_nas set mm_nas_json = %s where mm_nas_id = %s',\
+        (nas_json, guid))
 
 
 # delete record

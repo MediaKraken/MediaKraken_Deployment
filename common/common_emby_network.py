@@ -59,10 +59,12 @@ def common_network_Emby_Find_Server():
             if data_block["Address"] in server_hosts_found.keys():
                 pass
             else:
-                logging.debug("addr:" + data_block["Address"] + " : " + data_block["Id"] + " : " + data_block["Name"])
+                logging.debug("addr:" + data_block["Address"] + " : " + data_block["Id"] + " : "\
+                    + data_block["Name"])
                 server_hosts_found[data_block["Address"]] = (data_block["Id"], data_block["Name"])
         except socket.error, msg:
-            logging.critical('Network_Find_Server Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+            logging.critical('Network_Find_Server Error Code : ' + str(msg[0]) + ' Message '\
+                + msg[1])
             sys.exit()
     logging.info("hosts found: %s", server_hosts_found)
     return server_hosts_found
@@ -84,7 +86,8 @@ def common_network_Emby_Find_Users(host_server):
             pass
         found_users[user_data['Name']] = (user_data['Id'], user_image_id)
         if user_image_id is not None:
-            common_network.Network_Fetch_Image_From_URL(host_server + '/Users/' + user_data['Id'] + '/Images/Primary', None)
+            common_network.Network_Fetch_Image_From_URL(host_server + '/Users/' + user_data['Id']\
+                + '/Images/Primary', None)
     return found_users
 
 
@@ -101,7 +104,8 @@ def common_network_Emby_User_Login(host_server, user_name, user_password):
     values = {'Username' : user_name, 'Password' : password_hash}
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     try:
-        response = urllib2.urlopen(urllib2.Request(host_server + '/Users/AuthenticateByName?format=json', json.dumps(values), headers=headers))
+        response = urllib2.urlopen(urllib2.Request(host_server\
+            + '/Users/AuthenticateByName?format=json', json.dumps(values), headers=headers))
         json_response = response.read()
     except urllib2.HTTPError, e:
         logging.error('HTTPError = ' + str(e.code))
@@ -115,7 +119,8 @@ def common_network_Emby_User_Login(host_server, user_name, user_password):
 
 
 def common_network_Emby_User(host_server, user_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id, headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Users/'\
+        + user_id, headers=headers)).read()
 
 
 # fetch list of open sessions for user
@@ -127,34 +132,40 @@ def common_network_Emby_Sessions_List_Open(host_server, user_id):
     if user_id is not None:
         req = urllib2.Request(host_server + '/Sessions?format=json', headers)
     else:
-        req = urllib2.Request(host_server + '/Sessions?format=json', json.dumps({'ControllableByUserId' : user_id}), headers=headers)
+        req = urllib2.Request(host_server + '/Sessions?format=json',\
+            json.dumps({'ControllableByUserId' : user_id}), headers=headers)
     response = urllib2.urlopen(req)
     return response.read()
 
 
 # send command to specified session
 # https://github.com/MediaBrowser/Emby/wiki/Remote-control
-def common_network_Emby_Sessions_Send_Command(host_server, session_id, playstate_command, session_command):
+def common_network_Emby_Sessions_Send_Command(host_server, session_id, playstate_command,\
+        session_command):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     if playstate_command:
         url_location = '/Playing/'
     else:
         url_location = '/Command/'
-    return urllib2.urlopen(urllib2.Request(host_server + '/Sessions/' + session_id + url_location + session_command, headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Sessions/' + session_id + url_location\
+        + session_command, headers=headers)).read()
 
 
 def common_network_Emby_User_View_List(host_server, user_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views", headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views",\
+        headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def common_network_Emby_User_Channel_List(host_server, user_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id, headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id,\
+        headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def common_network_Emby_User_Channel_Feature_List(host_server, channel_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features', headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features',\
+        headers=headers)).read()
 ''' REQUEST TYPE
         StartIndex
         Limit
@@ -167,14 +178,17 @@ def common_network_Emby_User_Channel_Feature_List(host_server, channel_id, heade
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def common_network_Emby_User_Channel_Items(host_server, channel_id, user_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Items?userId=' + user_id, headers=headers)).read()
+    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id\
+        + '/Items?userId=' + user_id, headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Latest-Items
 # TODO grouping and such
 # TODO episodes
-def common_network_Emby_User_Latest_Items_List(host_server, request_type, request_subtype, request_limit, request_grouping, user_id, headers):
-    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest", headers=headers)).read()
+def common_network_Emby_User_Latest_Items_List(host_server, request_type, request_subtype,\
+        request_limit, request_grouping, user_id, headers):
+    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest",\
+        headers=headers)).read()
 
 
 # add new sync job

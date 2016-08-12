@@ -85,7 +85,8 @@ def movie_fetch_save_tmdb(db, tmdb_id):
         logging.debug("series: %s", series_id_json)
         # set and insert the record
         metadata_uuid = str(uuid.uuid4())
-        db.MK_Server_Database_Metadata_Insert_TMDB(metadata_uuid, series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+        db.MK_Server_Database_Metadata_Insert_TMDB(metadata_uuid, series_id_json,\
+            result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     else:
         metadata_uuid = None
     return metadata_uuid
@@ -118,7 +119,8 @@ def movie_fetch_save_tmdb_review(db, tmdb_id):
     if review_json['total_results'] > 0:
         review_json_id = ({'TMDB': str(review_json['id'])})
         logging.debug("review: %s", review_json_id)
-        db.MK_Server_Database_Review_Insert(json.dumps(review_json_id), json.dumps({'TMDB': review_json}))
+        db.MK_Server_Database_Review_Insert(json.dumps(review_json_id),\
+            json.dumps({'TMDB': review_json}))
 
 
 def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_id):
@@ -170,13 +172,15 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
                 else:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
+                db.MK_Server_Database_Download_Update(json.dumps(download_que_json),\
+                    download_que_id)
                 # set provider last so it's not picked up by the wrong thread
                 db.MK_Server_Database_Download_Update_Provider('theMovieDB', download_que_id)
             else:
                 # search themoviedb since not matched above via DB
                 download_que_json.update({'Status': 'Search'})
-                db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
+                db.MK_Server_Database_Download_Update(json.dumps(download_que_json),\
+                    download_que_id)
                 # set provider last so it's not picked up by the wrong thread
                 db.MK_Server_Database_Download_Update_Provider('theMovieDB', download_que_id)
     # set last values to negate lookups for same title/show

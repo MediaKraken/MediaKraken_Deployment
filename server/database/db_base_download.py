@@ -56,7 +56,8 @@ def MK_Server_Database_Download_Update_Provider(self, provider_name, guid):
     Update provider
     """
     logging.debug('download update provider: %s %s', provider_name, guid)
-    self.sql3_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s', (provider_name, guid))
+    self.sql3_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',\
+        (provider_name, guid))
     self.MK_Server_Database_Commit()
 
 
@@ -65,5 +66,6 @@ def MK_Server_Database_Download_Update(self, update_json, guid):
     Update download que record
     """
     logging.debug('download update: %s %s', update_json, guid)
-    self.sql3_cursor.execute('update mm_download_que set mdq_download_json = %s where mdq_id = %s', (update_json, guid))
+    self.sql3_cursor.execute('update mm_download_que set mdq_download_json = %s where mdq_id = %s',\
+        (update_json, guid))
     self.MK_Server_Database_Commit()

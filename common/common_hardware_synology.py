@@ -47,4 +47,5 @@ class common_synology_api():
         """
         Get share list
         """
-        return self.synology_nas.filestation.file_share.request('list_share', additional='real_path')
+        return self.synology_nas.filestation.file_share.request('list_share',\
+            additional='real_path')

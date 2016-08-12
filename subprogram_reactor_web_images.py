@@ -58,7 +58,9 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Reactor_Web_Im
 
 
 # simple reactor to present images to clients
-reactor.listenSSL(int(Config.get('MediaKrakenServer', 'ImageWeb').strip()), Site(File(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())), ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
+reactor.listenSSL(int(Config.get('MediaKrakenServer', 'ImageWeb').strip()),\
+    Site(File(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())),\
+    ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
 
 

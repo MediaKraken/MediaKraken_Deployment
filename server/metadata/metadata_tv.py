@@ -57,9 +57,11 @@ def tv_search_tvdb(db, file_name):
     metadata_uuid = None
     if theTVDB_API_Connection is not None:
         if 'year' in file_name:
-            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'], file_name['year'], tvdb_id, lang_code, True))
+            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'],\
+                file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'], None, tvdb_id, lang_code, True))
+            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'],\
+                None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
             # since there has been NO match whatsoever.....can "wipe" out everything
@@ -83,7 +85,8 @@ def tv_fetch_save_tvdb(db, tvdb_id):
         metadata_uuid = db.MK_Server_Database_MetadataTVDB_Insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('theTVDB', xml_actor_data['Actor'])
+            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('theTVDB',\
+                xml_actor_data['Actor'])
     return metadata_uuid
 
 
@@ -106,7 +109,8 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db, nfo_data, xml_data, download_que_json, download_que_id)
+    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db,\
+        nfo_data, xml_data, download_que_json, download_que_id)
     logging.debug("tv look: %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id)
     if metadata_uuid is None:
         # if same as last, return last id and save lookup

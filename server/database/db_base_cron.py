@@ -54,4 +54,5 @@ def MK_Server_Database_Cron_Time_Update(self, cron_type):
     """
     Update the datetime in which a cron job was run
     """
-    self.sql3_cursor.execute('update mm_cron set mm_cron_last_run = %s where mm_cron_name = %s', (datetime.datetime.now(), cron_type))
+    self.sql3_cursor.execute('update mm_cron set mm_cron_last_run = %s where mm_cron_name = %s',\
+        (datetime.datetime.now(), cron_type))

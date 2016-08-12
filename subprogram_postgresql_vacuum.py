@@ -19,7 +19,12 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Postgresql_Vac
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open_Isolation(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
+
 
 # log start
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Vacuum Start', None,\

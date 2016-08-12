@@ -55,7 +55,11 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_LiveStream')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    Config.get('DB Connections', 'PostDBPort').strip(),\
+    Config.get('DB Connections', 'PostDBName').strip(),\
+    Config.get('DB Connections', 'PostDBUser').strip(),\
+    Config.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -72,7 +76,8 @@ else:
 
 
 # do the actual capture
-filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+" - "+user+" - "+(info['stream']).get("channel").get("status")+".flv"
+filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - "\
+    + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
 subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 

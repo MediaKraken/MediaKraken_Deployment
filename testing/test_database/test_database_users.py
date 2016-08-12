@@ -48,8 +48,8 @@ class Test_database_users:
     # return user list
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_User_List_Name(self, offset, records):
         self.db.MK_Server_Database_User_List_Name(offset, records)
         self.db.MK_Server_Database_Rollback()

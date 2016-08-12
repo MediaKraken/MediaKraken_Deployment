@@ -91,7 +91,8 @@ class common_cloud_onedrive_api(object):
     def common_cloud_onedrive_copy(self, file_from, file_to):
         ref = ItemReference()
         ref.id = "yourparent!id" #path also supported
-        copy_operation = client.item(drive="me", id="youritemtocopy!id").copy(name="new copied name", parent_reference=ref).post()
+        copy_operation = client.item(drive="me",\
+            id="youritemtocopy!id").copy(name="new copied name", parent_reference=ref).post()
         #copy_operation.item will return None until the copy has completed.
         #If you would like to block until the operation has been completed
         #and copy_operation.item is no longer None

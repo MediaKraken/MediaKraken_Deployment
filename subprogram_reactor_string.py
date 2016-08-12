@@ -64,7 +64,11 @@ class MediaKrakenServerApp(Factory):
         self.users = {} # maps user names to network instances
         # open the database
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+            Config.get('DB Connections', 'PostDBPort').strip(),\
+            Config.get('DB Connections', 'PostDBName').strip(),\
+            Config.get('DB Connections', 'PostDBUser').strip(),\
+            Config.get('DB Connections', 'PostDBPass').strip())
         # preload some data from database
         self.genre_list = self.db.MK_Server_Database_Metadata_Genre_List()
         logging.info("Ready for connections!")
@@ -82,7 +86,8 @@ if __name__ == '__main__':
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(int(Config.get('MediaKrakenServer', 'ListenPort').strip()), MediaKrakenServerApp(), sslContext)
+    reactor.listenSSL(int(Config.get('MediaKrakenServer', 'ListenPort').strip()),\
+        MediaKrakenServerApp(), sslContext)
     reactor.run()
     # remove pid
     os.remove(pid_file)

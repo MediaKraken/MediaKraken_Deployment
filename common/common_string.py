@@ -94,4 +94,5 @@ def common_string_unc_to_addr_share_path(unc_path):
     """
     Break up unc to parts
     """
-    return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3], '\\'.join(unc_path.split('\\', 5)[4:]))
+    return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
+        '\\'.join(unc_path.split('\\', 5)[4:]))

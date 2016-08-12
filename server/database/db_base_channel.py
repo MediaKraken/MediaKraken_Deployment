@@ -24,7 +24,8 @@ import json
 
 
 # insert channel
-def MK_Server_Database_Channel_Insert(self, channel_id, channel_name, channel_language, channel_country, channel_logo_id):
+def MK_Server_Database_Channel_Insert(self, channel_id, channel_name, channel_language,\
+        channel_country, channel_logo_id):
     self.sql3_cursor.execute('select count(*) from blah where blah = %s', (channel_id,))
     if self.sql3_cursor.fetchall()[0] == 0:
         self.sql3_cursor.execute('')

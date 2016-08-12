@@ -63,7 +63,8 @@ def MK_Server_Database_Collection_By_TMDB(self, tmdb_id):
         return None
 
 
-def MK_Server_Database_Collection_Insert(self, collection_name, guid_json, metadata_json, localimage_json):
+def MK_Server_Database_Collection_Insert(self, collection_name, guid_json, metadata_json,\
+        localimage_json):
     """
     Insert collection into the database
     """

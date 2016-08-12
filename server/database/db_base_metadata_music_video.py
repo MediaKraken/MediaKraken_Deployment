@@ -27,7 +27,8 @@ def MK_Server_Database_Metadata_Music_Video_Lookup(self, artist_name, song_title
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Metadata_Music_Video_Add(self, artist_name, artist_song, id_json, data_json, image_json):
+def MK_Server_Database_Metadata_Music_Video_Add(self, artist_name, artist_song, id_json,\
+        data_json, image_json):
     self.sql3_cursor.execute('insert into mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_music_video_media_id, mm_media_music_video_band, mm_media_music_video_song, mm_metadata_music_video_json, mm_metadata_music_video_localimage_json) values (%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), id_json, artist_name, artist_song, data_json, image_json))
 
 

@@ -100,11 +100,13 @@ class MK_Common_Metadata_TheTVDB_API:
 
 
     def MK_Common_Metadata_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code = 'en'):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
+        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
+            + self.theTVDB_API_Key + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
     def MK_Common_Metadata_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code = 'en'):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
+        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
+            + self.theTVDB_API_Key + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 
 '''
 xmltodict.parse(xml, False)

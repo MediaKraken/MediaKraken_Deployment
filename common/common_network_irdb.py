@@ -39,9 +39,12 @@ def MK_Common_IRDB_Device_Types_By_Brand(brand_text):
 
 # See which sets of codes we have for that brand and device type:
 def MK_Common_IRDB_Codesets_By_Brand_Device(brand_text, device_type):
-    return json.loads(common_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/codeset/?brand=' + brand_text + '&devicetype=' + device_type, None))
+    return json.loads(common_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/codeset/?brand='\
+        + brand_text + '&devicetype=' + device_type, None))
 
 
 # get the code with the protocol, device, and subdevice information we just derived from above:
 def MK_Common_IRDB_Function_List(brand_text, protocol_type, device_type, device_num, subdevice):
-    return json.loads(common_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/code/?brand=' + brand_text + '&devicetype=' + device_type + '&protocol=' + protocol_type + '&device=' + device_num + '&subdevice=' + subdevice, None))
+    return json.loads(common_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/code/?brand='\
+        + brand_text + '&devicetype=' + device_type + '&protocol=' + protocol_type\
+        + '&device=' + device_num + '&subdevice=' + subdevice, None))

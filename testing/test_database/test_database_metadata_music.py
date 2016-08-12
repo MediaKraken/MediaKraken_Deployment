@@ -82,8 +82,8 @@ class Test_database_metadata_music:
     # return albums metadatalist
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Metadata_Album_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Album_List(offset, records)
         self.db.MK_Server_Database_Rollback()
@@ -92,8 +92,8 @@ class Test_database_metadata_music:
     # return muscian metadatalist
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_MK_Server_Database_Metadata_Muscian_List(self, offset, records):
         self.db.MK_Server_Database_Metadata_Muscian_List(offset, records)
         self.db.MK_Server_Database_Rollback()

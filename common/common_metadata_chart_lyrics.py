@@ -25,7 +25,8 @@ def MK_Common_Metadata_Chart_Lyrics(artist_name, song_name):
     """
     Generate url link and fetch lyrics
     """
-    lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s' % urllib.urlencode({'artist' : artist_name, 'song' : song_name})).read()
+    lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'\
+        % urllib.urlencode({'artist' : artist_name, 'song' : song_name})).read()
     logging.debug(lyric_text)
     return lyric_text
 
