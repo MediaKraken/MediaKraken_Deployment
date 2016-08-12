@@ -26,52 +26,52 @@ class CommonBackupBackblaze(object):
     Class for interfacing with backblaze
     """
     def __init__(self, account_id, app_key):
-        self.b2 = BackBlazeB2(account_id, app_key)
+        self.b2_blaze = BackBlazeB2(account_id, app_key)
 
 
-    def com_backup_backblaze_bucket_list(self):
+    def com_backblaze_bucket_list(self):
         """
         Return list of buckets in Backblaze
         """
-        return self.b2.list_buckets()
+        return self.b2_blaze.list_buckets()
 
 
-    def com_backup_backblaze_bucket_create(self, bucket_name):
+    def com_backblaze_bucket_create(self, bucket_name):
         """
         Create specified bucket name
         """
-        response = self.b2.create_bucket(bucket_name, bucket_type='allPrivate')
+        response = self.b2_blaze.create_bucket(bucket_name, bucket_type='allPrivate')
         logging.debug("b2 create: %s", response)
 
 
-    def com_backup_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
+    def com_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
         """
         Upload file into specified bucket
         """
         if file_password is None:
-            self.b2.upload_file(file_name, bucket_name=bucket_name)
+            self.b2_blaze.upload_file(file_name, bucket_name=bucket_name)
         else:
-            self.b2.upload_file(file_name, bucket_name=bucket_name, password=file_password)
+            self.b2_blaze.upload_file(file_name, bucket_name=bucket_name, password=file_password)
 
 
-    def com_backup_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
+    def com_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
         """
         Upload entire directory into specified bucket
         """
         if dir_password is None:
-            self.b2.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
+            self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
         else:
-            self.b2.recursive_upload(dir_name, bucket_name=bucket_name,\
+            self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name,\
                     multithread=True, password=dir_password)
 
 
-    def com_backup_backblaze_download_File(self, file_name, local_file_name, file_password):
+    def com_backblaze_download_file(self, file_name, local_file_name, file_password):
         """
         Download specified file
         """
         if file_password is None:
-            response = self.b2.download_file_by_name(file_name, local_file_name)
+            response = self.b2_blaze.download_file_by_name(file_name, local_file_name)
         else:
-            response = self.b2.download_file_by_name(file_name, local_file_name,\
+            response = self.b2_blaze.download_file_by_name(file_name, local_file_name,\
                     password=file_password)
         logging.debug("b2 down: %s", response)
