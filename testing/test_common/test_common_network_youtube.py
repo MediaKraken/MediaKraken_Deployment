@@ -25,8 +25,8 @@ from common_network_Youtube import *
 
 
 # fetch video via youtube-dl
-# def MK_Common_Metadata_Youtube_Fetch_Video_By_URL(url_location, file_name):
+# def com_Metadata_Youtube_Fetch_Video_By_URL(url_location, file_name):
 
 
 # fetch youtube trailers for title
-# def MK_Common_Metadata_Youtube_Fetch_Video_List(search_string, max_files):
+# def com_Metadata_Youtube_Fetch_Video_List(search_string, max_files):

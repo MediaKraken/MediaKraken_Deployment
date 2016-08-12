@@ -30,14 +30,14 @@ class CommonHardwareHDHomeRunPY(object):
         pass
 
 
-    def MK_Common_HDHomeRun_Discover(self):
+    def com_HDHomeRun_Discover(self):
         """
         Look for hdhomerun divices
         """
         self.devices = HdhrUtility.discover_find_devices_custom()
 
 
-    def MK_Common_HDHomeRun_List(self):
+    def com_HDHomeRun_List(self):
         return self.devices
 
 
@@ -73,9 +73,9 @@ class CommonHardwareHDHomeRunPY(object):
 
 
 '''
-Test_class = MK_Common_HDHomeRun_API_Py()
-Test_class.MK_Common_HDHomeRun_Discover()
-devices = Test_class.MK_Common_HDHomeRun_List()
+Test_class = com_HDHomeRun_API_Py()
+Test_class.com_HDHomeRun_Discover()
+devices = Test_class.com_HDHomeRun_List()
 
 i = 0
 for device in devices:

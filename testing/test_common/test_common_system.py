@@ -103,5 +103,5 @@ def Test_common_system_Uptime():
     (None),
     ('init'),
     ('fakeprocessname')])
-def Test_MK_Common_Process_List(process_name):
-    MK_Common_Process_List(process_name)
+def Test_com_Process_List(process_name):
+    com_Process_List(process_name)

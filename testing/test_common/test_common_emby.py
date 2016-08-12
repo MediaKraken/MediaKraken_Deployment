@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Emby import *
+from com_Emby import *
 
 
 # determine install directory
@@ -29,8 +29,8 @@ from MK_Common_Emby import *
     (None),
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
-def Test_MK_Common_Emby_Installed_Directory(dir_name):
-    MK_Common_Emby_Installed_Directory(dir_name)
+def Test_com_Emby_Installed_Directory(dir_name):
+    com_Emby_Installed_Directory(dir_name)
 
 
 # fetch library list
@@ -38,18 +38,18 @@ def Test_MK_Common_Emby_Installed_Directory(dir_name):
     (None),
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
-def Test_MK_Common_Emby_Library_List(dir_name):
-    MK_Common_Emby_Library_List(dir_name)
+def Test_com_Emby_Library_List(dir_name):
+    com_Emby_Library_List(dir_name)
 
 
 # check for running instance
-def Test_MK_Common_Emby_Check_Instance():
-    MK_Common_Emby_Check_Instance()
+def Test_com_Emby_Check_Instance():
+    com_Emby_Check_Instance()
 
 
 # C# guid to text
-# def MK_Common_Emby_GUID_To_UUID(emby_guid):
+# def com_Emby_GUID_To_UUID(emby_guid):
 
 
 # text uuid to C# guid
-# def MK_Common_Emby_UUID_to_GUID(emby_guid):
+# def com_Emby_UUID_to_GUID(emby_guid):

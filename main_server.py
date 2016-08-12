@@ -28,10 +28,10 @@ import os
 sys.path.append("./common")
 sys.path.append("./server")
 import common_logging
-import MK_Common_Watchdog
+import com_Watchdog
 rmda_enabled_os = False
 try:
-    import MK_Common_RMDA
+    import com_RMDA
     rmda_enabled_os = True
 except:
     pass
@@ -51,7 +51,7 @@ def signal_receive(signum, frame):
     for link_data in link_pid.keys():
         os.kill(link_pid[link_data], signal.SIGTERM)
     # stop watchdog
-    watchdog.MK_Common_Watchdog_Stop()
+    watchdog.com_Watchdog_Stop()
     # cleanup db
     db.MK_Server_Database_Rollback()
     # log stop
@@ -130,15 +130,15 @@ else:
 
 # look for infiniband rdma devices
 if rmda_enabled_os:
-    rmda_devices = MK_Common_RMDA.MK_RDMA_Get_Devices()
+    rmda_devices = com_RMDA.MK_RDMA_Get_Devices()
     if rmda_devices is None:
         rmda_enabled_os = False
 
 
 logging.info("Start Watchdog")
 # startup watchdog
-watchdog = MK_Common_Watchdog.MK_Common_Watchdog_API()
-watchdog.MK_Common_Watchdog_Start(db.MK_Server_Database_Audit_Paths(None, None))
+watchdog = com_Watchdog.com_Watchdog_API()
+watchdog.com_Watchdog_Start(db.MK_Server_Database_Audit_Paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -199,7 +199,7 @@ proc_web_app.wait()
 
 
 # stop watchdog
-watchdog.MK_Common_Watchdog_Stop()
+watchdog.com_Watchdog_Stop()
 
 
 # log stop

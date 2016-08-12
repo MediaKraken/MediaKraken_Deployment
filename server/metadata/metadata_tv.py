@@ -22,14 +22,14 @@ import json
 from guessit import guessit
 import sys
 sys.path.append("../common")
-import MK_Common_TheTVDB
+import com_TheTVDB
 import common_metadata_anidb
 import common_metadata_imdb
 import common_metadata_netflixroulette
-import MK_Common_Metadata_TheTVDB
-import MK_Common_Metadata_TV_Intro
-import MK_Common_Metadata_TV_Theme
-import MK_Common_Metadata_TVMaze
+import com_Metadata_TheTVDB
+import com_Metadata_TV_Intro
+import com_Metadata_TV_Theme
+import com_Metadata_TVMaze
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -38,16 +38,16 @@ import metadata_nfo_xml
 
 # verify thetvdb key exists for search
 if Config.get('API', 'theTVdb').strip() != 'None':
-    theTVDB_API_Connection = MK_Common_TheTVDB.MK_Common_TheTVDB_API()
+    theTVDB_API_Connection = com_TheTVDB.com_TheTVDB_API()
     # show xml downloader and general api interface
-    theTVDB_API = MK_Common_Metadata_TheTVDB.MK_Common_Metadata_TheTVDB_API()
+    theTVDB_API = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
 else:
     theTVDB_API_Connection = None
 
 
 # setup the tvmaze class
 if Config.get('API', 'TVMaze').strip() != 'None':
-    TVMaze_API_Connection = MK_Common_Metadata_TVMaze.MK_Common_Metadata_TVMaze_API()
+    TVMaze_API_Connection = com_Metadata_TVMaze.com_Metadata_TVMaze_API()
 else:
     TVMaze_API_Connection = None
 
@@ -57,10 +57,10 @@ def tv_search_tvdb(db, file_name):
     metadata_uuid = None
     if theTVDB_API_Connection is not None:
         if 'year' in file_name:
-            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(theTVDB_API_Connection.com_TheTVDB_Search(file_name['title'],\
                 file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(theTVDB_API_Connection.MK_Common_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(theTVDB_API_Connection.com_TheTVDB_Search(file_name['title'],\
                 None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
@@ -77,7 +77,7 @@ def tv_search_tvdb(db, file_name):
 def tv_fetch_save_tvdb(db, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
-    xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API.MK_Common_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
+    xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
     if xml_show_data is not None:
         # insert
         image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}

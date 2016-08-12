@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_HDHomeRun import *
+from com_Hardware_HDHomeRun import *
 
 
 class TestCommonHardwareHDHomeRun(object):
@@ -29,7 +29,7 @@ class TestCommonHardwareHDHomeRun(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Hardware_HDHomeRun.MK_Common_Hardware_HDHomeRun_API()
+        self.db = com_Hardware_HDHomeRun.com_Hardware_HDHomeRun_API()
 
 
     @classmethod
@@ -38,38 +38,38 @@ class TestCommonHardwareHDHomeRun(object):
 
 
     # discover items
-    def Test_MK_Common_HDHomeRun_Discover(self):
-        MK_Common_HDHomeRun_Discover()
+    def Test_com_HDHomeRun_Discover(self):
+        com_HDHomeRun_Discover()
 
 
     # item list
-    def Test_MK_Common_HDHomeRun_List(self):
-        MK_Common_HDHomeRun_List()
+    def Test_com_HDHomeRun_List(self):
+        com_HDHomeRun_List()
 
 
     # item detail
-#    def MK_Common_HDHomeRun_Detail(self, ndx):
+#    def com_HDHomeRun_Detail(self, ndx):
 
 
     # firmware upgrade
-#    def MK_Common_HDHomeRun_Upgrade(self, ndx, firmware_file):
+#    def com_HDHomeRun_Upgrade(self, ndx, firmware_file):
 
 
     # set lock request
-#    def MK_Common_HDHomeRun_Lock_Request(self, ndx):
+#    def com_HDHomeRun_Lock_Request(self, ndx):
 
 
     # release lock
-#    def MK_Common_HDHomeRun_Lock_Release(self, ndx):
+#    def com_HDHomeRun_Lock_Release(self, ndx):
 
 
     # get lock owner
-#    def MK_Common_HDHomeRun_Lock_Owner(self, ndx):
+#    def com_HDHomeRun_Lock_Owner(self, ndx):
 
 
     # set tuner
-#    def MK_Common_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
+#    def com_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
 
 
     # get tuner status
-#    def MK_Common_HDHomeRun_Get_Tuner_Status(self, ndx):
+#    def com_HDHomeRun_Get_Tuner_Status(self, ndx):

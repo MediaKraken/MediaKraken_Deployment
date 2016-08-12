@@ -39,8 +39,8 @@ class TestDatabaseMediaImages(object):
         self.db.MK_Server_Database_Close()
 
 
-    def Test_MK_Common_Media_Images_List_Count(self):
-        self.db.MK_Common_Media_Images_List_Count()
+    def Test_com_Media_Images_List_Count(self):
+        self.db.com_Media_Images_List_Count()
         self.db.MK_Server_Database_Rollback()
 
 
@@ -48,6 +48,6 @@ class TestDatabaseMediaImages(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_MK_Common_Media_Images_List(self, offset, records):
-        self.db.MK_Common_Media_Images_List(offset, records)
+    def Test_com_Media_Images_List(self, offset, records):
+        self.db.com_Media_Images_List(offset, records)
         self.db.MK_Server_Database_Rollback()

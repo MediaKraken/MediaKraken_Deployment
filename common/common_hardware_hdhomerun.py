@@ -30,18 +30,18 @@ class CommonHardwareHDHomeRun(object):
         pass
 
 
-    def MK_Common_HDHomeRun_Discover(self):
+    def com_HDHomeRun_Discover(self):
         """
         Discover hdhomerun devices
         """
         self.devices = Device.discover()
 
 
-    def MK_Common_HDHomeRun_List(self):
+    def com_HDHomeRun_List(self):
         return self.devices
 
 
-    def MK_Common_HDHomeRun_Detail(self, ndx):
+    def com_HDHomeRun_Detail(self, ndx):
         print('Model: %s', self.devices[ndx].get_var(item='/sys/model'))
         print('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel'))
         print('Name: %s', self.devices[ndx].get_name())
@@ -52,33 +52,33 @@ class CommonHardwareHDHomeRun(object):
 
 
     # firmware upgrade
-    def MK_Common_HDHomeRun_Upgrade(self, ndx, firmware_file):
+    def com_HDHomeRun_Upgrade(self, ndx, firmware_file):
         self.devices[ndx].upgrade(filename=firmware_file, wait=True)
 
 
     # set lock request
-    def MK_Common_HDHomeRun_Lock_Request(self, ndx):
+    def com_HDHomeRun_Lock_Request(self, ndx):
         self.devices[ndx].tuner_lockkey_request()
         self.devices[ndx].wait_for_lock()
 
 
     # release lock
-    def MK_Common_HDHomeRun_Lock_Release(self, ndx):
+    def com_HDHomeRun_Lock_Release(self, ndx):
         self.devices[ndx].tuner_lockkey_release()
 
 
     # get lock owner
-    def MK_Common_HDHomeRun_Lock_Owner(self, ndx):
+    def com_HDHomeRun_Lock_Owner(self, ndx):
         return self.devices[0].get_tuner_lockkey_owner()
 
 
     # set tuner
-    def MK_Common_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
+    def com_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
         self.devices[ndx].set_tuner(tuner_no)
 
 
     # get tuner status
-    def MK_Common_HDHomeRun_Get_Tuner_Status(self, ndx):
+    def com_HDHomeRun_Get_Tuner_Status(self, ndx):
          return self.devices[ndx].get_tuner_status()
 
 

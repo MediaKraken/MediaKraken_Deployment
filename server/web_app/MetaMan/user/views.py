@@ -33,7 +33,7 @@ sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
 import common_file
-import MK_Common_Google
+import com_Google
 import common_network_Twitch
 import common_network_Vimeo
 import common_network_Youtube
@@ -96,7 +96,7 @@ def user_internet():
 @login_required
 def user_internet_youtube():
     return render_template("users/user_internet_youtube.html",\
-        media=MK_Common_Google.MK_Common_Google_Youtube_Feed_List('top_rated'))
+        media=com_Google.com_Google_Youtube_Feed_List('top_rated'))
 
 
 # vimeo
@@ -112,9 +112,9 @@ def user_internet_vimeo():
 @blueprint.route('/internet/internet_twitch/')
 @login_required
 def user_internet_twitch():
-    twitch_api = common_network_Twitch.MK_Common_Twitch_API()
+    twitch_api = common_network_Twitch.com_Twitch_API()
     twitch_media = []
-    for stream_data in twitch_api.MK_Common_Twitch_Get_Featured_Streams()['featured']:
+    for stream_data in twitch_api.com_Twitch_Get_Featured_Streams()['featured']:
         logging.debug("stream: %s", stream_data)
         try:
             twitch_media.append((stream_data['stream']['name'],\
@@ -131,8 +131,8 @@ def user_internet_twitch():
 @blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>/')
 @login_required
 def user_internet_twitch_stream_detail(stream_name):
-    #twitch_api = common_network_Twitch.MK_Common_Twitch_API()
-    #media = twitch_api.MK_Common_Twitch_Channel_By_Name(stream_name)
+    #twitch_api = common_network_Twitch.com_Twitch_API()
+    #media = twitch_api.com_Twitch_Channel_By_Name(stream_name)
     #logging.debug("str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
@@ -667,7 +667,7 @@ def user_album_player(guid):
 @blueprint.route('/imagegallery/')
 @login_required
 def user_image_gallery():
-    return render_template("users/user_image_gallery_view.html", image_data=g.db.MK_Common_Media_Images_List())
+    return render_template("users/user_image_gallery_view.html", image_data=g.db.com_Media_Images_List())
 
 
 @blueprint.route('/games')

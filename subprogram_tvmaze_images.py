@@ -30,7 +30,7 @@ sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
 import common_file
 import common_logging
-import MK_Common_Metadata
+import com_Metadata
 import common_network
 import database as database_base
 import locale
@@ -92,7 +92,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('TVMaze')
     poster_image_local = None
     if 'image' in row_data['mm_metadata_tvshow_json'] and row_data['mm_metadata_tvshow_json']['image'] is not None:
         if 'original' in row_data['mm_metadata_tvshow_json']['image']:
-            poster_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['name'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['image']['original'].rsplit('.', 1)[1]))
+            poster_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['name'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['image']['original'].rsplit('.', 1)[1]))
             common_network.MK_Network_Fetch_From_URL(row_data['mm_metadata_tvshow_json']['image']['original'], poster_image_local)
     # generate image json
     json_image_data = {'Images': {'TVMaze': {'Banner': None, 'Fanart': None, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
@@ -100,7 +100,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('TVMaze')
     for cast_member in row_data['mm_metadata_tvshow_json']['_embedded']['cast']:
         if cast_member['person']['image'] is not None and 'original' in cast_member['person']['image']:
             # determine path and fetch image/save
-            cast_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.' + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
+            cast_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.' + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
             logging.debug("one: %s", cast_image_local)
             common_network.MK_Network_Fetch_From_URL(cast_member['person']['image']['original'], cast_image_local)
             json_image_data['Images']['TVMaze']['Cast'][cast_member['person']['id']] = cast_image_local
@@ -108,7 +108,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('TVMaze')
         if 'image' in cast_member['character']:
             if cast_member['character']['image'] is not None:
                 if 'original' in cast_member['character']['image']:
-                    char_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.' + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
+                    char_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.' + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
                     logging.debug("two: %s", char_image_local)
                     common_network.MK_Network_Fetch_From_URL(cast_member['character']['image']['original'], char_image_local)
                     json_image_data['Images']['TVMaze']['Characters'][cast_member['character']['id']] = char_image_local
@@ -117,7 +117,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('TVMaze')
     for episode_info in row_data['mm_metadata_tvshow_json']['_embedded']['episodes']:
         if episode_info['image'] is not None:
             if 'original' in episode_info['image']:
-                eps_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(episode_info['name'], 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['image']['original'].rsplit('.', 1)[1]))
+                eps_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(episode_info['name'], 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['image']['original'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
                 common_network.MK_Network_Fetch_From_URL(episode_info['image']['original'], eps_image_local)
                 json_image_data['Images']['TVMaze']['Episodes'][episode_info['id']] = eps_image_local

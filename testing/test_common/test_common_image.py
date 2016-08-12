@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Image import *
+from com_Image import *
 
 
 # def ResizeImageCalc(img_size, size):

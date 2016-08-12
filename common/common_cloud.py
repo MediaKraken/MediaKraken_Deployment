@@ -33,10 +33,10 @@ CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                     )
 
 
-awss3 = com_cloud_aws_s3.MK_Common_AWS_S3_API()
-dropbox = com_cloud_dropbox.MK_Common_DropBox_API()
-google = com_cloud_google_drive.MK_Common_Google_Drive_API()
-onedrive = com_cloud_onedrive.MK_Common_OneDrive_API()
+awss3 = com_cloud_aws_s3.com_AWS_S3_API()
+dropbox = com_cloud_dropbox.com_DropBox_API()
+google = com_cloud_google_drive.com_Google_Drive_API()
+onedrive = com_cloud_onedrive.com_OneDrive_API()
 
 
 def com_cloud_backup_list():
@@ -61,7 +61,7 @@ def com_cloud_file_store(cloud_type, file_path_name, file_save_name, backup_buck
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            awss3.MK_Common_AWS_S3_Upload(file_path_name, file_save_name, backup_bucket)
+            awss3.com_AWS_S3_Upload(file_path_name, file_save_name, backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
             com_cloud_Dropbox.dropbox_upload(file_path_name, file_save_name)
@@ -81,7 +81,7 @@ def com_cloud_file_delete(cloud_type, file_name, backup_bucket=False):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            awss3.MK_Common_AWS_S3_Delete(file_name, backup_bucket)
+            awss3.com_AWS_S3_Delete(file_name, backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
             pass
@@ -101,7 +101,7 @@ def com_cloud_file_list(cloud_type, file_path=None, backup_bucket=False):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            return awss3.MK_Common_AWS_S3_Bucket_List(backup_bucket)
+            return awss3.com_AWS_S3_Bucket_List(backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
             return com_cloud_Dropbox.dropbox_list(file_path)
@@ -120,7 +120,7 @@ def com_cloud_file_retrieve(cloud_type, file_name, file_location):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            awss3.MK_Common_AWS_S3_Download(file_name, file_location)
+            awss3.com_AWS_S3_Download(file_name, file_location)
     elif cloud_type == "dropbox":
         if dropbox.active:
             com_cloud_Dropbox.dropbox_download(file_name, file_location)

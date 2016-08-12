@@ -121,7 +121,7 @@ def makeBIF(filename, directory, interval):
     f.close()
 
 
-def MK_Common_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+def com_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
     """
     Create BIF
     """

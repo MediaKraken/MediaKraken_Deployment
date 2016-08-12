@@ -47,7 +47,7 @@ class TestCommonTransmission(object):
 #    def common_transmission_Remove_Torrent(self, torrent_hash):
 
 
-#    def MK_Common_Trnasmission_Name(self, torrent_no):
+#    def com_Trnasmission_Name(self, torrent_no):
 
 
 #    def common_transmission_Torrent_Detail(self, torrent_no):

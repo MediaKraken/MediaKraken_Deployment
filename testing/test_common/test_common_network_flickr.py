@@ -29,7 +29,7 @@ class TestCommonFlickr(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Flickr.MK_Common_Flickr_API()
+        self.db = common_network_Flickr.com_Flickr_API()
 
 
     @classmethod
@@ -37,5 +37,5 @@ class TestCommonFlickr(object):
         pass
 
 
-# class MK_Common_Flickr_API:
+# class com_Flickr_API:
 #    def __init__(self, api_key, api_secret):

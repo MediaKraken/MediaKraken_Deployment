@@ -31,7 +31,7 @@ mp3/3rd Bass/3rd bass - Al z A-B-Cee z.mp3
 '''
 
 
-def MK_Common_M3U_Write(playlist_data, m3u_file_name):
+def com_M3U_Write(playlist_data, m3u_file_name):
     """
     Write out m3u from list
     """

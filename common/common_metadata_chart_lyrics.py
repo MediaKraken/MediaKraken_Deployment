@@ -21,7 +21,7 @@ import logging
 import urllib
 
 
-def MK_Common_Metadata_Chart_Lyrics(artist_name, song_name):
+def com_Metadata_Chart_Lyrics(artist_name, song_name):
     """
     Generate url link and fetch lyrics
     """
@@ -31,5 +31,5 @@ def MK_Common_Metadata_Chart_Lyrics(artist_name, song_name):
     return lyric_text
 
 
-#MK_Common_Metadata_Chart_Lyrics('Megadeath','Peace Sells')
-#MK_Common_Metadata_Chart_Lyrics('Metallica','ride the lightning')
+#com_Metadata_Chart_Lyrics('Megadeath','Peace Sells')
+#com_Metadata_Chart_Lyrics('Metallica','ride the lightning')

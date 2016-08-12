@@ -29,7 +29,7 @@ class TestCommonDropBox(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_cloud_Dropbox.MK_Common_DropBox_API()
+        self.db = common_cloud_Dropbox.com_DropBox_API()
 
 
     @classmethod

@@ -18,12 +18,12 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import MK_Common_Google
+import com_Google
 import youtube_dl
 
 
 # fetch video via youtube-dl
-def MK_Common_Metadata_Youtube_Fetch_Video_By_URL(url_location, file_name):
+def com_Metadata_Youtube_Fetch_Video_By_URL(url_location, file_name):
     ydl_opts = {}
     ydl_opts["outtmpl"] = file_name
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -31,5 +31,5 @@ def MK_Common_Metadata_Youtube_Fetch_Video_By_URL(url_location, file_name):
 
 
 # fetch youtube trailers for title
-def MK_Common_Metadata_Youtube_Fetch_Video_List(search_string, max_files):
-    return MK_Common_Google.MK_Common_Google_Youtube_Search(search_string, max_files)
+def com_Metadata_Youtube_Fetch_Video_List(search_string, max_files):
+    return com_Google.com_Google_Youtube_Search(search_string, max_files)

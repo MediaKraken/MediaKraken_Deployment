@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_TheTVDB import *
+from com_Metadata_TheTVDB import *
 
 
 class TestCommonMetadataTheTVDB(object):
@@ -29,7 +29,7 @@ class TestCommonMetadataTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Metadata_TheTVDB.MK_Common_Metadata_TheTVDB_API()
+        self.db = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
 
 
     @classmethod
@@ -37,20 +37,20 @@ class TestCommonMetadataTheTVDB(object):
         pass
 
 
-# def MK_Common_Metadata_TheTVDB_Updates(self, frequency='day'):
+# def com_Metadata_TheTVDB_Updates(self, frequency='day'):
 
 
-# def MK_Common_Metadata_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
+# def com_Metadata_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
 
 
-    def Test_MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
-        MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time()
+    def Test_com_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
+        com_Metadata_TheTVDB_Get_Server_Epoc_Time()
 
 
-# def MK_Common_Metadata_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
+# def com_Metadata_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
 
 
-# def MK_Common_Metadata_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code = 'en'):
+# def com_Metadata_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code = 'en'):
 
 
-# def MK_Common_Metadata_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code = 'en'):
+# def com_Metadata_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code = 'en'):

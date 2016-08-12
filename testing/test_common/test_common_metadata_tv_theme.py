@@ -21,12 +21,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_TV_Theme import *
+from com_Metadata_TV_Theme import *
 
 
 # try to grab theme from tvtunes
 @pytest.mark.parametrize(("show_name", "expected_results"), [
     ("V", True),
     ("FAKETITLE", False)])
-def Test_MK_Common_TVTheme_Download(show_name, expected_results):
-    assert MK_Common_TVTheme_Download(show_name) == expected_results
+def Test_com_TVTheme_Download(show_name, expected_results):
+    assert com_TVTheme_Download(show_name) == expected_results

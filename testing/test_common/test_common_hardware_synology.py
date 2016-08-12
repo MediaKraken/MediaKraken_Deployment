@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_Synology import *
+from com_Hardware_Synology import *
 
 
 class TestCommonSynology(object):
@@ -29,7 +29,7 @@ class TestCommonSynology(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Hardware_Synology.MK_Common_Synology_API()
+        self.db = com_Hardware_Synology.com_Synology_API()
 
 
     @classmethod
@@ -38,15 +38,15 @@ class TestCommonSynology(object):
 
 
 # connect to synology    
-# def MK_Common_Synology_Connect(self, addr, user_name, user_password):
+# def com_Synology_Connect(self, addr, user_name, user_password):
 
 
     # get nas info
-    def Test_MK_Common_Synology_Info(self):
-        MK_Common_Synology_Info()
+    def Test_com_Synology_Info(self):
+        com_Synology_Info()
 
 
     # get share list
-    def Test_MK_Common_Synology_Shares_List(self):
-        MK_Common_Synology_Shares_List()
+    def Test_com_Synology_Shares_List(self):
+        com_Synology_Shares_List()
 

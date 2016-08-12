@@ -29,7 +29,7 @@ class TestCommonIMDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_metadata_imdb.MK_Common_IMDB_API()
+        self.db = common_metadata_imdb.com_IMDB_API()
 
 
     @classmethod
@@ -38,21 +38,21 @@ class TestCommonIMDB(object):
 
 
     # fetch info from title
-    def Test_MK_Common_IMDB_Title_Search(self):
-        MK_Common_IMDB_Title_Search("Robocop")
+    def Test_com_IMDB_Title_Search(self):
+        com_IMDB_Title_Search("Robocop")
 
 
 # fetch info by ttid
-# def MK_Common_IMDB_ID_Search(self, media_id):
+# def com_IMDB_ID_Search(self, media_id):
 
 
 # fetch person info by id
-# def MK_Common_IMDB_Person_By_ID(self, person_id):
+# def com_IMDB_Person_By_ID(self, person_id):
 
 
 # fetch person images by id
-# def MK_Common_IMDB_Person_Images_By_Id(self, person_id):
+# def com_IMDB_Person_Images_By_Id(self, person_id):
 
 
 # fetch the title review
-# def MK_Common_IMDB_Title_Review_By_ID(self, media_id):
+# def com_IMDB_Title_Review_By_ID(self, media_id):

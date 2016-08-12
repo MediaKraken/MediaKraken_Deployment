@@ -26,7 +26,7 @@ import common_file
 import common_system
 
 
-def MK_Common_Emby_Installed_Directory(dir_name = None):
+def com_Emby_Installed_Directory(dir_name = None):
     """
     Determine install directory
     """
@@ -58,12 +58,12 @@ def MK_Common_Emby_Installed_Directory(dir_name = None):
     return dir_name
 
 
-def MK_Common_Emby_Library_List(dir_name = None):
+def com_Emby_Library_List(dir_name = None):
     """
     Fetch library list
     """
     if dir_name is None:
-        dir_name = os.path.join(MK_Common_Emby_Installed_Directory(), 'root', 'default')
+        dir_name = os.path.join(com_Emby_Installed_Directory(), 'root', 'default')
     # grab dir and files
     library_list = {}
     if dir_name is not None:
@@ -80,7 +80,7 @@ def MK_Common_Emby_Library_List(dir_name = None):
     return library_list
 
 
-def MK_Common_Emby_Check_Instance():
+def com_Emby_Check_Instance():
     """
     Check for running instance
     """
@@ -88,19 +88,19 @@ def MK_Common_Emby_Check_Instance():
     if str.upper(sys.platform[0:3])=='WIN' \
     or str.upper(sys.platform[0:3])=='CYG':
         name_check += '.exe'
-    if com_system.MK_Common_Process_List(name_check):
+    if com_system.com_Process_List(name_check):
         logging.critical("Please shutdown Emby server first")
         sys.exit(-1)
 
 
-def MK_Common_Emby_GUID_To_UUID(emby_guid):
+def com_Emby_GUID_To_UUID(emby_guid):
     """
     C# guid to text
     """
     return uuid.UUID(bytes=emby_guid)
 
 
-def MK_Common_Emby_UUID_to_GUID(emby_guid):
+def com_Emby_UUID_to_GUID(emby_guid):
     """
     Text uuid to C# guid
     """

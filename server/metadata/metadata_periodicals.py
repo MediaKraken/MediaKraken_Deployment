@@ -29,7 +29,7 @@ Config.read("MediaKraken.ini")
 
 if Config.get('API', 'ISBNdb').strip() != 'None':
     # setup the isbndb class
-    ISBNdb_API_Connection = common_isbndb.MK_Common_ISBNdb_API()
+    ISBNdb_API_Connection = common_isbndb.com_ISBNdb_API()
 else:
     ISBNdb_API_Connection = None
 
@@ -49,7 +49,7 @@ def metadata_periodicals_lookup(db, media_file_path, download_que_id):
         lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_',' ')
         metadata_uuid = db.MK_Server_Database_MetadataBook_GUID_By_Name(lookup_name)
         if metadata_uuid is None and ISBNdb_API_Connection is not None:
-            json_data = ISBNdb_API_Connection.MK_Common_ISBNdb_Books(lookup_name)
+            json_data = ISBNdb_API_Connection.com_ISBNdb_Books(lookup_name)
             if json_data is None or 'error' in json_data:
                 logging.error("isbn book error: %s", json_data)
             else:

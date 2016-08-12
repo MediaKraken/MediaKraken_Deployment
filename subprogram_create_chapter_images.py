@@ -31,7 +31,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Metadata
+import com_Metadata
 #import common_system
 from concurrent import futures
 import database as database_base
@@ -71,7 +71,7 @@ def worker(worker_file_list):
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
-        file_path = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
+        file_path = os.path.join(com_Metadata.com_Metadata_Image_File_Path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
         command_list = []
         command_list.append('ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input

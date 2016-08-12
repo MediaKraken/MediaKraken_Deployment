@@ -54,7 +54,7 @@ Xbox 360
 '''
 
 # general freecovers search
-def MK_Common_FreeCovers_Search(search_string, search_categories):
+def com_FreeCovers_Search(search_string, search_categories):
     #xml_data = parse(com_network.MK_Network_Fetch_From_URL('http://www.freecovers.net/api/search/' + search_string, None))
     #for node in xml_data.getElementsByTagName('name'):
     request = urllib2.Request('http://www.freecovers.net/api/search/',\
@@ -63,5 +63,5 @@ def MK_Common_FreeCovers_Search(search_string, search_categories):
     print(handler.read())
 
 
-MK_Common_FreeCovers_Search('Megadeath', None):
+com_FreeCovers_Search('Megadeath', None):
     pass

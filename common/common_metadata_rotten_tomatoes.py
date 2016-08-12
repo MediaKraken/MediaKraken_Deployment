@@ -40,7 +40,7 @@ class CommonMetadataRottenTomatoes(object):
 
 
     # serach for movie title and year
-    def MK_Common_RT_Search(movie_title, movie_year=None):
+    def com_RT_Search(movie_title, movie_year=None):
         movie = rt.Movies()
         response = movie.search(q=movie_title)
         for m in movie.movies:

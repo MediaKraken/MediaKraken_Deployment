@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Database_Octmote import *
+from com_Database_Octmote import *
 
 
 class TestCommonDatabaseOctmote(object):

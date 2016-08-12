@@ -33,14 +33,14 @@ class CommonIMVDb(object):
         self.BASE_API_URL = 'http://imvdb.com/api/v1'
 
 
-    def MK_Common_IMVDb_Video_Info(self, video_id):
+    def com_IMVDb_Video_Info(self, video_id):
         resp = requests.post(self.BASE_API_URL + "/video/" + video_id\
             + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
         logging.debug("IMVDb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
-    def MK_Common_IMVDb_Search_Video(self, artist_name, song_title):
+    def com_IMVDb_Search_Video(self, artist_name, song_title):
         resp = requests.post(self.BASE_API_URL + "/search/videos?q="\
             + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),\
             headers=self.headers)
@@ -48,7 +48,7 @@ class CommonIMVDb(object):
         return resp.json()
 
 
-    def MK_Common_IMVDb_Search_Entities(self, artist_name):
+    def com_IMVDb_Search_Entities(self, artist_name):
         resp = requests.post(self.BASE_API_URL + "/search/entities?q="\
             + artist_name.replace(' ', '+'), headers=self.headers)
         logging.debug("IMVDb Entities Status: %s-%s", resp.status_code, resp.json())

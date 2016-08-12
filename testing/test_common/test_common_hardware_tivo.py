@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_Tivo import *
+from com_Hardware_Tivo import *
 
 
 class TestCommonTivo(object):
@@ -29,7 +29,7 @@ class TestCommonTivo(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Hardware_Tivo.MK_Common_Tivo_API()
+        self.db = com_Hardware_Tivo.com_Tivo_API()
 
 
     @classmethod
@@ -37,4 +37,4 @@ class TestCommonTivo(object):
         pass
 
 
-# def MK_Common_Tivo_Connect(self, telnet_host, telnet_port=31339):
+# def com_Tivo_Connect(self, telnet_host, telnet_port=31339):

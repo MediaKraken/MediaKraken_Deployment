@@ -29,7 +29,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Metadata_TVMaze
+import com_Metadata_TVMaze
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -77,10 +77,10 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Start', 
 
 # grab the show data and update/insert respecitivey
 def update_insert_show(tvmaze_id, update_rec=None):
-    #show_full_json = TVMaze.MK_Common_Metadata_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True)
+    #show_full_json = TVMaze.com_Metadata_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'TVMaze': json.loads(TVMaze.MK_Common_Metadata_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True))}})
+        show_full_json = ({'Meta': {'TVMaze': json.loads(TVMaze.com_Metadata_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True))}})
     except:
         pass
     logging.debug("full: %s", show_full_json)
@@ -124,8 +124,8 @@ def update_insert_show(tvmaze_id, update_rec=None):
 # grab updated show list with epoc data
 tvshow_updated = 0
 tvshow_inserted = 0
-TVMaze = MK_Common_Metadata_TVMaze.MK_Common_Metadata_TVMaze_API()
-result = TVMaze.MK_Common_Metadata_TheMaze_Show_Updated()
+TVMaze = com_Metadata_TVMaze.com_Metadata_TVMaze_API()
+result = TVMaze.com_Metadata_TheMaze_Show_Updated()
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():

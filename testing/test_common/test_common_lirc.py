@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_LIRC import *
+from com_LIRC import *
 
 
 # def MK_LIRC_Init(app_string="OctMote"):

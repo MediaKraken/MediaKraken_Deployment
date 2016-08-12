@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_TheTVDB import *
+from com_TheTVDB import *
 
 
 class TestCommonTheTVDB(object):
@@ -29,7 +29,7 @@ class TestCommonTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_TheTVDB.MK_Common_TheTVDB_API()
+        self.db = com_TheTVDB.com_TheTVDB_API()
 
 
     @classmethod
@@ -38,24 +38,24 @@ class TestCommonTheTVDB(object):
 
 
     # get show information
-#    def MK_Common_TheTVDB_Show_Info(self, show_title, show_language):
+#    def com_TheTVDB_Show_Info(self, show_title, show_language):
 
 
     # search for show
-#    def MK_Common_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+#    def com_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
 
 
     # save entire show info
-#    def MK_Common_TheTVDB_Show_DB_Save(self, show_data):
+#    def com_TheTVDB_Show_DB_Save(self, show_data):
 
 
     # get episode information
-#    def MK_Common_TheTVDB_Episode_Info(self, show_language, episode_id):
+#    def com_TheTVDB_Episode_Info(self, show_language, episode_id):
 
 
     # get episode information by season and episode
-#    def MK_Common_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
+#    def com_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
 
 
     # show data from result
-#    def MK_Common_TheTVDB_Show_Details(self, show_data):
+#    def com_TheTVDB_Show_Details(self, show_data):

@@ -61,7 +61,7 @@ class CommonMusicbrainz(object):
 
 
     # search by artist and album name
-    def MK_Common_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None,\
+    def com_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None,\
             artist_recording=None, return_limit=5, strict_flag=False):
         global musicbrainzngs
         if disc_id is not None:
@@ -81,7 +81,7 @@ class CommonMusicbrainz(object):
 
 
     # search by artist and song name
-    def MK_Common_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None,\
+    def com_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None,\
             song_name=None, return_limit=5, strict_flag=False):
         global musicbrainzngs
         result = musicbrainzngs.search_recordings(artist=artist_name, release=release_name,\

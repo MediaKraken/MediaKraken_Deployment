@@ -22,22 +22,22 @@ import os
 import sys
 import re
 import common_file
-import MK_Common_Hash
+import com_Hash
 sys.path.append("../../MediaKraken_Common/lib")
 from babelfish import Language
 import subliminal
 
 
 # fetch subtitles
-def MK_Common_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
-    #file_hash = MK_Common_Hash.MK_Common_Hash_TheSubDB(file_name)
+def com_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
+    #file_hash = com_Hash.com_Hash_TheSubDB(file_name)
     f = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
     cmd_output = f.read()
     return cmd_output
 
 
 # batch fetch subtitles
-def MK_Common_Metadata_Fetch_Subtitle_Batch(dir_name, sub_lang):
+def com_Metadata_Fetch_Subtitle_Batch(dir_name, sub_lang):
     # configure the cache
 #    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename': '/home/spoot/cachefile.dbm'})
 #    # scan for videos in the folder and their subtitles

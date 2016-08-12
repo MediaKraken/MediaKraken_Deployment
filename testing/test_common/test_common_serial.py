@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Serial import *
+from com_Serial import *
 
 
 class TestCommonSerial(object):
@@ -29,7 +29,7 @@ class TestCommonSerial(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Serial_API()
+        self.db = com_Serial_API()
 
 
     @classmethod

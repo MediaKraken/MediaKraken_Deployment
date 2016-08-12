@@ -30,7 +30,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Schedules_Direct
+import com_Schedules_Direct
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -60,9 +60,9 @@ else:
 
 def MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch):
     logging.debug("array: %s", meta_program_fetch)
-    meta_program_json = sd.MK_Common_Schedules_Direct_Program_Info(json.dumps(meta_program_fetch))
+    meta_program_json = sd.com_Schedules_Direct_Program_Info(json.dumps(meta_program_fetch))
     logging.debug("result: %s", meta_program_json)
-#   meta_program_json = sd.MK_Common_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
+#   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
         db.MK_Server_Database_TV_Program_Insert(program_json['programID'], json.dumps(program_data))
 
@@ -85,36 +85,36 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Updat
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
-sd = MK_Common_Schedules_Direct.MK_Common_Schedules_Direct_API()
-sd.MK_Common_Schedules_Direct_Login(Config.get('SD', 'User').strip(),\
+sd = com_Schedules_Direct.com_Schedules_Direct_API()
+sd.com_Schedules_Direct_Login(Config.get('SD', 'User').strip(),\
     Config.get('SD', 'Password').strip())
-status_data = sd.MK_Common_Schedules_Direct_Status()
+status_data = sd.com_Schedules_Direct_Status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
     logging.critical("SD is unavailable")
     sys.exit(0)
 # version check
-# version_json = sd.MK_Common_Schedules_Direct_Client_Version()
+# version_json = sd.com_Schedules_Direct_Client_Version()
 # TODO
 #if version_json != "MediaKraken_0.1.0":
 #    logging.critical("Outdated Client Version! Upgrade MediaKraken_")
 #    sys.exit(0)
 
 # get headends
-# headends_json = sd.MK_Common_Schedules_Direct_Headends('USA', '58701')
+# headends_json = sd.com_Schedules_Direct_Headends('USA', '58701')
 
 # add to lineup
-# logging.info(sd.MK_Common_Schedules_Direct_Lineup_Add('USA-ND33420-DEFAULT'))
+# logging.info(sd.com_Schedules_Direct_Lineup_Add('USA-ND33420-DEFAULT'))
 
 # remove from lineup
-#logging.info(sd.MK_Common_Schedules_Direct_Lineup_Delete('USA-DISH687-DEFAULT'))
+#logging.info(sd.com_Schedules_Direct_Lineup_Delete('USA-DISH687-DEFAULT'))
 
 
 # list lineups and channels for them
-#for line_name in sd.MK_Common_Schedules_Direct_Lineup_List()['lineups']:
+#for line_name in sd.com_Schedules_Direct_Lineup_List()['lineups']:
 #    # channel map
-#    channel_map = sd.MK_Common_Schedules_Direct_Lineup_Channel_Map(line_name['lineup'])
+#    channel_map = sd.com_Schedules_Direct_Lineup_Channel_Map(line_name['lineup'])
 #    logging.debug("Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
 #        logging.debug("mapchannel: %s", channel_id)
@@ -141,7 +141,7 @@ meta_program_fetch = []
 if len(station_fetch) > 5000:
     logging.critical("Too many channels!!!!  Exiting...")
 elif len(station_fetch > 0:
-    schedule_json = sd.MK_Common_Schedules_Direct_Schedules_By_StationID(json.dumps(station_fetch))
+    schedule_json = sd.com_Schedules_Direct_Schedules_By_StationID(json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
         # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15', u'modified': u'2016-06-14T23:07:05Z', u'md5': u'2aEwFuhZCqJSHKabBbR/Sg'}, 

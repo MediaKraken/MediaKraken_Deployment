@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_Pitchfork import *
+from com_Metadata_Pitchfork import *
 
 
 class TestCommonPitchfork(object):
@@ -29,7 +29,7 @@ class TestCommonPitchfork(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Pitchfork_API()
+        self.db = com_Pitchfork_API()
 
 
     @classmethod
@@ -40,25 +40,25 @@ class TestCommonPitchfork(object):
     @pytest.mark.parametrize(("artist_name", "album_title"), [
         ("Megadeath", "Youthanasia"),
         ("FakeBand", "FakeAlbum")])
-    def Test_MK_Common_Pitchfork_Search(self, artist_name, album_title):
-        self.db.MK_Common_Pitchfork_Search(artist_name, album_title)
+    def Test_com_Pitchfork_Search(self, artist_name, album_title):
+        self.db.com_Pitchfork_Search(artist_name, album_title)
 
 
-    def Test_MK_Common_Pitchfork_Album_Title(self):
-        self.db.MK_Common_Pitchfork_Album_Title()
+    def Test_com_Pitchfork_Album_Title(self):
+        self.db.com_Pitchfork_Album_Title()
 
 
-    def Test_MK_Common_Pitchfork_Album_Label(self):
-        self.db.MK_Common_Pitchfork_Album_Label()
+    def Test_com_Pitchfork_Album_Label(self):
+        self.db.com_Pitchfork_Album_Label()
 
 
-    def Test_MK_Common_Pitchfork_Album_Review(self):
-        self.db.MK_Common_Pitchfork_Album_Review()
+    def Test_com_Pitchfork_Album_Review(self):
+        self.db.com_Pitchfork_Album_Review()
 
 
-    def Test_MK_Common_Pitchfork_Album_Cover_Art_Link(self):
-        self.db.MK_Common_Pitchfork_Album_Cover_Art_Link()
+    def Test_com_Pitchfork_Album_Cover_Art_Link(self):
+        self.db.com_Pitchfork_Album_Cover_Art_Link()
 
 
-    def Test_MK_Common_Pitchfork_Album_Review_Score(self):
-        self.db.MK_Common_Pitchfork_Album_Review_Score()
+    def Test_com_Pitchfork_Album_Review_Score(self):
+        self.db.com_Pitchfork_Album_Review_Score()

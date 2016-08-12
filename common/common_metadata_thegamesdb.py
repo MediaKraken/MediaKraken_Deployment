@@ -65,7 +65,7 @@ class CommonMetadataGamesDB(object):
         self.gamesdb_api = API()
 
 
-    def MK_Common_Metadata_GamesDB_Platform_List(self):
+    def com_Metadata_GamesDB_Platform_List(self):
         """
         Get platform list
         """
@@ -75,7 +75,7 @@ class CommonMetadataGamesDB(object):
         return platform_list
 
 
-    def MK_Common_Metadata_GamesDB_Platform_By_ID(self, platform_id):
+    def com_Metadata_GamesDB_Platform_By_ID(self, platform_id):
         """
         Platform info by id
         """
@@ -85,7 +85,7 @@ class CommonMetadataGamesDB(object):
         return game_platform
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_Name_Or(self, game_name):
+    def com_Metadata_GamesDB_Games_By_Name_Or(self, game_name):
         """
         # 'mega man' as mega OR man
         """
@@ -95,7 +95,7 @@ class CommonMetadataGamesDB(object):
             print(game.release_date)
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_Name_And(self, game_name):
+    def com_Metadata_GamesDB_Games_By_Name_And(self, game_name):
         """
         # 'mega man' as mega AND man
         """
@@ -105,7 +105,7 @@ class CommonMetadataGamesDB(object):
             print(game.release_date)
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name,\
+    def com_Metadata_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name,\
             game_genre=None):
         """
         Fetch games by name OR platform
@@ -116,7 +116,7 @@ class CommonMetadataGamesDB(object):
             print(game.platform)
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name,\
+    def com_Metadata_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name,\
             game_genre=None):
         """
         Fetch games by name AND platform
@@ -127,7 +127,7 @@ class CommonMetadataGamesDB(object):
             print(game.platform)
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_Platform_ID(self, platform_id):
+    def com_Metadata_GamesDB_Games_By_Platform_ID(self, platform_id):
         """
         Games by platform id
         """
@@ -135,7 +135,7 @@ class CommonMetadataGamesDB(object):
             print(game.id, "-", game.title, "-", game.release_date)
 
 
-    def MK_Common_Metadata_GamesDB_Games_By_ID(self, game_id):
+    def com_Metadata_GamesDB_Games_By_ID(self, game_id):
         """
         Games by game id
         """

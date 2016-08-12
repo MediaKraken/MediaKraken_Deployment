@@ -30,7 +30,7 @@ sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
 import common_file
 import common_logging
-import MK_Common_Metadata
+import com_Metadata
 import common_network
 import database as database_base
 import locale
@@ -91,19 +91,19 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
     # grab poster
     poster_image_local = None
     if 'poster' in row_data['mm_metadata_tvshow_json']['Meta']['Series'] and row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'] is not None:
-        poster_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
+        poster_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
         common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
 
     # grab banner
     banner_image_local = None
     if 'banner' in row_data['mm_metadata_tvshow_json']['Meta']['Series'] and row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'] is not None:
-        banner_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
+        banner_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
         common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
 
     # grab fanart
     fanart_image_local = None
     if 'fanart' in row_data['mm_metadata_tvshow_json']['Meta']['Series'] and row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'] is not None:
-        fanart_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
+        fanart_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
         common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
 
     # generate image json
@@ -118,7 +118,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
                 logging.debug("wha: %s", cast_member)
                 if cast_member['Image'] is not None:
                     # determine path and fetch image/save
-                    cast_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(cast_member['Name'],\
+                    cast_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['Name'],\
                         'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
                     logging.debug("one: %s", cast_image_local)
                     common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + cast_member['Image'], cast_image_local)
@@ -131,7 +131,7 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
         for episode_info in row_data['mm_metadata_tvshow_json']['Meta']['Episode']:
             logging.debug("episode: %s", episode_info)
             if episode_info['filename'] is not None:
-                eps_image_local = os.path.join(MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(episode_info['EpisodeName'],\
+                eps_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(episode_info['EpisodeName'],\
                 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
                 common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/"\

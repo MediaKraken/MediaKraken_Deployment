@@ -21,7 +21,7 @@ import logging
 import json
 from xml.dom import minidom
 import common_file
-import MK_Common_Metadata
+import com_Metadata
 import common_network
 from pytvdbapi import api
 
@@ -41,13 +41,13 @@ class CommonTheTVDB(object):
 
 
     # get show information
-    def MK_Common_TheTVDB_Show_Info(self, show_title, show_language):
-        return MK_Common_TheTVDB_Show_Details(MK_Common_TheTVDB_Search(self.tvdb_connection,\
+    def com_TheTVDB_Show_Info(self, show_title, show_language):
+        return com_TheTVDB_Show_Details(com_TheTVDB_Search(self.tvdb_connection,\
             show_title, show_language))
 
 
     # search for show
-    def MK_Common_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+    def com_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
         if show_id is not None:
             show_data = self.tvdb_connection.get_series(show_id, show_language)
         else:
@@ -64,17 +64,17 @@ class CommonTheTVDB(object):
             #show.update()
 #            # save to local cache for future reference
 #            if save_db:
-#                metadata_uuid = MK_Common_TheTVDB_Show_DB_Save(show)
+#                metadata_uuid = com_TheTVDB_Show_DB_Save(show)
 #                return metadata_uuid
 #            else:
-#                show_dict = MK_Common_TheTVDB_Show_Details(show_data)
+#                show_dict = com_TheTVDB_Show_Details(show_data)
 #                com_file.com_file_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
 #                return show_dict
         return None
 
 
     # save entire show info
-    def MK_Common_TheTVDB_Show_DB_Save(self, show_data):
+    def com_TheTVDB_Show_DB_Save(self, show_data):
         show_data.update()
         # store the show data
         json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID,
@@ -102,22 +102,22 @@ class CommonTheTVDB(object):
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+            banner_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+            fanart_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(show_data.SeriesName,\
+            poster_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:
             json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
                 'Poster':poster_path}})
         # save the show data
-        MK_Common_Database.MK_Server_Database_Metadata_Save_Show(show_data.SeriesName,
+        com_Database.MK_Server_Database_Metadata_Save_Show(show_data.SeriesName,
             json_media_id, json_media_json)
 
         # store the season data
@@ -138,17 +138,17 @@ class CommonTheTVDB(object):
 
 
     # get episode information
-    def MK_Common_TheTVDB_Episode_Info(self, show_language, episode_id):
+    def com_TheTVDB_Episode_Info(self, show_language, episode_id):
         return self.tvdb_connection.get_episode(show_language, episodeid=episode_id)
 
 
     # get episode information by season and episode
-    def MK_Common_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
+    def com_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
         return self.tvdb_connection.get_episode(show_language, season_no, ep_no, show_id)
 
 
     # show data from result
-    def MK_Common_TheTVDB_Show_Details(self, show_data):
+    def com_TheTVDB_Show_Details(self, show_data):
         show_dict = {}
         show = show_data[0]
         show_number_seasons = len(show)

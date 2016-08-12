@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_M3U8 import *
+from com_M3U8 import *
 
 
 # write out m3u from list
-# def MK_Common_M3U_Write(playlist_data, m3u_file_name):
+# def com_M3U_Write(playlist_data, m3u_file_name):

@@ -31,38 +31,38 @@ class CommonOMDb(object):
         pass
 
 
-    def MK_Common_OMDb_Get(self, media_title, media_year, media_fullplot, media_tomatoes):
+    def com_OMDb_Get(self, media_title, media_year, media_fullplot, media_tomatoes):
         omdb.get(title=media_title, year=media_year, fullplot=media_fullplot,\
             tomatoes=media_tomatoes)
 
 
-    def MK_Common_OMDb_Search(self, media_title):
+    def com_OMDb_Search(self, media_title):
         omdb.search(media_title)
 
 
-    def MK_Common_OMDb_Search_Movie(self, media_title):
+    def com_OMDb_Search_Movie(self, media_title):
         omdb.search_movie(media_title)
 
 
-    def MK_Common_OMDb_Search_Episode(self, media_title):
+    def com_OMDb_Search_Episode(self, media_title):
         omdb.search_episode(media_title)
 
 
-    def MK_Common_OMDb_Search_Series(self, media_title):
+    def com_OMDb_Search_Series(self, media_title):
         omdb.search_series(media_title)
 
 
-    def MK_Common_OMDb_IMDB(self, IMDBid):
+    def com_OMDb_IMDB(self, IMDBid):
         omdb.imdbid(IMDBid)
 
 
-    def MK_Common_OMDb_Title(self, media_title):
+    def com_OMDb_Title(self, media_title):
         omdb.title(media_title)
 
 
-    def MK_Common_OMDb_Default(self):
+    def com_OMDb_Default(self):
         omdb.set_default('tomatoes', True)
 
 
-    def MK_Common_OMDb_Request(self, media_title, media_year, media_fullplot, media_tomatoes):
+    def com_OMDb_Request(self, media_title, media_year, media_fullplot, media_tomatoes):
         omdb.request(media_title, media_year, media_fullplot, media_tomatoes)

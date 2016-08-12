@@ -26,9 +26,9 @@ sys.path.append("../common")
 sys.path.append("../server")
 import common_file
 import common_logging
-import MK_Common_Metadata
+import com_Metadata
 import common_network
-import MK_Common_TheLogoDB
+import com_TheLogoDB
 import database as database_base
 
 
@@ -57,13 +57,13 @@ else:
 common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
-logo_connection = MK_Common_TheLogoDB.MK_Common_TheLogoDB_API()
+logo_connection = com_TheLogoDB.com_TheLogoDB_API()
 total_download_attempts = 0
 # main code
 def main(argv):
-    for channel_info in logo_connection.MK_Common_TheLogoDB_Fetch_Latest()['channels']:
+    for channel_info in logo_connection.com_TheLogoDB_Fetch_Latest()['channels']:
         # fetch and store logo image
-        image_file_path = MK_Common_Metadata.MK_Common_Metadata_Image_File_Path(channel_info['strChannel'], 'logo')
+        image_file_path = com_Metadata.com_Metadata_Image_File_Path(channel_info['strChannel'], 'logo')
         loggin.debug("image: %s", image_file_path)
         common_network.MK_Network_Fetch_From_URL(channel_info['strLogoWide'], image_file_path)
 

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_HDHomeRun_Py import *
+from com_Hardware_HDHomeRun_Py import *
 
 
 class TestCommonHardwareHDHomeRunPy(object):
@@ -29,7 +29,7 @@ class TestCommonHardwareHDHomeRunPy(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Hardware_HDHomeRun_Py.MK_Common_Hardware_HDHomeRun_API_Py()
+        self.db = com_Hardware_HDHomeRun_Py.com_Hardware_HDHomeRun_API_Py()
 
 
     @classmethod
@@ -38,13 +38,13 @@ class TestCommonHardwareHDHomeRunPy(object):
 
 
     # discover items
-    def Test_MK_Common_HDHomeRun_Discover(self):
-        MK_Common_HDHomeRun_Discover()
+    def Test_com_HDHomeRun_Discover(self):
+        com_HDHomeRun_Discover()
 
 
     # item list
-    def Test_MK_Common_HDHomeRun_List(self):
-        MK_Common_HDHomeRun_List()
+    def Test_com_HDHomeRun_List(self):
+        com_HDHomeRun_List()
 
 
 #    def get_tuner_vstatus(self, device_adapter):

@@ -25,8 +25,8 @@ from common_network_IRDB import *
 
 
 # get brand list
-def Test_MK_Common_IRDB_Brand_List():
-    MK_Common_IRDB_Brand_List()
+def Test_com_IRDB_Brand_List():
+    com_IRDB_Brand_List()
 
 
 # get device types by brand
@@ -34,13 +34,13 @@ def Test_MK_Common_IRDB_Brand_List():
     ("Pioneer"),
     ("Sony"),
     ("FakeBrand")])
-def Test_MK_Common_IRDB_Device_Types_By_Brand(brand_text):
-    MK_Common_IRDB_Device_Types_By_Brand(brand_text)
+def Test_com_IRDB_Device_Types_By_Brand(brand_text):
+    com_IRDB_Device_Types_By_Brand(brand_text)
 
 
 # See which sets of codes we have for that brand and device type:
-# def MK_Common_IRDB_Codesets_By_Brand_Device(brand_text, device_type):
+# def com_IRDB_Codesets_By_Brand_Device(brand_text, device_type):
 
 
 # get the code with the protocol, device, and subdevice information we just derived from above:
-# def MK_Common_IRDB_Function_List(brand_text, protocol_type, device_type, device_num, subdevice):
+# def com_IRDB_Function_List(brand_text, protocol_type, device_type, device_num, subdevice):

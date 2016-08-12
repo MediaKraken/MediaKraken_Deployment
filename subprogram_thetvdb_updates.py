@@ -33,7 +33,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Metadata_TheTVDB
+import com_Metadata_TheTVDB
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -81,10 +81,10 @@ db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Update Start',
 # grab the data
 tvshow_updated = 0
 tvshow_inserted = 0
-theTVDB_API_Connection = MK_Common_Metadata_TheTVDB.MK_Common_Metadata_TheTVDB_API()
+theTVDB_API_Connection = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
 option_json, status_json = db.MK_Server_Database_Option_Status_Read()
-#for update_item in xmltodict.parse(theTVDB_API_Connection.MK_Common_Metadata_TheTVDB_Updates_By_Epoc(status_json['theTVDB_Updated_Epoc'])):
-update_item = theTVDB_API_Connection.MK_Common_Metadata_TheTVDB_Updates()
+#for update_item in xmltodict.parse(theTVDB_API_Connection.com_Metadata_TheTVDB_Updates_By_Epoc(status_json['theTVDB_Updated_Epoc'])):
+update_item = theTVDB_API_Connection.com_Metadata_TheTVDB_Updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
     logging.debug(row_data['id'])
@@ -92,7 +92,7 @@ for row_data in update_item['Data']['Series']:
     metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_TVDB(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
-        xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API_Connection.MK_Common_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
+        xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API_Connection.com_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
         # insert
         image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'IMDB':xml_show_data['Data']['Series']['IMDB_ID'],\

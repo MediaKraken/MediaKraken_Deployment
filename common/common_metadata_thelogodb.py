@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import json
-import MK_Common_Metadata
+import com_Metadata
 import common_network
 
 
@@ -39,7 +39,7 @@ class CommonTheLogoDB(object):
         self.API_KEY = Config.get('API', 'TheLogoDB').strip()
 
 
-    def MK_Common_TheLogoDB_Fetch_Latest(self):
+    def com_TheLogoDB_Fetch_Latest(self):
         """
         Grab newest releases
         """

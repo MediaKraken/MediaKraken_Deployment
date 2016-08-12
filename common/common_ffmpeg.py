@@ -22,7 +22,7 @@ import subprocess
 
 
 # determine video attributes
-def mk_com_ffmpeg_media_attr(file_path):
+def com_ffmpeg_media_attr(file_path):
     """
     Runs ffprobe to generate the media file specifications which is returned in json
     """

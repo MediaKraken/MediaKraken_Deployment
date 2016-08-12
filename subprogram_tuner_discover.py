@@ -25,7 +25,7 @@ import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
-import MK_Common_HDHomeRun
+import com_HDHomeRun
 import common_logging
 import common_string
 import os
@@ -83,9 +83,9 @@ else:
 
 tuners_added = 0
 # tuner discovery
-tuner_api = MK_Common_HDHomeRun.MK_Common_HDHomeRun_API()
-tuner_api.MK_Common_HDHomeRun_Discover()
-for row_tuner in tuner_api.MK_Common_HDHomeRun_List():
+tuner_api = com_HDHomeRun.com_HDHomeRun_API()
+tuner_api.com_HDHomeRun_Discover()
+for row_tuner in tuner_api.com_HDHomeRun_List():
     json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
         'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\

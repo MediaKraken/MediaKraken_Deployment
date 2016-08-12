@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Watchdog import *
+from com_Watchdog import *
 
 
 # class MK_Watchdog_Handler(FileSystemEventHandler):
@@ -43,9 +43,9 @@ from MK_Common_Watchdog import *
 
 
 # define watchdog class
-# class MK_Common_Watchdog_API:
-#     def MK_Common_Watchdog_Start(self, paths_to_watch):
+# class com_Watchdog_API:
+#     def com_Watchdog_Start(self, paths_to_watch):
 
 
 # stop watchdog
-#    def MK_Common_Watchdog_Stop(self):
+#    def com_Watchdog_Stop(self):

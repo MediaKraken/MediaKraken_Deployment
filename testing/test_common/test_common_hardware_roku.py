@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_Roku import *
+from com_Hardware_Roku import *
 
 
 @pytest.mark.parametrize(("filename"), [
@@ -38,4 +38,4 @@ def Test_getMP4Info(filename):
 # def makeBIF(filename, directory, interval):
 
 
-# def MK_Common_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+# def com_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):

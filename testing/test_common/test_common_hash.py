@@ -21,14 +21,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hash import *
+from com_Hash import *
 
 
 @pytest.mark.parametrize(("file_name", "expected_result"), [
     ('./cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
     ('./fakedirzz', None)])
-def Test_MK_Common_Hash_SHA1_By_Filename(file_name, expected_result):
-    assert MK_Common_Hash_SHA1_By_Filename(file_name) == expected_result
+def Test_com_Hash_SHA1_By_Filename(file_name, expected_result):
+    assert com_Hash_SHA1_By_Filename(file_name) == expected_result
 
 
 # c call for sha1 hash
@@ -38,8 +38,8 @@ def Test_MK_Common_Hash_SHA1_By_Filename(file_name, expected_result):
     ('./cache/HashCalc.txt.tar', None),
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
-def Test_MK_Common_Hash_SHA1_C(file_name, expected_result):
-    assert MK_Common_Hash_SHA1_C(file_name) == expected_result
+def Test_com_Hash_SHA1_C(file_name, expected_result):
+    assert com_Hash_SHA1_C(file_name) == expected_result
 
 
 # caclucate crc32 for file
@@ -49,12 +49,12 @@ def Test_MK_Common_Hash_SHA1_C(file_name, expected_result):
     ('./cache/HashCalc.txt.tar', None),
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
-def Test_MK_Common_Hash_CRC32(file_name, expected_result):
-    assert MK_Common_Hash_CRC32(file_name) == expected_result
+def Test_com_Hash_CRC32(file_name, expected_result):
+    assert com_Hash_CRC32(file_name) == expected_result
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
-#def MK_Common_Hash_ed2k(filePath):
+#def com_Hash_ed2k(filePath):
 #    """ Returns the ed2k hash of a given file."""
 #    md4 = hashlib.new('md4').copy
 #    def gen(f):
@@ -81,8 +81,8 @@ def Test_MK_Common_Hash_CRC32(file_name, expected_result):
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def Test_MK_Common_Hash_TheSubDB(file_name):
-    MK_Common_Hash_TheSubDB(file_name)
+def Test_com_Hash_TheSubDB(file_name):
+    com_Hash_TheSubDB(file_name)
 
 
 # hash for opensubtiles.org
@@ -90,5 +90,5 @@ def Test_MK_Common_Hash_TheSubDB(file_name):
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def Test_MK_Common_Hash_OpenSubtitles(file_name)"
-    MK_Common_Hash_OpenSubtitles(file_name)
+def Test_com_Hash_OpenSubtitles(file_name)"
+    com_Hash_OpenSubtitles(file_name)

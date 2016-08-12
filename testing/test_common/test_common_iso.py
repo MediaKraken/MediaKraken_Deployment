@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_ISO import *
+from com_ISO import *
 
 
 class TestCommonISO(object):
@@ -29,7 +29,7 @@ class TestCommonISO(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_ISO.MK_Common_ISO_API()
+        self.db = com_ISO.com_ISO_API()
 
 
     @classmethod
@@ -41,5 +41,5 @@ class TestCommonISO(object):
     @pytest.mark.parametrize(("url_file"), [
         ("./cache/cache.iso"),
         ("./cache/cache_fake.iso")])
-    def Test_MK_Common_ISO_Load(url_file):
-        MK_Common_ISO_Load(url_file)
+    def Test_com_ISO_Load(url_file):
+        com_ISO_Load(url_file)

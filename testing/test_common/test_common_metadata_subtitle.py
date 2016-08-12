@@ -21,12 +21,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_Subtitle import *
+from com_Metadata_Subtitle import *
 
 
 # fetch subtitles
-# def MK_Common_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
+# def com_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
 
 
 # batch fetch subtitles
-# def MK_Common_Metadata_Fetch_Subtitle_Batch(dir_name, sub_lang):
+# def com_Metadata_Fetch_Subtitle_Batch(dir_name, sub_lang):

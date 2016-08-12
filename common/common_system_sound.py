@@ -37,7 +37,7 @@ def MK_Sound_Play_File(file_name):
 
 
 # list devices via pyaudio
-def MK_Common_Audio_Pyaudio_List_Devices():
+def com_Audio_Pyaudio_List_Devices():
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):

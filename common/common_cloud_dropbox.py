@@ -37,7 +37,9 @@ class CommonCloudDropbox(object):
         else:
             Config.read("../MediaKraken.ini")
         if Config.get('Dropbox', 'APIKey').strip() != 'None':
-            flow = dropbox.client.DropboxOAuth2FlowNoRedirect(Config.get('Dropbox', 'APIKey').strip(), Config.get('Dropbox', 'APISecret').strip())
+            flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
+                Config.get('Dropbox', 'APIKey').strip(),\
+                Config.get('Dropbox', 'APISecret').strip())
             self.active = True
 
 

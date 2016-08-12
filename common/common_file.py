@@ -39,7 +39,7 @@ junk_files.append('full length')
 junk_files.append('deleted scene')
 
 
-def com_file_Modification_Timestamp(file_name):
+def com_file_modification_timestamp(file_name):
     """
     Return file modfication date in datetime format
     """
@@ -49,7 +49,7 @@ def com_file_Modification_Timestamp(file_name):
         return None
 
 
-def com_file_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=False,\
+def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=False,\
         file_ext=None):
     """
     Save data as file
@@ -67,7 +67,7 @@ def com_file_Save_Data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     file_handle.close()
 
 
-def com_file_Load_Data(file_name, as_pickle=False):
+def com_file_load_data(file_name, as_pickle=False):
     """
     Load data from file as ascii or pickle
     """
@@ -80,7 +80,7 @@ def com_file_Load_Data(file_name, as_pickle=False):
     return data_block
 
 
-def com_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,\
+def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,\
         directory_only=False):
     """
     Find all filtered files in directory
@@ -127,7 +127,7 @@ def com_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk=True, file_size
         return None
 
 
-def com_file_Remove_Junk(file_list):
+def com_file_remove_junk(file_list):
     """
     Throw out junk entries in files list
     """
@@ -142,7 +142,7 @@ def com_file_Remove_Junk(file_list):
     return file_list
 
 
-def com_file_Is_Junk(file_name):
+def com_file_Is_junk(file_name):
     """
     See if file is junk
     """

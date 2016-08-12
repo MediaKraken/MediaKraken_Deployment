@@ -30,7 +30,7 @@ Config.read("MediaKraken.ini")
 
 # verify imvdb key exists
 if Config.get('API', 'IMVDb').strip() != 'None':
-    IMVDB_API_Connection = common_metadata_imvdb.MK_Common_IMVDb_API(Config.get('API', 'IMVDb').strip())
+    IMVDB_API_Connection = common_metadata_imvdb.com_IMVDb_API(Config.get('API', 'IMVDb').strip())
 else:
     IMVDB_API_Connection = None
 
@@ -64,7 +64,7 @@ def imvdb_lookup(db, file_name):
         metadata_uuid = None
     if metadata_uuid is None:
         if IMVDB_API_Connection is not None:
-            imvdb_json = IMVDB_API_Connection.MK_Common_IMVDb_Search_Video(band_name, song_name)
+            imvdb_json = IMVDB_API_Connection.com_IMVDb_Search_Video(band_name, song_name)
             logging.debug("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:

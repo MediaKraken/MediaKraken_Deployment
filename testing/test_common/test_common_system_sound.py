@@ -41,5 +41,5 @@ def Test_MK_Sound_Play_File(file_name):
 
 
 # list devices via pyaudio
-def Test_MK_Common_Audio_Pyaudio_List_Devices():
-    MK_Common_Audio_Pyaudio_List_Devices()
+def Test_com_Audio_Pyaudio_List_Devices():
+    com_Audio_Pyaudio_List_Devices()

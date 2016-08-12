@@ -65,7 +65,8 @@ class CommonCloudOneDrive(object):
         """
         upload
         """
-        returned_item = client.item(drive="me", id="root").children["newfile.txt"].upload("./path_to_file.txt")
+        returned_item = client.item(drive="me", id="root").children["newfile.txt"].\
+            upload("./path_to_file.txt")
 
 
     def com_cloud_onedrive_download(self, file_name, file_path):

@@ -21,17 +21,17 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_DISCID import *
+from com_DISCID import *
 
 
 # grab discid from default device
-def Test_MK_Common_DiscID_Default_Device():
-    MK_Common_DiscID_Default_Device()
+def Test_com_DiscID_Default_Device():
+    com_DiscID_Default_Device()
 
 
 # calculate discid from directory
 @pytest.mark.parametrize(("dir_to_calculate"), [
     ("./cache"),
     ("./cache_fake")])
-def Test_MK_Common_DiskID_Caclulate_Dir(dir_to_calculate):
-    MK_Common_DiskID_Caclulate_Dir(dir_to_calculate)
+def Test_com_DiskID_Caclulate_Dir(dir_to_calculate):
+    com_DiskID_Caclulate_Dir(dir_to_calculate)

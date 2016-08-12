@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata_MusicBrainz import *
+from com_Metadata_MusicBrainz import *
 
 
 class TestCommonMusicbrainz(object):
@@ -29,7 +29,7 @@ class TestCommonMusicbrainz(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Metadata_MusicBrainz.MK_Common_Musicbrainz_API()
+        self.db = com_Metadata_MusicBrainz.com_Musicbrainz_API()
 
 
     @classmethod
@@ -41,8 +41,8 @@ class TestCommonMusicbrainz(object):
 
 
 # search by artist and album name
-# def MK_Common_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None, artist_recording=None, return_limit=5, strict_flag=False):
+# def com_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None, artist_recording=None, return_limit=5, strict_flag=False):
 
 
 # search by artist and song name
-# def MK_Common_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None, song_name=None, return_limit=5, strict_flag=False):
+# def com_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None, song_name=None, return_limit=5, strict_flag=False):

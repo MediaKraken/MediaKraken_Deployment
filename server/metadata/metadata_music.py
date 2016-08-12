@@ -29,7 +29,7 @@ Config.read("MediaKraken.ini")
 
 if Config.get('API', 'MediaBrainz').strip() != 'None':
     # setup the mediabrainz class
-    MBrainz_API_Connection = common_metadata_musicbrainz.MK_Common_Musicbrainz_API()
+    MBrainz_API_Connection = common_metadata_musicbrainz.com_Musicbrainz_API()
 else:
     MBrainz_API_Connection = None
 
@@ -55,7 +55,7 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
 #                        if MBrainz_API_Connection is not None:
 #                            # look at musicbrainz server
 #                            brainz_id = None
-#                            music_data = MBrainz_API_Connection.MK_Common_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
+#                            music_data = MBrainz_API_Connection.com_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
 #                            # TODO  if not, store it
 #                            # TODO  use the metadata id for record update
 #                            metadata_uuid = music_data
@@ -67,5 +67,5 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
 
 #            elif class_text == "Music Album":
 #                # search musicbrainz
-#                #MBrainz_API_Connection.MK_Common_Mediabrainz_Get_Releases()
+#                #MBrainz_API_Connection.com_Mediabrainz_Get_Releases()
 #                pass

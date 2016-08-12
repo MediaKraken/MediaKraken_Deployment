@@ -21,7 +21,7 @@ import logging
 import os
 import sys
 sys.path.append("../common")
-import MK_Common_Hash
+import com_Hash
 sys.path.append("./metadata")
 import metadata_anime
 import metadata_game
@@ -52,17 +52,17 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
     elif class_text == "Game CHD":
         metadata_uuid = MK_Server_Database_Metadata_Game_By_Name_And_System(os.path.basename(os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = MK_Common_Hash.MK_Common_Hash_SHA1_C(media_file_path)
+            sha1_value = com_Hash.com_Hash_SHA1_C(media_file_path)
             metadata_uuid = db.MK_Server_Database_Metadata_Game_By_SHA1(sha1_value)
     elif class_text == "Game ISO":
         metadata_uuid = MK_Server_Database_Metadata_Game_By_Name_And_System(os.path.basename(os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = MK_Common_Hash.MK_Common_Hash_SHA1_C(media_file_path)
+            sha1_value = com_Hash.com_Hash_SHA1_C(media_file_path)
             metadata_uuid = db.MK_Server_Database_Metadata_Game_By_SHA1(sha1_value)
     elif class_text == "Game ROM":
         metadata_uuid = MK_Server_Database_Metadata_Game_By_Name_And_System(os.path.basename(os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_hash = MK_Common_Hash.MK_Common_Hash_SHA1_By_Filename(media_file_path)
+            sha1_hash = com_Hash.com_Hash_SHA1_By_Filename(media_file_path)
             if sha1_hash is not None:
                 # TODO lookup the sha1
                 pass

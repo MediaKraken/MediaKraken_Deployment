@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_Chromecast import *
+from com_Hardware_Chromecast import *
 
 
 class TestCommonHardwareChromecast(object):
@@ -29,7 +29,7 @@ class TestCommonHardwareChromecast(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Hardware_Chromecast.MK_Common_Hardware_Chromecast_API()
+        self.db = com_Hardware_Chromecast.com_Hardware_Chromecast_API()
 
 
     @classmethod

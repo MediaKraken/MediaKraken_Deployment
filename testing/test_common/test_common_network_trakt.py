@@ -29,7 +29,7 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Trakt.MK_Common_Trakt_API()
+        self.db = common_network_Trakt.com_Trakt_API()
 
 
     @classmethod
@@ -37,7 +37,7 @@ class TestCommonTrakt(object):
         pass
 
 
-# class MK_Common_Trakt_API:
+# class com_Trakt_API:
 #    def __init__(self, response):
 
 
@@ -45,9 +45,9 @@ class TestCommonTrakt(object):
     @pytest.mark.parametrize(("day_count"), [
         (7),
         (400)])
-    def Test_MK_Common_Trakt_Calendar_By_Days(self, day_count):
-        MK_Common_Trakt_Calendar_By_Days(day_count)
+    def Test_com_Trakt_Calendar_By_Days(self, day_count):
+        com_Trakt_Calendar_By_Days(day_count)
 
 
     # dismiss recommendation
-#    def MK_Common_Trakt_Dismiss_Recommendation(imdb_id, imdb_title, imdb_year):
+#    def com_Trakt_Dismiss_Recommendation(imdb_id, imdb_title, imdb_year):

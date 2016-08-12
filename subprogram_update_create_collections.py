@@ -29,7 +29,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import MK_Common_Metadata
+import com_Metadata
 import common_network
 import common_metadata_tmdb
 import database as database_base
@@ -92,16 +92,16 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_API_Connection.MK_Common_TMDB_Metadata_Collection_By_ID(collection_id)
+        collection_meta = TMDB_API_Connection.com_TMDB_Metadata_Collection_By_ID(collection_id)
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
-            image_poster_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(collection_name, 'poster', 'tmdb', poster_path)
+            image_poster_path = com_Metadata.com_MetaData_Image_Path(collection_name, 'poster', 'tmdb', poster_path)
         else:
             image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
-            image_backdrop_path = MK_Common_Metadata.MK_Common_MetaData_Image_Path(collection_name, 'backdrop', 'tmdb', backdrop_path)
+            image_backdrop_path = com_Metadata.com_MetaData_Image_Path(collection_name, 'backdrop', 'tmdb', backdrop_path)
         else:
             image_backdrop_path = ''
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}

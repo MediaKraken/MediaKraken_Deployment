@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Hardware_Roku_Network import *
+from com_Hardware_Roku_Network import *
 
 
 def Test_MK_Roku_Network_Discovery():

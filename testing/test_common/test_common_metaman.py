@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_MediaKraken import *
+from com_MediaKraken import *
 
 
 def Test_common_network_MediaKraken_Find_Server():

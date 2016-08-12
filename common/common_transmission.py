@@ -61,7 +61,7 @@ class CommonTransmission(object):
         self.tc.remove_torrent(torrent_hash)
 
 
-    def MK_Common_Trnasmission_Name(self, torrent_no):
+    def com_Trnasmission_Name(self, torrent_no):
         return self.tc.get_torrent(torrent_no)
 
 

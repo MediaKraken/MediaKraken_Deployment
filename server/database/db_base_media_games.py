@@ -20,42 +20,42 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def MK_Common_Media_Game_System_List_Count(self):
+def com_Media_Game_System_List_Count(self):
     """
     Audited system list count
     """
     pass
 
 
-def MK_Common_Media_Game_System_List(self, offset=None, records=None):
+def com_Media_Game_System_List(self, offset=None, records=None):
     """
     Audited system list
     """
     pass
 
 
-def MK_Common_Media_Game_List_By_System_Count(self, system_id):
+def com_Media_Game_List_By_System_Count(self, system_id):
     """
     Audited game list by system count
     """
     pass
 
 
-def MK_Common_Media_Game_List_By_System(self, system_id, offset=None, records=None):
+def com_Media_Game_List_By_System(self, system_id, offset=None, records=None):
     """
     Audited game list by system
     """
     pass
 
 
-def MK_Common_Media_Game_List_Count(self):
+def com_Media_Game_List_Count(self):
     """
     Audited games list count
     """
     pass
 
 
-def MK_Common_Media_Game_List(self, offset=None, records=None):
+def com_Media_Game_List(self, offset=None, records=None):
     """
     Audited games list
     """

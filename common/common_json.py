@@ -21,7 +21,7 @@ import logging
 import glob
 import json
 from kivy import platform
-import MK_Common_Database_Octmote
+import com_Database_Octmote
 
 
 def MK_Json_Find():
@@ -47,11 +47,11 @@ def MK_Json_Import(file_name):
     file_handle.close()
     try:
         # item type
-        MK_Common_Database_Octmote.MK_Database_Sqlite3_Item_Insert(json_data)
+        com_Database_Octmote.MK_Database_Sqlite3_Item_Insert(json_data)
     except:
         try:
             # layout
-            MK_Common_Database_Octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'], json_data)
+            com_Database_Octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'], json_data)
         except:
             pass
 

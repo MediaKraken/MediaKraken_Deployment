@@ -54,14 +54,14 @@ class MK_Server_Database(object):
         MK_Server_Database_Media_Class_List,\
         MK_Server_Database_Media_Class_By_UUID,\
         MK_Server_Database_Media_UUID_By_Class
-    from db_base_media_games import MK_Common_Media_Game_System_List_Count,\
-        MK_Common_Media_Game_System_List,\
-        MK_Common_Media_Game_List_By_System_Count,\
-        MK_Common_Media_Game_List_By_System,\
-        MK_Common_Media_Game_List_Count,\
-        MK_Common_Media_Game_List
-    from db_base_media_images import MK_Common_Media_Images_List_Count,\
-        MK_Common_Media_Images_List
+    from db_base_media_games import com_Media_Game_System_List_Count,\
+        com_Media_Game_System_List,\
+        com_Media_Game_List_By_System_Count,\
+        com_Media_Game_List_By_System,\
+        com_Media_Game_List_Count,\
+        com_Media_Game_List
+    from db_base_media_images import com_Media_Images_List_Count,\
+        com_Media_Images_List
     from db_base_media import MK_Server_Database_Insert_Media,\
         MK_Server_Database_Read_Media,\
         MK_Server_Database_Known_Media_Count,\

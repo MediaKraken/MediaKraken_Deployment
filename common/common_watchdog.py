@@ -55,7 +55,7 @@ class CommonWatchdog(object):
     """
     Class for starting up watchdog
     """
-    def MK_Common_Watchdog_Start(self, paths_to_watch):
+    def com_Watchdog_Start(self, paths_to_watch):
         """
         Start watchdog on specified list of paths(s)
         """
@@ -69,7 +69,7 @@ class CommonWatchdog(object):
         self.observer.start()
 
 
-    def MK_Common_Watchdog_Stop(self):
+    def com_Watchdog_Stop(self):
         """
         Stop watchdog
         """

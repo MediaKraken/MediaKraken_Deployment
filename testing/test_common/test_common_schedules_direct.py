@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Schedules_Direct import *
+from com_Schedules_Direct import *
 
 
 class TestCommonSchedulesDirect(object):
@@ -29,7 +29,7 @@ class TestCommonSchedulesDirect(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Common_Schedules_Direct.MK_Common_Schedules_Direct_API()
+        self.db = com_Schedules_Direct.com_Schedules_Direct_API()
 
 
     @classmethod
@@ -37,50 +37,50 @@ class TestCommonSchedulesDirect(object):
         pass
 
 
-#    def MK_Common_Schedules_Direct_Login(self, user_name, user_password):
+#    def com_Schedules_Direct_Login(self, user_name, user_password):
 
 
-    def Test_MK_Common_Schedules_Direct_Status(self):
-        MK_Common_Schedules_Direct_Status()
+    def Test_com_Schedules_Direct_Status(self):
+        com_Schedules_Direct_Status()
 
 
-    def Test_MK_Common_Schedules_Direct_Client_Version(self):
-        MK_Common_Schedules_Direct_Client_Version()
+    def Test_com_Schedules_Direct_Client_Version(self):
+        com_Schedules_Direct_Client_Version()
 
 
-#    def MK_Common_Schedules_Direct_Available(self, countries=None):
+#    def com_Schedules_Direct_Available(self, countries=None):
 
 
-#    def MK_Common_Schedules_Direct_Headends(self, country_code, postal_code):
+#    def com_Schedules_Direct_Headends(self, country_code, postal_code):
 
 
-#    def MK_Common_Schedules_Direct_Lineup_Add(self, lineup_id):
+#    def com_Schedules_Direct_Lineup_Add(self, lineup_id):
 
 
-    def Test_MK_Common_Schedules_Direct_Lineup_List(self):
-        MK_Common_Schedules_Direct_Lineup_List()
+    def Test_com_Schedules_Direct_Lineup_List(self):
+        com_Schedules_Direct_Lineup_List()
 
 
-#    def MK_Common_Schedules_Direct_Lineup_Delete(self, lineup_id):
+#    def com_Schedules_Direct_Lineup_Delete(self, lineup_id):
 
 
-#    def MK_Common_Schedules_Direct_Lineup_Channel_Map(self, lineup_id):
+#    def com_Schedules_Direct_Lineup_Channel_Map(self, lineup_id):
 
 
-#    def MK_Common_Schedules_Direct_Program_Info(self, program_ids):
+#    def com_Schedules_Direct_Program_Info(self, program_ids):
 
 
     # this one is only for EP types, not MV
-#    def MK_Common_Schedules_Direct_Program_Desc(self, program_ids):
+#    def com_Schedules_Direct_Program_Desc(self, program_ids):
 
 
-#    def MK_Common_Schedules_Direct_Schedules_By_StationID(self, station_ids):
+#    def com_Schedules_Direct_Schedules_By_StationID(self, station_ids):
 
 
-#    def MK_Common_Schedules_Direct_MD5(self, station_ids):
+#    def com_Schedules_Direct_MD5(self, station_ids):
 
 
-#    def MK_Common_Schedules_Still_Running(self, program_id):
+#    def com_Schedules_Still_Running(self, program_id):
 
 
-#    def MK_Common_Schedules_Program_Metadata(self, program_ids):
+#    def com_Schedules_Program_Metadata(self, program_ids):

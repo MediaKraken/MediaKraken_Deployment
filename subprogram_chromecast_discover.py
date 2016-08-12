@@ -24,7 +24,7 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import MK_Common_Chromecast
+import com_Chromecast
 import common_file
 import common_logging
 import common_string
@@ -85,7 +85,7 @@ devices_added = 0
 
 
 # look for devices
-chrome = MK_Common_Chromecast.MK_Common_Chromecast_API()
+chrome = com_Chromecast.com_Chromecast_API()
 logging.debug("Chrome: %s", chrome)
 for row_data in chrome.MK_Chromecast_Discover_Dict():
     logging.debug("Dict: %s", row_data)

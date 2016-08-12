@@ -26,7 +26,7 @@ import os
 import signal
 sys.path.append("../MediaKraken_Common")
 import common_logging
-import MK_Common_Roku
+import com_Roku
 sys.path.append("../MediaKraken_Server")
 import database as database_base
 import locale

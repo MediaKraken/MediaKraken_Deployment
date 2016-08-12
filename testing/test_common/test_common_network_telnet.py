@@ -29,7 +29,7 @@ class TestCommonTelnet(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Telnet.MK_Common_Telnet_API()
+        self.db = common_network_Telnet.com_Telnet_API()
 
 
     @classmethod

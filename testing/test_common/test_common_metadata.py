@@ -21,16 +21,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Metadata import *
+from com_Metadata import *
 
 
 # determine "weight" of file to download for trailer
-# def MK_Common_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_year):
+# def com_Metadata_Calc_Trailer_Weight(trailer_file_list, title_name, title_year):
 
 
 # determine file path of images
-# def MK_Common_Metadata_Image_File_Path(media_name, media_type):
+# def com_Metadata_Image_File_Path(media_name, media_type):
 
 
 # determine image location
-# def MK_Common_MetaData_Image_Path(media_name, media_type, source_link, source_file):
+# def com_MetaData_Image_Path(media_name, media_type, source_link, source_file):

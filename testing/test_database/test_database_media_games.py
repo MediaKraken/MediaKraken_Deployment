@@ -40,8 +40,8 @@ class TestDatabaseMediaGames(object):
 
 
     # audited system list count
-    def Test_MK_Common_Media_Game_System_List_Count(self):
-        self.db.MK_Common_Media_Game_System_List_Count()
+    def Test_com_Media_Game_System_List_Count(self):
+        self.db.com_Media_Game_System_List_Count()
         self.db.MK_Server_Database_Rollback()
 
 
@@ -50,24 +50,24 @@ class TestDatabaseMediaGames(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_MK_Common_Media_Game_System_List(self, offset, records):
-        self.db.MK_Common_Media_Game_System_List(offset, records)
+    def Test_com_Media_Game_System_List(self, offset, records):
+        self.db.com_Media_Game_System_List(offset, records)
         self.db.MK_Server_Database_Rollback()
 
 
     # audited game list by system count
-    # def MK_Common_Media_Game_List_By_System_Count(self, system_id):
+    # def com_Media_Game_List_By_System_Count(self, system_id):
 #        self.db.MK_Server_Database_Rollback()
 
 
     # audited game list by system
-    # def MK_Common_Media_Game_List_By_System(self, system_id, offset=None, records=None):
+    # def com_Media_Game_List_By_System(self, system_id, offset=None, records=None):
 #        self.db.MK_Server_Database_Rollback()
 
 
     # audited games list count
-    def Test_MK_Common_Media_Game_List_Count(self):
-        self.db.MK_Common_Media_Game_List_Count()
+    def Test_com_Media_Game_List_Count(self):
+        self.db.com_Media_Game_List_Count()
         self.db.MK_Server_Database_Rollback()
 
 
@@ -76,6 +76,6 @@ class TestDatabaseMediaGames(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_MK_Common_Media_Game_List(self, offset, records):
-        self.db.MK_Common_Media_Game_List(offset, records)
+    def Test_com_Media_Game_List(self, offset, records):
+        self.db.com_Media_Game_List(offset, records)
         self.db.MK_Server_Database_Rollback()

@@ -34,33 +34,33 @@ class CommonMetadataTVMaze(object):
 
 
     # show list 50 per page - 0 is first page
-    def MK_Common_Metadata_TheMaze_Show_List(self, page_no=0):
+    def com_Metadata_TheMaze_Show_List(self, page_no=0):
         url_opts = page_no,
         return com_network.MK_Network_Fetch_From_URL(('http://api.tvmaze.com/shows?page=%s'\
             % url_opts), None)
 
 
     # show when last updated
-    def MK_Common_Metadata_TheMaze_Show_Updated(self):
+    def com_Metadata_TheMaze_Show_Updated(self):
         # returns id's and timestamps of last changed
         return com_network.MK_Network_Fetch_From_URL('http://api.tvmaze.com/updates/shows', None)
 
 
     # lookup show
-    def MK_Common_Metadata_TheMaze_WideSearch(self, show_name, show_year=None):
+    def com_Metadata_TheMaze_WideSearch(self, show_name, show_year=None):
         url_opts = show_name,
         return com_network.MK_Network_Fetch_From_URL(('http://api.tvmaze.com/search/shows?q=%s'\
             % url_opts), None)
 
 
     # lookup specific show
-    def MK_Common_Metadata_TheMaze_NarrowSearch(self, show_name, show_year=None):
+    def com_Metadata_TheMaze_NarrowSearch(self, show_name, show_year=None):
         url_opts = show_name,
         return com_network.MK_Network_Fetch_From_URL(('http://api.tvmaze.com/singlesearch/shows?q=%s' % url_opts), None)
 
 
     # lookup specific id
-    def MK_Common_Metadata_TheMaze_Show_By_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id,\
+    def com_Metadata_TheMaze_Show_By_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id,\
             embed_info=True):
         result_json = None
         # tvmaze lookup and fetch embed info if needed
@@ -82,20 +82,20 @@ class CommonMetadataTVMaze(object):
                 url_opts = tvdb_id,
                 result_json = com_network.MK_Network_Fetch_From_URL(('http://api.tvmaze.com/lookup/shows?thetvdb=%s' % url_opts), None)
             if embed_info and result_json is not None:
-                result_json = MK_Common_Metadata_TheMaze_Show_By_ID(self, result_json['id'], None,\
+                result_json = com_Metadata_TheMaze_Show_By_ID(self, result_json['id'], None,\
                     None, None, True)
         return result_json
 
 
     # people search (doesnt' appear to have episode data here)
-    def MK_Common_Metadata_TheMaze_Person_By_Name(self, person_name):
+    def com_Metadata_TheMaze_Person_By_Name(self, person_name):
         url_opts = person_name,
         return com_network.MK_Network_Fetch_From_URL('http://api.tvmaze.com/search/people?q=%s'\
             % url_opts)
 
 
     # schedule
-    def MK_Common_Metadata_TheMaze_Schedule(self, country_code=None, schedule_date=None):
+    def com_Metadata_TheMaze_Schedule(self, country_code=None, schedule_date=None):
         result_json = com_network.MK_Network_Fetch_From_URL('http://api.tvmaze.com/schedule',\
             None)
         result_json = com_network.MK_Network_Fetch_From_URL('http://api.tvmaze.com/schedule?country=US&date=2014-12-01', None)

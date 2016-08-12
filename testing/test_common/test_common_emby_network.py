@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from MK_Common_Emby_Network import *
+from com_Emby_Network import *
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
