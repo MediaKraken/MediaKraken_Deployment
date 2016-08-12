@@ -33,7 +33,7 @@ from onedrivesdk.model.item_reference import ItemReference
 #        print(drive.id)
 
 
-class common_cloud_onedrive_api(object):
+class Common_cloud_onedrive_api(object):
     """
     Class for interfacing with onedrive
     """
