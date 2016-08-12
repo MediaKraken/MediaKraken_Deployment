@@ -26,13 +26,14 @@ class CommonSynology(object):
     Class for interfacing with synology nas
     """
     def __init__(self):
-        pass
+        self.synology_nas = None
 
 
     def com_synology_connect(self, addr, user_name, user_password):
         """
         Connect to synology
         """
+        logging.debug("syn connect: %s", addr)
         self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
 
 
