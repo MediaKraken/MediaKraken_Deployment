@@ -23,7 +23,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-class MK_Watchdog_Handler(FileSystemEventHandler):
+class CommonWatchdogHandler(FileSystemEventHandler):
     """
     Class for handling watchdog events
     """
@@ -51,7 +51,7 @@ class MK_Watchdog_Handler(FileSystemEventHandler):
 
 
 # define watchdog class
-class MK_Common_Watchdog_API:
+class CommonWatchdog(object):
     """
     Class for starting up watchdog
     """
@@ -59,7 +59,7 @@ class MK_Common_Watchdog_API:
         """
         Start watchdog on specified list of paths(s)
         """
-        event_handler = MK_Watchdog_Handler()
+        event_handler = CommonWatchdogHandler()
         self.observer = Observer()
         # pull in all the audit dirs
         for row_data in paths_to_watch:

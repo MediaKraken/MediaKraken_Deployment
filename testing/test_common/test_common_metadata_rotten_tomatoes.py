@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_rotten_tomatoes import *
 
 
-class Test_common_metadata_rotten_tomatoes_API:
+class TestCommonMetadataRottenTomatoes(object):
 
 
     @classmethod

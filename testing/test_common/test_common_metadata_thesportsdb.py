@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheSportsDB import *
 
 
-class Test_MK_Common_Metadata_TheSportsDB_API:
+class TestCommonMetadataTheSportsDB(object):
 
 
     @classmethod

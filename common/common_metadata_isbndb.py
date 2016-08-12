@@ -21,7 +21,7 @@ import logging
 import common_network
 
 
-class MK_Common_ISBNdb_API:
+class CommonISBNdb(object):
     """
     Class for interfacing with isbndb
     """

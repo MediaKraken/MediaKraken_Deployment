@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_cloud_Dropbox import *
 
 
-class Test_MK_Common_DropBox_API:
+class TestCommonDropBox(object):
 
 
     @classmethod

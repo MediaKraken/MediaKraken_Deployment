@@ -22,7 +22,7 @@ import boto
 from boto.s3.key import Key
 
 
-class Common_aws_s3_api:
+class CommonAWSS3(object):
     """
     Class for interfacing with aws s3
     """

@@ -22,7 +22,7 @@ from pprint import pprint
 from hdhomerun import Device, DeviceError
 
 
-class MK_Common_Hardware_HDHomeRun_API:
+class CommonHardwareHDHomeRun(object):
     """
     Class for interfacing with hdhomerun
     """

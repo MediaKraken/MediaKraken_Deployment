@@ -26,7 +26,7 @@ import common_network
 from pytvdbapi import api
 
 
-class MK_Common_TheTVDB_API:
+class CommonTheTVDB(object):
     """
     Class for interfacing with theTVDB
     """

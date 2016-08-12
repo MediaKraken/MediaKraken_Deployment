@@ -36,7 +36,7 @@ except:
     import pickle
 
 
-class Metaman_Network_Events(Int32StringReceiver):
+class NetworkEvents(Int32StringReceiver):
     """
     Process the network events for the server
     """

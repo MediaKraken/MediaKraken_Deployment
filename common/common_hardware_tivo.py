@@ -21,7 +21,7 @@ import logging
 import common_network_Telnet
 
 
-class common_tivo_api:
+class CommonTivo(object):
     """
     Class for interfacing with tivo device
     """

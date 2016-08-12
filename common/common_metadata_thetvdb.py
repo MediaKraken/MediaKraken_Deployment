@@ -33,7 +33,7 @@ http://www.thetvdb.com/wiki/index.php/Programmers_API
 '''
 
 
-class MK_Common_Metadata_TheTVDB_API:
+class CommonMetadataTheTVDB(object):
     """
     Class for interfacing with TheTVDB
     """

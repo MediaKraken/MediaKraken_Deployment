@@ -21,7 +21,7 @@ import logging
 import requests
 
 
-class Common_backup_crashplan_api:
+class CommonBackupCrashplan(object):
     """
     Class for interfacing with crashplan
     """

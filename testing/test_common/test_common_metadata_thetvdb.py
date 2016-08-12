@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_TheTVDB import *
 
 
-class Test_MK_Common_Metadata_TheTVDB_API:
+class TestCommonMetadataTheTVDB(object):
 
 
     @classmethod

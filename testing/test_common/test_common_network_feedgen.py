@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Feedgen import *
 
 
-class Test_MK_Common_Feedgen_API:
+class TestCommonFeedgen(object):
 
 
     @classmethod

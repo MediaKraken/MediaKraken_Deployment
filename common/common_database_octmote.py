@@ -25,7 +25,7 @@ import json
 import common_network_IRDB
 
 
-class MK_Common_Database_Octmote:
+class CommonDatabaseOctmote(object):
     """
     Class for interfacing with database of Octmote
     """

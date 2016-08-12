@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_Vimeo import *
 
 
-class Test_MK_Common_Vimeo_API:
+class TestCommonVimeo(object):
 
 
     @classmethod

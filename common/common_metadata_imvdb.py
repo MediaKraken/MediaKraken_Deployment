@@ -22,7 +22,7 @@ import json
 import requests
 
 
-class MK_Common_IMVDb_API:
+class CommonIMVDb(object):
     """
     Class for interfacing with imvdb
     """

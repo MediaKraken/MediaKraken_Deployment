@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_anidb import *
 
 
-class Test_common_metadata_anidb:
+class TestCommonMetadataAnidb(object):
 
 
     @classmethod

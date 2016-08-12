@@ -22,7 +22,7 @@ import os
 import dropbox
 
 
-class Common_cloud_dropbox_api:
+class CommonCloudDropbox(object):
     """
     Class for interfacing with dropbox
     """

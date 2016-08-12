@@ -21,7 +21,7 @@ import logging
 import flickrapi
 
 
-class MK_Common_Flickr_API:
+class CommonFlickr(object):
     """
     Class for interfacing with Flickr
     """

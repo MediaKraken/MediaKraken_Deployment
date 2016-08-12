@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_network_SNMP import *
 
 
-class Test_MK_Common_SNMP:
+class TestCommonSNMP(object):
 
 
     @classmethod

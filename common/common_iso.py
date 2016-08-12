@@ -21,7 +21,7 @@ import logging
 import isoparser
 
 
-class common_iso_api:
+class CommonISO(object):
     """
     Class for interfacing with iso images
     """

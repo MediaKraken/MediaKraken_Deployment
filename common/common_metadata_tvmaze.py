@@ -25,7 +25,7 @@ import common_network
 # http://www.tvmaze.com/api
 
 
-class MK_Common_Metadata_TVMaze_API:
+class CommonMetadataTVMaze(object):
     """
     Class for interfacing with TVMaze
     """

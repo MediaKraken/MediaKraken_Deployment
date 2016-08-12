@@ -23,7 +23,7 @@ import time
 newline = "\n"
 
 
-class MK_Common_Telnet_API:
+class CommonTelnet(object):
     """
     Class for interfacing with telnet protocol
     """

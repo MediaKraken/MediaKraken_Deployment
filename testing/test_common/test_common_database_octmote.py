@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Database_Octmote import *
 
 
-class Test_common_database_octmote:
+class TestCommonDatabaseOctmote(object):
 
 
     @classmethod

@@ -23,7 +23,7 @@ import os
 import omdb
 
 
-class MK_Common_OMDb_API:
+class CommonOMDb(object):
     """
     Class for interfacing with OMDb
     """

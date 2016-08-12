@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_HDHomeRun_Py import *
 
 
-class Test_MK_Common_Hardware_HDHomeRun_API_Py:
+class TestCommonHardwareHDHomeRunPy(object):
 
 
     @classmethod

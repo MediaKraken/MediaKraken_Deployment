@@ -57,7 +57,7 @@ Platform
 '''
 
 # setup class so I don't define the api resource unless I'm doing a lookup
-class MK_Common_Metadata_GamesDB_API:
+class CommonMetadataGamesDB(object):
     """
     Class for interfacing with GamesDB
     """

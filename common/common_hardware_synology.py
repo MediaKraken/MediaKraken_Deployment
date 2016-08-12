@@ -21,7 +21,7 @@ import logging
 from synolopy import NasApi
 
 
-class common_synology_api():
+class CommonSynology(object):
     """
     Class for interfacing with synology nas
     """

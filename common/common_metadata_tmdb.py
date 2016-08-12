@@ -26,7 +26,7 @@ import common_network
 import tmdbsimple as tmdb
 
 
-class common_metadata_tmdb_API:
+class CommonMetadataTMDB(object):
     """
     Class for interfacing with TMDB
     """

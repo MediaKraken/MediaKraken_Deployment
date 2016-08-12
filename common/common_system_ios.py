@@ -21,7 +21,7 @@ import logging
 from pyobjus import autoclass
 
 
-class MK_iOS_Hardware_Instance:
+class CommoniOSHardwareInstance(object):
     """
     Class for interfacing with iOS hardware
     """

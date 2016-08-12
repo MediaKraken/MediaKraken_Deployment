@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Serial import *
 
 
-class Test_MK_Common_Serial_API:
+class TestCommonSerial(object):
 
 
     @classmethod

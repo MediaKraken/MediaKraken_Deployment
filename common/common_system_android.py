@@ -23,7 +23,7 @@ import android
 from jnius import autoclass
 
 
-class MK_Android_Hardware_Instance:
+class CommonAndroidHardwareInstance(object):
     """
     Class for interfacing with android hardware
     """

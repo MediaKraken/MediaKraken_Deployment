@@ -25,7 +25,7 @@ import os
 import MK_Common_Emby
 
 
-class MK_Common_Database_Emby:
+class CommonDatabaseEmby(object):
     """
     Class for interfacing with emby server database
     """

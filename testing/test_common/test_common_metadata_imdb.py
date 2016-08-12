@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_metadata_imdb import *
 
 
-class Test_MK_Common_IMDB_API:
+class TestCommonIMDB(object):
 
 
     @classmethod

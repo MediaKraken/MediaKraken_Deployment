@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_IMVDb import *
 
 
-class Test_MK_Common_IMVDb_API:
+class TestCommonIMVDb(object):
 
 
     @classmethod

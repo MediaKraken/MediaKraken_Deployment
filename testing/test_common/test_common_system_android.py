@@ -24,7 +24,7 @@ sys.path.append("../common")
 from common_system_Android import *
 
 
-class Test_MK_Android_Hardware_Instance:
+class TestAndroidHardwareInstance(object):
 
 
     @classmethod

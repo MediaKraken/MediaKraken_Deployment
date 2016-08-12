@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Metadata_ISBNdb import *
 
 
-class Test_MK_Common_ISBNdb_API:
+class TestCommonISBNdb(object):
 
 
     @classmethod

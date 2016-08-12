@@ -23,7 +23,7 @@ from twitch.scraper import get_json, download
 from twitch.exceptions import ResourceUnavailableException
 
 
-class MK_Common_Twitch_API:
+class CommonTwitch(object):
     """
     Class for interfacing with TwitchTV
     """

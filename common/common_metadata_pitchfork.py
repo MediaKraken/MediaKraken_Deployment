@@ -21,7 +21,7 @@ import logging
 import pitchfork
 
 
-class MK_Common_Pitchfork_API:
+class CommonPitchfork(object):
     """
     Class for interfacing with pitchfork
     """

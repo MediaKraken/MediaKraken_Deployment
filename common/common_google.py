@@ -38,7 +38,7 @@ from googleapiclient.discovery import build
 #from oauth2client.tools import argparser
 
 
-class MK_Common_Google_API:
+class CommonGoogle(object):
     """
     Class for interfacing with google api
     """

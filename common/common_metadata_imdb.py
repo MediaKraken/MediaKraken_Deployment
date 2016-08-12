@@ -25,7 +25,7 @@ import common_network
 from imdbpie import Imdb
 
 
-class MK_Common_IMDB_API:
+class CommonIMDB(object):
     """
     Class for interfacing with imdb
     """

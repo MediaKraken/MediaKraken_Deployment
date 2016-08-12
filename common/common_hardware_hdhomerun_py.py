@@ -22,7 +22,7 @@ from pyhdhomerun.adapter import HdhrUtility, HdhrDeviceQuery
 from pyhdhomerun.constants import MAP_US_BCAST
 
 
-class MK_Common_Hardware_HDHomeRun_API_Py:
+class CommonHardwareHDHomeRunPY(object):
     """
     Class for interfacing with hdhomerun
     """

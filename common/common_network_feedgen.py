@@ -21,7 +21,7 @@ import logging
 from feedgen.feed import FeedGenerator
 
 
-class MK_Common_Feedgen_API:
+class CommonFeedgen(object):
     def __init__(self):
         self.fg = FeedGenerator()
         self.fg.id('http://lernfunk.de/media/654321')

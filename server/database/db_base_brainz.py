@@ -21,7 +21,7 @@ import logging
 import psycopg2
 
 
-class MK_Server_Database_Brainz:
+class ServerDatabaseBrainz(object):
     def __init__(self):
         self.sql3_conn = None
         self.sql3_cursor = None

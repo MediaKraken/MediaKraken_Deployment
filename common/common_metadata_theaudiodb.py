@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-class MK_Common_TheAudioDB_API:
+class CommonTheAudioDB(object):
     """
     Class for interfacing with TheAudioDB
     """

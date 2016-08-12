@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Hardware_Tivo import *
 
 
-class Test_MK_Common_Tivo_API:
+class TestCommonTivo(object):
 
 
     @classmethod

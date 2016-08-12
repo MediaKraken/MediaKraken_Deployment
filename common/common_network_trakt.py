@@ -32,7 +32,7 @@ from trakt.tv import TVShow
 from trakt.users import User
 
 
-class MK_Common_Trakt_API:
+class CommonTrakt(object):
     """
     Class for interfacing with Trakt
     """

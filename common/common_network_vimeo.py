@@ -21,7 +21,7 @@ import logging
 import vimeo
 
 
-class MK_Common_Vimeo_API:
+class CommonVimeo(object):
     """
     Class for interfacing with Vimeo
     """

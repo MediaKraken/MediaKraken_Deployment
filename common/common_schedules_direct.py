@@ -27,7 +27,7 @@ import gzip
 from StringIO import StringIO
 
 
-class MK_Common_Schedules_Direct_API:
+class CommonSchedulesDirect(object):
     """
     Class for interfacing with Schedules Direct
     """

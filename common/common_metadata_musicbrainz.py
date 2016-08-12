@@ -28,7 +28,7 @@ A recording is an entity in MusicBrainz which can be linked to tracks on release
 '''
 
 
-class MK_Common_Musicbrainz_API:
+class CommonMusicbrainz(object):
     """
     Class for interfacing with musicbrainz
     """

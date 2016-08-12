@@ -23,7 +23,7 @@ import common_network
 
 
 # http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
-class MK_Common_Metadata_TheSportsDB_API:
+class CommonMetadataTheSportsDB(object):
     """
     Class for interfacing with TheSportsDB
     """

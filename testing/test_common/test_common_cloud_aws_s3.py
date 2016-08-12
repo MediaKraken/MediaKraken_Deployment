@@ -25,7 +25,7 @@ sys.path.append("../common")
 from common_cloud_AWS_S3 import *
 
 
-class Test_common_cloud_AWS_S3:
+class TestCommonCloudAWSS3(object):
 
 
     @classmethod

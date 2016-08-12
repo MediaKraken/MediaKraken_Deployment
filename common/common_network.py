@@ -95,7 +95,7 @@ def MK_Network_Get_Default_IP():
 
 
 # ping modules
-class pingit(Thread):
+class PingIt(Thread):
     def __init__(self, ip):
        Thread.__init__(self)
        self.ip = ip
@@ -112,7 +112,7 @@ class pingit(Thread):
        while 1:
            line = pingaling.readline()
            if not line: break
-           igot = re.findall(pingit.lifeline, line)
+           igot = re.findall(PingIt.lifeline, line)
            if igot:
                self.status = int(igot[0])
 
@@ -121,11 +121,11 @@ def MK_Network_Ping_List(host_list):
     """
     Ping host list
     """
-    pingit.lifeline = re.compile(r"(\d) received")
+    PingIt.lifeline = re.compile(r"(\d) received")
     report = ("No response", "Partial Response", "Alive")
     pinglist = []
     for host in host_list:
-       current = pingit(host)
+       current = PingIt(host)
        pinglist.append(current)
        current.start()
     for pingle in pinglist:

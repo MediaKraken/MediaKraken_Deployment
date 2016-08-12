@@ -24,7 +24,7 @@ sys.path.append("../common")
 from MK_Common_Schedules_Direct import *
 
 
-class Test_MK_Common_Schedules_Direct_API:
+class TestCommonSchedulesDirect(object):
 
 
     @classmethod

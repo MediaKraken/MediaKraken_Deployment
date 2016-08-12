@@ -23,7 +23,7 @@ import urllib2
 from smb.SMBConnection import SMBConnection
 
 
-class common_cifs_Share_URL_API:
+class CommonCIFSShareURL(object):
     def __init__(self):
         pass
 
@@ -44,7 +44,7 @@ class common_cifs_Share_URL_API:
         file_con.close()
 
 
-class common_cifs_Share_API:
+class CommonCIFSShare(object):
     def __init__(self):
         pass
 

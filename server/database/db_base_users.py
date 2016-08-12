@@ -22,7 +22,7 @@ import uuid
 import datetime
 import json
 
-#class MK_Server_Database_Users:
+#class ServerDatabaseUsers(object):
 # return user count
 def MK_Server_Database_User_List_Name_Count(self):
     self.sql3_cursor.execute('select count(*) from mm_user')

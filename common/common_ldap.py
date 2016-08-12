@@ -21,7 +21,7 @@ import logging
 import ldap
 
 
-class MK_Common_LDAP_API:
+class CommonLDAP(object):
     """
     Class for interfacing with ldap server
     """

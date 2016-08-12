@@ -26,7 +26,7 @@ import pychromecast.controllers.youtube as youtube
 from pychromecast.controllers import BaseController
 
 
-class MK_Common_Hardware_Chromecast_API:
+class CommonHardwareChromecast(object):
     """
     Class for interfacing with chromecast
     """

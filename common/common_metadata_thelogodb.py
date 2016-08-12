@@ -24,7 +24,7 @@ import MK_Common_Metadata
 import common_network
 
 
-class MK_Common_TheLogoDB_API:
+class CommonTheLogoDB(object):
     """
     Class for interfacing with TheLogoDB
     """

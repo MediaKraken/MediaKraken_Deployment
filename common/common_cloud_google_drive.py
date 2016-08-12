@@ -31,7 +31,7 @@ except ImportError:
     flags = None
 
 
-class Common_cloud_google_drive_api:
+class CommonCloudGoogleDrive(object):
     """
     Class for interfacing with google drive
     """
