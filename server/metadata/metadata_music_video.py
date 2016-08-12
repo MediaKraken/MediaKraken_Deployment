@@ -29,8 +29,8 @@ Config.read("MediaKraken.ini")
 
 
 # verify imvdb key exists
-if Config.get('API', 'imvdb').strip() != 'None':
-    IMVDB_API_Connection = common_metadata_imvdb.com_imvdb_API(Config.get('API', 'imvdb').strip())
+if Config.get('API', 'IMVDb').strip() != 'None':
+    IMVDB_API_Connection = common_metadata_imvdb.com_IMVDb_API(Config.get('API', 'IMVDb').strip())
 else:
     IMVDB_API_Connection = None
 
@@ -59,23 +59,23 @@ def imvdb_lookup(db, file_name):
     if band_name == imvdb_lookup.metadata_last_band\
             and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
-    metadata_uuid = db.srv_db_metadata_music_video_lookup(band_name, song_name)
+    metadata_uuid = db.srv_db_Metadata_Music_Video_Lookup(band_name, song_name)
     logging.debug("uuid: %s", metadata_uuid)
     if metadata_uuid == []:
         metadata_uuid = None
     if metadata_uuid is None:
         if IMVDB_API_Connection is not None:
-            imvdb_json = IMVDB_API_Connection.com_imvdb_Search_Video(band_name, song_name)
+            imvdb_json = IMVDB_API_Connection.com_IMVDb_Search_Video(band_name, song_name)
             logging.debug("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:
                 logging.debug("vid data: %s", video_data)
-                if db.srv_db_metadata_music_video_count(str(video_data['id'])) == 0:
-                    db.srv_db_metadata_music_video_add(video_data['artists'][0]['slug'],\
-                        video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),\
-                        json.dumps(video_data), json.dumps({'Images': {'imvdb': None}}))
+                if db.srv_db_Metadata_Music_Video_Count(str(video_data['id'])) == 0:
+                    db.srv_db_Metadata_Music_Video_Add(video_data['artists'][0]['slug'],\
+                        video_data['song_slug'], json.dumps({'IMVDb': str(video_data['id'])}),\
+                        json.dumps(video_data), json.dumps({'Images': {'IMVDb': None}}))
             # try after inserting new records
-            metadata_uuid = db.srv_db_metadata_music_video_lookup(band_name, song_name)
+            metadata_uuid = db.srv_db_Metadata_Music_Video_Lookup(band_name, song_name)
             if metadata_uuid == []:
                 metadata_uuid = None
     # set last values to negate lookups for same song

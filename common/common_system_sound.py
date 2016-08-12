@@ -23,12 +23,12 @@ from kivy.core.audio import SoundLoader
 
 
 # text to speech
-def mk_sound_text_to_speech(message_to_speak):
+def MK_Sound_Text_To_Speech(message_to_speak):
     tts.speak(message_to_speak)
 
 
 # play audio file
-def mk_sound_play_file(file_name):
+def MK_Sound_Play_File(file_name):
     sound_data = SoundLoader.load(file_name)
     if sound_data:
         logging.debug("Sound found at %s" % sound_data.source)
@@ -37,7 +37,7 @@ def mk_sound_play_file(file_name):
 
 
 # list devices via pyaudio
-def com_audio_pyaudio_list_devices():
+def com_Audio_Pyaudio_List_Devices():
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):

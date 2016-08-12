@@ -24,7 +24,7 @@ sys.path.append("../../MediaKraken_Common/radio_crawler")
 
 
 # create the cache file for import
-def com_network_radio():
+def com_network_Radio():
     proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/crawler_google.py'],\
         shell=False)
     logging.debug("Crawler Google PID: %s", proc.pid)

@@ -26,23 +26,23 @@ from plyer import gps
 VIBRATION_PATTERN = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 
-def mk_hardware_accelerometer_on():
+def MK_Hardware_Accelerometer_On():
     """
     Turn on accelerometer
     """
     accelerometer.enable()
-    Clock.schedule_interval(mk_get_acceleration, 1 / 20.)
+    Clock.schedule_interval(MK_Get_Acceleration, 1 / 20.)
 
 
-def mk_hardware_accelerometer_off():
+def MK_Hardware_Accelerometer_Off():
     """
     Turn off accelerometer
     """
     accelerometer.disable()
-    Clock.unschedule(mk_get_acceleration)
+    Clock.unschedule(MK_Get_Acceleration)
 
 
-def mk_get_acceleration(dt):
+def MK_Get_Acceleration(dt):
     """
     Get accelerometer data
     """
@@ -54,28 +54,28 @@ def mk_get_acceleration(dt):
         return val
 
 
-def mk_hardware_vibration(pattern_string):
+def MK_Hardware_Vibration(pattern_string):
     """
     Setup of the vibration via pattern
     """
     vibrator.pattern([float(n) for n in ti.text.split(',')])
 
 
-def mk_hardware_vibration_Time(seconds_to_vibrate):
+def MK_Hardware_Vibration_Time(seconds_to_vibrate):
     """
     Vibration via time
     """
     vibrator.vibrate(seconds_to_vibrate)
 
 
-def mk_hardware_vibration_Stop():
+def MK_Hardware_Vibration_Stop():
     """
     Stop vibration
     """
     vibrator.cancel()
 
 
-def mk_hardware_gps_on():
+def MK_Hardware_GPS_On():
     """
     gps setup
     """

@@ -8,7 +8,7 @@ from MediaKraken.database import (
     Column,
     db,
     Model,
-    referencecol,
+    ReferenceCol,
     relationship,
     SurrogatePK,
 )
@@ -17,7 +17,7 @@ from MediaKraken.database import (
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
-    user_id = referencecol('mm_user', nullable=True)
+    user_id = ReferenceCol('mm_user', nullable=True)
     user = relationship('User', backref='roles')
 
     def __init__(self, name, **kwargs):

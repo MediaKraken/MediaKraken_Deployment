@@ -46,8 +46,8 @@ iokit.IORegistryEntryCreateCFProperty.restype = ctypes.c_void_p
 iokit.IORegistryEntryGetPath.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
 iokit.IORegistryEntryGetPath.restype = ctypes.c_void_p
 
-iokit.ioregistryentrygetname.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
-iokit.ioregistryentrygetname.restype = ctypes.c_void_p
+iokit.IORegistryEntryGetName.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+iokit.IORegistryEntryGetName.restype = ctypes.c_void_p
 
 iokit.IOObjectGetClass.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 iokit.IOObjectGetClass.restype = ctypes.c_void_p
@@ -118,7 +118,7 @@ def get_int_property(device_t, property):
 
     return number.value
 
-def ioregistryentrygetname(device):
+def IORegistryEntryGetName(device):
     pathname = ctypes.create_string_buffer(100) # TODO: Is this ok?
     iokit.IOObjectGetClass(
         device,
@@ -127,13 +127,13 @@ def ioregistryentrygetname(device):
 
     return pathname.value
 
-def getparentdevicebytype(device, parent_type):
+def GetParentDeviceByType(device, parent_type):
     """ Find the first parent of a device that implements the parent_type
         @param IOService Service to inspect
         @return Pointer to the parent type, or None if it was not found.
     """
     # First, try to walk up the IOService tree to find a parent of this device that is a IOUSBDevice.
-    while ioregistryentrygetname(device) != parent_type:
+    while IORegistryEntryGetName(device) != parent_type:
         parent = ctypes.c_void_p()
         response = iokit.IORegistryEntryGetParentEntry(
             device,
@@ -149,7 +149,7 @@ def getparentdevicebytype(device, parent_type):
 
     return device
 
-def getioservicesbytype(service_type):
+def GetIOServicesByType(service_type):
     """
     """
     serial_port_iterator = ctypes.c_void_p()
@@ -173,7 +173,7 @@ def getioservicesbytype(service_type):
 
 def comports():
     # Scan for all iokit serial ports
-    services = getioservicesbytype('IOSerialBSDClient')
+    services = GetIOServicesByType('IOSerialBSDClient')
 
     ports = []
     for service in services:
@@ -183,7 +183,7 @@ def comports():
         info.append(get_string_property(service, "IOCalloutDevice"))
 
         # If the serial port is implemented by a
-        usb_device = getparentdevicebytype(service, "IOUSBDevice")
+        usb_device = GetParentDeviceByType(service, "IOUSBDevice")
         if usb_device != None:
             info.append(get_string_property(usb_device, "USB Product Name"))
 

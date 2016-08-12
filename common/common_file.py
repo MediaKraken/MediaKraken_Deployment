@@ -142,7 +142,7 @@ def com_file_remove_junk(file_list):
     return file_list
 
 
-def com_file_is_junk(file_name):
+def com_file_Is_junk(file_name):
     """
     See if file is junk
     """

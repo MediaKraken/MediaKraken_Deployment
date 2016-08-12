@@ -28,14 +28,14 @@ from com_Hardware_Roku import *
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_getmp4info(filename):
-    getmp4info(filename)
+def Test_getMP4Info(filename):
+    getMP4Info(filename)
 
 
-# def extractimages(videoFile, directory, interval, mode=0, offset=0):
+# def extractImages(videoFile, directory, interval, mode=0, offset=0):
 
 
-# def makebif(filename, directory, interval):
+# def makeBIF(filename, directory, interval):
 
 
-# def com_roku_create_bif(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+# def com_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):

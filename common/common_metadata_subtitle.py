@@ -30,7 +30,7 @@ import subliminal
 
 # fetch subtitles
 def com_metadata_fetch_subtitle(file_name, sub_lang="en"):
-    #file_hash = com_Hash.com_hash_thesubdb(file_name)
+    #file_hash = com_Hash.com_Hash_TheSubDB(file_name)
     f = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
     cmd_output = f.read()
     return cmd_output

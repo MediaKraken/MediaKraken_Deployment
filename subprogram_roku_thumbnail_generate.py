@@ -66,7 +66,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', No
 
 # go through ALL known media files
 thumbnails_generated = 0
-for row_data in db.srv_db_known_media():
+for row_data in db.srv_db_Known_Media():
 
 #TODO  actually, this should probably be the metadata
 # TODO the common roku code has the bif/thumb gen

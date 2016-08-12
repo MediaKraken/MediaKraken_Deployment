@@ -38,27 +38,27 @@ class TestCommonMetadataAnidb(object):
 
 
     # fetch the tarball of anime titles
-    # def MK_Network_anidb_Fetch_Titles_File(self, data_type='dat'):
+    # def MK_Network_AniDB_Fetch_Titles_File(self, data_type='dat'):
 
 
     # save anidb title data to database
-    # def MK_Network_anidb_Save_Title_Data_To_DB(self, title_file):
+    # def MK_Network_AniDB_Save_Title_Data_To_DB(self, title_file):
 
 
     # find AID by title
-    # def MK_Network_anidb_AID_By_Title(self, title_to_search):
+    # def MK_Network_AniDB_AID_By_Title(self, title_to_search):
 
 
     # remote api calls
-    # def MK_Network_anidb_Connect(self, user_name, user_password):
+    # def MK_Network_AniDB_Connect(self, user_name, user_password):
 
 
-    # logout of anidb
-    def Test_MK_Network_anidb_Logout(self):
-        MK_Network_anidb_Logout()
+    # logout of AniDB
+    def Test_MK_Network_AniDB_Logout(self):
+        MK_Network_AniDB_Logout()
 
 
-    # close the anidb connect and stop the thread
-    def Test_MK_Network_anidb_Stop(self):
-        MK_Network_anidb_Stop()
+    # close the AniDB connect and stop the thread
+    def Test_MK_Network_AniDB_Stop(self):
+        MK_Network_AniDB_Stop()
 

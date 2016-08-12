@@ -69,13 +69,13 @@ def members():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_read_media_New_Count(7),
+                                total=g.db.srv_db_Read_Media_New_Count(7),
                                 record_name='new and hot',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template("users/members.html", data_resume_media = resume_list,
-                           data_new_media = g.db.srv_db_read_media_New(7, offset, per_page),
+                           data_new_media = g.db.srv_db_Read_Media_New(7, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -204,11 +204,11 @@ def user_music_video_list():
 def user_sports_page():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db.srv_db_metadata_sports_list(offset, per_page):
+    for row_data in g.db.srv_db_Metadata_Sports_List(offset, per_page):
         media.append((row_data['mm_metadata_sports_guid'],row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_sports_list_count(),
+                                total=g.db.srv_db_Metadata_Sports_List_Count(),
                                 record_name='sporting events',
                                 format_total=True,
                                 format_number=True,
@@ -242,7 +242,7 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db.srv_db_Metadatathesportsdb_Select_By_Guid(guid),
+                           data=g.db.srv_db_MetadataTheSportsDB_Select_By_Guid(guid),
                            data_poster_image = data_poster_image,
                            data_background_image = data_background_image
                            )
@@ -256,7 +256,7 @@ def user_tv_page():
     page, per_page, offset = common_pagination.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
-    for row_data in g.db.srv_db_web_tvmedia_list('TV Show', None, per_page, False, offset):
+    for row_data in g.db.srv_db_Web_TVMedia_List('TV Show', None, per_page, False, offset):
         # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*), 3 - mm_metadata_tvshow_localimage_json
         try:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
@@ -266,7 +266,7 @@ def user_tv_page():
                 None, locale.format('%d', row_data['mm_count'], True)))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_web_tvmedia_list_Count('TV Show',\
+                                total=g.db.srv_db_Web_TVMedia_List_Count('TV Show',\
                                     None, None),
                                 record_name='media',
                                 format_total=True,
@@ -287,58 +287,58 @@ def user_tv_show_detail_page(guid):
     if request.method == 'POST':
         # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db.srv_db_media_watched_status_update(guid,current_user.get_id(),False)
+            g.db.srv_db_Media_Watched_Status_Update(guid,current_user.get_id(),False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db.srv_db_media_watched_status_update(guid,current_user.get_id(),True)
+            g.db.srv_db_Media_Watched_Status_Update(guid,current_user.get_id(),True)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
-        data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+        data_metadata = g.db.srv_db_Metadata_TVShow_Detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
-        if 'tvmaze' in json_metadata['Meta']:
-            if 'runtime' in json_metadata['Meta']['tvmaze']:
-                data_runtime = json_metadata['Meta']['tvmaze']['runtime']
+        if 'TVMaze' in json_metadata['Meta']:
+            if 'runtime' in json_metadata['Meta']['TVMaze']:
+                data_runtime = json_metadata['Meta']['TVMaze']['runtime']
             else:
                 data_runtime = None
-            if 'rating' in json_metadata['Meta']['tvmaze']:
-                data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
+            if 'rating' in json_metadata['Meta']['TVMaze']:
+                data_rating = json_metadata['Meta']['TVMaze']['rating']['average']
             else:
                 data_rating = None
-            if 'premiered' in json_metadata['Meta']['tvmaze']:
-                data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
+            if 'premiered' in json_metadata['Meta']['TVMaze']:
+                data_first_aired = json_metadata['Meta']['TVMaze']['premiered']
             else:
                 data_first_aired = None
-            if 'summary' in json_metadata['Meta']['tvmaze']:
-                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+            if 'summary' in json_metadata['Meta']['TVMaze']:
+                data_overview = json_metadata['Meta']['TVMaze']['summary'].replace('<p>','').replace('</p>','')
             else:
                 data_overview = None
             # build gen list
             data_genres_list = ''
-            if 'genres' in json_metadata['Meta']['tvmaze']:
-                for ndx in json_metadata['Meta']['tvmaze']['genres']:
+            if 'genres' in json_metadata['Meta']['TVMaze']:
+                for ndx in json_metadata['Meta']['TVMaze']['genres']:
                     data_genres_list += (ndx + ', ')
-        elif 'thetvdb' in json_metadata['Meta']:
-            if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-                data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
+        elif 'theTVDB' in json_metadata['Meta']:
+            if 'Runtime' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+                data_runtime = json_metadata['Meta']['theTVDB']['Meta']['Series']['Runtime']
             else:
                 data_runtime = None
-            if 'ContentRating' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-                data_rating = json_metadata['Meta']['thetvdb']['Meta']['Series']['ContentRating']
+            if 'ContentRating' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+                data_rating = json_metadata['Meta']['theTVDB']['Meta']['Series']['ContentRating']
             else:
                 data_rating = None
-            if 'FirstAired' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-                data_first_aired = json_metadata['Meta']['thetvdb']['Meta']['Series']['FirstAired']
+            if 'FirstAired' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+                data_first_aired = json_metadata['Meta']['theTVDB']['Meta']['Series']['FirstAired']
             else:
                 data_first_aired = None
-            if 'Overview' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-                data_overview = json_metadata['Meta']['thetvdb']['Meta']['Series']['Overview']
+            if 'Overview' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+                data_overview = json_metadata['Meta']['theTVDB']['Meta']['Series']['Overview']
             else:
                 data_overview = None
             # build gen list
             data_genres_list = ''
-            if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-                for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
+            if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+                for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                     data_genres_list += (ndx + ', ')
                 # since | is at first and end....chop off first and last comma
                 data_genres_list = data_genres_list[2:-2]
@@ -366,7 +366,7 @@ def user_tv_show_detail_page(guid):
             data_background_image = None
         # grab reviews
         #review = g.db.srv_db_Review_List(data[0])
-        data_season_data = g.db.srv_db_read_tvmetadata_eps_season(guid)
+        data_season_data = g.db.srv_db_Read_TVMetadata_Eps_Season(guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
         m, s = divmod((float(data_runtime) * 60), 60)
@@ -401,56 +401,56 @@ def user_tv_show_detail_page(guid):
 @blueprint.route("/tv_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_season_detail_page(guid, season):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_Metadata_TVShow_Detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
-    if 'tvmaze' in json_metadata['Meta']:
-        if 'runtime' in json_metadata['Meta']['tvmaze']:
-            data_runtime = json_metadata['Meta']['tvmaze']['runtime']
+    if 'TVMaze' in json_metadata['Meta']:
+        if 'runtime' in json_metadata['Meta']['TVMaze']:
+            data_runtime = json_metadata['Meta']['TVMaze']['runtime']
         else:
             data_runtime = None
-        if 'rating' in json_metadata['Meta']['tvmaze']:
-            data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
+        if 'rating' in json_metadata['Meta']['TVMaze']:
+            data_rating = json_metadata['Meta']['TVMaze']['rating']['average']
         else:
             data_rating = None
-        if 'premiered' in json_metadata['Meta']['tvmaze']:
-            data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
+        if 'premiered' in json_metadata['Meta']['TVMaze']:
+            data_first_aired = json_metadata['Meta']['TVMaze']['premiered']
         else:
             data_first_aired = None
-        if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+        if 'summary' in json_metadata['Meta']['TVMaze']:
+            data_overview = json_metadata['Meta']['TVMaze']['summary'].replace('<p>','').replace('</p>','')
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'genres' in json_metadata['Meta']['tvmaze']:
-            for ndx in json_metadata['Meta']['tvmaze']['genres']:
+        if 'genres' in json_metadata['Meta']['TVMaze']:
+            for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
-    elif 'thetvdb' in json_metadata['Meta']:
-        if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
+    elif 'theTVDB' in json_metadata['Meta']:
+        if 'Runtime' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_runtime = json_metadata['Meta']['theTVDB']['Meta']['Series']['Runtime']
         else:
             data_runtime = None
-        if 'ContentRating' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_rating = json_metadata['Meta']['thetvdb']['Meta']['Series']['ContentRating']
+        if 'ContentRating' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_rating = json_metadata['Meta']['theTVDB']['Meta']['Series']['ContentRating']
         else:
             data_rating = None
-        if 'FirstAired' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_first_aired = json_metadata['Meta']['thetvdb']['Meta']['Series']['FirstAired']
+        if 'FirstAired' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_first_aired = json_metadata['Meta']['theTVDB']['Meta']['Series']['FirstAired']
         else:
             data_first_aired = None
-        if 'Overview' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_overview = json_metadata['Meta']['thetvdb']['Meta']['Series']['Overview']
+        if 'Overview' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_overview = json_metadata['Meta']['theTVDB']['Meta']['Series']['Overview']
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
+        if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
 
-    data_episode_count = g.db.srv_db_read_tvmetadata_season_eps_list(guid, int(season))
+    data_episode_count = g.db.srv_db_Read_TVMetadata_Season_Eps_List(guid, int(season))
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
     # poster image
     try:
@@ -482,7 +482,7 @@ def user_tv_season_detail_page(guid, season):
 @blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_episode_detail_page(guid, season, episode):
-    data_episode_detail = g.db.srv_db_read_tvmetadata_episode(guid, season, episode)
+    data_episode_detail = g.db.srv_db_Read_TVMetadata_Episode(guid, season, episode)
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
     # poster image
     try:
@@ -515,7 +515,7 @@ def user_livetv_page(schedule_date, schedule_time):
     channel_data = ""
     md_used = 2
     last_station = None
-    for row_data in g.db.srv_db_tv_schedule_by_date(schedule_date):
+    for row_data in g.db.srv_db_TV_Schedule_By_Date(schedule_date):
         if row_data[0] != last_station and last_station is not None:
             grid_data += '<tr><td>' + last_station + '</td><td>' + row_data[1] + '</td>'\
                 + channel_data + '</tr>'
@@ -610,7 +610,7 @@ def user_video_player(guid):
     audio_track_index = request.form["Video_Play_Audio_Track"]
     subtitle_track_index = request.form["Video_Play_Subtitles"]
     # launch ffmpeg to ffserver procecss
-    proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.srv_db_media_path_by_uuid(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
+    proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.srv_db_Media_Path_By_UUID(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
     logging.info("FFServer PID: %s",proc_ffserver.pid)
     return render_template("users/user_playback.html", data_desc = ('Movie title') )
 
@@ -622,7 +622,7 @@ def user_video_player_videojs(mtype, guid):
     logging.debug("videojs: %s %s", mtype, guid)
     # grab the guid from the comboindex
     media_guid_index = request.form["Video_Track"]
-    media_path = g.db.srv_db_media_path_by_uuid(media_guid_index)[0]
+    media_path = g.db.srv_db_Media_Path_By_UUID(media_guid_index)[0]
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
     logging.debug("aud: %s", audio_track_index)
@@ -659,15 +659,15 @@ def user_video_player_videojs(mtype, guid):
 @blueprint.route('/playalbum/<guid>')
 @login_required
 def user_album_player(guid):
-    return render_template("users/user_album_playback.html", data_desc = g.db.srv_db_metadata_album_by_guid(guid),
-                           data_song_list = g.db.srv_db_metadata_songs_by_album_guid(guid))
+    return render_template("users/user_album_playback.html", data_desc = g.db.srv_db_Metadata_Album_By_GUID(guid),
+                           data_song_list = g.db.srv_db_Metadata_Songs_By_Album_GUID(guid))
 
 
 @blueprint.route('/imagegallery')
 @blueprint.route('/imagegallery/')
 @login_required
 def user_image_gallery():
-    return render_template("users/user_image_gallery_view.html", image_data=g.db.com_media_images_list())
+    return render_template("users/user_image_gallery_view.html", image_data=g.db.com_Media_Images_List())
 
 
 @blueprint.route('/games')
@@ -689,7 +689,7 @@ def user_games_detail(guid):
 @login_required
 def user_movie_genre_page():
     media = []
-    for row_data in g.db.srv_db_media_movie_count_by_genre(g.db.srv_db_media_uuid_by_class('Movie')):
+    for row_data in g.db.srv_db_Media_Movie_Count_By_Genre(g.db.srv_db_Media_UUID_By_Class('Movie')):
         media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True), row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
@@ -701,7 +701,7 @@ def user_movie_page(genre):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
-    for row_data in g.db.srv_db_web_media_list(g.db.srv_db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False, offset=offset, include_remote=True):
+    for row_data in g.db.srv_db_Web_Media_List(g.db.srv_db_Media_UUID_By_Class('Movie'), list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False, offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json, 4 - mm_metadata_localimage_json
         logging.debug("row2: %s", row_data['mm_media_json'])
         json_image = row_data[mm_metadata_localimage_json]
@@ -737,7 +737,7 @@ def user_movie_page(genre):
         else:
             media.append((row_data[mm_media_name], row_data[mm_media_guid], None, watched_status,\
                 sync_status, poo_status, favorite_status, match_status))
-    total = g.db.srv_db_web_media_list_count(g.db.srv_db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre, group_collection=False, include_remote=True)
+    total = g.db.srv_db_Web_Media_List_Count(g.db.srv_db_Media_UUID_By_Class('Movie'), list_type='movie', list_genre=genre, group_collection=False, include_remote=True)
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=total,
@@ -759,10 +759,10 @@ def movie_detail(guid):
     if request.method == 'POST':
         # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db.srv_db_media_watched_status_update(guid, current_user.get_id(), False)
+            g.db.srv_db_Media_Watched_Status_Update(guid, current_user.get_id(), False)
             return redirect(url_for('user.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db.srv_db_media_watched_status_update(guid, current_user.get_id(), True)
+            g.db.srv_db_Media_Watched_Status_Update(guid, current_user.get_id(), True)
             return redirect(url_for('user.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
             return redirect(url_for('user.sync_edit', guid=guid))
@@ -773,11 +773,11 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
-            proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.srv_db_media_path_by_uuid(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
+            proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.srv_db_Media_Path_By_UUID(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
             logging.info("FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user.movie_detail', guid=guid))
     else:
-        data = g.db.srv_db_read_media_Metadata_Both(guid)
+        data = g.db.srv_db_Read_Media_Metadata_Both(guid)
         json_ffmpeg = data['mm_media_ffprobe_json']
         json_media = data['mm_media_json']
         json_metadata = data['mm_metadata_json']
@@ -825,7 +825,7 @@ def movie_detail(guid):
             data_file = json_ffmpeg['format']['filename']
         image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
         # check to see if there are other version of this video file (dvd, hddvd, etc)
-        vid_versions = g.db.srv_db_media_by_metadata_guid(data[1])  # metadata guid
+        vid_versions = g.db.srv_db_Media_By_Metadata_Guid(data[1])  # metadata guid
         # audio and sub sreams
         audio_streams = []
         subtitle_streams = [(0,'None')]
@@ -930,12 +930,12 @@ def movie_detail(guid):
 #    page, per_page, offset = common_pagination.get_page_items()
 #    media = []
 #    # class_guid, list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
-#    media.append((g.db.srv_db_web_media_list(xxxx, 'in_progress', None, per_page, False, offset))) # extra parans so adds list
-#    total = g.db.srv_db_web_media_list_count(xxxx, 'in_progress', None, False)
-#    media.append((g.db.srv_db_web_media_list(xxxx, 'recent_addition', None, per_page, False, offset)))
-#    total += g.db.srv_db_web_media_list_count(xxxx, 'recent_addition', None, False)
-#    media.append((g.db.srv_db_web_media_list(xxxx, 'video', None, per_page, False, offset)))
-#    total += g.db.srv_db_web_media_list_count(xxxx, 'video', None, False)
+#    media.append((g.db.srv_db_Web_Media_List(xxxx, 'in_progress', None, per_page, False, offset))) # extra parans so adds list
+#    total = g.db.srv_db_Web_Media_List_Count(xxxx, 'in_progress', None, False)
+#    media.append((g.db.srv_db_Web_Media_List(xxxx, 'recent_addition', None, per_page, False, offset)))
+#    total += g.db.srv_db_Web_Media_List_Count(xxxx, 'recent_addition', None, False)
+#    media.append((g.db.srv_db_Web_Media_List(xxxx, 'video', None, per_page, False, offset)))
+#    total += g.db.srv_db_Web_Media_List_Count(xxxx, 'video', None, False)
 #    pagination = common_pagination.get_pagination(page=page,
 #                                per_page=per_page,
 #                                total=total,
@@ -963,7 +963,7 @@ def user_audio_page():
 def user_album_list_page():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db.srv_db_media_album_list(offset, per_page):
+    for row_data in g.db.srv_db_Media_Album_List(offset, per_page):
         try:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],\
                 row_data['mm_metadata_album_json'].replace(Config.get('MediaKrakenServer',\
@@ -973,7 +973,7 @@ def user_album_list_page():
                 row_data['mm_metadata_album_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_media_album_count(),
+                                total=g.db.srv_db_Media_Album_Count(),
                                 record_name='music albums',
                                 format_total=True,
                                 format_number=True,
@@ -1100,13 +1100,13 @@ def class_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_media_class_list_count(),
+                                total=g.db.srv_db_Media_Class_List_Count(),
                                 record_name='Media Class',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/user_media_class_list.html',
-                           media_class=g.db.srv_db_media_class_list(offset, per_page),
+                           media_class=g.db.srv_db_Media_Class_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1120,13 +1120,13 @@ def report_display_all_duplicates():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_media_duplicate_count(),
+                                total=g.db.srv_db_Media_Duplicate_Count(),
                                 record_name='All Duplicate Media',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/reports/report_all_duplicate_media.html',
-                           media=g.db.srv_db_media_duplicate(offset, per_page),
+                           media=g.db.srv_db_Media_Duplicate(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1139,7 +1139,7 @@ def report_display_all_duplicates():
 def report_display_all_duplicates_detail(guid):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for media_data in g.db.srv_db_media_duplicate_Detail(guid, offset, per_page):
+    for media_data in g.db.srv_db_Media_Duplicate_Detail(guid, offset, per_page):
         logging.debug("media: %s", media_data['mm_media_ffprobe_json'])
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
@@ -1149,7 +1149,7 @@ def report_display_all_duplicates_detail(guid):
                 break
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_media_duplicate_Detail_Count(guid)[0],
+                                total=g.db.srv_db_Media_Duplicate_Detail_Count(guid)[0],
                                 record_name='copies',
                                 format_total=True,
                                 format_number=True,
@@ -1167,12 +1167,12 @@ def report_display_all_duplicates_detail(guid):
 def report_display_all_media():
     page, per_page, offset = common_pagination.get_page_items()
     media_data = []
-    for row_data in g.db.srv_db_known_media(offset, per_page):
+    for row_data in g.db.srv_db_Known_Media(offset, per_page):
         media_data.append((row_data['mm_media_path'],\
             common_string.bytes2human(os.path.getsize(row_data['mm_media_path']))))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_known_media_count(),
+                                total=g.db.srv_db_Known_Media_Count(),
                                 record_name='All Media',
                                 format_total=True,
                                 format_number=True,
@@ -1191,13 +1191,13 @@ def report_display_all_media_known_video():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_web_media_list_count(g.db.srv_db_media_uuid_by_class('Movie')),
+                                total=g.db.srv_db_Web_Media_List_Count(g.db.srv_db_Media_UUID_By_Class('Movie')),
                                 record_name='Known Videos',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/reports/report_all_known_media_video.html',
-                           media=g.db.srv_db_web_media_list(g.db.srv_db_media_uuid_by_class('Movie'), offset=offset, list_limit=per_page),
+                           media=g.db.srv_db_Web_Media_List(g.db.srv_db_Media_UUID_By_Class('Movie'), offset=offset, list_limit=per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1224,7 +1224,7 @@ def report_top10(mtype):
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
 def metadata_person_detail(guid):
-    meta_data = g.db.srv_db_metadata_person_by_guid(guid)
+    meta_data = g.db.srv_db_Metadata_Person_By_GUID(guid)
     json_metadata = meta_data['mmp_person_meta_json']
     json_imagedata = meta_data['mmp_person_image']
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
@@ -1238,7 +1238,7 @@ def metadata_person_detail(guid):
     except:
         data_person_image = None
     # also appears in
-    meta_also_media = g.db.srv_db_metadata_person_as_seen_in(meta_data[0])
+    meta_also_media = g.db.srv_db_Metadata_Person_As_Seen_In(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=json_metadata,
                            data_person_image = data_person_image,
@@ -1260,7 +1260,7 @@ def metadata_person_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_people_list.html',
-                           media_person=g.db.srv_db_metadata_person_list(offset, per_page),
+                           media_person=g.db.srv_db_Metadata_Person_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1300,7 +1300,7 @@ def metadata_music_video_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_music_video_list.html',
-                           media_person=g.db.srv_db_metadata_music_video_list(offset, per_page),
+                           media_person=g.db.srv_db_Metadata_Music_Video_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1331,7 +1331,7 @@ def metadata_music_album_list():
 @blueprint.route('/meta_movie_detail/<guid>')
 @login_required
 def metadata_movie_detail(guid):
-    data = g.db.srv_db_read_media_Metadata(guid)
+    data = g.db.srv_db_Read_Media_Metadata(guid)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
@@ -1390,7 +1390,7 @@ def metadata_movie_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_movie_list.html',
-                           media_movie=g.db.srv_db_metadata_movie_list(offset, per_page),
+                           media_movie=g.db.srv_db_Metadata_Movie_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1404,7 +1404,7 @@ def metadata_movie_list():
 def metadata_movie_collection_list():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db.srv_db_collection_list(offset, per_page):
+    for row_data in g.db.srv_db_Collection_List(offset, per_page):
         try:
             media.append((row_data['mm_metadata_collection_guid'],row_data['mm_metadata_collection_name'],row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(Config.get('MediaKrakenServer','MetadataImageLocal').strip(),'')))
         except:
@@ -1427,7 +1427,7 @@ def metadata_movie_collection_list():
 @blueprint.route('/meta_movie_collection_detail/<guid>')
 @login_required
 def metadata_movie_collection_detail(guid):
-    data_metadata = g.db.srv_db_collection_read_by_guid(guid)
+    data_metadata = g.db.srv_db_Collection_Read_By_GUID(guid)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
@@ -1459,51 +1459,51 @@ def metadata_movie_collection_detail(guid):
 @blueprint.route('/meta_tvshow_detail/<guid>')
 @login_required
 def metadata_tvshow_detail(guid):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_Metadata_TVShow_Detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
-    if 'tvmaze' in json_metadata['Meta']:
-        if 'runtime' in json_metadata['Meta']['tvmaze']:
-            data_runtime = json_metadata['Meta']['tvmaze']['runtime']
+    if 'TVMaze' in json_metadata['Meta']:
+        if 'runtime' in json_metadata['Meta']['TVMaze']:
+            data_runtime = json_metadata['Meta']['TVMaze']['runtime']
         else:
             data_runtime = None
-        if 'rating' in json_metadata['Meta']['tvmaze']:
-            data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
+        if 'rating' in json_metadata['Meta']['TVMaze']:
+            data_rating = json_metadata['Meta']['TVMaze']['rating']['average']
         else:
             data_rating = None
-        if 'premiered' in json_metadata['Meta']['tvmaze']:
-            data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
+        if 'premiered' in json_metadata['Meta']['TVMaze']:
+            data_first_aired = json_metadata['Meta']['TVMaze']['premiered']
         else:
             data_first_aired = None
-        if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+        if 'summary' in json_metadata['Meta']['TVMaze']:
+            data_overview = json_metadata['Meta']['TVMaze']['summary'].replace('<p>','').replace('</p>','')
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'genres' in json_metadata['Meta']['tvmaze']:
-            for ndx in json_metadata['Meta']['tvmaze']['genres']:
+        if 'genres' in json_metadata['Meta']['TVMaze']:
+            for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
-    elif 'thetvdb' in json_metadata['Meta']:
-        if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
+    elif 'theTVDB' in json_metadata['Meta']:
+        if 'Runtime' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_runtime = json_metadata['Meta']['theTVDB']['Meta']['Series']['Runtime']
         else:
             data_runtime = None
-        if 'ContentRating' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_rating = json_metadata['Meta']['thetvdb']['Meta']['Series']['ContentRating']
+        if 'ContentRating' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_rating = json_metadata['Meta']['theTVDB']['Meta']['Series']['ContentRating']
         else:
             data_rating = None
-        if 'FirstAired' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_first_aired = json_metadata['Meta']['thetvdb']['Meta']['Series']['FirstAired']
+        if 'FirstAired' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_first_aired = json_metadata['Meta']['theTVDB']['Meta']['Series']['FirstAired']
         else:
             data_first_aired = None
-        if 'Overview' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_overview = json_metadata['Meta']['thetvdb']['Meta']['Series']['Overview']
+        if 'Overview' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_overview = json_metadata['Meta']['theTVDB']['Meta']['Series']['Overview']
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
+        if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
@@ -1521,7 +1521,7 @@ def metadata_tvshow_detail(guid):
             data_background_image = None
     except:
         data_background_image = None
-    data_season_data = g.db.srv_db_read_tvmetadata_eps_season(guid)
+    data_season_data = g.db.srv_db_Read_TVMetadata_Eps_Season(guid)
 #    # build production list
 #    production_list = ''
 #    for ndx in range(0,len(json_metadata['production_companies'])):
@@ -1546,55 +1546,55 @@ def metadata_tvshow_detail(guid):
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_season_detail_page(guid, season):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_Metadata_TVShow_Detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
-    if 'tvmaze' in json_metadata['Meta']:
-        if 'runtime' in json_metadata['Meta']['tvmaze']:
-            data_runtime = json_metadata['Meta']['tvmaze']['runtime']
+    if 'TVMaze' in json_metadata['Meta']:
+        if 'runtime' in json_metadata['Meta']['TVMaze']:
+            data_runtime = json_metadata['Meta']['TVMaze']['runtime']
         else:
             data_runtime = None
-        if 'rating' in json_metadata['Meta']['tvmaze']:
-            data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
+        if 'rating' in json_metadata['Meta']['TVMaze']:
+            data_rating = json_metadata['Meta']['TVMaze']['rating']['average']
         else:
             data_rating = None
-        if 'premiered' in json_metadata['Meta']['tvmaze']:
-            data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
+        if 'premiered' in json_metadata['Meta']['TVMaze']:
+            data_first_aired = json_metadata['Meta']['TVMaze']['premiered']
         else:
             data_first_aired = None
-        if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+        if 'summary' in json_metadata['Meta']['TVMaze']:
+            data_overview = json_metadata['Meta']['TVMaze']['summary'].replace('<p>','').replace('</p>','')
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'genres' in json_metadata['Meta']['tvmaze']:
-            for ndx in json_metadata['Meta']['tvmaze']['genres']:
+        if 'genres' in json_metadata['Meta']['TVMaze']:
+            for ndx in json_metadata['Meta']['TVMaze']['genres']:
                 data_genres_list += (ndx + ', ')
-    elif 'thetvdb' in json_metadata['Meta']:
-        if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
+    elif 'theTVDB' in json_metadata['Meta']:
+        if 'Runtime' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_runtime = json_metadata['Meta']['theTVDB']['Meta']['Series']['Runtime']
         else:
             data_runtime = None
-        if 'ContentRating' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_rating = json_metadata['Meta']['thetvdb']['Meta']['Series']['ContentRating']
+        if 'ContentRating' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_rating = json_metadata['Meta']['theTVDB']['Meta']['Series']['ContentRating']
         else:
             data_rating = None
-        if 'FirstAired' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_first_aired = json_metadata['Meta']['thetvdb']['Meta']['Series']['FirstAired']
+        if 'FirstAired' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_first_aired = json_metadata['Meta']['theTVDB']['Meta']['Series']['FirstAired']
         else:
             data_first_aired = None
-        if 'Overview' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_overview = json_metadata['Meta']['thetvdb']['Meta']['Series']['Overview']
+        if 'Overview' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            data_overview = json_metadata['Meta']['theTVDB']['Meta']['Series']['Overview']
         else:
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
+        if 'Genre' in json_metadata['Meta']['theTVDB']['Meta']['Series']:
+            for ndx in json_metadata['Meta']['theTVDB']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = g.db.srv_db_read_tvmetadata_season_eps_list(guid, int(season))
+    data_episode_count = g.db.srv_db_Read_TVMetadata_Season_Eps_List(guid, int(season))
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
     # poster image
     try:
@@ -1627,7 +1627,7 @@ def metadata_tvshow_season_detail_page(guid, season):
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_episode_detail_page(guid, season, episode):
-    data_metadata = g.db.srv_db_read_tvmetadata_episode(guid, season, episode)
+    data_metadata = g.db.srv_db_Read_TVMetadata_Episode(guid, season, episode)
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
     # poster image
     try:
@@ -1663,7 +1663,7 @@ def metadata_tvshow_list():
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
-    for row_data in g.db.srv_db_metadata_tvshow_list(offset, per_page):
+    for row_data in g.db.srv_db_Metadata_TVShow_List(offset, per_page):
         image_data = row_data[3]  # TODO json dictcursor
         try:
             image_data = image_data.replace(image_location,'')
@@ -1673,7 +1673,7 @@ def metadata_tvshow_list():
             row_data['mm_metadata_tvshow_name'], row_data[2], image_data))  # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_tvshow_list_count(),
+                                total=g.db.srv_db_Metadata_TVShow_List_Count(),
                                 record_name='TV Shows',
                                 format_total=True,
                                 format_number=True,
@@ -1698,7 +1698,7 @@ def metadata_game_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_game_list.html',
-                           media_game=g.db.srv_db_metadata_game_list(offset, per_page),
+                           media_game=g.db.srv_db_Metadata_Game_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1710,7 +1710,7 @@ def metadata_game_list():
 @login_required
 def metadata_game_detail(guid):
     return render_template('users/metadata/meta_game_detail.html', guid=guid,
-                               data=g.db.srv_db_metadata_game_by_guid(guid)['gi_game_info_json'],
+                               data=g.db.srv_db_Metadata_Game_By_GUID(guid)['gi_game_info_json'],
                                data_review=None)
 
 
@@ -1721,13 +1721,13 @@ def metadata_game_system_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_game_system_list_count(),
+                                total=g.db.srv_db_Metadata_Game_System_List_Count(),
                                 record_name='Game Systems',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_game_system_list.html',
-                           media_game_system=g.db.srv_db_metadata_game_system_list(offset, per_page),
+                           media_game_system=g.db.srv_db_Metadata_Game_System_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1739,7 +1739,7 @@ def metadata_game_system_list():
 @login_required
 def metadata_game_system_detail(guid):
     return render_template('users/metadata/meta_game_system_detail.html', guid=guid,
-                           data=g.db.srv_db_metadata_game_system_by_guid(guid))
+                           data=g.db.srv_db_Metadata_Game_System_By_GUID(guid))
 
 
 @blueprint.route('/meta_sports_list')
@@ -1749,13 +1749,13 @@ def metadata_sports_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_sports_list_count(),
+                                total=g.db.srv_db_Metadata_Sports_List_Count(),
                                 record_name='sporting events',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_sports_list.html',
-                           media_sports_list=g.db.srv_db_metadata_sports_list(offset, per_page),
+                           media_sports_list=g.db.srv_db_Metadata_Sports_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1777,15 +1777,15 @@ def media_status(guid, media_type, event_type):
     logging.debug('media status: %s %s %s', guid, media_type, event_type)
     if media_type == "movie":
         if event_type == "watched":
-            g.db.srv_db_media_watched_status_update(guid, current_user.get_id(), True)
+            g.db.srv_db_Media_Watched_Status_Update(guid, current_user.get_id(), True)
             return json.dumps({'status':'OK'})
         elif event_type == "sync":
             return redirect(url_for('user.sync_edit', guid=guid))
         elif event_type == "favorite":
-            g.db.srv_db_media_favorite_status_update(guid, current_user.get_id(), True)
+            g.db.srv_db_Media_Favorite_Status_Update(guid, current_user.get_id(), True)
             return json.dumps({'status':'OK'})
         elif event_type == "poo":
-            g.db.srv_db_media_poo_status_update(guid, current_user.get_id(), True)
+            g.db.srv_db_Media_Poo_Status_Update(guid, current_user.get_id(), True)
             return json.dumps({'status':'OK'})
         elif event_type == "mismatch":
             pass

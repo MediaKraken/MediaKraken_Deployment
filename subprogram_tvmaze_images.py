@@ -39,11 +39,11 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'tvmaze_Images_Known', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'TVMaze_Images_Known', False, False, None)
 
 
 def signal_receive(signum, frame):
-    print('CHILD tvmaze Images: Received USR1')
+    print('CHILD TVMaze Images: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -54,7 +54,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_tvmaze_Images')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TVMaze_Images')
 
 
 # open the database
@@ -67,8 +67,8 @@ db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server tvmaze Images Start', None,\
-    'System: Server tvmaze Images Start', 'ServertvmazeImagesStart', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server TVMaze Images Start', None,\
+    'System: Server TVMaze Images Start', 'ServerTVMazeImagesStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -85,33 +85,33 @@ total_episode_images = 0
 
 
 # grab tvmaze ones without image data
-for row_data in db.srv_db_metadata_tvshow_images_to_update('tvmaze'):
+for row_data in db.srv_db_Metadata_TVShow_Images_To_Update('TVMaze'):
     logging.debug("json: %s", row_data['mm_metadata_tvshow_json'])
-    # this is "removed" via the query ['Meta']['tvmaze']
+    # this is "removed" via the query ['Meta']['TVMaze']
     # grab poster
     poster_image_local = None
     if 'image' in row_data['mm_metadata_tvshow_json'] and row_data['mm_metadata_tvshow_json']['image'] is not None:
         if 'original' in row_data['mm_metadata_tvshow_json']['image']:
             poster_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['name'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['image']['original'].rsplit('.', 1)[1]))
-            common_network.mk_network_fetch_from_url(row_data['mm_metadata_tvshow_json']['image']['original'], poster_image_local)
+            common_network.MK_Network_Fetch_From_URL(row_data['mm_metadata_tvshow_json']['image']['original'], poster_image_local)
     # generate image json
-    json_image_data = {'Images': {'tvmaze': {'Banner': None, 'Fanart': None, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
+    json_image_data = {'Images': {'TVMaze': {'Banner': None, 'Fanart': None, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
     # process person and character data
     for cast_member in row_data['mm_metadata_tvshow_json']['_embedded']['cast']:
         if cast_member['person']['image'] is not None and 'original' in cast_member['person']['image']:
             # determine path and fetch image/save
             cast_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.' + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
             logging.debug("one: %s", cast_image_local)
-            common_network.mk_network_fetch_from_url(cast_member['person']['image']['original'], cast_image_local)
-            json_image_data['Images']['tvmaze']['Cast'][cast_member['person']['id']] = cast_image_local
+            common_network.MK_Network_Fetch_From_URL(cast_member['person']['image']['original'], cast_image_local)
+            json_image_data['Images']['TVMaze']['Cast'][cast_member['person']['id']] = cast_image_local
             total_cast_images += 1
         if 'image' in cast_member['character']:
             if cast_member['character']['image'] is not None:
                 if 'original' in cast_member['character']['image']:
                     char_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.' + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
                     logging.debug("two: %s", char_image_local)
-                    common_network.mk_network_fetch_from_url(cast_member['character']['image']['original'], char_image_local)
-                    json_image_data['Images']['tvmaze']['Characters'][cast_member['character']['id']] = char_image_local
+                    common_network.MK_Network_Fetch_From_URL(cast_member['character']['image']['original'], char_image_local)
+                    json_image_data['Images']['TVMaze']['Characters'][cast_member['character']['id']] = char_image_local
                     total_char_images += 1
     # process episode data
     for episode_info in row_data['mm_metadata_tvshow_json']['_embedded']['episodes']:
@@ -119,10 +119,10 @@ for row_data in db.srv_db_metadata_tvshow_images_to_update('tvmaze'):
             if 'original' in episode_info['image']:
                 eps_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(episode_info['name'], 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['image']['original'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
-                common_network.mk_network_fetch_from_url(episode_info['image']['original'], eps_image_local)
-                json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']] = eps_image_local
+                common_network.MK_Network_Fetch_From_URL(episode_info['image']['original'], eps_image_local)
+                json_image_data['Images']['TVMaze']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
-    db.srv_db_metadata_tvshow_update_image(json.dumps(json_image_data), row_data[1])
+    db.srv_db_Metadata_TVShow_Update_Image(json.dumps(json_image_data), row_data[1])
     # commit
     db.srv_db_Commit()
 
@@ -139,8 +139,8 @@ if total_episode_images > 0:
         + " new TV episode image(s) added.", True)
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server tvmaze Images Stop', None,\
-    'System: Server tvmaze Images Stop', 'ServertvmazeImagesStop', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server TVMaze Images Stop', None,\
+    'System: Server TVMaze Images Stop', 'ServerTVMazeImagesStop', None, None, 'System')
 
 # commit all changes
 db.srv_db_Commit()

@@ -24,20 +24,20 @@ sys.path.append("../common")
 from com_Hardware_Roku_Network import *
 
 
-def test_mk_roku_network_discovery():
-    mk_roku_network_discovery()
+def Test_MK_Roku_Network_Discovery():
+    MK_Roku_Network_Discovery()
 
 
-# def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
+# def MK_Roku_Network_Command(roku_addr, roku_port, roku_command, roku_command_seconds):
 
 
-# def mk_roku_network_app_query(roku_addr, roku_port):
+# def MK_Roku_Network_App_Query(roku_addr, roku_port):
 
 
-# def mk_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
+# def MK_Roku_Network_App_Launch(roku_addr, roku_port, roku_app_id):
 
 
-# def mk_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
+# def MK_Roku_Network_App_Icon(roku_addr, roku_port, roku_app_id):
 
 
-# def mk_roku_network_touch(roku_addr, roku_port, x, y):
+# def MK_Roku_Network_Touch(roku_addr, roku_port, x, y):

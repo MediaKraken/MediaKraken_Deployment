@@ -16,7 +16,7 @@
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
 from types import FunctionType
-from aniDBmaper import anidbMaper
+from aniDBmaper import AniDBMaper
 
 class ResponseResolver:
 	def __init__(self,data):
@@ -56,7 +56,7 @@ class Response:
 		self.rescode=rescode
 		self.resstr=resstr
 		self.rawlines=rawlines
-		self.maper = anidbMaper()
+		self.maper = AniDBMaper()
 
 	def __repr__(self):
 		tmp="%s(%s,%s,%s) %s\n"%(self.__class__.__name__,repr(self.restag),repr(self.rescode),repr(self.resstr),repr(self.attrs))

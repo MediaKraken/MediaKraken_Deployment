@@ -22,19 +22,19 @@ import logging
 # TODO subselect speedup for list
 
 # grab tv data
-def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
+def srv_db_Web_TVMedia_List(self, list_type, genre_type=None, list_limit=None,\
         group_collection=False, offset=None):
     if list_type == 'TV Show':
         if offset is None:
-            self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid, count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
+            self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid, count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'TVMaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'theTVDB\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
         else:
-            self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid, count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name) offset %s limit %s', (offset, list_limit))
+            self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid, count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'TVMaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'theTVDB\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name) offset %s limit %s', (offset, list_limit))
         return self.sql3_cursor.fetchall()
     return None
 
 
 # grab tv data count
-def srv_db_web_tvmedia_list_Count(self, list_type, genre_type=None,\
+def srv_db_Web_TVMedia_List_Count(self, list_type, genre_type=None,\
         group_collection=False):
     if list_type == 'TV Show':
         self.sql3_cursor.execute('select count(*) from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid')

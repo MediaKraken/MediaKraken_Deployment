@@ -30,7 +30,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'giantbomb_Downloader', False, False, None)
+common_file.common_file_Save_Data(pid_file, 'GiantBomb_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Giant Bomb: Received USR1')

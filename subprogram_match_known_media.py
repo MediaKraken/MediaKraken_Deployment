@@ -23,9 +23,9 @@ files_added = 0
 build_collection = False
 
 
-total_media_to_match = db.srv_db_known_media_All_Unmatched_Count()
+total_media_to_match = db.srv_db_Known_Media_All_Unmatched_Count()
 # begin the media match on NULL matches
-for row_data in db.srv_db_known_media_All_Unmatched():
+for row_data in db.srv_db_Known_Media_All_Unmatched():
     files_to_id += 1
     # lookup class from db
     metadata_uuid = None
@@ -40,7 +40,7 @@ for row_data in db.srv_db_known_media_All_Unmatched():
     # update the media row with the json media id AND THE proper NAME!!!
     if metadata_uuid is not None:
         logging.debug("update: %s %s", row_data['mm_media_guid'], metadata_uuid)
-        db.srv_db_update_media_id(row_data['mm_media_guid'], metadata_uuid)
+        db.srv_db_Update_Media_ID(row_data['mm_media_guid'], metadata_uuid)
         files_added += 1
     db.srv_db_Option_Status_Update_Scan_Json(json.dumps({'Status': 'Media lookup: '
         + locale.format('%d', files_to_id, True) + ' / '\
@@ -57,4 +57,4 @@ if files_added > 0:
     db.srv_db_Notification_Insert(locale.format('%d', files_added, True)\
         + " new media file(s) matched.", True)
 if build_collection:
-    db.srv_db_trigger_insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))
+    db.srv_db_Trigger_Insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))

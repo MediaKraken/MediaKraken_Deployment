@@ -96,7 +96,7 @@ def worker(worker_file_list):
         json_data['ChapterImages'] = chapter_image_list
     # update the media row with the fact chapters images were created
     # and their filenames for the chapter images that were created
-    thread_db.srv_db_update_media_json(json_id, json.dumps(json_data))
+    thread_db.srv_db_Update_Media_JSON(json_id, json.dumps(json_data))
     # commit after each one to not cause dupe images I guess?
     thread_db.srv_db_Commit()
     thread_db.srv_db_Close()
@@ -130,7 +130,7 @@ else:
 
 # begin the media match on NULL matches
 file_list = []
-for row_data in db.srv_db_known_media_Chapter_Scan():
+for row_data in db.srv_db_Known_Media_Chapter_Scan():
     # from query 0-mm_media_guid, 1-mm_media_json, 2-mm_media_ffprobe_json, 3-mm_media_path
     # loop through ffprobe json chapter data
     if row_data['mm_media_ffprobe_json'] is not None:

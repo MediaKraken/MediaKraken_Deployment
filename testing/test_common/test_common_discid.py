@@ -25,7 +25,7 @@ from com_DISCID import *
 
 
 # grab discid from default device
-def test_com_discid_default_device():
+def Test_com_DiscID_Default_Device():
     com_DiscID_Default_Device()
 
 
@@ -33,5 +33,5 @@ def test_com_discid_default_device():
 @pytest.mark.parametrize(("dir_to_calculate"), [
     ("./cache"),
     ("./cache_fake")])
-def test_com_diskid_caclulate_dir(dir_to_calculate):
+def Test_com_DiskID_Caclulate_Dir(dir_to_calculate):
     com_DiskID_Caclulate_Dir(dir_to_calculate)

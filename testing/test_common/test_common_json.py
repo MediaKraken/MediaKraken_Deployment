@@ -25,7 +25,7 @@ from com_JSON import *
 
 
 # check for new json files for device/layout/etc
-def test_mk_json_find():
+def Test_MK_Json_Find():
     MK_Json_Find()
 
 

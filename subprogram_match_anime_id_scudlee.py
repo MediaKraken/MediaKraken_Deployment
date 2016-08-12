@@ -73,15 +73,15 @@ def store_update_record(db, collection_name, guid_list):
     collection_guid = db.srv_db_Collection_By_Name(collection_name)
     if collection_guid is None:
         # insert
-        db.srv_db_collection_insert(collection_name, guid_list)
+        db.srv_db_Collection_Insert(collection_name, guid_list)
     else:
         # update
-        db.srv_db_collection_update(collection_guid, guid_list)
+        db.srv_db_Collection_Update(collection_guid, guid_list)
 
 # check for new scudlee download
-com_Scudlee.mk_scudlee_fetch_xml()
+com_Scudlee.MK_Scudlee_Fetch_XML()
 # begin the media match on NULL matches
-for row_data in com_Scudlee.mk_scudlee_anime_list_parse():
+for row_data in com_Scudlee.MK_Scudlee_Anime_List_Parse():
     logging.debug("row: %s", row_data)
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
@@ -90,12 +90,12 @@ for row_data in com_Scudlee.mk_scudlee_anime_list_parse():
             pass
         else:
             # should be valid data, do the update
-            db.srv_db_metadata_update_Media_ID_From_Scudlee(row_data[1],\
+            db.srv_db_Metadata_Update_Media_ID_From_Scudlee(row_data[1],\
                 row_data[2], row_data[0])
 
 # begin the collections match/create/update
-for row_data in com_Scudlee.mk_scudlee_anime_set_parse():
-    #db.srv_db_metadata_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
+for row_data in com_Scudlee.MK_Scudlee_Anime_Set_Parse():
+    #db.srv_db_Metadata_Update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
     if row_data[1] == "music video":
         pass
     else:

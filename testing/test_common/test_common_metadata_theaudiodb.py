@@ -21,4 +21,4 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_theaudiodb import *
+from com_Metadata_TheAudioDB import *

@@ -82,7 +82,7 @@ else:
 
 while True:
     # check for new "triggers"
-    for row_data in db.srv_db_triggers_read():
+    for row_data in db.srv_db_Triggers_Read():
         # fire up cron service
         command_list = []
         for command_data in pickle.loads(str(row_data[1])):
@@ -90,7 +90,7 @@ while True:
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.debug("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db.srv_db_triggers_delete(row_data[0])
+        db.srv_db_Triggers_Delete(row_data[0])
     time.sleep(1)
 
 

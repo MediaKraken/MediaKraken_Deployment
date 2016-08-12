@@ -16,7 +16,7 @@
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 from random import shuffle
 
-class anidbMaper:
+class AniDBMaper:
     
     blacklist = ('unused','retired','reserved')
     

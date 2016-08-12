@@ -25,7 +25,7 @@ sys.path.append("./server") # for db import
 import database as database_base
 
 
-class TestDatabaseMetadatatvmaze(object):
+class TestDatabaseMetadataTVMaze(object):
 
 
     @classmethod
@@ -40,15 +40,15 @@ class TestDatabaseMetadatatvmaze(object):
 
 
     # metadata changed date by uuid
-    # def srv_db_Metadatatvmaze_Changed_UUID(self, maze_uuid):
+    # def srv_db_MetadataTVMaze_Changed_UUID(self, maze_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # insert
-    # def srv_db_Metadatatvmaze_Insert(self, series_id_json, tvmaze_name, show_detail, image_json):
+    # def srv_db_MetadataTVMaze_Insert(self, series_id_json, tvmaze_name, show_detail, image_json):
 #         self.db.srv_db_Rollback()
 
 
     # updated
-    # def srv_db_Metadatatvmaze_Update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
+    # def srv_db_MetadataTVMaze_Update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
 #         self.db.srv_db_Rollback()

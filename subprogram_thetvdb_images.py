@@ -43,7 +43,7 @@ common_file.common_file_Save_Data(pid_file, 'TVDB_Images_Known', False, False, N
 
 
 def signal_receive(signum, frame):
-    print('CHILD thetvdb Images: Received USR1')
+    print('CHILD theTVDB Images: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
@@ -54,7 +54,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_thetvdb_Images')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_theTVDB_Images')
 
 
 # open the database
@@ -67,8 +67,8 @@ db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server thetvdb Images Start', None,\
-    'System: Server tvmaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Images Start', None,\
+    'System: Server TVMaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -84,33 +84,33 @@ total_episode_images = 0
 
 
 # grab ones without image data
-for row_data in db.srv_db_metadata_tvshow_images_to_update('thetvdb'):
+for row_data in db.srv_db_Metadata_TVShow_Images_To_Update('theTVDB'):
     logging.debug("json: %s", row_data['mm_metadata_tvshow_json']['Meta']['Series'])
-    # this is "removed" via the query ['Meta']['thetvdb']
+    # this is "removed" via the query ['Meta']['theTVDB']
 
     # grab poster
     poster_image_local = None
     if 'poster' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'] is not None:
         poster_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
+        common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
 
     # grab banner
     banner_image_local = None
     if 'banner' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'] is not None:
         banner_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
+        common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
 
     # grab fanart
     fanart_image_local = None
     if 'fanart' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'] is not None:
         fanart_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
+        common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
 
     # generate image json
-    json_image_data = {'Images': {'thetvdb': {'Banner': banner_image_local, 'Fanart': fanart_image_local, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
+    json_image_data = {'Images': {'theTVDB': {'Banner': banner_image_local, 'Fanart': fanart_image_local, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
     logging.debug("image: %s", json_image_data)
 
     # process person and character data
@@ -125,8 +125,8 @@ for row_data in db.srv_db_metadata_tvshow_images_to_update('thetvdb'):
                     cast_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(cast_member['Name'],\
                         'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
                     logging.debug("one: %s", cast_image_local)
-                    common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + cast_member['Image'], cast_image_local)
-                    json_image_data['Images']['thetvdb']['Cast'][cast_member['id']] = cast_image_local
+                    common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/" + cast_member['Image'], cast_image_local)
+                    json_image_data['Images']['theTVDB']['Cast'][cast_member['id']] = cast_image_local
                     total_cast_images += 1
             logging.debug("cast: %s", json_image_data)
 
@@ -138,11 +138,11 @@ for row_data in db.srv_db_metadata_tvshow_images_to_update('thetvdb'):
                 eps_image_local = os.path.join(com_Metadata.com_Metadata_Image_File_Path(episode_info['EpisodeName'],\
                 'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
-                common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
+                common_network.MK_Network_Fetch_From_URL("https://thetvdb.com/banners/"\
                     + episode_info['filename'], eps_image_local)
-                json_image_data['Images']['thetvdb']['Episodes'][episode_info['id']] = eps_image_local
+                json_image_data['Images']['theTVDB']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
-    db.srv_db_metadata_tvshow_update_image(json.dumps(json_image_data), row_data[1])
+    db.srv_db_Metadata_TVShow_Update_Image(json.dumps(json_image_data), row_data[1])
     # commit
     db.srv_db_Commit()
 
@@ -156,8 +156,8 @@ if total_episode_images > 0:
         + " new TV episode image(s) added.", True)
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server thetvdb Images Stop', None,\
-    'System: Server thetvdb Images Stop', 'ServerTVDBImagesStop', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Images Stop', None,\
+    'System: Server theTVDB Images Stop', 'ServerTVDBImagesStop', None, None, 'System')
 
 # commit all changes
 db.srv_db_Commit()

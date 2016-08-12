@@ -79,7 +79,7 @@ class TestCommonDatabaseOctmote(object):
 
 
 # insert new anidb entries into database
-#def MK_Database_Sqlite3_anidb_Title_Insert(sql_params_list):
+#def MK_Database_Sqlite3_AniDB_Title_Insert(sql_params_list):
 
 
-#def MK_Database_Sqlite3_anidb_Title_Search(title_to_search):
+#def MK_Database_Sqlite3_AniDB_Title_Search(title_to_search):

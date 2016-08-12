@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_tvmaze import *
+from com_Metadata_TVMaze import *
 
 
-class TestCommonMetadatatvmaze(object):
+class TestCommonMetadataTVMaze(object):
 
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_tvmaze_API()
+        self.db = com_Metadata_TVMaze_API()
 
 
     @classmethod

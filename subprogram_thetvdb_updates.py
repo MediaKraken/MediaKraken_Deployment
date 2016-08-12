@@ -61,7 +61,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_thetvdb_Updates')
+common_logging.common_logging_Start('./log/MediaKraken_Subprogram_theTVDB_Updates')
 
 
 # open the database
@@ -74,40 +74,40 @@ db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server thetvdb Update Start', None,\
-    'System: Server thetvdb Start', 'ServerthetvdbStart', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Update Start', None,\
+    'System: Server theTVDB Start', 'ServertheTVDBStart', None, None, 'System')
 
 
 # grab the data
 tvshow_updated = 0
 tvshow_inserted = 0
-thetvdb_API_Connection = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
+theTVDB_API_Connection = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
 option_json, status_json = db.srv_db_Option_Status_Read()
-#for update_item in xmltodict.parse(thetvdb_API_Connection.com_Metadata_TheTVDB_Updates_By_Epoc(status_json['thetvdb_Updated_Epoc'])):
-update_item = thetvdb_API_Connection.com_Metadata_TheTVDB_Updates()
+#for update_item in xmltodict.parse(theTVDB_API_Connection.com_Metadata_TheTVDB_Updates_By_Epoc(status_json['theTVDB_Updated_Epoc'])):
+update_item = theTVDB_API_Connection.com_Metadata_TheTVDB_Updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
     logging.debug(row_data['id'])
     # look for previous data
-    metadata_uuid = db.srv_db_metadatatv_guid_by_tvdb(row_data['id'])
+    metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVDB(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
-        xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
+        xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API_Connection.com_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
         # insert
-        image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'imdb':xml_show_data['Data']['Series']['imdb_ID'],\
-            'thetvdb':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
-        db.srv_db_metadatatvdb_insert(series_id_json,\
-            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
+        image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        series_id_json = json.dumps({'IMDB':xml_show_data['Data']['Series']['IMDB_ID'],\
+            'theTVDB':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
+        db.srv_db_MetadataTVDB_Insert(series_id_json,\
+            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.srv_db_metadata_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
+            db.srv_db_Metadata_Person_Insert_Cast_Crew('theTVDB', xml_actor_data['Actor'])
         db.srv_db_Commit()
         tvshow_inserted += 1
         time.sleep(5) # delays for 5 seconds
     else:
         # update instead
-        #db.srv_db_metadatatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
+        #db.srv_db_MetadataTVDB_Update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
         tvshow_updated += 1
     # commit each just cuz
     db.srv_db_Commit()
@@ -121,8 +121,8 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 #db.srv_db_Option_Status_Update(row_data[0], status_json)
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server thetvdb Update Stop', None,\
-    'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Update Stop', None,\
+    'System: Server theTVDB Stop', 'ServertheTVDBStop', None, None, 'System')
 
 # send notications
 if tvshow_updated > 0:

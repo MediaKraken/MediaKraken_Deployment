@@ -20,9 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-class Commontheaudiodb(object):
+class CommonTheAudioDB(object):
     """
-    Class for interfacing with theaudiodb
+    Class for interfacing with TheAudioDB
     """
     def __init__(self):
         pass

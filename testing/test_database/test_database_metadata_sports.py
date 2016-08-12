@@ -40,12 +40,12 @@ class TestDatabaseMetadataSports(object):
 
 
     # metadata guid by imdb id
-    # def srv_db_Metadata_Sports_GUID_By_thesportsdb(self, thesports_uuid):
+    # def srv_db_Metadata_Sports_GUID_By_TheSportsDB(self, thesports_uuid):
 #        self.db.srv_db_Rollback()
 
 
-    def Test_srv_db_metadata_sports_list_count(self):
-        self.db.srv_db_metadata_sports_list_count()
+    def Test_srv_db_Metadata_Sports_List_Count(self):
+        self.db.srv_db_Metadata_Sports_List_Count()
         self.db.srv_db_Rollback()
 
 
@@ -54,11 +54,11 @@ class TestDatabaseMetadataSports(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_sports_list(self, offset, records):
-        self.db.srv_db_metadata_sports_list(offset, records)
+    def Test_srv_db_Metadata_Sports_List(self, offset, records):
+        self.db.srv_db_Metadata_Sports_List(offset, records)
         self.db.srv_db_Rollback()
 
 
     # fetch guid by event name
-    # def srv_db_metadata_sports_guid_by_event_name(self, event_name):
+    # def srv_db_Metadata_Sports_GUID_By_Event_Name(self, event_name):
 #        self.db.srv_db_Rollback()

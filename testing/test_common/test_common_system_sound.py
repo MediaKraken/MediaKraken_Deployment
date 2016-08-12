@@ -28,18 +28,18 @@ from common_system_Sound import *
 @pytest.mark.parametrize(("message_to_speak"), [
     ("first test"),
     ("can you hear me again")])
-def test_mk_sound_text_to_speech(message_to_speak):
-    mk_sound_text_to_speech(message_to_speak)
+def Test_MK_Sound_Text_To_Speech(message_to_speak):
+    MK_Sound_Text_To_Speech(message_to_speak)
 
 
 # play audio file
 @pytest.mark.parametrize(("file_name"), [
     ("./cache/250Hz_44100Hz_16bit_05sec.wav"),
     ("./cache/250Hz_44100Hz_16bit_05sec.mp3")])
-def test_mk_sound_play_file(file_name):
-    mk_sound_play_file(file_name)
+def Test_MK_Sound_Play_File(file_name):
+    MK_Sound_Play_File(file_name)
 
 
 # list devices via pyaudio
-def test_com_audio_pyaudio_list_devices():
-    com_audio_pyaudio_list_devices()
+def Test_com_Audio_Pyaudio_List_Devices():
+    com_Audio_Pyaudio_List_Devices()

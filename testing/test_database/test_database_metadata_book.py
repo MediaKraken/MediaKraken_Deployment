@@ -40,15 +40,15 @@ class TestDatabaseMetadata_book(object):
 
 
     # metadata guid by isbm id
-    # def srv_db_metadatabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
+    # def srv_db_MetadataBook_GUID_By_ISBN(self, isbn_uuid, isbn13_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # metadata guid by name
-    # def srv_db_metadatabook_guid_by_name(self, book_name):
+    # def srv_db_MetadataBook_GUID_By_Name(self, book_name):
 #        self.db.srv_db_Rollback()
 
 
     # insert metadata json from isbndb
-    # def srv_db_metadatabook_book_insert(self, json_data):
+    # def srv_db_MetadataBook_Book_Insert(self, json_data):
 #        self.db.srv_db_Rollback()

@@ -24,9 +24,9 @@ import common.common_Metadata
 import common.common_network
 
 
-class Commonthelogodb(object):
+class CommonTheLogoDB(object):
     """
-    Class for interfacing with thelogodb
+    Class for interfacing with TheLogoDB
     """
     def __init__(self):
         # pull in the ini file config
@@ -36,12 +36,12 @@ class Commonthelogodb(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        self.API_KEY = Config.get('API', 'thelogodb').strip()
+        self.API_KEY = Config.get('API', 'TheLogoDB').strip()
 
 
     def com_thelogodb_fetch_latest(self):
         """
         Grab newest releases
         """
-        return json.loads(com_network.mk_network_fetch_from_url(\
+        return json.loads(com_network.MK_Network_Fetch_From_URL(\
             'http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

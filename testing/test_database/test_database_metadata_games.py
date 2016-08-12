@@ -40,65 +40,65 @@ class TestDatabaseMetadataGames(object):
 
 
     # return game system data
-    # def srv_db_metadata_game_system_by_guid(self, guid):
+    # def srv_db_Metadata_Game_System_By_GUID(self, guid):
 #        self.db.srv_db_Rollback()
 
 
-    # def srv_db_metadata_game_system_list_count(self):
-    def Test_srv_db_metadata_game_system_list_count(self):
-        self.db.srv_db_metadata_game_system_list_count()
+    # def srv_db_Metadata_Game_System_List_Count(self):
+    def Test_srv_db_Metadata_Game_System_List_Count(self):
+        self.db.srv_db_Metadata_Game_System_List_Count()
         self.db.srv_db_Rollback()
 
 
     # return list of game systems
-    # def srv_db_metadata_game_system_list(self, offset=None, records=None):
+    # def srv_db_Metadata_Game_System_List(self, offset=None, records=None):
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_game_system_list(self, offset, records):
-        self.db.srv_db_metadata_game_system_list(offset, records)
+    def Test_srv_db_Metadata_Game_System_List(self, offset, records):
+        self.db.srv_db_Metadata_Game_System_List(offset, records)
         self.db.srv_db_Rollback()
 
 
     # return list of games count
-    # def srv_db_metadata_game_list_count(self):
-    def Test_srv_db_metadata_game_list_count(self):
-        self.db.srv_db_metadata_game_list_count()
+    # def srv_db_Metadata_Game_List_Count(self):
+    def Test_srv_db_Metadata_Game_List_Count(self):
+        self.db.srv_db_Metadata_Game_List_Count()
         self.db.srv_db_Rollback()
 
 
     # return list of games
-    # def srv_db_metadata_game_list(self, offset=None, records=None):
+    # def srv_db_Metadata_Game_List(self, offset=None, records=None):
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_game_list(self, offset, records):
-        self.db.srv_db_metadata_game_list(offset, records)
+    def Test_srv_db_Metadata_Game_List(self, offset, records):
+        self.db.srv_db_Metadata_Game_List(offset, records)
         self.db.srv_db_Rollback()
 
 
     # return game data
-    # def srv_db_metadata_game_by_guid(self, guid):
+    # def srv_db_Metadata_Game_By_GUID(self, guid):
 #        self.db.srv_db_Rollback()
 
 
     # game list by system count
-    # def srv_db_metadata_game_by_system_count(self, guid):
+    # def srv_db_Metadata_Game_By_System_Count(self, guid):
 #        self.db.srv_db_Rollback()
 
 
     # game list by system count
-    # def srv_db_metadata_game_by_system(self, guid, offset=None, records=None):
+    # def srv_db_Metadata_Game_By_System(self, guid, offset=None, records=None):
 #        self.db.srv_db_Rollback()
 
 
     # game by sha1
-    # def srv_db_metadata_game_by_sha1(self, sha1_hash):
+    # def srv_db_Metadata_Game_By_SHA1(self, sha1_hash):
 #        self.db.srv_db_Rollback()
 
 
     # game by name and system short name
-    # def srv_db_metadata_game_by_name_and_system(self, game_name, game_system_short_name):
+    # def srv_db_Metadata_Game_By_Name_And_System(self, game_name, game_system_short_name):
 #        self.db.srv_db_Rollback()

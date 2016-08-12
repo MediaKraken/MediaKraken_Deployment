@@ -1,7 +1,7 @@
 import ctypes
 import re
 
-def validhandle(value, func, arguments):
+def ValidHandle(value, func, arguments):
     if value == 0:
         raise ctypes.WinError()
     return value
@@ -89,7 +89,7 @@ SetupDiEnumDeviceInfo.restype = BOOL
 SetupDiGetClassDevs = setupapi.SetupDiGetClassDevsA
 SetupDiGetClassDevs.argtypes = [ctypes.POINTER(GUID), PCTSTR, HWND, DWORD]
 SetupDiGetClassDevs.restype = HDEVINFO
-SetupDiGetClassDevs.errcheck = validhandle
+SetupDiGetClassDevs.errcheck = ValidHandle
 
 SetupDiGetDeviceRegistryProperty = setupapi.SetupDiGetDeviceRegistryPropertyA
 SetupDiGetDeviceRegistryProperty.argtypes = [HDEVINFO, PSP_DEVINFO_DATA, DWORD, PDWORD, PBYTE, DWORD, PDWORD]

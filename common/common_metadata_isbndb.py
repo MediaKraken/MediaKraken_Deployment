@@ -36,7 +36,7 @@ class CommonISBNdb(object):
     # http://isbndb.com/api/v2/docs/authors
     # http://isbndb.com/api/v2/json/[your-api-key]/author/richards_rowland
     def com_isbndb_author(self, author_name):
-        return com_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return com_network.MK_Network_Fetch_From_URL('http://isbndb.com/api/v2/json/'\
             + self.api_key + '/author/' + author_name, None)
 
 
@@ -46,7 +46,7 @@ class CommonISBNdb(object):
     # http://isbndb.com/api/v2/docs/publishers
     # http://isbndb.com/api/v2/json/[your-api-key]/publisher/chapman_hall_crc
     def com_isbndb_publisher(self, publisher_name):
-        return com_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return com_network.MK_Network_Fetch_From_URL('http://isbndb.com/api/v2/json/'\
             + self.api_key + '/publisher/' + publisher_name, None)
 
 
@@ -63,7 +63,7 @@ class CommonISBNdb(object):
     # http://isbndb.com/api/v2/json/[your-api-key]/prices/9780849303159
     # http://isbndb.com/api/v2/json/[your-api-key]/prices/principles_of_solid_mechanics
     def com_isbndb_prices(self, book_info):
-        return com_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return com_network.MK_Network_Fetch_From_URL('http://isbndb.com/api/v2/json/'\
             + self.api_key + '/prices/' + book_info, None)
 
 
@@ -72,5 +72,5 @@ class CommonISBNdb(object):
     # http://isbndb.com/api/v2/json/[your-api-key]/book/9780849303159
     # http://isbndb.com/api/v2/json/[your-api-key]/book/principles_of_solid_mechanics
     def com_isbndb_books(self, book_info):
-        return com_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return com_network.MK_Network_Fetch_From_URL('http://isbndb.com/api/v2/json/'\
             + self.api_key + '/book/' + book_info, None)

@@ -6,7 +6,7 @@ import struct
 import time
 
 
-def getallbytes(con, bytesLeft):
+def getAllBytes(con, bytesLeft):
     return_buffer = ""
     while bytesLeft:
         data = con.recv(bytesLeft)
@@ -63,13 +63,13 @@ class FileReceiverThread(threading.Thread):
             logging.debug('Connection address: %s', addr)
             con.settimeout(60.0)
             while True:
-                data = getallbytes(con, 4)
+                data = getAllBytes(con, 4)
                 if not data:
                     break
                 elif data == 'FEND':
                     break
                 elif data == 'FILE':
-                    data = getallbytes(con, 260)
+                    data = getAllBytes(con, 260)
                     self.fileSize, fileName = struct.unpack("<i256s", data)
                     fileName = fileName.replace('\0', '')
                     logging.debug("%s %s", self.fileSize, fileName)

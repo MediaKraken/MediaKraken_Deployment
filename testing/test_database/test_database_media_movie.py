@@ -43,8 +43,8 @@ class TestDatabaseMediaMovie(object):
     @pytest.mark.parametrize(("image_type"), [
         (True),
         (False)])
-    def Test_srv_db_media_random(self, image_type):
-        self.db.srv_db_media_random(image_type)
+    def Test_srv_db_Media_Random(self, image_type):
+        self.db.srv_db_Media_Random(image_type)
         self.db.srv_db_Rollback()
 
 
@@ -52,8 +52,8 @@ class TestDatabaseMediaMovie(object):
     @pytest.mark.parametrize(("class_guid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30')])  # no exist
-    def Test_srv_db_media_movie_count_by_genre(self, class_guid):
-        self.db.srv_db_media_movie_count_by_genre(class_guid)
+    def Test_srv_db_Media_Movie_Count_By_Genre(self, class_guid):
+        self.db.srv_db_Media_Movie_Count_By_Genre(class_guid)
         self.db.srv_db_Rollback()
 
 
@@ -67,9 +67,9 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', True, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False, False)])  # no exist
-    def Test_srv_db_web_media_list_count(self, class_guid, list_type, list_genre,\
+    def Test_srv_db_Web_Media_List_Count(self, class_guid, list_type, list_genre,\
             group_collection, include_remote):
-        self.db.srv_db_web_media_list_count(class_guid, list_type, list_genre,\
+        self.db.srv_db_Web_Media_List_Count(class_guid, list_type, list_genre,\
             group_collection, include_remote)
         self.db.srv_db_Rollback()
 
@@ -84,8 +84,8 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, False, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0, True),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0, False)])  # no exist
-    def Test_srv_db_web_media_list(self, class_guid, list_type, list_genre,\
+    def Test_srv_db_Web_Media_List(self, class_guid, list_type, list_genre,\
             list_limit, group_collection, offset, include_remote):
-        self.db.srv_db_web_media_list(class_guid, list_type, list_genre, list_limit,\
+        self.db.srv_db_Web_Media_List(class_guid, list_type, list_genre, list_limit,\
             group_collection, offset, include_remote)
         self.db.srv_db_Rollback()

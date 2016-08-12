@@ -76,7 +76,7 @@ class CommonGoogle(object):
         """
         # info of particular video
         """
-        return com_network.mk_network_fetch_from_url('https://www.googleapis.com/'\
+        return com_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/'\
             + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url\
             + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 

@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_thelogodb import *
+from com_Metadata_TheLogoDB import *
 
 
-class TestCommonthelogodb(object):
+class TestCommonTheLogoDB(object):
 
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_thelogodb.com_thelogodb_API()
+        self.db = com_Metadata_TheLogoDB.com_TheLogoDB_API()
 
 
     @classmethod
@@ -38,5 +38,5 @@ class TestCommonthelogodb(object):
 
 
     # grab newest releases
-    def Test_com_thelogodb_Fetch_Latest(self):
-        com_thelogodb_Fetch_Latest()
+    def Test_com_TheLogoDB_Fetch_Latest(self):
+        com_TheLogoDB_Fetch_Latest()

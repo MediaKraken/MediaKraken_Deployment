@@ -22,9 +22,9 @@ from aniDBresponses import ResponseResolver
 from aniDBerrors import *
 
 
-class anidbLink(threading.Thread):
+class AniDBLink(threading.Thread):
     def __init__(self, server, port, myport, logFunction, delay=2, timeout=20, logPrivate=False):
-        super(anidbLink, self).__init__()
+        super(AniDBLink, self).__init__()
         self.server = server
         self.port = port
         self.target = (server, port)
@@ -109,7 +109,7 @@ class anidbLink(threading.Thread):
                     else:
                         break
                 if not resp:
-                    raise anidbPacketCorruptedError, "Either decrypting, decompressing or parsing the packet failed"
+                    raise AniDBPacketCorruptedError, "Either decrypting, decompressing or parsing the packet failed"
                 cmd = self._cmd_dequeue(resp)
                 resp = resp.resolve(cmd)
                 resp.parse()
@@ -124,7 +124,7 @@ class anidbLink(threading.Thread):
                     self.crypt = None
                 if resp.rescode in ('504', '555'):
                     self.banned = True
-                    print "anidb API informs that user or client is banned:", resp.resstr
+                    print "AniDB API informs that user or client is banned:", resp.resstr
                 resp.handle()
                 if not cmd or not cmd.mode:
                     self._resp_queue(resp)
@@ -190,7 +190,7 @@ class anidbLink(threading.Thread):
     def _send(self, command):
         if self.banned:
             self.log("NetIO | BANNED")
-            raise anidbError, "Not sending, banned"
+            raise AniDBError, "Not sending, banned"
         self._do_delay()
         self.lastpacket = time()
         command.started = time()
@@ -212,7 +212,7 @@ class anidbLink(threading.Thread):
 
     def request(self, command):
         if not (self.session and command.session) and command.command not in ('AUTH', 'PING', 'ENCRYPT'):
-            raise anidbMustAuthError, "You must be authed to execute commands besides AUTH and PING"
+            raise AniDBMustAuthError, "You must be authed to execute commands besides AUTH and PING"
         command.started = time()
         self._cmd_queue(command)
         self._send(command)

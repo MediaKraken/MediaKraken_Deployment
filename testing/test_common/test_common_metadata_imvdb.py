@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_imvdb import *
+from com_Metadata_IMVDb import *
 
 
-class TestCommonimvdb(object):
+class TestCommonIMVDb(object):
 
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_imvdb.com_imvdb_API()
+        self.db = com_Metadata_IMVDb.com_IMVDb_API()
 
 
     @classmethod
@@ -37,20 +37,20 @@ class TestCommonimvdb(object):
         pass
 
 
-# def com_imvdb_Video_Info(self, video_id):
+# def com_IMVDb_Video_Info(self, video_id):
 
 
     @pytest.mark.parametrize(("artist_name", "song_title"), [
         ('Megadeath', 'Trust'),
         ('Garbage', 'Empty'),
         ('fake', 'fake')])
-    def Test_com_imvdb_Search_Video(self, artist_name, song_title):
-        com_imvdb_Search_Video(artist_name, song_title)
+    def Test_com_IMVDb_Search_Video(self, artist_name, song_title):
+        com_IMVDb_Search_Video(artist_name, song_title)
 
 
     @pytest.mark.parametrize(("artist_name"), [
         ('Megadeath'),
         ('Garbage'),
         ('fake')])
-    def Test_com_imvdb_Search_Entities(self, artist_name):
-        com_imvdb_Search_Entities(artist_name)
+    def Test_com_IMVDb_Search_Entities(self, artist_name):
+        com_IMVDb_Search_Entities(artist_name)

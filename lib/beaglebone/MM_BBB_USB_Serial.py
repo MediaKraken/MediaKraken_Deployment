@@ -26,16 +26,16 @@ Arduino_Board_Stepper = Arduino('9600', port="/dev/ttyACM1")    # Stp1
 # Arduino Mega 2560
 Arduino_Board_LCD_Center = Arduino('9600', port="/dev/ttyACM2")
 
-def octmote_arduino_usb_serial_digitalwrite(board_type, pin_number, pin_high_low):
+def OctMote_Arduino_USB_Serial_DigitalWrite(board_type, pin_number, pin_high_low):
     pass
 
-def octmote_arduino_usb_serial_writestring(board_type, serial_string):
+def OctMote_Arduino_USB_Serial_WriteString(board_type, serial_string):
     if board_type == "Neo1":
         Arduino_Board_NeoPixel.SoftwareSerial.write(serial_string)
     else:
         Arduino_Board_Stepper.SoftwareSerial.write(serial_string)
 
-def octmote_arduino_usb_serial_receivestring():
+def OctMote_Arduino_USB_Serial_ReceiveString():
     pass
 
 #while True:

@@ -28,7 +28,7 @@ from pytvdbapi import api
 
 class CommonTheTVDB(object):
     """
-    Class for interfacing with thetvdb
+    Class for interfacing with theTVDB
     """
     def __init__(self):
         # pull in the ini file config
@@ -77,7 +77,7 @@ class CommonTheTVDB(object):
     def com_thetvdb_show_db_save(self, show_data):
         show_data.update()
         # store the show data
-        json_media_id = json.dumps({'imdb':show_data.imdb_ID, 'thetvdb':show_data.SeriesID,
+        json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID,
             'zap2it':show_data.zap2it_id})
         # start saving pictures (if available)
         banner_path = None
@@ -122,13 +122,13 @@ class CommonTheTVDB(object):
 
         # store the season data
     # atm not using season data anyways
-    #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+    #    json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_Metadata_Save_Season(self,season_json):
     #    sql_params = str(uuid.uuid4()),season_json
     #    self.sql3_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid, mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
-        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'',\
+        json_media_id = json.dumps({'IMDB':'', 'theTVDB':'', 'TMDB':'', 'AniDB':'', 'RT':'',\
             'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_Metadata_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json

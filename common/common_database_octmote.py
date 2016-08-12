@@ -187,7 +187,7 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.commit()
 
 
-    def MK_Database_Sqlite3_anidb_Title_Insert(self, sql_params_list):
+    def MK_Database_Sqlite3_AniDB_Title_Insert(self, sql_params_list):
         """
         Insert new anidb entries into database
         """
@@ -197,7 +197,7 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.commit()
 
 
-    def MK_Database_Sqlite3_anidb_Title_Search(self, title_to_search):
+    def MK_Database_Sqlite3_AniDB_Title_Search(self, title_to_search):
         self.sql3_cursor.execute("select anidb_aid from octmote_anidb where anidb_title = ? limit 1", (title_to_search,))
         try:
             return self.sql3_cursor.fetchone()[0]

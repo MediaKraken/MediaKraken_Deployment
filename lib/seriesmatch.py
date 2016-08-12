@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # when creating new regex group one must be show name group two must be episode number
 #(!@#$%^&*()\?<>;:'"{}[]|~`+=) all of these are valid characters on linux systems included for completion
 # returns [show, ep]
-def parsefilename(filename ,regex=None):
+def parseFilename(filename ,regex=None):
     path, file = os.path.split(filename)
     if (regex is None):
         regex = [
@@ -66,7 +66,7 @@ def parsefilename(filename ,regex=None):
 # root is the root tag of the xmlfile
 # the closer to 0 the less precise the match
 # returns [[aid, title], [aid, title] ... ]
-def findshowmatches(findMatch, root, precision=.9):
+def findShowMatches(findMatch, root, precision=.9):
     allMatches = []
 
     # search throuh anime subtags for a matching title
@@ -87,7 +87,7 @@ def findshowmatches(findMatch, root, precision=.9):
     return allMatches
 
 # command line method to choose one value from a list
-def listchoice(matchList):
+def listChoice(matchList):
     while True:
         for i in range(len(matchList)):
             print ('{0}: {1}'.format(i+1, matchList[i]))
@@ -105,7 +105,7 @@ def listchoice(matchList):
 
 # checks the csv file for a prefered title
 # returns [aid, prefName, foundName]
-def findprefname(filename, findMatch):
+def findPrefName(filename, findMatch):
     try:
         with open(filename) as prefTReader:
             prefTCSVReader = csv.reader(prefTReader)
@@ -118,7 +118,7 @@ def findprefname(filename, findMatch):
 
 '''
 # saves list of prefered names to a csv file without making duplicate entries
-def saveprefnames(filename, prefNameList):
+def saveprefNames(filename, prefNameList):
     prefNameListCopy = copy.deepcopy(prefNameList)
     try:
         with open(filename, 'a', newline='') as prefTWriter, open(filename, newline='') as prefTReader:
@@ -137,7 +137,7 @@ def saveprefnames(filename, prefNameList):
 
 # parses xml file for title names downloads new one if necessary
 # silent skips over anything that requires user input
-def generateprefnamecsv(xmlFilename, ShowList):
+def generatePrefNameCSV(xmlFilename, ShowList):
     try:
         xmlFileObject = utilities.openFile(xmlFilename)
     except IOError as e:
@@ -151,7 +151,7 @@ def generateprefnamecsv(xmlFilename, ShowList):
     root = tree.getroot()
     preferedNames=[]
     for show in ShowList:
-        showMatches = findshowmatches(show, root)
+        showMatches = findShowMatches(show, root)
         if (len(showMatches) == 0):
             # check date of latest animetitles.xml.gz
             # get new one if it was not already downloaded today
@@ -162,13 +162,13 @@ def generateprefnamecsv(xmlFilename, ShowList):
                 xmlFileObject = utilities.openFile(xmlFilename)
                 tree = ET.parse(xmlFileObject)
                 root = tree.getroot()
-                showMatches = findshowmatches(show, root)
+                showMatches = findShowMatches(show, root)
         #get user to pick show from list or write a warning and do nothing if silent is on
         if (len(showMatches) > 1):
             if not silent:
                 print('{0} matches for show {1}'.format(
                     len(showMatches), show))
-                showChoice = listchoice(showMatches)
+                showChoice = listChoice(showMatches)
                 showChoice.append(show)
                 preferedNames.append(showChoice)
                 showMatches = [showChoice]
@@ -186,7 +186,7 @@ def generateprefnamecsv(xmlFilename, ShowList):
     return preferedNames
 
 # Each list contains the aid, preffered title, and all files in the series
-def groupanimefiles(vidFilesLoc, xmlFilename='animetitles.xml.gz',
+def groupAnimeFiles(vidFilesLoc, xmlFilename='animetitles.xml.gz',
                     csvFile='prefName.csv', silentMode=False):
     global silent
     silent = silentMode
@@ -201,7 +201,7 @@ def groupanimefiles(vidFilesLoc, xmlFilename='animetitles.xml.gz',
     showNames = [] # list of show titles with duplicates
     fileInfo = [] # list of info pulled from file name
     for file in vidFiles:
-        showName = parsefilename(file)
+        showName = parseFilename(file)
         if showName is None:
             continue
 
@@ -219,7 +219,7 @@ def groupanimefiles(vidFilesLoc, xmlFilename='animetitles.xml.gz',
     while index < len(shows):
         # store as a list of lists for consistency with pulled matches
         try:
-            showMatch = findprefname(csvFile, shows[index])
+            showMatch = findPrefName(csvFile, shows[index])
         except IOError as e:
             break
         if (showMatch is not None):
@@ -230,9 +230,9 @@ def groupanimefiles(vidFilesLoc, xmlFilename='animetitles.xml.gz',
             index += 1
 
     # check xml file for shows
-    preferedNames += generateprefnamecsv(xmlFilename, shows)
+    preferedNames += generatePrefNameCSV(xmlFilename, shows)
 
-    saveprefnames(csvFile, preferedNames)
+    saveprefNames(csvFile, preferedNames)
 
     # group all files with show info
     for aid, prefName, originalName in preferedNames:
