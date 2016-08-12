@@ -85,7 +85,7 @@ class TestCommonDatabaseEmby(object):
 
 
 # grab all users from database
-#def MK_Database_Sqlite3_Users_List(offset = None, records = None, play_stats = None):
+#def MK_Database_Sqlite3_Users_List(offset=None, records=None, play_stats = None):
 
 
     # grab count of all users

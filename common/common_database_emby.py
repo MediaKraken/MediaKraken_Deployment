@@ -51,8 +51,8 @@ class CommonDatabaseEmby(object):
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/users.db' as 'users'")
 
 
-    def MK_Database_Sqlite3_Open_Emby(self, db_file_name = None,\
-            db_username_dir = os.environ.get("USERNAME"), attach_other_db = False):
+    def MK_Database_Sqlite3_Open_Emby(self, db_file_name=None,\
+            db_username_dir=os.environ.get("USERNAME"), attach_other_db=False):
         """
         Open database and pull in config from sqlite and create db if not exist
         """
@@ -83,7 +83,7 @@ class CommonDatabaseEmby(object):
         self.sql3_emby_conn.close()
 
 
-    def MK_Database_Sqlite3_Movie_List_Emby(self, offset = None, records = None):
+    def MK_Database_Sqlite3_Movie_List_Emby(self, offset=None, records=None):
         """
         Grab all movies in emby database
         """
@@ -102,7 +102,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    def MK_Database_Sqlite3_TV_List_Emby(self, offset = None, records = None):
+    def MK_Database_Sqlite3_TV_List_Emby(self, offset=None, records=None):
         """
         Grab all the tv episodes in the emby database
         """
@@ -121,7 +121,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    def MK_Database_Sqlite3_TV_Movie_List_Emby(self, offset = None, records = None):
+    def MK_Database_Sqlite3_TV_Movie_List_Emby(self, offset=None, records=None):
         """
         Grab all the tv episodes and movies in the emby database
         """
@@ -140,7 +140,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    def MK_Database_Sqlite3_Users_List(self, offset = None, records = None, play_stats = None):
+    def MK_Database_Sqlite3_Users_List(self, offset=None, records=None, play_stats=None):
         """
         Grab all users from database
         """
@@ -195,7 +195,7 @@ class CommonDatabaseEmby(object):
         return file_in_path
 
 
-    def MK_Database_Sqlite3_Emby_Activity_List(self, offset = None, records = None):
+    def MK_Database_Sqlite3_Emby_Activity_List(self, offset=None, records=None):
         """
         Grab all activity data
         """
@@ -215,7 +215,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    def MK_Databas_Sqlite3_Emby_Notification_List(self, offset = None, records = None):
+    def MK_Databas_Sqlite3_Emby_Notification_List(self, offset=None, records=None):
         """
         Grab all notifications
         """
@@ -235,7 +235,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchone()[0]
 
 
-    def MK_Database_Sqlite3_Emby_Sync_List(self, offset = None, records = None):
+    def MK_Database_Sqlite3_Emby_Sync_List(self, offset=None, records=None):
         """
         Grab all notifications
         """
