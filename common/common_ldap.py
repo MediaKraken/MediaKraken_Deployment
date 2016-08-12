@@ -45,8 +45,9 @@ class CommonLDAP(object):
         """
         Ldap logon check
         """
+        logging.debug("ldap login: %s", user_name)
         try:
-            dn = "sAMAccountName=" + user_name + ",dc=" + dc_name + ",dc=local"
+            dn = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
             self.con.simple_bind_s(dn, user_password)
         except ldap.INVALID_CREDENTIALS, e:
             return "INVALID_LOGIN"

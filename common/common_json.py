@@ -21,7 +21,7 @@ import logging
 import glob
 import json
 from kivy import platform
-import common_Database_Octmote
+import common_database_octmote
 
 
 def com_json_find():
@@ -34,7 +34,7 @@ def com_json_find():
         file_path = './OctMote_Json/'
     for file_name in glob.glob(file_path + "*.txt"):
         logging.debug(file_name)
-        MK_Json_Import(file_name)
+        com_json_import(file_name)
 
 
 def com_json_import(file_name):
@@ -47,11 +47,11 @@ def com_json_import(file_name):
     file_handle.close()
     try:
         # item type
-        com_Database_Octmote.MK_Database_Sqlite3_Item_Insert(json_data)
+        common_database_octmote.MK_Database_Sqlite3_Item_Insert(json_data)
     except:
         try:
             # layout
-            com_Database_Octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'], json_data)
+            common_database_octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'], json_data)
         except:
             pass
 

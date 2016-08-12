@@ -30,24 +30,42 @@ class CommonPitchfork(object):
 
 
     def com_pitchfork_search(self, artist_name, album_title):
+        """
+        Search via name and title
+        """
         self.pitchfork_api = pitchfork.search(artist_name, album_title)
 
 
     def com_pitchfork_album_title(self):
+        """
+        Album title
+        """
         return self.pitchfork_api.album()
 
 
     def com_pitchfork_album_label(self):
+        """
+        Album label
+        """
         return self.pitchfork_api.label()
 
 
     def com_pitchfork_album_review(self):
+        """
+        Album review
+        """
         return self.pitchfork_api.editorial()
 
 
     def com_pitchfork_album_cover_art_link(self):
+        """
+        Get album coverart link
+        """
         return self.pitchfork_api.cover()
 
 
     def com_pitchfork_album_review_score(self):
+        """
+        Get review score
+        """
         return self.pitchfork_api.score()

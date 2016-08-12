@@ -63,5 +63,5 @@ def com_freeCovers_search(search_string, search_categories):
     print(handler.read())
 
 
-com_FreeCovers_Search('Megadeath', None):
+com_freeCovers_search('Megadeath', None):
     pass

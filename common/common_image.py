@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
 from PIL import Image
 
 
@@ -25,23 +24,21 @@ def com_image_resizeimagecalc(img_size, size):
     """
     Scale image keeping aspect ratio
     """
-    picWidth = img_size[0]
+    picwidth = img_size[0]
     picHeight = img_size[1]
-    scaleWidth =  float(size[0] / picWidth)
-    scaleHeight = float(size[1] / picHeight)
-    if scaleWidth > scaleHeight:
-        scale = scaleHeight
+    scalewidth =  float(size[0] / picwidth)
+    scaleheight = float(size[1] / picHeight)
+    if scalewidth > scaleheight:
+        scale = scaleheight
     else:
-        scale = scaleWidth
-    NewWidth = picWidth * scale
-    NewHeight = picHeight * scale
-    return (NewWidth, NewHeight)
+        scale = scalewidth
+    return (picwidth * scale, picHeight * scale)
 
 
 def com_image_resizeimage(file_name, image_size):
     """
     Resize and save image
     """
-    im = Image.open(file_name)
-    im.thumbnail(com_image_resizeimagecalc(im.size, image_size), Image.BICUBIC)
-    im.save(file_name + 'thumb', "PNG")
+    im_data = Image.open(file_name)
+    im_data.thumbnail(com_image_resizeimagecalc(im_data.size, image_size), Image.BICUBIC)
+    im_data.save(file_name + 'thumb', "PNG")

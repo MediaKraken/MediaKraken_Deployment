@@ -32,5 +32,5 @@ def com_logging_start(log_name="./log/MediaKraken_Main"):
     """
     Fire up logging processing and file with timestamp
     """
-    logging.basicConfig(filename = log_name + '_' + time.strftime("%Y%m%d%H%M%S") \
-        + '.log', format='%(asctime)s: %(levelname)s %(message)s', level=logging.DEBUG)
+    logging.basicConfig(filename=(log_name + '_' + time.strftime("%Y%m%d%H%M%S") \
+        + '.log'), format='%(asctime)s: %(levelname)s %(message)s', level=logging.DEBUG)
