@@ -21,7 +21,7 @@ import logging
 import re
 import os
 import json
-import com_Metadata
+import common_Metadata
 import common_network
 import tmdbsimple as tmdb
 

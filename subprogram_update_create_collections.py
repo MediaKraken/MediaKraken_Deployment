@@ -29,7 +29,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import com_Metadata
+import common_Metadata
 import common_network
 import common_metadata_tmdb
 import database as database_base

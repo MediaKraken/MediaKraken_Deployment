@@ -26,9 +26,9 @@ sys.path.append("../common")
 sys.path.append("../server")
 import common_file
 import common_logging
-import com_Metadata
+import common_Metadata
 import common_network
-import com_TheLogoDB
+import common_TheLogoDB
 import database as database_base
 
 

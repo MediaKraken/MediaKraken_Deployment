@@ -31,7 +31,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import com_Metadata
+import common_Metadata
 #import common_system
 from concurrent import futures
 import database as database_base

@@ -21,7 +21,7 @@ import logging
 import json
 from xml.dom import minidom
 import common_file
-import com_Metadata
+import common_Metadata
 import common_network
 from pytvdbapi import api
 

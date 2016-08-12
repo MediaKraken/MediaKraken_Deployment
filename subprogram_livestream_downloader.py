@@ -23,7 +23,7 @@ sys.path.append("../common")
 sys.path.append("../server")
 import common_file
 import common_logging
-import com_Twitch
+import common_Twitch
 import os
 import signal
 import database as database_base

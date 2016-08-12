@@ -21,7 +21,7 @@ import logging
 import os
 import sys
 sys.path.append("../common")
-import com_Hash
+import common_Hash
 sys.path.append("./metadata")
 import metadata_anime
 import metadata_game

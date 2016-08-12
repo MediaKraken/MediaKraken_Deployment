@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import json
-import com_Metadata
+import common_Metadata
 import common_network
 
 

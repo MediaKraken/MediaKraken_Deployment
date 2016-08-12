@@ -24,7 +24,7 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import com_Chromecast
+import common_Chromecast
 import common_file
 import common_logging
 import common_string

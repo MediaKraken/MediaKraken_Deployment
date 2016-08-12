@@ -25,7 +25,7 @@ import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
-import com_HDHomeRun
+import common_HDHomeRun
 import common_logging
 import common_string
 import os

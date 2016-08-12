@@ -30,7 +30,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import com_Schedules_Direct
+import common_Schedules_Direct
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

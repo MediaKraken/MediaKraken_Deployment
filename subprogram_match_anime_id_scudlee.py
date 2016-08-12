@@ -28,7 +28,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import com_Scudlee
+import common_Scudlee
 import database as database_base
 
 # create the file for pid

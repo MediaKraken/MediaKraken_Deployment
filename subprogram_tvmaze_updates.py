@@ -29,7 +29,7 @@ sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
 import common_file
 import common_logging
-import com_Metadata_TVMaze
+import common_Metadata_TVMaze
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

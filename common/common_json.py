@@ -21,7 +21,7 @@ import logging
 import glob
 import json
 from kivy import platform
-import com_Database_Octmote
+import common_Database_Octmote
 
 
 def MK_Json_Find():

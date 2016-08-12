@@ -25,7 +25,7 @@ import zipfile
 import zlib
 import StringIO
 import common_file
-import com_Metadata
+import common_Metadata
 import common_network
 
 '''

@@ -33,7 +33,7 @@ sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
 import common_file
-import com_Google
+import common_Google
 import common_network_Twitch
 import common_network_Vimeo
 import common_network_Youtube

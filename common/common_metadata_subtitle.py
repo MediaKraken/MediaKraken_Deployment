@@ -22,7 +22,7 @@ import os
 import sys
 import re
 import common_file
-import com_Hash
+import common_Hash
 sys.path.append("../../MediaKraken_Common/lib")
 from babelfish import Language
 import subliminal
