@@ -29,7 +29,7 @@ import subliminal
 
 
 # fetch subtitles
-def com_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
+def com_metadata_fetch_subtitle(file_name, sub_lang="en"):
     #file_hash = com_Hash.com_Hash_TheSubDB(file_name)
     f = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
     cmd_output = f.read()
@@ -37,7 +37,7 @@ def com_Metadata_Fetch_Subtitle(file_name, sub_lang="en"):
 
 
 # batch fetch subtitles
-def com_Metadata_Fetch_Subtitle_Batch(dir_name, sub_lang):
+def com_metadata_fetch_subtitle_batch(dir_name, sub_lang):
     # configure the cache
 #    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename': '/home/spoot/cachefile.dbm'})
 #    # scan for videos in the folder and their subtitles

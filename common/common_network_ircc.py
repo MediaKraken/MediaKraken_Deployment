@@ -23,30 +23,36 @@ sys.path.append("../../MediaKraken_Common/lib")
 
 
 # ircc device discovery via ssdp
-def MK_Network_IRCC_Discover():
-    SSDP_MSearch.search(cbFoundDevice=MK_Network_IRCC_Found_Device,\
-        cbFinishedSearching=MK_Network_IRCC_Finished_Searching,\
+def com_net_ircc_discover():
+    SSDP_MSearch.search(cbFoundDevice=com_net_ircc_Found_Device,\
+        cbFinishedSearching=com_net_ircc_Finished_Searching,\
         target='urn:schemas-sony-com:service:IRCC:1')
 
 
 # filler found device
-def MK_Network_IRCC_Found_Device(ircc_device):
+def com_net_ircc_found_device(ircc_device):
     pass
 
 
-# process the found devices
-def MK_Network_IRCC_Finished_Searching(devices):
+def com_net_ircc_finished_searching(devices):
+    """
+    # process the found devices
+    """
     ircc_device = devices[0] # first device only for now
     ircc_service = ircc_device.get_service('schemas.sony.com/IRCC/1')
-    MK_Network_IRCC_Register_Device(ircc_device, ircc_service)
+    com_net_ircc_Register_Device(ircc_device, ircc_service)
 
 
-# register device for control
-def MK_Network_IRCC_Register_Device(ircc_device, ircc_service):
+def com_net_ircc_register_device(ircc_device, ircc_service):
+    """
+    # register device for control
+    """
     if ircc_device.register("My IRCC Controller") != unr.UNR_REGISTER_RESULT_OK:
         logging.error("Registration Failed")
 
 
-# send commands to ircc device
-def MK_Network_IRCC_Send_Command(ircc_device, ircc_service, command_text):
+def com_net_ircc_send_command(ircc_device, ircc_service, command_text):
+    """
+    # send commands to ircc device
+    """
     ircc_device.ircc.sendIRCC(command_text)

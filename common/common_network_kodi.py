@@ -21,8 +21,10 @@ import logging
 import socket
 
 
-# send commands to kodi via raw tcp and json
-def MK_Network_Kodi_Command(host_ip, host_port, kodi_command):
+def com_net_kodi_command(host_ip, host_port, kodi_command):
+    """
+    # send commands to kodi via raw tcp and json
+    """
     kodi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     kodi_socket.connect((host_ip, host_port))
     kodi_socket.sendall(kodi_command.split('|', 1)[1])

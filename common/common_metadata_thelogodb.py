@@ -39,8 +39,9 @@ class CommonTheLogoDB(object):
         self.API_KEY = Config.get('API', 'TheLogoDB').strip()
 
 
-    def com_TheLogoDB_Fetch_Latest(self):
+    def com_thelogodb_fetch_latest(self):
         """
         Grab newest releases
         """
-        return json.loads(com_network.MK_Network_Fetch_From_URL('http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))
+        return json.loads(com_network.MK_Network_Fetch_From_URL(\
+            'http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

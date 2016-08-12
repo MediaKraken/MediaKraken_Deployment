@@ -49,7 +49,7 @@ class CommonCIFSShare(object):
         pass
 
 
-    def com_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
+    def com_cifs_connect(self, ip_addr, user_name='guest', user_password=''):
         """
         Connect to share
         """
@@ -60,7 +60,7 @@ class CommonCIFSShare(object):
         self.smb_conn.connect(ip_addr, 139)
 
 
-    def com_cifs_Share_List_By_Connection(self):
+    def com_cifs_share_list_by_connection(self):
         """
         List shares
         """
@@ -70,7 +70,7 @@ class CommonCIFSShare(object):
         return share_names
 
 
-    def com_cifs_Share_File_List_By_Share(self, share_name, path_text='/'):
+    def com_cifs_share_file_list_by_share(self, share_name, path_text='/'):
         """
         List files in share
         """
@@ -81,7 +81,7 @@ class CommonCIFSShare(object):
         return file_names
 
 
-    def com_cifs_Share_Directory_Check(self, share_name, dir_path):
+    def com_cifs_share_directory_check(self, share_name, dir_path):
         """
         Verify smb directory
         """
@@ -93,42 +93,42 @@ class CommonCIFSShare(object):
         return False
 
 
-    def com_cifs_Share_File_Dir_Info(self, share_name, file_path):
+    def com_cifs_share_file_dir_info(self, share_name, file_path):
         """
         Get specific path/file info
         """
         return self.smb_conn.getAttributes(share_name, file_path)
 
 
-    def com_cifs_Share_File_Upload(self, file_path):
+    def com_cifs_share_file_upload(self, file_path):
         """
         Upload file to smb
         """
         self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path,'rb'))
 
 
-    def com_cifs_Share_File_Download(self, file_path):
+    def com_cifs_share_file_download(self, file_path):
         """
         Download from smb
         """
         self.smb_conn.retrieveFile(self.sharename, open(file_path, 'wb'))
 
 
-    def com_cifs_Share_File_Delete(self, share_name, file_path):
+    def com_cifs_share_file_delete(self, share_name, file_path):
         """
         Delete from smb
         """
         self.smb_conn.deleteFiles(share_name, '/' + file_path)
 
 
-    def com_cifs_Close(self):
+    def com_cifs_close(self):
         """
         Close connection
         """
         self.smb_conn.close()
 
 
-    def com_cifs_Walk(self, share_name, file_path='/'):
+    def com_cifs_walk(self, share_name, file_path='/'):
         """
         cifs directory walk
         """

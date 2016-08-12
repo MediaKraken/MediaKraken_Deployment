@@ -24,22 +24,30 @@ if platform != 'android':
     import eiscp
 
 
-# the EISCP auto discover only works on 2011 models or higher
-def MK_EISCP_Discovery():
+def com_net_eiscp_discovery():
+    """
+    # the EISCP auto discover only works on 2011 models or higher
+    """
     return eiscp.eISCP.discover(timeout=5)
 
 
-def MK_EISCP_Connection(ip_addr):
+def com_net_eiscp_connection(ip_addr):
+    """
+    Connect by ip address
+    """
     return eiscp.eISCP(ip_addr)
 
 
-def MK_EISCP_Disconnect(eiscp_device):
+def com_net_eiscp_disconnect(eiscp_device):
+    """
+    Disconnect from device
+    """
     eiscp_device.disconnect()
 
 
-def MK_EISCP_Command(eiscp_device, eiscp_command):
+def com_net_eiscp_command(eiscp_device, eiscp_command):
     eiscp_device.command(eiscp_command)
 
 
-def MK_EISCP_Command_RAW(eiscp_device, eiscp_raw_command):
+def com_net_eiscp_command_raw(eiscp_device, eiscp_raw_command):
     eiscp_device.raw(eiscp_raw_command)

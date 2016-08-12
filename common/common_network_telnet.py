@@ -31,7 +31,7 @@ class CommonTelnet(object):
         pass
 
 
-    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None,\
+    def com_net_telnet_open_device(self, telnet_host, telnet_port, telnet_user=None,\
             telnet_password=None):
         """
         Open device via telnet
@@ -44,7 +44,7 @@ class CommonTelnet(object):
             self.telnet_device.write(telnet_password + newline)
 
 
-    def MK_Telnet_Read_Device(self):
+    def com_net_telnet_read_device(self):
         """
         Read data from telnet device
         """
@@ -55,7 +55,7 @@ class CommonTelnet(object):
         return read_data
 
 
-    def MK_Telnet_Write_Device(self, telnet_message):
+    def com_net_telnet_write_device(self, telnet_message):
         """
         Send data to telnet device
         """

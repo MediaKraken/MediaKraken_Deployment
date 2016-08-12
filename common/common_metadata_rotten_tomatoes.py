@@ -39,8 +39,10 @@ class CommonMetadataRottenTomatoes(object):
             rt.API_KEY = Config.get('API','RottenTomatoes').strip()
 
 
-    # serach for movie title and year
-    def com_RT_Search(movie_title, movie_year=None):
+    def com_rt_search(movie_title, movie_year=None):
+        """
+        # search for movie title and year
+        """
         movie = rt.Movies()
         response = movie.search(q=movie_title)
         for m in movie.movies:

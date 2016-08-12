@@ -41,7 +41,8 @@ class CommonMusicbrainz(object):
         # If you plan to submit data, authenticate
         #musicbrainzngs.auth(Config.get('MediaBrainz','User').strip(), Config.get('MediaBrainz','Password').strip())
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
-        musicbrainzngs.set_useragent("MediaKraken_Server", "0.0.6", "spootdev@gmail.com https://github.com/MediaKraken_)
+        musicbrainzngs.set_useragent("MediaKraken_Server", "0.0.6",\
+            "spootdev@gmail.com https://github.com/MediaKraken_)
         # If you are connecting to a development server
         if Config.get('MediaBrainz', 'Host').strip() != 'None':
             #musicbrainzngs.set_hostname(Config.get('MediaBrainz','Host').strip())
@@ -60,9 +61,11 @@ class CommonMusicbrainz(object):
         logging.debug("MusicBrainz ID: {}".format(rel['id']))
 
 
-    # search by artist and album name
-    def com_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None,\
+    def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,\
             artist_recording=None, return_limit=5, strict_flag=False):
+        """
+        # search by artist and album name
+        """
         global musicbrainzngs
         if disc_id is not None:
             result = musicbrainzngs.get_releases_by_discid(disc.id,\
@@ -80,9 +83,11 @@ class CommonMusicbrainz(object):
             return release['id']
 
 
-    # search by artist and song name
-    def com_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None,\
+    def com_mediabrainz_get_recordings(self, artist_name=None, release_name=None,\
             song_name=None, return_limit=5, strict_flag=False):
+        """
+        # search by artist and song name
+        """
         global musicbrainzngs
         result = musicbrainzngs.search_recordings(artist=artist_name, release=release_name,\
             recording=song_name, limit=return_limit, strict=strict_flag)

@@ -27,24 +27,33 @@ sys.path.append("../../MediaKraken_Common/")
 import common_network
 
 
-# get brand list
-def com_IRDB_Brand_List():
+def com_irdb_brand_list():
+    """
+    # get brand list
+    """
     return json.loads(com_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/brand/', None))
 
 
-# get device types by brand
-def com_IRDB_Device_Types_By_Brand(brand_text):
-    return json.loads(com_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/devicetype/?brand=' + brand_text, None))
+def com_irdb_device_types_by_brand(brand_text):
+    """
+    # get device types by brand
+    """
+    return json.loads(com_network.MK_Network_Fetch_From_URL(\
+        'http://irdb.tk/api/devicetype/?brand=' + brand_text, None))
 
 
-# See which sets of codes we have for that brand and device type:
-def com_IRDB_Codesets_By_Brand_Device(brand_text, device_type):
+def com_irdb_codesets_by_brand_device(brand_text, device_type):
+    """
+    # See which sets of codes we have for that brand and device type:
+    """
     return json.loads(com_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/codeset/?brand='\
         + brand_text + '&devicetype=' + device_type, None))
 
 
-# get the code with the protocol, device, and subdevice information we just derived from above:
-def com_IRDB_Function_List(brand_text, protocol_type, device_type, device_num, subdevice):
+def com_irdb_function_list(brand_text, protocol_type, device_type, device_num, subdevice):
+    """
+    # get the code with the protocol, device, and subdevice information we just derived from above:
+    """
     return json.loads(com_network.MK_Network_Fetch_From_URL('http://irdb.tk/api/code/?brand='\
         + brand_text + '&devicetype=' + device_type + '&protocol=' + protocol_type\
         + '&device=' + device_num + '&subdevice=' + subdevice, None))
