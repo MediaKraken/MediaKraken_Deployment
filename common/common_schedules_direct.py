@@ -22,7 +22,7 @@ import sys
 import hashlib
 import json
 import requests
-import common.common_network
+from common import common_network
 import gzip
 from StringIO import StringIO
 

@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common.common_Google
+from common import common_Google
 import youtube_dl
 
 

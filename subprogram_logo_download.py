@@ -24,11 +24,11 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import common.common_file
-import common.common_logging
-import common.common_Metadata
-import common.common_network
-import common.common_TheLogoDB
+from common import common_file
+from common import common_logging
+from common import common_Metadata
+from common import common_network
+from common import common_TheLogoDB
 import database as database_base
 
 

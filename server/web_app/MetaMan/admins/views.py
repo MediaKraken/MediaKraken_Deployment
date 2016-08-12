@@ -30,15 +30,15 @@ import sys
 sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
-import common.common_cifs
-import common.common_cloud
-import common.common_file
-import common.common_network
-import common.common_pagination
-import common.common_string
-import common.common_system
-import common.common_transmission
-import common.common_zfs
+from common import common_cifs
+from common import common_cloud
+from common import common_file
+from common import common_network
+from common import common_pagination
+from common import common_string
+from common import common_system
+from common import common_transmission
+from common import common_zfs
 
 # import localization
 import locale

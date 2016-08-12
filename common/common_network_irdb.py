@@ -24,7 +24,7 @@ import json
 import sys
 # include code from other paths
 sys.path.append("../../MediaKraken_Common/")
-import common.common_network
+from common import common_network
 
 
 def com_irdb_brand_list():

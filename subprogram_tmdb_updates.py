@@ -28,9 +28,9 @@ import json
 import uuid
 sys.path.append("../common")
 sys.path.append("../server")
-import common.common_file
-import common.common_logging
-import common.common_metadata_tmdb
+from common import common_file
+from common import common_logging
+from common import common_metadata_tmdb
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

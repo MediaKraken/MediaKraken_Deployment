@@ -27,11 +27,11 @@ import signal
 import os
 sys.path.append("../common")
 sys.path.append("../server")
-import common.common_file
-import common.common_logging
-import common.common_Metadata
-import common.common_network
-import common.common_metadata_tmdb
+from common import common_file
+from common import common_logging
+from common import common_Metadata
+from common import common_network
+from common import common_metadata_tmdb
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

@@ -3,8 +3,8 @@ import logging
 import socket
 import sys
 sys.path.append("../MediaKraken_Common")
-import common.common_logging
-import common.common_network
+from common import common_logging
+from common import common_network
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")

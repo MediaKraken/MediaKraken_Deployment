@@ -26,9 +26,9 @@ import sys
 sys.path.append("../common")
 sys.path.append("../server")
 import database as database_base
-import common.common_file
-import common.common_logging
-import common.common_zfs
+from common import common_file
+from common import common_logging
+from common import common_zfs
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())

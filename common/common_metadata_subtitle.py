@@ -21,8 +21,8 @@ import logging
 import os
 import sys
 import re
-import common.common_file
-import common.common_Hash
+from common import common_file
+from common import common_Hash
 sys.path.append("../../MediaKraken_Common/lib")
 from babelfish import Language
 import subliminal

@@ -25,12 +25,12 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import common.common_cifs
-import common.common_ffmpeg
-import common.common_file
-import common.common_logging
-import common.common_string
-#import common.common_system
+from common import common_cifs
+from common import common_ffmpeg
+from common import common_file
+from common import common_logging
+from common import common_string
+#from common import common_system
 import _strptime # to handle threading
 from datetime import datetime # to handle threading
 import os

@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import json
-import common.common_Metadata
-import common.common_network
+from common import common_Metadata
+from common import common_network
 
 
 class CommonTheLogoDB(object):

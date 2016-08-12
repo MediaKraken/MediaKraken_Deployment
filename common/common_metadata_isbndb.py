@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common.common_network
+from common import common_network
 
 
 class CommonISBNdb(object):

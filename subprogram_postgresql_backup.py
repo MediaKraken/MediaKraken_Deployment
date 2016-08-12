@@ -26,8 +26,8 @@ import sys
 import os
 sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
-import common.common_cloud
-import common.common_logging
+from common import common_cloud
+from common import common_logging
 import database as database_base
 
 # start logging

@@ -27,8 +27,8 @@ import signal
 import json
 sys.path.append("../common")
 sys.path.append("../server")
-import common.common_file
-import common.common_logging
+from common import common_file
+from common import common_logging
 import database as database_base
 import db_base_brainz as database_base_brainz
 

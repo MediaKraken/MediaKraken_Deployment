@@ -21,7 +21,7 @@ import logging
 import os
 import sys
 sys.path.append("../common")
-import common.common_isbndb
+from common import common_isbndb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")

@@ -31,8 +31,8 @@ import network_base_string as network_base
 sys.path.append("../server")
 import database as database_base
 sys.path.append("../common")
-import common.common_file
-import common.common_logging
+from common import common_file
+from common import common_logging
 from time import time
 import time  # yes, use both otherwise some time code below breaks
 import os

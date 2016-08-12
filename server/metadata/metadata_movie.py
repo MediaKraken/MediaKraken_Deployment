@@ -24,14 +24,14 @@ import uuid
 from guessit import guessit
 import sys
 sys.path.append("../common")
-import common.common_metadata_anidb
-import common.common_metadata_imdb
-import common.common_metadata_movie_theme
-import common.common_metadata_movie_trailer
-import common.common_metadata_netflixroulette
-import common.common_metadata_omdb
-import common.common_metadata_rotten_tomatoes
-import common.common_metadata_tmdb
+from common import common_metadata_anidb
+from common import common_metadata_imdb
+from common import common_metadata_movie_theme
+from common import common_metadata_movie_trailer
+from common import common_metadata_netflixroulette
+from common import common_metadata_omdb
+from common import common_metadata_rotten_tomatoes
+from common import common_metadata_tmdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")

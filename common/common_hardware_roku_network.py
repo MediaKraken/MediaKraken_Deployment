@@ -22,7 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import urllib2
 import time
-import common.common_network_SSDP
+from common import common_network_SSDP
 
 
 def MK_Roku_Network_Discovery():

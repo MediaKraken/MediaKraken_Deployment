@@ -27,11 +27,11 @@ import signal
 import os
 sys.path.append("./common")
 sys.path.append("./server")
-import common.common_logging
-import common.common_Watchdog
+from common import common_logging
+from common import common_Watchdog
 rmda_enabled_os = False
 try:
-    import common.common_RMDA
+    from common import common_RMDA
     rmda_enabled_os = True
 except:
     pass

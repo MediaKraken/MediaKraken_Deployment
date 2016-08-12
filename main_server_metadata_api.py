@@ -48,30 +48,30 @@ import metadata_periodicals
 import metadata_person
 import metadata_sports
 import metadata_tv
-import common.common_file
-import common.common_Hash
-import common.common_ISBNdb
+from common import common_file
+from common import common_Hash
+from common import common_ISBNdb
 from com_Metadata_Limiter import *
-import common.common_logging
-import common.common_Metadata
-import common.common_Metadata_IMVDb
-import common.common_Metadata_Limiter
-import common.common_Metadata_MusicBrainz
-import common.common_metadata_netflixroulette
-import common.common_metadata_omdb
-import common.common_Metadata_Pitchfork
-import common.common_Metadata_TheAudioDB
-import common.common_Metadata_TheGamesDB
-import common.common_Metadata_TheLogoDB
-import common.common_Metadata_TheSportsDB
-import common.common_Metadata_TheTVDB
-import common.common_metadata_tmdb
-import common.common_Metadata_TV_Intro
-import common.common_Metadata_TV_Theme
-import common.common_Metadata_TVMaze
-import common.common_network
-import common.common_system
-import common.common_TheTVDB
+from common import common_logging
+from common import common_Metadata
+from common import common_Metadata_IMVDb
+from common import common_Metadata_Limiter
+from common import common_Metadata_MusicBrainz
+from common import common_metadata_netflixroulette
+from common import common_metadata_omdb
+from common import common_Metadata_Pitchfork
+from common import common_Metadata_TheAudioDB
+from common import common_Metadata_TheGamesDB
+from common import common_Metadata_TheLogoDB
+from common import common_Metadata_TheSportsDB
+from common import common_Metadata_TheTVDB
+from common import common_metadata_tmdb
+from common import common_Metadata_TV_Intro
+from common import common_Metadata_TV_Theme
+from common import common_Metadata_TVMaze
+from common import common_network
+from common import common_system
+from common import common_TheTVDB
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')

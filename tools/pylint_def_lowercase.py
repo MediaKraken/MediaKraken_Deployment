@@ -18,8 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-from common import common_file
-#import common.common_file
+from common from common import file
+#from common import common_file
 
 
 """

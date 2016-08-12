@@ -21,9 +21,9 @@ import logging
 import gzip
 import time
 import sys
-import common.common_Database_Octmote
-import common.common_file
-import common.common_network
+from common import common_Database_Octmote
+from common import common_file
+from common import common_network
 sys.path.append("../../common/lib")
 import adba
 

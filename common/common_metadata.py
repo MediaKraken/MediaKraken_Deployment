@@ -22,7 +22,7 @@ import os
 import re
 import random
 import string
-import common.common_network
+from common import common_network
 
 
 # pull in the ini file config

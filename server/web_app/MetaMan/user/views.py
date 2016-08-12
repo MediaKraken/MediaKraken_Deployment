@@ -32,13 +32,13 @@ import sys
 sys.path.append('../')
 import database as database_base
 sys.path.append('../../MediaKraken_Common')
-import common.common_file
-import common.common_Google
-import common.common_network_Twitch
-import common.common_network_Vimeo
-import common.common_network_Youtube
-import common.common_pagination
-import common.common_string
+from common import common_file
+from common import common_Google
+from common import common_network_Twitch
+from common import common_network_Vimeo
+from common import common_network_Youtube
+from common import common_pagination
+from common import common_string
 
 
 def flash_errors(form):

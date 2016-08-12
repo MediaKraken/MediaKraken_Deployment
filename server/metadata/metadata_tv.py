@@ -22,14 +22,14 @@ import json
 from guessit import guessit
 import sys
 sys.path.append("../common")
-import common.common_TheTVDB
-import common.common_metadata_anidb
-import common.common_metadata_imdb
-import common.common_metadata_netflixroulette
-import common.common_Metadata_TheTVDB
-import common.common_Metadata_TV_Intro
-import common.common_Metadata_TV_Theme
-import common.common_Metadata_TVMaze
+from common import common_TheTVDB
+from common import common_metadata_anidb
+from common import common_metadata_imdb
+from common import common_metadata_netflixroulette
+from common import common_Metadata_TheTVDB
+from common import common_Metadata_TV_Intro
+from common import common_Metadata_TV_Theme
+from common import common_Metadata_TVMaze
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
