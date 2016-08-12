@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-from backblazeb2 import BackBlazeB2
+from lib.backblazeb2 import BackBlazeB2
 
 
 class CommonBackupBackblaze(object):
