@@ -22,7 +22,7 @@ import sqlite3
 import json
 import sys
 import os
-import MK_Common_Emby
+import common_emby
 
 
 class CommonDatabaseEmby(object):
@@ -39,31 +39,9 @@ class CommonDatabaseEmby(object):
         # user activity - start/stop, errors and info
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path\
             + "/activitylog.db' as 'activitylog'")
-        # access tokens for devices
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/authentication.db' as 'authentication'")
-        #drwxrwxr-x.   2 MediaBrowserServer media      4096 Mar 29  2015 camerauploads
-        # frame/time/path information for media chapters - no longer in BETA version
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/chapters.db' as 'chapters'")
-        #drwxrwxr-x. 134 MediaBrowserServer media     12288 Oct 26 03:47 collections
-        #drwxrwxr-x    2 MediaBrowserServer media    249856 Nov  2 12:43 critic-reviews
-        #drwxrwxr-x.  65 MediaBrowserServer media      4096 Nov  5 10:29 devices
-        # eh?
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/displaypreferences.db' as 'displaypreferences'")
-        # blank db!
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/fileorganization.db' as 'fileorganization'")
-        # imagesizes.json
-        # data about media, codecs, lang, channels, bitrate, path, etc - no longer in BETA version
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/mediainfo.db' as 'mediainfo'")
         # notifications/spam etc from Emby team
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path\
             + "/notifications.db' as 'notifications'")
-        #drwxrwxr-x.   2 MediaBrowserServer media      4096 Mar 29  2015 playlists
-        # metadata status such as when it was refreshed last
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/refreshinfo.db' as 'refreshinfo'")
-        # remotenotifications.json
-        #drwxrwxr-x.   2 MediaBrowserServer media      4096 May 28  2015 ScheduledTasks
-        # blank db!
-        #self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/shares.db' as 'shares'")
         # contains info on sync jobs
         self.sql3_emby_cursor.execute("ATTACH DATABASE '" + dir_path + "/sync14.db' as 'sync14'")
         # user info for favs, played, etc
