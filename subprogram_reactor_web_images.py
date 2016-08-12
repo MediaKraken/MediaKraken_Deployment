@@ -25,8 +25,8 @@ import signal
 import os
 import sys
 sys.path.append("../common")
-import common_file
-import common_logging
+import common.common_file
+import common.common_logging
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor

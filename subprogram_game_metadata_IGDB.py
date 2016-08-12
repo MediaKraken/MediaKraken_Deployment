@@ -22,8 +22,8 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import common_file
-import common_network
+import common.common_file
+import common.common_network
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

@@ -28,9 +28,9 @@ import json
 import time
 sys.path.append("../common")
 sys.path.append("../server")
-import common_file
-import common_logging
-import common_Schedules_Direct
+import common.common_file
+import common.common_logging
+import common.common_Schedules_Direct
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

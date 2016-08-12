@@ -26,7 +26,7 @@ import logging
 import urllib2
 import urllib
 from xml.dom.minidom import parse
-import common_network
+import common.common_network
 
 '''
 Anime DVD

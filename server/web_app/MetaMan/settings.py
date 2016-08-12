@@ -6,7 +6,7 @@ import sys
 sys.path.append('./common')
 sys.path.append('../common')
 sys.path.append('../../common')
-import common_file
+import common.common_file
 
 # pull in the ini file config
 import ConfigParser

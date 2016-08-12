@@ -21,7 +21,7 @@ import logging
 import subprocess
 import sys
 import psutil
-import common_string
+import common.common_string
 
 
 def pprint_ntuple(nt, return_value=None):
@@ -29,7 +29,7 @@ def pprint_ntuple(nt, return_value=None):
     for name in nt._fields:
         value = getattr(nt, name)
         if name != 'percent':
-            value = com_string.bytes2human(value)
+            value = common_string.bytes2human(value)
         logging.debug('%-10s : %7s' % (name.capitalize(), value))
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
@@ -48,7 +48,7 @@ def com_system_virtual_memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = com_string.bytes2human(value)
+                value = common_string.bytes2human(value)
             logging.debug('%-10s : %7s' % (name.capitalize(), value))
             return_list.append(value)
     return return_list
@@ -66,7 +66,7 @@ def com_system_swap_memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = com_string.bytes2human(value)
+                value = common_string.bytes2human(value)
             logging.debug('%-10s : %7s' % (name.capitalize(), value))
             return_list.append(value)
     return return_list

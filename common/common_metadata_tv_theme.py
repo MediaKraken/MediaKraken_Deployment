@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from bs4 import BeautifulSoup
-import common_network
-import common_string
+import common.common_network
+import common.common_string
 
 
 def com_tvtheme_download(media_name):

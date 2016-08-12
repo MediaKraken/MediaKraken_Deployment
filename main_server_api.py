@@ -33,7 +33,7 @@ import signal
 import sys
 sys.path.append("./common")
 sys.path.append("./server")
-import common_logging
+import common.common_logging
 import database as database_base
 
 

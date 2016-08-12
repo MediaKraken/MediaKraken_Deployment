@@ -24,9 +24,9 @@ import xmltodict
 import zipfile
 import zlib
 import StringIO
-import common_file
-import common_Metadata
-import common_network
+import common.common_file
+import common.common_Metadata
+import common.common_network
 
 '''
 http://www.thetvdb.com/wiki/index.php/Programmers_API

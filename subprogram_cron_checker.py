@@ -25,8 +25,8 @@ import logging
 import sys
 sys.path.append("../server")
 sys.path.append("../common")
-import common_file
-import common_logging
+import common.common_file
+import common.common_logging
 import database as database_base
 import datetime
 import time

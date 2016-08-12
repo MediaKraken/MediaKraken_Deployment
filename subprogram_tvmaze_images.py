@@ -28,10 +28,10 @@ import json
 import sys
 sys.path.append("../server")
 sys.path.append("../common")
-import common_file
-import common_logging
-import common_Metadata
-import common_network
+import common.common_file
+import common.common_logging
+import common.common_Metadata
+import common.common_network
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

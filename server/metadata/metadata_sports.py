@@ -22,7 +22,7 @@ import os
 import json
 import sys
 sys.path.append("../common")
-import common_metadata_thesportsdb
+import common.common_metadata_thesportsdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")

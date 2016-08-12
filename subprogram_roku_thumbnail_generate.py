@@ -25,8 +25,8 @@ import sys
 import os
 import signal
 sys.path.append("../common")
-import common_logging
-import common_Roku
+import common.common_logging
+import common.common_Roku
 sys.path.append("../server")
 import database as database_base
 import locale

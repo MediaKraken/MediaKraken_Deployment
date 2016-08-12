@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common_network
+import common.common_network
 
 
 # code to use

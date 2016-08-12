@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import sys
 sys.path.append("../common")
-import common_metadata_musicbrainz
+import common.common_metadata_musicbrainz
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")

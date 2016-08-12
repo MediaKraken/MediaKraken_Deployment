@@ -43,7 +43,7 @@ import sys
 import getopt
 import sys
 sys.path.append("../MediaKraken_Common")
-import common_logging
+import common.common_logging
 
 
 def main(argv):

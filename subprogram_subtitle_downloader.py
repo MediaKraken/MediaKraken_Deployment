@@ -22,8 +22,8 @@ import sys
 import os
 import signal
 sys.path.append("../common")
-import common_file
-import common_logging
+import common.common_file
+import common.common_logging
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())

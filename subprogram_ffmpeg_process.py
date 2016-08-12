@@ -21,7 +21,7 @@ import logging
 import subprocess
 import sys
 sys.path.append("../common")
-import common_logging
+import common.common_logging
 import getopt
 
 

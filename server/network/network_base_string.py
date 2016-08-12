@@ -27,8 +27,8 @@ import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Common/lib")
 import ip2country
-import common_logging
-import common_network
+import common.common_logging
+import common.common_network
 import subprocess
 try:
     import cPickle as pickle

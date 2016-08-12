@@ -35,8 +35,8 @@ except:
     import pickle
 import sys
 sys.path.append("./common")
-import common_logging
-import common_system
+import common.common_logging
+import common.common_system
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver

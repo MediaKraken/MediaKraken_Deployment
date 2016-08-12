@@ -22,7 +22,7 @@ import os
 import sys
 sys.path.append("../common")
 sys.path.append("../server") # for db import
-import common_file
+import common.common_file
 import xmltodict
 
 

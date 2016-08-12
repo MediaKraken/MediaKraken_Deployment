@@ -29,10 +29,10 @@ import subprocess
 import os
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
-import common_file
-import common_logging
-import common_Metadata
-#import common_system
+import common.common_file
+import common.common_logging
+import common.common_Metadata
+#import common.common_system
 from concurrent import futures
 import database as database_base
 import locale

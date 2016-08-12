@@ -22,8 +22,8 @@ import sys
 import platform
 import os
 import uuid
-import common_file
-import common_system
+import common.common_file
+import common.common_system
 
 
 def com_emby_installed_directory(dir_name=None):

@@ -26,8 +26,8 @@ import os
 import signal
 sys.path.append("../common")
 sys.path.append("../server")
-import common_file
-import common_logging
+import common.common_file
+import common.common_logging
 import database as database_base
 
 def signal_receive(signum, frame):

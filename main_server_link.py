@@ -34,8 +34,8 @@ except:
     import pickle
 import sys
 sys.path.append("./common")
-import common_logging
-import common_system
+import common.common_logging
+import common.common_system
 sys.path.append("./server")
 import database as database_base
 

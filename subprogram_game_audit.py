@@ -35,7 +35,7 @@ import os.path
 sys.path.append("../server")
 import database as database_base
 sys.path.append("../common")
-import common_file
+import common.common_file
 import pylzma
 if str.upper(sys.platform[0:3]) == 'WIN' \
 or str.upper(sys.platform[0:3]) == 'CYG':

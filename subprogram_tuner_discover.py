@@ -24,10 +24,10 @@ Config.read("MediaKraken.ini")
 import sys
 sys.path.append("../common")
 sys.path.append("../server")
-import common_file
-import common_HDHomeRun
-import common_logging
-import common_string
+import common.common_file
+import common.common_HDHomeRun
+import common.common_logging
+import common.common_string
 import os
 import json
 import signal
