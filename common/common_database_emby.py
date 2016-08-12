@@ -89,10 +89,10 @@ class CommonDatabaseEmby(object):
         Grab all movies in emby database
         """
         if offset is None:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
                 '= "MediaBrowser.Controller.Entities.Movies.Movie"')
         else:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
                 ' = "MediaBrowser.Controller.Entities.Movies.Movie" limit ? offset ?',\
                 (records, offset))
         return self.sql3_emby_cursor.fetchall()
