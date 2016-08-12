@@ -26,7 +26,7 @@ import common_file
 import common_system
 
 
-def com_Emby_Installed_Directory(dir_name = None):
+def com_emby_installed_directory(dir_name=None):
     """
     Determine install directory
     """
@@ -58,7 +58,7 @@ def com_Emby_Installed_Directory(dir_name = None):
     return dir_name
 
 
-def com_Emby_Library_List(dir_name = None):
+def com_emby_library_list(dir_name=None):
     """
     Fetch library list
     """
@@ -80,7 +80,7 @@ def com_Emby_Library_List(dir_name = None):
     return library_list
 
 
-def com_Emby_Check_Instance():
+def com_emby_check_instance():
     """
     Check for running instance
     """
@@ -93,14 +93,14 @@ def com_Emby_Check_Instance():
         sys.exit(-1)
 
 
-def com_Emby_GUID_To_UUID(emby_guid):
+def com_emby_guid_to_uuid(emby_guid):
     """
     C# guid to text
     """
     return uuid.UUID(bytes=emby_guid)
 
 
-def com_Emby_UUID_to_GUID(emby_guid):
+def com_emby_uuid_to_guid(emby_guid):
     """
     Text uuid to C# guid
     """

@@ -34,7 +34,7 @@ def com_discid_default_device():
     return discid
 
 
-def com_diskid_caclulate_dir(dir_to_calculate):
+def com_discid_caclulate_dir(dir_to_calculate):
     """
     Calculate the discid from specified directory
     """

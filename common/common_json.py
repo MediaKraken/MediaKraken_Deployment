@@ -24,7 +24,7 @@ from kivy import platform
 import common_Database_Octmote
 
 
-def MK_Json_Find():
+def com_json_find():
     """
     Check for new json files for device/layout/etc
     """
@@ -37,7 +37,7 @@ def MK_Json_Find():
         MK_Json_Import(file_name)
 
 
-def MK_Json_Import(file_name):
+def com_json_import(file_name):
     """
     Import new jsons into database or update them if found
     """
@@ -56,7 +56,7 @@ def MK_Json_Import(file_name):
             pass
 
 
-def MK_Json_Load_Json(file_name):
+def com_json_load_file(file_name):
     """
     Load file as json data
     """

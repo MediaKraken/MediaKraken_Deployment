@@ -41,7 +41,7 @@ class CommonLDAP(object):
         self.dc_name = dc_name
 
 
-    def com_LDAP_Logon(self, user_name, user_password):
+    def com_ldap_logon(self, user_name, user_password):
         """
         Ldap logon check
         """
@@ -58,7 +58,7 @@ class CommonLDAP(object):
                 print(e)
 
 
-    def com_LDAP_Close(self):
+    def com_ldap_close(self):
         """
         Close the connection
         """

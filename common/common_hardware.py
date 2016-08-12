@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
@@ -24,6 +23,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from plyer import accelerometer
 from plyer import gps
+VIBRATION_PATTERN = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 
 def MK_Hardware_Accelerometer_On():

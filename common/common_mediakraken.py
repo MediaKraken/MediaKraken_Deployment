@@ -24,7 +24,7 @@ import sys
 import time
 
 
-def com_network_MediaKraken_Find_Server():
+def com_network_mediakraken_find_server():
     """
     # create dictionary containing
     # Address = Id, Name

@@ -50,8 +50,10 @@ class CommonGoogle(object):
             developerKey=DEVELOPER_KEY)
 
 
-    # query youtube via search
     def com_google_youtube_search(search_term, max_results):
+        """
+        # query youtube via search
+        """
         search_response = self.youtube.search().list(q=search_term, part="id,snippet",\
             maxResults=max_results).execute()
         videos = []
@@ -70,15 +72,19 @@ class CommonGoogle(object):
         return (videos, channels, playlists)
 
 
-    # info of particular video
-    def com_Google_Youtube_Info(video_url):
+    def com_google_youtube_info(video_url):
+        """
+        # info of particular video
+        """
         return com_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/'\
             + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url\
             + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 
 
-    # add a subscription to the specified channel.
-    def com_Google_Youtube_Add_Subscription(channel_id):
+    def com_google_youtube_add_subscription(channel_id):
+        """
+        # add a subscription to the specified channel.
+        """
         add_subscription_response = self.youtube.subscriptions().insert(
         part='snippet',
         body=dict(
@@ -91,8 +97,10 @@ class CommonGoogle(object):
         return add_subscription_response["snippet"]["title"]
 
 
-    # rate a yt video
-    def com_Google_Youtube_Rate_Video(video_id, like_dislike='like'): # or dislike
+    def com_google_youtube_rate_video(video_id, like_dislike='like'): # or dislike
+        """
+        # rate a yt video
+        """
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
         youtube.videos().rate(
           id=video_id,
@@ -100,7 +108,10 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_Google_Youtube_Get_Comments(video_id, channel_id):
+    def com_google_youtube_get_comments(video_id, channel_id):
+        """
+        Get yt comments for specified video
+        """
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
         results = youtube.commentThreads().list(
           part="snippet",
@@ -116,7 +127,7 @@ class CommonGoogle(object):
         return results["items"]
 
 
-    def com_Google_Youtube_Insert_Comment(channel_id, video_id, text):
+    def com_google_youtube_insert_comment(channel_id, video_id, text):
         insert_result = self.youtube.commentThreads().insert(
           part="snippet",
           body=dict(
@@ -133,7 +144,7 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_Google_Youtube_Update_Comment(comment):
+    def com_google_youtube_update_comment(comment):
         comment["snippet"]["topLevelComment"]["snippet"]["textOriginal"] = 'updated'
         update_result = self.youtube.commentThreads().update(
           part="snippet",
@@ -141,7 +152,7 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_Google_Youtube_Add_Subscription(channel_id):
+    def com_google_youtube_add_subscription(channel_id):
         add_subscription_response = self.youtube.subscriptions().insert(
           part='snippet',
           body=dict(

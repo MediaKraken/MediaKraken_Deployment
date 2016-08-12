@@ -22,8 +22,7 @@ import nest
 from nest import utils as nest_utils
 
 
-# connect to NEST device
-def MK_NEST_Device_Connect(user_name, password):
+def com_nest_device_connect(user_name, password):
     """
     Connect to NEST
     """
@@ -31,8 +30,10 @@ def MK_NEST_Device_Connect(user_name, password):
     return nest_device
 
 
-# grab structures and the devices
-def MK_NEST_Device_Structures(nest_device):
+def com_nest_device_structures(nest_device):
+    """
+    # grab structures and the devices
+    """
     for structure in nest_device.structures:
         logging.info('Structure %s' % structure.name)
         logging.info('Away: %s' % structure.away)
@@ -42,14 +43,14 @@ def MK_NEST_Device_Structures(nest_device):
             logging.info('Temp: %0.1f' % device.temperature)
 
 
-def MK_NEST_C_to_F(temp_data):
+def com_nest_c_to_f(temp_data):
     """
     C to F temp conversion
     """
     return nest_utils.c_to_f(temp_data)
 
 
-def MK_NEST_F_to_C(temp_data):
+def com_nest_f_to_c(temp_data):
     """
     F to C temp conversion
     """

@@ -40,26 +40,36 @@ class CommonIMDB(object):
             self.imdb = Imdb()
 
 
-    # fetch info from title
-    def com_IMDB_Title_Search(self, media_title):
+    def com_imdb_title_search(self, media_title):
+        """
+        # fetch info from title
+        """
         return self.imdb.search_for_title(media_title)
 
 
-    # fetch info by ttid
-    def com_IMDB_ID_Search(self, media_id):
+    def com_imdb_id_search(self, media_id):
+        """
+        # fetch info by ttid
+        """
         return self.imdb.get_title_by_id(media_id)
 
 
-    # fetch person info by id
-    def com_IMDB_Person_By_ID(self, person_id):
+    def com_imdb_person_by_id(self, person_id):
+        """
+        # fetch person info by id
+        """
         return self.imdb.get_person_by_id(person_id)
 
 
-    # fetch person images by id
-    def com_IMDB_Person_Images_By_Id(self, person_id):
+    def com_imdb_person_images_by_id(self, person_id):
+        """
+        # fetch person images by id
+        """
         return self.imdb.get_person_images(person_id)
 
 
-    # fetch the title review
-    def com_IMDB_Title_Review_By_ID(self, media_id):
+    def com_imdb_title_review_by_id(self, media_id):
+        """
+        # fetch the title review
+        """
         return self.imdb.get_title_reviews(media_id)
