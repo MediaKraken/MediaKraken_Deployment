@@ -52,8 +52,8 @@ class CommonCloudDropbox(object):
         code = raw_input("Enter the authorization code here: ").strip()
         # This will fail if the user enters an invalid authorization code
         access_token, user_id = flow.finish(code)
-        client = dropbox.client.DropboxClient(access_token)
-        print('linked account: %s', client.account_info())
+        self.client = dropbox.client.DropboxClient(access_token)
+        print('linked account: %s', self.client.account_info())
 
 
     def common_cloud_dropbox_upload(self, file_name, file_save_name):
@@ -61,23 +61,23 @@ class CommonCloudDropbox(object):
         Upload
         """
         f = open(file_name, 'rb')
-        response = client.put_file(file_save_name, f)
+        response = self.client.put_file(file_save_name, f)
         print('uploaded: %s', response)
 
 
-    def common_cloud_dropbox_list(self, dir_name = '/'):
+    def common_cloud_dropbox_list(self, dir_name='/'):
         """
         List files in folder
         """
-        folder_metadata = client.metadata(dir_name)
+        folder_metadata = self.client.metadata(dir_name)
         print('metadata: %s', folder_metadata)
 
 
-    def common_cloud_dropbox_download(self, file_name, file_save_name ):
+    def common_cloud_dropbox_download(self, file_name, file_save_name):
         """
         Download file from dropbox
         """
-        f, metadata = client.get_file_and_metadata(file_name)
+        f, metadata = self.client.get_file_and_metadata(file_name)
         out = open(file_save_name, 'wb')
         out.write(f.read())
         out.close()
