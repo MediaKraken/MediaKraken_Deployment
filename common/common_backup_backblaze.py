@@ -21,7 +21,7 @@ import logging
 from backblazeb2 import BackBlazeB2
 
 
-class Common-backup-backblaze-api(object):
+class CommonBackupBackblaze(object):
     """
     Class for interfacing with backblaze
     """
