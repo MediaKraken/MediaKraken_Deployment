@@ -46,7 +46,8 @@ def nfo_xml_file(media_file_path):
             xml_data = xmltodict.parse(common_file.common_file_Load_Data(xml_file_name, False))
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
                 'movie.xml')):
-            xml_data = xmltodict.parse(common_file.common_file_Load_Data(os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
+            xml_data = xmltodict.parse(common_file.common_file_Load_Data(os.path.join(\
+                os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
     return nfo_data, xml_data
 
 
