@@ -61,14 +61,14 @@ class CommonCloudOneDrive(object):
         #self.active = True
 
 
-    def common_cloud_onedrive_update(self, file_name, file_path):
+    def com_cloud_onedrive_update(self, file_name, file_path):
         """
         upload
         """
         returned_item = client.item(drive="me", id="root").children["newfile.txt"].upload("./path_to_file.txt")
 
 
-    def common_cloud_onedrive_download(self, file_name, file_path):
+    def com_cloud_onedrive_download(self, file_name, file_path):
         """
         Download
         """
@@ -77,7 +77,7 @@ class CommonCloudOneDrive(object):
         client.item(drive="me", id=id_of_file).download("./path_to_download_to.txt")
 
 
-    def common_cloud_onedrive_add_folder(self, folder_name):
+    def com_cloud_onedrive_add_folder(self, folder_name):
         """
         Add folder
         """
@@ -88,7 +88,7 @@ class CommonCloudOneDrive(object):
         returned_item = client.item(drive="me", id="root").children.add(i)
 
 
-    def common_cloud_onedrive_copy(self, file_from, file_to):
+    def com_cloud_onedrive_copy(self, file_from, file_to):
         ref = ItemReference()
         ref.id = "yourparent!id" #path also supported
         copy_operation = client.item(drive="me",\
@@ -99,14 +99,14 @@ class CommonCloudOneDrive(object):
         copy_operation.poll_until_complete()
 
 
-    def common_cloud_onedrive_name(self, file_from, file_to):
+    def com_cloud_onedrive_name(self, file_from, file_to):
         renamed_item = onedrivesdk.Item()
         renamed_item.name = "NewItemName"
         renamed_item.id = "youritemtorename!id"
         new_item = client.item(drive="me", id=renamed_item.id).update(renamed_item)
 
 
-    def common_cloud_onedrive_page(self):
+    def com_cloud_onedrive_page(self):
         """
         page through collection
         """

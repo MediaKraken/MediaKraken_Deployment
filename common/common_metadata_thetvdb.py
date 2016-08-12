@@ -24,9 +24,9 @@ import xmltodict
 import zipfile
 import zlib
 import StringIO
-import common_file
+import com_file
 import MK_Common_Metadata
-import common_network
+import com_network
 
 '''
 http://www.thetvdb.com/wiki/index.php/Programmers_API
@@ -51,7 +51,7 @@ class CommonMetadataTheTVDB(object):
     def MK_Common_Metadata_TheTVDB_Updates(self, frequency='day'):
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
-        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/updates/updates_' + frequency + '.zip', None)))
+        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
             xml_show_data = xmltodict.parse(updates_xml_zip.read(zippedshowFile))
@@ -65,7 +65,7 @@ class CommonMetadataTheTVDB(object):
         logging.debug("zip: %s %s %s", self.theTVDB_API_Key, tv_show_id, lang_code)
         try:
             # TODO catch errors
-            show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
+            show_zip = zipfile.ZipFile(StringIO.StringIO(com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
         except:
             return (None, None, None)
         # for the individual show data
@@ -84,28 +84,28 @@ class CommonMetadataTheTVDB(object):
 
 #    # depreciated....they round-robin at their end
 #    def MK_Common_Metadata_TheTVDB_Get_Mirrors():
-#        mirror_list_xml = common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/mirrors.xml', None)
+#        mirror_list_xml = com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/' + self.theTVDB_API_Key + '/mirrors.xml', None)
 #        return mirror_list_xml
 
 
     def MK_Common_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/Updates.php?type=none', None)
+        return com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/Updates.php?type=none', None)
 
     #'''
     #Following is the future database processing section
     #'''
 
     def MK_Common_Metadata_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
+        return com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
 
     def MK_Common_Metadata_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code = 'en'):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
+        return com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
             + self.theTVDB_API_Key + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
     def MK_Common_Metadata_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code = 'en'):
-        return common_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
+        return com_network.MK_Network_Fetch_From_URL('http://thetvdb.com/api/'\
             + self.theTVDB_API_Key + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 
 '''

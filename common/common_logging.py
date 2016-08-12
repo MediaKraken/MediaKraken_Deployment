@@ -28,7 +28,7 @@ import time
 # CRITICAL
 
 
-def common_logging_start(log_name="./log/MediaKraken_Main"):
+def com_logging_start(log_name="./log/MediaKraken_Main"):
     """
     Fire up logging processing and file with timestamp
     """

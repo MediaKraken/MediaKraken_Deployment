@@ -19,20 +19,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from bs4 import BeautifulSoup
-import common_network
-import common_string
+import com_network
+import com_string
 
 
-def common_tvtheme_download(media_name):
+def com_tvtheme_download(media_name):
     """
     Try to grab theme from tvtunes
     """
-    data = BeautifulSoup(common_network.MK_Network_Fetch_From_URL("http://www.televisiontunes.com/"\
-            + common_string.common_string_Title(media_name).replace(' ','_')\
+    data = BeautifulSoup(com_network.MK_Network_Fetch_From_URL("http://www.televisiontunes.com/"\
+            + com_string.com_string_Title(media_name).replace(' ','_')\
             + ".html", None)).find(id="download_song")
     if data is not None:
         logging.debug('href: %s', data['href'])
-        common_network.MK_Network_Fetch_From_URL("http://www.televisiontunes.com"\
+        com_network.MK_Network_Fetch_From_URL("http://www.televisiontunes.com"\
             + data['href'], 'theme.mp3')
 
 

@@ -29,21 +29,21 @@ class CommonSynology(object):
         pass
 
 
-    def common_synology_connect(self, addr, user_name, user_password):
+    def com_synology_connect(self, addr, user_name, user_password):
         """
         Connect to synology
         """
         self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
 
 
-    def common_synology_info(self):
+    def com_synology_info(self):
         """
         Get nas info
         """
         return self.synology_nas.downloadstation.info.request('getinfo')
 
 
-    def common_synology_shares_list(self):
+    def com_synology_shares_list(self):
         """
         Get share list
         """

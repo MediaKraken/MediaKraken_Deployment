@@ -23,19 +23,19 @@ import passwordmeter
 from socket import inet_ntoa
 
 
-def common_string_repl_func(m):
+def com_string_repl_func(m):
     """process regular expression match groups for word upper-casing problem"""
     return m.group(1) + m.group(2).upper()
 
 
-def common_string_title(title_string):
+def com_string_title(title_string):
     """
     capitalize first letter of each word and handling quotes
     """
     return re.sub("(^|\s)(\S)", repl_func, title_string)
 
 
-def common_string_bytes2human(n):
+def com_string_bytes2human(n):
     """
     Readable numbers for bytes to G, T, etc
     """
@@ -53,7 +53,7 @@ def common_string_bytes2human(n):
     return "%sB" % n
 
 
-def common_string_password_test(password_text):
+def com_string_password_test(password_text):
     """
     Test password strength
     """
@@ -72,7 +72,7 @@ def common_string_password_test(password_text):
     return (strength, improvements)
 
 
-def common_string_ip_ascii_to_int(ip):
+def com_string_ip_ascii_to_int(ip):
     """
     Return int from ascii IP
     """
@@ -83,14 +83,14 @@ def common_string_ip_ascii_to_int(ip):
     return int(encoded, 16)
 
 
-def common_string_ip_int_to_ascii(ip_int):
+def com_string_ip_int_to_ascii(ip_int):
     """
     Return ascii from IP integer
     """
     return inet_ntoa(hex(ip_int)[2:-1].zfill(8).decode('hex'))
 
 
-def common_string_unc_to_addr_share_path(unc_path):
+def com_string_unc_to_addr_share_path(unc_path):
     """
     Break up unc to parts
     """

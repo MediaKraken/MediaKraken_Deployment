@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common_network_Telnet
+import com_network_Telnet
 
 
 class CommonTivo(object):
@@ -29,7 +29,7 @@ class CommonTivo(object):
         pass
 
 
-    def common_tivo_connect(self, telnet_host, telnet_port=31339):
+    def com_tivo_connect(self, telnet_host, telnet_port=31339):
         """
         Connect to specified tivo
         """

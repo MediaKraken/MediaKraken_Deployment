@@ -41,7 +41,7 @@ class CommonCloudDropbox(object):
             self.active = True
 
 
-    def common_cloud_dropbox_user_auth(self):
+    def com_cloud_dropbox_user_auth(self):
         """
         Have the user sign in and authorize this token
         """
@@ -56,7 +56,7 @@ class CommonCloudDropbox(object):
         print('linked account: %s', self.client.account_info())
 
 
-    def common_cloud_dropbox_upload(self, file_name, file_save_name):
+    def com_cloud_dropbox_upload(self, file_name, file_save_name):
         """
         Upload
         """
@@ -65,7 +65,7 @@ class CommonCloudDropbox(object):
         print('uploaded: %s', response)
 
 
-    def common_cloud_dropbox_list(self, dir_name='/'):
+    def com_cloud_dropbox_list(self, dir_name='/'):
         """
         List files in folder
         """
@@ -73,7 +73,7 @@ class CommonCloudDropbox(object):
         print('metadata: %s', folder_metadata)
 
 
-    def common_cloud_dropbox_download(self, file_name, file_save_name):
+    def com_cloud_dropbox_download(self, file_name, file_save_name):
         """
         Download file from dropbox
         """

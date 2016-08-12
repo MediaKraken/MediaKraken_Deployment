@@ -22,8 +22,8 @@ import sys
 import time
 import os
 from xml.dom import minidom
-import common_file
-import common_network
+import com_file
+import com_network
 
 
 def MK_Scudlee_Fetch_XML():
@@ -32,11 +32,11 @@ def MK_Scudlee_Fetch_XML():
     """
     # grab from github via direct raw link
     if not os.path.isfile('./cache/anime-list.xml')\
-            or common_file.common_file_Modification_Timestamp('./cache/anime-list.xml')\
+            or com_file.com_file_Modification_Timestamp('./cache/anime-list.xml')\
             < (time.time() - (30 * 86400)):
-        common_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml', './cache/anime-list.xml')
-    if not os.path.isfile('./cache/anime-movieset-list.xml') or common_file.common_file_Modification_Timestamp('./cache/anime-movieset-list.xml') < (time.time() - (30 * 86400)):
-        common_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml', './cache/anime-movieset-list.xml')
+        com_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml', './cache/anime-list.xml')
+    if not os.path.isfile('./cache/anime-movieset-list.xml') or com_file.com_file_Modification_Timestamp('./cache/anime-movieset-list.xml') < (time.time() - (30 * 86400)):
+        com_network.MK_Network_Fetch_From_URL('https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml', './cache/anime-movieset-list.xml')
 
 
 def MK_Scudlee_Anime_List_Parse(file_name=None):

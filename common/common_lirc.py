@@ -23,21 +23,21 @@ if platform != 'android':
     import pylirc as lirc
 
 
-def common_lirc_init(app_string="OctMote"):
+def com_lirc_init(app_string="OctMote"):
     """
     Initialize LIRC
     """
     return lirc.init(app_string)
 
 
-def common_lirc_load_config(config_file):
+def com_lirc_load_config(config_file):
     """
     Load config file for LIRC
     """
     lirc.load_config_file(config_file)
 
 
-def common_lirc_close():
+def com_lirc_close():
     """
     Shutdown LIRC
     """

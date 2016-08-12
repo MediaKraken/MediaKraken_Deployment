@@ -22,7 +22,7 @@ import re
 import os
 import json
 import MK_Common_Metadata
-import common_network
+import com_network
 import tmdbsimple as tmdb
 
 
@@ -155,7 +155,7 @@ class CommonMetadataTMDB(object):
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
             if not os.path.isfile(file_path):
-                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                com_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
                     + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
@@ -165,7 +165,7 @@ class CommonMetadataTMDB(object):
         if result_json['backdrop_path'] is not None:
             file_path += result_json['backdrop_path']
             if not os.path.isfile(file_path):
-                common_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                com_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
                     + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case

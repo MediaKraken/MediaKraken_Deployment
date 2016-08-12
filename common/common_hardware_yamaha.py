@@ -21,7 +21,7 @@ import logging
 import rxv
 
 
-def common_hardware_yamaha_find():
+def com_hardware_yamaha_find():
     """
     Discover Yamaha receivers
     """

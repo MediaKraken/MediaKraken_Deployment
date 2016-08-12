@@ -22,7 +22,7 @@ import subprocess
 import platform
 
 
-def common_zfs_available():
+def com_zfs_available():
     """
     Check for ZFS compat
     """
@@ -36,7 +36,7 @@ def common_zfs_available():
         return False
 
 
-def common_zfs_zpool_list():
+def com_zfs_zpool_list():
     """
     Get zpool list
     """
@@ -44,7 +44,7 @@ def common_zfs_zpool_list():
     return proc.stdout.read()
 
 
-def common_zfs_zpool_status(zpool=None):
+def com_zfs_zpool_status(zpool=None):
     """
     Get zpool status
     """
@@ -55,7 +55,7 @@ def common_zfs_zpool_status(zpool=None):
     return proc.stdout.read()
 
 
-def common_zfs_snapshot_list(zpool=None):
+def com_zfs_snapshot_list(zpool=None):
     """
     List snapshot
     """
@@ -67,7 +67,7 @@ def common_zfs_snapshot_list(zpool=None):
     return proc.stdout.read()
 
 
-def common_zfs_snapshot_delete(snapshot):
+def com_zfs_snapshot_delete(snapshot):
     """
     Delete snapshot
     """
@@ -75,7 +75,7 @@ def common_zfs_snapshot_delete(snapshot):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_delete(zpool):
+def com_zfs_zpool_delete(zpool):
     """
     Delete pool
     """
@@ -83,7 +83,7 @@ def common_zfs_zpool_delete(zpool):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_scrub(zpool=None):
+def com_zfs_zpool_scrub(zpool=None):
     """
     Scrub pool
     """
@@ -94,7 +94,7 @@ def common_zfs_zpool_scrub(zpool=None):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
+def com_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
     """
     Replace drive in pool
     """
@@ -103,7 +103,7 @@ def common_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_create(zpool, zpool_type, zpool_drives):
+def com_zfs_zpool_create(zpool, zpool_type, zpool_drives):
     """
     Create pool
     """
@@ -114,7 +114,7 @@ def common_zfs_zpool_create(zpool, zpool_type, zpool_drives):
 
 # pool stats
 
-def common_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
+def com_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     """
     Set compression
     """
@@ -124,7 +124,7 @@ def common_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_compression(zpool):
+def com_zfs_zpool_compression(zpool):
     """
     Get compression
     """
@@ -132,7 +132,7 @@ def common_zfs_zpool_compression(zpool):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_deduplication(zpool, zpool_dedup):
+def com_zfs_zpool_deduplication(zpool, zpool_dedup):
     """
     Set deduplication
     """
@@ -143,7 +143,7 @@ def common_zfs_zpool_deduplication(zpool, zpool_dedup):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, port_no):
+def com_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, port_no):
     """
     Send snapshot
     """
@@ -151,7 +151,7 @@ def common_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, por
     return proc.stdout.read()
 
 
-def common_zfs_zpool_snapshot_receive(zpool_location, port_no):
+def com_zfs_zpool_snapshot_receive(zpool_location, port_no):
     """
     Receive snapshot
     """
@@ -159,21 +159,21 @@ def common_zfs_zpool_snapshot_receive(zpool_location, port_no):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_cache_drive(zpool):
+def com_zfs_zpool_cache_drive(zpool):
     """
     Set cache drive
     """
     return proc.stdout.read()
 
 
-def common_zfs_zpool_l2arc(zpool):
+def com_zfs_zpool_l2arc(zpool):
     """
     Set larc2 drive
     """
     return proc.stdout.read()
 
 
-def common_zfs_zpool_quota(zpool, quota_level):
+def com_zfs_zpool_quota(zpool, quota_level):
     """
     Quota set for pool
     """
@@ -184,7 +184,7 @@ def common_zfs_zpool_quota(zpool, quota_level):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_iostat(zpool, interval):
+def com_zfs_zpool_iostat(zpool, interval):
     """
     iostat, pool and interval
     """
@@ -192,7 +192,7 @@ def common_zfs_zpool_iostat(zpool, interval):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_export(zpool):
+def com_zfs_zpool_export(zpool):
     """
     Export zpool
     """
@@ -200,7 +200,7 @@ def common_zfs_zpool_export(zpool):
     return proc.stdout.read()
 
 
-def common_zfs_zpool_import(zpool, zpool_new_name=None):
+def com_zfs_zpool_import(zpool, zpool_new_name=None):
     """
     Import pool
     """
@@ -211,7 +211,7 @@ def common_zfs_zpool_import(zpool, zpool_new_name=None):
     return proc.stdout.read()
 
 
-def common_zfs_rename(zpool, zpool_new_name):
+def com_zfs_rename(zpool, zpool_new_name):
     """
     Rename zfs
     """
@@ -219,7 +219,7 @@ def common_zfs_rename(zpool, zpool_new_name):
     return proc.stdout.read()
 
 
-def common_zfs_clone(zpool_snap, zpool_clone):
+def com_zfs_clone(zpool_snap, zpool_clone):
     """
     Clone pool
     """
@@ -227,7 +227,7 @@ def common_zfs_clone(zpool_snap, zpool_clone):
     return proc.stdout.read()
 
 
-def common_zfs_health_check():
+def com_zfs_health_check():
     """
     Health check
     """

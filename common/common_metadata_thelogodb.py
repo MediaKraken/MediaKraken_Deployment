@@ -21,7 +21,7 @@ import logging
 import os
 import json
 import MK_Common_Metadata
-import common_network
+import com_network
 
 
 class CommonTheLogoDB(object):
@@ -43,4 +43,4 @@ class CommonTheLogoDB(object):
         """
         Grab newest releases
         """
-        return json.loads(common_network.MK_Network_Fetch_From_URL('http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))
+        return json.loads(com_network.MK_Network_Fetch_From_URL('http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

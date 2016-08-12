@@ -22,7 +22,7 @@ import sqlite3
 import json
 import sys
 import os
-import common_emby
+import com_emby
 
 
 class CommonDatabaseEmby(object):
@@ -102,7 +102,7 @@ class CommonDatabaseEmby(object):
         """
         Grab all movies in emby database count
         """
-        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'
+        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'\
             ' = "MediaBrowser.Controller.Entities.Movies.Movie"')
         return self.sql3_emby_cursor.fetchone()[0]
 
@@ -112,10 +112,10 @@ class CommonDatabaseEmby(object):
         Grab all the tv episodes in the emby database
         """
         if offset is None:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
                 ' = "MediaBrowser.Controller.Entities.TV.Episode"')
         else:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
                 ' = "MediaBrowser.Controller.Entities.TV.Episode" limit ? offset ?',\
                 (records, offset))
         return self.sql3_emby_cursor.fetchall()
@@ -125,7 +125,7 @@ class CommonDatabaseEmby(object):
         """
         Grab all the tv episodes in the emby database count
         """
-        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'
+        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'\
             ' = "MediaBrowser.Controller.Entities.TV.Episode"')
         return self.sql3_emby_cursor.fetchone()[0]
 
@@ -135,12 +135,12 @@ class CommonDatabaseEmby(object):
         Grab all the tv episodes and movies in the emby database
         """
         if offset is None:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
-                ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
+                ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'\
                 ' "MediaBrowser.Controller.Entities.Movies.Movie")')
         else:
-            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
-                ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'
+            self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
+                ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'\
                 ' "MediaBrowser.Controller.Entities.Movies.Movie") limit ? offset ?',\
                 (records, offset))
         return self.sql3_emby_cursor.fetchall()
@@ -150,8 +150,8 @@ class CommonDatabaseEmby(object):
         """
         Grab all the tv episodes and movies in the emby database count
         """
-        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'
-            ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'
+        self.sql3_emby_cursor.execute('select count(*) from TypedBaseItems where type'\
+            ' IN ("MediaBrowser.Controller.Entities.TV.Episode"'\
             ' "MediaBrowser.Controller.Entities.Movies.Movie")')
         return self.sql3_emby_cursor.fetchone()[0]
 
@@ -162,16 +162,29 @@ class CommonDatabaseEmby(object):
         """
         if play_stats is None:
             if offset is None:
-                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data'
+                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data'\
                     ' from users.users')
             else:
-                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data'
+                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data'\
                     ' from users.users limit ? offset ?', (records, offset))
         else:
             if offset is None:
-                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data, sum(userdata_v2.userdata.playCount), max(userdata_v2.userdata.lastPlayedDate) from users.users join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId union select users.users.guid, users.users.data, 0, NULL from users.users left join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId where userdata_v2.userdata.userId IS NULL')
+                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data,'\
+                    ' sum(userdata_v2.userdata.playCount),'\
+                    ' max(userdata_v2.userdata.lastPlayedDate) from users.users'\
+                    ' join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId'\
+                    ' union select users.users.guid, users.users.data, 0, NULL from users.users'\
+                    ' left join userdata_v2.userdata on users.users.guid'\
+                    ' = userdata_v2.userdata.userId where userdata_v2.userdata.userId IS NULL')
             else:
-                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data, sum(userdata_v2.userdata.playCount), max(userdata_v2.userdata.lastPlayedDate) from users.users join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId union select users.users.guid, users.users.data, 0, NULL from users.users left join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId where userdata_v2.userdata.userId IS NULL limit ? offset ?', (records, offset))
+                self.sql3_emby_cursor.execute('select users.users.guid, users.users.data,'\
+                    ' sum(userdata_v2.userdata.playCount),'\
+                    ' max(userdata_v2.userdata.lastPlayedDate) from users.users'\
+                    ' join userdata_v2.userdata on users.users.guid = userdata_v2.userdata.userId'\
+                    ' union select users.users.guid, users.users.data, 0, NULL from users.users'\
+                    ' left join userdata_v2.userdata on users.users.guid'\
+                    ' = userdata_v2.userdata.userId where userdata_v2.userdata.userId IS NULL'\
+                    ' limit ? offset ?', (records, offset))
         return self.sql3_emby_cursor.fetchall()
 
 
@@ -187,8 +200,8 @@ class CommonDatabaseEmby(object):
         """
         Grab last IP
         """
-        self.sql3_emby_cursor.execute('select ShortOverview from ActivityLogEntries'
-            ' where UserId = ? and ShortOverview LIKE \'Ip address%\''
+        self.sql3_emby_cursor.execute('select ShortOverview from ActivityLogEntries'\
+            ' where UserId = ? and ShortOverview LIKE \'Ip address%\''\
             ' order by DateCreated desc limit 1', (user_id,))
         row_data = self.sql3_emby_cursor.fetchone() # don't auto [0] since could be None
         if row_data is None:
@@ -202,7 +215,7 @@ class CommonDatabaseEmby(object):
         Get all the media files that match directory
         """
         # query by video will grab "home videos" type
-        self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'
+        self.sql3_emby_cursor.execute('select * from TypedBaseItems where type'\
             ' = "MediaBrowser.Controller.Entities.Video"')
         file_in_path = []
         for media_row in self.sql3_emby_cursor:

@@ -29,14 +29,14 @@ class CommonBackupBackblaze(object):
         self.b2 = BackBlazeB2(account_id, app_key)
 
 
-    def common_backup_backblaze_bucket_list(self):
+    def com_backup_backblaze_bucket_list(self):
         """
         Return list of buckets in Backblaze
         """
         return self.b2.list_buckets()
 
 
-    def common_backup_backblaze_bucket_create(self, bucket_name):
+    def com_backup_backblaze_bucket_create(self, bucket_name):
         """
         Create specified bucket name
         """
@@ -44,7 +44,7 @@ class CommonBackupBackblaze(object):
         logging.debug("b2 create: %s", response)
 
 
-    def common_backup_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
+    def com_backup_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
         """
         Upload file into specified bucket
         """
@@ -54,7 +54,7 @@ class CommonBackupBackblaze(object):
             self.b2.upload_file(file_name, bucket_name=bucket_name, password=file_password)
 
 
-    def common_backup_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
+    def com_backup_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
         """
         Upload entire directory into specified bucket
         """
@@ -65,7 +65,7 @@ class CommonBackupBackblaze(object):
                     multithread=True, password=dir_password)
 
 
-    def common_backup_backblaze_download_File(self, file_name, local_file_name, file_password):
+    def com_backup_backblaze_download_File(self, file_name, local_file_name, file_password):
         """
         Download specified file
         """

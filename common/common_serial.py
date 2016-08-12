@@ -33,7 +33,7 @@ class CommonSerial(object):
         pass
 
 
-    def common_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
+    def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
             dev_bytesize):
         """
         Open serial device for read/write
@@ -54,7 +54,7 @@ class CommonSerial(object):
         self.ser_device.isOpen()
 
 
-    def common_serial_read_device(self):
+    def com_serial_read_device(self):
         """
         Read data from serial device
         """
@@ -65,14 +65,14 @@ class CommonSerial(object):
         return read_data
 
 
-    def common_serial_close_device(self):
+    def com_serial_close_device(self):
         """
         Close serial device
         """
         self.ser_device.close()
 
 
-    def common_serial_write_device(self, message):
+    def com_serial_write_device(self, message):
         """
         Send data to serial device
         """

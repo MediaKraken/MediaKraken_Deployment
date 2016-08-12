@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import common_file
+import com_file
 
 # global statics
 M3U_HEADER = 'EXTM3U\n'
@@ -39,4 +39,4 @@ def MK_Common_M3U_Write(playlist_data, m3u_file_name):
     for playlist_item_seconds, playlist_item_name, playlist_item_filename in playlist_data:
         m3u_data += M3U_LINE_HEADER + playlist_item_seconds + ',' + playlist_item_name + '\n'\
             + playlist_item_filename + '\n'
-    common_file.common_file_Save_Data(m3u_file_name, m3u_data, False, False, None)
+    com_file.com_file_Save_Data(m3u_file_name, m3u_data, False, False, None)

@@ -20,9 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import json
 from xml.dom import minidom
-import common_file
+import com_file
 import MK_Common_Metadata
-import common_network
+import com_network
 from pytvdbapi import api
 
 
@@ -68,7 +68,7 @@ class CommonTheTVDB(object):
 #                return metadata_uuid
 #            else:
 #                show_dict = MK_Common_TheTVDB_Show_Details(show_data)
-#                common_file.common_file_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
+#                com_file.com_file_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
 #                return show_dict
         return None
 

@@ -29,7 +29,7 @@ class CommonISO(object):
         self.iso = None
 
 
-    def common_iso_load(self, url_file):
+    def com_iso_load(self, url_file):
         """
         Open the iso file for parsing (url or file)
         """

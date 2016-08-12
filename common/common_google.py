@@ -27,7 +27,7 @@ import sys
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
-import common_network
+import com_network
 import requests
 import json
 
@@ -72,7 +72,7 @@ class CommonGoogle(object):
 
     # info of particular video
     def MK_Common_Google_Youtube_Info(video_url):
-        return common_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/'\
+        return com_network.MK_Network_Fetch_From_URL('https://www.googleapis.com/'\
             + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url\
             + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 

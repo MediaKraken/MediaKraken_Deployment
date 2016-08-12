@@ -22,7 +22,7 @@ import os
 import re
 import random
 import string
-import common_network
+import com_network
 
 
 # pull in the ini file config
@@ -39,7 +39,7 @@ else:
     base_image_path += '/'
 
 
-def common_metadata_calc_trailer_weight(trailer_file_list, title_name, title_year):
+def com_metadata_calc_trailer_weight(trailer_file_list, title_name, title_year):
     """
     Determine "weight" of file to download for trailer
     """
@@ -66,7 +66,7 @@ def common_metadata_calc_trailer_weight(trailer_file_list, title_name, title_yea
     return best_match, old_weight
 
 
-def common_metadata_image_file_path(media_name, media_type):
+def com_metadata_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
@@ -84,7 +84,7 @@ def common_metadata_image_file_path(media_name, media_type):
     return file_path
 
 
-def common_metaData_image_path(media_name, media_type, source_link, source_file):
+def com_metaData_image_path(media_name, media_type, source_link, source_file):
     """
     determine image location
     media name - used to determine a-z dir
@@ -92,7 +92,7 @@ def common_metaData_image_path(media_name, media_type, source_link, source_file)
     source_link - the website/host to use
     source_file - the "file name" on the url
     """
-    file_path = common_metadata_image_file_path(media_name, media_type)
+    file_path = com_metadata_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == "tmdb":
         url = 'https://image.tmdb.org/'
@@ -120,5 +120,5 @@ def common_metaData_image_path(media_name, media_type, source_link, source_file)
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):
-        common_network.MK_Network_Fetch_From_URL(url + source_file, file_path)
+        com_network.MK_Network_Fetch_From_URL(url + source_file, file_path)
     return file_path
