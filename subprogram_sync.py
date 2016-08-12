@@ -54,7 +54,11 @@ def signal_receive(signum, frame):
 def worker(row_data):
     logging.debug("row: %s", row_data)
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        Config.get('DB Connections', 'PostDBPort').strip(),\
+        Config.get('DB Connections', 'PostDBName').strip(),\
+        Config.get('DB Connections', 'PostDBUser').strip(),\
+        Config.get('DB Connections', 'PostDBPass').strip())
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
     ffmpeg_params = ['ffmpeg', '-i', thread_db.MK_Server_Database_Media_Path_By_UUID(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
@@ -84,7 +88,8 @@ def worker(row_data):
             elif line[0:5] == "frame":
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
-                thread_db.MK_Server_Database_Sync_Progress_Update(row_data['mm_sync_guid'], time_percent)
+                thread_db.MK_Server_Database_Sync_Progress_Update(row_data['mm_sync_guid'],\
+                    time_percent)
                 thread_db.MK_Server_Database_Commit()
         else:
             break

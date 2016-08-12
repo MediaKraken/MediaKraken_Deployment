@@ -25,8 +25,8 @@ import sys
 import json
 import signal
 import os
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import common_file
 import common_logging
 import common_Metadata
@@ -96,16 +96,19 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
-            image_poster_path = com_Metadata.com_MetaData_Image_Path(collection_name, 'poster', 'tmdb', poster_path)
+            image_poster_path = com_Metadata.com_MetaData_Image_Path(collection_name,\
+                'poster', 'tmdb', poster_path)
         else:
             image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
-            image_backdrop_path = com_Metadata.com_MetaData_Image_Path(collection_name, 'backdrop', 'tmdb', backdrop_path)
+            image_backdrop_path = com_Metadata.com_MetaData_Image_Path(collection_name,\
+                'backdrop', 'tmdb', backdrop_path)
         else:
             image_backdrop_path = ''
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
-        db.MK_Server_Database_Collection_Insert(collection_name, guid_list, collection_meta, localimage_json)
+        db.MK_Server_Database_Collection_Insert(collection_name, guid_list,\
+            collection_meta, localimage_json)
         # commit all changes to db
         db.MK_Server_Database_Commit()
         total_collections_downloaded += 1
@@ -136,11 +139,13 @@ for row_data in db.MK_Server_Database_Media_Collection_Scan():
     guid_list.append(row_data['mm_metadata_guid'])
 # do last insert/update
 if len(guid_list) > 0:
-    store_update_record(db, old_collection_name, guid_list, old_poster_path, old_backdrop_path, old_id)
+    store_update_record(db, old_collection_name, guid_list, old_poster_path,\
+        old_backdrop_path, old_id)
 
 
 if total_collections_downloaded > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_collections_downloaded, True) + " collection(s) metadata downloaded.", True)
+    db.MK_Server_Database_Notification_Insert(locale.format('%d',\
+        total_collections_downloaded, True) + " collection(s) metadata downloaded.", True)
 
 
 # log end

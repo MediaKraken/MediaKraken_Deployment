@@ -26,8 +26,8 @@ import uuid
 import signal
 import json
 import sys
-sys.path.append("../MediaKraken_Server")
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../server")
+sys.path.append("../common")
 import common_file
 import common_logging
 import common_Metadata

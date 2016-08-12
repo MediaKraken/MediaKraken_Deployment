@@ -26,8 +26,8 @@ import os
 import signal
 import json
 import uuid
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import common_file
 import common_logging
 import common_metadata_tmdb
@@ -154,7 +154,8 @@ if movie_inserted > 0:
     create_collection_trigger = True
 # update collection
 if create_collection_trigger:
-    db.MK_Server_Database_Trigger_Insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))
+    db.MK_Server_Database_Trigger_Insert(('python',\
+        './subprogram/metadata/subprogram_update_create_collections.py'))
 
 
 # commit all changes

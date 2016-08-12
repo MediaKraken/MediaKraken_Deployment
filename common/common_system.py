@@ -36,7 +36,7 @@ def pprint_ntuple(nt, return_value=None):
         return tuple_print
 
 
-def com_system_Virtual_Memory(attribute_list=None):
+def com_system_virtual_memory(attribute_list=None):
     """
     Return virtual memory
     """
@@ -54,7 +54,7 @@ def com_system_Virtual_Memory(attribute_list=None):
     return return_list
 
 
-def com_system_SWAP_Memory(attribute_list=None):
+def com_system_swap_memory(attribute_list=None):
     """
     Return swap memory
     """
@@ -72,56 +72,56 @@ def com_system_SWAP_Memory(attribute_list=None):
     return return_list
 
 
-def com_system_CPU_Count():
+def com_system_cpu_count():
     """
     Return cpu count
     """
     return psutil.cpu_count()
 
 
-def com_system_Partitions():
+def com_system_partitions():
     """
     Return partitions
     """
     return psutil.disk_partitions()
 
 
-def com_system_Boot_Time():
+def com_system_boot_time():
     """
     Get boot time
     """
     return psutil.boot_time()
 
 
-def com_system_Users():
+def com_system_users():
     """
     Get users
     """
     return psutil.users()
 
 
-def com_system_CPU_Usage(per_cpu=False):
+def com_system_cpu_usage(per_cpu=False):
     """
     Get cpu percentage
     """
     return psutil.cpu_times_percent(interval=1, percpu=per_cpu)
 
 
-def com_system_CPU_Times():
+def com_system_cpu_times():
     """
     Get cpu times
     """
     return psutil.cpu_times()
 
 
-def com_system_Disk_Usage(file_path='/'):
+def com_system_disk_usage(file_path='/'):
     """
     Get disk usage for specified path
     """
     return psutil.disk_usage(file_path)
 
 
-def com_system_Disk_Usage_All(human_readable=False):
+def com_system_disk_usage_all(human_readable=False):
     """
     Get disk usage of all partitions
     """
@@ -140,14 +140,14 @@ def com_system_Disk_Usage_All(human_readable=False):
     return disk_usage_data
 
 
-def com_system_Disk_IO(per_disk=False):
+def com_system_disk_io(per_disk=False):
     """
     Get disk IO
     """
     return psutil.disk_io_counters(perdisk=per_disk)
 
 
-def com_system_Uptime():
+def com_system_uptime():
     """
     Get system uptime
     """

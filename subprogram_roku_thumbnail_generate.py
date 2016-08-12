@@ -24,10 +24,10 @@ Config.read("MediaKraken.ini")
 import sys
 import os
 import signal
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import common_logging
 import common_Roku
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../server")
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

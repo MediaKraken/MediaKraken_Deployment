@@ -24,8 +24,8 @@ Config.read("MediaKraken.ini")
 import sys
 import os
 import signal
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import common_file
 import common_logging
 import database as database_base

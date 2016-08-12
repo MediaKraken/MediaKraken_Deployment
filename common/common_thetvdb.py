@@ -41,13 +41,13 @@ class CommonTheTVDB(object):
 
 
     # get show information
-    def com_TheTVDB_Show_Info(self, show_title, show_language):
-        return com_TheTVDB_Show_Details(com_TheTVDB_Search(self.tvdb_connection,\
+    def com_thetvdb_show_info(self, show_title, show_language):
+        return com_thetvdb_Show_Details(com_thetvdb_Search(self.tvdb_connection,\
             show_title, show_language))
 
 
     # search for show
-    def com_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+    def com_thetvdb_Search(self, show_title, show_year, show_id, show_language, save_db=True):
         if show_id is not None:
             show_data = self.tvdb_connection.get_series(show_id, show_language)
         else:
@@ -64,17 +64,17 @@ class CommonTheTVDB(object):
             #show.update()
 #            # save to local cache for future reference
 #            if save_db:
-#                metadata_uuid = com_TheTVDB_Show_DB_Save(show)
+#                metadata_uuid = com_thetvdb_Show_DB_Save(show)
 #                return metadata_uuid
 #            else:
-#                show_dict = com_TheTVDB_Show_Details(show_data)
+#                show_dict = com_thetvdb_Show_Details(show_data)
 #                com_file.com_file_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
 #                return show_dict
         return None
 
 
     # save entire show info
-    def com_TheTVDB_Show_DB_Save(self, show_data):
+    def com_thetvdb_show_db_save(self, show_data):
         show_data.update()
         # store the show data
         json_media_id = json.dumps({'IMDB':show_data.IMDB_ID, 'theTVDB':show_data.SeriesID,
@@ -138,17 +138,17 @@ class CommonTheTVDB(object):
 
 
     # get episode information
-    def com_TheTVDB_Episode_Info(self, show_language, episode_id):
+    def com_thetvdb_episode_info(self, show_language, episode_id):
         return self.tvdb_connection.get_episode(show_language, episodeid=episode_id)
 
 
     # get episode information by season and episode
-    def com_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
+    def com_thetvdb_season_episode_info(self, show_language, season_no, ep_no, show_id):
         return self.tvdb_connection.get_episode(show_language, season_no, ep_no, show_id)
 
 
     # show data from result
-    def com_TheTVDB_Show_Details(self, show_data):
+    def com_thetvdb_show_details(self, show_data):
         show_dict = {}
         show = show_data[0]
         show_number_seasons = len(show)

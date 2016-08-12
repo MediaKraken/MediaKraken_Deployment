@@ -24,7 +24,7 @@ Config.read("MediaKraken.ini")
 import signal
 import os
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import common_file
 import common_logging
 from twisted.web.server import Site

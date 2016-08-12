@@ -252,7 +252,9 @@ class ROMFileParser(object):
         curs_game = conn_game.cursor()
         conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         # parse for multi roms archives and files
-        curs_game.execute("select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from game_info,game_info_roms where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)")
+        curs_game.execute("select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from'\
+            ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id'\
+            ' IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)")
         first_rec = True
         for sql_row in curs_game:
             if first_rec:
@@ -290,7 +292,9 @@ class ROMFileParser(object):
         # do parse for single rom archives and files
         db_full_hash_dict = []
         temp_list = []
-        curs_game.execute("select gir_gi_id,gir_sha1 from game_info,game_info_roms where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) = 1)")
+        curs_game.execute("select gir_gi_id,gir_sha1 from game_info,game_info_roms'\
+            ' where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms'\
+            ' group by gir_gi_id having count(*) = 1)")
         for sql_row in curs_game:
             temp_list.append(sql_row[0])
             temp_list.append(sql_row[1])
@@ -368,7 +372,14 @@ class GameAuditer(threading.Thread):
         curs_game = conn_game.cursor()
         conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         curs_game.execute("attach database 'db/hubcade_gui.db' as gui_db")
-        curs_game.execute("select gs_system_long_name,gi_short_name,gi_long_name,gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,gc_category from game_info,gui_db.game_audit,game_systems,game_category where gi_id = gui_db.game_audit.ga_game_id and gs_id = gi_system_id and gi_gc_category = gc_id union all select 'Arcade',gi_short_name,gi_long_name,gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,gc_category from game_info,gui_db.game_audit,game_category where gi_system_id = 0 and gi_id = gui_db.game_audit.ga_game_id and gi_gc_category = gc_id")
+        curs_game.execute("select gs_system_long_name,gi_short_name,gi_long_name,gi_id,'\
+            '(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
+            'gc_category from game_info,gui_db.game_audit,game_systems,game_category'\
+            ' where gi_id = gui_db.game_audit.ga_game_id and gs_id = gi_system_id'\
+            ' and gi_gc_category = gc_id union all select 'Arcade',gi_short_name,gi_long_name,'\
+            'gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
+            'gc_category from game_info,gui_db.game_audit,game_category where gi_system_id = 0'\
+            ' and gi_id = gui_db.game_audit.ga_game_id and gi_gc_category = gc_id")
         # for the times/time played
         conn_game_info = connect('db/hubcade_gui.db')
         curs_game_info = conn_game_info.cursor()
@@ -387,7 +398,8 @@ class GameAuditer(threading.Thread):
             game_players = 0
             game_category = "NA"
             sql_args = str(sql_row[3]),
-            curs_game_info.execute("select game_times_played,game_time_played from game_info where game_rom_id = ?", sql_args)
+            curs_game_info.execute("select game_times_played,game_time_played from game_info'\
+                ' where game_rom_id = ?", sql_args)
             row = curs_game_info.fetchone()
             if row is None:
                 pass

@@ -28,9 +28,9 @@ from twisted.internet.protocol import Factory
 import sys
 sys.path.append("./network")
 import network_base_string as network_base
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../server")
 import database as database_base
-sys.path.append("../MediaKraken_Common")
+sys.path.append("../common")
 import common_file
 import common_logging
 from time import time

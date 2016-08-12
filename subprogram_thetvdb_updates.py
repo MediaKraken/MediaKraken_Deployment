@@ -29,8 +29,8 @@ import xmltodict
 import zipfile
 import zlib
 import time
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 import common_file
 import common_logging
 import common_Metadata_TheTVDB

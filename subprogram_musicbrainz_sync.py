@@ -68,7 +68,11 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.MK_Server_Database_Brainz()
-db_brainz.MK_Server_Database_Open(Config.get('MediaBrainz', 'BrainzDBHost').strip(), Config.get('MediaBrainz', 'BrainzDBPort').strip(), Config.get('MediaBrainz', 'BrainzDBName').strip(), Config.get('MediaBrainz', 'BrainzDBUser').strip(), Config.get('MediaBrainz', 'BrainzDBPass').strip())
+db_brainz.MK_Server_Database_Open(Config.get('MediaBrainz', 'BrainzDBHost').strip(),\
+    Config.get('MediaBrainz', 'BrainzDBPort').strip(),\
+    Config.get('MediaBrainz', 'BrainzDBName').strip(),\
+    Config.get('MediaBrainz', 'BrainzDBUser').strip(),\
+    Config.get('MediaBrainz', 'BrainzDBPass').strip())
 
 # log start
 db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Start', None,\

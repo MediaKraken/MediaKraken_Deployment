@@ -24,11 +24,14 @@ import os
 
 # generate key
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    proc = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048', '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000', '-config', './key/windows_openssl.cfg'], shell=False)
+    proc = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
+        '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000', '-config',\
+        './key/windows_openssl.cfg'], shell=False)
     proc.wait() # have to do here so the move has sumthing to move
     shutil.move('privkey.pem', './key/.')
     shutil.move('cacert.pem', './key/.')
 else:
-    proc = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048', '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000'], shell=False)
+    proc = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
+        '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000'], shell=False)
     proc.wait() # have to do here so the move has sumthing to move
     os.system('mv %s %s' % ('*.pem', './key/.'))

@@ -64,7 +64,8 @@ if __name__ == "__main__":
     print('bomb game info download attempts: %s', total_download_attempts)
     # send notications
     if total_download_attempts > 0:
-        db.MK_Server_Database_Notification_Insert(locale.format('%d', total_download_attempts, True) + " Giant Bomb game info downloaded.", True)
+        db.MK_Server_Database_Notification_Insert(locale.format('%d',\
+            total_download_attempts, True) + " Giant Bomb game info downloaded.", True)
     # commit all changes
     db.MK_Server_Database_Commit()
     # close DB

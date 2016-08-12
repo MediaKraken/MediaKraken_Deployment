@@ -39,14 +39,14 @@ class CommonTransmission(object):
             int(Config.get('Transmission', 'Port').strip()))
 
 
-    def com_transmission_Get_Torrent_List(self):
+    def com_transmission_get_torrent_list(self):
         """
         Get torrent list
         """
         return self.tc.get_torrents()
 
 
-    def com_transmission_Add_Torrent(self, torrent_path):
+    def com_transmission_add_torrent(self, torrent_path):
         """
         Add torrent by file path
         """
@@ -54,18 +54,18 @@ class CommonTransmission(object):
         self.tc.add_torrent(torrent_path)
 
 
-    def com_transmission_Remove_Torrent(self, torrent_hash):
+    def com_transmission_remove_torrent(self, torrent_hash):
         """
         Remove torrent
         """
         self.tc.remove_torrent(torrent_hash)
 
 
-    def com_Trnasmission_Name(self, torrent_no):
+    def com_transmission_name(self, torrent_no):
         return self.tc.get_torrent(torrent_no)
 
 
-    def com_transmission_Torrent_Detail(self, torrent_no):
+    def com_transmission_torrent_detail(self, torrent_no):
         """
         Get torrent detail
         """
@@ -73,14 +73,14 @@ class CommonTransmission(object):
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
 
-    def com_transmission_Torrent_Start(self, torrent_no):
+    def com_transmission_torrent_start(self, torrent_no):
         """
         Start the specified torrent
         """
         self.tc.start_torrent(torrent_no)
 
 
-    def com_transmission_Torrent_Stop(self, torrent_no):
+    def com_transmission_torrent_stop(self, torrent_no):
         """
         Stop the specified torrent
         """
