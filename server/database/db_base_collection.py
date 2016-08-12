@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def MK_Server_Database_Collection_List(self, offset=None, records=None):
+def srv_db_Collection_List(self, offset=None, records=None):
     """
     Return collections list from the database
     """
@@ -33,7 +33,7 @@ def MK_Server_Database_Collection_List(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Media_Collection_Scan(self):
+def srv_db_Media_Collection_Scan(self):
     """
     Returns a list of movies that belong in a collection specifified by tmdb
     """
@@ -41,7 +41,7 @@ def MK_Server_Database_Media_Collection_Scan(self):
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Collection_GUID_By_Name(self, collection_name):
+def srv_db_Collection_GUID_By_Name(self, collection_name):
     """
     Return uuid from collection name
     """
@@ -52,7 +52,7 @@ def MK_Server_Database_Collection_GUID_By_Name(self, collection_name):
         return None
 
 
-def MK_Server_Database_Collection_By_TMDB(self, tmdb_id):
+def srv_db_Collection_By_TMDB(self, tmdb_id):
     """
     Return uuid via tmdb id
     """
@@ -63,7 +63,7 @@ def MK_Server_Database_Collection_By_TMDB(self, tmdb_id):
         return None
 
 
-def MK_Server_Database_Collection_Insert(self, collection_name, guid_json, metadata_json,\
+def srv_db_Collection_Insert(self, collection_name, guid_json, metadata_json,\
         localimage_json):
     """
     Insert collection into the database
@@ -71,14 +71,14 @@ def MK_Server_Database_Collection_Insert(self, collection_name, guid_json, metad
     self.sql3_cursor.execute('insert into mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_collection_name, mm_metadata_collection_media_ids, mm_metadata_collection_json, mm_metadata_collection_imagelocal_json) values (%s,%s,%s,%s,%s)', (str(uuid.uuid4()), json.dumps(collection_name), json.dumps(guid_json), json.dumps(metadata_json), json.dumps(localimage_json)))
 
 
-def MK_Server_Database_Collection_Update(self, collection_guid, guid_json):
+def srv_db_Collection_Update(self, collection_guid, guid_json):
     """
     Update the ids listed within a collection
     """
     self.sql3_cursor.execute('update mm_metadata_collection set mm_metadata_collection_media_ids = %s, mm_metadata_collection_json = %s where mm_metadata_collection_guid = %s', (json.dumps(guid_json), collection_guid))
 
 
-def MK_Server_Database_Collection_Read_By_GUID(self, media_uuid):
+def srv_db_Collection_Read_By_GUID(self, media_uuid):
     """
     Collection details
     """

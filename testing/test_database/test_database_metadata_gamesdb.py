@@ -31,14 +31,14 @@ class TestDatabaseMetadataGamesdb(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # insert gamesdb game system
-    # def MK_Server_Database_Metadata_GamesDB_System_Insert(self, platform_id, platform_name, platform_alias, platform_json=None):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_GamesDB_System_Insert(self, platform_id, platform_name, platform_alias, platform_json=None):
+#        self.db.srv_db_Rollback()

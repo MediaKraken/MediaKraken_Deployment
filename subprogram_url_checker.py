@@ -35,8 +35,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -51,7 +51,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_URL_Checker')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -59,11 +59,11 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server URL Scan Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server URL Scan Start', None,\
     'System: Server URL Scan Start', 'ServerURLScanStart', None, None, 'System')
 
 # go through ALL known media files
-for row_data in db.MK_Server_Database_Known_Media():
+for row_data in db.srv_db_Known_Media():
 
 #TODO  actually, this should probably be the metadata
 
@@ -72,11 +72,11 @@ for row_data in db.MK_Server_Database_Known_Media():
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server URL Scan Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server URL Scan Stop', None,\
     'System: Server URL Scan Stop', 'ServerURLScanStop', None, None, 'System')
 
 # commit all changes to db
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close DB
-db.MK_Server_Database_Close()
+db.srv_db_Close()

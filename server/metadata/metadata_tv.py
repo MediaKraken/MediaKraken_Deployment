@@ -68,7 +68,7 @@ def tv_search_tvdb(db, file_name):
             media_id_json = json.dumps({'theTVDB': tvdb_id})
             logging.debug("dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
-            metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_TVDB(tvdb_id)
+            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVDB(tvdb_id)
             logging.debug("db result: %s", metadata_uuid)
     return metadata_uuid
 
@@ -82,10 +82,10 @@ def tv_fetch_save_tvdb(db, tvdb_id):
         # insert
         image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'IMDB': xml_show_data['Data']['Series']['IMDB_ID'], 'theTVDB': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-        metadata_uuid = db.MK_Server_Database_MetadataTVDB_Insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
+        metadata_uuid = db.srv_db_MetadataTVDB_Insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('theTVDB',\
+            db.srv_db_Metadata_Person_Insert_Cast_Crew('theTVDB',\
                 xml_actor_data['Actor'])
     return metadata_uuid
 
@@ -123,9 +123,9 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
         # indiv eps is bad lookup - metadata_uuid, imdb_id, tvdb_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db, media_file_path, metadata_nfo_xml.nfo_xml_file(media_file_path))
         # lookup on local db via name, year (if available)
         if 'year' in file_name:
-            metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_TVShow_Name(file_name['title'], file_name['year'])
+            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVShow_Name(file_name['title'], file_name['year'])
         else:
-            metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_TVShow_Name(file_name['title'], None)
+            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVShow_Name(file_name['title'], None)
         if metadata_uuid is None:
             # search thetvdb since not matched above via DB
             # TODO insert que search record

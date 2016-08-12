@@ -111,7 +111,7 @@ class MediaKrakenApp():
 
     def exit_program(self):
         # close the database
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     def build(self):
@@ -122,7 +122,7 @@ class MediaKrakenApp():
         common_logging.common_logging_Start('./log/MediaKraken_Link')
         # open the database
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        self.db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections', 'PostDBName').strip(),\
             Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -165,21 +165,21 @@ class MediaKrakenApp():
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json, 3-mm_metadata_media_id jsonb
                 metadata_guid = None
                 if new_media[1] == 'Movie':
-                    metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_IMDB(new_media[3]['IMDB'])
+                    metadata_guid = self.db.srv_db_Metadata_GUID_By_IMDB(new_media[3]['IMDB'])
                     if metadata_guid is None:
-                        metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_TMDB(new_media[3]['TMDB'])
+                        metadata_guid = self.db.srv_db_Metadata_GUID_By_TMDB(new_media[3]['TMDB'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_TVDB(new_media[3]['theTVDB'])
+                            metadata_guid = self.db.srv_db_Metadata_GUID_By_TVDB(new_media[3]['theTVDB'])
                 elif new_media[1] == 'TV Show':
-                    metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_IMDB(new_media[3]['IMDB'])
+                    metadata_guid = self.db.srv_db_MetadataTV_GUID_By_IMDB(new_media[3]['IMDB'])
                     if metadata_guid is None:
-                        metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVMaze(new_media[3]['TVMaze'])
+                        metadata_guid = self.db.srv_db_MetadataTV_GUID_By_TVMaze(new_media[3]['TVMaze'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVDB(new_media[3]['theTVDB'])
+                            metadata_guid = self.db.srv_db_MetadataTV_GUID_By_TVDB(new_media[3]['theTVDB'])
                             if metadata_guid is None:
-                                metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVRage(new_media[3]['TVRage'])
+                                metadata_guid = self.db.srv_db_MetadataTV_GUID_By_TVRage(new_media[3]['TVRage'])
                 elif new_media[1] == 'Sports':
-                    metadata_guid = self.db.MK_Server_Database_MetadataSports_GUID_By_TheSportsDB(new_media[3]['TheSportsDB'])
+                    metadata_guid = self.db.srv_db_MetadataSports_GUID_By_TheSportsDB(new_media[3]['TheSportsDB'])
                 elif new_media[1] == 'Music':
                     pass
                 elif new_media[1] == 'Book':
@@ -188,10 +188,10 @@ class MediaKrakenApp():
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
-                self.db.MK_Server_Database_Insert_Remote_Media(link_server, new_media[0],\
-                    self.db.MK_Server_Database_Media_UUID_By_Class(new_media[1]),\
+                self.db.srv_db_Insert_Remote_Media(link_server, new_media[0],\
+                    self.db.srv_db_Media_UUID_By_Class(new_media[1]),\
                     new_media[2], metadata_guid)
-            self.db.MK_Server_Database_Commit()
+            self.db.srv_db_Commit()
         else:
             logging.debug("unknown message type")
         if msg is not None:

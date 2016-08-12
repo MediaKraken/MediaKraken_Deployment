@@ -22,7 +22,7 @@ import uuid
 
 
 # select
-def MK_Server_Database_MetadataTheSportsDB_Select_By_Guid(self, guid):
+def srv_db_MetadataTheSportsDB_Select_By_Guid(self, guid):
     self.sql3_cursor.execute('select mm_metadata_sports_json from mm_metadata_sports where mm_metadata_sports_guid = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_sports_json']
@@ -31,12 +31,12 @@ def MK_Server_Database_MetadataTheSportsDB_Select_By_Guid(self, guid):
 
 
 # insert
-def MK_Server_Database_MetadataTheSportsDB_Insert(self, series_id_json, event_name, show_detail,\
+def srv_db_MetadataTheSportsDB_Insert(self, series_id_json, event_name, show_detail,\
         image_json):
     self.sql3_cursor.execute('insert into mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json, mm_metadata_sports_image_json) values (%s,%s,%s,%s,%s)', (str(uuid.uuid4()), series_id_json, event_name, show_detail, image_json))
 
 
 # updated
-def MK_Server_Database_MetadataTheSports_Update(self, series_id_json, event_name, show_detail,
+def srv_db_MetadataTheSports_Update(self, series_id_json, event_name, show_detail,
         sportsdb_id):
     self.sql3_cursor.execute('update mm_metadata_sports set mm_metadata_media_sports_id = %s, mm_metadata_sports_name = %s, mm_metadata_sports_json = %s where mm_metadata_media_sports_id->\'TheSportsDB\' ? %s', (series_id_json, event_name, show_detail, sportsdb_id))

@@ -107,8 +107,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -120,10 +120,10 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
     total_files = 0
     logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
-    thread_db.MK_Server_Database_Audit_Directory_Timestamp_Update(dir_path)
-    thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid,\
+    thread_db.srv_db_Audit_Directory_Timestamp_Update(dir_path)
+    thread_db.srv_db_Audit_Path_Update_Status(dir_guid,\
         json.dumps({'Status': 'File scan', 'Pct': 100}))
-    thread_db.MK_Server_Database_Commit()
+    thread_db.srv_db_Commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
@@ -150,7 +150,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                 fileName, fileExtension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
                 # video game data, don't do ffmpeg
-                if thread_db.MK_Server_Database_Media_Class_By_UUID(media_class_type_uuid) == 'Video Game':
+                if thread_db.srv_db_Media_Class_By_UUID(media_class_type_uuid) == 'Video Game':
                     if fileExtension.lower() == 'iso':
                         new_class_type_uuid = class_text_dict['Game ISO']
                     elif fileExtension.lower() == 'chd':
@@ -168,7 +168,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                             or file_name.find('\\trailers\\') != -1\
                             or file_name.find('\\theme.mp3') != -1\
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.MK_Server_Database_Media_Class_By_UUID(new_class_type_uuid)
+                        media_class_text = thread_db.srv_db_Media_Class_By_UUID(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Trailer']
@@ -183,7 +183,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                     elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
                         new_class_type_uuid = None
                     elif file_name.find('/backdrops/') != -1 or file_name.find('\\backdrops\\') != -1:
-                        media_class_text = thread_db.MK_Server_Database_Media_Class_By_UUID(new_class_type_uuid)
+                        media_class_text = thread_db.srv_db_Media_Class_By_UUID(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/theme.mp3') != -1 or file_name.find('/theme.mp4') != -1 or file_name.find('\\theme.mp3') != -1 or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
@@ -195,34 +195,34 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})
                 media_id = str(uuid.uuid4())
-                thread_db.MK_Server_Database_Insert_Media(media_id, file_name,\
+                thread_db.srv_db_Insert_Media(media_id, file_name,\
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # media id begin and download que insert
-                thread_db.MK_Server_Database_Download_Insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
+                thread_db.srv_db_Download_Insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
-        thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid,\
+        thread_db.srv_db_Audit_Path_Update_Status(dir_guid,\
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
                 + ' / ' + locale.format('%d', total_file_in_dir, True),\
                 'Pct': (total_scanned / total_file_in_dir) * 100}))
-        thread_db.MK_Server_Database_Commit()
+        thread_db.srv_db_Commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.MK_Server_Database_Audit_Path_Update_Status(dir_guid, None) # set to none so it doens't show up
-    thread_db.MK_Server_Database_Commit()
+    thread_db.srv_db_Audit_Path_Update_Status(dir_guid, None) # set to none so it doens't show up
+    thread_db.srv_db_Commit()
     return total_files
 
 
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
     total_files = MK_Server_Media_Scan_Audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
     if total_files > 0:
-        thread_db.MK_Server_Database_Notification_Insert(locale.format('%d', total_files, True)\
+        thread_db.srv_db_Notification_Insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + data1, True)
-    thread_db.MK_Server_Database_Commit()
-    thread_db.MK_Server_Database_Close()
+    thread_db.srv_db_Commit()
+    thread_db.srv_db_Close()
     return
 
 
@@ -235,7 +235,7 @@ else:
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -243,13 +243,13 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server File Scan Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server File Scan Start', None,\
     'System: Server File Scan Start', 'ServerFileScanStart', None, None, 'System')
 
 
 # load in all media from DB
 global_known_media = []
-known_media = db.MK_Server_Database_Known_Media()
+known_media = db.srv_db_Known_Media()
 # verify rows were returned
 if known_media is not None:
     for media_row in known_media:
@@ -259,14 +259,14 @@ known_media = None
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
-for class_data in db.MK_Server_Database_Media_Class_List(None, None):
+for class_data in db.srv_db_Media_Class_List(None, None):
     class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
 logging.debug('class: %s', class_text_dict)
 
 
 # determine directories to audit
 audit_directories = []
-for row_data in db.MK_Server_Database_Audit_Paths():
+for row_data in db.srv_db_Audit_Paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
@@ -276,26 +276,26 @@ for row_data in db.MK_Server_Database_Audit_Paths():
         if smb_stuff.common_cifs_Share_Directory_Check(share, path):
             if datetime.strptime(time.ctime(smb_stuff.common_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
-            db.MK_Server_Database_Notification_Insert(('UNC Library path not found: %s',\
+            db.srv_db_Notification_Insert(('UNC Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
         smb_stuff.common_cifs_Close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
-            db.MK_Server_Database_Notification_Insert(('Library path not found: %s',\
+            db.srv_db_Notification_Insert(('Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
         else:
             # verify the directory inodes has changed
             if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.MK_Server_Database_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
 
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # start processing the directories
@@ -308,16 +308,16 @@ if len(audit_directories) > 0:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server File Scan Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server File Scan Stop', None,\
     'System: Server File Scan Stop', 'ServerFileScanStop', None, None, 'System')
 
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # remove pid

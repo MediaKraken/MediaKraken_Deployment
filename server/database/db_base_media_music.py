@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def MK_Server_Database_Media_Album_Count(self):
+def srv_db_Media_Album_Count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_album, mm_media where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
     sql_data = self.sql3_cursor.fetchall()
     if sql_data is None:
@@ -28,7 +28,7 @@ def MK_Server_Database_Media_Album_Count(self):
     return len(sql_data)
 
 
-def MK_Server_Database_Media_Album_List(self, offset=None, per_page=None):
+def srv_db_Media_Album_List(self, offset=None, per_page=None):
     # TODO only grab the image part of the json for list
     if offset is None:
         self.sql3_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,mm_metadata_album_json from mm_metadata_album, mm_media where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid order by mm_metadata_album_name')

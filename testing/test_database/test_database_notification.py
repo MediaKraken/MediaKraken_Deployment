@@ -31,17 +31,17 @@ class TestDatabaseNotification(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # insert notifications
-    # def MK_Server_Database_Notification_Insert(self, notification_data, notification_dismissable):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Notification_Insert(self, notification_data, notification_dismissable):
+#         self.db.srv_db_Rollback()
 
 
     # read all notifications
@@ -49,11 +49,11 @@ class TestDatabaseNotification(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_MK_Server_Database_Notification_Read(self, offset, records):
-        self.db.MK_Server_Database_Notification_Read(offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Notification_Read(self, offset, records):
+        self.db.srv_db_Notification_Read(offset, records)
+        self.db.srv_db_Rollback()
 
 
     # remove noticications
-    # def MK_Server_Database_Notification_Delete(self, notification_uuid):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Notification_Delete(self, notification_uuid):
+#         self.db.srv_db_Rollback()

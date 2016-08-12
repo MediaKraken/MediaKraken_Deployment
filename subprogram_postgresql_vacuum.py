@@ -19,7 +19,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Postgresql_Vac
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -27,25 +27,25 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Vacuum Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Postgresql Vacuum Start', None,\
     'System: Server DB Vacuum Start', 'ServerVacuumStart', None, None, 'System')
 
 
 # vacuum all the tables
-# TODO this needed since open is autocommit?   db.MK_Server_Database_Postgesql_Set_Isolation_Level(0)
-for row in db.MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(1):
+# TODO this needed since open is autocommit?   db.srv_db_Postgesql_Set_Isolation_Level(0)
+for row in db.srv_db_Postgresql_Vacuum_Stat_By_Day(1):
     logging.debug(row)
-    db.MK_Server_Database_Postgresql_Vacuum_Table(row['relname'])
+    db.srv_db_Postgresql_Vacuum_Table(row['relname'])
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Postgresql Vacuum Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Postgresql Vacuum Stop', None,\
     'System: Server DB Vacuum Stop', 'ServerVacuumStop', None, None, 'System')
 
 
 # commit records
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()

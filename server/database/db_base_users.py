@@ -23,34 +23,47 @@ import datetime
 import json
 
 #class ServerDatabaseUsers(object):
-# return user count
-def MK_Server_Database_User_List_Name_Count(self):
+def srv_db_user_list_name_count(self):
+    """
+    # return user count
+    """
     self.sql3_cursor.execute('select count(*) from mm_user')
     return self.sql3_cursor.fetchone()[0]
 
 
-# return user list
-def MK_Server_Database_User_List_Name(self, offset=None, records=None):
+def srv_db_user_list_name(self, offset=None, records=None):
+    """
+    # return user list
+    """
     if offset is None:
-        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang from mm_user order by LOWER(username)')
+        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
+            ' from mm_user order by LOWER(username)')
     else:
-        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang from mm_user where id in (select id from mm_user order by LOWER(username) offset %s limit %s) order by LOWER(username)', (offset, records))
+        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
+            ' from mm_user where id in (select id from mm_user order by LOWER(username)'\
+            ' offset %s limit %s) order by LOWER(username)', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
-# return all data for specified user
-def MK_Server_Database_User_Detail(self, guid):
+def srv_db_user_detail(self, guid):
+    """
+    # return all data for specified user
+    """
     self.sql3_cursor.execute('select * from mm_user where id = %s', (guid,))
     return self.sql3_cursor.fetchone()
 
 
-# remove user
-def MK_Server_Database_User_Delete(self, user_guid):
+def srv_db_user_delete(self, user_guid):
+    """
+    # remove user
+    """
     self.sql3_cursor.execute('delete from mm_user where id = %s', (user_guid,))
 
 
-# verify user logon
-def MK_Server_Database_User_Login_Kodi(self, user_data):
+def srv_db_user_login_kodi(self, user_data):
+    """
+    # verify user logon
+    """
     user_data = json.loads(user_data)
     self.sql3_cursor.execute('select id,password from mm_user where username = %s',\
         (user_data['username'],))

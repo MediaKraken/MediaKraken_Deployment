@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def MK_Server_Database_Media_Class_List_Count(self):
+def srv_db_Media_Class_List_Count(self):
     """
     Count media class
     """
@@ -28,7 +28,7 @@ def MK_Server_Database_Media_Class_List_Count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def MK_Server_Database_Media_Class_List(self, offset=None, records=None):
+def srv_db_Media_Class_List(self, offset=None, records=None):
     """
     List media class
     """
@@ -39,7 +39,7 @@ def MK_Server_Database_Media_Class_List(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Media_Class_By_UUID(self, class_uuid):
+def srv_db_Media_Class_By_UUID(self, class_uuid):
     """
     Find the class text by uuid
     """
@@ -50,7 +50,7 @@ def MK_Server_Database_Media_Class_By_UUID(self, class_uuid):
         return None
 
 
-def MK_Server_Database_Media_UUID_By_Class(self, class_text):
+def srv_db_Media_UUID_By_Class(self, class_text):
     """
     Find the class uuid by class text
     """

@@ -31,26 +31,26 @@ class TestDatabaseOptionStatus(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
-    def Test_MK_Server_Database_Option_Status_Read(self):
-        self.db.MK_Server_Database_Option_Status_Read()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Option_Status_Read(self):
+        self.db.srv_db_Option_Status_Read()
+        self.db.srv_db_Rollback()
 
 
-    # def MK_Server_Database_Option_Status_Update(self, option_json, status_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Option_Status_Update(self, option_json, status_json):
+#        self.db.srv_db_Rollback()
 
 
-    # def MK_Server_Database_Option_Status_Update_Scan_Json(self, scan_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Option_Status_Update_Scan_Json(self, scan_json):
+#        self.db.srv_db_Rollback()
 
 
-    # def MK_Server_Database_Option_Status_Update_Scan_Json_Rec(self, dir_path, scan_status, scan_percent):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Option_Status_Update_Scan_Json_Rec(self, dir_path, scan_status, scan_percent):
+#         self.db.srv_db_Rollback()

@@ -40,7 +40,7 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
     Lookup sporting event by name
     """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(',1)[0].strip())
-    metadata_uuid = db.MK_Server_Database_Metadata_Sports_GUID_By_Event_Name(stripped_name)
+    metadata_uuid = db.srv_db_Metadata_Sports_GUID_By_Event_Name(stripped_name)
     if metadata_uuid is None and TheSportsDB_API_Connection is not None:
         logging.debug("searching: %s", stripped_name)
         thesportsdb_data = TheSportsDB_API_Connection.com_Metadata_TheSportsDB_Search_Event_By_Name(stripped_name)
@@ -50,13 +50,13 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
                 # TODO "find" the rigth event by name?  if multiples?
-                metadata_uuid = db.MK_Server_Database_MetadataSports_GUID_By_TheSportsDB(thesportsdb_data['event'][0]['idEvent'])
+                metadata_uuid = db.srv_db_MetadataSports_GUID_By_TheSportsDB(thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
                     image_json = {'Images': {'TheSportsDB': {'Characters': {}, 'Banner': None,\
                         'Poster': None, 'Backdrop': None, "Redo": True}}}
                     media_id_json = json.dumps({'TheSportsDB':\
                         str(thesportsdb_data['event'][0]['idEvent'])})
-                    db.MK_Server_Database_MetadataTheSportsDB_Insert(media_id_json,\
+                    db.srv_db_MetadataTheSportsDB_Insert(media_id_json,\
                         thesportsdb_data['event'][0]['strFilename'], json.dumps(thesportsdb_data),\
                         json.dumps(image_json))
     return metadata_uuid

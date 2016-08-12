@@ -31,46 +31,46 @@ class TestDatabasePostgresql(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
-    def Test_MK_Server_Database_Postgresql_Table_Sizes(self):
-        self.db.MK_Server_Database_Postgresql_Table_Sizes()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Postgresql_Table_Sizes(self):
+        self.db.srv_db_Postgresql_Table_Sizes()
+        self.db.srv_db_Rollback()
 
 
     # return tables and row count
     # query provided by postgresql wiki
-    def Test_MK_Server_Database_Postgresql_Row_Count(self):
-        self.db.MK_Server_Database_Postgresql_Row_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Postgresql_Row_Count(self):
+        self.db.srv_db_Postgresql_Row_Count()
+        self.db.srv_db_Rollback()
 
 
     # vacuum stats by day list
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
-    def Test_MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(self, days):
-        self.db.MK_Server_Database_Postgresql_Vacuum_Stat_By_Day(days)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Postgresql_Vacuum_Stat_By_Day(self, days):
+        self.db.srv_db_Postgresql_Vacuum_Stat_By_Day(days)
+        self.db.srv_db_Rollback()
 
 
     # vacuum table
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
-    def Test_MK_Server_Database_Postgresql_Vacuum_Table(self, table_name):
-        self.db.MK_Server_Database_Postgresql_Vacuum_Table(table_name)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Postgresql_Vacuum_Table(self, table_name):
+        self.db.srv_db_Postgresql_Vacuum_Table(table_name)
+        self.db.srv_db_Rollback()
 
 
     # set isolation level
-    # def MK_Server_Database_Postgesql_Set_Isolation_Level(self, isolation_level):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Postgesql_Set_Isolation_Level(self, isolation_level):
+#        self.db.srv_db_Rollback()

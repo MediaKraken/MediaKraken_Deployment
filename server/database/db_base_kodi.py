@@ -23,13 +23,14 @@ import uuid
 import datetime
 
 
-def MK_Server_Database_Kodi_User_Sync_List_Added(self, synctime):
-    self.sql3_cursor.execute("select mm_media_guid from mm_media where mm_media_json->>\'DateAdded\' >= %s", (synctime,))
+def srv_db_kodi_user_sync_list_added(self, synctime):
+    self.sql3_cursor.execute("select mm_media_guid from mm_media'\
+        ' where mm_media_json->>\'DateAdded\' >= %s", (synctime,))
     return self.sql3_cursor.fetchall()
 
 
 # sync data
-def MK_Server_Database_Kodi_User_Sync(self, synctime):
+def srv_db_kodi_user_sync(self, synctime):
     # title, plot, shortplot, tagline, votecount, rating, writer, year, imdb, sorttitle, runtime, mpaa, genre, director, title, studio, trailer, country, movieid
     #  crew  \'job\': \'Screenplay\' \'name\',
     #  crew  \'job\': \'Director\', \'name\'

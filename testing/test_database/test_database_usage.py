@@ -31,29 +31,29 @@ class TestDatabaseUsage(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
-    def Test_MK_Server_Database_Usage_Top10_AllTime(self):
-        self.db.MK_Server_Database_Usage_Top10_AllTime()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Usage_Top10_AllTime(self):
+        self.db.srv_db_Usage_Top10_AllTime()
+        self.db.srv_db_Rollback()
 
 
-    def Test_MK_Server_Database_Usage_Top10_Movie(self):
-        self.db.MK_Server_Database_Usage_Top10_Movie()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Usage_Top10_Movie(self):
+        self.db.srv_db_Usage_Top10_Movie()
+        self.db.srv_db_Rollback()
 
 
-    def Test_MK_Server_Database_Usage_Top10_TV_Show(self):
-        self.db.MK_Server_Database_Usage_Top10_TV_Show()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Usage_Top10_TV_Show(self):
+        self.db.srv_db_Usage_Top10_TV_Show()
+        self.db.srv_db_Rollback()
 
 
-    def Test_MK_Server_Database_Usage_Top10_TV_Episode(self):
-        self.db.MK_Server_Database_Usage_Top10_TV_Episode()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Usage_Top10_TV_Episode(self):
+        self.db.srv_db_Usage_Top10_TV_Episode()
+        self.db.srv_db_Rollback()

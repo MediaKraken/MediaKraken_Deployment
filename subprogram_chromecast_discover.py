@@ -49,8 +49,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -61,7 +61,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Chromecast_Dis
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -69,7 +69,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Chromecast Scan Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Chromecast Scan Start', None,\
     'System: Server Chromecast Scan Start', 'ServerChromecastScanStart', None, None, 'System')
 
 
@@ -94,23 +94,23 @@ for row_data in chrome.MK_Chromecast_Discover_Dict():
     cast_json = chrome.MK_Chromecast_Info()
     logging.debug("Cast: %s", cast_json)
     print("status: %s", chrome.MK_Chromecast_Status())
-    db.MK_Server_Database_Device_Insert('cast', json.dumps({cast_json}))
+    db.srv_db_Device_Insert('cast', json.dumps({cast_json}))
 
 
 if devices_added > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', devices_added, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', devices_added, True)\
         + " Chromecast added.", True)
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Chromecast Scan Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Chromecast Scan Stop', None,\
     'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 # remove pid
 os.remove(pid_file)

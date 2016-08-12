@@ -37,8 +37,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -53,7 +53,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Roku_Thumbnail
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -61,12 +61,12 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
     'System: Server Roku Thumbnail Generate Start', 'ServerRokuThumbStart', None, None, 'System')
 
 # go through ALL known media files
 thumbnails_generated = 0
-for row_data in db.MK_Server_Database_Known_Media():
+for row_data in db.srv_db_Known_Media():
 
 #TODO  actually, this should probably be the metadata
 # TODO the common roku code has the bif/thumb gen
@@ -76,15 +76,15 @@ for row_data in db.MK_Server_Database_Known_Media():
 
 # send notications
 if thumbnails_generated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', thumbnails_generated, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', thumbnails_generated, True)\
         + " Roku thumbnail(s) generated.", True)
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 # commit all changes
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close DB
-db.MK_Server_Database_Close()
+db.srv_db_Close()

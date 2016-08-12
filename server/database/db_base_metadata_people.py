@@ -23,13 +23,13 @@ import json
 
 
 # count person metadata
-def MK_Server_Database_Metadata_Person_List_Count(self):
+def srv_db_Metadata_Person_List_Count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_person')
     return self.sql3_cursor.fetchone()[0]
 
 
 # return list of people
-def MK_Server_Database_Metadata_Person_List(self, offset=None, records=None):
+def srv_db_Metadata_Person_List(self, offset=None, records=None):
     if offset is None:
         self.sql3_cursor.execute('select mmp_id,mmp_person_name, mmp_person_image from mm_metadata_person order by mmp_person_name')
     else:
@@ -38,7 +38,7 @@ def MK_Server_Database_Metadata_Person_List(self, offset=None, records=None):
 
 
 # return person data
-def MK_Server_Database_Metadata_Person_By_GUID(self, guid):
+def srv_db_Metadata_Person_By_GUID(self, guid):
     self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_person_image, mmp_person_name from mm_metadata_person where mmp_id = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
@@ -47,7 +47,7 @@ def MK_Server_Database_Metadata_Person_By_GUID(self, guid):
 
 
 # return person data by name
-def MK_Server_Database_Metadata_Person_By_Name(self, person_name):
+def srv_db_Metadata_Person_By_Name(self, person_name):
     self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s', (person_name,))
     try:
         return self.sql3_cursor.fetchone()
@@ -56,7 +56,7 @@ def MK_Server_Database_Metadata_Person_By_Name(self, person_name):
 
 
 # does person exist already by host/id
-def MK_Server_Database_Metadata_Person_ID_Count(self, host_type, guid):
+def srv_db_Metadata_Person_ID_Count(self, host_type, guid):
     #sql_params = host_type, guid
     #self.sql3_cursor.execute('select count(*) from mm_metadata_person where mmp_person_media_id @> \'{"Host":%s}\' and mmp_person_meta_json @> \'{"id":%s}\'', sql_params)
     self.sql3_cursor.execute('select count(*) from mm_metadata_person where mmp_person_media_id @> \'{"Host":"' + host_type + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
@@ -66,13 +66,13 @@ def MK_Server_Database_Metadata_Person_ID_Count(self, host_type, guid):
 
 
 # insert person
-def MK_Server_Database_Metdata_Person_Insert(self, person_name, media_id_json, person_json,\
+def srv_db_Metdata_Person_Insert(self, person_name, media_id_json, person_json,\
         image_json=None):
     self.sql3_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name, mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)', (str(uuid.uuid4()), person_name, media_id_json, person_json, image_json))
 
 
 # batch insert from json of crew/cast
-def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_json):
+def srv_db_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_json):
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     try:
         for person_data in person_json:
@@ -91,10 +91,10 @@ def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_
                 person_id = None
                 person_name = None
             if person_id is not None:
-                if self.MK_Server_Database_Metadata_Person_ID_Count(meta_type, person_id) > 0:
+                if self.srv_db_Metadata_Person_ID_Count(meta_type, person_id) > 0:
                     logging.debug("skippy")
                 else:
-                    self.MK_Server_Database_Metdata_Person_Insert(person_name,\
+                    self.srv_db_Metdata_Person_Insert(person_name,\
                         json.dumps({'Host': meta_type, 'id': person_id}), None,\
                         json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))       
     except:
@@ -111,17 +111,17 @@ def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_
             person_id = None
             person_name = None
         if person_id is not None:
-            if self.MK_Server_Database_Metadata_Person_ID_Count(meta_type, person_id) > 0:
+            if self.srv_db_Metadata_Person_ID_Count(meta_type, person_id) > 0:
                 logging.debug("skippy")
             else:
-                self.MK_Server_Database_Metdata_Person_Insert(person_name,\
+                self.srv_db_Metdata_Person_Insert(person_name,\
                     json.dumps({'Host': meta_type, 'id': person_id}), None,\
                     json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
 
 
 # find other media for person
-def MK_Server_Database_Metadata_Person_As_Seen_In(self, person_guid):
-    row_data = self.MK_Server_Database_Metadata_Person_By_GUID(person_guid)
+def srv_db_Metadata_Person_As_Seen_In(self, person_guid):
+    row_data = self.srv_db_Metadata_Person_By_GUID(person_guid)
     logging.debug("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':
         sql_params = row_data['mmp_person_media_id']['id'],

@@ -31,18 +31,18 @@ class TestDatabaseTuner(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # count tuners
-    def Test_MK_Server_Database_Tuner_Count(self):
-        self.db.MK_Server_Database_Tuner_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Tuner_Count(self):
+        self.db.srv_db_Tuner_Count()
+        self.db.srv_db_Rollback()
 
 
     # read tuners
@@ -50,26 +50,26 @@ class TestDatabaseTuner(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_MK_Server_Database_Tuner_List(self, offset, records):
-        self.db.MK_Server_Database_Tuner_List(offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Tuner_List(self, offset, records):
+        self.db.srv_db_Tuner_List(offset, records)
+        self.db.srv_db_Rollback()
 
 
     # insert record
-    # def MK_Server_Database_Tuner_Insert(self, tuner_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Tuner_Insert(self, tuner_json):
+#        self.db.srv_db_Rollback()
 
 
     # update record
-    # def MK_Server_Database_Tuner_Update(self, guid, tuner_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Tuner_Update(self, guid, tuner_json):
+#        self.db.srv_db_Rollback()
 
 
     # delete record
-    # def MK_Server_Database_Tuner_Delete(self, guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Tuner_Delete(self, guid):
+#        self.db.srv_db_Rollback()
 
 
     # find detials by hardware id (serial)
-    # def MK_Server_Database_Tuner_By_Serial(self, serial_no):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Tuner_By_Serial(self, serial_no):
+#         self.db.srv_db_Rollback()

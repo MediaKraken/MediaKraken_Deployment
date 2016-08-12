@@ -58,7 +58,7 @@ def imvdb_lookup(db, file_name):
     # if same as last, return last id and save lookup
     if band_name == imvdb_lookup.metadata_last_band and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
-    metadata_uuid = db.MK_Server_Database_Metadata_Music_Video_Lookup(band_name, song_name)
+    metadata_uuid = db.srv_db_Metadata_Music_Video_Lookup(band_name, song_name)
     logging.debug("uuid: %s", metadata_uuid)
     if metadata_uuid == []:
         metadata_uuid = None
@@ -69,10 +69,10 @@ def imvdb_lookup(db, file_name):
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:
                 logging.debug("vid data: %s", video_data)
-                if db.MK_Server_Database_Metadata_Music_Video_Count(str(video_data['id'])) == 0:
-                    db.MK_Server_Database_Metadata_Music_Video_Add(video_data['artists'][0]['slug'], video_data['song_slug'], json.dumps({'IMVDb': str(video_data['id'])}), json.dumps(video_data), json.dumps({'Images': {'IMVDb': None}}))
+                if db.srv_db_Metadata_Music_Video_Count(str(video_data['id'])) == 0:
+                    db.srv_db_Metadata_Music_Video_Add(video_data['artists'][0]['slug'], video_data['song_slug'], json.dumps({'IMVDb': str(video_data['id'])}), json.dumps(video_data), json.dumps({'Images': {'IMVDb': None}}))
             # try after inserting new records
-            metadata_uuid = db.MK_Server_Database_Metadata_Music_Video_Lookup(band_name, song_name)
+            metadata_uuid = db.srv_db_Metadata_Music_Video_Lookup(band_name, song_name)
             if metadata_uuid == []:
                 metadata_uuid = None
     # set last values to negate lookups for same song

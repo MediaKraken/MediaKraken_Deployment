@@ -31,28 +31,28 @@ class TestDatabaseCron(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # return cron count
-    def Test_MK_Server_Database_Cron_List_Count(self):
-        self.db.MK_Server_Database_Cron_List_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Cron_List_Count(self):
+        self.db.srv_db_Cron_List_Count()
+        self.db.srv_db_Rollback()
 
 
-    def Test_MK_Server_Database_Cron_List_Count_False(self):
-        self.db.MK_Server_Database_Cron_List_Count(False)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Cron_List_Count_False(self):
+        self.db.srv_db_Cron_List_Count(False)
+        self.db.srv_db_Rollback()
 
 
-    def Test_MK_Server_Database_Cron_List_Count_True(self):
-        self.db.MK_Server_Database_Cron_List_Count(True)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Cron_List_Count_True(self):
+        self.db.srv_db_Cron_List_Count(True)
+        self.db.srv_db_Rollback()
 
 
     # return cron list
@@ -63,11 +63,11 @@ class TestDatabaseCron(object):
         (True, None, None),
         (True, 100, 100),
         (True, 100000000, 1000)])
-    def Test_MK_Server_Database_Cron_List(self, enabled_only, offset, records):
-        self.db.MK_Server_Database_Cron_List(enabled_only, offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Cron_List(self, enabled_only, offset, records):
+        self.db.srv_db_Cron_List(enabled_only, offset, records)
+        self.db.srv_db_Rollback()
 
 
     # update cron run date
-    # def MK_Server_Database_Cron_Time_Update(self, cron_type):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Cron_Time_Update(self, cron_type):
+#        self.db.srv_db_Rollback()

@@ -45,8 +45,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -54,14 +54,14 @@ def signal_receive(signum, frame):
 def worker(row_data):
     logging.debug("row: %s", row_data)
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
         Config.get('DB Connections', 'PostDBPass').strip())
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['ffmpeg', '-i', thread_db.MK_Server_Database_Media_Path_By_UUID(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
+    ffmpeg_params = ['ffmpeg', '-i', thread_db.srv_db_Media_Path_By_UUID(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs', row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
@@ -88,18 +88,18 @@ def worker(row_data):
             elif line[0:5] == "frame":
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
-                thread_db.MK_Server_Database_Sync_Progress_Update(row_data['mm_sync_guid'],\
+                thread_db.srv_db_Sync_Progress_Update(row_data['mm_sync_guid'],\
                     time_percent)
-                thread_db.MK_Server_Database_Commit()
+                thread_db.srv_db_Commit()
         else:
             break
     ffmpeg_pid.wait()
-    thread_db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync', None,\
+    thread_db.srv_db_Activity_Insert('MediaKraken_Server Sync', None,\
         'System: Server Sync', 'ServerSync', None, None, 'System')
-    thread_db.MK_Server_Database_Sync_Delete(row_data[0]) # guid of sync record
+    thread_db.srv_db_Sync_Delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
-    thread_db.MK_Server_Database_Commit()
-    thread_db.MK_Server_Database_Close()
+    thread_db.srv_db_Commit()
+    thread_db.srv_db_Close()
     return
 
 
@@ -109,7 +109,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Sync')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -117,7 +117,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Sync Start', None,\
     'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
 
 
@@ -130,7 +130,7 @@ else:
 
 
 # switched to this since tracebacks work this method
-sync_data = db.MK_Server_Database_Sync_List()
+sync_data = db.srv_db_Sync_List()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
@@ -138,14 +138,14 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Sync Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Sync Stop', None,\
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 # remove pid
 os.remove(pid_file)

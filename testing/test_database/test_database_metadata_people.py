@@ -31,18 +31,18 @@ class TestDatabaseMetadataPeople(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # count person metadata
-    def Test_MK_Server_Database_Metadata_Person_List_Count(self):
-        self.db.MK_Server_Database_Metadata_Person_List_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Metadata_Person_List_Count(self):
+        self.db.srv_db_Metadata_Person_List_Count()
+        self.db.srv_db_Rollback()
 
 
     # return list of people
@@ -50,36 +50,36 @@ class TestDatabaseMetadataPeople(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_MK_Server_Database_Metadata_Person_List(self, offset, records):
-        self.db.MK_Server_Database_Metadata_Person_List(offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Metadata_Person_List(self, offset, records):
+        self.db.srv_db_Metadata_Person_List(offset, records)
+        self.db.srv_db_Rollback()
 
 
     # return person data
-    # def MK_Server_Database_Metadata_Person_By_GUID(self, guid):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_Person_By_GUID(self, guid):
+#         self.db.srv_db_Rollback()
 
 
     # return person data by name
-    # def MK_Server_Database_Metadata_Person_By_Name(self, person_name):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_Person_By_Name(self, person_name):
+#         self.db.srv_db_Rollback()
 
 
     # does person exist already by host/id
-    # def MK_Server_Database_Metadata_Person_ID_Count(self, host_type, guid):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_Person_ID_Count(self, host_type, guid):
+#         self.db.srv_db_Rollback()
 
 
     # insert person
-    # def MK_Server_Database_Metdata_Person_Insert(self, person_name, media_id_json, person_json, image_json=None):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metdata_Person_Insert(self, person_name, media_id_json, person_json, image_json=None):
+#         self.db.srv_db_Rollback()
 
 
     # batch insert from json of crew/cast
-    # def MK_Server_Database_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_json):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_Person_Insert_Cast_Crew(self, meta_type, person_json):
+#         self.db.srv_db_Rollback()
 
 
     # find other media for person
-    # def MK_Server_Database_Metadata_Person_As_Seen_In(self, person_guid):
-#         self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_Person_As_Seen_In(self, person_guid):
+#         self.db.srv_db_Rollback()

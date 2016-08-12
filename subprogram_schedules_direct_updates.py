@@ -45,8 +45,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -64,7 +64,7 @@ def MK_Schedules_Direct_Program_Info_Fetch(meta_program_fetch):
     logging.debug("result: %s", meta_program_json)
 #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
-        db.MK_Server_Database_TV_Program_Insert(program_json['programID'], json.dumps(program_data))
+        db.srv_db_TV_Program_Insert(program_json['programID'], json.dumps(program_data))
 
 
 # start logging
@@ -73,7 +73,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Schedules_Dire
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -81,7 +81,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Update Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Schedules Direct Update Start', None,\
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
@@ -118,19 +118,19 @@ else:
 #    logging.debug("Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
 #        logging.debug("mapchannel: %s", channel_id)
-#        db.MK_Server_Database_TV_Station_Insert(channel_id['stationID'], channel_id['channel'])
+#        db.srv_db_TV_Station_Insert(channel_id['stationID'], channel_id['channel'])
 #    logging.debug("Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
 #        logging.debug("stationschannel: %s", channel_meta)
-#        db.MK_Server_Database_TV_Station_Update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
+#        db.srv_db_TV_Station_Update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
 
 
 # TODO downloading a generic description of a program - good for what the show is......not an episode itself
 
 station_fetch = []
-logging.debug("list: %s", db.MK_Server_Database_TV_Stations_Read_StationID_List())
+logging.debug("list: %s", db.srv_db_TV_Stations_Read_StationID_List())
 # grab all stations in DB
-for station_id in db.MK_Server_Database_TV_Stations_Read_StationID_List():
+for station_id in db.srv_db_TV_Stations_Read_StationID_List():
     # fetch all schedules for station
     station_fetch.append(station_id['mv_tv_station_id'])
 
@@ -149,7 +149,7 @@ elif len(station_fetch > 0:
        # for each program in station schedule result
         for program_json in station_json['programs']:
             # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}], u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000, u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z', u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
-            db.MK_Server_Database_TV_Schedule_Insert(station_json['stationID'],\
+            db.srv_db_TV_Schedule_Insert(station_json['stationID'],\
                 program_json['airDateTime'], json.dumps(program_json))
             logging.debug("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
@@ -166,16 +166,16 @@ if len(meta_program_fetch) > 0:
 # TODO, go grab images for blank logos
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Schedules Direct Update Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Schedules Direct Update Stop', None,\
     'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 
 # commit all changes to db
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close DB
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # remove pid

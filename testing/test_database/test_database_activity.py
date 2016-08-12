@@ -31,22 +31,22 @@ class TestDatabaseActivity(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
-    # def MK_Server_Database_Activity_Insert(self, activity_name, activity_overview, activity_short_overview, activity_type, activity_itemid, activity_userid, activity_log_severity):
+    # def srv_db_Activity_Insert(self, activity_name, activity_overview, activity_short_overview, activity_type, activity_itemid, activity_userid, activity_log_severity):
     # TODO
-#        self.db.MK_Server_Database_Rollback()
+#        self.db.srv_db_Rollback()
 
 
     @pytest.mark.parametrize(("days_old"), [
         (7),
         (400)])
-    def Test_MK_Server_Database_Activity_Purge(self, days_old):
-        self.db.MK_Server_Database_Activity_Purge(days_old)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Activity_Purge(self, days_old):
+        self.db.srv_db_Activity_Purge(days_old)
+        self.db.srv_db_Rollback()

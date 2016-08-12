@@ -53,13 +53,13 @@ def signal_receive(signum, frame):
     # stop watchdog
     watchdog.com_Watchdog_Stop()
     # cleanup db
-    db.MK_Server_Database_Rollback()
+    db.srv_db_Rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+    db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
-    db.MK_Server_Database_Commit()
-    db.MK_Server_Database_Close()
+    db.srv_db_Commit()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -107,7 +107,7 @@ logging.info("Open DB")
 # open the database
 db = database_base.MK_Server_Database()
 try:
-    db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -117,7 +117,7 @@ except:
     sys.exit()
 
 
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Start', None, 'System: Server Start',\
+db.srv_db_Activity_Insert('MediaKraken_Server Start', None, 'System: Server Start',\
         'ServerStart', None, None, 'System')
 
 
@@ -138,7 +138,7 @@ if rmda_enabled_os:
 logging.info("Start Watchdog")
 # startup watchdog
 watchdog = com_Watchdog.com_Watchdog_API()
-watchdog.com_Watchdog_Start(db.MK_Server_Database_Audit_Paths(None, None))
+watchdog.com_Watchdog_Start(db.srv_db_Audit_Paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -182,7 +182,7 @@ logging.info("API PID: %s", proc_api.pid)
 
 # fire up link servers
 link_pid = {}
-for link_data in db.MK_Server_Database_Link_List():
+for link_data in db.srv_db_Link_List():
     proc_link = subprocess.Popen(['python', 'main_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
@@ -203,15 +203,15 @@ watchdog.com_Watchdog_Stop()
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
          'ServerStop', None, None, 'System')
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # stop children

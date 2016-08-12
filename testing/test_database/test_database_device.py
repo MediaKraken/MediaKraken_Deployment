@@ -31,18 +31,18 @@ class TestDatabaseDevices(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # count device
-    def Test_MK_Server_Database_Device_Count(self):
-        self.db.MK_Server_Database_Device_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Device_Count(self):
+        self.db.srv_db_Device_Count()
+        self.db.srv_db_Rollback()
 
 
     # read list
@@ -53,26 +53,26 @@ class TestDatabaseDevices(object):
         ('Nas', None, None),
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
-    def Test_MK_Server_Database_Device_List(self, device_type, offset, records):
-        self.db.MK_Server_Database_Device_List(device_type, offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Device_List(self, device_type, offset, records):
+        self.db.srv_db_Device_List(device_type, offset, records)
+        self.db.srv_db_Rollback()
 
 
     # insert record
-    # def MK_Server_Database_Device_Insert(self, device_type, device_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Device_Insert(self, device_type, device_json):
+#        self.db.srv_db_Rollback()
 
 
     # update record
-    # def MK_Server_Database_Device_Update(self, guid, device_type, device_json):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Device_Update(self, guid, device_type, device_json):
+#        self.db.srv_db_Rollback()
 
 
     # delete record
-    # def MK_Server_Database_Device_Delete(self, guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Device_Delete(self, guid):
+#        self.db.srv_db_Rollback()
 
 
     # find detials by id
-    # def MK_Server_Database_Device_Read(self, guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Device_Read(self, guid):
+#        self.db.srv_db_Rollback()

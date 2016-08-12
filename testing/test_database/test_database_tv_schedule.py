@@ -31,51 +31,51 @@ class TestDatabaseTVSchedule(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # read the stations
-    def Test_MK_Server_Database_TV_Stations_Read(self):
-        self.db.MK_Server_Database_TV_Stations_Read()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_TV_Stations_Read(self):
+        self.db.srv_db_TV_Stations_Read()
+        self.db.srv_db_Rollback()
 
 
     # read the stationid list
-    def Test_MK_Server_Database_TV_Stations_Read_StationID_List(self):
-        self.db.MK_Server_Database_TV_Stations_Read_StationID_List()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_TV_Stations_Read_StationID_List(self):
+        self.db.srv_db_TV_Stations_Read_StationID_List()
+        self.db.srv_db_Rollback()
 
 
     # insert station/channel unless it exists
-    # def MK_Server_Database_TV_Station_Insert(self, station_id, channel_id):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Station_Insert(self, station_id, channel_id):
+#        self.db.srv_db_Rollback()
 
 
     # channel exist check
-    # def MK_Server_Database_TV_Station_Exist(self, station_id, channel_id):
- #       self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Station_Exist(self, station_id, channel_id):
+ #       self.db.srv_db_Rollback()
 
 
     # update station/channel info
-    # def MK_Server_Database_TV_Station_Update(self, station_name, station_id, station_json):
-  #      self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Station_Update(self, station_name, station_id, station_json):
+  #      self.db.srv_db_Rollback()
 
 
     # insert schedule info
-    # def MK_Server_Database_TV_Schedule_Insert(self, station_id, schedule_date, schedule_json):
-   #     self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Schedule_Insert(self, station_id, schedule_date, schedule_json):
+   #     self.db.srv_db_Rollback()
 
 
     # insert program info
-    # def MK_Server_Database_TV_Program_Insert(self, program_id, program_json):
-    #    self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Program_Insert(self, program_id, program_json):
+    #    self.db.srv_db_Rollback()
 
 
     # tv shows for schedule display
-    # def MK_Server_Database_TV_Schedule_By_Date(self, display_date):
-     #   self.db.MK_Server_Database_Rollback()
+    # def srv_db_TV_Schedule_By_Date(self, display_date):
+     #   self.db.srv_db_Rollback()

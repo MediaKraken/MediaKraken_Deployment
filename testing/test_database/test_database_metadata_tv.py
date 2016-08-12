@@ -31,43 +31,43 @@ class TestDatabaseMetadataTV(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # metadata guid by name
-    # def MK_Server_Database_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_year=None):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_year=None):
+#        self.db.srv_db_Rollback()
 
 
     # metadata guid by imdb id
-    # def MK_Server_Database_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
+#        self.db.srv_db_Rollback()
 
 
     # metadata guid by tv id
-    # def MK_Server_Database_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
+#        self.db.srv_db_Rollback()
 
 
     # metadata guid by tvmaze id
-    # def MK_Server_Database_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
+#        self.db.srv_db_Rollback()
 
 
     # metadata guid by tvrage id
-    # def MK_Server_Database_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
+#        self.db.srv_db_Rollback()
 
 
     # tvshow count
-    def Test_MK_Server_Database_Metadata_TVShow_List_Count(self):
-        self.db.MK_Server_Database_Metadata_TVShow_List_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Metadata_TVShow_List_Count(self):
+        self.db.srv_db_Metadata_TVShow_List_Count()
+        self.db.srv_db_Rollback()
 
 
     # return list of tvshows
@@ -75,41 +75,41 @@ class TestDatabaseMetadataTV(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_MK_Server_Database_Metadata_TVShow_List(self, offset, records):
-        self.db.MK_Server_Database_Metadata_TVShow_List(offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Metadata_TVShow_List(self, offset, records):
+        self.db.srv_db_Metadata_TVShow_List(offset, records)
+        self.db.srv_db_Rollback()
 
 
     # update image json
-    # def MK_Server_Database_Metadata_TVShow_Update_Image(self, image_json, metadata_uuid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_TVShow_Update_Image(self, image_json, metadata_uuid):
+#        self.db.srv_db_Rollback()
 
 
     # fetch tvmaze rows to update
-    # def MK_Server_Database_Metadata_TVShow_Images_To_Update(self, image_type):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_TVShow_Images_To_Update(self, image_type):
+#        self.db.srv_db_Rollback()
 #
 
     # return metadata for tvshow
-    # def MK_Server_Database_Metadata_TVShow_Detail(self, guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Metadata_TVShow_Detail(self, guid):
+#        self.db.srv_db_Rollback()
 
 
     # read in the tv episodes metadata by guid
-    # def MK_Server_Database_Read_TVMetadata_Episodes(self, show_guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Read_TVMetadata_Episodes(self, show_guid):
+#        self.db.srv_db_Rollback()
 
 
     # grab tvmaze ep data for eps per season
-    # def MK_Server_Database_Read_TVMetadata_Eps_Season(self, show_guid):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Read_TVMetadata_Eps_Season(self, show_guid):
+#        self.db.srv_db_Rollback()
 
 
     # grab episodes within the season
-    # def MK_Server_Database_Read_TVMetadata_Season_Eps_List(self, show_guid, season_number):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Read_TVMetadata_Season_Eps_List(self, show_guid, season_number):
+#        self.db.srv_db_Rollback()
 
 
     # grab episode detail
-    # def MK_Server_Database_Read_TVMetadata_Episode(self, show_guid, season_number, episode_number):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Read_TVMetadata_Episode(self, show_guid, season_number, episode_number):
+#        self.db.srv_db_Rollback()

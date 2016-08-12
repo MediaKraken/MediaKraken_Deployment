@@ -31,18 +31,18 @@ class TestDatabaseMediaClass(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
     # count media class
-    def Test_MK_Server_Database_Media_Class_List_Count(self):
-        self.db.MK_Server_Database_Media_Class_List_Count()
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Media_Class_List_Count(self):
+        self.db.srv_db_Media_Class_List_Count()
+        self.db.srv_db_Rollback()
 
 
     # list media class
@@ -50,24 +50,24 @@ class TestDatabaseMediaClass(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_MK_Server_Database_Media_Class_List(self, offset, records):
-        self.db.MK_Server_Database_Media_Class_List(offset, records)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Media_Class_List(self, offset, records):
+        self.db.srv_db_Media_Class_List(offset, records)
+        self.db.srv_db_Rollback()
 
 
     # find the class text by uuid
     @pytest.mark.parametrize(("class_uuid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exist
         ('928c56c3-253d-4e30-924e-5698be6d3d37')])  # not exist
-    def Test_MK_Server_Database_Media_Class_By_UUID(self, class_uuid):
-        self.db.MK_Server_Database_Media_Class_By_UUID(class_uuid)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Media_Class_By_UUID(self, class_uuid):
+        self.db.srv_db_Media_Class_By_UUID(class_uuid)
+        self.db.srv_db_Rollback()
 
 
     # find the class uuid by class text
     @pytest.mark.parametrize(("class_text"), [
         ('Movie'),
         ('fakestuff')])
-    def Test_MK_Server_Database_Media_UUID_By_Class(self, class_text):
-        self.db.MK_Server_Database_Media_UUID_By_Class(class_text)
-        self.db.MK_Server_Database_Rollback()
+    def Test_srv_db_Media_UUID_By_Class(self, class_text):
+        self.db.srv_db_Media_UUID_By_Class(class_text)
+        self.db.srv_db_Rollback()

@@ -27,7 +27,7 @@ import db_base_postgresql_ext
 
 
 # open database and pull in config from sqlite and create db if not exist
-def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -44,7 +44,7 @@ def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser
 
 
 # open database and pull in config from sqlite and create db if not exist
-def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName,\
+def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
         PostDBUser, PostDBPass):
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -63,34 +63,34 @@ def MK_Server_Database_Open_Isolation(self, PostDBHost, PostDBPort, PostDBName,\
 
 
 # close main db file
-def MK_Server_Database_Close(self):
+def srv_db_close(self):
     self.sql3_conn.close()
 
 
 # commit changes to media database
-def MK_Server_Database_Commit(self):
+def srv_db_commit(self):
     self.sql3_conn.commit()
 
 
 # rollback
-def MK_Server_Database_Rollback(self):
+def srv_db_rollback(self):
     self.sql3_conn.rollback()
 
 
 # check for table or index
-def MK_Server_Database_Table_Index_Check(self, resource_name):
+def srv_db_table_index_check(self, resource_name):
     self.sql3_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
     return self.sql3_cursor.fetchone()[0]
 
 
 # return count of records in table
-def MK_Server_Database_Table_Count(self, table_name):
+def srv_db_table_count(self, table_name):
     self.sql3_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
     return self.sql3_cursor.fetchone()[0]
 
 
 # general run anything
-def MK_Server_Database_Query(self, query_string):
+def srv_db_query(self, query_string):
     logging.debug("query: %s", query_string)
     self.sql3_cursor.execute(query_string)
     return self.sql3_cursor.fetchall()

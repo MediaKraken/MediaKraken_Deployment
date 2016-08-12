@@ -23,9 +23,9 @@ files_added = 0
 build_collection = False
 
 
-total_media_to_match = db.MK_Server_Database_Known_Media_All_Unmatched_Count()
+total_media_to_match = db.srv_db_Known_Media_All_Unmatched_Count()
 # begin the media match on NULL matches
-for row_data in db.MK_Server_Database_Known_Media_All_Unmatched():
+for row_data in db.srv_db_Known_Media_All_Unmatched():
     files_to_id += 1
     # lookup class from db
     metadata_uuid = None
@@ -40,21 +40,21 @@ for row_data in db.MK_Server_Database_Known_Media_All_Unmatched():
     # update the media row with the json media id AND THE proper NAME!!!
     if metadata_uuid is not None:
         logging.debug("update: %s %s", row_data['mm_media_guid'], metadata_uuid)
-        db.MK_Server_Database_Update_Media_ID(row_data['mm_media_guid'], metadata_uuid)
+        db.srv_db_Update_Media_ID(row_data['mm_media_guid'], metadata_uuid)
         files_added += 1
-    db.MK_Server_Database_Option_Status_Update_Scan_Json(json.dumps({'Status': 'Media lookup: '
+    db.srv_db_Option_Status_Update_Scan_Json(json.dumps({'Status': 'Media lookup: '
         + locale.format('%d', files_to_id, True) + ' / '\
         + locale.format('%d', total_media_to_match, True),\
         'Pct': (files_to_id / total_media_to_match) * 100}))
-    db.MK_Server_Database_Commit()
+    db.srv_db_Commit()
 
 
 # send notications
 if files_to_id > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', files_to_id, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', files_to_id, True)\
         + " file(s) scanned.", True)
 if files_added > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', files_added, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', files_added, True)\
         + " new media file(s) matched.", True)
 if build_collection:
-    db.MK_Server_Database_Trigger_Insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))
+    db.srv_db_Trigger_Insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))

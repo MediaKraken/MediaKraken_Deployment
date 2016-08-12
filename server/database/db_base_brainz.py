@@ -27,8 +27,10 @@ class ServerDatabaseBrainz(object):
         self.sql3_cursor = None
 
 
-    # open database and pull in config from sqlite and create db if not exist
-    def MK_Server_Database_Open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    def srv_db_brainz_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+        """
+        # open database and pull in config from sqlite and create db if not exist
+        """
         # setup for unicode
         psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
         psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -43,41 +45,61 @@ class ServerDatabaseBrainz(object):
 #            exit(1)
 
 
-    # close main db file
-    def MK_Server_Database_Close(self):
+    def srv_db_brainz_close(self):
+        """
+        # close main db file
+        """
         self.sql3_conn.close()
 
 
-    # read in all artists
-    def MK_Server_Database_Brainz_All_Artists(self):
-        self.sql3_cursor.execute('select gid,name,sort_name,comment,begin_date_year,begin_date_month,begin_date_day,end_date_year,end_date_month,end_date_day,gender,id from artist')
+    def srv_db_brainz_all_artists(self):
+        """
+        # read in all artists
+        """
+        self.sql3_cursor.execute('select gid,name,sort_name,comment,begin_date_year,'\
+            'begin_date_month,begin_date_day,end_date_year,end_date_month,end_date_day,'\
+            'gender,id from artist')
         return self.sql3_cursor.fetchall()
 
-    # read in all albums
-    def MK_Server_Database_Brainz_All_Albums(self):
-        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,barcode,id from release')
+    def srv_db_brainz_all_albums(self):
+        """
+        # read in all albums
+        """
+        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,'\
+            'barcode,id from release')
         return self.sql3_cursor.fetchall()
 
 
-    # read in album by artist credit id
-    def MK_Server_Database_Brainz_All_Albums_By_Artist(self, artist_id):
-        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,barcode,id from release where artist_credit = %s', (artist_id,))
+    def srv_db_brainz_all_albums_by_artist(self, artist_id):
+        """
+        # read in album by artist credit id
+        """
+        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,barcode,id'\
+            ' from release where artist_credit = %s', (artist_id,))
         return self.sql3_cursor.fetchall()
 
 
-    # read in all songs
-    def MK_Server_Database_Brainz_All_Songs(self):
+    def srv_db_brainz_all_songs(self):
+        """
+        # read in all songs
+        """
         self.sql3_cursor.execute('select gid,name,recording,position,id from track')
         return self.sql3_cursor.fetchall()
 
 
-    # read in all by recording id
-    def MK_Server_Database_Brainz_All_Songs_By_Record_UUID(self, record_id):
-        self.sql3_cursor.execute('select gid,name,recording,position,id from track where recording = %s', (record_id,))
+    def srv_db_brainz_all_songs_by_record_uuid(self, record_id):
+        """
+        # read in all by recording id
+        """
+        self.sql3_cursor.execute('select gid,name,recording,position,id from track'\
+            ' where recording = %s', (record_id,))
         return self.sql3_cursor.fetchall()
 
 
-    # read for batch insert
-    def MK_Server_Database_Brainz_All(self):
-        self.sql3_cursor.execute('select count(*) from artist, release, track where release.artist_credit = artist.id and track.recording = release.id')
+    def srv_db_brainz_all(self):
+        """
+        # read for batch insert
+        """
+        self.sql3_cursor.execute('select count(*) from artist, release, track'\
+            ' where release.artist_credit = artist.id and track.recording = release.id')
         return self.sql3_cursor.fetchall()

@@ -51,8 +51,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -63,7 +63,7 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MK_Server_Database()
-    thread_db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -96,10 +96,10 @@ def worker(worker_file_list):
         json_data['ChapterImages'] = chapter_image_list
     # update the media row with the fact chapters images were created
     # and their filenames for the chapter images that were created
-    thread_db.MK_Server_Database_Update_Media_JSON(json_id, json.dumps(json_data))
+    thread_db.srv_db_Update_Media_JSON(json_id, json.dumps(json_data))
     # commit after each one to not cause dupe images I guess?
-    thread_db.MK_Server_Database_Commit()
-    thread_db.MK_Server_Database_Close()
+    thread_db.srv_db_Commit()
+    thread_db.srv_db_Close()
     return
 
 
@@ -109,7 +109,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -117,7 +117,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Chapter Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Create Chapter Start', None,\
     'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
 
 
@@ -130,7 +130,7 @@ else:
 
 # begin the media match on NULL matches
 file_list = []
-for row_data in db.MK_Server_Database_Known_Media_Chapter_Scan():
+for row_data in db.srv_db_Known_Media_Chapter_Scan():
     # from query 0-mm_media_guid, 1-mm_media_json, 2-mm_media_ffprobe_json, 3-mm_media_path
     # loop through ffprobe json chapter data
     if row_data['mm_media_ffprobe_json'] is not None:
@@ -147,21 +147,21 @@ if len(file_list) > 0:
 
 # send notications
 if total_images_created > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_images_created, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', total_images_created, True)\
         + " chapter image(s) generated.", True)
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server Create Chapter Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server Create Chapter Stop', None,\
     'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
 
 
 # commit all changes
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # remove pid

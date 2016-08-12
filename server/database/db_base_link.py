@@ -21,7 +21,7 @@ import logging
 import uuid
 
 
-def MK_Server_Database_Link_List_Count(self):
+def srv_db_link_list_vount(self):
     """
     Return count of linked servers
     """
@@ -29,7 +29,7 @@ def MK_Server_Database_Link_List_Count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def MK_Server_Database_Link_List(self, offset=None, records=None):
+def srv_db_link_list(self, offset=None, records=None):
     """
     Return list of linked server
     Complete list for admins
@@ -37,18 +37,21 @@ def MK_Server_Database_Link_List(self, offset=None, records=None):
     if offset is None:
         self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link')
     else:
-        self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link where mm_link_guid in (select mm_link_guid from mm_link offset %s limit %s)', (offset, records))
+        self.sql3_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'\
+            ' where mm_link_guid in (select mm_link_guid from mm_link offset %s limit %s)',\
+            (offset, records))
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Link_Insert(self, link_json):
+def srv_db_link_insert(self, link_json):
     """
     Insert linked server
     """
-    self.sql3_cursor.execute('insert into mm_link (mm_link_guid, mm_link_options_json) values (%s, %s)', (str(uuid.uuid4()), link_json))
+    self.sql3_cursor.execute('insert into mm_link (mm_link_guid, mm_link_options_json)'\
+        ' values (%s, %s)', (str(uuid.uuid4()), link_json))
 
 
-def MK_Server_Database_Link_Delete(self, sync_guid):
+def srv_db_link_delete(self, sync_guid):
     """
     Delete server link
     """

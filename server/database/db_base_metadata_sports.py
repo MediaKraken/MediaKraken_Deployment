@@ -22,7 +22,7 @@ import uuid
 
 
 # metadata guid by imdb id
-def MK_Server_Database_Metadata_Sports_GUID_By_TheSportsDB(self, thesports_uuid):
+def srv_db_Metadata_Sports_GUID_By_TheSportsDB(self, thesports_uuid):
     self.sql3_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports where mm_metadata_media_sports_id->\'TheSportsDB\' ? %s', (thesports_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_sports_guid']
@@ -30,13 +30,13 @@ def MK_Server_Database_Metadata_Sports_GUID_By_TheSportsDB(self, thesports_uuid)
         return None
 
 
-def MK_Server_Database_Metadata_Sports_List_Count(self):
+def srv_db_Metadata_Sports_List_Count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_sports')
     return self.sql3_cursor.fetchone()[0]
 
 
 # return list of game systems
-def MK_Server_Database_Metadata_Sports_List(self, offset=None, records=None):
+def srv_db_Metadata_Sports_List(self, offset=None, records=None):
     if offset is None:
         self.sql3_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name from mm_metadata_sports order by mm_metadata_sports_name')
     else:
@@ -45,7 +45,7 @@ def MK_Server_Database_Metadata_Sports_List(self, offset=None, records=None):
 
 
 # fetch guid by event name
-def MK_Server_Database_Metadata_Sports_GUID_By_Event_Name(self, event_name):
+def srv_db_Metadata_Sports_GUID_By_Event_Name(self, event_name):
     self.sql3_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports where mm_metadata_sports_name = %s', (event_name,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_sports_guid']

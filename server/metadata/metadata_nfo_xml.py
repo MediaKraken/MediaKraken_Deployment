@@ -82,25 +82,25 @@ def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id
                 pass
         # TODO RT
     if tmdb_id is not None:
-        metadata_uuid = db.MK_Server_Database_Metadata_GUID_By_TMDB(tmdb_id)
+        metadata_uuid = db.srv_db_Metadata_GUID_By_TMDB(tmdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
-            db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
-            db.MK_Server_Database_Download_Update_Provider('theMovieDB', download_data['mdq_id'])
+            db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
+            db.srv_db_Download_Update_Provider('theMovieDB', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
-        metadata_uuid = db.MK_Server_Database_Metadata_GUID_By_IMDB(imdb_id)
+        metadata_uuid = db.srv_db_Metadata_GUID_By_IMDB(imdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-            db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
-            db.MK_Server_Database_Download_Update_Provider('IMDB', download_data['mdq_id'])
+            db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
+            db.srv_db_Download_Update_Provider('IMDB', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and rt_id is not None:
-        metadata_uuid = db.MK_Server_Database_Metadata_GUID_By_RT(rt_id)
+        metadata_uuid = db.srv_db_Metadata_GUID_By_RT(rt_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': rt_id})
-            db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
-            db.MK_Server_Database_Download_Update_Provider('Rotten_Tomatoes',\
+            db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
+            db.srv_db_Download_Update_Provider('Rotten_Tomatoes',\
                 download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     return (metadata_uuid, imdb_id, tmdb_id, rt_id)
@@ -134,17 +134,17 @@ def nfo_xml_db_lookup_tv(db, nfo_data, xml_data, download_que_json, download_que
             pass
     # TODO RT
     if tvdb_id is not None:
-        metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_TVDB(tvdb_id)
+        metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVDB(tvdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tvdb_id})
-            db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
-            db.MK_Server_Database_Download_Update_Provider('theTVDB', download_data['mdq_id'])
+            db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
+            db.srv_db_Download_Update_Provider('theTVDB', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
-        metadata_uuid = db.MK_Server_Database_MetadataTV_GUID_By_IMDB(imdb_id)
+        metadata_uuid = db.srv_db_MetadataTV_GUID_By_IMDB(imdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-            db.MK_Server_Database_Download_Update(json.dumps(download_que_json), download_que_id)
-            db.MK_Server_Database_Download_Update_Provider('IMDB', download_data['mdq_id'])
+            db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
+            db.srv_db_Download_Update_Provider('IMDB', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     return (metadata_uuid, imdb_id, tvdb_id)

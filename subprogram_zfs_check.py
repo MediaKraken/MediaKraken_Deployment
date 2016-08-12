@@ -41,8 +41,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -51,7 +51,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_ZFS_Check')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -59,26 +59,26 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS Health Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server ZFS Health Start', None,\
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
 for read_line in common_zfs.common_zfs_Health_Check():
     if read_line.find('ONLINE') != -1:
-        db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS ERROR!', None,\
+        db.srv_db_Activity_Insert('MediaKraken_Server ZFS ERROR!', None,\
             'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')
-        db.MK_Server_Database_Notification_Insert("ZFS zpool(s) degraded or offline!", True)
+        db.srv_db_Notification_Insert("ZFS zpool(s) degraded or offline!", True)
         break
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server ZFS Health Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server ZFS Health Stop', None,\
     'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 # remove pid
 os.remove(pid_file)

@@ -21,22 +21,35 @@ import logging
 import uuid
 
 
-# insert notifications
-def MK_Server_Database_Notification_Insert(self, notification_data, notification_dismissable):
-    self.sql3_cursor.execute('insert into mm_notification (mm_notification_guid,mm_notification_text,mm_notification_time,mm_notification_dismissable) values (%s,%s,CURRENT_TIMESTAMP,%s)', (str(uuid.uuid4()), notification_data, notification_dismissable))
+def srv_db_notification_insert(self, notification_data, notification_dismissable):
+    """
+    # insert notifications
+    """
+    self.sql3_cursor.execute('insert into mm_notification (mm_notification_guid,'\
+        'mm_notification_text,mm_notification_time,mm_notification_dismissable)'\
+        ' values (%s,%s,CURRENT_TIMESTAMP,%s)', (str(uuid.uuid4()), notification_data,\
+        notification_dismissable))
 
 
-# read all notifications
-def MK_Server_Database_Notification_Read(self, offset=None, records=None):
+def srv_db_notification_read(self, offset=None, records=None):
+    """
+    # read all notifications
+    """
     if offset is None:
-        self.sql3_cursor.execute('select mm_notification_guid, mm_notification_text, mm_notification_time, mm_notification_dismissable from mm_notification order by mm_notification_time desc')
+        self.sql3_cursor.execute('select mm_notification_guid, mm_notification_text,'\
+            ' mm_notification_time, mm_notification_dismissable from mm_notification'\
+            ' order by mm_notification_time desc')
     else:
-        self.sql3_cursor.execute('select mm_notification_guid, mm_notification_text, mm_notification_time, mm_notification_dismissable from mm_notification order by mm_notification_time desc offset %s limit %s', (offset, records))
+        self.sql3_cursor.execute('select mm_notification_guid, mm_notification_text,'\
+            ' mm_notification_time, mm_notification_dismissable from mm_notification'\
+            ' order by mm_notification_time desc offset %s limit %s', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
-# remove noticications
-def MK_Server_Database_Notification_Delete(self, notification_uuid):
+def srv_db_notification_delete(self, notification_uuid):
+    """
+    # remove noticications
+    """
     self.sql3_cursor.execute('delete from mm_notification where mm_notification_guid = %s',\
         (notification_uuid,))
     self.sql3_cursor.commit()

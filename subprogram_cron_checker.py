@@ -48,8 +48,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -67,7 +67,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Cron')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -77,7 +77,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 # start loop for cron checks
 pid_dict = {}
 while 1:
-    for row_data in db.MK_Server_Database_Cron_List(True):  # only grab enabled ones
+    for row_data in db.srv_db_Cron_List(True):  # only grab enabled ones
         # place holders for pid
         if row_data['mm_cron_name'] in pid_dict:
             pass
@@ -101,15 +101,15 @@ while 1:
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']], shell=False)
                 logging.debug("Cron $s PID %s:", row_data['mm_cron_name'], proc.pid)
-                db.MK_Server_Database_Cron_Time_Update(row_data['mm_cron_name'])
+                db.srv_db_Cron_Time_Update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
-            db.MK_Server_Database_Commit()
+            db.srv_db_Commit()
         logging.debug(row_data)
     time.sleep(60)  # sleep for 60 seconds
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 # remove pid
 os.remove(pid_file)

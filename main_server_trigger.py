@@ -40,11 +40,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Trigger: Received USR1')
     os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.MK_Server_Database_Rollback()
+    db.srv_db_Rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Stop', None,\
+    db.srv_db_Activity_Insert('MediaKraken_Trigger Stop', None,\
         'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
-    db.MK_Server_Database_Close()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -62,14 +62,14 @@ common_logging.common_logging_Start('./log/MediaKraken_Trigger')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
     Config.get('DB Connections', 'PostDBPass').strip())
 
 
-db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+db.srv_db_Activity_Insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
     'ServerTriggerStart', None, None, 'System')
 
 
@@ -82,7 +82,7 @@ else:
 
 while True:
     # check for new "triggers"
-    for row_data in db.MK_Server_Database_Triggers_Read():
+    for row_data in db.srv_db_Triggers_Read():
         # fire up cron service
         command_list = []
         for command_data in pickle.loads(str(row_data[1])):
@@ -90,21 +90,21 @@ while True:
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.debug("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db.MK_Server_Database_Triggers_Delete(row_data[0])
+        db.srv_db_Triggers_Delete(row_data[0])
     time.sleep(1)
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert('MediaKraken_Trigger Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Trigger Stop', None,\
     'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
 # commit
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # stop children

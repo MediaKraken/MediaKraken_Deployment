@@ -47,8 +47,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,7 +59,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_theTVDB_Images
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -67,7 +67,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Images Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Images Start', None,\
     'System: Server TVMaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
 
 
@@ -84,7 +84,7 @@ total_episode_images = 0
 
 
 # grab ones without image data
-for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'):
+for row_data in db.srv_db_Metadata_TVShow_Images_To_Update('theTVDB'):
     logging.debug("json: %s", row_data['mm_metadata_tvshow_json']['Meta']['Series'])
     # this is "removed" via the query ['Meta']['theTVDB']
 
@@ -142,25 +142,25 @@ for row_data in db.MK_Server_Database_Metadata_TVShow_Images_To_Update('theTVDB'
                     + episode_info['filename'], eps_image_local)
                 json_image_data['Images']['theTVDB']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
-    db.MK_Server_Database_Metadata_TVShow_Update_Image(json.dumps(json_image_data), row_data[1])
+    db.srv_db_Metadata_TVShow_Update_Image(json.dumps(json_image_data), row_data[1])
     # commit
-    db.MK_Server_Database_Commit()
+    db.srv_db_Commit()
 
 
 # send notifications
 if total_cast_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_cast_images, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', total_cast_images, True)\
         + " new TV cast image(s) added.", True)
 if total_episode_images > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', total_episode_images, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', total_episode_images, True)\
         + " new TV episode image(s) added.", True)
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server theTVDB Images Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server theTVDB Images Stop', None,\
     'System: Server theTVDB Images Stop', 'ServerTVDBImagesStop', None, None, 'System')
 
 # commit all changes
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 # close the database
-db.MK_Server_Database_Close()
+db.srv_db_Close()

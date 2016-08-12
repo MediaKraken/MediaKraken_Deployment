@@ -26,18 +26,18 @@ except:
 
 
 # create/insert a trigger
-def MK_Server_Database_Trigger_Insert(self, command_list):
+def srv_db_Trigger_Insert(self, command_list):
     self.sql3_cursor.execute('insert into mm_trigger (mm_trigger_guid,mm_trigger_command) values (%s,%s)', (str(uuid.uuid4()), pickle.dumps(command_list)))
-    self.MK_Server_Database_Commit()
+    self.srv_db_Commit()
 
 
 # read the triggers
-def MK_Server_Database_Triggers_Read(self):
+def srv_db_Triggers_Read(self):
     self.sql3_cursor.execute('select mm_trigger_guid,mm_trigger_command from mm_trigger')
     return self.sql3_cursor.fetchall()
 
 
 # remove trigger
-def MK_Server_Database_Triggers_Delete(self, guid):
+def srv_db_Triggers_Delete(self, guid):
     self.sql3_cursor.execute('delete from mm_trigger where mm_trigger_guid = %s', (guid,))
-    self.MK_Server_Database_Commit()
+    self.srv_db_Commit()

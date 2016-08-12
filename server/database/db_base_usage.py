@@ -19,21 +19,25 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 
-def MK_Server_Database_Usage_Top10_AllTime(self):
+def srv_db_usage_top10_alltime(self):
     self.sql3_cursor.execute('select blah from blah order by blah limit 10')
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Usage_Top10_Movie(self):
-    self.sql3_cursor.execute('select mm_metadata_user_json->\'Watched\'->\'Times\' from mm_metadata_movie order by mm_metadata_user_json->\'Watched\'->\'Times\' desc limit 10')
+def srv_db_usage_top10_movie(self):
+    self.sql3_cursor.execute('select mm_metadata_user_json->\'Watched\'->\'Times\''\
+        ' from mm_metadata_movie order by mm_metadata_user_json->\'Watched\'->\'Times\''\
+        ' desc limit 10')
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Usage_Top10_TV_Show(self):
-    self.sql3_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\' from mm_metadata_tvshow order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\' desc limit 10')
+def srv_db_usage_top10_tv_show(self):
+    self.sql3_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''\
+        ' from mm_metadata_tvshow order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''\
+        ' desc limit 10')
     return self.sql3_cursor.fetchall()
 
 
-def MK_Server_Database_Usage_Top10_TV_Episode(self):
+def srv_db_usage_top10_tv_episode(self):
     self.sql3_cursor.execute('select blah from blah order by blah limit 10')
     return self.sql3_cursor.fetchall()

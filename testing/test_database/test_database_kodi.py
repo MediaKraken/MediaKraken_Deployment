@@ -31,18 +31,18 @@ class TestDatabaseKodi(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Server_Database_Close()
+        self.db.srv_db_Close()
 
 
-    # def MK_Server_Database_Kodi_User_Sync_List_Added(self, synctime):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Kodi_User_Sync_List_Added(self, synctime):
+#        self.db.srv_db_Rollback()
 
 
     # sync data
-    # def MK_Server_Database_Kodi_User_Sync(self, synctime):
-#        self.db.MK_Server_Database_Rollback()
+    # def srv_db_Kodi_User_Sync(self, synctime):
+#        self.db.srv_db_Rollback()

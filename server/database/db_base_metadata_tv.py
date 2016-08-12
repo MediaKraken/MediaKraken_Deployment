@@ -22,7 +22,7 @@ import uuid
 
 
 # metadata guid by name
-def MK_Server_Database_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_year=None):
+def srv_db_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_year=None):
     metadata_guid = None
     if tvshow_year is None:
         self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where LOWER(mm_metadata_tvshow_name) = %s', (tvshow_name.lower(),))
@@ -37,7 +37,7 @@ def MK_Server_Database_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_
 
 
 # metadata guid by imdb id
-def MK_Server_Database_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
+def srv_db_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
     self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'IMDB\' ? %s', (imdb_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -46,7 +46,7 @@ def MK_Server_Database_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
 
 
 # metadata guid by tv id
-def MK_Server_Database_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
+def srv_db_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
     self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'theTVDB\' ? %s', (thetvdb_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -55,7 +55,7 @@ def MK_Server_Database_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
 
 
 # metadata guid by tvmaze id
-def MK_Server_Database_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
+def srv_db_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
     self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'TVMaze\' ? %s', (tvmaze_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -64,7 +64,7 @@ def MK_Server_Database_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
 
 
 # metadata guid by tvrage id
-def MK_Server_Database_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
+def srv_db_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
     self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'TVRage\' ? %s', (tvrage_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -73,13 +73,13 @@ def MK_Server_Database_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
 
 
 # tvshow count
-def MK_Server_Database_Metadata_TVShow_List_Count(self):
+def srv_db_Metadata_TVShow_List_Count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_tvshow')
     return self.sql3_cursor.fetchone()[0]
 
 
 # return list of tvshows
-def MK_Server_Database_Metadata_TVShow_List(self, offset=None, records=None):
+def srv_db_Metadata_TVShow_List(self, offset=None, records=None):
     # COALESCE - priority over one column
     if offset is None:
         self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name, COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'premiered\', mm_metadata_tvshow_json->\'Meta\'->\'theTVDB\'->\'Meta\'->\'Series\'->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'TVMaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'theTVDB\'->>\'Poster\') from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)')
@@ -89,12 +89,12 @@ def MK_Server_Database_Metadata_TVShow_List(self, offset=None, records=None):
 
 
 # update image json
-def MK_Server_Database_Metadata_TVShow_Update_Image(self, image_json, metadata_uuid):
+def srv_db_Metadata_TVShow_Update_Image(self, image_json, metadata_uuid):
     self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s', (image_json, metadata_uuid))
 
 
 # fetch tvmaze rows to update
-def MK_Server_Database_Metadata_TVShow_Images_To_Update(self, image_type):
+def srv_db_Metadata_TVShow_Images_To_Update(self, image_type):
     if image_type == 'TVMaze':
         self.sql3_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\',mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_tvshow_localimage_json->'Images'->'TVMaze'->'Redo' = 'true'")
     elif image_type == 'theTVDB':
@@ -103,7 +103,7 @@ def MK_Server_Database_Metadata_TVShow_Images_To_Update(self, image_type):
 
 
 # return metadata for tvshow
-def MK_Server_Database_Metadata_TVShow_Detail(self, guid):
+def srv_db_Metadata_TVShow_Detail(self, guid):
     self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json, mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'TVMaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'theTVDB\'->>\'Poster\') from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
@@ -112,13 +112,13 @@ def MK_Server_Database_Metadata_TVShow_Detail(self, guid):
 
 
 # read in the tv episodes metadata by guid
-def MK_Server_Database_Read_TVMetadata_Episodes(self, show_guid):
+def srv_db_Read_TVMetadata_Episodes(self, show_guid):
     sql_params = show_guid,
     return self.sql3_cursor.fetchall()
 
 
 # grab tvmaze ep data for eps per season
-def MK_Server_Database_Read_TVMetadata_Eps_Season(self, show_guid):
+def srv_db_Read_TVMetadata_Eps_Season(self, show_guid):
     # todo union will be bad later when both data sources are populated
     season_data = {}
     self.sql3_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s) union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'theTVDB\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'theTVDB\'->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))    
@@ -132,7 +132,7 @@ def MK_Server_Database_Read_TVMetadata_Eps_Season(self, show_guid):
 
 
 # grab episodes within the season
-def MK_Server_Database_Read_TVMetadata_Season_Eps_List(self, show_guid, season_number):
+def srv_db_Read_TVMetadata_Season_Eps_List(self, show_guid, season_number):
     episode_data = {}
     self.sql3_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'name\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json->\'Images\'->\'TVMaze\'->\'Episodes\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.sql3_cursor.fetchall():
@@ -145,7 +145,7 @@ def MK_Server_Database_Read_TVMetadata_Season_Eps_List(self, show_guid, season_n
 
 
 # grab episode detail
-def MK_Server_Database_Read_TVMetadata_Episode(self, show_guid, season_number, episode_number):
+def srv_db_Read_TVMetadata_Episode(self, show_guid, season_number, episode_number):
     logging.debug("huh: %s %s %s", show_guid, season_number, episode_number)
     self.sql3_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'name\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'runtime\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'TVMaze\'->\'_embedded\'->\'episodes\')::jsonb->\'summary\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.sql3_cursor.fetchall():

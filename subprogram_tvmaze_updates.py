@@ -44,8 +44,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -63,7 +63,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TVMaze_Updates
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -71,7 +71,7 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server TVMaze Update Start', None,\
     'System: Server TVMaze Start', 'ServertheTVMazeStart', None, None, 'System')
 
 
@@ -106,19 +106,19 @@ def update_insert_show(tvmaze_id, update_rec=None):
             'IMDB':imdb_id, 'theTVDB':thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'TVMaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db.MK_Server_Database_MetadataTVMaze_Insert(series_id_json, tvmaze_name,\
+            db.srv_db_MetadataTVMaze_Insert(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json))
         else:
-            db.MK_Server_Database_MetadataTVMaze_Update(series_id_json, tvmaze_name,\
+            db.srv_db_MetadataTVMaze_Update(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['TVMaze']['_embedded']:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze',\
+            db.srv_db_Metadata_Person_Insert_Cast_Crew('TVMaze',\
                 show_full_json['Meta']['TVMaze']['_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['TVMaze']['_embedded']:
-            db.MK_Server_Database_Metadata_Person_Insert_Cast_Crew('TVMaze',\
+            db.srv_db_Metadata_Person_Insert_Cast_Crew('TVMaze',\
                 show_full_json['Meta']['TVMaze']['_embedded']['crew'])
-        db.MK_Server_Database_Commit()
+        db.srv_db_Commit()
 
 
 # grab updated show list with epoc data
@@ -131,7 +131,7 @@ result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db.MK_Server_Database_MetadataTV_GUID_By_TVMaze(str(tvmaze_id))
+    results = db.srv_db_MetadataTV_GUID_By_TVMaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:
@@ -145,25 +145,25 @@ for tvmaze_id, tvmaze_time in result.items():
 
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server TVMaze Update Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server TVMaze Update Stop', None,\
     'System: Server TVMaze Stop', 'ServertheTVMazeStop', None, None, 'System')
 
 
 # send notications
 if tvshow_updated > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.MK_Server_Database_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+    db.srv_db_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
 
 
 # commit all changes to db
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 
 
 # close DB
-db.MK_Server_Database_Close()
+db.srv_db_Close()
 
 
 # remove pid

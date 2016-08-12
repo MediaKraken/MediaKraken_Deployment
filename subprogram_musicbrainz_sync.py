@@ -41,8 +41,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,7 +59,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_MusicBrainz_Sy
 
 # open the database
 db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -67,20 +67,20 @@ db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # open the remote musicbrainz db
-db_brainz = database_base_brainz.MK_Server_Database_Brainz()
-db_brainz.MK_Server_Database_Open(Config.get('MediaBrainz', 'BrainzDBHost').strip(),\
+db_brainz = database_base_brainz.srv_db_Brainz()
+db_brainz.srv_db_Open(Config.get('MediaBrainz', 'BrainzDBHost').strip(),\
     Config.get('MediaBrainz', 'BrainzDBPort').strip(),\
     Config.get('MediaBrainz', 'BrainzDBName').strip(),\
     Config.get('MediaBrainz', 'BrainzDBUser').strip(),\
     Config.get('MediaBrainz', 'BrainzDBPass').strip())
 
 # log start
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Start', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server MusicBrainz Start', None,\
     'System: Server MusicBrainz Start', 'ServerMusicBrainzStart', None, None, 'System')
 
 # fetch all the artists from brainz
-for row_data in db_brainz.MK_Server_Database_Brainz_All_Artists():
-    db.MK_Server_Database_Metadata_Musician_Add(row_data['name'],\
+for row_data in db_brainz.srv_db_Brainz_All_Artists():
+    db.srv_db_Metadata_Musician_Add(row_data['name'],\
         json.dumps({'MusicBrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],\
         'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'\
         + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),\
@@ -88,27 +88,27 @@ for row_data in db_brainz.MK_Server_Database_Brainz_All_Artists():
         + str(row_data['end_date_day']))}))
     logging.debug(row_data)
     # fetch all the albums from brainz by artist
-    for row_data_album in db_brainz.MK_Server_Database_Brainz_All_Albums_By_Artist(row_data['id']):
-        db.MK_Server_Database_Metadata_Album_Add(row_data_album['name'],\
+    for row_data_album in db_brainz.srv_db_Brainz_All_Albums_By_Artist(row_data['id']):
+        db.srv_db_Metadata_Album_Add(row_data_album['name'],\
             json.dumps({'MusicBrainz':row_data_album['gid']}),\
             json.dumps({'Commment':row_data_album['comment'],\
             'Language':row_data_album['language'], 'Barcode':row_data_album['barcode']}))
         logging.debug(row_data_album)
 '''
         # fetch all the songs from brainz
-        for row_data in db_brainz.MK_Server_Database_Brainz_All_Songs():
+        for row_data in db_brainz.srv_db_Brainz_All_Songs():
             # 0 gid, 1 name, 2 recording, 3 position, 4 id
-            db.MK_Server_Database_Metadata_Song_Add(row_data[99],json.dumps({ 'MusicBrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
+            db.srv_db_Metadata_Song_Add(row_data[99],json.dumps({ 'MusicBrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
 '''
 
 # log end
-db.MK_Server_Database_Activity_Insert('MediaKraken_Server MusicBrainz Stop', None,\
+db.srv_db_Activity_Insert('MediaKraken_Server MusicBrainz Stop', None,\
     'System: Server MusicBrainz Stop', 'ServerMusicBrainzStop', None, None, 'System')
 
 # commit all changes to db
-db.MK_Server_Database_Commit()
+db.srv_db_Commit()
 # close DB
-db_brainz.MK_Server_Database_Close()
-db.MK_Server_Database_Close()
+db_brainz.srv_db_Close()
+db.srv_db_Close()
 # remove pid
 os.remove(pid_file)

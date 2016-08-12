@@ -108,12 +108,12 @@ class NetworkEvents(Int32StringReceiver):
             pass
 # actually processed in "main_link" program!!!!
 #        elif messageWords[0] == "RECEIVENEWMEDIA":
-#            self.db.MK_Server_Database_Media_Link_New_Data(pickle.loads(messagewords[1])
+#            self.db.srv_db_Media_Link_New_Data(pickle.loads(messagewords[1])
         elif messageWords[0] == "REQUESTNEWMEDIA":
-            msg = "RECEIVENEWMEDIA " + pickle.dumps(self.db.MK_Server_Database_Media_Link_Read_New(pickle.loads(messagewords[1]), message_Words[2], message_Words[3], message_Words[4], message_Words[5], message_Words[6], message_Words[7]))
+            msg = "RECEIVENEWMEDIA " + pickle.dumps(self.db.srv_db_Media_Link_Read_New(pickle.loads(messagewords[1]), message_Words[2], message_Words[3], message_Words[4], message_Words[5], message_Words[6], message_Words[7]))
         elif messageWords[0] == "PlayUUID" or messageWords[0] == "demo":
-            #media_path = self.db.MK_Server_Database_Media_Path_By_UUID('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
-            media_path = self.db.MK_Server_Database_Media_Path_By_UUID(messageWords[1])[0]
+            #media_path = self.db.srv_db_Media_Path_By_UUID('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
+            media_path = self.db.srv_db_Media_Path_By_UUID(messageWords[1])[0]
             if media_path is not None:
                 if True:
                     # launch and attach to local running ffserver
@@ -130,7 +130,7 @@ class NetworkEvents(Int32StringReceiver):
             pass
         elif messageWords[0] == "MediaIDUpdateUUID":
             # media id, metadata id
-            self.db.MK_Server_Database_Update_Media_ID(messageWords[1], messageWords[2])
+            self.db.srv_db_Update_Media_ID(messageWords[1], messageWords[2])
         # metadata commands
         elif messageWords[0] == "IMAGE":
             lookup_id = None
@@ -140,13 +140,13 @@ class NetworkEvents(Int32StringReceiver):
             if messageWords[3] == 'None': # random movie selection
                 if messageWords[2] == "MOVIE":
                     try:
-                        lookup_id, media_id = self.db.MK_Server_Database_Media_Random(messageWords[5])
+                        lookup_id, media_id = self.db.srv_db_Media_Random(messageWords[5])
                     except:
                         pass
             else:
                 # fetch specific id
                 try:
-                    lookup_id = json.loads(self.db.MK_Server_Database_Media_Image_Path(messageWords[3])[0])[messageWords[4]] # use this to grab file path
+                    lookup_id = json.loads(self.db.srv_db_Media_Image_Path(messageWords[3])[0])[messageWords[4]] # use this to grab file path
                 except:
                     pass
             if lookup_id is not None:
@@ -158,11 +158,11 @@ class NetworkEvents(Int32StringReceiver):
             msg = "GENRELIST " + pickle.dumps(self.genre_list)
         # theater data
         elif messageWords[0] == "VIDEODETAIL":
-            msg = "VIDEODETAIL " + pickle.dumps(self.db.MK_Server_Database_Read_Media_Metadata_Both(messageWords[1]))
+            msg = "VIDEODETAIL " + pickle.dumps(self.db.srv_db_Read_Media_Metadata_Both(messageWords[1]))
         elif messageWords[0] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db.MK_Server_Database_Web_Media_List(self.db.MK_Server_Database_Media_UUID_By_Class("Movie"), messageWords[0], messageWords[1]))
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_Web_Media_List(self.db.srv_db_Media_UUID_By_Class("Movie"), messageWords[0], messageWords[1]))
         elif messageWords[0] == "movie" or messageWords[0] == "recent_addition" or messageWords[0] == 'in_progress' or messageWords[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db.MK_Server_Database_Web_Media_List(self.db.MK_Server_Database_Media_UUID_By_Class("Movie"), messageWords[0]))
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_Web_Media_List(self.db.srv_db_Media_UUID_By_Class("Movie"), messageWords[0]))
         # admin commands
         elif messageWords[0] == "ScanMedia":
             # popen expects a list
@@ -192,7 +192,7 @@ class NetworkEvents(Int32StringReceiver):
         elif messageWords[0] == "CPUUSAGE":
             self.cpu_use_table[self.user_ip_addy] = messageWords[1]
         elif messageWords[0] == "SHUTDOWN":
-            self.db.MK_Server_Database_Close()
+            self.db.srv_db_Close()
             sys.exit(0)
         else:
             loggging.error("UNKNOWN TYPE: %s", messageWords[0])

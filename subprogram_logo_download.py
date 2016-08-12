@@ -41,8 +41,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.MK_Server_Database_Rollback()
-    db.MK_Server_Database_Close()
+    db.srv_db_Rollback()
+    db.srv_db_Close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -76,10 +76,10 @@ if __name__ == "__main__":
     print('Total logo download attempts: %s', total_download_attempts)
     # send notications
 #    if total_download_attempts > 0:
-#        db.MK_Server_Database_Notification_Insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
+#        db.srv_db_Notification_Insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
 #    # commit all changes
-#    db.MK_Server_Database_Commit()
+#    db.srv_db_Commit()
 #    # close DB
-#    db.MK_Server_Database_Close()
+#    db.srv_db_Close()
 #    # remove pid
 #    os.remove(pid_file)
