@@ -42,7 +42,7 @@ class CommonMetadataTMDB(object):
 
 
     # search for movie title and year
-    def com_TMDB_Search(self, movie_title, movie_year=None, id_only=False):
+    def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
         logging.debug("tmdb search %s %s", movie_title, movie_year)
         search = tmdb.Search()
         response = search.movie(query=movie_title)
@@ -54,14 +54,14 @@ class CommonMetadataTMDB(object):
                         or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
                         or str(int(movie_year) + 1) == s['release_date'].split('-', 1)[0]):
                 if not id_only:
-                    return 'info', com_TMDB_Metadata_By_ID(s['id'])
+                    return 'info', com_tmdb_Metadata_By_ID(s['id'])
                 else:
                     return 'idonly', s['id'] #, s['title']
         return 're', search.results
 
 
     # search by tmdb
-    def com_TMDB_Metadata_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_By_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.info()
@@ -72,7 +72,7 @@ class CommonMetadataTMDB(object):
 
 
     # search by tmdb
-    def com_TMDB_Metadata_Cast_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Cast_By_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.credits()
@@ -83,7 +83,7 @@ class CommonMetadataTMDB(object):
 
 
     # review by tmdb
-    def com_TMDB_Metadata_Review_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Review_By_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.reviews()
@@ -103,7 +103,7 @@ class CommonMetadataTMDB(object):
 
 
     # search by imdb
-    def com_TMDB_Metadata_By_imdb_ID(self, imdb_id):
+    def com_tmdb_Metadata_By_imdb_ID(self, imdb_id):
         movie = tmdb.Find(imdb_id)
         try:
             metadata = movie.info(external_source='imdb_id')
@@ -114,28 +114,28 @@ class CommonMetadataTMDB(object):
 
 
     # movie changes since date within 24 hours
-    def com_TMDB_Metadata_Changes_Movie(self):
+    def com_tmdb_Metadata_Changes_Movie(self):
         changes = tmdb.Changes()
         movie_changes = changes.movie()
         return movie_changes
 
 
     # tv changes since date within 24 hours
-    def com_TMDB_Metadata_Changes_TV(self):
+    def com_tmdb_Metadata_Changes_TV(self):
         changes = tmdb.Changes()
         tv_changes = changes.tv()
         return tv_changes
 
 
     # person changes since date within 24 hours
-    def com_TMDB_Metadata_Changes_Person(self):
+    def com_tmdb_Metadata_Changes_Person(self):
         changes = tmdb.Changes()
         person_changes = changes.person()
         return person_changes
 
 
     # collection info
-    def com_TMDB_Metadata_Collection_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Collection_By_ID(self, tmdb_id):
         movie_collection = tmdb.Collections(tmdb_id)
         try:
             metadata = movie_collection.info()
@@ -146,7 +146,7 @@ class CommonMetadataTMDB(object):
 
 
     # download info and set data to be ready for insert into database
-    def com_TMDB_MetaData_Info_Build(self, result_json):
+    def com_tmdb_MetaData_Info_Build(self, result_json):
         logging.debug('tmdb info build: %s', result_json)
         # create file path for poster
         file_path = common_metadata.com_Metadata_Image_File_Path(result_json['title'],\

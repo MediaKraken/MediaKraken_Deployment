@@ -92,7 +92,7 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_API_Connection.com_TMDB_Metadata_Collection_By_ID(collection_id)
+        collection_meta = TMDB_API_Connection.com_tmdb_Metadata_Collection_By_ID(collection_id)
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:

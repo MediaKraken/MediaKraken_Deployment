@@ -38,39 +38,39 @@ class TestCommonMetadataTMDB(object):
 
 
 # search for movie title and year
-# def com_TMDB_Search(self, movie_title, movie_year=None, id_only=False):
+# def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
 
 
 # search by tmdb
-# def com_TMDB_Metadata_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_By_ID(self, tmdb_id):
 
 
 # search by tmdb
-# def com_TMDB_Metadata_Cast_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Cast_By_ID(self, tmdb_id):
 
 
 # review by tmdb
-# def com_TMDB_Metadata_Review_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Review_By_ID(self, tmdb_id):
 
 
     # movie changes since date within 24 hours
-    def Test_com_TMDB_Metadata_Changes_Movie(self):
-        com_TMDB_Metadata_Changes_Movie()
+    def Test_com_tmdb_Metadata_Changes_Movie(self):
+        com_tmdb_Metadata_Changes_Movie()
 
 
     # tv changes since date within 24 hours
-    def Test_com_TMDB_Metadata_Changes_TV(self):
-        com_TMDB_Metadata_Changes_TV()
+    def Test_com_tmdb_Metadata_Changes_TV(self):
+        com_tmdb_Metadata_Changes_TV()
 
 
     # person changes since date within 24 hours
-    def Test_com_TMDB_Metadata_Changes_Person(self):
-        com_TMDB_Metadata_Changes_Person()
+    def Test_com_tmdb_Metadata_Changes_Person(self):
+        com_tmdb_Metadata_Changes_Person()
 
 
 # collection info
-# def com_TMDB_Metadata_Collection_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Collection_By_ID(self, tmdb_id):
 
 
 # download info and set data to be ready for insert into database
-# def com_TMDB_MetaData_Info_Build(self, result_json):
+# def com_tmdb_MetaData_Info_Build(self, result_json):

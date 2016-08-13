@@ -56,10 +56,10 @@ def movie_search_tmdb(db, file_name):
     if TMDB_API_Connection is not None:
         # try to match ID ONLY
         if 'year' in file_name:
-            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(\
+            match_response, match_result = TMDB_API_Connection.com_tmdb_Search(\
                 file_name['title'], file_name['year'], True)
         else:
-            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(\
+            match_response, match_result = TMDB_API_Connection.com_tmdb_Search(\
                 file_name['title'], None, True)
         logging.debug("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
@@ -82,10 +82,10 @@ def movie_fetch_save_tmdb(db, tmdb_id):
     """
     logging.debug("tmdb fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
-    result_json = TMDB_API_Connection.com_TMDB_Metadata_By_ID(tmdb_id)
+    result_json = TMDB_API_Connection.com_tmdb_Metadata_By_ID(tmdb_id)
     logging.debug("uh: %s", result_json)
     if result_json is not None:
-        series_id_json, result_json, image_json = TMDB_API_Connection.com_TMDB_MetaData_Info_Build(result_json)
+        series_id_json, result_json, image_json = TMDB_API_Connection.com_tmdb_MetaData_Info_Build(result_json)
         # set and insert the record
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
         logging.debug("series: %s", series_id_json)
@@ -102,7 +102,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
     """
     # fetch from tmdb via imdb
     """
-    result_json = TMDB_API_Connection.com_TMDB_Metadata_By_imdb_ID(imdb_id)
+    result_json = TMDB_API_Connection.com_tmdb_Metadata_By_imdb_ID(imdb_id)
     logging.debug("uhimdb: %s", result_json)
     if result_json is not None:
         # find call for tmdb returns the other sections
@@ -112,7 +112,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
 
 
 def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
-    cast_json = TMDB_API_Connection.com_TMDB_Metadata_Cast_By_ID(tmdb_id)
+    cast_json = TMDB_API_Connection.com_tmdb_Metadata_Cast_By_ID(tmdb_id)
     if 'cast' in cast_json:
         db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
     if 'crew' in cast_json:
@@ -123,7 +123,7 @@ def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
 
 def movie_fetch_save_tmdb_review(db, tmdb_id):
     # grab reviews
-    review_json = TMDB_API_Connection.com_TMDB_Metadata_Review_By_ID(tmdb_id)
+    review_json = TMDB_API_Connection.com_tmdb_Metadata_Review_By_ID(tmdb_id)
     if review_json['total_results'] > 0:
         review_json_id = ({'TMDB': str(review_json['id'])})
         logging.debug("review: %s", review_json_id)
