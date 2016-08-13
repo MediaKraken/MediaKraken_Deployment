@@ -22,57 +22,79 @@ import uuid
 import json
 
 
-# count person metadata
 def srv_db_metadata_person_list_count(self):
+    """
+    # count person metadata
+    """
     self.sql3_cursor.execute('select count(*) from mm_metadata_person')
     return self.sql3_cursor.fetchone()[0]
 
 
-# return list of people
 def srv_db_metadata_person_list(self, offset=None, records=None):
+    """
+    # return list of people
+    """
     if offset is None:
-        self.sql3_cursor.execute('select mmp_id,mmp_person_name, mmp_person_image from mm_metadata_person order by mmp_person_name')
+        self.sql3_cursor.execute('select mmp_id,mmp_person_name, mmp_person_image'\
+            ' from mm_metadata_person order by mmp_person_name')
     else:
         self.sql3_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image from mm_metadata_person where mmp_id in (select mmp_id from mm_metadata_person order by mmp_person_name offset %s limit %s) order by mmp_person_name', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
-# return person data
 def srv_db_metadata_person_by_guid(self, guid):
-    self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_person_image, mmp_person_name from mm_metadata_person where mmp_id = %s', (guid,))
+    """
+    # return person data
+    """
+    self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'\
+        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_id = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# return person data by name
 def srv_db_metadata_person_by_name(self, person_name):
-    self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s', (person_name,))
+    """
+    # return person data by name
+    """
+    self.sql3_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'\
+        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s',\
+        (person_name,))
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# does person exist already by host/id
 def srv_db_metadata_person_id_count(self, host_type, guid):
+    """
+    # does person exist already by host/id
+    """
     #sql_params = host_type, guid
     #self.sql3_cursor.execute('select count(*) from mm_metadata_person where mmp_person_media_id @> \'{"Host":%s}\' and mmp_person_meta_json @> \'{"id":%s}\'', sql_params)
-    self.sql3_cursor.execute('select count(*) from mm_metadata_person where mmp_person_media_id @> \'{"Host":"' + host_type + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
+    self.sql3_cursor.execute('select count(*) from mm_metadata_person'\
+        ' where mmp_person_media_id @> \'{"Host":"' + host_type\
+        + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
     return self.sql3_cursor.fetchone()[0]
 # works in postgresql
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}' and mmp_person_meta_json @> '{"id":169}'
 
 
-# insert person
 def srv_db_metdata_person_insert(self, person_name, media_id_json, person_json,\
         image_json=None):
-    self.sql3_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name, mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)', (str(uuid.uuid4()), person_name, media_id_json, person_json, image_json))
+    """
+    # insert person
+    """
+    self.sql3_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'\
+        ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',\
+        (str(uuid.uuid4()), person_name, media_id_json, person_json, image_json))
 
 
-# batch insert from json of crew/cast
 def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
+    """
+    # batch insert from json of crew/cast
+    """
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     try:
         for person_data in person_json:
@@ -119,8 +141,10 @@ def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
                     json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
 
 
-# find other media for person
 def srv_db_metadata_person_as_seen_in(self, person_guid):
+    """
+    # find other media for person
+    """
     row_data = self.srv_db_metadata_person_by_guid(person_guid)
     logging.debug("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':

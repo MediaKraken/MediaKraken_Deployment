@@ -21,14 +21,21 @@ import logging
 import uuid
 
 
-# insert media into database
 def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
         media_metadata_uuid, media_ffprobe_json):
-    self.sql3_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json) values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json))
+    """
+    # insert media into database
+    """
+    self.sql3_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
+        ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json)'\
+        ' values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid,\
+        media_class_uuid, media_metadata_uuid, media_ffprobe_json))
 
 
-# read in all media unless guid specified
 def srv_db_read_remote_media(self, media_guid=None):
+    """
+    # read in all media unless guid specified
+    """
     if media_guid is not None:
         self.sql3_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
             (media_guid,))
@@ -41,8 +48,10 @@ def srv_db_read_remote_media(self, media_guid=None):
         return self.sql3_cursor.fetchall()
 
 
-# count known media
 def srv_db_known_remote_media_count(self):
+    """
+    # count known media
+    """
     self.sql3_cursor.execute('select count(*) from mm_media_remote')
     return self.sql3_cursor.fetchone()[0]
 
@@ -84,44 +93,64 @@ def srv_db_known_remote_media_count(self):
 #            self.srv_db_insert_remote_media(link_uuid, row_data[0], self.srv_db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
 
 
-# new media for link
 def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
         sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+    """
+    # new media for link
+    """
     sql_params = date_last_sync,
     first_query = True
     sync_query = ""
     if sync_movie is not None:
-        sync_query += ("select mm_media_guid, 'Movie', mm_media_ffprobe_json, mm_metadata_media_id from mm_media, mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ("select mm_media_guid, 'Movie', mm_media_ffprobe_json,'\
+            ' mm_metadata_media_id from mm_media, mm_metadata_movie'\
+            ' where mm_media_metadata_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s", sql_params)
         first_query = False
 
     if sync_tv is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ("select mm_media_guid, 'TV Show', mm_media_ffprobe_json, mm_metadata_media_tvshow_id from mm_media, mm_metadata_tvshow where mm_metadata_tvshow_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ('select mm_media_guid, \'TV Show\', mm_media_ffprobe_json,'\
+            ' mm_metadata_media_tvshow_id from mm_media, mm_metadata_tvshow'\
+            ' where mm_metadata_tvshow_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
 
     if sync_sports is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ("select mm_media_guid, 'Sports', mm_media_ffprobe_json, mm_metadata_media_sports_id from mm_media, mm_metadata_sports where mm_metadata_sports_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ('select mm_media_guid, \'Sports\', mm_media_ffprobe_json,'\
+            ' mm_metadata_media_sports_id from mm_media, mm_metadata_sports'\
+            ' where mm_metadata_sports_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
 
     if sync_music is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ("select mm_media_guid, 'Music', mm_media_ffprobe_json, mm_metadata_media_music_id from mm_media, mm_metadata_music where mm_metadata_music_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ('select mm_media_guid, \'Music\', mm_media_ffprobe_json,'\
+            ' mm_metadata_media_music_id from mm_media, mm_metadata_music'\
+            ' where mm_metadata_music_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
 
     if sync_music_video is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ("select mm_media_guid, 'Music Video', mm_media_ffprobe_json, mm_metadata_music_video_media_id from mm_media, mm_metadata_music_video where mm_metadata_music_video_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ('select mm_media_guid, \'Music Video\', mm_media_ffprobe_json,'\
+            ' mm_metadata_music_video_media_id from mm_media, mm_metadata_music_video'\
+            ' where mm_metadata_music_video_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
 
     if sync_book is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ("select mm_media_guid, 'Book', mm_media_ffprobe_json, mm_metadata_book_isbn from mm_media, mm_metadata_book where mm_metadata_book_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' > %s", sql_params)
+        sync_query += ('select mm_media_guid, \'Book\', mm_media_ffprobe_json,'\
+            ' mm_metadata_book_isbn from mm_media, mm_metadata_book'\
+            ' where mm_metadata_book_guid = mm_metadata_guid'\
+            ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
     self.sql3_cursor.execute(sync_query)
     return self.sql3_cursor.fetchall()

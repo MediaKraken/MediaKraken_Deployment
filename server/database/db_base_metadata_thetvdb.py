@@ -22,13 +22,23 @@ import uuid
 import json
 
 
-# insert
 def srv_db_metadatatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
+    """
+    # insert
+    """
     media_uuid = str(uuid.uuid4())
-    self.sql3_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json, mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)', (media_uuid, series_id_json, tv_name, show_detail, image_json))
+    self.sql3_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'\
+        ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json,'\
+        ' mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)',\
+        (media_uuid, series_id_json, tv_name, show_detail, image_json))
     return media_uuid
 
 
-# updated
 def srv_db_metadatatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
-    self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s, mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s', (series_id_json, tv_name, show_detail, tvdb_id))
+    """
+    # updated
+    """
+    self.sql3_cursor.execute('update mm_metadata_tvshow'\
+        ' set mm_metadata_media_tvshow_id = %s, mm_metadata_tvshow_name = %s,'\
+        ' mm_metadata_tvshow_json = %s where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s',\
+        (series_id_json, tv_name, show_detail, tvdb_id))

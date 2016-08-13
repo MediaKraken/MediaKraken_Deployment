@@ -21,8 +21,10 @@ import logging
 import uuid
 
 
-# query to see if song is in local DB
 def srv_db_music_lookup(self, artist_name, album_name, song_title):
+    """
+    # query to see if song is in local DB
+    """
     self.sql3_cursor.execute('select mm_metadata_music_guid, mm_metadata_media_music_id->\'Mbrainz\' from mm_metadata_music, mm_metadata_album, mm_metadata_musician where blah and lower(mm_metadata_musician_name) = %s and lower(mm_metadata_album_name) = %s and lower(mm_metadata_music_name) = %s', (artist_name.lower(), album_name.lower(), song_title.lower()))
     try:
         return self.sql3_cursor.fetchone()
@@ -30,22 +32,31 @@ def srv_db_music_lookup(self, artist_name, album_name, song_title):
         return None
 
 
-# return musician data by guid
 def srv_db_metadata_musician_by_guid(self, guid):
-    self.sql3_cursor.execute('select * from mm_metadata_musician where mm_metadata_musician_guid = %s', (guid,))
+    """
+    # return musician data by guid
+    """
+    self.sql3_cursor.execute('select * from mm_metadata_musician'\
+        ' where mm_metadata_musician_guid = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# insert musician
 def srv_db_metadata_musician_add(self, data_name, data_id, data_json):
-    self.sql3_cursor.execute('insert into mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_id, mm_metadata_musician_json) values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
+    """
+    # insert musician
+    """
+    self.sql3_cursor.execute('insert into mm_metadata_musician (mm_metadata_musician_guid,'\
+        ' mm_metadata_musician_name, mm_metadata_musician_id, mm_metadata_musician_json)'\
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-# return album data by guid
 def srv_db_metadata_album_by_guid(self, guid):
+    """
+    # return album data by guid
+    """
     self.sql3_cursor.execute('select * from mm_metadata_album where mm_metadata_album_guid = %s',\
         (guid,))
     try:
@@ -59,8 +70,10 @@ def srv_db_metadata_album_add(self, data_name, data_id, data_json):
     self.sql3_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json) values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-# return song data by guid
 def srv_db_metadata_song_by_guid(self, guid):
+    """
+    # return song data by guid
+    """
     self.sql3_cursor.execute('select * from mm_metadata_music where mm_metadata_music_guid = %s',\
         (guid,))
     try:
@@ -69,32 +82,50 @@ def srv_db_metadata_song_by_guid(self, guid):
         return None
 
 
-# insert song
 def srv_db_metadata_song_add(self, data_name, data_id, data_json):
-    self.sql3_cursor.execute('insert into mm_metadata_music (mm_metadata_music_guid, mm_metadata_music_name, mm_metadata_media_music_id, mm_metadata_music_json) values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
+    """
+    # insert song
+    """
+    self.sql3_cursor.execute('insert into mm_metadata_music (mm_metadata_music_guid,'\
+        ' mm_metadata_music_name, mm_metadata_media_music_id, mm_metadata_music_json)'\
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-# return song list from ablum guid
 def srv_db_metadata_songs_by_album_guid(self, guid):
-    self.sql3_cursor.execute('select * from mm_metadata_music where blah = %s order by lower(mm_metadata_music_name)', (guid,))
+    """
+    # return song list from ablum guid
+    """
+    self.sql3_cursor.execute('select * from mm_metadata_music where blah = %s'\
+        ' order by lower(mm_metadata_music_name)', (guid,))
     return self.sql3_cursor.fetchall()
 
 
-# return albums metadatalist
 def srv_db_metadata_album_list(self, offset=None, records=None):
+    """
+    # return albums metadatalist
+    """
     # TODO, only grab the poster local from json
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name')
+        self.sql3_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'\
+            ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name')
     else:
-        self.sql3_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name offset %s limit %s', (offset, records))
+        self.sql3_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'\
+            ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name'\
+            ' offset %s limit %s', (offset, records))
     return self.sql3_cursor.fetchall()
         
 
-# return muscian metadatalist
 def srv_db_metadata_muscian_list(self, offset=None, records=None):
+    """
+    # return muscian metadatalist
+    """
     # TODO, only grab the poster local from json
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_json from mm_metadata_musician order by mm_metadata_musician_name')
+        self.sql3_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'\
+            ' mm_metadata_musician_json from mm_metadata_musician'\
+            ' order by mm_metadata_musician_name')
     else:
-        self.sql3_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_json from mm_metadata_musician order by mm_metadata_musician_name offset %s limit %s', (offset, records))
+        self.sql3_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'\
+            ' mm_metadata_musician_json from mm_metadata_musician'\
+            ' order by mm_metadata_musician_name offset %s limit %s', (offset, records))
     return self.sql3_cursor.fetchall()

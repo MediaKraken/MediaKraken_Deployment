@@ -24,6 +24,9 @@ import datetime
 
 
 def srv_db_kodi_user_sync_list_added(self, synctime):
+    """
+    List of new items by date
+    """
     self.sql3_cursor.execute("select mm_media_guid from mm_media'\
         ' where mm_media_json->>\'DateAdded\' >= %s", (synctime,))
     return self.sql3_cursor.fetchall()

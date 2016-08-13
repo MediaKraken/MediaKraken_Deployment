@@ -36,7 +36,8 @@ def srv_db_tuner_list(self, offset=None, records=None):
     if offset is None:
         self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
     else:
-        self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner offset %s limit %s', (offset, records))
+        self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
+            ' offset %s limit %s', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
@@ -67,7 +68,8 @@ def srv_db_tuner_by_serial(self, serial_no):
     """
     Find detials by hardware id (serial)
     """
-    self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner where mm_tuner_json->\'ID\' ? %s', (serial_no,))
+    self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
+        ' where mm_tuner_json->\'ID\' ? %s', (serial_no,))
     try:
         return self.sql3_cursor.fetchone()
     except:

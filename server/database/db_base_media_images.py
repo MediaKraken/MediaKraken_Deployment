@@ -31,5 +31,7 @@ def com_media_images_list(self, offset=None, records=None):
     """
     Images list
     """
-    self.sql3_cursor.execute('select mm_media_path from mm_media,mm_media_class where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid and mm_media_class_type = \'Picture\'')
+    self.sql3_cursor.execute('select mm_media_path from mm_media,mm_media_class'\
+        ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
+        ' and mm_media_class_type = \'Picture\'')
     return self.sql3_cursor.fetchall()

@@ -20,8 +20,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-# return game system data
 def srv_db_metadata_game_system_by_guid(self, guid):
+    """
+    # return game system data
+    """
     self.sql3_cursor.execute('select * from mm_metadata_game_systems_info where gs_id = %s',\
         (guid,))
     try:
@@ -31,12 +33,15 @@ def srv_db_metadata_game_system_by_guid(self, guid):
 
 
 def srv_db_metadata_game_system_list_count(self):
-    self.sql3_cursor.execute('select count(*) from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\' ? \'yes\'')
+    self.sql3_cursor.execute('select count(*) from mm_metadata_game_systems_info'\
+        ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
     return self.sql3_cursor.fetchone()[0]
 
 
-# return list of game systems
 def srv_db_metadata_game_system_list(self, offset=None, records=None):
+    """
+    # return list of game systems
+    """
     if offset is None:
         self.sql3_cursor.execute('select gs_id,gs_game_system_json->\'@name\',gs_game_system_json->\'description\',gs_game_system_json->\'year\' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\' ? \'yes\' order by gs_game_system_json->\'description\'')
     else:
@@ -59,40 +64,57 @@ def srv_db_metadata_game_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-# return game data
 def srv_db_metadata_game_by_guid(self, guid):
-    self.sql3_cursor.execute('select gi_id, gi_system_id, gi_game_info_json from mm_metadata_game_software_info where gi_id = %s', (guid,))
+    """
+    # return game data
+    """
+    self.sql3_cursor.execute('select gi_id, gi_system_id, gi_game_info_json'\
+        ' from mm_metadata_game_software_info where gi_id = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# game list by system count
 def srv_db_metadata_game_by_system_count(self, guid):
-    self.sql3_cursor.execute('select count(*) from mm_metadata_game_software_info, mm_metadata_game_systems_info where gi_system_id = gs_id and gs_id = %s', (guid,))
+    """
+    # game list by system count
+    """
+    self.sql3_cursor.execute('select count(*) from mm_metadata_game_software_info,'\
+        ' mm_metadata_game_systems_info where gi_system_id = gs_id and gs_id = %s', (guid,))
     return self.sql3_cursor.fetchone()[0]
 
 
-# game list by system count
 def srv_db_metadata_game_by_system(self, guid, offset=None, records=None):
-    self.sql3_cursor.execute('select * from mm_metadata_game_software_info, mm_metadata_game_systems_info where gi_system_id = gs_id and gs_id = %s offset %s, limit %s', (guid, offset, records))
+    """
+    # game list by system count
+    """
+    self.sql3_cursor.execute('select * from mm_metadata_game_software_info,'\
+        ' mm_metadata_game_systems_info where gi_system_id = gs_id and gs_id = %s'\
+        ' offset %s, limit %s', (guid, offset, records))
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# game by sha1
 def srv_db_metadata_game_by_sha1(self, sha1_hash):
-    self.sql3_cursor.execute('select gi_id from mm_metadata_game_software_info where gi_game_info_json->\'@sha1\' ? %s', (sha1_hash,))
+    """
+    # game by sha1
+    """
+    self.sql3_cursor.execute('select gi_id from mm_metadata_game_software_info'\
+        ' where gi_game_info_json->\'@sha1\' ? %s', (sha1_hash,))
     try:
         return self.sql3_cursor.fetchone()['gi_id']
     except:
         return None
 
 
-# game by name and system short name
 def srv_db_metadata_game_by_name_and_system(self, game_name, game_system_short_name):
-    self.sql3_cursor.execute('select gi_id from mm_metadata_game_software_info where gi_game_info_json->\'@name\' = %s and gi_system_id = %s', (game_name, game_system_short_name))
+    """
+    # game by name and system short name
+    """
+    self.sql3_cursor.execute('select gi_id from mm_metadata_game_software_info'\
+        ' where gi_game_info_json->\'@name\' = %s and gi_system_id = %s',\
+        (game_name, game_system_short_name))
     return self.sql3_cursor.fetchall()

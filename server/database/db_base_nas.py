@@ -21,37 +21,49 @@ import logging
 import uuid
 
 
-# count nass
 def srv_db_nas_count(self):
+    """
+    # count nass
+    """
     self.sql3_cursor.execute('select count(*) from mm_nas')
     return self.sql3_cursor.fetchone()[0]
 
 
-# read nass
 def srv_db_nas_list(self):
+    """
+    # read nas
+    """
     self.sql3_cursor.execute('select mm_nas_id, mm_nas_json from mm_nas')
     return self.sql3_cursor.fetchall()
 
 
-# insert record
 def srv_db_nas_insert(self, nas_json):
+    """
+    # insert record
+    """
     self.sql3_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)',\
         (str(uuid.uuid4()), nas_json))
 
 
-# update record
 def srv_db_nas_update(self, guid, nas_json):
+    """
+    # update record
+    """
     self.sql3_cursor.execute('update mm_nas set mm_nas_json = %s where mm_nas_id = %s',\
         (nas_json, guid))
 
 
-# delete record
 def srv_db_nas_delete(self, guid):
+    """
+    # delete record
+    """
     self.sql3_cursor.execute('delete from mm_nas where mm_nas_id = %s', (guid,))
 
 
-# find detials by nas
 def srv_db_nas_read(self, guid):
+    """
+    # find detials by nas
+    """
     self.sql3_cursor.execute('select mm_nas_json from mm_nas where mm_nas_id = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()['mm_nas_json']

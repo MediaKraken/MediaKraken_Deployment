@@ -26,8 +26,10 @@ from psycopg2.extras import DictCursor
 import db_base_postgresql_ext
 
 
-# open database and pull in config from sqlite and create db if not exist
 def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    """
+    # open database and pull in config from sqlite and create db if not exist
+    """
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -43,9 +45,11 @@ def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass
         sys.exit()
 
 
-# open database and pull in config from sqlite and create db if not exist
 def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
         PostDBUser, PostDBPass):
+    """
+    # open database and pull in config from sqlite and create db if not exist
+    """
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
@@ -62,35 +66,47 @@ def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
         sys.exit()
 
 
-# close main db file
 def srv_db_close(self):
+    """
+    # close main db file
+    """
     self.sql3_conn.close()
 
 
-# commit changes to media database
 def srv_db_commit(self):
+    """
+    # commit changes to media database
+    """
     self.sql3_conn.commit()
 
 
-# rollback
 def srv_db_rollback(self):
+    """
+    # rollback
+    """
     self.sql3_conn.rollback()
 
 
-# check for table or index
 def srv_db_table_index_check(self, resource_name):
+    """
+    # check for table or index
+    """
     self.sql3_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
     return self.sql3_cursor.fetchone()[0]
 
 
-# return count of records in table
 def srv_db_table_count(self, table_name):
+    """
+    # return count of records in table
+    """
     self.sql3_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
     return self.sql3_cursor.fetchone()[0]
 
 
-# general run anything
 def srv_db_query(self, query_string):
+    """
+    # general run anything
+    """
     logging.debug("query: %s", query_string)
     self.sql3_cursor.execute(query_string)
     return self.sql3_cursor.fetchall()

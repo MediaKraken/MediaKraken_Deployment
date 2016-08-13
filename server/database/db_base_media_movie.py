@@ -27,25 +27,34 @@ def srv_db_media_random(self, return_image_type=False):
     Find random movie
     """
     if not return_image_type:
-        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid and random() < 0.01 limit 1')
+        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,'\
+            'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'\
+            ' and random() < 0.01 limit 1')
     else:
         self.sql3_cursor.execute('select mm_metadata_localimage_json->\'LocalImages\'->>'\
-            + return_image_type + ',mm_media_guid from mm_media,mm_metadata where mm_media_metadata_guid = mm_metadata_guid and mm_metadata_localimage_json->\'LocalImages\'->>' + return_image_type + ' > \'\' and random() < 0.01 limit 1')
+            + return_image_type + ',mm_media_guid from mm_media,mm_metadata'\
+            ' where mm_media_metadata_guid = mm_metadata_guid'\
+            ' and mm_metadata_localimage_json->\'LocalImages\'->>' + return_image_type\
+            + ' > \'\' and random() < 0.01 limit 1')
     try:
         return self.sql3_cursor.fetchone()
     except:
         return None
 
 
-# movie count by genre
 def srv_db_media_movie_count_by_genre(self, class_guid):
+    """
+    # movie count by genre
+    """
     self.sql3_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\') from ((select distinct on (mm_media_metadata_guid) mm_metadata_json from mm_media, mm_metadata_movie where mm_media_class_guid = %s and mm_media_metadata_guid = mm_metadata_guid) union (select distinct on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote, mm_metadata_movie where mmr_media_class_guid = %s and mmr_media_metadata_guid = mm_metadata_guid)) as temp group by gen', (class_guid, class_guid))
     return self.sql3_cursor.fetchall()
 
 
-# web media count
 def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
         group_collection=False, include_remote=False):
+    """
+    # web media count
+    """
     logging.debug("classuid: %s %s", class_guid, list_type)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
@@ -88,9 +97,11 @@ def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='Al
     return self.sql3_cursor.fetchone()[0]
 
 
-# web media return
 def srv_db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
         list_limit=0, group_collection=False, offset=0, include_remote=False):
+    """
+    # web media return
+    """
     logging.debug("classuid: %s %s %s", class_guid, list_type, list_genre)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':

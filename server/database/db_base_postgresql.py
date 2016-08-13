@@ -20,9 +20,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-# return tables sizes (includex indexes, etc)
 # query provided by postgresql wiki
 def srv_db_postgresql_table_sizes(self):
+    """
+    # return tables sizes (includex indexes, etc)
+    """
     self.sql3_cursor.execute('SELECT nspname || \'.\' || relname AS "relation",'\
         ' pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C'\
         ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname'\
@@ -31,16 +33,20 @@ def srv_db_postgresql_table_sizes(self):
     return self.sql3_cursor.fetchall()
 
 
-# return tables and row count
 # query provided by postgresql wiki
 def srv_db_postgresql_row_count(self):
+    """
+    # return tables and row count
+    """
     self.sql3_cursor.execute('SELECT schemaname,relname,n_live_tup'\
         ' FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
     return self.sql3_cursor.fetchall()
 
 
-# vacuum stats by day list
 def srv_db_postgresql_vacuum_stat_by_day(self, days=1):
+    """
+    # vacuum stats by day list
+    """
     if days == 0:
         self.sql3_cursor.execute('SELECT relname FROM pg_stat_all_tables'\
             ' WHERE schemaname = \'public\'')
@@ -54,11 +60,15 @@ def srv_db_postgresql_vacuum_stat_by_day(self, days=1):
     return self.sql3_cursor.fetchall()
 
 
-# vacuum table
 def srv_db_postgresql_vacuum_table(self, table_name):
+    """
+    # vacuum table
+    """
     self.sql3_cursor.execute('VACUUM ANALYZE ' + table_name)
 
 
-# set isolation level
 def srv_db_postgesql_set_isolation_level(self, isolation_level):
+    """
+    # set isolation level
+    """
     self.sql3_conn.set_isolation_level(isolation_level)

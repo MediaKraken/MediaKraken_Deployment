@@ -21,7 +21,11 @@ import logging
 
 
 def srv_db_media_album_count(self):
-    self.sql3_cursor.execute('select count(*) from mm_metadata_album, mm_media where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
+    """
+    Album count
+    """
+    self.sql3_cursor.execute('select count(*) from mm_metadata_album, mm_media'\
+        ' where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
     sql_data = self.sql3_cursor.fetchall()
     if sql_data is None:
         return 0
@@ -29,9 +33,19 @@ def srv_db_media_album_count(self):
 
 
 def srv_db_media_album_list(self, offset=None, per_page=None):
+    """
+    Album list
+    """
     # TODO only grab the image part of the json for list
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,mm_metadata_album_json from mm_metadata_album, mm_media where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid order by mm_metadata_album_name')
+        self.sql3_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'\
+            'mm_metadata_album_json from mm_metadata_album, mm_media'\
+            ' where mm_media_metadata_guid = mm_metadata_album_guid'\
+            ' group by mm_metadata_album_guid order by mm_metadata_album_name')
     else:
-        self.sql3_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,mm_metadata_album_json from mm_metadata_album, mm_media where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid order by mm_metadata_album_name offset %s limit %s', (offset, per_page))
+        self.sql3_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'\
+            'mm_metadata_album_json from mm_metadata_album, mm_media'\
+            ' where mm_media_metadata_guid = mm_metadata_album_guid'\
+            ' group by mm_metadata_album_guid order by mm_metadata_album_name'\
+            ' offset %s limit %s', (offset, per_page))
     return self.sql3_cursor.fetchall()
