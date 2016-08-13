@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import time
 from kivy.utils import platform
 # import the pyserial library for use in rs232c communications
@@ -30,7 +30,7 @@ class CommonSerial(object):
     Class for interfacing via serial devices
     """
     def __init__(self):
-        pass
+        self.ser_device = None
 
 
     def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
