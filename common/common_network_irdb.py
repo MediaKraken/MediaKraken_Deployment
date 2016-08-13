@@ -19,11 +19,8 @@
 # interface for IRDB website
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import json
-import sys
-# include code from other paths
-sys.path.append("../../MediaKraken_Common/")
 from common import common_network
 
 

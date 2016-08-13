@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 from kivy.utils import platform
 # this is for network and rs232 control of Integra/Onkyo receivers
 if platform != 'android':
@@ -46,6 +46,9 @@ def com_net_eiscp_disconnect(eiscp_device):
 
 
 def com_net_eiscp_command(eiscp_device, eiscp_command):
+    """
+    Send command via eiscp
+    """
     eiscp_device.command(eiscp_command)
 
 

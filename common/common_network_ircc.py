@@ -22,14 +22,15 @@ import sys
 sys.path.append("../../MediaKraken_Common/lib")
 
 
-# ircc device discovery via ssdp
 def com_net_ircc_discover():
+    """
+    # ircc device discovery via ssdp
+    """
     SSDP_MSearch.search(cbFoundDevice=com_net_ircc_Found_Device,\
         cbFinishedSearching=com_net_ircc_Finished_Searching,\
         target='urn:schemas-sony-com:service:IRCC:1')
 
 
-# filler found device
 def com_net_ircc_found_device(ircc_device):
     pass
 
