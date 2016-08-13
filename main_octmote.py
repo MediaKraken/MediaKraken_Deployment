@@ -111,7 +111,7 @@ class OctMoteApp(App):
     connection = None
 
     def exit_program(self):
-        com_Database_Octmote.MK_Database_Sqlite3_Close()
+        com_Database_Octmote.com_db_Close()
 
 
     def dismiss_popup(self):
@@ -125,7 +125,7 @@ class OctMoteApp(App):
         self.remote_mode_details_item = {}
         self.remote_mode_currrent_item = 'Default'
         # open database files
-        self.OctMote_Server_Connection_Data = com_Database_Octmote.MK_Database_Sqlite3_Open()
+        self.OctMote_Server_Connection_Data = com_Database_Octmote.com_db_Open()
         # fetch and import any item/layout files
         com_JSON.MK_Json_Find()
         root = OctMote()
@@ -220,7 +220,7 @@ class OctMoteApp(App):
             self.root.ids.setup_base_device_gridlayout.clear_widgets()
         self.root.ids.setup_base_device_gridlayout.bind(minimum_height=self.root.ids.setup_base_device_gridlayout.setter('height'))
         # fetch base items for setup
-        for base_device in com_Database_Octmote.MK_Database_Sqlite3_Device_List():
+        for base_device in com_Database_Octmote.com_db_Device_List():
             btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40, group='setup_base_device_button',)
             btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Device_Selected, base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
@@ -230,7 +230,7 @@ class OctMoteApp(App):
             self.root.ids.setup_base_item_gridlayout.clear_widgets()
         self.root.ids.setup_base_item_gridlayout.bind(minimum_height=self.root.ids.setup_base_item_gridlayout.setter('height'))
         # fetch items that users have added
-        for item_device in com_Database_Octmote.MK_Database_Sqlite3_Item_List():
+        for item_device in com_Database_Octmote.com_db_Item_List():
             btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40, group='setup_item_device_button',)
             btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Item_Selected, item_device[0]))
             self.root.ids.setup_base_item_gridlayout.add_widget(btn1)

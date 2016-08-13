@@ -29,57 +29,57 @@ class TestCommonDatabaseOctmote(object):
 
     @classmethod
     def setup_class(self):
-        self.db = MK_Database_Sqlite3_Open(None):
+        self.db = com_db_Open(None):
 
 
     @classmethod
     def teardown_class(self):
-        self.db.MK_Database_Sqlite3_Close()
+        self.db.com_db_Close()
 
 
 # insert new layout config into database
-#def MK_Database_Sqlite3_Layout_Config_Insert(layout_record_name, layout_record_json):
+#def com_db_Layout_Config_Insert(layout_record_name, layout_record_json):
 
 
-    def Test_MK_Database_Sqlite3_Layout_List(self):
-        MK_Database_Sqlite3_Layout_List()
+    def Test_com_db_Layout_List(self):
+        com_db_Layout_List()
 
 
-#def MK_Database_Sqlite3_Layout_Detail(guid):
+#def com_db_Layout_Detail(guid):
 
 
 # insert new device type into database
-#def MK_Database_Sqlite3_Device_Insert(device_record_name, device_record_description):
+#def com_db_Device_Insert(device_record_name, device_record_description):
 
 
-    def Test_MK_Database_Sqlite3_Device_List(self):
-        self.db.MK_Database_Sqlite3_Device_List()
+    def Test_com_db_Device_List(self):
+        self.db.com_db_Device_List()
 
 
-#def MK_Database_Sqlite3_Device_Detail(guid):
+#def com_db_Device_Detail(guid):
 
 
 # insert new item into database
-#def MK_Database_Sqlite3_Item_Insert(item_record_json):
+#def com_db_Item_Insert(item_record_json):
 
 
-    def Test_MK_Database_Sqlite3_Item_List(self):
-        self.db.MK_Database_Sqlite3_Item_List()
+    def Test_com_db_Item_List(self):
+        self.db.com_db_Item_List()
 
 
-#def MK_Database_Sqlite3_Item_Detail(guid):
+#def com_db_Item_Detail(guid):
 
 
 # do general query
-#def MK_Database_Sqlite3_General_Query(sql_command):
+#def com_db_General_Query(sql_command):
 
 
 # do general insert
-#def MK_Database_Sqlite3_General_Insert(sql_command):
+#def com_db_General_Insert(sql_command):
 
 
 # insert new anidb entries into database
-#def MK_Database_Sqlite3_anidb_Title_Insert(sql_params_list):
+#def com_db_anidb_Title_Insert(sql_params_list):
 
 
-#def MK_Database_Sqlite3_anidb_Title_Search(title_to_search):
+#def com_db_anidb_Title_Search(title_to_search):

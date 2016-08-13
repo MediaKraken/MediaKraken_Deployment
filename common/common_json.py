@@ -47,11 +47,11 @@ def com_json_import(file_name):
     file_handle.close()
     try:
         # item type
-        common_database_octmote.MK_Database_Sqlite3_Item_Insert(json_data)
+        common_database_octmote.com_db_Item_Insert(json_data)
     except:
         try:
             # layout
-            common_database_octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'],\
+            common_database_octmote.com_db_Layout_Config_Insert(json_data['Layout'],\
                 json_data)
         except:
             pass

@@ -30,10 +30,11 @@ class CommonDatabaseOctmote(object):
     Class for interfacing with database of Octmote
     """
     def __init__(self):
-        pass
+        self.sql3_conn = None
+        self.sql3_cursor = None
 
 
-    def MK_Database_Sqlite3_Open(self, db_file=None):
+    def com_db_open(self, db_file=None):
         """
         Open database and pull in config from sqlite and create db if not exist
         """
@@ -107,14 +108,14 @@ class CommonDatabaseOctmote(object):
             return None
 
 
-    def MK_Database_Sqlite3_Close():
+    def com_db_close():
         """
         Close sqlite3 database
         """
         self.sql3_conn.close()
 
 
-    def MK_Database_Sqlite3_Layout_Config_Insert(self, layout_record_name, layout_record_json):
+    def com_db_layout_config_insert(self, layout_record_name, layout_record_json):
         """
         Insert new layout config into database
         """
@@ -123,19 +124,22 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.commit()
 
 
-    def MK_Database_Sqlite3_Layout_List(self):
+    def com_db_layout_list(self):
+        """
+        Load list of layouts
+        """
         self.sql3_cursor.execute("select layout_guid, layout_name from octmote_layout'\
             ' order by layout_name asc")
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Layout_Detail(self, guid):
+    def com_db_layout_detail(self, guid):
         self.sql3_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
             (guid,))
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Device_Insert(self, device_record_name, device_record_description):
+    def com_db_device_insert(self, device_record_name, device_record_description):
         """
         Insert new device type into database
         """
@@ -148,19 +152,19 @@ class CommonDatabaseOctmote(object):
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Device_List(self):
+    def com_db_device_list(self):
         self.sql3_cursor.execute("select device_guid, device_name from octmote_device'\
             ' order by device_name asc")
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Device_Detail(self, guid):
+    def com_db_device_detail(self, guid):
         self.sql3_cursor.execute("select device_description from octmote_device'\
             ' where device_guid = ?", (guid,))
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Item_Insert(self, item_record_json):
+    def com_db_item_insert(self, item_record_json):
         """
         Insert new item into database
         """
@@ -177,19 +181,19 @@ class CommonDatabaseOctmote(object):
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Item_List(self):
+    def com_db_item_list(self):
         self.sql3_cursor.execute('select item_guid, item_type, item_manufacturer,'\
             ' item_model_number from octmote_item order by item_type, item_manufacturer,'\
             ' item_model_number asc')
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_Item_Detail(self, guid):
+    def com_db_item_detail(self, guid):
         self.sql3_cursor.execute("select item_type from octmote_item where item_guid = ?", (guid,))
         return self.sql3_cursor
 
 
-    def MK_Database_Sqlite3_General_Query(self, sql_command):
+    def com_db_general_query(self, sql_command):
         """
         Do general query
         """
@@ -197,7 +201,7 @@ class CommonDatabaseOctmote(object):
         return self.sql3_cursor.fetchall()
 
 
-    def MK_Database_Sqlite3_General_Insert(self, sql_command):
+    def com_db_general_insert(self, sql_command):
         """
         Do general insert
         """
@@ -205,7 +209,7 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.commit()
 
 
-    def MK_Database_Sqlite3_anidb_Title_Insert(self, sql_params_list):
+    def com_db_anidb_title_insert(self, sql_params_list):
         """
         Insert new anidb entries into database
         """
@@ -216,7 +220,7 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.commit()
 
 
-    def MK_Database_Sqlite3_anidb_Title_Search(self, title_to_search):
+    def com_db_anidb_title_search(self, title_to_search):
         self.sql3_cursor.execute('select anidb_aid from octmote_anidb'\
             ' where anidb_title = ? limit 1', (title_to_search,))
         try:
