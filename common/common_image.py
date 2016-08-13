@@ -25,14 +25,14 @@ def com_image_resizeimagecalc(img_size, size):
     Scale image keeping aspect ratio
     """
     picwidth = img_size[0]
-    picHeight = img_size[1]
-    scalewidth =  float(size[0] / picwidth)
-    scaleheight = float(size[1] / picHeight)
+    picheight = img_size[1]
+    scalewidth = float(size[0] / picwidth)
+    scaleheight = float(size[1] / picheight)
     if scalewidth > scaleheight:
         scale = scaleheight
     else:
         scale = scalewidth
-    return (picwidth * scale, picHeight * scale)
+    return (picwidth * scale, picheight * scale)
 
 
 def com_image_resizeimage(file_name, image_size):

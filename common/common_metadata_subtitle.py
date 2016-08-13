@@ -17,10 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import sys
-import re
 from common import common_file
 from common import common_Hash
 sys.path.append("../../MediaKraken_Common/lib")
@@ -29,7 +28,7 @@ import subliminal
 
 
 # fetch subtitles
-def com_metadata_fetch_subtitle(file_name, sub_lang="en"):
+def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     #file_hash = com_Hash.com_hash_thesubdb(file_name)
     f = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
     cmd_output = f.read()
@@ -37,7 +36,7 @@ def com_metadata_fetch_subtitle(file_name, sub_lang="en"):
 
 
 # batch fetch subtitles
-def com_metadata_fetch_subtitle_batch(dir_name, sub_lang):
+def com_meta_fetch_subtitle_batch(dir_name, sub_lang):
     # configure the cache
 #    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename': '/home/spoot/cachefile.dbm'})
 #    # scan for videos in the folder and their subtitles

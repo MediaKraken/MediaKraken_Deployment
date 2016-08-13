@@ -17,11 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-import sys
-from xml.dom import minidom
-from common import common_file
-from common import common_network
+# import logging
 from imdbpie import Imdb
 
 

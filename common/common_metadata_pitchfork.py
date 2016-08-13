@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import pitchfork
 
 
@@ -26,45 +26,45 @@ class CommonMetadataPitchfork(object):
     Class for interfacing with pitchfork
     """
     def __init__(self):
-        pass
+        self.pitchfork_api = None
 
 
-    def com_pitchfork_search(self, artist_name, album_title):
+    def com_pfork_search(self, artist_name, album_title):
         """
         Search via name and title
         """
         self.pitchfork_api = pitchfork.search(artist_name, album_title)
 
 
-    def com_pitchfork_album_title(self):
+    def com_pfork_album_title(self):
         """
         Album title
         """
         return self.pitchfork_api.album()
 
 
-    def com_pitchfork_album_label(self):
+    def com_pfork_album_label(self):
         """
         Album label
         """
         return self.pitchfork_api.label()
 
 
-    def com_pitchfork_album_review(self):
+    def com_pfork_album_review(self):
         """
         Album review
         """
         return self.pitchfork_api.editorial()
 
 
-    def com_pitchfork_album_cover_art_link(self):
+    def com_pfork_album_cover_art_link(self):
         """
         Get album coverart link
         """
         return self.pitchfork_api.cover()
 
 
-    def com_pitchfork_album_review_score(self):
+    def com_pfork_album_review_score(self):
         """
         Get review score
         """

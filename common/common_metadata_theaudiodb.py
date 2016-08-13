@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 
 
 class CommonMetadataTheAudiodb(object):
@@ -26,4 +26,3 @@ class CommonMetadataTheAudiodb(object):
     """
     def __init__(self):
         pass
-

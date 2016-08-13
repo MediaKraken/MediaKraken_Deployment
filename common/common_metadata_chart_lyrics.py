@@ -21,7 +21,7 @@ import logging
 import urllib
 
 
-def com_metadata_chart_lyrics(artist_name, song_name):
+def com_meta_chart_lyrics(artist_name, song_name):
     """
     Generate url link and fetch lyrics
     """

@@ -63,5 +63,4 @@ def com_freecovers_search(search_string, search_categories):
     print(handler.read())
 
 
-com_freecovers_search('Megadeath', None):
-    pass
+# com_freecovers_search('Megadeath', None)

@@ -39,7 +39,7 @@ else:
     base_image_path += '/'
 
 
-def com_metadata_calc_trailer_weight(trailer_file_list, title_name, title_year):
+def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
     """
     Determine "weight" of file to download for trailer
     """
@@ -66,7 +66,7 @@ def com_metadata_calc_trailer_weight(trailer_file_list, title_name, title_year):
     return best_match, old_weight
 
 
-def com_metadata_image_file_path(media_name, media_type):
+def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
@@ -80,11 +80,12 @@ def com_metadata_image_file_path(media_name, media_type):
             file_path = os.path.join(base_image_path, media_type,\
                 os.path.basename(media_name)[0].lower())
     except:
-        file_path = os.path.join(base_image_path, media_type, random.choice(string.ascii_lowercase))       
+        file_path = os.path.join(base_image_path, media_type,\
+            random.choice(string.ascii_lowercase))       
     return file_path
 
 
-def com_metadata_image_path(media_name, media_type, source_link, source_file):
+def com_meta_image_path(media_name, media_type, source_link, source_file):
     """
     determine image location
     media name - used to determine a-z dir
@@ -92,7 +93,7 @@ def com_metadata_image_path(media_name, media_type, source_link, source_file):
     source_link - the website/host to use
     source_file - the "file name" on the url
     """
-    file_path = com_metadata_image_file_path(media_name, media_type)
+    file_path = com_meta_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == "tmdb":
         url = 'https://image.tmdb.org/'
@@ -120,5 +121,5 @@ def com_metadata_image_path(media_name, media_type, source_link, source_file):
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):
-        com_network.mk_network_fetch_from_url(url + source_file, file_path)
+        common_network.mk_network_fetch_from_url(url + source_file, file_path)
     return file_path

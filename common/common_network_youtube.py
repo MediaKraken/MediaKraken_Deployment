@@ -23,7 +23,7 @@ import youtube_dl
 
 
 # fetch video via youtube-dl
-def com_metadata_youtube_fetch_video_by_url(url_location, file_name):
+def com_meta_youtube_fetch_video_by_url(url_location, file_name):
     ydl_opts = {}
     ydl_opts["outtmpl"] = file_name
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -31,5 +31,5 @@ def com_metadata_youtube_fetch_video_by_url(url_location, file_name):
 
 
 # fetch youtube trailers for title
-def com_metadata_youtube_fetch_video_list(search_string, max_files):
+def com_meta_youtube_fetch_video_list(search_string, max_files):
     return com_Google.com_Google_Youtube_Search(search_string, max_files)
