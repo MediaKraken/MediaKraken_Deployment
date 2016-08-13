@@ -21,15 +21,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_TheSportsDB import *
+from com_Metadata_thesportsdb import *
 
 
-class TestCommonMetadataTheSportsDB(object):
+class TestCommonMetadatathesportsdb(object):
 
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_TheSportsDB.com_Metadata_TheSportsDB_API()
+        self.db = com_Metadata_thesportsdb.com_Metadata_thesportsdb_API()
 
 
     @classmethod
@@ -42,26 +42,26 @@ class TestCommonMetadataTheSportsDB(object):
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def Test_com_Metadata_TheSportsDB_Search_Team_By_Name(self, team_name):
-        com_Metadata_TheSportsDB_Search_Team_By_Name(team_name)
+    def Test_com_Metadata_thesportsdb_Search_Team_By_Name(self, team_name):
+        com_Metadata_thesportsdb_Search_Team_By_Name(team_name)
 
 
     @pytest.mark.parametrize(("team_name"), [
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def Test_com_Metadata_TheSportsDB_Search_Players_By_Team(self, team_name):
-        com_Metadata_TheSportsDB_Search_Players_By_Team(team_name)
+    def Test_com_Metadata_thesportsdb_Search_Players_By_Team(self, team_name):
+        com_Metadata_thesportsdb_Search_Players_By_Team(team_name)
 
 
-# def com_Metadata_TheSportsDB_Search_Players_By_Name(self, player_name):
+# def com_Metadata_thesportsdb_Search_Players_By_Name(self, player_name):
 
 
-# def com_Metadata_TheSportsDB_Search_Players_By_Team_And_Player_Name(self, team_name, player_name):
+# def com_Metadata_thesportsdb_Search_Players_By_Team_And_Player_Name(self, team_name, player_name):
 
 
 # event lookups
-# def com_Metadata_TheSportsDB_Search_Event_By_Name(self, event_name):
+# def com_Metadata_thesportsdb_Search_Event_By_Name(self, event_name):
 
 
 

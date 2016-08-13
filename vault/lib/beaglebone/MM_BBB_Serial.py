@@ -23,12 +23,12 @@
 
 from bbio import *
 
-def OctMote_BBB_Serial_Setup(selected_speed):
+def octmote_bbb_serial_setup(selected_speed):
     baud_rates = [300, 1200, 2400, 9600, 19200, 38400, 57600, 115200, 230400, 460800]
     # Start Serial2 at selected baud:
     Serial2.begin(baud_rates[selected_speed])
 
-def OctMote_BBB_Data_Check():
+def octmote_bbb_data_check():
     if Serial2.available():
         # There's incoming data
         data = ''
@@ -40,6 +40,6 @@ def OctMote_BBB_Data_Check():
             delay(5)
         print "Data received:\n  '%s'" % data
 
-def OctMote_BBB_Data_Write(data_string):
+def octmote_bbb_data_write(data_string):
     print "Data write:\n  '%s'" % data_string
     Serial2.write(data_string)

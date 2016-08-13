@@ -29,7 +29,7 @@ from common import common_metadata_netflixroulette
 from common import common_Metadata_TheTVDB
 from common import common_Metadata_TV_Intro
 from common import common_Metadata_TV_Theme
-from common import common_Metadata_TVMaze
+from common import common_Metadata_tvmaze
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -38,37 +38,37 @@ import metadata_nfo_xml
 
 # verify thetvdb key exists for search
 if Config.get('API', 'theTVdb').strip() != 'None':
-    theTVDB_API_Connection = com_TheTVDB.com_TheTVDB_API()
+    thetvdb_API_Connection = com_TheTVDB.com_TheTVDB_API()
     # show xml downloader and general api interface
-    theTVDB_API = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
+    thetvdb_API = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
 else:
-    theTVDB_API_Connection = None
+    thetvdb_API_Connection = None
 
 
 # setup the tvmaze class
-if Config.get('API', 'TVMaze').strip() != 'None':
-    TVMaze_API_Connection = com_Metadata_TVMaze.com_Metadata_TVMaze_API()
+if Config.get('API', 'tvmaze').strip() != 'None':
+    tvmaze_API_Connection = com_Metadata_tvmaze.com_Metadata_tvmaze_API()
 else:
-    TVMaze_API_Connection = None
+    tvmaze_API_Connection = None
 
 
 # tvdb search
 def tv_search_tvdb(db, file_name):
     metadata_uuid = None
-    if theTVDB_API_Connection is not None:
+    if thetvdb_API_Connection is not None:
         if 'year' in file_name:
-            tvdb_id = str(theTVDB_API_Connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(thetvdb_API_Connection.com_TheTVDB_Search(file_name['title'],\
                 file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(theTVDB_API_Connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(thetvdb_API_Connection.com_TheTVDB_Search(file_name['title'],\
                 None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
             # since there has been NO match whatsoever.....can "wipe" out everything
-            media_id_json = json.dumps({'theTVDB': tvdb_id})
+            media_id_json = json.dumps({'thetvdb': tvdb_id})
             logging.debug("dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
-            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVDB(tvdb_id)
+            metadata_uuid = db.srv_db_metadatatv_guid_by_tvdb(tvdb_id)
             logging.debug("db result: %s", metadata_uuid)
     return metadata_uuid
 
@@ -77,19 +77,19 @@ def tv_search_tvdb(db, file_name):
 def tv_fetch_save_tvdb(db, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
-    xml_show_data, xml_actor_data, xml_banners_data = theTVDB_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
+    xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
     if xml_show_data is not None:
         # insert
-        image_json = {'Images': {'theTVDB': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'IMDB': xml_show_data['Data']['Series']['IMDB_ID'],\
-            'theTVDB': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-        metadata_uuid = db.srv_db_MetadataTVDB_Insert(series_id_json,\
-            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'theTVDB':\
+        image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],\
+            'thetvdb': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
+        metadata_uuid = db.srv_db_metadatatvdb_insert(series_id_json,\
+            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb':\
             {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
             'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.srv_db_Metadata_Person_Insert_Cast_Crew('theTVDB',\
+            db.srv_db_metadata_person_insert_cast_crew('thetvdb',\
                 xml_actor_data['Actor'])
     return metadata_uuid
 
@@ -128,10 +128,10 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
         # indiv eps is bad lookup - metadata_uuid, imdb_id, tvdb_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db, media_file_path, metadata_nfo_xml.nfo_xml_file(media_file_path))
         # lookup on local db via name, year (if available)
         if 'year' in file_name:
-            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVShow_Name(file_name['title'],\
+            metadata_uuid = db.srv_db_metadatatv_guid_by_tvshow_name(file_name['title'],\
                 file_name['year'])
         else:
-            metadata_uuid = db.srv_db_MetadataTV_GUID_By_TVShow_Name(file_name['title'], None)
+            metadata_uuid = db.srv_db_metadatatv_guid_by_tvshow_name(file_name['title'], None)
         if metadata_uuid is None:
             # search thetvdb since not matched above via DB
             # TODO insert que search record

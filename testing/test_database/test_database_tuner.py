@@ -40,8 +40,8 @@ class TestDatabaseTuner(object):
 
 
     # count tuners
-    def Test_srv_db_Tuner_Count(self):
-        self.db.srv_db_Tuner_Count()
+    def Test_srv_db_tuner_count(self):
+        self.db.srv_db_tuner_count()
         self.db.srv_db_Rollback()
 
 
@@ -50,26 +50,26 @@ class TestDatabaseTuner(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Tuner_List(self, offset, records):
-        self.db.srv_db_Tuner_List(offset, records)
+    def Test_srv_db_tuner_list(self, offset, records):
+        self.db.srv_db_tuner_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # insert record
-    # def srv_db_Tuner_Insert(self, tuner_json):
+    # def srv_db_tuner_insert(self, tuner_json):
 #        self.db.srv_db_Rollback()
 
 
     # update record
-    # def srv_db_Tuner_Update(self, guid, tuner_json):
+    # def srv_db_tuner_update(self, guid, tuner_json):
 #        self.db.srv_db_Rollback()
 
 
     # delete record
-    # def srv_db_Tuner_Delete(self, guid):
+    # def srv_db_tuner_delete(self, guid):
 #        self.db.srv_db_Rollback()
 
 
     # find detials by hardware id (serial)
-    # def srv_db_Tuner_By_Serial(self, serial_no):
+    # def srv_db_tuner_by_serial(self, serial_no):
 #         self.db.srv_db_Rollback()

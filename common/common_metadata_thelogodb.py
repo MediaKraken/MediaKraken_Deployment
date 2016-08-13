@@ -20,13 +20,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import json
-from common import common_Metadata
+from common import common_metadata
 from common import common_network
 
 
-class CommonTheLogoDB(object):
+class Commonthelogodb(object):
     """
-    Class for interfacing with TheLogoDB
+    Class for interfacing with thelogodb
     """
     def __init__(self):
         # pull in the ini file config
@@ -36,12 +36,12 @@ class CommonTheLogoDB(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        self.API_KEY = Config.get('API', 'TheLogoDB').strip()
+        self.API_KEY = Config.get('API', 'thelogodb').strip()
 
 
     def com_thelogodb_fetch_latest(self):
         """
         Grab newest releases
         """
-        return json.loads(com_network.MK_Network_Fetch_From_URL(\
+        return json.loads(com_network.mk_network_fetch_from_url(\
             'http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

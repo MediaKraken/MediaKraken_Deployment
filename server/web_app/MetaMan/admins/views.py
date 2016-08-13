@@ -78,11 +78,11 @@ def admin_required(fn):
 def admins():
     global outside_ip
     if outside_ip is None:
-        outside_ip = common_network.MK_Network_Get_Outside_IP()
+        outside_ip = common_network.mk_network_get_outside_ip()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
-    for key, value in common_network.MK_Network_IP_Addr().iteritems():
+    for key, value in common_network.mk_network_ip_addr().iteritems():
         nic_data.append(key + ' ' + value[0][1])
     data_alerts_dismissable = []
     data_alerts = []
@@ -114,8 +114,8 @@ def admins():
                            data_active_streams = locale.format('%d', 0, True),
                            data_alerts_dismissable = data_alerts_dismissable,
                            data_alerts = data_alerts,
-                           data_count_media_files = locale.format('%d', g.db.srv_db_Known_Media_Count(), True),
-                           data_count_matched_media = locale.format('%d', g.db.srv_db_Matched_Media_Count(), True),
+                           data_count_media_files = locale.format('%d', g.db.srv_db_known_media_count(), True),
+                           data_count_matched_media = locale.format('%d', g.db.srv_db_matched_media_count(), True),
                            data_count_streamed_media = locale.format('%d', 0, True),
                            data_zfs_active = common_zfs.common_zfs_Available(),
                            data_library = locale.format('%d', g.db.srv_db_Audit_Paths_Count(), True),
@@ -201,7 +201,7 @@ def admin_cron_edit(guid):
 @admin_required
 def admin_tvtuners():
     tv_tuners = []
-    for row_data in g.db.srv_db_Tuner_List():
+    for row_data in g.db.srv_db_tuner_list():
         tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
         + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],\
         row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
@@ -257,7 +257,7 @@ def admin_transmission_edit_page():
 @admin_required
 def admin_library():
     if request.method == 'POST':
-        g.db.srv_db_Trigger_Insert(('python', './subprogram/subprogram_file_scan.py'))
+        g.db.srv_db_trigger_insert(('python', './subprogram/subprogram_file_scan.py'))
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
@@ -318,7 +318,7 @@ def admin_library_edit_page():
         else:
             flash_errors(form)
     class_list = []
-    for row_data in g.db.srv_db_Media_Class_List():
+    for row_data in g.db.srv_db_media_class_list():
         if row_data[2]: # flagged for display
             class_list.append((row_data[0], row_data[1]))
     return render_template("admin/admin_library_edit.html", form=form,
@@ -384,7 +384,7 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db.srv_db_Trigger_Insert(('python',\
+                g.db.srv_db_trigger_insert(('python',\
                     './subprogram/subprogram_postgresql_backup.py')) # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:

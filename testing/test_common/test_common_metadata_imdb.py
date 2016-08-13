@@ -24,12 +24,12 @@ sys.path.append("../common")
 from common_metadata_imdb import *
 
 
-class TestCommonIMDB(object):
+class TestCommonimdb(object):
 
 
     @classmethod
     def setup_class(self):
-        self.db = common_metadata_imdb.com_IMDB_API()
+        self.db = common_metadata_imdb.com_imdb_API()
 
 
     @classmethod
@@ -38,21 +38,21 @@ class TestCommonIMDB(object):
 
 
     # fetch info from title
-    def Test_com_IMDB_Title_Search(self):
-        com_IMDB_Title_Search("Robocop")
+    def Test_com_imdb_Title_Search(self):
+        com_imdb_Title_Search("Robocop")
 
 
 # fetch info by ttid
-# def com_IMDB_ID_Search(self, media_id):
+# def com_imdb_ID_Search(self, media_id):
 
 
 # fetch person info by id
-# def com_IMDB_Person_By_ID(self, person_id):
+# def com_imdb_Person_By_ID(self, person_id):
 
 
 # fetch person images by id
-# def com_IMDB_Person_Images_By_Id(self, person_id):
+# def com_imdb_Person_Images_By_Id(self, person_id):
 
 
 # fetch the title review
-# def com_IMDB_Title_Review_By_ID(self, media_id):
+# def com_imdb_Title_Review_By_ID(self, media_id):

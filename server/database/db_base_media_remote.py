@@ -22,13 +22,13 @@ import uuid
 
 
 # insert media into database
-def srv_db_Insert_Remote_Media(self, media_link_uuid, media_uuid, media_class_uuid,\
+def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
         media_metadata_uuid, media_ffprobe_json):
     self.sql3_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json) values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json))
 
 
 # read in all media unless guid specified
-def srv_db_Read_Remote_Media(self, media_guid=None):
+def srv_db_read_remote_media(self, media_guid=None):
     if media_guid is not None:
         self.sql3_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
             (media_guid,))
@@ -42,7 +42,7 @@ def srv_db_Read_Remote_Media(self, media_guid=None):
 
 
 # count known media
-def srv_db_Known_Remote_Media_Count(self):
+def srv_db_known_remote_media_count(self):
     self.sql3_cursor.execute('select count(*) from mm_media_remote')
     return self.sql3_cursor.fetchone()[0]
 
@@ -55,20 +55,20 @@ def srv_db_Known_Remote_Media_Count(self):
 #    for row_data in link_records:
 #        if row_data[1] == 'Movie':
 #            if 'TMDB' in row_data[3]:
-#                metadata_guid = srv_db_Metadata_GUID_By_TMDB(row_data[3]['TMDB'])
-#            if metadata_guid is None and 'IMDB' in row_data[3]:
-#                metadata_guid = srv_db_Metadata_GUID_By_IMDB(row_data[3]['IMDB'])
-#            if metadata_guid is None and 'theTVDB' in row_data[3]:
-#                metadata_guid = srv_db_Metadata_GUID_By_TVDB(row_data[3]['theTVDB'])
+#                metadata_guid = srv_db_metadata_guid_by_tmdb(row_data[3]['TMDB'])
+#            if metadata_guid is None and 'imdb' in row_data[3]:
+#                metadata_guid = srv_db_Metadata_GUID_By_imdb(row_data[3]['imdb'])
+#            if metadata_guid is None and 'thetvdb' in row_data[3]:
+#                metadata_guid = srv_db_metadata_guid_by_tvdb(row_data[3]['thetvdb'])
 #        elif row_data[1] == 'TV Show':
-#            if 'IMDB' in row_data[3]
-#                metadata_guid = srv_db_MetadataTV_GUID_By_IMDB(row_data[3]['IMDB'])
-#            if metadata_guid is None and 'theTVDB' in row_data[3]:
-#                metadata_guid = srv_db_MetadataTV_GUID_By_TVDB(row_data[3]['theTVDB'])
-#            if metadata_guid is None and 'TVMaze' in row_data[3]:
-#                metadata_guid = srv_db_MetadataTV_GUID_By_TVMaze(row_data[3]['TVMaze'])
+#            if 'imdb' in row_data[3]
+#                metadata_guid = srv_db_MetadataTV_GUID_By_imdb(row_data[3]['imdb'])
+#            if metadata_guid is None and 'thetvdb' in row_data[3]:
+#                metadata_guid = srv_db_metadatatv_guid_by_tvdb(row_data[3]['thetvdb'])
+#            if metadata_guid is None and 'tvmaze' in row_data[3]:
+#                metadata_guid = srv_db_MetadataTV_GUID_By_tvmaze(row_data[3]['tvmaze'])
 #            if metadata_guid is None and 'TVRage' in row_data[3]:
-#                metadata_guid = srv_db_MetadataTV_GUID_By_TVRage(row_data[3]['TVRage'])
+#                metadata_guid = srv_db_metadatatv_guid_by_tvrage(row_data[3]['TVRage'])
 #        elif row_data[1] == 'Sports':
 #            pass
 #        elif row_data[1] == 'Music':
@@ -81,11 +81,11 @@ def srv_db_Known_Remote_Media_Count(self):
 #            logging.error('Link bad data type: %s', row_data[1])
 #            return None
 #        if metadata_guid is not None:
-#            self.srv_db_Insert_Remote_Media(link_uuid, row_data[0], self.srv_db_Media_UUID_By_Class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
+#            self.srv_db_insert_remote_media(link_uuid, row_data[0], self.srv_db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
 
 
 # new media for link
-def srv_db_Media_Remote_Read_New(self, date_last_sync, sync_movie=None, sync_tv=None,\
+def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
         sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
     sql_params = date_last_sync,
     first_query = True

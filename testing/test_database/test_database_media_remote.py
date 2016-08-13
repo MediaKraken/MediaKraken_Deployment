@@ -40,18 +40,18 @@ class TestDatabaseMediaRemote(object):
 
 
     # insert media into database
-    # def srv_db_Insert_Remote_Media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
+    # def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
 #        self.db.srv_db_Rollback()
 
 
     # read in all media unless guid specified
-    # def srv_db_Read_Remote_Media(self, media_guid=None):
+    # def srv_db_read_remote_media(self, media_guid=None):
 #        self.db.srv_db_Rollback()
 
 
     # count known media
-    def Test_srv_db_Known_Remote_Media_Count(self):
-        self.db.srv_db_Known_Remote_Media_Count()
+    def Test_srv_db_known_remote_media_count(self):
+        self.db.srv_db_known_remote_media_count()
         self.db.srv_db_Rollback()
 
 
@@ -62,5 +62,5 @@ class TestDatabaseMediaRemote(object):
 
 
     # new media for link
-    # def srv_db_Media_Remote_Read_New(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+    # def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
 #        self.db.srv_db_Rollback()

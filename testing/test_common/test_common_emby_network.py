@@ -25,7 +25,7 @@ from com_Emby_Network import *
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
-def Test_common_network_Emby_Find_Server():
+def test_common_network_emby_find_server():
     common_network_Emby_Find_Server()
 
 

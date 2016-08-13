@@ -21,9 +21,9 @@ import logging
 import musicbrainzngs
 
 '''
-A MusicBrainz release represents the unique release (i.e. issuing) of a product on a specific date with specific release information such as the country, label, barcode, packaging, etc. If you walk into a store and purchase an album or single, they're each represented in MusicBrainz as one release.
+A musicbrainz release represents the unique release (i.e. issuing) of a product on a specific date with specific release information such as the country, label, barcode, packaging, etc. If you walk into a store and purchase an album or single, they're each represented in musicbrainz as one release.
 
-A recording is an entity in MusicBrainz which can be linked to tracks on releases. Each track must always be associated with a single recording, but a recording can be linked to any number of tracks.
+A recording is an entity in musicbrainz which can be linked to tracks on releases. Each track must always be associated with a single recording, but a recording can be linked to any number of tracks.
 
 '''
 
@@ -58,7 +58,7 @@ class CommonMusicbrainz(object):
         #print "{}, by {}".format(rel['title'], rel["artist-credit-phrase"])
         if 'date' in rel:
             pass
-        logging.debug("MusicBrainz ID: {}".format(rel['id']))
+        logging.debug("musicbrainz ID: {}".format(rel['id']))
 
 
     def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,\

@@ -42,7 +42,7 @@ from common_string import *
     (1500000000000000000, "1.3E"),
     (1500000000000000000000, "1.3Z"),
     (1500000000000000000000000, "1.2Y")])
-def Test_bytes2human(n, expected_result):
+def test_bytes2human(n, expected_result):
     assert bytes2human(n) == expected_result
 
 
@@ -52,7 +52,7 @@ def Test_bytes2human(n, expected_result):
     ("Password", "1.5K"),
     ("sRji#234", "1.4M"),
     ("jfioj23$29#DFWEWFWE454938", "1.2Y")])
-def Test_common_string_Password_Test(password_text, expected_result):
+def test_common_string_password_test(password_text, expected_result):
     assert common_string_Password_Test(password_text) == expected_result
 
 

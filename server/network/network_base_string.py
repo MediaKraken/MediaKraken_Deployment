@@ -52,7 +52,7 @@ class NetworkEvents(Int32StringReceiver):
         self.user_user_name = None
         self.user_slave = False
         self.user_verified = 0
-        self.server_ip = common_network.MK_Network_Get_Default_IP()
+        self.server_ip = common_network.mk_network_get_default_ip()
         # pull in the ini file config
         import ConfigParser
         self.config = ConfigParser.ConfigParser()
@@ -112,15 +112,15 @@ class NetworkEvents(Int32StringReceiver):
         elif messageWords[0] == "REQUESTNEWMEDIA":
             msg = "RECEIVENEWMEDIA " + pickle.dumps(self.db.srv_db_Media_Link_Read_New(pickle.loads(messagewords[1]), message_Words[2], message_Words[3], message_Words[4], message_Words[5], message_Words[6], message_Words[7]))
         elif messageWords[0] == "PlayUUID" or messageWords[0] == "demo":
-            #media_path = self.db.srv_db_Media_Path_By_UUID('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
-            media_path = self.db.srv_db_Media_Path_By_UUID(messageWords[1])[0]
+            #media_path = self.db.srv_db_media_path_by_uuid('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
+            media_path = self.db.srv_db_media_path_by_uuid(messageWords[1])[0]
             if media_path is not None:
                 if True:
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
                     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',\
                         media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.MK_Network_Get_Default_IP() + ':'\
+                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
                         + self.server_port_ffmpeg + '/stream.ffm'
                 else:
                     # tell slave to fire up the media
@@ -130,7 +130,7 @@ class NetworkEvents(Int32StringReceiver):
             pass
         elif messageWords[0] == "MediaIDUpdateUUID":
             # media id, metadata id
-            self.db.srv_db_Update_Media_ID(messageWords[1], messageWords[2])
+            self.db.srv_db_update_media_id(messageWords[1], messageWords[2])
         # metadata commands
         elif messageWords[0] == "IMAGE":
             lookup_id = None
@@ -140,13 +140,13 @@ class NetworkEvents(Int32StringReceiver):
             if messageWords[3] == 'None': # random movie selection
                 if messageWords[2] == "MOVIE":
                     try:
-                        lookup_id, media_id = self.db.srv_db_Media_Random(messageWords[5])
+                        lookup_id, media_id = self.db.srv_db_media_random(messageWords[5])
                     except:
                         pass
             else:
                 # fetch specific id
                 try:
-                    lookup_id = json.loads(self.db.srv_db_Media_Image_Path(messageWords[3])[0])[messageWords[4]] # use this to grab file path
+                    lookup_id = json.loads(self.db.srv_db_media_image_path(messageWords[3])[0])[messageWords[4]] # use this to grab file path
                 except:
                     pass
             if lookup_id is not None:
@@ -158,11 +158,11 @@ class NetworkEvents(Int32StringReceiver):
             msg = "GENRELIST " + pickle.dumps(self.genre_list)
         # theater data
         elif messageWords[0] == "VIDEODETAIL":
-            msg = "VIDEODETAIL " + pickle.dumps(self.db.srv_db_Read_Media_Metadata_Both(messageWords[1]))
+            msg = "VIDEODETAIL " + pickle.dumps(self.db.srv_db_read_media_Metadata_Both(messageWords[1]))
         elif messageWords[0] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_Web_Media_List(self.db.srv_db_Media_UUID_By_Class("Movie"), messageWords[0], messageWords[1]))
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(self.db.srv_db_media_uuid_by_class("Movie"), messageWords[0], messageWords[1]))
         elif messageWords[0] == "movie" or messageWords[0] == "recent_addition" or messageWords[0] == 'in_progress' or messageWords[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_Web_Media_List(self.db.srv_db_Media_UUID_By_Class("Movie"), messageWords[0]))
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(self.db.srv_db_media_uuid_by_class("Movie"), messageWords[0]))
         # admin commands
         elif messageWords[0] == "ScanMedia":
             # popen expects a list

@@ -40,42 +40,42 @@ class TestDatabaseTVSchedule(object):
 
 
     # read the stations
-    def Test_srv_db_TV_Stations_Read(self):
-        self.db.srv_db_TV_Stations_Read()
+    def Test_srv_db_tv_stations_read(self):
+        self.db.srv_db_tv_stations_read()
         self.db.srv_db_Rollback()
 
 
     # read the stationid list
-    def Test_srv_db_TV_Stations_Read_StationID_List(self):
-        self.db.srv_db_TV_Stations_Read_StationID_List()
+    def Test_srv_db_tv_stations_read_StationID_List(self):
+        self.db.srv_db_tv_stations_read_StationID_List()
         self.db.srv_db_Rollback()
 
 
     # insert station/channel unless it exists
-    # def srv_db_TV_Station_Insert(self, station_id, channel_id):
+    # def srv_db_tv_station_insert(self, station_id, channel_id):
 #        self.db.srv_db_Rollback()
 
 
     # channel exist check
-    # def srv_db_TV_Station_Exist(self, station_id, channel_id):
+    # def srv_db_tv_station_exist(self, station_id, channel_id):
  #       self.db.srv_db_Rollback()
 
 
     # update station/channel info
-    # def srv_db_TV_Station_Update(self, station_name, station_id, station_json):
+    # def srv_db_tv_station_update(self, station_name, station_id, station_json):
   #      self.db.srv_db_Rollback()
 
 
     # insert schedule info
-    # def srv_db_TV_Schedule_Insert(self, station_id, schedule_date, schedule_json):
+    # def srv_db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
    #     self.db.srv_db_Rollback()
 
 
     # insert program info
-    # def srv_db_TV_Program_Insert(self, program_id, program_json):
+    # def srv_db_tv_program_insert(self, program_id, program_json):
     #    self.db.srv_db_Rollback()
 
 
     # tv shows for schedule display
-    # def srv_db_TV_Schedule_By_Date(self, display_date):
+    # def srv_db_tv_schedule_by_date(self, display_date):
      #   self.db.srv_db_Rollback()

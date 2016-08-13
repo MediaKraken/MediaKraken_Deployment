@@ -38,7 +38,7 @@ class CommonMetadataTMDB(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        tmdb.API_KEY = Config.get('API', 'theMovieDB').strip()
+        tmdb.API_KEY = Config.get('API', 'themoviedb').strip()
 
 
     # search for movie title and year
@@ -103,12 +103,12 @@ class CommonMetadataTMDB(object):
 
 
     # search by imdb
-    def com_TMDB_Metadata_By_IMDB_ID(self, imdb_id):
+    def com_TMDB_Metadata_By_imdb_ID(self, imdb_id):
         movie = tmdb.Find(imdb_id)
         try:
             metadata = movie.info(external_source='imdb_id')
         except Exception as e:
-            logging.error("TMDB Fetch IMDB Error: %s" % str(e))
+            logging.error("TMDB Fetch imdb Error: %s" % str(e))
             metadata = None
         return metadata
 
@@ -155,7 +155,7 @@ class CommonMetadataTMDB(object):
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
             if not os.path.isfile(file_path):
-                com_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                com_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
                     + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
@@ -165,11 +165,11 @@ class CommonMetadataTMDB(object):
         if result_json['backdrop_path'] is not None:
             file_path += result_json['backdrop_path']
             if not os.path.isfile(file_path):
-                com_network.MK_Network_Fetch_From_URL('https://image.tmdb.org/t/p/original'\
+                com_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
                     + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case
-        series_id_json = json.dumps({'IMDB':result_json['imdb_id'], 'TMDB':str(result_json['id'])})
+        series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'TMDB':str(result_json['id'])})
         # set local image json
         image_json = ({'Images': {'TMDB':{'Backdrop':backdrop_file_path,\
             'Poster':poster_file_path}}})

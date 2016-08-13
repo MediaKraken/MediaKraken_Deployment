@@ -40,33 +40,33 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by name
-    # def srv_db_MetadataTV_GUID_By_TVShow_Name(self, tvshow_name, tvshow_year=None):
+    # def srv_db_metadatatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
 #        self.db.srv_db_Rollback()
 
 
     # metadata guid by imdb id
-    # def srv_db_MetadataTV_GUID_By_IMDB(self, imdb_uuid):
+    # def srv_db_MetadataTV_GUID_By_imdb(self, imdb_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # metadata guid by tv id
-    # def srv_db_MetadataTV_GUID_By_TVDB(self, thetvdb_uuid):
+    # def srv_db_metadatatv_guid_by_tvdb(self, thetvdb_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # metadata guid by tvmaze id
-    # def srv_db_MetadataTV_GUID_By_TVMaze(self, tvmaze_uuid):
+    # def srv_db_MetadataTV_GUID_By_tvmaze(self, tvmaze_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # metadata guid by tvrage id
-    # def srv_db_MetadataTV_GUID_By_TVRage(self, tvrage_uuid):
+    # def srv_db_metadatatv_guid_by_tvrage(self, tvrage_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # tvshow count
-    def Test_srv_db_Metadata_TVShow_List_Count(self):
-        self.db.srv_db_Metadata_TVShow_List_Count()
+    def Test_srv_db_metadata_tvshow_list_count(self):
+        self.db.srv_db_metadata_tvshow_list_count()
         self.db.srv_db_Rollback()
 
 
@@ -75,41 +75,41 @@ class TestDatabaseMetadataTV(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Metadata_TVShow_List(self, offset, records):
-        self.db.srv_db_Metadata_TVShow_List(offset, records)
+    def Test_srv_db_metadata_tvshow_list(self, offset, records):
+        self.db.srv_db_metadata_tvshow_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # update image json
-    # def srv_db_Metadata_TVShow_Update_Image(self, image_json, metadata_uuid):
+    # def srv_db_metadata_tvshow_update_image(self, image_json, metadata_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # fetch tvmaze rows to update
-    # def srv_db_Metadata_TVShow_Images_To_Update(self, image_type):
+    # def srv_db_metadata_tvshow_images_to_update(self, image_type):
 #        self.db.srv_db_Rollback()
 #
 
     # return metadata for tvshow
-    # def srv_db_Metadata_TVShow_Detail(self, guid):
+    # def srv_db_metadata_tvshow_detail(self, guid):
 #        self.db.srv_db_Rollback()
 
 
     # read in the tv episodes metadata by guid
-    # def srv_db_Read_TVMetadata_Episodes(self, show_guid):
+    # def srv_db_read_tvmetadata_episodes(self, show_guid):
 #        self.db.srv_db_Rollback()
 
 
     # grab tvmaze ep data for eps per season
-    # def srv_db_Read_TVMetadata_Eps_Season(self, show_guid):
+    # def srv_db_read_tvmetadata_eps_season(self, show_guid):
 #        self.db.srv_db_Rollback()
 
 
     # grab episodes within the season
-    # def srv_db_Read_TVMetadata_Season_Eps_List(self, show_guid, season_number):
+    # def srv_db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
 #        self.db.srv_db_Rollback()
 
 
     # grab episode detail
-    # def srv_db_Read_TVMetadata_Episode(self, show_guid, season_number, episode_number):
+    # def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_number):
 #        self.db.srv_db_Rollback()

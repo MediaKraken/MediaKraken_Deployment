@@ -63,7 +63,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server URL Scan Start', None,\
     'System: Server URL Scan Start', 'ServerURLScanStart', None, None, 'System')
 
 # go through ALL known media files
-for row_data in db.srv_db_Known_Media():
+for row_data in db.srv_db_known_media():
 
 #TODO  actually, this should probably be the metadata
 

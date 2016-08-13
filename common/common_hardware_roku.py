@@ -29,7 +29,7 @@ videoSizes = [(240, 180), (320, 240), (240, 136), (320, 180)]
 modeExtension = ['SD', 'HD', 'SD', 'HD']
 
 
-def getMP4Info(filename):
+def getmp4info(filename):
     """
     Get mp4 info about the video
     """
@@ -56,7 +56,7 @@ def getMP4Info(filename):
     return details
 
 
-def extractImages(videoFile, directory, interval, mode=0, offset=0):
+def extractimages(videoFile, directory, interval, mode=0, offset=0):
     """
     Extract images from the video at 'interval' seconds
 
@@ -72,7 +72,7 @@ def extractImages(videoFile, directory, interval, mode=0, offset=0):
     (stdout, stderr) = p.communicate()
 
 
-def makeBIF(filename, directory, interval):
+def makebif(filename, directory, interval):
     """
     Build a .bif file for the Roku Player Tricks Mode
     @param filename name of .bif file to create
@@ -121,13 +121,13 @@ def makeBIF(filename, directory, interval):
     f.close()
 
 
-def com_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+def com_roku_create_bif(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
     """
     Create BIF
     """
     # help="(0=SD) 4:3 1=HD 4:3 2=SD 16:9 3=HD 16:9") - option_mode
     # Get info about the video file
-    videoInfo = getMP4Info(videoFile)
+    videoInfo = getmp4info(videoFile)
     if videoInfo["size"]:
         size = videoInfo["size"].split("x")
         aspectRatio = float(size[0]) / float(size[1])
@@ -136,10 +136,10 @@ def com_Roku_Create_BIF(videoFile, first_image_offset=7, image_interval=10, opti
         videoSizes[option_mode] = (width, height)
     tmpDirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
-    extractImages(videoFile, tmpDirectory, image_interval, option_mode, first_image_offset)
+    extractimages(videoFile, tmpDirectory, image_interval, option_mode, first_image_offset)
     bifFile = "%s-%s.bif" % (os.path.basename(videoFile).rsplit('.', 1)[0],\
         modeExtension[option_mode])
     # Create the BIF file
-    makeBIF(bifFile, tmpDirectory, image_interval)
+    makebif(bifFile, tmpDirectory, image_interval)
     # Clean up the temporary directory
     shutil.rmtree(tmpDirectory)

@@ -29,7 +29,7 @@ from common_file import *
 @pytest.mark.parametrize(("file_name"), [
     ("./cache/cache.iso"),
     ("./cache/cache_fake.iso")])
-def Test_common_file_Modification_Timestamp(file_name):
+def test_common_file_modification_timestamp(file_name):
         if file_name == "./cache/cache.iso":
             assert isinstance(common_file_Modification_Timestamp(file_name),\
                 datetime.datetime) == True
@@ -47,7 +47,7 @@ def Test_common_file_Modification_Timestamp(file_name):
     ('./cache/Test6_Pickle.txt', ("Test4", "Test5"), True, True, None),
     ('./cache/Test7_Pickle.txt', ("Test4", "Test5"), True, False, ".pickle"),
     ('./cache/Test8_Pickle.txt', ("Test4", "Test5"), False, True, ".dat")])
-def Test_common_file_Save_Data(file_name, data_block, as_pickle, with_timestamp, file_ext):
+def test_common_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext):
     common_file_Save_Data(file_name, data_block, as_pickle, with_timestamp, file_ext)
 
 
@@ -57,7 +57,7 @@ def Test_common_file_Save_Data(file_name, data_block, as_pickle, with_timestamp,
     ('./cache/HashCalc.txt', True),
     ('./cache/pickle.txt', True),
     ('./cache/pickle.txt', False)])
-def Test_common_file_Load_Data(file_name, as_pickle):
+def test_common_file_load_data(file_name, as_pickle):
     common_file_Load_Data(file_name, as_pickle)
 
 
@@ -88,13 +88,13 @@ def Test_common_file_Load_Data(file_name, as_pickle):
     ('./cache', "waffle", False, True, True, True),
     ('./cache', "waffle", True, True, False, True),
     ('./cache', "waffle", True, True, True, True)])
-def Test_common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size,\
+def test_common_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,\
         directory_only):
     common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size, directory_only)
 
 
 # throw out junk entries in files list
-def Test_common_file_Remove_Junk():
+def test_common_file_remove_junk():
     assert common_file_Remove_Junk(("ok", "blah full length")) == ("ok")
 
 
@@ -104,5 +104,5 @@ def Test_common_file_Remove_Junk():
     ('./cache/HashCalcfull album.txt', True),
     ('./cache/picklefull length.txt', True),
     ('./cache/pickle.txt', False)])
-def Test_common_file_Is_Junk(file_name, expected_result):
+def test_common_file_is_junk(file_name, expected_result):
     assert common_file_Is_Junk(file_name) == expected_result

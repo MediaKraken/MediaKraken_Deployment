@@ -44,14 +44,14 @@ class TestDatabaseCollection(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Collection_List(self, offset, records):
-        self.db.srv_db_Collection_List(offset, records)
+    def Test_srv_db_collection_list(self, offset, records):
+        self.db.srv_db_collection_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # read collection data from json metadata
-    def Test_srv_db_Media_Collection_Scan(self):
-        self.db.srv_db_Media_Collection_Scan()
+    def Test_srv_db_media_collection_scan(self):
+        self.db.srv_db_media_collection_scan()
         self.db.srv_db_Rollback()
 
 
@@ -59,26 +59,26 @@ class TestDatabaseCollection(object):
     @pytest.mark.parametrize(("collection_name"), [
         ('Darko Collection'),
         ('fakecollectionstuff')])
-    def Test_srv_db_Collection_GUID_By_Name(self, collection_name):
-        self.db.srv_db_Collection_GUID_By_Name(collection_name)
+    def Test_srv_db_collection_guid_by_name(self, collection_name):
+        self.db.srv_db_collection_guid_by_name(collection_name)
         self.db.srv_db_Rollback()
 
 
     # find guid of collection name
-    # def srv_db_Collection_By_TMDB(self, tmdb_id):
+    # def srv_db_collection_by_tmdb(self, tmdb_id):
 #        self.db.srv_db_Rollback()
 
 
     # insert collection
-    # def srv_db_Collection_Insert(self, collection_name, guid_json, metadata_json, localimage_json):
+    # def srv_db_collection_insert(self, collection_name, guid_json, metadata_json, localimage_json):
 #        self.db.srv_db_Rollback()
 
 
     # update collection ids
-    # def srv_db_Collection_Update(self, collection_guid, guid_json):
+    # def srv_db_collection_update(self, collection_guid, guid_json):
 #        self.db.srv_db_Rollback()
 
 
     # pull in colleciton info
-    # def srv_db_Collection_Read_By_GUID(self, media_uuid):
+    # def srv_db_collection_read_by_guid(self, media_uuid):
 #        self.db.srv_db_Rollback()

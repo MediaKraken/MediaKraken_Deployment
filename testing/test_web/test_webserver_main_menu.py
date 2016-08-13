@@ -29,7 +29,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
-def Test_main_index(driver):
+def test_main_index(driver):
     """
     Display main page
     """
@@ -37,7 +37,7 @@ def Test_main_index(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_login(driver):
+def test_main_login(driver):
     """
     Login into main page
     """
@@ -47,7 +47,7 @@ def Test_main_login(driver):
     driver.find_element_by_id('main_button_login').click()
 
 
-def Test_main_menu_metaman(driver):
+def test_main_menu_metaman(driver):
     """
     Click home page link
     """
@@ -56,7 +56,7 @@ def Test_main_menu_metaman(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_media(driver):
+def test_main_menu_media(driver):
     """
     Click media on nav menu
     """
@@ -65,7 +65,7 @@ def Test_main_menu_media(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_sync(driver):
+def test_main_menu_sync(driver):
     """
     Click sync on nav menu
     """
@@ -74,7 +74,7 @@ def Test_main_menu_sync(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_movies(driver):
+def test_main_menu_metadata_movies(driver):
     """
     Click metadata movies on nav menu
     """
@@ -86,7 +86,7 @@ def Test_main_menu_metadata_movies(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_movie_collection(driver):
+def test_main_menu_metadata_movie_collection(driver):
     """
     Click metadata movies collection on nav menu
     """
@@ -98,7 +98,7 @@ def Test_main_menu_metadata_movie_collection(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_tv_shows(driver):
+def test_main_menu_metadata_tv_shows(driver):
     """
     Click metadata tv shows on nav menu
     """
@@ -110,7 +110,7 @@ def Test_main_menu_metadata_tv_shows(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_music(driver):
+def test_main_menu_metadata_music(driver):
     """
     Click metadata music on nav menu
     """
@@ -122,7 +122,7 @@ def Test_main_menu_metadata_music(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_music_albums(driver):
+def test_main_menu_metadata_music_albums(driver):
     """
     Click metadata music albums on nav menu
     """
@@ -134,7 +134,7 @@ def Test_main_menu_metadata_music_albums(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_music_videos(driver):
+def test_main_menu_metadata_music_videos(driver):
     """
     Click metadata music videos on nav menu
     """
@@ -146,7 +146,7 @@ def Test_main_menu_metadata_music_videos(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_sports(driver):
+def test_main_menu_metadata_sports(driver):
     """
     Click metadata sports on nav menu
     """
@@ -158,7 +158,7 @@ def Test_main_menu_metadata_sports(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_games(driver):
+def test_main_menu_metadata_games(driver):
     """
     Click metadata games on nav menu
     """
@@ -170,7 +170,7 @@ def Test_main_menu_metadata_games(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_game_systems(driver):
+def test_main_menu_metadata_game_systems(driver):
     """
     Click metadata game systems on nav menu
     """
@@ -182,7 +182,7 @@ def Test_main_menu_metadata_game_systems(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_people(driver):
+def test_main_menu_metadata_people(driver):
     """
     Click metadata people on nav menu
     """
@@ -194,7 +194,7 @@ def Test_main_menu_metadata_people(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_metadata_metadata_class_list(driver):
+def test_main_menu_metadata_metadata_class_list(driver):
     """
     Click metadata class list on nav menu
     """
@@ -206,7 +206,7 @@ def Test_main_menu_metadata_metadata_class_list(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_server(driver):
+def test_main_menu_server(driver):
     """
     Click server on nav menu
     """
@@ -215,7 +215,7 @@ def Test_main_menu_server(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_about(driver):
+def test_main_menu_about(driver):
     """
     Click about on nav menu
     """
@@ -224,7 +224,7 @@ def Test_main_menu_about(driver):
     assert 'MediaKraken' in driver.title
 
 
-def Test_main_menu_contact(driver):
+def test_main_menu_contact(driver):
     """
     Click contact on footer
     """

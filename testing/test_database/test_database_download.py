@@ -53,7 +53,7 @@ class TestDatabaseDownload(object):
 
     # read the downloads by provider
     @pytest.mark.parametrize(("provider_name"), [
-        ('theMovieDB'),
+        ('themoviedb'),
         ('fakeprovider')])
     def Test_srv_db_Download_Read_By_Provider(self, provider_name):
         self.db.srv_db_Download_Read_By_Provider(provider_name)

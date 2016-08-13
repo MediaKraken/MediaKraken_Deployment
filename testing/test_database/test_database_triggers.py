@@ -40,16 +40,16 @@ class TestDatabaseTriggers(object):
 
 
     # create/insert a trigger
-    # def srv_db_Trigger_Insert(self, command_list):
+    # def srv_db_trigger_insert(self, command_list):
 #         self.db.srv_db_Rollback()
 
 
     # read the triggers
-    def Test_srv_db_Triggers_Read(self):
-        self.db.srv_db_Triggers_Read()
+    def Test_srv_db_triggers_read(self):
+        self.db.srv_db_triggers_read()
         self.db.srv_db_Rollback()
 
 
     # remove trigger
-    # def srv_db_Triggers_Delete(self, guid):
+    # def srv_db_triggers_delete(self, guid):
 #         self.db.srv_db_Rollback()

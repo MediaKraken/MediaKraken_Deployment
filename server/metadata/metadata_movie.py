@@ -39,7 +39,7 @@ import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if Config.get('API', 'theMovieDB').strip() != 'None':
+if Config.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
     TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
@@ -60,7 +60,7 @@ def movie_search_tmdb(db, file_name):
         logging.debug("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
-            metadata_uuid = db.srv_db_Metadata_GUID_By_TMDB(match_result)
+            metadata_uuid = db.srv_db_metadata_guid_by_tmdb(match_result)
             logging.debug("db result: %s", metadata_uuid)
         elif match_response == 'info':
             # store new metadata record and set uuid
@@ -85,7 +85,7 @@ def movie_fetch_save_tmdb(db, tmdb_id):
         logging.debug("series: %s", series_id_json)
         # set and insert the record
         metadata_uuid = str(uuid.uuid4())
-        db.srv_db_Metadata_Insert_TMDB(metadata_uuid, series_id_json,\
+        db.srv_db_metadata_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     else:
         metadata_uuid = None
@@ -94,7 +94,7 @@ def movie_fetch_save_tmdb(db, tmdb_id):
 
 # fetch from tmdb via imdb
 def movie_fetch_tmdb_imdb(imdb_id):
-    result_json = TMDB_API_Connection.com_TMDB_Metadata_By_IMDB_ID(imdb_id)
+    result_json = TMDB_API_Connection.com_TMDB_Metadata_By_imdb_ID(imdb_id)
     logging.debug("uhimdb: %s", result_json)
     if result_json is not None:
         # find call for tmdb returns the other sections
@@ -106,11 +106,11 @@ def movie_fetch_tmdb_imdb(imdb_id):
 def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
     cast_json = TMDB_API_Connection.com_TMDB_Metadata_Cast_By_ID(tmdb_id)
     if 'cast' in cast_json:
-        db.srv_db_Metadata_Person_Insert_Cast_Crew('TMDB', cast_json['cast'])
+        db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['cast'])
     if 'crew' in cast_json:
-        db.srv_db_Metadata_Person_Insert_Cast_Crew('TMDB', cast_json['crew'])
+        db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['crew'])
     # update the metadata record with the cast info
-    db.srv_db_Metadata_Movie_Update_CastCrew(tmdb_id, cast_json)
+    db.srv_db_metadata_movie_update_castcrew(tmdb_id, cast_json)
 
 
 def movie_fetch_save_tmdb_review(db, tmdb_id):
@@ -119,7 +119,7 @@ def movie_fetch_save_tmdb_review(db, tmdb_id):
     if review_json['total_results'] > 0:
         review_json_id = ({'TMDB': str(review_json['id'])})
         logging.debug("review: %s", review_json_id)
-        db.srv_db_Review_Insert(json.dumps(review_json_id),\
+        db.srv_db_review_insert(json.dumps(review_json_id),\
             json.dumps({'TMDB': review_json}))
 
 
@@ -161,10 +161,10 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
         logging.debug("movie db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db.srv_db_Find_Metadata_GUID(file_name['title'],\
+            metadata_uuid = db.srv_db_find_metadata_guid(file_name['title'],\
                 file_name['year'])
         else:
-            metadata_uuid = db.srv_db_Find_Metadata_GUID(file_name['title'], None)
+            metadata_uuid = db.srv_db_find_metadata_guid(file_name['title'], None)
         logging.debug("movie db meta: %s", metadata_uuid)
         if metadata_uuid is None:
             if imdb_id is not None or tmdb_id is not None:
@@ -175,14 +175,14 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
                 db.srv_db_Download_Update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db.srv_db_Download_Update_Provider('theMovieDB', download_que_id)
+                db.srv_db_Download_Update_Provider('themoviedb', download_que_id)
             else:
                 # search themoviedb since not matched above via DB
                 download_que_json.update({'Status': 'Search'})
                 db.srv_db_Download_Update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db.srv_db_Download_Update_Provider('theMovieDB', download_que_id)
+                db.srv_db_Download_Update_Provider('themoviedb', download_que_id)
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
     metadata_movie_lookup.metadata_last_title = file_name['title']

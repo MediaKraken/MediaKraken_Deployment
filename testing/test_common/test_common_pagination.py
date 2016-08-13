@@ -24,22 +24,22 @@ sys.path.append("../common")
 from common_pagination import *
 
 
-def Test_get_css_framework():
+def test_get_css_framework():
     get_css_framework()
 
 
-def Test_get_link_size():
+def test_get_link_size():
     get_link_size()
 
 
-def Test_show_single_page_or_not():
+def test_show_single_page_or_not():
     show_single_page_or_not()
 
 
 @pytest.mark.parametrize(("client_items_per_page"), [
     (None), # defualt to 30
     (50)])
-def Test_get_page_items(client_items_per_page):
+def test_get_page_items(client_items_per_page):
     get_page_items(client_items_per_page)
 
 

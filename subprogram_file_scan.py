@@ -115,7 +115,7 @@ def signal_receive(signum, frame):
 
 # TODO move this into worker function......no reason for this to be seperate anymore
 # perform media scan
-def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known_media_file,\
+def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known_media_file,\
         dir_guid, class_text_dict):
     total_files = 0
     logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
@@ -150,7 +150,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                 fileName, fileExtension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
                 # video game data, don't do ffmpeg
-                if thread_db.srv_db_Media_Class_By_UUID(media_class_type_uuid) == 'Video Game':
+                if thread_db.srv_db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
                     if fileExtension.lower() == 'iso':
                         new_class_type_uuid = class_text_dict['Game ISO']
                     elif fileExtension.lower() == 'chd':
@@ -168,7 +168,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                             or file_name.find('\\trailers\\') != -1\
                             or file_name.find('\\theme.mp3') != -1\
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.srv_db_Media_Class_By_UUID(new_class_type_uuid)
+                        media_class_text = thread_db.srv_db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Trailer']
@@ -183,7 +183,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                     elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
                         new_class_type_uuid = None
                     elif file_name.find('/backdrops/') != -1 or file_name.find('\\backdrops\\') != -1:
-                        media_class_text = thread_db.srv_db_Media_Class_By_UUID(new_class_type_uuid)
+                        media_class_text = thread_db.srv_db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/theme.mp3') != -1 or file_name.find('/theme.mp4') != -1 or file_name.find('\\theme.mp3') != -1 or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
@@ -195,7 +195,7 @@ def MK_Server_Media_Scan_Audit(thread_db, dir_path, media_class_type_uuid, known
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})
                 media_id = str(uuid.uuid4())
-                thread_db.srv_db_Insert_Media(media_id, file_name,\
+                thread_db.srv_db_insert_media(media_id, file_name,\
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # media id begin and download que insert
                 thread_db.srv_db_Download_Insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
@@ -216,7 +216,7 @@ def worker(audit_directory):
     thread_db = database_base.MK_Server_Database()
     thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
-    total_files = MK_Server_Media_Scan_Audit(thread_db, data1, data2, global_known_media,\
+    total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
     if total_files > 0:
         thread_db.srv_db_Notification_Insert(locale.format('%d', total_files, True)\
@@ -249,7 +249,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server File Scan Start', None,\
 
 # load in all media from DB
 global_known_media = []
-known_media = db.srv_db_Known_Media()
+known_media = db.srv_db_known_media()
 # verify rows were returned
 if known_media is not None:
     for media_row in known_media:
@@ -259,7 +259,7 @@ known_media = None
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
-for class_data in db.srv_db_Media_Class_List(None, None):
+for class_data in db.srv_db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
 logging.debug('class: %s', class_text_dict)
 

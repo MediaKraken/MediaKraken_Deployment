@@ -23,9 +23,9 @@ import os
 import omdb
 
 
-class CommonOMDb(object):
+class Commonomdb(object):
     """
-    Class for interfacing with OMDb
+    Class for interfacing with omdb
     """
     def __init__(self):
         pass
@@ -52,8 +52,8 @@ class CommonOMDb(object):
         omdb.search_series(media_title)
 
 
-    def com_omdb_imdb(self, IMDBid):
-        omdb.imdbid(IMDBid)
+    def com_omdb_imdb(self, imdbid):
+        omdb.imdbid(imdbid)
 
 
     def com_omdb_title(self, media_title):

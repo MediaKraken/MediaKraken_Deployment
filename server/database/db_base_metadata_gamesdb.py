@@ -22,6 +22,6 @@ import uuid
 
 
 # insert gamesdb game system
-def srv_db_Metadata_GamesDB_System_Insert(self, platform_id, platform_name,\
+def srv_db_metadata_gamesdb_system_insert(self, platform_id, platform_name,\
         platform_alias, platform_json=None):
     self.sql3_cursor.execute('insert into mm_metadata_gamedb_systems_info(gsdb_id_pk, gsdb_game_system_id, gsdb_game_system_name, gsdb_game_system_alias, gsdb_game_system_json) values (%s, %s, %s, %s, %s)', (str(uuid.uuid4()), platform_id, platform_name, platform_alias, platform_json))

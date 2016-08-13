@@ -29,5 +29,5 @@ from common_ffmpeg import *
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def Test_common_ffmpeg_Media_Attr(file_path):
+def test_common_ffmpeg_media_attr(file_path):
     common_ffmpeg_Media_Attr(file_path)
