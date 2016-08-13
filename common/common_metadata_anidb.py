@@ -21,7 +21,7 @@ import logging
 import gzip
 import time
 import sys
-from common import common_Database_Octmote
+from common import common_database_octmote
 from common import common_file
 from common import common_network
 sys.path.append("../../common/lib")
@@ -62,7 +62,7 @@ class CommonMetadataANIdb(object):
                 # not a comment so try to split the file via pipes with a limit of three fields
                 sql_fields = ani_line.split('|', 3)
                 sql_params_list.append(sql_fields)
-        com_Database_Octmote.MK_Database_Sqlite3_anidb_Title_Insert(sql_params_list)
+        common_database_octmote.MK_Database_Sqlite3_anidb_Title_Insert(sql_params_list)
 
 
     def MK_Network_anidb_AID_By_Title(self, title_to_search):
@@ -70,7 +70,7 @@ class CommonMetadataANIdb(object):
         Find AID by title
         """
         # check the local DB
-        local_db_result = com_Database_Octmote.MK_Database_Sqlite3_anidb_Title_Search(title_to_search)
+        local_db_result = common_database_octmote.MK_Database_Sqlite3_anidb_Title_Search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
             if com_file.com_file_Modification_Timestamp(title_to_search) \
@@ -115,7 +115,7 @@ class CommonMetadataANIdb(object):
 # works MK_Network_anidb_Fetch_Titles_File('dat')
 
 ''' # works
-com_Database_Octmote.MK_Database_Sqlite3_Open()
+common_database_octmote.MK_Database_Sqlite3_Open()
 MK_Network_anidb_Save_Title_Data_To_DB('./Temp_anidb_Titles.gz')
-com_Database_Octmote.MK_Database_Sqlite3_Close()
+common_database_octmote.MK_Database_Sqlite3_Close()
 '''

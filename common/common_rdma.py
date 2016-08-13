@@ -26,8 +26,10 @@ import rdma.satransactor
 import rdma.path
 
 
-# get list of RDMA devices
 def mk_rdma_get_devices():
+    """
+    # get list of RDMA devices
+    """
     rdma_device_list = rdma.get_devices()
     logging.info("RDMA devices: %s", rdma_device_list)
     for rdma_device in rdma_device_list:

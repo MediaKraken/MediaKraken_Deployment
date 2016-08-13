@@ -21,7 +21,7 @@ import logging
 import vimeo
 
 
-class CommonVimeo(object):
+class CommonNetworkVimeo(object):
     """
     Class for interfacing with Vimeo
     """

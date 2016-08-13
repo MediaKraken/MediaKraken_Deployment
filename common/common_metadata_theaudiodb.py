@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-class Commontheaudiodb(object):
+class CommonMetadataTheAudiodb(object):
     """
     Class for interfacing with theaudiodb
     """

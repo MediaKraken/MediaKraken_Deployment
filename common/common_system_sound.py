@@ -22,13 +22,17 @@ from plyer import tts
 from kivy.core.audio import SoundLoader
 
 
-# text to speech
-def mk_sound_text_to_speech(message_to_speak):
+def com_sound_text_to_speech(message_to_speak):
+    """
+    # text to speech
+    """
     tts.speak(message_to_speak)
 
 
-# play audio file
-def mk_sound_play_file(file_name):
+def com_sound_play_file(file_name):
+    """
+    # play audio file
+    """
     sound_data = SoundLoader.load(file_name)
     if sound_data:
         logging.debug("Sound found at %s" % sound_data.source)
@@ -36,8 +40,10 @@ def mk_sound_play_file(file_name):
         sound_data.play()
 
 
-# list devices via pyaudio
 def com_audio_pyaudio_list_devices():
+    """
+    # list devices via pyaudio
+    """
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):

@@ -23,7 +23,7 @@ import os
 import omdb
 
 
-class Commonomdb(object):
+class CommonMetadataOMDB(object):
     """
     Class for interfacing with omdb
     """

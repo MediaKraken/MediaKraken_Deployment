@@ -22,7 +22,7 @@ import json
 import requests
 
 
-class Commonimvdb(object):
+class CommonMetadataIMVdb(object):
     """
     Class for interfacing with imvdb
     """

@@ -28,20 +28,32 @@ class CommonWatchdogHandler(FileSystemEventHandler):
     Class for handling watchdog events
     """
     def on_modified(self, event):
+        """
+        File modified notification
+        """
         logging.info("Modifed: %s", event.src_path)
 
 
     def on_deleted(self, event):
+        """
+        File deleted notification
+        """
         # TODO then could remove the media (if a media file) from the db automatically
         logging.info("Deleted: %s", event.src_path)
 
 
     def on_moved(self, event):
+        """
+        File moved notification
+        """
         # TODO update media file path....if a media file
         logging.info("Moved: %s", event.src_path)
 
 
     def on_created(self, event):
+        """
+        File created notification
+        """
         logging.info("Created: %s", event.src_path)
 
 

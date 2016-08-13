@@ -21,7 +21,7 @@ import logging
 from easysnmp import Session
 
 
-class CommonSNMP(object):
+class CommonNetworkSNMP(object):
     """
     Class for interfacing via SNMP
     """

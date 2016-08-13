@@ -48,14 +48,21 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         if create_db:
             # create the tables since they don't exist
-            self.sql3_cursor.execute("CREATE TABLE octmote_server_settings (server_host text, server_port integer)")
-            self.sql3_cursor.execute("insert into octmote_server_settings (server_host, server_port) values ('localhost',8097)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_anidb (anidb_aid numeric, anidb_type numeric, anidb_language text, anidb_title text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_layout (layout_guid text, layout_name text, layout_json text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_macro (macro_guid text, macro_name text, macro_json text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_item (item_guid text, item_type text, item_manufacturer text, item_model_number text, item_json text)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_server_settings (server_host text,'\
+                ' server_port integer)")
+            self.sql3_cursor.execute("insert into octmote_server_settings (server_host,'\
+                ' server_port) values ('localhost',8097)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_anidb (anidb_aid numeric,'\
+                ' anidb_type numeric, anidb_language text, anidb_title text)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_layout (layout_guid text,'\
+                ' layout_name text, layout_json text)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_macro (macro_guid text,'\
+                ' macro_name text, macro_json text)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_item (item_guid text,'\
+                ' item_type text, item_manufacturer text, item_model_number text, item_json text)")
             # grab brands and insert them into database
-            self.sql3_cursor.execute("CREATE TABLE octmote_brand (brand_guid text, brand_name text)")
+            self.sql3_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
+                ' brand_name text)")
             json_brand = com_network_IRDB.com_IRDB_Brand_List()["objects"]
             for brand_name in json_brand:
                 self.sql3_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
@@ -111,12 +118,14 @@ class CommonDatabaseOctmote(object):
         """
         Insert new layout config into database
         """
-        self.sql3_cursor.execute("insert into octmote_layout (layout_guid, layout_name, layout_json) values (?,?,?)", (uuid.uuid4(), layout_record_name, layout_record_json))
+        self.sql3_cursor.execute("insert into octmote_layout (layout_guid, layout_name,'\
+            ' layout_json) values (?,?,?)", (uuid.uuid4(), layout_record_name, layout_record_json))
         self.sql3_conn.commit()
 
 
     def MK_Database_Sqlite3_Layout_List(self):
-        self.sql3_cursor.execute("select layout_guid, layout_name from octmote_layout order by layout_name asc")
+        self.sql3_cursor.execute("select layout_guid, layout_name from octmote_layout'\
+            ' order by layout_name asc")
         return self.sql3_cursor
 
 
@@ -130,7 +139,9 @@ class CommonDatabaseOctmote(object):
         """
         Insert new device type into database
         """
-        self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name, device_record_description))
+        self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name,'\
+            ' device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name,\
+            device_record_description))
         self.sql3_conn.commit()
         self.sql3_cursor.execute("select device_guid from octmote_device where rowid = ?",\
             (self.sql3_cursor.lastrowid,))
@@ -138,12 +149,14 @@ class CommonDatabaseOctmote(object):
 
 
     def MK_Database_Sqlite3_Device_List(self):
-        self.sql3_cursor.execute("select device_guid, device_name from octmote_device order by device_name asc")
+        self.sql3_cursor.execute("select device_guid, device_name from octmote_device'\
+            ' order by device_name asc")
         return self.sql3_cursor
 
 
     def MK_Database_Sqlite3_Device_Detail(self, guid):
-        self.sql3_cursor.execute("select device_description from octmote_device where device_guid = ?", (guid,))
+        self.sql3_cursor.execute("select device_description from octmote_device'\
+            ' where device_guid = ?", (guid,))
         return self.sql3_cursor
 
 
@@ -154,7 +167,10 @@ class CommonDatabaseOctmote(object):
         json_data = json.loads(item_record_json)
         # find all the models and store a record for each
         for model_number in json_data["Model Support"]:
-            self.sql3_cursor.execute("insert into octmote_item (item_guid, item_type, item_manufacturer, item_model_number, item_json) values (?,?,?,?,?)", (str(uuid.uuid4()), json_data["Item Type"], json_data["Manufacturer"], model_number, item_record_json))
+            self.sql3_cursor.execute('insert into octmote_item (item_guid, item_type,'\
+                ' item_manufacturer, item_model_number, item_json) values (?,?,?,?,?)',\
+                (str(uuid.uuid4()), json_data["Item Type"], json_data["Manufacturer"],\
+                model_number, item_record_json))
         self.sql3_conn.commit()
         self.sql3_cursor.execute("select item_guid from octmote_item where rowid = ?",\
             (self.sql3_cursor.lastrowid,))
@@ -162,7 +178,9 @@ class CommonDatabaseOctmote(object):
 
 
     def MK_Database_Sqlite3_Item_List(self):
-        self.sql3_cursor.execute("select item_guid, item_type, item_manufacturer, item_model_number from octmote_item order by item_type, item_manufacturer, item_model_number asc")
+        self.sql3_cursor.execute('select item_guid, item_type, item_manufacturer,'\
+            ' item_model_number from octmote_item order by item_type, item_manufacturer,'\
+            ' item_model_number asc')
         return self.sql3_cursor
 
 
@@ -193,12 +211,14 @@ class CommonDatabaseOctmote(object):
         """
         self.sql3_cursor.execute("delete from octmote_anidb")
         for sql_params in sql_params_list:
-            self.sql3_cursor.execute("insert into octmote_anidb (anidb_aid, anidb_type, anidb_language, anidb_title) values (?,?,?,?)", sql_params)
+            self.sql3_cursor.execute('insert into octmote_anidb (anidb_aid, anidb_type,'\
+                ' anidb_language, anidb_title) values (?,?,?,?)', sql_params)
         self.sql3_conn.commit()
 
 
     def MK_Database_Sqlite3_anidb_Title_Search(self, title_to_search):
-        self.sql3_cursor.execute("select anidb_aid from octmote_anidb where anidb_title = ? limit 1", (title_to_search,))
+        self.sql3_cursor.execute('select anidb_aid from octmote_anidb'\
+            ' where anidb_title = ? limit 1', (title_to_search,))
         try:
             return self.sql3_cursor.fetchone()[0]
         except:

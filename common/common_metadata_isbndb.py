@@ -21,7 +21,7 @@ import logging
 from common import common_network
 
 
-class CommonISBNdb(object):
+class CommonMetadataISBNdb(object):
     """
     Class for interfacing with isbndb
     """

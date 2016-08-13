@@ -40,14 +40,18 @@ class CommonTheTVDB(object):
             ignore_case=True)
 
 
-    # get show information
     def com_thetvdb_show_info(self, show_title, show_language):
+        """
+        # get show information
+        """
         return com_thetvdb_Show_Details(com_thetvdb_Search(self.tvdb_connection,\
             show_title, show_language))
 
 
-    # search for show
     def com_thetvdb_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+        """
+        # search for show
+        """
         if show_id is not None:
             show_data = self.tvdb_connection.get_series(show_id, show_language)
         else:
@@ -75,6 +79,9 @@ class CommonTheTVDB(object):
 
     # save entire show info
     def com_thetvdb_show_db_save(self, show_data):
+        """
+        # save entire show info
+        """
         show_data.update()
         # store the show data
         json_media_id = json.dumps({'imdb':show_data.imdb_ID, 'thetvdb':show_data.SeriesID,
@@ -137,18 +144,24 @@ class CommonTheTVDB(object):
 
 
 
-    # get episode information
     def com_thetvdb_episode_info(self, show_language, episode_id):
+        """
+        # get episode information
+        """
         return self.tvdb_connection.get_episode(show_language, episodeid=episode_id)
 
 
-    # get episode information by season and episode
     def com_thetvdb_season_episode_info(self, show_language, season_no, ep_no, show_id):
+        """
+        # get episode information by season and episode
+        """
         return self.tvdb_connection.get_episode(show_language, season_no, ep_no, show_id)
 
 
-    # show data from result
     def com_thetvdb_show_details(self, show_data):
+        """
+        # show data from result
+        """
         show_dict = {}
         show = show_data[0]
         show_number_seasons = len(show)

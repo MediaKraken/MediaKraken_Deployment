@@ -147,7 +147,8 @@ def com_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, port_n
     """
     Send snapshot
     """
-    proc = subprocess.Popen(['zfs send -R -i storage_pool@-2015-11-11 storage_pool@-2015-11-21  | mbuffer -s 128k -m 1G -O 10.1.0.7:9191'], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['zfs send -R -i storage_pool@-2015-11-11 storage_pool@-2015-11-21'\
+        ' | mbuffer -s 128k -m 1G -O 10.1.0.7:9191'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -155,7 +156,8 @@ def com_zfs_zpool_snapshot_receive(zpool_location, port_no):
     """
     Receive snapshot
     """
-    proc = subprocess.Popen(['mbuffer', '-s', '128k', '-m', '1G', '-I', port_no, '|', 'zfs', 'receive', '-Fudv', zpool_location], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['mbuffer', '-s', '128k', '-m', '1G', '-I', port_no, '|', 'zfs',\
+        'receive', '-Fudv', zpool_location], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 

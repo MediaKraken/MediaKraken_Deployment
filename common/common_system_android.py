@@ -29,32 +29,32 @@ class CommonAndroidHardwareInstance(object):
     """
     def __init__(self):
         # get hardware instance of device
-        self.Android_Hardware = autoclass('org.renpy.android.Hardware')
+        self.android_hardware = autoclass('org.renpy.android.Hardware')
 
 
     def MK_Android_Get_DPI(self):
         """
         Return the dpi for the device
         """
-        logging.debug('DPI is', self.Android_Hardware.getDPI())
-        return self.Android_Hardware.getDPI()
+        logging.debug('DPI is', self.android_hardware.getDPI())
+        return self.android_hardware.getDPI()
 
 
     def MK_Android_Vibrate(self, vibrate_time):
         """
         Vibrate the device
         """
-        self.Android_Hardware.vibrate(vibrate_time)
+        self.android_hardware.vibrate(vibrate_time)
 
 
     def MK_Android_Motion(self, time_range):
         """
         Return data from the motion controller
         """
-        self.Android_Hardware.accelerometerEnable(True)
+        self.android_hardware.accelerometerEnable(True)
         accel_data = []
         for x in xrange(time_range):
-            logging.debug( self.Android_Hardware.accelerometerReading())
-            accel_data.append(self.Android_Hardware.accelerometerReading())
+            logging.debug( self.android_hardware.accelerometerReading())
+            accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)
         return accel_data

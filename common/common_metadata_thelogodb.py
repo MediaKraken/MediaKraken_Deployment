@@ -24,7 +24,7 @@ from common import common_metadata
 from common import common_network
 
 
-class Commonthelogodb(object):
+class CommonMetadataTheLogoDB(object):
     """
     Class for interfacing with thelogodb
     """

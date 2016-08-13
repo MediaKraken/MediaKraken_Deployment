@@ -25,7 +25,7 @@ from common import common_network
 from imdbpie import Imdb
 
 
-class Commonimdb(object):
+class CommonMetadataIMDB(object):
     """
     Class for interfacing with imdb
     """

@@ -90,6 +90,9 @@ class CommonCloudOneDrive(object):
 
 
     def com_cloud_onedrive_copy(self, file_from, file_to):
+        """
+        Copy file
+        """
         ref = ItemReference()
         ref.id = "yourparent!id" #path also supported
         copy_operation = client.item(drive="me",\
@@ -101,6 +104,9 @@ class CommonCloudOneDrive(object):
 
 
     def com_cloud_onedrive_name(self, file_from, file_to):
+        """
+        File rename
+        """
         renamed_item = onedrivesdk.Item()
         renamed_item.name = "NewItemName"
         renamed_item.id = "youritemtorename!id"
