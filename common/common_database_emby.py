@@ -98,7 +98,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchall()
 
 
-    def com_db_Movie_List_emby_count(self):
+    def com_db_movie_list_emby_count(self):
         """
         Grab all movies in emby database count
         """

@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import sqlite3
 import uuid
 import os
 import json
-from common import common_network_IRDB
+from common import common_network_irdb
 
 
 class CommonDatabaseOctmote(object):
@@ -33,7 +33,7 @@ class CommonDatabaseOctmote(object):
         pass
 
 
-    def MK_Database_Sqlite3_Open(self, db_file = None):
+    def MK_Database_Sqlite3_Open(self, db_file=None):
         """
         Open database and pull in config from sqlite and create db if not exist
         """

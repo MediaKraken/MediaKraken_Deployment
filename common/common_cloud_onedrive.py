@@ -65,7 +65,7 @@ class CommonCloudOneDrive(object):
         """
         upload
         """
-        returned_item = client.item(drive="me", id="root").children["newfile.txt"].\
+        returned_item = self.client.item(drive="me", id="root").children["newfile.txt"].\
             upload("./path_to_file.txt")
 
 
@@ -73,9 +73,9 @@ class CommonCloudOneDrive(object):
         """
         Download
         """
-        root_folder = client.item(drive="me", id="root").children.get()
+        root_folder = self.client.item(drive="me", id="root").children.get()
         id_of_file = root_folder[0].id
-        client.item(drive="me", id=id_of_file).download("./path_to_download_to.txt")
+        self.client.item(drive="me", id=id_of_file).download("./path_to_download_to.txt")
 
 
     def com_cloud_onedrive_add_folder(self, folder_name):
@@ -86,7 +86,7 @@ class CommonCloudOneDrive(object):
         i = onedrivesdk.Item()
         i.name = folder_name
         i.folder = f
-        returned_item = client.item(drive="me", id="root").children.add(i)
+        returned_item = self.client.item(drive="me", id="root").children.add(i)
 
 
     def com_cloud_onedrive_copy(self, file_from, file_to):
@@ -95,7 +95,7 @@ class CommonCloudOneDrive(object):
         """
         ref = ItemReference()
         ref.id = "yourparent!id" #path also supported
-        copy_operation = client.item(drive="me",\
+        copy_operation = self.client.item(drive="me",\
             id="youritemtocopy!id").copy(name="new copied name", parent_reference=ref).post()
         #copy_operation.item will return None until the copy has completed.
         #If you would like to block until the operation has been completed
@@ -110,7 +110,7 @@ class CommonCloudOneDrive(object):
         renamed_item = onedrivesdk.Item()
         renamed_item.name = "NewItemName"
         renamed_item.id = "youritemtorename!id"
-        new_item = client.item(drive="me", id=renamed_item.id).update(renamed_item)
+        new_item = self.client.item(drive="me", id=renamed_item.id).update(renamed_item)
 
 
     def com_cloud_onedrive_page(self):
@@ -118,7 +118,7 @@ class CommonCloudOneDrive(object):
         page through collection
         """
         #get the top three elements of root, leaving the next page for more elements
-        collection = client.item(drive="me", id="root").children.request(top=3).get()
+        collection = self.client.item(drive="me", id="root").children.request(top=3).get()
         #get the first item in the collection
         item = collection[0]
         #get the next page of three elements, if none exist, returns None
@@ -126,4 +126,4 @@ class CommonCloudOneDrive(object):
 
 ###############
 #loop = asyncio.get_event_loop()
-#loop.run_until_complete(run_gets(client))
+#loop.run_until_complete(run_gets(self.client))

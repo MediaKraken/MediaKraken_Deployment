@@ -20,7 +20,7 @@
 # https://developers.google.com/cast/docs/media#subtitles--closed-captions
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import pychromecast
 import pychromecast.controllers.youtube as youtube
 from pychromecast.controllers import BaseController
@@ -34,44 +34,58 @@ class CommonHardwareChromecast(object):
         pass
 
 
-    # find chromecast as dict
     def MK_Chromecast_Discover_Dict(self):
+        """
+        # find chromecast as dict
+        """
         self.chromecast_dict = pychromecast.get_chromecasts_as_dict().keys()
         return self.chromecast_dict
 
 
-    # get detail by name
     def MK_Chromecast_Info(self):
+        """
+        # get detail by name
+        """
         return self.cast.device
 
 
-    # get status by name
     def MK_Chromecast_Status(self):
+        """
+        # get status by name
+        """
         return self.cast.status
 
 
-    # connect to device
     def MK_Chromecast_Connect_By_Name(self, key_name):
+        """
+        # connect to device
+        """
         self.cast = pychromecast.get_chromecast(friendly_name=key_name)
         # Wait for cast device to be ready
         self.cast.wait()
         self.chromecast_device = self.cast.media_controller
 
 
-    # play youtube video
     def MK_Chromecast_Play_YT(self, yt_id):
+        """
+        # play youtube video
+        """
         yt_controller = YouTubeController()
         self.chromecast_device.register_handler(yt_controller)
         yt_controller.play_video(yt_id)
 
 
-    # play media file
     def MK_Chromecast_Play_Media(self, media_file, media_type):
+        """
+        # play media file
+        """
         self.chromecast_device.play_media(media_file, media_type)
 
 
-    # send chromecast commands
     def MK_Chromecast_Device_Command(self, command):
+        """
+        # send chromecast commands
+        """
         if command == "Pause":
             self.chromecast_device.pause()
         elif command == "Play":
@@ -81,4 +95,7 @@ class CommonHardwareChromecast(object):
 
 
     def MK_Chromecast_Device_Close(self):
+        """
+        Close the chromecast device
+        """
         self.chromecast_device.quit_app()

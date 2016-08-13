@@ -83,7 +83,8 @@ def mk_hardware_gps_on():
     try:
         self.gps.configure(on_location=self.on_location, on_status=self.on_status)
     except NotImplementedError:
-        import traceback; traceback.print_exc()
+        import traceback
+        traceback.print_exc()
         self.gps_status = 'GPS is not implemented for your platform'
     return self.gps
 

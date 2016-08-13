@@ -35,12 +35,12 @@ def com_nest_device_structures(nest_device):
     # grab structures and the devices
     """
     for structure in nest_device.structures:
-        logging.info('Structure %s' % structure.name)
-        logging.info('Away: %s' % structure.away)
+        logging.info('Structure %s', structure.name)
+        logging.info('Away: %s', structure.away)
         logging.info('Devices:')
         for device in structure.devices:
-            logging.info('Device: %s' % device.name)
-            logging.info('Temp: %0.1f' % device.temperature)
+            logging.info('Device: %s', device.name)
+            logging.info('Temp: %0.1f', device.temperature)
 
 
 def com_nest_c_to_f(temp_data):

@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import boto
 from boto.s3.key import Key
+import datetime
 
 
 class CommonAWSS3(object):
@@ -50,7 +51,7 @@ class CommonAWSS3(object):
             self.active = True
 
 
-    def com_aws_s3_upload(self, source_path, destination_filename, backup_bucket = False):
+    def com_aws_s3_upload(self, source_path, destination_filename, backup_bucket=False):
         """
         Upload file to S3
         """
@@ -62,7 +63,7 @@ class CommonAWSS3(object):
         k.set_contents_from_filename(source_path)
 
 
-    def com_aws_s3_download(self, source_key, destination_filename, backup_bucket = False):
+    def com_aws_s3_download(self, source_key, destination_filename, backup_bucket=False):
         """
         Download from s3
         """
@@ -74,7 +75,7 @@ class CommonAWSS3(object):
         k.get_contents_to_filename(destination_filename)
 
 
-    def com_aws_s3_delete(self, key, backup_bucket = False):
+    def com_aws_s3_delete(self, key, backup_bucket=False):
         """
         Delete
         """
@@ -95,7 +96,7 @@ class CommonAWSS3(object):
                 self.bucket_backup.delete_key(key)
 
 
-    def com_aws_s3_bucket_list(self, backup_bucket = False):
+    def com_aws_s3_bucket_list(self, backup_bucket=False):
         """
         Bucket list (ha)
         """

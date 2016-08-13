@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-from pprint import pprint
+#import logging
+#from pprint import pprint
 from hdhomerun import Device, DeviceError
 
 
@@ -30,18 +30,18 @@ class CommonHardwareHDHomeRun(object):
         pass
 
 
-    def com_HDHomeRun_Discover(self):
+    def com_hdhomerun_discover(self):
         """
         Discover hdhomerun devices
         """
         self.devices = Device.discover()
 
 
-    def com_HDHomeRun_List(self):
+    def com_hdhomerun_list(self):
         return self.devices
 
 
-    def com_HDHomeRun_Detail(self, ndx):
+    def com_hdhomerun_detail(self, ndx):
         print('Model: %s', self.devices[ndx].get_var(item='/sys/model'))
         print('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel'))
         print('Name: %s', self.devices[ndx].get_name())
@@ -51,35 +51,47 @@ class CommonHardwareHDHomeRun(object):
         print('Versions: %s %d' % self.devices[ndx].get_version())
 
 
-    # firmware upgrade
-    def com_HDHomeRun_Upgrade(self, ndx, firmware_file):
+    def com_hdhomerun_upgrade(self, ndx, firmware_file):
+        """
+        # firmware upgrade
+        """
         self.devices[ndx].upgrade(filename=firmware_file, wait=True)
 
 
-    # set lock request
-    def com_HDHomeRun_Lock_Request(self, ndx):
+    def com_hdhomerun_lock_request(self, ndx):
+        """
+        # set lock request
+        """
         self.devices[ndx].tuner_lockkey_request()
         self.devices[ndx].wait_for_lock()
 
 
-    # release lock
-    def com_HDHomeRun_Lock_Release(self, ndx):
+    def com_hdhomerun_lock_release(self, ndx):
+        """
+        # release lock
+        """
         self.devices[ndx].tuner_lockkey_release()
 
 
-    # get lock owner
-    def com_HDHomeRun_Lock_Owner(self, ndx):
+    def com_hdhomerun_lock_owner(self, ndx):
+        """
+        # get lock owner
+        """
         return self.devices[0].get_tuner_lockkey_owner()
 
 
-    # set tuner
-    def com_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
+    def com_hdhomerun_set_tuner(self, ndx, tuner_no):
+        """
+        # set tuner
+        """
         self.devices[ndx].set_tuner(tuner_no)
 
 
-    # get tuner status
-    def com_HDHomeRun_Get_Tuner_Status(self, ndx):
-         return self.devices[ndx].get_tuner_status()
+    def com_hdhomerun_get_tuner_status(self, ndx):
+        """
+        # get tuner status
+        """
+        return self.devices[ndx].get_tuner_status()
 
 
 

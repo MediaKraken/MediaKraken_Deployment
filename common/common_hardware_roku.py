@@ -14,7 +14,7 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       They don't look right for me when I set the video height to 480
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import tempfile
 from subprocess import Popen, PIPE
@@ -23,10 +23,10 @@ import array
 import shutil
 
 # for mode 0, 1, 2, 3
-videoSizes = [(240, 180), (320, 240), (240, 136), (320, 180)]
+videosizes = [(240, 180), (320, 240), (240, 136), (320, 180)]
 
 # Extension to add to the file for mode 0, 1, 2, 3
-modeExtension = ['SD', 'HD', 'SD', 'HD']
+modeextension = ['SD', 'HD', 'SD', 'HD']
 
 
 def getmp4info(filename):
@@ -44,19 +44,19 @@ def getmp4info(filename):
             if fields[1] == 'video':
                 # parse the video info
                 # MPEG-4 Simple @ L3, 5706.117 secs, 897 kbps, 712x480 @ 23.9760 24 fps
-                videoFields = fields[2].split(',')
-                details['type'] = videoFields[0]
-                details['length'] = float(videoFields[1].split()[0])
-                details['bitrate'] = float(videoFields[2].split()[0])
-                details['format'] = videoFields[3]
-                details['size'] = videoFields[3].split('@')[0].strip()
+                videofields = fields[2].split(',')
+                details['type'] = videofields[0]
+                details['length'] = float(videofields[1].split()[0])
+                details['bitrate'] = float(videofields[2].split()[0])
+                details['format'] = videofields[3]
+                details['size'] = videofields[3].split('@')[0].strip()
         except:
             pass
 
     return details
 
 
-def extractimages(videoFile, directory, interval, mode=0, offset=0):
+def extractimages(videofile, directory, interval, mode=0, offset=0):
     """
     Extract images from the video at 'interval' seconds
 
@@ -65,8 +65,8 @@ def extractimages(videoFile, directory, interval, mode=0, offset=0):
     @param interval interval to extract images at, in seconds
     @param offset offset to first image, in seconds
     """
-    size = "x".join([str(i) for i in videoSizes[mode]])
-    cmd = ["ffmpeg", "-i", videoFile, "-ss", "%d" % offset,
+    size = "x".join([str(i) for i in videosizes[mode]])
+    cmd = ["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
            "-r", "%0.2f" % (1.00/interval), "-s", size, "%s/%%08d.jpg" % directory]
     p = Popen(cmd, stdout=PIPE, stdin=PIPE)
     (stdout, stderr) = p.communicate()
@@ -97,21 +97,21 @@ def makebif(filename, directory, interval):
     f.write(struct.pack("<I1", 1000 * interval))
     array.array('B', [0x00 for x in xrange(20, 64)]).tofile(f)
 
-    bifTableSize = 8 + (8 * len(images))
-    imageIndex = 64 + bifTableSize
+    biftablesize = 8 + (8 * len(images))
+    imageindex = 64 + biftablesize
     timestamp = 0
 
     # Get the length of each image
     for image in images:
         statinfo = os.stat("%s/%s" % (directory, image))
         f.write(struct.pack("<I1", timestamp))
-        f.write(struct.pack("<I1", imageIndex))
+        f.write(struct.pack("<I1", imageindex))
 
         timestamp += 1
-        imageIndex += statinfo.st_size
+        imageindex += statinfo.st_size
 
     f.write(struct.pack("<I1", 0xffffffff))
-    f.write(struct.pack("<I1", imageIndex))
+    f.write(struct.pack("<I1", imageindex))
 
     # Now copy the images
     for image in images:
@@ -121,25 +121,25 @@ def makebif(filename, directory, interval):
     f.close()
 
 
-def com_roku_create_bif(videoFile, first_image_offset=7, image_interval=10, option_mode=0):
+def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10, option_mode=0):
     """
     Create BIF
     """
     # help="(0=SD) 4:3 1=HD 4:3 2=SD 16:9 3=HD 16:9") - option_mode
     # Get info about the video file
-    videoInfo = getmp4info(videoFile)
-    if videoInfo["size"]:
-        size = videoInfo["size"].split("x")
-        aspectRatio = float(size[0]) / float(size[1])
-        width, height = videoSizes[option_mode]
-        height = int(width / aspectRatio)
-        videoSizes[option_mode] = (width, height)
-    tmpDirectory = tempfile.mkdtemp()
+    videoinfo = getmp4info(videofile)
+    if videoinfo["size"]:
+        size = videoinfo["size"].split("x")
+        aspectratio = float(size[0]) / float(size[1])
+        width, height = videosizes[option_mode]
+        height = int(width / aspectratio)
+        videosizes[option_mode] = (width, height)
+    tmpdirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
-    extractimages(videoFile, tmpDirectory, image_interval, option_mode, first_image_offset)
-    bifFile = "%s-%s.bif" % (os.path.basename(videoFile).rsplit('.', 1)[0],\
-        modeExtension[option_mode])
+    extractimages(videofile, tmpdirectory, image_interval, option_mode, first_image_offset)
+    biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0],\
+        modeextension[option_mode])
     # Create the BIF file
-    makebif(bifFile, tmpDirectory, image_interval)
+    makebif(biffile, tmpdirectory, image_interval)
     # Clean up the temporary directory
-    shutil.rmtree(tmpDirectory)
+    shutil.rmtree(tmpdirectory)

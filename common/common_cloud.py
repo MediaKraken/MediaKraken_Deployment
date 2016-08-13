@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 from common import common_cloud_aws_s3
 from common import common_cloud_dropbox
 from common import common_cloud_google_drive
 from common import common_cloud_onedrive
-from common import common_string
+#from common import common_string
 
 
 CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
@@ -33,10 +33,10 @@ CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                     )
 
 
-awss3 = com_cloud_aws_s3.com_AWS_S3_API()
-dropbox = com_cloud_dropbox.com_DropBox_API()
-google = com_cloud_google_drive.com_Google_Drive_API()
-onedrive = com_cloud_onedrive.com_OneDrive_API()
+awss3 = common_cloud_aws_s3.com_AWS_S3_API()
+dropbox = common_cloud_dropbox.com_DropBox_API()
+google = common_cloud_google_drive.com_Google_Drive_API()
+onedrive = common_cloud_onedrive.com_OneDrive_API()
 
 
 def com_cloud_backup_list():
@@ -44,9 +44,9 @@ def com_cloud_backup_list():
     Get list of all backups
     """
     backup_files = []
-    for backup_class in CLOUD_BACKUP_CLASS:    
+    for backup_class in CLOUD_BACKUP_CLASS:
         for backup_cloud in com_cloud_File_List(backup_class[0], None, True):
-            loggging.debug("cloud back: %s",backup_cloud)
+            loggging.debug("cloud back: %s", backup_cloud)
             backup_files.append((backup_cloud.name, backup_class[1],\
                 com_string.bytes2human(backup_cloud.size)))
     return backup_files

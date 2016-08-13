@@ -51,7 +51,8 @@ def com_json_import(file_name):
     except:
         try:
             # layout
-            common_database_octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'], json_data)
+            common_database_octmote.MK_Database_Sqlite3_Layout_Config_Insert(json_data['Layout'],\
+                json_data)
         except:
             pass
 

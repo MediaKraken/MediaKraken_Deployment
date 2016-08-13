@@ -19,14 +19,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import urllib2
-import urllib
+#import urllib
 import httplib
 import socket
 import json
-import os
+#import os
 import sys
 import hashlib
-import traceback
+#import traceback
 import time
 # include code
 from common import common_network
