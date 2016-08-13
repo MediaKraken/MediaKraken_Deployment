@@ -64,14 +64,14 @@ from common import common_metadata_theaudiodb
 from common import common_metadata_thegamesdb
 from common import common_metadata_thelogodb
 from common import common_metadata_thesportsdb
-from common import common_metadata_TheTVDB
+from common import common_metadata_thetvdb
 from common import common_metadata_tmdb
-from common import common_metadata_TV_Intro
-from common import common_metadata_TV_Theme
+from common import common_metadata_tv_intro
+from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from common import common_network
 from common import common_system
-from common import common_TheTVDB
+from common import common_thetvdb
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')
