@@ -40,10 +40,10 @@ class TestDatabaseMetadataThetvdb(object):
 
 
     # insert
-    # def srv_db_metadatatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
+    # def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
 #        self.db.srv_db_Rollback()
 
 
     # updated
-    # def srv_db_metadatatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
+    # def srv_db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
 #        self.db.srv_db_Rollback()

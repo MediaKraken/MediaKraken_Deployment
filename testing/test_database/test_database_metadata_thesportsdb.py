@@ -50,5 +50,5 @@ class TestDatabaseMetadataThesportsdb(object):
 
 
     # updated
-    # def srv_db_metadatathesports_update(self, series_id_json, event_name, show_detail, sportsdb_id):
+    # def srv_db_metathesports_update(self, series_id_json, event_name, show_detail, sportsdb_id):
 #         self.db.srv_db_Rollback()

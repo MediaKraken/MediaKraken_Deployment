@@ -33,12 +33,12 @@ def srv_db_Metadata_Sports_GUID_By_thesportsdb(self, thesports_uuid):
         return None
 
 
-def srv_db_metadata_sports_list_count(self):
+def srv_db_meta_sports_list_count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_sports')
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_sports_list(self, offset=None, records=None):
+def srv_db_meta_sports_list(self, offset=None, records=None):
     """
     # return list of game systems
     """
@@ -54,7 +54,7 @@ def srv_db_metadata_sports_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_sports_guid_by_event_name(self, event_name):
+def srv_db_meta_sports_guid_by_event_name(self, event_name):
     """
     # fetch guid by event name
     """

@@ -85,7 +85,7 @@ total_episode_images = 0
 
 
 # grab tvmaze ones without image data
-for row_data in db.srv_db_metadata_tvshow_images_to_update('tvmaze'):
+for row_data in db.srv_db_meta_tvshow_images_to_update('tvmaze'):
     logging.debug("json: %s", row_data['mm_metadata_tvshow_json'])
     # this is "removed" via the query ['Meta']['tvmaze']
     # grab poster
@@ -122,7 +122,7 @@ for row_data in db.srv_db_metadata_tvshow_images_to_update('tvmaze'):
                 common_network.mk_network_fetch_from_url(episode_info['image']['original'], eps_image_local)
                 json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
-    db.srv_db_metadata_tvshow_update_image(json.dumps(json_image_data), row_data[1])
+    db.srv_db_meta_tvshow_update_image(json.dumps(json_image_data), row_data[1])
     # commit
     db.srv_db_Commit()
 

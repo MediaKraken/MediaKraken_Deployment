@@ -70,7 +70,7 @@ class MediaKrakenServerApp(Factory):
             Config.get('DB Connections', 'PostDBUser').strip(),\
             Config.get('DB Connections', 'PostDBPass').strip())
         # preload some data from database
-        self.genre_list = self.db.srv_db_metadata_genre_list()
+        self.genre_list = self.db.srv_db_meta_genre_list()
         logging.info("Ready for connections!")
 
 

@@ -60,7 +60,7 @@ def movie_search_tmdb(db, file_name):
         logging.debug("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
-            metadata_uuid = db.srv_db_metadata_guid_by_tmdb(match_result)
+            metadata_uuid = db.srv_db_meta_guid_by_tmdb(match_result)
             logging.debug("db result: %s", metadata_uuid)
         elif match_response == 'info':
             # store new metadata record and set uuid
@@ -85,7 +85,7 @@ def movie_fetch_save_tmdb(db, tmdb_id):
         logging.debug("series: %s", series_id_json)
         # set and insert the record
         metadata_uuid = str(uuid.uuid4())
-        db.srv_db_metadata_insert_tmdb(metadata_uuid, series_id_json,\
+        db.srv_db_meta_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     else:
         metadata_uuid = None
@@ -106,11 +106,11 @@ def movie_fetch_tmdb_imdb(imdb_id):
 def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
     cast_json = TMDB_API_Connection.com_TMDB_Metadata_Cast_By_ID(tmdb_id)
     if 'cast' in cast_json:
-        db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['cast'])
+        db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
     if 'crew' in cast_json:
-        db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['crew'])
+        db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
     # update the metadata record with the cast info
-    db.srv_db_metadata_movie_update_castcrew(tmdb_id, cast_json)
+    db.srv_db_meta_movie_update_castcrew(tmdb_id, cast_json)
 
 
 def movie_fetch_save_tmdb_review(db, tmdb_id):

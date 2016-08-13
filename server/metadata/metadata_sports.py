@@ -40,7 +40,7 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
     Lookup sporting event by name
     """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(',1)[0].strip())
-    metadata_uuid = db.srv_db_metadata_sports_guid_by_event_name(stripped_name)
+    metadata_uuid = db.srv_db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and thesportsdb_API_Connection is not None:
         logging.debug("searching: %s", stripped_name)
         thesportsdb_data = thesportsdb_API_Connection.com_Metadata_thesportsdb_Search_Event_By_Name(stripped_name)

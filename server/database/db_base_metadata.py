@@ -34,7 +34,7 @@ def srv_db_read_media_Metadata(self, media_guid):
         return None
 
 
-def srv_db_metadata_update(self, series_id_json, result_json, image_json):
+def srv_db_meta_update(self, series_id_json, result_json, image_json):
     """
     # update record by tmdb
     """
@@ -44,7 +44,7 @@ def srv_db_metadata_update(self, series_id_json, result_json, image_json):
         json.dumps(result_json), json.dumps(image_json), str(result_json['id'])))
 
 
-def srv_db_metadata_genre_list_count(self):
+def srv_db_meta_genre_list_count(self):
     """
     # count all the generes
     """
@@ -52,7 +52,7 @@ def srv_db_metadata_genre_list_count(self):
     return len(self.sql3_cursor.fetchall())
 
 
-def srv_db_metadata_genre_list(self, offset=None, records=None):
+def srv_db_meta_genre_list(self, offset=None, records=None):
     """
     # grab all the generes
     """
@@ -63,7 +63,7 @@ def srv_db_metadata_genre_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_movie_count_by_genre(self):
+def srv_db_meta_movie_count_by_genre(self):
     """
     # movie count by genre
     """
@@ -83,7 +83,7 @@ def srv_db_Metadata_GUID_By_imdb(self, imdb_uuid):
         return None
 
 
-def srv_db_metadata_guid_by_tvdb(self, thetvdb_uuid):
+def srv_db_meta_guid_by_tvdb(self, thetvdb_uuid):
     """
     # metadata guid by tv id
     """
@@ -95,7 +95,7 @@ def srv_db_metadata_guid_by_tvdb(self, thetvdb_uuid):
         return None
 
 
-def srv_db_metadata_guid_by_tmdb(self, tmdb_uuid):
+def srv_db_meta_guid_by_tmdb(self, tmdb_uuid):
     """
     # see if metadata exists type and id
     """
@@ -107,7 +107,7 @@ def srv_db_metadata_guid_by_tmdb(self, tmdb_uuid):
         return None
 
 
-def srv_db_metadata_guid_by_rt(self, rt_uuid):
+def srv_db_meta_guid_by_rt(self, rt_uuid):
     """
     # see if metadata exists type and id
     """
@@ -119,7 +119,7 @@ def srv_db_metadata_guid_by_rt(self, rt_uuid):
         return None
 
 
-def srv_db_metadata_insert_tmdb(self, uuid_id, series_id, data_title, data_json,\
+def srv_db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,\
         data_image_json):
     """
     # insert metadata from themoviedb
@@ -130,7 +130,7 @@ def srv_db_metadata_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     self.srv_db_Commit()
 
 
-def srv_db_metadata_tmdb_count(self, tmdb_id):
+def srv_db_meta_tmdb_count(self, tmdb_id):
     """
     # see if metadata exists via themovedbid
     """
@@ -139,7 +139,7 @@ def srv_db_metadata_tmdb_count(self, tmdb_id):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_movie_list(self, offset=None, records=None):
+def srv_db_meta_movie_list(self, offset=None, records=None):
     """
     # return list of movies
     """
@@ -151,7 +151,7 @@ def srv_db_metadata_movie_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_fetch_media_id_json(self, media_id_type, media_id_id,\
+def srv_db_meta_fetch_media_id_json(self, media_id_type, media_id_id,\
         collection_media=False):
     """
     # grab the current metadata json id
@@ -170,7 +170,7 @@ def srv_db_metadata_fetch_media_id_json(self, media_id_type, media_id_id,\
         return None
 
 
-def srv_db_metadata_fetch_series_media_id_json(self, media_id_type, media_id_id,\
+def srv_db_meta_fetch_series_media_id_json(self, media_id_type, media_id_id,\
         collection_media=False):
     if not collection_media:
         self.sql3_cursor.execute('select mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id'\
@@ -204,7 +204,7 @@ def srv_db_find_metadata_guid(self, media_name, media_release_year):
     return metadata_guid
 
 
-def srv_db_metadata_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,\
+def srv_db_meta_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,\
         media_aniid):
     """
     # update the mediaid in metadata
@@ -220,7 +220,7 @@ def srv_db_metadata_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,
         media_type = 'anidb'
         media_id = media_aniid
     # lookup id from metadata json or collections
-    row_data = self.srv_db_metadata_fetch_media_id_json(media_type, media_id, False)
+    row_data = self.srv_db_meta_fetch_media_id_json(media_type, media_id, False)
     # do the update if a record is found
     if row_data is not None:
         # update json data
@@ -235,7 +235,7 @@ def srv_db_metadata_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,
         self.sql3_cursor.execute('update mm_metadata_movie set mm_metadata_media_id = %s'\
             ' where mm_metadata_guid = %s', (json.dumps(json_data), row_data['mm_metadata_guid']))
     # lookup id from series
-    row_data = self.srv_db_metadata_fetch_series_media_id_json(media_type, media_id)
+    row_data = self.srv_db_meta_fetch_series_media_id_json(media_type, media_id)
     # do the update if a record is found
     if row_data is not None:
         # update json data

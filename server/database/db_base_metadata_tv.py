@@ -21,7 +21,7 @@ import logging
 import uuid
 
 
-def srv_db_metadatatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
+def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     # metadata guid by name
     """
@@ -51,7 +51,7 @@ def srv_db_MetadataTV_GUID_By_imdb(self, imdb_uuid):
         return None
 
 
-def srv_db_metadatatv_guid_by_tvdb(self, thetvdb_uuid):
+def srv_db_metatv_guid_by_tvdb(self, thetvdb_uuid):
     """
     # metadata guid by tv id
     """
@@ -73,7 +73,7 @@ def srv_db_MetadataTV_GUID_By_tvmaze(self, tvmaze_uuid):
         return None
 
 
-def srv_db_metadatatv_guid_by_tvrage(self, tvrage_uuid):
+def srv_db_metatv_guid_by_tvrage(self, tvrage_uuid):
     """
     # metadata guid by tvrage id
     """
@@ -84,7 +84,7 @@ def srv_db_metadatatv_guid_by_tvrage(self, tvrage_uuid):
         return None
 
 
-def srv_db_metadata_tvshow_list_count(self):
+def srv_db_meta_tvshow_list_count(self):
     """
     # tvshow count
     """
@@ -92,7 +92,7 @@ def srv_db_metadata_tvshow_list_count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_tvshow_list(self, offset=None, records=None):
+def srv_db_meta_tvshow_list(self, offset=None, records=None):
     """
     # return list of tvshows
     """
@@ -104,14 +104,14 @@ def srv_db_metadata_tvshow_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_tvshow_update_image(self, image_json, metadata_uuid):
+def srv_db_meta_tvshow_update_image(self, image_json, metadata_uuid):
     """
     # update image json
     """
     self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s', (image_json, metadata_uuid))
 
 
-def srv_db_metadata_tvshow_images_to_update(self, image_type):
+def srv_db_meta_tvshow_images_to_update(self, image_type):
     """
     # fetch tvmaze rows to update
     """
@@ -122,7 +122,7 @@ def srv_db_metadata_tvshow_images_to_update(self, image_type):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_tvshow_detail(self, guid):
+def srv_db_meta_tvshow_detail(self, guid):
     """
     # return metadata for tvshow
     """

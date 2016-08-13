@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def srv_db_metadata_person_list_count(self):
+def srv_db_meta_person_list_count(self):
     """
     # count person metadata
     """
@@ -30,7 +30,7 @@ def srv_db_metadata_person_list_count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_person_list(self, offset=None, records=None):
+def srv_db_meta_person_list(self, offset=None, records=None):
     """
     # return list of people
     """
@@ -42,7 +42,7 @@ def srv_db_metadata_person_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_person_by_guid(self, guid):
+def srv_db_meta_person_by_guid(self, guid):
     """
     # return person data
     """
@@ -54,7 +54,7 @@ def srv_db_metadata_person_by_guid(self, guid):
         return None
 
 
-def srv_db_metadata_person_by_name(self, person_name):
+def srv_db_meta_person_by_name(self, person_name):
     """
     # return person data by name
     """
@@ -67,7 +67,7 @@ def srv_db_metadata_person_by_name(self, person_name):
         return None
 
 
-def srv_db_metadata_person_id_count(self, host_type, guid):
+def srv_db_meta_person_id_count(self, host_type, guid):
     """
     # does person exist already by host/id
     """
@@ -91,7 +91,7 @@ def srv_db_metdata_person_insert(self, person_name, media_id_json, person_json,\
         (str(uuid.uuid4()), person_name, media_id_json, person_json, image_json))
 
 
-def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
+def srv_db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     # batch insert from json of crew/cast
     """
@@ -113,7 +113,7 @@ def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
                 person_id = None
                 person_name = None
             if person_id is not None:
-                if self.srv_db_metadata_person_id_count(meta_type, person_id) > 0:
+                if self.srv_db_meta_person_id_count(meta_type, person_id) > 0:
                     logging.debug("skippy")
                 else:
                     self.srv_db_metdata_person_insert(person_name,\
@@ -133,7 +133,7 @@ def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
             person_id = None
             person_name = None
         if person_id is not None:
-            if self.srv_db_metadata_person_id_count(meta_type, person_id) > 0:
+            if self.srv_db_meta_person_id_count(meta_type, person_id) > 0:
                 logging.debug("skippy")
             else:
                 self.srv_db_metdata_person_insert(person_name,\
@@ -141,11 +141,11 @@ def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
                     json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
 
 
-def srv_db_metadata_person_as_seen_in(self, person_guid):
+def srv_db_meta_person_as_seen_in(self, person_guid):
     """
     # find other media for person
     """
-    row_data = self.srv_db_metadata_person_by_guid(person_guid)
+    row_data = self.srv_db_meta_person_by_guid(person_guid)
     logging.debug("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':
         sql_params = row_data['mmp_person_media_id']['id'],

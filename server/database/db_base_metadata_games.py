@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def srv_db_metadata_game_system_by_guid(self, guid):
+def srv_db_meta_game_system_by_guid(self, guid):
     """
     # return game system data
     """
@@ -32,13 +32,13 @@ def srv_db_metadata_game_system_by_guid(self, guid):
         return None
 
 
-def srv_db_metadata_game_system_list_count(self):
+def srv_db_meta_game_system_list_count(self):
     self.sql3_cursor.execute('select count(*) from mm_metadata_game_systems_info'\
         ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_game_system_list(self, offset=None, records=None):
+def srv_db_meta_game_system_list(self, offset=None, records=None):
     """
     # return list of game systems
     """
@@ -50,13 +50,13 @@ def srv_db_metadata_game_system_list(self, offset=None, records=None):
 
 
 # return list of games count
-def srv_db_metadata_game_list_count(self):
+def srv_db_meta_game_list_count(self):
     pass
 
 
 # TODO select subselect for speed
 # return list of games
-def srv_db_metadata_game_list(self, offset=None, records=None):
+def srv_db_meta_game_list(self, offset=None, records=None):
     if offset is None:
         self.sql3_cursor.execute('select gi_id,gi_game_info_json->\'description\',gi_game_info_json->\'year\',gs_game_system_json->\'description\' from mm_metadata_game_software_info,mm_metadata_game_systems_info where gi_system_id = gs_id order by gi_game_info_json->\'description\'')
     else:
@@ -64,7 +64,7 @@ def srv_db_metadata_game_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_game_by_guid(self, guid):
+def srv_db_meta_game_by_guid(self, guid):
     """
     # return game data
     """
@@ -76,7 +76,7 @@ def srv_db_metadata_game_by_guid(self, guid):
         return None
 
 
-def srv_db_metadata_game_by_system_count(self, guid):
+def srv_db_meta_game_by_system_count(self, guid):
     """
     # game list by system count
     """
@@ -85,7 +85,7 @@ def srv_db_metadata_game_by_system_count(self, guid):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_metadata_game_by_system(self, guid, offset=None, records=None):
+def srv_db_meta_game_by_system(self, guid, offset=None, records=None):
     """
     # game list by system count
     """
@@ -98,7 +98,7 @@ def srv_db_metadata_game_by_system(self, guid, offset=None, records=None):
         return None
 
 
-def srv_db_metadata_game_by_sha1(self, sha1_hash):
+def srv_db_meta_game_by_sha1(self, sha1_hash):
     """
     # game by sha1
     """
@@ -110,7 +110,7 @@ def srv_db_metadata_game_by_sha1(self, sha1_hash):
         return None
 
 
-def srv_db_metadata_game_by_name_and_system(self, game_name, game_system_short_name):
+def srv_db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
     """
     # game by name and system short name
     """

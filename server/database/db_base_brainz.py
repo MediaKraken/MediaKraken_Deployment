@@ -17,11 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import psycopg2
 
 
 class ServerDatabaseBrainz(object):
+    """
+    Connect to remote/local brainz instance
+    """
     def __init__(self):
         self.sql3_conn = None
         self.sql3_cursor = None
@@ -40,7 +43,8 @@ class ServerDatabaseBrainz(object):
             % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
         self.sql3_cursor = self.sql3_conn.cursor()
         self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-#        self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
+#        self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class\
+        #WHERE relname = 'mm_media'")
 #        if self.sql3_cursor.fetchone()[0] == 0:
 #            exit(1)
 

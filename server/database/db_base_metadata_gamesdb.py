@@ -21,7 +21,7 @@ import logging
 import uuid
 
 
-def srv_db_metadata_gamesdb_system_insert(self, platform_id, platform_name,\
+def srv_db_meta_gamesdb_system_insert(self, platform_id, platform_name,\
         platform_alias, platform_json=None):
     """
     # insert gamesdb game system

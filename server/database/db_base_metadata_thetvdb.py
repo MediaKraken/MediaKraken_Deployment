@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def srv_db_metadatatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
+def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
     """
     # insert
     """
@@ -34,7 +34,7 @@ def srv_db_metadatatvdb_insert(self, series_id_json, tv_name, show_detail, image
     return media_uuid
 
 
-def srv_db_metadatatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
+def srv_db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
     """
     # updated
     """

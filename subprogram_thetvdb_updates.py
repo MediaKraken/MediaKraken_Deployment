@@ -89,7 +89,7 @@ update_item = thetvdb_API_Connection.com_Metadata_TheTVDB_Updates()
 for row_data in update_item['Data']['Series']:
     logging.debug(row_data['id'])
     # look for previous data
-    metadata_uuid = db.srv_db_metadatatv_guid_by_tvdb(row_data['id'])
+    metadata_uuid = db.srv_db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
         xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_Metadata_TheTVDB_Get_ZIP_By_ID(row_data['id'])
@@ -97,17 +97,17 @@ for row_data in update_item['Data']['Series']:
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb':xml_show_data['Data']['Series']['imdb_ID'],\
             'thetvdb':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
-        db.srv_db_metadatatvdb_insert(series_id_json,\
+        db.srv_db_metatvdb_insert(series_id_json,\
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.srv_db_metadata_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
+            db.srv_db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
         db.srv_db_Commit()
         tvshow_inserted += 1
         time.sleep(5) # delays for 5 seconds
     else:
         # update instead
-        #db.srv_db_metadatatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
+        #db.srv_db_metatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
         tvshow_updated += 1
     # commit each just cuz
     db.srv_db_Commit()

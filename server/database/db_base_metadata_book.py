@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
 import json
 
 
-def srv_db_metadatabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
+def srv_db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
     """
     # metadata guid by isbm id
     """
@@ -35,7 +35,7 @@ def srv_db_metadatabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
         return None
 
 
-def srv_db_metadatabook_guid_by_name(self, book_name):
+def srv_db_metabook_guid_by_name(self, book_name):
     """
     # metadata guid by name
     """
@@ -47,7 +47,7 @@ def srv_db_metadatabook_guid_by_name(self, book_name):
         return None
 
 
-def srv_db_metadatabook_book_insert(self, json_data):
+def srv_db_metabook_book_insert(self, json_data):
     """
     # insert metadata json from isbndb
     """

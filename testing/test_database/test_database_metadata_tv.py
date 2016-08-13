@@ -40,7 +40,7 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by name
-    # def srv_db_metadatatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
+    # def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
 #        self.db.srv_db_Rollback()
 
 
@@ -50,7 +50,7 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by tv id
-    # def srv_db_metadatatv_guid_by_tvdb(self, thetvdb_uuid):
+    # def srv_db_metatv_guid_by_tvdb(self, thetvdb_uuid):
 #        self.db.srv_db_Rollback()
 
 
@@ -60,13 +60,13 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by tvrage id
-    # def srv_db_metadatatv_guid_by_tvrage(self, tvrage_uuid):
+    # def srv_db_metatv_guid_by_tvrage(self, tvrage_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # tvshow count
-    def Test_srv_db_metadata_tvshow_list_count(self):
-        self.db.srv_db_metadata_tvshow_list_count()
+    def Test_srv_db_meta_tvshow_list_count(self):
+        self.db.srv_db_meta_tvshow_list_count()
         self.db.srv_db_Rollback()
 
 
@@ -75,23 +75,23 @@ class TestDatabaseMetadataTV(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_tvshow_list(self, offset, records):
-        self.db.srv_db_metadata_tvshow_list(offset, records)
+    def Test_srv_db_meta_tvshow_list(self, offset, records):
+        self.db.srv_db_meta_tvshow_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # update image json
-    # def srv_db_metadata_tvshow_update_image(self, image_json, metadata_uuid):
+    # def srv_db_meta_tvshow_update_image(self, image_json, metadata_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # fetch tvmaze rows to update
-    # def srv_db_metadata_tvshow_images_to_update(self, image_type):
+    # def srv_db_meta_tvshow_images_to_update(self, image_type):
 #        self.db.srv_db_Rollback()
 #
 
     # return metadata for tvshow
-    # def srv_db_metadata_tvshow_detail(self, guid):
+    # def srv_db_meta_tvshow_detail(self, guid):
 #        self.db.srv_db_Rollback()
 
 

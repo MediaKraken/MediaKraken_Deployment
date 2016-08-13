@@ -264,7 +264,7 @@ def themoviedb(thread_db, download_data):
         else:
             thread_db.srv_db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
             # determine if the metadata is not downloaded
-            if thread_db.srv_db_metadata_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
+            if thread_db.srv_db_meta_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
                 thread_db.srv_db_Download_Update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
             else:

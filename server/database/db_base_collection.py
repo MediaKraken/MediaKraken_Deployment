@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
 import json
 
@@ -34,8 +34,8 @@ def srv_db_collection_list(self, offset=None, records=None):
         self.sql3_cursor.execute('select mm_metadata_collection_guid,mm_metadata_collection_name,'\
             'mm_metadata_collection_imagelocal_json from mm_metadata_collection'\
             ' where mm_metadata_collection_guid in (select mm_metadata_collection_guid'\
-            ' from mm_metadata_collection order by mm_metadata_collection_name offset %s limit %s)'\
-            ' order by mm_metadata_collection_name', (offset, records))
+            ' from mm_metadata_collection order by mm_metadata_collection_name'\
+            ' offset %s limit %s) order by mm_metadata_collection_name', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
@@ -44,7 +44,9 @@ def srv_db_media_collection_scan(self):
     Returns a list of movies that belong in a collection specifified by tmdb
     """
     self.sql3_cursor.execute('select mm_metadata_guid, mm_metadata_json from mm_metadata_movie'\
-        ' where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'belongs_to_collection\'::text <> \'{}\'::text order by mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'belongs_to_collection\'')
+        ' where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'belongs_to_collection\'::text'\
+        ' <> \'{}\'::text'\
+        ' order by mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'belongs_to_collection\'')
     return self.sql3_cursor.fetchall()
 
 

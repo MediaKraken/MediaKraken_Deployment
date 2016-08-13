@@ -113,10 +113,10 @@ def update_insert_show(tvmaze_id, update_rec=None):
                 json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db.srv_db_metadata_person_insert_cast_crew('tvmaze',\
+            db.srv_db_meta_person_insert_cast_crew('tvmaze',\
                 show_full_json['Meta']['tvmaze']['_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db.srv_db_metadata_person_insert_cast_crew('tvmaze',\
+            db.srv_db_meta_person_insert_cast_crew('tvmaze',\
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
         db.srv_db_Commit()
 

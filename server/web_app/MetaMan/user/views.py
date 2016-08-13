@@ -204,11 +204,11 @@ def user_music_video_list():
 def user_sports_page():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db.srv_db_metadata_sports_list(offset, per_page):
+    for row_data in g.db.srv_db_meta_sports_list(offset, per_page):
         media.append((row_data['mm_metadata_sports_guid'],row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_sports_list_count(),
+                                total=g.db.srv_db_meta_sports_list_count(),
                                 record_name='sporting events',
                                 format_total=True,
                                 format_number=True,
@@ -294,7 +294,7 @@ def user_tv_show_detail_page(guid):
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
-        data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+        data_metadata = g.db.srv_db_meta_tvshow_detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
             if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -401,7 +401,7 @@ def user_tv_show_detail_page(guid):
 @blueprint.route("/tv_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_season_detail_page(guid, season):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -659,8 +659,8 @@ def user_video_player_videojs(mtype, guid):
 @blueprint.route('/playalbum/<guid>')
 @login_required
 def user_album_player(guid):
-    return render_template("users/user_album_playback.html", data_desc = g.db.srv_db_metadata_album_by_guid(guid),
-                           data_song_list = g.db.srv_db_metadata_songs_by_album_guid(guid))
+    return render_template("users/user_album_playback.html", data_desc = g.db.srv_db_meta_album_by_guid(guid),
+                           data_song_list = g.db.srv_db_meta_songs_by_album_guid(guid))
 
 
 @blueprint.route('/imagegallery')
@@ -1224,7 +1224,7 @@ def report_top10(mtype):
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
 def metadata_person_detail(guid):
-    meta_data = g.db.srv_db_metadata_person_by_guid(guid)
+    meta_data = g.db.srv_db_meta_person_by_guid(guid)
     json_metadata = meta_data['mmp_person_meta_json']
     json_imagedata = meta_data['mmp_person_image']
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
@@ -1238,7 +1238,7 @@ def metadata_person_detail(guid):
     except:
         data_person_image = None
     # also appears in
-    meta_also_media = g.db.srv_db_metadata_person_as_seen_in(meta_data[0])
+    meta_also_media = g.db.srv_db_meta_person_as_seen_in(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=json_metadata,
                            data_person_image = data_person_image,
@@ -1260,7 +1260,7 @@ def metadata_person_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_people_list.html',
-                           media_person=g.db.srv_db_metadata_person_list(offset, per_page),
+                           media_person=g.db.srv_db_meta_person_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1300,7 +1300,7 @@ def metadata_music_video_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_music_video_list.html',
-                           media_person=g.db.srv_db_metadata_music_video_list(offset, per_page),
+                           media_person=g.db.srv_db_meta_music_video_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1390,7 +1390,7 @@ def metadata_movie_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_movie_list.html',
-                           media_movie=g.db.srv_db_metadata_movie_list(offset, per_page),
+                           media_movie=g.db.srv_db_meta_movie_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1459,7 +1459,7 @@ def metadata_movie_collection_detail(guid):
 @blueprint.route('/meta_tvshow_detail/<guid>')
 @login_required
 def metadata_tvshow_detail(guid):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -1546,7 +1546,7 @@ def metadata_tvshow_detail(guid):
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_season_detail_page(guid, season):
-    data_metadata = g.db.srv_db_metadata_tvshow_detail(guid)
+    data_metadata = g.db.srv_db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -1663,7 +1663,7 @@ def metadata_tvshow_list():
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
     image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
-    for row_data in g.db.srv_db_metadata_tvshow_list(offset, per_page):
+    for row_data in g.db.srv_db_meta_tvshow_list(offset, per_page):
         image_data = row_data[3]  # TODO json dictcursor
         try:
             image_data = image_data.replace(image_location,'')
@@ -1673,7 +1673,7 @@ def metadata_tvshow_list():
             row_data['mm_metadata_tvshow_name'], row_data[2], image_data))  # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_tvshow_list_count(),
+                                total=g.db.srv_db_meta_tvshow_list_count(),
                                 record_name='TV Shows',
                                 format_total=True,
                                 format_number=True,
@@ -1698,7 +1698,7 @@ def metadata_game_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_game_list.html',
-                           media_game=g.db.srv_db_metadata_game_list(offset, per_page),
+                           media_game=g.db.srv_db_meta_game_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1710,7 +1710,7 @@ def metadata_game_list():
 @login_required
 def metadata_game_detail(guid):
     return render_template('users/metadata/meta_game_detail.html', guid=guid,
-                               data=g.db.srv_db_metadata_game_by_guid(guid)['gi_game_info_json'],
+                               data=g.db.srv_db_meta_game_by_guid(guid)['gi_game_info_json'],
                                data_review=None)
 
 
@@ -1721,13 +1721,13 @@ def metadata_game_system_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_game_system_list_count(),
+                                total=g.db.srv_db_meta_game_system_list_count(),
                                 record_name='Game Systems',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_game_system_list.html',
-                           media_game_system=g.db.srv_db_metadata_game_system_list(offset, per_page),
+                           media_game_system=g.db.srv_db_meta_game_system_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1739,7 +1739,7 @@ def metadata_game_system_list():
 @login_required
 def metadata_game_system_detail(guid):
     return render_template('users/metadata/meta_game_system_detail.html', guid=guid,
-                           data=g.db.srv_db_metadata_game_system_by_guid(guid))
+                           data=g.db.srv_db_meta_game_system_by_guid(guid))
 
 
 @blueprint.route('/meta_sports_list')
@@ -1749,13 +1749,13 @@ def metadata_sports_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_metadata_sports_list_count(),
+                                total=g.db.srv_db_meta_sports_list_count(),
                                 record_name='sporting events',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_sports_list.html',
-                           media_sports_list=g.db.srv_db_metadata_sports_list(offset, per_page),
+                           media_sports_list=g.db.srv_db_meta_sports_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

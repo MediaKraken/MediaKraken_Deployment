@@ -83,7 +83,7 @@ def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id
                 pass
         # TODO RT
     if tmdb_id is not None:
-        metadata_uuid = db.srv_db_metadata_guid_by_tmdb(tmdb_id)
+        metadata_uuid = db.srv_db_meta_guid_by_tmdb(tmdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
             db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
@@ -97,7 +97,7 @@ def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id
             db.srv_db_Download_Update_Provider('imdb', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and rt_id is not None:
-        metadata_uuid = db.srv_db_metadata_guid_by_rt(rt_id)
+        metadata_uuid = db.srv_db_meta_guid_by_rt(rt_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': rt_id})
             db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)
@@ -135,7 +135,7 @@ def nfo_xml_db_lookup_tv(db, nfo_data, xml_data, download_que_json, download_que
             pass
     # TODO RT
     if tvdb_id is not None:
-        metadata_uuid = db.srv_db_metadatatv_guid_by_tvdb(tvdb_id)
+        metadata_uuid = db.srv_db_metatv_guid_by_tvdb(tvdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tvdb_id})
             db.srv_db_Download_Update(json.dumps(download_que_json), download_que_id)

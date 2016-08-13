@@ -124,9 +124,9 @@ def com_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     return proc.stdout.read()
 
 
-def com_zfs_zpool_compression(zpool):
+def com_zfs_zpool_compression_ratio(zpool):
     """
-    Get compression
+    Get compression ratio
     """
     proc = subprocess.Popen(['zfs', 'get', 'compressratio', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()

@@ -40,8 +40,8 @@ class TestDatabaseMetadataPeople(object):
 
 
     # count person metadata
-    def Test_srv_db_metadata_person_list_count(self):
-        self.db.srv_db_metadata_person_list_count()
+    def Test_srv_db_meta_person_list_count(self):
+        self.db.srv_db_meta_person_list_count()
         self.db.srv_db_Rollback()
 
 
@@ -50,23 +50,23 @@ class TestDatabaseMetadataPeople(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_person_list(self, offset, records):
-        self.db.srv_db_metadata_person_list(offset, records)
+    def Test_srv_db_meta_person_list(self, offset, records):
+        self.db.srv_db_meta_person_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # return person data
-    # def srv_db_metadata_person_by_guid(self, guid):
+    # def srv_db_meta_person_by_guid(self, guid):
 #         self.db.srv_db_Rollback()
 
 
     # return person data by name
-    # def srv_db_metadata_person_by_name(self, person_name):
+    # def srv_db_meta_person_by_name(self, person_name):
 #         self.db.srv_db_Rollback()
 
 
     # does person exist already by host/id
-    # def srv_db_metadata_person_id_count(self, host_type, guid):
+    # def srv_db_meta_person_id_count(self, host_type, guid):
 #         self.db.srv_db_Rollback()
 
 
@@ -76,10 +76,10 @@ class TestDatabaseMetadataPeople(object):
 
 
     # batch insert from json of crew/cast
-    # def srv_db_metadata_person_insert_cast_crew(self, meta_type, person_json):
+    # def srv_db_meta_person_insert_cast_crew(self, meta_type, person_json):
 #         self.db.srv_db_Rollback()
 
 
     # find other media for person
-    # def srv_db_metadata_person_as_seen_in(self, person_guid):
+    # def srv_db_meta_person_as_seen_in(self, person_guid):
 #         self.db.srv_db_Rollback()

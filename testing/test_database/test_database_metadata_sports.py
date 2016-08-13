@@ -44,8 +44,8 @@ class TestDatabaseMetadataSports(object):
 #        self.db.srv_db_Rollback()
 
 
-    def Test_srv_db_metadata_sports_list_count(self):
-        self.db.srv_db_metadata_sports_list_count()
+    def Test_srv_db_meta_sports_list_count(self):
+        self.db.srv_db_meta_sports_list_count()
         self.db.srv_db_Rollback()
 
 
@@ -54,11 +54,11 @@ class TestDatabaseMetadataSports(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_sports_list(self, offset, records):
-        self.db.srv_db_metadata_sports_list(offset, records)
+    def Test_srv_db_meta_sports_list(self, offset, records):
+        self.db.srv_db_meta_sports_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # fetch guid by event name
-    # def srv_db_metadata_sports_guid_by_event_name(self, event_name):
+    # def srv_db_meta_sports_guid_by_event_name(self, event_name):
 #        self.db.srv_db_Rollback()

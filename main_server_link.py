@@ -167,17 +167,17 @@ class MediaKrakenApp():
                 if new_media[1] == 'Movie':
                     metadata_guid = self.db.srv_db_Metadata_GUID_By_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db.srv_db_metadata_guid_by_tmdb(new_media[3]['TMDB'])
+                        metadata_guid = self.db.srv_db_meta_guid_by_tmdb(new_media[3]['TMDB'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.srv_db_metadata_guid_by_tvdb(new_media[3]['thetvdb'])
+                            metadata_guid = self.db.srv_db_meta_guid_by_tvdb(new_media[3]['thetvdb'])
                 elif new_media[1] == 'TV Show':
                     metadata_guid = self.db.srv_db_MetadataTV_GUID_By_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
                         metadata_guid = self.db.srv_db_MetadataTV_GUID_By_tvmaze(new_media[3]['tvmaze'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.srv_db_metadatatv_guid_by_tvdb(new_media[3]['thetvdb'])
+                            metadata_guid = self.db.srv_db_metatv_guid_by_tvdb(new_media[3]['thetvdb'])
                             if metadata_guid is None:
-                                metadata_guid = self.db.srv_db_metadatatv_guid_by_tvrage(new_media[3]['TVRage'])
+                                metadata_guid = self.db.srv_db_metatv_guid_by_tvrage(new_media[3]['TVRage'])
                 elif new_media[1] == 'Sports':
                     metadata_guid = self.db.srv_db_MetadataSports_GUID_By_thesportsdb(new_media[3]['thesportsdb'])
                 elif new_media[1] == 'Music':

@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 
-def srv_db_metadata_movie_update_castcrew(self, tmdb_id, cast_crew_json):
+def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json):
     self.sql3_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
         ' where mm_metadata_media_id->\'TMDB\' ? %s', (tmdb_id,))
     cast_crew_json = self.sql3_cursor.fetchone()['mm_metadata_json'].update({'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})

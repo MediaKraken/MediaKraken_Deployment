@@ -49,13 +49,13 @@ class TestDatabaseMetadata(object):
 
 
     # update record by tmdb
-    # def srv_db_metadata_update(self, series_id_json, result_json, image_json):
+    # def srv_db_meta_update(self, series_id_json, result_json, image_json):
 #        self.db.srv_db_Rollback()
 
 
     # count all the generes
-    def Test_srv_db_metadata_genre_list_count(self):
-        self.db.srv_db_metadata_genre_list_count()
+    def Test_srv_db_meta_genre_list_count(self):
+        self.db.srv_db_meta_genre_list_count()
         self.db.srv_db_Rollback()
 
 
@@ -64,14 +64,14 @@ class TestDatabaseMetadata(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_genre_list(self, offset, records):
-        self.db.srv_db_metadata_genre_list(offset, records)
+    def Test_srv_db_meta_genre_list(self, offset, records):
+        self.db.srv_db_meta_genre_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # movie count by genre
-    def Test_srv_db_metadata_movie_count_by_genre(self):
-        self.db.srv_db_metadata_movie_count_by_genre()
+    def Test_srv_db_meta_movie_count_by_genre(self):
+        self.db.srv_db_meta_movie_count_by_genre()
         self.db.srv_db_Rollback()
 
 
@@ -85,7 +85,7 @@ class TestDatabaseMetadata(object):
 
 
     # metadata guid by tv id
-    # def srv_db_metadata_guid_by_tvdb(self, thetvdb_uuid):
+    # def srv_db_meta_guid_by_tvdb(self, thetvdb_uuid):
 #        self.db.srv_db_Rollback()
 
 
@@ -93,18 +93,18 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def Test_srv_db_metadata_guid_by_tmdb(self, uuid):
-        self.db.srv_db_metadata_guid_by_tmdb(uuid)
+    def Test_srv_db_meta_guid_by_tmdb(self, uuid):
+        self.db.srv_db_meta_guid_by_tmdb(uuid)
         self.db.srv_db_Rollback()
 
 
     # see if metadata exists type and id
-    # def srv_db_metadata_guid_by_rt(self, rt_uuid):
+    # def srv_db_meta_guid_by_rt(self, rt_uuid):
 #        self.db.srv_db_Rollback()
 
 
     # insert metadata from themoviedb
-    # def srv_db_metadata_insert_tmdb(self, uuid_id, series_id, data_title, data_json, data_image_json):
+    # def srv_db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json, data_image_json):
 #        self.db.srv_db_Rollback()
 
 
@@ -112,8 +112,8 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def Test_srv_db_metadata_tmdb_count(self, uuid):
-        self.db.srv_db_metadata_tmdb_count(uuid)
+    def Test_srv_db_meta_tmdb_count(self, uuid):
+        self.db.srv_db_meta_tmdb_count(uuid)
         self.db.srv_db_Rollback()
 
 
@@ -122,13 +122,13 @@ class TestDatabaseMetadata(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_movie_list(self, offset, records):
-        self.db.srv_db_metadata_movie_list(offset, records)
+    def Test_srv_db_meta_movie_list(self, offset, records):
+        self.db.srv_db_meta_movie_list(offset, records)
         self.db.srv_db_Rollback()
 
 
     # grab the current metadata json id
-    # def srv_db_metadata_fetch_media_id_json(self, media_id_type, media_id_id, collection_media=False):
+    # def srv_db_meta_fetch_media_id_json(self, media_id_type, media_id_id, collection_media=False):
 #        self.db.srv_db_Rollback()
 
 
@@ -142,5 +142,5 @@ class TestDatabaseMetadata(object):
 
 
     # update the mediaid in metadata
-    # def srv_db_metadata_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid, media_aniid):
+    # def srv_db_meta_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid, media_aniid):
 #        self.db.srv_db_Rollback()

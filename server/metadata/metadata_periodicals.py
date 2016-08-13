@@ -41,18 +41,18 @@ def metadata_periodicals_lookup(db, media_file_path, download_que_id):
     metadata_uuid = None
     # try to pull isbn out..might not be long enough, so try
     try:
-        metadata_uuid = db.srv_db_metadatabook_guid_by_isbn(media_file_path[-10:],\
+        metadata_uuid = db.srv_db_metabook_guid_by_isbn(media_file_path[-10:],\
             media_file_path[-13:])
     except:
         pass
     if metadata_uuid is None:
         lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_',' ')
-        metadata_uuid = db.srv_db_metadatabook_guid_by_name(lookup_name)
+        metadata_uuid = db.srv_db_metabook_guid_by_name(lookup_name)
         if metadata_uuid is None and ISBNdb_API_Connection is not None:
             json_data = ISBNdb_API_Connection.com_ISBNdb_Books(lookup_name)
             if json_data is None or 'error' in json_data:
                 logging.error("isbn book error: %s", json_data)
             else:
                 # TODO verify decent results before insert
-                metadata_uuid = db.srv_db_metadatabook_book_insert(json_data)
+                metadata_uuid = db.srv_db_metabook_book_insert(json_data)
     return metadata_uuid

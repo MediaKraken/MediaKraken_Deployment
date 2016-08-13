@@ -40,19 +40,19 @@ class TestDatabaseMetadataMusicVideo(object):
 
 
     # query to see if song is in local DB
-    # def srv_db_metadata_music_video_lookup(self, artist_name, song_title):
+    # def srv_db_meta_music_video_lookup(self, artist_name, song_title):
 #         self.db.srv_db_Rollback()
 
 
-    # def srv_db_metadata_music_video_add(self, artist_name, artist_song, id_json, data_json, image_json):
+    # def srv_db_meta_music_video_add(self, artist_name, artist_song, id_json, data_json, image_json):
 #         self.db.srv_db_Rollback()
 
 
-    # def srv_db_metadata_music_video_detail_by_uuid(self, item_guid):
+    # def srv_db_meta_music_video_detail_by_uuid(self, item_guid):
 #         self.db.srv_db_Rollback()
 
 
-    # def srv_db_metadata_music_video_count(self, imvdb_ID=None):
+    # def srv_db_meta_music_video_count(self, imvdb_ID=None):
 #        self.db.srv_db_Rollback()
 
 
@@ -60,6 +60,6 @@ class TestDatabaseMetadataMusicVideo(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_metadata_music_video_list(self, offset, records):
-        self.db.srv_db_metadata_music_video_list(offset, records)
+    def Test_srv_db_meta_music_video_list(self, offset, records):
+        self.db.srv_db_meta_music_video_list(offset, records)
         self.db.srv_db_Rollback()

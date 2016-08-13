@@ -95,16 +95,16 @@ def movie_fetch_save(tmdb_id):
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'],\
             'Crew': cast_json['crew']}}})
         # check for previous record
-        if db.srv_db_metadata_tmdb_count(result_json['id']) > 0:
+        if db.srv_db_meta_tmdb_count(result_json['id']) > 0:
             # TODO if this is > 0......MUST use series id from DB.......so, stuff doesn't get wiped
-            #db.srv_db_metadata_update(series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+            #db.srv_db_meta_update(series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
             pass
         else:
             # store person info
             if 'cast' in cast_json:
-                db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['cast'])
+                db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
             if 'crew' in cast_json:
-                db.srv_db_metadata_person_insert_cast_crew('TMDB', cast_json['crew'])
+                db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
             # grab reviews
             review_json = tmdb.com_TMDB_Metadata_Review_By_ID(tmdb_id)
             if review_json['total_results'] > 0:
@@ -114,7 +114,7 @@ def movie_fetch_save(tmdb_id):
                     json.dumps({'TMDB': review_json}))
             # set and insert the record
             metadata_uuid = str(uuid.uuid4())
-            db.srv_db_metadata_insert_tmdb(metadata_uuid, series_id_json,\
+            db.srv_db_meta_insert_tmdb(metadata_uuid, series_id_json,\
                 result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     return metadata_uuid
 

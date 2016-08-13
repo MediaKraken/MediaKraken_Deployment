@@ -44,7 +44,7 @@ def srv_db_Metadatathesportsdb_Insert(self, series_id_json, event_name, show_det
         (str(uuid.uuid4()), series_id_json, event_name, show_detail, image_json))
 
 
-def srv_db_metadatathesports_update(self, series_id_json, event_name, show_detail,
+def srv_db_metathesports_update(self, series_id_json, event_name, show_detail,
         sportsdb_id):
     """
     # updated

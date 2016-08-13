@@ -101,79 +101,79 @@ class MK_Server_Database(object):
     from db_base_media_tv import srv_db_web_tvmedia_list,\
         srv_db_web_tvmedia_list_Count
     from db_base_metadata import srv_db_read_media_Metadata,\
-        srv_db_metadata_genre_list_count,\
-        srv_db_metadata_genre_list,\
-        srv_db_metadata_movie_count_by_genre,\
+        srv_db_meta_genre_list_count,\
+        srv_db_meta_genre_list,\
+        srv_db_meta_movie_count_by_genre,\
         srv_db_Metadata_GUID_By_imdb,\
-        srv_db_metadata_guid_by_tvdb,\
-        srv_db_metadata_guid_by_tmdb,\
-        srv_db_metadata_guid_by_rt,\
-        srv_db_metadata_insert_tmdb,\
-        srv_db_metadata_tmdb_count,\
-        srv_db_metadata_movie_list,\
-        srv_db_metadata_fetch_media_id_json,\
-        srv_db_metadata_fetch_series_media_id_json,\
+        srv_db_meta_guid_by_tvdb,\
+        srv_db_meta_guid_by_tmdb,\
+        srv_db_meta_guid_by_rt,\
+        srv_db_meta_insert_tmdb,\
+        srv_db_meta_tmdb_count,\
+        srv_db_meta_movie_list,\
+        srv_db_meta_fetch_media_id_json,\
+        srv_db_meta_fetch_series_media_id_json,\
         srv_db_find_metadata_guid,\
-        srv_db_metadata_update_Media_ID_From_Scudlee
-    from db_base_metadata_book import srv_db_metadatabook_guid_by_isbn,\
-        srv_db_metadatabook_guid_by_name,\
-        srv_db_metadatabook_book_insert
-    from db_base_metadata_games import srv_db_metadata_game_system_by_guid,\
-        srv_db_metadata_game_system_list_count,\
-        srv_db_metadata_game_system_list,\
-        srv_db_metadata_game_list_count,\
-        srv_db_metadata_game_list,\
-        srv_db_metadata_game_by_guid
-    from db_base_metadata_gamesdb import srv_db_metadata_gamesdb_system_insert
-    from db_base_metadata_movie import srv_db_metadata_movie_update_castcrew
+        srv_db_meta_update_Media_ID_From_Scudlee
+    from db_base_metadata_book import srv_db_metabook_guid_by_isbn,\
+        srv_db_metabook_guid_by_name,\
+        srv_db_metabook_book_insert
+    from db_base_metadata_games import srv_db_meta_game_system_by_guid,\
+        srv_db_meta_game_system_list_count,\
+        srv_db_meta_game_system_list,\
+        srv_db_meta_game_list_count,\
+        srv_db_meta_game_list,\
+        srv_db_meta_game_by_guid
+    from db_base_metadata_gamesdb import srv_db_meta_gamesdb_system_insert
+    from db_base_metadata_movie import srv_db_meta_movie_update_castcrew
     from db_base_metadata_music import srv_db_music_lookup,\
-        srv_db_metadata_musician_by_guid,\
-        srv_db_metadata_musician_add,\
-        srv_db_metadata_album_by_guid,\
-        srv_db_metadata_album_add,\
-        srv_db_metadata_song_by_guid,\
-        srv_db_metadata_song_add,\
-        srv_db_metadata_songs_by_album_guid,\
-        srv_db_metadata_album_list,\
-        srv_db_metadata_muscian_list
-    from db_base_metadata_music_video import srv_db_metadata_music_video_lookup,\
-        srv_db_metadata_music_video_add,\
-        srv_db_metadata_music_video_detail_by_uuid,\
-        srv_db_metadata_music_video_count,\
-        srv_db_metadata_music_video_list
+        srv_db_meta_musician_by_guid,\
+        srv_db_meta_musician_add,\
+        srv_db_meta_album_by_guid,\
+        srv_db_meta_album_add,\
+        srv_db_meta_song_by_guid,\
+        srv_db_meta_song_add,\
+        srv_db_meta_songs_by_album_guid,\
+        srv_db_meta_album_list,\
+        srv_db_meta_muscian_list
+    from db_base_metadata_music_video import srv_db_meta_music_video_lookup,\
+        srv_db_meta_music_video_add,\
+        srv_db_meta_music_video_detail_by_uuid,\
+        srv_db_meta_music_video_count,\
+        srv_db_meta_music_video_list
     from db_base_nas import srv_db_NAS_Count,\
         srv_db_NAS_List,\
         srv_db_NAS_Insert,\
         srv_db_NAS_Update,\
         srv_db_NAS_Delete,\
         srv_db_NAS_Read
-    from db_base_metadata_people import srv_db_metadata_person_list_count,\
-        srv_db_metadata_person_list,\
-        srv_db_metadata_person_by_guid,\
-        srv_db_metadata_person_by_name,\
-        srv_db_metadata_person_insert_cast_crew,\
+    from db_base_metadata_people import srv_db_meta_person_list_count,\
+        srv_db_meta_person_list,\
+        srv_db_meta_person_by_guid,\
+        srv_db_meta_person_by_name,\
+        srv_db_meta_person_insert_cast_crew,\
         srv_db_metdata_person_insert,\
-        srv_db_metadata_person_id_count,\
-        srv_db_metadata_person_as_seen_in
+        srv_db_meta_person_id_count,\
+        srv_db_meta_person_as_seen_in
     from db_base_metadata_sports import srv_db_Metadata_Sports_GUID_By_thesportsdb,\
-        srv_db_metadata_sports_list_count,\
-        srv_db_metadata_sports_list,\
-        srv_db_metadata_sports_guid_by_event_name
+        srv_db_meta_sports_list_count,\
+        srv_db_meta_sports_list,\
+        srv_db_meta_sports_guid_by_event_name
     from db_base_metadata_thesportsdb import srv_db_Metadatathesportsdb_Insert,\
-        srv_db_metadatathesports_update,\
+        srv_db_metathesports_update,\
         srv_db_Metadatathesportsdb_Select_By_Guid
-    from db_base_metadata_thetvdb import srv_db_metadatatvdb_insert,\
-        srv_db_metadatatvdb_update
+    from db_base_metadata_thetvdb import srv_db_metatvdb_insert,\
+        srv_db_metatvdb_update
     from db_base_metadata_tv import srv_db_MetadataTV_GUID_By_imdb,\
-        srv_db_metadatatv_guid_by_tvdb,\
+        srv_db_metatv_guid_by_tvdb,\
         srv_db_MetadataTV_GUID_By_tvmaze,\
-        srv_db_metadata_tvshow_list_count,\
-        srv_db_metadata_tvshow_list,\
-        srv_db_metadata_tvshow_detail,\
+        srv_db_meta_tvshow_list_count,\
+        srv_db_meta_tvshow_list,\
+        srv_db_meta_tvshow_detail,\
         srv_db_read_tvmetadata_episodes,\
-        srv_db_metadatatv_guid_by_tvshow_name,\
-        srv_db_metadata_tvshow_update_image,\
-        srv_db_metadata_tvshow_images_to_update,\
+        srv_db_metatv_guid_by_tvshow_name,\
+        srv_db_meta_tvshow_update_image,\
+        srv_db_meta_tvshow_images_to_update,\
         srv_db_read_tvmetadata_eps_season,\
         srv_db_read_tvmetadata_season_eps_list,\
         srv_db_read_tvmetadata_episode

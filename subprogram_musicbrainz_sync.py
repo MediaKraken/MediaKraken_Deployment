@@ -80,7 +80,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server musicbrainz Start', None,\
 
 # fetch all the artists from brainz
 for row_data in db_brainz.srv_db_Brainz_All_Artists():
-    db.srv_db_metadata_musician_add(row_data['name'],\
+    db.srv_db_meta_musician_add(row_data['name'],\
         json.dumps({'musicbrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],\
         'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'\
         + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),\
@@ -89,7 +89,7 @@ for row_data in db_brainz.srv_db_Brainz_All_Artists():
     logging.debug(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.srv_db_Brainz_All_Albums_By_Artist(row_data['id']):
-        db.srv_db_metadata_album_add(row_data_album['name'],\
+        db.srv_db_meta_album_add(row_data_album['name'],\
             json.dumps({'musicbrainz':row_data_album['gid']}),\
             json.dumps({'Commment':row_data_album['comment'],\
             'Language':row_data_album['language'], 'Barcode':row_data_album['barcode']}))
@@ -98,7 +98,7 @@ for row_data in db_brainz.srv_db_Brainz_All_Artists():
         # fetch all the songs from brainz
         for row_data in db_brainz.srv_db_Brainz_All_Songs():
             # 0 gid, 1 name, 2 recording, 3 position, 4 id
-            db.srv_db_metadata_song_add(row_data[99],json.dumps({ 'musicbrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
+            db.srv_db_meta_song_add(row_data[99],json.dumps({ 'musicbrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
 '''
 
 # log end

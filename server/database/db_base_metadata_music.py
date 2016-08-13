@@ -32,7 +32,7 @@ def srv_db_music_lookup(self, artist_name, album_name, song_title):
         return None
 
 
-def srv_db_metadata_musician_by_guid(self, guid):
+def srv_db_meta_musician_by_guid(self, guid):
     """
     # return musician data by guid
     """
@@ -44,7 +44,7 @@ def srv_db_metadata_musician_by_guid(self, guid):
         return None
 
 
-def srv_db_metadata_musician_add(self, data_name, data_id, data_json):
+def srv_db_meta_musician_add(self, data_name, data_id, data_json):
     """
     # insert musician
     """
@@ -53,7 +53,7 @@ def srv_db_metadata_musician_add(self, data_name, data_id, data_json):
         ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-def srv_db_metadata_album_by_guid(self, guid):
+def srv_db_meta_album_by_guid(self, guid):
     """
     # return album data by guid
     """
@@ -66,11 +66,11 @@ def srv_db_metadata_album_by_guid(self, guid):
 
 
 # insert album
-def srv_db_metadata_album_add(self, data_name, data_id, data_json):
+def srv_db_meta_album_add(self, data_name, data_id, data_json):
     self.sql3_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json) values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-def srv_db_metadata_song_by_guid(self, guid):
+def srv_db_meta_song_by_guid(self, guid):
     """
     # return song data by guid
     """
@@ -82,7 +82,7 @@ def srv_db_metadata_song_by_guid(self, guid):
         return None
 
 
-def srv_db_metadata_song_add(self, data_name, data_id, data_json):
+def srv_db_meta_song_add(self, data_name, data_id, data_json):
     """
     # insert song
     """
@@ -91,7 +91,7 @@ def srv_db_metadata_song_add(self, data_name, data_id, data_json):
         ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
-def srv_db_metadata_songs_by_album_guid(self, guid):
+def srv_db_meta_songs_by_album_guid(self, guid):
     """
     # return song list from ablum guid
     """
@@ -100,7 +100,7 @@ def srv_db_metadata_songs_by_album_guid(self, guid):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_metadata_album_list(self, offset=None, records=None):
+def srv_db_meta_album_list(self, offset=None, records=None):
     """
     # return albums metadatalist
     """
@@ -115,7 +115,7 @@ def srv_db_metadata_album_list(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
         
 
-def srv_db_metadata_muscian_list(self, offset=None, records=None):
+def srv_db_meta_muscian_list(self, offset=None, records=None):
     """
     # return muscian metadatalist
     """
