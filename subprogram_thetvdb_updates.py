@@ -33,7 +33,7 @@ sys.path.append("../common")
 sys.path.append("../server")
 from common import common_file
 from common import common_logging
-from common import common_Metadata_TheTVDB
+from common import common_metadata_TheTVDB
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

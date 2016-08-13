@@ -26,10 +26,10 @@ from common import common_TheTVDB
 from common import common_metadata_anidb
 from common import common_metadata_imdb
 from common import common_metadata_netflixroulette
-from common import common_Metadata_TheTVDB
-from common import common_Metadata_TV_Intro
-from common import common_Metadata_TV_Theme
-from common import common_Metadata_tvmaze
+from common import common_metadata_TheTVDB
+from common import common_metadata_TV_Intro
+from common import common_metadata_TV_Theme
+from common import common_metadata_tvmaze
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -77,7 +77,8 @@ def tv_search_tvdb(db, file_name):
 def tv_fetch_save_tvdb(db, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
-    xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
+    xml_show_data, xml_actor_data, xml_banners_data\
+        = thetvdb_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
     if xml_show_data is not None:
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
@@ -125,7 +126,9 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
         if tvdb_id is not None and tvdb_id == metadata_tv_lookup.metadata_last_tvdb:
             return metadata_tv_lookup.metadata_last_id
         # search thetvdb as the episodes will be under tv show for class per libraries
-        # indiv eps is bad lookup - metadata_uuid, imdb_id, tvdb_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db, media_file_path, metadata_nfo_xml.nfo_xml_file(media_file_path))
+        # indiv eps is bad lookup - metadata_uuid, imdb_id, tvdb_id\
+            #= metadata_nfo_xml.nfo_xml_db_lookup_tv(db, media_file_path,\
+            #metadata_nfo_xml.nfo_xml_file(media_file_path))
         # lookup on local db via name, year (if available)
         if 'year' in file_name:
             metadata_uuid = db.srv_db_metatv_guid_by_tvshow_name(file_name['title'],\

@@ -46,7 +46,7 @@ def metadata_periodicals_lookup(db, media_file_path, download_que_id):
     except:
         pass
     if metadata_uuid is None:
-        lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_',' ')
+        lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
         metadata_uuid = db.srv_db_metabook_guid_by_name(lookup_name)
         if metadata_uuid is None and ISBNdb_API_Connection is not None:
             json_data = ISBNdb_API_Connection.com_ISBNdb_Books(lookup_name)

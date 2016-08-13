@@ -30,7 +30,7 @@ sys.path.append("../server")
 sys.path.append("../common")
 from common import common_file
 from common import common_logging
-from common import common_Metadata
+from common import common_metadata
 from common import common_network
 import database as database_base
 import locale

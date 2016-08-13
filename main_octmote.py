@@ -42,7 +42,7 @@ from kivy.lang import Builder
 install_twisted_reactor()
 from twisted.internet import ssl, reactor, protocol
 from common import common_Emby
-from common import common_MediaKraken
+from common import common_mediaKraken
 
 
 class EchoClient(protocol.Protocol):
