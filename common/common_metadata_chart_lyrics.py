@@ -31,5 +31,5 @@ def com_meta_chart_lyrics(artist_name, song_name):
     return lyric_text
 
 
-#com_Metadata_chart_lyrics('Megadeath','Peace Sells')
-#com_Metadata_chart_lyrics('Metallica','ride the lightning')
+#com_meta_chart_lyrics('Megadeath','Peace Sells')
+#com_meta_chart_lyrics('Metallica','ride the lightning')

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_tvmaze import *
+from com_meta_tvmaze import *
 
 
 class TestCommonMetadatatvmaze(object):
@@ -29,7 +29,7 @@ class TestCommonMetadatatvmaze(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_tvmaze_API()
+        self.db = com_meta_tvmaze_API()
 
 
     @classmethod
@@ -38,29 +38,29 @@ class TestCommonMetadatatvmaze(object):
 
 
 # show list 50 per page - 0 is first page
-# def com_Metadata_TheMaze_Show_List(self, page_no=0):
+# def com_meta_TheMaze_Show_List(self, page_no=0):
 
 
     # show when last updated
-    def Test_com_Metadata_TheMaze_Show_Updated(self):
-        self.db.com_Metadata_TheMaze_Show_Updated()
+    def Test_com_meta_TheMaze_Show_Updated(self):
+        self.db.com_meta_TheMaze_Show_Updated()
 
 
 # lookup show
-# def com_Metadata_TheMaze_WideSearch(self, show_name, show_year=None):
+# def com_meta_TheMaze_WideSearch(self, show_name, show_year=None):
 
 
 # lookup specific show
-# def com_Metadata_TheMaze_NarrowSearch(self, show_name, show_year=None):
+# def com_meta_TheMaze_NarrowSearch(self, show_name, show_year=None):
 
 
 # lookup specific id
-# def com_Metadata_TheMaze_Show_By_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id, embed_info=True):
+# def com_meta_TheMaze_Show_By_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id, embed_info=True):
 
 
 # people search (doesnt' appear to have episode data here)
-# def com_Metadata_TheMaze_Person_By_Name(self, person_name):
+# def com_meta_TheMaze_Person_By_Name(self, person_name):
 
 
 # schedule
-# def com_Metadata_TheMaze_Schedule(self, country_code=None, schedule_date=None):
+# def com_meta_TheMaze_Schedule(self, country_code=None, schedule_date=None):

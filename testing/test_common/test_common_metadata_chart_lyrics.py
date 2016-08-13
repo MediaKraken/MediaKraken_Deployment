@@ -21,11 +21,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_chart_lyrics import *
+from com_meta_chart_lyrics import *
 
 
 @pytest.mark.parametrize(("band_name", "song_name"), [
     ("Megadeath", "Peace Sells"),
     ("Fakebandofdoom", "Fakesongofdoom")])
-def Test_com_Metadata_chart_lyrics(band_name, song_name):
-    com_Metadata_chart_lyrics(band_name, song_name)
+def Test_com_meta_chart_lyrics(band_name, song_name):
+    com_meta_chart_lyrics(band_name, song_name)

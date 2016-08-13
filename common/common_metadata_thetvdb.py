@@ -47,7 +47,7 @@ class CommonMetadataTheTVDB(object):
         self.thetvdb_API_Key = Config.get('API', 'theTVdb').strip()
 
 
-    def com_Metadata_TheTVDB_Updates(self, frequency='day'):
+    def com_meta_TheTVDB_Updates(self, frequency='day'):
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network\
@@ -59,7 +59,7 @@ class CommonMetadataTheTVDB(object):
         return xml_show_data
 
 
-    def com_Metadata_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
+    def com_meta_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
@@ -86,13 +86,13 @@ class CommonMetadataTheTVDB(object):
 
 
 #    # depreciated....they round-robin at their end
-#    def com_Metadata_TheTVDB_Get_Mirrors():
+#    def com_meta_TheTVDB_Get_Mirrors():
 #        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
 # + self.thetvdb_API_Key + '/mirrors.xml', None)
 #        return mirror_list_xml
 
 
-    def com_Metadata_TheTVDB_Get_Server_Epoc_Time(self):
+    def com_meta_TheTVDB_Get_Server_Epoc_Time(self):
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
@@ -100,22 +100,22 @@ class CommonMetadataTheTVDB(object):
     #Following is the future database processing section
     #'''
 
-    def com_Metadata_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
+    def com_meta_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
 
-    def com_Metadata_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code='en'):
+    def com_meta_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code='en'):
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
             + self.thetvdb_API_Key + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
-    def com_Metadata_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code='en'):
+    def com_meta_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code='en'):
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
             + self.thetvdb_API_Key + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 
 '''
 xmltodict.parse(xml, False)
 Record <previoustime> for next update
-a. Using the XML from com_Metadata_TheTVDB_Updates_By_Epoc, store <Time> as <previoustime> and use for your next call to Updates.php
+a. Using the XML from com_meta_TheTVDB_Updates_By_Epoc, store <Time> as <previoustime> and use for your next call to Updates.php
 '''

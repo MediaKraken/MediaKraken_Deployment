@@ -63,7 +63,7 @@ total_download_attempts = 0
 def main(argv):
     for channel_info in logo_connection.com_thelogodb_Fetch_Latest()['channels']:
         # fetch and store logo image
-        image_file_path = com_Metadata.com_Metadata_Image_File_Path(channel_info['strChannel'], 'logo')
+        image_file_path = com_metadata.com_meta_Image_File_Path(channel_info['strChannel'], 'logo')
         loggin.debug("image: %s", image_file_path)
         common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 

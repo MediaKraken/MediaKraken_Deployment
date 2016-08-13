@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_thelogodb import *
+from com_meta_thelogodb import *
 
 
 class TestCommonthelogodb(object):
@@ -29,7 +29,7 @@ class TestCommonthelogodb(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_thelogodb.com_thelogodb_API()
+        self.db = com_meta_thelogodb.com_thelogodb_API()
 
 
     @classmethod

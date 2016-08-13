@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Metadata_GamesDB import *
+from com_meta_GamesDB import *
 
 
 class TestCommonMetadataGamesDB(object):
@@ -29,7 +29,7 @@ class TestCommonMetadataGamesDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Metadata_GamesDB.com_Metadata_GamesDB_API()
+        self.db = com_meta_GamesDB.com_meta_GamesDB_API()
 
 
     @classmethod
@@ -37,30 +37,30 @@ class TestCommonMetadataGamesDB(object):
         pass
 
 
-    def Test_com_Metadata_GamesDB_Platform_List(self):
-        com_Metadata_GamesDB_Platform_List()
+    def Test_com_meta_GamesDB_Platform_List(self):
+        com_meta_GamesDB_Platform_List()
 
 
-# def com_Metadata_GamesDB_Platform_By_ID(self, platform_id):
+# def com_meta_GamesDB_Platform_By_ID(self, platform_id):
 
 
     # 'mega man' as mega OR man
-    def Test_com_Metadata_GamesDB_Games_By_Name_Or(self):
-        com_Metadata_GamesDB_Games_By_Name_Or("Mega Man")
+    def Test_com_meta_GamesDB_Games_By_Name_Or(self):
+        com_meta_GamesDB_Games_By_Name_Or("Mega Man")
 
 
     # 'mega man' as mega AND man
-    def Test_com_Metadata_GamesDB_Games_By_Name_And(self):
-        com_Metadata_GamesDB_Games_By_Name_And("Mega Man")
+    def Test_com_meta_GamesDB_Games_By_Name_And(self):
+        com_meta_GamesDB_Games_By_Name_And("Mega Man")
 
 
-# def com_Metadata_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
+# def com_meta_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
 
 
-# def com_Metadata_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
+# def com_meta_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
 
 
-# def com_Metadata_GamesDB_Games_By_Platform_ID(self, platform_id):
+# def com_meta_GamesDB_Games_By_Platform_ID(self, platform_id):
 
 
-# def com_Metadata_GamesDB_Games_By_ID(self, game_id):
+# def com_meta_GamesDB_Games_By_ID(self, game_id):

@@ -40,14 +40,14 @@ import metadata_nfo_xml
 if Config.get('API', 'theTVdb').strip() != 'None':
     thetvdb_API_Connection = com_TheTVDB.com_TheTVDB_API()
     # show xml downloader and general api interface
-    thetvdb_API = com_Metadata_TheTVDB.com_Metadata_TheTVDB_API()
+    thetvdb_API = com_meta_TheTVDB.com_meta_TheTVDB_API()
 else:
     thetvdb_API_Connection = None
 
 
 # setup the tvmaze class
 if Config.get('API', 'tvmaze').strip() != 'None':
-    tvmaze_API_Connection = com_Metadata_tvmaze.com_Metadata_tvmaze_API()
+    tvmaze_API_Connection = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
     tvmaze_API_Connection = None
 
@@ -78,7 +78,7 @@ def tv_fetch_save_tvdb(db, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\
-        = thetvdb_API.com_Metadata_TheTVDB_Get_ZIP_By_ID(tvdb_id)
+        = thetvdb_API.com_meta_TheTVDB_Get_ZIP_By_ID(tvdb_id)
     if xml_show_data is not None:
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}

@@ -71,7 +71,7 @@ def worker(worker_file_list):
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
-        file_path = os.path.join(com_Metadata.com_Metadata_Image_File_Path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
+        file_path = os.path.join(com_metadata.com_meta_Image_File_Path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
         command_list = []
         command_list.append('ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input

@@ -96,13 +96,13 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
-            image_poster_path = com_Metadata.com_MetaData_Image_Path(collection_name,\
+            image_poster_path = com_metadata.com_MetaData_Image_Path(collection_name,\
                 'poster', 'tmdb', poster_path)
         else:
             image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
-            image_backdrop_path = com_Metadata.com_MetaData_Image_Path(collection_name,\
+            image_backdrop_path = com_metadata.com_MetaData_Image_Path(collection_name,\
                 'backdrop', 'tmdb', backdrop_path)
         else:
             image_backdrop_path = ''
