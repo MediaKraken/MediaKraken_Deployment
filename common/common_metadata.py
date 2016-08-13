@@ -81,7 +81,7 @@ def com_meta_image_file_path(media_name, media_type):
                 os.path.basename(media_name)[0].lower())
     except:
         file_path = os.path.join(base_image_path, media_type,\
-            random.choice(string.ascii_lowercase))       
+            random.choice(string.ascii_lowercase))
     return file_path
 
 

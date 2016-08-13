@@ -45,7 +45,7 @@ class CommonDatabaseOctmote(object):
             self.sql3_conn = sqlite3.connect("OctMote.db")
         else:
             self.sql3_conn = sqlite3.connect(db_file)
-        self.sql3_cursor = sql3_conn.cursor()
+        self.sql3_cursor = self.sql3_conn.cursor()
         self.sql3_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         if create_db:
             # create the tables since they don't exist
@@ -64,7 +64,7 @@ class CommonDatabaseOctmote(object):
             # grab brands and insert them into database
             self.sql3_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
                 ' brand_name text)")
-            json_brand = common_network.IRDB.com_IRDB_Brand_List()["objects"]
+            json_brand = common_network_irdb.com_irdb_brand_list()["objects"]
             for brand_name in json_brand:
                 self.sql3_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
             # create device db and load with types
@@ -134,6 +134,9 @@ class CommonDatabaseOctmote(object):
 
 
     def com_db_layout_detail(self, guid):
+        """
+        Layout detail
+        """
         self.sql3_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
             (guid,))
         return self.sql3_cursor
@@ -153,12 +156,18 @@ class CommonDatabaseOctmote(object):
 
 
     def com_db_device_list(self):
+        """
+        list devices
+        """
         self.sql3_cursor.execute("select device_guid, device_name from octmote_device'\
             ' order by device_name asc")
         return self.sql3_cursor
 
 
     def com_db_device_detail(self, guid):
+        """
+        device detail
+        """
         self.sql3_cursor.execute("select device_description from octmote_device'\
             ' where device_guid = ?", (guid,))
         return self.sql3_cursor
@@ -182,6 +191,9 @@ class CommonDatabaseOctmote(object):
 
 
     def com_db_item_list(self):
+        """
+        item list
+        """
         self.sql3_cursor.execute('select item_guid, item_type, item_manufacturer,'\
             ' item_model_number from octmote_item order by item_type, item_manufacturer,'\
             ' item_model_number asc')
@@ -189,6 +201,9 @@ class CommonDatabaseOctmote(object):
 
 
     def com_db_item_detail(self, guid):
+        """
+        item detail
+        """
         self.sql3_cursor.execute("select item_type from octmote_item where item_guid = ?", (guid,))
         return self.sql3_cursor
 
@@ -221,6 +236,9 @@ class CommonDatabaseOctmote(object):
 
 
     def com_db_anidb_title_search(self, title_to_search):
+        """
+        search for title
+        """
         self.sql3_cursor.execute('select anidb_aid from octmote_anidb'\
             ' where anidb_title = ? limit 1', (title_to_search,))
         try:

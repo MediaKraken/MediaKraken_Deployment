@@ -53,4 +53,7 @@ def com_net_eiscp_command(eiscp_device, eiscp_command):
 
 
 def com_net_eiscp_command_raw(eiscp_device, eiscp_raw_command):
+    """
+    Send raw tcp
+    """
     eiscp_device.raw(eiscp_raw_command)

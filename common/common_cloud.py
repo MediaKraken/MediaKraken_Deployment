@@ -46,9 +46,9 @@ def com_cloud_backup_list():
     backup_files = []
     for backup_class in CLOUD_BACKUP_CLASS:
         for backup_cloud in com_cloud_File_List(backup_class[0], None, True):
-            loggging.debug("cloud back: %s", backup_cloud)
+            logging.debug("cloud back: %s", backup_cloud)
             backup_files.append((backup_cloud.name, backup_class[1],\
-                com_string.bytes2human(backup_cloud.size)))
+                common_string.bytes2human(backup_cloud.size)))
     return backup_files
 
 
@@ -123,10 +123,10 @@ def com_cloud_file_retrieve(cloud_type, file_name, file_location):
             awss3.com_AWS_S3_Download(file_name, file_location)
     elif cloud_type == "dropbox":
         if dropbox.active:
-            com_cloud_Dropbox.dropbox_download(file_name, file_location)
+            com_cloud_dropbox.dropbox_download(file_name, file_location)
     elif cloud_type == "onedrive":
         if onedrive.active:
-            com_cloud_OneDrive.MK_OneDrive_Download(file_name, file_location)
+            com_cloud_onedrive.MK_OneDrive_Download(file_name, file_location)
     else:
         return None
 

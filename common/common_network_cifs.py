@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import os
 import urllib2
 from smb.SMBConnection import SMBConnection
 
@@ -43,7 +42,7 @@ class CommonNetworkCIFSShareURL(object):
     def com_cifs_URL_Upload(self, file_path, connect_string):
         file_con = self.director.open(\
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',\
-            data = open(file_path, 'rb'))
+            data=open(file_path, 'rb'))
         file_con.close()
 
 
@@ -59,7 +58,7 @@ class CommonCIFSShare(object):
         server_name = 'Server'
         client_name = 'My Computer'
         self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,\
-            use_ntlm_v2 = True)
+            use_ntlm_v2=True)
         self.smb_conn.connect(ip_addr, 139)
 
 
@@ -107,7 +106,7 @@ class CommonCIFSShare(object):
         """
         Upload file to smb
         """
-        self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path,'rb'))
+        self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path, 'rb'))
 
 
     def com_cifs_share_file_download(self, file_path):
@@ -135,7 +134,7 @@ class CommonCIFSShare(object):
         """
         cifs directory walk
         """
-        dirs , nondirs = [], []
+        dirs, nondirs = [], []
         for name in self.smb_conn.listPath(share_name, file_path):
             if name.isDirectory:
                 if name.filename not in ['.', '..']:

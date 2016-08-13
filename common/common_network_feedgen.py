@@ -22,6 +22,9 @@ from feedgen.feed import FeedGenerator
 
 
 class CommonNetworkFeedgen(object):
+    """
+    For setting up rss feeds
+    """
     def __init__(self):
         self.fg = FeedGenerator()
         self.fg.id('http://lernfunk.de/media/654321')
