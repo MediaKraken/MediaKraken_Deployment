@@ -23,7 +23,7 @@ import subprocess
 sys.path.append("../../MediaKraken_Common/radio_crawler")
 
 
-def com_network_radio():
+def common_network.radio():
     """
     # create the cache file for import
     """

@@ -126,17 +126,17 @@ def com_system_disk_usage_all(human_readable=False):
     Get disk usage of all partitions
     """
     disk_usage_data = []
-    for row_data in com_system_Partitions():
+    for row_data in com_system_partitions():
         if human_readable:
             formatted_list = []
-            for space_value in com_system_Disk_Usage(row_data[1]):
+            for space_value in com_system_disk_usage(row_data[1]):
                 if len(formatted_list) == 3:
                     formatted_list.append(space_value)
                 else:
-                    formatted_list.append(com_string.bytes2human(space_value))
+                    formatted_list.append(common_string.bytes2human(space_value))
             disk_usage_data.append((row_data[1], formatted_list))
         else:
-            disk_usage_data.append((row_data[1], com_system_Disk_Usage(row_data[1])))
+            disk_usage_data.append((row_data[1], com_system_disk_usage(row_data[1])))
     return disk_usage_data
 
 

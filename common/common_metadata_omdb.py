@@ -17,9 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-import sys
-import os
+#import logging
 import omdb
 
 
@@ -37,18 +35,30 @@ class CommonMetadataOMDB(object):
 
 
     def com_omdb_search(self, media_title):
+        """
+        Search
+        """
         omdb.search(media_title)
 
 
     def com_omdb_search_movie(self, media_title):
+        """
+        Search movie
+        """
         omdb.search_movie(media_title)
 
 
     def com_omdb_search_episode(self, media_title):
+        """
+        Search episode
+        """
         omdb.search_episode(media_title)
 
 
     def com_omdb_search_series(self, media_title):
+        """
+        Search series
+        """
         omdb.search_series(media_title)
 
 

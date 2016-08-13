@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import telnetlib
 import time
-newline = "\n"
+NEWLINE = "\n"
 
 
 class CommonNetworkTelnet(object):
@@ -39,9 +39,9 @@ class CommonNetworkTelnet(object):
         self.telnet_device = telnetlib.Telnet(telnet_host, telnet_port)
         if telnet_user is not None:
             self.telnet_device.read_until("login: ")
-            self.telnet_device.write(telnet_user + newline)
+            self.telnet_device.write(telnet_user + NEWLINE)
             self.telnet_device.read_until("Password: ")
-            self.telnet_device.write(telnet_password + newline)
+            self.telnet_device.write(telnet_password + NEWLINE)
 
 
     def com_net_telnet_read_device(self):
@@ -59,4 +59,4 @@ class CommonNetworkTelnet(object):
         """
         Send data to telnet device
         """
-        self.telnet_device.write(telnet_message + newline)
+        self.telnet_device.write(telnet_message + NEWLINE)

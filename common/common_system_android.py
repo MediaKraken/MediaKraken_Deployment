@@ -54,7 +54,7 @@ class CommonAndroidHardwareInstance(object):
         self.android_hardware.accelerometerEnable(True)
         accel_data = []
         for x in xrange(time_range):
-            logging.debug( self.android_hardware.accelerometerReading())
+            logging.debug(self.android_hardware.accelerometerReading())
             accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)
         return accel_data

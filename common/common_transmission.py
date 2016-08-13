@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import transmissionrpc
 
@@ -39,14 +39,14 @@ class CommonTransmission(object):
             int(Config.get('Transmission', 'Port').strip()))
 
 
-    def com_transmission_get_torrent_list(self):
+    def com_trans_get_torrent_list(self):
         """
         Get torrent list
         """
         return self.tc.get_torrents()
 
 
-    def com_transmission_add_torrent(self, torrent_path):
+    def com_trans_add_torrent(self, torrent_path):
         """
         Add torrent by file path
         """
@@ -54,18 +54,21 @@ class CommonTransmission(object):
         self.tc.add_torrent(torrent_path)
 
 
-    def com_transmission_remove_torrent(self, torrent_hash):
+    def com_trans_remove_torrent(self, torrent_hash):
         """
         Remove torrent
         """
         self.tc.remove_torrent(torrent_hash)
 
 
-    def com_transmission_name(self, torrent_no):
+    def com_trans_name(self, torrent_no):
+        """
+        Get name of torrent by id
+        """
         return self.tc.get_torrent(torrent_no)
 
 
-    def com_transmission_torrent_detail(self, torrent_no):
+    def com_trans_torrent_detail(self, torrent_no):
         """
         Get torrent detail
         """
@@ -73,14 +76,14 @@ class CommonTransmission(object):
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
 
-    def com_transmission_torrent_start(self, torrent_no):
+    def com_trans_torrent_start(self, torrent_no):
         """
         Start the specified torrent
         """
         self.tc.start_torrent(torrent_no)
 
 
-    def com_transmission_torrent_stop(self, torrent_no):
+    def com_trans_torrent_stop(self, torrent_no):
         """
         Stop the specified torrent
         """

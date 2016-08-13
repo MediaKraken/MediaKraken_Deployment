@@ -19,9 +19,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import json
-from xml.dom import minidom
+#from xml.dom import minidom
 from common import common_file
-from common import common_Metadata
+from common import common_metadata
 from common import common_network
 from pytvdbapi import api
 
@@ -109,15 +109,15 @@ class CommonTheTVDB(object):
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            banner_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            fanart_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = com_Metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            poster_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
                 'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:
@@ -129,17 +129,20 @@ class CommonTheTVDB(object):
 
         # store the season data
     # atm not using season data anyways
-    #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+    #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'',\
+# 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_Metadata_Save_Season(self,season_json):
     #    sql_params = str(uuid.uuid4()),season_json
-    #    self.sql3_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid, mm_media_season_json) values (%s,%s)',sql_params)
+    #    self.sql3_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid,\
+# mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
         json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'',\
             'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_Metadata_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
-    #    self.sql3_cursor.execute('insert into mm_metadata (mm_metadata_guid, mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
+    #    self.sql3_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
+            #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
         return metadata_uuid
 
 

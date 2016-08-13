@@ -45,7 +45,7 @@ class CommonMetadataANIdb(object):
             data_file = 'http://anidb.net/api/anime-titles.dat.gz'
         else:
             data_file = 'http://anidb.net/api/anime-titles.xml.gz'
-        com_network.mk_network_fetch_from_url(data_file, './Temp_anidb_Titles.gz')
+        common_network.mk_network_fetch_from_url(data_file, './Temp_anidb_Titles.gz')
 
 
     def MK_Network_anidb_Save_Title_Data_To_DB(self, title_file):

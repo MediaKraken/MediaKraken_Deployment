@@ -29,7 +29,7 @@ def mk_roku_network_discovery():
     """
     Discover Roku device(s)
     """
-    return com_network_SSDP.discover("roku:ecp")
+    return common_network.SSDP.discover("roku:ecp")
 
 
 def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):

@@ -36,7 +36,7 @@ def mk_rdma_get_devices():
         logging.info("RDMA Device '%s'"%(rdma_device.name))
         for rdma_node in ['node_type', 'fw_ver', 'node_guid', 'node_desc', 'sys_image_guid',\
                 'board_id', 'hw_ver']:
-            logginf.info("    %s: %s"%(rdma_node, repr(getattr(rdma_device, rdma_node))))
+            logging.info("    %s: %s"%(rdma_node, repr(getattr(rdma_device, rdma_node))))
         for rdma_device_end_port in rdma_device.end_ports:
             logging.info("    port: %u"%(rdma_device_end_port.port_id))
             for rdma_attr in ['lid', 'lmc', 'phys_state', 'state', 'sm_lid', 'sm_sl', 'gids',\

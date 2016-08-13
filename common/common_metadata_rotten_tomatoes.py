@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+import os
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
@@ -36,7 +37,7 @@ class CommonMetadataRottenTomatoes(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-            rt.API_KEY = Config.get('API','RottenTomatoes').strip()
+            rt.API_KEY = Config.get('API', 'RottenTomatoes').strip()
 
 
     def com_rt_search(movie_title, movie_year=None):

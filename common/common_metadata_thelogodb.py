@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import json
-from common import common_metadata
+#from common import common_metadata
 from common import common_network
 
 
@@ -43,5 +43,5 @@ class CommonMetadataTheLogoDB(object):
         """
         Grab newest releases
         """
-        return json.loads(com_network.mk_network_fetch_from_url(\
+        return json.loads(common_network.mk_network_fetch_from_url(\
             'http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))

@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import json
+#import json
 import requests
 
 
@@ -34,6 +34,9 @@ class CommonMetadataIMVdb(object):
 
 
     def com_imvdb_video_info(self, video_id):
+        """
+        Video info
+        """
         resp = requests.post(self.BASE_API_URL + "/video/" + video_id\
             + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
         logging.debug("imvdb Info Status: %s-%s", resp.status_code, resp.json())

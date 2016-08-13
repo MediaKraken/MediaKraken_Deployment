@@ -21,7 +21,7 @@ import logging
 import re
 import os
 import json
-from common import common_Metadata
+from common import common_metadata
 from common import common_network
 import tmdbsimple as tmdb
 
@@ -149,23 +149,23 @@ class CommonMetadataTMDB(object):
     def com_TMDB_MetaData_Info_Build(self, result_json):
         logging.debug('tmdb info build: %s', result_json)
         # create file path for poster
-        file_path = com_Metadata.com_Metadata_Image_File_Path(result_json['title'],\
+        file_path = common_metadata.com_Metadata_Image_File_Path(result_json['title'],\
             'poster')
         poster_file_path = None
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
             if not os.path.isfile(file_path):
-                com_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
                     + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
-        file_path = com_Metadata.com_Metadata_Image_File_Path(result_json['title'],\
+        file_path = common_metadata.com_Metadata_Image_File_Path(result_json['title'],\
             'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             file_path += result_json['backdrop_path']
             if not os.path.isfile(file_path):
-                com_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
                     + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case

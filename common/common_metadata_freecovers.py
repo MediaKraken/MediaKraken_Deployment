@@ -55,7 +55,7 @@ Xbox 360
 
 # general freecovers search
 def com_freecovers_search(search_string, search_categories):
-    #xml_data = parse(com_network.mk_network_fetch_from_url('http://www.freecovers.net/api/search/' + search_string, None))
+    #xml_data = parse(common_network.mk_network_fetch_from_url('http://www.freecovers.net/api/search/' + search_string, None))
     #for node in xml_data.getElementsByTagName('name'):
     request = urllib2.Request('http://www.freecovers.net/api/search/',\
         urllib.urlencode({'search': search_string}))

@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import re
-import time
+#import time
 from threading import Thread
 import urllib2
 import socket
@@ -38,17 +38,17 @@ def mk_network_fetch_from_url(url, directory=None):
     Download image file from specified url to save in specific directory
     """
     try:
-        imageFile = urllib2.urlopen(url)
+        imagefile = urllib2.urlopen(url)
         if directory is not None:
-            localFile = open(directory, 'wb')
-            localFile.write(imageFile.read())
-            imageFile.close()
-            localFile.close()
+            localfile = open(directory, 'wb')
+            localfile.write(imagefile.read())
+            imagefile.close()
+            localfile.close()
     except urllib2.URLError, e:
         logging.error('you got an error with the code %s', e)
         return None
     if directory is None:
-        return imageFile.read()
+        return imagefile.read()
 
 
 def mk_network_wol(mac_address):
@@ -97,24 +97,24 @@ def mk_network_get_default_ip():
 # ping modules
 class PingIt(Thread):
     def __init__(self, ip):
-       Thread.__init__(self)
-       self.ip = ip
-       self.status = -1
+        Thread.__init__(self)
+        self.ip = ip
+        self.status = -1
 
 
     def run(self):
-       pingaling = None
-       if str.upper(sys.platform[0:3]) == 'WIN' \
-       or str.upper(sys.platform[0:3]) == 'CYG':
-           pingaling = os.popen("ping -n 2 "+self.ip, "r")
-       else:
-           pingaling = os.popen("ping -q -c2 "+self.ip, "r")
-       while 1:
-           line = pingaling.readline()
-           if not line: break
-           igot = re.findall(PingIt.lifeline, line)
-           if igot:
-               self.status = int(igot[0])
+        pingaling = None
+        if str.upper(sys.platform[0:3]) == 'WIN' \
+        or str.upper(sys.platform[0:3]) == 'CYG':
+            pingaling = os.popen("ping -n 2 "+self.ip, "r")
+        else:
+            pingaling = os.popen("ping -q -c2 "+self.ip, "r")
+        while 1:
+            line = pingaling.readline()
+            if not line: break
+            igot = re.findall(PingIt.lifeline, line)
+            if igot:
+                self.status = int(igot[0])
 
 
 def mk_network_ping_list(host_list):
@@ -125,12 +125,12 @@ def mk_network_ping_list(host_list):
     report = ("No response", "Partial Response", "Alive")
     pinglist = []
     for host in host_list:
-       current = PingIt(host)
-       pinglist.append(current)
-       current.start()
+        current = PingIt(host)
+        pinglist.append(current)
+        current.start()
     for pingle in pinglist:
-       pingle.join()
-       logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
+        pingle.join()
+        logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
 
 
 def mk_network_io_counter(show_nic=False):

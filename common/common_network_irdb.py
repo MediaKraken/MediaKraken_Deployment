@@ -43,8 +43,8 @@ def com_irdb_codesets_by_brand_device(brand_text, device_type):
     """
     # See which sets of codes we have for that brand and device type:
     """
-    return json.loads(common_network.mk_network_fetch_from_url('http://irdb.tk/api/codeset/?brand='\
-        + brand_text + '&devicetype=' + device_type, None))
+    return json.loads(common_network.mk_network_fetch_from_url(\
+        'http://irdb.tk/api/codeset/?brand=' + brand_text + '&devicetype=' + device_type, None))
 
 
 def com_irdb_function_list(brand_text, protocol_type, device_type, device_num, subdevice):

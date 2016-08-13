@@ -63,7 +63,7 @@ class CommonDatabaseOctmote(object):
             # grab brands and insert them into database
             self.sql3_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
                 ' brand_name text)")
-            json_brand = com_network_IRDB.com_IRDB_Brand_List()["objects"]
+            json_brand = common_network.IRDB.com_IRDB_Brand_List()["objects"]
             for brand_name in json_brand:
                 self.sql3_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
             # create device db and load with types

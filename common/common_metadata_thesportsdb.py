@@ -41,33 +41,33 @@ class CommonMetadataTheSportsDB(object):
         """
         Team and player looksup
         """
-        return com_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_API_Key + '/searchteams.php?t='\
             + team_name.replace(' ','%20'), None)
 
 
     def com_Metadata_thesportsdb_Search_Players_By_Team(self, team_name):
-        return com_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_API_Key + '/searchplayers.php?t='\
             + team_name.replace(' ','%20'), None)
 
 
     def com_Metadata_thesportsdb_Search_Players_By_Name(self, player_name):
-        return com_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_API_Key + '/searchplayers.php?p='\
             + player_name.replace(' ','%20'), None)
 
 
     def com_Metadata_thesportsdb_Search_Players_By_Team_And_Player_Name(self, team_name,\
             player_name):
-        return com_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_API_Key + '/searchplayers.php?t=' + team_name.replace(' ','%20')\
             + '&p=' + player_name.replace(' ','%20'), None)
 
     # event lookups
 
     def com_Metadata_thesportsdb_Search_Event_By_Name(self, event_name):
-        return com_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_API_Key + '/searchevents.php?e='\
             + event_name.replace(' ','%20'), None)
 
