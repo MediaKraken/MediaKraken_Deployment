@@ -39,8 +39,8 @@ class MK_Server_Database(object):
     from db_base_download import srv_db_Download_Insert,\
         srv_db_Download_Read_By_Provider,\
         srv_db_Download_Delete,\
-        srv_db_Download_Update_Provider,\
-        srv_db_Download_Update
+        srv_db_download_update_Provider,\
+        srv_db_download_update
     from db_base_kodi import srv_db_Kodi_User_Sync,\
         srv_db_Kodi_User_Sync_List_Added
     from db_base_iradio import srv_db_iRadio_Insert,\
@@ -104,7 +104,7 @@ class MK_Server_Database(object):
         srv_db_meta_genre_list_count,\
         srv_db_meta_genre_list,\
         srv_db_meta_movie_count_by_genre,\
-        srv_db_Metadata_GUID_By_imdb,\
+        srv_db_meta_GUID_By_imdb,\
         srv_db_meta_guid_by_tvdb,\
         srv_db_meta_guid_by_tmdb,\
         srv_db_meta_guid_by_rt,\
@@ -155,18 +155,18 @@ class MK_Server_Database(object):
         srv_db_metdata_person_insert,\
         srv_db_meta_person_id_count,\
         srv_db_meta_person_as_seen_in
-    from db_base_metadata_sports import srv_db_Metadata_Sports_GUID_By_thesportsdb,\
+    from db_base_metadata_sports import srv_db_meta_Sports_GUID_By_thesportsdb,\
         srv_db_meta_sports_list_count,\
         srv_db_meta_sports_list,\
         srv_db_meta_sports_guid_by_event_name
-    from db_base_metadata_thesportsdb import srv_db_Metadatathesportsdb_Insert,\
+    from db_base_metadata_thesportsdb import srv_db_metathesportsdb_Insert,\
         srv_db_metathesports_update,\
-        srv_db_Metadatathesportsdb_Select_By_Guid
+        srv_db_metathesportsdb_Select_By_Guid
     from db_base_metadata_thetvdb import srv_db_metatvdb_insert,\
         srv_db_metatvdb_update
-    from db_base_metadata_tv import srv_db_MetadataTV_GUID_By_imdb,\
+    from db_base_metadata_tv import srv_db_metaTV_GUID_By_imdb,\
         srv_db_metatv_guid_by_tvdb,\
-        srv_db_MetadataTV_GUID_By_tvmaze,\
+        srv_db_metaTV_GUID_By_tvmaze,\
         srv_db_meta_tvshow_list_count,\
         srv_db_meta_tvshow_list,\
         srv_db_meta_tvshow_detail,\
@@ -177,9 +177,9 @@ class MK_Server_Database(object):
         srv_db_read_tvmetadata_eps_season,\
         srv_db_read_tvmetadata_season_eps_list,\
         srv_db_read_tvmetadata_episode
-    from db_base_metadata_tvmaze import srv_db_Metadatatvmaze_Changed_UUID,\
-        srv_db_Metadatatvmaze_Insert,\
-        srv_db_Metadatatvmaze_Update
+    from db_base_metadata_tvmaze import srv_db_metatvmaze_Changed_UUID,\
+        srv_db_metatvmaze_Insert,\
+        srv_db_metatvmaze_Update
     from db_base_notification import srv_db_Notification_Insert,\
         srv_db_Notification_Read
     from db_base_option_status import srv_db_Option_Status_Read,\

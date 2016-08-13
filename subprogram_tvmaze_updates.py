@@ -106,10 +106,10 @@ def update_insert_show(tvmaze_id, update_rec=None):
             'imdb':imdb_id, 'thetvdb':thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db.srv_db_Metadatatvmaze_Insert(series_id_json, tvmaze_name,\
+            db.srv_db_metatvmaze_Insert(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json))
         else:
-            db.srv_db_Metadatatvmaze_Update(series_id_json, tvmaze_name,\
+            db.srv_db_metatvmaze_Update(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
@@ -131,7 +131,7 @@ result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db.srv_db_MetadataTV_GUID_By_tvmaze(str(tvmaze_id))
+    results = db.srv_db_metaTV_GUID_By_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:

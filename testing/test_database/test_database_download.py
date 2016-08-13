@@ -66,9 +66,9 @@ class TestDatabaseDownload(object):
 
 
     # update provdier
-    # def srv_db_Download_Update_Provider(self, provider_name, guid):
+    # def srv_db_download_update_Provider(self, provider_name, guid):
 #        self.db.srv_db_Rollback()
 
 
-    # def srv_db_Download_Update(self, update_json, guid):
+    # def srv_db_download_update(self, update_json, guid):
 #        self.db.srv_db_Rollback()

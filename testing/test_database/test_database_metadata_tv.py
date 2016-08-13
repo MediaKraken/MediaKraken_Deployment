@@ -45,7 +45,7 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by imdb id
-    # def srv_db_MetadataTV_GUID_By_imdb(self, imdb_uuid):
+    # def srv_db_metaTV_GUID_By_imdb(self, imdb_uuid):
 #        self.db.srv_db_Rollback()
 
 
@@ -55,7 +55,7 @@ class TestDatabaseMetadataTV(object):
 
 
     # metadata guid by tvmaze id
-    # def srv_db_MetadataTV_GUID_By_tvmaze(self, tvmaze_uuid):
+    # def srv_db_metaTV_GUID_By_tvmaze(self, tvmaze_uuid):
 #        self.db.srv_db_Rollback()
 
 

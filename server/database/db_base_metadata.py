@@ -71,7 +71,7 @@ def srv_db_meta_movie_count_by_genre(self):
     return self.sql3_cursor.fetchall()
 
     
-def srv_db_Metadata_GUID_By_imdb(self, imdb_uuid):
+def srv_db_meta_GUID_By_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
@@ -144,10 +144,18 @@ def srv_db_meta_movie_list(self, offset=None, records=None):
     # return list of movies
     """
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\', mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie order by LOWER(mm_media_name)')
+        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,'\
+            'mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\','\
+            ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
+            ' from mm_metadata_movie order by LOWER(mm_media_name)')
     else:
 #        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\', mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid from mm_metadata_movie order by LOWER(mm_media_name) offset %s limit %s) order by LOWER(mm_media_name)', (offset, records))
-        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\', mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid from mm_metadata_movie order by mm_media_name offset %s limit %s) order by mm_media_name', (offset, records))
+        self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,'\
+            'mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\','\
+            ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
+            ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'\
+            ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'\
+            ' order by mm_media_name', (offset, records))
     return self.sql3_cursor.fetchall()
 
 

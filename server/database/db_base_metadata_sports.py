@@ -17,11 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-import uuid
+#import logging
+#import uuid
 
 
-def srv_db_Metadata_Sports_GUID_By_thesportsdb(self, thesports_uuid):
+def srv_db_meta_Sports_GUID_By_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """
@@ -34,6 +34,9 @@ def srv_db_Metadata_Sports_GUID_By_thesportsdb(self, thesports_uuid):
 
 
 def srv_db_meta_sports_list_count(self):
+    """
+    Count sport events
+    """
     self.sql3_cursor.execute('select count(*) from mm_metadata_sports')
     return self.sql3_cursor.fetchone()[0]
 

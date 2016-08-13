@@ -242,7 +242,7 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db.srv_db_Metadatathesportsdb_Select_By_Guid(guid),
+                           data=g.db.srv_db_metathesportsdb_Select_By_Guid(guid),
                            data_poster_image = data_poster_image,
                            data_background_image = data_background_image
                            )
@@ -1280,7 +1280,7 @@ def metadata_music_list():
                                 format_number=True,
                                 )
     return render_template('users/metadata/meta_music_list.html',
-                           media_person=g.db.srv_db_Metadata_Music_List(offset, per_page),
+                           media_person=g.db.srv_db_meta_Music_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1320,7 +1320,7 @@ def metadata_music_album_list():
                             format_number=True,
                             )
     return render_template('users/metadata/meta_music_album_list.html',
-                           media_person=g.db.srv_db_Metadata_Music_Album_List(offset, per_page),
+                           media_person=g.db.srv_db_meta_Music_Album_List(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1767,7 +1767,7 @@ def metadata_sports_list():
 @login_required
 def metadata_sports_detail(guid):
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
-                           data=g.db.srv_db_Metadata_Sports_By_GUID(guid))
+                           data=g.db.srv_db_meta_Sports_By_GUID(guid))
 
 
 @blueprint.route('/media_status/<guid>/<media_type>/<event_type>/', methods=['GET', 'POST'])

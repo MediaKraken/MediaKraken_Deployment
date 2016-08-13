@@ -38,7 +38,10 @@ def srv_db_meta_person_list(self, offset=None, records=None):
         self.sql3_cursor.execute('select mmp_id,mmp_person_name, mmp_person_image'\
             ' from mm_metadata_person order by mmp_person_name')
     else:
-        self.sql3_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image from mm_metadata_person where mmp_id in (select mmp_id from mm_metadata_person order by mmp_person_name offset %s limit %s) order by mmp_person_name', (offset, records))
+        self.sql3_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image'\
+            ' from mm_metadata_person where mmp_id in (select mmp_id from mm_metadata_person'\
+            ' order by mmp_person_name offset %s limit %s) order by mmp_person_name',\
+            (offset, records))
     return self.sql3_cursor.fetchall()
 
 
@@ -152,10 +155,14 @@ def srv_db_meta_person_as_seen_in(self, person_guid):
         self.sql3_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],
-        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\'', sql_params)  # TODO won't this need to be like below?
+        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
+            'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''\
+            ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\'', sql_params)  # TODO won't this need to be like below?
     elif row_data['mmp_person_media_id']['Host'] == 'thetvdb':
         #sql_params = str(row_data[1]['id']),
-        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Cast\'->\'Actor\' @> \'[{"id": \"' + str(row_data['mmp_person_media_id']['id']) + '\"}]\'')  #, sql_params)  #TODO
+        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
+            'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''\
+            ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Cast\'->\'Actor\' @> \'[{"id": \"' + str(row_data['mmp_person_media_id']['id']) + '\"}]\'')  #, sql_params)  #TODO
     return self.sql3_cursor.fetchall()
 
 ## works

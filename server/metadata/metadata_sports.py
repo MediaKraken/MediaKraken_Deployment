@@ -50,13 +50,13 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
                 # TODO "find" the rigth event by name?  if multiples?
-                metadata_uuid = db.srv_db_MetadataSports_GUID_By_thesportsdb(thesportsdb_data['event'][0]['idEvent'])
+                metadata_uuid = db.srv_db_metaSports_GUID_By_thesportsdb(thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
                     image_json = {'Images': {'thesportsdb': {'Characters': {}, 'Banner': None,\
                         'Poster': None, 'Backdrop': None, "Redo": True}}}
                     media_id_json = json.dumps({'thesportsdb':\
                         str(thesportsdb_data['event'][0]['idEvent'])})
-                    db.srv_db_Metadatathesportsdb_Insert(media_id_json,\
+                    db.srv_db_metathesportsdb_Insert(media_id_json,\
                         thesportsdb_data['event'][0]['strFilename'], json.dumps(thesportsdb_data),\
                         json.dumps(image_json))
     return metadata_uuid

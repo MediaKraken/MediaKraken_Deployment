@@ -66,16 +66,16 @@ def srv_db_known_remote_media_count(self):
 #            if 'TMDB' in row_data[3]:
 #                metadata_guid = srv_db_meta_guid_by_tmdb(row_data[3]['TMDB'])
 #            if metadata_guid is None and 'imdb' in row_data[3]:
-#                metadata_guid = srv_db_Metadata_GUID_By_imdb(row_data[3]['imdb'])
+#                metadata_guid = srv_db_meta_GUID_By_imdb(row_data[3]['imdb'])
 #            if metadata_guid is None and 'thetvdb' in row_data[3]:
 #                metadata_guid = srv_db_meta_guid_by_tvdb(row_data[3]['thetvdb'])
 #        elif row_data[1] == 'TV Show':
 #            if 'imdb' in row_data[3]
-#                metadata_guid = srv_db_MetadataTV_GUID_By_imdb(row_data[3]['imdb'])
+#                metadata_guid = srv_db_metaTV_GUID_By_imdb(row_data[3]['imdb'])
 #            if metadata_guid is None and 'thetvdb' in row_data[3]:
 #                metadata_guid = srv_db_metatv_guid_by_tvdb(row_data[3]['thetvdb'])
 #            if metadata_guid is None and 'tvmaze' in row_data[3]:
-#                metadata_guid = srv_db_MetadataTV_GUID_By_tvmaze(row_data[3]['tvmaze'])
+#                metadata_guid = srv_db_metaTV_GUID_By_tvmaze(row_data[3]['tvmaze'])
 #            if metadata_guid is None and 'TVRage' in row_data[3]:
 #                metadata_guid = srv_db_metatv_guid_by_tvrage(row_data[3]['TVRage'])
 #        elif row_data[1] == 'Sports':

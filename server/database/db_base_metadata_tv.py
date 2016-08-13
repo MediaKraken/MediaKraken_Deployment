@@ -40,11 +40,12 @@ def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
 
 
 
-def srv_db_MetadataTV_GUID_By_imdb(self, imdb_uuid):
+def srv_db_metaTV_GUID_By_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'imdb\' ? %s', (imdb_uuid,))
+    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        ' where mm_metadata_media_tvshow_id->\'imdb\' ? %s', (imdb_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:
@@ -55,18 +56,20 @@ def srv_db_metatv_guid_by_tvdb(self, thetvdb_uuid):
     """
     # metadata guid by tv id
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s', (thetvdb_uuid,))
+    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        ' where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s', (thetvdb_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:
         return None
 
 
-def srv_db_MetadataTV_GUID_By_tvmaze(self, tvmaze_uuid):
+def srv_db_metaTV_GUID_By_tvmaze(self, tvmaze_uuid):
     """
     # metadata guid by tvmaze id
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s', (tvmaze_uuid,))
+    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        ' where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s', (tvmaze_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:
@@ -77,7 +80,8 @@ def srv_db_metatv_guid_by_tvrage(self, tvrage_uuid):
     """
     # metadata guid by tvrage id
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'TVRage\' ? %s', (tvrage_uuid,))
+    self.sql3_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        ' where mm_metadata_media_tvshow_id->\'TVRage\' ? %s', (tvrage_uuid,))
     try:
         return self.sql3_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:
@@ -98,9 +102,13 @@ def srv_db_meta_tvshow_list(self, offset=None, records=None):
     """
     # COALESCE - priority over one column
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name, COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\', mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\'->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)')
+        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
+            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','\
+            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\'->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)')
     else:
-        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name, COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\', mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\'->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name) offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)', (offset, records))
+        self.sql3_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
+            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','\
+            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\'->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name) offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)', (offset, records))
     return self.sql3_cursor.fetchall()
 
 
@@ -116,9 +124,13 @@ def srv_db_meta_tvshow_images_to_update(self, image_type):
     # fetch tvmaze rows to update
     """
     if image_type == 'tvmaze':
-        self.sql3_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\',mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_tvshow_localimage_json->'Images'->'tvmaze'->'Redo' = 'true'")
+        self.sql3_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\','\
+            'mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+            ' where mm_metadata_tvshow_localimage_json->'Images'->'tvmaze'->'Redo' = 'true'")
     elif image_type == 'thetvdb':
-        self.sql3_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\',mm_metadata_tvshow_guid from mm_metadata_tvshow where mm_metadata_tvshow_localimage_json->'Images'->'thetvdb'->'Redo' = 'true'")
+        self.sql3_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\','\
+            'mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+            ' where mm_metadata_tvshow_localimage_json->'Images'->'thetvdb'->'Redo' = 'true'")
     return self.sql3_cursor.fetchall()
 
 
@@ -126,7 +138,8 @@ def srv_db_meta_tvshow_detail(self, guid):
     """
     # return metadata for tvshow
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json, mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (guid,))
+    self.sql3_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'\
+        ' mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (guid,))
     try:
         return self.sql3_cursor.fetchone()
     except:
@@ -185,7 +198,6 @@ def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_numbe
             # 4 - runtime
             # 5 - summary
             return row_data
-            break
     return None
 
 

@@ -172,7 +172,7 @@ def imvdb(thread_db, download_data):
     if download_data['mdq_download_json']['Status'] == "Search":
         metadata_uuid = metadata_music_video.metadata_music_video_lookup()
         if metadata_uuid is None:
-            thread_db.srv_db_Download_Update_Provider('theaudiodb', download_data['mdq_id'])
+            thread_db.srv_db_download_update_Provider('theaudiodb', download_data['mdq_id'])
 
 
 @ratelimited(com_Metadata_Limiter.API_Limit['musicbrainz'][0] / com_Metadata_Limiter.API_Limit['musicbrainz'][1])
@@ -260,13 +260,13 @@ def themoviedb(thread_db, download_data):
     if download_data['mdq_download_json']['Status'] == "Search":
         metadata_uuid = metadata_movie.movie_search_tmdb(thread_db, download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
-            thread_db.srv_db_Download_Update_Provider('omdb', download_data['mdq_id'])
+            thread_db.srv_db_download_update_Provider('omdb', download_data['mdq_id'])
         else:
             thread_db.srv_db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
             # determine if the metadata is not downloaded
             if thread_db.srv_db_meta_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.srv_db_Download_Update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
             else:
                 thread_db.srv_db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -274,15 +274,15 @@ def themoviedb(thread_db, download_data):
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
                 download_data['mdq_download_json'].update({'ProviderMetaID': tmdb_id})
-                thread_db.srv_db_Download_Update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
         else:
             metadata_movie.movie_fetch_save_tmdb(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
             download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-            thread_db.srv_db_Download_Update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+            thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
         metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
         download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-        thread_db.srv_db_Download_Update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+        thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
         metadata_movie.movie_fetch_save_tmdb_review(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.srv_db_Download_Delete(download_data['mdq_id'])

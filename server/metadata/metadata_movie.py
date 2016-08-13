@@ -46,17 +46,21 @@ else:
     TMDB_API_Connection = None
 
 
-# search tmdb
 def movie_search_tmdb(db, file_name):
+    """
+    # search tmdb
+    """
     logging.debug("search tmdb: %s", file_name)
     file_name = guessit(file_name)
     metadata_uuid = None
     if TMDB_API_Connection is not None:
         # try to match ID ONLY
         if 'year' in file_name:
-            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(file_name['title'], file_name['year'], True)
+            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(\
+                file_name['title'], file_name['year'], True)
         else:
-            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(file_name['title'], None, True)
+            match_response, match_result = TMDB_API_Connection.com_TMDB_Search(\
+                file_name['title'], None, True)
         logging.debug("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
@@ -72,8 +76,10 @@ def movie_search_tmdb(db, file_name):
     return metadata_uuid
 
 
-# fetch from tmdb
 def movie_fetch_save_tmdb(db, tmdb_id):
+    """
+    # fetch from tmdb
+    """
     logging.debug("tmdb fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
     result_json = TMDB_API_Connection.com_TMDB_Metadata_By_ID(tmdb_id)
@@ -92,8 +98,10 @@ def movie_fetch_save_tmdb(db, tmdb_id):
     return metadata_uuid
 
 
-# fetch from tmdb via imdb
 def movie_fetch_tmdb_imdb(imdb_id):
+    """
+    # fetch from tmdb via imdb
+    """
     result_json = TMDB_API_Connection.com_TMDB_Metadata_By_imdb_ID(imdb_id)
     logging.debug("uhimdb: %s", result_json)
     if result_json is not None:
@@ -172,17 +180,17 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
                 else:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                db.srv_db_Download_Update(json.dumps(download_que_json),\
+                db.srv_db_download_update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db.srv_db_Download_Update_Provider('themoviedb', download_que_id)
+                db.srv_db_download_update_Provider('themoviedb', download_que_id)
             else:
                 # search themoviedb since not matched above via DB
                 download_que_json.update({'Status': 'Search'})
-                db.srv_db_Download_Update(json.dumps(download_que_json),\
+                db.srv_db_download_update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db.srv_db_Download_Update_Provider('themoviedb', download_que_id)
+                db.srv_db_download_update_Provider('themoviedb', download_que_id)
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
     metadata_movie_lookup.metadata_last_title = file_name['title']

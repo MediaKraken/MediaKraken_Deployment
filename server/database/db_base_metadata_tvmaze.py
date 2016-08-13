@@ -17,12 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
-import json
 
 
-def srv_db_Metadatatvmaze_Changed_UUID(self, maze_uuid):
+def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
     """
     # metadata changed date by uuid
     """
@@ -35,7 +34,7 @@ def srv_db_Metadatatvmaze_Changed_UUID(self, maze_uuid):
         return None
 
 
-def srv_db_Metadatatvmaze_Insert(self, series_id_json, tvmaze_name, show_detail,\
+def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
         image_json):
     new_uuid = str(uuid.uuid4())
     self.sql3_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'\
@@ -45,7 +44,10 @@ def srv_db_Metadatatvmaze_Insert(self, series_id_json, tvmaze_name, show_detail,
     return new_uuid
 
 
-def srv_db_Metadatatvmaze_Update(self, series_id_json, tvmaze_name, show_detail,\
+def srv_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
         tvmaze_id):
-    #self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s, mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s', (series_id_json, tvmaze_name, show_detail, tvmaze_id))
+    #self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,
+        #mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s
+        #where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',
+        #(series_id_json, tvmaze_name, show_detail, tvmaze_id))
     pass

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
 
 
@@ -25,7 +25,11 @@ def srv_db_music_lookup(self, artist_name, album_name, song_title):
     """
     # query to see if song is in local DB
     """
-    self.sql3_cursor.execute('select mm_metadata_music_guid, mm_metadata_media_music_id->\'Mbrainz\' from mm_metadata_music, mm_metadata_album, mm_metadata_musician where blah and lower(mm_metadata_musician_name) = %s and lower(mm_metadata_album_name) = %s and lower(mm_metadata_music_name) = %s', (artist_name.lower(), album_name.lower(), song_title.lower()))
+    self.sql3_cursor.execute('select mm_metadata_music_guid,'\
+        ' mm_metadata_media_music_id->\'Mbrainz\' from mm_metadata_music, mm_metadata_album,'\
+        ' mm_metadata_musician where blah and lower(mm_metadata_musician_name) = %s'\
+        ' and lower(mm_metadata_album_name) = %s and lower(mm_metadata_music_name) = %s',\
+        (artist_name.lower(), album_name.lower(), song_title.lower()))
     try:
         return self.sql3_cursor.fetchone()
     except:
@@ -65,9 +69,13 @@ def srv_db_meta_album_by_guid(self, guid):
         return None
 
 
-# insert album
 def srv_db_meta_album_add(self, data_name, data_id, data_json):
-    self.sql3_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json) values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
+    """
+    # insert album
+    """
+    self.sql3_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid,'\
+        ' mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json)'\
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), data_name, data_id, data_json))
 
 
 def srv_db_meta_song_by_guid(self, guid):

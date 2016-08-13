@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import json
 
 
@@ -64,4 +64,5 @@ def srv_db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_
     # no need for where clause as it's only the one record
     self.sql3_cursor.execute('update mm_options_and_status set mm_status_json = %s',\
         (json.dumps(status_json),))
-    # 'update objects set mm_options_and_status=jsonb_set(mm_options_and_status, '{name}', '"Mary"', true)' 
+    # 'update objects set mm_options_and_status=jsonb_set(mm_options_and_status,
+        #'{name}', '"Mary"', true)'

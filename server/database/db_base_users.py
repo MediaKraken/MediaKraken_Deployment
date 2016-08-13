@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import uuid
-import datetime
 import json
 
 #class ServerDatabaseUsers(object):
@@ -70,7 +69,8 @@ def srv_db_user_login_kodi(self, user_data):
     result = self.sql3_cursor.fetchone()
     logging.debug("what: $s", result)
     if result is not None:
-        if user_data['password'] == result['password'] or True: # pass matches   # TODO passowrd validation
+        if user_data['password'] == result['password'] or True: # pass matches 
+            # TODO passowrd validation
             return (result[0], str(uuid.uuid4()))
         else:
             return (result[0], None)
