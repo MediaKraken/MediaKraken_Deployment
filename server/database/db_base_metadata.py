@@ -71,7 +71,7 @@ def srv_db_meta_movie_count_by_genre(self):
     return self.sql3_cursor.fetchall()
 
     
-def srv_db_meta_guid_By_imdb(self, imdb_uuid):
+def srv_db_meta_guid_by_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
