@@ -37,7 +37,7 @@ class CommonMetadataANIdb(object):
         pass
 
 
-    def MK_Network_anidb_Fetch_Titles_File(self, data_type='dat'):
+    def com_net_anidb_fetch_titles_file(self, data_type='dat'):
         """
         Fetch the tarball of anime titles
         """
@@ -48,7 +48,7 @@ class CommonMetadataANIdb(object):
         common_network.mk_network_fetch_from_url(data_file, './Temp_anidb_Titles.gz')
 
 
-    def MK_Network_anidb_Save_Title_Data_To_DB(self, title_file):
+    def com_net_anidb_save_title_data_to_db(self, title_file):
         """
         Save anidb title data to database
         """
@@ -62,29 +62,29 @@ class CommonMetadataANIdb(object):
                 # not a comment so try to split the file via pipes with a limit of three fields
                 sql_fields = ani_line.split('|', 3)
                 sql_params_list.append(sql_fields)
-        common_database_octmote.com_db_anidb_Title_Insert(sql_params_list)
+        common_database_octmote.com_db_anidb_title_insert(sql_params_list)
 
 
-    def MK_Network_anidb_AID_by_Title(self, title_to_search):
+    def com_net_anidb_aid_by_title(self, title_to_search):
         """
         Find AID by title
         """
         # check the local DB
-        local_db_result = common_database_octmote.com_db_anidb_Title_Search(title_to_search)
+        local_db_result = common_database_octmote.com_db_anidb_title_search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
-            if com_file.com_file_Modification_Timestamp(title_to_search) \
+            if com_file.com_file_modification_timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
-                MK_Network_anidb_Fetch_Titles_File('dat')
+                com_net_anidb_Fetch_Titles_File('dat')
                 # since new titles file....recheck by title
-                MK_Network_anidb_AID_by_Title(title_to_search)
+                com_net_anidb_aid_by_title(title_to_search)
             else:
                 return None
         else:
             return local_db_result
 
 
-    def MK_Network_anidb_Connect(self, user_name, user_password):
+    def com_net_anidb_connect(self, user_name, user_password):
         """
         Remote api calls
         """
@@ -97,14 +97,14 @@ class CommonMetadataANIdb(object):
         return self.connection
 
 
-    def MK_Network_anidb_Logout(self):
+    def com_net_anidb_Logout(self):
         """
         Logout of anidb
         """
         self.connection.logout()
 
 
-    def MK_Network_anidb_Stop(self):
+    def com_net_anidb_Stop(self):
         """
         Close the anidb connect and stop the thread
         """
@@ -112,10 +112,10 @@ class CommonMetadataANIdb(object):
 
 
 # expericment code
-# works MK_Network_anidb_Fetch_Titles_File('dat')
+# works com_net_anidb_Fetch_Titles_File('dat')
 
 ''' # works
 common_database_octmote.com_db_Open()
-MK_Network_anidb_Save_Title_Data_To_DB('./Temp_anidb_Titles.gz')
+com_net_anidb_Save_Title_Data_To_DB('./Temp_anidb_Titles.gz')
 common_database_octmote.com_db_Close()
 '''
