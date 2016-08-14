@@ -19,7 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import sys
-sys.path.append("../../MediaKraken_Common/lib")
+sys.path.append("../../common/lib")
 
 
 def com_net_ircc_discover():
