@@ -29,7 +29,7 @@ class TestCommonISO(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_ISO.com_ISO_API()
+        self.db_connection.connection = com_ISO.com_ISO_API()
 
 
     @classmethod

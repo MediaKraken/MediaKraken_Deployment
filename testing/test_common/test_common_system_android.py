@@ -29,7 +29,7 @@ class TestAndroidHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_system_Android.MK_Android_Hardware_Instance()
+        self.db_connection.connection = common_system_Android.MK_Android_Hardware_Instance()
 
 
     @classmethod

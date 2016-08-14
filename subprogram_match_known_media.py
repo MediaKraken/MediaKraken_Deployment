@@ -35,7 +35,7 @@ for row_data in db.srv_db_known_media_All_Unmatched():
                 row_data['mm_media_path'])
         except:
             logging.debug("unable to print file")
-    metadata_uuid = metadata_identification(db, row_data['mm_media_class_guid'],\
+    metadata_uuid = metadata_identification(db_connection, row_data['mm_media_class_guid'],\
         row_data['mm_media_path'])
     # update the media row with the json media id AND THE proper NAME!!!
     if metadata_uuid is not None:

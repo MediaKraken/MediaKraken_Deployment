@@ -30,20 +30,20 @@ class TestDatabaseMediaTV(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # grab tv data
     # def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None, group_collection=False, offset=None):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # grab tv data count
     # def srv_db_web_tvmedia_list_Count(self, list_type, genre_type=None, group_collection=False):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

@@ -52,7 +52,7 @@ def nfo_xml_file(media_file_path):
     return nfo_data, xml_data
 
 
-def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id):
+def nfo_xml_db_lookup(db_connection, nfo_data, xml_data, download_que_json, download_que_id):
     """
     Lookup by id's in nfo/xml files
     """
@@ -108,7 +108,7 @@ def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id
     return (metadata_uuid, imdb_id, tmdb_id, rt_id)
 
 
-def nfo_xml_db_lookup_tv(db, nfo_data, xml_data, download_que_json, download_que_id):
+def nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data, download_que_json, download_que_id):
     """
     Look up id's in nfo/xml db lookup for tv
     """

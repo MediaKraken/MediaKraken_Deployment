@@ -35,7 +35,7 @@ else:
     thesportsdb_api_connection = None
 
 
-def metadata_sports_lookup(db, media_file_path, download_que_id):
+def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
     """
     Lookup sporting event by name
     """

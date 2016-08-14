@@ -29,7 +29,7 @@ class TestCommonTwitch(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Twitch.com_Twitch_API()
+        self.db_connection.connection = common_network_Twitch.com_Twitch_API()
 
 
     @classmethod
@@ -41,19 +41,19 @@ class TestCommonTwitch(object):
         (0),
         (5)])
     def test_com_Twitch_Get_All_Streams(self, stream_limit):
-        self.db.com_Twitch_Get_All_Streams(stream_limit)
+        self.db_connection.com_Twitch_Get_All_Streams(stream_limit)
 
 
     def test_com_Twitch_Get_Featured_Streams(self):
-        self.db.com_Twitch_Get_Featured_Streams()
+        self.db_connection.com_Twitch_Get_Featured_Streams()
 
 
     def test_com_Twitch_Get_Summary(self):
-        self.db.com_Twitch_Get_Summary()
+        self.db_connection.com_Twitch_Get_Summary()
 
 
     def test_com_Twitch_Get_Summary_Viewers(self):
-        self.db.com_Twitch_Get_Summary_Viewers()
+        self.db_connection.com_Twitch_Get_Summary_Viewers()
 
 
 #    def com_Twitch_Channel_by_User(self, user_name):

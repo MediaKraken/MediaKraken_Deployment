@@ -23,16 +23,16 @@ sys.path.append("../common")
 from guessit import guessit
 
 
-def metadata_anime_lookup(db, media_file_path, download_que_id):
+def metadata_anime_lookup(db_connection, media_file_path, download_que_id):
     """
     Check for anime in tv sections of the metadata providers
     """
-    metadata_uuid, imdb_id, tmdb_id = nfo_xml_db_lookup_tv(db, nfo_data, xml_data)
+    metadata_uuid, imdb_id, tmdb_id = nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data)
     if metadata_uuid is None:
         metadata_uuid = tveps_lookup(guessit(media_file_path), imdb_id, tvdb_id, 'en')
     if metadata_uuid is None:
         # check movie data
-        metadata_uuid, imdb_id, tmdb_id = nfo_xml_db_lookup(db, nfo_data, xml_data)
+        metadata_uuid, imdb_id, tmdb_id = nfo_xml_db_lookup(db_connection, nfo_data, xml_data)
         if metadata_uuid is None:
             metadata_uuid = movie_lookup(guessit(media_file_path), imdb_id, tmdb_id)
     # TODO   or perhaps JMM hit

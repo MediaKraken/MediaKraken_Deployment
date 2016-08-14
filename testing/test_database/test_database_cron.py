@@ -30,29 +30,29 @@ class TestDatabaseCron(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # return cron count
     def test_srv_db_Cron_List_Count(self):
-        self.db.srv_db_Cron_List_Count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_Cron_List_Count()
+        self.db_connection.srv_db_rollback()
 
 
     def test_srv_db_Cron_List_Count_False(self):
-        self.db.srv_db_Cron_List_Count(False)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_Cron_List_Count(False)
+        self.db_connection.srv_db_rollback()
 
 
     def test_srv_db_Cron_List_Count_True(self):
-        self.db.srv_db_Cron_List_Count(True)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_Cron_List_Count(True)
+        self.db_connection.srv_db_rollback()
 
 
     # return cron list
@@ -64,10 +64,10 @@ class TestDatabaseCron(object):
         (True, 100, 100),
         (True, 100000000, 1000)])
     def test_srv_db_Cron_List(self, enabled_only, offset, records):
-        self.db.srv_db_Cron_List(enabled_only, offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_Cron_List(enabled_only, offset, records)
+        self.db_connection.srv_db_rollback()
 
 
     # update cron run date
     # def srv_db_Cron_Time_Update(self, cron_type):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

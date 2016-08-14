@@ -46,7 +46,7 @@ else:
     tmdb_api_connection = None
 
 
-def movie_search_tmdb(db, file_name):
+def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
@@ -75,7 +75,7 @@ def movie_search_tmdb(db, file_name):
     return metadata_uuid
 
 
-def movie_fetch_save_tmdb(db, tmdb_id):
+def movie_fetch_save_tmdb(db_connection, tmdb_id):
     """
     # fetch from tmdb
     """
@@ -111,7 +111,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
         return None
 
 
-def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
+def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id):
     """
     Save cast/crew
     """
@@ -124,7 +124,7 @@ def movie_fetch_save_tmdb_cast_crew(db, tmdb_id):
     db.srv_db_meta_movie_update_castcrew(tmdb_id, cast_json)
 
 
-def movie_fetch_save_tmdb_review(db, tmdb_id):
+def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     # grab reviews
     """
@@ -136,7 +136,7 @@ def movie_fetch_save_tmdb_review(db, tmdb_id):
             json.dumps({'TMDB': review_json}))
 
 
-def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_id):
+def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id):
     """
     Movie lookup
     """
@@ -159,7 +159,7 @@ def metadata_movie_lookup(db, media_file_path, download_que_json, download_que_i
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db, nfo_data,\
+    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection, nfo_data,\
         xml_data, download_que_json, download_que_id)
     logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id,\
         metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\

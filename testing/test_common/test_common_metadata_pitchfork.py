@@ -29,7 +29,7 @@ class TestCommonpitchfork(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_pitchfork_API()
+        self.db_connection.connection = com_pitchfork_API()
 
 
     @classmethod
@@ -41,24 +41,24 @@ class TestCommonpitchfork(object):
         ("Megadeath", "Youthanasia"),
         ("FakeBand", "FakeAlbum")])
     def test_com_pitchfork_Search(self, artist_name, album_title):
-        self.db.com_pitchfork_Search(artist_name, album_title)
+        self.db_connection.com_pitchfork_Search(artist_name, album_title)
 
 
     def test_com_pitchfork_Album_Title(self):
-        self.db.com_pitchfork_Album_Title()
+        self.db_connection.com_pitchfork_Album_Title()
 
 
     def test_com_pitchfork_Album_Label(self):
-        self.db.com_pitchfork_Album_Label()
+        self.db_connection.com_pitchfork_Album_Label()
 
 
     def test_com_pitchfork_Album_Review(self):
-        self.db.com_pitchfork_Album_Review()
+        self.db_connection.com_pitchfork_Album_Review()
 
 
     def test_com_pitchfork_Album_Cover_Art_Link(self):
-        self.db.com_pitchfork_Album_Cover_Art_Link()
+        self.db_connection.com_pitchfork_Album_Cover_Art_Link()
 
 
     def test_com_pitchfork_Album_Review_Score(self):
-        self.db.com_pitchfork_Album_Review_Score()
+        self.db_connection.com_pitchfork_Album_Review_Score()

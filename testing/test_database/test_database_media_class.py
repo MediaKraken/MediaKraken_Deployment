@@ -30,19 +30,19 @@ class TestDatabaseMediaClass(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # count media class
     def test_srv_db_media_class_list_count(self):
-        self.db.srv_db_media_class_list_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_class_list_count()
+        self.db_connection.srv_db_rollback()
 
 
     # list media class
@@ -51,8 +51,8 @@ class TestDatabaseMediaClass(object):
         (100,100),
         (100000000,1000)])
     def test_srv_db_media_class_list(self, offset, records):
-        self.db.srv_db_media_class_list(offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_class_list(offset, records)
+        self.db_connection.srv_db_rollback()
 
 
     # find the class text by uuid
@@ -60,8 +60,8 @@ class TestDatabaseMediaClass(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exist
         ('928c56c3-253d-4e30-924e-5698be6d3d37')])  # not exist
     def test_srv_db_media_class_by_uuid(self, class_uuid):
-        self.db.srv_db_media_class_by_uuid(class_uuid)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_class_by_uuid(class_uuid)
+        self.db_connection.srv_db_rollback()
 
 
     # find the class uuid by class text
@@ -69,5 +69,5 @@ class TestDatabaseMediaClass(object):
         ('Movie'),
         ('fakestuff')])
     def test_srv_db_media_uuid_by_class(self, class_text):
-        self.db.srv_db_media_uuid_by_class(class_text)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_uuid_by_class(class_text)
+        self.db_connection.srv_db_rollback()

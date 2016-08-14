@@ -29,7 +29,7 @@ class TestCommonMetadatatvmaze(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_meta_tvmaze_API()
+        self.db_connection.connection = com_meta_tvmaze_API()
 
 
     @classmethod
@@ -43,7 +43,7 @@ class TestCommonMetadatatvmaze(object):
 
     # show when last updated
     def test_com_meta_TheMaze_Show_Updated(self):
-        self.db.com_meta_TheMaze_Show_Updated()
+        self.db_connection.com_meta_TheMaze_Show_Updated()
 
 
 # lookup show

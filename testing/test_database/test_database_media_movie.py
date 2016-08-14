@@ -30,13 +30,13 @@ class TestDatabaseMediaMovie(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # find random movie
@@ -44,8 +44,8 @@ class TestDatabaseMediaMovie(object):
         (True),
         (False)])
     def test_srv_db_media_random(self, image_type):
-        self.db.srv_db_media_random(image_type)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_random(image_type)
+        self.db_connection.srv_db_rollback()
 
 
     # movie count by genre
@@ -53,8 +53,8 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exists
         ('928c56c3-253d-4e30-924e-5698be6d3d30')])  # no exist
     def test_srv_db_media_movie_count_by_genre(self, class_guid):
-        self.db.srv_db_media_movie_count_by_genre(class_guid)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_movie_count_by_genre(class_guid)
+        self.db_connection.srv_db_rollback()
 
 
     # web media count
@@ -69,9 +69,9 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False, False)])  # no exist
     def test_srv_db_web_media_list_count(self, class_guid, list_type, list_genre,\
             group_collection, include_remote):
-        self.db.srv_db_web_media_list_count(class_guid, list_type, list_genre,\
+        self.db_connection.srv_db_web_media_list_count(class_guid, list_type, list_genre,\
             group_collection, include_remote)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_rollback()
 
 
     # web media return
@@ -86,6 +86,6 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0, False)])  # no exist
     def test_srv_db_web_media_list(self, class_guid, list_type, list_genre,\
             list_limit, group_collection, offset, include_remote):
-        self.db.srv_db_web_media_list(class_guid, list_type, list_genre, list_limit,\
+        self.db_connection.srv_db_web_media_list(class_guid, list_type, list_genre, list_limit,\
             group_collection, offset, include_remote)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_rollback()

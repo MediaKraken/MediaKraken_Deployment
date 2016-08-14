@@ -29,7 +29,7 @@ class TestCommonMusicbrainz(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_meta_musicbrainz.com_Musicbrainz_API()
+        self.db_connection.connection = com_meta_musicbrainz.com_Musicbrainz_API()
 
 
     @classmethod

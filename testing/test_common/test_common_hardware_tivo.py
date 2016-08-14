@@ -29,7 +29,7 @@ class TestCommonTivo(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Hardware_Tivo.com_Tivo_API()
+        self.db_connection.connection = com_Hardware_Tivo.com_Tivo_API()
 
 
     @classmethod

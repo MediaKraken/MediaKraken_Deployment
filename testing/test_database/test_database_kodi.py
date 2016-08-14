@@ -30,19 +30,19 @@ class TestDatabaseKodi(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # def srv_db_kodi_user_sync_list_added(self, synctime):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # sync data
     # def srv_db_kodi_user_sync(self, synctime):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

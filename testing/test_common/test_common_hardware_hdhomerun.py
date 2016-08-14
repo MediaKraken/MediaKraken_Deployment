@@ -29,7 +29,7 @@ class TestCommonHardwareHDHomeRun(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Hardware_HDHomeRun.com_Hardware_HDHomeRun_API()
+        self.db_connection.connection = com_Hardware_HDHomeRun.com_Hardware_HDHomeRun_API()
 
 
     @classmethod

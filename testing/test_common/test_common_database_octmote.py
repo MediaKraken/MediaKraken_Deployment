@@ -29,12 +29,12 @@ class TestCommonDatabaseOctmote(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_db_Open(None):
+        self.db_connection.connection = com_db_Open(None):
 
 
     @classmethod
     def teardown_class(self):
-        self.db.com_db_Close()
+        self.db_connection.com_db_Close()
 
 
 # insert new layout config into database
@@ -53,7 +53,7 @@ class TestCommonDatabaseOctmote(object):
 
 
     def test_com_db_Device_List(self):
-        self.db.com_db_Device_List()
+        self.db_connection.com_db_Device_List()
 
 
 #def com_db_Device_Detail(guid):
@@ -64,7 +64,7 @@ class TestCommonDatabaseOctmote(object):
 
 
     def test_com_db_Item_List(self):
-        self.db.com_db_Item_List()
+        self.db_connection.com_db_Item_List()
 
 
 #def com_db_Item_Detail(guid):

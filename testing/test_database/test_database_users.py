@@ -30,21 +30,21 @@ class TestDatabaseUsers(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     def test_srv_db_user_list_name_count(self):
         """
         # return user count
         """
-        self.db.srv_db_user_list_name_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_user_list_name_count()
+        self.db_connection.srv_db_rollback()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,20 +55,20 @@ class TestDatabaseUsers(object):
         """
         # return user list
         """
-        self.db.srv_db_user_list_name(offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_user_list_name(offset, records)
+        self.db_connection.srv_db_rollback()
 
 
     # return all data for specified user
     # def srv_db_user_detail(self, guid):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # remove user
     # def srv_db_user_delete(self, user_guid):
-        #self.db.srv_db_rollback()
+        #self.db_connection.srv_db_rollback()
 
 
     # verify user logon
     # def srv_db_user_login_kodi(self, user_data):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

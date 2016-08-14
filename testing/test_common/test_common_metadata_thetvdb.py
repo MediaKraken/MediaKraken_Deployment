@@ -29,7 +29,7 @@ class TestCommonMetadataTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_meta_TheTVDB.com_meta_TheTVDB_API()
+        self.db_connection.connection = com_meta_TheTVDB.com_meta_TheTVDB_API()
 
 
     @classmethod

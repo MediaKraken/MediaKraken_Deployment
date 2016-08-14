@@ -30,19 +30,19 @@ class TestDatabaseDevices(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # count device
     def test_srv_db_device_count(self):
-        self.db.srv_db_device_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_device_count()
+        self.db_connection.srv_db_rollback()
 
 
     # read list
@@ -54,25 +54,25 @@ class TestDatabaseDevices(object):
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
     def test_srv_db_device_list(self, device_type, offset, records):
-        self.db.srv_db_device_list(device_type, offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_device_list(device_type, offset, records)
+        self.db_connection.srv_db_rollback()
 
 
     # insert record
     # def srv_db_device_insert(self, device_type, device_json):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # update record
     # def srv_db_device_update(self, guid, device_type, device_json):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # delete record
     # def srv_db_device_delete(self, guid):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # find detials by id
     # def srv_db_device_read(self, guid):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

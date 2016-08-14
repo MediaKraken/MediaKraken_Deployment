@@ -30,18 +30,18 @@ class TestDatabaseMediaMusic(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     def test_srv_db_media_album_count(self):
-        self.db.srv_db_media_album_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_album_count()
+        self.db_connection.srv_db_rollback()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -49,5 +49,5 @@ class TestDatabaseMediaMusic(object):
         (100,100),
         (100000000,1000)])
     def test_srv_db_media_album_list(self, offset, records):
-        self.db.srv_db_media_album_list(offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_media_album_list(offset, records)
+        self.db_connection.srv_db_rollback()

@@ -30,18 +30,18 @@ class TestDatabaseiradio(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # insert iradio channel
     # def srv_db_iRadio_Insert(self, radio_channel):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()
 
 
     # iradio count
@@ -49,8 +49,8 @@ class TestDatabaseiradio(object):
         (True,),
         (False)])
     def test_srv_db_iradio_list_count(self, active_station):
-        self.db.srv_db_iradio_list_count(active_station)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_iradio_list_count(active_station)
+        self.db_connection.srv_db_rollback()
 
 
     # iradio list
@@ -62,5 +62,5 @@ class TestDatabaseiradio(object):
         (False, 100, 100),
         (False, 100000000, 1000)])
     def test_srv_db_iradio_list(self, active_station, offset, records):
-        self.db.srv_db_iradio_list(active_station, offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_iradio_list(active_station, offset, records)
+        self.db_connection.srv_db_rollback()

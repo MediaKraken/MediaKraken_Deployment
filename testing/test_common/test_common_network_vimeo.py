@@ -29,7 +29,7 @@ class TestCommonVimeo(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Vimeo.com_Vimeo_API()
+        self.db_connection.connection = common_network_Vimeo.com_Vimeo_API()
 
 
     @classmethod

@@ -29,7 +29,7 @@ class TestCommonLDAP(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_LDAP.com_LDAP_API()
+        self.db_connection.connection = com_LDAP.com_LDAP_API()
 
 
     @classmethod

@@ -30,25 +30,25 @@ class TestDatabaseReview(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # count reviews for media
     # def srv_db_review_count(self, metadata_id):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # grab reviews for metadata
     # def srv_db_review_list_by_tmdb_guid(self, metadata_id):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # insert record
     # def srv_db_review_insert(self, metadata_id, review_json):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()

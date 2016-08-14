@@ -30,25 +30,25 @@ class TestDatabaseMetadataThesportsdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # select
     # def srv_db_metathesportsdb_select_by_guid(self, guid):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # insert
     # def srv_db_metathesportsdb_insert(self, series_id_json, event_name, show_detail, image_json):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # updated
     # def srv_db_metathesports_update(self, series_id_json, event_name, show_detail, sportsdb_id):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()

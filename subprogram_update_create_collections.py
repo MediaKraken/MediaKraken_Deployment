@@ -85,7 +85,7 @@ else:
 
 total_collections_downloaded = 0
 # same code in subprogram match anime scudlee
-def store_update_record(db, collection_name, guid_list, poster_path, backdrop_path, collection_id):
+def store_update_record(db_connection, collection_name, guid_list, poster_path, backdrop_path, collection_id):
     global total_collections_downloaded
     # store/update the record
     collection_guid = db.srv_db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
@@ -129,7 +129,7 @@ for row_data in db.srv_db_media_collection_scan():
     #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
     if old_collection_name != row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']:
         if not first_record:
-            store_update_record(db, old_collection_name, guid_list, old_poster_path, old_backdrop_path, old_id)
+            store_update_record(db_connection, old_collection_name, guid_list, old_poster_path, old_backdrop_path, old_id)
         old_collection_name = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']
         old_poster_path = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['poster_path']
         old_backdrop_path = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['backdrop_path']
@@ -139,7 +139,7 @@ for row_data in db.srv_db_media_collection_scan():
     guid_list.append(row_data['mm_metadata_guid'])
 # do last insert/update
 if len(guid_list) > 0:
-    store_update_record(db, old_collection_name, guid_list, old_poster_path,\
+    store_update_record(db_connection, old_collection_name, guid_list, old_poster_path,\
         old_backdrop_path, old_id)
 
 

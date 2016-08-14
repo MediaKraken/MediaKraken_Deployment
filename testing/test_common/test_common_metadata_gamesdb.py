@@ -29,7 +29,7 @@ class TestCommonMetadataGamesDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_meta_GamesDB.com_meta_GamesDB_API()
+        self.db_connection.connection = com_meta_GamesDB.com_meta_GamesDB_API()
 
 
     @classmethod

@@ -29,7 +29,7 @@ class TestCommonFlickr(object):
 
     @classmethod
     def setup_class(self):
-        self.db = common_network_Flickr.com_Flickr_API()
+        self.db_connection.connection = common_network_Flickr.com_Flickr_API()
 
 
     @classmethod

@@ -34,7 +34,7 @@ else:
     isbndb_api_connection = None
 
 
-def metadata_periodicals_lookup(db, media_file_path, download_que_id):
+def metadata_periodicals_lookup(db_connection, media_file_path, download_que_id):
     """
     Lookup via isdb and then name
     """

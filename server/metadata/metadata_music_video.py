@@ -36,7 +36,7 @@ else:
 
 
 # imvdb look
-def imvdb_lookup(db, file_name):
+def imvdb_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """
@@ -85,9 +85,9 @@ def imvdb_lookup(db, file_name):
     return metadata_uuid
 
 
-def metadata_music_video_lookup(db, file_name, download_que_id):
+def metadata_music_video_lookup(db_connection, file_name, download_que_id):
     """
     Music Video lookup
     """
-    metadata_uuid = imvdb_lookup(db, file_name)
+    metadata_uuid = imvdb_lookup(db_connection, file_name)
     return metadata_uuid

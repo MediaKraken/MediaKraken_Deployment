@@ -52,7 +52,7 @@ else:
     tvmaze_api_connection = None
 
 
-def tv_search_tvdb(db, file_name):
+def tv_search_tvdb(db_connection, file_name):
     """
     # tvdb search
     """
@@ -75,7 +75,7 @@ def tv_search_tvdb(db, file_name):
     return metadata_uuid
 
 
-def tv_fetch_save_tvdb(db, tvdb_id):
+def tv_fetch_save_tvdb(db_connection, tvdb_id):
     """
     # tvdb data fetch
     """
@@ -99,7 +99,7 @@ def tv_fetch_save_tvdb(db, tvdb_id):
     return metadata_uuid
 
 
-def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
+def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id):
     # check for same show variables
     if not hasattr(metadata_tv_lookup, "metadata_last_id"):
         metadata_tv_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
@@ -119,7 +119,7 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db,\
+    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db_connection,\
         nfo_data, xml_data, download_que_json, download_que_id)
     logging.debug("tv look: %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id)
     if metadata_uuid is None:
@@ -131,7 +131,7 @@ def metadata_tv_lookup(db, media_file_path, download_que_json, download_que_id):
             return metadata_tv_lookup.metadata_last_id
         # search thetvdb as the episodes will be under tv show for class per libraries
         # indiv eps is bad lookup - metadata_uuid, imdb_id, tvdb_id\
-            #= metadata_nfo_xml.nfo_xml_db_lookup_tv(db, media_file_path,\
+            #= metadata_nfo_xml.nfo_xml_db_lookup_tv(db_connection, media_file_path,\
             #metadata_nfo_xml.nfo_xml_file(media_file_path))
         # lookup on local db via name, year (if available)
         if 'year' in file_name:

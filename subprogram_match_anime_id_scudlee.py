@@ -68,7 +68,7 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 # same code in subprograb update create collections
-def store_update_record(db, collection_name, guid_list):
+def store_update_record(db_connection, collection_name, guid_list):
     # store/update the record
     collection_guid = db.srv_db_Collection_by_Name(collection_name)
     if collection_guid is None:
@@ -99,7 +99,7 @@ for row_data in com_Scudlee.mk_scudlee_anime_set_parse():
     if row_data[1] == "music video":
         pass
     else:
-        store_update_record(db, row_data[0], row_data[1])
+        store_update_record(db_connection, row_data[0], row_data[1])
 
 # log end
 db.srv_db_Activity_Insert('MediaKraken_Server Anime Scudlee Stop', None,\

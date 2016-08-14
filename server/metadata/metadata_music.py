@@ -34,7 +34,7 @@ else:
     mbrainz_api_connection = None
 
 
-def metadata_music_lookup(db, media_file_path, download_que_id):
+def metadata_music_lookup(db_connection, media_file_path, download_que_id):
     """
     Search musicbrainz
     """

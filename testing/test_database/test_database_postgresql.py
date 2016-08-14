@@ -30,27 +30,27 @@ class TestDatabasePostgresql(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
     def test_srv_db_pgsql_table_sizes(self):
-        self.db.srv_db_pgsql_table_sizes()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_table_sizes()
+        self.db_connection.srv_db_rollback()
 
 
     # return tables and row count
     # query provided by postgresql wiki
     def test_srv_db_pgsql_row_count(self):
-        self.db.srv_db_pgsql_row_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_row_count()
+        self.db_connection.srv_db_rollback()
 
 
     # vacuum stats by day list
@@ -58,8 +58,8 @@ class TestDatabasePostgresql(object):
         (1),
         (60)])
     def test_srv_db_pgsql_vacuum_stat_by_day(self, days):
-        self.db.srv_db_pgsql_vacuum_stat_by_day(days)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_vacuum_stat_by_day(days)
+        self.db_connection.srv_db_rollback()
 
 
     # vacuum table
@@ -67,10 +67,10 @@ class TestDatabasePostgresql(object):
         ('mm_media'),
         ('mm_media_fake_table')])
     def test_srv_db_pgsql_vacuum_table(self, table_name):
-        self.db.srv_db_pgsql_vacuum_table(table_name)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_vacuum_table(table_name)
+        self.db_connection.srv_db_rollback()
 
 
     # set isolation level
     # def srv_db_pgsql_set_isolation_level(self, isolation_level):
-#        self.db.srv_db_rollback()
+#        self.db_connection.srv_db_rollback()

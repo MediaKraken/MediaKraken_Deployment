@@ -29,12 +29,12 @@ class TestCommonDatabaseEmby(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_db_Attach_Emby(None):
+        self.db_connection.connection = com_db_Attach_Emby(None):
 
 
     @classmethod
     def teardown_class(self):
-        self.db.com_db_Close_Emby()
+        self.db_connection.com_db_Close_Emby()
 
 
 
@@ -48,12 +48,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def test_com_db_Movie_List_Emby(self, offset, records):
-        self.db.com_db_Movie_List_Emby(offset, records)
+        self.db_connection.com_db_Movie_List_Emby(offset, records)
 
 
     # grab all movies in emby database count
     def teset_com_db_Movie_List_Emby_Count(self):
-        self.db.com_db_Movie_List_Emby_Count()
+        self.db_connection.com_db_Movie_List_Emby_Count()
 
 
     # grab all the tv episodes in the emby database
@@ -62,12 +62,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def com_db_TV_List_Emby(self, offset, records):
-        self.db.com_db_TV_List_Emby(offset, records)
+        self.db_connection.com_db_TV_List_Emby(offset, records)
 
 
     # grab all the tv episodes in the emby database count
     def test_com_db_TV_List_Emby_Count(self):
-        self.db.com_db_TV_List_Emby_Count()
+        self.db_connection.com_db_TV_List_Emby_Count()
 
 
     # grab all the tv episodes and movies in the emby database
@@ -76,12 +76,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def test_com_db_TV_Movie_List_Emby(self, offset, records):
-        self.db.com_db_TV_Movie_List_Emby(offset, records)
+        self.db_connection.com_db_TV_Movie_List_Emby(offset, records)
 
 
     # grab all the tv episodes and movies in the emby database count
     def test_com_db_TV_Movie_List_Emby_Count(self):
-        self.db.com_db_TV_Movie_List_Emby_Count()
+        self.db_connection.com_db_TV_Movie_List_Emby_Count()
 
 
 # grab all users from database
@@ -90,7 +90,7 @@ class TestCommonDatabaseEmby(object):
 
     # grab count of all users
     def test_com_db_Users_List_Count(self):
-        self.db.com_db_Users_List_Count()
+        self.db_connection.com_db_Users_List_Count()
 
 
 # grab last IP
@@ -107,12 +107,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def com_db_Emby_Activity_List(self, offset, records):
-        self.db.com_db_Emby_Activity_List(offset, records)
+        self.db_connection.com_db_Emby_Activity_List(offset, records)
 
 
     # grab all activity data count
     def test_com_db_Emby_Activity_List_Count(self):
-        self.db.com_db_Emby_Activity_List_Count()
+        self.db_connection.com_db_Emby_Activity_List_Count()
 
 
     # grab all notifications
@@ -121,12 +121,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def test_MK_Databas_Sqlite3_Emby_Notification_List(self, offset, records):
-        self.db.MK_Databas_Sqlite3_Emby_Notification_List(offset, records)
+        self.db_connection.MK_Databas_Sqlite3_Emby_Notification_List(offset, records)
 
 
     # grab notification  data count
     def test_com_db_Emby_Notification_List_Count(self):
-        self.db.com_db_Emby_Notification_List_Count()
+        self.db_connection.com_db_Emby_Notification_List_Count()
 
 
     # grab all notifications
@@ -135,12 +135,12 @@ class TestCommonDatabaseEmby(object):
         (100,100),
         (100000000,1000)])
     def test_com_db_Emby_Sync_List(self, offset, records):
-        self.db.com_db_Emby_Sync_List(offset, records):
+        self.db_connection.com_db_Emby_Sync_List(offset, records):
 
 
     # grab notification  data count
     def test_com_db_Emby_Sync_List_Count(self):
-        self.db.com_db_Emby_Sync_List_Count()
+        self.db_connection.com_db_Emby_Sync_List_Count()
 
 
 # get id to lookup from metadata
@@ -149,4 +149,4 @@ class TestCommonDatabaseEmby(object):
 
     # all data from users for playback
     def test_com_db_User_Play_Data(self):
-        self.db.com_db_User_Play_Data()
+        self.db_connection.com_db_User_Play_Data()

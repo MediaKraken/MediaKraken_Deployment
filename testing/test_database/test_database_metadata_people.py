@@ -30,19 +30,19 @@ class TestDatabaseMetadataPeople(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_close()
+        self.db_connection.srv_db_close()
 
 
     # count person metadata
     def test_srv_db_meta_person_list_count(self):
-        self.db.srv_db_meta_person_list_count()
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_meta_person_list_count()
+        self.db_connection.srv_db_rollback()
 
 
     # return list of people
@@ -51,35 +51,35 @@ class TestDatabaseMetadataPeople(object):
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_person_list(self, offset, records):
-        self.db.srv_db_meta_person_list(offset, records)
-        self.db.srv_db_rollback()
+        self.db_connection.srv_db_meta_person_list(offset, records)
+        self.db_connection.srv_db_rollback()
 
 
     # return person data
     # def srv_db_meta_person_by_guid(self, guid):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # return person data by name
     # def srv_db_meta_person_by_name(self, person_name):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # does person exist already by host/id
     # def srv_db_meta_person_id_count(self, host_type, guid):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # insert person
     # def srv_db_metdata_person_insert(self, person_name, media_id_json, person_json, image_json=None):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # batch insert from json of crew/cast
     # def srv_db_meta_person_insert_cast_crew(self, meta_type, person_json):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()
 
 
     # find other media for person
     # def srv_db_meta_person_as_seen_in(self, person_guid):
-#         self.db.srv_db_rollback()
+#         self.db_connection.srv_db_rollback()

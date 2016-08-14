@@ -29,7 +29,7 @@ class TestCommonSerial(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Serial_API()
+        self.db_connection.connection = com_Serial_API()
 
 
     @classmethod
@@ -41,12 +41,12 @@ class TestCommonSerial(object):
 
 
     def test_MK_Serial_Read_Device(self):
-        self.db.MK_Serial_Read_Device()
+        self.db_connection.MK_Serial_Read_Device()
 
 
     def test_MK_Serial_Close_Device(self):
-        self.db.MK_Serial_Close_Device()
+        self.db_connection.MK_Serial_Close_Device()
 
 
     def test_MK_Serial_Write_Device(self):
-        self.db.MK_Serial_Write_Device("Test serial message")
+        self.db_connection.MK_Serial_Write_Device("Test serial message")

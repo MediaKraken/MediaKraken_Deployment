@@ -34,7 +34,7 @@ import metadata_sports
 import metadata_tv
 
 
-def metadata_identification(db, class_text, media_file_path, download_que_json, download_que_id):
+def metadata_identification(db_connection, class_text, media_file_path, download_que_json, download_que_id):
     """
     Determine which provider to start lookup via class text
     """
@@ -45,10 +45,10 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
     if class_text == "Adult":
         pass
     elif class_text == "Anime":
-        metadata_uuid = metadata_anime.metadata_anime_lookup(db, media_file_path,
+        metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection, media_file_path,
             download_que_json, download_que_id)
     elif class_text == "Book":
-        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path,\
+        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Game CHD":
         metadata_uuid = srv_db_meta_game_by_name_and_system(os.path.basename(\
@@ -73,10 +73,10 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
     elif class_text == "Home Movie":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Magazine":
-        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db, media_file_path,\
+        metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Movie":
-        metadata_uuid = metadata_movie.metadata_movie_lookup(db, media_file_path,\
+        metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Movie Theme":
         guid = db.srv_db_read_media_Path_Like(os.path.dirname(\
@@ -98,24 +98,24 @@ def metadata_identification(db, class_text, media_file_path, download_que_json, 
         else:
             pass  # TODO lookup properly
     elif class_text == "Music":
-        metadata_uuid = metadata_music.metadata_music_lookup(db, media_file_path,\
+        metadata_uuid = metadata_music.metadata_music_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
     elif class_text == "Music Video":
-        metadata_uuid = metadata_music_video.metadata_music_video_lookup(db, media_file_path,\
+        metadata_uuid = metadata_music_video.metadata_music_video_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Picture":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":
-        metadata_uuid = metadata_sports.metadata_sports_lookup(db, media_file_path,\
+        metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
     elif class_text == "TV Show":
-        metadata_uuid = metadata_tv.metadata_tv_lookup(db, media_file_path,\
+        metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "TV Theme":
         guid = db.srv_db_read_media_Path_Like(os.path.dirname(\

@@ -49,8 +49,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    self.db.srv_db_rollback()
-    self.db.srv_db_close()
+    self.db_connection.srv_db_rollback()
+    self.db_connection.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -63,19 +63,19 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # open the database
-        self.db = database_base.MKServerDatabase()
-        self.db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections', 'PostDBName').strip(),\
             Config.get('DB Connections', 'PostDBUser').strip(),\
             Config.get('DB Connections', 'PostDBPass').strip())
         # preload some data from database
-        self.genre_list = self.db.srv_db_meta_genre_list()
+        self.genre_list = self.db_connection.srv_db_meta_genre_list()
         logging.info("Ready for connections!")
 
 
     def buildProtocol(self, addr):
-        return network_base.Metaman_Network_Events(self.users, self.db, self.genre_list)
+        return network_base.Metaman_Network_Events(self.users, self.db_connection. self.genre_list)
 
 
 if __name__ == '__main__':

@@ -30,7 +30,7 @@ class TestCommonBackupBackblaze(object):
 
     @classmethod
     def setup_class(self):
-        self.db = com_Backup_Backblaze.com_Backup_Backblaze_API()
+        self.db_connection.connection = com_Backup_Backblaze.com_Backup_Backblaze_API()
 
 
     @classmethod
@@ -39,7 +39,7 @@ class TestCommonBackupBackblaze(object):
 
 
     def test_com_Backup_Backblaze_Bucket_List(self):
-        self.db.com_Backup_Backblaze_Bucket_List()
+        self.db_connection.com_Backup_Backblaze_Bucket_List()
 
 
     @pytest.mark.parametrize(("bucket_name"), [
