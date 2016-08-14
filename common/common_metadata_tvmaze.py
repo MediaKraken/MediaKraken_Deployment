@@ -33,7 +33,7 @@ class CommonMetadatatvmaze(object):
         pass
 
 
-    def com_meta_themaze_show_list(self, page_no=0):
+    def com_meta_tvmaze_show_list(self, page_no=0):
         """
         # show list 50 per page - 0 is first page
         """
@@ -42,7 +42,7 @@ class CommonMetadatatvmaze(object):
             % url_opts), None)
 
 
-    def com_meta_themaze_show_updated(self):
+    def com_meta_tvmaze_show_updated(self):
         """
         # show when last updated
         """
@@ -51,7 +51,7 @@ class CommonMetadatatvmaze(object):
             'http://api.tvmaze.com/updates/shows', None)
 
 
-    def com_meta_themaze_widesearch(self, show_name, show_year=None):
+    def com_meta_tvmaze_widesearch(self, show_name, show_year=None):
         """
         # lookup show
         """
@@ -60,7 +60,7 @@ class CommonMetadatatvmaze(object):
             % url_opts), None)
 
 
-    def com_meta_themaze_narrowsearch(self, show_name, show_year=None):
+    def com_meta_tvmaze_narrowsearch(self, show_name, show_year=None):
         """
         # lookup specific show
         """
@@ -69,7 +69,7 @@ class CommonMetadatatvmaze(object):
             'http://api.tvmaze.com/singlesearch/shows?q=%s' % url_opts), None)
 
 
-    def com_meta_themaze_show_by_id(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id,\
+    def com_meta_tvmaze_show_by_id(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id,\
             embed_info=True):
         """
         # lookup specific id
@@ -100,12 +100,12 @@ class CommonMetadatatvmaze(object):
                 result_json = common_network.mk_network_fetch_from_url((\
                     'http://api.tvmaze.com/lookup/shows?thetvdb=%s' % url_opts), None)
             if embed_info and result_json is not None:
-                result_json = com_meta_themaze_Show_by_ID(self, result_json['id'], None,\
+                result_json = com_meta_tvmaze_show_by_id(self, result_json['id'], None,\
                     None, None, True)
         return result_json
 
 
-    def com_meta_themaze_person_by_name(self, person_name):
+    def com_meta_tvmaze_person_by_name(self, person_name):
         """
         # people search (doesnt' appear to have episode data here)
         """
@@ -114,8 +114,10 @@ class CommonMetadatatvmaze(object):
             % url_opts)
 
 
-    # schedule
-    def com_meta_themaze_schedule(self, country_code=None, schedule_date=None):
+    def com_meta_tvmaze_schedule(self, country_code=None, schedule_date=None):
+        """
+        # schedule
+        """
         result_json = common_network.mk_network_fetch_from_url('http://api.tvmaze.com/schedule',\
             None)
         result_json = common_network.mk_network_fetch_from_url(\

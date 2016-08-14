@@ -94,8 +94,10 @@ def mk_network_get_default_ip():
     return return_data
 
 
-# ping modules
 class PingIt(Thread):
+    """
+    # ping modules
+    """
     def __init__(self, ip):
         Thread.__init__(self)
         self.ip = ip
@@ -111,7 +113,8 @@ class PingIt(Thread):
             pingaling = os.popen("ping -q -c2 "+self.ip, "r")
         while 1:
             line = pingaling.readline()
-            if not line: break
+            if not line:
+                break
             igot = re.findall(PingIt.lifeline, line)
             if igot:
                 self.status = int(igot[0])

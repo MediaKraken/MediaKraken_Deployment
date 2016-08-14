@@ -44,11 +44,15 @@ class CommonNetworkTrakt(object):
         )
 
 
-    # calendar by days
-    def com_net_trakt_calendar_by_days(day_count):
+    def com_net_trakt_calendar_by_days(self, day_count):
+        """
+        # calendar by days
+        """
         return PremiereCalendar(days=day_count)
 
 
-    # dismiss recommendation
-    def com_net_trakt_dismiss_recommendation(imdb_id, imdb_title, imdb_year):
+    def com_net_trakt_dismiss_recommendation(self, imdb_id, imdb_title, imdb_year):
+        """
+        # dismiss recommendation
+        """
         dismiss_recommendation(imdb_id='tt3139072', title='Son of Batman', year=2014)
