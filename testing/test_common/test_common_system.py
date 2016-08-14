@@ -81,7 +81,7 @@ def test_common_system_disk_usage():
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
-def test_common_system_disk_usage_All(human_readable):
+def test_common_system_disk_usage_all(human_readable):
     common_system_Disk_Usage_All(human_readable)
 
 
