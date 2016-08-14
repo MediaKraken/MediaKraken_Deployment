@@ -43,7 +43,7 @@ class TestDatabaseMediaImages(object):
         """
         Image count
         """
-        self.db_connection.com_media_images_list_count()
+        self.db_connection.srv_db_media_images_list_count()
         self.db_connection.srv_db_rollback()
 
 
@@ -55,5 +55,5 @@ class TestDatabaseMediaImages(object):
         """
         List images
         """
-        self.db_connection.com_media_images_list(offset, records)
+        self.db_connection.srv_db_media_images_list(offset, records)
         self.db_connection.srv_db_rollback()
