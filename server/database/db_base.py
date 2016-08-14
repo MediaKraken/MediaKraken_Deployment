@@ -25,7 +25,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor
 
 
-def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+def srv_db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -35,7 +35,7 @@ def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+        % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
     self.sql3_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
@@ -45,8 +45,8 @@ def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass
         sys.exit()
 
 
-def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
-        PostDBUser, PostDBPass):
+def srv_db_open_isolation(self, postdbhost, postdbport, postdbname,\
+        postdbuser, postdbpass):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -56,7 +56,7 @@ def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+        % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
