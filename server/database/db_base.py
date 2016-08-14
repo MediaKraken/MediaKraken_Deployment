@@ -38,8 +38,8 @@ def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass
         % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class'\
-        ' WHERE relname = 'mm_media'")
+    self.sql3_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
+        ' WHERE relname = \'mm_media\'')
     if self.sql3_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
@@ -60,8 +60,8 @@ def srv_db_open_isolation(self, PostDBHost, PostDBPort, PostDBName,\
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class'\
-        ' WHERE relname = 'mm_media'")
+    self.sql3_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
+        ' WHERE relname = \'mm_media\'')
     if self.sql3_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
