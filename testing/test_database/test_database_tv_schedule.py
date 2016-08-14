@@ -39,15 +39,19 @@ class TestDatabaseTVSchedule(object):
         self.db_connection.srv_db_close()
 
 
-    # read the stations
     def test_srv_db_tv_stations_read(self):
+        """
+        # read the stations
+        """
         self.db_connection.srv_db_tv_stations_read()
         self.db_connection.srv_db_rollback()
 
 
-    # read the stationid list
-    def test_srv_db_tv_stations_read_StationID_List(self):
-        self.db_connection.srv_db_tv_stations_read_StationID_List()
+    def test_srv_db_tv_stations_read_stationid_list(self):
+        """
+        # read the stationid list
+        """
+        self.db_connection.srv_db_tv_stations_read_stationid_list()
         self.db_connection.srv_db_rollback()
 
 

@@ -64,18 +64,22 @@ class TestDatabaseMetadataTV(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # tvshow count
     def test_srv_db_meta_tvshow_list_count(self):
+        """
+        # tvshow count
+        """
         self.db_connection.srv_db_meta_tvshow_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    # return list of tvshows
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_tvshow_list(self, offset, records):
+        """
+        # return list of tvshows
+        """
         self.db_connection.srv_db_meta_tvshow_list(offset, records)
         self.db_connection.srv_db_rollback()
 

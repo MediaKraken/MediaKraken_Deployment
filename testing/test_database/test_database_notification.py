@@ -40,16 +40,18 @@ class TestDatabaseNotification(object):
 
 
     # insert notifications
-    # def srv_db_Notification_Insert(self, notification_data, notification_dismissable):
+    # def srv_db_notification_insert(self, notification_data, notification_dismissable):
 #         self.db_connection.srv_db_rollback()
 
 
-    # read all notifications
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_notification_read(self, offset, records):
+        """
+        # read all notifications
+        """
         self.db_connection.srv_db_notification_read(offset, records)
         self.db_connection.srv_db_rollback()
 

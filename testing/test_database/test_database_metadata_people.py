@@ -39,18 +39,22 @@ class TestDatabaseMetadataPeople(object):
         self.db_connection.srv_db_close()
 
 
-    # count person metadata
     def test_srv_db_meta_person_list_count(self):
+        """
+        # count person metadata
+        """
         self.db_connection.srv_db_meta_person_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    # return list of people
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_person_list(self, offset, records):
+        """
+        # return list of people
+        """
         self.db_connection.srv_db_meta_person_list(offset, records)
         self.db_connection.srv_db_rollback()
 

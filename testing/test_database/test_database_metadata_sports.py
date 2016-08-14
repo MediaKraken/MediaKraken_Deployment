@@ -45,16 +45,21 @@ class TestDatabaseMetadataSports(object):
 
 
     def test_srv_db_meta_sports_list_count(self):
+        """
+        Sports event count
+        """
         self.db_connection.srv_db_meta_sports_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    # return list of game systems
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_sports_list(self, offset, records):
+        """
+        Sports list
+        """
         self.db_connection.srv_db_meta_sports_list(offset, records)
         self.db_connection.srv_db_rollback()
 

@@ -45,7 +45,6 @@ class TestDatabaseDevices(object):
         self.db_connection.srv_db_rollback()
 
 
-    # read list
     @pytest.mark.parametrize(("device_type", "offset", "records"), [
         (None, None, None),
         (None, 100, 100),
@@ -54,6 +53,9 @@ class TestDatabaseDevices(object):
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
     def test_srv_db_device_list(self, device_type, offset, records):
+        """
+        # read list
+        """
         self.db_connection.srv_db_device_list(device_type, offset, records)
         self.db_connection.srv_db_rollback()
 

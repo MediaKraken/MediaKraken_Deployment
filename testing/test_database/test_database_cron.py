@@ -39,23 +39,24 @@ class TestDatabaseCron(object):
         self.db_connection.srv_db_close()
 
 
-    # return cron count
-    def test_srv_db_Cron_List_Count(self):
-        self.db_connection.srv_db_Cron_List_Count()
+    def test_srv_db_cron_list_count(self):
+        """
+        # return cron count
+        """
+        self.db_connection.srv_db_cron_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    def test_srv_db_Cron_List_Count_False(self):
-        self.db_connection.srv_db_Cron_List_Count(False)
+    def test_srv_db_cron_list_count_false(self):
+        self.db_connection.srv_db_cron_list_count(False)
         self.db_connection.srv_db_rollback()
 
 
-    def test_srv_db_Cron_List_Count_True(self):
-        self.db_connection.srv_db_Cron_List_Count(True)
+    def test_srv_db_cron_list_count_true(self):
+        self.db_connection.srv_db_cron_list_count(True)
         self.db_connection.srv_db_rollback()
 
 
-    # return cron list
     @pytest.mark.parametrize(("enabled_only", "offset", "records"), [
         (False, None, None),
         (False, 100, 100),
@@ -63,11 +64,14 @@ class TestDatabaseCron(object):
         (True, None, None),
         (True, 100, 100),
         (True, 100000000, 1000)])
-    def test_srv_db_Cron_List(self, enabled_only, offset, records):
-        self.db_connection.srv_db_Cron_List(enabled_only, offset, records)
+    def test_srv_db_cron_list(self, enabled_only, offset, records):
+        """
+        # return cron list
+        """
+        self.db_connection.srv_db_cron_list(enabled_only, offset, records)
         self.db_connection.srv_db_rollback()
 
 
     # update cron run date
-    # def srv_db_Cron_Time_Update(self, cron_type):
+    # def srv_db_cron_time_update(self, cron_type):
 #        self.db_connection.srv_db_rollback()

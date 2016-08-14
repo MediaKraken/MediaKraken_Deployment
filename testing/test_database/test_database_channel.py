@@ -39,5 +39,5 @@ class TestDatabaseChannel(object):
 
 
     # insert channel
-    # def srv_db_Channel_Insert(self, channel_id, channel_name, channel_language, channel_country, channel_logo_id):
+    # def srv_db_channel_insert(self, channel_id, channel_name, channel_language, channel_country, channel_logo_id):
 #        self.db_connection.srv_db_rollback()

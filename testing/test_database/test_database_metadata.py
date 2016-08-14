@@ -39,11 +39,13 @@ class TestDatabaseMetadata(object):
         self.db_connection.srv_db_close()
 
 
-    # read in the media with corresponding metadata
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
     def test_srv_db_read_media_metadata(self, media_guid):
+        """
+        # read in the media with corresponding metadata
+        """
         self.db_connection.srv_db_read_media_metadata(media_guid)
         self.db_connection.srv_db_rollback()
 
@@ -53,33 +55,41 @@ class TestDatabaseMetadata(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # count all the generes
     def test_srv_db_meta_genre_list_count(self):
+        """
+        # count all the generes
+        """
         self.db_connection.srv_db_meta_genre_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    # grab all the generes
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_genre_list(self, offset, records):
+        """
+        # grab all the generes
+        """
         self.db_connection.srv_db_meta_genre_list(offset, records)
         self.db_connection.srv_db_rollback()
 
 
-    # movie count by genre
     def test_srv_db_meta_movie_count_by_genre(self):
+        """
+        # movie count by genre
+        """
         self.db_connection.srv_db_meta_movie_count_by_genre()
         self.db_connection.srv_db_rollback()
 
 
-    # metadata guid by imdb id
     @pytest.mark.parametrize(("uuid"), [
         ('tt0215948'),
         ('fakeid')])
     def test_srv_db_meta_guid_by_imdb(self, uuid):
+        """
+        # metadata guid by imdb id
+        """
         self.db_connection.srv_db_meta_guid_by_imdb(uuid)
         self.db_connection.srv_db_rollback()
 
@@ -89,11 +99,13 @@ class TestDatabaseMetadata(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # see if metadata exists type and id
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
     def test_srv_db_meta_guid_by_tmdb(self, uuid):
+        """
+        # see if metadata exists type and id
+        """
         self.db_connection.srv_db_meta_guid_by_tmdb(uuid)
         self.db_connection.srv_db_rollback()
 
@@ -108,21 +120,25 @@ class TestDatabaseMetadata(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # see if metadata exists via themovedbid
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
     def test_srv_db_meta_tmdb_count(self, uuid):
+        """
+        # see if metadata exists via themovedbid
+        """
         self.db_connection.srv_db_meta_tmdb_count(uuid)
         self.db_connection.srv_db_rollback()
 
 
-    # return list of movies
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_movie_list(self, offset, records):
+        """
+        # return list of movies
+        """
         self.db_connection.srv_db_meta_movie_list(offset, records)
         self.db_connection.srv_db_rollback()
 

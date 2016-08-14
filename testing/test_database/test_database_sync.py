@@ -39,18 +39,22 @@ class TestDatabaseSync(object):
         self.db_connection.srv_db_close()
 
 
-    # return count of sync jobs
     def srv_db_sync_list_count(self):
+        """
+        # return count of sync jobs
+        """
         self.db_connection.srv_db_sync_list_count()
         self.db_connection.srv_db_rollback()
 
 
-    # return list of sync jobs
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_sync_list(self, offset, records):
+        """
+        # return list of sync jobs
+        """
         self.db_connection.srv_db_sync_list(offset, records)
         self.db_connection.srv_db_rollback()
 

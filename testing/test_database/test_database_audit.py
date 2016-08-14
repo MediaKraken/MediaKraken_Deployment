@@ -39,35 +39,39 @@ class TestDatabaseAudit(object):
         self.db_connection.srv_db_close()
 
 
-    ## read scan status
     def test_srv_db_audit_path_status(self):
+        """
+        # read scan status
+        """
         self.db_connection.srv_db_audit_path_status()
         self.db_connection.srv_db_rollback()
 
 
     ## update status
-    #def srv_db_Audit_Path_Update_Status(self, lib_guid, status_json):
+    #def srv_db_audit_path_update_status(self, lib_guid, status_json):
 #        self.db_connection.srv_db_rollback()
 
 
-    ## read the paths to audit
     def test_srv_db_audit_paths_count(self):
+        """
+        # read the paths to audit
+        """
         self.db_connection.srv_db_audit_paths_count()
         self.db_connection.srv_db_rollback()
 
 
     ## update audit path
-    #def srv_db_Audit_Path_Update_by_UUID(self, lib_path, class_guid, lib_guid):
+    #def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
 #        self.db_connection.srv_db_rollback()
 
 
     ## remove media path
-    #def srv_db_Audit_Path_Delete(self, lib_guid):
+    #def srv_db_audit_path_delete(self, lib_guid):
 #        self.db_connection.srv_db_rollback()
 
 
     ## add media path
-    #def srv_db_Audit_Path_Add(self, dir_path, class_guid):
+    #def srv_db_audit_path_add(self, dir_path, class_guid):
 #        self.db_connection.srv_db_rollback()
 
 
@@ -81,7 +85,7 @@ class TestDatabaseAudit(object):
 
 
     ## update the timestamp for directory scans
-    #def srv_db_Audit_Directory_Timestamp_Update(self, file_path):
+    #def srv_db_audit_directory_timestamp_update(self, file_path):
 #        self.db_connection.srv_db_rollback()
 
 
@@ -96,5 +100,5 @@ class TestDatabaseAudit(object):
 
 
     ## lib data per id
-    #def srv_db_Audit_Path_by_UUID(self, dir_id):
+    #def srv_db_audit_path_by_uuid(self, dir_id):
 #        self.db_connection.srv_db_rollback()

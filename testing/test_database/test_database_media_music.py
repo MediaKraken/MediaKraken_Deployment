@@ -40,6 +40,9 @@ class TestDatabaseMediaMusic(object):
 
 
     def test_srv_db_media_album_count(self):
+        """
+        Album count
+        """
         self.db_connection.srv_db_media_album_count()
         self.db_connection.srv_db_rollback()
 
@@ -49,5 +52,8 @@ class TestDatabaseMediaMusic(object):
         (100,100),
         (100000000,1000)])
     def test_srv_db_media_album_list(self, offset, records):
+        """
+        Album list
+        """
         self.db_connection.srv_db_media_album_list(offset, records)
         self.db_connection.srv_db_rollback()

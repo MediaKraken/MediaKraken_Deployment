@@ -44,12 +44,14 @@ class TestDatabaseLink(object):
         self.db_connection.srv_db_rollback()
 
 
-    # return list of sync jobs
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_link_list(self, offset, records):
+        """
+        # return list of sync jobs
+        """
         self.db_connection.srv_db_link_list(offset, records)
         self.db_connection.srv_db_rollback()
 

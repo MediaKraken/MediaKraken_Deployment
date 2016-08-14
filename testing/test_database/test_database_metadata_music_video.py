@@ -61,5 +61,8 @@ class TestDatabaseMetadataMusicVideo(object):
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_music_video_list(self, offset, records):
+        """
+        Music list
+        """
         self.db_connection.srv_db_meta_music_video_list(offset, records)
         self.db_connection.srv_db_rollback()

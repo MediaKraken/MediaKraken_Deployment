@@ -51,11 +51,13 @@ class TestDatabaseDownload(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # read the downloads by provider
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),
         ('fakeprovider')])
     def test_srv_db_download_read_by_provider(self, provider_name):
+        """
+        # read the downloads by provider
+        """
         self.db_connection.srv_db_download_read_by_provider(provider_name)
         self.db_connection.srv_db_rollback()
 

@@ -40,20 +40,32 @@ class TestDatabaseUsage(object):
 
 
     def test_srv_db_usage_top10_alltime(self):
+        """
+        top 10 alltime
+        """
         self.db_connection.srv_db_usage_top10_alltime()
         self.db_connection.srv_db_rollback()
 
 
     def test_srv_db_usage_top10_movie(self):
+        """
+        top 10 movie
+        """
         self.db_connection.srv_db_usage_top10_movie()
         self.db_connection.srv_db_rollback()
 
 
     def test_srv_db_usage_top10_tv_show(self):
+        """
+        top 10 tv show
+        """
         self.db_connection.srv_db_usage_top10_tv_show()
         self.db_connection.srv_db_rollback()
 
 
     def test_srv_db_usage_top10_tv_episode(self):
+        """
+        top 10 tv episode
+        """
         self.db_connection.srv_db_usage_top10_tv_episode()
         self.db_connection.srv_db_rollback()

@@ -40,6 +40,9 @@ class TestDatabaseMediaImages(object):
 
 
     def test_com_media_images_list_count(self):
+        """
+        Image count
+        """
         self.db_connection.com_media_images_list_count()
         self.db_connection.srv_db_rollback()
 
@@ -49,5 +52,8 @@ class TestDatabaseMediaImages(object):
         (100,100),
         (100000000,1000)])
     def test_com_media_images_list(self, offset, records):
+        """
+        List images
+        """
         self.db_connection.com_media_images_list(offset, records)
         self.db_connection.srv_db_rollback()

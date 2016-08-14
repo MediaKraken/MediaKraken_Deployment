@@ -39,18 +39,22 @@ class TestDatabaseTuner(object):
         self.db_connection.srv_db_close()
 
 
-    # count tuners
     def test_srv_db_tuner_count(self):
+        """
+        # count tuners
+        """
         self.db_connection.srv_db_tuner_count()
         self.db_connection.srv_db_rollback()
 
 
-    # read tuners
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_tuner_list(self, offset, records):
+        """
+        # read tuners
+        """
         self.db_connection.srv_db_tuner_list(offset, records)
         self.db_connection.srv_db_rollback()
 

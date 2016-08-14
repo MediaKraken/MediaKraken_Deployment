@@ -39,34 +39,42 @@ class TestDatabasePostgresql(object):
         self.db_connection.srv_db_close()
 
 
-    # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
     def test_srv_db_pgsql_table_sizes(self):
+        """
+        # return tables sizes (includex indexes, etc)
+        """
         self.db_connection.srv_db_pgsql_table_sizes()
         self.db_connection.srv_db_rollback()
 
 
-    # return tables and row count
     # query provided by postgresql wiki
     def test_srv_db_pgsql_row_count(self):
+        """
+        # return tables and row count
+        """
         self.db_connection.srv_db_pgsql_row_count()
         self.db_connection.srv_db_rollback()
 
 
-    # vacuum stats by day list
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
     def test_srv_db_pgsql_vacuum_stat_by_day(self, days):
+        """
+        # vacuum stats by day list
+        """
         self.db_connection.srv_db_pgsql_vacuum_stat_by_day(days)
         self.db_connection.srv_db_rollback()
 
 
-    # vacuum table
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
     def test_srv_db_pgsql_vacuum_table(self, table_name):
+        """
+        # vacuum table
+        """
         self.db_connection.srv_db_pgsql_vacuum_table(table_name)
         self.db_connection.srv_db_rollback()
 

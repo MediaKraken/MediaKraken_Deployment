@@ -79,21 +79,25 @@ class TestDatabaseMetadataMusic(object):
 #        self.db_connection.srv_db_rollback()
 
 
-    # return albums metadatalist
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_album_list(self, offset, records):
+        """
+        # return albums metadatalist
+        """
         self.db_connection.srv_db_meta_album_list(offset, records)
         self.db_connection.srv_db_rollback()
 
 
-    # return muscian metadatalist
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_meta_muscian_list(self, offset, records):
+        """
+        # return muscian metadatalist
+        """
         self.db_connection.srv_db_meta_muscian_list(offset, records)
         self.db_connection.srv_db_rollback()

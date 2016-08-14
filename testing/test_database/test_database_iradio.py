@@ -40,20 +40,21 @@ class TestDatabaseiradio(object):
 
 
     # insert iradio channel
-    # def srv_db_iRadio_Insert(self, radio_channel):
+    # def srv_db_iradio_insert(self, radio_channel):
 #        self.db_connection.srv_db_rollback()
 
 
-    # iradio count
     @pytest.mark.parametrize(("active_station"), [
         (True,),
         (False)])
     def test_srv_db_iradio_list_count(self, active_station):
+        """
+        # iradio count
+        """
         self.db_connection.srv_db_iradio_list_count(active_station)
         self.db_connection.srv_db_rollback()
 
 
-    # iradio list
     @pytest.mark.parametrize(("active_station", "offset", "records"), [
         (True, None, None),
         (True, 100, 100),
@@ -62,5 +63,8 @@ class TestDatabaseiradio(object):
         (False, 100, 100),
         (False, 100000000, 1000)])
     def test_srv_db_iradio_list(self, active_station, offset, records):
+        """
+        # iradio list
+        """
         self.db_connection.srv_db_iradio_list(active_station, offset, records)
         self.db_connection.srv_db_rollback()
