@@ -30,7 +30,7 @@ def srv_db_tv_stations_read(self):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_tv_stations_read_StationID_List(self):
+def srv_db_tv_stations_read_stationid_list(self):
     """
     # read the stationid list
     """

@@ -21,7 +21,7 @@ import logging
 import json
 
 
-def srv_db_read_media_Metadata(self, media_guid):
+def srv_db_read_media_metadata(self, media_guid):
     """
     # read in the media with corresponding metadata
     """
@@ -71,7 +71,7 @@ def srv_db_meta_movie_count_by_genre(self):
     return self.sql3_cursor.fetchall()
 
     
-def srv_db_meta_GUID_By_imdb(self, imdb_uuid):
+def srv_db_meta_guid_By_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
@@ -212,7 +212,7 @@ def srv_db_find_metadata_guid(self, media_name, media_release_year):
     return metadata_guid
 
 
-def srv_db_meta_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid,\
+def srv_db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,\
         media_aniid):
     """
     # update the mediaid in metadata

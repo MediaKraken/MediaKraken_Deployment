@@ -29,8 +29,10 @@ def srv_db_kodi_user_sync_list_added(self, synctime):
     return self.sql3_cursor.fetchall()
 
 
-# sync data
 def srv_db_kodi_user_sync(self, synctime):
+    """
+    # sync data
+    """
     # title, plot, shortplot, tagline, votecount, rating, writer, year, imdb, sorttitle,
     # runtime, mpaa, genre, director, title, studio, trailer, country, movieid
     #  crew  \'job\': \'Screenplay\' \'name\',

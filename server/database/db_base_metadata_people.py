@@ -81,7 +81,8 @@ def srv_db_meta_person_id_count(self, host_type, guid):
         + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
     return self.sql3_cursor.fetchone()[0]
 # works in postgresql
-# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}' and mmp_person_meta_json @> '{"id":169}'
+# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}' 
+    #and mmp_person_meta_json @> '{"id":169}'
 
 
 def srv_db_metdata_person_insert(self, person_name, media_id_json, person_json,\
