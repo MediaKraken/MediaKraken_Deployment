@@ -151,7 +151,7 @@ class OctMoteApp(App):
             self.textbox.text = ""
 
 
-    def MediaKraken_Find_Server_List(self):
+    def mediakraken_find_server_list(self):
         self.server_list = com_MediaKraken.common_network_MediaKraken_Find_Server()
         if self.server_list is not None:
             for found_server in self.server_list:

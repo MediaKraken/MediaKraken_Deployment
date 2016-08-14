@@ -441,7 +441,7 @@ class GameAuditer(threading.Thread):
         db.srv_db_close()
         return True
 
-    def getNamesDictDB(self, subString):
+    def getnamesdictdb(self, subString):
         if len(subString) == 0:
             # no need to do scan if filter is blank
             return Client_GlobalData.audit_gameList

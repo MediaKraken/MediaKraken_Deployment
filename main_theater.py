@@ -81,13 +81,13 @@ class TheaterFactory(ClientFactory):
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
             'Lost connection to MediaKraken_server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
             'Could not connect to MediaKraken_server.')
 
 
@@ -381,7 +381,7 @@ class MediaKrakenApp(App):
             for video_list in pickle_data:
                 btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
                     size_hint_y=None, width=self.root.ids.theater_media_video_list_scrollview.width, height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.Theater_Event_Button_Video_Select, video_list[1]))
+                btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
@@ -532,7 +532,7 @@ class MediaKrakenApp(App):
 
 
     # video select
-    def Theater_Event_Button_Video_Select(self, *args):
+    def theater_event_button_video_select(self, *args):
         logging.debug("vid select: %s", args)
         self.media_guid = args[0]
         networkProtocol.sendString("VIDEODETAIL " + args[0])
@@ -548,7 +548,7 @@ class MediaKrakenApp(App):
 
 
     # notification dialog
-    def MediaKraken_Notification_Popup(self, header, message):
+    def mediakraken_notification_popup(self, header, message):
         content = MediaKrakenNotificationScreen(ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
@@ -562,7 +562,7 @@ class MediaKrakenApp(App):
         self._notification_popup.dismiss()
 
 
-    def Theater_Event_Button_User_Select_Login(self, *args):
+    def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.debug("button server user login %s", self.global_selected_user_id)
         logging.debug("login: %s", self.login_password)
@@ -613,7 +613,7 @@ class MediaKrakenApp(App):
             networkProtocol.sendString(msg)
 
 
-    def Theater_Event_Button_Option_Select(self, option_text, *args):
+    def theater_event_button_option_select(self, option_text, *args):
         logging.debug("button server options %s", option_text)
         if option_text == 'Audio Settings':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Settings_Audio'
