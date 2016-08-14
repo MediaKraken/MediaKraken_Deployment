@@ -40,8 +40,8 @@ class TestDatabaseMediaMovie(object):
 
 
     @pytest.mark.parametrize(("image_type"), [
-        (True),
-        (False)])
+        ('Poster'),
+        (None)])
     def test_srv_db_media_random(self, image_type):
         """
         # find random movie

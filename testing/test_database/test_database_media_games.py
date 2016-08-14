@@ -43,7 +43,7 @@ class TestDatabaseMediaGames(object):
         """
         # audited system list count
         """
-        self.db_connection.com_media_game_system_list_count()
+        self.db_connection.srv_db_media_game_system_list_count()
         self.db_connection.srv_db_rollback()
 
 
@@ -55,7 +55,7 @@ class TestDatabaseMediaGames(object):
         """
         # audited system list
         """
-        self.db_connection.com_media_game_system_list(offset, records)
+        self.db_connection.srv_db_media_game_system_list(offset, records)
         self.db_connection.srv_db_rollback()
 
 
@@ -73,7 +73,7 @@ class TestDatabaseMediaGames(object):
         """
         # audited games list count
         """
-        self.db_connection.com_media_game_list_count()
+        self.db_connection.srv_db_media_game_list_count()
         self.db_connection.srv_db_rollback()
 
 
@@ -85,5 +85,5 @@ class TestDatabaseMediaGames(object):
         """
         # audited games list
         """
-        self.db_connection.com_media_game_list(offset, records)
+        self.db_connection.srv_db_media_game_list(offset, records)
         self.db_connection.srv_db_rollback()

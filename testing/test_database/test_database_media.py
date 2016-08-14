@@ -56,7 +56,7 @@ class TestDatabaseMedia(object):
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
     def test_srv_db_read_media_guid(self, media_guid):
-        self.db_connection.srv_db_read_media_guid(media_guid)
+        self.db_connection.srv_db_read_media(media_guid)
         self.db_connection.srv_db_rollback()
 
 
