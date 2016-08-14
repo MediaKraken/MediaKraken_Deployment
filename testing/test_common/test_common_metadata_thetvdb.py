@@ -40,14 +40,14 @@ class TestCommonMetadataTheTVDB(object):
 # def com_meta_TheTVDB_Updates(self, frequency='day'):
 
 
-# def com_meta_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
+# def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
 
 
     def Test_com_meta_TheTVDB_Get_Server_Epoc_Time(self):
         com_meta_TheTVDB_Get_Server_Epoc_Time()
 
 
-# def com_meta_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
+# def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):
 
 
 # def com_meta_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code = 'en'):

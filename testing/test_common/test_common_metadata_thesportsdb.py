@@ -42,26 +42,26 @@ class TestCommonMetadatathesportsdb(object):
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def Test_com_meta_thesportsdb_Search_Team_By_Name(self, team_name):
-        com_meta_thesportsdb_Search_Team_By_Name(team_name)
+    def Test_com_meta_thesportsdb_Search_Team_by_Name(self, team_name):
+        com_meta_thesportsdb_Search_Team_by_Name(team_name)
 
 
     @pytest.mark.parametrize(("team_name"), [
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def Test_com_meta_thesportsdb_Search_Players_By_Team(self, team_name):
-        com_meta_thesportsdb_Search_Players_By_Team(team_name)
+    def Test_com_meta_thesportsdb_Search_Players_by_Team(self, team_name):
+        com_meta_thesportsdb_Search_Players_by_Team(team_name)
 
 
-# def com_meta_thesportsdb_Search_Players_By_Name(self, player_name):
+# def com_meta_thesportsdb_Search_Players_by_Name(self, player_name):
 
 
-# def com_meta_thesportsdb_Search_Players_By_Team_And_Player_Name(self, team_name, player_name):
+# def com_meta_thesportsdb_Search_Players_by_Team_And_Player_Name(self, team_name, player_name):
 
 
 # event lookups
-# def com_meta_thesportsdb_Search_Event_By_Name(self, event_name):
+# def com_meta_thesportsdb_Search_Event_by_Name(self, event_name):
 
 
 

@@ -78,7 +78,7 @@ def tv_fetch_save_tvdb(db, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\
-        = thetvdb_API.com_meta_TheTVDB_Get_ZIP_By_ID(tvdb_id)
+        = thetvdb_API.com_meta_TheTVDB_Get_ZIP_by_ID(tvdb_id)
     if xml_show_data is not None:
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}

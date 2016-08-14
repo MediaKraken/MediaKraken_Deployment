@@ -79,8 +79,8 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('tt0215948'),
         ('fakeid')])
-    def Test_srv_db_meta_GUID_By_imdb(self, uuid):
-        self.db.srv_db_meta_GUID_By_imdb(uuid)
+    def Test_srv_db_meta_GUID_by_imdb(self, uuid):
+        self.db.srv_db_meta_GUID_by_imdb(uuid)
         self.db.srv_db_Rollback()
 
 

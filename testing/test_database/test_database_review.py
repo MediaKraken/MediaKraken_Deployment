@@ -45,7 +45,7 @@ class TestDatabaseReview(object):
 
 
     # grab reviews for metadata
-    # def srv_db_Review_List_By_TMDB_GUID(self, metadata_id):
+    # def srv_db_Review_List_by_TMDB_GUID(self, metadata_id):
 #         self.db.srv_db_Rollback()
 
 

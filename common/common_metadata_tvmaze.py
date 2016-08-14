@@ -100,7 +100,7 @@ class CommonMetadatatvmaze(object):
                 result_json = common_network.mk_network_fetch_from_url((\
                     'http://api.tvmaze.com/lookup/shows?thetvdb=%s' % url_opts), None)
             if embed_info and result_json is not None:
-                result_json = com_meta_themaze_Show_By_ID(self, result_json['id'], None,\
+                result_json = com_meta_themaze_Show_by_ID(self, result_json['id'], None,\
                     None, None, True)
         return result_json
 

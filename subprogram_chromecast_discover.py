@@ -89,7 +89,7 @@ chrome = com_Chromecast.com_Chromecast_API()
 logging.debug("Chrome: %s", chrome)
 for row_data in chrome.MK_Chromecast_Discover_Dict():
     logging.debug("Dict: %s", row_data)
-    chrome.MK_Chromecast_Connect_By_Name(row_data)
+    chrome.MK_Chromecast_Connect_by_Name(row_data)
     logging.debug("Connected!")
     cast_json = chrome.MK_Chromecast_Info()
     logging.debug("Cast: %s", cast_json)

@@ -91,7 +91,7 @@ def nfo_xml_db_lookup(db, nfo_data, xml_data, download_que_json, download_que_id
             db.srv_db_download_update_Provider('themoviedb', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
-        metadata_uuid = db.srv_db_meta_GUID_By_imdb(imdb_id)
+        metadata_uuid = db.srv_db_meta_GUID_by_imdb(imdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
             db.srv_db_download_update(json.dumps(download_que_json), download_que_id)
@@ -143,7 +143,7 @@ def nfo_xml_db_lookup_tv(db, nfo_data, xml_data, download_que_json, download_que
             db.srv_db_download_update_Provider('thetvdb', download_data['mdq_id'])
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
-        metadata_uuid = db.srv_db_metaTV_GUID_By_imdb(imdb_id)
+        metadata_uuid = db.srv_db_metaTV_GUID_by_imdb(imdb_id)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
             db.srv_db_download_update(json.dumps(download_que_json), download_que_id)

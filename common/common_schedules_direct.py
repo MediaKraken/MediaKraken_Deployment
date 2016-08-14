@@ -133,7 +133,7 @@ class CommonSchedulesDirect(object):
         return resp.json()
 
 
-    def com_Schedules_Direct_Schedules_By_StationID(self, station_ids):
+    def com_Schedules_Direct_Schedules_by_StationID(self, station_ids):
         resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers,\
                 data=station_ids)
         logging.debug("SD Station: %s-%s", resp.status_code, resp.json())

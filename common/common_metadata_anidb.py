@@ -65,7 +65,7 @@ class CommonMetadataANIdb(object):
         common_database_octmote.com_db_anidb_Title_Insert(sql_params_list)
 
 
-    def MK_Network_anidb_AID_By_Title(self, title_to_search):
+    def MK_Network_anidb_AID_by_Title(self, title_to_search):
         """
         Find AID by title
         """
@@ -77,7 +77,7 @@ class CommonMetadataANIdb(object):
                     < (time.time() - (1 * 86400)):
                 MK_Network_anidb_Fetch_Titles_File('dat')
                 # since new titles file....recheck by title
-                MK_Network_anidb_AID_By_Title(title_to_search)
+                MK_Network_anidb_AID_by_Title(title_to_search)
             else:
                 return None
         else:

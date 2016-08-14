@@ -64,12 +64,12 @@ class TestCommonCIFSShare(object):
 
 
     # list shares
-    def Test_common_cifs_Share_List_By_Connection(self):
-        common_cifs_Share_List_By_Connection()
+    def Test_common_cifs_Share_List_by_Connection(self):
+        common_cifs_Share_List_by_Connection()
 
 
 # list files in share
-# def common_cifs_Share_File_List_By_Share(self, share_name, path_text='/'):
+# def common_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
 
 
 # verify smb directory

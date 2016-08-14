@@ -59,7 +59,7 @@ class CommonMetadataTheTVDB(object):
         return xml_show_data
 
 
-    def com_meta_TheTVDB_Get_ZIP_By_ID(self, tv_show_id, lang_code='en'):
+    def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
@@ -100,7 +100,7 @@ class CommonMetadataTheTVDB(object):
     #Following is the future database processing section
     #'''
 
-    def com_meta_TheTVDB_Updates_By_Epoc(self, epoc_timestamp):
+    def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
@@ -117,5 +117,5 @@ class CommonMetadataTheTVDB(object):
 '''
 xmltodict.parse(xml, False)
 Record <previoustime> for next update
-a. Using the XML from com_meta_TheTVDB_Updates_By_Epoc, store <Time> as <previoustime> and use for your next call to Updates.php
+a. Using the XML from com_meta_TheTVDB_Updates_by_Epoc, store <Time> as <previoustime> and use for your next call to Updates.php
 '''

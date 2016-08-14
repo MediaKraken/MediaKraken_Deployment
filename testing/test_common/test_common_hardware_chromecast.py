@@ -53,7 +53,7 @@ class TestCommonHardwareChromecast(object):
 
 
     # connect to device
-#    def MK_Chromecast_Connect_By_Name(self, key_name):
+#    def MK_Chromecast_Connect_by_Name(self, key_name):
 
 
     # play youtube video

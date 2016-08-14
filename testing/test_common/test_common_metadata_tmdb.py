@@ -42,15 +42,15 @@ class TestCommonMetadataTMDB(object):
 
 
 # search by tmdb
-# def com_tmdb_Metadata_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_by_ID(self, tmdb_id):
 
 
 # search by tmdb
-# def com_tmdb_Metadata_Cast_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Cast_by_ID(self, tmdb_id):
 
 
 # review by tmdb
-# def com_tmdb_Metadata_Review_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Review_by_ID(self, tmdb_id):
 
 
     # movie changes since date within 24 hours
@@ -69,7 +69,7 @@ class TestCommonMetadataTMDB(object):
 
 
 # collection info
-# def com_tmdb_Metadata_Collection_By_ID(self, tmdb_id):
+# def com_tmdb_Metadata_Collection_by_ID(self, tmdb_id):
 
 
 # download info and set data to be ready for insert into database

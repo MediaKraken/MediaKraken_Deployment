@@ -83,7 +83,7 @@ tvshow_updated = 0
 tvshow_inserted = 0
 thetvdb_API_Connection = com_meta_TheTVDB.com_meta_TheTVDB_API()
 option_json, status_json = db.srv_db_Option_Status_Read()
-#for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_By_Epoc(status_json['thetvdb_Updated_Epoc'])):
+#for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc(status_json['thetvdb_Updated_Epoc'])):
 update_item = thetvdb_API_Connection.com_meta_TheTVDB_Updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
@@ -92,7 +92,7 @@ for row_data in update_item['Data']['Series']:
     metadata_uuid = db.srv_db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
-        xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_meta_TheTVDB_Get_ZIP_By_ID(row_data['id'])
+        xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_meta_TheTVDB_Get_ZIP_by_ID(row_data['id'])
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb':xml_show_data['Data']['Series']['imdb_ID'],\

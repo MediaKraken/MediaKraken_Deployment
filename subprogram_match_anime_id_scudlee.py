@@ -70,7 +70,7 @@ else:
 # same code in subprograb update create collections
 def store_update_record(db, collection_name, guid_list):
     # store/update the record
-    collection_guid = db.srv_db_Collection_By_Name(collection_name)
+    collection_guid = db.srv_db_Collection_by_Name(collection_name)
     if collection_guid is None:
         # insert
         db.srv_db_collection_insert(collection_name, guid_list)

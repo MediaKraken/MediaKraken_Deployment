@@ -77,10 +77,10 @@ db.srv_db_Activity_Insert('MediaKraken_Server tvmaze Update Start', None,\
 
 # grab the show data and update/insert respecitivey
 def update_insert_show(tvmaze_id, update_rec=None):
-    #show_full_json = tvmaze.com_meta_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True)
+    #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_TheMaze_Show_By_ID(tvmaze_id, None, None, None, True))}})
+        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True))}})
     except:
         pass
     logging.debug("full: %s", show_full_json)
@@ -131,7 +131,7 @@ result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db.srv_db_metaTV_GUID_By_tvmaze(str(tvmaze_id))
+    results = db.srv_db_metaTV_GUID_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:

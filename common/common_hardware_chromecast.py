@@ -56,7 +56,7 @@ class CommonHardwareChromecast(object):
         return self.cast.status
 
 
-    def MK_Chromecast_Connect_By_Name(self, key_name):
+    def MK_Chromecast_Connect_by_Name(self, key_name):
         """
         # connect to device
         """

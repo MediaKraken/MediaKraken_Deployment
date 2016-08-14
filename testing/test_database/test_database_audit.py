@@ -57,7 +57,7 @@ class TestDatabaseAudit(object):
 
 
     ## update audit path
-    #def srv_db_Audit_Path_Update_By_UUID(self, lib_path, class_guid, lib_guid):
+    #def srv_db_Audit_Path_Update_by_UUID(self, lib_path, class_guid, lib_guid):
 #        self.db.srv_db_Rollback()
 
 
@@ -96,5 +96,5 @@ class TestDatabaseAudit(object):
 
 
     ## lib data per id
-    #def srv_db_Audit_Path_By_UUID(self, dir_id):
+    #def srv_db_Audit_Path_by_UUID(self, dir_id):
 #        self.db.srv_db_Rollback()

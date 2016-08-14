@@ -41,26 +41,26 @@ class TestCommonMetadataGamesDB(object):
         com_meta_GamesDB_Platform_List()
 
 
-# def com_meta_GamesDB_Platform_By_ID(self, platform_id):
+# def com_meta_GamesDB_Platform_by_ID(self, platform_id):
 
 
     # 'mega man' as mega OR man
-    def Test_com_meta_GamesDB_Games_By_Name_Or(self):
-        com_meta_GamesDB_Games_By_Name_Or("Mega Man")
+    def Test_com_meta_GamesDB_Games_by_Name_Or(self):
+        com_meta_GamesDB_Games_by_Name_Or("Mega Man")
 
 
     # 'mega man' as mega AND man
-    def Test_com_meta_GamesDB_Games_By_Name_And(self):
-        com_meta_GamesDB_Games_By_Name_And("Mega Man")
+    def Test_com_meta_GamesDB_Games_by_Name_And(self):
+        com_meta_GamesDB_Games_by_Name_And("Mega Man")
 
 
-# def com_meta_GamesDB_Games_By_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
+# def com_meta_GamesDB_Games_by_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
 
 
-# def com_meta_GamesDB_Games_By_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
+# def com_meta_GamesDB_Games_by_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
 
 
-# def com_meta_GamesDB_Games_By_Platform_ID(self, platform_id):
+# def com_meta_GamesDB_Games_by_Platform_ID(self, platform_id):
 
 
-# def com_meta_GamesDB_Games_By_ID(self, game_id):
+# def com_meta_GamesDB_Games_by_ID(self, game_id):

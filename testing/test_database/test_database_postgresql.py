@@ -57,8 +57,8 @@ class TestDatabasePostgresql(object):
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
-    def Test_srv_db_Postgresql_Vacuum_Stat_By_Day(self, days):
-        self.db.srv_db_Postgresql_Vacuum_Stat_By_Day(days)
+    def Test_srv_db_Postgresql_Vacuum_Stat_by_Day(self, days):
+        self.db.srv_db_Postgresql_Vacuum_Stat_by_Day(days)
         self.db.srv_db_Rollback()
 
 

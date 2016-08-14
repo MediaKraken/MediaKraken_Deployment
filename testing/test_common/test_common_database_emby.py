@@ -144,7 +144,7 @@ class TestCommonDatabaseEmby(object):
 
 
 # get id to lookup from metadata
-#def com_db_Media_By_Guid(guid):
+#def com_db_Media_by_Guid(guid):
 
 
     # all data from users for playback

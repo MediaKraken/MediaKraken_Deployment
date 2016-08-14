@@ -132,7 +132,7 @@ def user_internet_twitch():
 @login_required
 def user_internet_twitch_stream_detail(stream_name):
     #twitch_api = common_network_Twitch.com_Twitch_API()
-    #media = twitch_api.com_Twitch_Channel_By_Name(stream_name)
+    #media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
     #logging.debug("str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
@@ -242,7 +242,7 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db.srv_db_metathesportsdb_Select_By_Guid(guid),
+                           data=g.db.srv_db_metathesportsdb_Select_by_Guid(guid),
                            data_poster_image = data_poster_image,
                            data_background_image = data_background_image
                            )
@@ -869,7 +869,7 @@ def movie_detail(guid):
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db.srv_db_Review_List_By_TMDB_GUID(json_metaid['TMDB'])
+        review_json = g.db.srv_db_Review_List_by_TMDB_GUID(json_metaid['TMDB'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
             for review_data in review_json[1]['TMDB']['results']:
@@ -1767,7 +1767,7 @@ def metadata_sports_list():
 @login_required
 def metadata_sports_detail(guid):
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
-                           data=g.db.srv_db_meta_Sports_By_GUID(guid))
+                           data=g.db.srv_db_meta_Sports_by_GUID(guid))
 
 
 @blueprint.route('/media_status/<guid>/<media_type>/<event_type>/', methods=['GET', 'POST'])

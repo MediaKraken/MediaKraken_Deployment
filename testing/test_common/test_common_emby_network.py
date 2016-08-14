@@ -87,7 +87,7 @@ def test_common_network_emby_find_server():
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Items-by-name
-# def common_network_Emby_Item_Info_By_Name():
+# def common_network_Emby_Item_Info_by_Name():
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Playlists

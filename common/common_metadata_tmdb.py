@@ -54,14 +54,14 @@ class CommonMetadataTMDB(object):
                         or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
                         or str(int(movie_year) + 1) == s['release_date'].split('-', 1)[0]):
                 if not id_only:
-                    return 'info', com_tmdb_Metadata_By_ID(s['id'])
+                    return 'info', com_tmdb_Metadata_by_ID(s['id'])
                 else:
                     return 'idonly', s['id'] #, s['title']
         return 're', search.results
 
 
     # search by tmdb
-    def com_tmdb_Metadata_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_by_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.info()
@@ -72,7 +72,7 @@ class CommonMetadataTMDB(object):
 
 
     # search by tmdb
-    def com_tmdb_Metadata_Cast_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Cast_by_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.credits()
@@ -83,7 +83,7 @@ class CommonMetadataTMDB(object):
 
 
     # review by tmdb
-    def com_tmdb_Metadata_Review_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Review_by_ID(self, tmdb_id):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.reviews()
@@ -103,7 +103,7 @@ class CommonMetadataTMDB(object):
 
 
     # search by imdb
-    def com_tmdb_Metadata_By_imdb_ID(self, imdb_id):
+    def com_tmdb_Metadata_by_imdb_ID(self, imdb_id):
         movie = tmdb.Find(imdb_id)
         try:
             metadata = movie.info(external_source='imdb_id')
@@ -135,7 +135,7 @@ class CommonMetadataTMDB(object):
 
 
     # collection info
-    def com_tmdb_Metadata_Collection_By_ID(self, tmdb_id):
+    def com_tmdb_Metadata_Collection_by_ID(self, tmdb_id):
         movie_collection = tmdb.Collections(tmdb_id)
         try:
             metadata = movie_collection.info()

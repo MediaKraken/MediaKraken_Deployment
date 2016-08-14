@@ -56,25 +56,25 @@ class TestCommonTwitch(object):
         self.db.com_Twitch_Get_Summary_Viewers()
 
 
-#    def com_Twitch_Channel_By_User(self, user_name):
+#    def com_Twitch_Channel_by_User(self, user_name):
 
 
-#    def com_Twitch_By_Name(self, user_name):
+#    def com_Twitch_by_Name(self, user_name):
 
 
-#    def com_Twitch_Channel_By_Name(self, channel_name):
+#    def com_Twitch_Channel_by_Name(self, channel_name):
 
 
-#    def com_Twitch_Get_Videos_By_Channel(self, channel_name, stream_limit):
+#    def com_Twitch_Get_Videos_by_Channel(self, channel_name, stream_limit):
 
 
-#    def com_Twitch_Channel_Teams_By_Name(self, channel_name):
+#    def com_Twitch_Channel_Teams_by_Name(self, channel_name):
 
 
-#    def com_Twitch_Search_Channel_By_Name(self, channel_name):
+#    def com_Twitch_Search_Channel_by_Name(self, channel_name):
 
 
-#    def com_Twitch_Search_Streams_By_Name(self, stream_game):
+#    def com_Twitch_Search_Streams_by_Name(self, stream_game):
 
 
-#    def com_Twitch_Search_Games_By_Name(self, game_name):
+#    def com_Twitch_Search_Games_by_Name(self, game_name):

@@ -141,7 +141,7 @@ meta_program_fetch = []
 if len(station_fetch) > 5000:
     logging.critical("Too many channels!!!!  Exiting...")
 elif len(station_fetch > 0:
-    schedule_json = sd.com_Schedules_Direct_Schedules_By_StationID(json.dumps(station_fetch))
+    schedule_json = sd.com_Schedules_Direct_Schedules_by_StationID(json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
         # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15', u'modified': u'2016-06-14T23:07:05Z', u'md5': u'2aEwFuhZCqJSHKabBbR/Sg'}, 

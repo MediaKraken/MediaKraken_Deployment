@@ -74,7 +74,7 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Program_Desc(self, program_ids):
 
 
-#    def com_Schedules_Direct_Schedules_By_StationID(self, station_ids):
+#    def com_Schedules_Direct_Schedules_by_StationID(self, station_ids):
 
 
 #    def com_Schedules_Direct_MD5(self, station_ids):

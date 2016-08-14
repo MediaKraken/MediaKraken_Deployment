@@ -55,11 +55,11 @@ class TestCommonMetadatatvmaze(object):
 
 
 # lookup specific id
-# def com_meta_TheMaze_Show_By_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id, embed_info=True):
+# def com_meta_TheMaze_Show_by_ID(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id, embed_info=True):
 
 
 # people search (doesnt' appear to have episode data here)
-# def com_meta_TheMaze_Person_By_Name(self, person_name):
+# def com_meta_TheMaze_Person_by_Name(self, person_name):
 
 
 # schedule

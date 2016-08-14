@@ -35,11 +35,11 @@ def test_com_irdb_brand_list():
     ("Sony"),
     ("FakeBrand")])
 def test_com_irdb_device_types_by_brand(brand_text):
-    com_IRDB_Device_Types_By_Brand(brand_text)
+    com_IRDB_Device_Types_by_Brand(brand_text)
 
 
 # See which sets of codes we have for that brand and device type:
-# def com_IRDB_Codesets_By_Brand_Device(brand_text, device_type):
+# def com_IRDB_Codesets_by_Brand_Device(brand_text, device_type):
 
 
 # get the code with the protocol, device, and subdevice information we just derived from above:

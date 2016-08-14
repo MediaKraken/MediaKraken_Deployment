@@ -40,7 +40,7 @@ def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
 
 
 
-def srv_db_metatv_guid_By_imdb(self, imdb_uuid):
+def srv_db_metatv_guid_by_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """

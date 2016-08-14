@@ -43,14 +43,14 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
     metadata_uuid = db.srv_db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and thesportsdb_API_Connection is not None:
         logging.debug("searching: %s", stripped_name)
-        thesportsdb_data = thesportsdb_API_Connection.com_meta_thesportsdb_Search_Event_By_Name(stripped_name)
+        thesportsdb_data = thesportsdb_API_Connection.com_meta_thesportsdb_Search_Event_by_Name(stripped_name)
         logging.debug("sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
                 # TODO "find" the rigth event by name?  if multiples?
-                metadata_uuid = db.srv_db_metaSports_GUID_By_thesportsdb(\
+                metadata_uuid = db.srv_db_metaSports_GUID_by_thesportsdb(\
                     thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
                     image_json = {'Images': {'thesportsdb': {'Characters': {}, 'Banner': None,\

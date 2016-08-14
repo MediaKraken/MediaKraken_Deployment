@@ -45,8 +45,8 @@ class TestCommonTrakt(object):
     @pytest.mark.parametrize(("day_count"), [
         (7),
         (400)])
-    def Test_com_Trakt_Calendar_By_Days(self, day_count):
-        com_Trakt_Calendar_By_Days(day_count)
+    def Test_com_Trakt_Calendar_by_Days(self, day_count):
+        com_Trakt_Calendar_by_Days(day_count)
 
 
     # dismiss recommendation

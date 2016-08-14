@@ -338,7 +338,7 @@ def admin_library_delete_page():
 @login_required
 @admin_required
 def getLibraryById():
-    result = g.db.srv_db_Audit_Path_By_UUID(request.form['id'])
+    result = g.db.srv_db_Audit_Path_by_UUID(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],\
         'Path': result['mm_media_dir_path'],'Media Class': result['mm_media_dir_class_type']})
 
@@ -347,7 +347,7 @@ def getLibraryById():
 @login_required
 @admin_required
 def updateLibrary():
-    g.db.srv_db_Audit_Path_Update_By_UUID(request.form['new_path'],\
+    g.db.srv_db_Audit_Path_Update_by_UUID(request.form['new_path'],\
         request.form['new_class'], request.form['id'])
     return json.dumps({'status':'OK'})
 

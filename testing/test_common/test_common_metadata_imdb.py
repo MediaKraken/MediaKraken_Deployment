@@ -47,12 +47,12 @@ class TestCommonimdb(object):
 
 
 # fetch person info by id
-# def com_imdb_Person_By_ID(self, person_id):
+# def com_imdb_Person_by_ID(self, person_id):
 
 
 # fetch person images by id
-# def com_imdb_Person_Images_By_Id(self, person_id):
+# def com_imdb_Person_Images_by_Id(self, person_id):
 
 
 # fetch the title review
-# def com_imdb_Title_Review_By_ID(self, media_id):
+# def com_imdb_Title_Review_by_ID(self, media_id):

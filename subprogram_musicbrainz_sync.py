@@ -88,7 +88,7 @@ for row_data in db_brainz.srv_db_Brainz_All_Artists():
         + str(row_data['end_date_day']))}))
     logging.debug(row_data)
     # fetch all the albums from brainz by artist
-    for row_data_album in db_brainz.srv_db_Brainz_All_Albums_By_Artist(row_data['id']):
+    for row_data_album in db_brainz.srv_db_Brainz_All_Albums_by_Artist(row_data['id']):
         db.srv_db_meta_album_add(row_data_album['name'],\
             json.dumps({'musicbrainz':row_data_album['gid']}),\
             json.dumps({'Commment':row_data_album['comment'],\

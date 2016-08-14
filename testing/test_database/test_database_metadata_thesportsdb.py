@@ -40,7 +40,7 @@ class TestDatabaseMetadataThesportsdb(object):
 
 
     # select
-    # def srv_db_metathesportsdb_Select_By_Guid(self, guid):
+    # def srv_db_metathesportsdb_Select_by_Guid(self, guid):
 #         self.db.srv_db_Rollback()
 
 

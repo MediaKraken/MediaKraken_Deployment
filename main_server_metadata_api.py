@@ -345,7 +345,7 @@ def worker(content_providers):
         Config.get('DB Connections', 'PostDBUser').strip(),\
         Config.get('DB Connections', 'PostDBPass').strip())
 #    while True:
-    for row_data in thread_db.srv_db_Download_Read_By_Provider(content_providers):
+    for row_data in thread_db.srv_db_Download_Read_by_Provider(content_providers):
         logging.debug("row: %s", row_data)
         # mdq_id,mdq_download_json
         if content_providers == 'anidb':

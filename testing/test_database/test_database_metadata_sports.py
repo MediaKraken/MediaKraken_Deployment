@@ -40,7 +40,7 @@ class TestDatabaseMetadataSports(object):
 
 
     # metadata guid by imdb id
-    # def srv_db_meta_Sports_GUID_By_thesportsdb(self, thesports_uuid):
+    # def srv_db_meta_Sports_GUID_by_thesportsdb(self, thesports_uuid):
 #        self.db.srv_db_Rollback()
 
 
