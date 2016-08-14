@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 
 
-def srv_db_link_list_vount(self):
+def srv_db_link_list_count(self):
     """
     Return count of linked servers
     """
