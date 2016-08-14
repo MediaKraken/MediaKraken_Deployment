@@ -35,7 +35,7 @@ def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
     return None
 
 
-def srv_db_web_tvmedia_list_Count(self, list_type, genre_type=None,\
+def srv_db_web_tvmedia_list_count(self, list_type, genre_type=None,\
         group_collection=False):
     """
     # grab tv data count
