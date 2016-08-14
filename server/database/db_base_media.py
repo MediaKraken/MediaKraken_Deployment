@@ -267,9 +267,9 @@ def srv_db_media_by_metadata_guid(self, metadata_guid):
     """
     # fetch all media with METADATA match
     """
-    self.db_cursor.execute("select mm_media_name,mm_media_guid from mm_media,'\
+    self.db_cursor.execute('select mm_media_name,mm_media_guid from mm_media,'\
         'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'\
-        ' and mm_media_metadata_guid = %s", (metadata_guid,))
+        ' and mm_media_metadata_guid = %s', (metadata_guid,))
     return self.db_cursor.fetchall()
 
 
@@ -277,9 +277,9 @@ def srv_db_media_image_path(self, media_id):
     """
     # grab image path for media id NOT metadataid
     """
-    self.db_cursor.execute("select mm_metadata_localimage_json->\'Images\' from mm_media,'\
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\' from mm_media,'\
         ' mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'\
-        ' and mm_media_guid = %s", (media_id,))
+        ' and mm_media_guid = %s', (media_id,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_localimage_json']
     except:
