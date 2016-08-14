@@ -37,7 +37,7 @@ def srv_db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
         % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    self.db_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+    self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
         ' WHERE relname = \'mm_media\'')
     if self.db_cursor.fetchone()['a'] == 0:

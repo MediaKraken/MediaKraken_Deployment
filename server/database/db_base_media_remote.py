@@ -26,9 +26,9 @@ def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uu
     """
     # insert media into database
     """
-    self.db_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
+    self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
         ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json)'\
-        ' values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid,\
+        ' values (%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), media_link_uuid, media_uuid,\
         media_class_uuid, media_metadata_uuid, media_ffprobe_json))
 
 
@@ -37,14 +37,14 @@ def srv_db_read_remote_media(self, media_guid=None):
     # read in all media unless guid specified
     """
     if media_guid is not None:
-        self.db_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
+        self.db_cursor.execute('select * from mm_media_remote where mmr_media_guid = %s',\
             (media_guid,))
         try:
             return self.db_cursor.fetchone()
         except:
             return None
     else:
-        self.db_cursor.execute("select * from mm_media_remote")
+        self.db_cursor.execute('select * from mm_media_remote')
         return self.db_cursor.fetchall()
 
 

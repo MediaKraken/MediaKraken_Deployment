@@ -27,9 +27,9 @@ def srv_db_insert_media(self, media_uuid, media_path, media_class_uuid,\
     """
     # insert media into database
     """
-    self.db_cursor.execute("insert into mm_media (mm_media_guid, mm_media_class_guid,'\
+    self.db_cursor.execute('insert into mm_media (mm_media_guid, mm_media_class_guid,'\
         ' mm_media_path, mm_media_metadata_guid, mm_media_ffprobe_json, mm_media_json)'\
-        ' values (%s,%s,%s,%s,%s,%s)", (media_uuid, media_class_uuid, media_path,\
+        ' values (%s,%s,%s,%s,%s,%s)', (media_uuid, media_class_uuid, media_path,\
         media_metadata_uuid, media_ffprobe_json, media_json))
 
 
@@ -38,13 +38,13 @@ def srv_db_read_media(self, media_guid=None):
     # read in all media unless guid specified
     """
     if media_guid is not None:
-        self.db_cursor.execute("select * from mm_media where mm_media_guid = %s", (media_guid,))
+        self.db_cursor.execute('select * from mm_media where mm_media_guid = %s', (media_guid,))
         try:
             return self.db_cursor.fetchone()
         except:
             return None
     else:
-        self.db_cursor.execute("select * from mm_media")
+        self.db_cursor.execute('select * from mm_media')
         return self.db_cursor.fetchall()
 
 

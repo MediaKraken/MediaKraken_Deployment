@@ -27,8 +27,8 @@ def srv_db_audit_path_status(self):
     """
     # read scan status
     """
-    self.db_cursor.execute("select mm_media_dir_path, mm_media_dir_status from mm_media_dir'\
-        ' where mm_media_dir_status IS NOT NULL order by mm_media_dir_path")
+    self.db_cursor.execute('select mm_media_dir_path, mm_media_dir_status from mm_media_dir'\
+        ' where mm_media_dir_status IS NOT NULL order by mm_media_dir_path')
     return self.db_cursor.fetchall()
 
 
@@ -36,8 +36,8 @@ def srv_db_audit_path_update_status(self, lib_guid, status_json):
     """
     # update status
     """
-    self.db_cursor.execute("update mm_media_dir set mm_media_dir_status = %s'\
-        ' where mm_media_dir_guid = %s", (status_json, lib_guid,))
+    self.db_cursor.execute('update mm_media_dir set mm_media_dir_status = %s'\
+        ' where mm_media_dir_guid = %s', (status_json, lib_guid,))
 
 
 def srv_db_audit_paths_count(self):
@@ -52,23 +52,23 @@ def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     # update audit path
     """
-    self.db_cursor.execute("update mm_media_dir set mm_media_dir_path = %s,'\
-        ' mm_media_dir_class_type = %s where mm_media_dir_guid = %s", ())
+    self.db_cursor.execute'"update mm_media_dir set mm_media_dir_path = %s,'\
+        ' mm_media_dir_class_type = %s where mm_media_dir_guid = %s', ())
 
 
 def srv_db_audit_path_delete(self, lib_guid):
     """
     # remove media path
     """
-    self.db_cursor.execute(u"delete from mm_media_dir where mm_media_dir_guid = %s", (lib_guid,))
+    self.db_cursor.execute('delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
 def srv_db_audit_path_add(self, dir_path, class_guid):
     """
     # add media path
     """
-    self.db_cursor.execute("insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
-        ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)",\
+    self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
+        ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)',\
         (str(uuid.uuid4()), dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
 
 

@@ -42,9 +42,9 @@ class ServerDatabaseBrainz(object):
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
             % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
         self.db_cursor = self.sql3_conn.cursor()
-        self.db_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-#        self.db_cursor.execute("SELECT COUNT (relname) as a FROM pg_class\
-        #WHERE relname = 'mm_media'")
+        self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
+#        self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class\
+        #WHERE relname = \'mm_media\'')
 #        if self.db_cursor.fetchone()[0] == 0:
 #            exit(1)
 

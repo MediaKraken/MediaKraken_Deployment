@@ -49,26 +49,26 @@ class CommonDatabaseOctmote(object):
         self.sql3_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         if create_db:
             # create the tables since they don't exist
-            self.db_cursor.execute("CREATE TABLE octmote_server_settings (server_host text,'\
-                ' server_port integer)")
-            self.db_cursor.execute("insert into octmote_server_settings (server_host,'\
-                ' server_port) values ('localhost',8097)")
-            self.db_cursor.execute("CREATE TABLE octmote_anidb (anidb_aid numeric,'\
-                ' anidb_type numeric, anidb_language text, anidb_title text)")
-            self.db_cursor.execute("CREATE TABLE octmote_layout (layout_guid text,'\
-                ' layout_name text, layout_json text)")
-            self.db_cursor.execute("CREATE TABLE octmote_macro (macro_guid text,'\
-                ' macro_name text, macro_json text)")
-            self.db_cursor.execute("CREATE TABLE octmote_item (item_guid text,'\
-                ' item_type text, item_manufacturer text, item_model_number text, item_json text)")
+            self.db_cursor.execute('CREATE TABLE octmote_server_settings (server_host text,'\
+                ' server_port integer)')
+            self.db_cursor.execute('insert into octmote_server_settings (server_host,'\
+                ' server_port) values ('localhost',8097)')
+            self.db_cursor.execute('CREATE TABLE octmote_anidb (anidb_aid numeric,'\
+                ' anidb_type numeric, anidb_language text, anidb_title text)')
+            self.db_cursor.execute('CREATE TABLE octmote_layout (layout_guid text,'\
+                ' layout_name text, layout_json text)')
+            self.db_cursor.execute('CREATE TABLE octmote_macro (macro_guid text,'\
+                ' macro_name text, macro_json text)')
+            self.db_cursor.execute('CREATE TABLE octmote_item (item_guid text,'\
+                ' item_type text, item_manufacturer text, item_model_number text, item_json text)')
             # grab brands and insert them into database
-            self.db_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
-                ' brand_name text)")
+            self.db_cursor.execute('CREATE TABLE octmote_brand (brand_guid text,'\
+                ' brand_name text)')
             json_brand = common_network_irdb.com_irdb_brand_list()["objects"]
             for brand_name in json_brand:
-                self.db_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
+                self.db_cursor.execute('insert into octmote_brand (brand_guid, brand_name) values (?,?)', (str(uuid.uuid4()), brand_name["brand"]))
             # create device db and load with types
-            self.db_cursor.execute("CREATE TABLE octmote_device (device_guid text, device_name text, device_description text)")
+            self.db_cursor.execute('CREATE TABLE octmote_device (device_guid text, device_name text, device_description text)')
             # add base devices to database
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'BluRay', 'BluRay Player')", (str(uuid.uuid4()),))
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DVD', 'DVD Player')", (str(uuid.uuid4()),))
@@ -101,7 +101,7 @@ class CommonDatabaseOctmote(object):
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Preamp', 'Audio/Video Preamplifier')", (str(uuid.uuid4()),))
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'UPS', 'Uninteruptable Power Supply')", (str(uuid.uuid4()),))
             self.sql3_conn.commit()
-        self.db_cursor.execute("select server_host, server_port from octmote_server_settings")
+        self.db_cursor.execute('select server_host, server_port from octmote_server_settings')
         try:
             return self.db_cursor.fetchone()[0]
         except:
@@ -119,8 +119,8 @@ class CommonDatabaseOctmote(object):
         """
         Insert new layout config into database
         """
-        self.db_cursor.execute("insert into octmote_layout (layout_guid, layout_name,'\
-            ' layout_json) values (?,?,?)", (uuid.uuid4(), layout_record_name, layout_record_json))
+        self.db_cursor.execute('insert into octmote_layout (layout_guid, layout_name,'\
+            ' layout_json) values (?,?,?)', (uuid.uuid4(), layout_record_name, layout_record_json))
         self.sql3_conn.commit()
 
 
@@ -128,8 +128,8 @@ class CommonDatabaseOctmote(object):
         """
         Load list of layouts
         """
-        self.db_cursor.execute("select layout_guid, layout_name from octmote_layout'\
-            ' order by layout_name asc")
+        self.db_cursor.execute('select layout_guid, layout_name from octmote_layout'\
+            ' order by layout_name asc')
         return self.db_cursor
 
 
@@ -137,7 +137,7 @@ class CommonDatabaseOctmote(object):
         """
         Layout detail
         """
-        self.db_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
+        self.db_cursor.execute('select layout_json from octmote_layout where layout_guid = ?',\
             (guid,))
         return self.db_cursor
 
@@ -146,11 +146,11 @@ class CommonDatabaseOctmote(object):
         """
         Insert new device type into database
         """
-        self.db_cursor.execute("insert into octmote_device (device_guid, device_name,'\
-            ' device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name,\
+        self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
+            ' device_json) values (?,?,?)', (str(uuid.uuid4()), device_record_name,\
             device_record_description))
         self.sql3_conn.commit()
-        self.db_cursor.execute("select device_guid from octmote_device where rowid = ?",\
+        self.db_cursor.execute('select device_guid from octmote_device where rowid = ?',\
             (self.db_cursor.lastrowid,))
         return self.db_cursor
 
@@ -159,8 +159,8 @@ class CommonDatabaseOctmote(object):
         """
         list devices
         """
-        self.db_cursor.execute("select device_guid, device_name from octmote_device'\
-            ' order by device_name asc")
+        self.db_cursor.execute('select device_guid, device_name from octmote_device'\
+            ' order by device_name asc')
         return self.db_cursor
 
 
@@ -168,8 +168,8 @@ class CommonDatabaseOctmote(object):
         """
         device detail
         """
-        self.db_cursor.execute("select device_description from octmote_device'\
-            ' where device_guid = ?", (guid,))
+        self.db_cursor.execute('select device_description from octmote_device'\
+            ' where device_guid = ?', (guid,))
         return self.db_cursor
 
 
@@ -185,7 +185,7 @@ class CommonDatabaseOctmote(object):
                 (str(uuid.uuid4()), json_data["Item Type"], json_data["Manufacturer"],\
                 model_number, item_record_json))
         self.sql3_conn.commit()
-        self.db_cursor.execute("select item_guid from octmote_item where rowid = ?",\
+        self.db_cursor.execute('select item_guid from octmote_item where rowid = ?',\
             (self.db_cursor.lastrowid,))
         return self.db_cursor
 
@@ -204,7 +204,7 @@ class CommonDatabaseOctmote(object):
         """
         item detail
         """
-        self.db_cursor.execute("select item_type from octmote_item where item_guid = ?", (guid,))
+        self.db_cursor.execute('select item_type from octmote_item where item_guid = ?', (guid,))
         return self.db_cursor
 
 
