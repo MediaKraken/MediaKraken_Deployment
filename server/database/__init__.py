@@ -177,9 +177,9 @@ class MK_Server_Database(object):
         srv_db_read_tvmetadata_eps_season,\
         srv_db_read_tvmetadata_season_eps_list,\
         srv_db_read_tvmetadata_episode
-    from db_base_metadata_tvmaze import srv_db_metatvmaze_changed_uuid,\
-        srv_db_metatvmaze_insert,\
-        srv_db_metatvmaze_update
+    from db_base_metadata_tvmaze import srv_db_meta_tvmaze_changed_uuid,\
+        srv_db_meta_tvmaze_insert,\
+        srv_db_meta_tvmaze_update
     from db_base_notification import srv_db_notification_insert,\
         srv_db_notification_read
     from db_base_option_status import srv_db_option_status_read,\
