@@ -72,7 +72,6 @@ def movie_search_tmdb(db, file_name):
         elif match_response == 're':
             # multiple results
             logging.info("movielookup multiple results: %s", match_result)
-            pass
     return metadata_uuid
 
 

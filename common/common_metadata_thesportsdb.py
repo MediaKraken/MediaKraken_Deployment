@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 from common import common_network
 
@@ -35,53 +35,64 @@ class CommonMetadataTheSportsDB(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        self.thesportsdb_API_Key = Config.get('API', 'thesportsdb').strip()
+        self.thesportsdb_api_key = Config.get('API', 'thesportsdb').strip()
 
-    def com_meta_thesportsdb_Search_Team_by_Name(self, team_name):
+    def com_meta_thesportsdb_search_team_by_name(self, team_name):
         """
         Team and player looksup
         """
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_API_Key + '/searchteams.php?t='\
-            + team_name.replace(' ','%20'), None)
+            + self.thesportsdb_api_key + '/searchteams.php?t='\
+            + team_name.replace(' ', '%20'), None)
 
 
-    def com_meta_thesportsdb_Search_Players_by_Team(self, team_name):
+    def com_meta_thesportsdb_search_players_by_team(self, team_name):
+        """
+        Get players list by team
+        """
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_API_Key + '/searchplayers.php?t='\
-            + team_name.replace(' ','%20'), None)
+            + self.thesportsdb_api_key + '/searchplayers.php?t='\
+            + team_name.replace(' ', '%20'), None)
 
 
-    def com_meta_thesportsdb_Search_Players_by_Name(self, player_name):
+    def com_meta_thesportsdb_search_players_by_name(self, player_name):
+        """
+        Get players by name
+        """
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_API_Key + '/searchplayers.php?p='\
-            + player_name.replace(' ','%20'), None)
+            + self.thesportsdb_api_key + '/searchplayers.php?p='\
+            + player_name.replace(' ', '%20'), None)
 
 
-    def com_meta_thesportsdb_Search_Players_by_Team_And_Player_Name(self, team_name,\
+    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,\
             player_name):
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_API_Key + '/searchplayers.php?t=' + team_name.replace(' ','%20')\
-            + '&p=' + player_name.replace(' ','%20'), None)
+            + self.thesportsdb_api_key + '/searchplayers.php?t=' + team_name.replace(' ', '%20')\
+            + '&p=' + player_name.replace(' ', '%20'), None)
 
     # event lookups
 
-    def com_meta_thesportsdb_Search_Event_by_Name(self, event_name):
+    def com_meta_thesportsdb_search_event_by_name(self, event_name):
+        """
+        Search for events by name
+        """
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_API_Key + '/searchevents.php?e='\
-            + event_name.replace(' ','%20'), None)
+            + self.thesportsdb_api_key + '/searchevents.php?e='\
+            + event_name.replace(' ', '%20'), None)
 
 
 #Search for event by event file name
 #thesportsdb.com/api/v1/json/{APIKEY}/searchfilename.php?e={league}{date}{hometeam} vs {awayteam}
-#http://www.thesportsdb.com/api/v1/json/1/searchfilename.php?e=English_Premier_League_2015-04-26_Arsenal_vs_Chelsea
+#http://www.thesportsdb.com/api/v1/json/1/searchfilename.php?\
+#e=English_Premier_League_2015-04-26_Arsenal_vs_Chelsea
 
 #Search for event by event name and season
 #thesportsdb.com/api/v1/json/{APIKEY}/searchevents.php?e={eventname}&s={seasonstring}
 #http://www.thesportsdb.com/api/v1/json/1/searchevents.php?e=Arsenal_vs_Chelsea&s=1415
 #
 #
-#thesportsdb.com/api/v1/json/{APIKEY}/eventspastleague.php?d={YYYY-MM-DD}&s={sport_string}&l={league_string}
+#thesportsdb.com/api/v1/json/{APIKEY}/eventspastleague.php?d={YYYY-MM-DD}\
+#&s={sport_string}&l={league_string}
 #
 #http://www.thesportsdb.com/api/v1/json/1/eventsday.php?d=2014-10-10
 #http://www.thesportsdb.com/api/v1/json/1/eventsday.php?d=2014-10-10&s=Soccer
@@ -204,7 +215,9 @@ class CommonMetadataTheSportsDB(object):
     # Images
 
 #Preview Images
-#Most of the time you won't want to download the original large image, just get a small preview. This is possible simple by adding "/preview" onto the end URL. This will give you a small 200px version. This will work with JPG images only.
+#Most of the time you won't want to download the original large image, just get a small preview.\
+# This is possible simple by adding "/preview" onto the end URL. This will give you a \
+#small 200px version. This will work with JPG images only.
 #
 #Original Image - http://www.thesportsdb.com/images/media/league/fanart/xpwsrw1421853005.jpg
 #Small Image - http://www.thesportsdb.com/images/media/league/fanart/xpwsrw1421853005.jpg/preview
