@@ -111,7 +111,7 @@ class MediaKrakenApp():
 
     def exit_program(self):
         # close the database
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     def build(self):
@@ -122,7 +122,7 @@ class MediaKrakenApp():
         common_logging.common_logging_Start('./log/MediaKraken_Link')
         # open the database
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        self.db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections', 'PostDBName').strip(),\
             Config.get('DB Connections', 'PostDBUser').strip(),\

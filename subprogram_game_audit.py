@@ -52,8 +52,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_Rollback()
-    db.srv_db_Close()
+    db.srv_db_rollback()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -361,7 +361,7 @@ class GameAuditer(threading.Thread):
         logging.debug("loading roms from db")
         # open the database
         db = database_base.MK_Server_Database()
-        db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections',' PostDBName').strip(),\
             Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -438,7 +438,7 @@ class GameAuditer(threading.Thread):
         curs_game.close()
         conn_game.close()
         # close the database
-        db.srv_db_Close()
+        db.srv_db_close()
         return True
 
     def getNamesDictDB(self, subString):

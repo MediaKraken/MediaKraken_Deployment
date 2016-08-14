@@ -31,9 +31,9 @@ class TestDatabaseMetadataMovie(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()

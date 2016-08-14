@@ -53,13 +53,13 @@ def signal_receive(signum, frame):
     # stop watchdog
     watchdog.com_Watchdog_Stop()
     # cleanup db
-    db.srv_db_Rollback()
+    db.srv_db_rollback()
     # log stop
     db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
     db.srv_db_Commit()
-    db.srv_db_Close()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -107,7 +107,7 @@ logging.info("Open DB")
 # open the database
 db = database_base.MK_Server_Database()
 try:
-    db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -211,7 +211,7 @@ db.srv_db_Commit()
 
 
 # close the database
-db.srv_db_Close()
+db.srv_db_close()
 
 
 # stop children

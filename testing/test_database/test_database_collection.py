@@ -31,12 +31,12 @@ class TestDatabaseCollection(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # find all known media
@@ -46,13 +46,13 @@ class TestDatabaseCollection(object):
         (100000000, 1000)])
     def Test_srv_db_collection_list(self, offset, records):
         self.db.srv_db_collection_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # read collection data from json metadata
     def Test_srv_db_media_collection_scan(self):
         self.db.srv_db_media_collection_scan()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # find guid of collection name
@@ -61,24 +61,24 @@ class TestDatabaseCollection(object):
         ('fakecollectionstuff')])
     def Test_srv_db_collection_guid_by_name(self, collection_name):
         self.db.srv_db_collection_guid_by_name(collection_name)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # find guid of collection name
     # def srv_db_collection_by_tmdb(self, tmdb_id):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # insert collection
     # def srv_db_collection_insert(self, collection_name, guid_json, metadata_json, localimage_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # update collection ids
     # def srv_db_collection_update(self, collection_guid, guid_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # pull in colleciton info
     # def srv_db_collection_read_by_guid(self, media_uuid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

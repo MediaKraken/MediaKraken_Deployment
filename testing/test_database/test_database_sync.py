@@ -31,18 +31,18 @@ class TestDatabaseSync(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # return count of sync jobs
     def srv_db_Sync_List_Count(self):
         self.db.srv_db_Sync_List_Count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return list of sync jobs
@@ -52,19 +52,19 @@ class TestDatabaseSync(object):
         (100000000, 1000)])
     def Test_srv_db_Sync_List(self, offset, records):
         self.db.srv_db_Sync_List(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # insert sync job
     # def srv_db_Sync_Insert(self, sync_path, sync_path_to, sync_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # delete sync job
     # def srv_db_Sync_Delete(self, sync_guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # update progress
     # def srv_db_Sync_Progress_Update(self, sync_guid, sync_percent):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

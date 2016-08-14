@@ -45,8 +45,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_Rollback()
-    db.srv_db_Close()
+    db.srv_db_rollback()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -55,7 +55,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Update_Create_
 
 # open the database
 db = database_base.MK_Server_Database()
-db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -156,7 +156,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Create Collection Stop', None,\
 db.srv_db_Commit()
 
 # close the database
-db.srv_db_Close()
+db.srv_db_close()
 
 # remove pid
 os.remove(pid_file)

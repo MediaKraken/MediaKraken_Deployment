@@ -31,25 +31,25 @@ class TestDatabaseTriggers(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # create/insert a trigger
     # def srv_db_trigger_insert(self, command_list):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # read the triggers
     def Test_srv_db_triggers_read(self):
         self.db.srv_db_triggers_read()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # remove trigger
     # def srv_db_triggers_delete(self, guid):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()

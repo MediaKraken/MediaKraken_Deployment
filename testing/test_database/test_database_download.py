@@ -31,24 +31,24 @@ class TestDatabaseDownload(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # create/insert a download
     # def srv_db_Download_Insert(self, provider, down_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
 #    ## read the download
 # this no longer exists
 #    def Test_srv_db_Download_Read(self):
 #        self.db.srv_db_Download_Read()
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # read the downloads by provider
@@ -57,18 +57,18 @@ class TestDatabaseDownload(object):
         ('fakeprovider')])
     def Test_srv_db_Download_Read_by_Provider(self, provider_name):
         self.db.srv_db_Download_Read_by_Provider(provider_name)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # remove download
     # def srv_db_Download_Delete(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # update provdier
     # def srv_db_download_update_Provider(self, provider_name, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # def srv_db_download_update(self, update_json, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

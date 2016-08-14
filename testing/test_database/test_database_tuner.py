@@ -31,18 +31,18 @@ class TestDatabaseTuner(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # count tuners
     def Test_srv_db_tuner_count(self):
         self.db.srv_db_tuner_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # read tuners
@@ -52,24 +52,24 @@ class TestDatabaseTuner(object):
         (100000000, 1000)])
     def Test_srv_db_tuner_list(self, offset, records):
         self.db.srv_db_tuner_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # insert record
     # def srv_db_tuner_insert(self, tuner_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # update record
     # def srv_db_tuner_update(self, guid, tuner_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # delete record
     # def srv_db_tuner_delete(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # find detials by hardware id (serial)
     # def srv_db_tuner_by_serial(self, serial_no):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()

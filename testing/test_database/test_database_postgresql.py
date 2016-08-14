@@ -31,26 +31,26 @@ class TestDatabasePostgresql(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
     def Test_srv_db_Postgresql_Table_Sizes(self):
         self.db.srv_db_Postgresql_Table_Sizes()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return tables and row count
     # query provided by postgresql wiki
     def Test_srv_db_Postgresql_Row_Count(self):
         self.db.srv_db_Postgresql_Row_Count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # vacuum stats by day list
@@ -59,7 +59,7 @@ class TestDatabasePostgresql(object):
         (60)])
     def Test_srv_db_Postgresql_Vacuum_Stat_by_Day(self, days):
         self.db.srv_db_Postgresql_Vacuum_Stat_by_Day(days)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # vacuum table
@@ -68,9 +68,9 @@ class TestDatabasePostgresql(object):
         ('mm_media_fake_table')])
     def Test_srv_db_Postgresql_Vacuum_Table(self, table_name):
         self.db.srv_db_Postgresql_Vacuum_Table(table_name)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # set isolation level
     # def srv_db_Postgesql_Set_Isolation_Level(self, isolation_level):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

@@ -31,23 +31,23 @@ class TestDatabaseMetadataGames(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # return game system data
     # def srv_db_meta_game_system_by_guid(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # def srv_db_meta_game_system_list_count(self):
     def Test_srv_db_meta_game_system_list_count(self):
         self.db.srv_db_meta_game_system_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return list of game systems
@@ -58,14 +58,14 @@ class TestDatabaseMetadataGames(object):
         (100000000, 1000)])
     def Test_srv_db_meta_game_system_list(self, offset, records):
         self.db.srv_db_meta_game_system_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return list of games count
     # def srv_db_meta_game_list_count(self):
     def Test_srv_db_meta_game_list_count(self):
         self.db.srv_db_meta_game_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return list of games
@@ -76,29 +76,29 @@ class TestDatabaseMetadataGames(object):
         (100000000, 1000)])
     def Test_srv_db_meta_game_list(self, offset, records):
         self.db.srv_db_meta_game_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return game data
     # def srv_db_meta_game_by_guid(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # game list by system count
     # def srv_db_meta_game_by_system_count(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # game list by system count
     # def srv_db_meta_game_by_system(self, guid, offset=None, records=None):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # game by sha1
     # def srv_db_meta_game_by_sha1(self, sha1_hash):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # game by name and system short name
     # def srv_db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

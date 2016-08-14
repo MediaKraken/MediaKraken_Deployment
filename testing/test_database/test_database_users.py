@@ -31,18 +31,18 @@ class TestDatabaseUsers(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # return user count
     def Test_srv_db_User_List_Name_Count(self):
         self.db.srv_db_User_List_Name_Count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return user list
@@ -52,19 +52,19 @@ class TestDatabaseUsers(object):
         (100000000, 1000)])
     def Test_srv_db_User_List_Name(self, offset, records):
         self.db.srv_db_User_List_Name(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return all data for specified user
     # def srv_db_User_Detail(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # remove user
     # def srv_db_User_Delete(self, user_guid):
-        #self.db.srv_db_Rollback()
+        #self.db.srv_db_rollback()
 
 
     # verify user logon
     # def srv_db_User_Login_Kodi(self, user_data):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

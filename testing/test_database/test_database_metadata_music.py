@@ -31,52 +31,52 @@ class TestDatabaseMetadataMusic(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # query to see if song is in local DB
     # def srv_db_music_lookup(self, artist_name, album_name, song_title):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # return musician data by guid
     # def srv_db_meta_musician_by_guid(self, guid):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # insert musician
     # def srv_db_meta_musician_add(self, data_name, data_id, data_json):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # return album data by guid
     # def srv_db_meta_album_by_guid(self, guid):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # insert album
     # def srv_db_meta_album_add(self, data_name, data_id, data_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # return song data by guid
     # def srv_db_meta_song_by_guid(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # insert song
     # def srv_db_meta_song_add(self, data_name, data_id, data_json):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # return song list from ablum guid
     # def srv_db_meta_songs_by_album_guid(self, guid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # return albums metadatalist
@@ -86,7 +86,7 @@ class TestDatabaseMetadataMusic(object):
         (100000000, 1000)])
     def Test_srv_db_meta_album_list(self, offset, records):
         self.db.srv_db_meta_album_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return muscian metadatalist
@@ -96,4 +96,4 @@ class TestDatabaseMetadataMusic(object):
         (100000000, 1000)])
     def Test_srv_db_meta_muscian_list(self, offset, records):
         self.db.srv_db_meta_muscian_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()

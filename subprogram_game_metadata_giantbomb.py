@@ -37,8 +37,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_Rollback()
-    db.srv_db_Close()
+    db.srv_db_rollback()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -69,6 +69,6 @@ if __name__ == "__main__":
     # commit all changes
     db.srv_db_Commit()
     # close DB
-    db.srv_db_Close()
+    db.srv_db_close()
     # remove pid
     os.remove(pid_file)

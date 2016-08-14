@@ -31,12 +31,12 @@ class TestDatabaseMediaMovie(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # find random movie
@@ -45,7 +45,7 @@ class TestDatabaseMediaMovie(object):
         (False)])
     def Test_srv_db_media_random(self, image_type):
         self.db.srv_db_media_random(image_type)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # movie count by genre
@@ -54,7 +54,7 @@ class TestDatabaseMediaMovie(object):
         ('928c56c3-253d-4e30-924e-5698be6d3d30')])  # no exist
     def Test_srv_db_media_movie_count_by_genre(self, class_guid):
         self.db.srv_db_media_movie_count_by_genre(class_guid)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # web media count
@@ -71,7 +71,7 @@ class TestDatabaseMediaMovie(object):
             group_collection, include_remote):
         self.db.srv_db_web_media_list_count(class_guid, list_type, list_genre,\
             group_collection, include_remote)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # web media return
@@ -88,4 +88,4 @@ class TestDatabaseMediaMovie(object):
             list_limit, group_collection, offset, include_remote):
         self.db.srv_db_web_media_list(class_guid, list_type, list_genre, list_limit,\
             group_collection, offset, include_remote)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()

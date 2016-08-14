@@ -31,17 +31,17 @@ class TestDatabaseMediaImages(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     def Test_com_media_images_list_count(self):
         self.db.com_media_images_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -50,4 +50,4 @@ class TestDatabaseMediaImages(object):
         (100000000,1000)])
     def Test_com_media_images_list(self, offset, records):
         self.db.com_media_images_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()

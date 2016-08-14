@@ -31,18 +31,18 @@ class TestDatabaseMediaGames(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # audited system list count
     def Test_com_media_game_system_list_count(self):
         self.db.com_media_game_system_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # audited system list
@@ -52,23 +52,23 @@ class TestDatabaseMediaGames(object):
         (100000000,1000)])
     def Test_com_media_game_system_list(self, offset, records):
         self.db.com_media_game_system_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # audited game list by system count
     # def com_media_game_list_by_system_count(self, system_id):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # audited game list by system
     # def com_media_game_list_by_system(self, system_id, offset=None, records=None):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     # audited games list count
     def Test_com_media_game_list_count(self):
         self.db.com_media_game_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # audited games list
@@ -78,4 +78,4 @@ class TestDatabaseMediaGames(object):
         (100000000,1000)])
     def Test_com_media_game_list(self, offset, records):
         self.db.com_media_game_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()

@@ -31,22 +31,22 @@ class TestDatabaseMetadataSports(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # metadata guid by imdb id
     # def srv_db_meta_Sports_GUID_by_thesportsdb(self, thesports_uuid):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     def Test_srv_db_meta_sports_list_count(self):
         self.db.srv_db_meta_sports_list_count()
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # return list of game systems
@@ -56,9 +56,9 @@ class TestDatabaseMetadataSports(object):
         (100000000, 1000)])
     def Test_srv_db_meta_sports_list(self, offset, records):
         self.db.srv_db_meta_sports_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()
 
 
     # fetch guid by event name
     # def srv_db_meta_sports_guid_by_event_name(self, event_name):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()

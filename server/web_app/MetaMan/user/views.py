@@ -1813,9 +1813,9 @@ def allowed_file(filename):
 @blueprint.before_request
 def before_request():
     g.db = database_base.MK_Server_Database()
-    g.db.srv_db_Open(Config.get('DB Connections','PostDBHost').strip(),Config.get('DB Connections','PostDBPort').strip(),Config.get('DB Connections','PostDBName').strip(),Config.get('DB Connections','PostDBUser').strip(),Config.get('DB Connections','PostDBPass').strip())
+    g.db.srv_db_open(Config.get('DB Connections','PostDBHost').strip(),Config.get('DB Connections','PostDBPort').strip(),Config.get('DB Connections','PostDBName').strip(),Config.get('DB Connections','PostDBUser').strip(),Config.get('DB Connections','PostDBPass').strip())
 
 
 @blueprint.teardown_request
 def teardown_request(exception):
-    g.db.srv_db_Close()
+    g.db.srv_db_close()

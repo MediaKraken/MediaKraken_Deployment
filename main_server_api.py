@@ -52,7 +52,7 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+        self.db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections', 'PostDBName').strip(),\
             Config.get('DB Connections', 'PostDBUser').strip(),\

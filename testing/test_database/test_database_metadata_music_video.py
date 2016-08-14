@@ -31,29 +31,29 @@ class TestDatabaseMetadataMusicVideo(object):
     @classmethod
     def setup_class(self):
         self.db = database_base.MK_Server_Database()
-        self.db.srv_db_Open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db.srv_db_Close()
+        self.db.srv_db_close()
 
 
     # query to see if song is in local DB
     # def srv_db_meta_music_video_lookup(self, artist_name, song_title):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # def srv_db_meta_music_video_add(self, artist_name, artist_song, id_json, data_json, image_json):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # def srv_db_meta_music_video_detail_by_uuid(self, item_guid):
-#         self.db.srv_db_Rollback()
+#         self.db.srv_db_rollback()
 
 
     # def srv_db_meta_music_video_count(self, imvdb_ID=None):
-#        self.db.srv_db_Rollback()
+#        self.db.srv_db_rollback()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -62,4 +62,4 @@ class TestDatabaseMetadataMusicVideo(object):
         (100000000, 1000)])
     def Test_srv_db_meta_music_video_list(self, offset, records):
         self.db.srv_db_meta_music_video_list(offset, records)
-        self.db.srv_db_Rollback()
+        self.db.srv_db_rollback()

@@ -51,8 +51,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_Rollback()
-    db.srv_db_Close()
+    db.srv_db_rollback()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -63,7 +63,7 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MK_Server_Database()
-    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -99,7 +99,7 @@ def worker(worker_file_list):
     thread_db.srv_db_update_media_json(json_id, json.dumps(json_data))
     # commit after each one to not cause dupe images I guess?
     thread_db.srv_db_Commit()
-    thread_db.srv_db_Close()
+    thread_db.srv_db_close()
     return
 
 
@@ -109,7 +109,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter
 
 # open the database
 db = database_base.MK_Server_Database()
-db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -161,7 +161,7 @@ db.srv_db_Commit()
 
 
 # close the database
-db.srv_db_Close()
+db.srv_db_close()
 
 
 # remove pid

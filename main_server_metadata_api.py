@@ -81,11 +81,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Metadata: Received USR1')
     # os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.srv_db_Rollback()
+    db.srv_db_rollback()
     # log stop
     db.srv_db_Activity_Insert('MediaKraken_Metadata API Stop', None,\
         'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
-    db.srv_db_Close()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -103,7 +103,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Metadata_API')
 
 # open the database
 db = database_base.MK_Server_Database()
-db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -339,7 +339,7 @@ def worker(content_providers):
     """
     logging.debug("name: %s", content_providers)
     thread_db = database_base.MK_Server_Database()
-    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -399,7 +399,7 @@ def worker(content_providers):
                 thread_db.srv_db_Download_Delete(row_data['mdq_id'])
     time.sleep(1)
     thread_db.srv_db_Commit()
-    thread_db.srv_db_Close()
+    thread_db.srv_db_close()
     return
 
 
@@ -426,4 +426,4 @@ db.srv_db_Commit()
 
 
 # close the database
-db.srv_db_Close()
+db.srv_db_close()

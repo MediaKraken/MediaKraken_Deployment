@@ -204,7 +204,7 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "CPUUSAGE":
             self.cpu_use_table[self.user_ip_addy] = message_words[1]
         elif message_words[0] == "SHUTDOWN":
-            self.db.srv_db_Close()
+            self.db.srv_db_close()
             sys.exit(0)
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])

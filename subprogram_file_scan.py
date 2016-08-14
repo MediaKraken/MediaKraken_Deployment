@@ -107,8 +107,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_Rollback()
-    db.srv_db_Close()
+    db.srv_db_rollback()
+    db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -214,7 +214,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
     thread_db = database_base.MK_Server_Database()
-    thread_db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
@@ -222,7 +222,7 @@ def worker(audit_directory):
         thread_db.srv_db_Notification_Insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + data1, True)
     thread_db.srv_db_Commit()
-    thread_db.srv_db_Close()
+    thread_db.srv_db_close()
     return
 
 
@@ -235,7 +235,7 @@ else:
 
 # open the database
 db = database_base.MK_Server_Database()
-db.srv_db_Open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -317,7 +317,7 @@ db.srv_db_Commit()
 
 
 # close the database
-db.srv_db_Close()
+db.srv_db_close()
 
 
 # remove pid
