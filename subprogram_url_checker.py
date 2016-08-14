@@ -76,7 +76,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server URL Scan Stop', None,\
     'System: Server URL Scan Stop', 'ServerURLScanStop', None, None, 'System')
 
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close DB
 db.srv_db_close()

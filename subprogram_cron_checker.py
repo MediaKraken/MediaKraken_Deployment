@@ -104,7 +104,7 @@ while 1:
                 db.srv_db_Cron_Time_Update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
-            db.srv_db_Commit()
+            db.srv_db_commit()
         logging.debug(row_data)
     time.sleep(60)  # sleep for 60 seconds
 

@@ -69,7 +69,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Postgresql Backup Stop', None,\
     'System: Server DB Backup Stop', 'ServerBackupStop', None, None, 'System')
 
 # commit records
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

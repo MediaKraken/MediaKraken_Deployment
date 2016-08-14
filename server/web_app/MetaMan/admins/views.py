@@ -238,7 +238,7 @@ def admin_transmission():
 @admin_required
 def admin_transmission_delete_page():
     #g.db.srv_db_Audit_Path_Delete(request.form['id'])
-    #g.db.srv_db_Commit()
+    #g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -247,7 +247,7 @@ def admin_transmission_delete_page():
 @admin_required
 def admin_transmission_edit_page():
     #g.db.srv_db_Audit_Path_Delete(request.form['id'])
-    #g.db.srv_db_Commit()
+    #g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -306,7 +306,7 @@ def admin_library_edit_page():
                 # verify it doesn't exit and add
                 if g.db.srv_db_Audit_Path_Check(request.form['library_path']) == 0:
                     g.db.srv_db_Audit_Path_Add(request.form['library_path'],request.form['Lib_Class'])
-                    g.db.srv_db_Commit()
+                    g.db.srv_db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
@@ -330,7 +330,7 @@ def admin_library_edit_page():
 @admin_required
 def admin_library_delete_page():
     g.db.srv_db_Audit_Path_Delete(request.form['id'])
-    g.db.srv_db_Commit()
+    g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -357,7 +357,7 @@ def updateLibrary():
 @admin_required
 def admin_user_delete_page():
     g.db.srv_db_User_Delete(request.form['id'])
-    g.db.srv_db_Commit()
+    g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -489,7 +489,7 @@ def admin_server_link_server():
 @admin_required
 def admin_link_delete_page():
     g.db.srv_db_Link_Delete(request.form['id'])
-    g.db.srv_db_Commit()
+    g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 

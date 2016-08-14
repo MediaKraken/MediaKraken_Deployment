@@ -90,7 +90,7 @@ def worker(row_data):
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
                 thread_db.srv_db_Sync_Progress_Update(row_data['mm_sync_guid'],\
                     time_percent)
-                thread_db.srv_db_Commit()
+                thread_db.srv_db_commit()
         else:
             break
     ffmpeg_pid.wait()
@@ -98,7 +98,7 @@ def worker(row_data):
         'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.srv_db_Sync_Delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     thread_db.srv_db_close()
     return
 
@@ -142,7 +142,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Sync Stop', None,\
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

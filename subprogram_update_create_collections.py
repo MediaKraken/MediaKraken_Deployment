@@ -110,7 +110,7 @@ def store_update_record(db, collection_name, guid_list, poster_path, backdrop_pa
         db.srv_db_collection_insert(collection_name, guid_list,\
             collection_meta, localimage_json)
         # commit all changes to db
-        db.srv_db_Commit()
+        db.srv_db_commit()
         total_collections_downloaded += 1
     else:
         # update
@@ -153,7 +153,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Create Collection Stop', None,\
     'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

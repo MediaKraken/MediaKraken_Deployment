@@ -98,7 +98,7 @@ def worker(worker_file_list):
     # and their filenames for the chapter images that were created
     thread_db.srv_db_update_media_json(json_id, json.dumps(json_data))
     # commit after each one to not cause dupe images I guess?
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     thread_db.srv_db_close()
     return
 
@@ -157,7 +157,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Create Chapter Stop', None,\
 
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close the database

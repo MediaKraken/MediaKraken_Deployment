@@ -1077,7 +1077,7 @@ def sync_edit(guid):
             'Priority': request.form['target_priority'], 'Status': 'Scheduled', 'Progress': 0}
         g.db.srv_db_Sync_Insert(request.form['name'],\
             request.form['target_output_path'], json.dumps(sync_json))
-        g.db.srv_db_Commit()
+        g.db.srv_db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
@@ -1089,7 +1089,7 @@ def sync_edit(guid):
 @login_required
 def admin_sync_delete_page():
     g.db.srv_db_Sync_Delete(request.form['id'])
-    g.db.srv_db_Commit()
+    g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 

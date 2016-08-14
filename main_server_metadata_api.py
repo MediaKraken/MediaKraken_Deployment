@@ -398,7 +398,7 @@ def worker(content_providers):
                 thread_db.srv_db_update_media_id(row_data['mdq_download_json']['MediaID'], metadata_uuid)
                 thread_db.srv_db_Download_Delete(row_data['mdq_id'])
     time.sleep(1)
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     thread_db.srv_db_close()
     return
 
@@ -422,7 +422,7 @@ db.srv_db_Activity_Insert('MediaKraken_Metadata API Stop', None,\
 
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close the database

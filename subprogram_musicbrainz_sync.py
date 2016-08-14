@@ -106,7 +106,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server musicbrainz Stop', None,\
     'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None, None, 'System')
 
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 # close DB
 db_brainz.srv_db_close()
 db.srv_db_close()

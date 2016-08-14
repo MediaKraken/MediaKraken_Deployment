@@ -46,7 +46,7 @@ for row_data in db.srv_db_known_media_All_Unmatched():
         + locale.format('%d', files_to_id, True) + ' / '\
         + locale.format('%d', total_media_to_match, True),\
         'Pct': (files_to_id / total_media_to_match) * 100}))
-    db.srv_db_Commit()
+    db.srv_db_commit()
 
 
 # send notications

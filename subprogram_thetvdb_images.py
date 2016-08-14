@@ -144,7 +144,7 @@ for row_data in db.srv_db_meta_tvshow_images_to_update('thetvdb'):
                 total_episode_images += 1
     db.srv_db_meta_tvshow_update_image(json.dumps(json_image_data), row_data[1])
     # commit
-    db.srv_db_Commit()
+    db.srv_db_commit()
 
 
 # send notifications
@@ -160,7 +160,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server thetvdb Images Stop', None,\
     'System: Server thetvdb Images Stop', 'ServerTVDBImagesStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

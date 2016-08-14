@@ -123,7 +123,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     thread_db.srv_db_Audit_Directory_Timestamp_Update(dir_path)
     thread_db.srv_db_Audit_Path_Update_Status(dir_guid,\
         json.dumps({'Status': 'File scan', 'Pct': 100}))
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
@@ -204,10 +204,10 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
                 + ' / ' + locale.format('%d', total_file_in_dir, True),\
                 'Pct': (total_scanned / total_file_in_dir) * 100}))
-        thread_db.srv_db_Commit()
+        thread_db.srv_db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
     thread_db.srv_db_Audit_Path_Update_Status(dir_guid, None) # set to none so it doens't show up
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     return total_files
 
 
@@ -221,7 +221,7 @@ def worker(audit_directory):
     if total_files > 0:
         thread_db.srv_db_Notification_Insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + data1, True)
-    thread_db.srv_db_Commit()
+    thread_db.srv_db_commit()
     thread_db.srv_db_close()
     return
 
@@ -295,7 +295,7 @@ for row_data in db.srv_db_Audit_Paths():
 
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # start processing the directories
@@ -313,7 +313,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server File Scan Stop', None,\
 
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close the database

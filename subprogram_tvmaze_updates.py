@@ -118,7 +118,7 @@ def update_insert_show(tvmaze_id, update_rec=None):
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
             db.srv_db_meta_person_insert_cast_crew('tvmaze',\
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
-        db.srv_db_Commit()
+        db.srv_db_commit()
 
 
 # grab updated show list with epoc data
@@ -159,7 +159,7 @@ if tvshow_inserted > 0:
 
 
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close DB

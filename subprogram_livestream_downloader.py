@@ -87,7 +87,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server LiveStream Stop', None,\
     'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

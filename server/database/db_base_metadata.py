@@ -127,7 +127,7 @@ def srv_db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,\
     self.sql3_cursor.execute('insert into mm_metadata_movie (mm_metadata_guid,'\
         ' mm_metadata_media_id, mm_media_name, mm_metadata_json, mm_metadata_localimage_json)'\
         ' values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title, data_json, data_image_json))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_meta_tmdb_count(self, tmdb_id):

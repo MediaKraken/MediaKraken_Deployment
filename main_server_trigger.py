@@ -100,7 +100,7 @@ db.srv_db_Activity_Insert('MediaKraken_Trigger Stop', None,\
 
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close the database

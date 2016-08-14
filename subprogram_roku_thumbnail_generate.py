@@ -84,7 +84,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', Non
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close DB
 db.srv_db_close()

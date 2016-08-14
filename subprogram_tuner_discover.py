@@ -110,7 +110,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Tuner Scan Stop', None,\
     'System: Server Tuner Scan Stop', 'ServerTunerScanStop', None, None, 'System')
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

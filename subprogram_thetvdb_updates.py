@@ -102,7 +102,7 @@ for row_data in update_item['Data']['Series']:
         # insert cast info
         if xml_actor_data is not None:
             db.srv_db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
-        db.srv_db_Commit()
+        db.srv_db_commit()
         tvshow_inserted += 1
         time.sleep(5) # delays for 5 seconds
     else:
@@ -110,7 +110,7 @@ for row_data in update_item['Data']['Series']:
         #db.srv_db_metatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
         tvshow_updated += 1
     # commit each just cuz
-    db.srv_db_Commit()
+    db.srv_db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
     logging.debug(row_data)
@@ -134,7 +134,7 @@ if tvshow_inserted > 0:
 
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close DB

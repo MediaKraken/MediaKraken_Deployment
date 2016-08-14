@@ -159,7 +159,7 @@ if create_collection_trigger:
 
 
 # commit all changes
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close DB

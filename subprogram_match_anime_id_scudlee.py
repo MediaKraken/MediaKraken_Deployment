@@ -105,7 +105,7 @@ for row_data in com_Scudlee.mk_scudlee_anime_set_parse():
 db.srv_db_Activity_Insert('MediaKraken_Server Anime Scudlee Stop', None,\
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 # close the database
 db.srv_db_close()
 

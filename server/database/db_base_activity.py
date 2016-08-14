@@ -34,7 +34,7 @@ def srv_db_activity_insert(self, activity_name, activity_overview,\
         ' values (%s,%s,%s,%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), activity_name,\
         activity_overview, activity_short_overview, activity_type, activity_itemid,\
         activity_userid, datetime.datetime.now(), activity_log_severity))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_activity_purge(self, days_old):
@@ -43,4 +43,4 @@ def srv_db_activity_purge(self, days_old):
     """
     self.sql3_cursor.execute('delete from mm_user_activity where mm_activity_datecreated'\
         ' < now() - interval %s;', (str(days_old) + ' day',))
-    self.srv_db_Commit()
+    self.srv_db_commit()

@@ -67,7 +67,7 @@ if __name__ == "__main__":
         db.srv_db_Notification_Insert(locale.format('%d',\
             total_download_attempts, True) + " Giant Bomb game info downloaded.", True)
     # commit all changes
-    db.srv_db_Commit()
+    db.srv_db_commit()
     # close DB
     db.srv_db_close()
     # remove pid

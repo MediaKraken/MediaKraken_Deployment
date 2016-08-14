@@ -171,7 +171,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Schedules Direct Update Stop', Non
 
 
 # commit all changes to db
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close DB

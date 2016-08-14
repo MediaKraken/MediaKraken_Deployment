@@ -27,4 +27,4 @@ def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id
         'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
     self.sql3_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
         ' where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
-    self.srv_db_Commit()
+    self.srv_db_commit()

@@ -75,7 +75,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server ZFS Health Stop', None,\
     'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 # close the database
 db.srv_db_close()

@@ -176,7 +176,7 @@ def srv_db_media_watched_status_update(self, media_guid, user_id, status_bool):
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
     self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
@@ -190,7 +190,7 @@ def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
     self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
@@ -204,7 +204,7 @@ def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
     self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
@@ -218,7 +218,7 @@ def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
     self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
@@ -232,7 +232,7 @@ def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_tim
     json_data = self.sql3_cursor.fetchone()['mm_media_json']
     json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
     self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_update_media_id(self, media_guid, metadata_guid):
@@ -241,7 +241,7 @@ def srv_db_update_media_id(self, media_guid, metadata_guid):
     """
     self.sql3_cursor.execute('update mm_media set mm_media_metadata_guid = %s'\
         ' where mm_media_guid = %s', (metadata_guid, media_guid))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_update_media_json(self, media_guid, mediajson):
@@ -250,7 +250,7 @@ def srv_db_update_media_json(self, media_guid, mediajson):
     """
     self.sql3_cursor.execute('update mm_media set mm_media_json = %s where mm_media_guid = %s',\
         (mediajson, media_guid))
-    self.srv_db_Commit()
+    self.srv_db_commit()
 
 
 def srv_db_known_media_chapter_scan(self):

@@ -191,7 +191,7 @@ class MediaKrakenApp():
                 self.db.srv_db_insert_remote_media(link_server, new_media[0],\
                     self.db.srv_db_media_uuid_by_class(new_media[1]),\
                     new_media[2], metadata_guid)
-            self.db.srv_db_Commit()
+            self.db.srv_db_commit()
         else:
             logging.debug("unknown message type")
         if msg is not None:

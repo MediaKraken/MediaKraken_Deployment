@@ -58,7 +58,7 @@ def signal_receive(signum, frame):
     db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
-    db.srv_db_Commit()
+    db.srv_db_commit()
     db.srv_db_close()
     sys.stdout.flush()
     sys.exit(0)
@@ -207,7 +207,7 @@ db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop'
          'ServerStop', None, None, 'System')
 
 # commit
-db.srv_db_Commit()
+db.srv_db_commit()
 
 
 # close the database
