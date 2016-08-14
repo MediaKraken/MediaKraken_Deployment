@@ -18,8 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-from common from common import file
-#from common import common_file
+from common import common_file
 
 
 """
@@ -37,7 +36,7 @@ for file_name in common_file.com_file_dir_list(\
             if file_line.split(' ')[0] == 'def':
                 #print('line: %s' % file_line)
                 #print('chunk: %s' % file_line.split(' ')[1].split('(')[0])
-                if file_line.split(' ')[1].split('(')[0].islower() == False:
+                if file_line.split(' ')[1].split('(')[0].islower() == False and file_line.find('/lib/') == -1:
                     print("Upper char found: %s" % file_line.split(' ')[1].split('(')[0])
                     command_string = 'find . -type f -name "*.py" -exec sed -i \'s/' + file_line.split(' ')[1].split('(')[0] + '/' + file_line.split(' ')[1].split('(')[0].lower() + '/g\' {} +'
                     print("command: %s" % command_string)
