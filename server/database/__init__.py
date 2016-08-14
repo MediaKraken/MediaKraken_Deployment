@@ -226,6 +226,6 @@ class MK_Server_Database(object):
         srv_db_user_login_kodi
     
     # class variables
-    sql3_conn = none
-    sql3_cursor = none
+    sql3_conn = None
+    sql3_cursor = None
     
