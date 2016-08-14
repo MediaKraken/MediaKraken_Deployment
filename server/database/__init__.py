@@ -54,14 +54,14 @@ class MK_Server_Database(object):
         srv_db_media_class_list,\
         srv_db_media_class_by_uuid,\
         srv_db_media_uuid_by_class
-    from db_base_media_games import common_media_game_system_list_count,\
-        com_media_game_system_list,\
-        com_media_game_list_by_system_count,\
-        com_media_game_list_by_system,\
-        com_media_game_list_count,\
-        com_media_game_list
-    from db_base_media_images import common_media_images_list_count,\
-        com_media_images_list
+    from db_base_media_games import srv_db_media_game_system_list_count,\
+        srv_db_media_game_system_list,\
+        srv_db_media_game_list_by_system_count,\
+        srv_db_media_game_list_by_system,\
+        srv_db_media_game_list_count,\
+        srv_db_media_game_list
+    from db_base_media_images import srv_db_media_images_list_count,\
+        srv_db_media_images_list
     from db_base_media import srv_db_insert_media,\
         srv_db_read_media,\
         srv_db_known_media_count,\
