@@ -52,7 +52,7 @@ def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     # update audit path
     """
-    self.db_cursor.execute'"update mm_media_dir set mm_media_dir_path = %s,'\
+    self.db_cursor.execute('update mm_media_dir set mm_media_dir_path = %s,'\
         ' mm_media_dir_class_type = %s where mm_media_dir_guid = %s', ())
 
 
