@@ -19,17 +19,17 @@
 # the Roku api docs
 # http://sdkdocs.roku.com/display/sdkdoc/External+Control+Guide
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import urllib2
 import time
-from common import common_network_SSDP
+from common import common_network_ssdp
 
 
 def mk_roku_network_discovery():
     """
     Discover Roku device(s)
     """
-    return common_network.SSDP.discover("roku:ecp")
+    return common_network_ssdp.SSDP.discover("roku:ecp")
 
 
 def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
@@ -47,17 +47,29 @@ def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_sec
 
 
 def mk_roku_network_app_query(roku_addr, roku_port):
+    """
+    Get list of apps installed
+    """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/query/apps')
 
 
 def mk_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
+    """
+    Launch app by id
+    """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/launch/' + roku_app_id)
 
 
 def mk_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
+    """
+    Grab app icon
+    """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/query/icon/' + roku_app_id)
 
 
 def mk_roku_network_touch(roku_addr, roku_port, x, y):
+    """
+    'Click' screen
+    """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x)\
         + '.0&touch.0.y=' + str(y) + '.0&touch.0.op=down')

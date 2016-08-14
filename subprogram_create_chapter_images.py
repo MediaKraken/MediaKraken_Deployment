@@ -62,7 +62,7 @@ def worker(worker_file_list):
     chapter_image_list = {}
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
-    thread_db = database_base.MK_Server_Database()
+    thread_db = database_base.MKServerDatabase()
     thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
@@ -108,7 +108,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter
 
 
 # open the database
-db = database_base.MK_Server_Database()
+db = database_base.MKServerDatabase()
 db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\

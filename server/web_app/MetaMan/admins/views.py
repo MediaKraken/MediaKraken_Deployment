@@ -594,7 +594,7 @@ def admin_fs_browse(path):
 
 @blueprint.before_request
 def before_request():
-    g.db = database_base.MK_Server_Database()
+    g.db = database_base.MKServerDatabase()
     g.db.srv_db_open(Config.get('DB Connections','PostDBHost').strip(),Config.get('DB Connections','PostDBPort').strip(),Config.get('DB Connections','PostDBName').strip(),Config.get('DB Connections','PostDBUser').strip(),Config.get('DB Connections','PostDBPass').strip())
 
 

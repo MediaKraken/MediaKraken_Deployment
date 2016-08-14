@@ -53,7 +53,7 @@ def signal_receive(signum, frame):
 
 def worker(row_data):
     logging.debug("row: %s", row_data)
-    thread_db = database_base.MK_Server_Database()
+    thread_db = database_base.MKServerDatabase()
     thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
@@ -108,7 +108,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Sync')
 
 
 # open the database
-db = database_base.MK_Server_Database()
+db = database_base.MKServerDatabase()
 db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\

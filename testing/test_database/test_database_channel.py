@@ -29,7 +29,7 @@ class TestDatabaseChannel(object):
 
     @classmethod
     def setup_class(self):
-        self.db = database_base.MK_Server_Database()
+        self.db = database_base.MKServerDatabase()
         self.db.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 

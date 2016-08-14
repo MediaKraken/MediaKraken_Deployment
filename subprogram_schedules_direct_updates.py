@@ -72,7 +72,7 @@ common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Schedules_Dire
 
 
 # open the database
-db = database_base.MK_Server_Database()
+db = database_base.MKServerDatabase()
 db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\

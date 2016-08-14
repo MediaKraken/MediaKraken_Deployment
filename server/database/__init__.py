@@ -1,4 +1,7 @@
-class MK_Server_Database(object):
+class MKServerDatabase(object):
+    """
+    Main database class for server
+    """
     from db_base import srv_db_open,\
         srv_db_open_isolation,\
         srv_db_close,\
@@ -224,8 +227,7 @@ class MK_Server_Database(object):
         srv_db_user_detail,\
         srv_db_user_delete,\
         srv_db_user_login_kodi
-    
+
     # class variables
     sql3_conn = None
     sql3_cursor = None
-    

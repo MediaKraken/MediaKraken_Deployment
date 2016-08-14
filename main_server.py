@@ -105,7 +105,7 @@ if not os.path.isdir(Config.get('MediaKrakenServer', 'BackupLocal').strip()):
 
 logging.info("Open DB")
 # open the database
-db = database_base.MK_Server_Database()
+db = database_base.MKServerDatabase()
 try:
     db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\

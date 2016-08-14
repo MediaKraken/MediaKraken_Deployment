@@ -63,7 +63,7 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # open the database
-        self.db = database_base.MK_Server_Database()
+        self.db = database_base.MKServerDatabase()
         self.db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
             Config.get('DB Connections', 'PostDBPort').strip(),\
             Config.get('DB Connections', 'PostDBName').strip(),\

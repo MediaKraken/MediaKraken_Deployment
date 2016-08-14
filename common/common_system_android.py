@@ -19,7 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from time import sleep
-import android
+#import android
 from jnius import autoclass
 
 
@@ -32,29 +32,29 @@ class CommonAndroidHardwareInstance(object):
         self.android_hardware = autoclass('org.renpy.android.Hardware')
 
 
-    def MK_Android_Get_DPI(self):
+    def com_android_get_dpi(self):
         """
         Return the dpi for the device
         """
-        logging.debug('DPI is', self.android_hardware.getDPI())
+        logging.debug('DPI is %s', self.android_hardware.getDPI())
         return self.android_hardware.getDPI()
 
 
-    def MK_Android_Vibrate(self, vibrate_time):
+    def com_android_vibrate(self, vibrate_time):
         """
         Vibrate the device
         """
         self.android_hardware.vibrate(vibrate_time)
 
 
-    def MK_Android_Motion(self, time_range):
+    def com_android_motion(self, time_range):
         """
         Return data from the motion controller
         """
         self.android_hardware.accelerometerEnable(True)
         accel_data = []
-        for x in xrange(time_range):
-            logging.debug(self.android_hardware.accelerometerReading())
+        for ndx in xrange(time_range):
+            logging.debug('Motion: %s', self.android_hardware.accelerometerReading())
             accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)
         return accel_data

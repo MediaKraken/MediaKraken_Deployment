@@ -213,7 +213,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
-    thread_db = database_base.MK_Server_Database()
+    thread_db = database_base.MKServerDatabase()
     thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
@@ -234,7 +234,7 @@ else:
 
 
 # open the database
-db = database_base.MK_Server_Database()
+db = database_base.MKServerDatabase()
 db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
