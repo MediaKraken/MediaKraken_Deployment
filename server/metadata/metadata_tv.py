@@ -47,9 +47,9 @@ else:
 
 # setup the tvmaze class
 if Config.get('API', 'tvmaze').strip() != 'None':
-    tvmaze_API_Connection = com_meta_tvmaze.com_meta_tvmaze_API()
+    tvmaze_api_connection = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
-    tvmaze_API_Connection = None
+    tvmaze_api_connection = None
 
 
 def tv_search_tvdb(db, file_name):

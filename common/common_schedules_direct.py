@@ -34,6 +34,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_login(self, user_name, user_password):
+        """
+        Login to SD
+        """
         resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers,\
             data=json.dumps({"password": hashlib.sha1(user_password.encode('utf-8')).hexdigest(),\
             "username": user_name})).json()
@@ -45,6 +48,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_status(self):
+        """
+        Get status of SD server
+        """
         resp = requests.get(self.BASE_API_URL + "/status", headers=self.headers)
         logging.debug("SD Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
@@ -73,6 +79,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_lineup_add(self, lineup_id):
+        """
+        Add lineup
+        """
         resp = requests.put(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
         if resp.json()['response'] == 'INVALID_LINEUP':
             logging.error("SD Invalid lineup: %s", lineup_id)
@@ -95,7 +104,7 @@ class CommonSchedulesDirect(object):
         if resp.json()['response'] != 'OK':
             logging.error("SD Invalid lineup delete: %s", lineup_id)
         elif resp.json()['code'] == 2103:
-            logging.erorr("SD lineup not in account: %s", lineup_id)
+            logging.error("SD lineup not in account: %s", lineup_id)
         else:
             logging.info("SD lineup deleted: %s", lineup_id)
         logging.debug("SD Lineup Delete: %s-%s", resp.status_code, resp.json())
@@ -111,6 +120,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_program_info(self, program_ids):
+        """
+        Get program info
+        """
         resp = requests.post(self.BASE_API_URL + "/programs", headers=self.headers,\
             data=program_ids)
         logging.debug("Header: %s", resp.headers)
@@ -119,8 +131,10 @@ class CommonSchedulesDirect(object):
         return resp.json()
 
 
-    # this one is only for EP types, not MV
     def com_schedules_direct_program_desc(self, program_ids):
+        """
+        # this one is only for EP types, not MV
+        """
         resp = requests.post(self.BASE_API_URL + "/metadata/description",\
                 headers=self.headers, data=program_ids)
         logging.debug("Header: %s", resp.headers)
@@ -138,12 +152,15 @@ class CommonSchedulesDirect(object):
 
     def com_schedules_direct_md5(self, station_ids):
         resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers,\
-                data=program_ids)
+                data=station_ids)
         logging.debug("SD MD5: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
     def com_schedules_still_running(self, program_id):
+        """
+        Check if program is still running (overtimes)
+        """
         resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id),\
                 headers=self.headers)
         logging.debug("SD Running: %s-%s", resp.status_code, resp.json())
@@ -151,6 +168,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_program_metadata(self, program_ids):
+        """
+        Grab program metadata
+        """
         resp = requests.post(self.BASE_API_URL + "/metadata/programs/", headers=self.headers,\
                 data=program_ids)
         logging.debug("SD Program Meta: %s-%s", resp.status_code, resp.json())

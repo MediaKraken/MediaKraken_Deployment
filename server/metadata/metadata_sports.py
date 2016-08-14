@@ -30,9 +30,9 @@ Config.read("MediaKraken.ini")
 
 # verify thesportsdb key exists
 if Config.get('API', 'thesportsdb').strip() != 'None':
-    thesportsdb_API_Connection = common_metadata_thesportsdb.com_meta_thesportsdb_API()
+    thesportsdb_api_connection = common_metadata_thesportsdb.com_meta_thesportsdb_API()
 else:
-    thesportsdb_API_Connection = None
+    thesportsdb_api_connection = None
 
 
 def metadata_sports_lookup(db, media_file_path, download_que_id):
@@ -41,9 +41,9 @@ def metadata_sports_lookup(db, media_file_path, download_que_id):
     """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db.srv_db_meta_sports_guid_by_event_name(stripped_name)
-    if metadata_uuid is None and thesportsdb_API_Connection is not None:
+    if metadata_uuid is None and thesportsdb_api_connection is not None:
         logging.debug("searching: %s", stripped_name)
-        thesportsdb_data = thesportsdb_API_Connection.com_meta_thesportsdb_Search_Event_by_Name(stripped_name)
+        thesportsdb_data = thesportsdb_api_connection.com_meta_thesportsdb_Search_Event_by_Name(stripped_name)
         logging.debug("sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:

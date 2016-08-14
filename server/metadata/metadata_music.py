@@ -29,9 +29,9 @@ Config.read("MediaKraken.ini")
 
 if Config.get('API', 'MediaBrainz').strip() != 'None':
     # setup the mediabrainz class
-    MBrainz_API_Connection = common_metadata_musicbrainz.com_Musicbrainz_API()
+    mbrainz_api_connection = common_metadata_musicbrainz.com_Musicbrainz_API()
 else:
-    MBrainz_API_Connection = None
+    mbrainz_api_connection = None
 
 
 def metadata_music_lookup(db, media_file_path, download_que_id):
@@ -52,10 +52,10 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
 #                    print "what:", ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE']
 #                    db_result = db.srv_db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'])
 #                    if db_result is None:
-#                        if MBrainz_API_Connection is not None:
+#                        if mbrainz_api_connection is not None:
 #                            # look at musicbrainz server
 #                            brainz_id = None
-#                            music_data = MBrainz_API_Connection.com_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
+#                            music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
 #                            # TODO  if not, store it
 #                            # TODO  use the metadata id for record update
 #                            metadata_uuid = music_data
@@ -67,5 +67,5 @@ def metadata_music_lookup(db, media_file_path, download_que_id):
 
 #            elif class_text == "Music Album":
 #                # search musicbrainz
-#                #MBrainz_API_Connection.com_Mediabrainz_Get_Releases()
+#                #mbrainz_api_connection.com_Mediabrainz_Get_Releases()
 #                pass
