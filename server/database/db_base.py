@@ -23,7 +23,7 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor
-import db_base_postgresql_ext
+from db_base_postgresql_ext import *
 
 
 def srv_db_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
