@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-from NetflixRoulette import *
+import NetflixRoulette
 
 
 def com_meta_flix_get_all_data(media_title, media_year=None):
