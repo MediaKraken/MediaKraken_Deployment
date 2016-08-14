@@ -19,9 +19,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import json
-from guessit import guessit
 import sys
 sys.path.append("../common")
+from guessit import guessit
 from common import common_thetvdb
 from common import common_metadata_anidb
 from common import common_metadata_imdb
@@ -38,11 +38,11 @@ import metadata_nfo_xml
 
 # verify thetvdb key exists for search
 if Config.get('API', 'theTVdb').strip() != 'None':
-    thetvdb_API_Connection = com_TheTVDB.com_TheTVDB_API()
+    thetvdb_api_connection = common_thetvdb.com_TheTVDB_API()
     # show xml downloader and general api interface
-    thetvdb_API = com_meta_TheTVDB.com_meta_TheTVDB_API()
+    thetvdb_API = common_metadata_thetvdb.com_meta_TheTVDB_API()
 else:
-    thetvdb_API_Connection = None
+    thetvdb_api_connection = None
 
 
 # setup the tvmaze class
@@ -52,15 +52,17 @@ else:
     tvmaze_API_Connection = None
 
 
-# tvdb search
 def tv_search_tvdb(db, file_name):
+    """
+    # tvdb search
+    """
     metadata_uuid = None
-    if thetvdb_API_Connection is not None:
+    if thetvdb_api_connection is not None:
         if 'year' in file_name:
-            tvdb_id = str(thetvdb_API_Connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(thetvdb_api_connection.com_TheTVDB_Search(file_name['title'],\
                 file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(thetvdb_API_Connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(thetvdb_api_connection.com_TheTVDB_Search(file_name['title'],\
                 None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
@@ -73,8 +75,10 @@ def tv_search_tvdb(db, file_name):
     return metadata_uuid
 
 
-# tvdb data fetch
 def tv_fetch_save_tvdb(db, tvdb_id):
+    """
+    # tvdb data fetch
+    """
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\

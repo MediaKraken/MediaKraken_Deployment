@@ -58,13 +58,13 @@ def com_string_password_test(password_text):
     Test password strength
     """
     ratings = (
-      'Infinitely weak',
-      'Extremely weak',
-      'Very weak',
-      'Weak',
-      'Moderately strong',
-      'Strong',
-      'Very strong',
+        'Infinitely weak',
+        'Extremely weak',
+        'Very weak',
+        'Weak',
+        'Moderately strong',
+        'Strong',
+        'Very strong',
     )
     strength, improvements = passwordmeter.test(password_text)
     logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,\
@@ -90,7 +90,7 @@ def com_string_ip_int_to_ascii(ip_int):
     return inet_ntoa(hex(ip_int)[2:-1].zfill(8).decode('hex'))
 
 
-def com_string_unc_to_addr_share_path(unc_path):
+def com_string_unc_to_addr_path(unc_path):
     """
     Break up unc to parts
     """

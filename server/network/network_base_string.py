@@ -51,6 +51,8 @@ class NetworkEvents(Int32StringReceiver):
         self.user_user_name = None
         self.user_slave = False
         self.user_verified = 0
+        self.user_country_code = None
+        self.user_country_name = None
         self.server_ip = common_network.mk_network_get_default_ip()
         # pull in the ini file config
         import ConfigParser
@@ -107,12 +109,12 @@ class NetworkEvents(Int32StringReceiver):
             pass
 # actually processed in "main_link" program!!!!
 #        elif message_words[0] == "RECEIVENEWMEDIA":
-#            self.db.srv_db_Media_Link_New_Data(pickle.loads(messagewords[1])
+#            self.db.srv_db_Media_Link_New_Data(pickle.loads(message_words[1])
         elif message_words[0] == "REQUESTNEWMEDIA":
             msg = "RECEIVENEWMEDIA " + pickle.dumps(\
-                self.db.srv_db_Media_Link_Read_New(pickle.loads(messagewords[1]),\
-                message_Words[2], message_Words[3], message_Words[4], message_Words[5],\
-                message_Words[6], message_Words[7]))
+                self.db.srv_db_Media_Link_Read_New(pickle.loads(message_words[1]),\
+                message_words[2], message_words[3], message_words[4], message_words[5],\
+                message_words[6], message_words[7]))
         elif message_words[0] == "PlayUUID" or message_words[0] == "demo":
  #media_path = self.db.srv_db_media_path_by_uuid('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
             media_path = self.db.srv_db_media_path_by_uuid(message_words[1])[0]
@@ -211,7 +213,7 @@ class NetworkEvents(Int32StringReceiver):
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             logging.debug("should be sending data")
-            self.Send_Single_User(msg)
+            self.send_single_user(msg)
 
 
     def send_single_user(self, message):

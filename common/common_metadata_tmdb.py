@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import re
 import os
 import json
 from common import common_metadata
@@ -41,8 +40,10 @@ class CommonMetadataTMDB(object):
         tmdb.API_KEY = Config.get('API', 'themoviedb').strip()
 
 
-    # search for movie title and year
-    def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
+    def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
+        """
+        # search for movie title and year
+        """
         logging.debug("tmdb search %s %s", movie_title, movie_year)
         search = tmdb.Search()
         response = search.movie(query=movie_title)
@@ -60,8 +61,10 @@ class CommonMetadataTMDB(object):
         return 're', search.results
 
 
-    # search by tmdb
-    def com_tmdb_Metadata_by_ID(self, tmdb_id):
+    def com_tmdb_metadata_by_id(self, tmdb_id):
+        """
+        # search by tmdb
+        """
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.info()
@@ -71,8 +74,10 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    # search by tmdb
-    def com_tmdb_Metadata_Cast_by_ID(self, tmdb_id):
+    def com_tmdb_metadata_cast_by_id(self, tmdb_id):
+        """
+        # search by tmdb
+        """
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.credits()
@@ -82,8 +87,10 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    # review by tmdb
-    def com_tmdb_Metadata_Review_by_ID(self, tmdb_id):
+    def com_tmdb_metadata_review_by_id(self, tmdb_id):
+        """
+        # review by tmdb
+        """
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.reviews()
@@ -102,8 +109,10 @@ class CommonMetadataTMDB(object):
 #    TV Episodes: imdb_id, freebase_mid, freebase_id, tvdb_id, tvrage_id
 
 
-    # search by imdb
-    def com_tmdb_Metadata_by_imdb_ID(self, imdb_id):
+    def com_tmdb_metadata_by_imdb_id(self, imdb_id):
+        """
+        # search by imdb
+        """
         movie = tmdb.Find(imdb_id)
         try:
             metadata = movie.info(external_source='imdb_id')
@@ -113,29 +122,37 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    # movie changes since date within 24 hours
-    def com_tmdb_Metadata_Changes_Movie(self):
+    def com_tmdb_metadata_changes_movie(self):
+        """
+        # movie changes since date within 24 hours
+        """
         changes = tmdb.Changes()
         movie_changes = changes.movie()
         return movie_changes
 
 
-    # tv changes since date within 24 hours
-    def com_tmdb_Metadata_Changes_TV(self):
+    def com_tmdb_metadata_changes_tv(self):
+        """
+        # tv changes since date within 24 hours
+        """
         changes = tmdb.Changes()
         tv_changes = changes.tv()
         return tv_changes
 
 
-    # person changes since date within 24 hours
-    def com_tmdb_Metadata_Changes_Person(self):
+    def com_tmdb_metadata_changes_person(self):
+        """
+        # person changes since date within 24 hours
+        """
         changes = tmdb.Changes()
         person_changes = changes.person()
         return person_changes
 
 
-    # collection info
-    def com_tmdb_Metadata_Collection_by_ID(self, tmdb_id):
+    def com_tmdb_metadata_collection_by_id(self, tmdb_id):
+        """
+        # collection info
+        """
         movie_collection = tmdb.Collections(tmdb_id)
         try:
             metadata = movie_collection.info()
@@ -145,8 +162,10 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    # download info and set data to be ready for insert into database
-    def com_tmdb_MetaData_Info_Build(self, result_json):
+    def com_tmdb_metadata_info_build(self, result_json):
+        """
+        # download info and set data to be ready for insert into database
+        """
         logging.debug('tmdb info build: %s', result_json)
         # create file path for poster
         file_path = common_metadata.com_meta_Image_File_Path(result_json['title'],\

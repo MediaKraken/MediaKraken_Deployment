@@ -18,8 +18,8 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-from kivy.lang import Builder
+#import logging
+#from kivy.lang import Builder
 from kivy.clock import Clock
 from plyer import accelerometer
 from plyer import gps
@@ -61,14 +61,14 @@ def mk_hardware_vibration(pattern_string):
     vibrator.pattern([float(n) for n in ti.text.split(',')])
 
 
-def mk_hardware_vibration_Time(seconds_to_vibrate):
+def mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Vibration via time
     """
     vibrator.vibrate(seconds_to_vibrate)
 
 
-def mk_hardware_vibration_Stop():
+def mk_hardware_vibration_stop():
     """
     Stop vibration
     """
