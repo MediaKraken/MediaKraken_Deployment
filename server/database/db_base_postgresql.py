@@ -17,11 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 
 
 # query provided by postgresql wiki
-def srv_db_postgresql_table_sizes(self):
+def srv_db_pgsql_table_sizes(self):
     """
     # return tables sizes (includex indexes, etc)
     """
@@ -34,7 +34,7 @@ def srv_db_postgresql_table_sizes(self):
 
 
 # query provided by postgresql wiki
-def srv_db_postgresql_row_count(self):
+def srv_db_pgsql_row_count(self):
     """
     # return tables and row count
     """
@@ -43,7 +43,7 @@ def srv_db_postgresql_row_count(self):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_postgresql_vacuum_stat_by_day(self, days=1):
+def srv_db_pgsql_vacuum_stat_by_day(self, days=1):
     """
     # vacuum stats by day list
     """
@@ -60,14 +60,14 @@ def srv_db_postgresql_vacuum_stat_by_day(self, days=1):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_postgresql_vacuum_table(self, table_name):
+def srv_db_pgsql_vacuum_table(self, table_name):
     """
     # vacuum table
     """
     self.sql3_cursor.execute('VACUUM ANALYZE ' + table_name)
 
 
-def srv_db_postgesql_set_isolation_level(self, isolation_level):
+def srv_db_pgsql_set_iso_level(self, isolation_level):
     """
     # set isolation level
     """

@@ -86,5 +86,8 @@ def imvdb_lookup(db, file_name):
 
 
 def metadata_music_video_lookup(db, file_name, download_que_id):
+    """
+    Music Video lookup
+    """
     metadata_uuid = imvdb_lookup(db, file_name)
     return metadata_uuid

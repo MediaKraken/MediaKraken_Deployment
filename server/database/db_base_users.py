@@ -67,9 +67,9 @@ def srv_db_user_login_kodi(self, user_data):
     self.sql3_cursor.execute('select id,password from mm_user where username = %s',\
         (user_data['username'],))
     result = self.sql3_cursor.fetchone()
-    logging.debug("what: $s", result)
+    logging.debug("what: %s", result)
     if result is not None:
-        if user_data['password'] == result['password'] or True: # pass matches 
+        if user_data['password'] == result['password'] or True: # pass matches
             # TODO passowrd validation
             return (result[0], str(uuid.uuid4()))
         else:
