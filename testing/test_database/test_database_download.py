@@ -40,13 +40,13 @@ class TestDatabaseDownload(object):
 
 
     # create/insert a download
-    # def srv_db_Download_Insert(self, provider, down_json):
+    # def srv_db_download_insert(self, provider, down_json):
 #        self.db.srv_db_rollback()
 
 
 #    ## read the download
 # this no longer exists
-#    def Test_srv_db_Download_Read(self):
+#    def test_srv_db_download_read(self):
 #        self.db.srv_db_Download_Read()
 #        self.db.srv_db_rollback()
 
@@ -55,18 +55,18 @@ class TestDatabaseDownload(object):
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),
         ('fakeprovider')])
-    def Test_srv_db_Download_Read_by_Provider(self, provider_name):
-        self.db.srv_db_Download_Read_by_Provider(provider_name)
+    def test_srv_db_download_read_by_provider(self, provider_name):
+        self.db.srv_db_download_read_by_provider(provider_name)
         self.db.srv_db_rollback()
 
 
     # remove download
-    # def srv_db_Download_Delete(self, guid):
+    # def srv_db_download_delete(self, guid):
 #        self.db.srv_db_rollback()
 
 
     # update provdier
-    # def srv_db_download_update_Provider(self, provider_name, guid):
+    # def srv_db_download_update_provider(self, provider_name, guid):
 #        self.db.srv_db_rollback()
 
 

@@ -69,7 +69,7 @@ def test_common_network_emby_find_server():
 # https://github.com/MediaBrowser/Emby/wiki/Latest-Items
 # TODO grouping and such
 # TODO episodes
-# def common_network_Emby_User_LaTest_Items_List(host_server, request_type, request_subtype, request_limit, request_grouping, user_id, headers):
+# def common_network_Emby_User_Latest_Items_List(host_server, request_type, request_subtype, request_limit, request_grouping, user_id, headers):
 
 
 # add new sync job

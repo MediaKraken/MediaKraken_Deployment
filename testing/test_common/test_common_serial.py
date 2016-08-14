@@ -40,13 +40,13 @@ class TestCommonSerial(object):
 #    def MK_Serial_Open_Device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits, dev_bytesize):
 
 
-    def Test_MK_Serial_Read_Device(self):
+    def test_MK_Serial_Read_Device(self):
         self.db.MK_Serial_Read_Device()
 
 
-    def Test_MK_Serial_Close_Device(self):
+    def test_MK_Serial_Close_Device(self):
         self.db.MK_Serial_Close_Device()
 
 
-    def Test_MK_Serial_Write_Device(self):
+    def test_MK_Serial_Write_Device(self):
         self.db.MK_Serial_Write_Device("Test serial message")

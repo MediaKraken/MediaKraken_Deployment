@@ -60,6 +60,6 @@ class TestDatabaseMetadataMusicVideo(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_music_video_list(self, offset, records):
+    def test_srv_db_meta_music_video_list(self, offset, records):
         self.db.srv_db_meta_music_video_list(offset, records)
         self.db.srv_db_rollback()

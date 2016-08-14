@@ -43,7 +43,7 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
-    def Test_srv_db_read_media_Metadata(self, media_guid):
+    def test_srv_db_read_media_Metadata(self, media_guid):
         self.db.srv_db_read_media_Metadata(media_guid)
         self.db.srv_db_rollback()
 
@@ -54,7 +54,7 @@ class TestDatabaseMetadata(object):
 
 
     # count all the generes
-    def Test_srv_db_meta_genre_list_count(self):
+    def test_srv_db_meta_genre_list_count(self):
         self.db.srv_db_meta_genre_list_count()
         self.db.srv_db_rollback()
 
@@ -64,13 +64,13 @@ class TestDatabaseMetadata(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_genre_list(self, offset, records):
+    def test_srv_db_meta_genre_list(self, offset, records):
         self.db.srv_db_meta_genre_list(offset, records)
         self.db.srv_db_rollback()
 
 
     # movie count by genre
-    def Test_srv_db_meta_movie_count_by_genre(self):
+    def test_srv_db_meta_movie_count_by_genre(self):
         self.db.srv_db_meta_movie_count_by_genre()
         self.db.srv_db_rollback()
 
@@ -79,7 +79,7 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('tt0215948'),
         ('fakeid')])
-    def Test_srv_db_meta_GUID_by_imdb(self, uuid):
+    def test_srv_db_meta_GUID_by_imdb(self, uuid):
         self.db.srv_db_meta_GUID_by_imdb(uuid)
         self.db.srv_db_rollback()
 
@@ -93,7 +93,7 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def Test_srv_db_meta_guid_by_tmdb(self, uuid):
+    def test_srv_db_meta_guid_by_tmdb(self, uuid):
         self.db.srv_db_meta_guid_by_tmdb(uuid)
         self.db.srv_db_rollback()
 
@@ -112,7 +112,7 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('71444'),
         ('fakeid')])
-    def Test_srv_db_meta_tmdb_count(self, uuid):
+    def test_srv_db_meta_tmdb_count(self, uuid):
         self.db.srv_db_meta_tmdb_count(uuid)
         self.db.srv_db_rollback()
 
@@ -122,7 +122,7 @@ class TestDatabaseMetadata(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_movie_list(self, offset, records):
+    def test_srv_db_meta_movie_list(self, offset, records):
         self.db.srv_db_meta_movie_list(offset, records)
         self.db.srv_db_rollback()
 
@@ -136,7 +136,7 @@ class TestDatabaseMetadata(object):
         ('Robocop', '1987'),
         ('Robocop', '2020'),
         ('FakeZZ', '2050')])
-    def Test_srv_db_find_metadata_guid(self, media_name, media_year):
+    def test_srv_db_find_metadata_guid(self, media_name, media_year):
         self.db.srv_db_find_metadata_guid(media_name, media_year)
         self.db.srv_db_rollback()
 

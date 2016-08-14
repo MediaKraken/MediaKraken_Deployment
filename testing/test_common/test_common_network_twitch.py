@@ -40,19 +40,19 @@ class TestCommonTwitch(object):
     @pytest.mark.parametrize(("stream_limit"), [
         (0),
         (5)])
-    def Test_com_Twitch_Get_All_Streams(self, stream_limit):
+    def test_com_Twitch_Get_All_Streams(self, stream_limit):
         self.db.com_Twitch_Get_All_Streams(stream_limit)
 
 
-    def Test_com_Twitch_Get_Featured_Streams(self):
+    def test_com_Twitch_Get_Featured_Streams(self):
         self.db.com_Twitch_Get_Featured_Streams()
 
 
-    def Test_com_Twitch_Get_Summary(self):
+    def test_com_Twitch_Get_Summary(self):
         self.db.com_Twitch_Get_Summary()
 
 
-    def Test_com_Twitch_Get_Summary_Viewers(self):
+    def test_com_Twitch_Get_Summary_Viewers(self):
         self.db.com_Twitch_Get_Summary_Viewers()
 
 

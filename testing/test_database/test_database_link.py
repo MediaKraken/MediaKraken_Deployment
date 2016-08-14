@@ -39,8 +39,8 @@ class TestDatabaseLink(object):
         self.db.srv_db_close()
 
 
-    def Test_srv_db_Link_List_Count(self):
-        self.db.srv_db_Link_List_Count()
+    def test_srv_db_link_list_count(self):
+        self.db.srv_db_link_list_count()
         self.db.srv_db_rollback()
 
 
@@ -49,8 +49,8 @@ class TestDatabaseLink(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Link_List(self, offset, records):
-        self.db.srv_db_Link_List(offset, records)
+    def test_srv_db_link_list(self, offset, records):
+        self.db.srv_db_link_list(offset, records)
         self.db.srv_db_rollback()
 
 

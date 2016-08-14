@@ -41,7 +41,7 @@ class TestCommonDatabaseOctmote(object):
 #def com_db_Layout_Config_Insert(layout_record_name, layout_record_json):
 
 
-    def Test_com_db_Layout_List(self):
+    def test_com_db_Layout_List(self):
         com_db_Layout_List()
 
 
@@ -52,7 +52,7 @@ class TestCommonDatabaseOctmote(object):
 #def com_db_Device_Insert(device_record_name, device_record_description):
 
 
-    def Test_com_db_Device_List(self):
+    def test_com_db_Device_List(self):
         self.db.com_db_Device_List()
 
 
@@ -63,7 +63,7 @@ class TestCommonDatabaseOctmote(object):
 #def com_db_Item_Insert(item_record_json):
 
 
-    def Test_com_db_Item_List(self):
+    def test_com_db_Item_List(self):
         self.db.com_db_Item_List()
 
 

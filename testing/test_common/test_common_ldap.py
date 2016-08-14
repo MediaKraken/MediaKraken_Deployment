@@ -45,14 +45,14 @@ class TestCommonLDAP(object):
         ("metaman", "metaman", True),
         ("metaman", "metaman_fake", False),
         ("metaman_fake", "metaman_fake", False)])
-    def Test_com_LDAP_Logon(self, user_name, user_password, expected_result):
+    def test_com_LDAP_Logon(self, user_name, user_password, expected_result):
         """
         Test ldap login
         """
         com_LDAP_Logon(user_name, user_password, expected_result)
 
 
-    def Test_com_LDAP_Close(self):
+    def test_com_LDAP_Close(self):
         """
         Test ldap close
         """

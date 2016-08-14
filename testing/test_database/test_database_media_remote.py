@@ -50,7 +50,7 @@ class TestDatabaseMediaRemote(object):
 
 
     # count known media
-    def Test_srv_db_known_remote_media_count(self):
+    def test_srv_db_known_remote_media_count(self):
         self.db.srv_db_known_remote_media_count()
         self.db.srv_db_rollback()
 

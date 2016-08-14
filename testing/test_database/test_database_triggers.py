@@ -45,7 +45,7 @@ class TestDatabaseTriggers(object):
 
 
     # read the triggers
-    def Test_srv_db_triggers_read(self):
+    def test_srv_db_triggers_read(self):
         self.db.srv_db_triggers_read()
         self.db.srv_db_rollback()
 

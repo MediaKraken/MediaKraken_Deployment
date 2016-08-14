@@ -40,11 +40,11 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Login(self, user_name, user_password):
 
 
-    def Test_com_Schedules_Direct_Status(self):
+    def test_com_Schedules_Direct_Status(self):
         com_Schedules_Direct_Status()
 
 
-    def Test_com_Schedules_Direct_Client_Version(self):
+    def test_com_Schedules_Direct_Client_Version(self):
         com_Schedules_Direct_Client_Version()
 
 
@@ -57,7 +57,7 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Lineup_Add(self, lineup_id):
 
 
-    def Test_com_Schedules_Direct_Lineup_List(self):
+    def test_com_Schedules_Direct_Lineup_List(self):
         com_Schedules_Direct_Lineup_List()
 
 

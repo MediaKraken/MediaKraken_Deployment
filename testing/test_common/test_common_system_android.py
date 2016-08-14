@@ -38,7 +38,7 @@ class TestAndroidHardwareInstance(object):
 
 
     # return the dpi for the device
-    def Test_MK_Android_Get_DPI(self):
+    def test_MK_Android_Get_DPI(self):
         MK_Android_Get_DPI()
 
 
@@ -46,7 +46,7 @@ class TestAndroidHardwareInstance(object):
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def Test_MK_Android_Vibrate(self, vibrate_time):
+    def test_MK_Android_Vibrate(self, vibrate_time):
         MK_Android_Vibrate(vibrate_time)
 
 
@@ -54,5 +54,5 @@ class TestAndroidHardwareInstance(object):
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def Test_MK_Android_Motion(self, time_range):
+    def test_MK_Android_Motion(self, time_range):
         MK_Android_Motion(time_range)

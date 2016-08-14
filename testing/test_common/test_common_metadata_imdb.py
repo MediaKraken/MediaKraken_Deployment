@@ -38,7 +38,7 @@ class TestCommonimdb(object):
 
 
     # fetch info from title
-    def Test_com_imdb_Title_Search(self):
+    def test_com_imdb_Title_Search(self):
         com_imdb_Title_Search("Robocop")
 
 

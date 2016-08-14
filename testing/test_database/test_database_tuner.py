@@ -40,7 +40,7 @@ class TestDatabaseTuner(object):
 
 
     # count tuners
-    def Test_srv_db_tuner_count(self):
+    def test_srv_db_tuner_count(self):
         self.db.srv_db_tuner_count()
         self.db.srv_db_rollback()
 
@@ -50,7 +50,7 @@ class TestDatabaseTuner(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_tuner_list(self, offset, records):
+    def test_srv_db_tuner_list(self, offset, records):
         self.db.srv_db_tuner_list(offset, records)
         self.db.srv_db_rollback()
 

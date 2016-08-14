@@ -40,7 +40,7 @@ class TestDatabaseUsers(object):
 
 
     # return user count
-    def Test_srv_db_User_List_Name_Count(self):
+    def test_srv_db_User_List_Name_Count(self):
         self.db.srv_db_User_List_Name_Count()
         self.db.srv_db_rollback()
 
@@ -50,7 +50,7 @@ class TestDatabaseUsers(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_User_List_Name(self, offset, records):
+    def test_srv_db_User_List_Name(self, offset, records):
         self.db.srv_db_User_List_Name(offset, records)
         self.db.srv_db_rollback()
 

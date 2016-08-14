@@ -41,5 +41,5 @@ class TestCommonISO(object):
     @pytest.mark.parametrize(("url_file"), [
         ("./cache/cache.iso"),
         ("./cache/cache_fake.iso")])
-    def Test_com_ISO_Load(url_file):
+    def test_com_ISO_Load(url_file):
         com_ISO_Load(url_file)

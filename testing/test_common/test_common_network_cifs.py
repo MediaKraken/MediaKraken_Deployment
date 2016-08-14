@@ -64,7 +64,7 @@ class TestCommonCIFSShare(object):
 
 
     # list shares
-    def Test_common_cifs_Share_List_by_Connection(self):
+    def test_common_cifs_Share_List_by_Connection(self):
         common_cifs_Share_List_by_Connection()
 
 
@@ -93,7 +93,7 @@ class TestCommonCIFSShare(object):
 
 
     # close connection
-    def Test_common_cifs_Close(self):
+    def test_common_cifs_Close(self):
         common_cifs_Close()
 
 

@@ -37,7 +37,7 @@ class TestCommonTransmission(object):
         pass
 
 
-    def Test_common_transmission_Get_Torrent_List(self):
+    def test_common_transmission_Get_Torrent_List(self):
         common_transmission_Get_Torrent_List()
 
 

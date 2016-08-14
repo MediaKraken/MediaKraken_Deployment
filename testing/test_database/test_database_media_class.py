@@ -40,7 +40,7 @@ class TestDatabaseMediaClass(object):
 
 
     # count media class
-    def Test_srv_db_media_class_list_count(self):
+    def test_srv_db_media_class_list_count(self):
         self.db.srv_db_media_class_list_count()
         self.db.srv_db_rollback()
 
@@ -50,7 +50,7 @@ class TestDatabaseMediaClass(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_srv_db_media_class_list(self, offset, records):
+    def test_srv_db_media_class_list(self, offset, records):
         self.db.srv_db_media_class_list(offset, records)
         self.db.srv_db_rollback()
 
@@ -59,7 +59,7 @@ class TestDatabaseMediaClass(object):
     @pytest.mark.parametrize(("class_uuid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exist
         ('928c56c3-253d-4e30-924e-5698be6d3d37')])  # not exist
-    def Test_srv_db_media_class_by_uuid(self, class_uuid):
+    def test_srv_db_media_class_by_uuid(self, class_uuid):
         self.db.srv_db_media_class_by_uuid(class_uuid)
         self.db.srv_db_rollback()
 
@@ -68,6 +68,6 @@ class TestDatabaseMediaClass(object):
     @pytest.mark.parametrize(("class_text"), [
         ('Movie'),
         ('fakestuff')])
-    def Test_srv_db_media_uuid_by_class(self, class_text):
+    def test_srv_db_media_uuid_by_class(self, class_text):
         self.db.srv_db_media_uuid_by_class(class_text)
         self.db.srv_db_rollback()

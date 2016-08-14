@@ -47,7 +47,7 @@ class TestCommonDatabaseEmby(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_com_db_Movie_List_Emby(self, offset, records):
+    def test_com_db_Movie_List_Emby(self, offset, records):
         self.db.com_db_Movie_List_Emby(offset, records)
 
 
@@ -66,7 +66,7 @@ class TestCommonDatabaseEmby(object):
 
 
     # grab all the tv episodes in the emby database count
-    def Test_com_db_TV_List_Emby_Count(self):
+    def test_com_db_TV_List_Emby_Count(self):
         self.db.com_db_TV_List_Emby_Count()
 
 
@@ -75,12 +75,12 @@ class TestCommonDatabaseEmby(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_com_db_TV_Movie_List_Emby(self, offset, records):
+    def test_com_db_TV_Movie_List_Emby(self, offset, records):
         self.db.com_db_TV_Movie_List_Emby(offset, records)
 
 
     # grab all the tv episodes and movies in the emby database count
-    def Test_com_db_TV_Movie_List_Emby_Count(self):
+    def test_com_db_TV_Movie_List_Emby_Count(self):
         self.db.com_db_TV_Movie_List_Emby_Count()
 
 
@@ -89,7 +89,7 @@ class TestCommonDatabaseEmby(object):
 
 
     # grab count of all users
-    def Test_com_db_Users_List_Count(self):
+    def test_com_db_Users_List_Count(self):
         self.db.com_db_Users_List_Count()
 
 
@@ -111,7 +111,7 @@ class TestCommonDatabaseEmby(object):
 
 
     # grab all activity data count
-    def Test_com_db_Emby_Activity_List_Count(self):
+    def test_com_db_Emby_Activity_List_Count(self):
         self.db.com_db_Emby_Activity_List_Count()
 
 
@@ -120,12 +120,12 @@ class TestCommonDatabaseEmby(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_MK_Databas_Sqlite3_Emby_Notification_List(self, offset, records):
+    def test_MK_Databas_Sqlite3_Emby_Notification_List(self, offset, records):
         self.db.MK_Databas_Sqlite3_Emby_Notification_List(offset, records)
 
 
     # grab notification  data count
-    def Test_com_db_Emby_Notification_List_Count(self):
+    def test_com_db_Emby_Notification_List_Count(self):
         self.db.com_db_Emby_Notification_List_Count()
 
 
@@ -134,12 +134,12 @@ class TestCommonDatabaseEmby(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_com_db_Emby_Sync_List(self, offset, records):
+    def test_com_db_Emby_Sync_List(self, offset, records):
         self.db.com_db_Emby_Sync_List(offset, records):
 
 
     # grab notification  data count
-    def Test_com_db_Emby_Sync_List_Count(self):
+    def test_com_db_Emby_Sync_List_Count(self):
         self.db.com_db_Emby_Sync_List_Count()
 
 
@@ -148,5 +148,5 @@ class TestCommonDatabaseEmby(object):
 
 
     # all data from users for playback
-    def Test_com_db_User_Play_Data(self):
+    def test_com_db_User_Play_Data(self):
         self.db.com_db_User_Play_Data()

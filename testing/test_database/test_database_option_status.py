@@ -39,7 +39,7 @@ class TestDatabaseOptionStatus(object):
         self.db.srv_db_close()
 
 
-    def Test_srv_db_Option_Status_Read(self):
+    def test_srv_db_Option_Status_Read(self):
         self.db.srv_db_Option_Status_Read()
         self.db.srv_db_rollback()
 

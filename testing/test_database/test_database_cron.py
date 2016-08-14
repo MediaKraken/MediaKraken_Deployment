@@ -40,17 +40,17 @@ class TestDatabaseCron(object):
 
 
     # return cron count
-    def Test_srv_db_Cron_List_Count(self):
+    def test_srv_db_Cron_List_Count(self):
         self.db.srv_db_Cron_List_Count()
         self.db.srv_db_rollback()
 
 
-    def Test_srv_db_Cron_List_Count_False(self):
+    def test_srv_db_Cron_List_Count_False(self):
         self.db.srv_db_Cron_List_Count(False)
         self.db.srv_db_rollback()
 
 
-    def Test_srv_db_Cron_List_Count_True(self):
+    def test_srv_db_Cron_List_Count_True(self):
         self.db.srv_db_Cron_List_Count(True)
         self.db.srv_db_rollback()
 
@@ -63,7 +63,7 @@ class TestDatabaseCron(object):
         (True, None, None),
         (True, 100, 100),
         (True, 100000000, 1000)])
-    def Test_srv_db_Cron_List(self, enabled_only, offset, records):
+    def test_srv_db_Cron_List(self, enabled_only, offset, records):
         self.db.srv_db_Cron_List(enabled_only, offset, records)
         self.db.srv_db_rollback()
 

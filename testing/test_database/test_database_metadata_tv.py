@@ -65,7 +65,7 @@ class TestDatabaseMetadataTV(object):
 
 
     # tvshow count
-    def Test_srv_db_meta_tvshow_list_count(self):
+    def test_srv_db_meta_tvshow_list_count(self):
         self.db.srv_db_meta_tvshow_list_count()
         self.db.srv_db_rollback()
 
@@ -75,7 +75,7 @@ class TestDatabaseMetadataTV(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_tvshow_list(self, offset, records):
+    def test_srv_db_meta_tvshow_list(self, offset, records):
         self.db.srv_db_meta_tvshow_list(offset, records)
         self.db.srv_db_rollback()
 

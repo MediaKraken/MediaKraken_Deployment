@@ -27,5 +27,5 @@ from com_meta_chart_lyrics import *
 @pytest.mark.parametrize(("band_name", "song_name"), [
     ("Megadeath", "Peace Sells"),
     ("Fakebandofdoom", "Fakesongofdoom")])
-def Test_com_meta_chart_lyrics(band_name, song_name):
+def test_com_meta_chart_lyrics(band_name, song_name):
     com_meta_chart_lyrics(band_name, song_name)

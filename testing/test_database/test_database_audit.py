@@ -40,8 +40,8 @@ class TestDatabaseAudit(object):
 
 
     ## read scan status
-    def Test_srv_db_Audit_Path_Status(self):
-        self.db.srv_db_Audit_Path_Status()
+    def test_srv_db_audit_path_status(self):
+        self.db.srv_db_audit_path_status()
         self.db.srv_db_rollback()
 
 
@@ -51,8 +51,8 @@ class TestDatabaseAudit(object):
 
 
     ## read the paths to audit
-    def Test_srv_db_Audit_Paths_Count(self):
-        self.db.srv_db_Audit_Paths_Count()
+    def test_srv_db_audit_paths_count(self):
+        self.db.srv_db_audit_paths_count()
         self.db.srv_db_rollback()
 
 
@@ -75,8 +75,8 @@ class TestDatabaseAudit(object):
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
-    def Test_srv_db_Audit_Path_Check(self, dir_path):
-        self.db.srv_db_Audit_Path_Check(dir_path)
+    def test_srv_db_audit_path_check(self, dir_path):
+        self.db.srv_db_audit_path_check(dir_path)
         self.db.srv_db_rollback()
 
 
@@ -90,8 +90,8 @@ class TestDatabaseAudit(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Audit_Paths(self, offset, records):
-        self.db.srv_db_Audit_Paths(offset, records)
+    def test_srv_db_audit_paths(self, offset, records):
+        self.db.srv_db_audit_paths(offset, records)
         self.db.srv_db_rollback()
 
 

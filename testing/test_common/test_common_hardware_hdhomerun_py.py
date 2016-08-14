@@ -38,12 +38,12 @@ class TestCommonHardwareHDHomeRunPy(object):
 
 
     # discover items
-    def Test_com_HDHomeRun_Discover(self):
+    def test_com_HDHomeRun_Discover(self):
         com_HDHomeRun_Discover()
 
 
     # item list
-    def Test_com_HDHomeRun_List(self):
+    def test_com_HDHomeRun_List(self):
         com_HDHomeRun_List()
 
 
@@ -62,6 +62,6 @@ class TestCommonHardwareHDHomeRunPy(object):
 #    def scan(self, device_adapter):
 
 
-    def Test_get_count(self):
+    def test_get_count(self):
         get_count()
 

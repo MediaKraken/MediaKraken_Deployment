@@ -40,13 +40,13 @@ class TestDatabaseTVSchedule(object):
 
 
     # read the stations
-    def Test_srv_db_tv_stations_read(self):
+    def test_srv_db_tv_stations_read(self):
         self.db.srv_db_tv_stations_read()
         self.db.srv_db_rollback()
 
 
     # read the stationid list
-    def Test_srv_db_tv_stations_read_StationID_List(self):
+    def test_srv_db_tv_stations_read_StationID_List(self):
         self.db.srv_db_tv_stations_read_StationID_List()
         self.db.srv_db_rollback()
 

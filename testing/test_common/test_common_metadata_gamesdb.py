@@ -37,7 +37,7 @@ class TestCommonMetadataGamesDB(object):
         pass
 
 
-    def Test_com_meta_GamesDB_Platform_List(self):
+    def test_com_meta_GamesDB_Platform_List(self):
         com_meta_GamesDB_Platform_List()
 
 
@@ -45,12 +45,12 @@ class TestCommonMetadataGamesDB(object):
 
 
     # 'mega man' as mega OR man
-    def Test_com_meta_GamesDB_Games_by_Name_Or(self):
+    def test_com_meta_GamesDB_Games_by_Name_Or(self):
         com_meta_GamesDB_Games_by_Name_Or("Mega Man")
 
 
     # 'mega man' as mega AND man
-    def Test_com_meta_GamesDB_Games_by_Name_And(self):
+    def test_com_meta_GamesDB_Games_by_Name_And(self):
         com_meta_GamesDB_Games_by_Name_And("Mega Man")
 
 

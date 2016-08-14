@@ -42,7 +42,7 @@ class TestCommonMetadatatvmaze(object):
 
 
     # show when last updated
-    def Test_com_meta_TheMaze_Show_Updated(self):
+    def test_com_meta_TheMaze_Show_Updated(self):
         self.db.com_meta_TheMaze_Show_Updated()
 
 

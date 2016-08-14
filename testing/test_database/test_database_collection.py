@@ -44,13 +44,13 @@ class TestDatabaseCollection(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_collection_list(self, offset, records):
+    def test_srv_db_collection_list(self, offset, records):
         self.db.srv_db_collection_list(offset, records)
         self.db.srv_db_rollback()
 
 
     # read collection data from json metadata
-    def Test_srv_db_media_collection_scan(self):
+    def test_srv_db_media_collection_scan(self):
         self.db.srv_db_media_collection_scan()
         self.db.srv_db_rollback()
 
@@ -59,7 +59,7 @@ class TestDatabaseCollection(object):
     @pytest.mark.parametrize(("collection_name"), [
         ('Darko Collection'),
         ('fakecollectionstuff')])
-    def Test_srv_db_collection_guid_by_name(self, collection_name):
+    def test_srv_db_collection_guid_by_name(self, collection_name):
         self.db.srv_db_collection_guid_by_name(collection_name)
         self.db.srv_db_rollback()
 

@@ -50,7 +50,7 @@ class TestDatabaseSync(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_Sync_List(self, offset, records):
+    def test_srv_db_Sync_List(self, offset, records):
         self.db.srv_db_Sync_List(offset, records)
         self.db.srv_db_rollback()
 

@@ -40,25 +40,25 @@ class TestCommonpitchfork(object):
     @pytest.mark.parametrize(("artist_name", "album_title"), [
         ("Megadeath", "Youthanasia"),
         ("FakeBand", "FakeAlbum")])
-    def Test_com_pitchfork_Search(self, artist_name, album_title):
+    def test_com_pitchfork_Search(self, artist_name, album_title):
         self.db.com_pitchfork_Search(artist_name, album_title)
 
 
-    def Test_com_pitchfork_Album_Title(self):
+    def test_com_pitchfork_Album_Title(self):
         self.db.com_pitchfork_Album_Title()
 
 
-    def Test_com_pitchfork_Album_Label(self):
+    def test_com_pitchfork_Album_Label(self):
         self.db.com_pitchfork_Album_Label()
 
 
-    def Test_com_pitchfork_Album_Review(self):
+    def test_com_pitchfork_Album_Review(self):
         self.db.com_pitchfork_Album_Review()
 
 
-    def Test_com_pitchfork_Album_Cover_Art_Link(self):
+    def test_com_pitchfork_Album_Cover_Art_Link(self):
         self.db.com_pitchfork_Album_Cover_Art_Link()
 
 
-    def Test_com_pitchfork_Album_Review_Score(self):
+    def test_com_pitchfork_Album_Review_Score(self):
         self.db.com_pitchfork_Album_Review_Score()

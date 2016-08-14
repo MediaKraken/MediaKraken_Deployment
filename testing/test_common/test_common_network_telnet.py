@@ -40,10 +40,10 @@ class TestCommonTelnet(object):
 #    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
 
 
-    def Test_MK_Telnet_Read_Device(self):
+    def test_MK_Telnet_Read_Device(self):
         MK_Telnet_Read_Device()
 
 
-    def Test_MK_Telnet_Write_Device(self):
+    def test_MK_Telnet_Write_Device(self):
         MK_Telnet_Write_Device("Telnet test message")
 

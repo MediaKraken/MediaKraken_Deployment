@@ -39,10 +39,10 @@ class TestDatabaseKodi(object):
         self.db.srv_db_close()
 
 
-    # def srv_db_Kodi_User_Sync_List_Added(self, synctime):
+    # def srv_db_kodi_user_sync_list_added(self, synctime):
 #        self.db.srv_db_rollback()
 
 
     # sync data
-    # def srv_db_Kodi_User_Sync(self, synctime):
+    # def srv_db_kodi_user_sync(self, synctime):
 #        self.db.srv_db_rollback()

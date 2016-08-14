@@ -41,7 +41,7 @@ class TestiOSHardwareInstance(object):
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def Test_MK_iOS_Motion(self, time_range):
+    def test_MK_iOS_Motion(self, time_range):
         MK_iOS_Motion(time_range)
 
 
@@ -49,7 +49,7 @@ class TestiOSHardwareInstance(object):
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def Test_MK_iOS_Gyro(self, time_range):
+    def test_MK_iOS_Gyro(self, time_range):
         MK_iOS_Gyro(time_range)
 
 
@@ -57,5 +57,5 @@ class TestiOSHardwareInstance(object):
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def Test_MK_iOS_Magnetometer(self, time_range):
+    def test_MK_iOS_Magnetometer(self, time_range):
         MK_iOS_Magnetometer(time_range)

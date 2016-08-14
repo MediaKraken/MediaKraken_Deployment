@@ -44,7 +44,7 @@ class TestCommonimvdb(object):
         ('Megadeath', 'Trust'),
         ('Garbage', 'Empty'),
         ('fake', 'fake')])
-    def Test_com_imvdb_Search_Video(self, artist_name, song_title):
+    def test_com_imvdb_Search_Video(self, artist_name, song_title):
         com_imvdb_Search_Video(artist_name, song_title)
 
 
@@ -52,5 +52,5 @@ class TestCommonimvdb(object):
         ('Megadeath'),
         ('Garbage'),
         ('fake')])
-    def Test_com_imvdb_Search_Entities(self, artist_name):
+    def test_com_imvdb_Search_Entities(self, artist_name):
         com_imvdb_Search_Entities(artist_name)

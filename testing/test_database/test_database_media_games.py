@@ -40,7 +40,7 @@ class TestDatabaseMediaGames(object):
 
 
     # audited system list count
-    def Test_com_media_game_system_list_count(self):
+    def test_com_media_game_system_list_count(self):
         self.db.com_media_game_system_list_count()
         self.db.srv_db_rollback()
 
@@ -50,7 +50,7 @@ class TestDatabaseMediaGames(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_com_media_game_system_list(self, offset, records):
+    def test_com_media_game_system_list(self, offset, records):
         self.db.com_media_game_system_list(offset, records)
         self.db.srv_db_rollback()
 
@@ -66,7 +66,7 @@ class TestDatabaseMediaGames(object):
 
 
     # audited games list count
-    def Test_com_media_game_list_count(self):
+    def test_com_media_game_list_count(self):
         self.db.com_media_game_list_count()
         self.db.srv_db_rollback()
 
@@ -76,6 +76,6 @@ class TestDatabaseMediaGames(object):
         (None, None),
         (100,100),
         (100000000,1000)])
-    def Test_com_media_game_list(self, offset, records):
+    def test_com_media_game_list(self, offset, records):
         self.db.com_media_game_list(offset, records)
         self.db.srv_db_rollback()

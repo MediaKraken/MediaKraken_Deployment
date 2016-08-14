@@ -38,7 +38,7 @@ class TestCommonBackupBackblaze(object):
         pass
 
 
-    def Test_com_Backup_Backblaze_Bucket_List(self):
+    def test_com_Backup_Backblaze_Bucket_List(self):
         self.db.com_Backup_Backblaze_Bucket_List()
 
 
@@ -46,7 +46,7 @@ class TestCommonBackupBackblaze(object):
         ("bucket_upload"),
         ("bucket_test"),
         ("bucket_test")]) # for duplicate
-    def Test_com_Backup_Backblaze_Bucket_Create(self, bucket_name):
+    def test_com_Backup_Backblaze_Bucket_Create(self, bucket_name):
         com_Backup_Backblaze_Bucket_Create(bucket_name)
 
 
@@ -55,7 +55,7 @@ class TestCommonBackupBackblaze(object):
         ("./cache/HashCalc.txt", "bucket_upload_fake", None),
         ("./cache/HashCalcfake.txt", "bucket_upload", None),
         ("./cache/HashCalc.txt", "bucket_test", "test")])
-    def Test_com_Backup_Backblaze_Upload_File(self, file_name, bucket_name, file_password):
+    def test_com_Backup_Backblaze_Upload_File(self, file_name, bucket_name, file_password):
         com_Backup_Backblaze_Upload_File(file_name, bucket_name, file_password)
 
 
@@ -63,7 +63,7 @@ class TestCommonBackupBackblaze(object):
         ("./cache", "bucket_upload", None),
         ("./cachefake", "bucket_upload_fake", None),
         ("./cache", "bucket_test", "test")])
-    def Test_com_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name,\
+    def test_com_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name,\
             dir_password=None):
         com_Backup_Backblaze_Upload_Directory(dir_name, bucket_name, dir_password)
 

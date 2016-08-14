@@ -84,7 +84,7 @@ class TestDatabaseMetadataMusic(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_album_list(self, offset, records):
+    def test_srv_db_meta_album_list(self, offset, records):
         self.db.srv_db_meta_album_list(offset, records)
         self.db.srv_db_rollback()
 
@@ -94,6 +94,6 @@ class TestDatabaseMetadataMusic(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def Test_srv_db_meta_muscian_list(self, offset, records):
+    def test_srv_db_meta_muscian_list(self, offset, records):
         self.db.srv_db_meta_muscian_list(offset, records)
         self.db.srv_db_rollback()

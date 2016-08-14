@@ -40,8 +40,8 @@ class TestDatabaseDevices(object):
 
 
     # count device
-    def Test_srv_db_Device_Count(self):
-        self.db.srv_db_Device_Count()
+    def test_srv_db_device_count(self):
+        self.db.srv_db_device_count()
         self.db.srv_db_rollback()
 
 
@@ -53,26 +53,26 @@ class TestDatabaseDevices(object):
         ('Nas', None, None),
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
-    def Test_srv_db_Device_List(self, device_type, offset, records):
-        self.db.srv_db_Device_List(device_type, offset, records)
+    def test_srv_db_device_list(self, device_type, offset, records):
+        self.db.srv_db_device_list(device_type, offset, records)
         self.db.srv_db_rollback()
 
 
     # insert record
-    # def srv_db_Device_Insert(self, device_type, device_json):
+    # def srv_db_device_insert(self, device_type, device_json):
 #        self.db.srv_db_rollback()
 
 
     # update record
-    # def srv_db_Device_Update(self, guid, device_type, device_json):
+    # def srv_db_device_update(self, guid, device_type, device_json):
 #        self.db.srv_db_rollback()
 
 
     # delete record
-    # def srv_db_Device_Delete(self, guid):
+    # def srv_db_device_delete(self, guid):
 #        self.db.srv_db_rollback()
 
 
     # find detials by id
-    # def srv_db_Device_Read(self, guid):
+    # def srv_db_device_read(self, guid):
 #        self.db.srv_db_rollback()
