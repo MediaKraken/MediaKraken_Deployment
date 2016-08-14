@@ -18,22 +18,21 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-from twisted.internet.protocol import Factory, Protocol
-from twisted.protocols.basic import Int32StringReceiver
 import json
 import os
 import signal
 import sys
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Common/lib")
-import ip2country
-from common import common_logging
-from common import common_network
+sys.path.append("../common")
+sys.path.append("../common/lib")
 import subprocess
 try:
     import cPickle as pickle
 except:
     import pickle
+from twisted.internet.protocol import Factory, Protocol
+from twisted.protocols.basic import Int32StringReceiver
+import ip2country
+from common import common_network
 
 
 class NetworkEvents(Int32StringReceiver):
@@ -85,35 +84,38 @@ class NetworkEvents(Int32StringReceiver):
         Message received from client
         """
         msg = None
-        messageWords = data.split(' ')
+        message_words = data.split(' ')
         logging.debug('GOT Data: %s', data)
-        logging.debug('Message: %s', messageWords[0])
-        if messageWords[0] == "VALIDATE":
+        logging.debug('Message: %s', message_words[0])
+        if message_words[0] == "VALIDATE":
             # have to create the self.player data so network knows how to send data back
-            self.user_host_name = messageWords[1]
+            self.user_host_name = message_words[1]
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
-            self.user_user_name = messageWords[1]
+            self.user_user_name = message_words[1]
             # lookup the country
             country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
-            self.users[messageWords[1]] = self
+            self.users[message_words[1]] = self
             logging.debug("user: %s %s", self.user_host_name, self.user_ip_addy)
             if self.user_user_name == 'link':
                 pass
-        elif messageWords[0] == "PING":  # Client_Network
+        elif message_words[0] == "PING":  # Client_Network
             msg = "PONG"
         # user commands
-        elif messageWords[0] == "LOGIN":
+        elif message_words[0] == "LOGIN":
             pass
 # actually processed in "main_link" program!!!!
-#        elif messageWords[0] == "RECEIVENEWMEDIA":
+#        elif message_words[0] == "RECEIVENEWMEDIA":
 #            self.db.srv_db_Media_Link_New_Data(pickle.loads(messagewords[1])
-        elif messageWords[0] == "REQUESTNEWMEDIA":
-            msg = "RECEIVENEWMEDIA " + pickle.dumps(self.db.srv_db_Media_Link_Read_New(pickle.loads(messagewords[1]), message_Words[2], message_Words[3], message_Words[4], message_Words[5], message_Words[6], message_Words[7]))
-        elif messageWords[0] == "PlayUUID" or messageWords[0] == "demo":
-            #media_path = self.db.srv_db_media_path_by_uuid('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
-            media_path = self.db.srv_db_media_path_by_uuid(messageWords[1])[0]
+        elif message_words[0] == "REQUESTNEWMEDIA":
+            msg = "RECEIVENEWMEDIA " + pickle.dumps(\
+                self.db.srv_db_Media_Link_Read_New(pickle.loads(messagewords[1]),\
+                message_Words[2], message_Words[3], message_Words[4], message_Words[5],\
+                message_Words[6], message_Words[7]))
+        elif message_words[0] == "PlayUUID" or message_words[0] == "demo":
+ #media_path = self.db.srv_db_media_path_by_uuid('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
+            media_path = self.db.srv_db_media_path_by_uuid(message_words[1])[0]
             if media_path is not None:
                 if True:
                     # launch and attach to local running ffserver
@@ -126,83 +128,96 @@ class NetworkEvents(Int32StringReceiver):
                     # tell slave to fire up the media
                     http_link = None
             msg = 'VIDPLAY ' + http_link
-        elif messageWords[0] == "FlagMismatchUUID":
+        elif message_words[0] == "FlagMismatchUUID":
             pass
-        elif messageWords[0] == "MediaIDUpdateUUID":
+        elif message_words[0] == "MediaIDUpdateUUID":
             # media id, metadata id
-            self.db.srv_db_update_media_id(messageWords[1], messageWords[2])
+            self.db.srv_db_update_media_id(message_words[1], message_words[2])
         # metadata commands
-        elif messageWords[0] == "IMAGE":
+        elif message_words[0] == "IMAGE":
             lookup_id = None
             uuid_found = False
-            # messageWords[1] is returned to show client which one is being refreshed
+            # message_words[1] is returned to show client which one is being refreshed
             media_id = None
-            if messageWords[3] == 'None': # random movie selection
-                if messageWords[2] == "MOVIE":
+            if message_words[3] == 'None': # random movie selection
+                if message_words[2] == "MOVIE":
                     try:
-                        lookup_id, media_id = self.db.srv_db_media_random(messageWords[5])
+                        lookup_id, media_id = self.db.srv_db_media_random(message_words[5])
                     except:
                         pass
             else:
                 # fetch specific id
                 try:
-                    lookup_id = json.loads(self.db.srv_db_media_image_path(messageWords[3])[0])[messageWords[4]] # use this to grab file path
+                    lookup_id = json.loads(self.db.srv_db_media_image_path(message_words[3])[0])\
+                        [message_words[4]] # use this to grab file path
                 except:
                     pass
             if lookup_id is not None:
-                msg = "IMAGE " + pickle.dumps((messageWords[1], 'https://'\
+                msg = "IMAGE " + pickle.dumps((message_words[1], 'https://'\
                     + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/'\
                     + lookup_id.replace('../images/', ''), media_id))
         # general data
-        elif messageWords[0] == "GENRELIST":
+        elif message_words[0] == "GENRELIST":
             msg = "GENRELIST " + pickle.dumps(self.genre_list)
         # theater data
-        elif messageWords[0] == "VIDEODETAIL":
-            msg = "VIDEODETAIL " + pickle.dumps(self.db.srv_db_read_media_Metadata_Both(messageWords[1]))
-        elif messageWords[0] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(self.db.srv_db_media_uuid_by_class("Movie"), messageWords[0], messageWords[1]))
-        elif messageWords[0] == "movie" or messageWords[0] == "recent_addition" or messageWords[0] == 'in_progress' or messageWords[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(self.db.srv_db_media_uuid_by_class("Movie"), messageWords[0]))
+        elif message_words[0] == "VIDEODETAIL":
+            msg = "VIDEODETAIL " + pickle.dumps(\
+                self.db.srv_db_read_media_Metadata_Both(message_words[1]))
+        elif message_words[0] == "VIDEOGENRELIST":
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(\
+                self.db.srv_db_media_uuid_by_class("Movie"), message_words[0], message_words[1]))
+        elif message_words[0] == "movie" or message_words[0] == "recent_addition"\
+                or message_words[0] == 'in_progress' or message_words[0] == 'video':
+            msg = "VIDEOLIST " + pickle.dumps(self.db.srv_db_web_media_list(\
+                self.db.srv_db_media_uuid_by_class("Movie"), message_words[0]))
         # admin commands
-        elif messageWords[0] == "ScanMedia":
+        elif message_words[0] == "ScanMedia":
             # popen expects a list
-            self.proc_file_scan = subprocess.Popen(['python', './subprogram/subprogram_file_scan.py'], shell=False)
-        elif messageWords[0] == "ScanMediaStop":
+            self.proc_file_scan = subprocess.Popen(['python',\
+                './subprogram/subprogram_file_scan.py'], shell=False)
+        elif message_words[0] == "ScanMediaStop":
             os.killpg(self.proc_file_scan.pid, signal.SIGUSR1)
-        elif messageWords[0] == "MatchMedia":
+        elif message_words[0] == "MatchMedia":
             # popen expects a list
-            self.proc_media_match = subprocess.Popen(['python', './subprogram/subprogram_match_known_media.py'], shell=False)
-        elif messageWords[0] == "MatchMediaStop":
+            self.proc_media_match = subprocess.Popen(['python',\
+                './subprogram/subprogram_match_known_media.py'], shell=False)
+        elif message_words[0] == "MatchMediaStop":
             os.killpg(self.proc_media_match.pid, signal.SIGUSR1)
-        elif messageWords[0] == "CreateChapterImage":
+        elif message_words[0] == "CreateChapterImage":
             # popen expects a list
-            self.proc_chapter_create = subprocess.Popen(['python', './subprogram/subprogram_create_chapter_images.py'], shell=False)
-        elif messageWords[0] == "CreateChapterImageStop":
+            self.proc_chapter_create = subprocess.Popen(['python',\
+                './subprogram/subprogram_create_chapter_images.py'], shell=False)
+        elif message_words[0] == "CreateChapterImageStop":
             os.killpg(self.proc_chapter_create.pid, signal.SIGUSR1)
-        elif messageWords[0] == "ScudLeeAnimeMatch":
+        elif message_words[0] == "ScudLeeAnimeMatch":
             # popen expects a list
-            self.proc_anime_match = subprocess.Popen(['python', './subprogram/subprogram_match_anime_id_scudlee.py'], shell=False)
-        elif messageWords[0] == "ScudLeeAnimeMatchStop":
+            self.proc_anime_match = subprocess.Popen(['python',\
+                './subprogram/subprogram_match_anime_id_scudlee.py'], shell=False)
+        elif message_words[0] == "ScudLeeAnimeMatchStop":
             os.killpg(self.proc_anime_match.pid, signal.SIGUSR1)
-        elif messageWords[0] == "SubtitleMedia":
+        elif message_words[0] == "SubtitleMedia":
             # popen expects a list
-            self.proc_subtitle_media_match = subprocess.Popen(['python', './subprogram/subprogram_subtitle_downloader.py'], shell=False)
-        elif messageWords[0] == "SubtitleMediaStop":
+            self.proc_subtitle_media_match = subprocess.Popen(['python',\
+                './subprogram/subprogram_subtitle_downloader.py'], shell=False)
+        elif message_words[0] == "SubtitleMediaStop":
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)
-        elif messageWords[0] == "CPUUSAGE":
-            self.cpu_use_table[self.user_ip_addy] = messageWords[1]
-        elif messageWords[0] == "SHUTDOWN":
+        elif message_words[0] == "CPUUSAGE":
+            self.cpu_use_table[self.user_ip_addy] = message_words[1]
+        elif message_words[0] == "SHUTDOWN":
             self.db.srv_db_Close()
             sys.exit(0)
         else:
-            loggging.error("UNKNOWN TYPE: %s", messageWords[0])
+            logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             logging.debug("should be sending data")
             self.Send_Single_User(msg)
 
 
-    def Send_Single_User(self, message):
+    def send_single_user(self, message):
+        """
+        Send message to single user
+        """
         for user_host_name, protocol in self.users.iteritems():
             if protocol == self:
                 logging.debug('send single: %s', message)
@@ -210,15 +225,31 @@ class NetworkEvents(Int32StringReceiver):
                 break
 
 
-    def Send_All_Users(self, message):
+    def send_all_users(self, message):
+        """
+        Send message to all users
+        """
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_verified == 1:
                 logging.debug('send all: %s', message)
                 protocol.sendString(message.encode("utf8"))
 
 
-    def Send_All_Slaves(self, message):
+    def send_all_slaves(self, message):
+        """
+        Send to all slave servers
+        """
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_slave:
                 logging.debug('send all slave: %s', message)
+                protocol.sendString(message.encode("utf8"))
+
+
+    def send_all_links(self, message):
+        """
+        Send to all linked servers
+        """
+        for user_host_name, protocol in self.users.iteritems():
+            if self.users[user_host_name].user_link:
+                logging.debug('send all link: %s', message)
                 protocol.sendString(message.encode("utf8"))

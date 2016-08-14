@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 #import uuid
 
 
-def srv_db_meta_Sports_GUID_By_thesportsdb(self, thesports_uuid):
+def srv_db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """

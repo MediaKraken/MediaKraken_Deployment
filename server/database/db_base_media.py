@@ -17,8 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
-import uuid
+#import logging
 import json
 import datetime
 
@@ -79,7 +78,7 @@ def srv_db_matched_media_count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_known_media_All_Unmatched_Count(self):
+def srv_db_known_media_all_unmatched_count(self):
     """
     # count all media that is NULL for meatadata match
     """
@@ -87,7 +86,7 @@ def srv_db_known_media_All_Unmatched_Count(self):
     return self.sql3_cursor.fetchone()[0]
 
 
-def srv_db_known_media_All_Unmatched(self, offset=None, records=None):
+def srv_db_known_media_all_unmatched(self, offset=None, records=None):
     """
     # read all media that is NULL for metadata match
     """
@@ -131,7 +130,7 @@ def srv_db_media_duplicate(self, offset=None, records=None):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_media_duplicate_Detail_Count(self, guid):
+def srv_db_media_duplicate_detail_count(self, guid):
     """
     # duplicate detail count
     """
@@ -140,7 +139,7 @@ def srv_db_media_duplicate_Detail_Count(self, guid):
     return self.sql3_cursor.fetchall()
 
 
-def srv_db_media_duplicate_Detail(self, guid, offset=None, records=None):
+def srv_db_media_duplicate_detail(self, guid, offset=None, records=None):
     """
     # list duplicate detail
     """
@@ -254,7 +253,7 @@ def srv_db_update_media_json(self, media_guid, mediajson):
     self.srv_db_Commit()
 
 
-def srv_db_known_media_Chapter_Scan(self):
+def srv_db_known_media_chapter_scan(self):
     """
     # return all media which needs chapter images created
     """
@@ -287,7 +286,7 @@ def srv_db_media_image_path(self, media_id):
         return None
 
 
-def srv_db_read_media_Metadata_Both(self, media_guid):
+def srv_db_read_media_metadata_both(self, media_guid):
     """
     # read in metadata by id
     """
@@ -301,20 +300,20 @@ def srv_db_read_media_Metadata_Both(self, media_guid):
         return None
 
 
-def srv_db_read_media_Path_Like(self, media_path):
+def srv_db_read_media_path_like(self, media_path):
     """
     # do a like class path match for trailers and extras
     """
-    sql_params = (media_path + '%'),  # use like since I won't be using the "root" directory but media within it
+    # use like since I won't be using the "root" directory but media within it
     self.sql3_cursor.execute('select mm_media_metadata_guid from mm_media'\
-        ' where mm_media_path LIKE %s', sql_params)
+        ' where mm_media_path LIKE %s', ((media_path + '%'),))
     try:
         return self.sql3_cursor.fetchone()['mm_media_metadata_guid']
     except:
         return None
 
 
-def srv_db_read_media_New_Count(self, days_old=7):
+def srv_db_read_media_new_count(self, days_old=7):
     """
     # new media count
     """
@@ -327,7 +326,7 @@ def srv_db_read_media_New_Count(self, days_old=7):
 
 
 # TODO subselect for speed
-def srv_db_read_media_New(self, days_old=7, offset=None, records=None):
+def srv_db_read_media_new(self, days_old=7, offset=None, records=None):
     """
     # new media
     """

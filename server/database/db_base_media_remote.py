@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
 
 
@@ -90,7 +90,8 @@ def srv_db_known_remote_media_count(self):
 #            logging.error('Link bad data type: %s', row_data[1])
 #            return None
 #        if metadata_guid is not None:
-#            self.srv_db_insert_remote_media(link_uuid, row_data[0], self.srv_db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
+#            self.srv_db_insert_remote_media(link_uuid, row_data[0], \
+# self.srv_db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
 
 
 def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\

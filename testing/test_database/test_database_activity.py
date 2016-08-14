@@ -39,7 +39,8 @@ class TestDatabaseActivity(object):
         self.db.srv_db_Close()
 
 
-    # def srv_db_Activity_Insert(self, activity_name, activity_overview, activity_short_overview, activity_type, activity_itemid, activity_userid, activity_log_severity):
+    # def srv_db_Activity_Insert(self, activity_name, activity_overview, \
+#activity_short_overview, activity_type, activity_itemid, activity_userid, activity_log_severity):
     # TODO
 #        self.db.srv_db_Rollback()
 
@@ -47,6 +48,6 @@ class TestDatabaseActivity(object):
     @pytest.mark.parametrize(("days_old"), [
         (7),
         (400)])
-    def Test_srv_db_Activity_Purge(self, days_old):
-        self.db.srv_db_Activity_Purge(days_old)
+    def test_srv_db_activity_purge(self, days_old):
+        self.db.srv_db_activity_purge(days_old)
         self.db.srv_db_Rollback()
