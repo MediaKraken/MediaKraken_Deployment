@@ -186,10 +186,10 @@ class MK_Server_Database(object):
         srv_db_option_status_update,\
         srv_db_option_status_update_scan_json,\
         srv_db_option_status_update_scan_json_rec
-    from db_base_postgresql import srv_db_postgresql_table_sizes,\
-        srv_db_postgresql_row_count,\
-        srv_db_postgresql_vacuum_stat_by_day,\
-        srv_db_postgresql_vacuum_table
+    from db_base_postgresql import srv_db_pgsql_table_sizes,\
+        srv_db_pgsql_row_count,\
+        srv_db_pgsql_vacuum_stat_by_day,\
+        srv_db_pgsql_vacuum_table
     from db_base_review import srv_db_review_count,\
         srv_db_review_list_by_tmdb_guid,\
         srv_db_review_insert
