@@ -66,7 +66,7 @@ class MKServerDatabase(object):
     from db_base_media_images import srv_db_media_images_list_count,\
         srv_db_media_images_list
     from db_base_media import srv_db_insert_media,\
-        srv_db_read_media,\
+        srv_db_read_media_guid,\
         srv_db_known_media_count,\
         srv_db_known_media,\
         srv_db_matched_media_count,\
