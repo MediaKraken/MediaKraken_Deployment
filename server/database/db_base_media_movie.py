@@ -22,7 +22,7 @@ import datetime
 
 # TODO subselect speed
 
-def srv_db_media_random(self, return_image_type=False):
+def srv_db_media_random(self, return_image_type=None): # poster, backdrop, etc
     """
     Find random movie
     """
