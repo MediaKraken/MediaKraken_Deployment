@@ -31,7 +31,7 @@ class CommonDatabaseOctmote(object):
     """
     def __init__(self):
         self.sql3_conn = None
-        self.sql3_cursor = None
+        self.db_cursor = None
 
 
     def com_db_open(self, db_file=None):
@@ -45,65 +45,65 @@ class CommonDatabaseOctmote(object):
             self.sql3_conn = sqlite3.connect("OctMote.db")
         else:
             self.sql3_conn = sqlite3.connect(db_file)
-        self.sql3_cursor = self.sql3_conn.cursor()
+        self.db_cursor = self.sql3_conn.cursor()
         self.sql3_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         if create_db:
             # create the tables since they don't exist
-            self.sql3_cursor.execute("CREATE TABLE octmote_server_settings (server_host text,'\
+            self.db_cursor.execute("CREATE TABLE octmote_server_settings (server_host text,'\
                 ' server_port integer)")
-            self.sql3_cursor.execute("insert into octmote_server_settings (server_host,'\
+            self.db_cursor.execute("insert into octmote_server_settings (server_host,'\
                 ' server_port) values ('localhost',8097)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_anidb (anidb_aid numeric,'\
+            self.db_cursor.execute("CREATE TABLE octmote_anidb (anidb_aid numeric,'\
                 ' anidb_type numeric, anidb_language text, anidb_title text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_layout (layout_guid text,'\
+            self.db_cursor.execute("CREATE TABLE octmote_layout (layout_guid text,'\
                 ' layout_name text, layout_json text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_macro (macro_guid text,'\
+            self.db_cursor.execute("CREATE TABLE octmote_macro (macro_guid text,'\
                 ' macro_name text, macro_json text)")
-            self.sql3_cursor.execute("CREATE TABLE octmote_item (item_guid text,'\
+            self.db_cursor.execute("CREATE TABLE octmote_item (item_guid text,'\
                 ' item_type text, item_manufacturer text, item_model_number text, item_json text)")
             # grab brands and insert them into database
-            self.sql3_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
+            self.db_cursor.execute("CREATE TABLE octmote_brand (brand_guid text,'\
                 ' brand_name text)")
             json_brand = common_network_irdb.com_irdb_brand_list()["objects"]
             for brand_name in json_brand:
-                self.sql3_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
+                self.db_cursor.execute("insert into octmote_brand (brand_guid, brand_name) values (?,?)", (str(uuid.uuid4()), brand_name["brand"]))
             # create device db and load with types
-            self.sql3_cursor.execute("CREATE TABLE octmote_device (device_guid text, device_name text, device_description text)")
+            self.db_cursor.execute("CREATE TABLE octmote_device (device_guid text, device_name text, device_description text)")
             # add base devices to database
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'BluRay', 'BluRay Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DVD', 'DVD Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Laserdisc', 'Laser Disc Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'VHS', 'VHS VCR')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Beta', 'Beta VCR')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'TV', 'Television')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Projector', 'DLP, LCD, LED Projector')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'CRT Projector', 'CRT Analog Projector')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'3D BluRay', '3D Capable BluRay Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'3D Projector', 'DLP, LCD, LED 3D Projector')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Phono', 'Analog Phonograph Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DAC', 'Digital To Analog Converter')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Tape', 'Tape Deck')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'CD', 'Compact Disc Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SACD', 'Super Audio Compact Disc Player')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SVHS', 'Super VHS VCR')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SBeta', 'Super Beta VCR')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Receiver', 'Audio/Video Receiver')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Amplifier', 'Audio Amplifier')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Decoder', '\"Description\":\"Audio Decoder\"')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DAT', 'Digital Audio Tape')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Reel', 'Reel To Reel Tape')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Cable', 'Cable TV')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Satellite ', 'Satellite  TV')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Net/USB', 'Net/USB')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Vid Proc', 'Video Processor')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Stream', 'Audio/Video Streaming Device')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Game', 'Game System')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Preamp', 'Audio/Video Preamplifier')", (str(uuid.uuid4()),))
-            self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'UPS', 'Uninteruptable Power Supply')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'BluRay', 'BluRay Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DVD', 'DVD Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Laserdisc', 'Laser Disc Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'VHS', 'VHS VCR')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Beta', 'Beta VCR')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'TV', 'Television')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Projector', 'DLP, LCD, LED Projector')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'CRT Projector', 'CRT Analog Projector')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'3D BluRay', '3D Capable BluRay Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'3D Projector', 'DLP, LCD, LED 3D Projector')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Phono', 'Analog Phonograph Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DAC', 'Digital To Analog Converter')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Tape', 'Tape Deck')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'CD', 'Compact Disc Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SACD', 'Super Audio Compact Disc Player')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SVHS', 'Super VHS VCR')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'SBeta', 'Super Beta VCR')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Receiver', 'Audio/Video Receiver')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Amplifier', 'Audio Amplifier')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Decoder', '\"Description\":\"Audio Decoder\"')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DAT', 'Digital Audio Tape')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Reel', 'Reel To Reel Tape')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Cable', 'Cable TV')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Satellite ', 'Satellite  TV')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Net/USB', 'Net/USB')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Vid Proc', 'Video Processor')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Stream', 'Audio/Video Streaming Device')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Game', 'Game System')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'Preamp', 'Audio/Video Preamplifier')", (str(uuid.uuid4()),))
+            self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'UPS', 'Uninteruptable Power Supply')", (str(uuid.uuid4()),))
             self.sql3_conn.commit()
-        self.sql3_cursor.execute("select server_host, server_port from octmote_server_settings")
+        self.db_cursor.execute("select server_host, server_port from octmote_server_settings")
         try:
-            return self.sql3_cursor.fetchone()[0]
+            return self.db_cursor.fetchone()[0]
         except:
             return None
 
@@ -119,7 +119,7 @@ class CommonDatabaseOctmote(object):
         """
         Insert new layout config into database
         """
-        self.sql3_cursor.execute("insert into octmote_layout (layout_guid, layout_name,'\
+        self.db_cursor.execute("insert into octmote_layout (layout_guid, layout_name,'\
             ' layout_json) values (?,?,?)", (uuid.uuid4(), layout_record_name, layout_record_json))
         self.sql3_conn.commit()
 
@@ -128,49 +128,49 @@ class CommonDatabaseOctmote(object):
         """
         Load list of layouts
         """
-        self.sql3_cursor.execute("select layout_guid, layout_name from octmote_layout'\
+        self.db_cursor.execute("select layout_guid, layout_name from octmote_layout'\
             ' order by layout_name asc")
-        return self.sql3_cursor
+        return self.db_cursor
 
 
     def com_db_layout_detail(self, guid):
         """
         Layout detail
         """
-        self.sql3_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
+        self.db_cursor.execute("select layout_json from octmote_layout where layout_guid = ?",\
             (guid,))
-        return self.sql3_cursor
+        return self.db_cursor
 
 
     def com_db_device_insert(self, device_record_name, device_record_description):
         """
         Insert new device type into database
         """
-        self.sql3_cursor.execute("insert into octmote_device (device_guid, device_name,'\
+        self.db_cursor.execute("insert into octmote_device (device_guid, device_name,'\
             ' device_json) values (?,?,?)", (str(uuid.uuid4()), device_record_name,\
             device_record_description))
         self.sql3_conn.commit()
-        self.sql3_cursor.execute("select device_guid from octmote_device where rowid = ?",\
-            (self.sql3_cursor.lastrowid,))
-        return self.sql3_cursor
+        self.db_cursor.execute("select device_guid from octmote_device where rowid = ?",\
+            (self.db_cursor.lastrowid,))
+        return self.db_cursor
 
 
     def com_db_device_list(self):
         """
         list devices
         """
-        self.sql3_cursor.execute("select device_guid, device_name from octmote_device'\
+        self.db_cursor.execute("select device_guid, device_name from octmote_device'\
             ' order by device_name asc")
-        return self.sql3_cursor
+        return self.db_cursor
 
 
     def com_db_device_detail(self, guid):
         """
         device detail
         """
-        self.sql3_cursor.execute("select device_description from octmote_device'\
+        self.db_cursor.execute("select device_description from octmote_device'\
             ' where device_guid = ?", (guid,))
-        return self.sql3_cursor
+        return self.db_cursor
 
 
     def com_db_item_insert(self, item_record_json):
@@ -180,47 +180,47 @@ class CommonDatabaseOctmote(object):
         json_data = json.loads(item_record_json)
         # find all the models and store a record for each
         for model_number in json_data["Model Support"]:
-            self.sql3_cursor.execute('insert into octmote_item (item_guid, item_type,'\
+            self.db_cursor.execute('insert into octmote_item (item_guid, item_type,'\
                 ' item_manufacturer, item_model_number, item_json) values (?,?,?,?,?)',\
                 (str(uuid.uuid4()), json_data["Item Type"], json_data["Manufacturer"],\
                 model_number, item_record_json))
         self.sql3_conn.commit()
-        self.sql3_cursor.execute("select item_guid from octmote_item where rowid = ?",\
-            (self.sql3_cursor.lastrowid,))
-        return self.sql3_cursor
+        self.db_cursor.execute("select item_guid from octmote_item where rowid = ?",\
+            (self.db_cursor.lastrowid,))
+        return self.db_cursor
 
 
     def com_db_item_list(self):
         """
         item list
         """
-        self.sql3_cursor.execute('select item_guid, item_type, item_manufacturer,'\
+        self.db_cursor.execute('select item_guid, item_type, item_manufacturer,'\
             ' item_model_number from octmote_item order by item_type, item_manufacturer,'\
             ' item_model_number asc')
-        return self.sql3_cursor
+        return self.db_cursor
 
 
     def com_db_item_detail(self, guid):
         """
         item detail
         """
-        self.sql3_cursor.execute("select item_type from octmote_item where item_guid = ?", (guid,))
-        return self.sql3_cursor
+        self.db_cursor.execute("select item_type from octmote_item where item_guid = ?", (guid,))
+        return self.db_cursor
 
 
     def com_db_general_query(self, sql_command):
         """
         Do general query
         """
-        self.sql3_cursor.execute(sql_command)
-        return self.sql3_cursor.fetchall()
+        self.db_cursor.execute(sql_command)
+        return self.db_cursor.fetchall()
 
 
     def com_db_general_insert(self, sql_command):
         """
         Do general insert
         """
-        self.sql3_cursor.execute(sql_command)
+        self.db_cursor.execute(sql_command)
         self.sql3_conn.commit()
 
 
@@ -228,9 +228,9 @@ class CommonDatabaseOctmote(object):
         """
         Insert new anidb entries into database
         """
-        self.sql3_cursor.execute("delete from octmote_anidb")
+        self.db_cursor.execute("delete from octmote_anidb")
         for sql_params in sql_params_list:
-            self.sql3_cursor.execute('insert into octmote_anidb (anidb_aid, anidb_type,'\
+            self.db_cursor.execute('insert into octmote_anidb (anidb_aid, anidb_type,'\
                 ' anidb_language, anidb_title) values (?,?,?,?)', sql_params)
         self.sql3_conn.commit()
 
@@ -239,9 +239,9 @@ class CommonDatabaseOctmote(object):
         """
         search for title
         """
-        self.sql3_cursor.execute('select anidb_aid from octmote_anidb'\
+        self.db_cursor.execute('select anidb_aid from octmote_anidb'\
             ' where anidb_title = ? limit 1', (title_to_search,))
         try:
-            return self.sql3_cursor.fetchone()[0]
+            return self.db_cursor.fetchone()[0]
         except:
             return None

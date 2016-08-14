@@ -28,7 +28,7 @@ def srv_db_activity_insert(self, activity_name, activity_overview,\
     """
     Insert server or user activity record
     """
-    self.sql3_cursor.execute('insert into mm_user_activity (mm_activity_guid, mm_activity_name,'\
+    self.db_cursor.execute('insert into mm_user_activity (mm_activity_guid, mm_activity_name,'\
         ' mm_activity_overview, mm_activity_short_overview, mm_activity_type, mm_activity_itemid,'\
         ' mm_activity_userid, mm_activity_datecreated, mm_activity_log_severity)'\
         ' values (%s,%s,%s,%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), activity_name,\
@@ -41,6 +41,6 @@ def srv_db_activity_purge(self, days_old):
     """
     Purge records older than specified days
     """
-    self.sql3_cursor.execute('delete from mm_user_activity where mm_activity_datecreated'\
+    self.db_cursor.execute('delete from mm_user_activity where mm_activity_datecreated'\
         ' < now() - interval %s;', (str(days_old) + ' day',))
     self.srv_db_commit()

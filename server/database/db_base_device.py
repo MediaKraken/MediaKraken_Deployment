@@ -25,8 +25,8 @@ def srv_db_device_count(self):
     """
     Return the number of devices in database
     """
-    self.sql3_cursor.execute('select count(*) from mm_device')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_device')
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_device_list(self, device_type=None, offset=None, records=None):
@@ -35,27 +35,27 @@ def srv_db_device_list(self, device_type=None, offset=None, records=None):
     """
     if device_type is None:
         if offset is None:
-            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
                 ' from mm_device')
         else:
-            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
                 ' from mm_device offset %s limit %s', (offset, records))
     else:
         if offset is None:
-            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
                 ' from mm_device where mm_device_type = %s', (device_type,))
         else:
-            self.sql3_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
                 ' from mm_device where mm_device_type = %s offset %s limit %s',\
                 (device_type, offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_device_insert(self, device_type, device_json):
     """
     Insert a device into the database
     """
-    self.sql3_cursor.execute('insert into mm_device (mm_device_id, mm_device_type,'\
+    self.db_cursor.execute('insert into mm_device (mm_device_id, mm_device_type,'\
         ' mm_device_json) values (%s,%s,%s)', (str(uuid.uuid4()), device_type, device_json))
 
 
@@ -63,7 +63,7 @@ def srv_db_device_update(self, guid, device_type, device_json):
     """
     Update the device in the database
     """
-    self.sql3_cursor.execute('update mm_device set mm_device_type = %s, mm_device_json = %s'\
+    self.db_cursor.execute('update mm_device set mm_device_type = %s, mm_device_json = %s'\
         ' where mm_device_id = %s', (device_type, device_json, guid))
 
 
@@ -71,17 +71,17 @@ def srv_db_device_delete(self, guid):
     """
     Remove a device from the database via uuid
     """
-    self.sql3_cursor.execute('delete from mm_device where mm_device_id = %s', (guid,))
+    self.db_cursor.execute('delete from mm_device where mm_device_id = %s', (guid,))
 
 
 def srv_db_device_read(self, guid):
     """
     Return details from database via uuid
     """
-    self.sql3_cursor.execute('select mm_device_type, mm_device_json from mm_device'\
+    self.db_cursor.execute('select mm_device_type, mm_device_json from mm_device'\
         ' where mm_device_id = %s', (guid,))
     try:
-        return self.sql3_cursor.fetchone()
+        return self.db_cursor.fetchone()
     except:
         return None
 

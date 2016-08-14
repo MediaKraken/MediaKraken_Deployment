@@ -36,11 +36,11 @@ def srv_db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
         % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
-    self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
+    self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    self.db_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+    self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
         ' WHERE relname = \'mm_media\'')
-    if self.sql3_cursor.fetchone()['a'] == 0:
+    if self.db_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
 
@@ -58,11 +58,11 @@ def srv_db_open_isolation(self, postdbhost, postdbport, postdbname,\
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
         % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    self.sql3_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-    self.sql3_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
+    self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    self.db_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+    self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
         ' WHERE relname = \'mm_media\'')
-    if self.sql3_cursor.fetchone()['a'] == 0:
+    if self.db_cursor.fetchone()['a'] == 0:
         logging.critical("Database is not populated!")
         sys.exit()
 
@@ -92,16 +92,16 @@ def srv_db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
-    self.sql3_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_table_count(self, table_name):
     """
     # return count of records in table
     """
-    self.sql3_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_query(self, query_string):
@@ -109,5 +109,5 @@ def srv_db_query(self, query_string):
     # general run anything
     """
     logging.debug("query: %s", query_string)
-    self.sql3_cursor.execute(query_string)
-    return self.sql3_cursor.fetchall()
+    self.db_cursor.execute(query_string)
+    return self.db_cursor.fetchall()

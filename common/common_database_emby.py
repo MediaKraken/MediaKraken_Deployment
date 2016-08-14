@@ -295,7 +295,7 @@ class CommonDatabaseEmby(object):
         """
         self.sql3_emby_cursor.execute('select * from TypedBaseItems where guid = ?', (guid,))
         try:
-            return self.sql3_cursor.fetchone()[0]
+            return self.db_cursor.fetchone()[0]
         except:
             return None
 

@@ -25,23 +25,23 @@ def srv_db_review_count(self, metadata_id):
     """
     # count reviews for media
     """
-    self.sql3_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s',\
+    self.db_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s',\
         (metadata_id,))
-    return self.sql3_cursor.fetchone()[0]
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_review_list_by_tmdb_guid(self, metadata_id):
     """
     # grab reviews for metadata
     """
-    self.sql3_cursor.execute('select mm_review_guid,mm_review_json from mm_review'\
+    self.db_cursor.execute('select mm_review_guid,mm_review_json from mm_review'\
         ' where mm_review_metadata_id->\'TMDB\' ? %s', (metadata_id,))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_review_insert(self, metadata_id, review_json):
     """
     # insert record
     """
-    self.sql3_cursor.execute('insert into mm_review (mm_review_guid, mm_review_metadata_id,'\
+    self.db_cursor.execute('insert into mm_review (mm_review_guid, mm_review_metadata_id,'\
         ' mm_review_json) values (%s,%s,%s)', (str(uuid.uuid4()), metadata_id, review_json))

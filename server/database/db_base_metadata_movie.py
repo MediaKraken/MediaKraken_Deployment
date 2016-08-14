@@ -21,10 +21,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 
 def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id):
-    self.sql3_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
+    self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
         ' where mm_metadata_media_id->\'TMDB\' ? %s', (tmdb_id,))
-    cast_crew_json = self.sql3_cursor.fetchone()['mm_metadata_json'].update({\
+    cast_crew_json = self.db_cursor.fetchone()['mm_metadata_json'].update({\
         'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
-    self.sql3_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
+    self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
         ' where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
     self.srv_db_commit()

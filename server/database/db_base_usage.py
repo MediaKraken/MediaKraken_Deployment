@@ -23,33 +23,33 @@ def srv_db_usage_top10_alltime(self):
     """
     Top 10 of all time
     """
-    self.sql3_cursor.execute('select blah from blah order by blah limit 10')
-    return self.sql3_cursor.fetchall()
+    self.db_cursor.execute('select blah from blah order by blah limit 10')
+    return self.db_cursor.fetchall()
 
 
 def srv_db_usage_top10_movie(self):
     """
     Top 10 movies
     """
-    self.sql3_cursor.execute('select mm_metadata_user_json->\'Watched\'->\'Times\''\
+    self.db_cursor.execute('select mm_metadata_user_json->\'Watched\'->\'Times\''\
         ' from mm_metadata_movie order by mm_metadata_user_json->\'Watched\'->\'Times\''\
         ' desc limit 10')
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_usage_top10_tv_show(self):
     """
     Top 10 TV show
     """
-    self.sql3_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''\
+    self.db_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''\
         ' from mm_metadata_tvshow order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''\
         ' desc limit 10')
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_usage_top10_tv_episode(self):
     """
     Top 10 TV episode
     """
-    self.sql3_cursor.execute('select blah from blah order by blah limit 10')
-    return self.sql3_cursor.fetchall()
+    self.db_cursor.execute('select blah from blah order by blah limit 10')
+    return self.db_cursor.fetchall()

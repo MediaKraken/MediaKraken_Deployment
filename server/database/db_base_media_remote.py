@@ -26,7 +26,7 @@ def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uu
     """
     # insert media into database
     """
-    self.sql3_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
+    self.db_cursor.execute("insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
         ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json)'\
         ' values (%s,%s,%s,%s,%s,%s)", (str(uuid.uuid4()), media_link_uuid, media_uuid,\
         media_class_uuid, media_metadata_uuid, media_ffprobe_json))
@@ -37,23 +37,23 @@ def srv_db_read_remote_media(self, media_guid=None):
     # read in all media unless guid specified
     """
     if media_guid is not None:
-        self.sql3_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
+        self.db_cursor.execute("select * from mm_media_remote where mmr_media_guid = %s",\
             (media_guid,))
         try:
-            return self.sql3_cursor.fetchone()
+            return self.db_cursor.fetchone()
         except:
             return None
     else:
-        self.sql3_cursor.execute("select * from mm_media_remote")
-        return self.sql3_cursor.fetchall()
+        self.db_cursor.execute("select * from mm_media_remote")
+        return self.db_cursor.fetchall()
 
 
 def srv_db_known_remote_media_count(self):
     """
     # count known media
     """
-    self.sql3_cursor.execute('select count(*) from mm_media_remote')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_media_remote')
+    return self.db_cursor.fetchone()[0]
 
 
 # processed via main_link........
@@ -153,5 +153,5 @@ def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=
             ' where mm_metadata_book_guid = mm_metadata_guid'\
             ' and mm_media_json->>\'DateAdded\' > %s', sql_params)
         first_query = False
-    self.sql3_cursor.execute(sync_query)
-    return self.sql3_cursor.fetchall()
+    self.db_cursor.execute(sync_query)
+    return self.db_cursor.fetchall()

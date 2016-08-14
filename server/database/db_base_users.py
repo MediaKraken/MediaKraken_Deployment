@@ -27,8 +27,8 @@ def srv_db_user_list_name_count(self):
     """
     # return user count
     """
-    self.sql3_cursor.execute('select count(*) from mm_user')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_user')
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_user_list_name(self, offset=None, records=None):
@@ -36,28 +36,28 @@ def srv_db_user_list_name(self, offset=None, records=None):
     # return user list
     """
     if offset is None:
-        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
+        self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
             ' from mm_user order by LOWER(username)')
     else:
-        self.sql3_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
+        self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'\
             ' from mm_user where id in (select id from mm_user order by LOWER(username)'\
             ' offset %s limit %s) order by LOWER(username)', (offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_user_detail(self, guid):
     """
     # return all data for specified user
     """
-    self.sql3_cursor.execute('select * from mm_user where id = %s', (guid,))
-    return self.sql3_cursor.fetchone()
+    self.db_cursor.execute('select * from mm_user where id = %s', (guid,))
+    return self.db_cursor.fetchone()
 
 
 def srv_db_user_delete(self, user_guid):
     """
     # remove user
     """
-    self.sql3_cursor.execute('delete from mm_user where id = %s', (user_guid,))
+    self.db_cursor.execute('delete from mm_user where id = %s', (user_guid,))
 
 
 def srv_db_user_login_kodi(self, user_data):
@@ -65,9 +65,9 @@ def srv_db_user_login_kodi(self, user_data):
     # verify user logon
     """
     user_data = json.loads(user_data)
-    self.sql3_cursor.execute('select id,password from mm_user where username = %s',\
+    self.db_cursor.execute('select id,password from mm_user where username = %s',\
         (user_data['username'],))
-    result = self.sql3_cursor.fetchone()
+    result = self.db_cursor.fetchone()
     logging.debug("what: %s", result)
     if result is not None:
         if user_data['password'] == result['password'] or True: # pass matches

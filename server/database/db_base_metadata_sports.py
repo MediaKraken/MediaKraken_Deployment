@@ -25,10 +25,10 @@ def srv_db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """
-    self.sql3_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
+    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
         ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s', (thesports_uuid,))
     try:
-        return self.sql3_cursor.fetchone()['mm_metadata_sports_guid']
+        return self.db_cursor.fetchone()['mm_metadata_sports_guid']
     except:
         return None
 
@@ -37,8 +37,8 @@ def srv_db_meta_sports_list_count(self):
     """
     Count sport events
     """
-    self.sql3_cursor.execute('select count(*) from mm_metadata_sports')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_metadata_sports')
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_meta_sports_list(self, offset=None, records=None):
@@ -46,24 +46,24 @@ def srv_db_meta_sports_list(self, offset=None, records=None):
     # return list of game systems
     """
     if offset is None:
-        self.sql3_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
+        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
             ' from mm_metadata_sports order by mm_metadata_sports_name')
     else:
-        self.sql3_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
+        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
             ' from mm_metadata_sports where mm_metadata_sports_guid'\
             ' in (select mm_metadata_sports_guid from mm_metadata_sports'\
             ' order by mm_metadata_sports_name offset %s limit %s)'\
             ' order by mm_metadata_sports_name', (offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_meta_sports_guid_by_event_name(self, event_name):
     """
     # fetch guid by event name
     """
-    self.sql3_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
+    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
         ' where mm_metadata_sports_name = %s', (event_name,))
     try:
-        return self.sql3_cursor.fetchone()['mm_metadata_sports_guid']
+        return self.db_cursor.fetchone()['mm_metadata_sports_guid']
     except:
         return None

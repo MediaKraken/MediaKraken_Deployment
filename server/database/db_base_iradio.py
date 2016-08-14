@@ -26,10 +26,10 @@ def srv_db_iradio_insert(self, radio_channel):
     """
     Insert iradio channel
     """
-    if self.sql3_cursor.execute('select count(*) from mm_radio where mm_radio_adress = %s',\
+    if self.db_cursor.execute('select count(*) from mm_radio where mm_radio_adress = %s',\
         (radio_channel,)):
-        if self.sql3_cursor.fetchall()[0][0] == 0:
-            self.sql3_cursor.execute('insert into mm_radio (mm_radio_guid,mm_radio_adress,'\
+        if self.db_cursor.fetchall()[0][0] == 0:
+            self.db_cursor.execute('insert into mm_radio (mm_radio_guid,mm_radio_adress,'\
                 'mm_radio_active) values (%s,%s,true)', (str(uuid.uuid4()), radio_channel))
 
 
@@ -37,9 +37,9 @@ def srv_db_iradio_list_count(self, active_station=True):
     """
     Iradio count
     """
-    self.sql3_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',\
+    self.db_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',\
         (active_station,))
-    return self.sql3_cursor.fetchone()[0]
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_iradio_list(self, active_station=True, offset=None, records=None):
@@ -47,13 +47,13 @@ def srv_db_iradio_list(self, active_station=True, offset=None, records=None):
     Iradio list
     """
     if offset is None:
-        self.sql3_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'\
+        self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'\
             ' from mm_radio where mm_radio_active = %s order by LOWER(mm_radio_name)',\
             (active_station,))
     else:
-        self.sql3_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'\
+        self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'\
             ' from mm_radio where mm_radio_guid in (select mm_radio_guid from mm_radio'\
             ' where mm_radio_active = %s order by LOWER(mm_radio_name) offset %s limit %s)'\
             ' order by LOWER(mm_radio_name)',\
         (active_station, offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()

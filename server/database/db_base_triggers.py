@@ -29,7 +29,7 @@ def srv_db_trigger_insert(self, command_list):
     """
     # create/insert a trigger
     """
-    self.sql3_cursor.execute('insert into mm_trigger (mm_trigger_guid,mm_trigger_command)'\
+    self.db_cursor.execute('insert into mm_trigger (mm_trigger_guid,mm_trigger_command)'\
         ' values (%s,%s)', (str(uuid.uuid4()), pickle.dumps(command_list)))
     self.srv_db_commit()
 
@@ -38,13 +38,13 @@ def srv_db_triggers_read(self):
     """
     # read the triggers
     """
-    self.sql3_cursor.execute('select mm_trigger_guid,mm_trigger_command from mm_trigger')
-    return self.sql3_cursor.fetchall()
+    self.db_cursor.execute('select mm_trigger_guid,mm_trigger_command from mm_trigger')
+    return self.db_cursor.fetchall()
 
 
 def srv_db_triggers_delete(self, guid):
     """
     # remove trigger
     """
-    self.sql3_cursor.execute('delete from mm_trigger where mm_trigger_guid = %s', (guid,))
+    self.db_cursor.execute('delete from mm_trigger where mm_trigger_guid = %s', (guid,))
     self.srv_db_commit()

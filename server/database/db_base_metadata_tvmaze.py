@@ -25,11 +25,11 @@ def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
     """
     # metadata changed date by uuid
     """
-    self.sql3_cursor.execute('SELECT mm_metadata_tvshow_json->>\'updated\''\
+    self.db_cursor.execute('SELECT mm_metadata_tvshow_json->>\'updated\''\
         ' from mm_metadata_tvshow where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',\
         (maze_uuid,))
     try:
-        return self.sql3_cursor.fetchone()['mm_metadata_tvshow_json']
+        return self.db_cursor.fetchone()['mm_metadata_tvshow_json']
     except:
         return None
 
@@ -37,7 +37,7 @@ def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
 def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
         image_json):
     new_uuid = str(uuid.uuid4())
-    self.sql3_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'\
+    self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'\
         ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json,'\
         ' mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)',\
         (new_uuid, series_id_json, tvmaze_name, show_detail, image_json))
@@ -46,7 +46,7 @@ def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
 
 def srv_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
         tvmaze_id):
-    #self.sql3_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,
+    #self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,
         #mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s
         #where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',
         #(series_id_json, tvmaze_name, show_detail, tvmaze_id))

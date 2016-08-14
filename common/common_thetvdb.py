@@ -133,7 +133,7 @@ class CommonTheTVDB(object):
 # 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_meta_Save_Season(self,season_json):
     #    sql_params = str(uuid.uuid4()),season_json
-    #    self.sql3_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid,\
+    #    self.db_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid,\
 # mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
@@ -141,7 +141,7 @@ class CommonTheTVDB(object):
             'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    srv_db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
-    #    self.sql3_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
+    #    self.db_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
             #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
         return metadata_uuid
 

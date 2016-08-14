@@ -25,8 +25,8 @@ def srv_db_tuner_count(self):
     """
     Return count of tuners in database
     """
-    self.sql3_cursor.execute('select count(*) from mm_tuner')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_tuner')
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_tuner_list(self, offset=None, records=None):
@@ -34,18 +34,18 @@ def srv_db_tuner_list(self, offset=None, records=None):
     Return list of tuners in the database
     """
     if offset is None:
-        self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
+        self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
     else:
-        self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
+        self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
             ' offset %s limit %s', (offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_tuner_insert(self, tuner_json):
     """
     Insert tuner into the database
     """
-    self.sql3_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',\
+    self.db_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',\
         (str(uuid.uuid4()), tuner_json))
 
 
@@ -53,7 +53,7 @@ def srv_db_tuner_update(self, guid, tuner_json):
     """
     Update tuner record in the database
     """
-    self.sql3_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s',\
+    self.db_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s',\
         (tuner_json, guid))
 
 
@@ -61,17 +61,17 @@ def srv_db_tuner_delete(self, guid):
     """
     Remove tuner from the database
     """
-    self.sql3_cursor.execute('delete from mm_tuner where mm_tuner_id = %s', (guid,))
+    self.db_cursor.execute('delete from mm_tuner where mm_tuner_id = %s', (guid,))
 
 
 def srv_db_tuner_by_serial(self, serial_no):
     """
     Find detials by hardware id (serial)
     """
-    self.sql3_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
+    self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
         ' where mm_tuner_json->\'ID\' ? %s', (serial_no,))
     try:
-        return self.sql3_cursor.fetchone()
+        return self.db_cursor.fetchone()
     except:
         return None
 

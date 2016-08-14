@@ -27,7 +27,7 @@ class ServerDatabaseBrainz(object):
     """
     def __init__(self):
         self.sql3_conn = None
-        self.sql3_cursor = None
+        self.db_cursor = None
 
 
     def srv_db_brainz_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
@@ -41,11 +41,11 @@ class ServerDatabaseBrainz(object):
         #psycopg2.extras.register_default_json(loads=lambda x: x)
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
             % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
-        self.sql3_cursor = self.sql3_conn.cursor()
-        self.sql3_cursor.execute("SET TIMEZONE = 'America/Chicago'")
-#        self.sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class\
+        self.db_cursor = self.sql3_conn.cursor()
+        self.db_cursor.execute("SET TIMEZONE = 'America/Chicago'")
+#        self.db_cursor.execute("SELECT COUNT (relname) as a FROM pg_class\
         #WHERE relname = 'mm_media'")
-#        if self.sql3_cursor.fetchone()[0] == 0:
+#        if self.db_cursor.fetchone()[0] == 0:
 #            exit(1)
 
 
@@ -60,50 +60,50 @@ class ServerDatabaseBrainz(object):
         """
         # read in all artists
         """
-        self.sql3_cursor.execute('select gid,name,sort_name,comment,begin_date_year,'\
+        self.db_cursor.execute('select gid,name,sort_name,comment,begin_date_year,'\
             'begin_date_month,begin_date_day,end_date_year,end_date_month,end_date_day,'\
             'gender,id from artist')
-        return self.sql3_cursor.fetchall()
+        return self.db_cursor.fetchall()
 
     def srv_db_brainz_all_albums(self):
         """
         # read in all albums
         """
-        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,'\
+        self.db_cursor.execute('select gid,name,artist_credit,comment,language,'\
             'barcode,id from release')
-        return self.sql3_cursor.fetchall()
+        return self.db_cursor.fetchall()
 
 
     def srv_db_brainz_all_albums_by_artist(self, artist_id):
         """
         # read in album by artist credit id
         """
-        self.sql3_cursor.execute('select gid,name,artist_credit,comment,language,barcode,id'\
+        self.db_cursor.execute('select gid,name,artist_credit,comment,language,barcode,id'\
             ' from release where artist_credit = %s', (artist_id,))
-        return self.sql3_cursor.fetchall()
+        return self.db_cursor.fetchall()
 
 
     def srv_db_brainz_all_songs(self):
         """
         # read in all songs
         """
-        self.sql3_cursor.execute('select gid,name,recording,position,id from track')
-        return self.sql3_cursor.fetchall()
+        self.db_cursor.execute('select gid,name,recording,position,id from track')
+        return self.db_cursor.fetchall()
 
 
     def srv_db_brainz_all_songs_by_record_uuid(self, record_id):
         """
         # read in all by recording id
         """
-        self.sql3_cursor.execute('select gid,name,recording,position,id from track'\
+        self.db_cursor.execute('select gid,name,recording,position,id from track'\
             ' where recording = %s', (record_id,))
-        return self.sql3_cursor.fetchall()
+        return self.db_cursor.fetchall()
 
 
     def srv_db_brainz_all(self):
         """
         # read for batch insert
         """
-        self.sql3_cursor.execute('select count(*) from artist, release, track'\
+        self.db_cursor.execute('select count(*) from artist, release, track'\
             ' where release.artist_credit = artist.id and track.recording = release.id')
-        return self.sql3_cursor.fetchall()
+        return self.db_cursor.fetchall()

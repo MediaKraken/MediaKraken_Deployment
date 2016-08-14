@@ -27,16 +27,16 @@ def srv_db_audit_path_status(self):
     """
     # read scan status
     """
-    self.sql3_cursor.execute("select mm_media_dir_path, mm_media_dir_status from mm_media_dir'\
+    self.db_cursor.execute("select mm_media_dir_path, mm_media_dir_status from mm_media_dir'\
         ' where mm_media_dir_status IS NOT NULL order by mm_media_dir_path")
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_audit_path_update_status(self, lib_guid, status_json):
     """
     # update status
     """
-    self.sql3_cursor.execute("update mm_media_dir set mm_media_dir_status = %s'\
+    self.db_cursor.execute("update mm_media_dir set mm_media_dir_status = %s'\
         ' where mm_media_dir_guid = %s", (status_json, lib_guid,))
 
 
@@ -44,15 +44,15 @@ def srv_db_audit_paths_count(self):
     """
     # read the paths to audit
     """
-    self.sql3_cursor.execute('select count(*) from mm_media_dir')
-    return self.sql3_cursor.fetchone()[0]
+    self.db_cursor.execute('select count(*) from mm_media_dir')
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     # update audit path
     """
-    self.sql3_cursor.execute("update mm_media_dir set mm_media_dir_path = %s,'\
+    self.db_cursor.execute("update mm_media_dir set mm_media_dir_path = %s,'\
         ' mm_media_dir_class_type = %s where mm_media_dir_guid = %s", ())
 
 
@@ -60,14 +60,14 @@ def srv_db_audit_path_delete(self, lib_guid):
     """
     # remove media path
     """
-    self.sql3_cursor.execute(u"delete from mm_media_dir where mm_media_dir_guid = %s", (lib_guid,))
+    self.db_cursor.execute(u"delete from mm_media_dir where mm_media_dir_guid = %s", (lib_guid,))
 
 
 def srv_db_audit_path_add(self, dir_path, class_guid):
     """
     # add media path
     """
-    self.sql3_cursor.execute("insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
+    self.db_cursor.execute("insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
         ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)",\
         (str(uuid.uuid4()), dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
 
@@ -76,16 +76,16 @@ def srv_db_audit_path_check(self, dir_path):
     """
     # lib path check (dupes)
     """
-    self.sql3_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s',\
+    self.db_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s',\
         (dir_path,))
-    return self.sql3_cursor.fetchone()[0]
+    return self.db_cursor.fetchone()[0]
 
 
 def srv_db_audit_directory_timestamp_update(self, file_path):
     """
     # update the timestamp for directory scans
     """
-    self.sql3_cursor.execute('update mm_media_dir set mm_media_dir_last_scanned = %s'\
+    self.db_cursor.execute('update mm_media_dir set mm_media_dir_last_scanned = %s'\
         ' where mm_media_dir_path = %s', (datetime.datetime.now(), file_path))
 
 
@@ -95,26 +95,26 @@ def srv_db_audit_paths(self, offset=None, records=None):
     # read the paths to audit
     """
     if offset is None:
-        self.sql3_cursor.execute('select mm_media_dir_path, mm_media_class_type,'\
+        self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'\
             ' mm_media_dir_last_scanned, mm_media_class_guid, mm_media_dir_guid'\
             ' from mm_media_dir, mm_media_class where mm_media_dir_class_type ='\
             ' mm_media_class_guid order by mm_media_class_type, mm_media_dir_path')
     else:
-        self.sql3_cursor.execute('select mm_media_dir_path, mm_media_class_type,'\
+        self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'\
             ' mm_media_dir_last_scanned, mm_media_class_guid, mm_media_dir_guid'\
             ' from mm_media_dir, mm_media_class where mm_media_dir_class_type'\
             ' = mm_media_class_guid order by mm_media_class_type, mm_media_dir_path'\
             ' offset %s limit %s', (offset, records))
-    return self.sql3_cursor.fetchall()
+    return self.db_cursor.fetchall()
 
 
 def srv_db_audit_path_by_uuid(self, dir_id):
     """
     # lib data per id
     """
-    self.sql3_cursor.execute('select mm_media_dir_guid,mm_media_dir_path,mm_media_dir_class_type'\
+    self.db_cursor.execute('select mm_media_dir_guid,mm_media_dir_path,mm_media_dir_class_type'\
         ' from mm_media_dir where mm_media_dir_guid = %s', (dir_id,))
     try:
-        return self.sql3_cursor.fetchone()
+        return self.db_cursor.fetchone()
     except:
         return None
