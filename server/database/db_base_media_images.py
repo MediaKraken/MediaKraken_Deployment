@@ -38,6 +38,6 @@ def srv_db_media_images_list(self, offset=None, records=None):
     else:
         self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'\
             ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
-            ' and mm_media_class_type = \'Picture\' offset %s limit %s)',\
+            ' and mm_media_class_type = \'Picture\' offset %s limit %s',\
             (offset, records))
     return self.db_cursor.fetchall()
