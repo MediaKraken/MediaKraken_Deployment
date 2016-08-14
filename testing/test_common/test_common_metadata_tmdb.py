@@ -29,7 +29,7 @@ class TestCommonMetadataTMDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_metadata_tmdb.common_metadata_tmdb_API()
+        self.db_connection = common_metadata_tmdb.common_metadata_tmdb_API()
 
 
     @classmethod

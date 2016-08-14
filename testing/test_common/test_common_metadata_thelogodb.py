@@ -29,7 +29,7 @@ class TestCommonthelogodb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_meta_thelogodb.com_thelogodb_API()
+        self.db_connection = com_meta_thelogodb.com_thelogodb_API()
 
 
     @classmethod

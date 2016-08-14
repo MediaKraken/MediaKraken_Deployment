@@ -29,7 +29,7 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_network_Trakt.com_Trakt_API()
+        self.db_connection = common_network_Trakt.com_Trakt_API()
 
 
     @classmethod

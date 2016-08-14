@@ -29,7 +29,7 @@ class TestCommonSchedulesDirect(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_Schedules_Direct.com_Schedules_Direct_API()
+        self.db_connection = com_Schedules_Direct.com_Schedules_Direct_API()
 
 
     @classmethod

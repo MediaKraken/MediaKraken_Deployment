@@ -29,7 +29,7 @@ class TestCommonSerial(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_Serial_API()
+        self.db_connection = com_Serial_API()
 
 
     @classmethod

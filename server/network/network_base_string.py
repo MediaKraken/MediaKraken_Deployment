@@ -44,7 +44,7 @@ class NetworkEvents(Int32StringReceiver):
         self.MAX_LENGTH = 32000000
         self.cpu_use_table = {}
         # server info
-        self.db_connection.connection = db
+        self.db_connection = db
         self.users = users
         self.user_host_name = None
         self.user_ip_addy = None

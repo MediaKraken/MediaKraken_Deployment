@@ -29,7 +29,7 @@ class TestCommonFeedgen(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_network_Feedgen.com_Feedgen_API()
+        self.db_connection = common_network_Feedgen.com_Feedgen_API()
 
 
     @classmethod

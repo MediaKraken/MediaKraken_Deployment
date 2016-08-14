@@ -29,7 +29,7 @@ class TestCommonCloudOneDrive(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_cloud_OneDrive.common_cloud_OneDrive_API()
+        self.db_connection = common_cloud_OneDrive.common_cloud_OneDrive_API()
 
 
     @classmethod

@@ -29,7 +29,7 @@ class TestCommonDatabaseOctmote(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_db_Open(None):
+        self.db_connection = com_db_Open(None):
 
 
     @classmethod

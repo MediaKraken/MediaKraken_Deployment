@@ -29,7 +29,7 @@ class TestCommonMetadatathesportsdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_meta_thesportsdb.com_meta_thesportsdb_API()
+        self.db_connection = com_meta_thesportsdb.com_meta_thesportsdb_API()
 
 
     @classmethod

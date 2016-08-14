@@ -29,7 +29,7 @@ class TestiOSHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_system_iOS.MK_iOS_Hardware_Instance()
+        self.db_connection = common_system_iOS.MK_iOS_Hardware_Instance()
 
 
     @classmethod

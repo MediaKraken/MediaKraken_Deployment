@@ -29,7 +29,7 @@ class TestCommonCIFSShareURL(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_network_CIFS.common_cifs_Share_URL_API()
+        self.db_connection = common_network_CIFS.common_cifs_Share_URL_API()
 
 
     @classmethod
@@ -51,7 +51,7 @@ class TestCommonCIFSShare(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = common_network_CIFS.common_cifs_Share_API()
+        self.db_connection = common_network_CIFS.common_cifs_Share_API()
 
 
     @classmethod

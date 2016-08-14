@@ -29,7 +29,7 @@ class TestCommonMetadataAnidb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = database_base.common_metadata_anidb_API()
+        self.db_connection = database_base.common_metadata_anidb_API()
 
 
     @classmethod

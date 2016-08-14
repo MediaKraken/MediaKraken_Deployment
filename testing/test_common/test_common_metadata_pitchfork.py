@@ -29,7 +29,7 @@ class TestCommonpitchfork(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = com_pitchfork_API()
+        self.db_connection = com_pitchfork_API()
 
 
     @classmethod

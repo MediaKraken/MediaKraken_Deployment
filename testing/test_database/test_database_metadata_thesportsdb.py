@@ -30,7 +30,7 @@ class TestDatabaseMetadataThesportsdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection.connection = database_base.MKServerDatabase()
+        self.db_connection = database_base.MKServerDatabase()
         self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
