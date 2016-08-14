@@ -41,15 +41,15 @@ class TestDatabasePostgresql(object):
 
     # return tables sizes (includex indexes, etc)
     # query provided by postgresql wiki
-    def test_srv_db_Postgresql_Table_Sizes(self):
-        self.db.srv_db_Postgresql_Table_Sizes()
+    def test_srv_db_pgsql_table_sizes(self):
+        self.db.srv_db_pgsql_table_sizes()
         self.db.srv_db_rollback()
 
 
     # return tables and row count
     # query provided by postgresql wiki
-    def test_srv_db_Postgresql_Row_Count(self):
-        self.db.srv_db_Postgresql_Row_Count()
+    def test_srv_db_pgsql_row_count(self):
+        self.db.srv_db_pgsql_row_count()
         self.db.srv_db_rollback()
 
 
@@ -57,8 +57,8 @@ class TestDatabasePostgresql(object):
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
-    def test_srv_db_Postgresql_Vacuum_Stat_by_Day(self, days):
-        self.db.srv_db_Postgresql_Vacuum_Stat_by_Day(days)
+    def test_srv_db_pgsql_vacuum_stat_by_day(self, days):
+        self.db.srv_db_pgsql_vacuum_stat_by_day(days)
         self.db.srv_db_rollback()
 
 
@@ -66,11 +66,11 @@ class TestDatabasePostgresql(object):
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
-    def test_srv_db_Postgresql_Vacuum_Table(self, table_name):
-        self.db.srv_db_Postgresql_Vacuum_Table(table_name)
+    def test_srv_db_pgsql_vacuum_table(self, table_name):
+        self.db.srv_db_pgsql_vacuum_table(table_name)
         self.db.srv_db_rollback()
 
 
     # set isolation level
-    # def srv_db_Postgesql_Set_Isolation_Level(self, isolation_level):
+    # def srv_db_pgsql_set_isolation_level(self, isolation_level):
 #        self.db.srv_db_rollback()

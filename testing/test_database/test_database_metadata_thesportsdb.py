@@ -40,12 +40,12 @@ class TestDatabaseMetadataThesportsdb(object):
 
 
     # select
-    # def srv_db_metathesportsdb_Select_by_Guid(self, guid):
+    # def srv_db_metathesportsdb_select_by_guid(self, guid):
 #         self.db.srv_db_rollback()
 
 
     # insert
-    # def srv_db_metathesportsdb_Insert(self, series_id_json, event_name, show_detail, image_json):
+    # def srv_db_metathesportsdb_insert(self, series_id_json, event_name, show_detail, image_json):
 #         self.db.srv_db_rollback()
 
 

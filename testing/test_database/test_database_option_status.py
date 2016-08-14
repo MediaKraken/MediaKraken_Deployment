@@ -39,18 +39,18 @@ class TestDatabaseOptionStatus(object):
         self.db.srv_db_close()
 
 
-    def test_srv_db_Option_Status_Read(self):
-        self.db.srv_db_Option_Status_Read()
+    def test_srv_db_option_status_read(self):
+        self.db.srv_db_option_status_read()
         self.db.srv_db_rollback()
 
 
-    # def srv_db_Option_Status_Update(self, option_json, status_json):
+    # def srv_db_option_status_update(self, option_json, status_json):
 #        self.db.srv_db_rollback()
 
 
-    # def srv_db_Option_Status_Update_Scan_Json(self, scan_json):
+    # def srv_db_option_status_update_scan_json(self, scan_json):
 #        self.db.srv_db_rollback()
 
 
-    # def srv_db_Option_Status_Update_Scan_Json_Rec(self, dir_path, scan_status, scan_percent):
+    # def srv_db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
 #         self.db.srv_db_rollback()

@@ -40,8 +40,8 @@ class TestDatabaseSync(object):
 
 
     # return count of sync jobs
-    def srv_db_Sync_List_Count(self):
-        self.db.srv_db_Sync_List_Count()
+    def srv_db_sync_list_count(self):
+        self.db.srv_db_sync_list_count()
         self.db.srv_db_rollback()
 
 
@@ -50,21 +50,21 @@ class TestDatabaseSync(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_Sync_List(self, offset, records):
-        self.db.srv_db_Sync_List(offset, records)
+    def test_srv_db_sync_list(self, offset, records):
+        self.db.srv_db_sync_list(offset, records)
         self.db.srv_db_rollback()
 
 
     # insert sync job
-    # def srv_db_Sync_Insert(self, sync_path, sync_path_to, sync_json):
+    # def srv_db_sync_insert(self, sync_path, sync_path_to, sync_json):
 #        self.db.srv_db_rollback()
 
 
     # delete sync job
-    # def srv_db_Sync_Delete(self, sync_guid):
+    # def srv_db_sync_delete(self, sync_guid):
 #        self.db.srv_db_rollback()
 
 
     # update progress
-    # def srv_db_Sync_Progress_Update(self, sync_guid, sync_percent):
+    # def srv_db_sync_progress_update(self, sync_guid, sync_percent):
 #        self.db.srv_db_rollback()

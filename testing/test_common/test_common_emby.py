@@ -48,7 +48,7 @@ def test_com_emby_check_instance():
 
 
 # C# guid to text
-# def com_Emby_GUID_To_UUID(emby_guid):
+# def com_Emby_guid_To_UUID(emby_guid):
 
 
 # text uuid to C# guid

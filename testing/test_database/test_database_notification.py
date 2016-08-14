@@ -49,11 +49,11 @@ class TestDatabaseNotification(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_Notification_Read(self, offset, records):
-        self.db.srv_db_Notification_Read(offset, records)
+    def test_srv_db_notification_read(self, offset, records):
+        self.db.srv_db_notification_read(offset, records)
         self.db.srv_db_rollback()
 
 
     # remove noticications
-    # def srv_db_Notification_Delete(self, notification_uuid):
+    # def srv_db_notification_delete(self, notification_uuid):
 #         self.db.srv_db_rollback()

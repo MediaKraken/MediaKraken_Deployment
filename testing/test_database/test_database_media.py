@@ -53,8 +53,8 @@ class TestDatabaseMedia(object):
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_srv_db_read_media_Guid(self, media_guid):
-        self.db.srv_db_read_media(media_guid)
+    def test_srv_db_read_media_guid(self, media_guid):
+        self.db.srv_db_read_media_guid(media_guid)
         self.db.srv_db_rollback()
 
 
@@ -81,8 +81,8 @@ class TestDatabaseMedia(object):
 
 
     # count all media that is NULL for meatadata match
-    def test_srv_db_known_media_All_Unmatched_Count(self):
-        self.db.srv_db_known_media_All_Unmatched_Count()
+    def test_srv_db_known_media_all_unmatched_count(self):
+        self.db.srv_db_known_media_all_unmatched_count()
         self.db.srv_db_rollback()
 
 
@@ -91,8 +91,8 @@ class TestDatabaseMedia(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_known_media_All_Unmatched(self, offset, records):
-        self.db.srv_db_known_media_All_Unmatched(offset, records)
+    def test_srv_db_known_media_all_unmatched(self, offset, records):
+        self.db.srv_db_known_media_all_unmatched(offset, records)
         self.db.srv_db_rollback()
 
 
@@ -116,8 +116,8 @@ class TestDatabaseMedia(object):
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
-    def test_srv_db_media_duplicate_Detail_Count(self, media_guid):
-        self.db.srv_db_media_duplicate_Detail_Count(media_guid)
+    def test_srv_db_media_duplicate_detail_count(self, media_guid):
+        self.db.srv_db_media_duplicate_detail_count(media_guid)
         self.db.srv_db_rollback()
 
 
@@ -129,8 +129,8 @@ class TestDatabaseMedia(object):
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', None, None),       # not exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 100, 100),         # not exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 100000000, 1000)]) # not exists
-    def test_srv_db_media_duplicate_Detail(self, media_guid, offset, records):
-        self.db.srv_db_media_duplicate_Detail(media_guid, offset, records)
+    def test_srv_db_media_duplicate_detail(self, media_guid, offset, records):
+        self.db.srv_db_media_duplicate_detail(media_guid, offset, records)
         self.db.srv_db_rollback()
 
 
@@ -209,8 +209,8 @@ class TestDatabaseMedia(object):
 
 
     # return all media which needs chapter images created
-    def test_srv_db_known_media_Chapter_Scan(self):
-        self.db.srv_db_known_media_Chapter_Scan()
+    def test_srv_db_known_media_chapter_scan(self):
+        self.db.srv_db_known_media_chapter_scan()
         self.db.srv_db_rollback()
 
 
@@ -236,13 +236,13 @@ class TestDatabaseMedia(object):
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
-    def test_srv_db_read_media_Metadata_Both(self, media_guid):
-        self.db.srv_db_read_media_Metadata_Both(media_guid)
+    def test_srv_db_read_media_metadata_both(self, media_guid):
+        self.db.srv_db_read_media_metadata_both(media_guid)
         self.db.srv_db_rollback()
 
 
     # do a like class path match for trailers and extras
-    # def srv_db_read_media_Path_Like(self, media_path):
+    # def srv_db_read_media_path_like(self, media_path):
 #        self.db.srv_db_rollback()
 
 
@@ -250,8 +250,8 @@ class TestDatabaseMedia(object):
     @pytest.mark.parametrize(("new_days"), [
         (7),
         (400)])
-    def test_srv_db_read_media_New_Count(self, new_days):
-        self.db.srv_db_read_media_New_Count(new_days)
+    def test_srv_db_read_media_new_count(self, new_days):
+        self.db.srv_db_read_media_new_count(new_days)
         self.db.srv_db_rollback()
 
 
@@ -261,6 +261,6 @@ class TestDatabaseMedia(object):
         (400, None, None),
         (400, 100, 100),
         (400, 10000000, 1000)])
-    def test_srv_db_read_media_New(self, new_days, offset, records):
-        self.db.srv_db_read_media_New(new_days, offset, records)
+    def test_srv_db_read_media_new(self, new_days, offset, records):
+        self.db.srv_db_read_media_new(new_days, offset, records)
         self.db.srv_db_rollback()

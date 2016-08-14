@@ -131,7 +131,7 @@ result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db.srv_db_metaTV_GUID_by_tvmaze(str(tvmaze_id))
+    results = db.srv_db_metaTV_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:

@@ -40,12 +40,12 @@ class TestDatabaseReview(object):
 
 
     # count reviews for media
-    # def srv_db_Review_Count(self, metadata_id):
+    # def srv_db_review_count(self, metadata_id):
 #         self.db.srv_db_rollback()
 
 
     # grab reviews for metadata
-    # def srv_db_Review_List_by_TMDB_GUID(self, metadata_id):
+    # def srv_db_review_list_by_tmdb_guid(self, metadata_id):
 #         self.db.srv_db_rollback()
 
 

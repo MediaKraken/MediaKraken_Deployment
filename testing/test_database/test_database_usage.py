@@ -39,21 +39,21 @@ class TestDatabaseUsage(object):
         self.db.srv_db_close()
 
 
-    def test_srv_db_Usage_Top10_AllTime(self):
-        self.db.srv_db_Usage_Top10_AllTime()
+    def test_srv_db_usage_top10_alltime(self):
+        self.db.srv_db_usage_top10_alltime()
         self.db.srv_db_rollback()
 
 
-    def test_srv_db_Usage_Top10_Movie(self):
-        self.db.srv_db_Usage_Top10_Movie()
+    def test_srv_db_usage_top10_movie(self):
+        self.db.srv_db_usage_top10_movie()
         self.db.srv_db_rollback()
 
 
-    def test_srv_db_Usage_Top10_TV_Show(self):
-        self.db.srv_db_Usage_Top10_TV_Show()
+    def test_srv_db_usage_top10_tv_show(self):
+        self.db.srv_db_usage_top10_tv_show()
         self.db.srv_db_rollback()
 
 
-    def test_srv_db_Usage_Top10_TV_Episode(self):
-        self.db.srv_db_Usage_Top10_TV_Episode()
+    def test_srv_db_usage_top10_tv_episode(self):
+        self.db.srv_db_usage_top10_tv_episode()
         self.db.srv_db_rollback()

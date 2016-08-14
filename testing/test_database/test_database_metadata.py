@@ -43,8 +43,8 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
-    def test_srv_db_read_media_Metadata(self, media_guid):
-        self.db.srv_db_read_media_Metadata(media_guid)
+    def test_srv_db_read_media_metadata(self, media_guid):
+        self.db.srv_db_read_media_metadata(media_guid)
         self.db.srv_db_rollback()
 
 
@@ -79,8 +79,8 @@ class TestDatabaseMetadata(object):
     @pytest.mark.parametrize(("uuid"), [
         ('tt0215948'),
         ('fakeid')])
-    def test_srv_db_meta_GUID_by_imdb(self, uuid):
-        self.db.srv_db_meta_GUID_by_imdb(uuid)
+    def test_srv_db_meta_guid_by_imdb(self, uuid):
+        self.db.srv_db_meta_guid_by_imdb(uuid)
         self.db.srv_db_rollback()
 
 
@@ -142,5 +142,5 @@ class TestDatabaseMetadata(object):
 
 
     # update the mediaid in metadata
-    # def srv_db_meta_update_Media_ID_From_Scudlee(self, media_tvid, media_imdbid, media_aniid):
+    # def srv_db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid, media_aniid):
 #        self.db.srv_db_rollback()

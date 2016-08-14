@@ -40,15 +40,15 @@ class TestDatabaseMetadatatvmaze(object):
 
 
     # metadata changed date by uuid
-    # def srv_db_metatvmaze_Changed_UUID(self, maze_uuid):
+    # def srv_db_metatvmaze_changed_uuid(self, maze_uuid):
 #        self.db.srv_db_rollback()
 
 
     # insert
-    # def srv_db_metatvmaze_Insert(self, series_id_json, tvmaze_name, show_detail, image_json):
+    # def srv_db_metatvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
 #         self.db.srv_db_rollback()
 
 
     # updated
-    # def srv_db_metatvmaze_Update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
+    # def srv_db_metatvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
 #         self.db.srv_db_rollback()

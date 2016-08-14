@@ -39,32 +39,36 @@ class TestDatabaseUsers(object):
         self.db.srv_db_close()
 
 
-    # return user count
-    def test_srv_db_User_List_Name_Count(self):
-        self.db.srv_db_User_List_Name_Count()
+    def test_srv_db_user_list_name_count(self):
+        """
+        # return user count
+        """
+        self.db.srv_db_user_list_name_count()
         self.db.srv_db_rollback()
 
 
-    # return user list
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_User_List_Name(self, offset, records):
-        self.db.srv_db_User_List_Name(offset, records)
+    def test_srv_db_user_list_name(self, offset, records):
+        """
+        # return user list
+        """
+        self.db.srv_db_user_list_name(offset, records)
         self.db.srv_db_rollback()
 
 
     # return all data for specified user
-    # def srv_db_User_Detail(self, guid):
+    # def srv_db_user_detail(self, guid):
 #        self.db.srv_db_rollback()
 
 
     # remove user
-    # def srv_db_User_Delete(self, user_guid):
+    # def srv_db_user_delete(self, user_guid):
         #self.db.srv_db_rollback()
 
 
     # verify user logon
-    # def srv_db_User_Login_Kodi(self, user_data):
+    # def srv_db_user_login_kodi(self, user_data):
 #        self.db.srv_db_rollback()
