@@ -22,16 +22,15 @@ import uuid
 import os
 import sys
 sys.path.append("../common")
-from . import common_hash
-sys.path.append("./metadata")
-import metadata_anime
-import metadata_game
-import metadata_movie
-import metadata_music_video
-import metadata_periodicals
-import metadata_person
-import metadata_sports
-import metadata_tv
+from .. import common_hash
+from . import metadata_anime
+from . import metadata_game
+from . import metadata_movie
+from . import metadata_music_video
+from . import metadata_periodicals
+from . import metadata_person
+from . import metadata_sports
+from . import metadata_tv
 
 
 def metadata_identification(db_connection, class_text, media_file_path, download_que_json,\
