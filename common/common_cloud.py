@@ -64,10 +64,10 @@ def com_cloud_file_store(cloud_type, file_path_name, file_save_name, backup_buck
             cloud_awss3.com_aws_s3_upload(file_path_name, file_save_name, backup_bucket)
     elif cloud_type == "dropbox":
         if cloud_dropbox.active:
-            cloud_dropbox.dropbox_upload(file_path_name, file_save_name)
+            cloud_dropbox.com_cloud_dropbox_upload(file_path_name, file_save_name)
     elif cloud_type == "onedrive":
         if cloud_onedrive.active:
-            cloud_onedrive.mk_onedrive_update(file_path_name, file_save_name)
+            cloud_onedrive.com_cloud_onedrive_update(file_path_name, file_save_name)
     else:
         return None
 
@@ -104,7 +104,7 @@ def com_cloud_file_list(cloud_type, file_path=None, backup_bucket=False):
             return cloud_awss3.com_aws_s3_bucket_list(backup_bucket)
     elif cloud_type == "dropbox":
         if cloud_dropbox.active:
-            return com_cloud_dropbox.dropbox_list(file_path)
+            return cloud_dropbox.com_cloud_dropbox_list(file_path)
     elif cloud_type == "onedrive":
         if cloud_onedrive.active:
             pass
@@ -116,17 +116,17 @@ def com_cloud_file_retrieve(cloud_type, file_name, file_location):
     Fetch file from cloud
     """
     if cloud_type == "google":
-        if google.active:
+        if cloud_google.active:
             pass
     elif cloud_type == "awss3":
         if cloud_awss3.active:
             cloud_awss3.com_aws_s3_download(file_name, file_location)
     elif cloud_type == "dropbox":
         if cloud_dropbox.active:
-            cloud_dropbox.dropbox_download(file_name, file_location)
+            cloud_dropbox.com_cloud_dropbox_download(file_name, file_location)
     elif cloud_type == "onedrive":
         if cloud_onedrive.active:
-            com_cloud_onedrive.mk_onedrive_download(file_name, file_location)
+            com_cloud_onedrive.com_cloud_onedrive_download(file_name, file_location)
     else:
         return None
 
@@ -136,7 +136,7 @@ def com_cloud_file_rename(cloud_type, file_from, file_to):
     Rename file on cloud
     """
     if cloud_type == "google":
-        if google.active:
+        if cloud_google.active:
             pass
     elif cloud_type == "awss3":
         if cloud_awss3.active:
@@ -156,7 +156,7 @@ def com_cloud_create_folder(cloud_type, dir_name):
     Create directory in cloud
     """
     if cloud_type == "google":
-        if google.active:
+        if cloud_google.active:
             pass
     elif cloud_type == "awss3":
         if cloud_awss3.active:

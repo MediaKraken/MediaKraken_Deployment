@@ -19,12 +19,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import os
-import xmltodict
 import zipfile
-#import zlib
 import StringIO
-from . import common_file
-from . import common_metadata
+import xmltodict
 from . import common_network
 
 '''
@@ -44,14 +41,14 @@ class CommonMetadataTheTVDB(object):
             Config.read("MediaKraken.ini")
         else:
             Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        self.thetvdb_API_Key = Config.get('API', 'theTVdb').strip()
+        self.thetvdb_connection = Config.get('API', 'theTVdb').strip()
 
 
     def com_meta_TheTVDB_Updates(self, frequency='day'):
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network\
-            .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_API_Key\
+            .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
             + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
@@ -63,11 +60,11 @@ class CommonMetadataTheTVDB(object):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
-        logging.debug("zip: %s %s %s", self.thetvdb_API_Key, tv_show_id, lang_code)
+        logging.debug("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
         try:
             # TODO catch errors
             show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
-                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_API_Key\
+                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
                 + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
         except:
             return (None, None, None)
@@ -88,11 +85,11 @@ class CommonMetadataTheTVDB(object):
 #    # depreciated....they round-robin at their end
 #    def com_meta_TheTVDB_Get_Mirrors():
 #        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
-# + self.thetvdb_API_Key + '/mirrors.xml', None)
+# + self.thetvdb_connection + '/mirrors.xml', None)
 #        return mirror_list_xml
 
 
-    def com_meta_TheTVDB_Get_Server_Epoc_Time(self):
+    def com_meta_thetvdb_get_server_epoc_time(self):
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
@@ -100,22 +97,23 @@ class CommonMetadataTheTVDB(object):
     #Following is the future database processing section
     #'''
 
-    def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):
+    def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
 
-    def com_meta_TheTVDB_Update_Series_Read(self, tv_show_id, lang_code='en'):
+    def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
-            + self.thetvdb_API_Key + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
+            + self.thetvdb_connection + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
-    def com_meta_TheTVDB_Update_Episode_Read(self, tv_eps_id, lang_code='en'):
+    def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
-            + self.thetvdb_API_Key + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
+            + self.thetvdb_connection + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 
 '''
 xmltodict.parse(xml, False)
 Record <previoustime> for next update
-a. Using the XML from com_meta_TheTVDB_Updates_by_Epoc, store <Time> as <previoustime> and use for your next call to Updates.php
+a. Using the XML from com_meta_TheTVDB_Updates_by_Epoc, store <Time>
+ as <previoustime> and use for your next call to Updates.php
 '''

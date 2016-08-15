@@ -28,16 +28,16 @@ except:
 from . import common_string
 
 JUNK_FILES = [
-            '(gameplay)',
-            'official gameplay',
-            'movie clip',
-            'fan made',
-            'review -',
-            'full movie',
-            'full album',
-            'full length',
-            'deleted scene',
-            ]
+    '(gameplay)',
+    'official gameplay',
+    'movie clip',
+    'fan made',
+    'review -',
+    'full movie',
+    'full album',
+    'full length',
+    'deleted scene',
+    ]
 
 
 def com_file_modification_timestamp(file_name):
@@ -121,7 +121,7 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
             match_list_size = []
             for row_data in match_list:
                 match_list_size.append((row_data,\
-                    common_string.bytes2human(os.path.getsize(row_data))))
+                    common_string.com_string_bytes2human(os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:

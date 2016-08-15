@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
 from twitch.api import v3 as twitch
-from twitch.scraper import get_json, download
-from twitch.exceptions import ResourceUnavailableException
+#from twitch.scraper import get_json, download
+#from twitch.exceptions import ResourceUnavailableException
 
 
 class CommonNetworkTwitch(object):
@@ -54,6 +54,9 @@ class CommonNetworkTwitch(object):
 
 
     def com_twitch_channel_by_user(self, user_name):
+        """
+        Get user channels
+        """
         return twitch.streams.by_channel(user_name)
 
 
@@ -62,10 +65,16 @@ class CommonNetworkTwitch(object):
 
 
     def com_twitch_channel_by_name(self, channel_name):
+        """
+        Grab info by channel name
+        """
         return twitch.channels.by_name(channel_name)
 
 
     def com_twitch_get_videos_by_channel(self, channel_name, stream_limit):
+        """
+        Search videos by channel name
+        """
         return twitch.channels.get_videos(channel_name, limit=stream_limit)['videos']
 
 
