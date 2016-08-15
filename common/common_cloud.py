@@ -126,7 +126,7 @@ def com_cloud_file_retrieve(cloud_type, file_name, file_location):
             cloud_dropbox.com_cloud_dropbox_download(file_name, file_location)
     elif cloud_type == "onedrive":
         if cloud_onedrive.active:
-            com_cloud_onedrive.com_cloud_onedrive_download(file_name, file_location)
+            cloud_onedrive.com_cloud_onedrive_download(file_name, file_location)
     else:
         return None
 
