@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import time
 import scandir
@@ -27,16 +27,17 @@ except:
     import pickle
 from common import common_string
 
-junk_files = []
-junk_files.append('(gameplay)')
-junk_files.append('official gameplay')
-junk_files.append('movie clip')
-junk_files.append('fan made')
-junk_files.append('review -')
-junk_files.append('full movie')
-junk_files.append('full album')
-junk_files.append('full length')
-junk_files.append('deleted scene')
+JUNK_FILES = [
+            '(gameplay)',
+            'official gameplay',
+            'movie clip',
+            'fan made',
+            'review -',
+            'full movie',
+            'full album',
+            'full length',
+            'deleted scene',
+            ]
 
 
 def com_file_modification_timestamp(file_name):
@@ -115,12 +116,12 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                         else:
                             match_list.append(os.path.join(root, file_name))
         if skip_junk and len(match_list) > 0:
-            match_list = com_file_Remove_Junk(match_list)
+            match_list = com_file_remove_junk(match_list)
         if file_size:
             match_list_size = []
             for row_data in match_list:
                 match_list_size.append((row_data,\
-                    com_string.bytes2human(os.path.getsize(row_data))))
+                    common_string.bytes2human(os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:
@@ -132,7 +133,7 @@ def com_file_remove_junk(file_list):
     Throw out junk entries in files list
     """
     for file_name in file_list:
-        for search_string in junk_files:
+        for search_string in JUNK_FILES:
             try:
                 if file_name.lower().find(search_string) != -1:
                     file_list.remove(file_name)
@@ -146,7 +147,7 @@ def com_file_is_junk(file_name):
     """
     See if file is junk
     """
-    for search_string in junk_files:
+    for search_string in JUNK_FILES:
         try:
             if file_name.lower().find(search_string) != -1:
                 return True
