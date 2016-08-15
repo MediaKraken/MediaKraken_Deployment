@@ -30,7 +30,7 @@ def pprint_ntuple(nt, return_value=None):
         value = getattr(nt, name)
         if name != 'percent':
             value = common_string.com_string_bytes2human(value)
-        logging.debug('%-10s : %7s' % (name.capitalize(), value))
+        logging.debug('%-10s : %7s', (name.capitalize(), value))
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
         return tuple_print
