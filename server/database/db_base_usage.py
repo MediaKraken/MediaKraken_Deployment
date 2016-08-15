@@ -23,7 +23,7 @@ def srv_db_usage_top10_alltime(self):
     """
     Top 10 of all time
     """
-    self.db_cursor.execute('select blah from blah order by blah limit 10')
+    self.db_cursor.execute('select 1 limit 10')
     return self.db_cursor.fetchall()
 
 
