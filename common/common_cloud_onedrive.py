@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import os
 import onedrivesdk
 from onedrivesdk.helpers import GetAuthCodeServer
@@ -82,10 +82,10 @@ class CommonCloudOneDrive(object):
         """
         Add folder
         """
-        f = onedrivesdk.Folder()
+        folder_handle = onedrivesdk.Folder()
         i = onedrivesdk.Item()
         i.name = folder_name
-        i.folder = f
+        i.folder = folder_handle
         returned_item = self.client.item(drive="me", id="root").children.add(i)
 
 

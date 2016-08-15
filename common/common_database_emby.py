@@ -30,7 +30,8 @@ class CommonDatabaseEmby(object):
     Class for interfacing with emby server database
     """
     def __init__(self):
-        pass
+        self.sql3_emby_conn = None
+        self.sql3_emby_cursor = None
 
 
     def com_db_attach_emby(self, dir_path):
@@ -60,7 +61,7 @@ class CommonDatabaseEmby(object):
         # if not specified....then try to find the default
         if db_file_name is None:
             # windows
-            db_file_name = os.path.join(com_Emby.com_Emby_Installed_Directory,\
+            db_file_name = os.path.join(common_emby.com_emby_installed_directory,\
                 '/data/library.db')
         # verify it found a file
         if db_file_name is None:
@@ -71,7 +72,7 @@ class CommonDatabaseEmby(object):
             self.sql3_emby_cursor = self.sql3_emby_conn.cursor()
             self.sql3_emby_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
             if attach_other_db:
-                com_db_Attach_Emby(db_file_name.replace('/library.db', ''))
+                common_emby.com_db_attach_emby(db_file_name.replace('/library.db', ''))
         except:
             logging.critical("Unable to open db file(s): %s", db_file_name)
             sys.exit()
@@ -295,7 +296,7 @@ class CommonDatabaseEmby(object):
         """
         self.sql3_emby_cursor.execute('select * from TypedBaseItems where guid = ?', (guid,))
         try:
-            return self.db_cursor.fetchone()[0]
+            return self.sql3_emby_cursor.fetchone()[0]
         except:
             return None
 

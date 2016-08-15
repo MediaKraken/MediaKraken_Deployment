@@ -37,7 +37,7 @@ class CommonCloudDropbox(object):
         else:
             Config.read("../MediaKraken.ini")
         if Config.get('Dropbox', 'APIKey').strip() != 'None':
-            flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
+            self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
                 Config.get('Dropbox', 'APIKey').strip(),\
                 Config.get('Dropbox', 'APISecret').strip())
             self.active = True
@@ -47,13 +47,13 @@ class CommonCloudDropbox(object):
         """
         Have the user sign in and authorize this token
         """
-        authorize_url = flow.start()
+        authorize_url = self.flow.start()
         print('1. Go to: %s', authorize_url)
         print('2. Click "Allow" (you might have to log in first)')
         print('3. Copy the authorization code.')
         code = raw_input("Enter the authorization code here: ").strip()
         # This will fail if the user enters an invalid authorization code
-        access_token, user_id = flow.finish(code)
+        access_token, user_id = self.flow.finish(code)
         self.client = dropbox.client.DropboxClient(access_token)
         print('linked account: %s', self.client.account_info())
 
@@ -62,8 +62,8 @@ class CommonCloudDropbox(object):
         """
         Upload
         """
-        f = open(file_name, 'rb')
-        response = self.client.put_file(file_save_name, f)
+        file_handle = open(file_name, 'rb')
+        response = self.client.put_file(file_save_name, file_handle)
         print('uploaded: %s', response)
 
 
@@ -79,8 +79,8 @@ class CommonCloudDropbox(object):
         """
         Download file from dropbox
         """
-        f, metadata = self.client.get_file_and_metadata(file_name)
+        file_handle, metadata = self.client.get_file_and_metadata(file_name)
         out = open(file_save_name, 'wb')
-        out.write(f.read())
+        out.write(file_handle.read())
         out.close()
         print(metadata)

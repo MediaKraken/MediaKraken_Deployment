@@ -28,7 +28,7 @@ from . import common_hash_c_code
 
 # import compression mods
 import pylzma
-if str.upper(sys.platform[0:3])=='WIN' or str.upper(sys.platform[0:3])=='CYG':
+if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
 
 
@@ -95,11 +95,11 @@ def com_hash_sha1_by_filename(file_name):
         # read in chunks to lower memory requirement
         try:
             SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-            for chunk in iter(lambda: file_pointer.read(128*SHA1.block_size), ''):
+            for chunk in iter(lambda: file_pointer.read(128 * SHA1.block_size), ''):
                 SHA1.update(chunk)
                 sha1_hash_data = SHA1.hexdigest()
         except:
-            logging.error("hash sha1 fail: %s",file_name)
+            logging.error("hash sha1 fail: %s", file_name)
         file_pointer.close()
         return sha1_hash_data
 
@@ -110,13 +110,12 @@ def com_hash_sha1_c(file_name):
     """
     num = 0
     while 1:
-        zip = zipfile.ZipFile(file_name,'r')  # issues if u do RB
-        hash_dict = {}
+        zip = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
         for zippedFile in zip.namelist():
             # calculate sha1 hash
 #            SHA1.update(zip.read(zippedFile))
             zip_file_data = zip.read(zippedFile)
-            R = inline(MK_C_Code,['zip_file_data'],support_code=MK_sha1_code)
+            R = inline(MK_C_Code, ['zip_file_data'], support_code = MK_sha1_code)
         num += 1
         if num > 5:
             break
@@ -130,9 +129,9 @@ def com_hash_crc32(file_name):
     CRC = zlib.crc32(file_pointer.read(1024*1024))
     while True:
         data = file_pointer.read(1024*1024)
-        if len(data)==0:
+        if len(data) == 0:
             break #Finished reading file
-        CRC = zlib.crc32(data,CRC)
+        CRC = zlib.crc32(data, CRC)
     file_pointer.close()
     return CRC
 
@@ -144,8 +143,10 @@ def com_hash_ed2k(filePath):
     def gen(f):
         while True:
             x = f.read(9728000)
-            if x: yield x
-            else: return
+            if x:
+                yield x
+            else:
+                return
 
     def md4_hash(data):
         m = md4()
@@ -157,7 +158,8 @@ def com_hash_ed2k(filePath):
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
             return hashes[0].encode("hex")
-        else: return md4_hash(reduce(lambda a,d: a + d, hashes, "")).hexdigest()
+        else:
+            return md4_hash(reduce(lambda a, d: a + d, hashes, "")).hexdigest()
 
 
 def com_hash_thesubdb(file_name):
@@ -181,24 +183,24 @@ def com_hash_opensubtitles(file_name):
     try:
         longlongformat = '<q'  # little-endian long long
         bytesize = struct.calcsize(longlongformat)
-        f = open(file_name, "rb")
+        file_handle = open(file_name, "rb")
         filesize = os.path.getsize(file_name)
         hash = filesize
         if filesize < 65536 * 2:
             return "SizeError"
-        for x in range(65536/bytesize):
-            buffer = f.read(bytesize)
+        for ndx in range(65536 / bytesize):
+            buffer = file_handle.read(bytesize)
             (l_value,)= struct.unpack(longlongformat, buffer)
             hash += l_value
             hash = hash & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
-        f.seek(max(0,filesize-65536),0)
-        for x in range(65536/bytesize):
-            buffer = f.read(bytesize)
+        file_handle.seek(max(0, filesize - 65536), 0)
+        for ndx in range(65536 / bytesize):
+            buffer = file_handle.read(bytesize)
             (l_value,)= struct.unpack(longlongformat, buffer)
             hash += l_value
             hash = hash & 0xFFFFFFFFFFFFFFFF
-        f.close()
+        file_handle.close()
         returnedhash =  "%016x" % hash
         return returnedhash
-    except(IOError):
+    except IOError:
         return "IOError"

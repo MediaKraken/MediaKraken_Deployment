@@ -19,16 +19,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import os
-import httplib2
-from apiclient import discovery
-import oauth2client
-from oauth2client import client
-from oauth2client import tools
 try:
     import argparse
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
+import httplib2
+from apiclient import discovery
+import oauth2client
+from oauth2client import client
+from oauth2client import tools
 
 
 class CommonCloudGoogleDrive(object):
@@ -46,7 +46,8 @@ class CommonCloudGoogleDrive(object):
         else:
             Config.read("../MediaKraken.ini")
         if Config.get('GoogleDrive', 'SecretFile').strip() != 'None':
-            #flow = dropbox.client.DropboxOAuth2FlowNoRedirect(Config.get('GoogleDrive', 'SecretFile').strip())
+  #flow = dropbox.client.DropboxOAuth2FlowNoRedirect
+        #(Config.get('GoogleDrive', 'SecretFile').strip())
             self.active = True
 
 
@@ -55,7 +56,7 @@ class CommonCloudGoogleDrive(object):
     APPLICATION_NAME = 'Drive API Python Quickstart'
 
 
-    def get_credentials():
+    def get_credentials(self):
         """Gets valid user credentials from storage.
 
         If nothing has been stored, or if the stored credentials are invalid,

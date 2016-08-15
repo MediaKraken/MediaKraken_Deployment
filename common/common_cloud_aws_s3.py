@@ -18,9 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
+import datetime
 import boto
 from boto.s3.key import Key
-import datetime
 
 
 class CommonCloudAWSS3(object):
