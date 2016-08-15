@@ -28,11 +28,11 @@ import common_cloud_onedrive
 
 
 CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
-                    ('dropbox', 'Dropbox'),
-                    ('google', 'Google Drive'),
-                    ('local', 'Local Filesystem'),
-                    ('onedrive', 'Microsoft OneDrive'),
-                    )
+                      ('dropbox', 'Dropbox'),
+                      ('google', 'Google Drive'),
+                      ('local', 'Local Filesystem'),
+                      ('onedrive', 'Microsoft OneDrive'),
+                      )
 
 
 awss3 = common_cloud_aws_s3.com_AWS_S3_API()
