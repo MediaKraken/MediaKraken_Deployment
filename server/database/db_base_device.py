@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import uuid
 
 
@@ -84,4 +84,3 @@ def srv_db_device_read(self, guid):
         return self.db_cursor.fetchone()
     except:
         return None
-

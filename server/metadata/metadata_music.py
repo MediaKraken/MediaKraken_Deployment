@@ -50,7 +50,7 @@ def metadata_music_lookup(db_connection, media_file_path, download_que_id):
 #                if row_data[4] is not None:
 #                    ffmpeg_data_json = row_data[4]
 #                    print "what:", ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE']
-#                    db_result = db.srv_db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'])
+#                    db_result = db_connection.srv_db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'])
 #                    if db_result is None:
 #                        if mbrainz_api_connection is not None:
 #                            # look at musicbrainz server

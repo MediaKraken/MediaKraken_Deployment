@@ -59,7 +59,7 @@ def imvdb_lookup(db_connection, file_name):
     if band_name == imvdb_lookup.metadata_last_band\
             and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
-    metadata_uuid = db.srv_db_meta_music_video_lookup(band_name, song_name)
+    metadata_uuid = db_connection.srv_db_meta_music_video_lookup(band_name, song_name)
     logging.debug("uuid: %s", metadata_uuid)
     if metadata_uuid == []:
         metadata_uuid = None
@@ -70,12 +70,12 @@ def imvdb_lookup(db_connection, file_name):
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:
                 logging.debug("vid data: %s", video_data)
-                if db.srv_db_meta_music_video_count(str(video_data['id'])) == 0:
-                    db.srv_db_meta_music_video_add(video_data['artists'][0]['slug'],\
+                if db_connection.srv_db_meta_music_video_count(str(video_data['id'])) == 0:
+                    db_connection.srv_db_meta_music_video_add(video_data['artists'][0]['slug'],\
                         video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),\
                         json.dumps(video_data), json.dumps({'Images': {'imvdb': None}}))
             # try after inserting new records
-            metadata_uuid = db.srv_db_meta_music_video_lookup(band_name, song_name)
+            metadata_uuid = db_connection.srv_db_meta_music_video_lookup(band_name, song_name)
             if metadata_uuid == []:
                 metadata_uuid = None
     # set last values to negate lookups for same song
