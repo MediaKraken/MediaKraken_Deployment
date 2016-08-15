@@ -52,7 +52,6 @@ def getmp4info(filename):
                 details['size'] = videofields[3].split('@')[0].strip()
         except:
             pass
-
     return details
 
 

@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import os
 import zipfile
 import StringIO
 import xmltodict
@@ -37,10 +36,7 @@ class CommonMetadataTheTVDB(object):
         # pull in the ini file config
         import ConfigParser
         Config = ConfigParser.ConfigParser()
-        if os.path.isfile("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../../MediaKraken_Server/MediaKraken.ini")
+        Config.read("MediaKraken.ini")
         self.thetvdb_connection = Config.get('API', 'theTVdb').strip()
 
 
@@ -90,12 +86,12 @@ class CommonMetadataTheTVDB(object):
 
 
     def com_meta_thetvdb_get_server_epoc_time(self):
+        """
+        Get epoc time from api server
+        """
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
-    #'''
-    #Following is the future database processing section
-    #'''
 
     def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
         return common_network.mk_network_fetch_from_url(\

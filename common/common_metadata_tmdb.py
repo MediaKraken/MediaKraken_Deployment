@@ -55,13 +55,13 @@ class CommonMetadataTMDB(object):
                         or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
                         or str(int(movie_year) + 1) == s['release_date'].split('-', 1)[0]):
                 if not id_only:
-                    return 'info', com_tmdb_Metadata_by_ID(s['id'])
+                    return 'info', com_tmdb_meta_by_ID(s['id'])
                 else:
                     return 'idonly', s['id'] #, s['title']
         return 're', search.results
 
 
-    def com_tmdb_metadata_by_id(self, tmdb_id):
+    def com_tmdb_meta_by_id(self, tmdb_id):
         """
         # search by tmdb
         """
@@ -74,7 +74,7 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    def com_tmdb_metadata_cast_by_id(self, tmdb_id):
+    def com_tmdb_meta_cast_by_id(self, tmdb_id):
         """
         # search by tmdb
         """
@@ -87,7 +87,7 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    def com_tmdb_metadata_review_by_id(self, tmdb_id):
+    def com_tmdb_meta_review_by_id(self, tmdb_id):
         """
         # review by tmdb
         """
@@ -109,7 +109,7 @@ class CommonMetadataTMDB(object):
 #    TV Episodes: imdb_id, freebase_mid, freebase_id, tvdb_id, tvrage_id
 
 
-    def com_tmdb_metadata_by_imdb_id(self, imdb_id):
+    def com_tmdb_meta_by_imdb_id(self, imdb_id):
         """
         # search by imdb
         """
@@ -122,7 +122,7 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    def com_tmdb_metadata_changes_movie(self):
+    def com_tmdb_meta_changes_movie(self):
         """
         # movie changes since date within 24 hours
         """
@@ -131,7 +131,7 @@ class CommonMetadataTMDB(object):
         return movie_changes
 
 
-    def com_tmdb_metadata_changes_tv(self):
+    def com_tmdb_meta_changes_tv(self):
         """
         # tv changes since date within 24 hours
         """
@@ -140,7 +140,7 @@ class CommonMetadataTMDB(object):
         return tv_changes
 
 
-    def com_tmdb_metadata_changes_person(self):
+    def com_tmdb_meta_changes_person(self):
         """
         # person changes since date within 24 hours
         """
@@ -149,7 +149,7 @@ class CommonMetadataTMDB(object):
         return person_changes
 
 
-    def com_tmdb_metadata_collection_by_id(self, tmdb_id):
+    def com_tmdb_meta_collection_by_id(self, tmdb_id):
         """
         # collection info
         """
@@ -162,7 +162,7 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
-    def com_tmdb_metadata_info_build(self, result_json):
+    def com_tmdb_meta_info_build(self, result_json):
         """
         # download info and set data to be ready for insert into database
         """

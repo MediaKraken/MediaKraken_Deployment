@@ -67,6 +67,10 @@ class CommonWatchdog(object):
     """
     Class for starting up watchdog
     """
+    def __init__(self):
+        self.observer = None
+
+
     def com_watchdog_start(self, paths_to_watch):
         """
         Start watchdog on specified list of paths(s)

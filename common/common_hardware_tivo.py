@@ -33,4 +33,5 @@ class CommonTivo(object):
         """
         Connect to specified tivo
         """
-        self.tivo_device = MK_Telnet_Open_Device(telnet_host, telnet_port)
+        self.tivo_device\
+            = common_network_telnet.com_net_telnet_open_device(telnet_host, telnet_port)

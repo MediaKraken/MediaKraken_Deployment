@@ -31,15 +31,15 @@ def com_emby_installed_directory(dir_name=None):
     """
     if dir_name is None:
         # windows
-        if str.upper(sys.platform[0:3])=='WIN' \
-        or str.upper(sys.platform[0:3])=='CYG':
+        if str.upper(sys.platform[0:3]) == 'WIN' \
+        or str.upper(sys.platform[0:3]) == 'CYG':
             if os.path.isdir("C:/Users/" + db_username_dir + "/AppData/Roaming/Emby-Server/"):
                 dir_name = "C:/Users/" + db_username_dir + "/AppData/Roaming/Emby-Server/"
             elif os.path.isdir("C:/Users/" + db_username_dir\
                 + "/AppData/Roaming/MediaBrowser-Server/"):
                 dir_name = "C:/Users/" + db_username_dir + "/AppData/Roaming/MediaBrowser-Server/"
         # mac
-        elif str.upper(sys.platform[0:3])=='DAR':
+        elif str.upper(sys.platform[0:3]) == 'DAR':
             if os.path.isdir("/Users/" + db_username_dir + "/EmbyServer/ProgramData-Server/"):
                 dir_name = "/Users/" + db_username_dir + "/EmbyServer/ProgramData-Server/"
             elif os.path.isdir("/Users/" + db_username_dir + "/MediaBrowser/ProgramData-Server/"):

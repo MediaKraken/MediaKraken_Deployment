@@ -28,7 +28,7 @@ class CommonNetworkTelnet(object):
     Class for interfacing with telnet protocol
     """
     def __init__(self):
-        pass
+        self.telnet_device = None
 
 
     def com_net_telnet_open_device(self, telnet_host, telnet_port, telnet_user=None,\

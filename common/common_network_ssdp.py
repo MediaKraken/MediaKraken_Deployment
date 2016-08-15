@@ -29,12 +29,12 @@ class SSDPResponse(object):
 
 
     def __init__(self, response):
-        r = httplib.HTTPResponse(self._FakeSocket(response))
-        r.begin()
-        self.location = r.getheader("location")
-        self.usn = r.getheader("usn")
-        self.st = r.getheader("st")
-        self.cache = r.getheader("cache-control").split("=")[1]
+        ssdp_response = httplib.HTTPResponse(self._FakeSocket(response))
+        ssdp_response.begin()
+        self.location = ssdp_response.getheader("location")
+        self.usn = ssdp_response.getheader("usn")
+        self.st = ssdp_response.getheader("st")
+        self.cache = ssdp_response.getheader("cache-control").split("=")[1]
 
     def __repr__(self):
         return "<SSDPResponse({location}, {st}, {usn})>".format(**self.__dict__)
