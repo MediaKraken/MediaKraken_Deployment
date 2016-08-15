@@ -69,7 +69,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info()
         except Exception as e:
-            logging.error("TMDB Fetch Error: %s" % str(e))
+            logging.error("TMDB Fetch Error: %s", str(e))
             metadata = None
         return metadata
 
@@ -82,7 +82,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.credits()
         except Exception as e:
-            logging.error("TMDB Fetch Credits Error: %s" % str(e))
+            logging.error("TMDB Fetch Credits Error: %s", str(e))
             metadata = None
         return metadata
 
@@ -95,7 +95,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.reviews()
         except Exception as e:
-            logging.error("TMDB Fetch Review Error: %s" % str(e))
+            logging.error("TMDB Fetch Review Error: %s", str(e))
             metadata = None
         return metadata
 
@@ -117,7 +117,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info(external_source='imdb_id')
         except Exception as e:
-            logging.error("TMDB Fetch imdb Error: %s" % str(e))
+            logging.error("TMDB Fetch imdb Error: %s", str(e))
             metadata = None
         return metadata
 
@@ -157,7 +157,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie_collection.info()
         except Exception as e:
-            logging.error("TMDB Fetch Collection Error: %s" % str(e))
+            logging.error("TMDB Fetch Collection Error: %s", str(e))
             metadata = None
         return metadata
 
@@ -190,7 +190,7 @@ class CommonMetadataTMDB(object):
         # its a number so make it a string just in case
         series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'TMDB':str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'TMDB':{'Backdrop':backdrop_file_path,\
-            'Poster':poster_file_path}}})
+        image_json = ({'Images': {'TMDB':{'Backdrop': backdrop_file_path,\
+            'Poster': poster_file_path}}})
         #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

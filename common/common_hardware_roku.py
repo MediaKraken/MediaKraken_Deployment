@@ -23,20 +23,20 @@ import array
 import shutil
 
 # for mode 0, 1, 2, 3
-videosizes = [(240, 180), (320, 240), (240, 136), (320, 180)]
+VIDEOSIZES = [(240, 180), (320, 240), (240, 136), (320, 180)]
 
 # Extension to add to the file for mode 0, 1, 2, 3
-modeextension = ['SD', 'HD', 'SD', 'HD']
+MODEEXTENSION = ['SD', 'HD', 'SD', 'HD']
 
 
 def getmp4info(filename):
     """
     Get mp4 info about the video
     """
-    details = {'type':"", 'length':0, 'bitrate':1500, 'format':"", 'size':""}
+    details = {'type': "", 'length': 0, 'bitrate': 1500, 'format': "", 'size': ""}
     cmd = ["mp4info", filename]
-    p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
-    (stdout, stderr) = p.communicate()
+    proc = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
+    (stdout, stderr) = proc.communicate()
     # Parse the results
     for line in stdout.split('\n'):
         fields = line.split(None, 2)
@@ -64,11 +64,11 @@ def extractimages(videofile, directory, interval, mode=0, offset=0):
     @param interval interval to extract images at, in seconds
     @param offset offset to first image, in seconds
     """
-    size = "x".join([str(i) for i in videosizes[mode]])
+    size = "x".join([str(ndx) for ndx in VIDEOSIZES[mode]])
     cmd = ["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
            "-r", "%0.2f" % (1.00/interval), "-s", size, "%s/%%08d.jpg" % directory]
-    p = Popen(cmd, stdout=PIPE, stdin=PIPE)
-    (stdout, stderr) = p.communicate()
+    proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
+    (stdout, stderr) = proc.communicate()
 
 
 def makebif(filename, directory, interval):
@@ -130,14 +130,14 @@ def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10, opti
     if videoinfo["size"]:
         size = videoinfo["size"].split("x")
         aspectratio = float(size[0]) / float(size[1])
-        width, height = videosizes[option_mode]
+        width, height = VIDEOSIZES[option_mode]
         height = int(width / aspectratio)
-        videosizes[option_mode] = (width, height)
+        VIDEOSIZES[option_mode] = (width, height)
     tmpdirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
     extractimages(videofile, tmpdirectory, image_interval, option_mode, first_image_offset)
     biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0],\
-        modeextension[option_mode])
+        MODEEXTENSION[option_mode])
     # Create the BIF file
     makebif(biffile, tmpdirectory, image_interval)
     # Clean up the temporary directory

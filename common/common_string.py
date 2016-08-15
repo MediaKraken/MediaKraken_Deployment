@@ -35,22 +35,22 @@ def com_string_title(title_string):
     return re.sub("(^|\s)(\S)", repl_func, title_string)
 
 
-def com_string_bytes2human(n):
+def com_string_bytes2human(num_bytes):
     """
     Readable numbers for bytes to G, T, etc
     """
     # http://code.activestate.com/recipes/578019
-    if n == 0 or type(n) == str:
+    if num_bytes == 0 or type(num_bytes) == str:
         return '0B'
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
     prefix = {}
     for i, s in enumerate(symbols):
         prefix[s] = 1 << (i + 1) * 10
-    for s in reversed(symbols):
-        if n >= prefix[s]:
-            value = float(n) / prefix[s]
-            return '%.1f%s' % (value, s)
-    return "%sB" % n
+    for ndx in reversed(symbols):
+        if num_bytes >= prefix[ndx]:
+            value = float(num_bytes) / prefix[ndx]
+            return '%.1f%s' % (value, ndx)
+    return "%sB" % num_bytes
 
 
 def com_string_password_test(password_text):

@@ -37,7 +37,7 @@ def com_hash_sha1_by_filename(file_name):
     Generate sha1 has by filename
     """
     if file_name.endswith('zip'):
-        zip = zipfile.ZipFile(file_name,'r')  # issues if u do RB
+        zip = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
         hash_dict = {}
         for zippedFile in zip.namelist():
             try:
@@ -61,8 +61,8 @@ def com_hash_sha1_by_filename(file_name):
     elif file_name.endswith('7z'):
         try:
             lock.acquire()
-            fp = open(file_name, 'rb')
-            archive = Archive7z(fp)
+            file_handle = open(file_name, 'rb')
+            archive = Archive7z(file_handle)
             filenames = archive.getnames()
             hash_dict = {}
             for filename in filenames:
@@ -76,7 +76,7 @@ def com_hash_sha1_by_filename(file_name):
                 except:
                     Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
                             + "|Error on SHA1 of file")
-            fp.close()
+            file_handle.close()
             if len(hash_dict) > 0:
                 if len(hash_dict) == 1:
                     fileHASHListSingle.append(hash_dict.values()[0])
@@ -115,7 +115,7 @@ def com_hash_sha1_c(file_name):
             # calculate sha1 hash
 #            SHA1.update(zip.read(zippedFile))
             zip_file_data = zip.read(zippedFile)
-            R = inline(MK_C_Code, ['zip_file_data'], support_code = MK_sha1_code)
+            R = inline(com_c_code, ['zip_file_data'], support_code = com_sha1_code)
         num += 1
         if num > 5:
             break
@@ -153,8 +153,8 @@ def com_hash_ed2k(filePath):
         m.update(data)
         return m
 
-    with open(filePath, 'rb') as f:
-        a = gen(f)
+    with open(filePath, 'rb') as file_handle:
+        a = gen(file_handle)
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
             return hashes[0].encode("hex")
@@ -167,11 +167,11 @@ def com_hash_thesubdb(file_name):
     Hash for thesubdb
     """
     readsize = 64 * 1024
-    with open(file_name, 'rb') as f:
+    with open(file_name, 'rb') as file_handle:
         size = os.path.getsize(file_name)
-        data = f.read(readsize)
-        f.seek(-readsize, os.SEEK_END)
-        data += f.read(readsize)
+        data = file_handle.read(readsize)
+        file_handle.seek(-readsize, os.SEEK_END)
+        data += file_handle.read(readsize)
     return hashlib.md5(data).hexdigest()
 
 

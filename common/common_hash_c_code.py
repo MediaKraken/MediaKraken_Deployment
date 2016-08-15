@@ -1,4 +1,4 @@
-MK_sha1_header_code = '''
+com_sha1_header_code = '''
     /*
      *  sha1.h
      *
@@ -55,7 +55,7 @@ MK_sha1_header_code = '''
     #endif
 '''
 
-MK_sha1_code = '''
+com_sha1_code = '''
     /*
      *  sha1.c
      *
@@ -429,7 +429,7 @@ MK_sha1_code = '''
     }
 '''
 
-MK_C_Code = '''
+com_c_code = '''
     #include <stdio.h>
     #include <string.h>
     #include "sha1.h"
