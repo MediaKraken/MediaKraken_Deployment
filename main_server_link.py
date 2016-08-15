@@ -19,10 +19,9 @@
 __version__ = '0.1.6'
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-# pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import os
 import platform
 import subprocess
@@ -122,11 +121,11 @@ class MediaKrakenApp():
         common_logging.common_logging_Start('./log/MediaKraken_Link')
         # open the database
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-            Config.get('DB Connections', 'PostDBPort').strip(),\
-            Config.get('DB Connections', 'PostDBName').strip(),\
-            Config.get('DB Connections', 'PostDBUser').strip(),\
-            Config.get('DB Connections', 'PostDBPass').strip())
+        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+            config_handle.get('DB Connections', 'PostDBPort').strip(),\
+            config_handle.get('DB Connections', 'PostDBName').strip(),\
+            config_handle.get('DB Connections', 'PostDBUser').strip(),\
+            config_handle.get('DB Connections', 'PostDBPass').strip())
         self.connect_to_server()
         return root
 

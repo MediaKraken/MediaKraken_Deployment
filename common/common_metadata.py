@@ -25,14 +25,10 @@ import string
 from . import common_network
 
 
-# pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-if os.path.exists("MediaKraken.ini"):
-    Config.read("MediaKraken.ini")
-else:
-    Config.read("../../MediaKraken_Server/MediaKraken.ini")
-base_image_path = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
+base_image_path = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
 if base_image_path.endswith('/'):
     pass
 else:

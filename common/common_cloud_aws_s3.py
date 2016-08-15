@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-import datetime
+import time
 import boto
 from boto.s3.key import Key
 
@@ -31,19 +31,15 @@ class CommonCloudAWSS3(object):
         import os
         # set active false so if following falls
         self.active = False
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        if os.path.isfile("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../MediaKraken.ini")
-        if Config.get('AWSS3', 'AccessKey').strip() != 'None':
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        if config_handle.get('AWSS3', 'AccessKey').strip() != 'None':
             # Amazon S3 settings.
-            self.AWS_ACCESS_KEY_ID = Config.get('AWSS3', 'AccessKey').strip()
-            self.AWS_SECRET_ACCESS_KEY = Config.get('AWSS3', 'SecretAccessKey').strip()
-            self.AWS_BUCKET_NAME = Config.get('AWSS3', 'Bucket').strip()
-            self.AWS_BUCKET_BACKUP_NAME = Config.get('AWSS3', 'BackupBucket').strip()
+            self.AWS_ACCESS_KEY_ID = config_handle.get('AWSS3', 'AccessKey').strip()
+            self.AWS_SECRET_ACCESS_KEY = config_handle.get('AWSS3', 'SecretAccessKey').strip()
+            self.AWS_BUCKET_NAME = config_handle.get('AWSS3', 'Bucket').strip()
+            self.AWS_BUCKET_BACKUP_NAME = config_handle.get('AWSS3', 'BackupBucket').strip()
             # setup connection and buckets for later use
             conn = boto.connect_s3(self.AWS_ACCESS_KEY_ID, self.AWS_SECRET_ACCESS_KEY)
             self.bucket = conn.get_bucket(self.AWS_BUCKET_NAME)
@@ -91,7 +87,7 @@ class CommonCloudAWSS3(object):
         """
         # Delete files older than days to keep.
         for key in self.bucket_backup.list():
-            timestamp = datetime.strptime(key.last_modified, '%Y-%m-%dT%H:%M:%S.%fZ')
+            timestamp = time.strptime(key.last_modified, '%Y-%m-%dT%H:%M:%S.%fZ')
             if timestamp < days_to_keep:
                 self.bucket_backup.delete_key(key)
 

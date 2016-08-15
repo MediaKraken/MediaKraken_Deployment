@@ -19,9 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import os
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
 import rtsimple as rt
 
 
@@ -30,14 +27,10 @@ class CommonMetadataRottenTomatoes(object):
     Class for interfacing with rotten tomatoes
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        if os.path.exists("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../../MediaKraken_Server/MediaKraken.ini")
-            rt.API_KEY = Config.get('API', 'RottenTomatoes').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        rt.API_KEY = config_handle.get('API', 'RottenTomatoes').strip()
 
 
     def com_rt_search(movie_title, movie_year=None):

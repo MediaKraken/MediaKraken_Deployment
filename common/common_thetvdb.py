@@ -31,12 +31,11 @@ class CommonTheTVDB(object):
     Class for interfacing with thetvdb
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        Config.read("MediaKraken.ini")
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
         # setup connection
-        self.tvdb_connection = api.TVDB(Config.get('API', 'theTVdb').strip(), actors=True,\
+        self.tvdb_connection = api.TVDB(config_handle.get('API', 'theTVdb').strip(), actors=True,\
             ignore_case=True)
 
 

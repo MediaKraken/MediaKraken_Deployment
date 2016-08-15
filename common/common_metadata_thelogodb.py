@@ -29,14 +29,10 @@ class CommonMetadataTheLogoDB(object):
     Class for interfacing with thelogodb
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        if os.path.exists("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        self.API_KEY = Config.get('API', 'thelogodb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        self.API_KEY = config_handle.get('API', 'thelogodb').strip()
 
 
     def com_thelogodb_fetch_latest(self):

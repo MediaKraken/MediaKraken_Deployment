@@ -23,10 +23,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import sys
-# pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 from . import common_network
 import requests
 import json
@@ -43,7 +42,7 @@ class CommonGoogle(object):
     Class for interfacing with google api
     """
     def __init__(self):
-        self.DEVELOPER_KEY = Config.get('API', 'Google').strip()
+        self.DEVELOPER_KEY = config_handle.get('API', 'Google').strip()
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
         self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,\

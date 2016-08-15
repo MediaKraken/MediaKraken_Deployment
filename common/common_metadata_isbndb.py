@@ -26,11 +26,10 @@ class CommonMetadataISBNdb(object):
     Class for interfacing with isbndb
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        Config.read("MediaKraken.ini")
-        self.api_key = Config.get('API', 'ISBNdb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        self.api_key = config_handle.get('API', 'ISBNdb').strip()
 
 
     # http://isbndb.com/api/v2/docs/authors

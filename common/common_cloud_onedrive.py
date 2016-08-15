@@ -40,13 +40,9 @@ class CommonCloudOneDrive(object):
     def __init__(self):
         # set active false so if following falls
         self.active = False
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        if os.path.isfile("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../MediaKraken.ini")
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
         # authenticate
 #        redirect_uri = "http://localhost:8080/"
 #        client_secret = "your_app_secret"

@@ -33,11 +33,10 @@ class CommonMetadataTheTVDB(object):
     Class for interfacing with TheTVDB
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        Config.read("MediaKraken.ini")
-        self.thetvdb_connection = Config.get('API', 'theTVdb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        self.thetvdb_connection = config_handle.get('API', 'theTVdb').strip()
 
 
     def com_meta_TheTVDB_Updates(self, frequency='day'):

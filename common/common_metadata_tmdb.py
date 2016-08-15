@@ -30,14 +30,10 @@ class CommonMetadataTMDB(object):
     Class for interfacing with TMDB
     """
     def __init__(self):
-        # pull in the ini file config
         import ConfigParser
-        Config = ConfigParser.ConfigParser()
-        if os.path.exists("MediaKraken.ini"):
-            Config.read("MediaKraken.ini")
-        else:
-            Config.read("../../MediaKraken_Server/MediaKraken.ini")
-        tmdb.API_KEY = Config.get('API', 'themoviedb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        tmdb.API_KEY = config_handle.get('API', 'themoviedb').strip()
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
