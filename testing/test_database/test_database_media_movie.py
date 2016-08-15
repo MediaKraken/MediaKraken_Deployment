@@ -46,8 +46,8 @@ class TestDatabaseMediaMovie(object):
         """
         # find random movie
         """
-        self.db_connection.srv_db_media_random(image_type)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_random(image_type)
 
 
     @pytest.mark.parametrize(("class_guid"), [
@@ -57,8 +57,8 @@ class TestDatabaseMediaMovie(object):
         """
         # movie count by genre
         """
-        self.db_connection.srv_db_media_movie_count_by_genre(class_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_movie_count_by_genre(class_guid)
 
 
     @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "group_collection",\
@@ -75,9 +75,9 @@ class TestDatabaseMediaMovie(object):
         """
         # web media count
         """
+        self.db_connection.srv_db_rollback()
         self.db_connection.srv_db_web_media_list_count(class_guid, list_type, list_genre,\
             group_collection, include_remote)
-        self.db_connection.srv_db_rollback()
 
 
     @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "list_limit",\
@@ -94,6 +94,6 @@ class TestDatabaseMediaMovie(object):
         """
         # web media return
         """
+        self.db_connection.srv_db_rollback()
         self.db_connection.srv_db_web_media_list(class_guid, list_type, list_genre, list_limit,\
             group_collection, offset, include_remote)
-        self.db_connection.srv_db_rollback()

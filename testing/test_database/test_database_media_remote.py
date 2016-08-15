@@ -53,8 +53,8 @@ class TestDatabaseMediaRemote(object):
         """
         # count known media
         """
-        self.db_connection.srv_db_known_remote_media_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_remote_media_count()
 
 
     # processed via main_link........

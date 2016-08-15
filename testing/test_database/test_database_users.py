@@ -43,8 +43,8 @@ class TestDatabaseUsers(object):
         """
         # return user count
         """
-        self.db_connection.srv_db_user_list_name_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_user_list_name_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,8 +55,8 @@ class TestDatabaseUsers(object):
         """
         # return user list
         """
-        self.db_connection.srv_db_user_list_name(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_user_list_name(offset, records)
 
 
     # return all data for specified user

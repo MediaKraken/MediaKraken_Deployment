@@ -43,8 +43,8 @@ class TestDatabaseMediaClass(object):
         """
         # count media class
         """
-        self.db_connection.srv_db_media_class_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_class_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,8 +55,8 @@ class TestDatabaseMediaClass(object):
         """
         # list media class
         """
-        self.db_connection.srv_db_media_class_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_class_list(offset, records)
 
 
     @pytest.mark.parametrize(("class_uuid"), [
@@ -66,8 +66,8 @@ class TestDatabaseMediaClass(object):
         """
         # find the class text by uuid
         """
-        self.db_connection.srv_db_media_class_by_uuid(class_uuid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_class_by_uuid(class_uuid)
 
 
     @pytest.mark.parametrize(("class_text"), [
@@ -77,5 +77,5 @@ class TestDatabaseMediaClass(object):
         """
         # find the class uuid by class text
         """
-        self.db_connection.srv_db_media_uuid_by_class(class_text)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_uuid_by_class(class_text)

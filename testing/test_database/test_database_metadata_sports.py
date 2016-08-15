@@ -48,8 +48,8 @@ class TestDatabaseMetadataSports(object):
         """
         Sports event count
         """
-        self.db_connection.srv_db_meta_sports_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_sports_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -60,8 +60,8 @@ class TestDatabaseMetadataSports(object):
         """
         Sports list
         """
-        self.db_connection.srv_db_meta_sports_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_sports_list(offset, records)
 
 
     # fetch guid by event name

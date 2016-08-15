@@ -48,8 +48,8 @@ class TestDatabaseTriggers(object):
         """
         # read the triggers
         """
-        self.db_connection.srv_db_triggers_read()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_triggers_read()
 
 
     # remove trigger

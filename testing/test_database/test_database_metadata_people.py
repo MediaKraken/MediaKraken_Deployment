@@ -43,8 +43,8 @@ class TestDatabaseMetadataPeople(object):
         """
         # count person metadata
         """
-        self.db_connection.srv_db_meta_person_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_person_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,8 +55,8 @@ class TestDatabaseMetadataPeople(object):
         """
         # return list of people
         """
-        self.db_connection.srv_db_meta_person_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_person_list(offset, records)
 
 
     # return person data

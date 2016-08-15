@@ -40,8 +40,8 @@ class TestDatabaseOptionStatus(object):
 
 
     def test_srv_db_option_status_read(self):
-        self.db_connection.srv_db_option_status_read()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_option_status_read()
 
 
     # def srv_db_option_status_update(self, option_json, status_json):

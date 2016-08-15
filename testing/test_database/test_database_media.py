@@ -48,24 +48,24 @@ class TestDatabaseMedia(object):
         """
         # read in all media unless guid specified
         """
-        self.db_connection.srv_db_read_media()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_read_media()
 
 
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
     def test_srv_db_read_media_guid(self, media_guid):
-        self.db_connection.srv_db_read_media(media_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_read_media(media_guid)
 
 
     def test_srv_db_known_media_count(self):
         """
         # count known media
         """
-        self.db_connection.srv_db_known_media_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_media_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -76,24 +76,24 @@ class TestDatabaseMedia(object):
         """
         # find all known media
         """
-        self.db_connection.srv_db_known_media(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_media(offset, records)
 
 
     def test_srv_db_matched_media_count(self):
         """
         # count matched media
         """
-        self.db_connection.srv_db_matched_media_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_matched_media_count()
 
 
     def test_srv_db_known_media_all_unmatched_count(self):
         """
         # count all media that is NULL for meatadata match
         """
-        self.db_connection.srv_db_known_media_all_unmatched_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_media_all_unmatched_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -104,16 +104,16 @@ class TestDatabaseMedia(object):
         """
         # read all media that is NULL for metadata match
         """
-        self.db_connection.srv_db_known_media_all_unmatched(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_media_all_unmatched(offset, records)
 
 
     def test_srv_db_media_duplicate_count(self):
         """
         # count the duplicates for pagination
         """
-        self.db_connection.srv_db_media_duplicate_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_duplicate_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -124,8 +124,8 @@ class TestDatabaseMedia(object):
         """
         # list duplicates
         """
-        self.db_connection.srv_db_media_duplicate(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_duplicate(offset, records)
 
 
     @pytest.mark.parametrize(("media_guid"), [
@@ -135,8 +135,8 @@ class TestDatabaseMedia(object):
         """
         # duplicate detail count
         """
-        self.db_connection.srv_db_media_duplicate_detail_count(media_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_duplicate_detail_count(media_guid)
 
 
     @pytest.mark.parametrize(("media_guid", "offset", "records"), [
@@ -150,8 +150,8 @@ class TestDatabaseMedia(object):
         """
         # list duplicate detail
         """
-        self.db_connection.srv_db_media_duplicate_detail(media_guid, offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_duplicate_detail(media_guid, offset, records)
 
 
     @pytest.mark.parametrize(("media_guid"), [
@@ -161,8 +161,8 @@ class TestDatabaseMedia(object):
         """
         # find path for media by uuid
         """
-        self.db_connection.srv_db_media_path_by_uuid(media_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_path_by_uuid(media_guid)
 
 
     @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
@@ -174,8 +174,8 @@ class TestDatabaseMedia(object):
         """
         # set watched/unwatched status for media
         """
-        self.db_connection.srv_db_media_watched_status_update(media_guid, user_id, status_bool)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_watched_status_update(media_guid, user_id, status_bool)
 
 
     @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
@@ -187,8 +187,8 @@ class TestDatabaseMedia(object):
         """
         # set favorite status for media
         """
-        self.db_connection.srv_db_media_favorite_status_update(media_guid, user_id, status_bool)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_favorite_status_update(media_guid, user_id, status_bool)
 
 
     @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
@@ -200,8 +200,8 @@ class TestDatabaseMedia(object):
         """
         # set favorite status for media
         """
-        self.db_connection.srv_db_media_poo_status_update(media_guid, user_id, status_bool)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_poo_status_update(media_guid, user_id, status_bool)
 
 
     @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
@@ -213,8 +213,8 @@ class TestDatabaseMedia(object):
         """
         # set favorite status for media
         """
-        self.db_connection.srv_db_media_mismatch_status_update(media_guid, user_id, status_bool)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_mismatch_status_update(media_guid, user_id, status_bool)
 
 
     @pytest.mark.parametrize(("media_guid", "user_id", "ffmpeg_time"), [
@@ -226,8 +226,8 @@ class TestDatabaseMedia(object):
         """
         # set checkpoint for media (so can pick up where left off per user)
         """
-        self.db_connection.srv_db_media_watched_checkpoint_update(media_guid, user_id, ffmpeg_time)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_watched_checkpoint_update(media_guid, user_id, ffmpeg_time)
 
 
     # update the mediaid
@@ -244,8 +244,8 @@ class TestDatabaseMedia(object):
         """
         # return all media which needs chapter images created
         """
-        self.db_connection.srv_db_known_media_chapter_scan()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_known_media_chapter_scan()
 
 
     @pytest.mark.parametrize(("metadata_guid"), [
@@ -255,8 +255,8 @@ class TestDatabaseMedia(object):
         """
         # fetch all media with METADATA match
         """
-        self.db_connection.srv_db_media_by_metadata_guid(metadata_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_by_metadata_guid(metadata_guid)
 
 
     @pytest.mark.parametrize(("media_guid"), [
@@ -266,8 +266,8 @@ class TestDatabaseMedia(object):
         """
         # grab image path for media id NOT metadataid
         """
-        self.db_connection.srv_db_media_image_path(media_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_image_path(media_guid)
 
 
     @pytest.mark.parametrize(("media_guid"), [
@@ -277,8 +277,8 @@ class TestDatabaseMedia(object):
         """
         # read in metadata by id
         """
-        self.db_connection.srv_db_read_media_metadata_both(media_guid)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_read_media_metadata_both(media_guid)
 
 
     # do a like class path match for trailers and extras
@@ -293,8 +293,8 @@ class TestDatabaseMedia(object):
         """
         # new media count
         """
-        self.db_connection.srv_db_read_media_new_count(new_days)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_read_media_new_count(new_days)
 
 
     @pytest.mark.parametrize(("new_days", "offset", "records"), [
@@ -306,5 +306,5 @@ class TestDatabaseMedia(object):
         """
         # new media
         """
-        self.db_connection.srv_db_read_media_new(new_days, offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_read_media_new(new_days, offset, records)

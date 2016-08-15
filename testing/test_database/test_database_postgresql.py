@@ -44,8 +44,8 @@ class TestDatabasePostgresql(object):
         """
         # return tables sizes (includex indexes, etc)
         """
-        self.db_connection.srv_db_pgsql_table_sizes()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_table_sizes()
 
 
     # query provided by postgresql wiki
@@ -53,8 +53,8 @@ class TestDatabasePostgresql(object):
         """
         # return tables and row count
         """
-        self.db_connection.srv_db_pgsql_row_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_row_count()
 
 
     @pytest.mark.parametrize(("days"), [
@@ -64,8 +64,8 @@ class TestDatabasePostgresql(object):
         """
         # vacuum stats by day list
         """
-        self.db_connection.srv_db_pgsql_vacuum_stat_by_day(days)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_vacuum_stat_by_day(days)
 
 
     @pytest.mark.parametrize(("table_name"), [
@@ -75,8 +75,8 @@ class TestDatabasePostgresql(object):
         """
         # vacuum table
         """
-        self.db_connection.srv_db_pgsql_vacuum_table(table_name)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_pgsql_vacuum_table(table_name)
 
 
     # set isolation level

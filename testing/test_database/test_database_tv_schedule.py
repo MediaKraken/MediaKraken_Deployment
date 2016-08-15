@@ -43,16 +43,16 @@ class TestDatabaseTVSchedule(object):
         """
         # read the stations
         """
-        self.db_connection.srv_db_tv_stations_read()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_tv_stations_read()
 
 
     def test_srv_db_tv_stations_read_stationid_list(self):
         """
         # read the stationid list
         """
-        self.db_connection.srv_db_tv_stations_read_stationid_list()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_tv_stations_read_stationid_list()
 
 
     # insert station/channel unless it exists

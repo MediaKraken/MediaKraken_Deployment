@@ -41,8 +41,8 @@ class TestDatabaseDevices(object):
 
     # count device
     def test_srv_db_device_count(self):
-        self.db_connection.srv_db_device_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_device_count()
 
 
     @pytest.mark.parametrize(("device_type", "offset", "records"), [
@@ -56,8 +56,8 @@ class TestDatabaseDevices(object):
         """
         # read list
         """
-        self.db_connection.srv_db_device_list(device_type, offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_device_list(device_type, offset, records)
 
 
     # insert record

@@ -43,8 +43,8 @@ class TestDatabaseMediaMusic(object):
         """
         Album count
         """
-        self.db_connection.srv_db_media_album_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_album_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,5 +55,5 @@ class TestDatabaseMediaMusic(object):
         """
         Album list
         """
-        self.db_connection.srv_db_media_album_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_media_album_list(offset, records)

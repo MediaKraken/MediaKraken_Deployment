@@ -43,8 +43,8 @@ class TestDatabaseTuner(object):
         """
         # count tuners
         """
-        self.db_connection.srv_db_tuner_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_tuner_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -55,8 +55,8 @@ class TestDatabaseTuner(object):
         """
         # read tuners
         """
-        self.db_connection.srv_db_tuner_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_tuner_list(offset, records)
 
 
     # insert record

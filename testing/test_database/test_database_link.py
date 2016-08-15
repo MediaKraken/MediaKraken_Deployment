@@ -40,8 +40,8 @@ class TestDatabaseLink(object):
 
 
     def test_srv_db_link_list_count(self):
-        self.db_connection.srv_db_link_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_link_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -52,8 +52,8 @@ class TestDatabaseLink(object):
         """
         # return list of sync jobs
         """
-        self.db_connection.srv_db_link_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_link_list(offset, records)
 
 
     # insert sync job

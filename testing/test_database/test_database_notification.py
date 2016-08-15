@@ -52,8 +52,8 @@ class TestDatabaseNotification(object):
         """
         # read all notifications
         """
-        self.db_connection.srv_db_notification_read(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_notification_read(offset, records)
 
 
     # remove noticications

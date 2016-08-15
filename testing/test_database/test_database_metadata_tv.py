@@ -68,8 +68,8 @@ class TestDatabaseMetadataTV(object):
         """
         # tvshow count
         """
-        self.db_connection.srv_db_meta_tvshow_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_tvshow_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -80,8 +80,8 @@ class TestDatabaseMetadataTV(object):
         """
         # return list of tvshows
         """
-        self.db_connection.srv_db_meta_tvshow_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_tvshow_list(offset, records)
 
 
     # update image json

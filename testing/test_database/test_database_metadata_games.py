@@ -45,8 +45,8 @@ class TestDatabaseMetadataGames(object):
 
 
     def test_srv_db_meta_game_system_list_count(self):
-        self.db_connection.srv_db_meta_game_system_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_game_system_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -57,16 +57,16 @@ class TestDatabaseMetadataGames(object):
         """
         # return list of game systems
         """
-        self.db_connection.srv_db_meta_game_system_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_game_system_list(offset, records)
 
 
     def test_srv_db_meta_game_list_count(self):
         """
         # return list of games count
         """
-        self.db_connection.srv_db_meta_game_list_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_game_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -77,8 +77,8 @@ class TestDatabaseMetadataGames(object):
         """
         # return list of games
         """
-        self.db_connection.srv_db_meta_game_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_game_list(offset, records)
 
 
     # return game data

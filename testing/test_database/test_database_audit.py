@@ -43,8 +43,8 @@ class TestDatabaseAudit(object):
         """
         # read scan status
         """
-        self.db_connection.srv_db_audit_path_status()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_audit_path_status()
 
 
     ## update status
@@ -56,8 +56,8 @@ class TestDatabaseAudit(object):
         """
         # read the paths to audit
         """
-        self.db_connection.srv_db_audit_paths_count()
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_audit_paths_count()
 
 
     ## update audit path
@@ -80,8 +80,8 @@ class TestDatabaseAudit(object):
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
     def test_srv_db_audit_path_check(self, dir_path):
-        self.db_connection.srv_db_audit_path_check(dir_path)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_audit_path_check(dir_path)
 
 
     ## update the timestamp for directory scans
@@ -95,8 +95,8 @@ class TestDatabaseAudit(object):
         (100, 100),
         (100000000, 1000)])
     def test_srv_db_audit_paths(self, offset, records):
-        self.db_connection.srv_db_audit_paths(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_audit_paths(offset, records)
 
 
     ## lib data per id

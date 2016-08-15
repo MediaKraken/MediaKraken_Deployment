@@ -51,8 +51,8 @@ class TestDatabaseiradio(object):
         """
         # iradio count
         """
-        self.db_connection.srv_db_iradio_list_count(active_station)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_iradio_list_count(active_station)
 
 
     @pytest.mark.parametrize(("active_station", "offset", "records"), [
@@ -66,5 +66,5 @@ class TestDatabaseiradio(object):
         """
         # iradio list
         """
-        self.db_connection.srv_db_iradio_list(active_station, offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_iradio_list(active_station, offset, records)

@@ -64,5 +64,5 @@ class TestDatabaseMetadataMusicVideo(object):
         """
         Music list
         """
-        self.db_connection.srv_db_meta_music_video_list(offset, records)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_meta_music_video_list(offset, records)

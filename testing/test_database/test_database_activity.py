@@ -49,5 +49,5 @@ class TestDatabaseActivity(object):
         (7),
         (400)])
     def test_srv_db_activity_purge(self, days_old):
-        self.db_connection.srv_db_activity_purge(days_old)
         self.db_connection.srv_db_rollback()
+        self.db_connection.srv_db_activity_purge(days_old)
