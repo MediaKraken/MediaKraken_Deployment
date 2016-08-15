@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_meta_Scudlee import *
+from common_metadata_scudlee import *
 
 
 # def fetch the anime list by scudlee for thetvdb crossreference

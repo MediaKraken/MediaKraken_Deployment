@@ -21,4 +21,4 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_meta_tv_intro import *
+from common_metadata_tv_intro import *

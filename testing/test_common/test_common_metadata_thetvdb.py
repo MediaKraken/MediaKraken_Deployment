@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_meta_thetvdb import *
+from common_metadata_thetvdb import *
 
 
 class TestCommonMetadataTheTVDB(object):
