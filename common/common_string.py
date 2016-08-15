@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import re
-import passwordmeter
 from socket import inet_ntoa
+import passwordmeter
 
 
 def com_string_repl_func(m):
@@ -72,13 +72,13 @@ def com_string_password_test(password_text):
     return (strength, improvements)
 
 
-def com_string_ip_ascii_to_int(ip):
+def com_string_ip_ascii_to_int(ip_addr):
     """
     Return int from ascii IP
     """
-    octets = [int(octet) for octet in ip.split('.')]
+    octets = [int(octet) for octet in ip_addr.split('.')]
     if len(octets) != 4:
-        raise Exception("IP [%s] does not have four octets." % (ip))
+        raise Exception("IP [%s] does not have four octets." % (ip_addr))
     encoded = ("%02x%02x%02x%02x" % (octets[0], octets[1], octets[2], octets[3]))
     return int(encoded, 16)
 

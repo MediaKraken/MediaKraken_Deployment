@@ -89,12 +89,12 @@ def makebif(filename, directory, interval):
     images.sort()
     images = images[1:]
 
-    f = open(filename, "wb")
-    array.array('B', magic).tofile(f)
-    f.write(struct.pack("<I1", version))
-    f.write(struct.pack("<I1", len(images)))
-    f.write(struct.pack("<I1", 1000 * interval))
-    array.array('B', [0x00 for x in xrange(20, 64)]).tofile(f)
+    file_handle = open(filename, "wb")
+    array.array('B', magic).tofile(file_handle)
+    file_handle.write(struct.pack("<I1", version))
+    file_handle.write(struct.pack("<I1", len(images)))
+    file_handle.write(struct.pack("<I1", 1000 * interval))
+    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(file_handle)
 
     biftablesize = 8 + (8 * len(images))
     imageindex = 64 + biftablesize
@@ -103,21 +103,21 @@ def makebif(filename, directory, interval):
     # Get the length of each image
     for image in images:
         statinfo = os.stat("%s/%s" % (directory, image))
-        f.write(struct.pack("<I1", timestamp))
-        f.write(struct.pack("<I1", imageindex))
+        file_handle.write(struct.pack("<I1", timestamp))
+        file_handle.write(struct.pack("<I1", imageindex))
 
         timestamp += 1
         imageindex += statinfo.st_size
 
-    f.write(struct.pack("<I1", 0xffffffff))
-    f.write(struct.pack("<I1", imageindex))
+    file_handle.write(struct.pack("<I1", 0xffffffff))
+    file_handle.write(struct.pack("<I1", imageindex))
 
     # Now copy the images
     for image in images:
         data = open("%s/%s" % (directory, image), "rb").read()
-        f.write(data)
+        file_handle.write(data)
 
-    f.close()
+    file_handle.close()
 
 
 def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10, option_mode=0):

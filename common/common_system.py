@@ -29,7 +29,7 @@ def pprint_ntuple(nt, return_value=None):
     for name in nt._fields:
         value = getattr(nt, name)
         if name != 'percent':
-            value = common_string.bytes2human(value)
+            value = common_string.com_string_bytes2human(value)
         logging.debug('%-10s : %7s' % (name.capitalize(), value))
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
@@ -48,8 +48,8 @@ def com_system_virtual_memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = common_string.bytes2human(value)
-            logging.debug('%-10s : %7s' % (name.capitalize(), value))
+                value = common_string.com_string_bytes2human(value)
+            #logging.debug('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -66,8 +66,8 @@ def com_system_swap_memory(attribute_list=None):
         for name in attribute_list:
             value = getattr(nt, name)
             if name != 'percent':
-                value = common_string.bytes2human(value)
-            logging.debug('%-10s : %7s' % (name.capitalize(), value))
+                value = common_string.com_string_bytes2human(value)
+            #logging.debug('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -133,7 +133,7 @@ def com_system_disk_usage_all(human_readable=False):
                 if len(formatted_list) == 3:
                     formatted_list.append(space_value)
                 else:
-                    formatted_list.append(common_string.bytes2human(space_value))
+                    formatted_list.append(common_string.com_string_bytes2human(space_value))
             disk_usage_data.append((row_data[1], formatted_list))
         else:
             disk_usage_data.append((row_data[1], com_system_disk_usage(row_data[1])))

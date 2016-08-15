@@ -91,7 +91,6 @@ class CommonMetadataANIdb(object):
         self.adba_connection = adba.Connection(log=True)
         try:
             self.adba_connection.auth(user_name, user_password)
-            pass
         except Exception, e:
             logging.error("exception msg: " + str(e))
         return self.adba_connection

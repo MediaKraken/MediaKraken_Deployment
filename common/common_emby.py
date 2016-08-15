@@ -62,18 +62,18 @@ def com_emby_library_list(dir_name=None):
     Fetch library list
     """
     if dir_name is None:
-        dir_name = os.path.join(com_Emby_Installed_Directory(), 'root', 'default')
+        dir_name = os.path.join(com_emby_installed_directory(), 'root', 'default')
     # grab dir and files
     library_list = {}
     if dir_name is not None:
-        for dir_path in common_file.com_file_Dir_List(dir_name, None, False, False):
+        for dir_path in common_file.com_file_dir_list(dir_name, None, False, False):
             logging.debug("main dir: %s", dir_path)
             lib_file_path = []
-            for file_list in common_file.com_file_Dir_List(os.path.join(dir_name, dir_path,\
+            for file_list in common_file.com_file_dir_list(os.path.join(dir_name, dir_path,\
                     None, False, False)):
                 logging.debug("file: %s", file_list)
                 if file_list.endswith('.mblink'): # only grab "link" files for path
-                    lib_file_path.append(common_file.com_file_Load_Data(os.path.join(dir_name,\
+                    lib_file_path.append(common_file.com_file_load_data(os.path.join(dir_name,\
                         dir_path, file_list), False))
             library_list[dir_path] = lib_file_path
     return library_list
@@ -84,8 +84,7 @@ def com_emby_check_instance():
     Check for running instance
     """
     name_check = 'emby-server'
-    if str.upper(sys.platform[0:3])=='WIN' \
-    or str.upper(sys.platform[0:3])=='CYG':
+    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
         name_check += '.exe'
     if common_system.com_process_list(name_check):
         logging.critical("Please shutdown Emby server first")
