@@ -21,8 +21,8 @@ import logging
 import sys
 import os
 import uuid
-import .common_file
-import .common_system
+from . import common_file
+from . import common_system
 
 
 def com_emby_installed_directory(dir_name=None):

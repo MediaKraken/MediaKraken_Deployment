@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import os
 import json
-import .common_metadata
-import .common_network
+from . import common_metadata
+from . import common_network
 import tmdbsimple as tmdb
 
 

@@ -24,7 +24,7 @@ import zipfile
 import os
 import struct
 import sys
-import .common_hash_c_code
+from . import common_hash_c_code
 
 # import compression mods
 import pylzma

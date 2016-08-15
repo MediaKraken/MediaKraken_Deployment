@@ -18,13 +18,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-#import sys
-#sys.path.append("./common")
 from . import common_cloud_aws_s3
-import common_cloud_dropbox
-import common_cloud_google_drive
-import common_cloud_onedrive
-#import common_string
+from . import common_cloud_dropbox
+from . import common_cloud_google_drive
+from . import common_cloud_onedrive
+#from . import common_string
 
 
 CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),

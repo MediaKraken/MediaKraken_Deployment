@@ -21,9 +21,9 @@ import logging
 import gzip
 import time
 import sys
-import .common_database_octmote
-import .common_file
-import .common_network
+from . import common_database_octmote
+from . import common_file
+from . import common_network
 sys.path.append("./vault/lib")
 import adba
 
