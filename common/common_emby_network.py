@@ -107,13 +107,13 @@ def common_network.emby_user_login(host_server, user_name, user_password):
         response = urllib2.urlopen(urllib2.Request(host_server\
             + '/Users/AuthenticateByName?format=json', json.dumps(values), headers=headers))
         json_response = response.read()
-    except urllib2.HTTPError, e:
-        logging.error('HTTPError = ' + str(e.code))
-        if int(e.code) == httplib.UNAUTHORIZED:
-            json_response = int(e.code)
-    except urllib2.URLError, e:
-        logging.error('URLError = ' + str(e.reason))
-    except httplib.HTTPException, e:
+    except urllib2.HTTPError, err_code:
+        logging.error('HTTPError = ' + str(err_code.code))
+        if int(err_code.code) == httplib.UNAUTHORIZED:
+            json_response = int(err_code.code)
+    except urllib2.URLError, err_code:
+        logging.error('URLError = ' + str(err_code.reason))
+    except httplib.HTTPException, err_code:
         logging.error('HTTPException')
     return json_response
 

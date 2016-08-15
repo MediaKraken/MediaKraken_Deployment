@@ -29,12 +29,12 @@ class CommonLDAP(object):
         # Initialize connection
         try:
             self.con = ldap.initialize('ldap://%s', ldap_server)
-        except ldap.LDAPError, e:
-            print(e.message['info'])
-            if type(e.message) == dict and e.message.has_key('desc'):
-                print(e.message['desc'])
+        except ldap.LDAPError, err_code:
+            print(err_code.message['info'])
+            if type(err_code.message) == dict and e.message.has_key('desc'):
+                print(err_code.message['desc'])
             else:
-                print(e)
+                print(err_code)
         # Bind to the server (ie. actually connect) - not needed as simple_bind for check
         #self.con.simple_bind("ou=People,dc=hotbot,dc=com")
         self.ou_name = ou_name
@@ -51,12 +51,12 @@ class CommonLDAP(object):
             self.con.simple_bind_s(dn, user_password)
         except ldap.INVALID_CREDENTIALS, e:
             return "INVALID_LOGIN"
-        except ldap.LDAPError, e:
-            print(e.message['info'])
-            if type(e.message) == dict and e.message.has_key('desc'):
-                print(e.message['desc'])
+        except ldap.LDAPError, err_code:
+            print(err_code.message['info'])
+            if type(err_code.message) == dict and err_code.message.has_key('desc'):
+                print(err_code.message['desc'])
             else:
-                print(e)
+                print(err_code)
 
 
     def com_ldap_close(self):

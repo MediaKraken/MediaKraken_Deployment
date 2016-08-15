@@ -64,8 +64,8 @@ class CommonMetadataTMDB(object):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.info()
-        except Exception as e:
-            logging.error("TMDB Fetch Error: %s", str(e))
+        except Exception as err_code:
+            logging.error("TMDB Fetch Error: %s", str(err_code))
             metadata = None
         return metadata
 
@@ -77,8 +77,8 @@ class CommonMetadataTMDB(object):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.credits()
-        except Exception as e:
-            logging.error("TMDB Fetch Credits Error: %s", str(e))
+        except Exception as err_code:
+            logging.error("TMDB Fetch Credits Error: %s", str(err_code))
             metadata = None
         return metadata
 
@@ -90,8 +90,8 @@ class CommonMetadataTMDB(object):
         movie = tmdb.Movies(tmdb_id)
         try:
             metadata = movie.reviews()
-        except Exception as e:
-            logging.error("TMDB Fetch Review Error: %s", str(e))
+        except Exception as err_code:
+            logging.error("TMDB Fetch Review Error: %s", str(err_code))
             metadata = None
         return metadata
 
@@ -112,8 +112,8 @@ class CommonMetadataTMDB(object):
         movie = tmdb.Find(imdb_id)
         try:
             metadata = movie.info(external_source='imdb_id')
-        except Exception as e:
-            logging.error("TMDB Fetch imdb Error: %s", str(e))
+        except Exception as err_code:
+            logging.error("TMDB Fetch imdb Error: %s", str(err_code))
             metadata = None
         return metadata
 
@@ -152,8 +152,8 @@ class CommonMetadataTMDB(object):
         movie_collection = tmdb.Collections(tmdb_id)
         try:
             metadata = movie_collection.info()
-        except Exception as e:
-            logging.error("TMDB Fetch Collection Error: %s", str(e))
+        except Exception as err_code:
+            logging.error("TMDB Fetch Collection Error: %s", str(err_code))
             metadata = None
         return metadata
 

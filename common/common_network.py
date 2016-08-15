@@ -43,8 +43,8 @@ def mk_network_fetch_from_url(url, directory=None):
             localfile.write(imagefile.read())
             imagefile.close()
             localfile.close()
-    except urllib2.URLError, e:
-        logging.error('you got an error with the code %s', e)
+    except urllib2.URLError, err_code:
+        logging.error('you got an error with the code %s', err_code)
         return None
     if directory is None:
         return imagefile.read()
