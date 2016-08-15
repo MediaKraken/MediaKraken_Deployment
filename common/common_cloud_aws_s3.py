@@ -23,7 +23,7 @@ from boto.s3.key import Key
 import datetime
 
 
-class CommonAWSS3(object):
+class CommonCloudAWSS3(object):
     """
     Class for interfacing with aws s3
     """

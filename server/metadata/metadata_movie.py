@@ -22,7 +22,7 @@ import logging
 import json
 import uuid
 from guessit import guessit
-from . import common_metadata_anidb
+from ..common import common_metadata_anidb
 from . import common_metadata_imdb
 from . import common_metadata_movie_theme
 from . import common_metadata_movie_trailer

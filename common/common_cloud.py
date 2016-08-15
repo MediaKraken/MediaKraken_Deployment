@@ -22,7 +22,7 @@ from . import common_cloud_aws_s3
 from . import common_cloud_dropbox
 from . import common_cloud_google_drive
 from . import common_cloud_onedrive
-#from . import common_string
+from . import common_string
 
 
 CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
@@ -33,10 +33,10 @@ CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                       )
 
 
-awss3 = common_cloud_aws_s3.com_AWS_S3_API()
-dropbox = common_cloud_dropbox.com_DropBox_API()
-google = common_cloud_google_drive.com_Google_Drive_API()
-onedrive = common_cloud_onedrive.com_OneDrive_API()
+awss3 = common_cloud_aws_s3.CommonCloudAWSS3()
+dropbox = common_cloud_dropbox.CommonCloudDropbox()
+google = common_cloud_google_drive.CommonCloudGoogleDrive()
+onedrive = common_cloud_onedrive.CommonCloudOneDrive()
 
 
 def com_cloud_backup_list():
@@ -45,7 +45,7 @@ def com_cloud_backup_list():
     """
     backup_files = []
     for backup_class in CLOUD_BACKUP_CLASS:
-        for backup_cloud in com_cloud_File_List(backup_class[0], None, True):
+        for backup_cloud in com_cloud_file_list(backup_class[0], None, True):
             logging.debug("cloud back: %s", backup_cloud)
             backup_files.append((backup_cloud.name, backup_class[1],\
                 common_string.bytes2human(backup_cloud.size)))
@@ -81,7 +81,7 @@ def com_cloud_file_delete(cloud_type, file_name, backup_bucket=False):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            awss3.com_AWS_S3_Delete(file_name, backup_bucket)
+            awss3.com_aws_s3_delete(file_name, backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
             pass
@@ -101,10 +101,10 @@ def com_cloud_file_list(cloud_type, file_path=None, backup_bucket=False):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            return awss3.com_AWS_S3_Bucket_List(backup_bucket)
+            return awss3.com_aws_s3_bucket_list(backup_bucket)
     elif cloud_type == "dropbox":
         if dropbox.active:
-            return com_cloud_Dropbox.dropbox_list(file_path)
+            return com_cloud_dropbox.dropbox_list(file_path)
     elif cloud_type == "onedrive":
         if onedrive.active:
             pass
@@ -120,13 +120,13 @@ def com_cloud_file_retrieve(cloud_type, file_name, file_location):
             pass
     elif cloud_type == "awss3":
         if awss3.active:
-            awss3.com_AWS_S3_Download(file_name, file_location)
+            awss3.com_aws_s3_download(file_name, file_location)
     elif cloud_type == "dropbox":
         if dropbox.active:
             com_cloud_dropbox.dropbox_download(file_name, file_location)
     elif cloud_type == "onedrive":
         if onedrive.active:
-            com_cloud_onedrive.MK_OneDrive_Download(file_name, file_location)
+            com_cloud_onedrive.mk_onedrive_download(file_name, file_location)
     else:
         return None
 
