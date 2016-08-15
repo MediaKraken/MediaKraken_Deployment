@@ -24,8 +24,7 @@ import zipfile
 import os
 import struct
 import sys
-sys.path.append("../../MediaKraken_Common")
-from com_Hash_C_Code import *
+import common_hash_c_code
 
 # import compression mods
 import pylzma

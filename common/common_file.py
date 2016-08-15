@@ -25,7 +25,7 @@ try:
     import cPickle as pickle
 except:
     import pickle
-from common import common_string
+import common_string
 
 JUNK_FILES = [
             '(gameplay)',

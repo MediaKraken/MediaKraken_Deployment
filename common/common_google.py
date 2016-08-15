@@ -27,7 +27,7 @@ import sys
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
-from common import common_network
+import common_network
 import requests
 import json
 

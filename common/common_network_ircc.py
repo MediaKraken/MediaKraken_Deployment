@@ -19,7 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import sys
-sys.path.append("../../common/lib")
+sys.path.append("./vault/lib")
 
 
 def com_net_ircc_discover():

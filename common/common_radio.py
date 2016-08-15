@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import sys
 import subprocess
-sys.path.append("../../common/radio_crawler")
+sys.path.append("./common/radio_crawler")
 
 
 def common_network.radio():

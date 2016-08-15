@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-from common import common_file
+import common_file
 
 # global statics
 M3U_HEADER = 'EXTM3U\n'

@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 import os
 from xml.dom import minidom
-from common import common_file
-from common import common_network
+import common_file
+import common_network
 
 
 def mk_scudlee_fetch_xml():

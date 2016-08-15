@@ -18,7 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-from vault.lib.backblazeb2 import BackBlazeB2
+import sys
+sys.path.append("./vault/lib")
+from backblazeb2 import BackBlazeB2
 
 
 class CommonBackupBackblaze(object):

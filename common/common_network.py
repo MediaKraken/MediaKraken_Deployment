@@ -28,8 +28,7 @@ import sys
 from plyer import email
 import psutil
 import ipgetter
-sys.path.append("../common/lib")
-sys.path.append("../../common/lib")
+sys.path.append("./vault/lib")
 import wol
 
 
