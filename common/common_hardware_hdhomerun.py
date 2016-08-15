@@ -77,7 +77,7 @@ class CommonHardwareHDHomeRun(object):
         """
         # get lock owner
         """
-        return self.devices[0].get_tuner_lockkey_owner()
+        return self.devices[ndx].get_tuner_lockkey_owner()
 
 
     def com_hdhomerun_set_tuner(self, ndx, tuner_no):
