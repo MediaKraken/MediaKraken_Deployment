@@ -31,7 +31,7 @@ class CommonHardwareChromecast(object):
     Class for interfacing with chromecast
     """
     def __init__(self):
-        pass
+        self.chromecast_dict = None
 
 
     def MK_Chromecast_Discover_Dict(self):

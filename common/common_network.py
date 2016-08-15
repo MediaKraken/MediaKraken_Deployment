@@ -97,9 +97,9 @@ class PingIt(Thread):
     """
     # ping modules
     """
-    def __init__(self, ip):
+    def __init__(self, ip_addr):
         Thread.__init__(self)
-        self.ip = ip
+        self.ip_addr = ip_addr
         self.status = -1
 
 
@@ -107,9 +107,9 @@ class PingIt(Thread):
         pingaling = None
         if str.upper(sys.platform[0:3]) == 'WIN' \
         or str.upper(sys.platform[0:3]) == 'CYG':
-            pingaling = os.popen("ping -n 2 "+self.ip, "r")
+            pingaling = os.popen("ping -n 2 " + self.ip_addr, "r")
         else:
-            pingaling = os.popen("ping -q -c2 "+self.ip, "r")
+            pingaling = os.popen("ping -q -c2 " + self.ip_addr, "r")
         while 1:
             line = pingaling.readline()
             if not line:

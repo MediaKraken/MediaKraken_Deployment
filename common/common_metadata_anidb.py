@@ -34,7 +34,7 @@ class CommonMetadataANIdb(object):
     Class for interfacing with anidb
     """
     def __init__(self):
-        pass
+        self.adba_connection = None
 
 
     def com_net_anidb_fetch_titles_file(self, data_type='dat'):
@@ -88,27 +88,27 @@ class CommonMetadataANIdb(object):
         """
         Remote api calls
         """
-        self.connection = adba.Connection(log=True)
+        self.adba_connection = adba.Connection(log=True)
         try:
-            self.connection.auth(user_name, user_password)
+            self.adba_connection.auth(user_name, user_password)
             pass
         except Exception, e:
             logging.error("exception msg: " + str(e))
-        return self.connection
+        return self.adba_connection
 
 
     def com_net_anidb_logout(self):
         """
         Logout of anidb
         """
-        self.connection.logout()
+        self.adba_connection.logout()
 
 
     def com_net_anidb_stop(self):
         """
         Close the anidb connect and stop the thread
         """
-        self.connection.stop()
+        self.adba_connection.stop()
 
 
 # expericment code

@@ -26,7 +26,7 @@ class CommonTivo(object):
     Class for interfacing with tivo device
     """
     def __init__(self):
-        pass
+        self.tivo_device = None
 
 
     def com_tivo_connect(self, telnet_host, telnet_port=31339):

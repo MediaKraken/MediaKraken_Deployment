@@ -27,14 +27,14 @@ class CommoniOSHardwareInstance(object):
     """
     def __init__(self):
 # get hardware instance of device
-        self.iOS_Hardware = autoclass('bridge')
+        self.ios_hardware = autoclass('bridge')
 
 
     def com_ios_motion(self, time_range):
         """
         # return data from the motion controller
         """
-        br = self.iOS_Hardware.alloc().init()
+        br = self.ios_hardware.alloc().init()
         br.motionManager.setAccelerometerUpdateInterval_(0.1)
         br.startAccelerometer()
         accel_data = []
@@ -48,7 +48,7 @@ class CommoniOSHardwareInstance(object):
         """
         # return data from the gyro
         """
-        br = self.iOS_Hardware.alloc().init()
+        br = self.ios_hardware.alloc().init()
         br.startGyroscope()
         gyro_data = []
         for i in range(time_range):
@@ -61,7 +61,7 @@ class CommoniOSHardwareInstance(object):
         """
         # return data from the magnetometer
         """
-        br = self.iOS_Hardware.alloc().init()
+        br = self.ios_hardware.alloc().init()
         br.startMagnetometer()
         mag_data = []
         for i in range(time_range):

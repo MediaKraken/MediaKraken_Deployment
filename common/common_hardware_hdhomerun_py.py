@@ -27,7 +27,7 @@ class CommonHardwareHDHomeRunPY(object):
     Class for interfacing with hdhomerun
     """
     def __init__(self):
-        pass
+        self.devices = None
 
 
     def com_HDHomeRun_Discover(self):
