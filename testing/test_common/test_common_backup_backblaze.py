@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import pytest
 import sys
-sys.path.append("../common")
-from common import common_backup_backblaze
+sys.path.append("./common")
+import common_backup_backblaze
 
 
 class TestCommonBackupBackblaze(object):
