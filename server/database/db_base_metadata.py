@@ -25,9 +25,9 @@ def srv_db_read_media_metadata(self, media_guid):
     """
     # read in the media with corresponding metadata
     """
-    self.db_cursor.execute("select mm_metadata_guid, mm_metadata_media_id, mm_media_name,'\
+    self.db_cursor.execute('select mm_metadata_guid, mm_metadata_media_id, mm_media_name,'\
         ' mm_metadata_json, mm_metadata_localimage_json, mm_metadata_user_json'\
-        ' from mm_metadata_movie where mm_metadata_guid = %s", (media_guid,))
+        ' from mm_metadata_movie where mm_metadata_guid = %s', (media_guid,))
     try:
         return self.db_cursor.fetchone()
     except:
