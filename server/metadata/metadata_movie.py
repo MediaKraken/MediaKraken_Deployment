@@ -21,21 +21,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import json
 import uuid
-import sys
-sys.path.append("../common")
 from guessit import guessit
-from common import common_metadata_anidb
-from common import common_metadata_imdb
-from common import common_metadata_movie_theme
-from common import common_metadata_movie_trailer
-from common import common_metadata_netflixroulette
-from common import common_metadata_omdb
-from common import common_metadata_rotten_tomatoes
-from common import common_metadata_tmdb
+from . import common_metadata_anidb
+from . import common_metadata_imdb
+from . import common_metadata_movie_theme
+from . import common_metadata_movie_trailer
+from . import common_metadata_netflixroulette
+from . import common_metadata_omdb
+from . import common_metadata_rotten_tomatoes
+from . import common_metadata_tmdb
 import ConfigParser
 Config = ConfigParser.ConfigParser()
 Config.read("MediaKraken.ini")
-import metadata_nfo_xml
+from . import metadata_nfo_xml
 
 
 # verify themovietb key exists

@@ -22,7 +22,7 @@ import uuid
 import os
 import sys
 sys.path.append("../common")
-from common import common_hash
+from . import common_hash
 sys.path.append("./metadata")
 import metadata_anime
 import metadata_game
