@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_pagination import *
+sys.path.append("./common")
+import common_pagination
 
 
 def test_get_css_framework():

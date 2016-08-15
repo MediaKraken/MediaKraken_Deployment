@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_radio import *
+sys.path.append("./common")
+import common_radio
 
 
 # create the cache file for import

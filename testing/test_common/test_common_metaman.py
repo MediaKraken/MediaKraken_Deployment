@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from com_MediaKraken import *
+sys.path.append("./common")
+import com_MediaKraken
 
 
 def test_common_network_mediakraken_find_server():

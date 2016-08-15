@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_zfs import *
+sys.path.append("./common")
+import common_zfs
 
 
 # check for ZFS compat
@@ -40,12 +40,12 @@ def test_common_zfs_zpool_list():
     ("spinning_rust"),
     ("spinning_rust_fake")])
 def test_common_zfs_zpool_status(zpool):
-    common_zfs_Zpool_Status(zpool)
+    common_zfs_zpool_status(zpool)
 
 
 # list snapshot
 def test_common_zfs_snapshot_list():
-    common_zfs_Snapshot_List()
+    common_zfs_snapshot_list()
 
 
 # list snapshot
@@ -54,7 +54,7 @@ def test_common_zfs_snapshot_list():
     ("spinning_rust"),
     ("spinning_rust_fake")])
 def test_common_zfs_snapshot_list(zpool):
-    common_zfs_Snapshot_List(zpool)
+    common_zfs_snapshot_list(zpool)
 
 
 # delete snapshot
@@ -67,7 +67,7 @@ def test_common_zfs_snapshot_list(zpool):
     ("spinning_rust"),
     ("spinning_rust_fake")])
 def test_common_zfs_zpool_delete(zpool):
-    common_zfs_Zpool_Delete(zpool)
+    common_zfs_zpool_delete(zpool)
 
 
 # scrub pool
@@ -76,7 +76,7 @@ def test_common_zfs_zpool_delete(zpool):
     ("spinning_rust"),
     ("spinning_rust_fake")])
 def test_common_zfs_zpool_scrub(zpool):
-    common_zfs_Zpool_Scrub(zpool)
+    common_zfs_zpool_scrub(zpool)
 
 
 # replace drive in pool
@@ -99,7 +99,7 @@ def test_common_zfs_zpool_scrub(zpool):
     ("spinning_rust"),
     ("spinning_rust_fake")])
 def test_common_zfs_zpool_compression(zpool):
-    common_zfs_Zpool_Compression(zpool)
+    common_zfs_zpool_compression(zpool)
 
 
 # set deduplication
@@ -148,4 +148,4 @@ def test_common_zfs_zpool_compression(zpool):
 
 # health check
 def test_common_zfs_health_check():
-    common_zfs_Health_Check()
+    common_zfs_health_check()

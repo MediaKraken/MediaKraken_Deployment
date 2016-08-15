@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_system import *
+sys.path.append("./common")
+import common_system
 
 
 # def pprint_ntuple(nt, return_value=None):
@@ -53,14 +53,14 @@ def test_common_system_boot_time():
     """
     # get boot time
     """
-    common_system_Boot_Time()
+    common_system_boot_time()
 
 
 def test_common_system_users():
     """
     # get users 
     """
-    common_system_Users()
+    common_system_users()
 
 
 @pytest.mark.parametrize(("per_cpu"), [
@@ -77,7 +77,7 @@ def test_common_system_cpu_times():
     """
     # get cpu times
     """
-    common_system_CPU_Times()
+    common_system_cpu_times()
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':

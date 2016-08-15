@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from com_Database_Octmote import *
+sys.path.append("./common")
+import common_database_octmote
 
 
 class TestCommonDatabaseOctmote(object):
@@ -29,19 +29,19 @@ class TestCommonDatabaseOctmote(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_db_Open(None):
+        self.db_connection = com_db_open(None):
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.com_db_Close()
+        self.db_connection.com_db_close()
 
 
 # insert new layout config into database
 #def com_db_Layout_Config_Insert(layout_record_name, layout_record_json):
 
 
-    def test_com_db_Layout_List(self):
+    def test_com_db_layout_list(self):
         com_db_layout_list()
 
 
@@ -52,7 +52,7 @@ class TestCommonDatabaseOctmote(object):
 #def com_db_Device_Insert(device_record_name, device_record_description):
 
 
-    def test_com_db_Device_List(self):
+    def test_com_db_device_list(self):
         self.db_connection.com_db_device_list()
 
 
@@ -63,7 +63,7 @@ class TestCommonDatabaseOctmote(object):
 #def com_db_Item_Insert(item_record_json):
 
 
-    def test_com_db_Item_List(self):
+    def test_com_db_item_list(self):
         self.db_connection.com_db_item_list()
 
 

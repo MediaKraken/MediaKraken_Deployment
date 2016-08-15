@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_metadata_chart_lyrics import *
+sys.path.append("./common")
+import common_metadata_chart_lyrics
 
 
 @pytest.mark.parametrize(("band_name", "song_name"), [

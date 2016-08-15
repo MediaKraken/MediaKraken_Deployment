@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_logging import *
+sys.path.append("./common")
+import common_logging
 
 
 # def common_logging_Start(log_name="./log/MediaKraken_Main"):
@@ -30,4 +30,4 @@ from common_logging import *
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
 def test_common_logging_start(log_name):
-    common_logging_Start(log_name)
+    common_logging_start(log_name)

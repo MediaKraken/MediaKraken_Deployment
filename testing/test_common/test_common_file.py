@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import datetime
 import sys
-sys.path.append("../common")
-from common_file import *
+sys.path.append("./common")
+import common_file
 
 
 # return file modfication date in datetime format

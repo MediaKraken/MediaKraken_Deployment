@@ -22,7 +22,7 @@ import os
 import pytest
 import sys
 sys.path.append("./common")
-import common.common_backup_backblaze
+import common_backup_backblaze
 
 
 class TestCommonBackupBackblaze(object):

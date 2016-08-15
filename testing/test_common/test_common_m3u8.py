@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from common_M3U8 import *
+sys.path.append("./common")
+import common_m3u8
 
 
 # write out m3u from list

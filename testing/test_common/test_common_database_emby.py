@@ -20,8 +20,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
 import sys
-sys.path.append("../common")
-from com_db_emby import *
+sys.path.append("./common")
+import com_db_emby
 
 
 class TestCommonDatabaseEmby(object):
@@ -29,12 +29,12 @@ class TestCommonDatabaseEmby(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_db_Attach_Emby(None):
+        self.db_connection = com_db_attach_emby(None):
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.com_db_Close_Emby()
+        self.db_connection.com_db_close_emby()
 
 
 
