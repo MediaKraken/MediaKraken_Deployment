@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from bs4 import BeautifulSoup
-import common_network
-import common_string
+import .common_network
+import .common_string
 
 
 # http://www.tv-intros.com

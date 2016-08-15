@@ -20,9 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 #import logging
 import os
 import sys
-import common_file
-import common_hash
-sys.path.append("../../common/lib")
+import .common_file
+import .common_hash
+sys.path.append("./vault/lib")
 from babelfish import Language
 import subliminal
 

@@ -18,10 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-import common_cloud_aws_s3
-import common_cloud_dropbox
-import common_cloud_google_drive
-import common_cloud_onedrive
+import .common_cloud_aws_s3
+import .common_cloud_dropbox
+import .common_cloud_google_drive
+import .common_cloud_onedrive
 #import common_string
 
 

@@ -29,7 +29,7 @@ import hashlib
 #import traceback
 import time
 # include code
-import common_network
+import .common_network
 
 
 # create dictionary containing
