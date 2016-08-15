@@ -29,7 +29,7 @@ class TestCommonDropBox(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_cloud_dropbox.com_DropBox_API()
+        self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox()
 
 
     @classmethod
@@ -38,14 +38,14 @@ class TestCommonDropBox(object):
 
 
     def test_dropbox_user_auth(self):
-        dropbox_user_auth()
+        self.dropbox_connection.dropbox_user_auth()
 
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("./cache/HashCalc.txt", "HashCalc.txt"),
         ("./cache/HashCalcfake.txt", "HashCalcfake.txt")])
     def test_dropbox_upload(self, file_name, file_save_name):
-        dropbox_upload(file_name, file_save_name)
+        self.dropbox_connection.dropbox_upload(file_name, file_save_name)
 
 
     @pytest.mark.parametrize(("dir_name"), [
@@ -53,11 +53,11 @@ class TestCommonDropBox(object):
         ("metaman"),
         ("fakedir")])
     def test_dropbox_list(self, dir_name = '/'):
-        dropbox_list(dir_name):
+        self.dropbox_connection.dropbox_list(dir_name)
 
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("HashCalc.txt", "./cache/HashCalcDown.txt"),
         ("HashCalcfake.txt", "./cache/HashCalcDown2.txt")])
     def test_dropbox_download(self, file_name, file_save_name):
-        dropbox_download(file_name, file_save_name)
+        self.dropbox_connection.dropbox_download(file_name, file_save_name)

@@ -30,7 +30,7 @@ class TestCommonCloudAWSS3(object):
 
     @classmethod
     def setup_class(self):
-        self.awss3 = com_AWS_S3_API()
+        self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3()
 
 
     @classmethod
@@ -44,9 +44,9 @@ class TestCommonCloudAWSS3(object):
         ("./cache/HashCalc.txt", "HashCalc.txt", True),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", False),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
-    def test_com_AWS_S3_Upload(self, source_path, destination_filename,\
+    def test_com_aws_s3_upload(self, source_path, destination_filename,\
             backup_bucket = False):
-        com_AWS_S3_Upload(source_path, destination_filename, backup_bucket)
+        self.awss3.com_aws_s3_upload(source_path, destination_filename, backup_bucket)
 
 
     # download from s3
@@ -54,8 +54,8 @@ class TestCommonCloudAWSS3(object):
     @pytest.mark.parametrize(("source_key", "destination_filename", "backup_bucket"), [
         ("HashCalc.txt", "./cache/HashCalcDown.txt", False),
         ("HashCalc.txt", "./cache/HashCalcDown2.txt", True)])
-    def test_com_AWS_S3_Download(self, source_key, destination_filename, backup_bucket):
-        com_AWS_S3_Download(source_key, destination_filename, backup_bucket = False)
+    def test_com_aws_s3_download(self, source_key, destination_filename, backup_bucket):
+        self.awss3.com_aws_s3_download(source_key, destination_filename, backup_bucket = False)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
 
@@ -64,21 +64,21 @@ class TestCommonCloudAWSS3(object):
     @pytest.mark.parametrize(("key", "backup_bucket"), [
         ("HashCalc.txt", False),
         ("HashCalc.txt", True)])
-    def test_com_AWS_S3_Delete(self, key, backup_bucket):
-        com_AWS_S3_Delete(key, backup_bucket)
+    def test_com_aws_s3_delete(self, key, backup_bucket):
+        self.awss3.com_aws_s3_delete(key, backup_bucket)
 
 
     # remove old database backups
     @pytest.mark.parametrize(("days_to_keep"), [
         (7),
         (400)])
-    def test_com_AWS_S3_Backup_Purge(self, days_to_keep):
-        self.awss3.com_AWS_S3_Backup_Purge(days_to_keep)
+    def test_com_aws_s3_backup_purge(self, days_to_keep):
+        self.awss3.com_aws_s3_backup_purge(days_to_keep)
 
 
     # bucket list (ha)
     @pytest.mark.parametrize(("backup_bucket"), [
         (True),
         (False)])
-    def test_com_AWS_S3_Bucket_List(self, backup_bucket):
-        self.awss3.com_AWS_S3_Bucket_List(backup_bucket)
+    def test_com_aws_s3_bucket_list(self, backup_bucket):
+        self.awss3.com_aws_s3_bucket_list(backup_bucket)
