@@ -90,5 +90,5 @@ def test_com_hash_thesubdb(file_name):
     ("./cache/BigBuckBunny.ogv"),
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
-def test_com_hash_opensubtitles(file_name)"
+def test_com_hash_opensubtitles(file_name):
     com_hash_opensubtitles(file_name)
