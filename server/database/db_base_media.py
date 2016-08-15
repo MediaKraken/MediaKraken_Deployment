@@ -173,10 +173,13 @@ def srv_db_media_watched_status_update(self, media_guid, user_id, status_bool):
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
         (media_guid,))
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
-    self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_commit()
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
+        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
+        self.srv_db_commit()
+    except:
+        return None
 
 
 def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
@@ -187,10 +190,13 @@ def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
         (media_guid,))
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
-    self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_commit()
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
+        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
+        self.srv_db_commit()
+    except:
+        return None
 
 
 def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
@@ -201,10 +207,13 @@ def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
         (media_guid,))
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
-    self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_commit()
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
+        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
+        self.srv_db_commit()
+    except:
+        return None
 
 
 def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
@@ -215,10 +224,13 @@ def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
         (media_guid,))
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
-    self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_commit()
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
+        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
+        self.srv_db_commit()
+    except:
+        return None
 
 
 def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
@@ -229,10 +241,13 @@ def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_tim
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',\
         (media_guid,))
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
-    self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-    self.srv_db_commit()
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
+        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
+        self.srv_db_commit()
+    except:
+        return None
 
 
 def srv_db_update_media_id(self, media_guid, metadata_guid):
