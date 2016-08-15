@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_cloud_Dropbox import *
+from common_cloud_dropbox import *
 
 
 class TestCommonDropBox(object):
@@ -29,7 +29,7 @@ class TestCommonDropBox(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_cloud_Dropbox.com_DropBox_API()
+        self.db_connection = common_cloud_dropbox.com_DropBox_API()
 
 
     @classmethod

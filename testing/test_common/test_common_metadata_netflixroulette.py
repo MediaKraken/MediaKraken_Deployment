@@ -30,7 +30,7 @@ from common_metadata_netflixroulette import *
     ("Red", None),
     ("Robocop", 1987)])
 def test_common_metadata_netflixroulette_get_all_data(media_title, media_year):
-    common_metadata_netflixroulette_Get_All_Data(media_title, media_year)
+    common_metadata_netflixroulette_get_all_data(media_title, media_year)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -38,7 +38,7 @@ def test_common_metadata_netflixroulette_get_all_data(media_title, media_year):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_id(media_title):
-    common_metadata_netflixroulette_Get_Id(media_title)
+    common_metadata_netflixroulette_get_id(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -46,7 +46,7 @@ def test_common_metadata_netflixroulette_get_id(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_director(media_title):
-    common_metadata_netflixroulette_Get_Director(media_title)
+    common_metadata_netflixroulette_get_director(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -54,7 +54,7 @@ def test_common_metadata_netflixroulette_get_director(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_summary(media_title):
-    common_metadata_netflixroulette_Get_Summary(media_title)
+    common_metadata_netflixroulette_get_summary(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -62,7 +62,7 @@ def test_common_metadata_netflixroulette_get_summary(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_category(media_title):
-    common_metadata_netflixroulette_Get_Category(media_title)
+    common_metadata_netflixroulette_get_category(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -70,7 +70,7 @@ def test_common_metadata_netflixroulette_get_category(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_cast(media_title):
-    common_metadata_netflixroulette_Get_Cast(media_title)
+    common_metadata_netflixroulette_get_cast(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -78,7 +78,7 @@ def test_common_metadata_netflixroulette_get_cast(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_release_year(media_title):
-    common_metadata_netflixroulette_Get_Release_Year(media_title)
+    common_metadata_netflixroulette_get_release_year(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -86,7 +86,7 @@ def test_common_metadata_netflixroulette_get_release_year(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_type(media_title):
-    common_metadata_netflixroulette_Get_Type(media_title)
+    common_metadata_netflixroulette_get_type(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -94,7 +94,7 @@ def test_common_metadata_netflixroulette_get_type(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_media_poster(media_title):
-    common_metadata_netflixroulette_Get_Media_Poster(media_title)
+    common_metadata_netflixroulette_get_media_poster(media_title)
 
 
 @pytest.mark.parametrize(("media_title"), [
@@ -102,9 +102,8 @@ def test_common_metadata_netflixroulette_get_media_poster(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_rating(media_title):
-    common_metadata_netflixroulette_Get_Rating(media_title)
+    common_metadata_netflixroulette_get_rating(media_title)
 
 
 def test_common_metadata_netflixroulette_get_version():
-    common_metadata_netflixroulette_Get_Version()
-
+    common_metadata_netflixroulette_get_version()

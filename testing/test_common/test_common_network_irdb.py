@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_network_IRDB import *
+from common_network_irdb import *
 
 
 # get brand list

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_musicbrainz import *
+from common_meta_musicbrainz import *
 
 
 class TestCommonMusicbrainz(object):
@@ -29,7 +29,7 @@ class TestCommonMusicbrainz(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_musicbrainz.com_Musicbrainz_API()
+        self.musicbrainz_connection = com_meta_musicbrainz.com_Musicbrainz_API()
 
 
     @classmethod

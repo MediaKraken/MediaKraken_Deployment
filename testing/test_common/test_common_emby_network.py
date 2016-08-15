@@ -21,12 +21,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Emby_Network import *
+from common_emby_network import *
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
 def test_common_network_emby_find_server():
-    common_network_Emby_Find_Server()
+    common_network_emby_find_server()
 
 
 # create dictionary containing

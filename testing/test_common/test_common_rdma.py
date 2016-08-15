@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_RDMA import *
+from common_rdma import *
 
 
 # get list of RDMA devices

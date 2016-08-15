@@ -22,7 +22,7 @@ import os
 import pytest
 import sys
 sys.path.append("../common")
-from com_Backup_Backblaze import *
+from common_backup_backblaze import *
 
 
 class TestCommonBackupBackblaze(object):
@@ -38,16 +38,16 @@ class TestCommonBackupBackblaze(object):
         pass
 
 
-    def test_com_Backup_Backblaze_Bucket_List(self):
-        self.db_connection.com_Backup_Backblaze_Bucket_List()
+    def test_com_backup_backblaze_bucket_list(self):
+        self.db_connection.com_backup_backblaze_bucket_list()
 
 
     @pytest.mark.parametrize(("bucket_name"), [
         ("bucket_upload"),
         ("bucket_test"),
         ("bucket_test")]) # for duplicate
-    def test_com_Backup_Backblaze_Bucket_Create(self, bucket_name):
-        com_Backup_Backblaze_Bucket_Create(bucket_name)
+    def test_com_backup_backblaze_bucket_create(self, bucket_name):
+        com_backup_backblaze_bucket_create(bucket_name)
 
 
     @pytest.mark.parametrize(("file_name", "bucket_name", "file_password"), [
@@ -55,24 +55,23 @@ class TestCommonBackupBackblaze(object):
         ("./cache/HashCalc.txt", "bucket_upload_fake", None),
         ("./cache/HashCalcfake.txt", "bucket_upload", None),
         ("./cache/HashCalc.txt", "bucket_test", "test")])
-    def test_com_Backup_Backblaze_Upload_File(self, file_name, bucket_name, file_password):
-        com_Backup_Backblaze_Upload_File(file_name, bucket_name, file_password)
+    def test_com_backup_backblaze_upload_file(self, file_name, bucket_name, file_password):
+        com_backup_backblaze_upload_file(file_name, bucket_name, file_password)
 
 
     @pytest.mark.parametrize(("dir_name", "bucket_name", "dir_password"), [
         ("./cache", "bucket_upload", None),
         ("./cachefake", "bucket_upload_fake", None),
         ("./cache", "bucket_test", "test")])
-    def test_com_Backup_Backblaze_Upload_Directory(self, dir_name, bucket_name,\
+    def test_com_backup_backblaze_upload_directory(self, dir_name, bucket_name,\
             dir_password=None):
-        com_Backup_Backblaze_Upload_Directory(dir_name, bucket_name, dir_password)
+        com_backup_backblaze_upload_directory(dir_name, bucket_name, dir_password)
 
 
     @pytest.mark.parametrize(("file_name", "local_file_name", "file_password"), [
         ("HashCalc.txt", "./cache/down.txt", None),
         ("hashCalc.txt", "./cache/down_pass.txt", "test")])
-    def com_Backup_Backblaze_Download_File(self, file_name, local_file_name, file_password):
-        com_Backup_Backblaze_Download_File(file_name, local_file_name, file_password)
+    def test_com_backup_backblaze_download_file(self, file_name, local_file_name, file_password):
+        com_backup_backblaze_download_file(file_name, local_file_name, file_password)
         os.remove("./cache/down.txt")
         os.remove("./cache/down_pass.txt")
-

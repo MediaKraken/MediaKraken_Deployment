@@ -42,55 +42,69 @@ class TestCommonDatabaseEmby(object):
 #def com_db_Open_Emby(db_file_name = None, db_username_dir = os.environ.get("USERNAME"), 
 
 
-    # grab all movies in emby database
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_com_db_Movie_List_Emby(self, offset, records):
-        self.db_connection.com_db_Movie_List_Emby(offset, records)
+    def test_com_db_movie_list_emby(self, offset, records):
+        """
+        # grab all movies in emby database
+        """
+        self.db_connection.com_db_movie_list_emby(offset, records)
 
 
-    # grab all movies in emby database count
-    def teset_com_db_Movie_List_Emby_Count(self):
-        self.db_connection.com_db_Movie_List_Emby_Count()
+    def test_com_db_movie_list_emby_count(self):
+        """
+        # grab all movies in emby database count
+        """
+        self.db_connection.com_db_movie_list_emby_count()
 
 
-    # grab all the tv episodes in the emby database
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def com_db_TV_List_Emby(self, offset, records):
-        self.db_connection.com_db_TV_List_Emby(offset, records)
+    def test_com_db_tv_list_emby(self, offset, records):
+        """
+        # grab all the tv episodes in the emby database
+        """
+        self.db_connection.com_db_tv_list_emby(offset, records)
 
 
-    # grab all the tv episodes in the emby database count
-    def test_com_db_TV_List_Emby_Count(self):
-        self.db_connection.com_db_TV_List_Emby_Count()
+    def test_com_db_tv_list_emby_count(self):
+        """
+        # grab all the tv episodes in the emby database count
+        """
+        self.db_connection.com_db_tv_list_emby_count()
 
 
-    # grab all the tv episodes and movies in the emby database
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_com_db_TV_Movie_List_Emby(self, offset, records):
-        self.db_connection.com_db_TV_Movie_List_Emby(offset, records)
+    def test_com_db_tv_movie_list_emby(self, offset, records):
+        """
+        # grab all the tv episodes and movies in the emby database
+        """
+        self.db_connection.com_db_tv_movie_list_emby(offset, records)
 
 
-    # grab all the tv episodes and movies in the emby database count
-    def test_com_db_TV_Movie_List_Emby_Count(self):
-        self.db_connection.com_db_TV_Movie_List_Emby_Count()
+    def test_com_db_tv_movie_list_emby_count(self):
+        """
+        # grab all the tv episodes and movies in the emby database count
+        """
+        self.db_connection.com_db_tv_movie_list_emby_count()
 
 
 # grab all users from database
 #def com_db_Users_List(offset=None, records=None, play_stats = None):
 
 
-    # grab count of all users
-    def test_com_db_Users_List_Count(self):
-        self.db_connection.com_db_Users_List_Count()
+    def test_com_db_users_list_count(self):
+        """
+        # grab count of all users
+        """
+        self.db_connection.com_db_users_list_count()
 
 
 # grab last IP
@@ -101,52 +115,66 @@ class TestCommonDatabaseEmby(object):
 #def com_db_Media_In_Dir(dir_name):
 
 
-    # grab all activity data
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def com_db_Emby_Activity_List(self, offset, records):
-        self.db_connection.com_db_Emby_Activity_List(offset, records)
+    def test_com_db_emby_activity_list(self, offset, records):
+        """
+        # grab all activity data
+        """
+        self.db_connection.com_db_emby_activity_list(offset, records)
 
 
-    # grab all activity data count
-    def test_com_db_Emby_Activity_List_Count(self):
-        self.db_connection.com_db_Emby_Activity_List_Count()
+    def test_com_db_emby_activity_list_count(self):
+        """
+        # grab all activity data count
+        """
+        self.db_connection.com_db_emby_activity_list_count()
 
 
-    # grab all notifications
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_MK_Databas_Sqlite3_Emby_Notification_List(self, offset, records):
-        self.db_connection.MK_Databas_Sqlite3_Emby_Notification_List(offset, records)
+    def test_MK_Database_Sqlite3_Emby_Notification_List(self, offset, records):
+        """
+        # grab all notifications
+        """
+        self.db_connection.MK_Database_Sqlite3_Emby_Notification_List(offset, records)
 
 
-    # grab notification  data count
-    def test_com_db_Emby_Notification_List_Count(self):
-        self.db_connection.com_db_Emby_Notification_List_Count()
+    def test_com_db_emby_notification_list_count(self):
+        """
+        # grab notification data count
+        """
+        self.db_connection.com_db_emby_notification_list_count()
 
 
-    # grab all notifications
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100,100),
         (100000000,1000)])
-    def test_com_db_Emby_Sync_List(self, offset, records):
-        self.db_connection.com_db_Emby_Sync_List(offset, records):
+    def test_com_db_emby_sync_list(self, offset, records):
+        """
+        # grab all sync
+        """
+        self.db_connection.com_db_emby_sync_list(offset, records):
 
 
-    # grab notification  data count
-    def test_com_db_Emby_Sync_List_Count(self):
-        self.db_connection.com_db_Emby_Sync_List_Count()
+    def test_com_db_emby_sync_list_count(self):
+        """
+        # grab notification  data count
+        """
+        self.db_connection.com_db_emby_sync_list_count()
 
 
 # get id to lookup from metadata
 #def com_db_Media_by_Guid(guid):
 
 
-    # all data from users for playback
-    def test_com_db_User_Play_Data(self):
-        self.db_connection.com_db_User_Play_Data()
+    def test_com_db_user_play_data(self):
+        """
+        # all data from users for playback
+        """
+        self.db_connection.com_db_user_play_data()

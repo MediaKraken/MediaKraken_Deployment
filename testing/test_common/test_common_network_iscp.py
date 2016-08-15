@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_network_ISCP import *
+from common_network_iscp import *
 
 
 # the EISCP auto discover only works on 2011 models or higher

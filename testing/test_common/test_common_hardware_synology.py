@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Hardware_Synology import *
+from common_hardware_synology import *
 
 
 class TestCommonSynology(object):
@@ -43,10 +43,10 @@ class TestCommonSynology(object):
 
     # get nas info
     def test_com_Synology_Info(self):
-        com_Synology_Info()
+        com_synology_info()
 
 
     # get share list
     def test_com_Synology_Shares_List(self):
-        com_Synology_Shares_List()
+        com_synology_shares_list()
 

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_imvdb import *
+from common_meta_imvdb import *
 
 
 class TestCommonimvdb(object):
@@ -29,7 +29,7 @@ class TestCommonimvdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_imvdb.com_imvdb_API()
+        self.imvdb_connection = com_meta_imvdb.com_imvdb_API()
 
 
     @classmethod

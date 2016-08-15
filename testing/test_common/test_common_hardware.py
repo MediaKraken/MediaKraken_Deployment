@@ -24,7 +24,7 @@ vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 import pytest
 import sys
 sys.path.append("../common")
-from com_Hardware import *
+from common_hardware import *
 
 
 # turn on accelerometer

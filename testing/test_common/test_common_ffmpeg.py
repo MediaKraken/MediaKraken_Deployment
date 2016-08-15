@@ -30,4 +30,4 @@ from common_ffmpeg import *
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
 def test_common_ffmpeg_media_attr(file_path):
-    common_ffmpeg_Media_Attr(file_path)
+    common_ffmpeg_media_attr(file_path)

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_TV_Theme import *
+from common_meta_tv_theme import *
 
 
 # try to grab theme from tvtunes
@@ -29,4 +29,4 @@ from com_meta_TV_Theme import *
     ("V", True),
     ("FAKETITLE", False)])
 def test_com_tvtheme_download(show_name, expected_results):
-    assert com_TVTheme_Download(show_name) == expected_results
+    assert com_tvtheme_download(show_name) == expected_results

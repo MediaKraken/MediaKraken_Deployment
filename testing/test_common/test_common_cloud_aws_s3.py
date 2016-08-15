@@ -22,7 +22,7 @@ import os
 import pytest
 import sys
 sys.path.append("../common")
-from common_cloud_AWS_S3 import *
+from common_cloud_aws_s3 import *
 
 
 class TestCommonCloudAWSS3(object):

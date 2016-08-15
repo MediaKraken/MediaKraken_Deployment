@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Serial import *
+from common_serial import *
 
 
 class TestCommonSerial(object):
@@ -29,7 +29,7 @@ class TestCommonSerial(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Serial_API()
+        self.serial_connection = com_Serial_API()
 
 
     @classmethod
@@ -41,12 +41,12 @@ class TestCommonSerial(object):
 
 
     def test_MK_Serial_Read_Device(self):
-        self.db_connection.MK_Serial_Read_Device()
+        self.serial_connection.MK_Serial_Read_Device()
 
 
     def test_MK_Serial_Close_Device(self):
-        self.db_connection.MK_Serial_Close_Device()
+        self.serial_connection.MK_Serial_Close_Device()
 
 
     def test_MK_Serial_Write_Device(self):
-        self.db_connection.MK_Serial_Write_Device("Test serial message")
+        self.serial_connection.MK_Serial_Write_Device("Test serial message")

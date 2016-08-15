@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_thelogodb import *
+from common_meta_thelogodb import *
 
 
 class TestCommonthelogodb(object):
@@ -38,5 +38,5 @@ class TestCommonthelogodb(object):
 
 
     # grab newest releases
-    def test_com_thelogodb_Fetch_Latest(self):
-        com_thelogodb_Fetch_Latest()
+    def test_com_thelogodb_fetch_latest(self):
+        com_thelogodb_fetch_latest()

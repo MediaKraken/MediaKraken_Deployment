@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_tvmaze import *
+from common_meta_tvmaze import *
 
 
 class TestCommonMetadatatvmaze(object):
@@ -42,8 +42,8 @@ class TestCommonMetadatatvmaze(object):
 
 
     # show when last updated
-    def test_com_meta_TheMaze_Show_Updated(self):
-        self.db_connection.com_meta_TheMaze_Show_Updated()
+    def test_com_meta_themaze_show_updated(self):
+        self.db_connection.com_meta_themaze_show_updated()
 
 
 # lookup show

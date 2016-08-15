@@ -42,7 +42,7 @@ class TestCommonDatabaseOctmote(object):
 
 
     def test_com_db_Layout_List(self):
-        com_db_Layout_List()
+        com_db_layout_list()
 
 
 #def com_db_Layout_Detail(guid):
@@ -53,7 +53,7 @@ class TestCommonDatabaseOctmote(object):
 
 
     def test_com_db_Device_List(self):
-        self.db_connection.com_db_Device_List()
+        self.db_connection.com_db_device_list()
 
 
 #def com_db_Device_Detail(guid):
@@ -64,7 +64,7 @@ class TestCommonDatabaseOctmote(object):
 
 
     def test_com_db_Item_List(self):
-        self.db_connection.com_db_Item_List()
+        self.db_connection.com_db_item_list()
 
 
 #def com_db_Item_Detail(guid):

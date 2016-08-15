@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_system_Android import *
+from common_system_android import *
 
 
 class TestAndroidHardwareInstance(object):
@@ -29,7 +29,7 @@ class TestAndroidHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_system_Android.MK_Android_Hardware_Instance()
+        self.android_connection = common_system_Android.MK_Android_Hardware_Instance()
 
 
     @classmethod

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_LDAP import *
+from common_ldap import *
 
 
 class TestCommonLDAP(object):
@@ -29,7 +29,7 @@ class TestCommonLDAP(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_LDAP.com_LDAP_API()
+        self.db_connection = common_ldap.com_LDAP_API()
 
 
     @classmethod
@@ -45,16 +45,16 @@ class TestCommonLDAP(object):
         ("metaman", "metaman", True),
         ("metaman", "metaman_fake", False),
         ("metaman_fake", "metaman_fake", False)])
-    def test_com_LDAP_Logon(self, user_name, user_password, expected_result):
+    def test_com_ldap_logon(self, user_name, user_password, expected_result):
         """
         Test ldap login
         """
-        com_LDAP_Logon(user_name, user_password, expected_result)
+        com_ldap_logon(user_name, user_password, expected_result)
 
 
-    def test_com_LDAP_Close(self):
+    def test_com_ldap_close(self):
         """
         Test ldap close
         """
-        com_LDAP_Close()
+        com_ldap_Close()
 

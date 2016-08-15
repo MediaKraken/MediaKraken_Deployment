@@ -29,7 +29,7 @@ class TestCommonTransmission(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_transmission.common_transmission_API()
+        self.transmission_connection = common_transmission.common_transmission_API()
 
 
     @classmethod
@@ -37,8 +37,8 @@ class TestCommonTransmission(object):
         pass
 
 
-    def test_common_transmission_Get_Torrent_List(self):
-        common_transmission_Get_Torrent_List()
+    def test_common_transmission_get_torrent_list(self):
+        common_transmission_get_torrent_list()
 
 
 #    def common_transmission_Add_Torrent(self, torrent_path):

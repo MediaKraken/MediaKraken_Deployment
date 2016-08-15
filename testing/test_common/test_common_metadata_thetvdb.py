@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_TheTVDB import *
+from common_meta_thetvdb import *
 
 
 class TestCommonMetadataTheTVDB(object):
@@ -43,8 +43,8 @@ class TestCommonMetadataTheTVDB(object):
 # def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
 
 
-    def test_com_meta_TheTVDB_Get_Server_Epoc_Time(self):
-        com_meta_TheTVDB_Get_Server_Epoc_Time()
+    def test_com_meta_thetvdb_get_server_epoc_time(self):
+        com_meta_thetvdb_get_server_epoc_time()
 
 
 # def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):

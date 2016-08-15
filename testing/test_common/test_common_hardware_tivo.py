@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Hardware_Tivo import *
+from common_hardware_tivo import *
 
 
 class TestCommonTivo(object):

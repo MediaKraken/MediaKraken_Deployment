@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Emby import *
+from common_emby import *
 
 
 # determine install directory
@@ -30,7 +30,7 @@ from com_Emby import *
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_installed_directory(dir_name):
-    com_Emby_Installed_Directory(dir_name)
+    com_emby_installed_directory(dir_name)
 
 
 # fetch library list
@@ -39,12 +39,12 @@ def test_com_emby_installed_directory(dir_name):
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_library_list(dir_name):
-    com_Emby_Library_List(dir_name)
+    com_emby_library_list(dir_name)
 
 
 # check for running instance
 def test_com_emby_check_instance():
-    com_Emby_Check_Instance()
+    com_emby_check_instance()
 
 
 # C# guid to text

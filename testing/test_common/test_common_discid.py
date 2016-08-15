@@ -21,12 +21,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_DISCID import *
+from common_discid import *
 
 
 # grab discid from default device
 def test_com_discid_default_device():
-    com_DiscID_Default_Device()
+    com_discid_default_device()
 
 
 # calculate discid from directory
@@ -34,4 +34,4 @@ def test_com_discid_default_device():
     ("./cache"),
     ("./cache_fake")])
 def test_com_diskid_caclulate_dir(dir_to_calculate):
-    com_DiskID_Caclulate_Dir(dir_to_calculate)
+    com_diskid_caclulate_dir(dir_to_calculate)

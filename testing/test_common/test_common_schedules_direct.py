@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Schedules_Direct import *
+from common_schedules_direct import *
 
 
 class TestCommonSchedulesDirect(object):
@@ -29,7 +29,7 @@ class TestCommonSchedulesDirect(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Schedules_Direct.com_Schedules_Direct_API()
+        self.sd_connection = com_Schedules_Direct.com_Schedules_Direct_API()
 
 
     @classmethod

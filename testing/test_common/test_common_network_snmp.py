@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_network_SNMP import *
+from common_network_snmp import *
 
 
 class TestCommonSNMP(object):
@@ -29,7 +29,7 @@ class TestCommonSNMP(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_network_SNMP.com_SNMP()
+        self.snmp_connection = common_network_SNMP.com_SNMP()
 
 
     @classmethod

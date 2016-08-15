@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_ISBNdb import *
+from common_meta_ISBNdb import *
 
 
 class TestCommonISBNdb(object):
@@ -29,7 +29,7 @@ class TestCommonISBNdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_ISBNdb.com_ISBNdb_API()
+        self.isbndb_connection = com_meta_ISBNdb.com_ISBNdb_API()
 
 
     @classmethod

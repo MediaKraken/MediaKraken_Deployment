@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_TheTVDB import *
+from common_thetvdb import *
 
 
 class TestCommonTheTVDB(object):
@@ -29,7 +29,7 @@ class TestCommonTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_TheTVDB.com_TheTVDB_API()
+        self.thetvdb_connection = com_TheTVDB.com_TheTVDB_API()
 
 
     @classmethod

@@ -31,7 +31,6 @@ from common_string import *
 # def common_string_Title(title_string):
 
 
-# readable numbers for bytes to G, T, etc
 @pytest.mark.parametrize(("n", "expected_result"), [
     (500, "500B"),
     (1500, "1.5K"),
@@ -43,16 +42,21 @@ from common_string import *
     (1500000000000000000000, "1.3Z"),
     (1500000000000000000000000, "1.2Y")])
 def test_bytes2human(n, expected_result):
+    """
+    # readable numbers for bytes to G, T, etc
+    """
     assert bytes2human(n) == expected_result
 
 
-# test password
 @pytest.mark.parametrize(("password_text", "expected_result"), [
     ("password", "500B"),
     ("Password", "1.5K"),
     ("sRji#234", "1.4M"),
     ("jfioj23$29#DFWEWFWE454938", "1.2Y")])
 def test_common_string_password_test(password_text, expected_result):
+    """
+    # test password
+    """
     assert common_string_Password_Test(password_text) == expected_result
 
 

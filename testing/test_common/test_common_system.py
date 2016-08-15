@@ -35,73 +35,95 @@ from common_system import *
 # def common_system_SWAP_Memory(attribute_list=None):
 
 
-# return cpu count
 def test_common_system_cpu_count():
+    """
+    # return cpu count
+    """
     assert common_system_CPU_Count() == 8
 
 
-# return partitions
 def test_common_system_partitions():
+    """
+    # return partitions
+    """
     common_system_Partitions()
 
 
-# get boot time
 def test_common_system_boot_time():
+    """
+    # get boot time
+    """
     common_system_Boot_Time()
 
 
-# get users 
 def test_common_system_users():
+    """
+    # get users 
+    """
     common_system_Users()
 
 
-# get cpu percentage
 @pytest.mark.parametrize(("per_cpu"), [
     (True),
     (False)])
 def test_common_system_cpu_usage(per_cpu):
+    """
+    # get cpu percentage
+    """
     common_system_CPU_Usage(per_cpu)
 
 
-# get cpu times
 def test_common_system_cpu_times():
+    """
+    # get cpu times
+    """
     common_system_CPU_Times()
 
 
-# get disk usage
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     path = 'C:'
 else:
     path = '/'
 def test_common_system_disk_usage():
+    """
+    # get disk usage
+    """
     common_system_Disk_Usage(path)
 
 
-# get disk usage of all partitions
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
 def test_common_system_disk_usage_all(human_readable):
+    """
+    # get disk usage of all partitions
+    """
     common_system_Disk_Usage_All(human_readable)
 
 
-# get disk IO
 @pytest.mark.parametrize(("per_disk"), [
     (True),
     (False)])
 def test_common_system_disk_io(per_disk):
+    """
+    # get disk IO
+    """
     common_system_Disk_IO(per_disk)
 
 
-# get system uptime
 def test_common_system_uptime():
+    """
+    # get system uptime
+    """
     common_system_Uptime()
 
 
-# get processes and optionally check for one
 @pytest.mark.parametrize(("process_name"), [
     (None),
     ('init'),
     ('fakeprocessname')])
 def test_com_process_list(process_name):
+    """
+    # get processes and optionally check for one
+    """
     com_Process_List(process_name)

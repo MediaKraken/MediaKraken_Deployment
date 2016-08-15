@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_system_iOS import *
+from common_system_ios import *
 
 
 class TestiOSHardwareInstance(object):
@@ -29,7 +29,7 @@ class TestiOSHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_system_iOS.MK_iOS_Hardware_Instance()
+        self.ios_connection = common_system_iOS.MK_iOS_Hardware_Instance()
 
 
     @classmethod
@@ -37,25 +37,31 @@ class TestiOSHardwareInstance(object):
         pass
 
 
-    # return data from the motion controller
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
     def test_MK_iOS_Motion(self, time_range):
+        """
+        # return data from the motion controller
+        """
         MK_iOS_Motion(time_range)
 
 
-    # return data from the gyro
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
     def test_MK_iOS_Gyro(self, time_range):
+        """
+        # return data from the gyro
+        """
         MK_iOS_Gyro(time_range)
 
 
-    # return data from the magnetometer
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
     def test_MK_iOS_Magnetometer(self, time_range):
+        """
+        # return data from the magnetometer
+        """
         MK_iOS_Magnetometer(time_range)

@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_meta_pitchfork import *
+from common_meta_pitchfork import *
 
 
 class TestCommonpitchfork(object):
@@ -29,7 +29,7 @@ class TestCommonpitchfork(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_pitchfork_API()
+        self.pitchfork_connection = com_pitchfork_API()
 
 
     @classmethod
@@ -40,25 +40,25 @@ class TestCommonpitchfork(object):
     @pytest.mark.parametrize(("artist_name", "album_title"), [
         ("Megadeath", "Youthanasia"),
         ("FakeBand", "FakeAlbum")])
-    def test_com_pitchfork_Search(self, artist_name, album_title):
-        self.db_connection.com_pitchfork_Search(artist_name, album_title)
+    def test_com_pitchfork_search(self, artist_name, album_title):
+        self.pitchfork_connection.com_pitchfork_search(artist_name, album_title)
 
 
-    def test_com_pitchfork_Album_Title(self):
-        self.db_connection.com_pitchfork_Album_Title()
+    def test_com_pitchfork_album_title(self):
+        self.pitchfork_connection.com_pitchfork_album_title()
 
 
-    def test_com_pitchfork_Album_Label(self):
-        self.db_connection.com_pitchfork_Album_Label()
+    def test_com_pitchfork_album_label(self):
+        self.pitchfork_connection.com_pitchfork_album_label()
 
 
-    def test_com_pitchfork_Album_Review(self):
-        self.db_connection.com_pitchfork_Album_Review()
+    def test_com_pitchfork_album_review(self):
+        self.pitchfork_connection.com_pitchfork_album_review()
 
 
-    def test_com_pitchfork_Album_Cover_Art_Link(self):
-        self.db_connection.com_pitchfork_Album_Cover_Art_Link()
+    def test_com_pitchfork_album_cover_art_link(self):
+        self.pitchfork_connection.com_pitchfork_album_cover_art_link()
 
 
-    def test_com_pitchfork_Album_Review_Score(self):
-        self.db_connection.com_pitchfork_Album_Review_Score()
+    def test_com_pitchfork_album_review_score(self):
+        self.pitchfork_connection.com_pitchfork_album_review_score()

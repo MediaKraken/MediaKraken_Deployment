@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_network_Trakt import *
+from common_network_trakt import *
 
 
 class TestCommonTrakt(object):
@@ -29,7 +29,7 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_network_Trakt.com_Trakt_API()
+        self.trakt_connection = common_network_Trakt.com_Trakt_API()
 
 
     @classmethod
@@ -45,9 +45,9 @@ class TestCommonTrakt(object):
     @pytest.mark.parametrize(("day_count"), [
         (7),
         (400)])
-    def test_com_Trakt_Calendar_by_Days(self, day_count):
-        com_Trakt_Calendar_by_Days(day_count)
+    def test_com_trakt_calendar_by_days(self, day_count):
+        com_trakt_calendar_by_days(day_count)
 
 
     # dismiss recommendation
-#    def com_Trakt_Dismiss_Recommendation(imdb_id, imdb_title, imdb_year):
+#    def com_trakt_dismiss_recommendation(imdb_id, imdb_title, imdb_year):

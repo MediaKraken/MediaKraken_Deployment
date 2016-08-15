@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from com_Hardware_Yamaha import *
+from common_hardware_yamaha import *
 
 
 def test_com_hardware_yamaha_find():
-    com_Hardware_Yamaha_Find()
+    com_hardware_yamaha_find()

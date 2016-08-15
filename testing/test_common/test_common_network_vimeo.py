@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append("../common")
-from common_network_Vimeo import *
+from common_network_vimeo import *
 
 
 class TestCommonVimeo(object):
@@ -29,7 +29,7 @@ class TestCommonVimeo(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_network_Vimeo.com_Vimeo_API()
+        self.vimeo_connection = common_network_Vimeo.com_Vimeo_API()
 
 
     @classmethod
