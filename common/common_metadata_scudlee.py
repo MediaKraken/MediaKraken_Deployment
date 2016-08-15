@@ -31,11 +31,11 @@ def mk_scudlee_fetch_xml():
     """
     # grab from github via direct raw link
     if not os.path.isfile('./cache/anime-list.xml')\
-            or common_file.com_file_Modification_Timestamp('./cache/anime-list.xml')\
+            or common_file.com_file_modification_timestamp('./cache/anime-list.xml')\
             < (time.time() - (30 * 86400)):
         common_network.mk_network_fetch_from_url('https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml', './cache/anime-list.xml')
     if not os.path.isfile('./cache/anime-movieset-list.xml')\
-            or common_file.com_file_Modification_Timestamp('./cache/anime-movieset-list.xml')\
+            or common_file.com_file_modification_timestamp('./cache/anime-movieset-list.xml')\
             < (time.time() - (30 * 86400)):
         common_network.mk_network_fetch_from_url('https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml', './cache/anime-movieset-list.xml')
 

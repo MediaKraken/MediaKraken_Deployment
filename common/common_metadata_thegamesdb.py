@@ -105,7 +105,7 @@ class CommonMetadataGamesDB(object):
             print(game.release_date)
 
 
-    def com_meta_gamesdb_games_by_name_and_platform_Or(self, game_name, platform_name,\
+    def com_meta_gamesdb_games_by_name_and_platform_or(self, game_name, platform_name,\
             game_genre=None):
         """
         Fetch games by name OR platform

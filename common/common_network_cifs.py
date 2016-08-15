@@ -27,11 +27,11 @@ class CommonNetworkCIFSShareURL(object):
         pass
 
 
-    def com_cifs_URL_Director(self, connect_string):
+    def com_cifs_url_director(self, connect_string):
         self.director = urllib2.build_opener(SMBHandler)
 
 
-    def com_cifs_URL_Download(self, connect_string):
+    def com_cifs_url_download(self, connect_string):
         # For paths/files with unicode characters, simply pass in the URL as an unicode string
         file_con = self.director.open(\
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
@@ -39,7 +39,7 @@ class CommonNetworkCIFSShareURL(object):
         file_con.close()
 
 
-    def com_cifs_URL_Upload(self, file_path, connect_string):
+    def com_cifs_url_upload(self, file_path, connect_string):
         file_con = self.director.open(\
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',\
             data=open(file_path, 'rb'))

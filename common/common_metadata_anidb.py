@@ -22,7 +22,6 @@ import gzip
 import time
 import sys
 from . import common_database_octmote
-from . import common_file
 from . import common_network
 sys.path.append("./vault/lib")
 import adba
@@ -75,7 +74,7 @@ class CommonMetadataANIdb(object):
             # check to see if local titles file is older than 24 hours
             if com_file.com_file_modification_timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
-                com_net_anidb_Fetch_Titles_File('dat')
+                com_net_anidb_fetch_titles_file('dat')
                 # since new titles file....recheck by title
                 com_net_anidb_aid_by_title(title_to_search)
             else:
@@ -97,14 +96,14 @@ class CommonMetadataANIdb(object):
         return self.connection
 
 
-    def com_net_anidb_Logout(self):
+    def com_net_anidb_logout(self):
         """
         Logout of anidb
         """
         self.connection.logout()
 
 
-    def com_net_anidb_Stop(self):
+    def com_net_anidb_stop(self):
         """
         Close the anidb connect and stop the thread
         """
