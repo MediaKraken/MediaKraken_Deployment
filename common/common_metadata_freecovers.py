@@ -22,11 +22,9 @@ Apparenlty their API was disabled a year ago due to abuse
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
 import urllib2
 import urllib
-from xml.dom.minidom import parse
-from . import common_network
 
 '''
 Anime DVD
@@ -53,9 +51,12 @@ Xbox
 Xbox 360
 '''
 
-# general freecovers search
 def com_freecovers_search(search_string, search_categories):
-    #xml_data = parse(common_network.mk_network_fetch_from_url('http://www.freecovers.net/api/search/' + search_string, None))
+    """
+    # general freecovers search
+    """
+    #xml_data = parse(common_network.mk_network_fetch_from_url
+#('http://www.freecovers.net/api/search/' + search_string, None))
     #for node in xml_data.getElementsByTagName('name'):
     request = urllib2.Request('http://www.freecovers.net/api/search/',\
         urllib.urlencode({'search': search_string}))
