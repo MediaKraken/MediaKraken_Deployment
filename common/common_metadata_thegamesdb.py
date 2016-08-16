@@ -65,7 +65,7 @@ class CommonMetadataGamesDB(object):
         self.gamesdb_api = API()
 
 
-    def com_meta_gamesdb_platform_List(self):
+    def com_meta_gamesdb_platform_list(self):
         """
         Get platform list
         """

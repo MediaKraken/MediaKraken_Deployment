@@ -35,8 +35,8 @@ def com_sound_play_file(file_name):
     """
     sound_data = SoundLoader.load(file_name)
     if sound_data:
-        logging.debug("Sound found at %s" % sound_data.source)
-        logging.debug("Sound is %.3f seconds" % sound_data.length)
+        logging.debug("Sound found at %s", sound_data.source)
+        logging.debug("Sound is %.3f seconds", sound_data.length)
         sound_data.play()
 
 

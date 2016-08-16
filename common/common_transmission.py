@@ -34,44 +34,44 @@ class CommonTransmission(object):
             config_handle.read("MediaKraken.ini")
         else:
             config_handle.read("../MediaKraken.ini")
-        self.tc = transmissionrpc.Client(config_handle.get('Transmission', 'Host').strip(),\
-            int(config_handle.get('Transmission', 'Port').strip()))
+        self.trans_connection = transmissionrpc.Client(config_handle.get('Transmission',\
+            'Host').strip(), int(config_handle.get('Transmission', 'Port').strip()))
 
 
     def com_trans_get_torrent_list(self):
         """
         Get torrent list
         """
-        return self.tc.get_torrents()
+        return self.trans_connection.get_torrents()
 
 
     def com_trans_add_torrent(self, torrent_path):
         """
         Add torrent by file path
         """
-        #tc.add_torrent('http://releases.ubuntu.com/8.10/ubuntu-8.10-desktop-i386.iso.torrent')
-        self.tc.add_torrent(torrent_path)
+        #trans_connection.add_torrent('http://releases.ubuntu.com/8.10/ubuntu-8.10-desktop-i386.iso.torrent')
+        self.trans_connection.add_torrent(torrent_path)
 
 
     def com_trans_remove_torrent(self, torrent_hash):
         """
         Remove torrent
         """
-        self.tc.remove_torrent(torrent_hash)
+        self.trans_connection.remove_torrent(torrent_hash)
 
 
     def com_trans_name(self, torrent_no):
         """
         Get name of torrent by id
         """
-        return self.tc.get_torrent(torrent_no)
+        return self.trans_connection.get_torrent(torrent_no)
 
 
     def com_trans_torrent_detail(self, torrent_no):
         """
         Get torrent detail
         """
-        torrent = self.tc.get_torrent(torrent_no)[1]
+        torrent = self.trans_connection.get_torrent(torrent_no)[1]
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
 
@@ -79,11 +79,11 @@ class CommonTransmission(object):
         """
         Start the specified torrent
         """
-        self.tc.start_torrent(torrent_no)
+        self.trans_connection.start_torrent(torrent_no)
 
 
     def com_trans_torrent_stop(self, torrent_no):
         """
         Stop the specified torrent
         """
-        self.tc.stop_torrent(torrent_no)
+        self.trans_connection.stop_torrent(torrent_no)

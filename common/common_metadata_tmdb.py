@@ -164,7 +164,7 @@ class CommonMetadataTMDB(object):
         """
         logging.debug('tmdb info build: %s', result_json)
         # create file path for poster
-        file_path = common_metadata.com_meta_Image_File_Path(result_json['title'],\
+        file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
             'poster')
         poster_file_path = None
         if result_json['poster_path'] is not None:
@@ -174,7 +174,7 @@ class CommonMetadataTMDB(object):
                     + result_json['poster_path'], file_path)
             poster_file_path = file_path
         # create file path for backdrop
-        file_path = common_metadata.com_meta_Image_File_Path(result_json['title'],\
+        file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
             'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
@@ -188,5 +188,5 @@ class CommonMetadataTMDB(object):
         # set local image json
         image_json = ({'Images': {'TMDB':{'Backdrop': backdrop_file_path,\
             'Poster': poster_file_path}}})
-        #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
+   #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

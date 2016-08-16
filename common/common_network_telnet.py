@@ -48,11 +48,7 @@ class CommonNetworkTelnet(object):
         """
         Read data from telnet device
         """
-        time.sleep(1)
-        read_data = ''
-        while self.telnet_device.inWaiting() > 0:
-            read_data += self.telnet_device.read_all()
-        return read_data
+        return self.telnet_device.read_very_eager()
 
 
     def com_net_telnet_write_device(self, telnet_message):
