@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -63,15 +63,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_tvmaze_Updates')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server tvmaze Update Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server tvmaze Update Start', None,\
     'System: Server tvmaze Start', 'ServerthetvmazeStart', None, None, 'System')
 
 
@@ -145,7 +145,7 @@ for tvmaze_id, tvmaze_time in result.items():
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server tvmaze Update Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,\
     'System: Server tvmaze Stop', 'ServerthetvmazeStop', None, None, 'System')
 
 

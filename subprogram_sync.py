@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("../common")
 sys.path.append("../server")
@@ -54,11 +54,11 @@ def signal_receive(signum, frame):
 def worker(row_data):
     logging.debug("row: %s", row_data)
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-        Config.get('DB Connections', 'PostDBPort').strip(),\
-        Config.get('DB Connections', 'PostDBName').strip(),\
-        Config.get('DB Connections', 'PostDBUser').strip(),\
-        Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
     ffmpeg_params = ['ffmpeg', '-i', thread_db.srv_db_media_path_by_uuid(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
@@ -94,7 +94,7 @@ def worker(row_data):
         else:
             break
     ffmpeg_pid.wait()
-    thread_db.srv_db_Activity_Insert('MediaKraken_Server Sync', None,\
+    thread_db.srv_db_activity_insert('MediaKraken_Server Sync', None,\
         'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.srv_db_Sync_Delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
@@ -109,15 +109,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Sync Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Sync Start', None,\
     'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
 
 
@@ -138,7 +138,7 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Sync Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Sync Stop', None,\
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes

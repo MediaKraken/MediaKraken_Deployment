@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -73,21 +73,21 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Schedules_Direct_
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Schedules Direct Update Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,\
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
 sd = com_Schedules_Direct.com_Schedules_Direct_API()
-sd.com_Schedules_Direct_Login(Config.get('SD', 'User').strip(),\
-    Config.get('SD', 'Password').strip())
+sd.com_Schedules_Direct_Login(config_handle.get('SD', 'User').strip(),\
+    config_handle.get('SD', 'Password').strip())
 status_data = sd.com_Schedules_Direct_Status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
@@ -166,7 +166,7 @@ if len(meta_program_fetch) > 0:
 # TODO, go grab images for blank logos
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Schedules Direct Update Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,\
     'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 

@@ -20,10 +20,9 @@ __version__ = '0.1.6'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-# pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken_Slave.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken_Slave.ini")
 import os
 import platform
 import subprocess
@@ -154,8 +153,8 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
-            int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+        reactor.connectSSL(self.config_handle.get('MediaKrakenServer', 'Host').strip(),\
+            int(self.config_handle.get('MediaKrakenServer', 'Port').strip()),\
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 

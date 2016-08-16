@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import json
 import signal
@@ -55,15 +55,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Update_Create_Col
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Create Collection Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Create Collection Start', None,\
     'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -74,7 +74,7 @@ else:
 
 
 # verify themovietb key exists
-if Config.get('API', 'themoviedb').strip() != 'None':
+if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
     TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
@@ -149,7 +149,7 @@ if total_collections_downloaded > 0:
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Create Collection Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Create Collection Stop', None,\
     'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db

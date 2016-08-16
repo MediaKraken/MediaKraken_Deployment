@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 # pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Common")
 sys.path.append("../MediaKraken_Server")
@@ -214,7 +214,11 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
@@ -235,15 +239,15 @@ else:
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server File Scan Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server File Scan Start', None,\
     'System: Server File Scan Start', 'ServerFileScanStart', None, None, 'System')
 
 
@@ -308,7 +312,7 @@ if len(audit_directories) > 0:
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server File Scan Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server File Scan Stop', None,\
     'System: Server File Scan Stop', 'ServerFileScanStop', None, None, 'System')
 
 

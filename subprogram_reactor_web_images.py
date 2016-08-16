@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import signal
 import os
 import sys
@@ -58,8 +58,8 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Image
 
 
 # simple reactor to present images to clients
-reactor.listenSSL(int(Config.get('MediaKrakenServer', 'ImageWeb').strip()),\
-    Site(File(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())),\
+reactor.listenSSL(int(config_handle.get('MediaKrakenServer', 'ImageWeb').strip()),\
+    Site(File(config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip())),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
 

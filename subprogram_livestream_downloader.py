@@ -63,7 +63,7 @@ db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server LiveStream Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server LiveStream Start', None,\
     'System: Server LiveStream Start', 'ServerLiveStreamStart', None, None, 'System')
 
 
@@ -83,7 +83,7 @@ subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server LiveStream Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
     'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
 # commit all changes

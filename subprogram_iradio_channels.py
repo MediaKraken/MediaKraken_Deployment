@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("../MediaKraken_Server")
 sys.path.append("../MediaKraken_Common")
@@ -58,15 +58,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server iRadio Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
@@ -81,7 +81,7 @@ for row_data in radio_cache:
 #radio_xiph = common_file.common_file_Load_Data('./xiph.pickle', True)
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server iRadio Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server iRadio Stop', None,\
     'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
 
 # commit

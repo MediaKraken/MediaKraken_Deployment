@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 try:
     import cPickle as pickle
 except:
@@ -52,11 +52,11 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-            Config.get('DB Connections', 'PostDBPort').strip(),\
-            Config.get('DB Connections', 'PostDBName').strip(),\
-            Config.get('DB Connections', 'PostDBUser').strip(),\
-            Config.get('DB Connections', 'PostDBPass').strip())
+        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+            config_handle.get('DB Connections', 'PostDBPort').strip(),\
+            config_handle.get('DB Connections', 'PostDBName').strip(),\
+            config_handle.get('DB Connections', 'PostDBUser').strip(),\
+            config_handle.get('DB Connections', 'PostDBPass').strip())
         self.user_xref = []
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_API')
@@ -318,4 +318,4 @@ if __name__ == '__main__':
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     run_api = MediaKrakenAPI()
-    run_api.app.run("localhost", int(Config.get('MediaKrakenServer', 'APIPort').strip()))
+    run_api.app.run("localhost", int(config_handle.get('MediaKrakenServer', 'APIPort').strip()))

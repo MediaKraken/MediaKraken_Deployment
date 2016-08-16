@@ -19,16 +19,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import json
 import uuid
 import signal
 import subprocess
 import os
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 from common import common_file
 from common import common_logging
 from common import common_metadata
@@ -63,11 +63,11 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-        Config.get('DB Connections', 'PostDBPort').strip(),\
-        Config.get('DB Connections', 'PostDBName').strip(),\
-        Config.get('DB Connections', 'PostDBUser').strip(),\
-        Config.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
@@ -109,15 +109,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Im
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Create Chapter Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Create Chapter Start', None,\
     'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
 
 
@@ -152,7 +152,7 @@ if total_images_created > 0:
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Create Chapter Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Create Chapter Stop', None,\
     'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
 
 

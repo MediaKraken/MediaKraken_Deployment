@@ -25,7 +25,7 @@ sys.path.append("../common")
 sys.path.append("../server")
 from common import common_file
 from common import common_chart_lyrics
-improt common_logging
+import common_logging
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

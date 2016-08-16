@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -59,23 +59,23 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_musicbrainz_Sync'
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.srv_db_Brainz()
-db_brainz.srv_db_open(Config.get('MediaBrainz', 'BrainzDBHost').strip(),\
-    Config.get('MediaBrainz', 'BrainzDBPort').strip(),\
-    Config.get('MediaBrainz', 'BrainzDBName').strip(),\
-    Config.get('MediaBrainz', 'BrainzDBUser').strip(),\
-    Config.get('MediaBrainz', 'BrainzDBPass').strip())
+db_brainz.srv_db_open(config_handle.get('MediaBrainz', 'BrainzDBHost').strip(),\
+    config_handle.get('MediaBrainz', 'BrainzDBPort').strip(),\
+    config_handle.get('MediaBrainz', 'BrainzDBName').strip(),\
+    config_handle.get('MediaBrainz', 'BrainzDBUser').strip(),\
+    config_handle.get('MediaBrainz', 'BrainzDBPass').strip())
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server musicbrainz Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server musicbrainz Start', None,\
     'System: Server musicbrainz Start', 'ServermusicbrainzStart', None, None, 'System')
 
 # fetch all the artists from brainz
@@ -102,7 +102,7 @@ for row_data in db_brainz.srv_db_Brainz_All_Artists():
 '''
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server musicbrainz Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server musicbrainz Stop', None,\
     'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None, None, 'System')
 
 # commit all changes to db

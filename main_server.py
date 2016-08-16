@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import subprocess
 import signal
@@ -92,14 +92,15 @@ if not os.path.isfile('./key/cacert.pem'):
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
-if not os.path.isdir(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()):
+if not os.path.isdir(config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()):
     logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
     logging.critical("Invalid Path: %s",\
-        Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())
+        config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip())
     sys.exit()
-if not os.path.isdir(Config.get('MediaKrakenServer', 'BackupLocal').strip()):
+if not os.path.isdir(config_handle.get('MediaKrakenServer', 'BackupLocal').strip()):
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s", Config.get('MediaKrakenServer', 'BackupLocal').strip())
+    logging.critical("Invalid Path: %s",\
+        config_handle.get('MediaKrakenServer', 'BackupLocal').strip())
     sys.exit()
 
 
@@ -107,11 +108,11 @@ logging.info("Open DB")
 # open the database
 db = database_base.MKServerDatabase()
 try:
-    db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-        Config.get('DB Connections', 'PostDBPort').strip(),\
-        Config.get('DB Connections', 'PostDBName').strip(),\
-        Config.get('DB Connections', 'PostDBUser').strip(),\
-        Config.get('DB Connections', 'PostDBPass').strip())
+    db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
 except:
     logging.critical("Cannot open database. Exiting...")
     sys.exit()

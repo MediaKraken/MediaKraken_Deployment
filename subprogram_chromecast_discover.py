@@ -19,11 +19,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("../common")
+sys.path.append("../server")
 from common import common_Chromecast
 from common import common_file
 from common import common_logging
@@ -61,15 +61,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Chromecast_Discov
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Chromecast Scan Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Chromecast Scan Start', None,\
     'System: Server Chromecast Scan Start', 'ServerChromecastScanStart', None, None, 'System')
 
 
@@ -85,25 +85,25 @@ devices_added = 0
 
 
 # look for devices
-chrome = com_Chromecast.com_Chromecast_API()
+chrome = common_chromecast.com_Chromecast_API()
 logging.debug("Chrome: %s", chrome)
-for row_data in chrome.MK_Chromecast_Discover_Dict():
+for row_data in chrome.com_chromecast_discover_dict():
     logging.debug("Dict: %s", row_data)
-    chrome.MK_Chromecast_Connect_by_Name(row_data)
+    chrome.com_chromecast_Connect_by_Name(row_data)
     logging.debug("Connected!")
-    cast_json = chrome.MK_Chromecast_Info()
+    cast_json = chrome.com_chromecast_info()
     logging.debug("Cast: %s", cast_json)
-    print("status: %s", chrome.MK_Chromecast_Status())
+    print("status: %s", chrome.com_chromecast_status())
     db.srv_db_Device_Insert('cast', json.dumps({cast_json}))
 
 
 if devices_added > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', devices_added, True)\
+    db.srv_db_notification_insert(locale.format('%d', devices_added, True)\
         + " Chromecast added.", True)
 
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Chromecast Scan Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,\
     'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
 # commit

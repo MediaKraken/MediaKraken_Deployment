@@ -23,7 +23,7 @@ import subprocess
 sys.path.append("./common/radio_crawler")
 
 
-def common_network.radio():
+def com_net_radio():
     """
     # create the cache file for import
     """

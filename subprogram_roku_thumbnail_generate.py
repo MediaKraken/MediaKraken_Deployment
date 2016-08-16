@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -53,15 +53,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Roku_Thumbnail')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
     'System: Server Roku Thumbnail Generate Start', 'ServerRokuThumbStart', None, None, 'System')
 
 # go through ALL known media files
@@ -80,7 +80,7 @@ if thumbnails_generated > 0:
         + " Roku thumbnail(s) generated.", True)
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 # commit all changes

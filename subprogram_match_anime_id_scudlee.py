@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import sys
 import signal
 import os
@@ -50,15 +50,15 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Anime_Scudlee')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
-db.srv_db_Activity_Insert('MediaKraken_Server Anime Scudlee Start', None,\
+db.srv_db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,\
     'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -102,7 +102,7 @@ for row_data in com_Scudlee.mk_scudlee_anime_set_parse():
         store_update_record(db_connection, row_data[0], row_data[1])
 
 # log end
-db.srv_db_Activity_Insert('MediaKraken_Server Anime Scudlee Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 # commit all changes to db
 db.srv_db_commit()

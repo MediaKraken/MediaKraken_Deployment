@@ -83,7 +83,7 @@ def signal_receive(signum, frame):
     # cleanup db
     db.srv_db_rollback()
     # log stop
-    db.srv_db_Activity_Insert('MediaKraken_Metadata API Stop', None,\
+    db.srv_db_activity_insert('MediaKraken_Metadata API Stop', None,\
         'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
     db.srv_db_close()
     sys.stdout.flush()
@@ -110,7 +110,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
-db.srv_db_Activity_Insert('MediaKraken_Metadata API Start', None,\
+db.srv_db_activity_insert('MediaKraken_Metadata API Start', None,\
      'System: Metadata API Start', 'ServerMetadataAPIStart', None, None, 'System')
 
 
@@ -417,7 +417,7 @@ with futures.ThreadPoolExecutor(len(com_meta_Limiter.API_Limit.keys())) as execu
 
 
 # log stop
-db.srv_db_Activity_Insert('MediaKraken_Metadata API Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Metadata API Stop', None,\
      'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
 
 

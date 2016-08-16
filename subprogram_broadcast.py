@@ -6,8 +6,8 @@ sys.path.append("../MediaKraken_Common")
 from common import common_logging
 from common import common_network
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 address = ('', 9101)
@@ -27,4 +27,4 @@ while True:
     if recv_data == "who is MediaKrakenServer?":
         # TODO   mk_network_ip_addr()
         server_socket.sendto("http:localhost:"\
-            + Config.get('MediaKrakenServer', 'APIPort').strip(), addr)
+            + config_handle.get('MediaKrakenServer', 'APIPort').strip(), addr)
