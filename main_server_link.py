@@ -118,7 +118,7 @@ class MediaKrakenApp():
         root = MediaKrakenApp()
         metaapp = self
         # start logging
-        common_logging.common_logging_Start('./log/MediaKraken_Link')
+        common_logging.com_logging_start('./log/MediaKraken_Link')
         # open the database
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\

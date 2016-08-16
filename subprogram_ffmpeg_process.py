@@ -27,7 +27,7 @@ import getopt
 
 def main(argv):
     # start logging
-    common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Cron')
+    common_logging.com_logging_start('./log/MediaKraken_Subprogram_Cron')
     inputfile = None
     outputfile = None
     vid_codec = []

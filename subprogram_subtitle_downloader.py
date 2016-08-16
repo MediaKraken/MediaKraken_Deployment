@@ -48,7 +48,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Subtitle_Downloader')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Subtitle_Downloader')
 
 
 total_download_attempts = 0

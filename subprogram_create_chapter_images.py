@@ -104,7 +104,7 @@ def worker(worker_file_list):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
 
 
 # open the database

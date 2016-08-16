@@ -31,7 +31,7 @@ from common import common_logging
 import database as database_base
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Postgresql_Backup')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Backup')
 
 # open the database
 db = database_base.MKServerDatabase()

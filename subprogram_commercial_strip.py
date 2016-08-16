@@ -48,7 +48,7 @@ from common import common_logging
 
 def main(argv):
     # start logging
-    common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Commercial_Strip')
+    common_logging.com_logging_start('./log/MediaKraken_Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:

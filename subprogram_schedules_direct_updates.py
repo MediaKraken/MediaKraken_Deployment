@@ -68,7 +68,7 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Schedules_Direct_Updates')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Schedules_Direct_Updates')
 
 
 # open the database

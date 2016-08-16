@@ -57,7 +57,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_TMDB_Updates')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_TMDB_Updates')
 
 
 # open the database

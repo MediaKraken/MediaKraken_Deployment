@@ -139,7 +139,7 @@ class MediaKrakenApp():
     def build(self):
         global metaapp
         # start logging
-        common_logging.common_logging_Start('./log/MediaKraken_Slave')
+        common_logging.com_logging_start('./log/MediaKraken_Slave')
         root = MediaKrakenApp()
         metaapp = self
         self.connect_to_server()

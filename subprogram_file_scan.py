@@ -99,7 +99,7 @@ common_file.common_file_Save_Data(pid_file, 'Sub_File_Scan', False, False, None)
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_File_Scan')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
 
 
 def signal_receive(signum, frame):

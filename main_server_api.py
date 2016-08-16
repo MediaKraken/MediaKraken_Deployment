@@ -59,7 +59,7 @@ class MediaKrakenAPI(object):
             Config.get('DB Connections', 'PostDBPass').strip())
         self.user_xref = []
         # start logging
-        common_logging.common_logging_Start('./log/MediaKraken_API')
+        common_logging.com_logging_start('./log/MediaKraken_API')
 
 
     @app.route('/')

@@ -51,7 +51,7 @@ def signal_receive(signum, frame):
     sys.exit(0)
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Update_Create_Collections')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Update_Create_Collections')
 
 # open the database
 db = database_base.MKServerDatabase()

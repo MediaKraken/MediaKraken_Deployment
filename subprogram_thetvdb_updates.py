@@ -61,7 +61,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_thetvdb_Updates')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_thetvdb_Updates')
 
 
 # open the database

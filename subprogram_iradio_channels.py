@@ -54,7 +54,7 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_IRadio')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
 
 # open the database
 db = database_base.MKServerDatabase()

@@ -51,11 +51,11 @@ def signal_receive(signum, frame):
     for link_data in link_pid.keys():
         os.kill(link_pid[link_data], signal.SIGTERM)
     # stop watchdog
-    watchdog.com_Watchdog_Stop()
+    watchdog.com_watchdog_stop()
     # cleanup db
     db.srv_db_rollback()
     # log stop
-    db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+    db.srv_db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
     db.srv_db_commit()
@@ -65,7 +65,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-common_logging.common_logging_Start()
+common_logging.com_logging_start()
 
 # store pid for initd
 pid = os.getpid()
@@ -117,7 +117,7 @@ except:
     sys.exit()
 
 
-db.srv_db_Activity_Insert('MediaKraken_Server Start', None, 'System: Server Start',\
+db.srv_db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
         'ServerStart', None, None, 'System')
 
 
@@ -137,8 +137,8 @@ if rmda_enabled_os:
 
 logging.info("Start Watchdog")
 # startup watchdog
-watchdog = com_Watchdog.com_Watchdog_API()
-watchdog.com_Watchdog_Start(db.srv_db_Audit_Paths(None, None))
+watchdog = common_watchdog.CommonWatchdog()
+watchdog.com_watchdog_start(db.srv_db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -199,11 +199,11 @@ proc_web_app.wait()
 
 
 # stop watchdog
-watchdog.com_Watchdog_Stop()
+watchdog.com_watchdog_stop()
 
 
 # log stop
-db.srv_db_Activity_Insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+db.srv_db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
          'ServerStop', None, None, 'System')
 
 # commit

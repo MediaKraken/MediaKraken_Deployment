@@ -24,7 +24,7 @@ sys.path.append("./common")
 import common_logging
 
 
-# def common_logging_Start(log_name="./log/MediaKraken_Main"):
+# def com_logging_start(log_name="./log/MediaKraken_Main"):
 @pytest.mark.parametrize(("log_name"), [
     (None),
     ("./log/MediaKraken_Test"),

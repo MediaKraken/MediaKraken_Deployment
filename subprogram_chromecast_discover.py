@@ -56,7 +56,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Chromecast_Discovery')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Chromecast_Discovery')
 
 
 # open the database

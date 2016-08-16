@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Logo_Download')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
 logo_connection = com_thelogodb.com_thelogodb_API()

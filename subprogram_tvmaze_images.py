@@ -54,7 +54,7 @@ def signal_receive(signum, frame):
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_tvmaze_Images')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_tvmaze_Images')
 
 
 # open the database

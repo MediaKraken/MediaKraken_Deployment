@@ -54,7 +54,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
 
 # simple reactor to present images to clients

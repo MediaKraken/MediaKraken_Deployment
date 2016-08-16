@@ -17,7 +17,7 @@ server_socket.bind(address)
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Broadcast')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Broadcast')
 
 
 # begin loop to respond to all broastcast messages

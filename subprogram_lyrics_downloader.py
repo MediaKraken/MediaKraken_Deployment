@@ -52,7 +52,7 @@ else:
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Subprogram_Lyrics_Download')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Lyrics_Download')
 
 
 total_download_attempts = 0

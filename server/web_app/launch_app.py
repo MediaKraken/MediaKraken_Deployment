@@ -15,7 +15,7 @@ sys.path.append("../../common")
 from common import common_logging
 
 # start logging
-common_logging.common_logging_Start('../log/MediaKraken_WebApp')
+common_logging.com_logging_start('../log/MediaKraken_WebApp')
 logging.info('Creating webapp instance')
 # defaults to PROD config
 application = create_app()

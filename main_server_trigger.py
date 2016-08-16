@@ -57,7 +57,7 @@ op.close()
 
 
 # start logging
-common_logging.common_logging_Start('./log/MediaKraken_Trigger')
+common_logging.com_logging_start('./log/MediaKraken_Trigger')
 
 
 # open the database
@@ -69,7 +69,7 @@ db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPass').strip())
 
 
-db.srv_db_Activity_Insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+db.srv_db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
     'ServerTriggerStart', None, None, 'System')
 
 
@@ -95,7 +95,7 @@ while True:
 
 
 # log stop
-db.srv_db_Activity_Insert('MediaKraken_Trigger Stop', None,\
+db.srv_db_activity_insert('MediaKraken_Trigger Stop', None,\
     'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
