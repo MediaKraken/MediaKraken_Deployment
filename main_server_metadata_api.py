@@ -50,12 +50,12 @@ import metadata_sports
 import metadata_tv
 from common import common_file
 from common import common_Hash
-from common import common_ISBNdb
+from common import common_isbndb
 from com_meta_Limiter import *
 from common import common_logging
 from common import common_metadata
 from common import common_metadata_imvdb
-from common import common_metadata_Limiter
+from common import common_metadata_limiter
 from common import common_metadata_musicbrainz
 from common import common_metadata_netflixroulette
 from common import common_metadata_omdb

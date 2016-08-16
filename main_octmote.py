@@ -24,25 +24,25 @@ import json
 import sys
 import os
 sys.path.append("../common")
-from common import common_Database_Octmote
-from common import common_ISCP
-from common import common_LIRC
-from common import common_Emby_Network
+from common import common_database_octmote
+from common import common_iscp
+from common import common_lirc
+from common import common_emby
+from common import common_emby_network
+from common import common_mediakraken
 from common import common_network
-from common import common_Roku_Network
-from common import common_Serial
-from common import common_SSDP
-from common import common_Telnet
-from common import common_JSON
-from common import common_Kodi
+from common import common_roku_network
+from common import common_serial
+from common import common_ssdp
+from common import common_telnet
+from common import common_json
+from common import common_kodi
 
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
 install_twisted_reactor()
 from twisted.internet import ssl, reactor, protocol
-from common import common_Emby
-from common import common_mediaKraken
 
 
 class EchoClient(protocol.Protocol):
