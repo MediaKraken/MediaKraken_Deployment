@@ -79,30 +79,40 @@ def test_mk_network_get_default_ip():
 #               self.status = int(igot[0])
 
 
-# ping host list
 host_list = ('www.yahoo.com', 'www.cnn.com', '8.8.8.8')
 def test_mk_network_ping_list():
+    """
+    # ping host list
+    """"
     mk_network_ping_list(host_list)
 
 
-# get network io
 @pytest.mark.parametrize(("show_nic"), [
     (False),
     (True)])
 def test_mk_network_io_counter(show_nic):
+    """
+    # get network io
+    """
     mk_network_io_counter(show_nic)
 
 
-# show network connections
 def test_mk_network_connections():
+    """
+    # show network connections
+    """
     mk_network_connections()
 
 
-# show ip addys
 def test_mk_network_ip_addr():
+    """
+    # show ip addys
+    """
     mk_network_ip_addr()
 
 
-# show netowrk stats
 def test_mk_network_stats():
+    """
+    # show network stats
+    """
     mk_network_stats()

@@ -24,6 +24,8 @@ sys.path.append("./common")
 import common_radio
 
 
-# create the cache file for import
 def test_common_network_radio():
+    """
+    # create the cache file for import
+    """
     com_network_radio()

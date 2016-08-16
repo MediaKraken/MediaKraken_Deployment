@@ -24,6 +24,8 @@ sys.path.append("./common")
 import common_rdma
 
 
-# get list of RDMA devices
 def test_mk_rdma_get_devices():
+    """
+    # get list of RDMA devices
+    """
     mk_rdma_get_devices()
