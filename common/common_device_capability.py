@@ -37,7 +37,7 @@ device_compatibility = {
         'Stick': {},
         'TV': {}
         },
-    'Raspberry:' {
+    'Raspberry': {
         'P1': {},
         'P2': {},
         'P3': {}
