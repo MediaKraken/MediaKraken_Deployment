@@ -36,7 +36,7 @@ def srv_db_download_insert(self, provider, down_json):
 #    return self.db_cursor.fetchall()
 
 
-def srv_db_download_read_by_provider(self, provider_name):
+def srv_db_download_read_provider(self, provider_name):
     """
     Read the downloads by provider
     """
