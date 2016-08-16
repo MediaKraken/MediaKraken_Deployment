@@ -35,7 +35,7 @@ from . import common_network
 # create dictionary containing
 # Address = Id, Name
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
-def common_network.emby_find_server():
+def com_net_emby_find_server():
     """
     Search for servers for one second
     """
@@ -73,7 +73,7 @@ def common_network.emby_find_server():
 # create dictionary containing
 # Name = Id, PrimaryImageTag (or NULL)
 # https://github.com/MediaBrowser/Emby/wiki/Authentication
-def common_network.emby_find_users(host_server):
+def com_net_emby_find_users(host_server):
     """
     Return user list from specified server
     """
@@ -92,7 +92,7 @@ def common_network.emby_find_users(host_server):
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Authentication
-def common_network.emby_user_login(host_server, user_name, user_password):
+def com_net_emby_user_login(host_server, user_name, user_password):
     """
     Login with specified user/name/pass
     """
@@ -118,13 +118,13 @@ def common_network.emby_user_login(host_server, user_name, user_password):
     return json_response
 
 
-def common_network.emby_user(host_server, user_id, headers):
+def com_net_emby_user(host_server, user_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/'\
         + user_id, headers=headers)).read()
 
 
 # fetch list of open sessions for user
-def common_network.emby_sessions_list_open(host_server, user_id):
+def com_net_emby_sessions_list_open(host_server, user_id):
     """
     If the user id is passed only return sessions it can control otherwise return all sessions
     """
@@ -139,7 +139,7 @@ def common_network.emby_sessions_list_open(host_server, user_id):
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Remote-control
-def common_network.emby_sessions_send_command(host_server, session_id, playstate_command,\
+def com_net_emby_sessions_send_command(host_server, session_id, playstate_command,\
         session_command):
     """
     Send command to specified session
@@ -153,19 +153,19 @@ def common_network.emby_sessions_send_command(host_server, session_id, playstate
         + session_command, headers=headers)).read()
 
 
-def common_network.emby_user_view_list(host_server, user_id, headers):
+def com_net_emby_user_view_list(host_server, user_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views",\
         headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
-def common_network.emby_user_channel_list(host_server, user_id, headers):
+def com_net_emby_user_channel_list(host_server, user_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id,\
         headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
-def common_network.emby_user_channel_feature_list(host_server, channel_id, headers):
+def com_net_emby_user_channel_feature_list(host_server, channel_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features',\
         headers=headers)).read()
 ''' REQUEST TYPE
@@ -179,7 +179,7 @@ def common_network.emby_user_channel_feature_list(host_server, channel_id, heade
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
-def common_network.emby_user_channel_items(host_server, channel_id, user_id, headers):
+def com_net_emby_user_channel_items(host_server, channel_id, user_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id\
         + '/Items?userId=' + user_id, headers=headers)).read()
 
@@ -187,21 +187,21 @@ def common_network.emby_user_channel_items(host_server, channel_id, user_id, hea
 # https://github.com/MediaBrowser/Emby/wiki/Latest-Items
 # TODO grouping and such
 # TODO episodes
-def common_network.emby_user_latest_items_list(host_server, request_type, request_subtype,\
+def com_net_emby_user_latest_items_list(host_server, request_type, request_subtype,\
         request_limit, request_grouping, user_id, headers):
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest",\
         headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Sync
-def common_network.emby_sync_add():
+def com_net_emby_sync_add():
     """
     Add new sync job
     """
     pass
 
 
-def common_network.emby_image_download():
+def com_net_emby_image_download():
     """
     # download images
     # https://github.com/MediaBrowser/Emby/wiki/Images
@@ -214,7 +214,7 @@ def common_network.emby_image_download():
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Items-by-name
-def common_network.emby_item_info_by_name():
+def com_net_emby_item_info_by_name():
     pass
 
 

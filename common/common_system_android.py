@@ -53,7 +53,7 @@ class CommonAndroidHardwareInstance(object):
         """
         self.android_hardware.accelerometerEnable(True)
         accel_data = []
-        for ndx in xrange(time_range):
+        for ndx in xrange(time_range): # pylint: disable=W0612
             logging.debug('Motion: %s', self.android_hardware.accelerometerReading())
             accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)

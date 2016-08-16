@@ -36,6 +36,7 @@ class CommonCloudDropbox(object):
                 config_handle.get('Dropbox', 'APIKey').strip(),\
                 config_handle.get('Dropbox', 'APISecret').strip())
             self.active = True
+        self.client = None
 
 
     def com_cloud_dropbox_user_auth(self):
