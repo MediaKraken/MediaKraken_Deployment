@@ -28,10 +28,10 @@ import os
 sys.path.append("./common")
 sys.path.append("./server")
 import common_logging
-import common_Watchdog
+import common_watchdog
 rmda_enabled_os = False
 try:
-    from common import common_RMDA
+    from common import common_rmda
     rmda_enabled_os = True
 except:
     pass
