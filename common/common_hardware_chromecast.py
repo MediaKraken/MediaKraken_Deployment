@@ -34,7 +34,7 @@ class CommonHardwareChromecast(object):
         self.chromecast_dict = None
 
 
-    def MK_Chromecast_Discover_Dict(self):
+    def com_chromecast_discover_dict(self):
         """
         # find chromecast as dict
         """
@@ -42,21 +42,21 @@ class CommonHardwareChromecast(object):
         return self.chromecast_dict
 
 
-    def MK_Chromecast_Info(self):
+    def com_chromecast_info(self):
         """
         # get detail by name
         """
         return self.cast.device
 
 
-    def MK_Chromecast_Status(self):
+    def com_chromecast_status(self):
         """
         # get status by name
         """
         return self.cast.status
 
 
-    def MK_Chromecast_Connect_by_Name(self, key_name):
+    def com_chromecast_connect_by_name(self, key_name):
         """
         # connect to device
         """
@@ -66,7 +66,7 @@ class CommonHardwareChromecast(object):
         self.chromecast_device = self.cast.media_controller
 
 
-    def MK_Chromecast_Play_YT(self, yt_id):
+    def com_chromecast_play_yt(self, yt_id):
         """
         # play youtube video
         """
@@ -75,14 +75,14 @@ class CommonHardwareChromecast(object):
         yt_controller.play_video(yt_id)
 
 
-    def MK_Chromecast_Play_Media(self, media_file, media_type):
+    def com_chromecast_play_media(self, media_file, media_type):
         """
         # play media file
         """
         self.chromecast_device.play_media(media_file, media_type)
 
 
-    def MK_Chromecast_Device_Command(self, command):
+    def com_chromecast_device_command(self, command):
         """
         # send chromecast commands
         """
@@ -94,7 +94,7 @@ class CommonHardwareChromecast(object):
             self.chromecast_device.stop()
 
 
-    def MK_Chromecast_Device_Close(self):
+    def com_chromecast_device_close(self):
         """
         Close the chromecast device
         """

@@ -41,7 +41,7 @@ def com_net_ircc_finished_searching(devices):
     """
     ircc_device = devices[0] # first device only for now
     ircc_service = ircc_device.get_service('schemas.sony.com/IRCC/1')
-    com_net_ircc_Register_Device(ircc_device, ircc_service)
+    com_net_ircc_register_device(ircc_device, ircc_service)
 
 
 def com_net_ircc_register_device(ircc_device, ircc_service):
