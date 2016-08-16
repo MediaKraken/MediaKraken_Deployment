@@ -44,8 +44,8 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_db_movie_list_emby(self, offset, records):
         """
         # grab all movies in emby database
@@ -62,8 +62,8 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_db_tv_list_emby(self, offset, records):
         """
         # grab all the tv episodes in the emby database
@@ -80,8 +80,8 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_db_tv_movie_list_emby(self, offset, records):
         """
         # grab all the tv episodes and movies in the emby database
@@ -117,8 +117,8 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_db_emby_activity_list(self, offset, records):
         """
         # grab all activity data
@@ -135,13 +135,13 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
-    def test_MK_Database_Sqlite3_Emby_Notification_List(self, offset, records):
+        (100, 100),
+        (100000000, 1000)])
+    def test_com_db_emby_notification_list(self, offset, records):
         """
         # grab all notifications
         """
-        self.db_connection.MK_Database_Sqlite3_Emby_Notification_List(offset, records)
+        self.db_connection.test_com_db_emby_notification_list(offset, records)
 
 
     def test_com_db_emby_notification_list_count(self):
@@ -153,8 +153,8 @@ class TestCommonDatabaseEmby(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_db_emby_sync_list(self, offset, records):
         """
         # grab all sync

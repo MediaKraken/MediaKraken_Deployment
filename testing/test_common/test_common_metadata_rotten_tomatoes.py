@@ -29,7 +29,7 @@ class TestCommonMetadataRottenTomatoes(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_metadata_rotten_tomatoes.common_metadata_rotten_tomatoes_API()
+        self.rt_connection = common_metadata_rotten_tomatoes.common_metadata_rotten_tomatoes_API()
 
 
     @classmethod
@@ -43,4 +43,4 @@ class TestCommonMetadataRottenTomatoes(object):
         ("Robocop", 1987),
         ("Fake", None)])
     def test_com_rt_search(self, movie_title, movie_year):
-        com_rt_search(movie_title, movie_year)
+        self.rt_connection.com_rt_search(movie_title, movie_year)

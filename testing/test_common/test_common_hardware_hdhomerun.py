@@ -38,13 +38,13 @@ class TestCommonHardwareHDHomeRun(object):
 
 
     # discover items
-    def test_com_HDHomeRun_Discover(self):
-        com_HDHomeRun_Discover()
+    def test_com_hdhomerun_discover(self):
+        com_hdhomerun_discover()
 
 
     # item list
-    def test_com_HDHomeRun_List(self):
-        com_HDHomeRun_List()
+    def test_com_hdhomerun_list(self):
+        com_hdhomerun_list()
 
 
     # item detail

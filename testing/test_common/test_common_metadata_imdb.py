@@ -38,8 +38,8 @@ class TestCommonimdb(object):
 
 
     # fetch info from title
-    def test_com_imdb_Title_Search(self):
-        com_imdb_Title_Search("Robocop")
+    def test_com_imdb_title_search(self):
+        self.imdb_connection.com_imdb_title_search("Robocop")
 
 
 # fetch info by ttid

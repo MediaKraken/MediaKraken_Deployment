@@ -29,7 +29,7 @@ class TestCommonHardwareHDHomeRunPy(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Hardware_HDHomeRun_Py.com_Hardware_HDHomeRun_API_Py()
+        self.db_connection = common_hardware_hdhomerun_py.com_Hardware_HDHomeRun_API_Py()
 
 
     @classmethod
@@ -38,13 +38,13 @@ class TestCommonHardwareHDHomeRunPy(object):
 
 
     # discover items
-    def test_com_HDHomeRun_Discover(self):
-        com_HDHomeRun_Discover()
+    def test_com_hdhomerun_discover(self):
+        com_hdhomerun_discover()
 
 
     # item list
-    def test_com_HDHomeRun_List(self):
-        com_HDHomeRun_List()
+    def test_com_hdhomerun_list(self):
+        com_hdhomerun_list()
 
 
 #    def get_tuner_vstatus(self, device_adapter):

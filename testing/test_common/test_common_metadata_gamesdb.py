@@ -29,7 +29,7 @@ class TestCommonMetadataGamesDB(object):
 
     @classmethod
     def setup_class(self):
-        self.gamesdb_connection = com_meta_GamesDB.com_meta_GamesDB_API()
+        self.gamesdb_connection = common_metadata_gamesdb.com_meta_gamesdb_API()
 
 
     @classmethod
@@ -37,30 +37,30 @@ class TestCommonMetadataGamesDB(object):
         pass
 
 
-    def test_com_meta_GamesDB_Platform_List(self):
-        com_meta_GamesDB_Platform_List()
+    def test_com_meta_gamesdb_platform_list(self):
+        com_meta_gamesdb_platform_list()
 
 
-# def com_meta_GamesDB_Platform_by_ID(self, platform_id):
+# def com_meta_gamesdb_Platform_by_ID(self, platform_id):
 
 
     # 'mega man' as mega OR man
-    def test_com_meta_GamesDB_Games_by_Name_Or(self):
-        com_meta_GamesDB_Games_by_Name_Or("Mega Man")
+    def test_com_meta_gamesdb_games_by_name_or(self):
+        com_meta_gamesdb_games_by_name_or("Mega Man")
 
 
     # 'mega man' as mega AND man
-    def test_com_meta_GamesDB_Games_by_Name_And(self):
-        com_meta_GamesDB_Games_by_Name_And("Mega Man")
+    def test_com_meta_gamesdb_games_by_name_and(self):
+        com_meta_gamesdb_games_by_name_and("Mega Man")
 
 
-# def com_meta_GamesDB_Games_by_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
+# def com_meta_gamesdb_Games_by_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):
 
 
-# def com_meta_GamesDB_Games_by_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
+# def com_meta_gamesdb_Games_by_Name_And_Platform_And(self, game_name, platform_name, game_genre=None):
 
 
-# def com_meta_GamesDB_Games_by_Platform_ID(self, platform_id):
+# def com_meta_gamesdb_Games_by_Platform_ID(self, platform_id):
 
 
-# def com_meta_GamesDB_Games_by_ID(self, game_id):
+# def com_meta_gamesdb_Games_by_ID(self, game_id):

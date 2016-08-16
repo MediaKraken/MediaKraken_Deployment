@@ -29,7 +29,7 @@ class TestCommonTelnet(object):
 
     @classmethod
     def setup_class(self):
-        self.telnet_connection = common_network_Telnet.com_Telnet_API()
+        self.telnet_connection = common_network_telnet.com_Telnet_API()
 
 
     @classmethod

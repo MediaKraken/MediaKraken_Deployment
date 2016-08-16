@@ -29,7 +29,7 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.trakt_connection = common_network_Trakt.com_Trakt_API()
+        self.trakt_connection = common_network_trakt.com_Trakt_API()
 
 
     @classmethod

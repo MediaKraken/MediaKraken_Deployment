@@ -29,7 +29,7 @@ class TestCommonHardwareChromecast(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Hardware_Chromecast.com_Hardware_Chromecast_API()
+        self.db_connection = common_hardware_chromecast.com_Hardware_Chromecast_API()
 
 
     @classmethod

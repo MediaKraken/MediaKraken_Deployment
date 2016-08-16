@@ -51,12 +51,12 @@ def test_mk_hardware_vibration():
     ("0.5"),
     ("2")])
 def test_mk_hardware_vibration_time(seconds_to_vibrate):
-    mk_hardware_vibration_Time(seconds_to_vibrate)
+    mk_hardware_vibration_time(seconds_to_vibrate)
 
 
 # stop vibration
 def test_mk_hardware_vibration_stop():
-    mk_hardware_vibration_Stop()
+    mk_hardware_vibration_stop()
 
 
 # gps setup
