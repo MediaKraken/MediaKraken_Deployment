@@ -81,7 +81,7 @@ def srv_db_audit_path_check(self, dir_path):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_audit_directory_timestamp_update(self, file_path):
+def srv_db_audit_dir_timestamp_update(self, file_path):
     """
     # update the timestamp for directory scans
     """

@@ -1,7 +1,7 @@
 15.10 mini Ubuntu
 system/software update
 upgrade to 16.04
-sudo apt-get install python-pip phantomjs firefox python-kivy
+sudo apt-get install python-pip phantomjs firefox python-kivy portaudio19-dev
 sudo pip install -r pip_requirements.txt
 
 browse to https://www.google.com/intl/en-US/chrome/browser/desktop/index.html
