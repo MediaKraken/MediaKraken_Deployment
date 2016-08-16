@@ -176,31 +176,31 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "ScanMedia":
             # popen expects a list
             self.proc_file_scan = subprocess.Popen(['python',\
-                './subprogram/subprogram_file_scan.py'], shell=False)
+                './subprogram_file_scan.py'], shell=False)
         elif message_words[0] == "ScanMediaStop":
             os.killpg(self.proc_file_scan.pid, signal.SIGUSR1)
         elif message_words[0] == "MatchMedia":
             # popen expects a list
             self.proc_media_match = subprocess.Popen(['python',\
-                './subprogram/subprogram_match_known_media.py'], shell=False)
+                './subprogram_match_known_media.py'], shell=False)
         elif message_words[0] == "MatchMediaStop":
             os.killpg(self.proc_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CreateChapterImage":
             # popen expects a list
             self.proc_chapter_create = subprocess.Popen(['python',\
-                './subprogram/subprogram_create_chapter_images.py'], shell=False)
+                './subprogram_create_chapter_images.py'], shell=False)
         elif message_words[0] == "CreateChapterImageStop":
             os.killpg(self.proc_chapter_create.pid, signal.SIGUSR1)
         elif message_words[0] == "ScudLeeAnimeMatch":
             # popen expects a list
             self.proc_anime_match = subprocess.Popen(['python',\
-                './subprogram/subprogram_match_anime_id_scudlee.py'], shell=False)
+                './subprogram_match_anime_id_scudlee.py'], shell=False)
         elif message_words[0] == "ScudLeeAnimeMatchStop":
             os.killpg(self.proc_anime_match.pid, signal.SIGUSR1)
         elif message_words[0] == "SubtitleMedia":
             # popen expects a list
             self.proc_subtitle_media_match = subprocess.Popen(['python',\
-                './subprogram/subprogram_subtitle_downloader.py'], shell=False)
+                './subprogram_subtitle_downloader.py'], shell=False)
         elif message_words[0] == "SubtitleMediaStop":
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CPUUSAGE":

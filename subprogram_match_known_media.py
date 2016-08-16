@@ -57,4 +57,4 @@ if files_added > 0:
     db.srv_db_Notification_Insert(locale.format('%d', files_added, True)\
         + " new media file(s) matched.", True)
 if build_collection:
-    db.srv_db_trigger_insert(('python', './subprogram/metadata/subprogram_update_create_collections.py'))
+    db.srv_db_trigger_insert(('python', './subprogram_update_create_collections.py'))

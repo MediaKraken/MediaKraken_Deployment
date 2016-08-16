@@ -155,7 +155,7 @@ if movie_inserted > 0:
 # update collection
 if create_collection_trigger:
     db.srv_db_trigger_insert(('python',\
-        './subprogram/metadata/subprogram_update_create_collections.py'))
+        './subprogram_update_create_collections.py'))
 
 
 # commit all changes

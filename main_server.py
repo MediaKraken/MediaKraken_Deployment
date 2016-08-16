@@ -142,23 +142,23 @@ watchdog.com_watchdog_start(db.srv_db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram/subprogram_reactor_string.py'], shell=False)
+proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram/subprogram_reactor_web_images.py'],\
+proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'],\
     shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
-proc_broadcast = subprocess.Popen(['python', './subprogram/subprogram_broadcast.py'], shell=False)
+proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
 logging.info("Broadcast PID: %s", proc_broadcast.pid)
 
 
 # fire up cron service
-proc_cron = subprocess.Popen(['python', './subprogram/subprogram_cron_checker.py'], shell=False)
+proc_cron = subprocess.Popen(['python', './subprogram_cron_checker.py'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
 
 

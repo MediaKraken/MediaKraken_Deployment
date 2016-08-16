@@ -251,7 +251,7 @@ def admin_transmission_edit_page():
 @admin_required
 def admin_library():
     if request.method == 'POST':
-        g.db.srv_db_trigger_insert(('python', './subprogram/subprogram_file_scan.py'))
+        g.db.srv_db_trigger_insert(('python', './subprogram_file_scan.py'))
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
@@ -379,7 +379,7 @@ def admin_backup():
                 pass
             elif request.form['backup'] == 'Start Backup':
                 g.db.srv_db_trigger_insert(('python',\
-                    './subprogram/subprogram_postgresql_backup.py')) # this commits
+                    './subprogram_postgresql_backup.py')) # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:
             flash_errors(form)
