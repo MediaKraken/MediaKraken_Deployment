@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
 import uuid
-import json
 
 
 def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):

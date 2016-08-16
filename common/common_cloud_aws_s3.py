@@ -28,7 +28,6 @@ class CommonCloudAWSS3(object):
     Class for interfacing with aws s3
     """
     def __init__(self):
-        import os
         # set active false so if following falls
         self.active = False
         import ConfigParser

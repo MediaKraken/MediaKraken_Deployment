@@ -106,4 +106,3 @@ def srv_db_collection_read_by_guid(self, media_uuid):
         return self.db_cursor.fetchone()
     except:
         return None
-

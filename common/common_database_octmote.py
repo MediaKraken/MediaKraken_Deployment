@@ -52,7 +52,7 @@ class CommonDatabaseOctmote(object):
             self.db_cursor.execute('CREATE TABLE octmote_server_settings (server_host text,'\
                 ' server_port integer)')
             self.db_cursor.execute('insert into octmote_server_settings (server_host,'\
-                ' server_port) values ('localhost',8097)')
+                ' server_port) values (\'localhost\',8097)')
             self.db_cursor.execute('CREATE TABLE octmote_anidb (anidb_aid numeric,'\
                 ' anidb_type numeric, anidb_language text, anidb_title text)')
             self.db_cursor.execute('CREATE TABLE octmote_layout (layout_guid text,'\
@@ -66,9 +66,11 @@ class CommonDatabaseOctmote(object):
                 ' brand_name text)')
             json_brand = common_network_irdb.com_irdb_brand_list()["objects"]
             for brand_name in json_brand:
-                self.db_cursor.execute('insert into octmote_brand (brand_guid, brand_name) values (?,?)', (str(uuid.uuid4()), brand_name["brand"]))
+                self.db_cursor.execute('insert into octmote_brand (brand_guid, brand_name)'\
+                    ' values (?,?)', (str(uuid.uuid4()), brand_name["brand"]))
             # create device db and load with types
-            self.db_cursor.execute('CREATE TABLE octmote_device (device_guid text, device_name text, device_description text)')
+            self.db_cursor.execute('CREATE TABLE octmote_device (device_guid text,'\
+                ' device_name text, device_description text)')
             # add base devices to database
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'BluRay', 'BluRay Player')", (str(uuid.uuid4()),))
             self.db_cursor.execute("insert into octmote_device (device_guid, device_name, device_description) values (?,'DVD', 'DVD Player')", (str(uuid.uuid4()),))

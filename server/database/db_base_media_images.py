@@ -24,7 +24,9 @@ def srv_db_media_images_list_count(self):
     """
     Images list count
     """
-    pass
+    self.db_cursor.execute('select count(*) from mm_media,mm_media_class'\
+            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
+            ' and mm_media_class_type = \'Picture\'')
 
 
 def srv_db_media_images_list(self, offset=None, records=None):

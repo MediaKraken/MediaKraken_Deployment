@@ -116,7 +116,6 @@ class NetworkEvents(Int32StringReceiver):
                 message_words[2], message_words[3], message_words[4], message_words[5],\
                 message_words[6], message_words[7]))
         elif message_words[0] == "PlayUUID" or message_words[0] == "demo":
- #media_path = self.db_connection.srv_db_media_path_by_uuid('0000be97-09de-446e-b45e-e0d3b93c44e7')[0][0]
             media_path = self.db_connection.srv_db_media_path_by_uuid(message_words[1])[0]
             if media_path is not None:
                 if True:
@@ -144,14 +143,16 @@ class NetworkEvents(Int32StringReceiver):
             if message_words[3] == 'None': # random movie selection
                 if message_words[2] == "MOVIE":
                     try:
-                        lookup_id, media_id = self.db_connection.srv_db_media_random(message_words[5])
+                        lookup_id, media_id\
+                            = self.db_connection.srv_db_media_random(message_words[5])
                     except:
                         pass
             else:
                 # fetch specific id
                 try:
-                    lookup_id = json.loads(self.db_connection.srv_db_media_image_path(message_words[3])[0])\
-                        [message_words[4]] # use this to grab file path
+                    lookup_id\
+                        = json.loads(self.db_connection.srv_db_media_image_path(message_words[3])\
+                        [0])[message_words[4]] # use this to grab file path
                 except:
                     pass
             if lookup_id is not None:
@@ -167,7 +168,8 @@ class NetworkEvents(Int32StringReceiver):
                 self.db_connection.srv_db_read_media_Metadata_Both(message_words[1]))
         elif message_words[0] == "VIDEOGENRELIST":
             msg = "VIDEOLIST " + pickle.dumps(self.db_connection.srv_db_web_media_list(\
-                self.db_connection.srv_db_media_uuid_by_class("Movie"), message_words[0], message_words[1]))
+                self.db_connection.srv_db_media_uuid_by_class("Movie"),\
+                    message_words[0], message_words[1]))
         elif message_words[0] == "movie" or message_words[0] == "recent_addition"\
                 or message_words[0] == 'in_progress' or message_words[0] == 'video':
             msg = "VIDEOLIST " + pickle.dumps(self.db_connection.srv_db_web_media_list(\

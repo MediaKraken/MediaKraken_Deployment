@@ -65,6 +65,9 @@ def upload_image():
 @blueprint.route("/")
 @login_required
 def members():
+    """
+    Display main members page
+    """
     resume_list = []
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
@@ -79,7 +82,7 @@ def members():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 # internet sites
@@ -87,6 +90,9 @@ def members():
 @blueprint.route('/internet/')
 @login_required
 def user_internet():
+    """
+    Display internet page
+    """
     return render_template("users/user_internet.html")
 
 
@@ -95,6 +101,9 @@ def user_internet():
 @blueprint.route('/internet/internet_youtube/')
 @login_required
 def user_internet_youtube():
+    """
+    Display youtube page
+    """
     return render_template("users/user_internet_youtube.html",\
         media=com_Google.com_Google_Youtube_Feed_List('top_rated'))
 
@@ -104,6 +113,9 @@ def user_internet_youtube():
 @blueprint.route('/internet/internet_vimeo/')
 @login_required
 def user_internet_vimeo():
+    """
+    Display vimeo page
+    """
     return render_template("users/user_internet_vimeo.html")
 
 
@@ -112,6 +124,9 @@ def user_internet_vimeo():
 @blueprint.route('/internet/internet_twitch/')
 @login_required
 def user_internet_twitch():
+    """
+    Display twitchtv page
+    """
     twitch_api = common_network_Twitch.com_Twitch_API()
     twitch_media = []
     for stream_data in twitch_api.com_Twitch_Get_Featured_Streams()['featured']:
@@ -166,6 +181,9 @@ def user_iradio_list():
 @blueprint.route('/books/')
 @login_required
 def user_books_list():
+    """
+    Display books page
+    """
     return render_template("users/user_books_list.html")
 
 
@@ -174,6 +192,9 @@ def user_books_list():
 @blueprint.route('/3D/')
 @login_required
 def user_3d_list():
+    """
+    Display 3D media page
+    """
     return render_template("users/user_3d_list.html")
 
 
@@ -181,6 +202,9 @@ def user_3d_list():
 @blueprint.route('/music_video_list/')
 @login_required
 def user_music_video_list():
+    """
+    Display music video page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -194,7 +218,7 @@ def user_music_video_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 # list of spoting events
@@ -202,10 +226,13 @@ def user_music_video_list():
 @blueprint.route("/sports/")
 @login_required
 def user_sports_page():
+    """
+    Display sporting events page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.srv_db_meta_sports_list(offset, per_page):
-        media.append((row_data['mm_metadata_sports_guid'],row_data['mm_metadata_sports_name']))
+        media.append((row_data['mm_metadata_sports_guid'], row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.srv_db_meta_sports_list_count(),
@@ -217,18 +244,18 @@ def user_sports_page():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route("/sports_detail/<guid>/", methods=['GET', 'POST'])
 @blueprint.route("/sports_detail/<guid>", methods=['GET', 'POST'])
 @login_required
 def user_sports_detail_page(guid):
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_metadata['LocalImages']['Poster'] is not None:
-            data_poster_image = json_metadata['LocalImages']['Poster'].replace(image_location,'')
+            data_poster_image = json_metadata['LocalImages']['Poster'].replace(image_location, '')
         else:
             data_poster_image = None
     except:
@@ -236,7 +263,7 @@ def user_sports_detail_page(guid):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -245,7 +272,7 @@ def user_sports_detail_page(guid):
                            data=g.db.srv_db_metathesportsdb_Select_by_Guid(guid),
                            data_poster_image = data_poster_image,
                            data_background_image = data_background_image
-                           )
+                          )
 
 
 # list of tv shows
@@ -253,6 +280,9 @@ def user_sports_detail_page(guid):
 @blueprint.route("/tv/")
 @login_required
 def user_tv_page():
+    """
+    Display tv shows page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
@@ -276,7 +306,7 @@ def user_tv_page():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 # tv show detail
@@ -284,13 +314,16 @@ def user_tv_page():
 @blueprint.route("/tv_show_detail/<guid>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_show_detail_page(guid):
+    """
+    Display tv show detail page
+    """
     if request.method == 'POST':
         # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db.srv_db_media_watched_status_update(guid,current_user.get_id(),False)
+            g.db.srv_db_media_watched_status_update(guid, current_user.get_id(), False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db.srv_db_media_watched_status_update(guid,current_user.get_id(),True)
+            g.db.srv_db_media_watched_status_update(guid, current_user.get_id(), True)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
@@ -310,7 +343,7 @@ def user_tv_show_detail_page(guid):
             else:
                 data_first_aired = None
             if 'summary' in json_metadata['Meta']['tvmaze']:
-                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
             else:
                 data_overview = None
             # build gen list
@@ -350,7 +383,7 @@ def user_tv_show_detail_page(guid):
         production_list = ''
         #for ndx in range(0,len(json_metadata['production_companies'])):
         #    production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
-        image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+        image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
         # poster image
         try:
             data_poster_image = data_metadata[3].replace(image_location, '')
@@ -359,7 +392,7 @@ def user_tv_show_detail_page(guid):
         # background image
         try:
             if json_metadata['LocalImages']['Backdrop'] is not None:
-                data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+                data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
             else:
                 data_background_image = None
         except:
@@ -377,23 +410,23 @@ def user_tv_show_detail_page(guid):
         except:
             watched_status = False
         return render_template('users/user_tv_show_detail.html', data=data_metadata[0],
-                                json_metadata=json_metadata,
-                                data_genres=data_genres_list[:-2],
-                                data_production=production_list[:-2],
-                                data_image_local=image_location,
-                                data_guid=guid,
-                                data_overview = data_overview,
-                                data_rating = data_rating,
-                                data_first_aired = data_first_aired,
+                               json_metadata=json_metadata,
+                               data_genres=data_genres_list[:-2],
+                               data_production=production_list[:-2],
+                               data_image_local=image_location,
+                               data_guid=guid,
+                               data_overview = data_overview,
+                               data_rating = data_rating,
+                               data_first_aired = data_first_aired,
 #                                data_review=review,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image,
-                                data_vote_count = data_vote_count,
-                                data_watched_status = watched_status,
-                                data_season_data = data_season_data,
-                                data_season_count = data_season_count,
-                                data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
-                                )
+                               data_poster_image = data_poster_image,
+                               data_background_image = data_background_image,
+                               data_vote_count = data_vote_count,
+                               data_watched_status = watched_status,
+                               data_season_data = data_season_data,
+                               data_season_count = data_season_count,
+                               data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
+                              )
 
 
 # tv show season detail - show guid then season #
@@ -417,7 +450,7 @@ def user_tv_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -451,7 +484,7 @@ def user_tv_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
 
     data_episode_count = g.db.srv_db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -460,21 +493,22 @@ def user_tv_season_detail_page(guid, season):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/user_tv_season_detail.html", data=data_metadata[0],
-                                data_guid=guid,
-                                data_season=season,
-                                data_overview = data_overview,
-                                data_rating = data_rating,
-                                data_first_aired = data_first_aired,
-                                data_image_local=image_location,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image,
-                                data_episode_count=data_episode_count)
+                           data_guid=guid,
+                           data_season=season,
+                           data_overview = data_overview,
+                           data_rating = data_rating,
+                           data_first_aired = data_first_aired,
+                           data_image_local=image_location,
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image,
+                           data_episode_count=data_episode_count
+                          )
 
 
 # tv show episode detail
@@ -483,7 +517,7 @@ def user_tv_season_detail_page(guid, season):
 @login_required
 def user_tv_episode_detail_page(guid, season, episode):
     data_episode_detail = g.db.srv_db_read_tvmetadata_episode(guid, season, episode)
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -492,15 +526,16 @@ def user_tv_episode_detail_page(guid, season, episode):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
-                                data_image_local=image_location,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image)
+                           data_image_local=image_location,
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image
+                          )
 
 
 # livetv list
@@ -508,8 +543,11 @@ def user_tv_episode_detail_page(guid, season, episode):
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>/")
 @login_required
 def user_livetv_page(schedule_date, schedule_time):
+    """
+    Display livetv page
+    """
     grid_data = '<table style="width:100%" border="2"></tr><th>Station</th><th>Channel</th>'
-    for ndx in range(0,10):
+    for ndx in range(0, 10):
         grid_data += '<th>' + str((int(schedule_time) + (30 * ndx))) + '</th>'
     grid_data += '</tr>'
     channel_data = ""
@@ -611,14 +649,17 @@ def user_video_player(guid):
     subtitle_track_index = request.form["Video_Play_Subtitles"]
     # launch ffmpeg to ffserver procecss
     proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.srv_db_media_path_by_uuid(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
-    logging.info("FFServer PID: %s",proc_ffserver.pid)
-    return render_template("users/user_playback.html", data_desc = ('Movie title') )
+    logging.info("FFServer PID: %s", proc_ffserver.pid)
+    return render_template("users/user_playback.html", data_desc = ('Movie title'))
 
 
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/')
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>')
 @login_required
 def user_video_player_videojs(mtype, guid):
+    """
+    Display video playback page
+    """
     logging.debug("videojs: %s %s", mtype, guid)
     # grab the guid from the comboindex
     media_guid_index = request.form["Video_Track"]
@@ -643,7 +684,7 @@ def user_video_player_videojs(mtype, guid):
             + ["yadif=0:0:0", vid_name], shell=False)
         logging.info("FFMPEG Pid: %s", p.pid)
 
-#ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8        
+#ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
 
         pass_guid = 'http://10.0.0.179' + '/user/static/cache/' + vid_name
         #pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
@@ -667,6 +708,9 @@ def user_album_player(guid):
 @blueprint.route('/imagegallery/')
 @login_required
 def user_image_gallery():
+    """
+    Display image gallery page
+    """
     return render_template("users/user_image_gallery_view.html", image_data=g.db.com_media_images_list())
 
 
@@ -674,6 +718,9 @@ def user_image_gallery():
 @blueprint.route('/games/')
 @login_required
 def user_games_list():
+    """
+    Display games page
+    """
     return render_template("users/user_game_list.html")
 
 
@@ -681,6 +728,9 @@ def user_games_list():
 @blueprint.route('/games_detail/<guid>', methods=['GET', 'POST'])
 @login_required
 def user_games_detail(guid):
+    """
+    Display game detail page
+    """
     return render_template("users/user_game_detail.html")
 
 
@@ -749,7 +799,7 @@ def user_movie_page(genre):
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/movie_detail/<guid>/', methods=['GET', 'POST'])
@@ -788,11 +838,11 @@ def movie_detail(guid):
             json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
         # build gen list
         genres_list = ''
-        for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
+        for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
             genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
         # build production list
         production_list = ''
-        for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
+        for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
             production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
         # budget format
         budget = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
@@ -811,7 +861,7 @@ def movie_detail(guid):
             data_file = "NA"
         else:
             # aspect ratio
-            aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],json_ffmpeg['streams'][0]['height'])).replace('/',':')
+            aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'], json_ffmpeg['streams'][0]['height'])).replace('/', ':')
             # bitrate
             bitrate = common_string.bytes2human(float(json_ffmpeg['format']['bit_rate']))
             # file size
@@ -823,12 +873,12 @@ def movie_detail(guid):
             data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' + str(json_ffmpeg['streams'][0]['height'])
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
-        image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+        image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
         # check to see if there are other version of this video file (dvd, hddvd, etc)
         vid_versions = g.db.srv_db_media_by_metadata_guid(data[1])  # metadata guid
         # audio and sub sreams
         audio_streams = []
-        subtitle_streams = [(0,'None')]
+        subtitle_streams = [(0, 'None')]
         if json_ffmpeg is not None:
             for stream_info in json_ffmpeg['streams']:
                 stream_language = ''
@@ -843,18 +893,18 @@ def movie_detail(guid):
                 except:
                     pass
                 try:
-                    stream_codec = stream_info['codec_long_name'].rsplit('(',1)[1].replace(')','') + ' - '
+                    stream_codec = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
-                    audio_streams.append((len(audio_streams),(stream_codec + stream_language\
+                    audio_streams.append((len(audio_streams), (stream_codec + stream_language\
                         + stream_title)[:-3]))
                 elif stream_info['codec_type'] == 'subtitle':
                     subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
         # poster image
         try:
             if json_imagedata['Images']['TMDB']['Poster'] is not None:
-                data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location,'')
+                data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
             else:
                 data_poster_image = None
         except:
@@ -862,7 +912,7 @@ def movie_detail(guid):
         # background image
         try:
             if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-                data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location,'')
+                data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
             else:
                 data_background_image = None
         except:
@@ -878,7 +928,7 @@ def movie_detail(guid):
         data_json_media_chapters = []
         try:
             for chap_data in natsort.natsorted(json_media['ChapterImages']):
-                data_json_media_chapters.append((chap_data,json_media['ChapterImages'][chap_data]))
+                data_json_media_chapters.append((chap_data, json_media['ChapterImages'][chap_data]))
         except:
             pass
         # set watched and sync
@@ -891,36 +941,36 @@ def movie_detail(guid):
         except:
             sync_status = False
         return render_template('users/user_movie_detail.html', data=data[0],
-                                json_ffmpeg=json_ffmpeg,
-                                json_media=json_media,
-                                json_metadata=json_metadata,
-                                data_resolution=data_resolution,
-                                data_codec=data_codec,
-                                data_genres=genres_list[:-2],
-                                data_production=production_list[:-2],
-                                data_budget=budget,
-                                data_revenue=revenue,
-                                data_file=data_file,
-                                data_file_size=file_size,
-                                data_bitrate=bitrate,
-                                data_image_local=image_location,
-                                data_guid=guid,
-                                data_playback_url='/users/playvideo_videojs/hls/'+guid,
-                                data_detail_url='/users/movie_detail/'+guid,
-                                data_audio_track=audio_streams,
-                                data_sub_track=subtitle_streams,
-                                data_aspect=aspect_ratio,
-                                data_review=review,
-                                data_vid_versions = vid_versions,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image,
-                                data_vote_count = data_vote_count,
-                                data_json_media_chapters = data_json_media_chapters,
-                                data_watched_status = watched_status,
-                                data_sync_status = sync_status,
-                                data_cast = True,
-                                data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
-                                )
+                               json_ffmpeg=json_ffmpeg,
+                               json_media=json_media,
+                               json_metadata=json_metadata,
+                               data_resolution=data_resolution,
+                               data_codec=data_codec,
+                               data_genres=genres_list[:-2],
+                               data_production=production_list[:-2],
+                               data_budget=budget,
+                               data_revenue=revenue,
+                               data_file=data_file,
+                               data_file_size=file_size,
+                               data_bitrate=bitrate,
+                               data_image_local=image_location,
+                               data_guid=guid,
+                               data_playback_url='/users/playvideo_videojs/hls/'+guid,
+                               data_detail_url='/users/movie_detail/'+guid,
+                               data_audio_track=audio_streams,
+                               data_sub_track=subtitle_streams,
+                               data_aspect=aspect_ratio,
+                               data_review=review,
+                               data_vid_versions = vid_versions,
+                               data_poster_image = data_poster_image,
+                               data_background_image = data_background_image,
+                               data_vote_count = data_vote_count,
+                               data_json_media_chapters = data_json_media_chapters,
+                               data_watched_status = watched_status,
+                               data_sync_status = sync_status,
+                               data_cast = True,
+                               data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
+                              )
 
 
 #@blueprint.route("/video")
@@ -982,7 +1032,7 @@ def user_album_list_page():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/media')
@@ -1023,7 +1073,7 @@ def search(name):
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 # https://github.com/Bouni/HTML5-jQuery-Flask-file-upload
@@ -1045,6 +1095,9 @@ def upload():
 @blueprint.route('/sync/')
 @login_required
 def sync_display_all():
+    """
+    Display sync page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = common_pagination.get_pagination(page=page,
@@ -1059,7 +1112,7 @@ def sync_display_all():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/sync_edit/<guid>/', methods=['GET', 'POST'])
@@ -1082,12 +1135,15 @@ def sync_edit(guid):
     form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
-    return render_template('users/user_sync_edit.html', guid=guid, form=form )
+    return render_template('users/user_sync_edit.html', guid=guid, form=form)
 
 
-@blueprint.route('/sync_delete',methods=["POST"])
+@blueprint.route('/sync_delete', methods=["POST"])
 @login_required
 def admin_sync_delete_page():
+    """
+    Display sync delete action 'page'
+    """
     g.db.srv_db_Sync_Delete(request.form['id'])
     g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
@@ -1097,6 +1153,9 @@ def admin_sync_delete_page():
 @blueprint.route('/class/')
 @login_required
 def class_display_all():
+    """
+    Display class list page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -1110,13 +1169,16 @@ def class_display_all():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/report_duplicate')
 @blueprint.route('/report_duplicate/')
 @login_required
 def report_display_all_duplicates():
+    """
+    Display media duplication report page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -1130,7 +1192,7 @@ def report_display_all_duplicates():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/report_duplicate_detail/<guid>/')
@@ -1158,7 +1220,7 @@ def report_display_all_duplicates_detail(guid):
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/report_all')
@@ -1181,7 +1243,7 @@ def report_display_all_media():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/report_known_video')
@@ -1201,13 +1263,16 @@ def report_display_all_media_known_video():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/report_top10/<mtype>')
 @blueprint.route('/report_top10/<mtype>/')
 @login_required
 def report_top10(mtype):
+    """
+    Display top10 pages
+    """
     top10_data = None
     if mtype == '1': # all time
         top10_data = g.db.srv_db_Usage_Top10_AllTime()
@@ -1224,15 +1289,18 @@ def report_top10(mtype):
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
 def metadata_person_detail(guid):
+    """
+    Display person detail page
+    """
     meta_data = g.db.srv_db_meta_person_by_guid(guid)
     json_metadata = meta_data['mmp_person_meta_json']
     json_imagedata = meta_data['mmp_person_image']
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
             data_person_image = "../../static/meta/images/"\
-                + json_imagedata['Images']['Poster'].replace(image_location,'').replace('../','')
+                + json_imagedata['Images']['Poster'].replace(image_location, '').replace('../', '')
         else:
             data_person_image = None
     except:
@@ -1244,13 +1312,16 @@ def metadata_person_detail(guid):
                            data_person_image = data_person_image,
                            data_also_media = meta_also_media,
                            data_image_local=image_location
-                           )
+                          )
 
 
 @blueprint.route('/meta_person_list')
 @blueprint.route('/meta_person_list/')
 @login_required
 def metadata_person_list():
+    """
+    Display person list page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -1264,7 +1335,7 @@ def metadata_person_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/metadata_music_list')
@@ -1284,7 +1355,7 @@ def metadata_music_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/metadata_music_video_list')
@@ -1304,7 +1375,7 @@ def metadata_music_video_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/metadata_music_album_list')
@@ -1324,7 +1395,7 @@ def metadata_music_album_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_movie_detail/<guid>/')
@@ -1338,17 +1409,17 @@ def metadata_movie_detail(guid):
     data_vote_count = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
     # build gen list
     genres_list = ''
-    for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
+    for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
         genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0,len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
+    for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
         production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_imagedata['Images']['TMDB']['Poster'] is not None:
-            data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location,'')
+            data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
         else:
             data_poster_image = None
     except:
@@ -1356,7 +1427,7 @@ def metadata_movie_detail(guid):
     # background image
     try:
         if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location,'')
+            data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1365,16 +1436,17 @@ def metadata_movie_detail(guid):
 #    review = g.db.srv_db_Review_List(data[1])
     return render_template('users/metadata/meta_movie_detail.html',
 #                                data_media_ids=data[1],
-                                data_image_local=image_location,
-                                data_name=data[2],
-                                json_metadata=json_metadata,
-                                data_genres=genres_list[:-2],
-                                data_production=production_list[:-2],
+                           data_image_local=image_location,
+                           data_name=data[2],
+                           json_metadata=json_metadata,
+                           data_genres=genres_list[:-2],
+                           data_production=production_list[:-2],
 #                                data_review=review,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image,
-                                data_vote_count = data_vote_count,
-                                data_budget=locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True))
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image,
+                           data_vote_count = data_vote_count,
+                           data_budget=locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
+                          )
 
 
 @blueprint.route('/meta_movie_list')
@@ -1394,8 +1466,8 @@ def metadata_movie_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           image_location=Config.get('MediaKrakenServer','MetadataImageLocal').strip(),
-                           )
+                           image_location=Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(),
+                          )
 
 
 @blueprint.route('/metadata_movie_collection_list')
@@ -1406,9 +1478,9 @@ def metadata_movie_collection_list():
     media = []
     for row_data in g.db.srv_db_collection_list(offset, per_page):
         try:
-            media.append((row_data['mm_metadata_collection_guid'],row_data['mm_metadata_collection_name'],row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(Config.get('MediaKrakenServer','MetadataImageLocal').strip(),'')))
+            media.append((row_data['mm_metadata_collection_guid'], row_data['mm_metadata_collection_name'], row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(), '')))
         except:
-            media.append((row_data['mm_metadata_collection_guid'],row_data['mm_metadata_collection_name'],None))
+            media.append((row_data['mm_metadata_collection_guid'], row_data['mm_metadata_collection_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
                                 total=g.db.srv_db_Table_Count('mm_metadata_collection'),
@@ -1420,7 +1492,7 @@ def metadata_movie_collection_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_movie_collection_detail/<guid>/')
@@ -1430,11 +1502,11 @@ def metadata_movie_collection_detail(guid):
     data_metadata = g.db.srv_db_collection_read_by_guid(guid)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_imagedata['Poster'] is not None:
-            data_poster_image = json_imagedata['Poster'].replace(image_location,'')
+            data_poster_image = json_imagedata['Poster'].replace(image_location, '')
         else:
             data_poster_image = None
     except:
@@ -1442,17 +1514,17 @@ def metadata_movie_collection_detail(guid):
     # background image
     try:
         if json_imagedata['Backdrop'] is not None:
-            data_background_image = json_imagedata['Backdrop'].replace(image_location,'')
+            data_background_image = json_imagedata['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template('users/metadata/meta_movie_collection_detail.html',
-                            data_name=json_metadata['name'],
-                            data_poster_image = data_poster_image,
-                            data_background_image = data_background_image,
-                            json_metadata=json_metadata
-                            )
+                           data_name=json_metadata['name'],
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image,
+                           json_metadata=json_metadata
+                          )
 
 
 @blueprint.route('/meta_tvshow_detail/<guid>/')
@@ -1475,7 +1547,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -1507,7 +1579,7 @@ def metadata_tvshow_detail(guid):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -1516,7 +1588,7 @@ def metadata_tvshow_detail(guid):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1527,18 +1599,18 @@ def metadata_tvshow_detail(guid):
 #    for ndx in range(0,len(json_metadata['production_companies'])):
 #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
     return render_template('users/metadata/meta_tvshow_detail.html',
-                            data_title=data_metadata['mm_metadata_tvshow_name'],
-                            data_runtime=data_runtime,
-                            data_guid=guid,
-                            data_rating=data_rating,
-                            data_first_aired=data_first_aired,
-                            data_poster_image = data_poster_image,
-                            data_background_image = data_background_image,
-                            data_overview=data_overview,
-                            data_season_data = data_season_data,
-                            data_season_count = sorted(data_season_data.iterkeys()),
-                            data_genres_list=data_genres_list[:-2]
-                            )
+                           data_title=data_metadata['mm_metadata_tvshow_name'],
+                           data_runtime=data_runtime,
+                           data_guid=guid,
+                           data_rating=data_rating,
+                           data_first_aired=data_first_aired,
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image,
+                           data_overview=data_overview,
+                           data_season_data = data_season_data,
+                           data_season_count = sorted(data_season_data.iterkeys()),
+                           data_genres_list=data_genres_list[:-2]
+                          )
 
 
 # tv show season detail - show guid then season #
@@ -1562,7 +1634,7 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>','')
+            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -1595,7 +1667,7 @@ def metadata_tvshow_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db.srv_db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -1604,22 +1676,23 @@ def metadata_tvshow_season_detail_page(guid, season):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/metadata/meta_tvshow_season_detail.html",
-                                data=data_metadata['mm_metadata_tvshow_name'],
-                                data_guid=guid,
-                                data_season=season,
-                                data_overview = data_overview,
-                                data_rating = data_rating,
-                                data_first_aired = data_first_aired,
-                                data_image_local=image_location,
-                                data_poster_image = data_poster_image,
-                                data_background_image = data_background_image,
-                                data_episode_count=data_episode_count)
+                           data=data_metadata['mm_metadata_tvshow_name'],
+                           data_guid=guid,
+                           data_season=season,
+                           data_overview = data_overview,
+                           data_rating = data_rating,
+                           data_first_aired = data_first_aired,
+                           data_image_local=image_location,
+                           data_poster_image = data_poster_image,
+                           data_background_image = data_background_image,
+                           data_episode_count=data_episode_count
+                          )
 
 
 # tv show season detail - show guid then season #
@@ -1637,23 +1710,23 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location,'')
+            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/metadata/meta_tvshow_episode_detail.html", data=data_metadata[0],
-                                data_guid=guid,
-                                data_title=data_metadata[2],
-                                data_runtime=data_metadata[4],
-                                data_season=season,
-                                data_episode=episode,
-                                data_overview=data_metadata[5],
-                                data_first_aired=data_metadata[3],
-                                data_image_local=image_location,
-                                data_poster_image=data_poster_image,
-                                data_background_image=data_background_image
-                                )
+                           data_guid=guid,
+                           data_title=data_metadata[2],
+                           data_runtime=data_metadata[4],
+                           data_season=season,
+                           data_episode=episode,
+                           data_overview=data_metadata[5],
+                           data_first_aired=data_metadata[3],
+                           data_image_local=image_location,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image
+                          )
 
 
 @blueprint.route('/meta_tvshow_list')
@@ -1662,11 +1735,11 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
 def metadata_tvshow_list():
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     for row_data in g.db.srv_db_meta_tvshow_list(offset, per_page):
         image_data = row_data[3]  # TODO json dictcursor
         try:
-            image_data = image_data.replace(image_location,'')
+            image_data = image_data.replace(image_location, '')
         except:
             pass
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],\
@@ -1682,7 +1755,7 @@ def metadata_tvshow_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_game_list')
@@ -1702,7 +1775,7 @@ def metadata_game_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_game_detail/<guid>/')
@@ -1731,7 +1804,7 @@ def metadata_game_system_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_game_system_detail/<guid>/')
@@ -1759,7 +1832,7 @@ def metadata_sports_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/meta_sports_detail/<guid>/')
@@ -1813,7 +1886,11 @@ def allowed_file(filename):
 @blueprint.before_request
 def before_request():
     g.db = database_base.MKServerDatabase()
-    g.db.srv_db_open(Config.get('DB Connections','PostDBHost').strip(),Config.get('DB Connections','PostDBPort').strip(),Config.get('DB Connections','PostDBName').strip(),Config.get('DB Connections','PostDBUser').strip(),Config.get('DB Connections','PostDBPass').strip())
+    g.db.srv_db_open(Config.get('DB Connections','PostDBHost').strip(),\
+        Config.get('DB Connections','PostDBPort').strip(),\
+        Config.get('DB Connections','PostDBName').strip(),\
+        Config.get('DB Connections','PostDBUser').strip(),\
+        Config.get('DB Connections','PostDBPass').strip())
 
 
 @blueprint.teardown_request

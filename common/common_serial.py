@@ -30,7 +30,7 @@ class CommonSerial(object):
     Class for interfacing via serial devices
     """
     def __init__(self):
-        self.ser_device = None
+        self.serial_device = None
 
 
     def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
@@ -38,7 +38,7 @@ class CommonSerial(object):
         """
         Open serial device for read/write
         """
-        self.ser_device = serial.Serial(
+        self.serial_device = serial.Serial(
             #port='/dev/ttyUSB1',
             port=dev_port,
             #baudrate=9600,
@@ -50,8 +50,8 @@ class CommonSerial(object):
             #bytesize=serial.SEVENBITS
             bytesize=dev_bytesize
         )
-        self.ser_device.open()
-        self.ser_device.isOpen()
+        self.serial_device.open()
+        self.serial_device.isOpen()
 
 
     def com_serial_read_device(self):
@@ -60,8 +60,8 @@ class CommonSerial(object):
         """
         time.sleep(1)
         read_data = ''
-        while self.ser_device.inWaiting() > 0:
-            read_data += self.ser_device.read(1)
+        while self.serial_device.inWaiting() > 0:
+            read_data += self.serial_device.read(1)
         return read_data
 
 
@@ -69,11 +69,11 @@ class CommonSerial(object):
         """
         Close serial device
         """
-        self.ser_device.close()
+        self.serial_device.close()
 
 
     def com_serial_write_device(self, message):
         """
         Send data to serial device
         """
-        self.ser_device.write(message)
+        self.serial_device.write(message)

@@ -31,13 +31,13 @@ from . import common_metadata_omdb
 from . import common_metadata_rotten_tomatoes
 from . import common_metadata_tmdb
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 from . import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if Config.get('API', 'themoviedb').strip() != 'None':
+if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
     tmdb_api_connection = common_metadata_tmdb.common_metadata_tmdb_API()
 else:
@@ -157,8 +157,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection, nfo_data,\
-        xml_data, download_que_json, download_que_id)
+    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection,\
+        nfo_data, xml_data, download_que_json, download_que_id)
     logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id,\
         metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
         metadata_movie_lookup.metadata_last_rt)

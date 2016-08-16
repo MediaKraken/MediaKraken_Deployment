@@ -119,6 +119,9 @@ def com_net_emby_user_login(host_server, user_name, user_password):
 
 
 def com_net_emby_user(host_server, user_id, headers):
+    """
+    Get user list
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/'\
         + user_id, headers=headers)).read()
 
@@ -160,12 +163,18 @@ def com_net_emby_user_view_list(host_server, user_id, headers):
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def com_net_emby_user_channel_list(host_server, user_id, headers):
+    """
+    Get list of channels for user
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id,\
         headers=headers)).read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def com_net_emby_user_channel_feature_list(host_server, channel_id, headers):
+    """
+    Get list of features for channel
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features',\
         headers=headers)).read()
 ''' REQUEST TYPE
@@ -189,6 +198,9 @@ def com_net_emby_user_channel_items(host_server, channel_id, user_id, headers):
 # TODO episodes
 def com_net_emby_user_latest_items_list(host_server, request_type, request_subtype,\
         request_limit, request_grouping, user_id, headers):
+    """
+    Get new media list from server
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest",\
         headers=headers)).read()
 

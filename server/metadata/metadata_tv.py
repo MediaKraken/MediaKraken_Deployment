@@ -31,13 +31,13 @@ from common import common_metadata_tv_intro
 from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import metadata_nfo_xml
 
 
 # verify thetvdb key exists for search
-if Config.get('API', 'theTVdb').strip() != 'None':
+if config_handle.get('API', 'theTVdb').strip() != 'None':
     thetvdb_api_connection = common_thetvdb.com_TheTVDB_API()
     # show xml downloader and general api interface
     thetvdb_API = common_metadata_thetvdb.com_meta_TheTVDB_API()
@@ -46,7 +46,7 @@ else:
 
 
 # setup the tvmaze class
-if Config.get('API', 'tvmaze').strip() != 'None':
+if config_handle.get('API', 'tvmaze').strip() != 'None':
     tvmaze_api_connection = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
     tvmaze_api_connection = None

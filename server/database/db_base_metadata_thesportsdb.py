@@ -45,7 +45,7 @@ def srv_db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,
 
 
 def srv_db_metathesports_update(self, series_id_json, event_name, show_detail,
-        sportsdb_id):
+                                sportsdb_id):
     """
     # updated
     """

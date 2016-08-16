@@ -23,11 +23,11 @@ import sys
 sys.path.append("../common")
 from common import common_isbndb
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
-if Config.get('API', 'ISBNdb').strip() != 'None':
+if config_handle.get('API', 'ISBNdb').strip() != 'None':
     # setup the isbndb class
     isbndb_api_connection = common_isbndb.com_ISBNdb_API()
 else:

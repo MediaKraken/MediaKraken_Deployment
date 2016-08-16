@@ -23,7 +23,7 @@ import uuid
 
 def srv_db_nas_count(self):
     """
-    # count nass
+    # count nas
     """
     self.db_cursor.execute('select count(*) from mm_nas')
     return self.db_cursor.fetchone()[0]

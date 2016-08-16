@@ -36,6 +36,9 @@ def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
 
 def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
         image_json):
+    """
+    Insert tv series into db
+    """
     new_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'\
         ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json,'\
@@ -46,6 +49,9 @@ def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
 
 def srv_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
         tvmaze_id):
+    """
+    Update tv series in db
+    """
     #self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,
         #mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s
         #where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',

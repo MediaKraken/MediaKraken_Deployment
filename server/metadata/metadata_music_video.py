@@ -24,13 +24,13 @@ import sys
 sys.path.append("../common")
 from common import common_metadata_imvdb
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 # verify imvdb key exists
-if Config.get('API', 'imvdb').strip() != 'None':
-    imvdb_api_connection = common_metadata_imvdb.com_imvdb_API(Config.get('API', 'imvdb').strip())
+if config_handle.get('API', 'imvdb').strip() != 'None':
+    imvdb_api_connection = common_metadata_imvdb.com_imvdb_API(config_handle.get('API', 'imvdb').strip())
 else:
     imvdb_api_connection = None
 

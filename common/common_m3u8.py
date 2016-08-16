@@ -39,4 +39,4 @@ def com_m3u_write(playlist_data, m3u_file_name):
     for playlist_item_seconds, playlist_item_name, playlist_item_filename in playlist_data:
         m3u_data += M3U_LINE_HEADER + playlist_item_seconds + ',' + playlist_item_name + '\n'\
             + playlist_item_filename + '\n'
-    common_file.com_file_Save_Data(m3u_file_name, m3u_data, False, False, None)
+    common_file.com_file_save_data(m3u_file_name, m3u_data, False, False, None)

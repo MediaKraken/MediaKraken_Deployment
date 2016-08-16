@@ -51,7 +51,7 @@ def srv_db_media_movie_count_by_genre(self, class_guid):
 
 
 def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
-        group_collection=False, include_remote=False):
+                                group_collection=False, include_remote=False):
     """
     # web media count
     """

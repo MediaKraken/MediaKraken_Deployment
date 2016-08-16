@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, url_for, redirect, session
+from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
+     url_for, redirect, session
 from flask_login import login_required
 from flask_paginate import Pagination
 blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
@@ -70,6 +71,9 @@ def admin_required(fn):
 @login_required
 @admin_required
 def admins():
+    """
+    Display main server page
+    """
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
@@ -84,10 +88,10 @@ def admins():
     for row_data in g.db.srv_db_Notification_Read():
         if row_data['mm_notification_dismissable']: # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],\
-                row_data['mm_notification_text'],row_data['mm_notification_time']))
+                row_data['mm_notification_text'], row_data['mm_notification_time']))
         else:
             data_alerts.append((row_data['mm_notification_guid'],\
-                row_data['mm_notification_text'],row_data['mm_notification_time']))
+                row_data['mm_notification_text'], row_data['mm_notification_time']))
     # TODO temp
     data_transmission_active = True
     # set the scan info
@@ -97,11 +101,11 @@ def admins():
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db.srv_db_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
-    return render_template("admin/admins.html", 
+    return render_template("admin/admins.html",
                            data_user_count = locale.format('%d', g.db.srv_db_User_List_Name_Count(), True),
                            data_server_info_server_name = data_server_info_server_name,
                            data_server_info_server_ip = nic_data,
-                           data_server_info_server_port = config_handle.get('MediaKrakenServer','ListenPort').strip(),
+                           data_server_info_server_port = config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
                            data_server_info_server_ip_external = outside_ip,
                            data_server_info_server_version = '0.1.4',
                            data_server_uptime = common_system.common_system_Uptime(),
@@ -116,7 +120,7 @@ def admins():
                            data_transmission_active = data_transmission_active,
                            data_scan_info = data_scan_info,
                            data_messages = data_messages
-                           )
+                          )
 
 
 @blueprint.route("/users")
@@ -124,6 +128,9 @@ def admins():
 @login_required
 @admin_required
 def admin_users():
+    """
+    Display user list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -137,7 +144,7 @@ def admin_users():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route("/user_detail/<guid>/")
@@ -145,6 +152,9 @@ def admin_users():
 @login_required
 @admin_required
 def admin_user_detail(guid):
+    """
+    Display user details
+    """
     return render_template('admin/admin_user_detail.html',\
         data_user=g.db.srv_db_User_Detail(guid))
 
@@ -162,6 +172,9 @@ def admin_user_detail(guid):
 @login_required
 @admin_required
 def admin_cron_display_all():
+    """
+    Display cron jobs
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -175,7 +188,7 @@ def admin_cron_display_all():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])
@@ -183,10 +196,13 @@ def admin_cron_display_all():
 @login_required
 @admin_required
 def admin_cron_edit(guid):
+    """
+    Edit cron job page
+    """
     form = CronEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
-    return render_template('admin/admin_cron_edit.html', guid=guid, form=form )
+    return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
 @blueprint.route("/tvtuners", methods=["GET", "POST"])
@@ -194,6 +210,9 @@ def admin_cron_edit(guid):
 @login_required
 @admin_required
 def admin_tvtuners():
+    """
+    List tvtuners
+    """
     tv_tuners = []
     for row_data in g.db.srv_db_tuner_list():
         tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
@@ -216,6 +235,9 @@ def admin_nas():
 @login_required
 @admin_required
 def admin_transmission():
+    """
+    Display transmission page
+    """
     trans_connection = common_transmission.common_transmission_API()
     transmission_data = []
     if trans_connection is not None:
@@ -227,7 +249,7 @@ def admin_transmission():
     return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
 
 
-@blueprint.route('/transmission_delete',methods=["POST"])
+@blueprint.route('/transmission_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_transmission_delete_page():
@@ -236,7 +258,7 @@ def admin_transmission_delete_page():
     return json.dumps({'status':'OK'})
 
 
-@blueprint.route('/transmission_edit',methods=["POST"])
+@blueprint.route('/transmission_edit', methods=["POST"])
 @login_required
 @admin_required
 def admin_transmission_edit_page():
@@ -250,6 +272,9 @@ def admin_transmission_edit_page():
 @login_required
 @admin_required
 def admin_library():
+    """
+    List all media libraries
+    """
     if request.method == 'POST':
         g.db.srv_db_trigger_insert(('python', './subprogram_file_scan.py'))
         flash("Scheduled media scan.")
@@ -266,7 +291,7 @@ def admin_library():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           )
+                          )
 
 
 @blueprint.route("/library_edit", methods=["GET", "POST"])
@@ -286,10 +311,10 @@ def admin_library_edit_page():
                     if not smb_stuff.common_cifs_Share_Directory_Check(share, path):
                         smb_stuff.common_cifs_Close()
                         flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins.admin_library_edit_page'))                      
+                        return redirect(url_for('admins.admin_library_edit_page'))
                     smb_stuff.common_cifs_Close()
                 elif request.form['library_path'][0:3] == "smb":
-                    # TODO                    
+                    # TODO
                     smb_stuff = common_cifs.common_cifs_Share_API()
                     smb_stuff.common_cifs_Connect(ip_addr, user_name='guest', user_password='')
                     smb_stuff.common_cifs_Share_Directory_Check(share_name, dir_path)
@@ -299,7 +324,7 @@ def admin_library_edit_page():
                     return redirect(url_for('admins.admin_library_edit_page'))
                 # verify it doesn't exit and add
                 if g.db.srv_db_Audit_Path_Check(request.form['library_path']) == 0:
-                    g.db.srv_db_Audit_Path_Add(request.form['library_path'],request.form['Lib_Class'])
+                    g.db.srv_db_Audit_Path_Add(request.form['library_path'], request.form['Lib_Class'])
                     g.db.srv_db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:
@@ -319,22 +344,25 @@ def admin_library_edit_page():
                            data_class = class_list)
 
 
-@blueprint.route('/library_delete',methods=["POST"])
+@blueprint.route('/library_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_library_delete_page():
+    """
+    Delete library action 'page'
+    """
     g.db.srv_db_Audit_Path_Delete(request.form['id'])
     g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
-@blueprint.route('/getLibraryById',methods=['POST'])
+@blueprint.route('/getLibraryById', methods=['POST'])
 @login_required
 @admin_required
 def getLibraryById():
     result = g.db.srv_db_Audit_Path_by_UUID(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],\
-        'Path': result['mm_media_dir_path'],'Media Class': result['mm_media_dir_class_type']})
+        'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
 
 
 @blueprint.route('/updateLibrary', methods=['POST'])
@@ -346,19 +374,25 @@ def updateLibrary():
     return json.dumps({'status':'OK'})
 
 
-@blueprint.route('/user_delete',methods=["POST"])
+@blueprint.route('/user_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_user_delete_page():
+    """
+    Delete user action 'page'
+    """
     g.db.srv_db_User_Delete(request.form['id'])
     g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
 
 
-@blueprint.route('/backup_delete',methods=["POST"])
+@blueprint.route('/backup_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_backup_delete_page():
+    """
+    Delete backup file action 'page'
+    """
     file_path, file_type = request.form['id'].split('|')
     if file_type == "Local":
         os.remove(file_path)
@@ -372,6 +406,9 @@ def admin_backup_delete_page():
 @login_required
 @admin_required
 def admin_backup():
+    """
+    List backsup from local fs and cloud
+    """
     form = BackupEditForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -385,7 +422,7 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.common_file_Dir_List(config_handle.get('MediaKrakenServer','BackupLocal').strip(), 'dump', False, False, True):
+    for backup_local in common_file.common_file_Dir_List(config_handle.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.common_cloud_Backup_List():
@@ -407,7 +444,7 @@ def admin_backup():
                            page=page,
                            per_page=per_page,
                            pagination=pagination
-                           )
+                          )
 
 
 @blueprint.route("/ffmpeg_stat")
@@ -423,7 +460,10 @@ def ffmpeg_stat():
 @login_required
 @admin_required
 def admin_server_stat():
-    return render_template("admin/admin_server_stats.html", 
+    """
+    Display server stats via psutils
+    """
+    return render_template("admin/admin_server_stats.html",
                            data_disk=common_system.common_system_Disk_Usage_All(True),
                            data_cpu_usage=common_system.common_system_CPU_Usage(True),
                            data_mem_usage=common_system.common_system_Virtual_Memory(None))
@@ -434,6 +474,9 @@ def admin_server_stat():
 @login_required
 @admin_required
 def admin_server_stat_slave():
+    """
+    Display stats on connected slaves via psutils
+    """
     return render_template("admin/admin_server_stats_slave.html",
                            data_disk=common_system.common_system_Disk_Usage_All(True),
                            data_cpu_usage=common_system.common_system_CPU_Usage(True),
@@ -478,10 +521,13 @@ def admin_server_link_server():
                            pagination=pagination)
 
 
-@blueprint.route('/link_delete',methods=["POST"])
+@blueprint.route('/link_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_link_delete_page():
+    """
+    Delete linked server action 'page'
+    """
     g.db.srv_db_Link_Delete(request.form['id'])
     g.db.srv_db_commit()
     return json.dumps({'status':'OK'})
@@ -558,10 +604,13 @@ def admin_chart_client_usage():
 @login_required
 @admin_required
 def admin_database_statistics():
+    """
+    Display database statistics page
+    """
     db_stats_count = []
     for row_data in g.db.srv_db_Postgresql_Row_Count():
         db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
-    return render_template("admin/admin_server_database_stats.html", 
+    return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db.srv_db_Postgresql_Table_Sizes(),
                            data_db_count=db_stats_count)
 
@@ -580,7 +629,7 @@ def admin_fs_browse(path):
             if build_path == '':
                 build_path += path_part # to "skip" leading slash for path
             else:
-                build_path += '/' + path_part 
+                build_path += '/' + path_part
             browse_parent.append((build_path, path_part))
     return render_template("admin/admin_fs_browse.html", file=browse_file,
                            file_parent=browse_parent)
@@ -589,7 +638,11 @@ def admin_fs_browse(path):
 @blueprint.before_request
 def before_request():
     g.db = database_base.MKServerDatabase()
-    g.db.srv_db_open(config_handle.get('DB Connections','PostDBHost').strip(),config_handle.get('DB Connections','PostDBPort').strip(),config_handle.get('DB Connections','PostDBName').strip(),config_handle.get('DB Connections','PostDBUser').strip(),config_handle.get('DB Connections','PostDBPass').strip())
+    g.db.srv_db_open(config_handle.get('DB Connections','PostDBHost').strip(),\
+        config_handle.get('DB Connections','PostDBPort').strip(),\
+        config_handle.get('DB Connections','PostDBName').strip(),\
+        config_handle.get('DB Connections','PostDBUser').strip(),\
+        config_handle.get('DB Connections','PostDBPass').strip())
 
 
 @blueprint.teardown_request

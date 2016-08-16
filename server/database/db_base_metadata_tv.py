@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
-import uuid
 
 
 def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
@@ -31,7 +30,8 @@ def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
             ' where LOWER(mm_metadata_tvshow_name) = %s', (tvshow_name.lower(),))
     else:
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
-            ' where (LOWER(mm_metadata_tvshow_name) = %s) and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->>\'FirstAired\' from 0 for 5) in (%s,%s,%s) or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\' from 0 for 5) in (%s,%s,%s))', (tvshow_name.lower(), str(tvshow_year), str(int(tvshow_year) + 1), str(int(tvshow_year) - 1), str(tvshow_year), str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
+            ' where (LOWER(mm_metadata_tvshow_name) = %s)'\
+            ' and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->>\'FirstAired\' from 0 for 5) in (%s,%s,%s) or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\' from 0 for 5) in (%s,%s,%s))', (tvshow_name.lower(), str(tvshow_year), str(int(tvshow_year) + 1), str(int(tvshow_year) - 1), str(tvshow_year), str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
         logging.debug("db find metadata tv guid: %s", metadata_guid)
@@ -116,7 +116,9 @@ def srv_db_meta_tvshow_update_image(self, image_json, metadata_uuid):
     """
     # update image json
     """
-    self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s', (image_json, metadata_uuid))
+    self.db_cursor.execute('update mm_metadata_tvshow'\
+        ' set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s',\
+        (image_json, metadata_uuid))
 
 
 def srv_db_meta_tvshow_images_to_update(self, image_type):
@@ -160,7 +162,7 @@ def srv_db_read_tvmetadata_eps_season(self, show_guid):
     """
     # todo union will be bad later when both data sources are populated
     season_data = {}
-    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s) union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))    
+    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s) union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] in season_data:
             if season_data[row_data[0]] < row_data[1]:

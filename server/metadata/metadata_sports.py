@@ -24,12 +24,12 @@ import sys
 sys.path.append("../common")
 from common import common_metadata_thesportsdb
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 # verify thesportsdb key exists
-if Config.get('API', 'thesportsdb').strip() != 'None':
+if config_handle.get('API', 'thesportsdb').strip() != 'None':
     thesportsdb_api_connection = common_metadata_thesportsdb.com_meta_thesportsdb_API()
 else:
     thesportsdb_api_connection = None

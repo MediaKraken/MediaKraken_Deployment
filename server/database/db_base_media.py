@@ -206,7 +206,7 @@ def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
     # TODO   begin trans...as could update between these two commands
     # do this as a subselect instead....then don't have to worry about it
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
-        (media_guid,))
+                           (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})

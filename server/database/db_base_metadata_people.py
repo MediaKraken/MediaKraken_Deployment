@@ -81,7 +81,7 @@ def srv_db_meta_person_id_count(self, host_type, guid):
         + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
     return self.db_cursor.fetchone()[0]
 # works in postgresql
-# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}' 
+# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}'
     #and mmp_person_meta_json @> '{"id":169}'
 
 
@@ -122,7 +122,7 @@ def srv_db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 else:
                     self.srv_db_metdata_person_insert(person_name,\
                         json.dumps({'Host': meta_type, 'id': person_id}), None,\
-                        json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))       
+                        json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
     except:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
@@ -153,7 +153,9 @@ def srv_db_meta_person_as_seen_in(self, person_guid):
     logging.debug("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':
         sql_params = row_data['mmp_person_media_id']['id'],
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\' @> \'[{"id":%s}]\'', sql_params)
+        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
+            'mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\

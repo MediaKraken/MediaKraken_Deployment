@@ -17,10 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+#import logging
+
 
 # put the "preferred" item first in the array, as it will default to that on no match
-device_compatibility = {
+DEVICE_COMPATIBILITY = {
     'ATV': {
         'NP': {},
         'Shield': {},
@@ -47,7 +48,7 @@ device_compatibility = {
 }
 
 
-def com_device_compatibility_best_fit(device_type, device_model, video_container,\
+def com_DEVICE_COMPATIBILITY_best_fit(device_type, device_model, video_container,\
         video_codec, audio_codec, audio_channels):
     """
     Determine best "fit" for video
@@ -55,8 +56,8 @@ def com_device_compatibility_best_fit(device_type, device_model, video_container
     return_video_container = None
     return_video_codec = None
     return_audio_codec = None
-    if device_type in device_compatibility:
-        if device_model in device_compatibility[device_type]:
+    if device_type in DEVICE_COMPATIBILITY:
+        if device_model in DEVICE_COMPATIBILITY[device_type]:
             # determine container to use
             if video_container in device_model['VidContainer']:
                 pass # no change

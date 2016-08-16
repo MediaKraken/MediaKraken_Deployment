@@ -18,9 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 #import logging
-import uuid
-import datetime
-import json
 
 
 def srv_db_channel_insert(self, channel_id, channel_name, channel_language,\

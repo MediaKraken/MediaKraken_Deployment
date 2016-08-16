@@ -121,7 +121,7 @@ def srv_db_meta_album_list(self, offset=None, records=None):
             ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name'\
             ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
-        
+
 
 def srv_db_meta_muscian_list(self, offset=None, records=None):
     """

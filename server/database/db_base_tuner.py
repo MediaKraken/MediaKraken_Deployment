@@ -74,4 +74,3 @@ def srv_db_tuner_by_serial(self, serial_no):
         return self.db_cursor.fetchone()
     except:
         return None
-
