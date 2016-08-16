@@ -1,3 +1,7 @@
+"""
+Threads for transfering files
+"""
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import socket
@@ -6,60 +10,69 @@ import struct
 import time
 
 
-def getallbytes(con, bytesLeft):
+def getallbytes(con, bytesleft):
+    """
+    Read bytes in the connection buffer
+    """
     return_buffer = ""
-    while bytesLeft:
-        data = con.recv(bytesLeft)
-        bytesLeft -= len(data)
+    while bytesleft:
+        data = con.recv(bytesleft)
+        bytesleft -= len(data)
         return_buffer += data
     return return_buffer
 
 
 class FileSenderThread(threading.Thread):
-    def __init__(self, targetIP, targetPort, fileNames, fileLocations):
-        self.host = targetIP
-        self.port = targetPort
-        self.fileNames = fileNames
-        self.fileLocations = fileLocations
+    """
+    Thread for sending a file
+    """
+    def __init__(self, targetip, targetport, filenames, filelocations):
+        self.host = targetip
+        self.port = targetport
+        self.filenames = filenames
+        self.filelocations = filelocations
         threading.Thread.__init__(self)
 
 
     def run(self):
         try:
-            clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            clientSocket.settimeout(60.0)
-            clientSocket.connect((self.host, self.port))
-            for fileindex in xrange(0, len(self.fileNames)):
-                data = open(self.fileLocations[fileindex], 'rb').read()
-                logging.debug("fn: %s %s", self.fileNames[fileindex],\
-                    type(self.fileNames[fileindex]))
-                clientSocket.sendall("FILE"+struct.pack("<i256s", len(data),\
-                    str(self.fileNames[fileindex])))
-                for x in xrange(0, (len(data)+1023)/1024):
-                    clientSocket.sendall(data[x*1024:(x+1)*1024])
+            clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            clientsocket.settimeout(60.0)
+            clientsocket.connect((self.host, self.port))
+            for fileindex in xrange(0, len(self.filenames)):
+                data = open(self.filelocations[fileindex], 'rb').read()
+                logging.debug("fn: %s %s", self.filenames[fileindex],\
+                    type(self.filenames[fileindex]))
+                clientsocket.sendall("FILE"+struct.pack("<i256s", len(data),\
+                    str(self.filenames[fileindex])))
+                for ndx in xrange(0, (len(data)+1023)/1024):
+                    clientsocket.sendall(data[ndx*1024:(ndx+1)*1024])
                     time.sleep(0.05)
-            clientSocket.sendall('FEND')
-            clientSocket.close()
+            clientsocket.sendall('FEND')
+            clientsocket.close()
         except socket.error, msg:
             logging.error('Sending files failed. %s', str(msg))
 
 
 class FileReceiverThread(threading.Thread):
+    """
+    Thread for receiving files
+    """
     def __init__(self, receive_port):
         threading.Thread.__init__(self)
-        self.fileDone = 0
-        self.fileSize = 1
+        self.filedone = 0
+        self.filesize = 1
         self.receive_port = receive_port
 
 
     def run(self):
         try:
             logging.debug('Listening for response on port %s', self.receive_port)
-            localSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            localSocket.settimeout(60.0)
-            localSocket.bind(('', self.receive_port))
-            localSocket.listen(1)
-            con, addr = localSocket.accept()
+            localsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            localsocket.settimeout(60.0)
+            localsocket.bind(('', self.receive_port))
+            localsocket.listen(1)
+            con, addr = localsocket.accept()
             logging.debug('Connection address: %s', addr)
             con.settimeout(60.0)
             while True:
@@ -70,24 +83,24 @@ class FileReceiverThread(threading.Thread):
                     break
                 elif data == 'FILE':
                     data = getallbytes(con, 260)
-                    self.fileSize, fileName = struct.unpack("<i256s", data)
-                    fileName = fileName.replace('\0', '')
-                    logging.debug("%s %s", self.fileSize, fileName)
-                    fileName = str(fileName)
-                    logging.debug('fileName %s', fileName)
-                    f = open('../roms/' + fileName, 'wb')
-                    fileLeft = self.fileSize
-                    while fileLeft:
-                        data = con.recv(min(fileLeft, 1024))
-                        fileLeft = max(0, fileLeft - len(data))
-                        self.fileDone = self.fileSize - fileLeft
-                        logging.debug('percent done %s', self.fileDone * 100 / self.fileSize)
-                        f.write(data)
-                    f.close()
+                    self.filesize, filename = struct.unpack("<i256s", data)
+                    filename = filename.replace('\0', '')
+                    logging.debug("%s %s", self.filesize, filename)
+                    filename = str(filename)
+                    logging.debug('filename %s', filename)
+                    file_handle = open('../roms/' + filename, 'wb')
+                    fileleft = self.filesize
+                    while fileleft:
+                        data = con.recv(min(fileleft, 1024))
+                        fileleft = max(0, fileleft - len(data))
+                        self.filedone = self.filesize - fileleft
+                        logging.debug('percent done %s', self.filedone * 100 / self.filesize)
+                        file_handle.write(data)
+                    file_handle.close()
                     logging.debug('file finished')
                 else:
                     raise Exception('ERROR GETTING FILES (NO FILE OR FEND)')
             logging.debug('Finished getting all files!')
-            del localSocket
+            del localsocket
         except socket.error as msg:
             logging.error("Transfer Failed: %s", str(msg))
