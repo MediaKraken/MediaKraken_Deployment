@@ -110,7 +110,7 @@ class CommonDatabaseOctmote(object):
             return None
 
 
-    def com_db_close():
+    def com_db_close(self):
         """
         Close sqlite3 database
         """
