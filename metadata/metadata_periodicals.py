@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import os
 import sys
 sys.path.append("./common")
-from common import common_isbndb
+from common import common_metadata_isbndb
 import ConfigParser
 CONFIG_HANDLE = ConfigParser.ConfigParser()
 CONFIG_HANDLE.read("MediaKraken.ini")
@@ -29,7 +29,7 @@ CONFIG_HANDLE.read("MediaKraken.ini")
 
 if CONFIG_HANDLE.get('API', 'ISBNdb').strip() != 'None':
     # setup the isbndb class
-    ISBNDB_CONNECTION = common_isbndb.com_ISBNdb_API()
+    ISBNDB_CONNECTION = common_metadata_isbndb.CommonMetadataISBNdb()
 else:
     ISBNDB_CONNECTION = None
 
