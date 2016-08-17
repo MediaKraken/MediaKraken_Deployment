@@ -32,7 +32,6 @@ from Queue import Queue
 import hashlib
 SHA1 = hashlib.sha1()
 import os.path
-sys.path.append("./server")
 import database as database_base
 sys.path.append("./common")
 from common import common_file

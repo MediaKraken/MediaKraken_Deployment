@@ -25,7 +25,6 @@ import sys
 import os
 import signal
 sys.path.append("./common")
-sys.path.append("./server")
 from common import common_file
 from common import common_logging
 import database as database_base

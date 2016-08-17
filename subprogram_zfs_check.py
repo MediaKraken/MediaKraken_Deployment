@@ -24,7 +24,6 @@ CONFIG_HANDLE.read("MediaKraken.ini")
 import os
 import sys
 sys.path.append("./common")
-sys.path.append("./server")
 import database as database_base
 from common import common_file
 from common import common_logging

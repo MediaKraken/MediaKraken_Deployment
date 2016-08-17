@@ -22,7 +22,6 @@ import json
 import os
 import sys
 sys.path.append("./common")
-sys.path.append("./server") # for db import
 from common import common_file
 import xmltodict
 

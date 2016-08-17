@@ -35,8 +35,6 @@ try:
 except:
     import pickle
 sys.path.append("./common")
-sys.path.append("./server")
-sys.path.append("./server/metadata")
 import database as database_base
 import metadata_anime
 import metadata_game

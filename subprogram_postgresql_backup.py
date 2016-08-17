@@ -24,7 +24,6 @@ CONFIG_HANDLE.read("MediaKraken.ini")
 import time
 import sys
 import os
-sys.path.append("./server")
 sys.path.append("./common")
 from common import common_cloud
 from common import common_logging

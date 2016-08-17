@@ -7,7 +7,6 @@ import ConfigParser
 CONFIG_HANDLE = ConfigParser.ConfigParser()
 CONFIG_HANDLE.read("MediaKraken.ini")
 import sys
-sys.path.append("./server")
 sys.path.append("./common")
 import common_logging
 import database as database_base

@@ -27,7 +27,6 @@ import signal
 sys.path.append("./common")
 from common import common_logging
 from common import common_hardware_roku
-sys.path.append("./server")
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')

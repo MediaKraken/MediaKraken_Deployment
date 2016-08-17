@@ -19,9 +19,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-sys.path.append("./server") # for db import
 import database as database_base
 
 
@@ -49,8 +46,8 @@ class TestDatabaseMediaImages(object):
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_media_images_list(self, offset, records):
         """
         List images

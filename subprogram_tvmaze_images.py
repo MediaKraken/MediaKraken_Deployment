@@ -26,7 +26,6 @@ import uuid
 import signal
 import json
 import sys
-sys.path.append("./server")
 sys.path.append("./common")
 from common import common_file
 from common import common_logging

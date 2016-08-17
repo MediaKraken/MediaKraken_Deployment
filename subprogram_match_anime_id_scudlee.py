@@ -25,7 +25,6 @@ import sys
 import signal
 import os
 sys.path.append("./common")
-sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_metadata_scudlee

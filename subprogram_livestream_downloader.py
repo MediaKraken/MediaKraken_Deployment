@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 sys.path.append("./common")
-sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_network_twitch

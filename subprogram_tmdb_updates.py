@@ -27,7 +27,6 @@ import signal
 import json
 import uuid
 sys.path.append("./common")
-sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_metadata_tmdb

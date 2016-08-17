@@ -26,7 +26,6 @@ import subprocess
 import signal
 import os
 sys.path.append("./common")
-sys.path.append("./server")
 import common_logging
 import common_watchdog
 rmda_enabled_os = False

@@ -18,9 +18,6 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import sys
-sys.path.append("./common")
-sys.path.append("./server") # for db import
 import database as database_base
 
 
