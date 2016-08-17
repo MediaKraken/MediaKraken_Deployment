@@ -184,7 +184,12 @@ def srv_db_read_tvmetadata_eps_season(self, show_guid):
         '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
         '->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow'\
-        ' where mm_metadata_tvshow_guid = %s) union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))
+        ' where mm_metadata_tvshow_guid = %s)'\
+        ' union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\''\
+        '->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''\
+        '->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow'\
+        ' where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] in season_data:
             if season_data[row_data[0]] < row_data[1]:
@@ -201,7 +206,14 @@ def srv_db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
     episode_data = {}
     self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'\
         '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'name\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Episodes\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json'\
+        '->\'Images\'->\'tvmaze\'->\'Episodes\' from mm_metadata_tvshow'\
+        ' where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] == season_number:
             try:
@@ -219,7 +231,16 @@ def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_numbe
     self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'\
         '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'number\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'name\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'runtime\', jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'summary\' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
+        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','\
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        '->\'_embedded\'->\'episodes\')::jsonb->\'summary\''\
+        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if str(row_data[0]) == season_number and str(row_data[1]) == episode_number:
             # 2 - name
@@ -234,4 +255,5 @@ def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_numbe
 # jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 
 # "last" episode season number from tvmaze
-# mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes'->(jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes') - 1)->'season'
+# mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes'->(jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
+# - 1)->'season'

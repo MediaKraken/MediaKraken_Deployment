@@ -27,10 +27,19 @@ def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
     if list_type == 'TV Show':
         if offset is None:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'\
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
+                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'\
+                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'\
+                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'\
+                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'\
+                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
         else:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'\
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow, mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name) offset %s limit %s', (offset, list_limit))
+                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'\
+                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'\
+                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'\
+                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'\
+                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)'\
+                ' offset %s limit %s', (offset, list_limit))
         return self.db_cursor.fetchall()
     return None
 

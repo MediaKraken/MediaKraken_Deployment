@@ -48,7 +48,8 @@ def srv_db_meta_genre_list_count(self):
     """
     # count all the generes
     """
-    self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::json from mm_metadata_movie')
+    self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
+        '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::json from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
 
@@ -57,9 +58,15 @@ def srv_db_meta_genre_list(self, offset=None, records=None):
     # grab all the generes
     """
     if offset is None:
-        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb')
+        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
+            '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
+            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+            '->\'Meta\'->\'genres\')::jsonb')
     else:
-        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb offset %s limit %s', (offset, records))
+        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
+            '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
+            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+            '->\'Meta\'->\'genres\')::jsonb offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -67,7 +74,11 @@ def srv_db_meta_movie_count_by_genre(self):
     """
     # movie count by genre
     """
-    self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\') from mm_metadata_movie group by gen order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb ')
+    self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\''\
+        '->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''\
+        '->\'TMDB\'->\'Meta\'->\'genres\') from mm_metadata_movie group by gen'\
+        ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'Meta\'->\'genres\')::jsonb ')
     return self.db_cursor.fetchall()
 
     

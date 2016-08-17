@@ -37,5 +37,18 @@ def srv_db_kodi_user_sync(self, synctime):
     # runtime, mpaa, genre, director, title, studio, trailer, country, movieid
     #  crew  \'job\': \'Screenplay\' \'name\',
     #  crew  \'job\': \'Director\', \'name\'
-    self.db_cursor.execute('select mm_media_name, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'overview\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'tagline\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'vote_count\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'vote_average\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Crew\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'release_date\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'imdb_id\', LOWER(mm_media_name), mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'runtime\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'genres\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Crew\', mm_media_name, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'production_companies\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'production_countries\', mm_media_guid from mm_media, mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= %s', (synctime,))
+    self.db_cursor.execute('select mm_media_name, mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'Meta\'->>\'overview\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\''\
+        '->>\'tagline\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'vote_count\','\
+        ' mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->>\'vote_average\','\
+        ' mm_metadata_json->\'Meta\'->\'TMDB\'->\'Crew\', mm_metadata_json->\'Meta\''\
+        '->\'TMDB\'->\'Meta\'->>\'release_date\', mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'Meta\'->>\'imdb_id\', LOWER(mm_media_name), mm_metadata_json->\'Meta\''\
+        '->\'TMDB\'->\'Meta\'->>\'runtime\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'Meta\'->>\'genres\', mm_metadata_json->\'Meta\'->\'TMDB\'->\'Crew\','\
+        ' mm_media_name, mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\''\
+        '->>\'production_companies\', NULL, mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'Meta\'->>\'production_countries\', mm_media_guid from mm_media,'\
+        ' mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'\
+        ' and mm_media_json->>\'DateAdded\' >= %s', (synctime,))
     return self.db_cursor.fetchall()
