@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 from kivy.utils import platform
 # this is for network and rs232 control of Integra/Onkyo receivers
 if platform != 'android':

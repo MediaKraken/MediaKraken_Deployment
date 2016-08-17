@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import os
 import sys
-sys.path.append("../common")
+sys.path.append("./common")
 from common import common_isbndb
 import ConfigParser
 config_handle = ConfigParser.ConfigParser()

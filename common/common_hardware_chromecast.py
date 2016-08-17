@@ -20,7 +20,7 @@
 # https://developers.google.com/cast/docs/media#subtitles--closed-captions
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 import pychromecast
 import pychromecast.controllers.youtube as youtube
 from pychromecast.controllers import BaseController

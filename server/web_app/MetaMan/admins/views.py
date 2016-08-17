@@ -22,7 +22,7 @@ config_handle.read("../MediaKraken.ini")
 
 import pygal
 import json
-import logging
+import logging # pylint: disable=W0611
 import subprocess
 import platform
 import os

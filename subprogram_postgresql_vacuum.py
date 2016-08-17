@@ -2,7 +2,7 @@
 # http://rendykstan.github.io/blog/2013/04/04/postgresql-vacuum-and-analyze-maintenance-and-performance/
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import ConfigParser
 config_handle = ConfigParser.ConfigParser()
 config_handle.read("MediaKraken.ini")

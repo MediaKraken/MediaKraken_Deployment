@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 from twitch.api import v3 as twitch
 #from twitch.scraper import get_json, download
 #from twitch.exceptions import ResourceUnavailableException

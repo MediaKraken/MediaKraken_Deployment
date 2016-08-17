@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 
 
 def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):

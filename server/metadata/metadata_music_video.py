@@ -17,11 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import os
 import json
 import sys
-sys.path.append("../common")
+sys.path.append("./common")
 from common import common_metadata_imvdb
 import ConfigParser
 config_handle = ConfigParser.ConfigParser()
@@ -30,7 +30,8 @@ config_handle.read("MediaKraken.ini")
 
 # verify imvdb key exists
 if config_handle.get('API', 'imvdb').strip() != 'None':
-    imvdb_api_connection = common_metadata_imvdb.com_imvdb_API(config_handle.get('API', 'imvdb').strip())
+    imvdb_api_connection = common_metadata_imvdb.CommonMetadataIMVdb(config_handle.get('API',\
+        'imvdb').strip())
 else:
     imvdb_api_connection = None
 
@@ -42,9 +43,9 @@ def imvdb_lookup(db_connection, file_name):
     """
     # check for same show variables
     if not hasattr(imvdb_lookup, "metadata_last_id"):
-       imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
-       imvdb_lookup.metadata_last_band = None
-       imvdb_lookup.metadata_last_song = None
+        imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        imvdb_lookup.metadata_last_band = None
+        imvdb_lookup.metadata_last_song = None
     # determine names
     band_name, song_name = os.path.splitext(os.path.basename(file_name.lower()))[0].split('-', 1)
     try:
@@ -65,7 +66,7 @@ def imvdb_lookup(db_connection, file_name):
         metadata_uuid = None
     if metadata_uuid is None:
         if imvdb_api_connection is not None:
-            imvdb_json = imvdb_api_connection.com_imvdb_Search_Video(band_name, song_name)
+            imvdb_json = imvdb_api_connection.com_imvdb_search_video(band_name, song_name)
             logging.debug("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:

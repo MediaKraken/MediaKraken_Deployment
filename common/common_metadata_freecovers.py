@@ -22,7 +22,7 @@ Apparenlty their API was disabled a year ago due to abuse
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 import urllib2
 import urllib
 

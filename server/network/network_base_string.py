@@ -17,13 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import json
 import os
 import signal
 import sys
-sys.path.append("../common")
-sys.path.append("../common/lib")
+sys.path.append("./common")
+sys.path.append("./vault/lib")
 import subprocess
 try:
     import cPickle as pickle

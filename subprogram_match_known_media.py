@@ -17,6 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+import logging # pylint: disable=W0611
 # prep totals
 files_to_id = 0
 files_added = 0

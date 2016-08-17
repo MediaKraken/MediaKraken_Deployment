@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import json
 import os
 import sys
-sys.path.append("../common")
-sys.path.append("../server") # for db import
+sys.path.append("./common")
+sys.path.append("./server") # for db import
 from common import common_file
 import xmltodict
 

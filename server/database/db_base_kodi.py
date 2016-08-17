@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 
 
 def srv_db_kodi_user_sync_list_added(self, synctime):

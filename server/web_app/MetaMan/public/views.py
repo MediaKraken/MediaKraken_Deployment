@@ -10,7 +10,7 @@ from MediaKraken.user.models import User
 from MediaKraken.public.forms import LoginForm
 from MediaKraken.user.forms import RegisterForm
 from MediaKraken.utils import flash_errors
-import logging
+import logging # pylint: disable=W0611
 
 # this fixes the login issue!!!!!!!!!!!!!!!!!!!!!!!!!
 #blueprint = Blueprint('public', __name__, url_prefix='/public', static_folder="../static")

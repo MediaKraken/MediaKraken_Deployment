@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import ConfigParser
 config_handle = ConfigParser.ConfigParser()
 config_handle.read("MediaKraken.ini")
@@ -25,7 +25,7 @@ import sys
 sys.path.append("./common")
 sys.path.append("./server")
 from common import common_file
-from common import common_HDHomeRun
+from common import common_hardware_hdhomerun
 from common import common_logging
 from common import common_string
 import os
@@ -83,9 +83,9 @@ else:
 
 tuners_added = 0
 # tuner discovery
-tuner_api = com_HDHomeRun.com_HDHomeRun_API()
-tuner_api.com_HDHomeRun_Discover()
-for row_tuner in tuner_api.com_HDHomeRun_List():
+tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
+tuner_api.com_hdhomerun_discover()
+for row_tuner in tuner_api.com_hdhomerun_list():
     json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
         'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\

@@ -36,7 +36,7 @@
 #rm blacks.txt
 #ffmpeg -f concat -i ace-files.txt -c copy ace.tvshow
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import subprocess
 import os
 import sys

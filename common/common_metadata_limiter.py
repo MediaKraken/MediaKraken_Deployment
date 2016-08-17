@@ -2,7 +2,7 @@
 # http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm/667706#667706
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging
+import logging # pylint: disable=W0611
 import time
 
 

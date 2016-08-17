@@ -21,7 +21,7 @@ Config = ConfigParser.ConfigParser()
 Config.read("../MediaKraken.ini")
 
 import pygal
-import logging
+import logging # pylint: disable=W0611
 import datetime
 import uuid
 import json

@@ -27,7 +27,7 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import logging
+import logging # pylint: disable=W0611
 import sys
 sys.path.append("./common")
 #install_twisted_rector must be called before importing the reactor

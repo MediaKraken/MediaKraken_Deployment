@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging
+import logging # pylint: disable=W0611
 
 
 def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id):
