@@ -40,7 +40,7 @@ class MKServerDatabase(object):
         srv_db_device_delete,\
         srv_db_device_read
     from db_base_download import srv_db_download_insert,\
-        srv_db_download_read_by_provider,\
+        srv_db_download_read_provider,\
         srv_db_download_delete,\
         srv_db_download_update_provider,\
         srv_db_download_update
