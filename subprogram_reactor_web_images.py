@@ -34,7 +34,7 @@ from twisted.internet import ssl
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'Sub_Web_Image', False, False, None)
+common_file.common_file_save_data(pid_file, 'Sub_Web_Image', False, False, None)
 
 
 def signal_receive(signum, frame):

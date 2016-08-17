@@ -43,7 +43,7 @@ or str.upper(sys.platform[0:3]) == 'CYG':
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'Sub_Game_Audit', False, False, None)
+common_file.common_file_save_data(pid_file, 'Sub_Game_Audit', False, False, None)
 
 def signal_receive(signum, frame):
     global global_end_program

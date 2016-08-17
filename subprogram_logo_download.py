@@ -34,7 +34,7 @@ import database as database_base
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'Logo_Downloader', False, False, None)
+common_file.common_file_save_data(pid_file, 'Logo_Downloader', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Logo: Received USR1')

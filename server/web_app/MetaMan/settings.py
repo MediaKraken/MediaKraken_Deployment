@@ -18,7 +18,7 @@ class Config(object):
         pass
     else:
         data = os.urandom(24).encode('hex')
-        common_file.common_file_Save_Data('web_secret_key.txt', data, False)
+        common_file.common_file_save_data('web_secret_key.txt', data, False)
     SECRET_KEY = os_env.get('MEDIAKRAKEN_SECRET',\
         common_file.common_file_Load_Data('web_secret_key.txt', False))
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory

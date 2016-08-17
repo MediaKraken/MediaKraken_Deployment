@@ -34,7 +34,7 @@ import db_base_brainz as database_base_brainz
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_Save_Data(pid_file, 'Musicbrainz_Sync', False, False, None)
+common_file.common_file_save_data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Mbrainz Sync: Received USR1')
