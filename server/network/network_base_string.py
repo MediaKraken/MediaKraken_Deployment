@@ -222,7 +222,7 @@ class NetworkEvents(Int32StringReceiver):
         """
         Send message to single user
         """
-        for user_host_name, protocol in self.users.iteritems():
+        for user_host_name, protocol in self.users.iteritems(): # pylint: disable=W0612
             if protocol == self:
                 logging.debug('send single: %s', message)
                 protocol.sendString(message.encode("utf8"))

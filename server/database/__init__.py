@@ -18,7 +18,7 @@ class MKServerDatabase(object):
         srv_db_audit_path_update_by_uuid,\
         srv_db_audit_path_add,\
         srv_db_audit_path_check,\
-        srv_db_audit_directory_timestamp_update,\
+        srv_db_audit_dir_timestamp_update,\
         srv_db_audit_paths,\
         srv_db_audit_path_delete,\
         srv_db_audit_path_by_uuid
