@@ -74,8 +74,6 @@ def srv_db_meta_person_id_count(self, host_type, guid):
     """
     # does person exist already by host/id
     """
-    #sql_params = host_type, guid
-    #self.db_cursor.execute('select count(*) from mm_metadata_person where mmp_person_media_id @> \'{"Host":%s}\' and mmp_person_meta_json @> \'{"id":%s}\'', sql_params)
     self.db_cursor.execute('select count(*) from mm_metadata_person'\
         ' where mmp_person_media_id @> \'{"Host":"' + host_type\
         + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
@@ -155,7 +153,8 @@ def srv_db_meta_person_as_seen_in(self, person_guid):
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
             'mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\' @> \'[{"id":%s}]\'', sql_params)
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\''\
+            ' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\

@@ -100,6 +100,9 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
 
 
 def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+    """
+    Lookup tv metadata
+    """
     # check for same show variables
     if not hasattr(metadata_tv_lookup, "metadata_last_id"):
         metadata_tv_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it

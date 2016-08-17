@@ -30,7 +30,7 @@ config_handle.read("MediaKraken.ini")
 
 # verify thesportsdb key exists
 if config_handle.get('API', 'thesportsdb').strip() != 'None':
-    thesportsdb_api_connection = common_metadata_thesportsdb.com_meta_thesportsdb_API()
+    thesportsdb_api_connection = common_metadata_thesportsdb.CommonMetadataTheSportsDB()
 else:
     thesportsdb_api_connection = None
 
@@ -43,7 +43,8 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
     metadata_uuid = db_connection.srv_db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and thesportsdb_api_connection is not None:
         logging.debug("searching: %s", stripped_name)
-        thesportsdb_data = thesportsdb_api_connection.com_meta_thesportsdb_Search_Event_by_Name(stripped_name)
+        thesportsdb_data =\
+                thesportsdb_api_connection.com_meta_thesportsdb_search_event_by_name(stripped_name)
         logging.debug("sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
@@ -57,7 +58,7 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
                         'Poster': None, 'Backdrop': None, "Redo": True}}}
                     media_id_json = json.dumps({'thesportsdb':\
                         str(thesportsdb_data['event'][0]['idEvent'])})
-                    db_connection.srv_db_metathesportsdb_Insert(media_id_json,\
+                    db_connection.srv_db_metathesportsdb_insert(media_id_json,\
                         thesportsdb_data['event'][0]['strFilename'], json.dumps(thesportsdb_data),\
                         json.dumps(image_json))
     return metadata_uuid
