@@ -233,5 +233,8 @@ def com_zfs_health_check():
     """
     Health check
     """
-    proc = subprocess.Popen(['zpool', 'list', '-H', '-o', 'health'], stdout=subprocess.PIPE)
-    return proc.stdout.read()
+    try:
+        proc = subprocess.Popen(['zpool', 'list', '-H', '-o', 'health'], stdout=subprocess.PIPE)
+        return proc.stdout.read()
+    except OSError as err_code: # typically program doesn't exist
+        return None
