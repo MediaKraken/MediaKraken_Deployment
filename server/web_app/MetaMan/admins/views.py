@@ -116,7 +116,7 @@ def admins():
                            data_count_matched_media = locale.format('%d', g.db.srv_db_matched_media_count(), True),
                            data_count_streamed_media = locale.format('%d', 0, True),
                            data_zfs_active = common_zfs.com_zfs_Available(),
-                           data_library = locale.format('%d', g.db.srv_db_Audit_Paths_Count(), True),
+                           data_library = locale.format('%d', g.db.srv_db_audit_paths_Count(), True),
                            data_transmission_active = data_transmission_active,
                            data_scan_info = data_scan_info,
                            data_messages = data_messages
@@ -281,13 +281,13 @@ def admin_library():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_Audit_Paths_Count(),
+                                total=g.db.srv_db_audit_paths_Count(),
                                 record_name='library dir(s)',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template("admin/admin_library.html",
-                           media_dir=g.db.srv_db_Audit_Paths(offset, per_page),
+                           media_dir=g.db.srv_db_audit_paths(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

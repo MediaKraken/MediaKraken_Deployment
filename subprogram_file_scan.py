@@ -270,7 +270,7 @@ logging.debug('class: %s', class_text_dict)
 
 # determine directories to audit
 audit_directories = []
-for row_data in db.srv_db_Audit_Paths():
+for row_data in db.srv_db_audit_paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
