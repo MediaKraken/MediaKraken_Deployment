@@ -21,12 +21,12 @@ import logging
 import sys
 import os
 import signal
-sys.path.append("../common")
+sys.path.append("./common")
 from common import common_file
 from common import common_logging
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Sub_Subtitle_Down', False, False, None)
 
 def signal_receive(signum, frame):

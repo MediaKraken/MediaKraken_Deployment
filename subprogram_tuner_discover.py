@@ -22,8 +22,8 @@ import ConfigParser
 config_handle = ConfigParser.ConfigParser()
 config_handle.read("MediaKraken.ini")
 import sys
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_HDHomeRun
 from common import common_logging

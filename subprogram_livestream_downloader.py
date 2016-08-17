@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 import sys
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_Twitch

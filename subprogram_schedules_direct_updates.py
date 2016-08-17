@@ -26,8 +26,8 @@ import os
 import signal
 import json
 import time
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_Schedules_Direct
@@ -36,7 +36,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Schedules Direct Update', False, False, None)
 
 

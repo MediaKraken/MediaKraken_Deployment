@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import socket
 import sys
-sys.path.append("../MediaKraken_Common")
+sys.path.append("./common")
 from common import common_logging
 from common import common_network
 import ConfigParser

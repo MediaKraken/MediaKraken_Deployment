@@ -25,15 +25,15 @@ import sys
 import os
 import signal
 import json
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 import database as database_base
 import db_base_brainz as database_base_brainz
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
 def signal_receive(signum, frame):

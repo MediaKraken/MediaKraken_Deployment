@@ -29,8 +29,8 @@ import xmltodict
 import zipfile
 import zlib
 import time
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_metadata_thetvdb
@@ -40,7 +40,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'TheTVDB Update', False, False, None)
 
 def signal_receive(signum, frame):

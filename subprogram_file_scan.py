@@ -23,8 +23,8 @@ import ConfigParser
 config_handle = ConfigParser.ConfigParser()
 config_handle.read("MediaKraken.ini")
 import sys
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_cifs
 from common import common_ffmpeg
 from common import common_file

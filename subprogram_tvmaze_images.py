@@ -26,8 +26,8 @@ import uuid
 import signal
 import json
 import sys
-sys.path.append("../server")
-sys.path.append("../common")
+sys.path.append("./server")
+sys.path.append("./common")
 from common import common_file
 from common import common_logging
 from common import common_metadata
@@ -38,7 +38,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'tvmaze_Images_Known', False, False, None)
 
 

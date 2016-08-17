@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import sys
 import os
 import signal
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_network
 import database as database_base
@@ -29,7 +29,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'IGDB_Downloader', False, False, None)
 
 def signal_receive(signum, frame):

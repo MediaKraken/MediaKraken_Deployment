@@ -25,8 +25,8 @@ import sys
 import os
 import signal
 import json
-sys.path.append("../MediaKraken_Common")
-sys.path.append("../MediaKraken_Server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_metadata_tvmaze
@@ -35,7 +35,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'tvmaze Update', False, False, None)
 
 

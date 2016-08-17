@@ -28,9 +28,9 @@ from twisted.internet.protocol import Factory
 import sys
 sys.path.append("./network")
 from server import network_base_string as network_base
-sys.path.append("../database")
+sys.path.append("./database")
 from server import database as database_base
-sys.path.append("../common")
+sys.path.append("./common")
 from common import common_file
 from common import common_logging
 from time import time

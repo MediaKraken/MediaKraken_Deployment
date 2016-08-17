@@ -25,8 +25,8 @@ import sys
 import json
 import signal
 import os
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_logging
 from common import common_metadata
@@ -37,7 +37,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Sub_Collection', False, False, None)
 
 def signal_receive(signum, frame):

@@ -21,8 +21,8 @@ import logging
 import sys
 import os
 import signal
-sys.path.append("../common")
-sys.path.append("../server")
+sys.path.append("./common")
+sys.path.append("./server")
 from common import common_file
 from common import common_chart_lyrics
 import common_logging
@@ -31,7 +31,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
-pid_file = '../pid/' + str(os.getpid())
+pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Sub_Lyrics_Downloader', False, False, None)
 
 def signal_receive(signum, frame):

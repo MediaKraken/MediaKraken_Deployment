@@ -22,6 +22,7 @@ import shutil
 import sys
 import os
 
+
 # generate key
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     proc = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
