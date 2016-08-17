@@ -32,6 +32,9 @@ def com_net_ircc_discover():
 
 
 def com_net_ircc_found_device(ircc_device):
+    """
+    Found ircc device
+    """
     pass
 
 
