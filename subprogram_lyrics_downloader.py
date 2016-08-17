@@ -24,7 +24,7 @@ import signal
 sys.path.append("./common")
 sys.path.append("./server")
 from common import common_file
-from common import common_chart_lyrics
+from common import common_metadata_chart_lyrics
 import common_logging
 import database as database_base
 import locale

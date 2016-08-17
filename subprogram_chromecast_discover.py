@@ -24,7 +24,7 @@ config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("./common")
 sys.path.append("./server")
-from common import common_Chromecast
+from common import common_hardware_chromecast
 from common import common_file
 from common import common_logging
 from common import common_string
@@ -85,16 +85,16 @@ devices_added = 0
 
 
 # look for devices
-chrome = common_chromecast.com_Chromecast_API()
+chrome = common_hardware_chromecast.CommonHardwareChromecast()
 logging.debug("Chrome: %s", chrome)
 for row_data in chrome.com_chromecast_discover_dict():
     logging.debug("Dict: %s", row_data)
-    chrome.com_chromecast_Connect_by_Name(row_data)
+    chrome.com_chromecast_connect_by_name(row_data)
     logging.debug("Connected!")
     cast_json = chrome.com_chromecast_info()
     logging.debug("Cast: %s", cast_json)
     print("status: %s", chrome.com_chromecast_status())
-    db.srv_db_Device_Insert('cast', json.dumps({cast_json}))
+    db.srv_db_device_insert('cast', json.dumps({cast_json}))
 
 
 if devices_added > 0:

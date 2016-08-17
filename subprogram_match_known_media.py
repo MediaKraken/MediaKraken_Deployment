@@ -42,7 +42,7 @@ for row_data in db.srv_db_known_media_all_unmatched():
         logging.debug("update: %s %s", row_data['mm_media_guid'], metadata_uuid)
         db.srv_db_update_media_id(row_data['mm_media_guid'], metadata_uuid)
         files_added += 1
-    db.srv_db_Option_Status_Update_Scan_Json(json.dumps({'Status': 'Media lookup: '
+    db.srv_db_option_status_update_scan_json(json.dumps({'Status': 'Media lookup: '
         + locale.format('%d', files_to_id, True) + ' / '\
         + locale.format('%d', total_media_to_match, True),\
         'Pct': (files_to_id / total_media_to_match) * 100}))

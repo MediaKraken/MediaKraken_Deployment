@@ -86,7 +86,7 @@ def movie_fetch_save(tmdb_id):
     metadata_uuid = None
     logging.debug("fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
-    result_json = tmdb.com_tmdb_Metadata_by_ID(tmdb_id)
+    result_json = tmdb.com_tmdb_metadata_by_id(tmdb_id)
     if result_json is not None:
         logging.debug("here I am")
         series_id_json, result_json, image_json = tmdb.com_tmdb_metadata_info_build(result_json)
@@ -120,7 +120,7 @@ def movie_fetch_save(tmdb_id):
 
 
 # grab the updated data
-tmdb = com_TMDB.com_metadata_tmdb_API()
+tmdb = common_metadata_tmdb.CommonMetadataTMDB()
 for movie_change in tmdb.com_tmdb_metadata_changes_movie()['results']:
     logging.debug("mov: %s", movie_change['id'])
     movie_fetch_save(movie_change['id'])

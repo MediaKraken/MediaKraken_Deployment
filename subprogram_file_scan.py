@@ -128,7 +128,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     if dir_path[:1] == "\\":
         file_data = []
         smb_stuff = common_cifs.com_cifs_Share_API()
-        addr, share, path = common_string.UNC_To_Addr_Share_Path(dir_path)
+        addr, share, path = common_string.com_string_unc_to_addr_path(dir_path)
         smb_stuff.com_cifs_Connect(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
@@ -136,7 +136,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                     + '\\' + file_name)
         smb_stuff.com_cifs_Close()
     else:
-        file_data = common_file.com_file_Dir_List(dir_path, None, True, False)
+        file_data = common_file.com_file_dir_list(dir_path, None, True, False)
     total_file_in_dir = len(file_data)
     total_scanned = 0
     for file_name in file_data:

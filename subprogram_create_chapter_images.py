@@ -130,7 +130,7 @@ else:
 
 # begin the media match on NULL matches
 file_list = []
-for row_data in db.srv_db_known_media_Chapter_Scan():
+for row_data in db.srv_db_known_media_chapter_scan():
     # from query 0-mm_media_guid, 1-mm_media_json, 2-mm_media_ffprobe_json, 3-mm_media_path
     # loop through ffprobe json chapter data
     if row_data['mm_media_ffprobe_json'] is not None:

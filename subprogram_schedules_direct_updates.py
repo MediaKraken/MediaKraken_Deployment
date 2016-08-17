@@ -60,7 +60,7 @@ else:
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.debug("array: %s", meta_program_fetch)
-    meta_program_json = sd.com_Schedules_Direct_Program_Info(json.dumps(meta_program_fetch))
+    meta_program_json = sd.com_schedules_direct_program_info(json.dumps(meta_program_fetch))
     logging.debug("result: %s", meta_program_json)
 #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
@@ -85,7 +85,7 @@ db.srv_db_activity_insert('MediaKraken_Server Schedules Direct Update Start', No
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
-sd = com_Schedules_Direct.com_Schedules_Direct_API()
+sd = com_schedules_direct.CommonSchedulesDirect()
 sd.com_schedules_direct_login(config_handle.get('SD', 'User').strip(),\
     config_handle.get('SD', 'Password').strip())
 status_data = sd.com_schedules_direct_status()
@@ -141,7 +141,7 @@ meta_program_fetch = []
 if len(station_fetch) > 5000:
     logging.critical("Too many channels!!!!  Exiting...")
 elif len(station_fetch > 0:
-    schedule_json = sd.com_Schedules_Direct_Schedules_by_StationID(json.dumps(station_fetch))
+    schedule_json = sd.com_schedules_direct_schedules_by_stationid(json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
         # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15', u'modified': u'2016-06-14T23:07:05Z', u'md5': u'2aEwFuhZCqJSHKabBbR/Sg'}, 

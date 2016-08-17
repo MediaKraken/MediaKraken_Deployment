@@ -26,7 +26,7 @@ sys.path.append("./server")
 sys.path.append("./common")
 from common import common_file
 from common import common_logging
-from common import common_network_Radio
+from common import common_network_radio
 import os
 import signal
 import database as database_base
@@ -76,7 +76,7 @@ db.srv_db_activity_insert('MediaKraken_Server iRadio Start', None,\
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
-    db.srv_db_iRadio_Insert(row_data)
+    db.srv_db_iradio_insert(row_data)
 
 #radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 

@@ -28,7 +28,7 @@ from common import common_file
 from common import common_logging
 from common import common_metadata
 from common import common_network
-from common import common_thelogodb
+from common import common_metadata_thelogodb
 import database as database_base
 
 

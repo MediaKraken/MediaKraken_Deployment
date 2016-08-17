@@ -28,7 +28,7 @@ sys.path.append("./common")
 sys.path.append("./server")
 from common import common_file
 from common import common_logging
-from common import common_Scudlee
+from common import common_metadata_scudlee
 import database as database_base
 
 # create the file for pid
@@ -79,9 +79,9 @@ def store_update_record(db_connection, collection_name, guid_list):
         db.srv_db_collection_update(collection_guid, guid_list)
 
 # check for new scudlee download
-com_Scudlee.mk_scudlee_fetch_xml()
+com_scudlee.mk_scudlee_fetch_xml()
 # begin the media match on NULL matches
-for row_data in com_Scudlee.mk_scudlee_anime_list_parse():
+for row_data in com_scudlee.mk_scudlee_anime_list_parse():
     logging.debug("row: %s", row_data)
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
@@ -94,7 +94,7 @@ for row_data in com_Scudlee.mk_scudlee_anime_list_parse():
                 row_data[2], row_data[0])
 
 # begin the collections match/create/update
-for row_data in com_Scudlee.mk_scudlee_anime_set_parse():
+for row_data in com_scudlee.mk_scudlee_anime_set_parse():
     #db.srv_db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
     if row_data[1] == "music video":
         pass

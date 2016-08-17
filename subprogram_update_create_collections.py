@@ -76,7 +76,7 @@ else:
 # verify themovietb key exists
 if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
-    TMDB_API_Connection = common_metadata_tmdb.com_metadata_tmdb_API()
+    TMDB_API_Connection = common_metadata_tmdb.CommonMetadataTMDB()
 else:
     TMDB_API_Connection = None
     logging.critical("themoviedb API not available. Exiting program...")
@@ -92,7 +92,7 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path, 
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_API_Connection.com_tmdb_Metadata_Collection_by_ID(collection_id)
+        collection_meta = TMDB_API_Connection.com_tmdb_metadata_collection_by_id(collection_id)
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
