@@ -178,13 +178,13 @@ def admin_cron_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_Cron_List_Count(False),
+                                total=g.db.srv_db_cron_list_Count(False),
                                 record_name='Cron Jobs',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('admin/admin_cron.html',
-                           media_cron=g.db.srv_db_Cron_List(False, offset, per_page),
+                           media_cron=g.db.srv_db_cron_list(False, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

@@ -77,7 +77,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 # start loop for cron checks
 pid_dict = {}
 while 1:
-    for row_data in db.srv_db_Cron_List(True):  # only grab enabled ones
+    for row_data in db.srv_db_cron_list(True):  # only grab enabled ones
         # place holders for pid
         if row_data['mm_cron_name'] in pid_dict:
             pass
