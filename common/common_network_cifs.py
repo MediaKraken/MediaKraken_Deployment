@@ -144,7 +144,7 @@ class CommonCIFSShare(object):
         yield file_path, dirs, nondirs
         for name in dirs:
             new_path = file_path + '\\' + name
-            for ndx in self.com_cifs_Walk(share_name, new_path):
+            for ndx in self.com_cifs_walk(share_name, new_path):
                 yield ndx
 
 #    ans = com_cifs_Walk(conn, 'SHARE_FOLDER',file_path= '/')
