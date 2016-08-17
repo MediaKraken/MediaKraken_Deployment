@@ -28,7 +28,7 @@ def com_tvtheme_download(media_name):
     Try to grab theme from tvtunes
     """
     data = BeautifulSoup(common_network.mk_network_fetch_from_url("http://www.televisiontunes.com/"\
-            + com_tmdb_metadata.com_string_title(media_name).replace(' ','_')\
+            + common_string.com_string_title(media_name).replace(' ', '_')\
             + ".html", None)).find(id="download_song")
     if data is not None:
         logging.debug('href: %s', data['href'])
