@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_kodi_user_sync_list_added(self, synctime):
+def srv_db_kodi_user_sync_added(self, synctime):
     """
     List of new items by date
     """
