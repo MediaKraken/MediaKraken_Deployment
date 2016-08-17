@@ -9,7 +9,7 @@ config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("./server")
 sys.path.append("./common")
-import MK_Commong_Logging
+import common_logging
 import database as database_base
 
 
