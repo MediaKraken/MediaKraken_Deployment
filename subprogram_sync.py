@@ -130,7 +130,7 @@ else:
 
 
 # switched to this since tracebacks work this method
-sync_data = db.srv_db_Sync_List()
+sync_data = db.srv_db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
