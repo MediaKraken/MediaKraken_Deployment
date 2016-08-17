@@ -20,9 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import uuid
 import os
-import sys
-sys.path.append("./common")
-from . import common_hash
+from common import common_hash
 from . import metadata_anime
 from . import metadata_game
 from . import metadata_movie

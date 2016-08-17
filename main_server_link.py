@@ -32,7 +32,6 @@ try:
 except:
     import pickle
 import sys
-sys.path.append("./common")
 from common import common_logging
 from common import common_system
 import database as database_base

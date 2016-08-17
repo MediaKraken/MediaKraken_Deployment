@@ -22,9 +22,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 import pytest
-import sys
-sys.path.append("./common")
-import common_hardware
+from common import common_hardware
 
 
 # turn on accelerometer

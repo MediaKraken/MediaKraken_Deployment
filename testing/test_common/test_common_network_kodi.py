@@ -19,9 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-import common_network_kodi
+from common import common_network_kodi
 
 
 # send commands to kodi via raw tcp and json

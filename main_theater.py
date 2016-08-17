@@ -29,7 +29,6 @@ except:
     import pickle
 import logging # pylint: disable=W0611
 import sys
-sys.path.append("./common")
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder

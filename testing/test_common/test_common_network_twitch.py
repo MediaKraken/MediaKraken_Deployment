@@ -19,9 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-import common_network_twitch
+from common import common_network_twitch
 
 
 class TestCommonTwitch(object):
@@ -29,7 +27,7 @@ class TestCommonTwitch(object):
 
     @classmethod
     def setup_class(self):
-        self.twitch_connection = common_network_Twitch.com_Twitch_API()
+        self.twitch_connection = common_network_twitch.com_Twitch_API()
 
 
     @classmethod
@@ -41,19 +39,19 @@ class TestCommonTwitch(object):
         (0),
         (5)])
     def test_com_Twitch_Get_All_Streams(self, stream_limit):
-        self.twitch_connection.com_Twitch_Get_All_Streams(stream_limit)
+        self.twitch_connection.com_twitch_get_all_streams(stream_limit)
 
 
     def test_com_Twitch_Get_Featured_Streams(self):
-        self.twitch_connection.com_Twitch_Get_Featured_Streams()
+        self.twitch_connection.com_twitch_get_featured_streams()
 
 
     def test_com_Twitch_Get_Summary(self):
-        self.twitch_connection.com_Twitch_Get_Summary()
+        self.twitch_connection.com_twitch_get_summary()
 
 
     def test_com_Twitch_Get_Summary_Viewers(self):
-        self.twitch_connection.com_Twitch_Get_Summary_Viewers()
+        self.twitch_connection.com_twitch_get_summary_viewers()
 
 
 #    def com_Twitch_Channel_by_User(self, user_name):

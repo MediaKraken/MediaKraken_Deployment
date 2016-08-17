@@ -21,8 +21,6 @@ import logging # pylint: disable=W0611
 import json
 import os
 import signal
-import sys
-sys.path.append("./common")
 sys.path.append("./vault/lib")
 import subprocess
 try:

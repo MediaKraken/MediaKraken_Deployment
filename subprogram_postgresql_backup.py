@@ -22,9 +22,7 @@ import ConfigParser
 CONFIG_HANDLE = ConfigParser.ConfigParser()
 CONFIG_HANDLE.read("MediaKraken.ini")
 import time
-import sys
 import os
-sys.path.append("./common")
 from common import common_cloud
 from common import common_logging
 import database as database_base

@@ -24,7 +24,6 @@ from plyer import uniqueid
 import json
 import sys
 import os
-sys.path.append("../common")
 from common import common_database_octmote
 from common import common_iscp
 from common import common_lirc

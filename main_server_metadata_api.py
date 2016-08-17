@@ -34,7 +34,6 @@ try:
     import cPickle as pickle
 except:
     import pickle
-sys.path.append("./common")
 import database as database_base
 import metadata_anime
 import metadata_game

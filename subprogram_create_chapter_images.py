@@ -27,7 +27,6 @@ import uuid
 import signal
 import subprocess
 import os
-sys.path.append("./common")
 from common import common_file
 from common import common_logging
 from common import common_metadata

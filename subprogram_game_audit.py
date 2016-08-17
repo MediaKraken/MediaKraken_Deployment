@@ -33,7 +33,6 @@ import hashlib
 SHA1 = hashlib.sha1()
 import os.path
 import database as database_base
-sys.path.append("./common")
 from common import common_file
 import pylzma
 if str.upper(sys.platform[0:3]) == 'WIN' \

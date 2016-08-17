@@ -19,10 +19,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-import com_MediaKraken
+from common import common_medialkraken
 
 
 def test_common_network_mediakraken_find_server():
-    common_network_MediaKraken_Find_Server()
+    common_network_mediakraken_find_server()

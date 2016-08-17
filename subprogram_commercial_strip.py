@@ -42,7 +42,6 @@ import os
 import sys
 import getopt
 import sys
-sys.path.append("./common")
 from common import common_logging
 
 

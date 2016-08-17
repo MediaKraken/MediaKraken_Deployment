@@ -25,9 +25,8 @@ import sys
 import subprocess
 import signal
 import os
-sys.path.append("./common")
-import common_logging
-import common_watchdog
+from common import common_logging
+from common import common_watchdog
 rmda_enabled_os = False
 try:
     from common import common_rmda

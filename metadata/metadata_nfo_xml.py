@@ -20,8 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import json
 import os
-import sys
-sys.path.append("./common")
 from common import common_file
 import xmltodict
 

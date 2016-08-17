@@ -29,7 +29,6 @@ import xmltodict
 import zipfile
 import zlib
 import time
-sys.path.append("./common")
 from common import common_file
 from common import common_logging
 from common import common_metadata_thetvdb

@@ -33,8 +33,7 @@ try:
 except:
     import pickle
 import sys
-sys.path.append("./common")
-from common import common_logging
+from common from common import common_logging
 from common import common_system
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl

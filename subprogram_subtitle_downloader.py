@@ -21,7 +21,6 @@ import logging # pylint: disable=W0611
 import sys
 import os
 import signal
-sys.path.append("./common")
 from common import common_file
 from common import common_logging
 

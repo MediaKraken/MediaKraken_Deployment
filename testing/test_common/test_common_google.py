@@ -18,6 +18,4 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-import common_google
+from common import common_google

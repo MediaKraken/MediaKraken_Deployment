@@ -19,9 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
-import sys
-sys.path.append("./common")
-import common_metadata_anidb
+from common import common_metadata_anidb
 
 
 class TestCommonMetadataAnidb(object):
