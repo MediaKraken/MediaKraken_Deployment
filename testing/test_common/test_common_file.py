@@ -47,8 +47,8 @@ def test_common_file_modification_timestamp(file_name):
     ('./cache/Test6_Pickle.txt', ("Test4", "Test5"), True, True, None),
     ('./cache/Test7_Pickle.txt', ("Test4", "Test5"), True, False, ".pickle"),
     ('./cache/Test8_Pickle.txt', ("Test4", "Test5"), False, True, ".dat")])
-def test_common_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext):
-    common_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext)
+def test_com_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext):
+    com_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext)
 
 
 # load file as data

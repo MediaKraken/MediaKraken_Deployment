@@ -33,7 +33,7 @@ import database as database_base
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'Sub_Anime_Match', False, False, None)
+common_file.com_file_save_data(pid_file, 'Sub_Anime_Match', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Anime: Received USR1')

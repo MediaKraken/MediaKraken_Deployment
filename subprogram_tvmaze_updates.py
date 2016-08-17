@@ -36,7 +36,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'tvmaze Update', False, False, None)
+common_file.com_file_save_data(pid_file, 'tvmaze Update', False, False, None)
 
 
 def signal_receive(signum, frame):

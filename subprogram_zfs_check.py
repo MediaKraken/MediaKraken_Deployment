@@ -32,7 +32,7 @@ from common import common_zfs
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'ZFS_Health_Scan', False, False, None)
+common_file.com_file_save_data(pid_file, 'ZFS_Health_Scan', False, False, None)
 
 def signal_receive(signum, frame):
     global global_end_program

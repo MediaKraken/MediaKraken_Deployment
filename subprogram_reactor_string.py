@@ -41,7 +41,7 @@ import signal
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'Sub_Reactor_String', False, False, None)
+common_file.com_file_save_data(pid_file, 'Sub_Reactor_String', False, False, None)
 
 
 def signal_receive(signum, frame):

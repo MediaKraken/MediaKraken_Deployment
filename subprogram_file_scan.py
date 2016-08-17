@@ -95,7 +95,7 @@ media_extension_skip_ffmpeg = [
 
 # create the file for pid
 pid_file = './pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'Sub_File_Scan', False, False, None)
+common_file.com_file_save_data(pid_file, 'Sub_File_Scan', False, False, None)
 
 
 # start logging

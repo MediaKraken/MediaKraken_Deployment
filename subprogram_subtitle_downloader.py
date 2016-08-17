@@ -27,7 +27,7 @@ from common import common_logging
 
 # create the file for pid
 pid_file = '../pid/' + str(os.getpid())
-common_file.common_file_save_data(pid_file, 'Sub_Subtitle_Down', False, False, None)
+common_file.com_file_save_data(pid_file, 'Sub_Subtitle_Down', False, False, None)
 
 def signal_receive(signum, frame):
     print('CHILD Subtitle: Received USR1')
