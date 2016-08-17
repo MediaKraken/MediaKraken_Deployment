@@ -38,10 +38,16 @@ class CommonHardwareHDHomeRun(object):
 
 
     def com_hdhomerun_list(self):
+        """
+        List found devices
+        """
         return self.devices
 
 
     def com_hdhomerun_detail(self, ndx):
+        """
+        Detail on specified device
+        """
         print('Model: %s', self.devices[ndx].get_var(item='/sys/model'))
         print('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel'))
         print('Name: %s', self.devices[ndx].get_name())

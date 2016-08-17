@@ -56,7 +56,8 @@ def srv_db_pgsql_vacuum_stat_by_day(self, days=1):
             ' AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze'\
             ' OR last_analyze is null) AND last_autoanalyze < now() - interval %s)'\
             ' OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null)'\
-            ' AND last_analyze < now() - interval %s));', [str(days) + ' day', str(days) + ' day'])
+            ' AND last_analyze < now() - interval %s));', [str(days) + ' day',\
+            + str(days) + ' day'])
     return self.db_cursor.fetchall()
 
 

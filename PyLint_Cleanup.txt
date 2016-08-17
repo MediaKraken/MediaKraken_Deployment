@@ -9,3 +9,4 @@ tmdb_api_connection/TMDB_CONNECTION
 isbndb_api_connection/ISBNDB_CONNECTION
 imvdb_api_connection/IMVDB_CONNECTION
 srv_db_download_update_Provider/srv_db_download_update_provider
+com_thetvdb_Search/com_thetvdb_search

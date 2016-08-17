@@ -52,7 +52,7 @@ def srv_db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_
     """
     self.db_cursor.execute('select mm_status_json from mm_options_and_status')
     status_json = self.db_cursor.fetchone()['mm_status_json'] # will always have the one record
-    status_json.update({'Scan':{dir_path:{'Status':scan_status, 'Pct': scan_percent}}})
+    status_json.update({'Scan': {dir_path: {'Status': scan_status, 'Pct': scan_percent}}})
 
 # how about have the status on the lib record itself
 # then in own thread....no, read to update....just update
