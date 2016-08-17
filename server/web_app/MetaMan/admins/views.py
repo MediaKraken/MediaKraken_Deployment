@@ -509,13 +509,13 @@ def admin_server_link_server():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.srv_db_Link_List_Count(),
+                                total=g.db.srv_db_link_list_Count(),
                                 record_name='linked servers',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template("admin/admin_link.html",
-                           data=g.db.srv_db_Link_List(offset, per_page),
+                           data=g.db.srv_db_link_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination)

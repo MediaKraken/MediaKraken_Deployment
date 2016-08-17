@@ -183,7 +183,7 @@ logging.info("API PID: %s", proc_api.pid)
 
 # fire up link servers
 link_pid = {}
-for link_data in db.srv_db_Link_List():
+for link_data in db.srv_db_link_list():
     proc_link = subprocess.Popen(['python', 'main_server_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
