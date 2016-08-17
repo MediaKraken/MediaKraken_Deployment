@@ -22,7 +22,7 @@ from . import common_google
 import youtube_dl
 
 
-def com_net_youtube_fetch_video_by_url(url_location, file_name):
+def com_net_yt_fetch_video_by_url(url_location, file_name):
     """
     # fetch video via youtube-dl
     """
@@ -32,7 +32,7 @@ def com_net_youtube_fetch_video_by_url(url_location, file_name):
         ydl.download([url_location])
 
 
-def com_net_youtube_fetch_video_list(search_string, max_files):
+def com_net_yt_fetch_video_list(search_string, max_files):
     """
     # fetch youtube trailers for title
     """
