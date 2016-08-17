@@ -27,7 +27,7 @@ from twisted.internet import protocol
 from twisted.internet.protocol import Factory
 import sys
 sys.path.append("./network")
-import network_base_string as network_base
+from server import network_base_string as network_base
 sys.path.append("../server")
 import database as database_base
 sys.path.append("../common")
