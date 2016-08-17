@@ -172,19 +172,19 @@ else:
 
 
 # fire up trigger procress
-proc_trigger = subprocess.Popen(['python', 'main_trigger.py'], shell=False)
+proc_trigger = subprocess.Popen(['python', 'main_server_trigger.py'], shell=False)
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
 # fire up api server
-proc_api = subprocess.Popen(['python', 'main_api.py'], shell=False)
+proc_api = subprocess.Popen(['python', 'main_server_api.py'], shell=False)
 logging.info("API PID: %s", proc_api.pid)
 
 
 # fire up link servers
 link_pid = {}
 for link_data in db.srv_db_Link_List():
-    proc_link = subprocess.Popen(['python', 'main_link.py', link_data[2]['IP'],\
+    proc_link = subprocess.Popen(['python', 'main_server_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
