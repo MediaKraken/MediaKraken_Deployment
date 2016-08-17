@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 import sys
 sys.path.append("./common")
 sys.path.append("./server")
@@ -54,11 +54,11 @@ def signal_receive(signum, frame):
 def worker(row_data):
     logging.debug("row: %s", row_data)
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
     ffmpeg_params = ['ffmpeg', '-i', thread_db.srv_db_media_path_by_uuid(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
@@ -109,11 +109,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start

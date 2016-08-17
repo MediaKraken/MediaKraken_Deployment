@@ -21,8 +21,8 @@ __version__ = '0.1.6'
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken_Slave.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken_Slave.ini")
 import os
 import platform
 import subprocess
@@ -153,8 +153,8 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL(self.config_handle.get('MediaKrakenServer', 'Host').strip(),\
-            int(self.config_handle.get('MediaKrakenServer', 'Port').strip()),\
+        reactor.connectSSL(self.CONFIG_HANDLE.get('MediaKrakenServer', 'Host').strip(),\
+            int(self.CONFIG_HANDLE.get('MediaKrakenServer', 'Port').strip()),\
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 

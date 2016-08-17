@@ -18,7 +18,7 @@ from MediaKraken.admins.forms import AdminSettingsForm
 
 import ConfigParser
 Config = ConfigParser.ConfigParser()
-config_handle.read("../MediaKraken.ini")
+CONFIG_HANDLE.read("../MediaKraken.ini")
 
 import pygal
 import json
@@ -105,7 +105,7 @@ def admins():
                            data_user_count = locale.format('%d', g.db.srv_db_User_List_Name_Count(), True),
                            data_server_info_server_name = data_server_info_server_name,
                            data_server_info_server_ip = nic_data,
-                           data_server_info_server_port = config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
+                           data_server_info_server_port = CONFIG_HANDLE.get('MediaKrakenServer', 'ListenPort').strip(),
                            data_server_info_server_ip_external = outside_ip,
                            data_server_info_server_version = '0.1.4',
                            data_server_uptime = common_system.com_system_Uptime(),
@@ -422,7 +422,7 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_Dir_List(config_handle.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
+    for backup_local in common_file.com_file_Dir_List(CONFIG_HANDLE.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.com_cloud_Backup_List():
@@ -638,11 +638,11 @@ def admin_fs_browse(path):
 @blueprint.before_request
 def before_request():
     g.db = database_base.MKServerDatabase()
-    g.db.srv_db_open(config_handle.get('DB Connections','PostDBHost').strip(),\
-        config_handle.get('DB Connections','PostDBPort').strip(),\
-        config_handle.get('DB Connections','PostDBName').strip(),\
-        config_handle.get('DB Connections','PostDBUser').strip(),\
-        config_handle.get('DB Connections','PostDBPass').strip())
+    g.db.srv_db_open(CONFIG_HANDLE.get('DB Connections','PostDBHost').strip(),\
+        CONFIG_HANDLE.get('DB Connections','PostDBPort').strip(),\
+        CONFIG_HANDLE.get('DB Connections','PostDBName').strip(),\
+        CONFIG_HANDLE.get('DB Connections','PostDBUser').strip(),\
+        CONFIG_HANDLE.get('DB Connections','PostDBPass').strip())
 
 
 @blueprint.teardown_request

@@ -23,11 +23,11 @@ import sys
 sys.path.append("./common")
 from common import common_metadata_musicbrainz
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 
 
-if config_handle.get('API', 'MediaBrainz').strip() != 'None':
+if CONFIG_HANDLE.get('API', 'MediaBrainz').strip() != 'None':
     # setup the mediabrainz class
     mbrainz_api_connection = common_metadata_musicbrainz.com_Musicbrainz_API()
 else:

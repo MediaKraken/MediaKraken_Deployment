@@ -26,9 +26,9 @@ from . import common_network
 
 
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
-base_image_path = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
+base_image_path = CONFIG_HANDLE.get('MediaKrakenServer', 'MetadataImageLocal').strip()
 if base_image_path.endswith('/'):
     pass
 else:

@@ -23,15 +23,15 @@ import sys
 sys.path.append("./common")
 from common import common_isbndb
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 
 
-if config_handle.get('API', 'ISBNdb').strip() != 'None':
+if CONFIG_HANDLE.get('API', 'ISBNdb').strip() != 'None':
     # setup the isbndb class
-    isbndb_api_connection = common_isbndb.com_ISBNdb_API()
+    ISBNDB_CONNECTION = common_isbndb.com_ISBNdb_API()
 else:
-    isbndb_api_connection = None
+    ISBNDB_CONNECTION = None
 
 
 def metadata_periodicals_lookup(db_connection, media_file_path, download_que_id):
@@ -48,8 +48,8 @@ def metadata_periodicals_lookup(db_connection, media_file_path, download_que_id)
     if metadata_uuid is None:
         lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
         metadata_uuid = db_connection.srv_db_metabook_guid_by_name(lookup_name)
-        if metadata_uuid is None and isbndb_api_connection is not None:
-            json_data = isbndb_api_connection.com_ISBNdb_Books(lookup_name)
+        if metadata_uuid is None and ISBNDB_CONNECTION is not None:
+            json_data = ISBNDB_CONNECTION.com_ISBNdb_Books(lookup_name)
             if json_data is None or 'error' in json_data:
                 logging.error("isbn book error: %s", json_data)
             else:

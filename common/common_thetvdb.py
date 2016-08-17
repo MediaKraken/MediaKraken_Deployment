@@ -32,10 +32,10 @@ class CommonTheTVDB(object):
     """
     def __init__(self):
         import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+        CONFIG_HANDLE = ConfigParser.ConfigParser()
+        CONFIG_HANDLE.read("MediaKraken.ini")
         # setup connection
-        self.tvdb_connection = api.TVDB(config_handle.get('API', 'theTVdb').strip(), actors=True,\
+        self.tvdb_connection = api.TVDB(CONFIG_HANDLE.get('API', 'theTVdb').strip(), actors=True,\
             ignore_case=True)
 
 
@@ -47,7 +47,7 @@ class CommonTheTVDB(object):
             show_title, show_language))
 
 
-    def com_thetvdb_Search(self, show_title, show_year, show_id, show_language, save_db=True):
+    def com_thetvdb_search(self, show_title, show_year, show_id, show_language, save_db=True):
         """
         # search for show
         """

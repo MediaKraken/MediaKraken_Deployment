@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 # pull in the ini file config
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 import sys
 sys.path.append("./common")
 sys.path.append("./server")
@@ -214,11 +214,11 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    thread_db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+        CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
     logging.debug('value=%s', data1)
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
@@ -239,11 +239,11 @@ else:
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start

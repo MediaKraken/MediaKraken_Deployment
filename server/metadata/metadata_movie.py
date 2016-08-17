@@ -31,17 +31,17 @@ from . import common_metadata_omdb
 from . import common_metadata_rotten_tomatoes
 from . import common_metadata_tmdb
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 from . import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if config_handle.get('API', 'themoviedb').strip() != 'None':
+if CONFIG_HANDLE.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
-    tmdb_api_connection = common_metadata_tmdb.com_metadata_tmdb_API()
+    TMDB_CONNECTION = common_metadata_tmdb.com_metadata_tmdb_API()
 else:
-    tmdb_api_connection = None
+    TMDB_CONNECTION = None
 
 
 def movie_search_tmdb(db_connection, file_name):
@@ -51,13 +51,13 @@ def movie_search_tmdb(db_connection, file_name):
     logging.debug("search tmdb: %s", file_name)
     file_name = guessit(file_name)
     metadata_uuid = None
-    if tmdb_api_connection is not None:
+    if TMDB_CONNECTION is not None:
         # try to match ID ONLY
         if 'year' in file_name:
-            match_response, match_result = tmdb_api_connection.com_tmdb_Search(\
+            match_response, match_result = TMDB_CONNECTION.com_tmdb_Search(\
                 file_name['title'], file_name['year'], True)
         else:
-            match_response, match_result = tmdb_api_connection.com_tmdb_Search(\
+            match_response, match_result = TMDB_CONNECTION.com_tmdb_Search(\
                 file_name['title'], None, True)
         logging.debug("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
@@ -79,11 +79,11 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id):
     """
     logging.debug("tmdb fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
-    result_json = tmdb_api_connection.com_tmdb_Metadata_by_ID(tmdb_id)
+    result_json = TMDB_CONNECTION.com_tmdb_Metadata_by_ID(tmdb_id)
     logging.debug("uh: %s", result_json)
     if result_json is not None:
         series_id_json, result_json, image_json\
-            = tmdb_api_connection.com_tmdb_MetaData_Info_Build(result_json)
+            = TMDB_CONNECTION.com_tmdb_MetaData_Info_Build(result_json)
         # set and insert the record
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
         logging.debug("series: %s", series_id_json)
@@ -100,7 +100,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
     """
     # fetch from tmdb via imdb
     """
-    result_json = tmdb_api_connection.com_tmdb_Metadata_by_imdb_ID(imdb_id)
+    result_json = TMDB_CONNECTION.com_tmdb_Metadata_by_imdb_ID(imdb_id)
     logging.debug("uhimdb: %s", result_json)
     if result_json is not None:
         # find call for tmdb returns the other sections
@@ -113,7 +113,7 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id):
     """
     Save cast/crew
     """
-    cast_json = tmdb_api_connection.com_tmdb_Metadata_Cast_by_ID(tmdb_id)
+    cast_json = TMDB_CONNECTION.com_tmdb_Metadata_Cast_by_ID(tmdb_id)
     if 'cast' in cast_json:
         db_connection.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
     if 'crew' in cast_json:
@@ -126,7 +126,7 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     # grab reviews
     """
-    review_json = tmdb_api_connection.com_tmdb_Metadata_Review_by_ID(tmdb_id)
+    review_json = TMDB_CONNECTION.com_tmdb_Metadata_Review_by_ID(tmdb_id)
     if review_json['total_results'] > 0:
         review_json_id = ({'TMDB': str(review_json['id'])})
         logging.debug("review: %s", review_json_id)
@@ -189,14 +189,14 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 db_connection.srv_db_download_update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db_connection.srv_db_download_update_Provider('themoviedb', download_que_id)
+                db_connection.srv_db_download_update_provider('themoviedb', download_que_id)
             else:
                 # search themoviedb since not matched above via DB
                 download_que_json.update({'Status': 'Search'})
                 db_connection.srv_db_download_update(json.dumps(download_que_json),\
                     download_que_id)
                 # set provider last so it's not picked up by the wrong thread
-                db_connection.srv_db_download_update_Provider('themoviedb', download_que_id)
+                db_connection.srv_db_download_update_provider('themoviedb', download_que_id)
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
     metadata_movie_lookup.metadata_last_title = file_name['title']

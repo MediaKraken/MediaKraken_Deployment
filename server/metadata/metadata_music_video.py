@@ -24,16 +24,16 @@ import sys
 sys.path.append("./common")
 from common import common_metadata_imvdb
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 
 
 # verify imvdb key exists
-if config_handle.get('API', 'imvdb').strip() != 'None':
-    imvdb_api_connection = common_metadata_imvdb.CommonMetadataIMVdb(config_handle.get('API',\
+if CONFIG_HANDLE.get('API', 'imvdb').strip() != 'None':
+    IMVDB_CONNECTION = common_metadata_imvdb.CommonMetadataIMVdb(CONFIG_HANDLE.get('API',\
         'imvdb').strip())
 else:
-    imvdb_api_connection = None
+    IMVDB_CONNECTION = None
 
 
 # imvdb look
@@ -65,8 +65,8 @@ def imvdb_lookup(db_connection, file_name):
     if metadata_uuid == []:
         metadata_uuid = None
     if metadata_uuid is None:
-        if imvdb_api_connection is not None:
-            imvdb_json = imvdb_api_connection.com_imvdb_search_video(band_name, song_name)
+        if IMVDB_CONNECTION is not None:
+            imvdb_json = IMVDB_CONNECTION.com_imvdb_search_video(band_name, song_name)
             logging.debug("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:

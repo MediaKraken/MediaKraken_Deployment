@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -59,20 +59,20 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_musicbrainz_Sync'
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+    CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
 
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.srv_db_Brainz()
-db_brainz.srv_db_open(config_handle.get('MediaBrainz', 'BrainzDBHost').strip(),\
-    config_handle.get('MediaBrainz', 'BrainzDBPort').strip(),\
-    config_handle.get('MediaBrainz', 'BrainzDBName').strip(),\
-    config_handle.get('MediaBrainz', 'BrainzDBUser').strip(),\
-    config_handle.get('MediaBrainz', 'BrainzDBPass').strip())
+db_brainz.srv_db_open(CONFIG_HANDLE.get('MediaBrainz', 'BrainzDBHost').strip(),\
+    CONFIG_HANDLE.get('MediaBrainz', 'BrainzDBPort').strip(),\
+    CONFIG_HANDLE.get('MediaBrainz', 'BrainzDBName').strip(),\
+    CONFIG_HANDLE.get('MediaBrainz', 'BrainzDBUser').strip(),\
+    CONFIG_HANDLE.get('MediaBrainz', 'BrainzDBPass').strip())
 
 # log start
 db.srv_db_activity_insert('MediaKraken_Server musicbrainz Start', None,\

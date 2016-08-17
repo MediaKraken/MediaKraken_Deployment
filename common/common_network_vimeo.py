@@ -28,12 +28,12 @@ class CommonNetworkVimeo(object):
     def __init__(self):
         import os
         import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
+        CONFIG_HANDLE = ConfigParser.ConfigParser()
         if os.path.isfile("MediaKraken.ini"):
-            config_handle.read("MediaKraken.ini")
+            CONFIG_HANDLE.read("MediaKraken.ini")
         else:
-            config_handle.read("../MediaKraken.ini")
-        self.vimeo_instance = vimeo.VimeoClient(token=config_handle.get('Vimeo',\
+            CONFIG_HANDLE.read("../MediaKraken.ini")
+        self.vimeo_instance = vimeo.VimeoClient(token=CONFIG_HANDLE.get('Vimeo',\
             'AccessToken').strip(),\
-            key=config_handle.get('Vimeo', 'ClientID').strip(),\
-            secret=config_handle.get('Vimeo', 'ClientSecret').strip())
+            key=CONFIG_HANDLE.get('Vimeo', 'ClientID').strip(),\
+            secret=CONFIG_HANDLE.get('Vimeo', 'ClientSecret').strip())

@@ -31,25 +31,25 @@ from common import common_metadata_tv_intro
 from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 import metadata_nfo_xml
 
 
 # verify thetvdb key exists for search
-if config_handle.get('API', 'theTVdb').strip() != 'None':
-    thetvdb_api_connection = common_thetvdb.com_TheTVDB_API()
+if CONFIG_HANDLE.get('API', 'theTVdb').strip() != 'None':
+    THETVDB_CONNECTION = common_thetvdb.com_TheTVDB_API()
     # show xml downloader and general api interface
     thetvdb_API = common_metadata_thetvdb.com_meta_TheTVDB_API()
 else:
-    thetvdb_api_connection = None
+    THETVDB_CONNECTION = None
 
 
 # setup the tvmaze class
-if config_handle.get('API', 'tvmaze').strip() != 'None':
-    tvmaze_api_connection = com_meta_tvmaze.com_meta_tvmaze_API()
+if CONFIG_HANDLE.get('API', 'tvmaze').strip() != 'None':
+    TVMAZE_CONNECTION = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
-    tvmaze_api_connection = None
+    TVMAZE_CONNECTION = None
 
 
 def tv_search_tvdb(db_connection, file_name):
@@ -57,12 +57,12 @@ def tv_search_tvdb(db_connection, file_name):
     # tvdb search
     """
     metadata_uuid = None
-    if thetvdb_api_connection is not None:
+    if THETVDB_CONNECTION is not None:
         if 'year' in file_name:
-            tvdb_id = str(thetvdb_api_connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_TheTVDB_Search(file_name['title'],\
                 file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(thetvdb_api_connection.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_TheTVDB_Search(file_name['title'],\
                 None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:

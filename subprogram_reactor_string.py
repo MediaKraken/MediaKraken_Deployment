@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 from twisted.internet import ssl
 from twisted.internet import reactor
 from twisted.internet import protocol
@@ -64,11 +64,11 @@ class MediaKrakenServerApp(Factory):
         self.users = {} # maps user names to network instances
         # open the database
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-            config_handle.get('DB Connections', 'PostDBPort').strip(),\
-            config_handle.get('DB Connections', 'PostDBName').strip(),\
-            config_handle.get('DB Connections', 'PostDBUser').strip(),\
-            config_handle.get('DB Connections', 'PostDBPass').strip())
+        self.db_connection.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
         # preload some data from database
         self.genre_list = self.db_connection.srv_db_meta_genre_list()
         logging.info("Ready for connections!")
@@ -86,7 +86,7 @@ if __name__ == '__main__':
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(int(config_handle.get('MediaKrakenServer', 'ListenPort').strip()),\
+    reactor.listenSSL(int(CONFIG_HANDLE.get('MediaKrakenServer', 'ListenPort').strip()),\
         MediaKrakenServerApp(), sslContext)
     reactor.run()
     # remove pid

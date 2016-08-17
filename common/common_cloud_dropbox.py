@@ -29,12 +29,12 @@ class CommonCloudDropbox(object):
         # set active false so if following falls
         self.active = False
         import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
-        if config_handle.get('Dropbox', 'APIKey').strip() != 'None':
+        CONFIG_HANDLE = ConfigParser.ConfigParser()
+        CONFIG_HANDLE.read("MediaKraken.ini")
+        if CONFIG_HANDLE.get('Dropbox', 'APIKey').strip() != 'None':
             self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
-                config_handle.get('Dropbox', 'APIKey').strip(),\
-                config_handle.get('Dropbox', 'APISecret').strip())
+                CONFIG_HANDLE.get('Dropbox', 'APIKey').strip(),\
+                CONFIG_HANDLE.get('Dropbox', 'APISecret').strip())
             self.active = True
         self.client = None
 

@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 __version__ = '0.1.6'
 import logging # pylint: disable=W0611
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 import os
 import platform
 import subprocess
@@ -121,11 +121,11 @@ class MediaKrakenApp():
         common_logging.com_logging_start('./log/MediaKraken_Link')
         # open the database
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-            config_handle.get('DB Connections', 'PostDBPort').strip(),\
-            config_handle.get('DB Connections', 'PostDBName').strip(),\
-            config_handle.get('DB Connections', 'PostDBUser').strip(),\
-            config_handle.get('DB Connections', 'PostDBPass').strip())
+        self.db_connection.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
+            CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
         self.connect_to_server()
         return root
 

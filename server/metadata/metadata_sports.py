@@ -24,15 +24,15 @@ import sys
 sys.path.append("./common")
 from common import common_metadata_thesportsdb
 import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+CONFIG_HANDLE = ConfigParser.ConfigParser()
+CONFIG_HANDLE.read("MediaKraken.ini")
 
 
 # verify thesportsdb key exists
-if config_handle.get('API', 'thesportsdb').strip() != 'None':
-    thesportsdb_api_connection = common_metadata_thesportsdb.CommonMetadataTheSportsDB()
+if CONFIG_HANDLE.get('API', 'thesportsdb').strip() != 'None':
+    THESPORTSDB_CONNECTION = common_metadata_thesportsdb.CommonMetadataTheSportsDB()
 else:
-    thesportsdb_api_connection = None
+    THESPORTSDB_CONNECTION = None
 
 
 def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
@@ -41,10 +41,10 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
     """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db_connection.srv_db_meta_sports_guid_by_event_name(stripped_name)
-    if metadata_uuid is None and thesportsdb_api_connection is not None:
+    if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         logging.debug("searching: %s", stripped_name)
         thesportsdb_data =\
-                thesportsdb_api_connection.com_meta_thesportsdb_search_event_by_name(stripped_name)
+                THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(stripped_name)
         logging.debug("sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:

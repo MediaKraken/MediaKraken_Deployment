@@ -35,18 +35,18 @@ class CommonMetadataMusicbrainz(object):
     def __init__(self):
         global musicbrainzngs
         import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+        CONFIG_HANDLE = ConfigParser.ConfigParser()
+        CONFIG_HANDLE.read("MediaKraken.ini")
         # If you plan to submit data, authenticate
-        #musicbrainzngs.auth(config_handle.get('MediaBrainz','User').strip(), config_handle.get('MediaBrainz','Password').strip())
+        #musicbrainzngs.auth(CONFIG_HANDLE.get('MediaBrainz','User').strip(), CONFIG_HANDLE.get('MediaBrainz','Password').strip())
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
         musicbrainzngs.set_useragent("MediaKraken_Server", "0.1.6",\
             "spootdev@gmail.com https://github.com/MediaKraken_Deployment")
         # If you are connecting to a development server
-        if config_handle.get('MediaBrainz', 'Host').strip() != 'None':
-            #musicbrainzngs.set_hostname(config_handle.get('MediaBrainz','Host').strip())
-            musicbrainzngs.set_hostname(config_handle.get('MediaBrainz', 'Host').strip() + ':'\
-                + config_handle.get('MediaBrainz', 'Port').strip())
+        if CONFIG_HANDLE.get('MediaBrainz', 'Host').strip() != 'None':
+            #musicbrainzngs.set_hostname(CONFIG_HANDLE.get('MediaBrainz','Host').strip())
+            musicbrainzngs.set_hostname(CONFIG_HANDLE.get('MediaBrainz', 'Host').strip() + ':'\
+                + CONFIG_HANDLE.get('MediaBrainz', 'Port').strip())
 
 
     def show_release_details(self, rel):
