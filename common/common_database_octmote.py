@@ -134,7 +134,7 @@ class CommonDatabaseOctmote(object):
                 ' device_description) values (?,\'Reel\', \'Reel To Reel Tape\')',\
                 (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
-                ' device_description) values (?,\'Cable\', \'Cable TV\')", (str(uuid.uuid4()),))
+                ' device_description) values (?,\'Cable\', \'Cable TV\')', (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
                 ' device_description) values (?,\'Satellite\', \'Satellite TV\')',\
                 (str(uuid.uuid4()),))

@@ -43,7 +43,7 @@ class CommonTheTVDB(object):
         """
         # get show information
         """
-        return com_thetvdb_Show_Details(com_thetvdb_Search(self.tvdb_connection,\
+        return com_thetvdb_show_details(com_thetvdb_search(self.tvdb_connection,\
             show_title, show_language))
 
 
