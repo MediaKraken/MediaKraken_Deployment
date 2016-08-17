@@ -25,7 +25,7 @@ config_handle.read("MediaKraken.ini")
 import sys
 sys.path.append("./common")
 sys.path.append("./server")
-from common import common_cifs
+from common import common_network_cifs
 from common import common_ffmpeg
 from common import common_file
 from common import common_logging
