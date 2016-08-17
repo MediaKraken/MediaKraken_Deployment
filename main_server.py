@@ -192,7 +192,8 @@ for link_data in db.srv_db_link_list():
 
 # fire up uwsgi server
 proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
-        '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
+        '--chdir=./server/web_app', '--ini', './server/web_app/mediakraken_uwsgi.ini'],\
+        shell=False)
 
 
 # hold here
