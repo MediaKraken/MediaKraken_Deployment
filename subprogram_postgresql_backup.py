@@ -59,9 +59,9 @@ os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass').stri
     + config_handle.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name)
 
 # grab settings and options
-option_json = db.srv_db_Option_Status_Read()['mm_options_json']
+option_json = db.srv_db_option_status_read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
-    common_cloud.com_cloud_File_Store(option_json['Backup']['BackupType'],\
+    common_cloud.com_cloud_file_store(option_json['Backup']['BackupType'],\
     config_handle.get('MediaKrakenServer', 'BackupLocal').strip() + '/'\
     + backup_file_name, backup_file_name, True)
 

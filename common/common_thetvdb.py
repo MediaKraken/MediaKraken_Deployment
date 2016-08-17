@@ -108,15 +108,15 @@ class CommonTheTVDB(object):
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            banner_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
                 'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            fanart_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
                 'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = common_metadata.com_MetaData_Image_Path(show_data.SeriesName,\
+            poster_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
                 'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:

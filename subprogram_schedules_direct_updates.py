@@ -30,7 +30,7 @@ sys.path.append("./common")
 sys.path.append("./server")
 from common import common_file
 from common import common_logging
-from common import common_Schedules_Direct
+from common import common_schedules_direct
 import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -86,9 +86,9 @@ db.srv_db_activity_insert('MediaKraken_Server Schedules Direct Update Start', No
 
 
 sd = com_Schedules_Direct.com_Schedules_Direct_API()
-sd.com_Schedules_Direct_Login(config_handle.get('SD', 'User').strip(),\
+sd.com_schedules_direct_login(config_handle.get('SD', 'User').strip(),\
     config_handle.get('SD', 'Password').strip())
-status_data = sd.com_Schedules_Direct_Status()
+status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
@@ -128,9 +128,9 @@ else:
 # TODO downloading a generic description of a program - good for what the show is......not an episode itself
 
 station_fetch = []
-logging.debug("list: %s", db.srv_db_tv_stations_read_StationID_List())
+logging.debug("list: %s", db.srv_db_tv_stations_read_stationid_list())
 # grab all stations in DB
-for station_id in db.srv_db_tv_stations_read_StationID_List():
+for station_id in db.srv_db_tv_stations_read_stationid_list():
     # fetch all schedules for station
     station_fetch.append(station_id['mv_tv_station_id'])
 

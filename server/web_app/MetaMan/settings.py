@@ -20,7 +20,7 @@ class Config(object):
         data = os.urandom(24).encode('hex')
         common_file.com_file_save_data('web_secret_key.txt', data, False)
     SECRET_KEY = os_env.get('MEDIAKRAKEN_SECRET',\
-        common_file.com_file_Load_Data('web_secret_key.txt', False))
+        common_file.com_file_load_data('web_secret_key.txt', False))
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BCRYPT_LOG_ROUNDS = 13

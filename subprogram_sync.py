@@ -88,7 +88,7 @@ def worker(row_data):
             elif line[0:5] == "frame":
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
-                thread_db.srv_db_Sync_Progress_Update(row_data['mm_sync_guid'],\
+                thread_db.srv_db_sync_progress_update(row_data['mm_sync_guid'],\
                     time_percent)
                 thread_db.srv_db_commit()
         else:
@@ -96,7 +96,7 @@ def worker(row_data):
     ffmpeg_pid.wait()
     thread_db.srv_db_activity_insert('MediaKraken_Server Sync', None,\
         'System: Server Sync', 'ServerSync', None, None, 'System')
-    thread_db.srv_db_Sync_Delete(row_data[0]) # guid of sync record
+    thread_db.srv_db_sync_delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
     thread_db.srv_db_commit()
     thread_db.srv_db_close()

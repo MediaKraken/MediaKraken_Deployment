@@ -79,7 +79,7 @@ db.srv_db_activity_insert('MediaKraken_Server musicbrainz Start', None,\
     'System: Server musicbrainz Start', 'ServermusicbrainzStart', None, None, 'System')
 
 # fetch all the artists from brainz
-for row_data in db_brainz.srv_db_Brainz_All_Artists():
+for row_data in db_brainz.srv_db_brainz_all_artists():
     db.srv_db_meta_musician_add(row_data['name'],\
         json.dumps({'musicbrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],\
         'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'\
@@ -88,11 +88,11 @@ for row_data in db_brainz.srv_db_Brainz_All_Artists():
         + str(row_data['end_date_day']))}))
     logging.debug(row_data)
     # fetch all the albums from brainz by artist
-    for row_data_album in db_brainz.srv_db_Brainz_All_Albums_by_Artist(row_data['id']):
+    for row_data_album in db_brainz.srv_db_brainz_all_albums_by_artist(row_data['id']):
         db.srv_db_meta_album_add(row_data_album['name'],\
             json.dumps({'musicbrainz':row_data_album['gid']}),\
             json.dumps({'Commment':row_data_album['comment'],\
-            'Language':row_data_album['language'], 'Barcode':row_data_album['barcode']}))
+            'Language': row_data_album['language'], 'Barcode': row_data_album['barcode']}))
         logging.debug(row_data_album)
 '''
         # fetch all the songs from brainz

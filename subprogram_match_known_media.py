@@ -23,9 +23,9 @@ files_added = 0
 build_collection = False
 
 
-total_media_to_match = db.srv_db_known_media_All_Unmatched_Count()
+total_media_to_match = db.srv_db_known_media_all_unmatched_count()
 # begin the media match on NULL matches
-for row_data in db.srv_db_known_media_All_Unmatched():
+for row_data in db.srv_db_known_media_all_unmatched():
     files_to_id += 1
     # lookup class from db
     metadata_uuid = None

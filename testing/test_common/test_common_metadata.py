@@ -29,8 +29,8 @@ import common_metadata
 
 
 # determine file path of images
-# def com_meta_Image_File_Path(media_name, media_type):
+# def com_meta_image_file_path(media_name, media_type):
 
 
 # determine image location
-# def com_MetaData_Image_Path(media_name, media_type, source_link, source_file):
+# def com_metadata_image_path(media_name, media_type, source_link, source_file):

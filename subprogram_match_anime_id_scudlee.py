@@ -90,7 +90,7 @@ for row_data in com_Scudlee.mk_scudlee_anime_list_parse():
             pass
         else:
             # should be valid data, do the update
-            db.srv_db_meta_update_Media_ID_From_Scudlee(row_data[1],\
+            db.srv_db_meta_update_media_id_from_scudlee(row_data[1],\
                 row_data[2], row_data[0])
 
 # begin the collections match/create/update

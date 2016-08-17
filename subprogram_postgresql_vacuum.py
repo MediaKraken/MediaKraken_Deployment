@@ -33,9 +33,9 @@ db.srv_db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', None,\
 
 # vacuum all the tables
 # TODO this needed since open is autocommit?   db.srv_db_Postgesql_Set_Isolation_Level(0)
-for row in db.srv_db_Postgresql_Vacuum_Stat_by_Day(1):
+for row in db.srv_db_postgresql_vacuum_stat_by_day(1):
     logging.debug(row)
-    db.srv_db_Postgresql_Vacuum_Table(row['relname'])
+    db.srv_db_postgresql_vacuum_table(row['relname'])
 
 
 # log end

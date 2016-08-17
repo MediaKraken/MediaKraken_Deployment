@@ -120,8 +120,8 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     total_files = 0
     logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
-    thread_db.srv_db_Audit_Directory_Timestamp_Update(dir_path)
-    thread_db.srv_db_Audit_Path_Update_Status(dir_guid,\
+    thread_db.srv_db_audit_directory_timestamp_update(dir_path)
+    thread_db.srv_db_audit_path_update_status(dir_guid,\
         json.dumps({'Status': 'File scan', 'Pct': 100}))
     thread_db.srv_db_commit()
     # check for UNC before grabbing dir list
@@ -130,7 +130,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
         smb_stuff = common_cifs.com_cifs_Share_API()
         addr, share, path = common_string.UNC_To_Addr_Share_Path(dir_path)
         smb_stuff.com_cifs_Connect(addr)
-        for dir_data in smb_stuff.com_cifs_Walk(share, path):
+        for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]\
                     + '\\' + file_name)
@@ -190,7 +190,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
                         file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = common_ffmpeg.com_ffmpeg_Media_Attr(file_name)
+                    media_ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(file_name)
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})
@@ -198,15 +198,15 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                 thread_db.srv_db_insert_media(media_id, file_name,\
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # media id begin and download que insert
-                thread_db.srv_db_Download_Insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
+                thread_db.srv_db_download_insert('Z', json.dumps({'MediaID': media_id, 'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None, 'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
-        thread_db.srv_db_Audit_Path_Update_Status(dir_guid,\
+        thread_db.srv_db_audit_path_update_status(dir_guid,\
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
                 + ' / ' + locale.format('%d', total_file_in_dir, True),\
                 'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.srv_db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.srv_db_Audit_Path_Update_Status(dir_guid, None) # set to none so it doens't show up
+    thread_db.srv_db_audit_path_update_status(dir_guid, None) # set to none so it doens't show up
     thread_db.srv_db_commit()
     return total_files
 
@@ -280,7 +280,7 @@ for row_data in db.srv_db_audit_paths():
         if smb_stuff.com_cifs_Share_Directory_Check(share, path):
             if datetime.strptime(time.ctime(smb_stuff.com_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                db.srv_db_audit_path_update_status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
             db.srv_db_notification_insert(('UNC Library path not found: %s',\
@@ -294,7 +294,7 @@ for row_data in db.srv_db_audit_paths():
             # verify the directory inodes has changed
             if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
+                db.srv_db_audit_path_update_status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
 
 

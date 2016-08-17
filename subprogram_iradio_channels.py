@@ -73,12 +73,12 @@ db.srv_db_activity_insert('MediaKraken_Server iRadio Start', None,\
 #common_network_Radio.com_network_Radio()
 
 # load the cache files and compare to db
-radio_cache = common_file.com_file_Load_Data('./cache.pickle', True)
+radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
     db.srv_db_iRadio_Insert(row_data)
 
-#radio_xiph = common_file.com_file_Load_Data('./xiph.pickle', True)
+#radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 # log end
 db.srv_db_activity_insert('MediaKraken_Server iRadio Stop', None,\
