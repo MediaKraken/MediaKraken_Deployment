@@ -27,7 +27,7 @@ skipping the lib, kodi, roku and tizen directory.
 """
 
 
-for file_name in common_file.com_file_dir_list(\
+for file_name in common_file.com_file_Dir_List(\
         '/home/spoot/github/MediaKraken/MediaKraken_Deployment', filter_text='py', walk_dir=True,\
         skip_junk=False, file_size=False, directory_only=False):
     #print('File: %s' % file_name)
