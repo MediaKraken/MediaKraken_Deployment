@@ -127,16 +127,16 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
-        smb_stuff = common_cifs.common_cifs_Share_API()
+        smb_stuff = common_cifs.com_cifs_Share_API()
         addr, share, path = common_string.UNC_To_Addr_Share_Path(dir_path)
-        smb_stuff.common_cifs_Connect(addr)
-        for dir_data in smb_stuff.common_cifs_Walk(share, path):
+        smb_stuff.com_cifs_Connect(addr)
+        for dir_data in smb_stuff.com_cifs_Walk(share, path):
             for file_name in dir_data[2]:
                 file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]\
                     + '\\' + file_name)
-        smb_stuff.common_cifs_Close()
+        smb_stuff.com_cifs_Close()
     else:
-        file_data = common_file.common_file_Dir_List(dir_path, None, True, False)
+        file_data = common_file.com_file_Dir_List(dir_path, None, True, False)
     total_file_in_dir = len(file_data)
     total_scanned = 0
     for file_name in file_data:
@@ -190,7 +190,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
                         file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = common_ffmpeg.common_ffmpeg_Media_Attr(file_name)
+                    media_ffprobe_json = common_ffmpeg.com_ffmpeg_Media_Attr(file_name)
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})
@@ -274,18 +274,18 @@ for row_data in db.srv_db_Audit_Paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
-        smb_stuff = common_cifs.common_cifs_Share_API()
+        smb_stuff = common_cifs.com_cifs_Share_API()
         addr, share, path = common_string.UNC_To_Addr_Share_Path(row_data['mm_media_dir_path'])
-        smb_stuff.common_cifs_Connect(addr)
-        if smb_stuff.common_cifs_Share_Directory_Check(share, path):
-            if datetime.strptime(time.ctime(smb_stuff.common_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+        smb_stuff.com_cifs_Connect(addr)
+        if smb_stuff.com_cifs_Share_Directory_Check(share, path):
+            if datetime.strptime(time.ctime(smb_stuff.com_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'], str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
                 db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
             db.srv_db_Notification_Insert(('UNC Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
-        smb_stuff.common_cifs_Close()
+        smb_stuff.com_cifs_Close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
             db.srv_db_Notification_Insert(('Library path not found: %s',\

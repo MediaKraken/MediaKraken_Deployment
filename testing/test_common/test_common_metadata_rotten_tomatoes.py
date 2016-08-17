@@ -29,7 +29,7 @@ class TestCommonMetadataRottenTomatoes(object):
 
     @classmethod
     def setup_class(self):
-        self.rt_connection = common_metadata_rotten_tomatoes.common_metadata_rotten_tomatoes_API()
+        self.rt_connection = common_metadata_rotten_tomatoes.com_metadata_rotten_tomatoes_API()
 
 
     @classmethod

@@ -76,7 +76,7 @@ else:
 # verify themovietb key exists
 if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
-    TMDB_API_Connection = common_metadata_tmdb.common_metadata_tmdb_API()
+    TMDB_API_Connection = common_metadata_tmdb.com_metadata_tmdb_API()
 else:
     TMDB_API_Connection = None
     logging.critical("themoviedb API not available. Exiting program...")

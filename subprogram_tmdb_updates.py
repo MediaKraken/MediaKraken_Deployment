@@ -120,7 +120,7 @@ def movie_fetch_save(tmdb_id):
 
 
 # grab the updated data
-tmdb = com_TMDB.common_metadata_tmdb_API()
+tmdb = com_TMDB.com_metadata_tmdb_API()
 for movie_change in tmdb.com_tmdb_Metadata_Changes_Movie()['results']:
     logging.debug("mov: %s", movie_change['id'])
     movie_fetch_save(movie_change['id'])

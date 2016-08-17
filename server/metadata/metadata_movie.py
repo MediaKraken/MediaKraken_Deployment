@@ -39,7 +39,7 @@ from . import metadata_nfo_xml
 # verify themovietb key exists
 if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
-    tmdb_api_connection = common_metadata_tmdb.common_metadata_tmdb_API()
+    tmdb_api_connection = common_metadata_tmdb.com_metadata_tmdb_API()
 else:
     tmdb_api_connection = None
 

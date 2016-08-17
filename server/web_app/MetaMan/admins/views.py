@@ -108,14 +108,14 @@ def admins():
                            data_server_info_server_port = config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
                            data_server_info_server_ip_external = outside_ip,
                            data_server_info_server_version = '0.1.4',
-                           data_server_uptime = common_system.common_system_Uptime(),
+                           data_server_uptime = common_system.com_system_Uptime(),
                            data_active_streams = locale.format('%d', 0, True),
                            data_alerts_dismissable = data_alerts_dismissable,
                            data_alerts = data_alerts,
                            data_count_media_files = locale.format('%d', g.db.srv_db_known_media_count(), True),
                            data_count_matched_media = locale.format('%d', g.db.srv_db_matched_media_count(), True),
                            data_count_streamed_media = locale.format('%d', 0, True),
-                           data_zfs_active = common_zfs.common_zfs_Available(),
+                           data_zfs_active = common_zfs.com_zfs_Available(),
                            data_library = locale.format('%d', g.db.srv_db_Audit_Paths_Count(), True),
                            data_transmission_active = data_transmission_active,
                            data_scan_info = data_scan_info,
@@ -238,11 +238,11 @@ def admin_transmission():
     """
     Display transmission page
     """
-    trans_connection = common_transmission.common_transmission_API()
+    trans_connection = common_transmission.com_transmission_API()
     transmission_data = []
     if trans_connection is not None:
         torrent_no = 1
-        for torrent in trans_connection.common_transmission_Get_Torrent_List():
+        for torrent in trans_connection.com_transmission_Get_Torrent_List():
             transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,\
                 torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
@@ -306,19 +306,19 @@ def admin_library_edit_page():
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
-                    smb_stuff = common_cifs.common_cifs_Share_API()
-                    smb_stuff.common_cifs_Connect(addr)
-                    if not smb_stuff.common_cifs_Share_Directory_Check(share, path):
-                        smb_stuff.common_cifs_Close()
+                    smb_stuff = common_cifs.com_cifs_Share_API()
+                    smb_stuff.com_cifs_Connect(addr)
+                    if not smb_stuff.com_cifs_Share_Directory_Check(share, path):
+                        smb_stuff.com_cifs_Close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))
-                    smb_stuff.common_cifs_Close()
+                    smb_stuff.com_cifs_Close()
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO
-                    smb_stuff = common_cifs.common_cifs_Share_API()
-                    smb_stuff.common_cifs_Connect(ip_addr, user_name='guest', user_password='')
-                    smb_stuff.common_cifs_Share_Directory_Check(share_name, dir_path)
-                    smb_stuff.common_cifs_Close()
+                    smb_stuff = common_cifs.com_cifs_Share_API()
+                    smb_stuff.com_cifs_Connect(ip_addr, user_name='guest', user_password='')
+                    smb_stuff.com_cifs_Share_Directory_Check(share_name, dir_path)
+                    smb_stuff.com_cifs_Close()
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))
@@ -397,7 +397,7 @@ def admin_backup_delete_page():
     if file_type == "Local":
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
-        common_cloud.common_cloud_File_Delete('awss3', file_path, True)
+        common_cloud.com_cloud_File_Delete('awss3', file_path, True)
     return json.dumps({'status':'OK'})
 
 
@@ -422,10 +422,10 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.common_file_Dir_List(config_handle.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
+    for backup_local in common_file.com_file_Dir_List(config_handle.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in common_cloud.common_cloud_Backup_List():
+    for backup_cloud in common_cloud.com_cloud_Backup_List():
         backup_files.append((backup_cloud.name, backup_cloud.type,\
             common_string.bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
@@ -464,9 +464,9 @@ def admin_server_stat():
     Display server stats via psutils
     """
     return render_template("admin/admin_server_stats.html",
-                           data_disk=common_system.common_system_Disk_Usage_All(True),
-                           data_cpu_usage=common_system.common_system_CPU_Usage(True),
-                           data_mem_usage=common_system.common_system_Virtual_Memory(None))
+                           data_disk=common_system.com_system_Disk_Usage_All(True),
+                           data_cpu_usage=common_system.com_system_CPU_Usage(True),
+                           data_mem_usage=common_system.com_system_Virtual_Memory(None))
 
 
 @blueprint.route("/server_stat_slave")
@@ -478,9 +478,9 @@ def admin_server_stat_slave():
     Display stats on connected slaves via psutils
     """
     return render_template("admin/admin_server_stats_slave.html",
-                           data_disk=common_system.common_system_Disk_Usage_All(True),
-                           data_cpu_usage=common_system.common_system_CPU_Usage(True),
-                           data_mem_usage=common_system.common_system_Virtual_Memory(None))
+                           data_disk=common_system.com_system_Disk_Usage_All(True),
+                           data_cpu_usage=common_system.com_system_CPU_Usage(True),
+                           data_mem_usage=common_system.com_system_Virtual_Memory(None))
 
 
 @blueprint.route("/settings")
@@ -498,7 +498,7 @@ def admin_server_settings():
 @admin_required
 def admin_server_zfs():
     return render_template("admin/admin_server_zfs.html",
-                           data_zpool=common_zfs.common_zfs_Zpool_List())
+                           data_zpool=common_zfs.com_zfs_Zpool_List())
 
 
 @blueprint.route("/link_server")
@@ -621,7 +621,7 @@ def admin_database_statistics():
 @login_required
 @admin_required
 def admin_fs_browse(path):
-    browse_file = common_file.common_file_Dir_List('/' + path, None, False, False, True, True)
+    browse_file = common_file.com_file_Dir_List('/' + path, None, False, False, True, True)
     browse_parent = []
     build_path = ''
     for path_part in path.split('/'):

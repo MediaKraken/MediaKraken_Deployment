@@ -29,7 +29,7 @@ class TestCommonTransmission(object):
 
     @classmethod
     def setup_class(self):
-        self.transmission_connection = common_transmission.common_transmission_API()
+        self.transmission_connection = common_transmission.com_transmission_API()
 
 
     @classmethod

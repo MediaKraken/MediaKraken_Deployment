@@ -144,7 +144,7 @@ class MediaKrakenApp():
         self.connect_to_server()
         # start up the cpu timer
         status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\
-            + pickle.dumps(common_system.common_system_CPU_Usage(False))))
+            + pickle.dumps(common_system.com_system_CPU_Usage(False))))
         status_timer.start()
         return root
 
@@ -182,15 +182,15 @@ class MediaKrakenApp():
             self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(messageWords[1], shell=False))
         # admin commands
         elif messageWords[0] == "CPUUSAGE":
-            msg = 'CPUUSAGE ' + pickle.dumps(common_system.common_system_CPU_Usage(True))
+            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_CPU_Usage(True))
         elif messageWords[0] == "DISKUSAGE":
-            msg = 'DISKUSAGE ' + pickle.dumps(common_system.common_system_Disk_Usage_All(True))
+            msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_Disk_Usage_All(True))
         elif messageWords[0] == "MEMUSAGE":
-            msg = 'MEMUSAGE ' + pickle.dumps(common_system.common_system_Virtual_Memory(False))
+            msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_Virtual_Memory(False))
         elif messageWords[0] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((common_system.common_system_CPU_Usage(True),\
-                common_system.common_system_Disk_Usage_All(True),\
-                common_system.common_system_Virtual_Memory(False)))
+            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_CPU_Usage(True),\
+                common_system.com_system_Disk_Usage_All(True),\
+                common_system.com_system_Virtual_Memory(False)))
         elif messageWords[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
             status_timer.cancel()
