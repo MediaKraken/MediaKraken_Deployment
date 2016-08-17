@@ -77,7 +77,7 @@ class CommonDatabaseOctmote(object):
                 ' values (?,\'BluRay\', \'BluRay Player\')', (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device'\
                 ' (device_guid, device_name, device_description)'\
-                ' values (?,'DVD', 'DVD Player')', (str(uuid.uuid4()),))
+                ' values (?,\'DVD\', \'DVD Player\')', (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
                 ' device_description) values (?,\'Laserdisc\', \'Laser Disc Player\')',\
                 (str(uuid.uuid4()),))
@@ -116,7 +116,8 @@ class CommonDatabaseOctmote(object):
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
                 ' device_description) values (?,\'SVHS\', \'Super VHS VCR\')', (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
-                ' device_description) values (?,\'SBeta\', \'Super Beta VCR\')', (str(uuid.uuid4()),))
+                ' device_description) values (?,\'SBeta\', \'Super Beta VCR\')',\
+                (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'\
                 ' device_description) values (?,\'Receiver\', \'Audio/Video Receiver\')',\
                 (str(uuid.uuid4()),))
