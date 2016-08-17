@@ -87,7 +87,8 @@ def worker(worker_file_list):
         command_list.append('1')
         command_list.append(file_path)
         ffmpeg_proc = subprocess.Popen(command_list, shell=False)
-        ffmpeg_proc.wait() # wait for subprocess to finish to not flood with ffmpeg processes as the worker might see it as finished if allowed to continue
+        ffmpeg_proc.wait() # wait for subprocess to finish to not flood with ffmpeg processes
+        # as the worker might see it as finished if allowed to continue
         chapter_image_list[chapter_data['tags']['title']] = file_path
         total_images_created += 1
     if json_data is None:
