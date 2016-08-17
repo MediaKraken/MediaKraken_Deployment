@@ -28,15 +28,15 @@ try:
     from twisted.web import version as twisted_web_version
     from twisted.python.versions import Version
 except ImportError, exc:
-    sys.stderr.write("Twisted >= 14.0.2 and Twisted.Web >= 14.0.2 are required.\n")
+    sys.stderr.write("Twisted >= 14.0.2 is required.\n")
     raise
 
 # verify the version numbers for twisted
 try:
     if twisted_version < Version("twisted", 14, 0, 2):
         raise ImportError("Twisted 14.0.2 or higher is required.")
-    if twisted_web_version < Version("twisted.web", 14, 0, 2):
-        raise ImportError("Twisted.Web version 14.0.2 or higher is required.")
+    if twisted_web_version < Version("twisted", 14, 0, 2):
+        raise ImportError("Twisted version 14.0.2 or higher is required.")
 except ImportError, exc:
     for arg in exc.args:
         sys.stderr.write("%s\n" % arg)
