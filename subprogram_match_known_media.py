@@ -51,10 +51,10 @@ for row_data in db.srv_db_known_media_All_Unmatched():
 
 # send notications
 if files_to_id > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', files_to_id, True)\
+    db.srv_db_notification_insert(locale.format('%d', files_to_id, True)\
         + " file(s) scanned.", True)
 if files_added > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', files_added, True)\
+    db.srv_db_notification_insert(locale.format('%d', files_added, True)\
         + " new media file(s) matched.", True)
 if build_collection:
     db.srv_db_trigger_insert(('python', './subprogram_update_create_collections.py'))

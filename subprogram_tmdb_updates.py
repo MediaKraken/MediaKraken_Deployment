@@ -137,19 +137,19 @@ db.srv_db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
 create_collection_trigger = False
 # send notications
 if tvshow_updated > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+    db.srv_db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
     create_collection_trigger = True
 if tvshow_inserted > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+    db.srv_db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
     create_collection_trigger = True
 if movie_updated > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', movie_updated, True)\
+    db.srv_db_notification_insert(locale.format('%d', movie_updated, True)\
         + " movie metadata updated.", True)
     create_collection_trigger = True
 if movie_inserted > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', movie_inserted, True)\
+    db.srv_db_notification_insert(locale.format('%d', movie_inserted, True)\
         + " movie metadata added.", True)
     create_collection_trigger = True
 # update collection

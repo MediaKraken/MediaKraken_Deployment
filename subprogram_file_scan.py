@@ -223,7 +223,7 @@ def worker(audit_directory):
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
     if total_files > 0:
-        thread_db.srv_db_Notification_Insert(locale.format('%d', total_files, True)\
+        thread_db.srv_db_notification_insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + data1, True)
     thread_db.srv_db_commit()
     thread_db.srv_db_close()
@@ -283,12 +283,12 @@ for row_data in db.srv_db_audit_paths():
                 db.srv_db_Audit_Path_Update_Status(row_data['mm_media_dir_guid'],\
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
-            db.srv_db_Notification_Insert(('UNC Library path not found: %s',\
+            db.srv_db_notification_insert(('UNC Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
         smb_stuff.com_cifs_Close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
-            db.srv_db_Notification_Insert(('Library path not found: %s',\
+            db.srv_db_notification_insert(('Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
         else:
             # verify the directory inodes has changed

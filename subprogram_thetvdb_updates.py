@@ -126,10 +126,10 @@ db.srv_db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
 
 # send notications
 if tvshow_updated > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', tvshow_updated, True)\
+    db.srv_db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', tvshow_inserted, True)\
+    db.srv_db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
 
 

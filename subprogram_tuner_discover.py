@@ -101,7 +101,7 @@ for row_tuner in tuner_api.com_HDHomeRun_List():
 
 
 if tuners_added > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', tuners_added, True)\
+    db.srv_db_notification_insert(locale.format('%d', tuners_added, True)\
         + " tuners added.", True)
 
 

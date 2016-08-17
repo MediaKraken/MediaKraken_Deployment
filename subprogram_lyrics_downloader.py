@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print('Total lyrics download attempts: %s', total_download_attempts)
     # send notications
     if total_download_attempts > 0:
-        db.srv_db_Notification_Insert(locale.format('%d',\
+        db.srv_db_notification_insert(locale.format('%d',\
             total_download_attempts, True) + " lyric(s) downloaded.", True)
     # commit all changes
     db.srv_db_commit()

@@ -76,7 +76,7 @@ for row_data in db.srv_db_known_media():
 
 # send notications
 if thumbnails_generated > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', thumbnails_generated, True)\
+    db.srv_db_notification_insert(locale.format('%d', thumbnails_generated, True)\
         + " Roku thumbnail(s) generated.", True)
 
 # log end

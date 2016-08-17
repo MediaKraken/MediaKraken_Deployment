@@ -71,7 +71,7 @@ def worker(worker_file_list):
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
-        file_path = os.path.join(com_metadata.com_meta_Image_File_Path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
+        file_path = os.path.join(com_metadata.com_meta_image_file_path(media_path, 'chapter'), (str(uuid.uuid4()) + '.png'))
         command_list = []
         command_list.append('ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input
@@ -147,7 +147,7 @@ if len(file_list) > 0:
 
 # send notications
 if total_images_created > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', total_images_created, True)\
+    db.srv_db_notification_insert(locale.format('%d', total_images_created, True)\
         + " chapter image(s) generated.", True)
 
 

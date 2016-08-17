@@ -129,13 +129,13 @@ for row_data in db.srv_db_meta_tvshow_images_to_update('tvmaze'):
 
 # send notifications
 if total_cast_images > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', total_cast_images, True)\
+    db.srv_db_notification_insert(locale.format('%d', total_cast_images, True)\
         + " new TV cast image(s) added.", True)
 if total_char_images > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', total_char_images, True)\
+    db.srv_db_notification_insert(locale.format('%d', total_char_images, True)\
         + " new TV character image(s) added.", True)
 if total_episode_images > 0:
-    db.srv_db_Notification_Insert(locale.format('%d', total_episode_images, True)\
+    db.srv_db_notification_insert(locale.format('%d', total_episode_images, True)\
         + " new TV episode image(s) added.", True)
 
 # log end

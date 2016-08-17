@@ -63,11 +63,11 @@ db.srv_db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
-for read_line in common_zfs.com_zfs_Health_Check():
+for read_line in common_zfs.com_zfs_health_check():
     if read_line.find('ONLINE') != -1:
         db.srv_db_activity_insert('MediaKraken_Server ZFS ERROR!', None,\
             'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')
-        db.srv_db_Notification_Insert("ZFS zpool(s) degraded or offline!", True)
+        db.srv_db_notification_insert("ZFS zpool(s) degraded or offline!", True)
         break
 
 # log end

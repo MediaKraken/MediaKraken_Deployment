@@ -144,7 +144,7 @@ if len(guid_list) > 0:
 
 
 if total_collections_downloaded > 0:
-    db.srv_db_Notification_Insert(locale.format('%d',\
+    db.srv_db_notification_insert(locale.format('%d',\
         total_collections_downloaded, True) + " collection(s) metadata downloaded.", True)
 
 
