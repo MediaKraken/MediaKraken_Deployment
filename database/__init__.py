@@ -45,7 +45,7 @@ class MKServerDatabase(object):
         db_download_update_provider,\
         db_download_update
     from db_base_kodi import db_kodi_user_sync,\
-        db_kodi_user_sync_list_added
+        db_kodi_user_sync_added
     from db_base_iradio import db_iradio_insert,\
         db_iradio_list_count,\
         db_iradio_list
