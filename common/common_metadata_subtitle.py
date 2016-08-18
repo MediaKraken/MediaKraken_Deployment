@@ -30,7 +30,8 @@ def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     # fetch subtitles
     """
     #file_hash = com_Hash.com_hash_thesubdb(file_name)
-    command_handle = os.popen("subliminal -l " + sub_lang + " -- \'" + file_name.encode("utf8") + "\'")
+    command_handle = os.popen("subliminal -l " + sub_lang + " -- \'"\
+        + file_name.encode("utf8") + "\'")
     cmd_output = command_handle.read()
     return cmd_output
 
@@ -40,7 +41,8 @@ def com_meta_fetch_subtitle_batch(dir_name, sub_lang):
     # batch fetch subtitles
     """
     # configure the cache
-#    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename': '/home/spoot/cachefile.dbm'})
+#    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
+    #'/home/spoot/cachefile.dbm'})
 #    # scan for videos in the folder and their subtitles
 #    videos = subliminal.scan_videos(['/nfsmount/TV_Shows_Misc/Earth 2
     #(1994)/season 1/'], subtitles=True, embedded_subtitles=True)

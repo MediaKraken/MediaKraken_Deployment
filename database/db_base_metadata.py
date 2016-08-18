@@ -123,7 +123,7 @@ def srv_db_meta_guid_by_rt(self, rt_uuid):
     # see if metadata exists type and id
     """
     self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'\
-        ' where mm_metadata_media_id->\'RT\' ? %s', (str(tmdb_uuid),))
+        ' where mm_metadata_media_id->\'RT\' ? %s', (str(rt_uuid),))
     try:
         return self.db_cursor.fetchone()['mm_metadata_guid']
     except:
@@ -160,7 +160,6 @@ def srv_db_meta_movie_list(self, offset=None, records=None):
             ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
             ' from mm_metadata_movie order by LOWER(mm_media_name)')
     else:
-#        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\', mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid from mm_metadata_movie order by LOWER(mm_media_name) offset %s limit %s) order by LOWER(mm_media_name)', (offset, records))
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
             'mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\','\
             ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\

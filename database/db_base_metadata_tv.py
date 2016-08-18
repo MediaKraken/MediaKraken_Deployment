@@ -255,5 +255,6 @@ def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_numbe
 # jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 
 # "last" episode season number from tvmaze
-# mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes'->(jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
+# mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes'->(jsonb_array_length(
+#mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 # - 1)->'season'
