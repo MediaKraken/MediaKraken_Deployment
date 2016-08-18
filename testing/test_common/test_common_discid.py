@@ -29,7 +29,7 @@ def test_com_discid_default_device():
     """
     Test function
     """
-    com_discid_default_device()
+    common_discid.com_discid_default_device()
 
 
 # calculate discid from directory
@@ -40,4 +40,4 @@ def test_com_diskid_caclulate_dir(dir_to_calculate):
     """
     Test function
     """
-    com_diskid_caclulate_dir(dir_to_calculate)
+    common_discid.com_diskid_caclulate_dir(dir_to_calculate)

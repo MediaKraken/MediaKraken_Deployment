@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append('.')
-from common import com_db_emby
+from common import common_database_emby
 
 
 class TestCommonDatabaseEmby(object):
@@ -29,7 +29,7 @@ class TestCommonDatabaseEmby(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_db_attach_emby(None)
+        self.db_connection = common_database_emby.com_db_attach_emby(None)
 
 
     @classmethod

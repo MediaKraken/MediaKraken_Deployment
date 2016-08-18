@@ -32,7 +32,7 @@ class TestCommonBackupBackblaze(object):
 
     @classmethod
     def setup_class(self):
-        self.backblaze_connection = common_backup_backblaze.com_Backup_Backblaze_API()
+        self.backblaze_connection = common_backup_backblaze.CommonBackupBackblaze()
 
 
     @classmethod

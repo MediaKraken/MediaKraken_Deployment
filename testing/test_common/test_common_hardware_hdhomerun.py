@@ -29,7 +29,7 @@ class TestCommonHardwareHDHomeRun(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Hardware_HDHomeRun.com_Hardware_HDHomeRun_API()
+        self.db_connection = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 
 
     @classmethod
@@ -42,7 +42,7 @@ class TestCommonHardwareHDHomeRun(object):
         """
         Test function
         """
-        com_hdhomerun_discover()
+        self.db_connection.com_hdhomerun_discover()
 
 
     # item list
@@ -50,7 +50,7 @@ class TestCommonHardwareHDHomeRun(object):
         """
         Test function
         """
-        com_hdhomerun_list()
+        self.db_connection.com_hdhomerun_list()
 
 
     # item detail

@@ -33,7 +33,7 @@ def test_com_emby_installed_directory(dir_name):
     """
     Test function
     """
-    com_emby_installed_directory(dir_name)
+    common_emby.com_emby_installed_directory(dir_name)
 
 
 # fetch library list
@@ -45,7 +45,7 @@ def test_com_emby_library_list(dir_name):
     """
     Test function
     """
-    com_emby_library_list(dir_name)
+    common_emby.com_emby_library_list(dir_name)
 
 
 # check for running instance
@@ -53,7 +53,7 @@ def test_com_emby_check_instance():
     """
     Test function
     """
-    com_emby_check_instance()
+    common_emby.com_emby_check_instance()
 
 
 # C# guid to text

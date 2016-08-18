@@ -29,7 +29,7 @@ class TestCommonDatabaseOctmote(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_db_open(None)
+        self.db_connection = common_database_octmote.com_db_open(None)
 
 
     @classmethod
@@ -45,7 +45,7 @@ class TestCommonDatabaseOctmote(object):
         """
         Test function
         """
-        com_db_layout_list()
+        self.db_connection.com_db_layout_list()
 
 
 #def com_db_Layout_Detail(guid):

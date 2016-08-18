@@ -29,7 +29,7 @@ class TestCommonHardwareChromecast(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_hardware_chromecast.com_Hardware_Chromecast_API()
+        self.db_connection = common_hardware_chromecast.CommonHardwareChromecast()
 
 
     @classmethod
@@ -38,27 +38,27 @@ class TestCommonHardwareChromecast(object):
 
 
     # find chromecast as dict
-    def test_MK_Chromecast_Discover_Dict(self):
+    def test_com_chromecast_discover_dict(self):
         """
         Test function
         """
-        MK_Chromecast_Discover_Dict()
+        self.db_connection.com_chromecast_discover_dict()
 
 
     # get detail by name
-    def test_MK_Chromecast_Info(self):
+    def test_com_chromecast_info(self):
         """
         Test function
         """
-        MK_Chromecast_Info()
+        self.db_connection.com_chromecast_info()
 
 
     # get status by name
-    def test_MK_Chromecast_Status(self):
+    def test_com_chromecast_status(self):
         """
         Test function
         """
-        MK_Chromecast_Status()
+        self.db_connection.com_chromecast_status()
 
 
     # connect to device
@@ -77,9 +77,8 @@ class TestCommonHardwareChromecast(object):
 #    def MK_Chromecast_Device_Command(self, command):
 
 
-    def test_MK_Chromecast_Device_Close(self):
+    def test_com_chromecast_device_close(self):
         """
         Test function
         """
-        MK_Chromecast_Device_Close()
-
+        self.db_connection.com_chromecast_device_close()

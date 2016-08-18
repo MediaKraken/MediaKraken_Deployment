@@ -29,7 +29,7 @@ def test_common_cloud_backup_list():
     """
     Test function
     """
-    common_cloud_backup_list()
+    common_cloud.com_cloud_backup_list()
 
 
 # store file in cloud
@@ -64,8 +64,8 @@ def test_common_cloud_backup_list():
     ("local", "dir_test"), # dupe test
     ("onedrive", "dir_test"),
     ("onedrive", "dir_test")]) # dupe test
-def test_common_cloud_create_folder(self, cloud_type, dir_name):
+def test_common_cloud_create_folder(cloud_type, dir_name):
     """
     Test function
     """
-    common_cloud_create_folder(cloud_type, dir_name)
+    common_cloud.com_cloud_create_folder(cloud_type, dir_name)

@@ -33,4 +33,4 @@ def test_common_ffmpeg_media_attr(file_path):
     """
     Test function
     """
-    common_ffmpeg_media_attr(file_path)
+    common_ffmpeg.com_ffmpeg_media_attr(file_path)

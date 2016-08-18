@@ -34,10 +34,10 @@ def test_common_file_modification_timestamp(file_name):
     Test function
     """
     if file_name == "./cache/cache.iso":
-        assert isinstance(common_file_Modification_Timestamp(file_name),\
+        assert isinstance(common_file.com_file_modification_timestamp(file_name),\
             datetime.datetime) == True
     else:
-        assert common_file_Modification_Timestamp(file_name) is None
+        assert common_file.com_file_modification_timestamp(file_name) is None
 
 
 # save data as file
@@ -54,7 +54,7 @@ def test_com_file_save_data(file_name, data_block, as_pickle, with_timestamp, fi
     """
     Test function
     """
-    com_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext)
+    common_file.com_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext)
 
 
 # load file as data
@@ -67,7 +67,7 @@ def test_common_file_load_data(file_name, as_pickle):
     """
     Test function
     """
-    common_file_Load_Data(file_name, as_pickle)
+    common_file.com_file_load_data(file_name, as_pickle)
 
 
 # find all filters files in directory
@@ -102,7 +102,8 @@ def test_common_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_s
     """
     Test function
     """
-    common_file_Dir_List(dir_name, filter_text, walk_dir, skip_junk, file_size, directory_only)
+    common_file.com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk,\
+        file_size, directory_only)
 
 
 # throw out junk entries in files list
@@ -110,7 +111,7 @@ def test_common_file_remove_junk():
     """
     Test function
     """
-    assert common_file_Remove_Junk(("ok", "blah full length")) == ("ok")
+    assert common_file.com_file_remove_junk(("ok", "blah full length")) == ("ok")
 
 
 # see if file is junk
@@ -123,4 +124,4 @@ def test_common_file_is_junk(file_name, expected_result):
     """
     Test function
     """
-    assert common_file_Is_Junk(file_name) == expected_result
+    assert common_file.com_file_is_junk(file_name) == expected_result
