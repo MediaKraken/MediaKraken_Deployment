@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import os
 import rtsimple as rt
 
 
@@ -33,7 +32,7 @@ class CommonMetadataRottenTomatoes(object):
         rt.API_KEY = config_handle.get('API', 'RottenTomatoes').strip()
 
 
-    def com_rt_search(movie_title, movie_year=None):
+    def com_rt_search(self, movie_title, movie_year=None):
         """
         # search for movie title and year
         """

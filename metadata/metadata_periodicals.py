@@ -47,7 +47,7 @@ def metadata_periodicals_lookup(db_connection, media_file_path, download_que_id)
         lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
         metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
         if metadata_uuid is None and ISBNDB_CONNECTION is not None:
-            json_data = ISBNDB_CONNECTION.com_ISBNdb_Books(lookup_name)
+            json_data = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
             if json_data is None or 'error' in json_data:
                 logging.error("isbn book error: %s", json_data)
             else:

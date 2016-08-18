@@ -30,7 +30,7 @@ for file_name in common_file.com_file_dir_list(\
             if file_line.split(' ')[0] == 'def':
                 #print('line: %s' % file_line)
                 #print('chunk: %s' % file_line.split(' ')[1].split('(')[0])
-                if file_line.split(' ')[1].split('(')[0].islower() == False\
+                if file_line.split(' ')[1].split('(')[0].islower() is False\
                         and file_name.find('/lib/') == -1\
                         and file_name.find('_Kodi') == -1\
                         and file_name.find('_Roku') == -1\

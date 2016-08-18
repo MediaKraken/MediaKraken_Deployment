@@ -172,5 +172,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     return self.db_cursor.fetchall()
 
 ## works
-#select mm_metadata_tvshow_guid,mm_metadata_tvshow_name as media_query_name,mm_metadata_tvshow_localimage_json
-#from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'cast' @> '[{"person": {"id": 96405}}]'
+#select mm_metadata_tvshow_guid,mm_metadata_tvshow_name as
+# media_query_name,mm_metadata_tvshow_localimage_json
+#from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->'Meta'
+#->'tvmaze'->'_embedded'->'cast' @> '[{"person": {"id": 96405}}]'

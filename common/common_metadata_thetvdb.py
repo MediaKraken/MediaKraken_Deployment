@@ -108,7 +108,7 @@ class CommonMetadataTheTVDB(object):
     def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
         """
         Update series
-        """"
+        """
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
             + self.thetvdb_connection + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
