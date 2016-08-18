@@ -170,7 +170,6 @@ def db_read_tvmetadata_episodes(self, show_guid):
     """
     # read in the tv episodes metadata by guid
     """
-    sql_params = show_guid,
     return self.db_cursor.fetchall()
 
 

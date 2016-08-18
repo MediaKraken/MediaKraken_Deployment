@@ -23,7 +23,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import pychromecast
 import pychromecast.controllers.youtube as youtube
-from pychromecast.controllers import BaseController
+#from pychromecast.controllers import BaseController
 
 
 class CommonHardwareChromecast(object):
@@ -32,6 +32,8 @@ class CommonHardwareChromecast(object):
     """
     def __init__(self):
         self.chromecast_dict = None
+        self.cast = None
+        self.chromecast_device = None
 
 
     def com_chromecast_discover_dict(self):
@@ -70,7 +72,7 @@ class CommonHardwareChromecast(object):
         """
         # play youtube video
         """
-        yt_controller = YouTubeController()
+        yt_controller = youtube.YouTubeController()
         self.chromecast_device.register_handler(yt_controller)
         yt_controller.play_video(yt_id)
 

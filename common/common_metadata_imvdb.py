@@ -30,14 +30,14 @@ class CommonMetadataIMVdb(object):
         self.headers = {'User-Agent': 'MediaKraken_0.1.1',
                         'IMVDB-APP-KEY': imvdb_api_key,
                         'Accept': 'application/json'}
-        self.BASE_API_URL = 'http://imvdb.com/api/v1'
+        self.base_api_url = 'http://imvdb.com/api/v1'
 
 
     def com_imvdb_video_info(self, video_id):
         """
         Video info
         """
-        resp = requests.post(self.BASE_API_URL + "/video/" + video_id\
+        resp = requests.post(self.base_api_url + "/video/" + video_id\
             + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
         logging.debug("imvdb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
@@ -47,7 +47,7 @@ class CommonMetadataIMVdb(object):
         """
         Search for video by band name and song title
         """
-        resp = requests.post(self.BASE_API_URL + "/search/videos?q="\
+        resp = requests.post(self.base_api_url + "/search/videos?q="\
             + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),\
             headers=self.headers)
         logging.debug("imvdb Video Status: %s-%s", resp.status_code, resp.json())
@@ -58,7 +58,7 @@ class CommonMetadataIMVdb(object):
         """
         Search by band name
         """
-        resp = requests.post(self.BASE_API_URL + "/search/entities?q="\
+        resp = requests.post(self.base_api_url + "/search/entities?q="\
             + artist_name.replace(' ', '+'), headers=self.headers)
         logging.debug("imvdb Entities Status: %s-%s", resp.status_code, resp.json())
         return resp.json()

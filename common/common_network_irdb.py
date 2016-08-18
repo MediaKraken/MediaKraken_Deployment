@@ -39,7 +39,7 @@ def com_irdb_device_types_by_brand(brand_text):
         'http://irdb.tk/api/devicetype/?brand=' + brand_text, None))
 
 
-def com_irdb_codesets_by_brand_device(brand_text, device_type):
+def com_irdb_codesets_brand_device(brand_text, device_type):
     """
     # See which sets of codes we have for that brand and device type:
     """

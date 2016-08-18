@@ -16,14 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_file
-
-
-"""
-This program will scan for all py files in specified directory
-skipping the lib, kodi, roku and tizen directory.
-"""
 
 
 for file_name in common_file.com_file_dir_list(\

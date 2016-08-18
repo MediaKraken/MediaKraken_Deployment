@@ -18,10 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import string
 import os
 import re
 import random
-import string
 from . import common_network
 
 

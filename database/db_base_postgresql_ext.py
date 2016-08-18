@@ -1,3 +1,6 @@
+"""
+Postgresql extensions
+"""
 # from psycopg2 documentation
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -8,6 +11,9 @@ import psycopg2.extensions
 
 
 class LoggingCursor(psycopg2.extensions.cursor):
+    """
+    Use for cursor that logs all queries
+    """
     def execute(self, sql, args=None):
         logger = logging.getLogger('sql_debug')
         logger.info(self.mogrify(sql, args))
@@ -19,6 +25,9 @@ class LoggingCursor(psycopg2.extensions.cursor):
 
 
 class InfDateAdapter:
+    """
+    Infinite date adapter
+    """
     def __init__(self, wrapped):
         self.wrapped = wrapped
     def getquoted(self):

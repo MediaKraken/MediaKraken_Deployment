@@ -33,6 +33,9 @@ def db_meta_music_video_lookup(self, artist_name, song_title):
 
 def db_meta_music_video_add(self, artist_name, artist_song, id_json,\
         data_json, image_json):
+    """
+    Add metadata for music video
+    """
     self.db_cursor.execute('insert into mm_metadata_music_video (mm_metadata_music_video_guid,'\
         ' mm_metadata_music_video_media_id, mm_media_music_video_band, mm_media_music_video_song,'\
         ' mm_metadata_music_video_json, mm_metadata_music_video_localimage_json)'\
@@ -41,6 +44,9 @@ def db_meta_music_video_add(self, artist_name, artist_song, id_json,\
 
 
 def db_meta_music_video_detail_by_uuid(self, item_guid):
+    """
+    Grab metadata for specififed music video
+    """
     self.db_cursor.execute('select mm_media_music_video_band, mm_media_music_video_song,'\
         ' mm_metadata_music_video_json, mm_metadata_music_video_localimage_json'\
         ' from mm_metadata_music_video where mm_metadata_music_video_guid = %s', (item_guid,))
@@ -50,16 +56,22 @@ def db_meta_music_video_detail_by_uuid(self, item_guid):
         return None
 
 
-def db_meta_music_video_count(self, imvdb_ID=None):
-    if imvdb_ID is None:
+def db_meta_music_video_count(self, imvdb_id=None):
+    """
+    Return count of music video metadata
+    """
+    if imvdb_id is None:
         self.db_cursor.execute('select count(*) from mm_metadata_music_video')
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_music_video'\
-            ' where mm_metadata_music_video_media_id->\'imvdb\' ? %s', (imvdb_ID,))
+            ' where mm_metadata_music_video_media_id->\'imvdb\' ? %s', (imvdb_id,))
     return self.db_cursor.fetchone()[0]
 
 
 def db_meta_music_video_list(self, offset=None, records=None):
+    """
+    List music video metadata
+    """
     if offset is None:
         self.db_cursor.execute('select mm_metadata_music_video_guid, mm_media_music_video_band,'\
             ' mm_media_music_video_song, mm_metadata_music_video_localimage_json'\

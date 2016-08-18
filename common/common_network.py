@@ -28,8 +28,7 @@ import sys
 from plyer import email
 import psutil
 import ipgetter
-sys.path.append("./vault/lib")
-import wol
+from vault.lib import wol
 
 
 def mk_network_fetch_from_url(url, directory=None):
@@ -105,8 +104,7 @@ class PingIt(Thread):
 
     def run(self):
         pingaling = None
-        if str.upper(sys.platform[0:3]) == 'WIN' \
-        or str.upper(sys.platform[0:3]) == 'CYG':
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             pingaling = os.popen("ping -n 2 " + self.ip_addr, "r")
         else:
             pingaling = os.popen("ping -q -c2 " + self.ip_addr, "r")

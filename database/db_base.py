@@ -21,8 +21,8 @@ import logging # pylint: disable=W0611
 import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
-from psycopg2.extras import DictCursor
+#from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
+#from psycopg2.extras import DictCursor
 
 
 def db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
