@@ -2,10 +2,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 os_env = os.environ
-import sys
-sys.path.append('./common')
-sys.path.append('../common')
-sys.path.append('../../common')
 from common import common_file
 
 # pull in the ini file config
