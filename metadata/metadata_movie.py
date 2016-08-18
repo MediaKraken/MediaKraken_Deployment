@@ -23,13 +23,13 @@ import json
 import uuid
 from guessit import guessit
 from common import common_metadata_anidb
-from . import common_metadata_imdb
-from . import common_metadata_movie_theme
-from . import common_metadata_movie_trailer
-from . import common_metadata_netflixroulette
-from . import common_metadata_omdb
-from . import common_metadata_rotten_tomatoes
-from . import common_metadata_tmdb
+from common import common_metadata_imdb
+from common import common_metadata_movie_theme
+from common import common_metadata_movie_trailer
+from common import common_metadata_netflixroulette
+from common import common_metadata_omdb
+from common import common_metadata_rotten_tomatoes
+from common import common_metadata_tmdb
 import ConfigParser
 config_handle = ConfigParser.ConfigParser()
 config_handle.read("MediaKraken.ini")
