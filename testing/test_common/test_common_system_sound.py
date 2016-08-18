@@ -27,6 +27,9 @@ from common import common_system_sound
     ("first test"),
     ("can you hear me again")])
 def test_mk_sound_text_to_speech(message_to_speak):
+    """
+    Test function
+    """
     mk_sound_text_to_speech(message_to_speak)
 
 
@@ -35,9 +38,15 @@ def test_mk_sound_text_to_speech(message_to_speak):
     ("./cache/250Hz_44100Hz_16bit_05sec.wav"),
     ("./cache/250Hz_44100Hz_16bit_05sec.mp3")])
 def test_mk_sound_play_file(file_name):
+    """
+    Test function
+    """
     mk_sound_play_file(file_name)
 
 
 # list devices via pyaudio
 def test_com_audio_pyaudio_list_devices():
+    """
+    Test function
+    """
     com_audio_pyaudio_list_devices()

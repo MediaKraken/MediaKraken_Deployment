@@ -28,4 +28,7 @@ from common import common_logging
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
 def test_common_logging_start(log_name):
+    """
+    Test function
+    """
     common_logging_start(log_name)

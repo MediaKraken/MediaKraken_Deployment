@@ -24,6 +24,9 @@ from common import common_network_iscp
 
 # the EISCP auto discover only works on 2011 models or higher
 def test_mk_eiscp_discovery():
+    """
+    Test function
+    """
     MK_EISCP_Discovery()
 
 

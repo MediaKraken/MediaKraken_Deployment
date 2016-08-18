@@ -24,6 +24,9 @@ from common import common_json
 
 # check for new json files for device/layout/etc
 def test_mk_json_find():
+    """
+    Test function
+    """
     MK_Json_Find()
 
 

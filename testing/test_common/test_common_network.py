@@ -36,21 +36,33 @@ from common import common_network
     ('spootdev@gmail.com', "test2", "body"),
     ('spootdev@fakegmail.com', "test3", "body")])
 def test_mk_network_send_email(email_receipient, email_subject, email_body):
+    """
+    Test function
+    """
     mk_network_send_email(email_receipient, email_subject, email_body)
 
 
 # get MAC address
 def test_mk_network_get_mac():
+    """
+    Test function
+    """
     mk_network_get_mac()
 
 
 # get outside ip addy
 def test_mk_network_get_outside_ip():
+    """
+    Test function
+    """
     mk_network_get_outside_ip()
 
 
 # get default ip address
 def test_mk_network_get_default_ip():
+    """
+    Test function
+    """
     mk_network_get_default_ip()
 
 

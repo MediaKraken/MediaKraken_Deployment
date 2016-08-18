@@ -53,16 +53,25 @@ class TestCommonMetadataTMDB(object):
 
     # movie changes since date within 24 hours
     def test_com_tmdb_Metadata_Changes_Movie(self):
+        """
+        Test function
+        """
         com_tmdb_Metadata_Changes_Movie()
 
 
     # tv changes since date within 24 hours
     def test_com_tmdb_Metadata_Changes_TV(self):
+        """
+        Test function
+        """
         com_tmdb_Metadata_Changes_TV()
 
 
     # person changes since date within 24 hours
     def test_com_tmdb_Metadata_Changes_Person(self):
+        """
+        Test function
+        """
         com_tmdb_Metadata_Changes_Person()
 
 

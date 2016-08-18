@@ -43,6 +43,9 @@ class TestCommonimvdb(object):
         ('Garbage', 'Empty'),
         ('fake', 'fake')])
     def test_com_imvdb_search_video(self, artist_name, song_title):
+        """
+        Test function
+        """
         self.imvdb_connection.com_imvdb_search_video(artist_name, song_title)
 
 
@@ -51,4 +54,7 @@ class TestCommonimvdb(object):
         ('Garbage'),
         ('fake')])
     def test_com_imvdb_search_entities(self, artist_name):
+        """
+        Test function
+        """
         self.imvdb_connection.com_imvdb_search_entities(artist_name)

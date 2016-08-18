@@ -23,4 +23,7 @@ from common import common_medialkraken
 
 
 def test_common_network_mediakraken_find_server():
+    """
+    Test function
+    """
     common_network_mediakraken_find_server()

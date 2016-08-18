@@ -24,6 +24,9 @@ from common import common_cloud
 
 # get list of all backups
 def test_common_cloud_backup_list():
+    """
+    Test function
+    """
     common_cloud_backup_list()
 
 
@@ -60,4 +63,7 @@ def test_common_cloud_backup_list():
     ("onedrive", "dir_test"),
     ("onedrive", "dir_test")]) # dupe test
 def test_common_cloud_create_folder(self, cloud_type, dir_name):
+    """
+    Test function
+    """
     common_cloud_create_folder(cloud_type, dir_name)

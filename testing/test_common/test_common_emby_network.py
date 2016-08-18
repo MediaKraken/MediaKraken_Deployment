@@ -24,6 +24,9 @@ from common import common_emby_network
 
 # https://github.com/MediaBrowser/Emby/wiki/Locating-the-Server
 def test_common_network_emby_find_server():
+    """
+    Test function
+    """
     common_emby_network.com_network_emby_find_server()
 
 

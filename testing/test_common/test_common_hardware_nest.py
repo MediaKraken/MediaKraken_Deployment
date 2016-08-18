@@ -35,6 +35,9 @@ from common import common_hardware_nest
     (-7),
     (36)])
 def test_mk_nest_c_to_f(temp_data):
+    """
+    Test function
+    """
     MK_NEST_C_to_F(temp_data)
 
 
@@ -42,4 +45,7 @@ def test_mk_nest_c_to_f(temp_data):
     (-7),
     (60)])
 def test_mk_nest_f_to_c(temp_data):
+    """
+    Test function
+    """
     MK_NEST_F_to_C(temp_data)

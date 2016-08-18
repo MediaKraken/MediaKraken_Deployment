@@ -27,6 +27,9 @@ from common import common_hardware_roku
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
 def test_getmp4info(filename):
+    """
+    Test function
+    """
     getmp4info(filename)
 
 

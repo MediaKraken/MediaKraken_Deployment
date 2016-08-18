@@ -39,9 +39,14 @@ class TestCommonTelnet(object):
 
 
     def test_MK_Telnet_Read_Device(self):
+        """
+        Test function
+        """
         MK_Telnet_Read_Device()
 
 
     def test_MK_Telnet_Write_Device(self):
+        """
+        Test function
+        """
         MK_Telnet_Write_Device("Telnet test message")
-

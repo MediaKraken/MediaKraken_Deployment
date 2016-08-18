@@ -41,6 +41,9 @@ class TestCommonMetadatathesportsdb(object):
         ('Dallas Cowboys'),
         ('fakename')])
     def test_com_meta_thesportsdb_Search_Team_by_Name(self, team_name):
+        """
+        Test function
+        """
         com_meta_thesportsdb_Search_Team_by_Name(team_name)
 
 
@@ -49,6 +52,9 @@ class TestCommonMetadatathesportsdb(object):
         ('Dallas Cowboys'),
         ('fakename')])
     def test_com_meta_thesportsdb_Search_Players_by_Team(self, team_name):
+        """
+        Test function
+        """
         com_meta_thesportsdb_Search_Players_by_Team(team_name)
 
 

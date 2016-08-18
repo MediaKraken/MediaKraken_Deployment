@@ -23,14 +23,23 @@ from common import common_pagination
 
 
 def test_get_css_framework():
+    """
+    Test function
+    """
     get_css_framework()
 
 
 def test_get_link_size():
+    """
+    Test function
+    """
     get_link_size()
 
 
 def test_show_single_page_or_not():
+    """
+    Test function
+    """
     show_single_page_or_not()
 
 
@@ -38,6 +47,9 @@ def test_show_single_page_or_not():
     (None), # defualt to 30
     (50)])
 def test_get_page_items(client_items_per_page):
+    """
+    Test function
+    """
     get_page_items(client_items_per_page)
 
 

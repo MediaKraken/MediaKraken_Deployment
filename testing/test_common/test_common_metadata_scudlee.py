@@ -24,6 +24,9 @@ from common import common_metadata_scudlee
 
 # def fetch the anime list by scudlee for thetvdb crossreference
 def test_mk_scudlee_fetch_xml():
+    """
+    Test function
+    """
     mk_scudlee_fetch_xml()
 
 

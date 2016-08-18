@@ -27,4 +27,7 @@ from common import common_metadata_tv_theme
     ("V", True),
     ("FAKETITLE", False)])
 def test_com_tvtheme_download(show_name, expected_results):
+    """
+    Test function
+    """
     assert com_tvtheme_download(show_name) == expected_results

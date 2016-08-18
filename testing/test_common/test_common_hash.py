@@ -26,6 +26,9 @@ from common import common_hash
     ('./cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
     ('./fakedirzz', None)])
 def test_com_hash_sha1_by_filename(file_name, expected_result):
+    """
+    Test function
+    """
     assert com_hash_sha1_by_filename(file_name) == expected_result
 
 
@@ -37,6 +40,9 @@ def test_com_hash_sha1_by_filename(file_name, expected_result):
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
 def test_com_hash_sha1_c(file_name, expected_result):
+    """
+    Test function
+    """
     assert com_hash_sha1_c(file_name) == expected_result
 
 
@@ -48,6 +54,9 @@ def test_com_hash_sha1_c(file_name, expected_result):
     ('./cache/HashCalc.txt.tar.bz2', None),
     ('./fakedirzz', None)])
 def test_com_hash_crc32(file_name, expected_result):
+    """
+    Test function
+    """
     assert com_hash_crc32(file_name) == expected_result
 
 
@@ -80,6 +89,9 @@ def test_com_hash_crc32(file_name, expected_result):
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
 def test_com_hash_thesubdb(file_name):
+    """
+    Test function
+    """
     com_hash_thesubdb(file_name)
 
 
@@ -89,4 +101,7 @@ def test_com_hash_thesubdb(file_name):
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
 def test_com_hash_opensubtitles(file_name):
+    """
+    Test function
+    """
     com_hash_opensubtitles(file_name)

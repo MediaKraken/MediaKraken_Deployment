@@ -42,6 +42,9 @@ class TestCommonMetadataTheTVDB(object):
 
 
     def test_com_meta_thetvdb_get_server_epoc_time(self):
+        """
+        Test function
+        """
         com_meta_thetvdb_get_server_epoc_time()
 
 

@@ -24,6 +24,9 @@ from common import common_network_ircc
 
 # ircc device discovery via ssdp
 def test_mk_network_ircc_discover():
+    """
+    Test function
+    """
     MK_Network_IRCC_Discover()
 
 

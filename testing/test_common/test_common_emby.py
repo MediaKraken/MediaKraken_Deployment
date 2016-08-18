@@ -28,6 +28,9 @@ from common import common_emby
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_installed_directory(dir_name):
+    """
+    Test function
+    """
     com_emby_installed_directory(dir_name)
 
 
@@ -37,11 +40,17 @@ def test_com_emby_installed_directory(dir_name):
     #("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_library_list(dir_name):
+    """
+    Test function
+    """
     com_emby_library_list(dir_name)
 
 
 # check for running instance
 def test_com_emby_check_instance():
+    """
+    Test function
+    """
     com_emby_check_instance()
 
 

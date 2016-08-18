@@ -26,4 +26,7 @@ from common import common_metadata_chart_lyrics
     ("Megadeath", "Peace Sells"),
     ("Fakebandofdoom", "Fakesongofdoom")])
 def test_com_meta_chart_lyrics(band_name, song_name):
+    """
+    Test function
+    """
     com_meta_chart_lyrics(band_name, song_name)

@@ -46,5 +46,8 @@ class TestDatabaseActivity(object):
         (7),
         (400)])
     def test_db_activity_purge(self, days_old):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_activity_purge(days_old)

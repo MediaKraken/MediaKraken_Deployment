@@ -37,6 +37,9 @@ class TestDatabaseLink(object):
 
 
     def test_db_link_list_count(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_link_list_count()
 

@@ -37,16 +37,25 @@ class TestCommonHardwareChromecast(object):
 
     # find chromecast as dict
     def test_MK_Chromecast_Discover_Dict(self):
+        """
+        Test function
+        """
         MK_Chromecast_Discover_Dict()
 
 
     # get detail by name
     def test_MK_Chromecast_Info(self):
+        """
+        Test function
+        """
         MK_Chromecast_Info()
 
 
     # get status by name
     def test_MK_Chromecast_Status(self):
+        """
+        Test function
+        """
         MK_Chromecast_Status()
 
 
@@ -67,5 +76,8 @@ class TestCommonHardwareChromecast(object):
 
 
     def test_MK_Chromecast_Device_Close(self):
+        """
+        Test function
+        """
         MK_Chromecast_Device_Close()
 

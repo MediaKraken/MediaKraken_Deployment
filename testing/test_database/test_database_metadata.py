@@ -150,6 +150,9 @@ class TestDatabaseMetadata(object):
         ('Robocop', '2020'),
         ('FakeZZ', '2050')])
     def test_db_find_metadata_guid(self, media_name, media_year):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_find_metadata_guid(media_name, media_year)
 

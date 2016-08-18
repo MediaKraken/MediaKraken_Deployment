@@ -41,6 +41,9 @@ class TestCommonMetadatatvmaze(object):
 
     # show when last updated
     def test_com_meta_themaze_show_updated(self):
+        """
+        Test function
+        """
         self.db_connection.com_meta_themaze_show_updated()
 
 

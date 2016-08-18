@@ -44,6 +44,9 @@ class TestCommonCloudAWSS3(object):
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
     def test_com_aws_s3_upload(self, source_path, destination_filename,\
             backup_bucket = False):
+        """
+        Test function
+        """
         self.awss3.com_aws_s3_upload(source_path, destination_filename, backup_bucket)
 
 
@@ -53,6 +56,9 @@ class TestCommonCloudAWSS3(object):
         ("HashCalc.txt", "./cache/HashCalcDown.txt", False),
         ("HashCalc.txt", "./cache/HashCalcDown2.txt", True)])
     def test_com_aws_s3_download(self, source_key, destination_filename, backup_bucket):
+        """
+        Test function
+        """
         self.awss3.com_aws_s3_download(source_key, destination_filename, backup_bucket = False)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
@@ -63,6 +69,9 @@ class TestCommonCloudAWSS3(object):
         ("HashCalc.txt", False),
         ("HashCalc.txt", True)])
     def test_com_aws_s3_delete(self, key, backup_bucket):
+        """
+        Test function
+        """
         self.awss3.com_aws_s3_delete(key, backup_bucket)
 
 
@@ -71,6 +80,9 @@ class TestCommonCloudAWSS3(object):
         (7),
         (400)])
     def test_com_aws_s3_backup_purge(self, days_to_keep):
+        """
+        Test function
+        """
         self.awss3.com_aws_s3_backup_purge(days_to_keep)
 
 
@@ -79,4 +91,7 @@ class TestCommonCloudAWSS3(object):
         (True),
         (False)])
     def test_com_aws_s3_bucket_list(self, backup_bucket):
+        """
+        Test function
+        """
         self.awss3.com_aws_s3_bucket_list(backup_bucket)

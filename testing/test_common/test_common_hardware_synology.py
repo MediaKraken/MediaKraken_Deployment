@@ -41,10 +41,15 @@ class TestCommonSynology(object):
 
     # get nas info
     def test_com_Synology_Info(self):
+        """
+        Test function
+        """
         com_synology_info()
 
 
     # get share list
     def test_com_Synology_Shares_List(self):
+        """
+        Test function
+        """
         com_synology_shares_list()
-

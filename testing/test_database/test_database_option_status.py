@@ -37,6 +37,9 @@ class TestDatabaseOptionStatus(object):
 
 
     def test_db_opt_status_read(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_opt_status_read()
 

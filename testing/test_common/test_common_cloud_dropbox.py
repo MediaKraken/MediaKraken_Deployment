@@ -36,6 +36,9 @@ class TestCommonDropBox(object):
 
 
     def test_dropbox_user_auth(self):
+        """
+        Test function
+        """
         self.dropbox_connection.dropbox_user_auth()
 
 
@@ -43,6 +46,9 @@ class TestCommonDropBox(object):
         ("./cache/HashCalc.txt", "HashCalc.txt"),
         ("./cache/HashCalcfake.txt", "HashCalcfake.txt")])
     def test_dropbox_upload(self, file_name, file_save_name):
+        """
+        Test function
+        """
         self.dropbox_connection.dropbox_upload(file_name, file_save_name)
 
 
@@ -51,6 +57,9 @@ class TestCommonDropBox(object):
         ("metaman"),
         ("fakedir")])
     def test_dropbox_list(self, dir_name = '/'):
+        """
+        Test function
+        """
         self.dropbox_connection.dropbox_list(dir_name)
 
 
@@ -58,4 +67,7 @@ class TestCommonDropBox(object):
         ("HashCalc.txt", "./cache/HashCalcDown.txt"),
         ("HashCalcfake.txt", "./cache/HashCalcDown2.txt")])
     def test_dropbox_download(self, file_name, file_save_name):
+        """
+        Test function
+        """
         self.dropbox_connection.dropbox_download(file_name, file_save_name)

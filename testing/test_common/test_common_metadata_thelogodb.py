@@ -37,4 +37,7 @@ class TestCommonthelogodb(object):
 
     # grab newest releases
     def test_com_thelogodb_fetch_latest(self):
+        """
+        Test function
+        """
         com_thelogodb_fetch_latest()

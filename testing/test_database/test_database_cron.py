@@ -45,11 +45,17 @@ class TestDatabaseCron(object):
 
 
     def test_db_cron_list_count_false(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list_count(False)
 
 
     def test_db_cron_list_count_true(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list_count(True)
 

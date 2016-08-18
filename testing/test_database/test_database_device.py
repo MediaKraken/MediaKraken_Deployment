@@ -38,6 +38,9 @@ class TestDatabaseDevices(object):
 
     # count device
     def test_db_device_count(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_device_count()
 

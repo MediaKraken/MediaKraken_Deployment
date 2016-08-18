@@ -24,6 +24,9 @@ from common import common_lirc
 
 # def MK_LIRC_Init(app_string="OctMote"):
 def test_mk_lirc_init():
+    """
+    Test function
+    """
     MK_LIRC_Init()
 
 
@@ -31,4 +34,7 @@ def test_mk_lirc_init():
 
 
 def test_mk_lirc_close():
+    """
+    Test function
+    """
     MK_LIRC_Close()

@@ -28,4 +28,7 @@ from common import common_ffmpeg
     ("./cache/BigBuckBunny_512kb.mp4"),
     ("./cache/fake_video.mp4")])
 def test_common_ffmpeg_media_attr(file_path):
+    """
+    Test function
+    """
     common_ffmpeg_media_attr(file_path)

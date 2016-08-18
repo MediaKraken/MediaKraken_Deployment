@@ -44,6 +44,9 @@ class TestCommonTrakt(object):
         (7),
         (400)])
     def test_com_trakt_calendar_by_days(self, day_count):
+        """
+        Test function
+        """
         com_trakt_calendar_by_days(day_count)
 
 

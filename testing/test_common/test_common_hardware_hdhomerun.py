@@ -37,11 +37,17 @@ class TestCommonHardwareHDHomeRun(object):
 
     # discover items
     def test_com_hdhomerun_discover(self):
+        """
+        Test function
+        """
         com_hdhomerun_discover()
 
 
     # item list
     def test_com_hdhomerun_list(self):
+        """
+        Test function
+        """
         com_hdhomerun_list()
 
 

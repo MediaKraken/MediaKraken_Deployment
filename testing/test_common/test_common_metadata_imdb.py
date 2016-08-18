@@ -37,6 +37,9 @@ class TestCommonimdb(object):
 
     # fetch info from title
     def test_com_imdb_title_search(self):
+        """
+        Test function
+        """
         self.imdb_connection.com_imdb_title_search("Robocop")
 
 

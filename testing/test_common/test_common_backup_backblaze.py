@@ -50,6 +50,9 @@ class TestCommonBackupBackblaze(object):
         ("bucket_test"),
         ("bucket_test")]) # for duplicate
     def test_com_backup_backblaze_bucket_create(self, bucket_name):
+        """
+        Test function
+        """
         self.backblaze_connection.com_backup_backblaze_bucket_create(bucket_name)
 
 
@@ -59,6 +62,9 @@ class TestCommonBackupBackblaze(object):
         ("./cache/HashCalcfake.txt", "bucket_upload", None),
         ("./cache/HashCalc.txt", "bucket_test", "test")])
     def test_com_backup_backblaze_upload_file(self, file_name, bucket_name, file_password):
+        """
+        Test function
+        """
         self.backblaze_connection.com_backup_backblaze_upload_file(file_name, bucket_name, file_password)
 
 
@@ -68,6 +74,9 @@ class TestCommonBackupBackblaze(object):
         ("./cache", "bucket_test", "test")])
     def test_com_backup_backblaze_upload_directory(self, dir_name, bucket_name,\
             dir_password=None):
+        """
+        Test function
+        """
         self.backblaze_connection.com_backup_backblaze_upload_directory(dir_name, bucket_name, dir_password)
 
 
@@ -75,6 +84,9 @@ class TestCommonBackupBackblaze(object):
         ("HashCalc.txt", "./cache/down.txt", None),
         ("hashCalc.txt", "./cache/down_pass.txt", "test")])
     def test_com_backup_backblaze_download_file(self, file_name, local_file_name, file_password):
+        """
+        Test function
+        """
         self.backblaze_connection.com_backup_backblaze_download_file(file_name, local_file_name, file_password)
         os.remove("./cache/down.txt")
         os.remove("./cache/down_pass.txt")

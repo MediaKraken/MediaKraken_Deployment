@@ -39,18 +39,30 @@ class TestCommonTwitch(object):
         (0),
         (5)])
     def test_com_Twitch_Get_All_Streams(self, stream_limit):
+        """
+        Test function
+        """
         self.twitch_connection.com_twitch_get_all_streams(stream_limit)
 
 
     def test_com_Twitch_Get_Featured_Streams(self):
+        """
+        Test function
+        """
         self.twitch_connection.com_twitch_get_featured_streams()
 
 
     def test_com_Twitch_Get_Summary(self):
+        """
+        Test function
+        """
         self.twitch_connection.com_twitch_get_summary()
 
 
     def test_com_Twitch_Get_Summary_Viewers(self):
+        """
+        Test function
+        """
         self.twitch_connection.com_twitch_get_summary_viewers()
 
 

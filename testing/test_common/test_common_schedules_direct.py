@@ -39,10 +39,16 @@ class TestCommonSchedulesDirect(object):
 
 
     def test_com_Schedules_Direct_Status(self):
+        """
+        Test function
+        """
         com_Schedules_Direct_Status()
 
 
     def test_com_Schedules_Direct_Client_Version(self):
+        """
+        Test function
+        """
         com_Schedules_Direct_Client_Version()
 
 
@@ -56,6 +62,9 @@ class TestCommonSchedulesDirect(object):
 
 
     def test_com_Schedules_Direct_Lineup_List(self):
+        """
+        Test function
+        """
         com_Schedules_Direct_Lineup_List()
 
 

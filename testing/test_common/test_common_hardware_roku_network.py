@@ -23,6 +23,9 @@ from common import common_hardware_roku_network
 
 
 def test_mk_roku_network_discovery():
+    """
+    Test function
+    """
     mk_roku_network_discovery()
 
 

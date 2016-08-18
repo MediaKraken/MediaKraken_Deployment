@@ -41,4 +41,7 @@ class TestCommonMetadataRottenTomatoes(object):
         ("Robocop", 1987),
         ("Fake", None)])
     def test_com_rt_search(self, movie_title, movie_year):
+        """
+        Test function
+        """
         self.rt_connection.com_rt_search(movie_title, movie_year)

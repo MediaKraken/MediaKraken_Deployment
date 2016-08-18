@@ -37,6 +37,9 @@ class TestAndroidHardwareInstance(object):
 
     # return the dpi for the device
     def test_MK_Android_Get_DPI(self):
+        """
+        Test function
+        """
         MK_Android_Get_DPI()
 
 
@@ -45,6 +48,9 @@ class TestAndroidHardwareInstance(object):
         (0.5),
         (5)])
     def test_MK_Android_Vibrate(self, vibrate_time):
+        """
+        Test function
+        """
         MK_Android_Vibrate(vibrate_time)
 
 
@@ -53,4 +59,7 @@ class TestAndroidHardwareInstance(object):
         (0.5),
         (5)])
     def test_MK_Android_Motion(self, time_range):
+        """
+        Test function
+        """
         MK_Android_Motion(time_range)

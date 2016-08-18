@@ -40,4 +40,7 @@ class TestCommonISO(object):
         ("./cache/cache.iso"),
         ("./cache/cache_fake.iso")])
     def test_com_iso_load(url_file):
+        """
+        Test function
+        """
         com_iso_load(url_file)

@@ -53,10 +53,15 @@ class TestCommonMetadataAnidb(object):
 
     # logout of anidb
     def test_MK_Network_anidb_Logout(self):
+        """
+        Test function
+        """
         MK_Network_anidb_Logout()
 
 
     # close the anidb connect and stop the thread
     def test_MK_Network_anidb_Stop(self):
+        """
+        Test function
+        """
         MK_Network_anidb_Stop()
-

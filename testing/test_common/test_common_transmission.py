@@ -36,6 +36,9 @@ class TestCommonTransmission(object):
 
 
     def test_common_transmission_get_torrent_list(self):
+        """
+        Test function
+        """
         common_transmission_get_torrent_list()
 
 

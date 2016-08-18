@@ -28,6 +28,9 @@ from common import common_metadata_netflixroulette
     ("Red", None),
     ("Robocop", 1987)])
 def test_common_metadata_netflixroulette_get_all_data(media_title, media_year):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_all_data(media_title, media_year)
 
 
@@ -36,6 +39,9 @@ def test_common_metadata_netflixroulette_get_all_data(media_title, media_year):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_id(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_id(media_title)
 
 
@@ -44,6 +50,9 @@ def test_common_metadata_netflixroulette_get_id(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_director(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_director(media_title)
 
 
@@ -52,6 +61,9 @@ def test_common_metadata_netflixroulette_get_director(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_summary(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_summary(media_title)
 
 
@@ -60,6 +72,9 @@ def test_common_metadata_netflixroulette_get_summary(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_category(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_category(media_title)
 
 
@@ -68,6 +83,9 @@ def test_common_metadata_netflixroulette_get_category(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_cast(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_cast(media_title)
 
 
@@ -76,6 +94,9 @@ def test_common_metadata_netflixroulette_get_cast(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_release_year(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_release_year(media_title)
 
 
@@ -84,6 +105,9 @@ def test_common_metadata_netflixroulette_get_release_year(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_type(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_type(media_title)
 
 
@@ -92,6 +116,9 @@ def test_common_metadata_netflixroulette_get_type(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_media_poster(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_media_poster(media_title)
 
 
@@ -100,8 +127,14 @@ def test_common_metadata_netflixroulette_get_media_poster(media_title):
     ("fakezzzzzz"),
     ("Red")])
 def test_common_metadata_netflixroulette_get_rating(media_title):
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_rating(media_title)
 
 
 def test_common_metadata_netflixroulette_get_version():
+    """
+    Test function
+    """
     common_metadata_netflixroulette_get_version()

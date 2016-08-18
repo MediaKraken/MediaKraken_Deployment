@@ -42,6 +42,9 @@ class TestDatabaseMetadataGames(object):
 
 
     def test_db_meta_game_system_list_count(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_game_system_list_count()
 

@@ -53,6 +53,9 @@ class TestDatabaseMedia(object):
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
     def test_db_read_media_guid(self, media_guid):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_read_media(media_guid)
 

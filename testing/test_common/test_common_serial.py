@@ -39,12 +39,21 @@ class TestCommonSerial(object):
 
 
     def test_MK_Serial_Read_Device(self):
+        """
+        Test function
+        """
         self.serial_connection.MK_Serial_Read_Device()
 
 
     def test_MK_Serial_Close_Device(self):
+        """
+        Test function
+        """
         self.serial_connection.MK_Serial_Close_Device()
 
 
     def test_MK_Serial_Write_Device(self):
+        """
+        Test function
+        """
         self.serial_connection.MK_Serial_Write_Device("Test serial message")

@@ -27,11 +27,17 @@ from common import common_hardware
 
 # turn on accelerometer
 def test_mk_hardware_accelerometer_on():
+    """
+    Test function
+    """
     mk_hardware_accelerometer_on()
 
 
 # turn off accelerometer
 def test_mk_hardware_accelerometer_off():
+    """
+    Test function
+    """
     mk_hardware_accelerometer_off()
 
 
@@ -41,6 +47,9 @@ def test_mk_hardware_accelerometer_off():
 
 # setup off the vibration via pattern
 def test_mk_hardware_vibration():
+    """
+    Test function
+    """
     mk_hardware_vibration(pattern_string)
 
 
@@ -49,16 +58,25 @@ def test_mk_hardware_vibration():
     ("0.5"),
     ("2")])
 def test_mk_hardware_vibration_time(seconds_to_vibrate):
+    """
+    Test function
+    """
     mk_hardware_vibration_time(seconds_to_vibrate)
 
 
 # stop vibration
 def test_mk_hardware_vibration_stop():
+    """
+    Test function
+    """
     mk_hardware_vibration_stop()
 
 
 # gps setup
 def test_mk_hardware_gps_on():
+    """
+    Test function
+    """
     mk_hardware_gps_on()
 
 

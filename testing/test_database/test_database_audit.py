@@ -77,6 +77,9 @@ class TestDatabaseAudit(object):
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
     def test_db_audit_path_check(self, dir_path):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_check(dir_path)
 
@@ -92,6 +95,9 @@ class TestDatabaseAudit(object):
         (100, 100),
         (100000000, 1000)])
     def test_db_audit_paths(self, offset, records):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_audit_paths(offset, records)
 

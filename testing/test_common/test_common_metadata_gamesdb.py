@@ -36,6 +36,9 @@ class TestCommonMetadataGamesDB(object):
 
 
     def test_com_meta_gamesdb_platform_list(self):
+        """
+        Test function
+        """
         com_meta_gamesdb_platform_list()
 
 
@@ -44,11 +47,17 @@ class TestCommonMetadataGamesDB(object):
 
     # 'mega man' as mega OR man
     def test_com_meta_gamesdb_games_by_name_or(self):
+        """
+        Test function
+        """
         com_meta_gamesdb_games_by_name_or("Mega Man")
 
 
     # 'mega man' as mega AND man
     def test_com_meta_gamesdb_games_by_name_and(self):
+        """
+        Test function
+        """
         com_meta_gamesdb_games_by_name_and("Mega Man")
 
 

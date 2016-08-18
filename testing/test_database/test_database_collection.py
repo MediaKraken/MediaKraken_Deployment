@@ -42,12 +42,18 @@ class TestDatabaseCollection(object):
         (100, 100),
         (100000000, 1000)])
     def test_db_collection_list(self, offset, records):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_collection_list(offset, records)
 
 
     # read collection data from json metadata
     def test_db_media_collection_scan(self):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_media_collection_scan()
  
@@ -57,6 +63,9 @@ class TestDatabaseCollection(object):
         ('Darko Collection'),
         ('fakecollectionstuff')])
     def test_db_collection_guid_by_name(self, collection_name):
+        """
+        Test function
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_collection_guid_by_name(collection_name)
 
