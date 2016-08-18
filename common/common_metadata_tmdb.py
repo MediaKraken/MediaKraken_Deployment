@@ -31,9 +31,9 @@ class CommonMetadataTMDB(object):
     """
     def __init__(self):
         import ConfigParser
-        CONFIG_HANDLE = ConfigParser.ConfigParser()
-        CONFIG_HANDLE.read("MediaKraken.ini")
-        tmdb.API_KEY = CONFIG_HANDLE.get('API', 'themoviedb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        tmdb.API_KEY = config_handle.get('API', 'themoviedb').strip()
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):

@@ -21,11 +21,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from common import common_metadata_musicbrainz
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
-if CONFIG_HANDLE.get('API', 'MediaBrainz').strip() != 'None':
+if config_handle.get('API', 'MediaBrainz').strip() != 'None':
     # setup the mediabrainz class
     mbrainz_api_connection = common_metadata_musicbrainz.com_Musicbrainz_API()
 else:

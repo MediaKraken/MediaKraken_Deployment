@@ -22,12 +22,12 @@ import os
 import json
 from common import common_metadata_thesportsdb
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 # verify thesportsdb key exists
-if CONFIG_HANDLE.get('API', 'thesportsdb').strip() != 'None':
+if config_handle.get('API', 'thesportsdb').strip() != 'None':
     THESPORTSDB_CONNECTION = common_metadata_thesportsdb.CommonMetadataTheSportsDB()
 else:
     THESPORTSDB_CONNECTION = None

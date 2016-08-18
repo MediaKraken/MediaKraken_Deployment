@@ -30,9 +30,9 @@ class CommonMetadataTheLogoDB(object):
     """
     def __init__(self):
         import ConfigParser
-        CONFIG_HANDLE = ConfigParser.ConfigParser()
-        CONFIG_HANDLE.read("MediaKraken.ini")
-        self.API_KEY = CONFIG_HANDLE.get('API', 'thelogodb').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        self.API_KEY = config_handle.get('API', 'thelogodb').strip()
 
 
     def com_thelogodb_fetch_latest(self):

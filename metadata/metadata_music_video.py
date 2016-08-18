@@ -22,13 +22,13 @@ import os
 import json
 from common import common_metadata_imvdb
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 # verify imvdb key exists
-if CONFIG_HANDLE.get('API', 'imvdb').strip() != 'None':
-    IMVDB_CONNECTION = common_metadata_imvdb.CommonMetadataIMVdb(CONFIG_HANDLE.get('API',\
+if config_handle.get('API', 'imvdb').strip() != 'None':
+    IMVDB_CONNECTION = common_metadata_imvdb.CommonMetadataIMVdb(config_handle.get('API',\
         'imvdb').strip())
 else:
     IMVDB_CONNECTION = None

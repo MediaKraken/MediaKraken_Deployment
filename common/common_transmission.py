@@ -29,13 +29,13 @@ class CommonTransmission(object):
     """
     def __init__(self):
         import ConfigParser
-        CONFIG_HANDLE = ConfigParser.ConfigParser()
+        config_handle = ConfigParser.ConfigParser()
         if os.path.isfile("MediaKraken.ini"):
-            CONFIG_HANDLE.read("MediaKraken.ini")
+            config_handle.read("MediaKraken.ini")
         else:
-            CONFIG_HANDLE.read("../MediaKraken.ini")
-        self.trans_connection = transmissionrpc.Client(CONFIG_HANDLE.get('Transmission',\
-            'Host').strip(), int(CONFIG_HANDLE.get('Transmission', 'Port').strip()))
+            config_handle.read("../MediaKraken.ini")
+        self.trans_connection = transmissionrpc.Client(config_handle.get('Transmission',\
+            'Host').strip(), int(config_handle.get('Transmission', 'Port').strip()))
 
 
     def com_trans_get_torrent_list(self):

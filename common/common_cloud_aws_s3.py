@@ -31,14 +31,14 @@ class CommonCloudAWSS3(object):
         # set active false so if following falls
         self.active = False
         import ConfigParser
-        CONFIG_HANDLE = ConfigParser.ConfigParser()
-        CONFIG_HANDLE.read("MediaKraken.ini")
-        if CONFIG_HANDLE.get('AWSS3', 'AccessKey').strip() != 'None':
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        if config_handle.get('AWSS3', 'AccessKey').strip() != 'None':
             # Amazon S3 settings.
-            self.AWS_ACCESS_KEY_ID = CONFIG_HANDLE.get('AWSS3', 'AccessKey').strip()
-            self.AWS_SECRET_ACCESS_KEY = CONFIG_HANDLE.get('AWSS3', 'SecretAccessKey').strip()
-            self.AWS_BUCKET_NAME = CONFIG_HANDLE.get('AWSS3', 'Bucket').strip()
-            self.AWS_BUCKET_BACKUP_NAME = CONFIG_HANDLE.get('AWSS3', 'BackupBucket').strip()
+            self.AWS_ACCESS_KEY_ID = config_handle.get('AWSS3', 'AccessKey').strip()
+            self.AWS_SECRET_ACCESS_KEY = config_handle.get('AWSS3', 'SecretAccessKey').strip()
+            self.AWS_BUCKET_NAME = config_handle.get('AWSS3', 'Bucket').strip()
+            self.AWS_BUCKET_BACKUP_NAME = config_handle.get('AWSS3', 'BackupBucket').strip()
             # setup connection and buckets for later use
             conn = boto.connect_s3(self.AWS_ACCESS_KEY_ID, self.AWS_SECRET_ACCESS_KEY)
             self.bucket = conn.get_bucket(self.AWS_BUCKET_NAME)

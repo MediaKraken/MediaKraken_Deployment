@@ -31,13 +31,13 @@ from . import common_metadata_omdb
 from . import common_metadata_rotten_tomatoes
 from . import common_metadata_tmdb
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 from . import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if CONFIG_HANDLE.get('API', 'themoviedb').strip() != 'None':
+if config_handle.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
     TMDB_CONNECTION = common_metadata_tmdb.com_metadata_tmdb_API()
 else:

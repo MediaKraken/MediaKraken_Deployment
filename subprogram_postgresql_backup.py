@@ -19,8 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 import time
 import os
 from common import common_cloud
@@ -32,11 +32,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Backup
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start
@@ -44,22 +44,22 @@ db.srv_db_activity_insert('MediaKraken_Server Postgresql Backup Start', None,\
     'System: Server DB Backup Start', 'ServerBackupStart', None, None, 'System')
 
 # popen appears to be trying to execute pgpassword
-#proc_back = subprocess.Popen(['PGPASSWORD=' + CONFIG_HANDLE.get('DB Connections','PostDBPass').strip(), 'pg_dump', '-U', CONFIG_HANDLE.get('DB Connections','PostDBUser').strip(), CONFIG_HANDLE.get('DB Connections','PostDBName').strip(), '-F', 'c', '-f', CONFIG_HANDLE.get('MediaKrakenServer','BackupLocal').strip() + '/MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'], shell=False)
+#proc_back = subprocess.Popen(['PGPASSWORD=' + config_handle.get('DB Connections','PostDBPass').strip(), 'pg_dump', '-U', config_handle.get('DB Connections','PostDBUser').strip(), config_handle.get('DB Connections','PostDBName').strip(), '-F', 'c', '-f', config_handle.get('MediaKrakenServer','BackupLocal').strip() + '/MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'], shell=False)
 #proc_back.pid.wait()
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
-os.system('PGPASSWORD=' + CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip()\
+os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass').strip()\
     + ' pg_dump -U '\
-    + CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip() + ' '\
-    + CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip() + ' -F c -f '\
-    + CONFIG_HANDLE.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name)
+    + config_handle.get('DB Connections', 'PostDBUser').strip() + ' '\
+    + config_handle.get('DB Connections', 'PostDBName').strip() + ' -F c -f '\
+    + config_handle.get('MediaKrakenServer', 'BackupLocal').strip() + '/' + backup_file_name)
 
 # grab settings and options
 option_json = db.srv_db_option_status_read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
     common_cloud.com_cloud_file_store(option_json['Backup']['BackupType'],\
-    CONFIG_HANDLE.get('MediaKrakenServer', 'BackupLocal').strip() + '/'\
+    config_handle.get('MediaKrakenServer', 'BackupLocal').strip() + '/'\
     + backup_file_name, backup_file_name, True)
 
 # log end

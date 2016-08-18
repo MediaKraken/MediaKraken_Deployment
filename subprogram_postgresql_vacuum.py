@@ -4,8 +4,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 from common import common_logging
 import database as database_base
 
@@ -16,11 +16,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Vacuum
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(CONFIG_HANDLE.get('DB Connections', 'PostDBHost').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBPort').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBName').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBUser').strip(),\
-    CONFIG_HANDLE.get('DB Connections', 'PostDBPass').strip())
+db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    config_handle.get('DB Connections', 'PostDBPort').strip(),\
+    config_handle.get('DB Connections', 'PostDBName').strip(),\
+    config_handle.get('DB Connections', 'PostDBUser').strip(),\
+    config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 # log start

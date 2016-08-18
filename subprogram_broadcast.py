@@ -4,8 +4,8 @@ import socket
 from common import common_logging
 from common import common_network
 import ConfigParser
-CONFIG_HANDLE = ConfigParser.ConfigParser()
-CONFIG_HANDLE.read("MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("MediaKraken.ini")
 
 
 address = ('', 9101)
@@ -25,4 +25,4 @@ while True:
     if recv_data == "who is MediaKrakenServer?":
         # TODO   mk_network_ip_addr()
         server_socket.sendto("http:localhost:"\
-            + CONFIG_HANDLE.get('MediaKrakenServer', 'APIPort').strip(), addr)
+            + config_handle.get('MediaKrakenServer', 'APIPort').strip(), addr)

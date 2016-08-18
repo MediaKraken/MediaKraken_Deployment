@@ -28,9 +28,9 @@ class CommonMetadataRottenTomatoes(object):
     """
     def __init__(self):
         import ConfigParser
-        CONFIG_HANDLE = ConfigParser.ConfigParser()
-        CONFIG_HANDLE.read("MediaKraken.ini")
-        rt.API_KEY = CONFIG_HANDLE.get('API', 'RottenTomatoes').strip()
+        config_handle = ConfigParser.ConfigParser()
+        config_handle.read("MediaKraken.ini")
+        rt.API_KEY = config_handle.get('API', 'RottenTomatoes').strip()
 
 
     def com_rt_search(movie_title, movie_year=None):
