@@ -18,9 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import os
 import json
-#from . import common_metadata
 from . import common_network
 
 
@@ -32,7 +30,7 @@ class CommonMetadataTheLogoDB(object):
         import ConfigParser
         config_handle = ConfigParser.ConfigParser()
         config_handle.read("MediaKraken.ini")
-        self.API_KEY = config_handle.get('API', 'thelogodb').strip()
+        self.logo_api_key = config_handle.get('API', 'thelogodb').strip()
 
 
     def com_thelogodb_fetch_latest(self):
@@ -40,4 +38,4 @@ class CommonMetadataTheLogoDB(object):
         Grab newest releases
         """
         return json.loads(common_network.mk_network_fetch_from_url(\
-            'http://www.thelogodb.com/api/json/v1/' + self.API_KEY + '/tvlatest.php', None))
+            'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))
