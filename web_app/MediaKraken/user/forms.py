@@ -4,7 +4,7 @@ from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from decimal import ROUND_UP
-from models import User
+from .models import User
 
 
 # for editing sync jobs

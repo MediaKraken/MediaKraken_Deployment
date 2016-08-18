@@ -10,11 +10,8 @@ from flask_paginate import Pagination
 from fractions import Fraction
 blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../static")
 
-
-# import localization
 import locale
 locale.setlocale(locale.LC_ALL, '')
-
 # pull in the ini file config
 import ConfigParser
 Config = ConfigParser.ConfigParser()
@@ -29,14 +26,13 @@ import subprocess
 import natsort
 import os
 import sys
-sys.path.append('../')
+sys.path.append('..')
 import database as database_base
-sys.path.append('../../MediaKraken_Common')
 from common import common_file
-from common import common_Google
-from common import common_network_Twitch
-from common import common_network_Vimeo
-from common import common_network_Youtube
+from common import common_google
+from common import common_network_twitch
+from common import common_network_vimeo
+from common import common_network_youtube
 from common import common_pagination
 from common import common_string
 
