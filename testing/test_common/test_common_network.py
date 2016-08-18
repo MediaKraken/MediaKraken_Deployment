@@ -95,7 +95,7 @@ host_list = ('www.yahoo.com', 'www.cnn.com', '8.8.8.8')
 def test_mk_network_ping_list():
     """
     # ping host list
-    """"
+    """
     mk_network_ping_list(host_list)
 
 
