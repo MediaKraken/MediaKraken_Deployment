@@ -39,11 +39,11 @@ class NetworkEvents(Int32StringReceiver):
     Process the network events for the server
     """
     # init is called on every connection
-    def __init__(self, users, db, genre_list):
-        self.MAX_LENGTH = 32000000
+    def __init__(self, users, db_connection, genre_list):
+        self.MAX_LENGTH = 32000000 # pylint: disable=C0103
         self.cpu_use_table = {}
         # server info
-        self.db_connection = db
+        self.db_connection = db_connection
         self.users = users
         self.user_host_name = None
         self.user_ip_addy = None
