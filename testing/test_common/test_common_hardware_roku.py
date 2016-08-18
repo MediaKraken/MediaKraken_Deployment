@@ -32,7 +32,7 @@ def test_getmp4info(filename):
     """
     Test function
     """
-    getmp4info(filename)
+    common_hardware_roku.getmp4info(filename)
 
 
 # def extractimages(videoFile, directory, interval, mode=0, offset=0):

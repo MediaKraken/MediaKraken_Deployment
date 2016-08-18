@@ -28,4 +28,4 @@ def test_com_hardware_yamaha_find():
     """
     Test function
     """
-    com_hardware_yamaha_find()
+    common_hardware_yamaha.com_hardware_yamaha_find()

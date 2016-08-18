@@ -24,23 +24,23 @@ sys.path.append('.')
 from common import common_hardware_roku_network
 
 
-def test_mk_roku_network_discovery():
+def test_com_roku_network_discovery():
     """
     Test function
     """
-    mk_roku_network_discovery()
+    common_hardware_roku_network.com_roku_network_discovery()
 
 
-# def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
+# def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
 
 
-# def mk_roku_network_app_query(roku_addr, roku_port):
+# def com_roku_network_app_query(roku_addr, roku_port):
 
 
-# def mk_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
+# def com_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
 
 
-# def mk_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
+# def com_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
 
 
-# def mk_roku_network_touch(roku_addr, roku_port, x, y):
+# def com_roku_network_touch(roku_addr, roku_port, x, y):

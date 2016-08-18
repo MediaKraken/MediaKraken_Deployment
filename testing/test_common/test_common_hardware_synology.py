@@ -29,7 +29,7 @@ class TestCommonSynology(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Hardware_Synology.com_Synology_API()
+        self.db_connection = common_hardware_synology.CommonSynology()
 
 
     @classmethod
@@ -38,7 +38,7 @@ class TestCommonSynology(object):
 
 
 # connect to synology    
-# def com_Synology_Connect(self, addr, user_name, user_password):
+# def com_synology_connect(self, addr, user_name, user_password):
 
 
     # get nas info
@@ -46,7 +46,7 @@ class TestCommonSynology(object):
         """
         Test function
         """
-        com_synology_info()
+        self.db_connection.com_synology_info()
 
 
     # get share list
@@ -54,4 +54,4 @@ class TestCommonSynology(object):
         """
         Test function
         """
-        com_synology_shares_list()
+        self.db_connection.com_synology_shares_list()

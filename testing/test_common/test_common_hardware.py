@@ -32,7 +32,7 @@ def test_mk_hardware_accelerometer_on():
     """
     Test function
     """
-    mk_hardware_accelerometer_on()
+    common_hardware.mk_hardware_accelerometer_on()
 
 
 # turn off accelerometer
@@ -40,7 +40,7 @@ def test_mk_hardware_accelerometer_off():
     """
     Test function
     """
-    mk_hardware_accelerometer_off()
+    common_hardware.mk_hardware_accelerometer_off()
 
 
 # get accelerometer data
@@ -52,7 +52,7 @@ def test_mk_hardware_vibration():
     """
     Test function
     """
-    mk_hardware_vibration(pattern_string)
+    common_hardware.mk_hardware_vibration(pattern_string)
 
 
 # vibration via time
@@ -63,7 +63,7 @@ def test_mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Test function
     """
-    mk_hardware_vibration_time(seconds_to_vibrate)
+    common_hardware.mk_hardware_vibration_time(seconds_to_vibrate)
 
 
 # stop vibration
@@ -71,7 +71,7 @@ def test_mk_hardware_vibration_stop():
     """
     Test function
     """
-    mk_hardware_vibration_stop()
+    common_hardware.mk_hardware_vibration_stop()
 
 
 # gps setup
@@ -79,7 +79,7 @@ def test_mk_hardware_gps_on():
     """
     Test function
     """
-    mk_hardware_gps_on()
+    common_hardware.mk_hardware_gps_on()
 
 
 # gps location

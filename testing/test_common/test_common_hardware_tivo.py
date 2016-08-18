@@ -29,7 +29,7 @@ class TestCommonTivo(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_Hardware_Tivo.com_Tivo_API()
+        self.db_connection = common_hardware_tivo.CommonTivo()
 
 
     @classmethod
@@ -37,4 +37,4 @@ class TestCommonTivo(object):
         pass
 
 
-# def com_Tivo_Connect(self, telnet_host, telnet_port=31339):
+# def com_tivo_connect(self, telnet_host, telnet_port=31339):

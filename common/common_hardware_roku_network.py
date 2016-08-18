@@ -25,14 +25,14 @@ import time
 from . import common_network_ssdp
 
 
-def mk_roku_network_discovery():
+def com_roku_network_discovery():
     """
     Discover Roku device(s)
     """
     return common_network_ssdp.SSDP.discover("roku:ecp")
 
 
-def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
+def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
     """
     Send comment to roku device
     """
@@ -46,28 +46,28 @@ def mk_roku_network_command(roku_addr, roku_port, roku_command, roku_command_sec
     return response
 
 
-def mk_roku_network_app_query(roku_addr, roku_port):
+def com_roku_network_app_query(roku_addr, roku_port):
     """
     Get list of apps installed
     """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/query/apps')
 
 
-def mk_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
+def com_roku_network_app_launch(roku_addr, roku_port, roku_app_id):
     """
     Launch app by id
     """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/launch/' + roku_app_id)
 
 
-def mk_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
+def com_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
     """
     Grab app icon
     """
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/query/icon/' + roku_app_id)
 
 
-def mk_roku_network_touch(roku_addr, roku_port, x, y):
+def com_roku_network_touch(roku_addr, roku_port, x, y):
     """
     'Click' screen
     """
