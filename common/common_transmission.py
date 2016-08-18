@@ -49,7 +49,7 @@ class CommonTransmission(object):
         """
         Add torrent by file path
         """
-        #trans_connection.add_torrent('http://releases.ubuntu.com/8.10/ubuntu-8.10-desktop-i386.iso.torrent')
+        #trans_connection.add_torrent('http://releases.ubuntu.com/8.10/i386.iso.torrent')
         self.trans_connection.add_torrent(torrent_path)
 
 
