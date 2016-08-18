@@ -185,10 +185,10 @@ class MKServerDatabase(object):
         db_meta_tvmaze_update
     from database.db_base_notification import db_notification_insert,\
         db_notification_read
-    from database.db_base_option_status import db_option_status_read,\
-        db_option_status_update,\
-        db_option_status_update_scan_json,\
-        db_option_status_update_scan_json_rec
+    from database.db_base_option_status import db_opt_status_read,\
+        db_opt_status_update,\
+        db_opt_status_update_scan,\
+        db_opt_status_update_scan_rec
     from database.db_base_postgresql import db_pgsql_table_sizes,\
         db_pgsql_row_count,\
         db_pgsql_vacuum_stat_by_day,\

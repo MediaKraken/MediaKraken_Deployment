@@ -286,7 +286,7 @@ class MediaKrakenAPI(object):
     with app.subroute("/System") as app:
         @app.route("/Configuration")
         def system_configuration(self, request):
-            options_json, status_json = self.db_connection.db_option_status_read()
+            options_json, status_json = self.db_connection.db_opt_status_read()
             loggin.debug("otions: %s", options_json)
             return str(options_json['MaxResumePct'])
 

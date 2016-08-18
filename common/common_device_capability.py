@@ -48,7 +48,7 @@ DEVICE_COMPATIBILITY = {
 }
 
 
-def com_DEVICE_COMPATIBILITY_best_fit(device_type, device_model, video_container,\
+def com_device_compat_best_fit(device_type, device_model, video_container,\
         video_codec, audio_codec, audio_channels):
     """
     Determine best "fit" for video
@@ -56,6 +56,7 @@ def com_DEVICE_COMPATIBILITY_best_fit(device_type, device_model, video_container
     return_video_container = None
     return_video_codec = None
     return_audio_codec = None
+    return_audio_channels = None
     if device_type in DEVICE_COMPATIBILITY:
         if device_model in DEVICE_COMPATIBILITY[device_type]:
             # determine container to use
@@ -73,4 +74,9 @@ def com_DEVICE_COMPATIBILITY_best_fit(device_type, device_model, video_container
                 pass # no change
             else:
                 return_audio_codec = device_model['AudioCodec'][0]
-    return (return_video_container, return_video_codec, return_audio_codec)
+            # determine audio channels to use
+            if audio_channels in device_model['AudioChannel']:
+                pass # no change
+            else:
+                return_audio_channels = device_model['AudioChannel'][0]
+    return (return_video_container, return_video_codec, return_audio_codec, return_audio_channels)

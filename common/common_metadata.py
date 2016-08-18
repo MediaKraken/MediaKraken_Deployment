@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import string
+import string # pylint: disable=W0402
 import os
 import re
 import random

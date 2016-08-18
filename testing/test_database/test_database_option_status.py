@@ -36,18 +36,18 @@ class TestDatabaseOptionStatus(object):
         self.db_connection.db_close()
 
 
-    def test_db_option_status_read(self):
+    def test_db_opt_status_read(self):
         self.db_connection.db_rollback()
-        self.db_connection.db_option_status_read()
+        self.db_connection.db_opt_status_read()
 
 
-    # def db_option_status_update(self, option_json, status_json):
+    # def db_opt_status_update(self, option_json, status_json):
 #        self.db_connection.db_rollback()
 
 
-    # def db_option_status_update_scan_json(self, scan_json):
+    # def db_opt_status_update_scan(self, scan_json):
 #        self.db_connection.db_rollback()
 
 
-    # def db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
+    # def db_opt_status_update_scan_rec(self, dir_path, scan_status, scan_percent):
 #         self.db_connection.db_rollback()

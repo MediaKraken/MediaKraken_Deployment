@@ -80,7 +80,7 @@ db.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,\
 tvshow_updated = 0
 tvshow_inserted = 0
 thetvdb_API_Connection = com_meta_thetvdb.CommonMetadataTheTVDB()
-option_json, status_json = db.db_option_status_read()
+option_json, status_json = db.db_opt_status_read()
 #for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc(status_json['thetvdb_Updated_Epoc'])):
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
