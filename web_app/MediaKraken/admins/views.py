@@ -39,7 +39,6 @@ from common import common_system
 from common import common_transmission
 from common import common_zfs
 
-# import localization
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -47,6 +46,9 @@ outside_ip = None
 
 
 def flash_errors(form):
+    """
+    Display errors from list
+    """
     for field, errors in form.errors.items():
         for error in errors:
             flash("Error in the %s field - %s" % (
@@ -56,6 +58,9 @@ def flash_errors(form):
 
 
 def admin_required(fn):
+    """
+    Admin check
+    """
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -101,18 +106,22 @@ def admins():
     for dir_path in g.db.db_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count=locale.format('%d', g.db.db_User_List_Name_Count(), True),
+                           data_user_count=locale.format('%d',\
+                               g.db.db_User_List_Name_Count(), True),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port=config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
+                           data_server_info_server_port=config_handle.get('MediaKrakenServer',\
+                               'ListenPort').strip(),
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version='0.1.4',
                            data_server_uptime=common_system.com_system_Uptime(),
                            data_active_streams=locale.format('%d', 0, True),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
-                           data_count_media_files=locale.format('%d', g.db.db_known_media_count(), True),
-                           data_count_matched_media=locale.format('%d', g.db.db_matched_media_count(), True),
+                           data_count_media_files=locale.format('%d',\
+                               g.db.db_known_media_count(), True),
+                           data_count_matched_media=locale.format('%d',\
+                               g.db.db_matched_media_count(), True),
                            data_count_streamed_media=locale.format('%d', 0, True),
                            data_zfs_active=common_zfs.com_zfs_Available(),
                            data_library=locale.format('%d', g.db.db_audit_paths_Count(), True),
@@ -406,7 +415,7 @@ def admin_backup_delete_page():
 @admin_required
 def admin_backup():
     """
-    List backsup from local fs and cloud
+    List backups from local fs and cloud
     """
     form = BackupEditForm(request.form)
     if request.method == 'POST':
@@ -487,6 +496,9 @@ def admin_server_stat_slave():
 @login_required
 @admin_required
 def admin_server_settings():
+    """
+    Display server settings page
+    """
     return render_template("admin/admin_server_settings.html",
                            form=AdminSettingsForm(request.form))
 
@@ -496,6 +508,9 @@ def admin_server_settings():
 @login_required
 @admin_required
 def admin_server_zfs():
+    """
+    Display zfs admin page
+    """
     return render_template("admin/admin_server_zfs.html",
                            data_zpool=common_zfs.com_zfs_Zpool_List())
 
@@ -505,6 +520,9 @@ def admin_server_zfs():
 @login_required
 @admin_required
 def admin_server_link_server():
+    """
+    Display page for linking server
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
@@ -636,6 +654,9 @@ def admin_fs_browse(path):
 
 @blueprint.before_request
 def before_request():
+    """
+    Executes before each request
+    """
     g.db = database_base.MKServerDatabase()
     g.db.db_open(config_handle.get('DB Connections','PostDBHost').strip(),\
         config_handle.get('DB Connections','PostDBPort').strip(),\
@@ -646,4 +667,7 @@ def before_request():
 
 @blueprint.teardown_request
 def teardown_request(exception):
+    """
+    Executes after each request
+    """
     g.db.db_close()

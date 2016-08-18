@@ -2027,6 +2027,9 @@ def allowed_file(filename):
 
 @blueprint.before_request
 def before_request():
+    """
+    Executes before each request
+    """
     g.db = database_base.MKServerDatabase()
     g.db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
         config_handle.get('DB Connections', 'PostDBPort').strip(),\
@@ -2037,4 +2040,7 @@ def before_request():
 
 @blueprint.teardown_request
 def teardown_request(exception):
+    """
+    Executes after each request
+    """
     g.db.db_close()
