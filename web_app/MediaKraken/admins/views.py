@@ -29,6 +29,7 @@ import os
 import sys
 sys.path.append('..')
 import database as database_base
+sys.path.append('../..')
 from common import common_cifs
 from common import common_cloud
 from common import common_file

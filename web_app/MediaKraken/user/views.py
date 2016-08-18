@@ -27,6 +27,7 @@ import os
 import sys
 sys.path.append('..')
 import database as database_base
+sys.path.append('../..')
 from common import common_file
 from common import common_google
 from common import common_network_twitch
