@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from vault.lib.backblazeb2 import BackBlazeB2
+from .backblazeb2 import BackBlazeB2
 
 
 class CommonBackupBackblaze(object):

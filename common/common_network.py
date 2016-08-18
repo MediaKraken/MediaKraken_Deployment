@@ -28,7 +28,7 @@ import sys
 from plyer import email
 import psutil
 import ipgetter
-from vault.lib import wol
+from . import wol
 
 
 def mk_network_fetch_from_url(url, directory=None):
