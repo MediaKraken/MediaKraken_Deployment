@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_review_count(self, metadata_id):
+def db_review_count(self, metadata_id):
     """
     # count reviews for media
     """
@@ -30,7 +30,7 @@ def srv_db_review_count(self, metadata_id):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_review_list_by_tmdb_guid(self, metadata_id):
+def db_review_list_by_tmdb_guid(self, metadata_id):
     """
     # grab reviews for metadata
     """
@@ -39,7 +39,7 @@ def srv_db_review_list_by_tmdb_guid(self, metadata_id):
     return self.db_cursor.fetchall()
 
 
-def srv_db_review_insert(self, metadata_id, review_json):
+def db_review_insert(self, metadata_id, review_json):
     """
     # insert record
     """

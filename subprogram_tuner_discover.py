@@ -47,8 +47,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,7 +59,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Tuner_Discovery')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -67,7 +67,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server Tuner Scan Start', None,\
+db.db_activity_insert('MediaKraken_Server Tuner Scan Start', None,\
     'System: Server Tuner Scan Start', 'ServerTunerScanStart', None, None, 'System')
 
 
@@ -90,28 +90,28 @@ for row_tuner in tuner_api.com_hdhomerun_list():
         'IP': common_string.ip_int_to_ascii(row_tuner.get_device_ip()),\
         'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
-    current_data = db.srv_db_tuner_by_serial(str(hex(row_tuner.get_device_id())))
+    current_data = db.db_tuner_by_serial(str(hex(row_tuner.get_device_id())))
     if current_data is not None:
-        db.srv_db_tuner_update(current_data['mm_tuner_id'], json.dumps(json_data))
+        db.db_tuner_update(current_data['mm_tuner_id'], json.dumps(json_data))
     else:
-        db.srv_db_tuner_insert(json.dumps(json_data))
+        db.db_tuner_insert(json.dumps(json_data))
     tuners_added += 1
 
 
 if tuners_added > 0:
-    db.srv_db_notification_insert(locale.format('%d', tuners_added, True)\
+    db.db_notification_insert(locale.format('%d', tuners_added, True)\
         + " tuners added.", True)
 
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server Tuner Scan Stop', None,\
+db.db_activity_insert('MediaKraken_Server Tuner Scan Stop', None,\
     'System: Server Tuner Scan Stop', 'ServerTunerScanStop', None, None, 'System')
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

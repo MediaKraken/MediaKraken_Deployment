@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_meta_gamesdb_system_insert(self, platform_id, platform_name,\
+def db_meta_gamesdb_system_insert(self, platform_id, platform_name,\
         platform_alias, platform_json=None):
     """
     # insert gamesdb game system

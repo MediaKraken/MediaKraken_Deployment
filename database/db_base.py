@@ -25,7 +25,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor
 
 
-def srv_db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
+def db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -45,7 +45,7 @@ def srv_db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass
         sys.exit()
 
 
-def srv_db_open_isolation(self, postdbhost, postdbport, postdbname,\
+def db_open_isolation(self, postdbhost, postdbport, postdbname,\
         postdbuser, postdbpass):
     """
     # open database and pull in config from sqlite and create db if not exist
@@ -67,28 +67,28 @@ def srv_db_open_isolation(self, postdbhost, postdbport, postdbname,\
         sys.exit()
 
 
-def srv_db_close(self):
+def db_close(self):
     """
     # close main db file
     """
     self.sql3_conn.close()
 
 
-def srv_db_commit(self):
+def db_commit(self):
     """
     # commit changes to media database
     """
     self.sql3_conn.commit()
 
 
-def srv_db_rollback(self):
+def db_rollback(self):
     """
     # rollback
     """
     self.sql3_conn.rollback()
 
 
-def srv_db_table_index_check(self, resource_name):
+def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
@@ -96,7 +96,7 @@ def srv_db_table_index_check(self, resource_name):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_table_count(self, table_name):
+def db_table_count(self, table_name):
     """
     # return count of records in table
     """
@@ -104,7 +104,7 @@ def srv_db_table_count(self, table_name):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_query(self, query_string):
+def db_query(self, query_string):
     """
     # general run anything
     """

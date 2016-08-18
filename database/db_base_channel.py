@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_channel_insert(self, channel_id, channel_name, channel_language,\
+def db_channel_insert(self, channel_id, channel_name, channel_language,\
         channel_country, channel_logo_id):
     """
     # insert channel

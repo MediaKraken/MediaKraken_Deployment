@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
+def db_meta_tvmaze_changed_uuid(self, maze_uuid):
     """
     # metadata changed date by uuid
     """
@@ -34,7 +34,7 @@ def srv_db_meta_tvmaze_changed_uuid(self, maze_uuid):
         return None
 
 
-def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
+def db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
         image_json):
     """
     Insert tv series into db
@@ -47,7 +47,7 @@ def srv_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,\
     return new_uuid
 
 
-def srv_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
+def db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
         tvmaze_id):
     """
     Update tv series in db

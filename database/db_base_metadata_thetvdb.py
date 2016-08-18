@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
+def db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
     """
     # insert
     """
@@ -33,7 +33,7 @@ def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_jso
     return media_uuid
 
 
-def srv_db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
+def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
     """
     # updated
     """

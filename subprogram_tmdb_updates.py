@@ -42,8 +42,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -60,7 +60,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_TMDB_Updates')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -68,7 +68,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
+db.db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
     'System: Server TMDB Start', 'ServertheTMDBStart', None, None, 'System')
 
 
@@ -93,26 +93,26 @@ def movie_fetch_save(tmdb_id):
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'],\
             'Crew': cast_json['crew']}}})
         # check for previous record
-        if db.srv_db_meta_tmdb_count(result_json['id']) > 0:
+        if db.db_meta_tmdb_count(result_json['id']) > 0:
             # TODO if this is > 0......MUST use series id from DB.......so, stuff doesn't get wiped
-            #db.srv_db_meta_update(series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+            #db.db_meta_update(series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
             pass
         else:
             # store person info
             if 'cast' in cast_json:
-                db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
+                db.db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
             if 'crew' in cast_json:
-                db.srv_db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
+                db.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
             # grab reviews
             review_json = tmdb.com_tmdb_metadata_review_by_id(tmdb_id)
             if review_json['total_results'] > 0:
                 review_json_id = ({'TMDB': str(review_json['id'])})
                 logging.debug("review: %s", review_json_id)
-                db.srv_db_review_insert(json.dumps(review_json_id),\
+                db.db_review_insert(json.dumps(review_json_id),\
                     json.dumps({'TMDB': review_json}))
             # set and insert the record
             metadata_uuid = str(uuid.uuid4())
-            db.srv_db_meta_insert_tmdb(metadata_uuid, series_id_json,\
+            db.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
                 result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     return metadata_uuid
 
@@ -128,40 +128,40 @@ for tv_change in tmdb.com_tmdb_metadata_changes_tv()['results']:
 
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
+db.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
     'System: Server TMDB Stop', 'ServertheTMDBStop', None, None, 'System')
 
 
 create_collection_trigger = False
 # send notications
 if tvshow_updated > 0:
-    db.srv_db_notification_insert(locale.format('%d', tvshow_updated, True)\
+    db.db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
     create_collection_trigger = True
 if tvshow_inserted > 0:
-    db.srv_db_notification_insert(locale.format('%d', tvshow_inserted, True)\
+    db.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
     create_collection_trigger = True
 if movie_updated > 0:
-    db.srv_db_notification_insert(locale.format('%d', movie_updated, True)\
+    db.db_notification_insert(locale.format('%d', movie_updated, True)\
         + " movie metadata updated.", True)
     create_collection_trigger = True
 if movie_inserted > 0:
-    db.srv_db_notification_insert(locale.format('%d', movie_inserted, True)\
+    db.db_notification_insert(locale.format('%d', movie_inserted, True)\
         + " movie metadata added.", True)
     create_collection_trigger = True
 # update collection
 if create_collection_trigger:
-    db.srv_db_trigger_insert(('python',\
+    db.db_trigger_insert(('python',\
         './subprogram_update_create_collections.py'))
 
 
 # commit all changes
-db.srv_db_commit()
+db.db_commit()
 
 
 # close DB
-db.srv_db_close()
+db.db_close()
 
 
 # remove pid

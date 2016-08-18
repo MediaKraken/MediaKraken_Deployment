@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_nas_count(self):
+def db_nas_count(self):
     """
     # count nas
     """
@@ -29,7 +29,7 @@ def srv_db_nas_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_nas_list(self):
+def db_nas_list(self):
     """
     # read nas
     """
@@ -37,7 +37,7 @@ def srv_db_nas_list(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_nas_insert(self, nas_json):
+def db_nas_insert(self, nas_json):
     """
     # insert record
     """
@@ -45,7 +45,7 @@ def srv_db_nas_insert(self, nas_json):
         (str(uuid.uuid4()), nas_json))
 
 
-def srv_db_nas_update(self, guid, nas_json):
+def db_nas_update(self, guid, nas_json):
     """
     # update record
     """
@@ -53,14 +53,14 @@ def srv_db_nas_update(self, guid, nas_json):
         (nas_json, guid))
 
 
-def srv_db_nas_delete(self, guid):
+def db_nas_delete(self, guid):
     """
     # delete record
     """
     self.db_cursor.execute('delete from mm_nas where mm_nas_id = %s', (guid,))
 
 
-def srv_db_nas_read(self, guid):
+def db_nas_read(self, guid):
     """
     # find detials by nas
     """

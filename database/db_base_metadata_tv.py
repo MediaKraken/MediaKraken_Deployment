@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
+def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     # metadata guid by name
     """
@@ -45,7 +45,7 @@ def srv_db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
 
 
 
-def srv_db_metatv_guid_by_imdb(self, imdb_uuid):
+def db_metatv_guid_by_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
@@ -57,7 +57,7 @@ def srv_db_metatv_guid_by_imdb(self, imdb_uuid):
         return None
 
 
-def srv_db_metatv_guid_by_tvdb(self, thetvdb_uuid):
+def db_metatv_guid_by_tvdb(self, thetvdb_uuid):
     """
     # metadata guid by tv id
     """
@@ -69,7 +69,7 @@ def srv_db_metatv_guid_by_tvdb(self, thetvdb_uuid):
         return None
 
 
-def srv_db_metatv_guid_by_tvmaze(self, tvmaze_uuid):
+def db_metatv_guid_by_tvmaze(self, tvmaze_uuid):
     """
     # metadata guid by tvmaze id
     """
@@ -81,7 +81,7 @@ def srv_db_metatv_guid_by_tvmaze(self, tvmaze_uuid):
         return None
 
 
-def srv_db_metatv_guid_by_tvrage(self, tvrage_uuid):
+def db_metatv_guid_by_tvrage(self, tvrage_uuid):
     """
     # metadata guid by tvrage id
     """
@@ -93,7 +93,7 @@ def srv_db_metatv_guid_by_tvrage(self, tvrage_uuid):
         return None
 
 
-def srv_db_meta_tvshow_list_count(self):
+def db_meta_tvshow_list_count(self):
     """
     # tvshow count
     """
@@ -101,7 +101,7 @@ def srv_db_meta_tvshow_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_meta_tvshow_list(self, offset=None, records=None):
+def db_meta_tvshow_list(self, offset=None, records=None):
     """
     # return list of tvshows
     """
@@ -127,7 +127,7 @@ def srv_db_meta_tvshow_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_meta_tvshow_update_image(self, image_json, metadata_uuid):
+def db_meta_tvshow_update_image(self, image_json, metadata_uuid):
     """
     # update image json
     """
@@ -136,7 +136,7 @@ def srv_db_meta_tvshow_update_image(self, image_json, metadata_uuid):
         (image_json, metadata_uuid))
 
 
-def srv_db_meta_tvshow_images_to_update(self, image_type):
+def db_meta_tvshow_images_to_update(self, image_type):
     """
     # fetch tvmaze rows to update
     """
@@ -151,7 +151,7 @@ def srv_db_meta_tvshow_images_to_update(self, image_type):
     return self.db_cursor.fetchall()
 
 
-def srv_db_meta_tvshow_detail(self, guid):
+def db_meta_tvshow_detail(self, guid):
     """
     # return metadata for tvshow
     """
@@ -166,7 +166,7 @@ def srv_db_meta_tvshow_detail(self, guid):
         return None
 
 
-def srv_db_read_tvmetadata_episodes(self, show_guid):
+def db_read_tvmetadata_episodes(self, show_guid):
     """
     # read in the tv episodes metadata by guid
     """
@@ -174,7 +174,7 @@ def srv_db_read_tvmetadata_episodes(self, show_guid):
     return self.db_cursor.fetchall()
 
 
-def srv_db_read_tvmetadata_eps_season(self, show_guid):
+def db_read_tvmetadata_eps_season(self, show_guid):
     """
     # grab tvmaze ep data for eps per season
     """
@@ -199,7 +199,7 @@ def srv_db_read_tvmetadata_eps_season(self, show_guid):
     return season_data
 
 
-def srv_db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
+def db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
     """
     # grab episodes within the season
     """
@@ -223,7 +223,7 @@ def srv_db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
     return episode_data
 
 
-def srv_db_read_tvmetadata_episode(self, show_guid, season_number, episode_number):
+def db_read_tvmetadata_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """

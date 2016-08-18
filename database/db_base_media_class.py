@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_media_class_list_count(self):
+def db_media_class_list_count(self):
     """
     Count media class
     """
@@ -28,7 +28,7 @@ def srv_db_media_class_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_media_class_list(self, offset=None, records=None):
+def db_media_class_list(self, offset=None, records=None):
     """
     List media class
     """
@@ -44,7 +44,7 @@ def srv_db_media_class_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_class_by_uuid(self, class_uuid):
+def db_media_class_by_uuid(self, class_uuid):
     """
     Find the class text by uuid
     """
@@ -56,7 +56,7 @@ def srv_db_media_class_by_uuid(self, class_uuid):
         return None
 
 
-def srv_db_media_uuid_by_class(self, class_text):
+def db_media_uuid_by_class(self, class_text):
     """
     Find the class uuid by class text
     """

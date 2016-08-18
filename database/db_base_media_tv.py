@@ -22,7 +22,7 @@ import logging # pylint: disable=W0611
 # TODO subselect speedup for list
 
 # grab tv data
-def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
+def db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
         group_collection=False, offset=None):
     if list_type == 'TV Show':
         if offset is None:
@@ -44,7 +44,7 @@ def srv_db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
     return None
 
 
-def srv_db_web_tvmedia_list_count(self, list_type, genre_type=None,\
+def db_web_tvmedia_list_count(self, list_type, genre_type=None,\
         group_collection=False):
     """
     # grab tv data count

@@ -38,8 +38,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -48,7 +48,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Anime_Scudlee')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -56,7 +56,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,\
+db.db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,\
     'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -68,13 +68,13 @@ else:
 # same code in subprograb update create collections
 def store_update_record(db_connection, collection_name, guid_list):
     # store/update the record
-    collection_guid = db.srv_db_Collection_by_Name(collection_name)
+    collection_guid = db.db_Collection_by_Name(collection_name)
     if collection_guid is None:
         # insert
-        db.srv_db_collection_insert(collection_name, guid_list)
+        db.db_collection_insert(collection_name, guid_list)
     else:
         # update
-        db.srv_db_collection_update(collection_guid, guid_list)
+        db.db_collection_update(collection_guid, guid_list)
 
 # check for new scudlee download
 com_scudlee.mk_scudlee_fetch_xml()
@@ -88,24 +88,24 @@ for row_data in com_scudlee.mk_scudlee_anime_list_parse():
             pass
         else:
             # should be valid data, do the update
-            db.srv_db_meta_update_media_id_from_scudlee(row_data[1],\
+            db.db_meta_update_media_id_from_scudlee(row_data[1],\
                 row_data[2], row_data[0])
 
 # begin the collections match/create/update
 for row_data in com_scudlee.mk_scudlee_anime_set_parse():
-    #db.srv_db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
+    #db.db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
     if row_data[1] == "music video":
         pass
     else:
         store_update_record(db_connection, row_data[0], row_data[1])
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
+db.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 # commit all changes to db
-db.srv_db_commit()
+db.db_commit()
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

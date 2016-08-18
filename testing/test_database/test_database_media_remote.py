@@ -28,38 +28,38 @@ class TestDatabaseMediaRemote(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # insert media into database
-    # def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
+#        self.db_connection.db_rollback()
 
 
     # read in all media unless guid specified
-    # def srv_db_read_remote_media(self, media_guid=None):
-#        self.db_connection.srv_db_rollback()
+    # def db_read_remote_media(self, media_guid=None):
+#        self.db_connection.db_rollback()
 
 
-    def test_srv_db_known_remote_media_count(self):
+    def test_db_known_remote_media_count(self):
         """
         # count known media
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_known_remote_media_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_known_remote_media_count()
 
 
     # processed via main_link........
     ## process new records from network sync event from linked server
-    #def srv_db_Media_Remote_New_Data(self, link_uuid, link_records):
-#        self.db_connection.srv_db_rollback()
+    #def db_Media_Remote_New_Data(self, link_uuid, link_records):
+#        self.db_connection.db_rollback()
 
 
     # new media for link
-    # def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
-#        self.db_connection.srv_db_rollback()
+    # def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+#        self.db_connection.db_rollback()

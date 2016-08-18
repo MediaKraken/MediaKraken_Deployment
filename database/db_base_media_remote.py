@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
+def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
         media_metadata_uuid, media_ffprobe_json):
     """
     # insert media into database
@@ -32,7 +32,7 @@ def srv_db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uu
         media_class_uuid, media_metadata_uuid, media_ffprobe_json))
 
 
-def srv_db_read_remote_media(self, media_guid=None):
+def db_read_remote_media(self, media_guid=None):
     """
     # read in all media unless guid specified
     """
@@ -48,7 +48,7 @@ def srv_db_read_remote_media(self, media_guid=None):
         return self.db_cursor.fetchall()
 
 
-def srv_db_known_remote_media_count(self):
+def db_known_remote_media_count(self):
     """
     # count known media
     """
@@ -58,26 +58,26 @@ def srv_db_known_remote_media_count(self):
 
 # processed via main_link........
 ## process new records from network sync event from linked server
-#def srv_db_Media_Remote_New_Data(self, link_uuid, link_records):
+#def db_Media_Remote_New_Data(self, link_uuid, link_records):
 #    # 0-media guid, 1-type, 2-ffrobe, 3-media id json
 #    metadata_guid = None
 #    for row_data in link_records:
 #        if row_data[1] == 'Movie':
 #            if 'TMDB' in row_data[3]:
-#                metadata_guid = srv_db_meta_guid_by_tmdb(row_data[3]['TMDB'])
+#                metadata_guid = db_meta_guid_by_tmdb(row_data[3]['TMDB'])
 #            if metadata_guid is None and 'imdb' in row_data[3]:
-#                metadata_guid = srv_db_meta_guid_by_imdb(row_data[3]['imdb'])
+#                metadata_guid = db_meta_guid_by_imdb(row_data[3]['imdb'])
 #            if metadata_guid is None and 'thetvdb' in row_data[3]:
-#                metadata_guid = srv_db_meta_guid_by_tvdb(row_data[3]['thetvdb'])
+#                metadata_guid = db_meta_guid_by_tvdb(row_data[3]['thetvdb'])
 #        elif row_data[1] == 'TV Show':
 #            if 'imdb' in row_data[3]
-#                metadata_guid = srv_db_metaTV_guid_by_imdb(row_data[3]['imdb'])
+#                metadata_guid = db_metaTV_guid_by_imdb(row_data[3]['imdb'])
 #            if metadata_guid is None and 'thetvdb' in row_data[3]:
-#                metadata_guid = srv_db_metatv_guid_by_tvdb(row_data[3]['thetvdb'])
+#                metadata_guid = db_metatv_guid_by_tvdb(row_data[3]['thetvdb'])
 #            if metadata_guid is None and 'tvmaze' in row_data[3]:
-#                metadata_guid = srv_db_metaTV_guid_by_tvmaze(row_data[3]['tvmaze'])
+#                metadata_guid = db_metaTV_guid_by_tvmaze(row_data[3]['tvmaze'])
 #            if metadata_guid is None and 'TVRage' in row_data[3]:
-#                metadata_guid = srv_db_metatv_guid_by_tvrage(row_data[3]['TVRage'])
+#                metadata_guid = db_metatv_guid_by_tvrage(row_data[3]['TVRage'])
 #        elif row_data[1] == 'Sports':
 #            pass
 #        elif row_data[1] == 'Music':
@@ -90,11 +90,11 @@ def srv_db_known_remote_media_count(self):
 #            logging.error('Link bad data type: %s', row_data[1])
 #            return None
 #        if metadata_guid is not None:
-#            self.srv_db_insert_remote_media(link_uuid, row_data[0], \
-# self.srv_db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
+#            self.db_insert_remote_media(link_uuid, row_data[0], \
+# self.db_media_uuid_by_class(row_data[1]), metadata_guid[0], json.dumps(row_data[2]))
 
 
-def srv_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
+def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
         sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
     """
     # new media for link

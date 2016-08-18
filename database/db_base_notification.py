@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_notification_insert(self, notification_data, notification_dismissable):
+def db_notification_insert(self, notification_data, notification_dismissable):
     """
     # insert notifications
     """
@@ -31,7 +31,7 @@ def srv_db_notification_insert(self, notification_data, notification_dismissable
         notification_dismissable))
 
 
-def srv_db_notification_read(self, offset=None, records=None):
+def db_notification_read(self, offset=None, records=None):
     """
     # read all notifications
     """
@@ -46,7 +46,7 @@ def srv_db_notification_read(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_notification_delete(self, notification_uuid):
+def db_notification_delete(self, notification_uuid):
     """
     # remove noticications
     """

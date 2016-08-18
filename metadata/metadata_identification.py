@@ -49,19 +49,19 @@ def metadata_identification(db_connection, class_text, media_file_path, download
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,\
             media_file_path, download_que_json, download_que_id)
     elif class_text == "Game CHD":
-        metadata_uuid = srv_db_meta_game_by_name_and_system(os.path.basename(\
+        metadata_uuid = db_meta_game_by_name_and_system(os.path.basename(\
             os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
             sha1_value = common_hash.com_hash_sha1_c(media_file_path)
-            metadata_uuid = db_connection.srv_db_meta_game_by_sha1(sha1_value)
+            metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_value)
     elif class_text == "Game ISO":
-        metadata_uuid = srv_db_meta_game_by_name_and_system(os.path.basename(\
+        metadata_uuid = db_meta_game_by_name_and_system(os.path.basename(\
             os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
             sha1_value = common_hash.com_hash_sha1_c(media_file_path)
-            metadata_uuid = db_connection.srv_db_meta_game_by_sha1(sha1_value)
+            metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_value)
     elif class_text == "Game ROM":
-        metadata_uuid = srv_db_meta_game_by_name_and_system(os.path.basename(\
+        metadata_uuid = db_meta_game_by_name_and_system(os.path.basename(\
             os.path.splitext(media_file_path)[0]), lookup_system_id)
         if metadata_uuid is None:
             sha1_hash = common_hash.com_hash_sha1_by_filename(media_file_path)
@@ -77,19 +77,19 @@ def metadata_identification(db_connection, class_text, media_file_path, download
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "Movie Theme":
-        guid = db_connection.srv_db_read_media_Path_Like(os.path.dirname(\
+        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
             os.path.abspath(media_file_path.replace('/theme/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
-            guid = db_connection.srv_db_read_media_Path_Like(os.path.dirname(\
+            guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
                 os.path.abspath(media_file_path.replace('/backdrops/', ''))))
             if guid is not None:
                 metadata_uuid = guid
             else:
                 pass  # TODO lookup properly
     elif class_text == "Movie Trailer":
-        guid = db_connection.srv_db_read_media_Path_Like(os.path.dirname(\
+        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
             os.path.abspath(media_file_path.replace('/trailers/', ''))))
         if guid is not None:
             metadata_uuid = guid
@@ -116,14 +116,14 @@ def metadata_identification(db_connection, class_text, media_file_path, download
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection, media_file_path,\
             download_que_json, download_que_id)
     elif class_text == "TV Theme":
-        guid = db_connection.srv_db_read_media_Path_Like(os.path.dirname(\
+        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
             os.path.abspath(media_file_path.replace('/theme/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
             pass  # TODO lookup properly
     elif class_text == "TV Trailer":
-        guid = db_connection.srv_db_read_media_Path_Like(os.path.dirname(\
+        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
             os.path.abspath(media_file_path.replace('/trailers/', ''))))
         if guid is not None:
             metadata_uuid = guid

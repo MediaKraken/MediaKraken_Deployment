@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_tv_stations_read(self):
+def db_tv_stations_read(self):
     """
     # read the stations
     """
@@ -30,7 +30,7 @@ def srv_db_tv_stations_read(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_tv_stations_read_stationid_list(self):
+def db_tv_stations_read_stationid_list(self):
     """
     # read the stationid list
     """
@@ -38,17 +38,17 @@ def srv_db_tv_stations_read_stationid_list(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_tv_station_insert(self, station_id, channel_id):
+def db_tv_station_insert(self, station_id, channel_id):
     """
     # insert station/channel unless it exists
     """
-    if self.srv_db_tv_station_exist(station_id, channel_id) == 0:
+    if self.db_tv_station_exist(station_id, channel_id) == 0:
         self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id, mv_tv_station_id,'\
             ' mv_tv_station_channel) values (%s, %s, %s)',\
             (str(uuid.uuid4()), station_id, channel_id))
 
 
-def srv_db_tv_station_exist(self, station_id, channel_id):
+def db_tv_station_exist(self, station_id, channel_id):
     """
     # channel exist check
     """
@@ -57,7 +57,7 @@ def srv_db_tv_station_exist(self, station_id, channel_id):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_tv_station_update(self, station_name, station_id, station_json):
+def db_tv_station_update(self, station_name, station_id, station_json):
     """
     # update station/channel info
     """
@@ -66,7 +66,7 @@ def srv_db_tv_station_update(self, station_name, station_id, station_json):
         (station_name, station_json, station_id))
 
 
-def srv_db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
+def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
     """
     # insert schedule info
     """
@@ -84,7 +84,7 @@ def srv_db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
             (str(uuid.uuid4()), station_id, schedule_date, schedule_json))
 
 
-def srv_db_tv_program_insert(self, program_id, program_json):
+def db_tv_program_insert(self, program_id, program_json):
     """
     # insert program info
     """
@@ -101,7 +101,7 @@ def srv_db_tv_program_insert(self, program_id, program_json):
             (str(uuid.uuid4()), program_id, program_json))
 
 
-def srv_db_tv_schedule_by_date(self, display_date):
+def db_tv_schedule_by_date(self, display_date):
     """
     # tv shows for schedule display
     """

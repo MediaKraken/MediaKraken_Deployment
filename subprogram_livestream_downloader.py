@@ -41,8 +41,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -53,7 +53,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_LiveStream')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
     Config.get('DB Connections', 'PostDBPort').strip(),\
     Config.get('DB Connections', 'PostDBName').strip(),\
     Config.get('DB Connections', 'PostDBUser').strip(),\
@@ -61,7 +61,7 @@ db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server LiveStream Start', None,\
+db.db_activity_insert('MediaKraken_Server LiveStream Start', None,\
     'System: Server LiveStream Start', 'ServerLiveStreamStart', None, None, 'System')
 
 
@@ -81,14 +81,14 @@ subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
+db.db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
     'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

@@ -38,11 +38,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Trigger: Received USR1')
     os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.srv_db_rollback()
+    db.db_rollback()
     # log stop
-    db.srv_db_activity_insert('MediaKraken_Trigger Stop', None,\
+    db.db_activity_insert('MediaKraken_Trigger Stop', None,\
         'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
-    db.srv_db_close()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -60,14 +60,14 @@ common_logging.com_logging_start('./log/MediaKraken_Trigger')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
     config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
-db.srv_db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+db.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
     'ServerTriggerStart', None, None, 'System')
 
 
@@ -80,7 +80,7 @@ else:
 
 while True:
     # check for new "triggers"
-    for row_data in db.srv_db_triggers_read():
+    for row_data in db.db_triggers_read():
         # fire up cron service
         command_list = []
         for command_data in pickle.loads(str(row_data[1])):
@@ -88,21 +88,21 @@ while True:
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.debug("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db.srv_db_triggers_delete(row_data[0])
+        db.db_triggers_delete(row_data[0])
     time.sleep(1)
 
 
 # log stop
-db.srv_db_activity_insert('MediaKraken_Trigger Stop', None,\
+db.db_activity_insert('MediaKraken_Trigger Stop', None,\
     'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 
 # stop children

@@ -39,8 +39,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -56,7 +56,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -64,7 +64,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server iRadio Start', None,\
+db.db_activity_insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
@@ -74,19 +74,19 @@ db.srv_db_activity_insert('MediaKraken_Server iRadio Start', None,\
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
-    db.srv_db_iradio_insert(row_data)
+    db.db_iradio_insert(row_data)
 
 #radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server iRadio Stop', None,\
+db.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
     'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

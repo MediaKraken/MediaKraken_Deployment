@@ -51,13 +51,13 @@ def signal_receive(signum, frame):
     # stop watchdog
     watchdog.com_watchdog_stop()
     # cleanup db
-    db.srv_db_rollback()
+    db.db_rollback()
     # log stop
-    db.srv_db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+    db.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
-    db.srv_db_commit()
-    db.srv_db_close()
+    db.db_commit()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -106,7 +106,7 @@ logging.info("Open DB")
 # open the database
 db = database_base.MKServerDatabase()
 try:
-    db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+    db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
         config_handle.get('DB Connections', 'PostDBPort').strip(),\
         config_handle.get('DB Connections', 'PostDBName').strip(),\
         config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -116,7 +116,7 @@ except:
     sys.exit()
 
 
-db.srv_db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
+db.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
         'ServerStart', None, None, 'System')
 
 
@@ -137,7 +137,7 @@ if rmda_enabled_os:
 logging.info("Start Watchdog")
 # startup watchdog
 watchdog = common_watchdog.CommonWatchdog()
-watchdog.com_watchdog_start(db.srv_db_audit_paths(None, None))
+watchdog.com_watchdog_start(db.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -181,7 +181,7 @@ logging.info("API PID: %s", proc_api.pid)
 
 # fire up link servers
 link_pid = {}
-for link_data in db.srv_db_link_list():
+for link_data in db.db_link_list():
     proc_link = subprocess.Popen(['python', 'main_server_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
@@ -203,15 +203,15 @@ watchdog.com_watchdog_stop()
 
 
 # log stop
-db.srv_db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+db.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
          'ServerStop', None, None, 'System')
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 
 # stop children

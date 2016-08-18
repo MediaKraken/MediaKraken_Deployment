@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 #import uuid
 
 
-def srv_db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
+def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """
@@ -33,7 +33,7 @@ def srv_db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
         return None
 
 
-def srv_db_meta_sports_list_count(self):
+def db_meta_sports_list_count(self):
     """
     Count sport events
     """
@@ -41,7 +41,7 @@ def srv_db_meta_sports_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_meta_sports_list(self, offset=None, records=None):
+def db_meta_sports_list(self, offset=None, records=None):
     """
     # return list of game systems
     """
@@ -57,7 +57,7 @@ def srv_db_meta_sports_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_meta_sports_guid_by_event_name(self, event_name):
+def db_meta_sports_guid_by_event_name(self, event_name):
     """
     # fetch guid by event name
     """

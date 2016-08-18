@@ -22,7 +22,7 @@ import datetime
 
 # TODO subselect speed
 
-def srv_db_media_random(self, return_image_type=None): # poster, backdrop, etc
+def db_media_random(self, return_image_type=None): # poster, backdrop, etc
     """
     Find random movie
     """
@@ -42,7 +42,7 @@ def srv_db_media_random(self, return_image_type=None): # poster, backdrop, etc
         return None
 
 
-def srv_db_media_movie_count_by_genre(self, class_guid):
+def db_media_movie_count_by_genre(self, class_guid):
     """
     # movie count by genre
     """
@@ -58,7 +58,7 @@ def srv_db_media_movie_count_by_genre(self, class_guid):
     return self.db_cursor.fetchall()
 
 
-def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
+def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
                                 group_collection=False, include_remote=False):
     """
     # web media count
@@ -168,7 +168,7 @@ def srv_db_web_media_list_count(self, class_guid, list_type=None, list_genre='Al
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
+def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
         list_limit=0, group_collection=False, offset=0, include_remote=False):
     """
     # web media return

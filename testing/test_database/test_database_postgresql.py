@@ -28,54 +28,54 @@ class TestDatabasePostgresql(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # query provided by postgresql wiki
-    def test_srv_db_pgsql_table_sizes(self):
+    def test_db_pgsql_table_sizes(self):
         """
         # return tables sizes (includex indexes, etc)
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_pgsql_table_sizes()
+        self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_table_sizes()
 
 
     # query provided by postgresql wiki
-    def test_srv_db_pgsql_row_count(self):
+    def test_db_pgsql_row_count(self):
         """
         # return tables and row count
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_pgsql_row_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_row_count()
 
 
     @pytest.mark.parametrize(("days"), [
         (1),
         (60)])
-    def test_srv_db_pgsql_vacuum_stat_by_day(self, days):
+    def test_db_pgsql_vacuum_stat_by_day(self, days):
         """
         # vacuum stats by day list
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_pgsql_vacuum_stat_by_day(days)
+        self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_vacuum_stat_by_day(days)
 
 
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
-    def test_srv_db_pgsql_vacuum_table(self, table_name):
+    def test_db_pgsql_vacuum_table(self, table_name):
         """
         # vacuum table
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_pgsql_vacuum_table(table_name)
+        self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_vacuum_table(table_name)
 
 
     # set isolation level
-    # def srv_db_pgsql_set_isolation_level(self, isolation_level):
-#        self.db_connection.srv_db_rollback()
+    # def db_pgsql_set_isolation_level(self, isolation_level):
+#        self.db_connection.db_rollback()

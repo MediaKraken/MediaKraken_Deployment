@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def srv_db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
+def db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
     """
     # metadata guid by isbm id
     """
@@ -35,7 +35,7 @@ def srv_db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
         return None
 
 
-def srv_db_metabook_guid_by_name(self, book_name):
+def db_metabook_guid_by_name(self, book_name):
     """
     # metadata guid by name
     """
@@ -47,7 +47,7 @@ def srv_db_metabook_guid_by_name(self, book_name):
         return None
 
 
-def srv_db_metabook_book_insert(self, json_data):
+def db_metabook_book_insert(self, json_data):
     """
     # insert metadata json from isbndb
     """

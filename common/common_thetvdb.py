@@ -123,14 +123,14 @@ class CommonTheTVDB(object):
             json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
                 'Poster':poster_path}})
         # save the show data
-        com_Database.srv_db_meta_Save_Show(show_data.SeriesName,
+        com_Database.db_meta_Save_Show(show_data.SeriesName,
             json_media_id, json_media_json)
 
         # store the season data
     # atm not using season data anyways
     #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'',\
 # 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
-    #    srv_db_meta_Save_Season(self,season_json):
+    #    db_meta_Save_Season(self,season_json):
     #    sql_params = str(uuid.uuid4()),season_json
     #    self.db_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid,\
 # mm_media_season_json) values (%s,%s)',sql_params)
@@ -138,7 +138,7 @@ class CommonTheTVDB(object):
         # store the episode data
         json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'',\
             'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
-    #    srv_db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
+    #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
     #    self.db_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
             #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)

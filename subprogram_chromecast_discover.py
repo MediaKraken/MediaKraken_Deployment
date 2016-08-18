@@ -47,8 +47,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,7 +59,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Chromecast_Discov
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -67,7 +67,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server Chromecast Scan Start', None,\
+db.db_activity_insert('MediaKraken_Server Chromecast Scan Start', None,\
     'System: Server Chromecast Scan Start', 'ServerChromecastScanStart', None, None, 'System')
 
 
@@ -92,23 +92,23 @@ for row_data in chrome.com_chromecast_discover_dict():
     cast_json = chrome.com_chromecast_info()
     logging.debug("Cast: %s", cast_json)
     print("status: %s", chrome.com_chromecast_status())
-    db.srv_db_device_insert('cast', json.dumps({cast_json}))
+    db.db_device_insert('cast', json.dumps({cast_json}))
 
 
 if devices_added > 0:
-    db.srv_db_notification_insert(locale.format('%d', devices_added, True)\
+    db.db_notification_insert(locale.format('%d', devices_added, True)\
         + " Chromecast added.", True)
 
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,\
+db.db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,\
     'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

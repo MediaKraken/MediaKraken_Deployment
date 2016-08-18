@@ -23,7 +23,7 @@ import datetime
 import psycopg2
 
 
-def srv_db_audit_path_status(self):
+def db_audit_path_status(self):
     """
     # read scan status
     """
@@ -32,7 +32,7 @@ def srv_db_audit_path_status(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_audit_path_update_status(self, lib_guid, status_json):
+def db_audit_path_update_status(self, lib_guid, status_json):
     """
     # update status
     """
@@ -40,7 +40,7 @@ def srv_db_audit_path_update_status(self, lib_guid, status_json):
         ' where mm_media_dir_guid = %s', (status_json, lib_guid,))
 
 
-def srv_db_audit_paths_count(self):
+def db_audit_paths_count(self):
     """
     # read the paths to audit
     """
@@ -48,7 +48,7 @@ def srv_db_audit_paths_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
+def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     # update audit path
     """
@@ -56,14 +56,14 @@ def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
         ' mm_media_dir_class_type = %s where mm_media_dir_guid = %s', ())
 
 
-def srv_db_audit_path_delete(self, lib_guid):
+def db_audit_path_delete(self, lib_guid):
     """
     # remove media path
     """
     self.db_cursor.execute('delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
-def srv_db_audit_path_add(self, dir_path, class_guid):
+def db_audit_path_add(self, dir_path, class_guid):
     """
     # add media path
     """
@@ -72,7 +72,7 @@ def srv_db_audit_path_add(self, dir_path, class_guid):
         (str(uuid.uuid4()), dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
 
 
-def srv_db_audit_path_check(self, dir_path):
+def db_audit_path_check(self, dir_path):
     """
     # lib path check (dupes)
     """
@@ -81,7 +81,7 @@ def srv_db_audit_path_check(self, dir_path):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_audit_dir_timestamp_update(self, file_path):
+def db_audit_dir_timestamp_update(self, file_path):
     """
     # update the timestamp for directory scans
     """
@@ -90,7 +90,7 @@ def srv_db_audit_dir_timestamp_update(self, file_path):
 
 
 # TODO subselect speed
-def srv_db_audit_paths(self, offset=None, records=None):
+def db_audit_paths(self, offset=None, records=None):
     """
     # read the paths to audit
     """
@@ -108,7 +108,7 @@ def srv_db_audit_paths(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_audit_path_by_uuid(self, dir_id):
+def db_audit_path_by_uuid(self, dir_id):
     """
     # lib data per id
     """

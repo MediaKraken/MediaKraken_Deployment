@@ -35,8 +35,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -51,7 +51,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Roku_Thumbnail')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -59,12 +59,12 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
+db.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
     'System: Server Roku Thumbnail Generate Start', 'ServerRokuThumbStart', None, None, 'System')
 
 # go through ALL known media files
 thumbnails_generated = 0
-for row_data in db.srv_db_known_media():
+for row_data in db.db_known_media():
 
 #TODO  actually, this should probably be the metadata
 # TODO the common roku code has the bif/thumb gen
@@ -74,15 +74,15 @@ for row_data in db.srv_db_known_media():
 
 # send notications
 if thumbnails_generated > 0:
-    db.srv_db_notification_insert(locale.format('%d', thumbnails_generated, True)\
+    db.db_notification_insert(locale.format('%d', thumbnails_generated, True)\
         + " Roku thumbnail(s) generated.", True)
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
+db.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 # commit all changes
-db.srv_db_commit()
+db.db_commit()
 
 # close DB
-db.srv_db_close()
+db.db_close()

@@ -28,46 +28,46 @@ class TestDatabaseDownload(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # create/insert a download
-    # def srv_db_download_insert(self, provider, down_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_download_insert(self, provider, down_json):
+#        self.db_connection.db_rollback()
 
 
 #    ## read the download
 # this no longer exists
-#    def test_srv_db_download_read(self):
-#        self.db_connection.srv_db_Download_Read()
-#        self.db_connection.srv_db_rollback()
+#    def test_db_download_read(self):
+#        self.db_connection.db_Download_Read()
+#        self.db_connection.db_rollback()
 
 
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),
         ('fakeprovider')])
-    def test_srv_db_download_read_provider(self, provider_name):
+    def test_db_download_read_provider(self, provider_name):
         """
         # read the downloads by provider
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_download_read_provider(provider_name)
+        self.db_connection.db_rollback()
+        self.db_connection.db_download_read_provider(provider_name)
 
 
     # remove download
-    # def srv_db_download_delete(self, guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_download_delete(self, guid):
+#        self.db_connection.db_rollback()
 
 
     # update provdier
-    # def srv_db_download_update_provider(self, provider_name, guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_download_update_provider(self, provider_name, guid):
+#        self.db_connection.db_rollback()
 
 
-    # def srv_db_download_update(self, update_json, guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_download_update(self, update_json, guid):
+#        self.db_connection.db_rollback()

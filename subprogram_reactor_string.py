@@ -46,8 +46,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    self.db_connection.srv_db_rollback()
-    self.db_connection.srv_db_close()
+    self.db_connection.db_rollback()
+    self.db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -61,13 +61,13 @@ class MediaKrakenServerApp(Factory):
         self.users = {} # maps user names to network instances
         # open the database
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        self.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
             config_handle.get('DB Connections', 'PostDBPort').strip(),\
             config_handle.get('DB Connections', 'PostDBName').strip(),\
             config_handle.get('DB Connections', 'PostDBUser').strip(),\
             config_handle.get('DB Connections', 'PostDBPass').strip())
         # preload some data from database
-        self.genre_list = self.db_connection.srv_db_meta_genre_list()
+        self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
 

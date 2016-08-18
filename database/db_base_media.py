@@ -22,7 +22,7 @@ import json
 import datetime
 
 
-def srv_db_insert_media(self, media_uuid, media_path, media_class_uuid,\
+def db_insert_media(self, media_uuid, media_path, media_class_uuid,\
         media_metadata_uuid, media_ffprobe_json, media_json):
     """
     # insert media into database
@@ -33,7 +33,7 @@ def srv_db_insert_media(self, media_uuid, media_path, media_class_uuid,\
         media_metadata_uuid, media_ffprobe_json, media_json))
 
 
-def srv_db_read_media(self, media_guid=None):
+def db_read_media(self, media_guid=None):
     """
     # read in all media unless guid specified
     """
@@ -48,7 +48,7 @@ def srv_db_read_media(self, media_guid=None):
         return self.db_cursor.fetchall()
 
 
-def srv_db_known_media_count(self):
+def db_known_media_count(self):
     """
     # count known media
     """
@@ -56,7 +56,7 @@ def srv_db_known_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_known_media(self, offset=None, records=None):
+def db_known_media(self, offset=None, records=None):
     """
     # find all known media
     """
@@ -69,7 +69,7 @@ def srv_db_known_media(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_matched_media_count(self):
+def db_matched_media_count(self):
     """
     # count matched media
     """
@@ -78,7 +78,7 @@ def srv_db_matched_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_known_media_all_unmatched_count(self):
+def db_known_media_all_unmatched_count(self):
     """
     # count all media that is NULL for meatadata match
     """
@@ -86,7 +86,7 @@ def srv_db_known_media_all_unmatched_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_known_media_all_unmatched(self, offset=None, records=None):
+def db_known_media_all_unmatched(self, offset=None, records=None):
     """
     # read all media that is NULL for metadata match
     """
@@ -101,7 +101,7 @@ def srv_db_known_media_all_unmatched(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_duplicate_count(self):
+def db_media_duplicate_count(self):
     """
     # count the duplicates for pagination
     """
@@ -112,7 +112,7 @@ def srv_db_media_duplicate_count(self):
 
 
 # TODO subselect for speed
-def srv_db_media_duplicate(self, offset=None, records=None):
+def db_media_duplicate(self, offset=None, records=None):
     """
     # list duplicates
     """
@@ -130,7 +130,7 @@ def srv_db_media_duplicate(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_duplicate_detail_count(self, guid):
+def db_media_duplicate_detail_count(self, guid):
     """
     # duplicate detail count
     """
@@ -139,7 +139,7 @@ def srv_db_media_duplicate_detail_count(self, guid):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_duplicate_detail(self, guid, offset=None, records=None):
+def db_media_duplicate_detail(self, guid, offset=None, records=None):
     """
     # list duplicate detail
     """
@@ -153,7 +153,7 @@ def srv_db_media_duplicate_detail(self, guid, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_path_by_uuid(self, media_uuid):
+def db_media_path_by_uuid(self, media_uuid):
     """
     # find path for media by uuid
     """
@@ -165,7 +165,7 @@ def srv_db_media_path_by_uuid(self, media_uuid):
         return None
 
 
-def srv_db_media_watched_status_update(self, media_guid, user_id, status_bool):
+def db_media_watched_status_update(self, media_guid, user_id, status_bool):
     """
     # set watched/unwatched status for media
     """
@@ -176,13 +176,13 @@ def srv_db_media_watched_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
-        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-        self.srv_db_commit()
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         return None
 
 
-def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
+def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
@@ -193,13 +193,13 @@ def srv_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
-        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-        self.srv_db_commit()
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         return None
 
 
-def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
+def db_media_poo_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
@@ -210,13 +210,13 @@ def srv_db_media_poo_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
-        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-        self.srv_db_commit()
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         return None
 
 
-def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
+def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     """
     # set mismatch status for media
     """
@@ -227,13 +227,13 @@ def srv_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
-        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-        self.srv_db_commit()
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         return None
 
 
-def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
+def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     """
     # set checkpoint for media (so can pick up where left off per user)
     """
@@ -244,31 +244,31 @@ def srv_db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_tim
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
-        self.srv_db_update_media_json(media_guid, json.dumps(json_data))
-        self.srv_db_commit()
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         return None
 
 
-def srv_db_update_media_id(self, media_guid, metadata_guid):
+def db_update_media_id(self, media_guid, metadata_guid):
     """
     # update the mediaid
     """
     self.db_cursor.execute('update mm_media set mm_media_metadata_guid = %s'\
         ' where mm_media_guid = %s', (metadata_guid, media_guid))
-    self.srv_db_commit()
+    self.db_commit()
 
 
-def srv_db_update_media_json(self, media_guid, mediajson):
+def db_update_media_json(self, media_guid, mediajson):
     """
     # update the mediajson
     """
     self.db_cursor.execute('update mm_media set mm_media_json = %s where mm_media_guid = %s',\
         (mediajson, media_guid))
-    self.srv_db_commit()
+    self.db_commit()
 
 
-def srv_db_known_media_chapter_scan(self):
+def db_known_media_chapter_scan(self):
     """
     # return all media which needs chapter images created
     """
@@ -278,7 +278,7 @@ def srv_db_known_media_chapter_scan(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_by_metadata_guid(self, metadata_guid):
+def db_media_by_metadata_guid(self, metadata_guid):
     """
     # fetch all media with METADATA match
     """
@@ -288,7 +288,7 @@ def srv_db_media_by_metadata_guid(self, metadata_guid):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_image_path(self, media_id):
+def db_media_image_path(self, media_id):
     """
     # grab image path for media id NOT metadataid
     """
@@ -301,7 +301,7 @@ def srv_db_media_image_path(self, media_id):
         return None
 
 
-def srv_db_read_media_metadata_both(self, media_guid):
+def db_read_media_metadata_both(self, media_guid):
     """
     # read in metadata by id
     """
@@ -315,7 +315,7 @@ def srv_db_read_media_metadata_both(self, media_guid):
         return None
 
 
-def srv_db_read_media_path_like(self, media_path):
+def db_read_media_path_like(self, media_path):
     """
     # do a like class path match for trailers and extras
     """
@@ -328,7 +328,7 @@ def srv_db_read_media_path_like(self, media_path):
         return None
 
 
-def srv_db_read_media_new_count(self, days_old=7):
+def db_read_media_new_count(self, days_old=7):
     """
     # new media count
     """
@@ -341,7 +341,7 @@ def srv_db_read_media_new_count(self, days_old=7):
 
 
 # TODO subselect for speed
-def srv_db_read_media_new(self, days_old=7, offset=None, records=None):
+def db_read_media_new(self, days_old=7, offset=None, records=None):
     """
     # new media
     """

@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_media_images_list_count(self):
+def db_media_images_list_count(self):
     """
     Images list count
     """
@@ -29,7 +29,7 @@ def srv_db_media_images_list_count(self):
             ' and mm_media_class_type = \'Picture\'')
 
 
-def srv_db_media_images_list(self, offset=None, records=None):
+def db_media_images_list(self, offset=None, records=None):
     """
     Images list
     """

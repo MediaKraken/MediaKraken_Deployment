@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id):
+def db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id):
     """
     Update the cast/crew for selected media
     """
@@ -30,4 +30,4 @@ def srv_db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id
         'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
         ' where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
-    self.srv_db_commit()
+    self.db_commit()

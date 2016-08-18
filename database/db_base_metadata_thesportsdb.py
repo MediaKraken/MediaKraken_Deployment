@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 
 
-def srv_db_metathesportsdb_select_by_guid(self, guid):
+def db_metathesportsdb_select_by_guid(self, guid):
     """
     # select
     """
@@ -33,7 +33,7 @@ def srv_db_metathesportsdb_select_by_guid(self, guid):
         return None
 
 
-def srv_db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,\
+def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,\
         image_json):
     """
     # insert
@@ -44,7 +44,7 @@ def srv_db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,
         (str(uuid.uuid4()), series_id_json, event_name, show_detail, image_json))
 
 
-def srv_db_metathesports_update(self, series_id_json, event_name, show_detail,
+def db_metathesports_update(self, series_id_json, event_name, show_detail,
                                 sportsdb_id):
     """
     # updated

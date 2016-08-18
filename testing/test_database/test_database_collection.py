@@ -28,12 +28,12 @@ class TestDatabaseCollection(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # find all known media
@@ -41,41 +41,41 @@ class TestDatabaseCollection(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_collection_list(self, offset, records):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_collection_list(offset, records)
+    def test_db_collection_list(self, offset, records):
+        self.db_connection.db_rollback()
+        self.db_connection.db_collection_list(offset, records)
 
 
     # read collection data from json metadata
-    def test_srv_db_media_collection_scan(self):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_media_collection_scan()
+    def test_db_media_collection_scan(self):
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_collection_scan()
  
 
     # find guid of collection name
     @pytest.mark.parametrize(("collection_name"), [
         ('Darko Collection'),
         ('fakecollectionstuff')])
-    def test_srv_db_collection_guid_by_name(self, collection_name):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_collection_guid_by_name(collection_name)
+    def test_db_collection_guid_by_name(self, collection_name):
+        self.db_connection.db_rollback()
+        self.db_connection.db_collection_guid_by_name(collection_name)
 
 
     # find guid of collection name
-    # def srv_db_collection_by_tmdb(self, tmdb_id):
-#        self.db_connection.srv_db_rollback()
+    # def db_collection_by_tmdb(self, tmdb_id):
+#        self.db_connection.db_rollback()
 
 
     # insert collection
-    # def srv_db_collection_insert(self, collection_name, guid_json, metadata_json, localimage_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_collection_insert(self, collection_name, guid_json, metadata_json, localimage_json):
+#        self.db_connection.db_rollback()
 
 
     # update collection ids
-    # def srv_db_collection_update(self, collection_guid, guid_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_collection_update(self, collection_guid, guid_json):
+#        self.db_connection.db_rollback()
 
 
     # pull in colleciton info
-    # def srv_db_collection_read_by_guid(self, media_uuid):
-#        self.db_connection.srv_db_rollback()
+    # def db_collection_read_by_guid(self, media_uuid):
+#        self.db_connection.db_rollback()

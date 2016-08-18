@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_tuner_count(self):
+def db_tuner_count(self):
     """
     Return count of tuners in database
     """
@@ -29,7 +29,7 @@ def srv_db_tuner_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_tuner_list(self, offset=None, records=None):
+def db_tuner_list(self, offset=None, records=None):
     """
     Return list of tuners in the database
     """
@@ -41,7 +41,7 @@ def srv_db_tuner_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_tuner_insert(self, tuner_json):
+def db_tuner_insert(self, tuner_json):
     """
     Insert tuner into the database
     """
@@ -49,7 +49,7 @@ def srv_db_tuner_insert(self, tuner_json):
         (str(uuid.uuid4()), tuner_json))
 
 
-def srv_db_tuner_update(self, guid, tuner_json):
+def db_tuner_update(self, guid, tuner_json):
     """
     Update tuner record in the database
     """
@@ -57,14 +57,14 @@ def srv_db_tuner_update(self, guid, tuner_json):
         (tuner_json, guid))
 
 
-def srv_db_tuner_delete(self, guid):
+def db_tuner_delete(self, guid):
     """
     Remove tuner from the database
     """
     self.db_cursor.execute('delete from mm_tuner where mm_tuner_id = %s', (guid,))
 
 
-def srv_db_tuner_by_serial(self, serial_no):
+def db_tuner_by_serial(self, serial_no):
     """
     Find detials by hardware id (serial)
     """

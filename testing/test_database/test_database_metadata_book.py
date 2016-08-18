@@ -28,24 +28,24 @@ class TestDatabaseMetadata_book(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # metadata guid by isbm id
-    # def srv_db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
-#        self.db_connection.srv_db_rollback()
+    # def db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
+#        self.db_connection.db_rollback()
 
 
     # metadata guid by name
-    # def srv_db_metabook_guid_by_name(self, book_name):
-#        self.db_connection.srv_db_rollback()
+    # def db_metabook_guid_by_name(self, book_name):
+#        self.db_connection.db_rollback()
 
 
     # insert metadata json from isbndb
-    # def srv_db_metabook_book_insert(self, json_data):
-#        self.db_connection.srv_db_rollback()
+    # def db_metabook_book_insert(self, json_data):
+#        self.db_connection.db_rollback()

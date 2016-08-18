@@ -21,22 +21,22 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_download_insert(self, provider, down_json):
+def db_download_insert(self, provider, down_json):
     """
     Create/insert a download into the que
     """
     self.db_cursor.execute('insert into mm_download_que (mdq_id,mdq_provider,mdq_download_json)'\
         ' values (%s,%s,%s)', (str(uuid.uuid4()), provider, down_json))
-    self.srv_db_commit()
+    self.db_commit()
 
 
 ## read the download
-#def srv_db_Download_Read(self):
+#def db_Download_Read(self):
 #    self.db_cursor.execute('select mdq_id,mdq_provider,mdq_download_json from mm_download_que')
 #    return self.db_cursor.fetchall()
 
 
-def srv_db_download_read_provider(self, provider_name):
+def db_download_read_provider(self, provider_name):
     """
     Read the downloads by provider
     """
@@ -45,29 +45,29 @@ def srv_db_download_read_provider(self, provider_name):
     return self.db_cursor.fetchall()
 
 
-def srv_db_download_delete(self, guid):
+def db_download_delete(self, guid):
     """
     Remove download
     """
     self.db_cursor.execute('delete from mm_download_que where mdq_id = %s', (guid,))
-    self.srv_db_commit()
+    self.db_commit()
 
 
-def srv_db_download_update_provider(self, provider_name, guid):
+def db_download_update_provider(self, provider_name, guid):
     """
     Update provider
     """
     logging.debug('download update provider: %s %s', provider_name, guid)
     self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',\
         (provider_name, guid))
-    self.srv_db_commit()
+    self.db_commit()
 
 
-def srv_db_download_update(self, update_json, guid):
+def db_download_update(self, update_json, guid):
     """
     Update download que record
     """
     logging.debug('download update: %s %s', update_json, guid)
     self.db_cursor.execute('update mm_download_que set mdq_download_json = %s where mdq_id = %s',\
         (update_json, guid))
-    self.srv_db_commit()
+    self.db_commit()

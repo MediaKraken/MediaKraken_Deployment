@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_device_count(self):
+def db_device_count(self):
     """
     Return the number of devices in database
     """
@@ -29,7 +29,7 @@ def srv_db_device_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_device_list(self, device_type=None, offset=None, records=None):
+def db_device_list(self, device_type=None, offset=None, records=None):
     """
     Return list of devices in database
     """
@@ -51,7 +51,7 @@ def srv_db_device_list(self, device_type=None, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_device_insert(self, device_type, device_json):
+def db_device_insert(self, device_type, device_json):
     """
     Insert a device into the database
     """
@@ -59,7 +59,7 @@ def srv_db_device_insert(self, device_type, device_json):
         ' mm_device_json) values (%s,%s,%s)', (str(uuid.uuid4()), device_type, device_json))
 
 
-def srv_db_device_update(self, guid, device_type, device_json):
+def db_device_update(self, guid, device_type, device_json):
     """
     Update the device in the database
     """
@@ -67,14 +67,14 @@ def srv_db_device_update(self, guid, device_type, device_json):
         ' where mm_device_id = %s', (device_type, device_json, guid))
 
 
-def srv_db_device_delete(self, guid):
+def db_device_delete(self, guid):
     """
     Remove a device from the database via uuid
     """
     self.db_cursor.execute('delete from mm_device where mm_device_id = %s', (guid,))
 
 
-def srv_db_device_read(self, guid):
+def db_device_read(self, guid):
     """
     Return details from database via uuid
     """

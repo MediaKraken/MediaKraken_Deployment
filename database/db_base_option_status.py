@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import json
 
 
-def srv_db_option_status_read(self):
+def db_option_status_read(self):
     """
     Read options
     """
@@ -29,7 +29,7 @@ def srv_db_option_status_read(self):
     return self.db_cursor.fetchone() # no [0] as two fields
 
 
-def srv_db_option_status_update(self, option_json, status_json):
+def db_option_status_update(self, option_json, status_json):
     """
     Update option and status json
     """
@@ -38,7 +38,7 @@ def srv_db_option_status_update(self, option_json, status_json):
         ' mm_status_json = %s', (option_json, status_json))
 
 
-def srv_db_option_status_update_scan_json(self, scan_json):
+def db_option_status_update_scan_json(self, scan_json):
     """
     Update scan info
     """
@@ -46,7 +46,7 @@ def srv_db_option_status_update_scan_json(self, scan_json):
     self.db_cursor.execute('update mm_options_and_status set mm_status_json = %s', (scan_json,))
 
 
-def srv_db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
+def db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
     """
     Update scan data
     """

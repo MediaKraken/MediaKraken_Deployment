@@ -28,39 +28,39 @@ class TestDatabaseMetadataSports(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # metadata guid by imdb id
-    # def srv_db_meta_Sports_guid_by_thesportsdb(self, thesports_uuid):
-#        self.db_connection.srv_db_rollback()
+    # def db_meta_Sports_guid_by_thesportsdb(self, thesports_uuid):
+#        self.db_connection.db_rollback()
 
 
-    def test_srv_db_meta_sports_list_count(self):
+    def test_db_meta_sports_list_count(self):
         """
         Sports event count
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_meta_sports_list_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_sports_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_meta_sports_list(self, offset, records):
+    def test_db_meta_sports_list(self, offset, records):
         """
         Sports list
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_meta_sports_list(offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_sports_list(offset, records)
 
 
     # fetch guid by event name
-    # def srv_db_meta_sports_guid_by_event_name(self, event_name):
-#        self.db_connection.srv_db_rollback()
+    # def db_meta_sports_guid_by_event_name(self, event_name):
+#        self.db_connection.db_rollback()

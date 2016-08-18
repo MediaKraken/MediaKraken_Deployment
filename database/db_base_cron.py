@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import datetime
 
 
-def srv_db_cron_list_count(self, enabled_only=False):
+def db_cron_list_count(self, enabled_only=False):
     """
     Return number of cron jobs
     """
@@ -32,7 +32,7 @@ def srv_db_cron_list_count(self, enabled_only=False):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_cron_list(self, enabled_only=False, offset=None, records=None):
+def db_cron_list(self, enabled_only=False, offset=None, records=None):
     """
     Return cron list
     """
@@ -61,7 +61,7 @@ def srv_db_cron_list(self, enabled_only=False, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_cron_time_update(self, cron_type):
+def db_cron_time_update(self, cron_type):
     """
     Update the datetime in which a cron job was run
     """

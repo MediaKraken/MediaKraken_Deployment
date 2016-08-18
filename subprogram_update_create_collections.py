@@ -43,8 +43,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -53,7 +53,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Update_Create_Col
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -61,7 +61,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server Create Collection Start', None,\
+db.db_activity_insert('MediaKraken_Server Create Collection Start', None,\
     'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None, 'System')
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -86,7 +86,7 @@ total_collections_downloaded = 0
 def store_update_record(db_connection, collection_name, guid_list, poster_path, backdrop_path, collection_id):
     global total_collections_downloaded
     # store/update the record
-    collection_guid = db.srv_db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
+    collection_guid = db.db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
@@ -105,14 +105,14 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path, 
         else:
             image_backdrop_path = ''
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
-        db.srv_db_collection_insert(collection_name, guid_list,\
+        db.db_collection_insert(collection_name, guid_list,\
             collection_meta, localimage_json)
         # commit all changes to db
-        db.srv_db_commit()
+        db.db_commit()
         total_collections_downloaded += 1
     else:
         # update
-        #db.srv_db_collection_update(collection_guid, guid_list)
+        #db.db_collection_update(collection_guid, guid_list)
         pass
 
 
@@ -123,7 +123,7 @@ old_backdrop_path = None
 old_id= None
 guid_list = []
 first_record = True
-for row_data in db.srv_db_media_collection_scan():
+for row_data in db.db_media_collection_scan():
     #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
     if old_collection_name != row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']:
         if not first_record:
@@ -142,19 +142,19 @@ if len(guid_list) > 0:
 
 
 if total_collections_downloaded > 0:
-    db.srv_db_notification_insert(locale.format('%d',\
+    db.db_notification_insert(locale.format('%d',\
         total_collections_downloaded, True) + " collection(s) metadata downloaded.", True)
 
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server Create Collection Stop', None,\
+db.db_activity_insert('MediaKraken_Server Create Collection Stop', None,\
     'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

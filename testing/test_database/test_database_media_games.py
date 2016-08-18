@@ -28,20 +28,20 @@ class TestDatabaseMediaGames(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     def test_com_media_game_system_list_count(self):
         """
         # audited system list count
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_media_game_system_list_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_game_system_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -52,26 +52,26 @@ class TestDatabaseMediaGames(object):
         """
         # audited system list
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_media_game_system_list(offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_game_system_list(offset, records)
 
 
     # audited game list by system count
     # def com_media_game_list_by_system_count(self, system_id):
-#        self.db_connection.srv_db_rollback()
+#        self.db_connection.db_rollback()
 
 
     # audited game list by system
     # def com_media_game_list_by_system(self, system_id, offset=None, records=None):
-#        self.db_connection.srv_db_rollback()
+#        self.db_connection.db_rollback()
 
 
     def test_com_media_game_list_count(self):
         """
         # audited games list count
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_media_game_list_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_game_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -82,5 +82,5 @@ class TestDatabaseMediaGames(object):
         """
         # audited games list
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_media_game_list(offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_game_list(offset, records)

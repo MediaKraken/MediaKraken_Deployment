@@ -37,8 +37,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -68,11 +68,11 @@ if __name__ == "__main__":
     print('Total lyrics download attempts: %s', total_download_attempts)
     # send notications
     if total_download_attempts > 0:
-        db.srv_db_notification_insert(locale.format('%d',\
+        db.db_notification_insert(locale.format('%d',\
             total_download_attempts, True) + " lyric(s) downloaded.", True)
     # commit all changes
-    db.srv_db_commit()
+    db.db_commit()
     # close DB
-    db.srv_db_close()
+    db.db_close()
     # remove pid
     os.remove(pid_file)

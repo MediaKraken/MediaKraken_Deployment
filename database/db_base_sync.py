@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_sync_list_count(self):
+def db_sync_list_count(self):
     """
     # return count of sync jobs
     """
@@ -29,7 +29,7 @@ def srv_db_sync_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_sync_list(self, offset=None, records=None, user_guid=None):
+def db_sync_list(self, offset=None, records=None, user_guid=None):
     """
     # return list of sync jobs
     """
@@ -60,7 +60,7 @@ def srv_db_sync_list(self, offset=None, records=None, user_guid=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_sync_insert(self, sync_path, sync_path_to, sync_json):
+def db_sync_insert(self, sync_path, sync_path_to, sync_json):
     """
     # insert sync job
     """
@@ -69,14 +69,14 @@ def srv_db_sync_insert(self, sync_path, sync_path_to, sync_json):
         sync_path_to, sync_json))
 
 
-def srv_db_sync_delete(self, sync_guid):
+def db_sync_delete(self, sync_guid):
     """
     # delete sync job
     """
     self.db_cursor.execute('delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
 
 
-def srv_db_sync_progress_update(self, sync_guid, sync_percent):
+def db_sync_progress_update(self, sync_guid, sync_percent):
     """
     # update progress
     """

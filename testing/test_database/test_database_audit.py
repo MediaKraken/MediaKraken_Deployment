@@ -28,62 +28,62 @@ class TestDatabaseAudit(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
-    def test_srv_db_audit_path_status(self):
+    def test_db_audit_path_status(self):
         """
         # read scan status
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_audit_path_status()
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_path_status()
 
 
     ## update status
-    #def srv_db_audit_path_update_status(self, lib_guid, status_json):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_path_update_status(self, lib_guid, status_json):
+#        self.db_connection.db_rollback()
 
 
-    def test_srv_db_audit_paths_count(self):
+    def test_db_audit_paths_count(self):
         """
         # read the paths to audit
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_audit_paths_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_paths_count()
 
 
     ## update audit path
-    #def srv_db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
+#        self.db_connection.db_rollback()
 
 
     ## remove media path
-    #def srv_db_audit_path_delete(self, lib_guid):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_path_delete(self, lib_guid):
+#        self.db_connection.db_rollback()
 
 
     ## add media path
-    #def srv_db_audit_path_add(self, dir_path, class_guid):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_path_add(self, dir_path, class_guid):
+#        self.db_connection.db_rollback()
 
 
     ## lib path check (dupes)
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
-    def test_srv_db_audit_path_check(self, dir_path):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_audit_path_check(dir_path)
+    def test_db_audit_path_check(self, dir_path):
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_path_check(dir_path)
 
 
     ## update the timestamp for directory scans
-    #def srv_db_audit_directory_timestamp_update(self, file_path):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_directory_timestamp_update(self, file_path):
+#        self.db_connection.db_rollback()
 
 
     ## read the paths to audit
@@ -91,11 +91,11 @@ class TestDatabaseAudit(object):
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_audit_paths(self, offset, records):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_audit_paths(offset, records)
+    def test_db_audit_paths(self, offset, records):
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_paths(offset, records)
 
 
     ## lib data per id
-    #def srv_db_audit_path_by_uuid(self, dir_id):
-#        self.db_connection.srv_db_rollback()
+    #def db_audit_path_by_uuid(self, dir_id):
+#        self.db_connection.db_rollback()

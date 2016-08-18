@@ -28,31 +28,31 @@ class TestDatabaseNotification(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # insert notifications
-    # def srv_db_notification_insert(self, notification_data, notification_dismissable):
-#         self.db_connection.srv_db_rollback()
+    # def db_notification_insert(self, notification_data, notification_dismissable):
+#         self.db_connection.db_rollback()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_notification_read(self, offset, records):
+    def test_db_notification_read(self, offset, records):
         """
         # read all notifications
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_notification_read(offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_notification_read(offset, records)
 
 
     # remove noticications
-    # def srv_db_notification_delete(self, notification_uuid):
-#         self.db_connection.srv_db_rollback()
+    # def db_notification_delete(self, notification_uuid):
+#         self.db_connection.db_rollback()

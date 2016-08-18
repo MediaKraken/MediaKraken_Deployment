@@ -30,7 +30,7 @@ class ServerDatabaseBrainz(object):
         self.db_cursor = None
 
 
-    def srv_db_brainz_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    def db_brainz_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
         """
         # open database and pull in config from sqlite and create db if not exist
         """
@@ -49,14 +49,14 @@ class ServerDatabaseBrainz(object):
 #            exit(1)
 
 
-    def srv_db_brainz_close(self):
+    def db_brainz_close(self):
         """
         # close main db file
         """
         self.sql3_conn.close()
 
 
-    def srv_db_brainz_all_artists(self):
+    def db_brainz_all_artists(self):
         """
         # read in all artists
         """
@@ -65,7 +65,7 @@ class ServerDatabaseBrainz(object):
             'gender,id from artist')
         return self.db_cursor.fetchall()
 
-    def srv_db_brainz_all_albums(self):
+    def db_brainz_all_albums(self):
         """
         # read in all albums
         """
@@ -74,7 +74,7 @@ class ServerDatabaseBrainz(object):
         return self.db_cursor.fetchall()
 
 
-    def srv_db_brainz_all_albums_by_artist(self, artist_id):
+    def db_brainz_all_albums_by_artist(self, artist_id):
         """
         # read in album by artist credit id
         """
@@ -83,7 +83,7 @@ class ServerDatabaseBrainz(object):
         return self.db_cursor.fetchall()
 
 
-    def srv_db_brainz_all_songs(self):
+    def db_brainz_all_songs(self):
         """
         # read in all songs
         """
@@ -91,7 +91,7 @@ class ServerDatabaseBrainz(object):
         return self.db_cursor.fetchall()
 
 
-    def srv_db_brainz_all_songs_by_record_uuid(self, record_id):
+    def db_brainz_all_songs_by_record_uuid(self, record_id):
         """
         # read in all by recording id
         """
@@ -100,7 +100,7 @@ class ServerDatabaseBrainz(object):
         return self.db_cursor.fetchall()
 
 
-    def srv_db_brainz_all(self):
+    def db_brainz_all(self):
         """
         # read for batch insert
         """

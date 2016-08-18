@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_link_list_count(self):
+def db_link_list_count(self):
     """
     Return count of linked servers
     """
@@ -29,7 +29,7 @@ def srv_db_link_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_link_list(self, offset=None, records=None):
+def db_link_list(self, offset=None, records=None):
     """
     Return list of linked server
     Complete list for admins
@@ -43,7 +43,7 @@ def srv_db_link_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_link_insert(self, link_json):
+def db_link_insert(self, link_json):
     """
     Insert linked server
     """
@@ -51,7 +51,7 @@ def srv_db_link_insert(self, link_json):
         ' values (%s, %s)', (str(uuid.uuid4()), link_json))
 
 
-def srv_db_link_delete(self, sync_guid):
+def db_link_delete(self, sync_guid):
     """
     Delete server link
     """

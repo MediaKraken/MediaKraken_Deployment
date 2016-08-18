@@ -78,11 +78,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Metadata: Received USR1')
     # os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.srv_db_rollback()
+    db.db_rollback()
     # log stop
-    db.srv_db_activity_insert('MediaKraken_Metadata API Stop', None,\
+    db.db_activity_insert('MediaKraken_Metadata API Stop', None,\
         'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
-    db.srv_db_close()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -100,14 +100,14 @@ common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
     config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
-db.srv_db_activity_insert('MediaKraken_Metadata API Start', None,\
+db.db_activity_insert('MediaKraken_Metadata API Start', None,\
      'System: Metadata API Start', 'ServerMetadataAPIStart', None, None, 'System')
 
 
@@ -169,7 +169,7 @@ def imvdb(thread_db, download_data):
     if download_data['mdq_download_json']['Status'] == "Search":
         metadata_uuid = metadata_music_video.metadata_music_video_lookup()
         if metadata_uuid is None:
-            thread_db.srv_db_download_update_provider('theaudiodb', download_data['mdq_id'])
+            thread_db.db_download_update_provider('theaudiodb', download_data['mdq_id'])
 
 
 @ratelimited(com_meta_Limiter.API_LIMIT['musicbrainz'][0] / com_meta_Limiter.API_LIMIT['musicbrainz'][1])
@@ -257,32 +257,32 @@ def themoviedb(thread_db, download_data):
     if download_data['mdq_download_json']['Status'] == "Search":
         metadata_uuid = metadata_movie.movie_search_tmdb(thread_db, download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
-            thread_db.srv_db_download_update_provider('omdb', download_data['mdq_id'])
+            thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
-            thread_db.srv_db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
+            thread_db.db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
             # determine if the metadata is not downloaded
-            if thread_db.srv_db_meta_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
+            if thread_db.db_meta_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
             else:
-                thread_db.srv_db_Download_Delete(download_data['mdq_id'])
+                thread_db.db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         if download_data['mdq_download_json']['ProviderMetaID'][0:2] != 'tt': # imdb id check
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
                 download_data['mdq_download_json'].update({'ProviderMetaID': tmdb_id})
-                thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
         else:
             metadata_movie.movie_fetch_save_tmdb(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
             download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-            thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
         metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
         download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-        thread_db.srv_db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+        thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
         metadata_movie.movie_fetch_save_tmdb_review(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.srv_db_Download_Delete(download_data['mdq_id'])
+        thread_db.db_Download_Delete(download_data['mdq_id'])
 
 
 @ratelimited(com_meta_Limiter.API_LIMIT['thesportsdb'][0] / com_meta_Limiter.API_LIMIT['thesportsdb'][1])
@@ -336,13 +336,13 @@ def worker(content_providers):
     """
     logging.debug("name: %s", content_providers)
     thread_db = database_base.MKServerDatabase()
-    thread_db.srv_db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
+    thread_db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
         Config.get('DB Connections', 'PostDBPort').strip(),\
         Config.get('DB Connections', 'PostDBName').strip(),\
         Config.get('DB Connections', 'PostDBUser').strip(),\
         Config.get('DB Connections', 'PostDBPass').strip())
 #    while True:
-    for row_data in thread_db.srv_db_Download_Read_by_Provider(content_providers):
+    for row_data in thread_db.db_Download_Read_by_Provider(content_providers):
         logging.debug("row: %s", row_data)
         # mdq_id,mdq_download_json
         if content_providers == 'anidb':
@@ -392,17 +392,17 @@ def worker(content_providers):
             if metadata_uuid is not None:
                 logging.debug("update: %s %s",\
                     row_data['mdq_download_json']['MediaID'], metadata_uuid)
-                thread_db.srv_db_update_media_id(row_data['mdq_download_json']['MediaID'], metadata_uuid)
-                thread_db.srv_db_Download_Delete(row_data['mdq_id'])
+                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'], metadata_uuid)
+                thread_db.db_Download_Delete(row_data['mdq_id'])
     time.sleep(1)
-    thread_db.srv_db_commit()
-    thread_db.srv_db_close()
+    thread_db.db_commit()
+    thread_db.db_close()
     return
 
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
-for class_data in db.srv_db_media_class_list(None, None):
+for class_data in db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
 
@@ -414,13 +414,13 @@ with futures.ThreadPoolExecutor(len(com_meta_Limiter.API_LIMIT.keys())) as execu
 
 
 # log stop
-db.srv_db_activity_insert('MediaKraken_Metadata API Stop', None,\
+db.db_activity_insert('MediaKraken_Metadata API Stop', None,\
      'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
 
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 
 # close the database
-db.srv_db_close()
+db.db_close()

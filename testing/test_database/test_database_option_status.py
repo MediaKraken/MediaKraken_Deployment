@@ -28,26 +28,26 @@ class TestDatabaseOptionStatus(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
-    def test_srv_db_option_status_read(self):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_option_status_read()
+    def test_db_option_status_read(self):
+        self.db_connection.db_rollback()
+        self.db_connection.db_option_status_read()
 
 
-    # def srv_db_option_status_update(self, option_json, status_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_option_status_update(self, option_json, status_json):
+#        self.db_connection.db_rollback()
 
 
-    # def srv_db_option_status_update_scan_json(self, scan_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_option_status_update_scan_json(self, scan_json):
+#        self.db_connection.db_rollback()
 
 
-    # def srv_db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
-#         self.db_connection.srv_db_rollback()
+    # def db_option_status_update_scan_json_rec(self, dir_path, scan_status, scan_percent):
+#         self.db_connection.db_rollback()

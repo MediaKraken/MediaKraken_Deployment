@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def srv_db_kodi_user_sync_added(self, synctime):
+def db_kodi_user_sync_added(self, synctime):
     """
     List of new items by date
     """
@@ -29,7 +29,7 @@ def srv_db_kodi_user_sync_added(self, synctime):
     return self.db_cursor.fetchall()
 
 
-def srv_db_kodi_user_sync(self, synctime):
+def db_kodi_user_sync(self, synctime):
     """
     # sync data
     """

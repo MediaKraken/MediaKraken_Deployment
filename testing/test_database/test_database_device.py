@@ -28,18 +28,18 @@ class TestDatabaseDevices(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # count device
-    def test_srv_db_device_count(self):
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_device_count()
+    def test_db_device_count(self):
+        self.db_connection.db_rollback()
+        self.db_connection.db_device_count()
 
 
     @pytest.mark.parametrize(("device_type", "offset", "records"), [
@@ -49,29 +49,29 @@ class TestDatabaseDevices(object):
         ('Nas', None, None),
         ('Nas', 100, 100),
         ('Nas', 100000000, 1000)])
-    def test_srv_db_device_list(self, device_type, offset, records):
+    def test_db_device_list(self, device_type, offset, records):
         """
         # read list
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_device_list(device_type, offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_device_list(device_type, offset, records)
 
 
     # insert record
-    # def srv_db_device_insert(self, device_type, device_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_device_insert(self, device_type, device_json):
+#        self.db_connection.db_rollback()
 
 
     # update record
-    # def srv_db_device_update(self, guid, device_type, device_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_device_update(self, guid, device_type, device_json):
+#        self.db_connection.db_rollback()
 
 
     # delete record
-    # def srv_db_device_delete(self, guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_device_delete(self, guid):
+#        self.db_connection.db_rollback()
 
 
     # find detials by id
-    # def srv_db_device_read(self, guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_device_read(self, guid):
+#        self.db_connection.db_rollback()

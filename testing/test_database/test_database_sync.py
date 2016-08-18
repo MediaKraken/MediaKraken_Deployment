@@ -28,44 +28,44 @@ class TestDatabaseSync(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
-    def srv_db_sync_list_count(self):
+    def db_sync_list_count(self):
         """
         # return count of sync jobs
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_sync_list_count()
+        self.db_connection.db_rollback()
+        self.db_connection.db_sync_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
         (100000000, 1000)])
-    def test_srv_db_sync_list(self, offset, records):
+    def test_db_sync_list(self, offset, records):
         """
         # return list of sync jobs
         """
-        self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_sync_list(offset, records)
+        self.db_connection.db_rollback()
+        self.db_connection.db_sync_list(offset, records)
 
 
     # insert sync job
-    # def srv_db_sync_insert(self, sync_path, sync_path_to, sync_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_sync_insert(self, sync_path, sync_path_to, sync_json):
+#        self.db_connection.db_rollback()
 
 
     # delete sync job
-    # def srv_db_sync_delete(self, sync_guid):
-#        self.db_connection.srv_db_rollback()
+    # def db_sync_delete(self, sync_guid):
+#        self.db_connection.db_rollback()
 
 
     # update progress
-    # def srv_db_sync_progress_update(self, sync_guid, sync_percent):
-#        self.db_connection.srv_db_rollback()
+    # def db_sync_progress_update(self, sync_guid, sync_percent):
+#        self.db_connection.db_rollback()

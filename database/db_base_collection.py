@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def srv_db_collection_list(self, offset=None, records=None):
+def db_collection_list(self, offset=None, records=None):
     """
     Return collections list from the database
     """
@@ -39,7 +39,7 @@ def srv_db_collection_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_media_collection_scan(self):
+def db_media_collection_scan(self):
     """
     Returns a list of movies that belong in a collection specifified by tmdb
     """
@@ -50,7 +50,7 @@ def srv_db_media_collection_scan(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_collection_guid_by_name(self, collection_name):
+def db_collection_guid_by_name(self, collection_name):
     """
     Return uuid from collection name
     """
@@ -62,7 +62,7 @@ def srv_db_collection_guid_by_name(self, collection_name):
         return None
 
 
-def srv_db_collection_by_tmdb(self, tmdb_id):
+def db_collection_by_tmdb(self, tmdb_id):
     """
     Return uuid via tmdb id
     """
@@ -74,7 +74,7 @@ def srv_db_collection_by_tmdb(self, tmdb_id):
         return None
 
 
-def srv_db_collection_insert(self, collection_name, guid_json, metadata_json,\
+def db_collection_insert(self, collection_name, guid_json, metadata_json,\
         localimage_json):
     """
     Insert collection into the database
@@ -86,7 +86,7 @@ def srv_db_collection_insert(self, collection_name, guid_json, metadata_json,\
         json.dumps(guid_json), json.dumps(metadata_json), json.dumps(localimage_json)))
 
 
-def srv_db_collection_update(self, collection_guid, guid_json):
+def db_collection_update(self, collection_guid, guid_json):
     """
     Update the ids listed within a collection
     """
@@ -95,7 +95,7 @@ def srv_db_collection_update(self, collection_guid, guid_json):
         ' where mm_metadata_collection_guid = %s', (json.dumps(guid_json), collection_guid))
 
 
-def srv_db_collection_read_by_guid(self, media_uuid):
+def db_collection_read_by_guid(self, media_uuid):
     """
     Collection details
     """

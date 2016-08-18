@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 
 
 # query provided by postgresql wiki
-def srv_db_pgsql_table_sizes(self):
+def db_pgsql_table_sizes(self):
     """
     # return tables sizes (includex indexes, etc)
     """
@@ -34,7 +34,7 @@ def srv_db_pgsql_table_sizes(self):
 
 
 # query provided by postgresql wiki
-def srv_db_pgsql_row_count(self):
+def db_pgsql_row_count(self):
     """
     # return tables and row count
     """
@@ -43,7 +43,7 @@ def srv_db_pgsql_row_count(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_pgsql_vacuum_stat_by_day(self, days=1):
+def db_pgsql_vacuum_stat_by_day(self, days=1):
     """
     # vacuum stats by day list
     """
@@ -61,14 +61,14 @@ def srv_db_pgsql_vacuum_stat_by_day(self, days=1):
     return self.db_cursor.fetchall()
 
 
-def srv_db_pgsql_vacuum_table(self, table_name):
+def db_pgsql_vacuum_table(self, table_name):
     """
     # vacuum table
     """
     self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
 
 
-def srv_db_pgsql_set_iso_level(self, isolation_level):
+def db_pgsql_set_iso_level(self, isolation_level):
     """
     # set isolation level
     """

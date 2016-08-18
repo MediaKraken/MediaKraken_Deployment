@@ -28,19 +28,19 @@ class TestDatabaseMetadataThetvdb(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
 
 
     @classmethod
     def teardown_class(self):
-        self.db_connection.srv_db_close()
+        self.db_connection.db_close()
 
 
     # insert
-    # def srv_db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
-#        self.db_connection.srv_db_rollback()
+    # def db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
+#        self.db_connection.db_rollback()
 
 
     # updated
-    # def srv_db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
-#        self.db_connection.srv_db_rollback()
+    # def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
+#        self.db_connection.db_rollback()

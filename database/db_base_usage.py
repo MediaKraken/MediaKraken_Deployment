@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging  # pylint: disable=W0611
 
 
-def srv_db_usage_top10_alltime(self):
+def db_usage_top10_alltime(self):
     """
     Top 10 of all time
     """
@@ -28,7 +28,7 @@ def srv_db_usage_top10_alltime(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_usage_top10_movie(self):
+def db_usage_top10_movie(self):
     """
     Top 10 movies
     """
@@ -38,7 +38,7 @@ def srv_db_usage_top10_movie(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_usage_top10_tv_show(self):
+def db_usage_top10_tv_show(self):
     """
     Top 10 TV show
     """
@@ -48,7 +48,7 @@ def srv_db_usage_top10_tv_show(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_usage_top10_tv_episode(self):
+def db_usage_top10_tv_episode(self):
     """
     Top 10 TV episode
     """

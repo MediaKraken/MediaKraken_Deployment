@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def srv_db_iradio_insert(self, radio_channel):
+def db_iradio_insert(self, radio_channel):
     """
     Insert iradio channel
     """
@@ -32,7 +32,7 @@ def srv_db_iradio_insert(self, radio_channel):
                 'mm_radio_active) values (%s,%s,true)', (str(uuid.uuid4()), radio_channel))
 
 
-def srv_db_iradio_list_count(self, active_station=True):
+def db_iradio_list_count(self, active_station=True):
     """
     Iradio count
     """
@@ -41,7 +41,7 @@ def srv_db_iradio_list_count(self, active_station=True):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_iradio_list(self, active_station=True, offset=None, records=None):
+def db_iradio_list(self, active_station=True, offset=None, records=None):
     """
     Iradio list
     """

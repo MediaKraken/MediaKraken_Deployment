@@ -39,8 +39,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.srv_db_rollback()
-    db.srv_db_close()
+    db.db_rollback()
+    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -49,7 +49,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_ZFS_Check')
 
 # open the database
 db = database_base.MKServerDatabase()
-db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
     config_handle.get('DB Connections', 'PostDBPort').strip(),\
     config_handle.get('DB Connections', 'PostDBName').strip(),\
     config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -57,7 +57,7 @@ db.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
 
 
 # log start
-db.srv_db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
+db.db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
@@ -65,20 +65,20 @@ zfs_result = common_zfs.com_zfs_health_check()
 if zfs_result is not None:
     for read_line in zfs_result:
         if read_line.find('ONLINE') != -1:
-            db.srv_db_activity_insert('MediaKraken_Server ZFS ERROR!', None,\
+            db.db_activity_insert('MediaKraken_Server ZFS ERROR!', None,\
                 'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')
-            db.srv_db_notification_insert("ZFS zpool(s) degraded or offline!", True)
+            db.db_notification_insert("ZFS zpool(s) degraded or offline!", True)
             break
 
 # log end
-db.srv_db_activity_insert('MediaKraken_Server ZFS Health Stop', None,\
+db.db_activity_insert('MediaKraken_Server ZFS Health Stop', None,\
     'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
 # commit
-db.srv_db_commit()
+db.db_commit()
 
 # close the database
-db.srv_db_close()
+db.db_close()
 
 # remove pid
 os.remove(pid_file)

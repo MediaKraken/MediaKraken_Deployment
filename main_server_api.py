@@ -50,7 +50,7 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.srv_db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        self.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
             config_handle.get('DB Connections', 'PostDBPort').strip(),\
             config_handle.get('DB Connections', 'PostDBName').strip(),\
             config_handle.get('DB Connections', 'PostDBUser').strip(),\
@@ -108,7 +108,7 @@ class MediaKrakenAPI(object):
         def user_authenticate(self, request):
             logging.debug("req: %s", request.content.getvalue())
             # {"username": "quinn", "password": "da39a3ee5e6b4b0d3255bfef95601890afd80709"}
-            return pickle.dumps(self.db_connection.srv_db_user_login_kodi(request.content.getvalue()))
+            return pickle.dumps(self.db_connection.db_user_login_kodi(request.content.getvalue()))
 
 
         @app.route("/FavoriteItems")
@@ -126,7 +126,7 @@ class MediaKrakenAPI(object):
         def user_items_sync(self, request, synctime):
             logggin.debug("req: %s", request.content.getvalue())
             items_added = []
-            for row_data in self.db_connection.srv_db_kodi_user_sync_list_Added(synctime):
+            for row_data in self.db_connection.db_kodi_user_sync_list_Added(synctime):
                 items_added.append(row_data[0])
             sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],\
                 "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,\
@@ -251,7 +251,7 @@ class MediaKrakenAPI(object):
         @app.route("/Public")
         def user_public(self, request):
             user_data = []
-            for row_data in self.db_connection.srv_db_user_list_name(None, None):
+            for row_data in self.db_connection.db_user_list_name(None, None):
                 user_data.append((row_data[0], row_data[1], None))
             logging.debug("userdat: %s", user_data)
             return pickle.dumps(user_data)
@@ -286,7 +286,7 @@ class MediaKrakenAPI(object):
     with app.subroute("/System") as app:
         @app.route("/Configuration")
         def system_configuration(self, request):
-            options_json, status_json = self.db_connection.srv_db_option_status_read()
+            options_json, status_json = self.db_connection.db_option_status_read()
             loggin.debug("otions: %s", options_json)
             return str(options_json['MaxResumePct'])
 

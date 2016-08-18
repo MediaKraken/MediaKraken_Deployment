@@ -25,16 +25,16 @@ except:
     import pickle
 
 
-def srv_db_trigger_insert(self, command_list):
+def db_trigger_insert(self, command_list):
     """
     # create/insert a trigger
     """
     self.db_cursor.execute('insert into mm_trigger (mm_trigger_guid,mm_trigger_command)'\
         ' values (%s,%s)', (str(uuid.uuid4()), pickle.dumps(command_list)))
-    self.srv_db_commit()
+    self.db_commit()
 
 
-def srv_db_triggers_read(self):
+def db_triggers_read(self):
     """
     # read the triggers
     """
@@ -42,9 +42,9 @@ def srv_db_triggers_read(self):
     return self.db_cursor.fetchall()
 
 
-def srv_db_triggers_delete(self, guid):
+def db_triggers_delete(self, guid):
     """
     # remove trigger
     """
     self.db_cursor.execute('delete from mm_trigger where mm_trigger_guid = %s', (guid,))
-    self.srv_db_commit()
+    self.db_commit()

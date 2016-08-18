@@ -23,7 +23,7 @@ import json
 
 
 #class ServerDatabaseUsers(object):
-def srv_db_user_list_name_count(self):
+def db_user_list_name_count(self):
     """
     # return user count
     """
@@ -31,7 +31,7 @@ def srv_db_user_list_name_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def srv_db_user_list_name(self, offset=None, records=None):
+def db_user_list_name(self, offset=None, records=None):
     """
     # return user list
     """
@@ -45,7 +45,7 @@ def srv_db_user_list_name(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_user_detail(self, guid):
+def db_user_detail(self, guid):
     """
     # return all data for specified user
     """
@@ -53,14 +53,14 @@ def srv_db_user_detail(self, guid):
     return self.db_cursor.fetchone()
 
 
-def srv_db_user_delete(self, user_guid):
+def db_user_delete(self, user_guid):
     """
     # remove user
     """
     self.db_cursor.execute('delete from mm_user where id = %s', (user_guid,))
 
 
-def srv_db_user_login_kodi(self, user_data):
+def db_user_login_kodi(self, user_data):
     """
     # verify user logon
     """

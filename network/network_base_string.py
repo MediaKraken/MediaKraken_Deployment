@@ -107,14 +107,14 @@ class NetworkEvents(Int32StringReceiver):
             pass
 # actually processed in "main_link" program!!!!
 #        elif message_words[0] == "RECEIVENEWMEDIA":
-#            self.db_connection.srv_db_Media_Link_New_Data(pickle.loads(message_words[1])
+#            self.db_connection.db_Media_Link_New_Data(pickle.loads(message_words[1])
         elif message_words[0] == "REQUESTNEWMEDIA":
             msg = "RECEIVENEWMEDIA " + pickle.dumps(\
-                self.db_connection.srv_db_Media_Link_Read_New(pickle.loads(message_words[1]),\
+                self.db_connection.db_Media_Link_Read_New(pickle.loads(message_words[1]),\
                 message_words[2], message_words[3], message_words[4], message_words[5],\
                 message_words[6], message_words[7]))
         elif message_words[0] == "PlayUUID" or message_words[0] == "demo":
-            media_path = self.db_connection.srv_db_media_path_by_uuid(message_words[1])[0]
+            media_path = self.db_connection.db_media_path_by_uuid(message_words[1])[0]
             if media_path is not None:
                 if True:
                     # launch and attach to local running ffserver
@@ -131,7 +131,7 @@ class NetworkEvents(Int32StringReceiver):
             pass
         elif message_words[0] == "MediaIDUpdateUUID":
             # media id, metadata id
-            self.db_connection.srv_db_update_media_id(message_words[1], message_words[2])
+            self.db_connection.db_update_media_id(message_words[1], message_words[2])
         # metadata commands
         elif message_words[0] == "IMAGE":
             lookup_id = None
@@ -142,14 +142,14 @@ class NetworkEvents(Int32StringReceiver):
                 if message_words[2] == "MOVIE":
                     try:
                         lookup_id, media_id\
-                            = self.db_connection.srv_db_media_random(message_words[5])
+                            = self.db_connection.db_media_random(message_words[5])
                     except:
                         pass
             else:
                 # fetch specific id
                 try:
                     lookup_id\
-                        = json.loads(self.db_connection.srv_db_media_image_path(message_words[3])\
+                        = json.loads(self.db_connection.db_media_image_path(message_words[3])\
                         [0])[message_words[4]] # use this to grab file path
                 except:
                     pass
@@ -163,15 +163,15 @@ class NetworkEvents(Int32StringReceiver):
         # theater data
         elif message_words[0] == "VIDEODETAIL":
             msg = "VIDEODETAIL " + pickle.dumps(\
-                self.db_connection.srv_db_read_media_Metadata_Both(message_words[1]))
+                self.db_connection.db_read_media_Metadata_Both(message_words[1]))
         elif message_words[0] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.srv_db_web_media_list(\
-                self.db_connection.srv_db_media_uuid_by_class("Movie"),\
+            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(\
+                self.db_connection.db_media_uuid_by_class("Movie"),\
                     message_words[0], message_words[1]))
         elif message_words[0] == "movie" or message_words[0] == "recent_addition"\
                 or message_words[0] == 'in_progress' or message_words[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.srv_db_web_media_list(\
-                self.db_connection.srv_db_media_uuid_by_class("Movie"), message_words[0]))
+            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(\
+                self.db_connection.db_media_uuid_by_class("Movie"), message_words[0]))
         # admin commands
         elif message_words[0] == "ScanMedia":
             # popen expects a list
@@ -206,7 +206,7 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "CPUUSAGE":
             self.cpu_use_table[self.user_ip_addy] = message_words[1]
         elif message_words[0] == "SHUTDOWN":
-            self.db_connection.srv_db_close()
+            self.db_connection.db_close()
             sys.exit(0)
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])
