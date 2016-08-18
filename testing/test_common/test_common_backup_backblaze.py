@@ -24,7 +24,9 @@ from common import common_backup_backblaze
 
 
 class TestCommonBackupBackblaze(object):
-
+    """
+    Test backblaze
+    """
 
     @classmethod
     def setup_class(self):
@@ -37,6 +39,9 @@ class TestCommonBackupBackblaze(object):
 
 
     def test_com_backup_backblaze_bucket_list(self):
+        """
+        Test bucket list
+        """
         self.backblaze_connection.com_backup_backblaze_bucket_list()
 
 
