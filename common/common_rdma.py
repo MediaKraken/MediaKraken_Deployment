@@ -26,7 +26,7 @@ import rdma.satransactor
 import rdma.path
 
 
-def mk_rdma_get_devices():
+def com_rdma_get_devices():
     """
     # get list of RDMA devices
     """

@@ -29,7 +29,7 @@ class TestCommonMetadataTMDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_metadata_tmdb.com_metadata_tmdb_API()
+        self.db_connection = common_metadata_tmdb.CommonMetadataTMDB()
 
 
     @classmethod
@@ -54,27 +54,27 @@ class TestCommonMetadataTMDB(object):
 
 
     # movie changes since date within 24 hours
-    def test_com_tmdb_Metadata_Changes_Movie(self):
+    def test_com_tmdb_meta_changes_movie(self):
         """
         Test function
         """
-        com_tmdb_Metadata_Changes_Movie()
+        self.db_connection.com_tmdb_meta_changes_movie()
 
 
     # tv changes since date within 24 hours
-    def test_com_tmdb_Metadata_Changes_TV(self):
+    def test_com_tmdb_meta_changes_tv(self):
         """
         Test function
         """
-        com_tmdb_Metadata_Changes_TV()
+        self.db_connection.com_tmdb_meta_changes_tv()
 
 
     # person changes since date within 24 hours
-    def test_com_tmdb_Metadata_Changes_Person(self):
+    def test_com_tmdb_meta_changes_person(self):
         """
         Test function
         """
-        com_tmdb_Metadata_Changes_Person()
+        self.db_connection.com_tmdb_meta_changes_person()
 
 
 # collection info

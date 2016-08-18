@@ -25,16 +25,16 @@ from common import common_json
 
 
 # check for new json files for device/layout/etc
-def test_mk_json_find():
+def test_com_json_find():
     """
     Test function
     """
-    MK_Json_Find()
+    common_json.com_json_find()
 
 
 # import new jsons into database or update them if found
-# def MK_Json_Import(file_name):
+# def com_json_import(file_name):
 
 
 # load file as json data
-# def MK_Json_Load_Json(file_name):
+# def com_json_load_file(file_name):

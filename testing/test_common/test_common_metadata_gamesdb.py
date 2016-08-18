@@ -29,7 +29,7 @@ class TestCommonMetadataGamesDB(object):
 
     @classmethod
     def setup_class(self):
-        self.gamesdb_connection = common_metadata_gamesdb.com_meta_gamesdb_API()
+        self.gamesdb_connection = common_metadata_gamesdb.CommonMetadataGamesDB()
 
 
     @classmethod
@@ -41,7 +41,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Test function
         """
-        com_meta_gamesdb_platform_list()
+        self.gamesdb_connection.com_meta_gamesdb_platform_list()
 
 
 # def com_meta_gamesdb_Platform_by_ID(self, platform_id):
@@ -52,7 +52,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Test function
         """
-        com_meta_gamesdb_games_by_name_or("Mega Man")
+        self.gamesdb_connection.com_meta_gamesdb_games_by_name_or("Mega Man")
 
 
     # 'mega man' as mega AND man
@@ -60,7 +60,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Test function
         """
-        com_meta_gamesdb_games_by_name_and("Mega Man")
+        self.gamesdb_connection.com_meta_gamesdb_games_by_name_and("Mega Man")
 
 
 # def com_meta_gamesdb_Games_by_Name_And_Platform_Or(self, game_name, platform_name, game_genre=None):

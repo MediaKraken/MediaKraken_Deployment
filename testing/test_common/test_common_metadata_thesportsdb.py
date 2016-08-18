@@ -29,7 +29,7 @@ class TestCommonMetadatathesportsdb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_thesportsdb.com_meta_thesportsdb_API()
+        self.db_connection = common_metadata_thesportsdb.CommonMetadataTheSportsDB()
 
 
     @classmethod
@@ -42,22 +42,22 @@ class TestCommonMetadatathesportsdb(object):
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def test_com_meta_thesportsdb_Search_Team_by_Name(self, team_name):
+    def test_com_meta_thesportsdb_search_team_by_name(self, team_name):
         """
         Test function
         """
-        com_meta_thesportsdb_Search_Team_by_Name(team_name)
+        self.db_connection.com_meta_thesportsdb_search_team_by_name(team_name)
 
 
     @pytest.mark.parametrize(("team_name"), [
         ('Pacers'),
         ('Dallas Cowboys'),
         ('fakename')])
-    def test_com_meta_thesportsdb_Search_Players_by_Team(self, team_name):
+    def test_com_meta_thesportsdb_search_players_by_team(self, team_name):
         """
         Test function
         """
-        com_meta_thesportsdb_Search_Players_by_Team(team_name)
+        self.db_connection.com_meta_thesportsdb_search_players_by_team(team_name)
 
 
 # def com_meta_thesportsdb_Search_Players_by_Name(self, player_name):

@@ -41,7 +41,7 @@ def test_mk_network_send_email(email_receipient, email_subject, email_body):
     """
     Test function
     """
-    mk_network_send_email(email_receipient, email_subject, email_body)
+    common_network.mk_network_send_email(email_receipient, email_subject, email_body)
 
 
 # get MAC address
@@ -49,7 +49,7 @@ def test_mk_network_get_mac():
     """
     Test function
     """
-    mk_network_get_mac()
+    common_network.mk_network_get_mac()
 
 
 # get outside ip addy
@@ -57,7 +57,7 @@ def test_mk_network_get_outside_ip():
     """
     Test function
     """
-    mk_network_get_outside_ip()
+    common_network.mk_network_get_outside_ip()
 
 
 # get default ip address
@@ -65,7 +65,7 @@ def test_mk_network_get_default_ip():
     """
     Test function
     """
-    mk_network_get_default_ip()
+    common_network.mk_network_get_default_ip()
 
 
 # ping modules
@@ -96,7 +96,7 @@ def test_mk_network_ping_list():
     """
     # ping host list
     """
-    mk_network_ping_list(host_list)
+    common_network.mk_network_ping_list(host_list)
 
 
 @pytest.mark.parametrize(("show_nic"), [
@@ -106,25 +106,25 @@ def test_mk_network_io_counter(show_nic):
     """
     # get network io
     """
-    mk_network_io_counter(show_nic)
+    common_network.mk_network_io_counter(show_nic)
 
 
 def test_mk_network_connections():
     """
     # show network connections
     """
-    mk_network_connections()
+    common_network.mk_network_connections()
 
 
 def test_mk_network_ip_addr():
     """
     # show ip addys
     """
-    mk_network_ip_addr()
+    common_network.mk_network_ip_addr()
 
 
 def test_mk_network_stats():
     """
     # show network stats
     """
-    mk_network_stats()
+    common_network.mk_network_stats()

@@ -29,7 +29,7 @@ class TestCommonTransmission(object):
 
     @classmethod
     def setup_class(self):
-        self.transmission_connection = common_transmission.com_transmission_API()
+        self.transmission_connection = common_transmission.CommonTransmission()
 
 
     @classmethod
@@ -41,7 +41,7 @@ class TestCommonTransmission(object):
         """
         Test function
         """
-        common_transmission_get_torrent_list()
+        self.transmission_connection.com_transmission_get_torrent_list()
 
 
 #    def common_transmission_Add_Torrent(self, torrent_path):

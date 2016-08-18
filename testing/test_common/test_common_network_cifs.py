@@ -29,7 +29,7 @@ class TestCommonCIFSShareURL(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_network_CIFS.com_cifs_Share_URL_API()
+        self.db_connection = common_network_cifs.CommonNetworkCIFSShareURL()
 
 
     @classmethod
@@ -51,7 +51,7 @@ class TestCommonCIFSShare(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_network_CIFS.com_cifs_Share_API()
+        self.db_connection = common_network_cifs.CommonCIFSShare()
 
 
     @classmethod
@@ -60,48 +60,48 @@ class TestCommonCIFSShare(object):
 
 
 # connect
-# def common_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
+# def com_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
 
 
     # list shares
-    def test_common_cifs_Share_List_by_Connection(self):
+    def test_com_cifs_share_list_by_connection(self):
         """
         Test function
         """
-        common_cifs_Share_List_by_Connection()
+        self.db_connection.com_cifs_share_list_by_connection()
 
 
 # list files in share
-# def common_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
+# def com_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
 
 
 # verify smb directory
-# def common_cifs_Share_Directory_Check(self, share_name, dir_path):
+# def com_cifs_Share_Directory_Check(self, share_name, dir_path):
 
 
 # get specific path/file info
-# def common_cifs_Share_File_Dir_Info(self, share_name, file_path):
+# def com_cifs_Share_File_Dir_Info(self, share_name, file_path):
 
 
 # upload file to smb
-# def common_cifs_Share_File_Upload(self, file_path):
+# def com_cifs_Share_File_Upload(self, file_path):
 
 
 # download from smb
-# def common_cifs_Share_File_Download(self, file_path):
+# def com_cifs_Share_File_Download(self, file_path):
 
 
 # delete from smb
-# def common_cifs_Share_File_Delete(self, share_name, file_path):
+# def com_cifs_Share_File_Delete(self, share_name, file_path):
 
 
     # close connection
-    def test_common_cifs_Close(self):
+    def test_com_cifs_close(self):
         """
         Test function
         """
-        common_cifs_Close()
+        self.db_connection.com_cifs_close()
 
 
 # cifs directory walk
-# def common_cifs_Walk(self, share_name, file_path='/'):
+# def com_cifs_Walk(self, share_name, file_path='/'):

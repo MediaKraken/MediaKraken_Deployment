@@ -29,7 +29,7 @@ class TestCommonSNMP(object):
 
     @classmethod
     def setup_class(self):
-        self.snmp_connection = common_network_SNMP.com_SNMP()
+        self.snmp_connection = common_network_snmp.CommonNetworkSNMP()
 
 
     @classmethod

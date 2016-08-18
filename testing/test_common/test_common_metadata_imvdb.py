@@ -29,7 +29,7 @@ class TestCommonimvdb(object):
 
     @classmethod
     def setup_class(self):
-        self.imvdb_connection = com_meta_imvdb.com_imvdb_API()
+        self.imvdb_connection = common_metadata_imvdb.CommonMetadataIMVdb()
 
 
     @classmethod

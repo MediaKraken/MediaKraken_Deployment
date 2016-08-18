@@ -29,7 +29,7 @@ class TestCommonSchedulesDirect(object):
 
     @classmethod
     def setup_class(self):
-        self.sd_connection = com_Schedules_Direct.com_Schedules_Direct_API()
+        self.sd_connection = common_schedules_direct.CommonSchedulesDirect()
 
 
     @classmethod
@@ -40,18 +40,18 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Login(self, user_name, user_password):
 
 
-    def test_com_Schedules_Direct_Status(self):
+    def test_com_schedules_direct_status(self):
         """
         Test function
         """
-        com_Schedules_Direct_Status()
+        self.sd_connection.com_schedules_direct_status()
 
 
-    def test_com_Schedules_Direct_Client_Version(self):
+    def test_com_schedules_direct_client_version(self):
         """
         Test function
         """
-        com_Schedules_Direct_Client_Version()
+        self.sd_connection.com_schedules_direct_client_version()
 
 
 #    def com_Schedules_Direct_Available(self, countries=None):
@@ -63,11 +63,11 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Lineup_Add(self, lineup_id):
 
 
-    def test_com_Schedules_Direct_Lineup_List(self):
+    def test_com_schedules_direct_lineup_list(self):
         """
         Test function
         """
-        com_Schedules_Direct_Lineup_List()
+        self.sd_connection.com_schedules_direct_lineup_list()
 
 
 #    def com_Schedules_Direct_Lineup_Delete(self, lineup_id):

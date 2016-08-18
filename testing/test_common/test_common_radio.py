@@ -28,4 +28,4 @@ def test_common_network_radio():
     """
     # create the cache file for import
     """
-    com_network_radio()
+    common_radio.com_network_radio()

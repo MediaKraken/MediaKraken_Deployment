@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_image
 
 
-# def ResizeImageCalc(img_size, size):
+# def com_image_resizeimagecalc(img_size, size):
 
 
-# def ResizeImage(file_name, image_size):
+# def com_image_resizeimage(file_name, image_size):

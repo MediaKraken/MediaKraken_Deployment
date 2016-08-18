@@ -29,7 +29,7 @@ class TestCommonTwitch(object):
 
     @classmethod
     def setup_class(self):
-        self.twitch_connection = common_network_twitch.com_Twitch_API()
+        self.twitch_connection = common_network_twitch.CommonNetworkTwitch()
 
 
     @classmethod

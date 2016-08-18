@@ -29,7 +29,7 @@ class TestCommonMusicbrainz(object):
 
     @classmethod
     def setup_class(self):
-        self.musicbrainz_connection = com_meta_musicbrainz.com_Musicbrainz_API()
+        self.musicbrainz_connection = common_metadata_musicbrainz.CommonMetadataMusicbrainz()
 
 
     @classmethod

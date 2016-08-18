@@ -26,7 +26,7 @@ from common import common_network_irdb
 
 # get brand list
 def test_com_irdb_brand_list():
-    com_IRDB_Brand_List()
+    common_network_irdb.com_irdb_brand_list()
 
 
 # get device types by brand
@@ -38,7 +38,7 @@ def test_com_irdb_device_types_by_brand(brand_text):
     """
     Test function
     """
-    com_IRDB_Device_Types_by_Brand(brand_text)
+    common_network_irdb.com_irdb_device_types_by_brand(brand_text)
 
 
 # See which sets of codes we have for that brand and device type:

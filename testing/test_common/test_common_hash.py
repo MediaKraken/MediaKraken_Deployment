@@ -31,7 +31,7 @@ def test_com_hash_sha1_by_filename(file_name, expected_result):
     """
     Test function
     """
-    assert com_hash_sha1_by_filename(file_name) == expected_result
+    assert common_hash.com_hash_sha1_by_filename(file_name) == expected_result
 
 
 # c call for sha1 hash
@@ -45,7 +45,7 @@ def test_com_hash_sha1_c(file_name, expected_result):
     """
     Test function
     """
-    assert com_hash_sha1_c(file_name) == expected_result
+    assert common_hash.com_hash_sha1_c(file_name) == expected_result
 
 
 # caclucate crc32 for file
@@ -59,7 +59,7 @@ def test_com_hash_crc32(file_name, expected_result):
     """
     Test function
     """
-    assert com_hash_crc32(file_name) == expected_result
+    assert common_hash.com_hash_crc32(file_name) == expected_result
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
@@ -94,7 +94,7 @@ def test_com_hash_thesubdb(file_name):
     """
     Test function
     """
-    com_hash_thesubdb(file_name)
+    common_hash.com_hash_thesubdb(file_name)
 
 
 # hash for opensubtiles.org
@@ -106,4 +106,4 @@ def test_com_hash_opensubtitles(file_name):
     """
     Test function
     """
-    com_hash_opensubtitles(file_name)
+    common_hash.com_hash_opensubtitles(file_name)

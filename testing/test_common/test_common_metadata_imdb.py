@@ -29,7 +29,7 @@ class TestCommonimdb(object):
 
     @classmethod
     def setup_class(self):
-        self.imdb_connection = common_metadata_imdb.com_imdb_API()
+        self.imdb_connection = common_metadata_imdb.CommonMetadataIMDB()
 
 
     @classmethod

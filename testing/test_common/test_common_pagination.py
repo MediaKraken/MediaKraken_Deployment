@@ -28,21 +28,21 @@ def test_get_css_framework():
     """
     Test function
     """
-    get_css_framework()
+    common_pagination.get_css_framework()
 
 
 def test_get_link_size():
     """
     Test function
     """
-    get_link_size()
+    common_pagination.get_link_size()
 
 
 def test_show_single_page_or_not():
     """
     Test function
     """
-    show_single_page_or_not()
+    common_pagination.show_single_page_or_not()
 
 
 @pytest.mark.parametrize(("client_items_per_page"), [
@@ -52,7 +52,7 @@ def test_get_page_items(client_items_per_page):
     """
     Test function
     """
-    get_page_items(client_items_per_page)
+    common_pagination.get_page_items(client_items_per_page)
 
 
 # def get_pagination(**kwargs):

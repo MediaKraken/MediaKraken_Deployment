@@ -39,28 +39,28 @@ def test_common_system_cpu_count():
     """
     # return cpu count
     """
-    assert common_system_CPU_Count() == 8
+    assert common_system.com_system_cpu_count() == 8
 
 
 def test_common_system_partitions():
     """
     # return partitions
     """
-    common_system_Partitions()
+    common_system.com_system_partitions()
 
 
 def test_common_system_boot_time():
     """
     # get boot time
     """
-    common_system_boot_time()
+    common_system..com_system_boot_time()
 
 
 def test_common_system_users():
     """
     # get users 
     """
-    common_system_users()
+    common_system.com_system_users()
 
 
 @pytest.mark.parametrize(("per_cpu"), [
@@ -70,14 +70,14 @@ def test_common_system_cpu_usage(per_cpu):
     """
     # get cpu percentage
     """
-    common_system_CPU_Usage(per_cpu)
+    common_system..com_system_cpu_usage(per_cpu)
 
 
 def test_common_system_cpu_times():
     """
     # get cpu times
     """
-    common_system_cpu_times()
+    common_system.com_system_cpu_times()
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -88,7 +88,7 @@ def test_common_system_disk_usage():
     """
     # get disk usage
     """
-    common_system_Disk_Usage(path)
+    common_system.com_system_disk_usage(path)
 
 
 @pytest.mark.parametrize(("human_readable"), [
@@ -98,7 +98,7 @@ def test_common_system_disk_usage_all(human_readable):
     """
     # get disk usage of all partitions
     """
-    common_system_Disk_Usage_All(human_readable)
+    common_system.com_system_disk_usage_all(human_readable)
 
 
 @pytest.mark.parametrize(("per_disk"), [
@@ -108,14 +108,14 @@ def test_common_system_disk_io(per_disk):
     """
     # get disk IO
     """
-    common_system_Disk_IO(per_disk)
+    common_system.com_system_disk_io(per_disk)
 
 
 def test_common_system_uptime():
     """
     # get system uptime
     """
-    common_system_Uptime()
+    common_system.com_system_uptime()
 
 
 @pytest.mark.parametrize(("process_name"), [
@@ -126,4 +126,4 @@ def test_com_process_list(process_name):
     """
     # get processes and optionally check for one
     """
-    com_Process_List(process_name)
+    common_system.com_process_list(process_name)

@@ -25,19 +25,19 @@ from common import common_zfs
 
 
 # check for ZFS compat
-def test_common_zfs_available():
+def test_com_zfs_available():
     """
     Test function
     """
-    common_zfs_Available()
+    common_zfs.com_zfs_Available()
 
 
 # get zpool list
-def test_common_zfs_zpool_list():
+def test_com_zfs_zpool_list():
     """
     Test function
     """
-    common_zfs_Zpool_List()
+    common_zfs.com_zfs_Zpool_List()
 
 
 # get zpool status
@@ -45,19 +45,19 @@ def test_common_zfs_zpool_list():
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def test_common_zfs_zpool_status(zpool):
+def test_com_zfs_zpool_status(zpool):
     """
     Test function
     """
-    common_zfs_zpool_status(zpool)
+    common_zfs.com_zfs_zpool_status(zpool)
 
 
 # list snapshot
-def test_common_zfs_snapshot_list():
+def test_com_zfs_snapshot_list():
     """
     Test function
     """
-    common_zfs_snapshot_list()
+    common_zfs.com_zfs_snapshot_list()
 
 
 # list snapshot
@@ -65,15 +65,15 @@ def test_common_zfs_snapshot_list():
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def test_common_zfs_snapshot_list(zpool):
+def test_com_zfs_snapshot_list(zpool):
     """
     Test function
     """
-    common_zfs_snapshot_list(zpool)
+    common_zfs.com_zfs_snapshot_list(zpool)
 
 
 # delete snapshot
-# def common_zfs_Snapshot_Delete(snapshot):
+# def common_zfs.com_zfs_Snapshot_Delete(snapshot):
 
 
 # delete pool
@@ -81,11 +81,11 @@ def test_common_zfs_snapshot_list(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def test_common_zfs_zpool_delete(zpool):
+def test_com_zfs_zpool_delete(zpool):
     """
     Test function
     """
-    common_zfs_zpool_delete(zpool)
+    common_zfs.com_zfs_zpool_delete(zpool)
 
 
 # scrub pool
@@ -93,25 +93,25 @@ def test_common_zfs_zpool_delete(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def test_common_zfs_zpool_scrub(zpool):
+def test_com_zfs_zpool_scrub(zpool):
     """
     Test function
     """
-    common_zfs_zpool_scrub(zpool)
+    common_zfs.com_zfs_zpool_scrub(zpool)
 
 
 # replace drive in pool
-# def common_zfs_Zpool_Replace_Drive(zpool, target_drive, replacement_drive):
+# def common_zfs.com_zfs_Zpool_Replace_Drive(zpool, target_drive, replacement_drive):
 
 
 # create pool
-# def common_zfs_Zpool_Create(zpool, zpool_type, zpool_drives):
+# def common_zfs.com_zfs_Zpool_Create(zpool, zpool_type, zpool_drives):
 
 
 # pool stats
 
 # set compression
-# def common_zfs_Zpool_Compression(zpool, zpool_compression, zpool_rate):
+# def common_zfs.com_zfs_Zpool_Compression(zpool, zpool_compression, zpool_rate):
 
 
 # get compression
@@ -119,60 +119,60 @@ def test_common_zfs_zpool_scrub(zpool):
     (None),
     ("spinning_rust"),
     ("spinning_rust_fake")])
-def test_common_zfs_zpool_compression(zpool):
+def test_com_zfs_zpool_compression(zpool):
     """
     Test function
     """
-    common_zfs_zpool_compression(zpool)
+    common_zfs.com_zfs_zpool_compression(zpool)
 
 
 # set deduplication
-# def common_zfs_Zpool_Deduplication(zpool, zpool_dedup):
+# def common_zfs.com_zfs_Zpool_Deduplication(zpool, zpool_dedup):
 
 
 # send snapshot
-# def common_zfs_Zpool_Snapshot_Send(snapshot_begin, snapshot_end, receive_ip, port_no):
+# def common_zfs.com_zfs_Zpool_Snapshot_Send(snapshot_begin, snapshot_end, receive_ip, port_no):
 
 
 # receive snapshot
-# def common_zfs_Zpool_Snapshot_Receive(zpool_location, port_no):
+# def common_zfs.com_zfs_Zpool_Snapshot_Receive(zpool_location, port_no):
 
 
 # set cache drive
-# def common_zfs_Zpool_Cache_Drive(zpool):
+# def common_zfs.com_zfs_Zpool_Cache_Drive(zpool):
 
 
 # set larc2 drive
-# def common_zfs_Zpool_L2ARC(zpool):
+# def common_zfs.com_zfs_Zpool_L2ARC(zpool):
 
 
 # quota set for pool
-# def common_zfs_Zpool_Quota(zpool, quota_level):
+# def common_zfs.com_zfs_Zpool_Quota(zpool, quota_level):
 
 
 # iostat, pool and interval
-# def common_zfs_Zpool_IOStat(zpool, interval):
+# def common_zfs.com_zfs_Zpool_IOStat(zpool, interval):
 
 
 # export zpool
-# def common_zfs_Zpool_Export(zpool):
+# def common_zfs.com_zfs_Zpool_Export(zpool):
 
 
 # import pool
-# def common_zfs_Zpool_Import(zpool, zpool_new_name=None):
+# def common_zfs.com_zfs_Zpool_Import(zpool, zpool_new_name=None):
 
 
 # rename zfs
-# def common_zfs_Rename(zpool, zpool_new_name):
+# def common_zfs.com_zfs_Rename(zpool, zpool_new_name):
 
 
 # clone pool
-# def common_zfs_Clone(zpool_snap, zpool_clone):
+# def common_zfs.com_zfs_Clone(zpool_snap, zpool_clone):
 
 
 # health check
-def test_common_zfs_health_check():
+def test_com_zfs_health_check():
     """
     Test function
     """
-    common_zfs_health_check()
+    common_zfs.com_zfs_health_check()

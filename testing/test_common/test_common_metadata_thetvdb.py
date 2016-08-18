@@ -29,7 +29,7 @@ class TestCommonMetadataTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_TheTVDB.com_meta_TheTVDB_API()
+        self.db_connection = common_metadata_thetvdb.CommonMetadataTheTVDB()
 
 
     @classmethod
@@ -47,7 +47,7 @@ class TestCommonMetadataTheTVDB(object):
         """
         Test function
         """
-        com_meta_thetvdb_get_server_epoc_time()
+        self.db_connection.com_meta_thetvdb_get_server_epoc_time()
 
 
 # def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):

@@ -42,7 +42,7 @@ class TestAndroidHardwareInstance(object):
         """
         Test function
         """
-        MK_Android_Get_DPI()
+        self.android_connection.MK_Android_Get_DPI()
 
 
     # vibrate the device
@@ -53,7 +53,7 @@ class TestAndroidHardwareInstance(object):
         """
         Test function
         """
-        MK_Android_Vibrate(vibrate_time)
+        self.android_connection.MK_Android_Vibrate(vibrate_time)
 
 
     # return data from the motion controller
@@ -64,4 +64,4 @@ class TestAndroidHardwareInstance(object):
         """
         Test function
         """
-        MK_Android_Motion(time_range)
+        self.android_connection.MK_Android_Motion(time_range)

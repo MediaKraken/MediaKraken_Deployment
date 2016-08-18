@@ -29,7 +29,7 @@ class TestCommonthelogodb(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_thelogodb.com_thelogodb_API()
+        self.db_connection = common_metadata_thelogodb.CommonMetadataTheLogoDB()
 
 
     @classmethod
@@ -42,4 +42,4 @@ class TestCommonthelogodb(object):
         """
         Test function
         """
-        com_thelogodb_fetch_latest()
+        self.db_connection.com_thelogodb_fetch_latest()

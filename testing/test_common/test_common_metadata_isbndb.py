@@ -29,7 +29,7 @@ class TestCommonISBNdb(object):
 
     @classmethod
     def setup_class(self):
-        self.isbndb_connection = com_meta_ISBNdb.com_ISBNdb_API()
+        self.isbndb_connection = common_metadata_isbndb.CommonMetadataISBNdb()
 
 
     @classmethod

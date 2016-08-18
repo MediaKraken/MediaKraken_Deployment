@@ -29,7 +29,7 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.trakt_connection = common_network_trakt.com_Trakt_API()
+        self.trakt_connection = common_network_trakt.CommonNetworkTrakt()
 
 
     @classmethod
@@ -49,7 +49,7 @@ class TestCommonTrakt(object):
         """
         Test function
         """
-        com_trakt_calendar_by_days(day_count)
+        self.trakt_connection.com_trakt_calendar_by_days(day_count)
 
 
     # dismiss recommendation

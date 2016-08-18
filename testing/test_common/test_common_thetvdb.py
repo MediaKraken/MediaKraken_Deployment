@@ -29,7 +29,7 @@ class TestCommonTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.thetvdb_connection = com_TheTVDB.com_TheTVDB_API()
+        self.thetvdb_connection = common_thetvdb.CommonTheTVDB()
 
 
     @classmethod

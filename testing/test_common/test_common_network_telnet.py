@@ -29,7 +29,7 @@ class TestCommonTelnet(object):
 
     @classmethod
     def setup_class(self):
-        self.telnet_connection = common_network_telnet.com_Telnet_API()
+        self.telnet_connection = common_network_telnet.CommonNetworkTelnet()
 
 
     @classmethod
@@ -40,15 +40,15 @@ class TestCommonTelnet(object):
 #    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
 
 
-    def test_MK_Telnet_Read_Device(self):
+    def test_com_net_telnet_read_device(self):
         """
         Test function
         """
-        MK_Telnet_Read_Device()
+        self.telnet_connection.com_net_telnet_read_device()
 
 
-    def test_MK_Telnet_Write_Device(self):
+    def test_com_net_telnet_write_device(self):
         """
         Test function
         """
-        MK_Telnet_Write_Device("Telnet test message")
+        self.telnet_connection.com_net_telnet_write_device("Telnet test message")

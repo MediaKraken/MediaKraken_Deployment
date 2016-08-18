@@ -29,7 +29,7 @@ def test_mk_scudlee_fetch_xml():
     """
     Test function
     """
-    mk_scudlee_fetch_xml()
+    common_metadata_scudlee.mk_scudlee_fetch_xml()
 
 
 # parse the anime list

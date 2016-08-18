@@ -29,7 +29,7 @@ class TestCommonMetadatatvmaze(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = com_meta_tvmaze_API()
+        self.db_connection = common_metadata_tvmaze.CommonMetadatatvmaze()
 
 
     @classmethod

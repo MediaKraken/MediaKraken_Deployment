@@ -29,7 +29,7 @@ class TestCommonLDAP(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_ldap.com_LDAP_API()
+        self.db_connection = common_ldap.CommonLDAP()
 
 
     @classmethod
@@ -49,12 +49,12 @@ class TestCommonLDAP(object):
         """
         Test ldap login
         """
-        com_ldap_logon(user_name, user_password, expected_result)
+        self.db_connection.com_ldap_logon(user_name, user_password, expected_result)
 
 
     def test_com_ldap_close(self):
         """
         Test ldap close
         """
-        com_ldap_Close()
+        self.db_connection.com_ldap_close()
 

@@ -29,7 +29,7 @@ class TestiOSHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.ios_connection = common_system_iOS.MK_iOS_Hardware_Instance()
+        self.ios_connection = common_system_ios.CommoniOSHardwareInstance()
 
 
     @classmethod
@@ -40,28 +40,28 @@ class TestiOSHardwareInstance(object):
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Motion(self, time_range):
+    def test_com_ios_motion(self, time_range):
         """
         # return data from the motion controller
         """
-        MK_iOS_Motion(time_range)
+        self.ios_connection.com_ios_motion(time_range)
 
 
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Gyro(self, time_range):
+    def test_com_ios_gyro(self, time_range):
         """
         # return data from the gyro
         """
-        MK_iOS_Gyro(time_range)
+        self.ios_connection.com_ios_gyro(time_range)
 
 
     @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
-    def test_MK_iOS_Magnetometer(self, time_range):
+    def test_com_ios_magnetometer(self, time_range):
         """
         # return data from the magnetometer
         """
-        MK_iOS_Magnetometer(time_range)
+        self.ios_connection.com_ios_magnetometer(time_range)

@@ -29,7 +29,7 @@ class TestCommonMetadataAnidb(object):
 
     @classmethod
     def setup_class(self):
-        self.anidb_connection = common_metadata_anidb.com_metadata_anidb_API()
+        self.anidb_connection = common_metadata_anidb.CommonMetadataANIdb()
 
 
     @classmethod
@@ -38,32 +38,32 @@ class TestCommonMetadataAnidb(object):
 
 
     # fetch the tarball of anime titles
-    # def MK_Network_anidb_Fetch_Titles_File(self, data_type='dat'):
+    # def com_net_anidb_fetch_titles_file(self, data_type='dat'):
 
 
     # save anidb title data to database
-    # def MK_Network_anidb_Save_Title_Data_To_DB(self, title_file):
+    # def com_net_anidb_save_title_data_to_db(self, title_file):
 
 
     # find AID by title
-    # def MK_Network_anidb_AID_by_Title(self, title_to_search):
+    # def com_net_anidb_aid_by_title(self, title_to_search):
 
 
     # remote api calls
-    # def MK_Network_anidb_Connect(self, user_name, user_password):
+    # def com_net_anidb_connect(self, user_name, user_password):
 
 
     # logout of anidb
-    def test_MK_Network_anidb_Logout(self):
+    def test_com_net_anidb_logout(self):
         """
         Test function
         """
-        MK_Network_anidb_Logout()
+        self.anidb_connection.com_net_anidb_logout()
 
 
     # close the anidb connect and stop the thread
-    def test_MK_Network_anidb_Stop(self):
+    def test_com_net_anidb_stop(self):
         """
         Test function
         """
-        MK_Network_anidb_Stop()
+        self.anidb_connection.com_net_anidb_stop()

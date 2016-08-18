@@ -33,4 +33,4 @@ def test_common_logging_start(log_name):
     """
     Test function
     """
-    common_logging_start(log_name)
+    common_logging.common_logging_start(log_name)

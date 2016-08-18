@@ -29,7 +29,7 @@ class TestSSDPResponse(object):
 
     @classmethod
     def setup_class(self):
-        self.ssdp_connection = common_network_SSDP.SSDPResponse()
+        self.ssdp_connection = common_network_ssdp.SSDPResponse()
 
 
     @classmethod

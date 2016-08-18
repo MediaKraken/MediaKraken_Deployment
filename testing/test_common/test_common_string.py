@@ -45,7 +45,7 @@ def test_com_string_bytes2human(n, expected_result):
     """
     # readable numbers for bytes to G, T, etc
     """
-    assert com_string_bytes2human(n) == expected_result
+    assert common_string.com_string_bytes2human(n) == expected_result
 
 
 @pytest.mark.parametrize(("password_text", "expected_result"), [
@@ -57,7 +57,7 @@ def test_com_string_password_test(password_text, expected_result):
     """
     # test password
     """
-    assert com_string_password_test(password_text) == expected_result
+    assert common_string.com_string_password_test(password_text) == expected_result
 
 
 # def ip_ascii_to_int(ip):

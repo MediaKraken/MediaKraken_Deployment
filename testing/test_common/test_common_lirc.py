@@ -25,18 +25,18 @@ from common import common_lirc
 
 
 # def MK_LIRC_Init(app_string="OctMote"):
-def test_mk_lirc_init():
+def test_com_lirc_init():
     """
     Test function
     """
-    MK_LIRC_Init()
+    common_lirc.com_lirc_init()
 
 
 # def MK_LIRC_Load_Config(config_file):
 
 
-def test_mk_lirc_close():
+def test_com_lirc_close():
     """
     Test function
     """
-    MK_LIRC_Close()
+    common_lirc.com_lirc_close()

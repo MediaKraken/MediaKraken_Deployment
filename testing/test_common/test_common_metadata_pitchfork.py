@@ -29,7 +29,7 @@ class TestCommonpitchfork(object):
 
     @classmethod
     def setup_class(self):
-        self.pitchfork_connection = com_pitchfork_API()
+        self.pitchfork_connection = common_metadata_pitchfork.CommonMetadataPitchfork()
 
 
     @classmethod

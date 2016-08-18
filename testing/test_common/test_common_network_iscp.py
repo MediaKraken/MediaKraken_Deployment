@@ -25,11 +25,11 @@ from common import common_network_iscp
 
 
 # the EISCP auto discover only works on 2011 models or higher
-def test_mk_eiscp_discovery():
+def test_com_net_eiscp_discovery():
     """
     Test function
     """
-    MK_EISCP_Discovery()
+    common_network_iscp.com_net_eiscp_discovery()
 
 
 # def MK_EISCP_Connection(ip_addr):
