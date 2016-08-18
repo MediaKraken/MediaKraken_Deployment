@@ -21,9 +21,11 @@ import logging # pylint: disable=W0611
 
 # TODO subselect speedup for list
 
-# grab tv data
 def db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None,\
         group_collection=False, offset=None):
+    """
+    # grab tv data
+    """
     if list_type == 'TV Show':
         if offset is None:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'\

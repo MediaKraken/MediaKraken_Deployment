@@ -23,15 +23,24 @@ from smb.SMBConnection import SMBConnection
 
 
 class CommonNetworkCIFSShareURL(object):
+    """
+    Handle CIFS shares
+    """
     def __init__(self):
         pass
 
 
     def com_cifs_url_director(self, connect_string):
+        """
+        Create director for CIFS management
+        """
         self.director = urllib2.build_opener(SMBHandler)
 
 
     def com_cifs_url_download(self, connect_string):
+        """
+        Grab file from CIFS
+        """
         # For paths/files with unicode characters, simply pass in the URL as an unicode string
         file_con = self.director.open(\
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
@@ -40,6 +49,9 @@ class CommonNetworkCIFSShareURL(object):
 
 
     def com_cifs_url_upload(self, file_path, connect_string):
+        """
+        Post file via CIFS
+        """
         file_con = self.director.open(\
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',\
             data=open(file_path, 'rb'))
@@ -47,6 +59,9 @@ class CommonNetworkCIFSShareURL(object):
 
 
 class CommonCIFSShare(object):
+    """
+    Handle CIFS shares
+    """
     def __init__(self):
         pass
 

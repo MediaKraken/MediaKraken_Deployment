@@ -30,34 +30,49 @@ class CommonHardwareHDHomeRunPY(object):
         self.devices = None
 
 
-    def com_HDHomeRun_Discover(self):
+    def com_hdhomerun_discover(self):
         """
         Look for hdhomerun divices
         """
         self.devices = HdhrUtility.discover_find_devices_custom()
 
 
-    def com_HDHomeRun_List(self):
+    def com_hdhomerun_list(self):
+        """
+        List hdhomerun tuners
+        """
         return self.devices
 
 
     def get_tuner_vstatus(self, device_adapter):
+        """
+        Get tuner status
+        """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
         logging.debug(vstatus)
 
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
+        """
+        Set current channel
+        """
         device_adapter.set_tuner_vchannel(vchannel)
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
         logging.debug(vstatus)
 
 
     def set_stream(self, device_adapter, vchannel, target_uri):
+        """
+        Set stream
+        """
         device_adapter.set_tuner_vchannel(vchannel)
         device_adapter.set_tuner_target(target_uri)
 
 
     def get_supported(self, device_adapter):
+        """
+        Get supported info
+        """
         logging.debug(device_adapter.get_supported())
 
 
@@ -69,6 +84,9 @@ class CommonHardwareHDHomeRunPY(object):
 
 
     def get_count(self):
+        """
+        Return count of channels
+        """
         return HdhrUtility.get_channels_in_range(MAP_US_BCAST)
 
 

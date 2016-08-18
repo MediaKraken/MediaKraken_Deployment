@@ -189,6 +189,9 @@ def com_net_emby_user_channel_feature_list(host_server, channel_id, headers):
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
 def com_net_emby_user_channel_items(host_server, channel_id, user_id, headers):
+    """
+    List items in a channel
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id\
         + '/Items?userId=' + user_id, headers=headers)).read()
 
@@ -227,6 +230,9 @@ def com_net_emby_image_download():
 
 # https://github.com/MediaBrowser/Emby/wiki/Items-by-name
 def com_net_emby_item_info_by_name():
+    """
+    Info by name of item
+    """
     pass
 
 

@@ -46,10 +46,16 @@ class CommonNetworkTwitch(object):
 
 
     def com_twitch_get_summary(self):
+        """
+        Get summary
+        """
         return twitch.streams.summary()
 
 
     def com_twitch_get_summary_viewers(self):
+        """
+        Get veiwers of summary
+        """
         return twitch.streams.summary().get('viewers')
 
 
@@ -61,6 +67,9 @@ class CommonNetworkTwitch(object):
 
 
     def com_twitch_by_name(self, user_name):
+        """
+        Get data by user name
+        """
         return twitch.users.by_name(user_name)
 
 
@@ -79,18 +88,30 @@ class CommonNetworkTwitch(object):
 
 
     def com_twitch_channel_teams_by_name(self, channel_name):
+        """
+        Get teams by channel name
+        """
         return twitch.channels.teams(channel_name)
 
 
     def com_twitch_search_channel_by_name(self, channel_name):
+        """
+        Search by channel name
+        """
         return twitch.search.channels(channel_name).get('channels')
 
 
     def com_twitch_search_streams_by_name(self, stream_game):
+        """
+        Search streams by game name
+        """
         return twitch.search.streams(stream_game).get('streams')
 
 
     def com_twitch_search_games_by_name(self, game_name):
+        """
+        Search games by name
+        """
         return twitch.search.games(game_name).get('games')
 
 

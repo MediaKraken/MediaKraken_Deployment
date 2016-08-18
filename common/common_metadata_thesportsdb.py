@@ -61,6 +61,9 @@ class CommonMetadataTheSportsDB(object):
 
     def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,\
             player_name):
+        """
+        Search plays by team and player name
+        """
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
             + self.thesportsdb_api_key + '/searchplayers.php?t=' + team_name.replace(' ', '%20')\
             + '&p=' + player_name.replace(' ', '%20'), None)

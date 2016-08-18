@@ -57,12 +57,18 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_client_version(self):
+        """
+        Get client version
+        """
         resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
         logging.debug("SD Version: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
     def com_schedules_direct_available(self, countries=None):
+        """
+        Get available list by country
+        """
         if countries is None:
             resp = requests.get(self.BASE_API_URL + "/available")
         else:
@@ -72,6 +78,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_headends(self, country_code, postal_code):
+        """
+        Get headends list
+        """
         resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code
                 + "&postalcode=" + postal_code, headers=self.headers)
         logging.debug("SD Headends: %s-%s", resp.status_code, resp.json())
@@ -94,12 +103,18 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_lineup_list(self):
+        """
+        Get user lineup list
+        """
         resp = requests.get(self.BASE_API_URL + "/lineups", headers=self.headers)
         logging.debug("SD Lineup: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 
     def com_schedules_direct_lineup_delete(self, lineup_id):
+        """
+        Delete lineup from user list
+        """
         resp = requests.delete(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
         if resp.json()['response'] != 'OK':
             logging.error("SD Invalid lineup delete: %s", lineup_id)
@@ -112,6 +127,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_lineup_channel_map(self, lineup_id):
+        """
+        Return channel map for lineup
+        """
         resp = requests.get(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
         logging.debug("SD Channel Map: %s-%s", resp.status_code, resp.json())
         return resp.json()
@@ -144,6 +162,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_schedules_by_stationid(self, station_ids):
+        """
+        Get info by station
+        """
         resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers,\
                 data=station_ids)
         logging.debug("SD Station: %s-%s", resp.status_code, resp.json())
@@ -151,6 +172,9 @@ class CommonSchedulesDirect(object):
 
 
     def com_schedules_direct_md5(self, station_ids):
+        """
+        Get md5 list for updates
+        """
         resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers,\
                 data=station_ids)
         logging.debug("SD MD5: %s-%s", resp.status_code, resp.json())

@@ -25,6 +25,9 @@ from . import common_string
 
 
 def pprint_ntuple(nt, return_value=None):
+    """
+    Create tuple for memory print
+    """
     tuple_print = []
     for name in nt._fields:
         value = getattr(nt, name)

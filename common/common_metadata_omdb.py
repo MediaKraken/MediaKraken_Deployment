@@ -63,14 +63,23 @@ class CommonMetadataOMDB(object):
 
 
     def com_omdb_imdb(self, imdbid):
+        """
+        Info by IMDB id
+        """
         omdb.imdbid(imdbid)
 
 
     def com_omdb_title(self, media_title):
+        """
+        Grab by title
+        """
         omdb.title(media_title)
 
 
     def com_omdb_default(self):
+        """
+        Set defaults for data returned
+        """
         omdb.set_default('tomatoes', True)
 
 

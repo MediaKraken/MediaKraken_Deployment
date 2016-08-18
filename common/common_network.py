@@ -103,6 +103,9 @@ class PingIt(Thread):
 
 
     def run(self):
+        """
+        run the pings
+        """
         pingaling = None
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             pingaling = os.popen("ping -n 2 " + self.ip_addr, "r")

@@ -39,9 +39,11 @@ class CommonMetadataTheTVDB(object):
         self.thetvdb_connection = config_handle.get('API', 'theTVdb').strip()
 
 
-    def com_meta_TheTVDB_Updates(self, frequency='day'):
+    def com_meta_thetvdb_updates(self, frequency='day'):
+        """
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
+        """
         updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network\
             .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
             + '/updates/updates_' + frequency + '.zip', None)))
@@ -51,7 +53,10 @@ class CommonMetadataTheTVDB(object):
         return xml_show_data
 
 
-    def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
+    def com_meta_thetvdb_get_zip_by_id(self, tv_show_id, lang_code='en'):
+        """
+        Fetch zip by id
+        """
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
@@ -93,16 +98,25 @@ class CommonMetadataTheTVDB(object):
 
 
     def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
+        """
+        Get updates by epoc
+        """
         return common_network.mk_network_fetch_from_url(\
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
 
     def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
+        """
+        Update series
+        """"
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
             + self.thetvdb_connection + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
     def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
+        """
+        Update episode
+        """
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
             + self.thetvdb_connection + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 

@@ -190,6 +190,9 @@ def db_meta_fetch_media_id_json(self, media_id_type, media_id_id,\
 
 def db_meta_fetch_series_media_id_json(self, media_id_type, media_id_id,\
         collection_media=False):
+    """
+    Fetch series json by id
+    """
     if not collection_media:
         self.db_cursor.execute('select mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id'\
             ' from mm_metadata_tvshow where mm_metadata_media_tvshow_id->>%s = %s',\
@@ -201,6 +204,9 @@ def db_meta_fetch_series_media_id_json(self, media_id_type, media_id_id,\
 
 
 def db_find_metadata_guid(self, media_name, media_release_year):
+    """
+    Lookup id by name/year
+    """
     metadata_guid = None
     if media_release_year is not None:
         # for year and -1/+1 year as well

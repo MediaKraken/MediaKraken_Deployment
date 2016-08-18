@@ -127,6 +127,9 @@ class CommonGoogle(object):
 
 
     def com_google_youtube_insert_comment(channel_id, video_id, text):
+        """
+        Add youtube comment on video
+        """
         insert_result = self.youtube.commentThreads().insert(
           part="snippet",
           body=dict(
@@ -144,6 +147,9 @@ class CommonGoogle(object):
 
 
     def com_google_youtube_update_comment(comment):
+        """
+        Update comment on youtube video
+        """
         comment["snippet"]["topLevelComment"]["snippet"]["textOriginal"] = 'updated'
         update_result = self.youtube.commentThreads().update(
           part="snippet",
@@ -152,6 +158,9 @@ class CommonGoogle(object):
 
 
     def com_google_youtube_add_subscription(channel_id):
+        """
+        Add subscription to channel
+        """
         add_subscription_response = self.youtube.subscriptions().insert(
           part='snippet',
           body=dict(

@@ -50,6 +50,9 @@ class CommonMetadataMusicbrainz(object):
 
 
     def show_release_details(self, rel):
+        """
+        Get release details
+        """
         global musicbrainzngs
         # "artist-credit-phrase" is a flat string of the credited artists
         # joined with " + " or whatever is given by the server.

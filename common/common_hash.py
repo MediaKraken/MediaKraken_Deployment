@@ -138,7 +138,9 @@ def com_hash_crc32(file_name):
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
 def com_hash_ed2k(filePath):
-    """ Returns the ed2k hash of a given file."""
+    """
+    Returns the ed2k hash of a given file.
+    """
     md4 = hashlib.new('md4').copy
     def gen(f):
         while True:
@@ -149,6 +151,9 @@ def com_hash_ed2k(filePath):
                 return
 
     def md4_hash(data):
+        """
+        Calc hash
+        """
         m = md4()
         m.update(data)
         return m

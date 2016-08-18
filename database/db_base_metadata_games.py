@@ -33,6 +33,9 @@ def db_meta_game_system_by_guid(self, guid):
 
 
 def db_meta_game_system_list_count(self):
+    """
+    Return game system count
+    """
     self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'\
         ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
     return self.db_cursor.fetchone()[0]
@@ -57,14 +60,18 @@ def db_meta_game_system_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-# return list of games count
 def db_meta_game_list_count(self):
+    """
+    # return list of games count
+    """
     pass
 
 
 # TODO select subselect for speed
-# return list of games
 def db_meta_game_list(self, offset=None, records=None):
+    """
+    # return list of games
+    """
     if offset is None:
         self.db_cursor.execute('select gi_id,gi_game_info_json->\'description\','\
             'gi_game_info_json->\'year\',gs_game_system_json->\'description\''\
