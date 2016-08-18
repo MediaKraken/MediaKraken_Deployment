@@ -70,7 +70,7 @@ def srv_db_meta_genre_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def srv_db_meta_movie_count_by_genre(self):
+def srv_db_meta_movie_count_genre(self):
     """
     # movie count by genre
     """
@@ -81,7 +81,7 @@ def srv_db_meta_movie_count_by_genre(self):
         '->\'Meta\'->\'genres\')::jsonb ')
     return self.db_cursor.fetchall()
 
-    
+
 def srv_db_meta_guid_by_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id

@@ -106,7 +106,7 @@ class MKServerDatabase(object):
     from db_base_metadata import srv_db_read_media_metadata,\
         srv_db_meta_genre_list_count,\
         srv_db_meta_genre_list,\
-        srv_db_meta_movie_count_by_genre,\
+        srv_db_meta_movie_count_genre,\
         srv_db_meta_guid_by_imdb,\
         srv_db_meta_guid_by_tvdb,\
         srv_db_meta_guid_by_tmdb,\

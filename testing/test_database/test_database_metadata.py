@@ -72,12 +72,12 @@ class TestDatabaseMetadata(object):
         self.db_connection.srv_db_meta_genre_list(offset, records)
 
 
-    def test_srv_db_meta_movie_count_by_genre(self):
+    def test_srv_db_meta_movie_count_genre(self):
         """
         # movie count by genre
         """
         self.db_connection.srv_db_rollback()
-        self.db_connection.srv_db_meta_movie_count_by_genre()
+        self.db_connection.srv_db_meta_movie_count_genre()
 
 
     @pytest.mark.parametrize(("uuid"), [
