@@ -12,10 +12,9 @@ blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../s
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
-# pull in the ini file config
 import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("../MediaKraken.ini")
+config_handle = ConfigParser.ConfigParser()
+config_handle.read("../MediaKraken.ini")
 
 import pygal
 import logging # pylint: disable=W0611
@@ -38,6 +37,9 @@ from common import common_string
 
 
 def flash_errors(form):
+    """
+    Display each error on top of form
+    """
     for field, errors in form.errors.items():
         for error in errors:
             flash("Error in the %s field - %s" % (
@@ -49,6 +51,9 @@ def flash_errors(form):
 @blueprint.route('/upload_image', methods=['GET', 'POST'])
 @login_required
 def upload_image():
+    """
+    Allow user to upload image
+    """
     if request.method == 'POST' and 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         rec = Photo(filename=filename, user=g.user.id)
@@ -67,14 +72,14 @@ def members():
     resume_list = []
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_read_media_New_Count(7),
-                                record_name='new and hot',
-                                format_total=True,
-                                format_number=True,
-                                )
-    return render_template("users/members.html", data_resume_media = resume_list,
-                           data_new_media = g.db.db_read_media_New(7, offset, per_page),
+                                                  per_page=per_page,
+                                                  total=g.db.db_read_media_New_Count(7),
+                                                  record_name='new and hot',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
+    return render_template("users/members.html", data_resume_media=resume_list,
+                           data_new_media=g.db.db_read_media_New(7, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -142,6 +147,9 @@ def user_internet_twitch():
 @blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>/')
 @login_required
 def user_internet_twitch_stream_detail(stream_name):
+    """
+    Show twitch stream detail page
+    """
     #twitch_api = common_network_Twitch.com_Twitch_API()
     #media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
     #logging.debug("str detail: %s", media)
@@ -153,6 +161,9 @@ def user_internet_twitch_stream_detail(stream_name):
 @blueprint.route('/internet/internet_flickr/')
 @login_required
 def user_internet_flickr():
+    """
+    Display main page for flickr
+    """
     return render_template("users/user_internet_flickr.html")
 
 
@@ -161,6 +172,9 @@ def user_internet_flickr():
 @blueprint.route('/home_media/')
 @login_required
 def user_home_media_list():
+    """
+    Display mage page for home media
+    """
     return render_template("users/user_home_media_list.html")
 
 
@@ -169,6 +183,9 @@ def user_home_media_list():
 @blueprint.route('/iradio/')
 @login_required
 def user_iradio_list():
+    """
+    Display main page for internet radio
+    """
     return render_template("users/user_iradio_list.html")
 
 
@@ -203,12 +220,12 @@ def user_music_video_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_music_video'),
-                                record_name='music video',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_music_video'),
+                                                  record_name='music video',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_music_video_list.html',
                            media_person=g.db.db_Music_Video_List(offset, per_page),
                            page=page,
@@ -230,12 +247,12 @@ def user_sports_page():
     for row_data in g.db.db_meta_sports_list(offset, per_page):
         media.append((row_data['mm_metadata_sports_guid'], row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_meta_sports_list_count(),
-                                record_name='sporting events',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_meta_sports_list_count(),
+                                                  record_name='sporting events',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_sports_page.html', media=media,
                            page=page,
                            per_page=per_page,
@@ -247,7 +264,10 @@ def user_sports_page():
 @blueprint.route("/sports_detail/<guid>", methods=['GET', 'POST'])
 @login_required
 def user_sports_detail_page(guid):
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    """
+    Display sports detail page
+    """
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_metadata['LocalImages']['Poster'] is not None:
@@ -259,15 +279,16 @@ def user_sports_detail_page(guid):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
                            data=g.db.db_metathesportsdb_Select_by_Guid(guid),
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image
                           )
 
 
@@ -283,21 +304,24 @@ def user_tv_page():
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     for row_data in g.db.db_web_tvmedia_list('TV Show', None, per_page, False, offset):
-        # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*), 3 - mm_metadata_tvshow_localimage_json
+        # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*),
+        # 3 - mm_metadata_tvshow_localimage_json
         try:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
-                row_data['mm_metadata_tvshow_localimage_json'].replace(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(), ''), locale.format('%d', row_data['mm_count'], True)))
+                row_data['mm_metadata_tvshow_localimage_json'].replace(\
+                config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip(), ''),\
+                locale.format('%d', row_data['mm_count'], True)))
         except:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
                 None, locale.format('%d', row_data['mm_count'], True)))
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_web_tvmedia_list_Count('TV Show',\
-                                    None, None),
-                                record_name='media',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_web_tvmedia_list_Count('TV Show',\
+                                                      None, None),
+                                                  record_name='media',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_tv_page.html', media=media,
                            page=page,
                            per_page=per_page,
@@ -314,7 +338,8 @@ def user_tv_show_detail_page(guid):
     Display tv show detail page
     """
     if request.method == 'POST':
-        # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
+        # do NOT need to check for play video here,
+        # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
             g.db.db_media_watched_status_update(guid, current_user.get_id(), False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
@@ -339,7 +364,8 @@ def user_tv_show_detail_page(guid):
             else:
                 data_first_aired = None
             if 'summary' in json_metadata['Meta']['tvmaze']:
-                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>',\
+                    '').replace('</p>', '')
             else:
                 data_overview = None
             # build gen list
@@ -379,7 +405,7 @@ def user_tv_show_detail_page(guid):
         production_list = ''
         #for ndx in range(0,len(json_metadata['production_companies'])):
         #    production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
-        image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+        image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
         # poster image
         try:
             data_poster_image = data_metadata[3].replace(image_location, '')
@@ -388,7 +414,8 @@ def user_tv_show_detail_page(guid):
         # background image
         try:
             if json_metadata['LocalImages']['Backdrop'] is not None:
-                data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+                data_background_image\
+                    = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
             else:
                 data_background_image = None
         except:
@@ -411,17 +438,17 @@ def user_tv_show_detail_page(guid):
                                data_production=production_list[:-2],
                                data_image_local=image_location,
                                data_guid=guid,
-                               data_overview = data_overview,
-                               data_rating = data_rating,
-                               data_first_aired = data_first_aired,
-#                                data_review=review,
-                               data_poster_image = data_poster_image,
-                               data_background_image = data_background_image,
-                               data_vote_count = data_vote_count,
-                               data_watched_status = watched_status,
-                               data_season_data = data_season_data,
-                               data_season_count = data_season_count,
-                               data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
+                               data_overview=data_overview,
+                               data_rating=data_rating,
+                               data_first_aired=data_first_aired,
+                               # data_review=review,
+                               data_poster_image=data_poster_image,
+                               data_background_image=data_background_image,
+                               data_vote_count=data_vote_count,
+                               data_watched_status=watched_status,
+                               data_season_data=data_season_data,
+                               data_season_count=data_season_count,
+                               data_runtime="%02dH:%02dM:%02dS" % (h, m, s)
                               )
 
 
@@ -430,6 +457,9 @@ def user_tv_show_detail_page(guid):
 @blueprint.route("/tv_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_season_detail_page(guid, season):
+    """
+    Display tv season detail page
+    """
     data_metadata = g.db.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
@@ -446,7 +476,8 @@ def user_tv_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+            data_overview\
+                = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -480,7 +511,7 @@ def user_tv_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
 
     data_episode_count = g.db.db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -489,7 +520,8 @@ def user_tv_season_detail_page(guid, season):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -497,12 +529,12 @@ def user_tv_season_detail_page(guid, season):
     return render_template("users/user_tv_season_detail.html", data=data_metadata[0],
                            data_guid=guid,
                            data_season=season,
-                           data_overview = data_overview,
-                           data_rating = data_rating,
-                           data_first_aired = data_first_aired,
+                           data_overview=data_overview,
+                           data_rating=data_rating,
+                           data_first_aired=data_first_aired,
                            data_image_local=image_location,
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image,
                            data_episode_count=data_episode_count
                           )
 
@@ -512,8 +544,11 @@ def user_tv_season_detail_page(guid, season):
 @blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_episode_detail_page(guid, season, episode):
+    """
+    Display tv episode detail page
+    """
     data_episode_detail = g.db.db_read_tvmetadata_episode(guid, season, episode)
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -522,15 +557,16 @@ def user_tv_episode_detail_page(guid, season, episode):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
                            data_image_local=image_location,
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image
                           )
 
 
@@ -631,6 +667,9 @@ def user_livetv_page(schedule_date, schedule_time):
 @blueprint.route("/livetv_detail/<guid>")
 @login_required
 def user_livetv_detail_page(guid):
+    """
+    Display live tv detail page
+    """
     return render_template("users/user_livetv_page.html")
 
 
@@ -638,15 +677,20 @@ def user_livetv_detail_page(guid):
 @blueprint.route('/playvideo/<guid>')
 @login_required
 def user_video_player(guid):
+    """
+    Obsolete?
+    """
     # grab the guid from the comboindex
     media_guid_index = request.form["Video_Track"]
     # call ffpmeg with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
     subtitle_track_index = request.form["Video_Play_Subtitles"]
     # launch ffmpeg to ffserver procecss
-    proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db.db_media_path_by_uuid(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
+    proc_ffserver = subprocess.Popen(['ffmpeg', '-i',\
+        g.db.db_media_path_by_uuid(media_guid_index)[0],\
+        'http://localhost:8900/stream.ffm'], shell=False)
     logging.info("FFServer PID: %s", proc_ffserver.pid)
-    return render_template("users/user_playback.html", data_desc = ('Movie title'))
+    return render_template("users/user_playback.html", data_desc=('Movie title'))
 
 
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/')
@@ -680,7 +724,8 @@ def user_video_player_videojs(mtype, guid):
             + ["yadif=0:0:0", vid_name], shell=False)
         logging.info("FFMPEG Pid: %s", p.pid)
 
-#ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
+#ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
+# -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
 
         pass_guid = 'http://10.0.0.179' + '/user/static/cache/' + vid_name
         #pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
@@ -696,8 +741,12 @@ def user_video_player_videojs(mtype, guid):
 @blueprint.route('/playalbum/<guid>')
 @login_required
 def user_album_player(guid):
-    return render_template("users/user_album_playback.html", data_desc = g.db.db_meta_album_by_guid(guid),
-                           data_song_list = g.db.db_meta_songs_by_album_guid(guid))
+    """
+    Obsolete?
+    """
+    return render_template("users/user_album_playback.html",
+                           data_desc=g.db.db_meta_album_by_guid(guid),
+                           data_song_list=g.db.db_meta_songs_by_album_guid(guid))
 
 
 @blueprint.route('/imagegallery')
@@ -734,9 +783,13 @@ def user_games_detail(guid):
 @blueprint.route("/movie_genre/")
 @login_required
 def user_movie_genre_page():
+    """
+    Display movies split up by genre
+    """
     media = []
     for row_data in g.db.db_media_movie_count_by_genre(g.db.db_media_uuid_by_class('Movie')):
-        media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True), row_data[0]['name'] + ".png"))
+        media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True),\
+            row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
 
@@ -744,11 +797,17 @@ def user_movie_genre_page():
 @blueprint.route("/movie/<genre>/")
 @login_required
 def user_movie_page(genre):
+    """
+    Display movie page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
-    for row_data in g.db.db_web_media_list(g.db.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False, offset=offset, include_remote=True):
-        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json, 4 - mm_metadata_localimage_json
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    for row_data in g.db.db_web_media_list(g.db.db_media_uuid_by_class('Movie'),\
+            list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,\
+            offset=offset, include_remote=True):
+        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
+        # 4 - mm_metadata_localimage_json
         logging.debug("row2: %s", row_data['mm_media_json'])
         json_image = row_data[mm_metadata_localimage_json]
         # set watched
@@ -785,12 +844,12 @@ def user_movie_page(genre):
                 sync_status, poo_status, favorite_status, match_status))
     total = g.db.db_web_media_list_count(g.db.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre, group_collection=False, include_remote=True)
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=total,
-                                record_name='media',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=total,
+                                                  record_name='media',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_movie_page.html', media=media,
                            page=page,
                            per_page=per_page,
@@ -802,6 +861,9 @@ def user_movie_page(genre):
 @blueprint.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @login_required
 def movie_detail(guid):
+    """
+    Display move detail page
+    """
     if request.method == 'POST':
         # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
@@ -865,11 +927,11 @@ def movie_detail(guid):
             # calculate a better runtime
             m, s = divmod(float(json_ffmpeg['format']['duration']), 60)
             #m, s = divmod(json_metadata['runtime'], 60)
-            h, m = divmod(m, 60)            
+            h, m = divmod(m, 60)
             data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' + str(json_ffmpeg['streams'][0]['height'])
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
-        image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+        image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
         # check to see if there are other version of this video file (dvd, hddvd, etc)
         vid_versions = g.db.db_media_by_metadata_guid(data[1])  # metadata guid
         # audio and sub sreams
@@ -889,7 +951,8 @@ def movie_detail(guid):
                 except:
                     pass
                 try:
-                    stream_codec = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                    stream_codec\
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
@@ -900,7 +963,8 @@ def movie_detail(guid):
         # poster image
         try:
             if json_imagedata['Images']['TMDB']['Poster'] is not None:
-                data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
+                data_poster_image\
+                    = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
             else:
                 data_poster_image = None
         except:
@@ -957,15 +1021,15 @@ def movie_detail(guid):
                                data_sub_track=subtitle_streams,
                                data_aspect=aspect_ratio,
                                data_review=review,
-                               data_vid_versions = vid_versions,
-                               data_poster_image = data_poster_image,
-                               data_background_image = data_background_image,
-                               data_vote_count = data_vote_count,
-                               data_json_media_chapters = data_json_media_chapters,
-                               data_watched_status = watched_status,
-                               data_sync_status = sync_status,
-                               data_cast = True,
-                               data_runtime = "%02dH:%02dM:%02dS" % (h, m, s)
+                               data_vid_versions=vid_versions,
+                               data_poster_image=data_poster_image,
+                               data_background_image=data_background_image,
+                               data_vote_count=data_vote_count,
+                               data_json_media_chapters=data_json_media_chapters,
+                               data_watched_status=watched_status,
+                               data_sync_status=sync_status,
+                               data_cast=True,
+                               data_runtime="%02dH:%02dM:%02dS" % (h, m, s)
                               )
 
 
@@ -1000,6 +1064,9 @@ def movie_detail(guid):
 @blueprint.route("/audio/")
 @login_required
 def user_audio_page():
+    """
+    Obsolete?
+    """
     return render_template("users/user_audio_page.html")
 
 
@@ -1007,23 +1074,26 @@ def user_audio_page():
 @blueprint.route("/album_list/")
 @login_required
 def user_album_list_page():
+    """
+    Display album page
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.db_media_album_list(offset, per_page):
         try:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],\
-                row_data['mm_metadata_album_json'].replace(Config.get('MediaKrakenServer',\
+                row_data['mm_metadata_album_json'].replace(config_handle.get('MediaKrakenServer',\
                 'MetadataImageLocal').strip(), '')))
         except:
             media.append((row_data['mm_metadata_album_guid'],\
                 row_data['mm_metadata_album_name'], None))
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_media_album_count(),
-                                record_name='music albums',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_media_album_count(),
+                                                  record_name='music albums',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template("users/user_music_album_page.html", media=media,
                            page=page,
                            per_page=per_page,
@@ -1035,6 +1105,9 @@ def user_album_list_page():
 @blueprint.route('/media/')
 @login_required
 def user_media_list():
+    """
+    Display main media page
+    """
     return render_template("users/user_media_list.html")
 
 
@@ -1042,6 +1115,9 @@ def user_media_list():
 @blueprint.route('/server/')
 @login_required
 def server():
+    """
+    Display server page
+    """
     return render_template("users/user_server.html")
 
 
@@ -1049,6 +1125,9 @@ def server():
 @blueprint.route('/search/<name>')
 @login_required
 def search(name):
+    """
+    Search media
+    """
     sql = 'select count(*) from users where name like ?'
     args = ('%{}%'.format(name), )
     g.cur.execute(sql, args)
@@ -1061,10 +1140,10 @@ def search(name):
     g.cur.execute(sql.format(offset, per_page), args)
     users = g.cur.fetchall()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=total,
-                                record_name='Users',
-                                )
+                                                  per_page=per_page,
+                                                  total=total,
+                                                  record_name='Users',
+                                                 )
     return render_template('users/user_report_all_known_media_video.html', users=users,
                            page=page,
                            per_page=per_page,
@@ -1081,7 +1160,7 @@ def upload():
         file = request.files['file']
         if file and allowed_file(file.filename):
             now = datetime.now()
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], "%s.%s"\
+            filename = os.path.join(app.config_handle['UPLOAD_FOLDER'], "%s.%s"\
                 % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
             file.save(filename)
             return jsonify({"success":True})
@@ -1097,12 +1176,12 @@ def sync_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Sync_List_Count(),
-                                record_name='Sync Jobs',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Sync_List_Count(),
+                                                  record_name='Sync Jobs',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_sync.html',
                            media_sync=g.db.db_Sync_List(offset, per_page),
                            page=page,
@@ -1115,6 +1194,9 @@ def sync_display_all():
 @blueprint.route('/sync_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 def sync_edit(guid):
+    """
+    Allow user to edit sync page
+    """
     if request.method == 'POST':
         sync_json = {"Type": request.form['target_type'],\
             "Size": request.form['target_file_size'], 'Media GUID': guid,\
@@ -1154,12 +1236,12 @@ def class_display_all():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_media_class_list_count(),
-                                record_name='Media Class',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_media_class_list_count(),
+                                                  record_name='Media Class',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/user_media_class_list.html',
                            media_class=g.db.db_media_class_list(offset, per_page),
                            page=page,
@@ -1177,12 +1259,12 @@ def report_display_all_duplicates():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_media_duplicate_count(),
-                                record_name='All Duplicate Media',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_media_duplicate_count(),
+                                                  record_name='All Duplicate Media',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/reports/report_all_duplicate_media.html',
                            media=g.db.db_media_duplicate(offset, per_page),
                            page=page,
@@ -1195,6 +1277,9 @@ def report_display_all_duplicates():
 @blueprint.route('/report_duplicate_detail/<guid>')
 @login_required
 def report_display_all_duplicates_detail(guid):
+    """
+    Display detail of duplicate list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for media_data in g.db.db_media_duplicate_Detail(guid, offset, per_page):
@@ -1206,12 +1291,12 @@ def report_display_all_duplicates_detail(guid):
                     media_data['mm_media_ffprobe_json']['format']['duration']))
                 break
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_media_duplicate_Detail_Count(guid)[0],
-                                record_name='copies',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_media_duplicate_Detail_Count(guid)[0],
+                                                  record_name='copies',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/reports/report_all_duplicate_media_detail.html', media=media,
                            page=page,
                            per_page=per_page,
@@ -1223,18 +1308,21 @@ def report_display_all_duplicates_detail(guid):
 @blueprint.route('/report_all/')
 @login_required
 def report_display_all_media():
+    """
+    Display all media list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media_data = []
     for row_data in g.db.db_known_media(offset, per_page):
         media_data.append((row_data['mm_media_path'],\
             common_string.bytes2human(os.path.getsize(row_data['mm_media_path']))))
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_known_media_count(),
-                                record_name='All Media',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_known_media_count(),
+                                                  record_name='All Media',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/reports/report_all_media.html', media=media_data,
                            page=page,
                            per_page=per_page,
@@ -1246,16 +1334,20 @@ def report_display_all_media():
 @blueprint.route('/report_known_video/')
 @login_required
 def report_display_all_media_known_video():
+    """
+    Display list of all matched video
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_web_media_list_count(g.db.db_media_uuid_by_class('Movie')),
-                                record_name='Known Videos',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_web_media_list_count(g.db.db_media_uuid_by_class('Movie')),
+                                                  record_name='Known Videos',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/reports/report_all_known_media_video.html',
-                           media=g.db.db_web_media_list(g.db.db_media_uuid_by_class('Movie'), offset=offset, list_limit=per_page),
+                           media=g.db.db_web_media_list(g.db.db_media_uuid_by_class('Movie'),\
+                               offset=offset, list_limit=per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1291,7 +1383,7 @@ def metadata_person_detail(guid):
     meta_data = g.db.db_meta_person_by_guid(guid)
     json_metadata = meta_data['mmp_person_meta_json']
     json_imagedata = meta_data['mmp_person_image']
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
@@ -1305,8 +1397,8 @@ def metadata_person_detail(guid):
     meta_also_media = g.db.db_meta_person_as_seen_in(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=json_metadata,
-                           data_person_image = data_person_image,
-                           data_also_media = meta_also_media,
+                           data_person_image=data_person_image,
+                           data_also_media=meta_also_media,
                            data_image_local=image_location
                           )
 
@@ -1320,12 +1412,12 @@ def metadata_person_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_person'),
-                                record_name='People',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_person'),
+                                                  record_name='People',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_people_list.html',
                            media_person=g.db.db_meta_person_list(offset, per_page),
                            page=page,
@@ -1338,14 +1430,17 @@ def metadata_person_list():
 @blueprint.route('/metadata_music_list/')
 @login_required
 def metadata_music_list():
+    """
+    Display metdata music list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_music'),
-                                record_name='music',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_music'),
+                                                  record_name='music',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_music_list.html',
                            media_person=g.db.db_meta_Music_List(offset, per_page),
                            page=page,
@@ -1358,14 +1453,17 @@ def metadata_music_list():
 @blueprint.route('/metadata_music_video_list/')
 @login_required
 def metadata_music_video_list():
+    """
+    Display metadata music video
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_music_video'),
-                                record_name='music video',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_music_video'),
+                                                  record_name='music video',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_music_video_list.html',
                            media_person=g.db.db_meta_music_video_list(offset, per_page),
                            page=page,
@@ -1378,14 +1476,17 @@ def metadata_music_video_list():
 @blueprint.route('/metadata_music_album_list/')
 @login_required
 def metadata_music_album_list():
+    """
+    Display metadata of album list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                            per_page=per_page,
-                            total=g.db.db_Table_Count('mm_metadata_music_album'),
-                            record_name='music album',
-                            format_total=True,
-                            format_number=True,
-                            )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_music_album'),
+                                                  record_name='music album',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_music_album_list.html',
                            media_person=g.db.db_meta_Music_Album_List(offset, per_page),
                            page=page,
@@ -1398,6 +1499,9 @@ def metadata_music_album_list():
 @blueprint.route('/meta_movie_detail/<guid>')
 @login_required
 def metadata_movie_detail(guid):
+    """
+    Display metadata movie detail
+    """
     data = g.db.db_read_media_Metadata(guid)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
@@ -1411,7 +1515,7 @@ def metadata_movie_detail(guid):
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
         production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_imagedata['Images']['TMDB']['Poster'] is not None:
@@ -1431,16 +1535,16 @@ def metadata_movie_detail(guid):
     # grab reviews
 #    review = g.db.db_Review_List(data[1])
     return render_template('users/metadata/meta_movie_detail.html',
-#                                data_media_ids=data[1],
+                           # data_media_ids=data[1],
                            data_image_local=image_location,
                            data_name=data[2],
                            json_metadata=json_metadata,
                            data_genres=genres_list[:-2],
                            data_production=production_list[:-2],
-#                                data_review=review,
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image,
-                           data_vote_count = data_vote_count,
+                           # data_review=review,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image,
+                           data_vote_count=data_vote_count,
                            data_budget=locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
                           )
 
@@ -1449,20 +1553,23 @@ def metadata_movie_detail(guid):
 @blueprint.route('/meta_movie_list/')
 @login_required
 def metadata_movie_list():
+    """
+    Display list of movie metadata
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_movie'),
-                                record_name='Movies',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_movie'),
+                                                  record_name='Movies',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_movie_list.html',
                            media_movie=g.db.db_meta_movie_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           image_location=Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(),
+                           image_location=config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip(),
                           )
 
 
@@ -1470,20 +1577,23 @@ def metadata_movie_list():
 @blueprint.route('/metadata_movie_collection_list/')
 @login_required
 def metadata_movie_collection_list():
+    """
+    Display movie collection metadata
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db.db_collection_list(offset, per_page):
         try:
-            media.append((row_data['mm_metadata_collection_guid'], row_data['mm_metadata_collection_name'], row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip(), '')))
+            media.append((row_data['mm_metadata_collection_guid'], row_data['mm_metadata_collection_name'], row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip(), '')))
         except:
             media.append((row_data['mm_metadata_collection_guid'], row_data['mm_metadata_collection_name'], None))
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_collection'),
-                                record_name='movie collection(s)',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_collection'),
+                                                  record_name='movie collection(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_movie_collection_list.html', media=media,
                            page=page,
                            per_page=per_page,
@@ -1495,10 +1605,13 @@ def metadata_movie_collection_list():
 @blueprint.route('/meta_movie_collection_detail/<guid>')
 @login_required
 def metadata_movie_collection_detail(guid):
+    """
+    Display movie collection metadata detail
+    """
     data_metadata = g.db.db_collection_read_by_guid(guid)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_imagedata['Poster'] is not None:
@@ -1517,8 +1630,8 @@ def metadata_movie_collection_detail(guid):
         data_background_image = None
     return render_template('users/metadata/meta_movie_collection_detail.html',
                            data_name=json_metadata['name'],
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image,
                            json_metadata=json_metadata
                           )
 
@@ -1527,6 +1640,9 @@ def metadata_movie_collection_detail(guid):
 @blueprint.route('/meta_tvshow_detail/<guid>')
 @login_required
 def metadata_tvshow_detail(guid):
+    """
+    Display metadata of tvshow
+    """
     data_metadata = g.db.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
@@ -1543,7 +1659,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>', '')
+            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -1575,7 +1691,7 @@ def metadata_tvshow_detail(guid):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -1600,11 +1716,11 @@ def metadata_tvshow_detail(guid):
                            data_guid=guid,
                            data_rating=data_rating,
                            data_first_aired=data_first_aired,
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image,
                            data_overview=data_overview,
-                           data_season_data = data_season_data,
-                           data_season_count = sorted(data_season_data.iterkeys()),
+                           data_season_data=data_season_data,
+                           data_season_count=sorted(data_season_data.iterkeys()),
                            data_genres_list=data_genres_list[:-2]
                           )
 
@@ -1614,6 +1730,9 @@ def metadata_tvshow_detail(guid):
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_season_detail_page(guid, season):
+    """
+    Display metadata of tvshow season detail
+    """
     data_metadata = g.db.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
@@ -1630,7 +1749,7 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>','').replace('</p>', '')
+            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -1663,7 +1782,7 @@ def metadata_tvshow_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db.db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')
@@ -1681,12 +1800,12 @@ def metadata_tvshow_season_detail_page(guid, season):
                            data=data_metadata['mm_metadata_tvshow_name'],
                            data_guid=guid,
                            data_season=season,
-                           data_overview = data_overview,
-                           data_rating = data_rating,
-                           data_first_aired = data_first_aired,
+                           data_overview=data_overview,
+                           data_rating=data_rating,
+                           data_first_aired=data_first_aired,
                            data_image_local=image_location,
-                           data_poster_image = data_poster_image,
-                           data_background_image = data_background_image,
+                           data_poster_image=data_poster_image,
+                           data_background_image=data_background_image,
                            data_episode_count=data_episode_count
                           )
 
@@ -1696,8 +1815,11 @@ def metadata_tvshow_season_detail_page(guid, season):
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_episode_detail_page(guid, season, episode):
+    """
+    Display tvshow episode metadata detail
+    """
     data_metadata = g.db.db_read_tvmetadata_episode(guid, season, episode)
-    image_location = Config.get('MediaKrakenServer','MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         data_poster_image = data_metadata[3].replace(image_location, '')  # TODO dictcursor
@@ -1729,9 +1851,12 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
 @blueprint.route('/meta_tvshow_list/')
 @login_required
 def metadata_tvshow_list():
+    """
+    Display tvshow metadata list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    image_location = Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+    image_location = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     for row_data in g.db.db_meta_tvshow_list(offset, per_page):
         image_data = row_data[3]  # TODO json dictcursor
         try:
@@ -1741,12 +1866,12 @@ def metadata_tvshow_list():
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],\
             row_data['mm_metadata_tvshow_name'], row_data[2], image_data))  # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_meta_tvshow_list_count(),
-                                record_name='TV Shows',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_meta_tvshow_list_count(),
+                                                  record_name='TV Shows',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_tvshow_list.html', media_tvshow=media_tvshow,
                            page=page,
                            per_page=per_page,
@@ -1758,14 +1883,17 @@ def metadata_tvshow_list():
 @blueprint.route('/meta_game_list/')
 @login_required
 def metadata_game_list():
+    """
+    Display game list metadata
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_Table_Count('mm_metadata_game_software_info'),
-                                record_name='Games',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_Table_Count('mm_metadata_game_software_info'),
+                                                  record_name='Games',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_game_list.html',
                            media_game=g.db.db_meta_game_list(offset, per_page),
                            page=page,
@@ -1778,23 +1906,29 @@ def metadata_game_list():
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
 def metadata_game_detail(guid):
+    """
+    Display game metadata detail
+    """
     return render_template('users/metadata/meta_game_detail.html', guid=guid,
-                               data=g.db.db_meta_game_by_guid(guid)['gi_game_info_json'],
-                               data_review=None)
+                           data=g.db.db_meta_game_by_guid(guid)['gi_game_info_json'],
+                           data_review=None)
 
 
 @blueprint.route('/meta_game_system_list')
 @blueprint.route('/meta_game_system_list/')
 @login_required
 def metadata_game_system_list():
+    """
+    Display game system metadata
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_meta_game_system_list_count(),
-                                record_name='Game Systems',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_meta_game_system_list_count(),
+                                                  record_name='Game Systems',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_game_system_list.html',
                            media_game_system=g.db.db_meta_game_system_list(offset, per_page),
                            page=page,
@@ -1807,6 +1941,9 @@ def metadata_game_system_list():
 @blueprint.route('/meta_game_system_detail/<guid>')
 @login_required
 def metadata_game_system_detail(guid):
+    """
+    Display game system detail metadata
+    """
     return render_template('users/metadata/meta_game_system_detail.html', guid=guid,
                            data=g.db.db_meta_game_system_by_guid(guid))
 
@@ -1815,14 +1952,17 @@ def metadata_game_system_detail(guid):
 @blueprint.route('/meta_sports_list/')
 @login_required
 def metadata_sports_list():
+    """
+    Display sports metadata list
+    """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db.db_meta_sports_list_count(),
-                                record_name='sporting events',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db.db_meta_sports_list_count(),
+                                                  record_name='sporting events',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('users/metadata/meta_sports_list.html',
                            media_sports_list=g.db.db_meta_sports_list(offset, per_page),
                            page=page,
@@ -1835,6 +1975,9 @@ def metadata_sports_list():
 @blueprint.route('/meta_sports_detail/<guid>')
 @login_required
 def metadata_sports_detail(guid):
+    """
+    Display sports detail metadata
+    """
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
                            data=g.db.db_meta_Sports_by_GUID(guid))
 
@@ -1843,6 +1986,9 @@ def metadata_sports_detail(guid):
 @blueprint.route('/media_status/<guid>/<media_type>/<event_type>', methods=['GET', 'POST'])
 @login_required
 def media_status(guid, media_type, event_type):
+    """
+    Set media status for specified media, user
+    """
     logging.debug('media status: %s %s %s', guid, media_type, event_type)
     if media_type == "movie":
         if event_type == "watched":
@@ -1882,11 +2028,11 @@ def allowed_file(filename):
 @blueprint.before_request
 def before_request():
     g.db = database_base.MKServerDatabase()
-    g.db.db_open(Config.get('DB Connections','PostDBHost').strip(),\
-        Config.get('DB Connections','PostDBPort').strip(),\
-        Config.get('DB Connections','PostDBName').strip(),\
-        Config.get('DB Connections','PostDBUser').strip(),\
-        Config.get('DB Connections','PostDBPass').strip())
+    g.db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 @blueprint.teardown_request

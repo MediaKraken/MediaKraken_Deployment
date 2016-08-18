@@ -17,7 +17,7 @@ from MediaKraken.admins.forms import UserEditForm
 from MediaKraken.admins.forms import AdminSettingsForm
 
 import ConfigParser
-Config = ConfigParser.ConfigParser()
+config_handle = ConfigParser.ConfigParser()
 config_handle.read("../MediaKraken.ini")
 
 import pygal
@@ -101,24 +101,24 @@ def admins():
     for dir_path in g.db.db_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count = locale.format('%d', g.db.db_User_List_Name_Count(), True),
-                           data_server_info_server_name = data_server_info_server_name,
-                           data_server_info_server_ip = nic_data,
-                           data_server_info_server_port = config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
-                           data_server_info_server_ip_external = outside_ip,
-                           data_server_info_server_version = '0.1.4',
-                           data_server_uptime = common_system.com_system_Uptime(),
-                           data_active_streams = locale.format('%d', 0, True),
-                           data_alerts_dismissable = data_alerts_dismissable,
-                           data_alerts = data_alerts,
-                           data_count_media_files = locale.format('%d', g.db.db_known_media_count(), True),
-                           data_count_matched_media = locale.format('%d', g.db.db_matched_media_count(), True),
-                           data_count_streamed_media = locale.format('%d', 0, True),
-                           data_zfs_active = common_zfs.com_zfs_Available(),
-                           data_library = locale.format('%d', g.db.db_audit_paths_Count(), True),
-                           data_transmission_active = data_transmission_active,
-                           data_scan_info = data_scan_info,
-                           data_messages = data_messages
+                           data_user_count=locale.format('%d', g.db.db_User_List_Name_Count(), True),
+                           data_server_info_server_name=data_server_info_server_name,
+                           data_server_info_server_ip=nic_data,
+                           data_server_info_server_port=config_handle.get('MediaKrakenServer', 'ListenPort').strip(),
+                           data_server_info_server_ip_external=outside_ip,
+                           data_server_info_server_version='0.1.4',
+                           data_server_uptime=common_system.com_system_Uptime(),
+                           data_active_streams=locale.format('%d', 0, True),
+                           data_alerts_dismissable=data_alerts_dismissable,
+                           data_alerts=data_alerts,
+                           data_count_media_files=locale.format('%d', g.db.db_known_media_count(), True),
+                           data_count_matched_media=locale.format('%d', g.db.db_matched_media_count(), True),
+                           data_count_streamed_media=locale.format('%d', 0, True),
+                           data_zfs_active=common_zfs.com_zfs_Available(),
+                           data_library=locale.format('%d', g.db.db_audit_paths_Count(), True),
+                           data_transmission_active=data_transmission_active,
+                           data_scan_info=data_scan_info,
+                           data_messages=data_messages
                           )
 
 
