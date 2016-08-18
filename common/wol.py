@@ -38,6 +38,7 @@ def create_magic_packet(macaddress):
         send_data += struct.pack(b'B', int(data[i: i + 2], 16))
     return send_data
 
+
 def send_magic_packet(*macs, **kwargs):
     """
     Wakes the computer with the given mac address if wake on lan is
@@ -51,7 +52,7 @@ def send_magic_packet(*macs, **kwargs):
                (default 9)
     """
     packets = []
-    ip = kwargs.pop('ip_address', BROADCAST_IP)
+    ip_addr = kwargs.pop('ip_address', BROADCAST_IP)
     port = kwargs.pop('port', DEFAULT_PORT)
     for k in kwargs:
         raise TypeError('send_magic_packet() got an unexpected keyword '
@@ -61,7 +62,7 @@ def send_magic_packet(*macs, **kwargs):
         packets.append(packet)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    sock.connect((ip, port))
+    sock.connect((ip_addr, port))
     for packet in packets:
         sock.send(packet)
     sock.close()
