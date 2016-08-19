@@ -83,9 +83,9 @@ class TestDatabasePostgresql(object):
     @pytest.mark.parametrize(("isolation_level"), [
         (ISOLATION_LEVEL_AUTOCOMMIT),
         (ISOLATION_LEVEL_READ_COMMITTED)])
-    def test_db_pgsql_set_isolation_level(self, isolation_level):
+    def test_db_pgsql_set_iso_level(self, isolation_level):
         """
         # set isolation level
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_pgsql_set_isolation_level(isolation_level)
+        self.db_connection.db_pgsql_set_iso_level(isolation_level)
