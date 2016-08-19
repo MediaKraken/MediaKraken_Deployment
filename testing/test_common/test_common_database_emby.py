@@ -159,7 +159,7 @@ class TestCommonDatabaseEmby(object):
         """
         # grab all sync
         """
-        self.db_connection.com_db_emby_sync_list(offset, records):
+        self.db_connection.com_db_emby_sync_list(offset, records)
 
 
     def test_com_db_emby_sync_list_count(self):

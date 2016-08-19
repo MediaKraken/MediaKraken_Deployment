@@ -29,7 +29,7 @@ def test_com_zfs_available():
     """
     Test function
     """
-    common_zfs.com_zfs_Available()
+    common_zfs.com_zfs_available()
 
 
 # get zpool list
@@ -37,7 +37,7 @@ def test_com_zfs_zpool_list():
     """
     Test function
     """
-    common_zfs.com_zfs_Zpool_List()
+    common_zfs.com_zfs_zpool_list()
 
 
 # get zpool status

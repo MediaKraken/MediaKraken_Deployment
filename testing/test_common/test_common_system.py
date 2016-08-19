@@ -35,28 +35,28 @@ from common import common_system
 # def common_system_SWAP_Memory(attribute_list=None):
 
 
-def test_common_system_cpu_count():
+def test_com_system_cpu_count():
     """
     # return cpu count
     """
     assert common_system.com_system_cpu_count() == 8
 
 
-def test_common_system_partitions():
+def test_com_system_partitions():
     """
     # return partitions
     """
     common_system.com_system_partitions()
 
 
-def test_common_system_boot_time():
+def test_com_system_boot_time():
     """
     # get boot time
     """
-    common_system..com_system_boot_time()
+    common_system.com_system_boot_time()
 
 
-def test_common_system_users():
+def test_com_system_users():
     """
     # get users 
     """
@@ -66,14 +66,14 @@ def test_common_system_users():
 @pytest.mark.parametrize(("per_cpu"), [
     (True),
     (False)])
-def test_common_system_cpu_usage(per_cpu):
+def test_com_system_cpu_usage(per_cpu):
     """
     # get cpu percentage
     """
-    common_system..com_system_cpu_usage(per_cpu)
+    common_system.com_system_cpu_usage(per_cpu)
 
 
-def test_common_system_cpu_times():
+def test_com_system_cpu_times():
     """
     # get cpu times
     """
@@ -84,7 +84,7 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     path = 'C:'
 else:
     path = '/'
-def test_common_system_disk_usage():
+def test_com_system_disk_usage():
     """
     # get disk usage
     """
@@ -94,7 +94,7 @@ def test_common_system_disk_usage():
 @pytest.mark.parametrize(("human_readable"), [
     (True),
     (False)])
-def test_common_system_disk_usage_all(human_readable):
+def test_com_system_disk_usage_all(human_readable):
     """
     # get disk usage of all partitions
     """
@@ -104,14 +104,14 @@ def test_common_system_disk_usage_all(human_readable):
 @pytest.mark.parametrize(("per_disk"), [
     (True),
     (False)])
-def test_common_system_disk_io(per_disk):
+def test_com_system_disk_io(per_disk):
     """
     # get disk IO
     """
     common_system.com_system_disk_io(per_disk)
 
 
-def test_common_system_uptime():
+def test_com_system_uptime():
     """
     # get system uptime
     """

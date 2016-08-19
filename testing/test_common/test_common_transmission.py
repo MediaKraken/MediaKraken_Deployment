@@ -37,26 +37,26 @@ class TestCommonTransmission(object):
         pass
 
 
-    def test_common_transmission_get_torrent_list(self):
+    def test_com_trans_get_torrent_list(self):
         """
         Test function
         """
-        self.transmission_connection.com_transmission_get_torrent_list()
+        self.transmission_connection.com_trans_get_torrent_list()
 
 
-#    def common_transmission_Add_Torrent(self, torrent_path):
+#    def com_trans_add_torrent(self, torrent_path):
 
 
-#    def common_transmission_Remove_Torrent(self, torrent_hash):
+#    def com_trans_remove_torrent(self, torrent_hash):
 
 
-#    def com_Trnasmission_Name(self, torrent_no):
+#    def com_tran_name(self, torrent_no):
 
 
-#    def common_transmission_Torrent_Detail(self, torrent_no):
+#    def com_trans_torrent_detail(self, torrent_no):
 
 
-#    def common_transmission_Torrent_Start(self, torrent_no):
+#    def com_trans_torrent_start(self, torrent_no):
 
 
-#    def common_transmission_Torrent_Stop(self, torrent_no):
+#    def com_trans_torrent_stop(self, torrent_no):

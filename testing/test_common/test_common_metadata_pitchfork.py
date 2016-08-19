@@ -40,43 +40,43 @@ class TestCommonpitchfork(object):
     @pytest.mark.parametrize(("artist_name", "album_title"), [
         ("Megadeath", "Youthanasia"),
         ("FakeBand", "FakeAlbum")])
-    def test_com_pitchfork_search(self, artist_name, album_title):
+    def test_com_pfork_search(self, artist_name, album_title):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_search(artist_name, album_title)
+        self.pitchfork_connection.com_pfork_search(artist_name, album_title)
 
 
-    def test_com_pitchfork_album_title(self):
+    def test_com_pfork_album_title(self):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_album_title()
+        self.pitchfork_connection.com_pfork_album_title()
 
 
-    def test_com_pitchfork_album_label(self):
+    def test_com_pfork_album_label(self):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_album_label()
+        self.pitchfork_connection.com_pfork_album_label()
 
 
-    def test_com_pitchfork_album_review(self):
+    def test_com_pfork_album_review(self):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_album_review()
+        self.pitchfork_connection.com_pfork_album_review()
 
 
-    def test_com_pitchfork_album_cover_art_link(self):
+    def test_com_pfork_album_cover_art_link(self):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_album_cover_art_link()
+        self.pitchfork_connection.com_pfork_album_cover_art_link()
 
 
-    def test_com_pitchfork_album_review_score(self):
+    def test_com_pfork_album_review_score(self):
         """
         Test function
         """
-        self.pitchfork_connection.com_pitchfork_album_review_score()
+        self.pitchfork_connection.com_pfork_album_review_score()
