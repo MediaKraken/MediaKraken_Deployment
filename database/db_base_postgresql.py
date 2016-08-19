@@ -67,7 +67,7 @@ def db_pgsql_vacuum_table(self, table_name):
     """
     # vacuum table
     """
-    self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)        
+    self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)
     self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
     self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
 
@@ -76,4 +76,12 @@ def db_pgsql_set_iso_level(self, isolation_level):
     """
     # set isolation level
     """
-    self.sql3_conn.set_isolation_level(isolation_level)
+    self.db_cursor.set_isolation_level(isolation_level)
+
+
+def db_pgsql_table_exits(self, table_name):
+    """
+    Check to see if table exits. Will return NULL if not.
+    """
+    self.db_cursor.execute('SELECT to_regclass(%s)', (table_name,))
+    return self.db_cursor.fetchone()
