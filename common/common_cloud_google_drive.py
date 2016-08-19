@@ -19,16 +19,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import os
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
 import httplib2
 from apiclient import discovery
 import oauth2client
 from oauth2client import client
 from oauth2client import tools
+try:
+    import argparse
+    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+except ImportError:
+    flags = None
 
 
 class CommonCloudGoogleDrive(object):
