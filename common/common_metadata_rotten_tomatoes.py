@@ -25,10 +25,7 @@ class CommonMetadataRottenTomatoes(object):
     """
     Class for interfacing with rotten tomatoes
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+    def __init__(self, config_handler):
         rt.API_KEY = config_handle.get('API', 'RottenTomatoes').strip()
 
 

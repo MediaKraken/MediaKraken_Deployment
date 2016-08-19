@@ -37,12 +37,9 @@ class CommonCloudOneDrive(object):
     """
     Class for interfacing with onedrive
     """
-    def __init__(self):
+    def __init__(self, config_handler):
         # set active false so if following falls
         self.active = False
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
         # authenticate
 #        redirect_uri = "http://localhost:8080/"
 #        client_secret = "your_app_secret"

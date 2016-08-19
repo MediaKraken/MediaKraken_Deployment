@@ -29,10 +29,7 @@ class CommonMetadataTMDB(object):
     """
     Class for interfacing with TMDB
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+    def __init__(self, config_handler):
         tmdb.API_KEY = config_handle.get('API', 'themoviedb').strip()
 
 

@@ -35,13 +35,10 @@ class CommonCloudGoogleDrive(object):
     """
     Class for interfacing with google drive
     """
-    def __init__(self):
+    def __init__(self, config_handler):
         # set active false so if following falls
         self.active = False
         # pull in the ini file config
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
         if config_handle.get('GoogleDrive', 'SecretFile').strip() != 'None':
   #flow = dropbox.client.DropboxOAuth2FlowNoRedirect
         #(config_handle.get('GoogleDrive', 'SecretFile').strip())

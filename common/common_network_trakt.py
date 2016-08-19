@@ -18,9 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import trakt
 from trakt.calendar import PremiereCalendar
 from trakt import movies
@@ -36,7 +33,7 @@ class CommonNetworkTrakt(object):
     """
     Class for interfacing with Trakt
     """
-    def __init__(self, response):
+    def __init__(self, response, config_handler):
         # setup login/user info
         trakt.configuration.defaults.client(
             id=config_handle.get('Trakt', 'ClientID').strip(),

@@ -27,13 +27,7 @@ class CommonTransmission(object):
     """
     Class for interfacing with transmission bitorrent server
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        if os.path.isfile("MediaKraken.ini"):
-            config_handle.read("MediaKraken.ini")
-        else:
-            config_handle.read("../MediaKraken.ini")
+    def __init__(self, config_handle):
         self.trans_connection = transmissionrpc.Client(config_handle.get('Transmission',\
             'Host').strip(), int(config_handle.get('Transmission', 'Port').strip()))
 

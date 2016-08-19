@@ -39,7 +39,7 @@ class NetworkEvents(Int32StringReceiver):
     Process the network events for the server
     """
     # init is called on every connection
-    def __init__(self, users, db_connection, genre_list):
+    def __init__(self, users, db_connection, genre_list, config_handler):
         self.MAX_LENGTH = 32000000 # pylint: disable=C0103
         self.cpu_use_table = {}
         # server info
@@ -53,14 +53,9 @@ class NetworkEvents(Int32StringReceiver):
         self.user_country_code = None
         self.user_country_name = None
         self.server_ip = common_network.mk_network_get_default_ip()
-        # pull in the ini file config
-        import ConfigParser
-        self.config = ConfigParser.ConfigParser()
-        self.config.read("MediaKraken.ini")
-        # grab settings
-        self.server_port = self.config.get('MediaKrakenServer', 'ListenPort').strip()
-        self.server_port_image = self.config.get('MediaKrakenServer', 'ImageWeb').strip()
-        self.server_port_ffmpeg = self.config.get('MediaKrakenServer', 'FFMPEG').strip()
+        self.server_port = config_handler.get('MediaKrakenServer', 'ListenPort').strip()
+        self.server_port_image = config_handler.get('MediaKrakenServer', 'ImageWeb').strip()
+        self.server_port_ffmpeg = config_handler.get('MediaKrakenServer', 'FFMPEG').strip()
         self.proc_file_scan = None
         self.proc_media_match = None
         self.proc_chapter_create = None

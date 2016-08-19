@@ -27,12 +27,9 @@ class CommonCloudAWSS3(object):
     """
     Class for interfacing with aws s3
     """
-    def __init__(self):
+    def __init__(self, config_handler):
         # set active false so if following falls
         self.active = False
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
         if config_handle.get('AWSS3', 'AccessKey').strip() != 'None':
             # Amazon S3 settings.
             self.AWS_ACCESS_KEY_ID = config_handle.get('AWSS3', 'AccessKey').strip()

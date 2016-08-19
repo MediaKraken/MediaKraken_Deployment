@@ -26,10 +26,7 @@ class CommonMetadataTheLogoDB(object):
     """
     Class for interfacing with thelogodb
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+    def __init__(self, config_handler):
         self.logo_api_key = config_handle.get('API', 'thelogodb').strip()
 
 

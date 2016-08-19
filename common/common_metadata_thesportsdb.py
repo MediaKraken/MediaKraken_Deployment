@@ -26,10 +26,7 @@ class CommonMetadataTheSportsDB(object):
     """
     Class for interfacing with thesportsdb
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+    def __init__(self, config_handler):
         self.thesportsdb_api_key = config_handle.get('API', 'thesportsdb').strip()
 
     def com_meta_thesportsdb_search_team_by_name(self, team_name):

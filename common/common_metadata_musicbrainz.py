@@ -32,11 +32,8 @@ class CommonMetadataMusicbrainz(object):
     """
     Class for interfacing with musicbrainz
     """
-    def __init__(self):
+    def __init__(self, config_handler):
         global musicbrainzngs
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
         # If you plan to submit data, authenticate
         #musicbrainzngs.auth(config_handle.get('MediaBrainz','User').strip(), config_handle.get('MediaBrainz','Password').strip())
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )

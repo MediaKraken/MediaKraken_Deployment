@@ -25,10 +25,7 @@ class CommonNetworkVimeo(object):
     """
     Class for interfacing with Vimeo
     """
-    def __init__(self):
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
+    def __init__(self, config_handler):
         self.vimeo_instance = vimeo.VimeoClient(token=config_handle.get('Vimeo',\
             'AccessToken').strip(),\
             key=config_handle.get('Vimeo', 'ClientID').strip(),\

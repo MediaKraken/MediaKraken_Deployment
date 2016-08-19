@@ -25,12 +25,9 @@ class CommonCloudDropbox(object):
     """
     Class for interfacing with dropbox
     """
-    def __init__(self):
+    def __init__(self, config_handler):
         # set active false so if following falls
         self.active = False
-        import ConfigParser
-        config_handle = ConfigParser.ConfigParser()
-        config_handle.read("MediaKraken.ini")
         if config_handle.get('Dropbox', 'APIKey').strip() != 'None':
             self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
                 config_handle.get('Dropbox', 'APIKey').strip(),\
