@@ -25,8 +25,8 @@ class CommonMetadataRottenTomatoes(object):
     """
     Class for interfacing with rotten tomatoes
     """
-    def __init__(self, config_handler):
-        rt.API_KEY = config_handle.get('API', 'RottenTomatoes').strip()
+    def __init__(self, option_config_json):
+        rt.API_KEY = option_config_json['API']['RottenTomatoes']
 
 
     def com_rt_search(self, movie_title, movie_year=None):

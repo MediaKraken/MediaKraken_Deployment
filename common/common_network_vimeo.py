@@ -25,8 +25,7 @@ class CommonNetworkVimeo(object):
     """
     Class for interfacing with Vimeo
     """
-    def __init__(self, config_handler):
-        self.vimeo_instance = vimeo.VimeoClient(token=config_handle.get('Vimeo',\
-            'AccessToken').strip(),\
-            key=config_handle.get('Vimeo', 'ClientID').strip(),\
-            secret=config_handle.get('Vimeo', 'ClientSecret').strip())
+    def __init__(self, option_config_json):
+        self.vimeo_instance = vimeo.VimeoClient(token=option_config_json['Vimeo']['AccessToken']\
+            key=option_config_json['Vimeo']['ClientID'],\
+            secret=option_config_json['Vimeo']['ClientSecret'])

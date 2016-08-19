@@ -33,11 +33,10 @@ class CommonNetworkTrakt(object):
     """
     Class for interfacing with Trakt
     """
-    def __init__(self, response, config_handler):
+    def __init__(self, response, option_config_json):
         # setup login/user info
-        trakt.configuration.defaults.client(
-            id=config_handle.get('Trakt', 'ClientID').strip(),
-            secret=config_handle.get('Trakt', 'SecretKey').strip()
+        trakt.configuration.defaults.client(id=option_config_json['Trakt']['ClientID'],
+            secret=option_config_json['Trakt']['SecretKey']
         )
 
 

@@ -30,8 +30,8 @@ class CommonTheTVDB(object):
     """
     Class for interfacing with thetvdb
     """
-    def __init__(self, config_handler):
-        self.tvdb_connection = api.TVDB(config_handle.get('API', 'theTVdb').strip(), actors=True,\
+    def __init__(self, option_config_json):
+        self.tvdb_connection = api.TVDB(option_config_json['API']['theTVdb'], actors=True,\
             ignore_case=True)
 
 

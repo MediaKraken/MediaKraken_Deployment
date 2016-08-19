@@ -35,13 +35,13 @@ class CommonCloudGoogleDrive(object):
     """
     Class for interfacing with google drive
     """
-    def __init__(self, config_handler):
+    def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
         # pull in the ini file config
-        if config_handle.get('GoogleDrive', 'SecretFile').strip() != 'None':
+        if option_config_json['GoogleDrive']['SecretFile'] is not None:
   #flow = dropbox.client.DropboxOAuth2FlowNoRedirect
-        #(config_handle.get('GoogleDrive', 'SecretFile').strip())
+        #(option_config_json.get('GoogleDrive', 'SecretFile').strip())
             self.active = True
 
 

@@ -22,10 +22,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import sys
 from . import common_network
-import requests
-import json
 
 
 # import google api modules
@@ -38,15 +35,15 @@ class CommonGoogle(object):
     """
     Class for interfacing with google api
     """
-    def __init__(self, config_handler):
-        self.DEVELOPER_KEY = config_handle.get('API', 'Google').strip()
+    def __init__(self, option_config_json):
+        self.DEVELOPER_KEY = option_config_json['API']['Google']
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
         self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,\
             developerKey=DEVELOPER_KEY)
 
 
-    def com_google_youtube_search(search_term, max_results):
+    def com_google_youtube_search(self, search_term, max_results):
         """
         # query youtube via search
         """
@@ -68,7 +65,7 @@ class CommonGoogle(object):
         return (videos, channels, playlists)
 
 
-    def com_google_youtube_info(video_url):
+    def com_google_youtube_info(self, video_url):
         """
         # info of particular video
         """
@@ -77,23 +74,23 @@ class CommonGoogle(object):
             + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 
 
-    def com_google_youtube_add_subscription(channel_id):
+    def com_google_youtube_add_subscription(self, channel_id):
         """
         # add a subscription to the specified channel.
         """
         add_subscription_response = self.youtube.subscriptions().insert(
-        part='snippet',
-        body=dict(
-          snippet=dict(
-            resourceId=dict(
-              channelId=channel_id
-            )
-          )
-        )).execute()
+            part='snippet',
+            body=dict(
+              snippet=dict(
+                resourceId=dict(
+                  channelId=channel_id
+                )
+              )
+            )).execute()
         return add_subscription_response["snippet"]["title"]
 
 
-    def com_google_youtube_rate_video(video_id, like_dislike='like'): # or dislike
+    def com_google_youtube_rate_video(self, video_id, like_dislike='like'): # or dislike
         """
         # rate a yt video
         """
@@ -104,7 +101,7 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_google_youtube_get_comments(video_id, channel_id):
+    def com_google_youtube_get_comments(self, video_id, channel_id):
         """
         Get yt comments for specified video
         """
@@ -123,7 +120,7 @@ class CommonGoogle(object):
         return results["items"]
 
 
-    def com_google_youtube_insert_comment(channel_id, video_id, text):
+    def com_google_youtube_insert_comment(self, channel_id, video_id, text):
         """
         Add youtube comment on video
         """
@@ -143,7 +140,7 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_google_youtube_update_comment(comment):
+    def com_google_youtube_update_comment(self, comment):
         """
         Update comment on youtube video
         """
@@ -154,7 +151,7 @@ class CommonGoogle(object):
         ).execute()
 
 
-    def com_google_youtube_add_subscription(channel_id):
+    def com_google_youtube_add_subscription(self, channel_id):
         """
         Add subscription to channel
         """

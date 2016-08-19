@@ -25,13 +25,13 @@ class CommonCloudDropbox(object):
     """
     Class for interfacing with dropbox
     """
-    def __init__(self, config_handler):
+    def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
-        if config_handle.get('Dropbox', 'APIKey').strip() != 'None':
+        if option_config_json['Dropbox']['APIKey'] is not None:
             self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
-                config_handle.get('Dropbox', 'APIKey').strip(),\
-                config_handle.get('Dropbox', 'APISecret').strip())
+                option_config_json['Dropbox']['APIKey'],\
+                option_config_json['Dropbox']['APISecret'])
             self.active = True
         self.client = None
 

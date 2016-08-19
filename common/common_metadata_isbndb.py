@@ -25,8 +25,8 @@ class CommonMetadataISBNdb(object):
     """
     Class for interfacing with isbndb
     """
-    def __init__(self, config_handler):
-        self.api_key = config_handle.get('API', 'ISBNdb').strip()
+    def __init__(self, option_config_json):
+        self.api_key = option_config_json['API']['ISBNdb']
 
 
     # http://isbndb.com/api/v2/docs/authors

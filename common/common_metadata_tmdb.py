@@ -29,8 +29,8 @@ class CommonMetadataTMDB(object):
     """
     Class for interfacing with TMDB
     """
-    def __init__(self, config_handler):
-        tmdb.API_KEY = config_handle.get('API', 'themoviedb').strip()
+    def __init__(self, option_config_json):
+        tmdb.API_KEY = option_config_json['API']['themoviedb']
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):

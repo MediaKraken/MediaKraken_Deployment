@@ -27,19 +27,18 @@ class CommonCloudAWSS3(object):
     """
     Class for interfacing with aws s3
     """
-    def __init__(self, config_handler):
+    def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
-        if config_handle.get('AWSS3', 'AccessKey').strip() != 'None':
-            # Amazon S3 settings.
-            self.AWS_ACCESS_KEY_ID = config_handle.get('AWSS3', 'AccessKey').strip()
-            self.AWS_SECRET_ACCESS_KEY = config_handle.get('AWSS3', 'SecretAccessKey').strip()
-            self.AWS_BUCKET_NAME = config_handle.get('AWSS3', 'Bucket').strip()
-            self.AWS_BUCKET_BACKUP_NAME = config_handle.get('AWSS3', 'BackupBucket').strip()
+        if option_config_json['AWSS3']['AccessKey'] is not None:
+            self.aws_access_key_id = option_config_json['AWSS3']['AccessKey']
+            self.aws_secret_access_key = option_config_json['AWSS3']['SecretAccessKey']
+            self.aws_bucket_name = option_config_json['AWSS3']['Bucket']
+            self.aws_bucket_backup_name = option_config_json['AWSS3']['BackupBucket']
             # setup connection and buckets for later use
-            conn = boto.connect_s3(self.AWS_ACCESS_KEY_ID, self.AWS_SECRET_ACCESS_KEY)
-            self.bucket = conn.get_bucket(self.AWS_BUCKET_NAME)
-            self.bucket_backup = conn.get_bucket(self.AWS_BUCKET_BACKUP_NAME)
+            conn = boto.connect_s3(self.aws_access_key_id, self.aws_secret_access_key)
+            self.bucket = conn.get_bucket(self.aws_bucket_name)
+            self.bucket_backup = conn.get_bucket(self.aws_bucket_backup_name)
             self.active = True
 
 

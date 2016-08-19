@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import os
 import onedrivesdk
 from onedrivesdk.helpers import GetAuthCodeServer
 from onedrivesdk.model.item_reference import ItemReference
@@ -37,7 +36,7 @@ class CommonCloudOneDrive(object):
     """
     Class for interfacing with onedrive
     """
-    def __init__(self, config_handler):
+    def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
         # authenticate
