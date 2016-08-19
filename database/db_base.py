@@ -112,3 +112,7 @@ def db_query(self, query_string):
     logging.debug("query: %s", query_string)
     self.db_cursor.execute(query_string)
     return self.db_cursor.fetchall()
+
+
+def db_isolation_level(self, isolation_level):
+    self.sql3_conn.set_isolation_level(isolation_level)
