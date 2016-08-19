@@ -22,6 +22,8 @@ import pytest
 import sys
 sys.path.append('.')
 import database as database_base
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 
 
 class TestDatabasePostgresql(object):
@@ -78,6 +80,12 @@ class TestDatabasePostgresql(object):
         self.db_connection.db_pgsql_vacuum_table(table_name)
 
 
-    # set isolation level
-    # def db_pgsql_set_isolation_level(self, isolation_level):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("isolation_level"), [
+        (ISOLATION_LEVEL_AUTOCOMMIT),
+        (ISOLATION_LEVEL_READ_COMMITTED)])
+    def test_db_pgsql_set_isolation_level(self, isolation_level):
+        """
+        # set isolation level
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_set_isolation_level(isolation_level)
