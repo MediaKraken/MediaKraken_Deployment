@@ -77,7 +77,9 @@ class TestDatabasePostgresql(object):
         # vacuum table
         """
         self.db_connection.db_rollback()
+        self.db_connection.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)        
         self.db_connection.db_pgsql_vacuum_table(table_name)
+        self.db_connection.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
 
 
     @pytest.mark.parametrize(("isolation_level"), [
