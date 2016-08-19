@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-#from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor # pylint: disable=W0611
 
 
@@ -36,6 +36,7 @@ def db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
         % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
+    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
