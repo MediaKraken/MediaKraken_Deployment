@@ -34,7 +34,7 @@ class ProdConfig(Config):
     ENV = 'prod'
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://'\
-        + ConfigFile.get('DB Connections','PostDBUser') + ':'\
+        + ConfigFile.get('DB Connections','PostDBUser').strip() + ':'\
         + ConfigFile.get('DB Connections','PostDBPass').strip() + '@'\
         + ConfigFile.get('DB Connections','PostDBHost').strip() + '/'\
         + ConfigFile.get('DB Connections','PostDBName').strip()
@@ -47,7 +47,7 @@ class DevConfig(Config):
     ENV = 'dev'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://'\
-        + ConfigFile.get('DB Connections','PostDBUser') + ':'\
+        + ConfigFile.get('DB Connections','PostDBUser').strip() + ':'\
         + ConfigFile.get('DB Connections','PostDBPass').strip() + '@'\
         + ConfigFile.get('DB Connections','PostDBHost').strip() + '/'\
         + ConfigFile.get('DB Connections','PostDBName').strip()
