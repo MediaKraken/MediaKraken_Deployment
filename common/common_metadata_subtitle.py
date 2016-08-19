@@ -18,11 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+#import subliminal
 import os
 import sys
 sys.path.append("./vault/lib")
-from babelfish import Language
-import subliminal
 
 
 def com_meta_fetch_subtitle(file_name, sub_lang="en"):

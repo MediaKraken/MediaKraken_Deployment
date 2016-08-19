@@ -38,6 +38,7 @@ class CommonMetadataRottenTomatoes(object):
         """
         movie = rt.Movies()
         response = movie.search(q=movie_title)
-        for m in movie.movies:
-            logging.info("rt: %s %s %s", m['title'], m['id'], m['alternate_ids'])
+        for movie_data in movie.movies:
+            logging.info("rt: %s %s %s", movie_data['title'], movie_data['id'],\
+                movie_data['alternate_ids'])
         return movie

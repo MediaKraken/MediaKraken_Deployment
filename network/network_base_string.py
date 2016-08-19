@@ -61,6 +61,11 @@ class NetworkEvents(Int32StringReceiver):
         self.server_port = self.config.get('MediaKrakenServer', 'ListenPort').strip()
         self.server_port_image = self.config.get('MediaKrakenServer', 'ImageWeb').strip()
         self.server_port_ffmpeg = self.config.get('MediaKrakenServer', 'FFMPEG').strip()
+        self.proc_file_scan = None
+        self.proc_media_match = None
+        self.proc_chapter_create = None
+        self.proc_anime_match = None
+        self.proc_subtitle_media_match = None
 
 
     def connectionMade(self):

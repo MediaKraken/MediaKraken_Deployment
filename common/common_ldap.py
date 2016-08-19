@@ -31,7 +31,7 @@ class CommonLDAP(object):
             self.con = ldap.initialize('ldap://%s', ldap_server)
         except ldap.LDAPError, err_code:
             print(err_code.message['info'])
-            if type(err_code.message) == dict and e.message.has_key('desc'):
+            if isinstance(err_code.message, dict) and err_code.message.has_key('desc'):
                 print(err_code.message['desc'])
             else:
                 print(err_code)
@@ -47,13 +47,13 @@ class CommonLDAP(object):
         """
         logging.debug("ldap login: %s", user_name)
         try:
-            dn = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
-            self.con.simple_bind_s(dn, user_password)
-        except ldap.INVALID_CREDENTIALS, e:
+            dn_name = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
+            self.con.simple_bind_s(dn_name, user_password)
+        except ldap.INVALID_CREDENTIALS, err_code:
             return "INVALID_LOGIN"
         except ldap.LDAPError, err_code:
             print(err_code.message['info'])
-            if type(err_code.message) == dict and err_code.message.has_key('desc'):
+            if isinstance(err_code.message, dict) and err_code.message.has_key('desc'):
                 print(err_code.message['desc'])
             else:
                 print(err_code)
