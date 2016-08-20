@@ -19,9 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 __version__ = '0.1.6'
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import os
 import platform
 import subprocess
@@ -32,9 +29,10 @@ try:
 except:
     import pickle
 import sys
+from common import common_config_ini
 from common import common_logging
 from common import common_system
-import database as database_base
+
 
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
@@ -118,12 +116,7 @@ class MediaKrakenApp():
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_Link')
         # open the database
-        self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-            config_handle.get('DB Connections', 'PostDBPort').strip(),\
-            config_handle.get('DB Connections', 'PostDBName').strip(),\
-            config_handle.get('DB Connections', 'PostDBUser').strip(),\
-            config_handle.get('DB Connections', 'PostDBPass').strip())
+        config_handle, self.db_connection = common_config_ini.com_config_read(True)
         self.connect_to_server()
         return root
 

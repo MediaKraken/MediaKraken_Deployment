@@ -18,18 +18,15 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
 import json
 import uuid
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata_tmdb
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -42,8 +39,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,16 +56,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_TMDB_Updates')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
     'System: Server TMDB Start', 'ServertheTMDBStart', None, None, 'System')
 
 
@@ -93,26 +85,27 @@ def movie_fetch_save(tmdb_id):
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'],\
             'Crew': cast_json['crew']}}})
         # check for previous record
-        if db.db_meta_tmdb_count(result_json['id']) > 0:
+        if db_connection.db_meta_tmdb_count(result_json['id']) > 0:
             # TODO if this is > 0......MUST use series id from DB.......so, stuff doesn't get wiped
-            #db.db_meta_update(series_id_json, result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+            #db_connection.db_meta_update(series_id_json, result_json['title'],
+        #json.dumps(meta_json), json.dumps(image_json))
             pass
         else:
             # store person info
             if 'cast' in cast_json:
-                db.db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
+                db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
             if 'crew' in cast_json:
-                db.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
+                db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
             # grab reviews
             review_json = tmdb.com_tmdb_metadata_review_by_id(tmdb_id)
             if review_json['total_results'] > 0:
                 review_json_id = ({'TMDB': str(review_json['id'])})
                 logging.debug("review: %s", review_json_id)
-                db.db_review_insert(json.dumps(review_json_id),\
+                db_connection.db_review_insert(json.dumps(review_json_id),\
                     json.dumps({'TMDB': review_json}))
             # set and insert the record
             metadata_uuid = str(uuid.uuid4())
-            db.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
+            db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
                 result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     return metadata_uuid
 
@@ -128,40 +121,40 @@ for tv_change in tmdb.com_tmdb_metadata_changes_tv()['results']:
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
     'System: Server TMDB Stop', 'ServertheTMDBStop', None, None, 'System')
 
 
 create_collection_trigger = False
 # send notications
 if tvshow_updated > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_updated, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
     create_collection_trigger = True
 if tvshow_inserted > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
     create_collection_trigger = True
 if movie_updated > 0:
-    db.db_notification_insert(locale.format('%d', movie_updated, True)\
+    db_connection.db_notification_insert(locale.format('%d', movie_updated, True)\
         + " movie metadata updated.", True)
     create_collection_trigger = True
 if movie_inserted > 0:
-    db.db_notification_insert(locale.format('%d', movie_inserted, True)\
+    db_connection.db_notification_insert(locale.format('%d', movie_inserted, True)\
         + " movie metadata added.", True)
     create_collection_trigger = True
 # update collection
 if create_collection_trigger:
-    db.db_trigger_insert(('python',\
+    db_connection.db_trigger_insert(('python',\
         './subprogram_update_create_collections.py'))
 
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 
 # close DB
-db.db_close()
+db_connection.db_close()
 
 
 # remove pid

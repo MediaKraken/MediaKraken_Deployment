@@ -32,7 +32,7 @@ from Queue import Queue
 import hashlib
 SHA1 = hashlib.sha1()
 import os.path
-import database as database_base
+from common import common_config_ini
 from common import common_file
 import pylzma
 if str.upper(sys.platform[0:3]) == 'WIN' \
@@ -50,8 +50,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -358,13 +358,7 @@ class GameAuditer(threading.Thread):
             return True
         logging.debug("loading roms from db")
         # open the database
-        db = database_base.MKServerDatabase()
-        db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-            Config.get('DB Connections', 'PostDBPort').strip(),\
-            Config.get('DB Connections',' PostDBName').strip(),\
-            Config.get('DB Connections', 'PostDBUser').strip(),\
-            Config.get('DB Connections', 'PostDBPass').strip())
-
+        config_handle, db_connection = common_config_ini.com_config_read(True)
         # read all the audited games
         conn_game = connect('db/game_database.db')
         curs_game = conn_game.cursor()
@@ -436,7 +430,7 @@ class GameAuditer(threading.Thread):
         curs_game.close()
         conn_game.close()
         # close the database
-        db.db_close()
+        db_connection.db_close()
         return True
 
     def getnamesdictdb(self, subString):

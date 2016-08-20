@@ -16,10 +16,6 @@ from MediaKraken.admins.forms import DLNAEditForm
 from MediaKraken.admins.forms import UserEditForm
 from MediaKraken.admins.forms import AdminSettingsForm
 
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("../MediaKraken.ini")
-
 import pygal
 import json
 import logging # pylint: disable=W0611
@@ -28,7 +24,7 @@ import platform
 import os
 import sys
 sys.path.append('..')
-import database as database_base
+from common import common_config_ini
 from common import common_network_cifs
 from common import common_cloud
 from common import common_file
@@ -43,6 +39,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 outside_ip = None
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 def flash_errors(form):
@@ -110,8 +107,8 @@ def admins():
                                g.db.db_User_List_Name_Count(), True),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port=config_handle.get('MediaKrakenServer',\
-                               'ListenPort').strip(),
+                           data_server_info_server_port\
+                               =config_handle['MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version='0.1.4',
                            data_server_uptime=common_system.com_system_Uptime(),
@@ -430,7 +427,8 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_Dir_List(config_handle.get('MediaKrakenServer', 'BackupLocal').strip(), 'dump', False, False, True):
+    for backup_local in common_file.com_file_Dir_List(\
+            config_handle['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.com_cloud_Backup_List():
@@ -658,11 +656,11 @@ def before_request():
     Executes before each request
     """
     g.db = database_base.MKServerDatabase()
-    g.db.db_open(config_handle.get('DB Connections','PostDBHost').strip(),\
-        config_handle.get('DB Connections','PostDBPort').strip(),\
-        config_handle.get('DB Connections','PostDBName').strip(),\
-        config_handle.get('DB Connections','PostDBUser').strip(),\
-        config_handle.get('DB Connections','PostDBPass').strip())
+    g.db.db_open(config_handle['DB Connections']['PostDBHost'],\
+        config_handle['DB Connections']['PostDBPort'],\
+        config_handle['DB Connections']['PostDBName'],\
+        config_handle['DB Connections']['PostDBUser'],\
+        config_handle['DB Connections']['PostDBPass']
 
 
 @blueprint.teardown_request

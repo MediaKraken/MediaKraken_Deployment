@@ -18,12 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import os
 import sys
-import database as database_base
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_zfs
@@ -39,25 +36,21 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_ZFS_Check')
 
+
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
 # health check
@@ -65,20 +58,20 @@ zfs_result = common_zfs.com_zfs_health_check()
 if zfs_result is not None:
     for read_line in zfs_result:
         if read_line.find('ONLINE') != -1:
-            db.db_activity_insert('MediaKraken_Server ZFS ERROR!', None,\
+            db_connection.db_activity_insert('MediaKraken_Server ZFS ERROR!', None,\
                 'System: ZFS Health ERROR!', 'ServerZFSERROR', None, None, 'System')
-            db.db_notification_insert("ZFS zpool(s) degraded or offline!", True)
+            db_connection.db_notification_insert("ZFS zpool(s) degraded or offline!", True)
             break
 
 # log end
-db.db_activity_insert('MediaKraken_Server ZFS Health Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server ZFS Health Stop', None,\
     'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
 # commit
-db.db_commit()
+db_connection.db_commit()
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 # remove pid
 os.remove(pid_file)

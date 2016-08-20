@@ -20,20 +20,17 @@ __version__ = '0.1.6'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken_Slave.ini")
 import os
 import platform
 import subprocess
-from threading import Timer
 from threading import Event, Thread
 try:
     import cPickle as pickle
 except:
     import pickle
 import sys
-from common from common import common_logging
+from common import common_config_ini
+from common import common_logging
 from common import common_system
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
@@ -152,8 +149,9 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL(self.config_handle.get('MediaKrakenServer', 'Host').strip(),\
-            int(self.config_handle.get('MediaKrakenServer', 'Port').strip()),\
+        config_handle = common_config_ini.com_config_read(False)
+        reactor.connectSSL(config_handle['MediaKrakenServer']['Host'],\
+            config_handle['MediaKrakenServer']['Port'],\
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 

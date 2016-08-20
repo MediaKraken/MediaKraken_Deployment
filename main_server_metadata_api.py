@@ -18,10 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-# pull in the ini file config
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import json
 import uuid
 import sys
@@ -34,7 +30,6 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import database as database_base
 import metadata_anime
 import metadata_game
 import metadata_identification
@@ -45,10 +40,11 @@ import metadata_periodicals
 import metadata_person
 import metadata_sports
 import metadata_tv
+from common import common_config_ini
 from common import common_file
-from common import common_Hash
+from common import common_hash
 from common import common_isbndb
-from com_meta_Limiter import *
+from com_meta_limiter import *
 from common import common_logging
 from common import common_metadata
 from common import common_metadata_imvdb
@@ -78,11 +74,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Metadata: Received USR1')
     # os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.db_rollback()
+    db_connection.db_rollback()
     # log stop
-    db.db_activity_insert('MediaKraken_Metadata API Stop', None,\
+    db_connection.db_activity_insert('MediaKraken_Metadata API Stop', None,\
         'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
-    db.db_close()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -99,15 +95,10 @@ common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
-db.db_activity_insert('MediaKraken_Metadata API Start', None,\
+db_connection.db_activity_insert('MediaKraken_Metadata API Start', None,\
      'System: Metadata API Start', 'ServerMetadataAPIStart', None, None, 'System')
 
 
@@ -402,7 +393,7 @@ def worker(content_providers):
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
-for class_data in db.db_media_class_list(None, None):
+for class_data in db_connection.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
 
@@ -414,13 +405,13 @@ with futures.ThreadPoolExecutor(len(com_meta_Limiter.API_LIMIT.keys())) as execu
 
 
 # log stop
-db.db_activity_insert('MediaKraken_Metadata API Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Metadata API Stop', None,\
      'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
 
 
 # commit
-db.db_commit()
+db_connection.db_commit()
 
 
 # close the database
-db.db_close()
+db_connection.db_close()

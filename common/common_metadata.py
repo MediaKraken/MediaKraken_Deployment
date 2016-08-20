@@ -22,13 +22,13 @@ import string # pylint: disable=W0402
 import os
 import re
 import random
+from . import common_config_ini
 from . import common_network
 
 
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
-base_image_path = config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()
+config_handle = common_config_ini.com_config_read(False)
+
+base_image_path = config_handle['MediaKrakenServer']['MetadataImageLocal']
 if base_image_path.endswith('/'):
     pass
 else:

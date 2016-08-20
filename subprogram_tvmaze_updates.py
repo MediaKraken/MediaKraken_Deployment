@@ -18,13 +18,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
 import json
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata_tvmaze
@@ -42,8 +40,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -60,16 +58,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_tvmaze_Updates')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,\
     'System: Server tvmaze Start', 'ServerthetvmazeStart', None, None, 'System')
 
 
@@ -104,19 +97,19 @@ def update_insert_show(tvmaze_id, update_rec=None):
             'imdb':imdb_id, 'thetvdb':thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db.db_metatvmaze_Insert(series_id_json, tvmaze_name,\
+            db_connection.db_metatvmaze_Insert(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json))
         else:
-            db.db_metatvmaze_Update(series_id_json, tvmaze_name,\
+            db_connection.db_metatvmaze_Update(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db.db_meta_person_insert_cast_crew('tvmaze',\
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
                 show_full_json['Meta']['tvmaze']['_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db.db_meta_person_insert_cast_crew('tvmaze',\
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
-        db.db_commit()
+        db_connection.db_commit()
 
 
 # grab updated show list with epoc data
@@ -129,7 +122,7 @@ result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db.db_metaTV_guid_by_tvmaze(str(tvmaze_id))
+    results = db_connection.db_metaTV_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:
@@ -143,25 +136,25 @@ for tvmaze_id, tvmaze_time in result.items():
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,\
     'System: Server tvmaze Stop', 'ServerthetvmazeStop', None, None, 'System')
 
 
 # send notications
 if tvshow_updated > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_updated, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
 
 
 # commit all changes to db
-db.db_commit()
+db_connection.db_commit()
 
 
 # close DB
-db.db_close()
+db_connection.db_close()
 
 
 # remove pid

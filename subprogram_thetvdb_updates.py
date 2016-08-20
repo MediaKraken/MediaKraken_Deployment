@@ -18,9 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
@@ -29,10 +26,10 @@ import xmltodict
 import zipfile
 import zlib
 import time
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata_thetvdb
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -46,8 +43,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -63,16 +60,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_thetvdb_Updates')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,\
     'System: Server thetvdb Start', 'ServerthetvdbStart', None, None, 'System')
 
 
@@ -80,14 +72,14 @@ db.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,\
 tvshow_updated = 0
 tvshow_inserted = 0
 thetvdb_API_Connection = com_meta_thetvdb.CommonMetadataTheTVDB()
-option_json, status_json = db.db_opt_status_read()
+option_json, status_json = db_connection.db_opt_status_read()
 #for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc(status_json['thetvdb_Updated_Epoc'])):
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
     logging.debug(row_data['id'])
     # look for previous data
-    metadata_uuid = db.db_metatv_guid_by_tvdb(row_data['id'])
+    metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
         xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
@@ -95,20 +87,20 @@ for row_data in update_item['Data']['Series']:
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb':xml_show_data['Data']['Series']['imdb_ID'],\
             'thetvdb':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
-        db.db_metatvdb_insert(series_id_json,\
+        db_connection.db_metatvdb_insert(series_id_json,\
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
-        db.db_commit()
+            db_connection.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
+        db_connection.db_commit()
         tvshow_inserted += 1
         time.sleep(5) # delays for 5 seconds
     else:
         # update instead
-        #db.db_metatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
+        #db_connection.db_metatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
         tvshow_updated += 1
     # commit each just cuz
-    db.db_commit()
+    db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
     logging.debug(row_data)
@@ -116,27 +108,27 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 
 # set the epoc date
 # TODO update the epoc in status from the udpate xml
-#db.db_Option_Status_Update(row_data[0], status_json)
+#db_connection.db_Option_Status_Update(row_data[0], status_json)
 
 # log end
-db.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
     'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
 
 # send notications
 if tvshow_updated > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_updated, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
         + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
+    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
         + " TV show(s) metadata added.", True)
 
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 
 # close DB
-db.db_close()
+db_connection.db_close()
 
 
 # remove pid

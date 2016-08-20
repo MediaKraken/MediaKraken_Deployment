@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import json
 from guessit import guessit
+from common import common_config_ini
 from common import common_thetvdb
 from common import common_metadata_anidb
 from common import common_metadata_imdb
@@ -28,14 +29,12 @@ from common import common_metadata_thetvdb
 from common import common_metadata_tv_intro
 from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import metadata_nfo_xml
 
+config_handle = common_config_ini.com_config_read(False)
 
 # verify thetvdb key exists for search
-if config_handle.get('API', 'theTVdb').strip() != 'None':
+if config_handle['API']['theTVdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.com_TheTVDB_API()
     # show xml downloader and general api interface
     thetvdb_API = common_metadata_thetvdb.com_meta_TheTVDB_API()
@@ -44,7 +43,7 @@ else:
 
 
 # setup the tvmaze class
-if config_handle.get('API', 'tvmaze').strip() != 'None':
+if config_handle['API']['tvmaze'] is not None:
     TVMAZE_CONNECTION = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
     TVMAZE_CONNECTION = None

@@ -22,12 +22,12 @@ import logging # pylint: disable=W0611
 import sys
 import os
 import signal
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata
 from common import common_network
 from common import common_metadata_thelogodb
-import database as database_base
 
 
 # create the file for pid
@@ -39,8 +39,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -55,6 +55,10 @@ else:
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Logo_Download')
 
 
+# open the database
+config_handle, db_connection = common_config_ini.com_config_read(True)
+
+
 logo_connection = com_thelogodb.com_thelogodb_API()
 total_download_attempts = 0
 # main code
@@ -65,7 +69,9 @@ def main(argv):
         loggin.debug("image: %s", image_file_path)
         common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 
-# {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,","strLyngsat":null,"strCountry":"United Kingdom","strLyngsatLogo":null,"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png","strLogoWideBW":null,"strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,"dateModified":"2016-01-20 18:35:55"}
+# {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,",
+#"strLyngsat":null,"strCountry":"United Kingdom","strLyngsatLogo":null,
+#"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png","strLogoWideBW":null,"strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,"dateModified":"2016-01-20 18:35:55"}
 
         total_download_attempts += 1
 
@@ -74,10 +80,10 @@ if __name__ == "__main__":
     print('Total logo download attempts: %s', total_download_attempts)
     # send notications
 #    if total_download_attempts > 0:
-#        db.db_notification_insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
+#        db_connection.db_notification_insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
 #    # commit all changes
-#    db.db_commit()
+#    db_connection.db_commit()
 #    # close DB
-#    db.db_close()
+#    db_connection.db_close()
 #    # remove pid
 #    os.remove(pid_file)

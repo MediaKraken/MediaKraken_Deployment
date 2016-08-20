@@ -20,16 +20,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 import json
+frmo common import common_config_ini
 from common import common_metadata_imvdb
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+config_handle = common_config_ini.com_config_read(False)
 
 
 # verify imvdb key exists
-if config_handle.get('API', 'imvdb').strip() != 'None':
-    IMVDB_CONNECTION = common_metadata_imvdb.CommonMetadataIMVdb(config_handle.get('API',\
-        'imvdb').strip())
+if config_handle['API']['imvdb'] is not None:
+    IMVDB_CONNECTION = common_metadata_imvdb.CommonMetadataIMVdb(config_handle['API']['imvdb'])
 else:
     IMVDB_CONNECTION = None
 

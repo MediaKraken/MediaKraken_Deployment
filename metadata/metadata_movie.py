@@ -22,6 +22,7 @@ import logging # pylint: disable=W0611
 import json
 import uuid
 from guessit import guessit
+from common import common_config_ini
 from common import common_metadata_anidb
 from common import common_metadata_imdb
 from common import common_metadata_movie_theme
@@ -30,14 +31,13 @@ from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
 from common import common_metadata_rotten_tomatoes
 from common import common_metadata_tmdb
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+config_handle = common_config_ini.com_config_read(False)
+
 from . import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if config_handle.get('API', 'themoviedb').strip() != 'None':
+if config_handle['API']['themoviedb'] is not None:
     # setup the thmdb class
     TMDB_CONNECTION = common_metadata_tmdb.com_metadata_tmdb_API()
 else:

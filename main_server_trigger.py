@@ -18,16 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
+from common import common_config_ini
 from common import common_logging
 import subprocess
 import signal
 import os
 import time
-import database as database_base
 try:
     import cPickle as pickle
 except:
@@ -38,11 +35,11 @@ def signal_receive(signum, frame):
     print('CHILD Main Trigger: Received USR1')
     os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
-    db.db_rollback()
+    db_connection.db_rollback()
     # log stop
-    db.db_activity_insert('MediaKraken_Trigger Stop', None,\
+    db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,\
         'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
-    db.db_close()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -59,15 +56,10 @@ common_logging.com_logging_start('./log/MediaKraken_Trigger')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
-db.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
     'ServerTriggerStart', None, None, 'System')
 
 
@@ -80,7 +72,7 @@ else:
 
 while True:
     # check for new "triggers"
-    for row_data in db.db_triggers_read():
+    for row_data in db_connection.db_triggers_read():
         # fire up cron service
         command_list = []
         for command_data in pickle.loads(str(row_data[1])):
@@ -88,21 +80,21 @@ while True:
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.debug("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db.db_triggers_delete(row_data[0])
+        db_connection.db_triggers_delete(row_data[0])
     time.sleep(1)
 
 
 # log stop
-db.db_activity_insert('MediaKraken_Trigger Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,\
     'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
 # commit
-db.db_commit()
+db_connection.db_commit()
 
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 
 # stop children

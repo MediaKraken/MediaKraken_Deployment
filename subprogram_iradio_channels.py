@@ -18,16 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_network_radio
 import os
 import signal
-import database as database_base
 
 
 # create the file for pid
@@ -39,8 +36,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -54,17 +51,13 @@ else:
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
 
+
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server iRadio Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
@@ -74,19 +67,19 @@ db.db_activity_insert('MediaKraken_Server iRadio Start', None,\
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
     logging.debug(row_data)
-    db.db_iradio_insert(row_data)
+    db_connection.db_iradio_insert(row_data)
 
 #radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 # log end
-db.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
     'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
 
 # commit
-db.db_commit()
+db_connection.db_commit()
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 # remove pid
 os.remove(pid_file)

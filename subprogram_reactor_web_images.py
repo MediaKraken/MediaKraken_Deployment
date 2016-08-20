@@ -18,12 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import signal
 import os
 import sys
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from twisted.web.server import Site
@@ -55,10 +53,10 @@ else:
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
-
+config_handle = common_config_ini.com_config_read(False)
 # simple reactor to present images to clients
-reactor.listenSSL(int(config_handle.get('MediaKrakenServer', 'ImageWeb').strip()),\
-    Site(File(config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip())),\
+reactor.listenSSL(int(config_handle['MediaKrakenServer']['ImageWeb']),\
+    Site(File(config_handle['MediaKrakenServer']['MetadataImageLocal'])),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
 

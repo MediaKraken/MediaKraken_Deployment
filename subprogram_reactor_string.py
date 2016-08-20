@@ -18,16 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 from twisted.internet import ssl
 from twisted.internet import reactor
-from twisted.internet import protocol
+#from twisted.internet import protocol
 from twisted.internet.protocol import Factory
 import sys
 from network import network_base_string as network_base
-import database as database_base
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from time import time
@@ -60,12 +57,7 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # open the database
-        self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-            config_handle.get('DB Connections', 'PostDBPort').strip(),\
-            config_handle.get('DB Connections', 'PostDBName').strip(),\
-            config_handle.get('DB Connections', 'PostDBUser').strip(),\
-            config_handle.get('DB Connections', 'PostDBPass').strip())
+        config_handle, self.db_connection = common_config_ini.com_config_read(True)
         # preload some data from database
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
@@ -81,9 +73,10 @@ if __name__ == '__main__':
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+    config_handle = common_config_ini.com_config_read(False)
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(int(config_handle.get('MediaKrakenServer', 'ListenPort').strip()),\
+    reactor.listenSSL(int(config_handle['MediaKrakenServer']['ListenPort']),\
         MediaKrakenServerApp(), sslContext)
     reactor.run()
     # remove pid

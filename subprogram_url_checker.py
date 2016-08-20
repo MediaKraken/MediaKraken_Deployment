@@ -18,23 +18,21 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
+from common import common_config_ini
 from common import common_file
 from common import common_logging
-import database as database_base
+
 
 def signal_receive(signum, frame):
     print('CHILD URL Check: Received USR1')
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -47,21 +45,17 @@ else:
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_URL_Checker')
 
+
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server URL Scan Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server URL Scan Start', None,\
     'System: Server URL Scan Start', 'ServerURLScanStart', None, None, 'System')
 
 # go through ALL known media files
-for row_data in db.db_known_media():
+for row_data in db_connection.db_known_media():
 
 #TODO  actually, this should probably be the metadata
 
@@ -70,11 +64,11 @@ for row_data in db.db_known_media():
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server URL Scan Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server URL Scan Stop', None,\
     'System: Server URL Scan Stop', 'ServerURLScanStop', None, None, 'System')
 
 # commit all changes to db
-db.db_commit()
+db_connection.db_commit()
 
 # close DB
-db.db_close()
+db_connection.db_close()

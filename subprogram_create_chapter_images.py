@@ -18,15 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import json
 import uuid
 import signal
 import subprocess
 import os
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata
@@ -49,8 +47,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -61,11 +59,11 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    thread_db.db_open(config_handle['DB Connections']['PostDBHost'],\
+        config_handle['DB Connections']['PostDBPort'],\
+        config_handle['DB Connections']['PostDBName'],\
+        config_handle['DB Connections']['PostDBUser'],\
+        config_handle['DB Connections']['PostDBPass'])
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
@@ -108,16 +106,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Im
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server Create Chapter Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,\
     'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
 
 
@@ -130,7 +123,7 @@ else:
 
 # begin the media match on NULL matches
 file_list = []
-for row_data in db.db_known_media_chapter_scan():
+for row_data in db_connection.db_known_media_chapter_scan():
     # from query 0-mm_media_guid, 1-mm_media_json, 2-mm_media_ffprobe_json, 3-mm_media_path
     # loop through ffprobe json chapter data
     if row_data['mm_media_ffprobe_json'] is not None:
@@ -147,21 +140,21 @@ if len(file_list) > 0:
 
 # send notications
 if total_images_created > 0:
-    db.db_notification_insert(locale.format('%d', total_images_created, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_images_created, True)\
         + " chapter image(s) generated.", True)
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,\
     'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
 
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 
 # remove pid

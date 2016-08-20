@@ -19,12 +19,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_network_twitch
 import os
 import signal
-import database as database_base
 import subprocess
 import datetime
 
@@ -41,8 +41,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -52,16 +52,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_LiveStream')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-    Config.get('DB Connections', 'PostDBPort').strip(),\
-    Config.get('DB Connections', 'PostDBName').strip(),\
-    Config.get('DB Connections', 'PostDBUser').strip(),\
-    Config.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server LiveStream Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server LiveStream Start', None,\
     'System: Server LiveStream Start', 'ServerLiveStreamStart', None, None, 'System')
 
 
@@ -81,14 +76,14 @@ subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
     'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 # remove pid
 os.remove(pid_file)

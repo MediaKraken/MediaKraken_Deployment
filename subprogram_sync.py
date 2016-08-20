@@ -18,16 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_system
 import os
 import signal
-import database as database_base
 from concurrent import futures
 import subprocess
 from datetime import timedelta
@@ -43,8 +40,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -52,11 +49,11 @@ def signal_receive(signum, frame):
 def worker(row_data):
     logging.debug("row: %s", row_data)
     thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    thread_db.db_open(config_handle['DB Connections']['PostDBHost'],\
+        config_handle['DB Connections']['PostDBPort'],\
+        config_handle['DB Connections']['PostDBName'],\
+        config_handle['DB Connections']['PostDBUser'],\
+        config_handle['DB Connections']['PostDBPass'])
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
     ffmpeg_params = ['ffmpeg', '-i', thread_db.db_media_path_by_uuid(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
@@ -106,16 +103,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server Sync Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,\
     'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
 
 
@@ -128,7 +120,7 @@ else:
 
 
 # switched to this since tracebacks work this method
-sync_data = db.db_sync_list()
+sync_data = db_connection.db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
@@ -136,14 +128,14 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 
 # log end
-db.db_activity_insert('MediaKraken_Server Sync Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,\
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 # remove pid
 os.remove(pid_file)

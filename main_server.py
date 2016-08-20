@@ -18,13 +18,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import subprocess
 import signal
 import os
+from common import common_config_ini
 from common import common_logging
 from common import common_watchdog
 rmda_enabled_os = False
@@ -33,7 +31,6 @@ try:
     rmda_enabled_os = True
 except:
     pass
-import database as database_base
 
 
 def signal_receive(signum, frame):
@@ -51,13 +48,13 @@ def signal_receive(signum, frame):
     # stop watchdog
     watchdog.com_watchdog_stop()
     # cleanup db
-    db.db_rollback()
+    db_connection.db_rollback()
     # log stop
-    db.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+    db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
         'ServerStop', None, None, 'System')
     # commit
-    db.db_commit()
-    db.db_close()
+    db_connection.db_commit()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -90,33 +87,24 @@ if not os.path.isfile('./key/cacert.pem'):
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
-if not os.path.isdir(config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip()):
+if not os.path.isdir(config_handle['MediaKrakenServer']['MetadataImageLocal']):
     logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
     logging.critical("Invalid Path: %s",\
-        config_handle.get('MediaKrakenServer', 'MetadataImageLocal').strip())
+        config_handle['MediaKrakenServer']['MetadataImageLocal']
     sys.exit()
-if not os.path.isdir(config_handle.get('MediaKrakenServer', 'BackupLocal').strip()):
+if not os.path.isdir(config_handle['MediaKrakenServer']['BackupLocal']:
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
     logging.critical("Invalid Path: %s",\
-        config_handle.get('MediaKrakenServer', 'BackupLocal').strip())
+        config_handle['MediaKrakenServer']['BackupLocal'])
     sys.exit()
 
 
 logging.info("Open DB")
 # open the database
-db = database_base.MKServerDatabase()
-try:
-    db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
-except:
-    logging.critical("Cannot open database. Exiting...")
-    sys.exit()
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
-db.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
+db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
         'ServerStart', None, None, 'System')
 
 
@@ -137,7 +125,7 @@ if rmda_enabled_os:
 logging.info("Start Watchdog")
 # startup watchdog
 watchdog = common_watchdog.CommonWatchdog()
-watchdog.com_watchdog_start(db.db_audit_paths(None, None))
+watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -181,7 +169,7 @@ logging.info("API PID: %s", proc_api.pid)
 
 # fire up link servers
 link_pid = {}
-for link_data in db.db_link_list():
+for link_data in db_connection.db_link_list():
     proc_link = subprocess.Popen(['python', 'main_server_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
@@ -203,15 +191,15 @@ watchdog.com_watchdog_stop()
 
 
 # log stop
-db.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
          'ServerStop', None, None, 'System')
 
 # commit
-db.db_commit()
+db_connection.db_commit()
 
 
 # close the database
-db.db_close()
+db_connection.db_close()
 
 
 # stop children

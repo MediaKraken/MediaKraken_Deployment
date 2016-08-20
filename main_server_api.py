@@ -18,9 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 try:
     import cPickle as pickle
 except:
@@ -32,7 +29,6 @@ import datetime
 import signal
 import sys
 from common import common_logging
-import database as database_base
 
 
 __version__ = json.dumps({"Version": "0.1.6"})
@@ -49,12 +45,8 @@ class MediaKrakenAPI(object):
 
 
     def __init__(self):
-        self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-            config_handle.get('DB Connections', 'PostDBPort').strip(),\
-            config_handle.get('DB Connections', 'PostDBName').strip(),\
-            config_handle.get('DB Connections', 'PostDBUser').strip(),\
-            config_handle.get('DB Connections', 'PostDBPass').strip())
+        # open the database
+        self.config_handle, self.db_connection = common_config_ini.com_config_read(True)
         self.user_xref = []
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_API')
@@ -118,7 +110,7 @@ class MediaKrakenAPI(object):
 
         @app.route("/Items/<guid>")
         def user_items(self, request, guid):
-            #json_data = db.
+            #json_data = db_connection.
             return None
 
 
@@ -316,4 +308,4 @@ if __name__ == '__main__':
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     run_api = MediaKrakenAPI()
-    run_api.app.run("localhost", int(config_handle.get('MediaKrakenServer', 'APIPort').strip()))
+    run_api.app.run("localhost", int(self.config_handle['MediaKrakenServer']['APIPort']))

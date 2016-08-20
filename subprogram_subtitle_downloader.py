@@ -32,9 +32,6 @@ def signal_receive(signum, frame):
     print('CHILD Subtitle: Received USR1')
     # remove pid
     os.remove(pid_file)
-    # cleanup db
-    db.db_rollback()
-    db.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -61,15 +58,15 @@ def main(argv):
             ('avi', 'mkv', 'mp4', 'm4v'), True):
         # run the subliminal fetch for episode
         logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
-        # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt") 
+        # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
         # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
         if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
             # change working dir so srt is saved in the right spot
             total_download_attempts += 1
             os.chdir(media_row.rsplit('/', 1)[0])
-            f = os.popen("subliminal -l " + sub_lang + " -- \"" + media_row.encode("utf8") + "\"")
-            cmd_output = f.read()
-            loggin.debug("Download Status: %s", cmd_output)
+            file_handle = os.popen("subliminal -l " + sub_lang + " -- \"" + media_row.encode("utf8") + "\"")
+            cmd_output = file_handle.read()
+            logging.debug("Download Status: %s", cmd_output)
 
 
 if __name__ == "__main__":

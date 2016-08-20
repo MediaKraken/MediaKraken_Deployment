@@ -18,18 +18,15 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
 import sys
 import os
 import signal
 import json
 import time
+from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_schedules_direct
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -43,8 +40,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -62,7 +59,7 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.debug("result: %s", meta_program_json)
 #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
-        db.db_tv_program_insert(program_json['programID'], json.dumps(program_data))
+        db_connection.db_tv_program_insert(program_json['programID'], json.dumps(program_data))
 
 
 # start logging
@@ -70,22 +67,17 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Schedules_Direct_
 
 
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-    config_handle.get('DB Connections', 'PostDBPort').strip(),\
-    config_handle.get('DB Connections', 'PostDBName').strip(),\
-    config_handle.get('DB Connections', 'PostDBUser').strip(),\
-    config_handle.get('DB Connections', 'PostDBPass').strip())
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,\
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
 sd = com_schedules_direct.CommonSchedulesDirect()
-sd.com_schedules_direct_login(config_handle.get('SD', 'User').strip(),\
-    config_handle.get('SD', 'Password').strip())
+sd.com_schedules_direct_login(config_handle['SD']['User'],\
+    config_handle['SD']['Password'])
 status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
@@ -116,19 +108,19 @@ else:
 #    logging.debug("Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
 #        logging.debug("mapchannel: %s", channel_id)
-#        db.db_tv_station_insert(channel_id['stationID'], channel_id['channel'])
+#        db_connection.db_tv_station_insert(channel_id['stationID'], channel_id['channel'])
 #    logging.debug("Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
 #        logging.debug("stationschannel: %s", channel_meta)
-#        db.db_tv_station_update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
+#        db_connection.db_tv_station_update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
 
 
 # TODO downloading a generic description of a program - good for what the show is......not an episode itself
 
 station_fetch = []
-logging.debug("list: %s", db.db_tv_stations_read_stationid_list())
+logging.debug("list: %s", db_connection.db_tv_stations_read_stationid_list())
 # grab all stations in DB
-for station_id in db.db_tv_stations_read_stationid_list():
+for station_id in db_connection.db_tv_stations_read_stationid_list():
     # fetch all schedules for station
     station_fetch.append(station_id['mv_tv_station_id'])
 
@@ -147,7 +139,7 @@ elif len(station_fetch > 0:
        # for each program in station schedule result
         for program_json in station_json['programs']:
             # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}], u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000, u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z', u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
-            db.db_tv_schedule_insert(station_json['stationID'],\
+            db_connection.db_tv_schedule_insert(station_json['stationID'],\
                 program_json['airDateTime'], json.dumps(program_json))
             logging.debug("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
@@ -164,16 +156,16 @@ if len(meta_program_fetch) > 0:
 # TODO, go grab images for blank logos
 
 # log end
-db.db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,\
     'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 
 # commit all changes to db
-db.db_commit()
+db_connection.db_commit()
 
 
 # close DB
-db.db_close()
+db_connection.db_close()
 
 
 # remove pid
