@@ -166,14 +166,14 @@ def db_meta_tvshow_detail(self, guid):
         return None
 
 
-def db_read_tvmetadata_episodes(self, show_guid):
+def db_read_tvmeta_episodes(self, show_guid):
     """
     # read in the tv episodes metadata by guid
     """
     return self.db_cursor.fetchall()
 
 
-def db_read_tvmetadata_eps_season(self, show_guid):
+def db_read_tvmeta_eps_season(self, show_guid):
     """
     # grab tvmaze ep data for eps per season
     """
@@ -198,7 +198,7 @@ def db_read_tvmetadata_eps_season(self, show_guid):
     return season_data
 
 
-def db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
+def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
     """
     # grab episodes within the season
     """
@@ -222,7 +222,7 @@ def db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
     return episode_data
 
 
-def db_read_tvmetadata_episode(self, show_guid, season_number, episode_number):
+def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """

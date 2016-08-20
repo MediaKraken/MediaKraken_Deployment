@@ -144,11 +144,11 @@ class TestCommonDatabaseEmby(object):
         self.db_connection.test_com_db_emby_notification_list(offset, records)
 
 
-    def test_com_db_emby_notification_list_count(self):
+    def test_com_db_emby_notice_list_count(self):
         """
         # grab notification data count
         """
-        self.db_connection.com_db_emby_notification_list_count()
+        self.db_connection.com_db_emby_notice_list_count()
 
 
     @pytest.mark.parametrize(("offset", "records"), [

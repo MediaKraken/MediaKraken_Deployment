@@ -72,7 +72,7 @@ class CommonDatabaseEmby(object):
             self.sql3_emby_cursor = self.sql3_emby_conn.cursor()
             self.sql3_emby_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
             if attach_other_db:
-                common_emby.com_db_attach_emby(db_file_name.replace('/library.db', ''))
+                self.com_db_attach_emby(db_file_name.replace('/library.db', ''))
         except:
             logging.critical("Unable to open db file(s): %s", db_file_name)
             sys.exit()
@@ -262,7 +262,7 @@ class CommonDatabaseEmby(object):
         return self.sql3_emby_cursor.fetchall()
 
 
-    def com_db_emby_notification_list_count(self):
+    def com_db_emby_notice_list_count(self):
         """
         Grab notification  data count
         """

@@ -99,20 +99,20 @@ class TestDatabaseMetadataTV(object):
 
 
     # read in the tv episodes metadata by guid
-    # def db_read_tvmetadata_episodes(self, show_guid):
+    # def db_read_tvmeta_episodes(self, show_guid):
 #        self.db_connection.db_rollback()
 
 
     # grab tvmaze ep data for eps per season
-    # def db_read_tvmetadata_eps_season(self, show_guid):
+    # def db_read_tvmeta_eps_season(self, show_guid):
 #        self.db_connection.db_rollback()
 
 
     # grab episodes within the season
-    # def db_read_tvmetadata_season_eps_list(self, show_guid, season_number):
+    # def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
 #        self.db_connection.db_rollback()
 
 
     # grab episode detail
-    # def db_read_tvmetadata_episode(self, show_guid, season_number, episode_number):
+    # def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
 #        self.db_connection.db_rollback()

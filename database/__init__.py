@@ -173,13 +173,13 @@ class MKServerDatabase(object):
         db_meta_tvshow_list_count,\
         db_meta_tvshow_list,\
         db_meta_tvshow_detail,\
-        db_read_tvmetadata_episodes,\
+        db_read_tvmeta_episodes,\
         db_metatv_guid_by_tvshow_name,\
         db_meta_tvshow_update_image,\
         db_meta_tvshow_images_to_update,\
-        db_read_tvmetadata_eps_season,\
-        db_read_tvmetadata_season_eps_list,\
-        db_read_tvmetadata_episode
+        db_read_tvmeta_eps_season,\
+        db_read_tvmeta_season_eps_list,\
+        db_read_tvmeta_episode
     from database.db_base_metadata_tvmaze import db_meta_tvmaze_changed_uuid,\
         db_meta_tvmaze_insert,\
         db_meta_tvmaze_update
