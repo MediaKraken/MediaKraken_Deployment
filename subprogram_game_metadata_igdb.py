@@ -21,9 +21,9 @@ import logging # pylint: disable=W0611
 import sys
 import os
 import signal
+from common import common_config_ini
 from common import common_file
 from common import common_network
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -36,8 +36,8 @@ def signal_receive(signum, frame):
     # remove pid
     os.remove(pid_file)
     # cleanup db
-    db.db_rollback()
-    db.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -56,18 +56,19 @@ def main(argv):
     # search the directory for filter files
 
 
-
+# open the database
+config_handle, db_connection = common_config_ini.com_config_read(True)
 
 
 if __name__ == "__main__":
     print('IGDB game info download attempts: %s', total_download_attempts)
     # send notications
     if total_download_attempts > 0:
-        db.db_notification_insert(locale.format('%d',\
+        db_connection.db_notification_insert(locale.format('%d',\
             total_download_attempts, True) + " IGDB game info downloaded.", True)
     # commit all changes
-    db.db_commit()
+    db_connection.db_commit()
     # close DB
-    db.db_close()
+    db_connection.db_close()
     # remove pid
     os.remove(pid_file)
