@@ -43,7 +43,7 @@ def db_meta_music_video_add(self, artist_name, artist_song, id_json,\
         (str(uuid.uuid4()), id_json, artist_name, artist_song, data_json, image_json))
 
 
-def db_meta_music_video_detail_by_uuid(self, item_guid):
+def db_meta_music_video_detail_uuid(self, item_guid):
     """
     Grab metadata for specififed music video
     """

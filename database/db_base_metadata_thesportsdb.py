@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 
 
-def db_metathesportsdb_select_by_guid(self, guid):
+def db_metathesportsdb_select_guid(self, guid):
     """
     # select
     """

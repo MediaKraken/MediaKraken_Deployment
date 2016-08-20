@@ -47,7 +47,7 @@ class TestDatabaseMetadataMusicVideo(object):
 #         self.db_connection.db_rollback()
 
 
-    # def db_meta_music_video_detail_by_uuid(self, item_guid):
+    # def db_meta_music_video_detail_uuid(self, item_guid):
 #         self.db_connection.db_rollback()
 
 

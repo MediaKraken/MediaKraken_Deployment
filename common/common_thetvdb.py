@@ -20,9 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import json
 #from xml.dom import minidom
-from . import common_file
 from . import common_metadata
-from . import common_network
 from pytvdbapi import api
 
 
@@ -39,7 +37,7 @@ class CommonTheTVDB(object):
         """
         # get show information
         """
-        return com_thetvdb_show_details(com_thetvdb_search(self.tvdb_connection,\
+        return self.com_thetvdb_show_details(self.com_thetvdb_search(self.tvdb_connection,\
             show_title, show_language))
 
 
@@ -104,22 +102,22 @@ class CommonTheTVDB(object):
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
+            banner_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
                 'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
+            fanart_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
                 'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = common_metadata.com_metadata_image_path(show_data.SeriesName,\
+            poster_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
                 'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:
             json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
                 'Poster':poster_path}})
         # save the show data
-        com_Database.db_meta_Save_Show(show_data.SeriesName,
+        com_database.db_meta_Save_Show(show_data.SeriesName,
             json_media_id, json_media_json)
 
         # store the season data
@@ -137,7 +135,7 @@ class CommonTheTVDB(object):
     #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
     #    self.db_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
-            #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
+        #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
         return metadata_uuid
 
 

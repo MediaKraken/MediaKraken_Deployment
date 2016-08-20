@@ -141,7 +141,7 @@ class MKServerDatabase(object):
         db_meta_muscian_list
     from database.db_base_metadata_music_video import db_meta_music_video_lookup,\
         db_meta_music_video_add,\
-        db_meta_music_video_detail_by_uuid,\
+        db_meta_music_video_detail_uuid,\
         db_meta_music_video_count,\
         db_meta_music_video_list
     from database.db_base_nas import db_nas_count,\
@@ -164,7 +164,7 @@ class MKServerDatabase(object):
         db_meta_sports_guid_by_event_name
     from database.db_base_metadata_thesportsdb import db_metathesportsdb_insert,\
         db_metathesports_update,\
-        db_metathesportsdb_select_by_guid
+        db_metathesportsdb_select_guid
     from database.db_base_metadata_thetvdb import db_metatvdb_insert,\
         db_metatvdb_update
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb,\

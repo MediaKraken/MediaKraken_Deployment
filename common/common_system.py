@@ -33,7 +33,7 @@ def pprint_ntuple(nt, return_value=None):
         value = getattr(nt, name)
         if name != 'percent':
             value = common_string.com_string_bytes2human(value)
-        logging.debug('%-10s : %7s', (name.capitalize(), value))
+        logging.debug('%-10s : %7s', name.capitalize(), value)
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
         return tuple_print
@@ -156,7 +156,7 @@ def com_system_uptime():
     """
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
         uptime_proc = subprocess.Popen(['net', 'statistics', 'server'], stdout=subprocess.PIPE)
-        out, err = uptime_proc.communicate()
+        out, err = uptime_proc.communicate() # pylint: disable=W0612
         uptime_proc.wait()
         for out_line in out:
             if out_line.find('Statistics since') != -1:

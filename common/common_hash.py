@@ -115,7 +115,7 @@ def com_hash_sha1_c(file_name):
             # calculate sha1 hash
 #            SHA1.update(zip.read(zippedFile))
             zip_file_data = zip.read(zippedFile)
-            R = inline(com_c_code, ['zip_file_data'], support_code = com_sha1_code)
+            R = inline(com_c_code, ['zip_file_data'], support_code=com_sha1_code)
         num += 1
         if num > 5:
             break
@@ -186,26 +186,26 @@ def com_hash_opensubtitles(file_name):
     folling routine is provided by opensubtitles.org website for api calls
     """
     try:
-        longlongformat = '<q'  # little-endian long long
+        longlongformat = '<q' # little-endian long long
         bytesize = struct.calcsize(longlongformat)
         file_handle = open(file_name, "rb")
         filesize = os.path.getsize(file_name)
         hash = filesize
         if filesize < 65536 * 2:
             return "SizeError"
-        for ndx in range(65536 / bytesize):
+        for ndx in range(65536 / bytesize): # pylint: disable=W0612
             buffer = file_handle.read(bytesize)
-            (l_value,)= struct.unpack(longlongformat, buffer)
+            (l_value,) = struct.unpack(longlongformat, buffer)
             hash += l_value
             hash = hash & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
         file_handle.seek(max(0, filesize - 65536), 0)
-        for ndx in range(65536 / bytesize):
+        for ndx in range(65536 / bytesize): # pylint: disable=W0612
             buffer = file_handle.read(bytesize)
-            (l_value,)= struct.unpack(longlongformat, buffer)
+            (l_value,) = struct.unpack(longlongformat, buffer)
             hash += l_value
             hash = hash & 0xFFFFFFFFFFFFFFFF
         file_handle.close()
-        returnedhash =  "%016x" % hash
+        returnedhash = "%016x" % hash
         return returnedhash
     except IOError:
         return "IOError"

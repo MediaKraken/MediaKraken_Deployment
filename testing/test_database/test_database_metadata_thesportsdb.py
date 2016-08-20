@@ -39,7 +39,7 @@ class TestDatabaseMetadataThesportsdb(object):
 
 
     # select
-    # def db_metathesportsdb_select_by_guid(self, guid):
+    # def db_metathesportsdb_select_guid(self, guid):
 #         self.db_connection.db_rollback()
 
 

@@ -20,11 +20,11 @@ class LoggingCursor(psycopg2.extensions.cursor):
         try:
             psycopg2.extensions.cursor.execute(self, sql, args)
         except Exception, exc:
-            logger.error("%s: %s" % (exc.__class__.__name__, exc))
+            logger.error("%s: %s", exc.__class__.__name__, exc)
             raise
 
 
-class InfDateAdapter:
+class InfDateAdapter(object):
     """
     Infinite date adapter
     """
