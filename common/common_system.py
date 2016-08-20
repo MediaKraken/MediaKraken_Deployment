@@ -24,13 +24,13 @@ import psutil
 from . import common_string
 
 
-def pprint_ntuple(nt, return_value=None):
+def pprint_ntuple(nt_result, return_value=None):
     """
     Create tuple for memory print
     """
     tuple_print = []
-    for name in nt._fields:
-        value = getattr(nt, name)
+    for name in nt_result._fields:
+        value = getattr(nt_result, name)
         if name != 'percent':
             value = common_string.com_string_bytes2human(value)
         logging.debug('%-10s : %7s', name.capitalize(), value)
@@ -47,9 +47,9 @@ def com_system_virtual_memory(attribute_list=None):
     if attribute_list is None:
         return pprint_ntuple(psutil.virtual_memory(), True)
     else:
-        nt = psutil.virtual_memory()
+        nt_result = psutil.virtual_memory()
         for name in attribute_list:
-            value = getattr(nt, name)
+            value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
             #logging.debug('%-10s : %7s', (name.capitalize(), value))
@@ -65,9 +65,9 @@ def com_system_swap_memory(attribute_list=None):
     if attribute_list is None:
         pprint_ntuple(psutil.swap_memory())
     else:
-        nt = psutil.swap_memory()
+        nt_result = psutil.swap_memory()
         for name in attribute_list:
-            value = getattr(nt, name)
+            value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
             #logging.debug('%-10s : %7s', (name.capitalize(), value))

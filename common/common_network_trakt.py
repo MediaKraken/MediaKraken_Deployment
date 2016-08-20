@@ -51,4 +51,5 @@ class CommonNetworkTrakt(object):
         """
         # dismiss recommendation
         """
-        dismiss_recommendation(imdb_id='tt3139072', title='Son of Batman', year=2014)
+        #dismiss_recommendation(imdb_id='tt3139072', title='Son of Batman', year=2014)
+        dismiss_recommendation(imdb_id=imdb_id, title=imdb_title, year=imdb_year)
