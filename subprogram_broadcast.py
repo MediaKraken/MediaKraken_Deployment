@@ -2,10 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import socket
 from common import common_logging
-from common import common_network
-import ConfigParser
-config_handle = ConfigParser.ConfigParser()
-config_handle.read("MediaKraken.ini")
+from common import common_config_ini
 
 
 address = ('', 9101)
@@ -18,6 +15,7 @@ server_socket.bind(address)
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Broadcast')
 
 
+config_handle = common_config_ini.com_config_read(False)
 # begin loop to respond to all broastcast messages
 while True:
     recv_data, addr = server_socket.recvfrom(2048)
@@ -25,4 +23,4 @@ while True:
     if recv_data == "who is MediaKrakenServer?":
         # TODO   mk_network_ip_addr()
         server_socket.sendto("http:localhost:"\
-            + config_handle.get('MediaKrakenServer', 'APIPort').strip(), addr)
+            + config_handle['MediaKrakenServer']['APIPort'], addr)
