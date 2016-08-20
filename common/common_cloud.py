@@ -32,11 +32,13 @@ CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                       ('onedrive', 'Microsoft OneDrive'),
                      )
 
+# TODO set
+option_config_json = None
 
-cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3()
-cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox()
-cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive()
-cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive()
+cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
+cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
+cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive(option_config_json)
+cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive(option_config_json)
 
 
 def com_cloud_backup_list():
