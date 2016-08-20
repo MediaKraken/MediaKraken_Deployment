@@ -32,8 +32,6 @@ CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                       ('onedrive', 'Microsoft OneDrive'),
                      )
 
-# TODO set
-option_config_json = None
 
 cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
 cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
