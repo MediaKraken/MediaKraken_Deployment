@@ -431,11 +431,11 @@ def admin_backup():
     backup_files = []
     for backup_local in common_file.com_file_dir_list(\
             option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
+        backup_files.append((backup_local[0], 'Local', common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.com_cloud_backup_list():
         backup_files.append((backup_cloud.name, backup_cloud.type,\
-            common_string.bytes2human(backup_cloud.size)))
+            common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
