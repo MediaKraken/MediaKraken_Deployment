@@ -30,6 +30,7 @@ from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 from common import common_string
+import database as database_base
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -71,7 +72,7 @@ def members():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_read_media_New_Count(7),
+                                                  total=g.db_connection.db_read_media_new_count(7),
                                                   record_name='new and hot',
                                                   format_total=True,
                                                   format_number=True,
@@ -104,7 +105,7 @@ def user_internet_youtube():
     Display youtube page
     """
     return render_template("users/user_internet_youtube.html",\
-        media=com_Google.com_Google_Youtube_Feed_List('top_rated'))
+        media=common_google.com_google_youtube_feed_list('top_rated'))
 
 
 # vimeo
@@ -126,9 +127,9 @@ def user_internet_twitch():
     """
     Display twitchtv page
     """
-    twitch_api = common_network_Twitch.com_Twitch_API()
+    twitch_api = common_network_twitch.CommonNetworkTwitch()
     twitch_media = []
-    for stream_data in twitch_api.com_Twitch_Get_Featured_Streams()['featured']:
+    for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
         logging.debug("stream: %s", stream_data)
         try:
             twitch_media.append((stream_data['stream']['name'],\
@@ -225,7 +226,7 @@ def user_music_video_list():
                                                   format_number=True,
                                                  )
     return render_template('users/user_music_video_list.html',
-                           media_person=g.db_connection.db_Music_Video_List(offset, per_page),
+                           media_person=g.db_connection.db_music_video_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -284,7 +285,7 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db_connection.db_metathesportsdb_Select_by_Guid(guid),
+                           data=g.db_connection.db_metathesportsdb_select_by_guid(guid),
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                           )
@@ -314,7 +315,7 @@ def user_tv_page():
                 None, locale.format('%d', row_data['mm_count'], True)))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_web_tvmedia_list_Count('TV Show',\
+                                                  total=g.db_connection.db_web_tvmedia_list_count('TV Show',\
                                                       None, None),
                                                   record_name='media',
                                                   format_total=True,
@@ -705,7 +706,7 @@ def user_video_player_videojs(mtype, guid):
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
     logging.debug("aud: %s", audio_track_index)
-    atracks=['-map ' + audio_track_index] # 0:0 as example
+    atracks=['-map ' + audio_track_index] # 0:0 as example # pylint: disable=C0326
     subtitle_track_index = request.form["Video_Play_Subtitles"]
     logging.debug("sub: %s", subtitle_track_index)
     if subtitle_track_index is not None:
@@ -716,9 +717,9 @@ def user_video_player_videojs(mtype, guid):
     # fire up ffmpeg process
     if mtype == "hls":
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
-        acodecs=['aac', '-ac:a:0', '2', '-vbr', '5']
-        p=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec", "libx264", "-preset",\
-            "veryfast", "-acodec"] + acodecs + atracks + ["-vf"] + subtracks\
+        acodecs=['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
+        p=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
+            "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks + ["-vf"] + subtracks\
             + ["yadif=0:0:0", vid_name], shell=False)
         logging.info("FFMPEG Pid: %s", p.pid)
 
@@ -754,7 +755,8 @@ def user_image_gallery():
     """
     Display image gallery page
     """
-    return render_template("users/user_image_gallery_view.html", image_data=g.db_connection.com_media_images_list())
+    return render_template("users/user_image_gallery_view.html",\
+        image_data=g.db_connection.com_media_images_list())
 
 
 @blueprint.route('/games')
@@ -785,7 +787,8 @@ def user_movie_genre_page():
     Display movies split up by genre
     """
     media = []
-    for row_data in g.db_connection.db_media_movie_count_by_genre(g.db_connection.db_media_uuid_by_class('Movie')):
+    for row_data in g.db_connection.db_media_movie_count_by_genre(\
+            g.db_connection.db_media_uuid_by_class('Movie')):
         media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True),\
             row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
@@ -807,7 +810,7 @@ def user_movie_page(genre):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
         # 4 - mm_metadata_localimage_json
         logging.debug("row2: %s", row_data['mm_media_json'])
-        json_image = row_data[mm_metadata_localimage_json]
+        json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
             watched_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Watched']
@@ -835,12 +838,17 @@ def user_movie_page(genre):
             match_status = False
         logging.debug("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
             favorite_status, match_status)
-        if 'TMDB' in json_image['Images'] and 'Poster' in json_image['Images']['TMDB'] and json_image['Images']['TMDB']['Poster'] is not None:
-            media.append((row_data[mm_media_name], row_data[mm_media_guid], json_image['Images']['TMDB']['Poster'].replace(image_location, ''), watched_status, sync_status, poo_status, favorite_status, match_status))
+        if 'TMDB' in json_image['Images'] and 'Poster' in json_image['Images']['TMDB']\
+                and json_image['Images']['TMDB']['Poster'] is not None:
+            media.append((row_data['mm_media_name'], row_data['mm_media_guid'],\
+                json_image['Images']['TMDB']['Poster'].replace(image_location, ''),\
+                watched_status, sync_status, poo_status, favorite_status, match_status))
         else:
-            media.append((row_data[mm_media_name], row_data[mm_media_guid], None, watched_status,\
-                sync_status, poo_status, favorite_status, match_status))
-    total = g.db_connection.db_web_media_list_count(g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre, group_collection=False, include_remote=True)
+            media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,\
+                watched_status, sync_status, poo_status, favorite_status, match_status))
+    total = g.db_connection.db_web_media_list_count(\
+        g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,\
+        group_collection=False, include_remote=True)
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,
@@ -863,7 +871,8 @@ def movie_detail(guid):
     Display move detail page
     """
     if request.method == 'POST':
-        # do NOT need to check for play video here, it's routed by the event itself in the html via the 'action' clause
+        # do NOT need to check for play video here,
+        # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), False)
             return redirect(url_for('user.movie_detail', guid=guid))
@@ -879,7 +888,9 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
-            proc_ffserver = subprocess.Popen(['ffmpeg', '-i', g.db_connection.db_media_path_by_uuid(media_guid_index)[0], 'http://localhost:8900/stream.ffm'], shell=False)
+            proc_ffserver = subprocess.Popen(['ffmpeg', '-i',\
+                g.db_connection.db_media_path_by_uuid(media_guid_index)[0],\
+                'http://localhost:8900/stream.ffm'], shell=False)
             logging.info("FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user.movie_detail', guid=guid))
     else:
@@ -1155,13 +1166,13 @@ def search(name):
 @login_required
 def upload():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
+        file_handle = request.files['file']
+        if file_handle and allowed_file(file_handle.filename):
             now = datetime.now()
             filename = os.path.join(app.config_handle['UPLOAD_FOLDER'], "%s.%s"\
-                % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
-            file.save(filename)
-            return jsonify({"success":True})
+                % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file_handle.filename.rsplit('.', 1)[1]))
+            file_handle.save(filename)
+            return jsonify({"success": True})
 
 
 @blueprint.route('/sync')
@@ -1204,7 +1215,7 @@ def sync_edit(guid):
             'ACodec': request.form['target_audio_codec'],\
             'ASRate': request.form['target_sample_rate']},\
             'Priority': request.form['target_priority'], 'Status': 'Scheduled', 'Progress': 0}
-        g.db_connection.db_Sync_Insert(request.form['name'],\
+        g.db_connection.db_sync_insert(request.form['name'],\
             request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))
@@ -1220,7 +1231,7 @@ def admin_sync_delete_page():
     """
     Display sync delete action 'page'
     """
-    g.db_connection.db_Sync_Delete(request.form['id'])
+    g.db_connection.db_sync_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
@@ -1280,7 +1291,7 @@ def report_display_all_duplicates_detail(guid):
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for media_data in g.db_connection.db_media_duplicate_Detail(guid, offset, per_page):
+    for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
         logging.debug("media: %s", media_data['mm_media_ffprobe_json'])
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
@@ -1290,7 +1301,7 @@ def report_display_all_duplicates_detail(guid):
                 break
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_media_duplicate_Detail_Count(guid)[0],
+                                                  total=g.db_connection.db_media_duplicate_detail_count(guid)[0],
                                                   record_name='copies',
                                                   format_total=True,
                                                   format_number=True,
@@ -1361,13 +1372,13 @@ def report_top10(mtype):
     """
     top10_data = None
     if mtype == '1': # all time
-        top10_data = g.db_connection.db_Usage_Top10_AllTime()
+        top10_data = g.db_connection.db_usage_top10_alltime()
     elif mtype == '2': # movie
-        top10_data = g.db_connection.db_Usage_Top10_Movie()
+        top10_data = g.db_connection.db_usage_top10_movie()
     elif mtype == '3': # tv show
-        top10_data = g.db_connection.db_Usage_Top10_TV_Show()
+        top10_data = g.db_connection.db_usage_top10_tv_show()
     elif mtype == '4': # tv episode
-        top10_data = g.db_connection.db_Usage_Top10_TV_Episode()
+        top10_data = g.db_connection.db_usage_top10_tv_episode()
     return render_template('users/reports/report_top10_base.html', media=top10_data)
 
 
@@ -1434,13 +1445,13 @@ def metadata_music_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_music'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_music'),
                                                   record_name='music',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_music_list.html',
-                           media_person=g.db_connection.db_meta_Music_List(offset, per_page),
+                           media_person=g.db_connection.db_meta_music_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1457,7 +1468,7 @@ def metadata_music_video_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_music_video'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
                                                   format_number=True,
@@ -1480,13 +1491,13 @@ def metadata_music_album_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_music_album'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_music_album'),
                                                   record_name='music album',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_music_album_list.html',
-                           media_person=g.db_connection.db_meta_Music_Album_List(offset, per_page),
+                           media_person=g.db_connection.db_meta_music_album_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1500,7 +1511,7 @@ def metadata_movie_detail(guid):
     """
     Display metadata movie detail
     """
-    data = g.db_connection.db_read_media_Metadata(guid)
+    data = g.db_connection.db_read_media_metadata(guid)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
@@ -1591,7 +1602,7 @@ def metadata_movie_collection_list():
                 row_data['mm_metadata_collection_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_collection'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_collection'),
                                                   record_name='movie collection(s)',
                                                   format_total=True,
                                                   format_number=True,
@@ -1981,7 +1992,7 @@ def metadata_sports_detail(guid):
     Display sports detail metadata
     """
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
-                           data=g.db_connection.db_meta_Sports_by_GUID(guid))
+                           data=g.db_connection.db_meta_sports_by_guid(guid))
 
 
 @blueprint.route('/media_status/<guid>/<media_type>/<event_type>/', methods=['GET', 'POST'])

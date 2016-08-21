@@ -34,6 +34,8 @@ from common import common_string
 from common import common_system
 from common import common_transmission
 from common import common_zfs
+import database as database_base
+
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -86,7 +88,7 @@ def admins():
     data_alerts_dismissable = []
     data_alerts = []
     # read in the notifications
-    for row_data in g.db_connection.db_Notification_Read():
+    for row_data in g.db_connection.db_notification_read():
         if row_data['mm_notification_dismissable']: # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],\
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
@@ -97,21 +99,21 @@ def admins():
     data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = g.db_connection.db_Option_Status_Read()['mm_status_json']
+    scanning_json = g.db_connection.db_option_status_read()['mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db_connection.db_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
                            data_user_count=locale.format('%d',\
-                               g.db_connection.db_User_List_Name_Count(), True),
+                               g.db_connection.db_user_list_name_count(), True),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
                                =option_config_json['MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version='0.1.4',
-                           data_server_uptime=common_system.com_system_Uptime(),
+                           data_server_uptime=common_system.com_system_uptime(),
                            data_active_streams=locale.format('%d', 0, True),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
@@ -120,7 +122,7 @@ def admins():
                            data_count_matched_media=locale.format('%d',\
                                g.db_connection.db_matched_media_count(), True),
                            data_count_streamed_media=locale.format('%d', 0, True),
-                           data_zfs_active=common_zfs.com_zfs_Available(),
+                           data_zfs_active=common_zfs.com_zfs_available(),
                            data_library=locale.format('%d', g.db_connection.db_audit_paths_count(), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
@@ -139,13 +141,13 @@ def admin_users():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db_connection.db_User_List_Name_Count(),
+                                total=g.db_connection.db_user_list_name_count(),
                                 record_name='users',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('admin/admin_users.html',
-                           users=g.db_connection.db_User_List_Name(offset, per_page),
+                           users=g.db_connection.db_user_list_name(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -161,7 +163,7 @@ def admin_user_detail(guid):
     Display user details
     """
     return render_template('admin/admin_user_detail.html',\
-        data_user=g.db_connection.db_User_Detail(guid))
+        data_user=g.db_connection.db_user_detail(guid))
 
 
 #@blueprint.route("/dlna")
@@ -232,7 +234,7 @@ def admin_tvtuners():
 @admin_required
 def admin_nas():
     nas_devices = []
-    return render_template("admin/admin_nas.html", data_nas = nas_devices)
+    return render_template("admin/admin_nas.html", data_nas=nas_devices)
 
 
 @blueprint.route("/transmission")
@@ -243,11 +245,11 @@ def admin_transmission():
     """
     Display transmission page
     """
-    trans_connection = common_transmission.com_transmission_API()
+    trans_connection = common_transmission.CommonTransmission()
     transmission_data = []
     if trans_connection is not None:
         torrent_no = 1
-        for torrent in trans_connection.com_transmission_Get_Torrent_List():
+        for torrent in trans_connection.com_trans_get_torrent_list():
             transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,\
                 torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
@@ -260,7 +262,7 @@ def admin_transmission():
 def admin_transmission_delete_page():
     #g.db_connection.db_Audit_Path_Delete(request.form['id'])
     #g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/transmission_edit', methods=["POST"])
@@ -269,7 +271,7 @@ def admin_transmission_delete_page():
 def admin_transmission_edit_page():
     #g.db_connection.db_Audit_Path_Delete(request.form['id'])
     #g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route("/library", methods=["GET", "POST"])
@@ -286,7 +288,7 @@ def admin_library():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db_connection.db_audit_paths_Count(),
+                                total=g.db_connection.db_audit_paths_count(),
                                 record_name='library dir(s)',
                                 format_total=True,
                                 format_number=True,
@@ -311,16 +313,16 @@ def admin_library_edit_page():
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
-                    smb_stuff = common_cifs.com_cifs_Share_API()
+                    smb_stuff = common_network_cifs.com_cifs_Share_API()
                     smb_stuff.com_cifs_Connect(addr)
-                    if not smb_stuff.com_cifs_Share_Directory_Check(share, path):
+                    if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_Close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))
                     smb_stuff.com_cifs_Close()
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO
-                    smb_stuff = common_cifs.com_cifs_Share_API()
+                    smb_stuff = common_network_cifs.com_cifs_Share_API()
                     smb_stuff.com_cifs_Connect(ip_addr, user_name='guest', user_password='')
                     smb_stuff.com_cifs_Share_Directory_Check(share_name, dir_path)
                     smb_stuff.com_cifs_Close()
@@ -328,8 +330,8 @@ def admin_library_edit_page():
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))
                 # verify it doesn't exit and add
-                if g.db_connection.db_Audit_Path_Check(request.form['library_path']) == 0:
-                    g.db_connection.db_Audit_Path_Add(request.form['library_path'], request.form['Lib_Class'])
+                if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
+                    g.db_connection.db_audit_path_add(request.form['library_path'], request.form['Lib_Class'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:
@@ -356,16 +358,16 @@ def admin_library_delete_page():
     """
     Delete library action 'page'
     """
-    g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    g.db_connection.db_audit_path_delete(request.form['id'])
     g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/getLibraryById', methods=['POST'])
 @login_required
 @admin_required
 def getLibraryById():
-    result = g.db_connection.db_Audit_Path_by_UUID(request.form['id'])
+    result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],\
         'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
 
@@ -374,9 +376,9 @@ def getLibraryById():
 @login_required
 @admin_required
 def updateLibrary():
-    g.db_connection.db_Audit_Path_Update_by_UUID(request.form['new_path'],\
+    g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],\
         request.form['new_class'], request.form['id'])
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/user_delete', methods=["POST"])
@@ -386,9 +388,9 @@ def admin_user_delete_page():
     """
     Delete user action 'page'
     """
-    g.db_connection.db_User_Delete(request.form['id'])
+    g.db_connection.db_user_delete(request.form['id'])
     g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/backup_delete', methods=["POST"])
@@ -403,7 +405,7 @@ def admin_backup_delete_page():
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
         common_cloud.com_cloud_File_Delete('awss3', file_path, True)
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route("/backup", methods=["GET", "POST"])
@@ -427,7 +429,7 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_Dir_List(\
+    for backup_local in common_file.com_file_dir_list(\
             option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
@@ -470,9 +472,9 @@ def admin_server_stat():
     Display server stats via psutils
     """
     return render_template("admin/admin_server_stats.html",
-                           data_disk=common_system.com_system_Disk_Usage_All(True),
-                           data_cpu_usage=common_system.com_system_CPU_Usage(True),
-                           data_mem_usage=common_system.com_system_Virtual_Memory(None))
+                           data_disk=common_system.com_system_disk_usage_all(True),
+                           data_cpu_usage=common_system.com_system_cpu_usage(True),
+                           data_mem_usage=common_system.com_system_virtual_memory(None))
 
 
 @blueprint.route("/server_stat_slave")
@@ -484,9 +486,9 @@ def admin_server_stat_slave():
     Display stats on connected slaves via psutils
     """
     return render_template("admin/admin_server_stats_slave.html",
-                           data_disk=common_system.com_system_Disk_Usage_All(True),
-                           data_cpu_usage=common_system.com_system_CPU_Usage(True),
-                           data_mem_usage=common_system.com_system_Virtual_Memory(None))
+                           data_disk=common_system.com_system_disk_usage_all(True),
+                           data_cpu_usage=common_system.com_system_cpu_usage(True),
+                           data_mem_usage=common_system.com_system_virtual_memory(None))
 
 
 @blueprint.route("/settings")
@@ -510,7 +512,7 @@ def admin_server_zfs():
     Display zfs admin page
     """
     return render_template("admin/admin_server_zfs.html",
-                           data_zpool=common_zfs.com_zfs_Zpool_List())
+                           data_zpool=common_zfs.com_zfs_zpool_list())
 
 
 @blueprint.route("/link_server")
@@ -524,7 +526,7 @@ def admin_server_link_server():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db_connection.db_link_list_Count(),
+                                total=g.db_connection.db_link_list_count(),
                                 record_name='linked servers',
                                 format_total=True,
                                 format_number=True,
@@ -543,7 +545,7 @@ def admin_link_delete_page():
     """
     Delete linked server action 'page'
     """
-    g.db_connection.db_Link_Delete(request.form['id'])
+    g.db_connection.db_link_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
@@ -623,10 +625,10 @@ def admin_database_statistics():
     Display database statistics page
     """
     db_stats_count = []
-    for row_data in g.db_connection.db_Postgresql_Row_Count():
+    for row_data in g.db_connection.db_postgresql_row_count():
         db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
     return render_template("admin/admin_server_database_stats.html",
-                           data_db_size=g.db_connection.db_Postgresql_Table_Sizes(),
+                           data_db_size=g.db_connection.db_postgresql_table_sizes(),
                            data_db_count=db_stats_count)
 
 
