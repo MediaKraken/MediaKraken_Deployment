@@ -21,10 +21,9 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', N
 
 
 # vacuum all the tables
-# TODO this needed since open is autocommit?   db_connection.db_Postgesql_Set_Isolation_Level(0)
-for row in db_connection.db_postgresql_vacuum_stat_by_day(1):
+for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
     logging.debug(row)
-    db_connection.db_postgresql_vacuum_table(row['relname'])
+    db_connection.db_pgsql_vacuum_table(row['relname'])
 
 
 # log end

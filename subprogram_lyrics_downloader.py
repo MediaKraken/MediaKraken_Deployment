@@ -64,7 +64,7 @@ def main(argv):
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files
-    for media_row in common_file.com_file_Dir_List():
+    for media_row in common_file.com_file_dir_list():
         logging.debug(media_row)
 
 

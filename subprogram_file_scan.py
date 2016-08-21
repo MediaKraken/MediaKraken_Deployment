@@ -189,7 +189,8 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                                 new_class_type_uuid = class_text_dict['Movie Theme']
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
-                        file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
+                        file_name\
+                            = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                     media_ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(file_name)
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
@@ -274,8 +275,8 @@ for row_data in db_connection.db_audit_paths():
         smb_stuff = common_network_cifs.com_cifs_Share_API()
         addr, share, path = common_string.UNC_To_Addr_Share_Path(row_data['mm_media_dir_path'])
         smb_stuff.com_cifs_Connect(addr)
-        if smb_stuff.com_cifs_Share_Directory_Check(share, path):
-            if datetime.strptime(time.ctime(smb_stuff.com_cifs_Share_File_Dir_Info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+        if smb_stuff.com_cifs_share_directory_check(share, path):
+            if datetime.strptime(time.ctime(smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],\
                     str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],\

@@ -64,7 +64,8 @@ class MediaKrakenServerApp(Factory):
 
 
     def buildProtocol(self, addr):
-        return network_base.Metaman_Network_Events(self.users, self.db_connection. self.genre_list)
+        return network_base.mediakraken_network_events(self.users, self.db_connection,\
+            self.genre_list)
 
 
 if __name__ == '__main__':
@@ -72,7 +73,7 @@ if __name__ == '__main__':
         signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c  
+        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')

@@ -74,9 +74,9 @@ def worker(worker_file_list):
         # if ss is before the input it seeks and doesn't convert every frame like after input
         command_list.append('-ss')
         # format the seconds to what ffmpeg is looking for
-        m, s = divmod(float(chapter_data['start_time']), 60)
-        h, m = divmod(m, 60)
-        command_list.append("%02d:%02d:%02f" % (h, m, s))
+        minutes, seconds = divmod(float(chapter_data['start_time']), 60)
+        hours, minutes = divmod(minutes, 60)
+        command_list.append("%02d:%02d:%02f" % (hours, minutes, seconds))
         command_list.append('-i')
         command_list.append(media_path)
         command_list.append('-vframes')

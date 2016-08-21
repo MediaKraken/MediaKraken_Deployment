@@ -38,8 +38,6 @@ common_file.com_file_save_data(pid_file, 'Tuner_Scan', False, False, None)
 
 
 def signal_receive(signum, frame):
-    global global_end_program
-    global_end_program = True
     print('CHILD Tuner Scan: Received USR1')
     # remove pid
     os.remove(pid_file)
@@ -79,7 +77,7 @@ for row_tuner in tuner_api.com_hdhomerun_list():
     json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
         'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\
-        'IP': common_string.ip_int_to_ascii(row_tuner.get_device_ip()),\
+        'IP': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip()),\
         'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
     current_data = db_connection.db_tuner_by_serial(str(hex(row_tuner.get_device_id())))

@@ -76,7 +76,8 @@ else:
 
 total_collections_downloaded = 0
 # same code in subprogram match anime scudlee
-def store_update_record(db_connection, collection_name, guid_list, poster_path, backdrop_path, collection_id):
+def store_update_record(db_connection, collection_name, guid_list, poster_path,\
+        backdrop_path, collection_id):
     global total_collections_downloaded
     # store/update the record
     collection_guid = db_connection.db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
@@ -87,13 +88,13 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path, 
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
-            image_poster_path = com_metadata.com_metadata_image_path(collection_name,\
+            image_poster_path = common_metadata.com_metadata_image_path(collection_name,\
                 'poster', 'tmdb', poster_path)
         else:
             image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
-            image_backdrop_path = com_metadata.com_metadata_image_path(collection_name,\
+            image_backdrop_path = common_metadata.com_metadata_image_path(collection_name,\
                 'backdrop', 'tmdb', backdrop_path)
         else:
             image_backdrop_path = ''
@@ -113,7 +114,7 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path, 
 old_collection_name = ''
 old_poster_path = None
 old_backdrop_path = None
-old_id= None
+old_id = None
 guid_list = []
 first_record = True
 for row_data in db_connection.db_media_collection_scan():

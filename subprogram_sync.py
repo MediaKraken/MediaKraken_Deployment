@@ -22,7 +22,6 @@ import sys
 from common import common_config_ini
 from common import common_file
 from common import common_logging
-from common import common_system
 import os
 import signal
 from concurrent import futures
@@ -55,8 +54,10 @@ def worker(row_data):
         config_handle.get('DB Connections', 'PostDBUser'),\
         config_handle.get('DB Connections', 'PostDBPass'))
     # row_data
-    # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text, 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['ffmpeg', '-i', thread_db.db_media_path_by_uuid(row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
+    # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
+    # 3 mm_sync_options_json jsonb
+    ffmpeg_params = ['ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
+        row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs', row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
@@ -67,15 +68,17 @@ def worker(row_data):
         ffmpeg_params.extend(('-acodec', row_data['mm_sync_options_json']['Options']['ACodec'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
-    ffmpeg_params.append(row_data['mm_sync_path_to'].encode('utf8') + "." + row_data['mm_sync_options_json']['Options']['VContainer'])
+    ffmpeg_params.append(row_data['mm_sync_path_to'].encode('utf8') + "."\
+        + row_data['mm_sync_options_json']['Options']['VContainer'])
     logging.debug("ffmpeg: %s", ffmpeg_params)
     ffmpeg_pid = subprocess.Popen(ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
     #  Duration: 01:31:10.10, start: 0.000000, bitrate: 4647 kb/s
-    # frame= 1091 fps= 78 q=-1.0 Lsize=    3199kB time=00:00:36.48 bitrate= 718.4kbits/s dup=197 drop=0 speed= 2.6x
+    # frame= 1091 fps= 78 q=-1.0 Lsize=    3199kB time=00:00:36.48
+    # bitrate= 718.4kbits/s dup=197 drop=0 speed= 2.6x
     media_duration = None
     while True:
-        line = proc.stdout.readline()
+        line = ffmpeg_pid.stdout.readline()
         if line != '':
             logging.debug("ffmpeg out: %", line.rstrip())
             if line.find("Duration:") != -1:

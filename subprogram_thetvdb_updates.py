@@ -71,7 +71,7 @@ db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None
 # grab the data
 tvshow_updated = 0
 tvshow_inserted = 0
-thetvdb_API_Connection = com_meta_thetvdb.CommonMetadataTheTVDB()
+thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB()
 option_json, status_json = db_connection.db_opt_status_read()
 #for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc(status_json['thetvdb_Updated_Epoc'])):
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
@@ -82,13 +82,16 @@ for row_data in update_item['Data']['Series']:
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
         # for the individual show data
-        xml_show_data, xml_actor_data, xml_banners_data = thetvdb_API_Connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
+        xml_show_data, xml_actor_data, xml_banners_data\
+            = thetvdb_API_Connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb':xml_show_data['Data']['Series']['imdb_ID'],\
             'thetvdb':str(row_data['id']), 'zap2it':xml_show_data['Data']['Series']['zap2it_id']})
         db_connection.db_metatvdb_insert(series_id_json,\
-            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data, 'Banner': xml_banners_data}}}), json.dumps(image_json))
+            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta':\
+                {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
+                'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
             db_connection.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
@@ -97,7 +100,8 @@ for row_data in update_item['Data']['Series']:
         time.sleep(5) # delays for 5 seconds
     else:
         # update instead
-        #db_connection.db_metatvdb_update(series_id_json, xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
+        #db_connection.db_metatvdb_update(series_id_json,\
+        # xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
         tvshow_updated += 1
     # commit each just cuz
     db_connection.db_commit()

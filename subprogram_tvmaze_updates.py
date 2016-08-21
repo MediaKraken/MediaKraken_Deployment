@@ -26,7 +26,6 @@ from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata_tvmaze
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -71,7 +70,8 @@ def update_insert_show(tvmaze_id, update_rec=None):
     #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True))}})
+        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_TheMaze_Show_by_ID(\
+            tvmaze_id, None, None, None, True))}})
     except:
         pass
     logging.debug("full: %s", show_full_json)
@@ -115,7 +115,7 @@ def update_insert_show(tvmaze_id, update_rec=None):
 # grab updated show list with epoc data
 tvshow_updated = 0
 tvshow_inserted = 0
-tvmaze = com_meta_tvmaze.com_meta_tvmaze_API()
+tvmaze = common_metadata_tvmaze.com_meta_tvmaze_API()
 result = tvmaze.com_meta_themaze_show_updated()
 #for show_list_json in result:
 result = json.loads(result)

@@ -25,6 +25,9 @@ import getopt
 
 
 def main(argv):
+    """
+    Launch ffmpeg process
+    """
     # start logging
     common_logging.com_logging_start('./log/MediaKraken_Subprogram_Cron')
     inputfile = None
@@ -39,12 +42,12 @@ def main(argv):
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-           logging.debug('subprogram_ffmpeg_process.py -i <inputfile> -o <outputfile>')
-           sys.exit()
+            logging.debug('subprogram_ffmpeg_process.py -i <inputfile> -o <outputfile>')
+            sys.exit()
         elif opt in ("-i", "--ifile"):
-           inputfile = arg
+            inputfile = arg
         elif opt in ("-o", "--ofile"):
-           outputfile = arg
+            outputfile = arg
     subproccess_args = []
     subproccess_args.extend(('-i', inputfile))
     subproccess_args.extend(vid_codec)
@@ -58,4 +61,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])

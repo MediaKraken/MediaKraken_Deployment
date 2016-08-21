@@ -23,7 +23,6 @@ import os
 import signal
 from common import common_config_ini
 from common import common_file
-from common import common_network
 import locale
 locale.setlocale(locale.LC_ALL, '')
 

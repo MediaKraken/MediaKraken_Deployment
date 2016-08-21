@@ -82,25 +82,32 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
     poster_image_local = None
     if 'poster' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'] is not None:
-        poster_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
+        poster_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+            row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'),\
+            (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
+        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
 
     # grab banner
     banner_image_local = None
     if 'banner' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'] is not None:
         banner_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
+        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
 
     # grab fanart
     fanart_image_local = None
     if 'fanart' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'] is not None:
         fanart_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
-        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
+        common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
 
     # generate image json
-    json_image_data = {'Images': {'thetvdb': {'Banner': banner_image_local, 'Fanart': fanart_image_local, 'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
+    json_image_data = {'Images': {'thetvdb': {'Banner': banner_image_local,\
+        'Fanart': fanart_image_local, 'Poster': poster_image_local, 'Cast': {},\
+        'Characters': {}, 'Episodes': {}, "Redo": False}}}
     logging.debug("image: %s", json_image_data)
 
     # process person and character data
@@ -115,7 +122,8 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
                     cast_image_local = os.path.join(common_metadata.com_meta_image_file_path(cast_member['Name'],\
                         'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
                     logging.debug("one: %s", cast_image_local)
-                    common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/" + cast_member['Image'], cast_image_local)
+                    common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
+                        + cast_member['Image'], cast_image_local)
                     json_image_data['Images']['thetvdb']['Cast'][cast_member['id']] = cast_image_local
                     total_cast_images += 1
             logging.debug("cast: %s", json_image_data)

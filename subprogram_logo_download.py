@@ -59,19 +59,22 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Logo_Download')
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-logo_connection = com_thelogodb.com_thelogodb_API()
+logo_connection = common_metadata_thelogodb.com_thelogodb_API()
 total_download_attempts = 0
 # main code
 def main(argv):
     for channel_info in logo_connection.com_thelogodb_Fetch_Latest()['channels']:
         # fetch and store logo image
         image_file_path = com_metadata.com_meta_image_file_path(channel_info['strChannel'], 'logo')
-        loggin.debug("image: %s", image_file_path)
+        logging.debug("image: %s", image_file_path)
         common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 
 # {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,",
 #"strLyngsat":null,"strCountry":"United Kingdom","strLyngsatLogo":null,
-#"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png","strLogoWideBW":null,"strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,"dateModified":"2016-01-20 18:35:55"}
+#"strLogoWide":"http:\/\/www.thelogodb.com\/images\/media\/logo\/rstxry1453314955.png",
+#"strLogoWideBW":null,
+# "strLogoSquare":null,"strLogoSquareBW":null,"strFanart1":null,"strDescription":null,
+#"dateModified":"2016-01-20 18:35:55"}
 
         total_download_attempts += 1
 
@@ -80,7 +83,8 @@ if __name__ == "__main__":
     print('Total logo download attempts: %s', total_download_attempts)
     # send notications
 #    if total_download_attempts > 0:
-#        db_connection.db_notification_insert(locale.format('%d', total_download_attempts, True) + " logo image(s) downloaded.", True)
+#        db_connection.db_notification_insert(locale.format('%d', total_download_attempts, True)\
+#    + " logo image(s) downloaded.", True)
 #    # commit all changes
 #    db_connection.db_commit()
 #    # close DB

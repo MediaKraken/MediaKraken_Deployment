@@ -29,7 +29,8 @@
 
 # this work?
 #ffmpeg -i "$1" -vf blackframe -an -f null - 2>&1 | ack "(?<=frame:)[0-9]*(?= )" -oh > blacks.txt
-# ffmpeg -i '/home/spoot/nfsmount/TV_Shows_Misc/Wilfred (2007)/s1e4.avi' -vf blackframe -an -f null - 2>&1 | ack "(?<=frame:)[0-9]*(?= )" -oh > blacks.txt
+# ffmpeg -i '/home/spoot/nfsmount/TV_Shows_Misc/Wilfred (2007)/s1e4.avi'
+# -vf blackframe -an -f null - 2>&1 | ack "(?<=frame:)[0-9]*(?= )" -oh > blacks.txt
 #cat blacks.txt | while read a; do
 #printf "not(eq(n\,$a))*"
 #done
@@ -38,31 +39,32 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import subprocess
-import os
 import sys
 import getopt
-import sys
 from common import common_logging
 
 
 def main(argv):
+    """
+    Main commercial strip
+    """
     # start logging
     common_logging.com_logging_start('./log/MediaKraken_Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
         logging.debug('subprogram_commercial_strip.py -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-           logging.debug('subprogram_commercial_strip.py -i <inputfile> -o <outputfile>')
-           sys.exit()
+            logging.debug('subprogram_commercial_strip.py -i <inputfile> -o <outputfile>')
+            sys.exit()
         elif opt in ("-i", "--ifile"):
-           inputfile = arg
+            inputfile = arg
         elif opt in ("-o", "--ofile"):
-           outputfile = arg
+            outputfile = arg
     # kick off ffmpeg process
     proc = subprocess.Popen(['ffmpeg', subproccess_args], shell=False)
     logging.debug("FFMpeg PID %s:", proc.pid)
@@ -70,4 +72,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])

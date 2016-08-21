@@ -22,7 +22,6 @@ import sys
 import os
 import signal
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 
 

@@ -30,8 +30,6 @@ pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'ZFS_Health_Scan', False, False, None)
 
 def signal_receive(signum, frame):
-    global global_end_program
-    global_end_program = True
     print('CHILD ZFS Health Scan: Received USR1')
     # remove pid
     os.remove(pid_file)
