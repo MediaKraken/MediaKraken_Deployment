@@ -102,7 +102,7 @@ def admins():
     scanning_json = g.db_connection.db_opt_status_read()['mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    for dir_path in g.db_connection.db_Audit_Path_Status():
+    for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
                            data_user_count=locale.format('%d',\
