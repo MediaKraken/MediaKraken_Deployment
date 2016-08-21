@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import database as database_base
+import os
 
 
 def com_config_read():
@@ -27,7 +28,10 @@ def com_config_read():
     """
     import ConfigParser
     config_handle = ConfigParser.ConfigParser()
-    config_handle.read("MediaKraken.ini")
+    if os.path.isfile("MediaKraken.ini"):
+        config_handle.read("MediaKraken.ini")
+    else:
+        config_handle.read("../MediaKraken.ini")       
     # open the database
     db_connection = database_base.MKServerDatabase()
     db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
