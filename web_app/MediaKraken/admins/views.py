@@ -185,7 +185,7 @@ def admin_cron_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db_connection.db_cron_list_Count(False),
+                                total=g.db_connection.db_cron_list_count(False),
                                 record_name='Cron Jobs',
                                 format_total=True,
                                 format_number=True,
@@ -433,7 +433,7 @@ def admin_backup():
             option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in common_cloud.com_cloud_Backup_List():
+    for backup_cloud in common_cloud.com_cloud_backup_list():
         backup_files.append((backup_cloud.name, backup_cloud.type,\
             common_string.bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()

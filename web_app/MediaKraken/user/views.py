@@ -1193,13 +1193,13 @@ def sync_display_all():
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Sync_List_Count(),
+                                                  total=g.db_connection.db_sync_list_count(),
                                                   record_name='Sync Jobs',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/user_sync.html',
-                           media_sync=g.db_connection.db_Sync_List(offset, per_page),
+                           media_sync=g.db_connection.db_sync_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1575,7 +1575,7 @@ def metadata_movie_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_movie'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_movie'),
                                                   record_name='Movies',
                                                   format_total=True,
                                                   format_number=True,
