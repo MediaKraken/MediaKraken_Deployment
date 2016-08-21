@@ -112,7 +112,7 @@ def admins():
                            data_server_info_server_port\
                                =option_config_json['MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
-                           data_server_info_server_version='0.1.4',
+                           data_server_info_server_version='0.1.6',
                            data_server_uptime=common_system.com_system_uptime(),
                            data_active_streams=locale.format('%d', 0, True),
                            data_alerts_dismissable=data_alerts_dismissable,
