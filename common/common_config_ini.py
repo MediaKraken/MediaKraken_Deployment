@@ -36,5 +36,5 @@ def com_config_read(open_database=True):
             config_handle.get('DB Connections', 'PostDBName').strip(),\
             config_handle.get('DB Connections', 'PostDBUser').strip(),\
             config_handle.get('DB Connections', 'PostDBPass').strip())
-        return config_handle, db_connection
+        return db_connection.db_opt_status_read()['mm_options_json'], db_connection
     return config_handle
