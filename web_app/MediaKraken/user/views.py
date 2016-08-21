@@ -2037,7 +2037,7 @@ def before_request():
         config_handle['DB Connections']['PostDBPort'],\
         config_handle['DB Connections']['PostDBName'],\
         config_handle['DB Connections']['PostDBUser'],\
-        config_handle['DB Connections']['PostDBPass']
+        config_handle['DB Connections']['PostDBPass'])
 
 
 @blueprint.teardown_request
