@@ -99,7 +99,7 @@ def admins():
     data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = g.db_connection.db_option_status_read()['mm_status_json']
+    scanning_json = g.db_connection.db_opt_status_read()['mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db_connection.db_Audit_Path_Status():
