@@ -285,12 +285,12 @@ for row_data in db_connection.db_audit_paths():
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
             db_connection.db_notification_insert(('UNC Library path not found: %s',\
-                (row_data['mm_media_dir_path'],)), True)
+                row_data['mm_media_dir_path']), True)
         smb_stuff.com_cifs_close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
             db_connection.db_notification_insert(('Library path not found: %s',\
-                (row_data['mm_media_dir_path'],)), True)
+                row_data['mm_media_dir_path']), True)
         else:
             # verify the directory inodes has changed
             if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),\
