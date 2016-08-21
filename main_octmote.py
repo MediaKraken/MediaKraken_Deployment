@@ -125,7 +125,7 @@ class OctMoteApp(App):
         self.remote_mode_details_item = {}
         self.remote_mode_currrent_item = 'Default'
         # open database files
-        self.OctMote_Server_Connection_Data = com_Database_Octmote.com_db_Open()
+        self.OctMote_Server_Connection_Data = com_database_octmote.com_db_open()
         # fetch and import any item/layout files
         com_JSON.MK_Json_Find()
         root = OctMote()
@@ -152,7 +152,7 @@ class OctMoteApp(App):
 
 
     def mediakraken_find_server_list(self):
-        self.server_list = com_MediaKraken.com_network_MediaKraken_Find_Server()
+        self.server_list = com_MediaKraken.com_network_mediakraken_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],\
@@ -165,7 +165,7 @@ class OctMoteApp(App):
 
 
     def Emby_Find_Server_List(self):
-        self.server_list = com_Emby_Network.com_network_Emby_Find_Server()
+        self.server_list = com_Emby_Network.com_network_emby_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
@@ -177,7 +177,7 @@ class OctMoteApp(App):
 
 
     def Emby_Event_Button_Server_Select(self, server_addr, *args):
-        self.server_user_list = com_Emby_Network.com_network_Emby_Find_Users(server_addr)
+        self.server_user_list = com_emby_network.com_network_emby_find_users(server_addr)
         self.root.ids.user_list_layout.clear_widgets()
         self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
         for found_user in self.server_user_list:
@@ -199,7 +199,8 @@ class OctMoteApp(App):
 
     def Emby_Event_Button_User_Select_Login(self, *args):
         self.dismiss_popup()
-        self.emby_user_connection_json = com_Emby_Network.com_network_Emby_User_Login(self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
+        self.emby_user_connection_json = com_emby_network.com_network_emby_user_login(\
+            self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
         # build header parameters to url
         user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         self.global_url_headers = {'User-Agent' : user_agent,
@@ -218,20 +219,24 @@ class OctMoteApp(App):
         # clear the children and reload to pick up new records
         if self.base_device_guid_dict:
             self.root.ids.setup_base_device_gridlayout.clear_widgets()
-        self.root.ids.setup_base_device_gridlayout.bind(minimum_height=self.root.ids.setup_base_device_gridlayout.setter('height'))
+        self.root.ids.setup_base_device_gridlayout.bind(\
+            minimum_height=self.root.ids.setup_base_device_gridlayout.setter('height'))
         # fetch base items for setup
         for base_device in com_Database_Octmote.com_db_Device_List():
-            btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40, group='setup_base_device_button',)
+            btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,\
+                group='setup_base_device_button',)
             btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Device_Selected, base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
             self.base_device_guid_dict[base_device[0]] = base_device[1]
         # clear the children and reload to pick up new records
         if self.base_item_guid_dict:
             self.root.ids.setup_base_item_gridlayout.clear_widgets()
-        self.root.ids.setup_base_item_gridlayout.bind(minimum_height=self.root.ids.setup_base_item_gridlayout.setter('height'))
+        self.root.ids.setup_base_item_gridlayout.bind(\
+            minimum_height=self.root.ids.setup_base_item_gridlayout.setter('height'))
         # fetch items that users have added
         for item_device in com_Database_Octmote.com_db_Item_List():
-            btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40, group='setup_item_device_button',)
+            btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,\
+                group='setup_item_device_button',)
             btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Item_Selected, item_device[0]))
             self.root.ids.setup_base_item_gridlayout.add_widget(btn1)
             self.base_item_guid_dict[item_device[0]] = item_device[1]
@@ -297,8 +302,8 @@ class OctMoteApp(App):
             # check to see if rs232 device is already open
             if json_data["Protocol"]["Method"].lower() == "rs232":
                 if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
-                    self.rs232_devices_dict[json_data["Protocol"]["Host IP"]] = com_Telnet.OctMote_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
-                com_Telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.rs232_devices_dict[json_data["Protocol"]["Host IP"]] = com_telnet.OctMote_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
+                com_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
                 pass
             # check to see if IR device is already open
             elif json_data["Protocol"]["Method"].lower() == "ir":

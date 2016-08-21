@@ -55,8 +55,8 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Image
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 # simple reactor to present images to clients
-reactor.listenSSL(int(config_handle['MediaKrakenServer']['ImageWeb']),\
-    Site(File(config_handle['MediaKrakenServer']['MetadataImageLocal'])),\
+reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ImageWeb']),\
+    Site(File(option_config_json['MediaKrakenServer']['MetadataImageLocal'])),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
 

@@ -24,7 +24,7 @@ from common import common_metadata_isbndb
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-if config_handle['API']['ISBNdb'] is not None:
+if option_config_json['API']['ISBNdb'] is not None:
     # setup the isbndb class
     ISBNDB_CONNECTION = common_metadata_isbndb.CommonMetadataISBNdb()
 else:

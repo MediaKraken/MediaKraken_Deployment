@@ -34,7 +34,7 @@ import metadata_nfo_xml
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify thetvdb key exists for search
-if config_handle['API']['theTVdb'] is not None:
+if option_config_json['API']['theTVdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.com_TheTVDB_API()
     # show xml downloader and general api interface
     thetvdb_API = common_metadata_thetvdb.com_meta_TheTVDB_API()
@@ -43,7 +43,7 @@ else:
 
 
 # setup the tvmaze class
-if config_handle['API']['tvmaze'] is not None:
+if option_config_json['API']['tvmaze'] is not None:
     TVMAZE_CONNECTION = com_meta_tvmaze.com_meta_tvmaze_API()
 else:
     TVMAZE_CONNECTION = None

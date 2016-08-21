@@ -58,11 +58,11 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.db_Brainz()
-db_brainz.db_open(config_handle['MediaBrainz']['BrainzDBHost'],\
-    config_handle['MediaBrainz']['BrainzDBPort'],\
-    config_handle['MediaBrainz']['BrainzDBName'],\
-    config_handle['MediaBrainz']['BrainzDBUser'],\
-    config_handle['MediaBrainz']['BrainzDBPass'])
+db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],\
+    option_config_json['MediaBrainz']['BrainzDBPort'],\
+    option_config_json['MediaBrainz']['BrainzDBName'],\
+    option_config_json['MediaBrainz']['BrainzDBUser'],\
+    option_config_json['MediaBrainz']['BrainzDBPass'])
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,\

@@ -24,4 +24,4 @@ while True:
     if recv_data == "who is MediaKrakenServer?":
         # TODO   mk_network_ip_addr()
         server_socket.sendto("http:localhost:"\
-            + config_handle['MediaKrakenServer']['APIPort'], addr)
+            + option_config_json['MediaKrakenServer']['APIPort'], addr)

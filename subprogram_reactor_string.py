@@ -76,7 +76,7 @@ if __name__ == '__main__':
     config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(int(config_handle['MediaKrakenServer']['ListenPort']),\
+    reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ListenPort']),\
         MediaKrakenServerApp(), sslContext)
     reactor.run()
     # remove pid

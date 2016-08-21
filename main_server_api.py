@@ -46,7 +46,8 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         # open the database
-        self.config_handle, self.option_config_json, self.db_connection = common_config_ini.com_config_read()
+        self.config_handle, self.option_config_json,\
+            self.db_connection = common_config_ini.com_config_read()
         self.user_xref = []
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_API')
@@ -118,7 +119,7 @@ class MediaKrakenAPI(object):
         def user_items_sync(self, request, synctime):
             logggin.debug("req: %s", request.content.getvalue())
             items_added = []
-            for row_data in self.db_connection.db_kodi_user_sync_list_Added(synctime):
+            for row_data in self.db_connection.db_kodi_user_sync_list_added(synctime):
                 items_added.append(row_data[0])
             sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],\
                 "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,\
@@ -308,4 +309,4 @@ if __name__ == '__main__':
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     run_api = MediaKrakenAPI()
-    run_api.app.run("localhost", int(self.config_handle['MediaKrakenServer']['APIPort']))
+    run_api.app.run("localhost", int(self.option_config_json['MediaKrakenServer']['APIPort']))

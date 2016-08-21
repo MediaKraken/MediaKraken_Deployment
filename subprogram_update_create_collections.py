@@ -65,7 +65,7 @@ else:
 
 
 # verify themovietb key exists
-if config_handle['API']['themoviedb'] is not None:
+if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
     TMDB_API_Connection = common_metadata_tmdb.CommonMetadataTMDB()
 else:

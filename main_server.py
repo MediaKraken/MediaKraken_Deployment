@@ -84,24 +84,24 @@ if not os.path.isfile('./key/cacert.pem'):
         sys.exit()
 
 
-logging.info("Validate Paths")
-# validate paths in ini file
-# keep the checks split so user can be told which one is wrong
-if not os.path.isdir(config_handle['MediaKrakenServer']['MetadataImageLocal']):
-    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s",\
-        config_handle['MediaKrakenServer']['MetadataImageLocal']
-    sys.exit()
-if not os.path.isdir(config_handle['MediaKrakenServer']['BackupLocal']:
-    logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s",\
-        config_handle['MediaKrakenServer']['BackupLocal'])
-    sys.exit()
-
-
 logging.info("Open DB")
 # open the database
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+logging.info("Validate Paths")
+# validate paths in ini file
+# keep the checks split so user can be told which one is wrong
+if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
+    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
+    logging.critical("Invalid Path: %s",\
+        option_config_json['MediaKrakenServer']['MetadataImageLocal']
+    sys.exit()
+if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']:
+    logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
+    logging.critical("Invalid Path: %s",\
+        option_config_json['MediaKrakenServer']['BackupLocal'])
+    sys.exit()
 
 
 db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\

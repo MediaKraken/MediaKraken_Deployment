@@ -39,17 +39,17 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', N
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
-os.system('PGPASSWORD=' + config_handle['DB Connections']['PostDBPass']\
+os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass')\
     + ' pg_dump -U '\
-    + config_handle['DB Connections']['PostDBUser'] + ' '\
-    + config_handle['DB Connections']['PostDBName'] + ' -F c -f '\
-    + config_handle['MediaKrakenServer']['BackupLocal'] + '/' + backup_file_name)
+    + config_handle.get('DB Connections', 'PostDBUser') + ' '\
+    + config_handle.get('DB Connections', 'PostDBName') + ' -F c -f '\
+    + option_config_json['MediaKrakenServer']['BackupLocal'] + '/' + backup_file_name)
 
 # grab settings and options
 option_json = db_connection.db_opt_status_read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
     common_cloud.com_cloud_file_store(option_json['Backup']['BackupType'],\
-    config_handle['MediaKrakenServer']['BackupLocal'] + '/'\
+    option_config_json['MediaKrakenServer']['BackupLocal'] + '/'\
     + backup_file_name, backup_file_name, True)
 
 # log end

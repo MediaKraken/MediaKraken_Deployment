@@ -76,8 +76,8 @@ db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Sta
 
 
 sd = com_schedules_direct.CommonSchedulesDirect()
-sd.com_schedules_direct_login(config_handle['SD']['User'],\
-    config_handle['SD']['Password'])
+sd.com_schedules_direct_login(option_config_json['SD']['User'],\
+    option_config_json['SD']['Password'])
 status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass

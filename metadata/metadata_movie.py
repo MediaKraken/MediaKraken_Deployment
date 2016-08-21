@@ -37,7 +37,7 @@ from . import metadata_nfo_xml
 
 
 # verify themovietb key exists
-if config_handle['API']['themoviedb'] is not None:
+if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
     TMDB_CONNECTION = common_metadata_tmdb.com_metadata_tmdb_API()
 else:
