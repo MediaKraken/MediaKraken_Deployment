@@ -933,9 +933,9 @@ def movie_detail(guid):
             aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],\
                 json_ffmpeg['streams'][0]['height'])).replace('/', ':')
             # bitrate
-            bitrate = common_string.bytes2human(float(json_ffmpeg['format']['bit_rate']))
+            bitrate = common_string.com_string_bytes2human(float(json_ffmpeg['format']['bit_rate']))
             # file size
-            file_size = common_string.bytes2human(float(json_ffmpeg['format']['size']))
+            file_size = common_string.com_string_bytes2human(float(json_ffmpeg['format']['size']))
             # calculate a better runtime
             minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
             hours, minutes = divmod(minutes, 60)
@@ -1331,7 +1331,7 @@ def report_display_all_media():
     media_data = []
     for row_data in g.db_connection.db_known_media(offset, per_page):
         media_data.append((row_data['mm_media_path'],\
-            common_string.bytes2human(os.path.getsize(row_data['mm_media_path']))))
+            common_string.com_string_bytes2human(os.path.getsize(row_data['mm_media_path']))))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_known_media_count(),
