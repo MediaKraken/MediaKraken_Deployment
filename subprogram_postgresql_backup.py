@@ -29,7 +29,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Backup
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start

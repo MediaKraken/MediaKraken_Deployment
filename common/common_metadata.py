@@ -26,7 +26,7 @@ from . import common_config_ini
 from . import common_network
 
 
-config_handle = common_config_ini.com_config_read(False)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 base_image_path = config_handle['MediaKrakenServer']['MetadataImageLocal']
 if base_image_path.endswith('/'):

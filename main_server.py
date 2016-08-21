@@ -101,7 +101,7 @@ if not os.path.isdir(config_handle['MediaKrakenServer']['BackupLocal']:
 
 logging.info("Open DB")
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\

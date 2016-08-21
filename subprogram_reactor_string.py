@@ -57,7 +57,7 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # open the database
-        config_handle, self.db_connection = common_config_ini.com_config_read(True)
+        config_handle, option_config_json, self.db_connection = common_config_ini.com_config_read()
         # preload some data from database
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
@@ -72,8 +72,8 @@ if __name__ == '__main__':
         signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
-    config_handle = common_config_ini.com_config_read(False)
+        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c  
+    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
     sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
     reactor.listenSSL(int(config_handle['MediaKrakenServer']['ListenPort']),\

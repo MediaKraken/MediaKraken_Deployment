@@ -55,7 +55,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Tuner_Discovery')
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start

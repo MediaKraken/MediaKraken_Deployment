@@ -15,7 +15,8 @@ server_socket.bind(address)
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Broadcast')
 
 
-config_handle = common_config_ini.com_config_read(False)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
 # begin loop to respond to all broastcast messages
 while True:
     recv_data, addr = server_socket.recvfrom(2048)

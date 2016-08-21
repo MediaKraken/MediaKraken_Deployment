@@ -49,7 +49,7 @@ else:
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 total_download_attempts = 0

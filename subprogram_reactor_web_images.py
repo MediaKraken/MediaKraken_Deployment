@@ -53,7 +53,7 @@ else:
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
-config_handle = common_config_ini.com_config_read(False)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 # simple reactor to present images to clients
 reactor.listenSSL(int(config_handle['MediaKrakenServer']['ImageWeb']),\
     Site(File(config_handle['MediaKrakenServer']['MetadataImageLocal'])),\

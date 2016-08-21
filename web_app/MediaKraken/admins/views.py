@@ -39,7 +39,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 outside_ip = None
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def flash_errors(form):
@@ -108,7 +108,7 @@ def admins():
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
-                               =config_handle['MediaKrakenServer']['ListenPort'],
+                               =option_config_json['MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version='0.1.4',
                            data_server_uptime=common_system.com_system_Uptime(),
@@ -428,7 +428,7 @@ def admin_backup():
     backup_enabled = False
     backup_files = []
     for backup_local in common_file.com_file_Dir_List(\
-            config_handle['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
+            option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local', common_string.bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.com_cloud_Backup_List():

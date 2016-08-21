@@ -46,7 +46,7 @@ class MediaKrakenAPI(object):
 
     def __init__(self):
         # open the database
-        self.config_handle, self.db_connection = common_config_ini.com_config_read(True)
+        self.config_handle, self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.user_xref = []
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_API')

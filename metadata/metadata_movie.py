@@ -31,7 +31,7 @@ from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
 from common import common_metadata_rotten_tomatoes
 from common import common_metadata_tmdb
-config_handle = common_config_ini.com_config_read(False)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 from . import metadata_nfo_xml
 
