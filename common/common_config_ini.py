@@ -28,7 +28,7 @@ def com_config_read(open_database=True):
     import ConfigParser
     config_handle = ConfigParser.ConfigParser()
     config_handle.read("MediaKraken.ini")
-    if open_database == True:
+    if open_database:
         # open the database
         db_connection = database_base.MKServerDatabase()
         db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
