@@ -245,7 +245,7 @@ def admin_transmission():
     """
     Display transmission page
     """
-    trans_connection = common_transmission.CommonTransmission()
+    trans_connection = common_transmission.CommonTransmission(option_config_json)
     transmission_data = []
     if trans_connection is not None:
         torrent_no = 1
