@@ -1,4 +1,6 @@
-
+"""
+User view in webapp
+"""
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Blueprint, render_template, g, request, current_app, jsonify, redirect, url_for
@@ -78,7 +80,7 @@ def members():
                                                   format_number=True,
                                                  )
     return render_template("users/members.html", data_resume_media=resume_list,
-                           data_new_media=g.db_connection.db_read_media_New(7, offset, per_page),
+                           data_new_media=g.db_connection.db_read_media_new(7, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -315,8 +317,8 @@ def user_tv_page():
                 None, locale.format('%d', row_data['mm_count'], True)))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_web_tvmedia_list_count('TV Show',\
-                                                      None, None),
+                                                  total=g.db_connection.db_web_tvmedia_list_count(\
+                                                      'TV Show', None, None),
                                                   record_name='media',
                                                   format_total=True,
                                                   format_number=True,
@@ -424,8 +426,8 @@ def user_tv_show_detail_page(guid):
         data_season_data = g.db_connection.db_read_tvmetadata_eps_season(guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
-        m, s = divmod((float(data_runtime) * 60), 60)
-        h, m = divmod(m, 60)
+        minutes, seconds = divmod((float(data_runtime) * 60), 60)
+        hours, minutes = divmod(minutes, 60)
         # set watched
         try:
             watched_status = json_media['UserStats'][current_user.get_id()]
@@ -447,7 +449,7 @@ def user_tv_show_detail_page(guid):
                                data_watched_status=watched_status,
                                data_season_data=data_season_data,
                                data_season_count=data_season_count,
-                               data_runtime="%02dH:%02dM:%02dS" % (h, m, s)
+                               data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
                               )
 
 
@@ -718,10 +720,10 @@ def user_video_player_videojs(mtype, guid):
     if mtype == "hls":
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
         acodecs=['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
-        p=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
+        proc=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
             "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks + ["-vf"] + subtracks\
             + ["yadif=0:0:0", vid_name], shell=False)
-        logging.info("FFMPEG Pid: %s", p.pid)
+        logging.info("FFMPEG Pid: %s", proc.pid)
 
 #ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
 # -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
@@ -920,24 +922,25 @@ def movie_detail(guid):
             aspect_ratio = "NA"
             bitrate = "NA"
             file_size = "NA"
-            h = 0
-            m = 0
-            s = 0
+            hours = 0
+            minutes = 0
+            seconds = 0
             data_resolution = "NA"
             data_codec = "NA"
             data_file = "NA"
         else:
             # aspect ratio
-            aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'], json_ffmpeg['streams'][0]['height'])).replace('/', ':')
+            aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],\
+                json_ffmpeg['streams'][0]['height'])).replace('/', ':')
             # bitrate
             bitrate = common_string.bytes2human(float(json_ffmpeg['format']['bit_rate']))
             # file size
             file_size = common_string.bytes2human(float(json_ffmpeg['format']['size']))
             # calculate a better runtime
-            m, s = divmod(float(json_ffmpeg['format']['duration']), 60)
-            #m, s = divmod(json_metadata['runtime'], 60)
-            h, m = divmod(m, 60)
-            data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' + str(json_ffmpeg['streams'][0]['height'])
+            minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
+            hours, minutes = divmod(minutes, 60)
+            data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x'\
+                + str(json_ffmpeg['streams'][0]['height'])
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
         image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
@@ -981,7 +984,8 @@ def movie_detail(guid):
         # background image
         try:
             if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-                data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
+                data_background_image\
+                    = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
             else:
                 data_background_image = None
         except:
@@ -1038,7 +1042,7 @@ def movie_detail(guid):
                                data_watched_status=watched_status,
                                data_sync_status=sync_status,
                                data_cast=True,
-                               data_runtime="%02dH:%02dM:%02dS" % (h, m, s)
+                               data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
                               )
 
 
@@ -1165,6 +1169,9 @@ def search(name):
 @blueprint.route('/upload/', methods=['POST'])
 @login_required
 def upload():
+    """
+    Handle file upload from user
+    """
     if request.method == 'POST':
         file_handle = request.files['file']
         if file_handle and allowed_file(file_handle.filename):
@@ -1422,7 +1429,7 @@ def metadata_person_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_person'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_person'),
                                                   record_name='People',
                                                   format_total=True,
                                                   format_number=True,
@@ -1902,7 +1909,7 @@ def metadata_game_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_Table_Count('mm_metadata_game_software_info'),
+                                                  total=g.db_connection.db_table_count('mm_metadata_game_software_info'),
                                                   record_name='Games',
                                                   format_total=True,
                                                   format_number=True,
