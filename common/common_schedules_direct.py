@@ -98,7 +98,7 @@ class CommonSchedulesDirect(object):
             logging.error("SD lineup duplicate: %s", lineup_id)
         else:
             logging.info("SD lineup added: %s", lineup_id)
-        logging.debug("SD Lineup Add: %s-%s", resp.status_code, resp.json())  
+        logging.debug("SD Lineup Add: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
 

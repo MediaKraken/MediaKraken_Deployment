@@ -121,14 +121,14 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
-        smb_stuff = common_network_cifs.com_cifs_Share_API()
+        smb_stuff = common_network_cifs.CommonCIFSShare()
         addr, share, path = common_string.com_string_unc_to_addr_path(dir_path)
-        smb_stuff.com_cifs_Connect(addr)
+        smb_stuff.com_cifs_connect(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]\
                     + '\\' + file_name)
-        smb_stuff.com_cifs_Close()
+        smb_stuff.com_cifs_close()
     else:
         file_data = common_file.com_file_dir_list(dir_path, None, True, False)
     total_file_in_dir = len(file_data)
@@ -272,11 +272,13 @@ for row_data in db_connection.db_audit_paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
-        smb_stuff = common_network_cifs.com_cifs_Share_API()
-        addr, share, path = common_string.UNC_To_Addr_Share_Path(row_data['mm_media_dir_path'])
-        smb_stuff.com_cifs_Connect(addr)
+        smb_stuff = common_network_cifs.CommonCIFSShare()
+        addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
+        smb_stuff.com_cifs_connect(addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
-            if datetime.strptime(time.ctime(smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+            if datetime.strptime(time.ctime(\
+                    smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),\
+                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],\
                     str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],\
@@ -284,14 +286,15 @@ for row_data in db_connection.db_audit_paths():
         else:
             db_connection.db_notification_insert(('UNC Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
-        smb_stuff.com_cifs_Close()
+        smb_stuff.com_cifs_close()
     else:
         if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
             db_connection.db_notification_insert(('Library path not found: %s',\
                 (row_data['mm_media_dir_path'],)), True)
         else:
             # verify the directory inodes has changed
-            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])), "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),\
+                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],\
                     str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],\
