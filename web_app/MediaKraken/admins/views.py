@@ -86,7 +86,7 @@ def admins():
     data_alerts_dismissable = []
     data_alerts = []
     # read in the notifications
-    for row_data in g.db.db_Notification_Read():
+    for row_data in g.db_connection.db_Notification_Read():
         if row_data['mm_notification_dismissable']: # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],\
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
@@ -97,14 +97,14 @@ def admins():
     data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = g.db.db_Option_Status_Read()['mm_status_json']
+    scanning_json = g.db_connection.db_Option_Status_Read()['mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    for dir_path in g.db.db_Audit_Path_Status():
+    for dir_path in g.db_connection.db_Audit_Path_Status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
                            data_user_count=locale.format('%d',\
-                               g.db.db_User_List_Name_Count(), True),
+                               g.db_connection.db_User_List_Name_Count(), True),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
@@ -116,12 +116,12 @@ def admins():
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
                            data_count_media_files=locale.format('%d',\
-                               g.db.db_known_media_count(), True),
+                               g.db_connection.db_known_media_count(), True),
                            data_count_matched_media=locale.format('%d',\
-                               g.db.db_matched_media_count(), True),
+                               g.db_connection.db_matched_media_count(), True),
                            data_count_streamed_media=locale.format('%d', 0, True),
                            data_zfs_active=common_zfs.com_zfs_Available(),
-                           data_library=locale.format('%d', g.db.db_audit_paths_Count(), True),
+                           data_library=locale.format('%d', g.db_connection.db_audit_paths_count(), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages
@@ -139,13 +139,13 @@ def admin_users():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.db_User_List_Name_Count(),
+                                total=g.db_connection.db_User_List_Name_Count(),
                                 record_name='users',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('admin/admin_users.html',
-                           users=g.db.db_User_List_Name(offset, per_page),
+                           users=g.db_connection.db_User_List_Name(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -161,7 +161,7 @@ def admin_user_detail(guid):
     Display user details
     """
     return render_template('admin/admin_user_detail.html',\
-        data_user=g.db.db_User_Detail(guid))
+        data_user=g.db_connection.db_User_Detail(guid))
 
 
 #@blueprint.route("/dlna")
@@ -183,13 +183,13 @@ def admin_cron_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.db_cron_list_Count(False),
+                                total=g.db_connection.db_cron_list_Count(False),
                                 record_name='Cron Jobs',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template('admin/admin_cron.html',
-                           media_cron=g.db.db_cron_list(False, offset, per_page),
+                           media_cron=g.db_connection.db_cron_list(False, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -219,7 +219,7 @@ def admin_tvtuners():
     List tvtuners
     """
     tv_tuners = []
-    for row_data in g.db.db_tuner_list():
+    for row_data in g.db_connection.db_tuner_list():
         tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
         + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],\
         row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
@@ -258,8 +258,8 @@ def admin_transmission():
 @login_required
 @admin_required
 def admin_transmission_delete_page():
-    #g.db.db_Audit_Path_Delete(request.form['id'])
-    #g.db.db_commit()
+    #g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    #g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -267,8 +267,8 @@ def admin_transmission_delete_page():
 @login_required
 @admin_required
 def admin_transmission_edit_page():
-    #g.db.db_Audit_Path_Delete(request.form['id'])
-    #g.db.db_commit()
+    #g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    #g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -281,18 +281,18 @@ def admin_library():
     List all media libraries
     """
     if request.method == 'POST':
-        g.db.db_trigger_insert(('python', './subprogram_file_scan.py'))
+        g.db_connection.db_trigger_insert(('python', './subprogram_file_scan.py'))
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.db_audit_paths_Count(),
+                                total=g.db_connection.db_audit_paths_Count(),
                                 record_name='library dir(s)',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template("admin/admin_library.html",
-                           media_dir=g.db.db_audit_paths(offset, per_page),
+                           media_dir=g.db_connection.db_audit_paths(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -328,9 +328,9 @@ def admin_library_edit_page():
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))
                 # verify it doesn't exit and add
-                if g.db.db_Audit_Path_Check(request.form['library_path']) == 0:
-                    g.db.db_Audit_Path_Add(request.form['library_path'], request.form['Lib_Class'])
-                    g.db.db_commit()
+                if g.db_connection.db_Audit_Path_Check(request.form['library_path']) == 0:
+                    g.db_connection.db_Audit_Path_Add(request.form['library_path'], request.form['Lib_Class'])
+                    g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
@@ -342,7 +342,7 @@ def admin_library_edit_page():
         else:
             flash_errors(form)
     class_list = []
-    for row_data in g.db.db_media_class_list():
+    for row_data in g.db_connection.db_media_class_list():
         if row_data[2]: # flagged for display
             class_list.append((row_data[0], row_data[1]))
     return render_template("admin/admin_library_edit.html", form=form,
@@ -356,8 +356,8 @@ def admin_library_delete_page():
     """
     Delete library action 'page'
     """
-    g.db.db_Audit_Path_Delete(request.form['id'])
-    g.db.db_commit()
+    g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -365,7 +365,7 @@ def admin_library_delete_page():
 @login_required
 @admin_required
 def getLibraryById():
-    result = g.db.db_Audit_Path_by_UUID(request.form['id'])
+    result = g.db_connection.db_Audit_Path_by_UUID(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],\
         'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
 
@@ -374,7 +374,7 @@ def getLibraryById():
 @login_required
 @admin_required
 def updateLibrary():
-    g.db.db_Audit_Path_Update_by_UUID(request.form['new_path'],\
+    g.db_connection.db_Audit_Path_Update_by_UUID(request.form['new_path'],\
         request.form['new_class'], request.form['id'])
     return json.dumps({'status':'OK'})
 
@@ -386,8 +386,8 @@ def admin_user_delete_page():
     """
     Delete user action 'page'
     """
-    g.db.db_User_Delete(request.form['id'])
-    g.db.db_commit()
+    g.db_connection.db_User_Delete(request.form['id'])
+    g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -420,7 +420,7 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db.db_trigger_insert(('python',\
+                g.db_connection.db_trigger_insert(('python',\
                     './subprogram_postgresql_backup.py')) # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:
@@ -524,13 +524,13 @@ def admin_server_link_server():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                 per_page=per_page,
-                                total=g.db.db_link_list_Count(),
+                                total=g.db_connection.db_link_list_Count(),
                                 record_name='linked servers',
                                 format_total=True,
                                 format_number=True,
                                 )
     return render_template("admin/admin_link.html",
-                           data=g.db.db_link_list(offset, per_page),
+                           data=g.db_connection.db_link_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination)
@@ -543,8 +543,8 @@ def admin_link_delete_page():
     """
     Delete linked server action 'page'
     """
-    g.db.db_Link_Delete(request.form['id'])
-    g.db.db_commit()
+    g.db_connection.db_Link_Delete(request.form['id'])
+    g.db_connection.db_commit()
     return json.dumps({'status':'OK'})
 
 
@@ -623,10 +623,10 @@ def admin_database_statistics():
     Display database statistics page
     """
     db_stats_count = []
-    for row_data in g.db.db_Postgresql_Row_Count():
+    for row_data in g.db_connection.db_Postgresql_Row_Count():
         db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
     return render_template("admin/admin_server_database_stats.html",
-                           data_db_size=g.db.db_Postgresql_Table_Sizes(),
+                           data_db_size=g.db_connection.db_Postgresql_Table_Sizes(),
                            data_db_count=db_stats_count)
 
 
@@ -655,12 +655,12 @@ def before_request():
     """
     Executes before each request
     """
-    g.db = database_base.MKServerDatabase()
-    g.db.db_open(config_handle['DB Connections']['PostDBHost'],\
-        config_handle['DB Connections']['PostDBPort'],\
-        config_handle['DB Connections']['PostDBName'],\
-        config_handle['DB Connections']['PostDBUser'],\
-        config_handle['DB Connections']['PostDBPass'])
+    g.db_connection = database_base.MKServerDatabase()
+    g.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
+        config_handle.get('DB Connections', 'PostDBPort').strip(),\
+        config_handle.get('DB Connections', 'PostDBName').strip(),\
+        config_handle.get('DB Connections', 'PostDBUser').strip(),\
+        config_handle.get('DB Connections', 'PostDBPass').strip())
 
 
 @blueprint.teardown_request
@@ -668,4 +668,4 @@ def teardown_request(exception):
     """
     Executes after each request
     """
-    g.db.db_close()
+    g.db_connection.db_close()
