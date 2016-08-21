@@ -31,7 +31,7 @@ def com_config_read():
     if os.path.isfile("MediaKraken.ini"):
         config_handle.read("MediaKraken.ini")
     else:
-        config_handle.read("../MediaKraken.ini")       
+        config_handle.read("../MediaKraken.ini")
     # open the database
     db_connection = database_base.MKServerDatabase()
     db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
@@ -39,4 +39,4 @@ def com_config_read():
         config_handle.get('DB Connections', 'PostDBName').strip(),\
         config_handle.get('DB Connections', 'PostDBUser').strip(),\
         config_handle.get('DB Connections', 'PostDBPass').strip())
-    return config_handle, option_config_json, db_connection.db_opt_status_read()['mm_options_json'], db_connection
+    return config_handle, db_connection.db_opt_status_read()['mm_options_json'], db_connection
