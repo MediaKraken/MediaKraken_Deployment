@@ -358,7 +358,7 @@ class GameAuditer(threading.Thread):
             return True
         logging.debug("loading roms from db")
         # open the database
-        config_handle, db_connection = common_config_ini.com_config_read(True)
+        config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
         # read all the audited games
         conn_game = connect('db/game_database.db')
         curs_game = conn_game.cursor()

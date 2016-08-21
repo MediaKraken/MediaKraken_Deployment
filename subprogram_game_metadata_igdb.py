@@ -57,7 +57,7 @@ def main(argv):
 
 
 # open the database
-config_handle, db_connection = common_config_ini.com_config_read(True)
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read(True)
 
 
 if __name__ == "__main__":
