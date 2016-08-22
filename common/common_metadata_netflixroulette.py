@@ -35,7 +35,7 @@ def com_meta_flix_get_id(media_title):
     """
     Get id by name
     """
-    return NetflixRoulette.get_flix_id(media_title)
+    return NetflixRoulette.get_netflix_id(media_title)
 
 
 def com_meta_flix_get_director(media_title):
