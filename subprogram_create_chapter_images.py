@@ -59,11 +59,11 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.debug('value=%s', json_id)
     thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(config_handle['DB Connections']['PostDBHost'],\
-        config_handle['DB Connections']['PostDBPort'],\
-        config_handle['DB Connections']['PostDBName'],\
-        config_handle['DB Connections']['PostDBUser'],\
-        config_handle['DB Connections']['PostDBPass'])
+    thread_db.db_open(config_handle.get('DB Connections', 'PostDBHost'),\
+        config_handle.get('DB Connections', 'PostDBPort'),\
+        config_handle.get('DB Connections', 'PostDBName'),\
+        config_handle.get('DB Connections', 'PostDBUser'),\
+        config_handle.get('DB Connections', 'PostDBPass'))
     # begin image generation
     for chapter_data in json_obj['chapters']:
         # file path, time, output name
