@@ -29,7 +29,7 @@ from common import common_metadata_thetvdb
 from common import common_metadata_tv_intro
 from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
-import metadata_nfo_xml
+from . import metadata_nfo_xml
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -37,7 +37,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 if option_config_json['API']['theTVdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
     # show xml downloader and general api interface
-    thetvdb_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
+    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 else:
     THETVDB_CONNECTION = None
 
@@ -56,10 +56,10 @@ def tv_search_tvdb(db_connection, file_name):
     metadata_uuid = None
     if THETVDB_CONNECTION is not None:
         if 'year' in file_name:
-            tvdb_id = str(THETVDB_CONNECTION.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
                 file_name['year'], tvdb_id, lang_code, True))
         else:
-            tvdb_id = str(THETVDB_CONNECTION.com_TheTVDB_Search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
                 None, tvdb_id, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
@@ -79,7 +79,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\
-        = thetvdb_API.com_meta_TheTVDB_Get_ZIP_by_ID(tvdb_id)
+        = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
     if xml_show_data is not None:
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
@@ -119,9 +119,9 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db_connection,\
+    metadata_uuid, imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup_tv(db_connection,\
         nfo_data, xml_data, download_que_json, download_que_id)
-    logging.debug("tv look: %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id)
+    logging.debug("tv look: %s %s %s %s", metadata_uuid, imdb_id, tvdb_id, rt_id)
     if metadata_uuid is None:
         # if same as last, return last id and save lookup
         # check these dupes as the nfo/xml files might not exist to pull the metadata id from
