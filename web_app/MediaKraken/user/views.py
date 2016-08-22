@@ -134,12 +134,21 @@ def user_internet_twitch():
     for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
         logging.debug("stream: %s", stream_data)
         try:
-            twitch_media.append((stream_data['stream']['name'],\
-                stream_data['stream']['preview']['medium'], stream_data['stream']['game']))
+            if stream_data['stream']['game'] is None:
+                twitch_media.append((stream_data['stream']['name'],\
+                    stream_data['stream']['preview']['medium'], 'Not Available'))
+            else:
+                twitch_media.append((stream_data['stream']['name'],\
+                    stream_data['stream']['preview']['medium'], stream_data['stream']['game']))
         except:
-            twitch_media.append((stream_data['stream']['channel']['name'],\
-                stream_data['stream']['preview']['medium'],\
-                stream_data['stream']['channel']['game']))
+            if stream_data['stream']['channel']['game'] is None:
+                twitch_media.append((stream_data['stream']['channel']['name'],\
+                    stream_data['stream']['preview']['medium'],\
+                    'Not Available'))
+            else:
+                twitch_media.append((stream_data['stream']['channel']['name'],\
+                    stream_data['stream']['preview']['medium'],\
+                    stream_data['stream']['channel']['game']))
     return render_template("users/user_internet_twitch.html", media=twitch_media)
 
 
