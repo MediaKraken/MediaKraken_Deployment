@@ -10,3 +10,6 @@
 [submodule "MediaKraken_Build"]
 	path = MediaKraken_Build
 	url = ../MediaKraken_Build
+[submodule "KrakenStreamer"]
+	path = KrakenStreamer
+	url = ../KrakenStreamer
