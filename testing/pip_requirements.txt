@@ -4,3 +4,4 @@ pytest-selenium
 selenium
 coverage
 pytest-cov
+tox
