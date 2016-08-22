@@ -64,7 +64,8 @@ def db_meta_game_list_count(self):
     """
     # return list of games count
     """
-    pass
+    self.db_cursor.execute('select count(*) from mm_metadata_game_software_info')
+    return self.db_cursor.fetchone()[0]
 
 
 # TODO select subselect for speed

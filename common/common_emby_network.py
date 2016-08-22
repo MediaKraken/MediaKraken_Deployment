@@ -86,7 +86,7 @@ def com_net_emby_find_users(host_server):
             pass
         found_users[user_data['Name']] = (user_data['Id'], user_image_id)
         if user_image_id is not None:
-            common_network.Network_Fetch_Image_From_URL(host_server + '/Users/' + user_data['Id']\
+            common_network.mk_network_fetch_from_url(host_server + '/Users/' + user_data['Id']\
                 + '/Images/Primary', None)
     return found_users
 
@@ -142,7 +142,7 @@ def com_net_emby_sessions_list_open(host_server, user_id):
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Remote-control
-def com_net_emby_sessions_send_command(host_server, session_id, playstate_command,\
+def com_net_emby_session_command(host_server, session_id, playstate_command,\
         session_command):
     """
     Send command to specified session
@@ -157,6 +157,9 @@ def com_net_emby_sessions_send_command(host_server, session_id, playstate_comman
 
 
 def com_net_emby_user_view_list(host_server, user_id, headers):
+    """
+    Get user views
+    """
     return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views",\
         headers=headers)).read()
 
@@ -171,7 +174,7 @@ def com_net_emby_user_channel_list(host_server, user_id, headers):
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Channels
-def com_net_emby_user_channel_feature_list(host_server, channel_id, headers):
+def com_net_emby_channel_features(host_server, channel_id, headers):
     """
     Get list of features for channel
     """
@@ -199,7 +202,7 @@ def com_net_emby_user_channel_items(host_server, channel_id, user_id, headers):
 # https://github.com/MediaBrowser/Emby/wiki/Latest-Items
 # TODO grouping and such
 # TODO episodes
-def com_net_emby_user_latest_items_list(host_server, request_type, request_subtype,\
+def com_net_emby_user_latest_items(host_server, request_type, request_subtype,\
         request_limit, request_grouping, user_id, headers):
     """
     Get new media list from server
@@ -221,7 +224,9 @@ def com_net_emby_image_download():
     # download images
     # https://github.com/MediaBrowser/Emby/wiki/Images
     """
-    #for users, the url's are /Users/{Id}/Images/{Type} and /Users/{Id}/Images/{Type}/{Index}. For media items, it's /Items/{Id}/Images/{Type}, as well as /Items/{Id}/Images/{Type}/{Index}
+    #for users, the url's are /Users/{Id}/Images/{Type}
+    #and /Users/{Id}/Images/{Type}/{Index}. For media items,
+    #it's /Items/{Id}/Images/{Type}, as well as /Items/{Id}/Images/{Type}/{Index}
 # TODO types
 # TODO percentage complete
 # TODO played or not image

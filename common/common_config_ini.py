@@ -18,8 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import database as database_base
 import os
+import database as database_base
 
 
 def com_config_read():
