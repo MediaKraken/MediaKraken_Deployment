@@ -63,7 +63,7 @@ class CommonCIFSShare(object):
     Handle CIFS shares
     """
     def __init__(self):
-        pass
+        self.smb_conn = None
 
 
     def com_cifs_connect(self, ip_addr, user_name='guest', user_password=''):

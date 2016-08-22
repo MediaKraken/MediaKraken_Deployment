@@ -37,19 +37,19 @@ def com_hash_sha1_by_filename(file_name):
     Generate sha1 has by filename
     """
     if file_name.endswith('zip'):
-        zip = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
+        zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
         hash_dict = {}
-        for zippedFile in zip.namelist():
+        for zippedfile in zip_handle.namelist():
             try:
                 # calculate sha1 hash
                 SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-                SHA1.update(zip.read(zippedFile))
+                SHA1.update(zip_handle.read(zippedfile))
                 sha1_hash_data = SHA1.hexdigest()
-                hash_dict[zippedFile] = sha1_hash_data
+                hash_dict[zippedfile] = sha1_hash_data
             except:
                 Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
                         + "|Error on SHA1 of file")
-        zip.close()
+        zip_handle.close()
         if len(hash_dict) > 0:
             if len(hash_dict) == 1:
                 fileHASHListSingle.append(hash_dict.values()[0])
@@ -87,7 +87,7 @@ def com_hash_sha1_by_filename(file_name):
                 return hash_dict
         except:
             Client_GlobalData.skipped_files.append(os.path.normpath(file_name)
-                    + "|Error reading 7z")
+                                                   + "|Error reading 7z")
         return None
     else:
         sha1_hash_data = None
@@ -110,12 +110,13 @@ def com_hash_sha1_c(file_name):
     """
     num = 0
     while 1:
-        zip = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
-        for zippedFile in zip.namelist():
+        zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
+        for zippedfile in zip_handle.namelist():
             # calculate sha1 hash
-#            SHA1.update(zip.read(zippedFile))
-            zip_file_data = zip.read(zippedFile)
-            R = inline(com_c_code, ['zip_file_data'], support_code=com_sha1_code)
+#            SHA1.update(zip_handle.read(zippedfile))
+            zip_file_data = zip_handle.read(zippedfile)
+            R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],\
+                support_code=common_hash_c_code.COM_SHA1_CODE)
         num += 1
         if num > 5:
             break
@@ -137,7 +138,7 @@ def com_hash_crc32(file_name):
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
-def com_hash_ed2k(filePath):
+def com_hash_ed2k(filepath):
     """
     Returns the ed2k hash of a given file.
     """
@@ -154,11 +155,11 @@ def com_hash_ed2k(filePath):
         """
         Calc hash
         """
-        m = md4()
-        m.update(data)
-        return m
+        m_hash = md4()
+        m_hash.update(data)
+        return m_hash
 
-    with open(filePath, 'rb') as file_handle:
+    with open(filepath, 'rb') as file_handle:
         a = gen(file_handle)
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
@@ -173,7 +174,7 @@ def com_hash_thesubdb(file_name):
     """
     readsize = 64 * 1024
     with open(file_name, 'rb') as file_handle:
-        size = os.path.getsize(file_name)
+        # size = os.path.getsize(file_name)
         data = file_handle.read(readsize)
         file_handle.seek(-readsize, os.SEEK_END)
         data += file_handle.read(readsize)

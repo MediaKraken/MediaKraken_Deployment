@@ -15,6 +15,9 @@ class LoggingCursor(psycopg2.extensions.cursor):
     Use for cursor that logs all queries
     """
     def execute(self, sql, args=None):
+        """
+        Shut up pylint
+        """
         logger = logging.getLogger('sql_debug')
         logger.info(self.mogrify(sql, args))
         try:
@@ -31,6 +34,9 @@ class InfDateAdapter(object):
     def __init__(self, wrapped):
         self.wrapped = wrapped
     def getquoted(self):
+        """
+        Shut up pylint
+        """
         if self.wrapped == datetime.date.max:
             return b"'infinity'::date"
         elif self.wrapped == datetime.date.min:

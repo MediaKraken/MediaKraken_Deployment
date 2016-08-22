@@ -30,7 +30,7 @@ class ServerDatabaseBrainz(object):
         self.db_cursor = None
 
 
-    def db_brainz_open(self, PostDBHost, PostDBPort, PostDBName, PostDBUser, PostDBPass):
+    def db_brainz_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
         """
         # open database and pull in config from sqlite and create db if not exist
         """
@@ -40,7 +40,7 @@ class ServerDatabaseBrainz(object):
         #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
         #psycopg2.extras.register_default_json(loads=lambda x: x)
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-            % (PostDBName, PostDBUser, PostDBHost, int(PostDBPort), PostDBPass))
+            % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
         self.db_cursor = self.sql3_conn.cursor()
         self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
 #        self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class\
@@ -91,7 +91,7 @@ class ServerDatabaseBrainz(object):
         return self.db_cursor.fetchall()
 
 
-    def db_brainz_all_songs_by_record_uuid(self, record_id):
+    def db_brainz_all_songs_by_rec_uuid(self, record_id):
         """
         # read in all by recording id
         """

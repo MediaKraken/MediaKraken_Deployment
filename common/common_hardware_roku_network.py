@@ -67,9 +67,9 @@ def com_roku_network_app_icon(roku_addr, roku_port, roku_app_id):
     return urllib2.urlopen(roku_addr + ':' + roku_port + '/query/icon/' + roku_app_id)
 
 
-def com_roku_network_touch(roku_addr, roku_port, x, y):
+def com_roku_network_touch(roku_addr, roku_port, x_pos, y_pos):
     """
     'Click' screen
     """
-    return urllib2.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x)\
-        + '.0&touch.0.y=' + str(y) + '.0&touch.0.op=down')
+    return urllib2.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x_pos)\
+        + '.0&touch.0.y=' + str(y_pos) + '.0&touch.0.op=down')

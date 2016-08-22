@@ -26,7 +26,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 if option_config_json['API']['ISBNdb'] is not None:
     # setup the isbndb class
-    ISBNDB_CONNECTION = common_metadata_isbndb.CommonMetadataISBNdb()
+    ISBNDB_CONNECTION = common_metadata_isbndb.CommonMetadataISBNdb(option_config_json)
 else:
     ISBNDB_CONNECTION = None
 
