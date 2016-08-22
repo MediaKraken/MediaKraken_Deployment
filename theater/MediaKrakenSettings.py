@@ -19,7 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
 
-# base metaman settings
+# base mediakraken settings
 metaman_settings_base_json = json.dumps([
     {'type': 'title',
      'title': 'MediaKraken Server Settings'},

@@ -47,7 +47,7 @@ def test_main_login(driver):
     driver.find_element_by_id('main_button_login').click()
 
 
-def test_main_menu_metaman(driver):
+def test_main_menu(driver):
     """
     Click home page link
     """
