@@ -34,8 +34,8 @@ def db_media_random(self, return_image_type=None): # poster, backdrop, etc
         self.db_cursor.execute('select mm_metadata_localimage_json->\'LocalImages\'->>'\
             + return_image_type + ',mm_media_guid from mm_media,mm_metadata_movie'\
             ' where mm_media_metadata_guid = mm_metadata_guid'\
-            ' and mm_metadata_localimage_json->\'LocalImages\'->>%s'\
-            + ' > \'\' and random() < 0.01 limit 1', (return_image_type,))
+            ' and mm_metadata_localimage_json->\'LocalImages\'->>\'' + return_image_type + '\''\
+            + ' > \'\' and random() < 0.01 limit 1')
     try:
         return self.db_cursor.fetchone()
     except:
