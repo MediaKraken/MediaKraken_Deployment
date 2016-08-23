@@ -264,7 +264,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
                         ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
                         ' order by LOWER(mm_media_name)) offset %s limit %s',\
-                        (class_guid, class_guid, offset, list_limit))
+                        (class_guid, offset, list_limit))
     else:
         if list_type == "recent_addition":
             if not group_collection:
