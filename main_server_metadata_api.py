@@ -58,7 +58,7 @@ from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from common import common_network
 from common import common_thetvdb
-from database import database as database_base
+import database as database_base
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')
