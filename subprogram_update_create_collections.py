@@ -65,9 +65,9 @@ else:
 
 
 # verify themovietb key exists
-if option_config_json['API']['themoviedb'] is not None:
+if option_config_json['API']['theMovieDB'] is not None:
     # setup the thmdb class
-    TMDB_API_Connection = common_metadata_tmdb.CommonMetadataTMDB()
+    TMDB_API_Connection = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
     TMDB_API_Connection = None
     logging.critical("themoviedb API not available. Exiting program...")

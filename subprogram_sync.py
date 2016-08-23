@@ -47,12 +47,8 @@ def signal_receive(signum, frame):
 
 def worker(row_data):
     logging.debug("row: %s", row_data)
-    thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(config_handle.get('DB Connections', 'PostDBHost'),\
-        config_handle.get('DB Connections', 'PostDBPort'),\
-        config_handle.get('DB Connections', 'PostDBName'),\
-        config_handle.get('DB Connections', 'PostDBUser'),\
-        config_handle.get('DB Connections', 'PostDBPass'))
+    # open the database
+    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb

@@ -216,12 +216,8 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 
 def worker(audit_directory):
     data1, data2, dir_guid = audit_directory
-    thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(config_handle.get('DB Connections', 'PostDBHost'),\
-        config_handle.get('DB Connections', 'PostDBPort'),\
-        config_handle.get('DB Connections', 'PostDBName'),\
-        config_handle.get('DB Connections', 'PostDBUser'),\
-        config_handle.get('DB Connections', 'PostDBPass'))
+    # open the database
+    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     logging.debug('value=%s', data1)
     total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
         dir_guid, class_text_dict)
