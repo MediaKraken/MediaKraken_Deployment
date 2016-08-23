@@ -386,7 +386,7 @@ def worker(content_providers):
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
 #    while True:
-    for row_data in thread_db.db_download_read_by_provider(content_providers):
+    for row_data in thread_db.db_download_read_provider(content_providers):
         logging.debug("row: %s", row_data)
         # mdq_id,mdq_download_json
         if content_providers == 'anidb':
