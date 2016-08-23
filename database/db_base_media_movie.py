@@ -262,7 +262,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
                         ' and (mm_metadata_json->>\'belongs_to_collection\') is null'\
                         ' union select mm_metadata_collection_name as name,'\
                         ' mm_metadata_collection_guid as guid,'\
-                        ' null as mediajson, null as metajson'\
+                        ' null as mediajson, null as metajson,'\
                         ' null as metaimagejson'\
                         ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
