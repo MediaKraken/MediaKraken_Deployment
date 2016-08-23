@@ -79,7 +79,7 @@ def db_pgsql_set_iso_level(self, isolation_level):
     """
     # set isolation level
     """
-    self.db_cursor.set_isolation_level(isolation_level)
+    self.sql3_conn.set_isolation_level(isolation_level)
 
 
 def db_pgsql_table_exits(self, table_name):
