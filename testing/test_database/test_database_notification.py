@@ -38,9 +38,13 @@ class TestDatabaseNotification(object):
         self.db_connection.db_close()
 
 
-    # insert notifications
-    # def db_notification_insert(self, notification_data, notification_dismissable):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("notification_data", "notification_dismissable"), [
+        ('Test Notice', True),
+        ('Test nondismiss', False)])
+        # insert notifications
+    def test_db_notification_insert(self, notification_data, notification_dismissable):
+        self.db_connection.db_rollback()
+        self.db_connection.db_notification_insert(notification_data, notification_dismissable)
 
 
     @pytest.mark.parametrize(("offset", "records"), [
