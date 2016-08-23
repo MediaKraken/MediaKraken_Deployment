@@ -27,7 +27,7 @@ class CommonMetadataTheSportsDB(object):
     Class for interfacing with thesportsdb
     """
     def __init__(self, option_config_json):
-        self.thesportsdb_api_key = option_config_json['API']['thesportsdb']
+        self.thesportsdb_api_key = option_config_json['API']['TheSportsDB']
 
 
     def com_meta_thesportsdb_search_team_by_name(self, team_name):

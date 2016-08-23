@@ -30,7 +30,7 @@ class CommonMetadataTMDB(object):
     Class for interfacing with TMDB
     """
     def __init__(self, option_config_json):
-        tmdb.API_KEY = option_config_json['API']['themoviedb']
+        tmdb.API_KEY = option_config_json['API']['theMovieDB']
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
