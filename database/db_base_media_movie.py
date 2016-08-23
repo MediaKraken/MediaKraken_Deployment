@@ -246,7 +246,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
                         ' and mm_media_metadata_guid = mm_metadata_guid'\
                         ' and (mm_metadata_json->>\'belongs_to_collection\') is null'\
                         ' union select mm_metadata_collection_name as name,'\
-                        ' mm_metadata_collection_guid as guid, null as metaguid from xxxx'\
+                        ' mm_metadata_collection_guid as guid, null as metaguid'\
+                        ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
                         ' order by LOWER(mm_media_name) offset %s limit %s',\
                         (class_guid, offset, list_limit))
@@ -259,7 +260,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
                         ' and mm_media_metadata_guid = mm_metadata_guid'\
                         ' and (mm_metadata_json->>\'belongs_to_collection\') is null)'\
                         ' union (select mm_metadata_collection_name as name,'\
-                        ' mm_metadata_collection_guid as guid, null as metaguid from xxxx'\
+                        ' mm_metadata_collection_guid as guid, null as metaguid'\
+                        ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
                         ' order by LOWER(mm_media_name)) offset %s limit %s',\
                         (class_guid, class_guid, offset, list_limit))
