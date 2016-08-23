@@ -383,12 +383,8 @@ def worker(content_providers):
     Worker thread for limiter
     """
     logging.debug("name: %s", content_providers)
-    thread_db = database_base.MKServerDatabase()
-    thread_db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-        Config.get('DB Connections', 'PostDBPort').strip(),\
-        Config.get('DB Connections', 'PostDBName').strip(),\
-        Config.get('DB Connections', 'PostDBUser').strip(),\
-        Config.get('DB Connections', 'PostDBPass').strip())
+    # open the database
+    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
 #    while True:
     for row_data in thread_db.db_download_read_by_provider(content_providers):
         logging.debug("row: %s", row_data)
