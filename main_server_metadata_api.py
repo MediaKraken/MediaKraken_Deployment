@@ -30,16 +30,16 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import metadata_anime
-import metadata_game
-import metadata_identification
-import metadata_movie
-import metadata_music_video
-import metadata_music
-import metadata_periodicals
-import metadata_person
-import metadata_sports
-import metadata_tv
+from metadata import metadata_anime
+from metadata import metadata_game
+from metadata import metadata_identification
+from metadata import metadata_movie
+from metadata import metadata_music_video
+from metadata import metadata_music
+from metadata import metadata_periodicals
+from metadata import metadata_person
+from metadata import metadata_sports
+from metadata import metadata_tv
 from common import common_config_ini
 from common import common_file
 from common import common_hash
