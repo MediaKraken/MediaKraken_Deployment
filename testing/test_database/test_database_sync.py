@@ -38,7 +38,7 @@ class TestDatabaseSync(object):
         self.db_connection.db_close()
 
 
-    def db_sync_list_count(self):
+    def test_db_sync_list_count(self):
         """
         # return count of sync jobs
         """
