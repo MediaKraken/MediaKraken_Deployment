@@ -21,11 +21,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append('.')
-from common import common_radio
+from common import common_network_radio
 
 
 def test_common_network_radio():
     """
     # create the cache file for import
     """
-    common_radio.com_network_radio()
+    common_network_radio.com_net_radio()
