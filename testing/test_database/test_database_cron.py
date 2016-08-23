@@ -79,8 +79,10 @@ class TestDatabaseCron(object):
 
     @pytest.mark.parametrize(("cron_type"), [
         ('Game Audit'),
-        ('fakecron')]
-    # update cron run date
+        ('fakecron')])
     def test_db_cron_time_update(self, cron_type):
+        """
+        # update cron run date
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_cron_time_update(cron_type)
