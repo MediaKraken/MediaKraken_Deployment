@@ -114,7 +114,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
     total_files = 0
     logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
-    thread_db.db_audit_directory_timestamp_update(dir_path)
+    thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,\
         json.dumps({'Status': 'File scan', 'Pct': 100}))
     thread_db.db_commit()
