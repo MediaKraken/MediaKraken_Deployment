@@ -249,7 +249,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
                         ' mm_metadata_collection_guid as guid, null::jsonb as metajson'\
                         ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
-                        ' order by LOWER(mm_media_name) offset %s limit %s',\
+                        ' order by LOWER(name) offset %s limit %s',\
                         (class_guid, offset, list_limit))
                 else:
                     self.db_cursor.execute('select * from (select distinct'\
@@ -267,7 +267,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
 #                        ' null::jsonb as metaimagejson'\
 #                        ' from mm_metadata_collection'\
                         ' order by mm_media_metadata_guid, name) as temp'\
-                        ' order by LOWER(mm_media_name) offset %s limit %s',\
+                        ' order by LOWER(name) offset %s limit %s',\
                         (class_guid, offset, list_limit))
     else:
         if list_type == "recent_addition":
