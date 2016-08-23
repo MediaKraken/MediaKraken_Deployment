@@ -21,11 +21,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 import sys
 sys.path.append('.')
-from common import common_mediakraken
+from common import common_network_mediakraken
 
 
 def test_com_network_mediakraken_find_server():
     """
     Test function
     """
-    common_mediakraken.com_network_mediakraken_find_server()
+    common_network_mediakraken.com_net_mediakraken_find_server()
