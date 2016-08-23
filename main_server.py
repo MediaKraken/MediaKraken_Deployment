@@ -34,7 +34,7 @@ except:
 
 
 def signal_receive(signum, frame):
-    logging.infol('CHILD Main: Received USR1')
+    logging.info('CHILD Main: Received USR1')
     os.kill(proc.pid, signal.SIGTERM)
     os.kill(proc_image.pid, signal.SIGTERM)
     os.kill(proc_cron.pid, signal.SIGTERM)
