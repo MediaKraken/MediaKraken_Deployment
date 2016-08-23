@@ -66,7 +66,7 @@ class TestDatabaseUsers(object):
         # return all data for specified user
         """
         self.db_connection.db_rollback()
-        self.db_user_detail(guid)
+        self.db_connection.db_user_detail(guid)
 
 
     # remove user
