@@ -193,7 +193,8 @@ class MKServerDatabase(object):
         db_pgsql_row_count,\
         db_pgsql_vacuum_stat_by_day,\
         db_pgsql_vacuum_table,\
-        db_pgsql_set_iso_level
+        db_pgsql_set_iso_level,\
+        db_pgsql_table_exits
     from database.db_base_review import db_review_count,\
         db_review_list_by_tmdb_guid,\
         db_review_insert
