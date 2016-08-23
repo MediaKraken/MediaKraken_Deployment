@@ -43,7 +43,7 @@ from metadata import metadata_tv
 from common import common_config_ini
 from common import common_file
 from common import common_hash
-from common_metadata_limiter import *
+from common.common_metadata_limiter import *
 from common import common_logging
 from common import common_metadata
 from common import common_metadata_imvdb
