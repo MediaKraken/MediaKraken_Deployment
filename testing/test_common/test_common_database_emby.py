@@ -29,7 +29,8 @@ class TestCommonDatabaseEmby(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_database_emby.com_db_attach_emby(None)
+        self.db_connection = common_database_emby.CommonDatabaseEmby()
+        self.db_connection.com_db_open_emby(None)
 
 
     @classmethod
