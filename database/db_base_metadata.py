@@ -49,7 +49,7 @@ def db_meta_genre_list_count(self):
     # count all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
-        '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::json from mm_metadata_movie')
+        '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
 
