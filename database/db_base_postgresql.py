@@ -87,5 +87,4 @@ def db_pgsql_table_exits(self, table_name):
     Check to see if table exits. Will return NULL if not.
     """
     self.db_cursor.execute('SELECT to_regclass(%s)::text', (table_name,))
-    print('oid: %s', self.db_cursor.fetchone())
     return self.db_cursor.fetchone()[0]
