@@ -58,9 +58,15 @@ class TestDatabaseUsers(object):
         self.db_connection.db_user_list_name(offset, records)
 
 
-    # return all data for specified user
-    # def db_user_detail(self, guid):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("guid"), [
+        (1),
+        (923894894893)]) # not exist
+    def test_db_user_detail(self, guid):
+        """
+        # return all data for specified user
+        """
+        self.db_connection.db_rollback()
+        self.db_user_detail(guid)
 
 
     # remove user

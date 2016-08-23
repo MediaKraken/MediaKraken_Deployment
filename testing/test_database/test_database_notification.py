@@ -43,6 +43,9 @@ class TestDatabaseNotification(object):
         ('Test nondismiss', False)])
         # insert notifications
     def test_db_notification_insert(self, notification_data, notification_dismissable):
+        """
+        Test notice insert
+        """
         self.db_connection.db_rollback()
         self.db_connection.db_notification_insert(notification_data, notification_dismissable)
 
