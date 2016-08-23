@@ -3,7 +3,6 @@ class MKServerDatabase(object):
     Main database class for server
     """
     from database.db_base import db_open,\
-        db_open_isolation,\
         db_close,\
         db_commit,\
         db_rollback,\
