@@ -43,11 +43,11 @@ from metadata import metadata_tv
 from common import common_config_ini
 from common import common_file
 from common import common_hash
-from common import common_isbndb
-from com_meta_limiter import *
+from common_metadata_limiter import *
 from common import common_logging
 from common import common_metadata
 from common import common_metadata_imvdb
+from common import common_metadata_isbndb
 from common import common_metadata_limiter
 from common import common_metadata_musicbrainz
 from common import common_metadata_netflixroulette
