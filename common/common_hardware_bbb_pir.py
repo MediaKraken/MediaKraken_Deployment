@@ -22,13 +22,13 @@ import time
 
 GPIO.setup('P9_15', GPIO.IN)
 
-f = open('movement_log.txt', 'w')
+file_handle = open('movement_log.txt', 'w')
 
 while True:
     GPIO.wait_for_edge("P9_15", GPIO.RISING)
     log_start = time.strftime("%a, %d %b %Y %H:%M:%S")
     GPIO.wait_for_edge("P9_15", GPIO.FALLING)
     log_end = time.strftime("%a, %d %b %Y %H:%M:%S")
-    f.write("+" + "-"*40 + "\n")
-    f.write("| Start: %s\n" %log_start)
-    f.write("| End: %s\n" %log_end)
+    file_handle.write("+" + "-"*40 + "\n")
+    file_handle.write("| Start: %s\n" % log_start)
+    file_handle.write("| End: %s\n" % log_end)

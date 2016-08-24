@@ -25,4 +25,4 @@ from Adafruit_BBIO.SPI import SPI
 import Adafruit_BBIO.UART as UART
 
 # import the BBB usb serial lib to drive the arduinos
-from OctMote_BBB_USB_Serial import *
+from common_hardware_bbb_usb_serial import *
