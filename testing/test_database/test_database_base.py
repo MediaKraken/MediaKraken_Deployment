@@ -24,7 +24,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseActivity(object):
+class TestDatabaseBase(object):
 
 
     @classmethod
@@ -38,29 +38,34 @@ class TestDatabaseActivity(object):
         self.db_connection.db_close()
 
 
-    @pytest.mark.parametrize(("activity_name", "activity_overview", \
-        "activity_short_overview", "activity_type", "activity_itemid", "activity_userid",\
-        "activity_log_severity"), [
-        ('TestMediaKraken_Trigger Start', None, 'System: Trigger Start',\
-    'ServerTriggerStart', None, None, 'SystemTest')])
-    def test_db_activity_insert(self, activity_name, activity_overview, \
-            activity_short_overview, activity_type, activity_itemid, activity_userid,\
-            activity_log_severity):
+    @pytest.mark.parametrize(("resource_name"), [
+        ('mm_media'),
+        ('fake_table')])
+    def test_db_table_index_check(self, resource_name):
         """
-        Test activity insert
+        # check for table or index
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_activity_insert(activity_name, activity_overview, \
-            activity_short_overview, activity_type, activity_itemid, activity_userid,\
-            activity_log_severity
+        self.db_connection.db_table_index_check(resource_name)
 
 
-    @pytest.mark.parametrize(("days_old"), [
-        (7),
-        (400)])
-    def test_db_activity_purge(self, days_old):
+    @pytest.mark.parametrize(("table_name"), [
+        ('mm_media'),
+        ('fake_table')])
+    def test_db_table_count(self, table_name):
         """
-        Test function
+        # return count of records in table
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_activity_purge(days_old)
+        self.db_connection.db_table_count(table_name)
+
+
+    @pytest.mark.parametrize(("query_string"), [
+        ('select 1 from mm_media'),
+        ('select fake_colum from fake_table')])
+    def test_db_query(self, query_string):
+        """
+        # general run anything
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_query(query_string)
