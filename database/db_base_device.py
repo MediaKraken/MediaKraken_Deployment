@@ -55,8 +55,10 @@ def db_device_insert(self, device_type, device_json):
     """
     Insert a device into the database
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_device (mm_device_id, mm_device_type,'\
-        ' mm_device_json) values (%s,%s,%s)', (str(uuid.uuid4()), device_type, device_json))
+        ' mm_device_json) values (%s,%s,%s)', (new_guid, device_type, device_json))
+    return new_guid
 
 
 def db_device_update(self, guid, device_type, device_json):

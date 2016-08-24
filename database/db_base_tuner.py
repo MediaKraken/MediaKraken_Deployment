@@ -45,8 +45,10 @@ def db_tuner_insert(self, tuner_json):
     """
     Insert tuner into the database
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',\
-        (str(uuid.uuid4()), tuner_json))
+        (new_guid, tuner_json))
+    return new_guid
 
 
 def db_tuner_update(self, guid, tuner_json):

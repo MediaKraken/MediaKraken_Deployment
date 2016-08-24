@@ -25,9 +25,11 @@ def db_download_insert(self, provider, down_json):
     """
     Create/insert a download into the que
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_download_que (mdq_id,mdq_provider,mdq_download_json)'\
-        ' values (%s,%s,%s)', (str(uuid.uuid4()), provider, down_json))
+        ' values (%s,%s,%s)', (new_guid, provider, down_json))
     self.db_commit()
+    return new_guid
 
 
 ## read the download

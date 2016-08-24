@@ -26,10 +26,12 @@ def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
     """
     # insert media into database
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'\
         ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json)'\
-        ' values (%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), media_link_uuid, media_uuid,\
+        ' values (%s,%s,%s,%s,%s,%s)', (new_guid, media_link_uuid, media_uuid,\
         media_class_uuid, media_metadata_uuid, media_ffprobe_json))
+    return new_guid
 
 
 def db_read_remote_media(self, media_guid=None):

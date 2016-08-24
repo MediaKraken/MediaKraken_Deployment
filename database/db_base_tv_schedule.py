@@ -43,9 +43,11 @@ def db_tv_station_insert(self, station_id, channel_id):
     # insert station/channel unless it exists
     """
     if self.db_tv_station_exist(station_id, channel_id) == 0:
+        new_guid = str(uuid.uuid4())
         self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id, mv_tv_station_id,'\
             ' mv_tv_station_channel) values (%s, %s, %s)',\
-            (str(uuid.uuid4()), station_id, channel_id))
+            (new_guid, station_id, channel_id))
+        return new_guid
 
 
 def db_tv_station_exist(self, station_id, channel_id):
@@ -78,10 +80,12 @@ def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
             ' where mm_tv_schedule_station_id = %s and mm_tv_schedule_date = %s',\
             (schedule_json, station_id, schedule_date))
     else:
+        new_guid = str(uuid.uuid4())
         self.db_cursor.execute('insert into mm_tv_schedule (mm_tv_schedule_id,'\
             ' mm_tv_schedule_station_id, mm_tv_schedule_date, mm_tv_schedule_json)'\
             ' values (%s, %s, %s, %s)',\
-            (str(uuid.uuid4()), station_id, schedule_date, schedule_json))
+            (new_guid, station_id, schedule_date, schedule_json))
+        return new_guid
 
 
 def db_tv_program_insert(self, program_id, program_json):
@@ -95,10 +99,12 @@ def db_tv_program_insert(self, program_id, program_json):
             ' set mm_tv_schedule_program_json = %s where mm_tv_schedule_program_id = %s',\
             (program_json, program_id))
     else:
+        new_guid = str(uuid.uuid4())
         self.db_cursor.execute('insert into mm_tv_schedule_program'\
             ' (mm_tv_schedule_program_guid, mm_tv_schedule_program_id,'\
             ' mm_tv_schedule_program_json) values (%s, %s, %s)',\
-            (str(uuid.uuid4()), program_id, program_json))
+            (new_guid, program_id, program_json))
+        return new_guid
 
 
 def db_tv_schedule_by_date(self, display_date):

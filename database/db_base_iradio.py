@@ -28,8 +28,10 @@ def db_iradio_insert(self, radio_channel):
     if self.db_cursor.execute('select count(*) from mm_radio where mm_radio_adress = %s',\
         (radio_channel,)):
         if self.db_cursor.fetchall()[0][0] == 0:
+            new_guid = str(uuid.uuid4())
             self.db_cursor.execute('insert into mm_radio (mm_radio_guid,mm_radio_adress,'\
-                'mm_radio_active) values (%s,%s,true)', (str(uuid.uuid4()), radio_channel))
+                'mm_radio_active) values (%s,%s,true)', (new_guid, radio_channel))
+            return new_guid
 
 
 def db_iradio_list_count(self, active_station=True):

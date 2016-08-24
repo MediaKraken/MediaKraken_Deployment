@@ -38,10 +38,12 @@ def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,\
     """
     # insert
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_sports (mm_metadata_sports_guid,'\
         ' mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json,'\
         ' mm_metadata_sports_image_json) values (%s,%s,%s,%s,%s)',\
-        (str(uuid.uuid4()), series_id_json, event_name, show_detail, image_json))
+        (new_guid, series_id_json, event_name, show_detail, image_json))
+    return new_guid
 
 
 def db_metathesports_update(self, series_id_json, event_name, show_detail,

@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 try:
     import cPickle as pickle
-except:
+except: # pylint: disable=W0702
     import pickle
 
 
@@ -29,9 +29,11 @@ def db_trigger_insert(self, command_list):
     """
     # create/insert a trigger
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_trigger (mm_trigger_guid,mm_trigger_command)'\
-        ' values (%s,%s)', (str(uuid.uuid4()), pickle.dumps(command_list)))
+        ' values (%s,%s)', (new_guid, pickle.dumps(command_list)))
     self.db_commit()
+    return new_guid
 
 
 def db_triggers_read(self):

@@ -47,8 +47,10 @@ def db_link_insert(self, link_json):
     """
     Insert linked server
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_link (mm_link_guid, mm_link_options_json)'\
-        ' values (%s, %s)', (str(uuid.uuid4()), link_json))
+        ' values (%s, %s)', (new_guid, link_json))
+    return new_guid
 
 
 def db_link_delete(self, sync_guid):

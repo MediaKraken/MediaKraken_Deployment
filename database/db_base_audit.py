@@ -68,9 +68,11 @@ def db_audit_path_add(self, dir_path, class_guid):
     """
     # add media path
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
         ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)',\
-        (str(uuid.uuid4()), dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
+        (new_guid, dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
+    return new_guid
 
 
 def db_audit_path_check(self, dir_path):

@@ -64,9 +64,11 @@ def db_sync_insert(self, sync_path, sync_path_to, sync_json):
     """
     # insert sync job
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to,'\
-        ' mm_sync_options_json) values (%s, %s, %s, %s)', (str(uuid.uuid4()), sync_path,\
+        ' mm_sync_options_json) values (%s, %s, %s, %s)', (new_guid, sync_path,\
         sync_path_to, sync_json))
+    return new_guid
 
 
 def db_sync_delete(self, sync_guid):

@@ -41,8 +41,10 @@ def db_nas_insert(self, nas_json):
     """
     # insert record
     """
+    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)',\
-        (str(uuid.uuid4()), nas_json))
+        (new_guid, nas_json))
+    return new_guid
 
 
 def db_nas_update(self, guid, nas_json):
