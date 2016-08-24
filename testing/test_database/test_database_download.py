@@ -43,13 +43,6 @@ class TestDatabaseDownload(object):
 #        self.db_connection.db_rollback()
 
 
-#    ## read the download
-# this no longer exists
-#    def test_db_download_read(self):
-#        self.db_connection.db_Download_Read()
-#        self.db_connection.db_rollback()
-
-
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),
         ('fakeprovider')])

@@ -63,11 +63,11 @@ class TestDatabaseSync(object):
 #        self.db_connection.db_rollback()
 
 
-    # delete sync job
-    # def db_sync_delete(self, sync_guid):
+    # update progress
+    # def db_sync_progress_update(self, sync_guid, sync_percent):
 #        self.db_connection.db_rollback()
 
 
-    # update progress
-    # def db_sync_progress_update(self, sync_guid, sync_percent):
+    # delete sync job
+    # def db_sync_delete(self, sync_guid):
 #        self.db_connection.db_rollback()

@@ -72,11 +72,10 @@ class TestDatabaseDevices(object):
 #        self.db_connection.db_rollback()
 
 
-    # delete record
-    # def db_device_delete(self, guid):
-#        self.db_connection.db_rollback()
-
-
     # find detials by id
     # def db_device_read(self, guid):
+#        self.db_connection.db_rollback()
+
+    # delete record
+    # def db_device_delete(self, guid):
 #        self.db_connection.db_rollback()

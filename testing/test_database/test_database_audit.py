@@ -31,6 +31,7 @@ class TestDatabaseAudit(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -64,31 +65,37 @@ class TestDatabaseAudit(object):
 #        self.db_connection.db_rollback()
 
 
-    ## remove media path
-    #def db_audit_path_delete(self, lib_guid):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("dir_path", "class_guid"), [
+        ('/home/spoot/fakedirzz', 'realclassguid'),
+        ('/home/spoot', 'realclassguid')])
+    def test_db_audit_path_add(self, dir_path, class_guid):
+        """
+        ## add media path
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_audit_path_add(self, dir_path, class_guid)
 
 
-    ## add media path
-    #def db_audit_path_add(self, dir_path, class_guid):
-#        self.db_connection.db_rollback()
-
-
-    ## lib path check (dupes)
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
     def test_db_audit_path_check(self, dir_path):
         """
-        Test function
+        ## lib path check (dupes)
         """
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_check(dir_path)
 
 
-    ## update the timestamp for directory scans
-    #def db_audit_directory_timestamp_update(self, file_path):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("dir_path"), [
+        ('/home/spoot'),
+        ('/home/spoot/fakedirzz')])
+    def test_db_audit_directory_timestamp_update(self, dir_path):
+        """
+        ## update the timestamp for directory scans
+        """
+        self.db_connection.db_rollback()
+        self.db_conenction.db_audit_directory_timestamp_update(dir_path)
 
 
     ## read the paths to audit
@@ -104,6 +111,23 @@ class TestDatabaseAudit(object):
         self.db_connection.db_audit_paths(offset, records)
 
 
-    ## lib data per id
-    #def db_audit_path_by_uuid(self, dir_id):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("dir_id"), [
+        ('fake_guid'),
+        (self.new_guid)])
+    def test_db_audit_path_by_uuid(self, dir_id):
+        """
+        ## lib data per id
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_path_by_uuid(dir_id)
+
+
+    @pytest.mark.parametrize(("lib_guid"), [
+        ('fake_guid'),
+        (self.new_guid)])
+    def test_db_audit_path_delete(self, lib_guid):
+        """
+        ## remove media path
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_audit_path_delete(self, lib_guid)

@@ -84,12 +84,12 @@ def db_audit_path_check(self, dir_path):
     return self.db_cursor.fetchone()[0]
 
 
-def db_audit_dir_timestamp_update(self, file_path):
+def db_audit_dir_timestamp_update(self, dir_path):
     """
     # update the timestamp for directory scans
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_last_scanned = %s'\
-        ' where mm_media_dir_path = %s', (datetime.datetime.now(), file_path))
+        ' where mm_media_dir_path = %s', (datetime.datetime.now(), dir_path))
 
 
 # TODO subselect speed
