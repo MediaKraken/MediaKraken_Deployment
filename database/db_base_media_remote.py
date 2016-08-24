@@ -102,10 +102,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     first_query = True
     sync_query = ""
     if sync_movie is not None:
-        sync_query += ("select mm_media_guid, 'Movie', mm_media_ffprobe_json,'\
+        sync_query += ('select mm_media_guid, \'Movie\', mm_media_ffprobe_json,'\
             ' mm_metadata_media_id from mm_media, mm_metadata_movie'\
             ' where mm_media_metadata_guid = mm_metadata_guid'\
-            ' and mm_media_json->>\'DateAdded\' > %s", (date_last_sync,))
+            ' and mm_media_json->>\'DateAdded\' > %s', (date_last_sync,))
         first_query = False
 
     if sync_tv is not None:
