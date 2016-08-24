@@ -39,7 +39,8 @@ class TestDatabaseMediaRemote(object):
 
 
     # insert media into database
-    # def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid, media_metadata_uuid, media_ffprobe_json):
+    # def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,\
+    # media_metadata_uuid, media_ffprobe_json):
 #        self.db_connection.db_rollback()
 
 
@@ -58,10 +59,24 @@ class TestDatabaseMediaRemote(object):
 
     # processed via main_link........
     ## process new records from network sync event from linked server
-    #def db_Media_Remote_New_Data(self, link_uuid, link_records):
+    #def db_media_remote_new_data(self, link_uuid, link_records):
 #        self.db_connection.db_rollback()
 
 
-    # new media for link
-    # def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None, sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("date_last_sync", "sync_movie", "sync_tv", "sync_sports",\
+            "sync_music", "sync_music_video", "sync_book"), [
+                (20160824, True, None, None, None, None, None),
+                (20160824, None, True, None, None, None, None),
+                (20160824, None, None, True, None, None, None),
+                (20160824, None, None, None, True, None, None),
+                (20160824, None, None, None, None, True, None),
+                (20160824, None, None, None, None, None, True),
+                (20160824, None, None, None, None, None, None)])
+    def test_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
+            sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+        """
+        # new media for link
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_media_remote_read_new(date_last_sync, sync_movie, sync_tv,\
+            sync_sports, sync_music, sync_music_video, sync_book)
