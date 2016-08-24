@@ -72,8 +72,8 @@ class TestDatabaseMediaRemote(object):
                 (20160824, None, None, None, None, True, None),
                 (20160824, None, None, None, None, None, True),
                 (20160824, None, None, None, None, None, None)])
-    def test_db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None,\
-            sync_sports=None, sync_music=None, sync_music_video=None, sync_book=None):
+    def test_db_media_remote_read_new(self, date_last_sync, sync_movie, sync_tv,\
+            sync_sports, sync_music, sync_music_video, sync_book):
         """
         # new media for link
         """
