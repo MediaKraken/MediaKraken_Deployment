@@ -24,22 +24,14 @@ from twisted.internet import reactor
 from twisted.internet.protocol import Factory
 import sys
 from network import network_base_string_weblog as network_base
-from common import common_config_ini
-from common import common_file
 from common import common_logging
 from time import time
 import time  # yes, use both otherwise some time code below breaks
-import os
 import signal
 
 
 def signal_receive(signum, frame):
     print('CHILD Reactor String: Received USR1')
-    # remove pid
-    os.remove(pid_file)
-    # cleanup db
-    self.db_connection.db_rollback()
-    self.db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -51,10 +43,6 @@ class MediaKrakenServerApp(Factory):
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
-        # open the database
-        config_handle, option_config_json, self.db_connection = common_config_ini.com_config_read()
-        # preload some data from database
-        self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
 
@@ -69,11 +57,7 @@ if __name__ == '__main__':
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
-    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
-    sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ListenPort']),\
-        MediaKrakenServerApp(), sslContext)
+    ssl_context = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
+    reactor.listenSSL(8901, MediaKrakenServerApp(), ssl_context)
     reactor.run()
-    # remove pid
-    os.remove(pid_file)

@@ -22,7 +22,7 @@ try:
     import cPickle as pickle
 except:
     import pickle
-from twisted.internet.protocol import Factory, Protocol
+import bz2
 from twisted.protocols.basic import Int32StringReceiver
 from common import common_network
 
@@ -32,18 +32,15 @@ class NetworkEvents(Int32StringReceiver):
     Process the network events for the server
     """
     # init is called on every connection
-    def __init__(self, users, db_connection, genre_list, option_config_json):
+    def __init__(self, users):
         self.MAX_LENGTH = 32000000 # pylint: disable=C0103
         self.cpu_use_table = {}
         # server info
-        self.db_connection = db_connection
         self.users = users
         self.user_host_name = None
         self.user_ip_addy = None
         self.user_user_name = None
         self.user_verified = 0
-        self.server_ip = common_network.mk_network_get_default_ip()
-        self.server_port = option_config_json['MediaKrakenServer']['ListenPort']
 
 
     def connectionMade(self):
@@ -83,9 +80,10 @@ class NetworkEvents(Int32StringReceiver):
         # user commands
         elif message_words[0] == "LOGIN":
             pass
-        # general data
-        elif message_words[0] == "GENRELIST":
-            msg = "GENRELIST " + pickle.dumps(self.genre_list)
+        elif message_words[0] == "KODI_LOG":
+            log_data = bz2.decompress(message_words[1])
+        elif message_words[0] == "DEBUG_LOG":
+            log_data = bz2.decompress(message_words[1])
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
