@@ -63,7 +63,7 @@ class TestDatabaseBase(object):
     @pytest.mark.parametrize(("query_string"), [
         ('select 1 from mm_media'),
         ('select fake_colum from fake_table')])
-    def test_db_query(self, query_string, expected_result):
+    def test_db_query(self, query_string):
         """
         # general run anything
         """
