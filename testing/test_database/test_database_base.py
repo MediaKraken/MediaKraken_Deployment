@@ -60,12 +60,12 @@ class TestDatabaseBase(object):
         assert self.db_connection.db_table_count(table_name) == expected_result
 
 
-    @pytest.mark.parametrize(("query_string", "expected_result"), [
-        ('select 1 from mm_media', 1),
-        ('select fake_colum from fake_table', None)])
+    @pytest.mark.parametrize(("query_string"), [
+        ('select 1 from mm_media'),
+        ('select fake_colum from fake_table')])
     def test_db_query(self, query_string, expected_result):
         """
         # general run anything
         """
         self.db_connection.db_rollback()
-        assert self.db_connection.db_query(query_string) == expected_result
+        self.db_connection.db_query(query_string)
