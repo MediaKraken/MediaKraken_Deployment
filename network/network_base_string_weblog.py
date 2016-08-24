@@ -18,13 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-try:
-    import cPickle as pickle
-except:
-    import pickle
 import bz2
 from twisted.protocols.basic import Int32StringReceiver
-from common import common_network
+from common import common_file
 
 
 class NetworkEvents(Int32StringReceiver):
@@ -81,9 +77,11 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "LOGIN":
             pass
         elif message_words[0] == "KODI_LOG":
-            log_data = bz2.decompress(message_words[1])
+            common_file.com_file_save_data(\
+                './log_debug/Kodi', bz2.decompress(message_words[1]), False, True, '.log')
         elif message_words[0] == "DEBUG_LOG":
-            log_data = bz2.decompress(message_words[1])
+            common_file.com_file_save_data(\
+                './log_debug/Debug', bz2.decompress(message_words[1]), False, True, '.log')
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
