@@ -71,8 +71,6 @@ class NetworkEvents(Int32StringReceiver):
             self.user_user_name = message_words[1]
             self.users[message_words[1]] = self
             logging.debug("user: %s %s", self.user_host_name, self.user_ip_addy)
-        elif message_words[0] == "PING":  # Client_Network
-            msg = "PONG"
         # user commands
         elif message_words[0] == "LOGIN":
             pass
