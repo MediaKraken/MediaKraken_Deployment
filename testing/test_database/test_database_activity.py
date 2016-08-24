@@ -52,7 +52,7 @@ class TestDatabaseActivity(object):
         self.db_connection.db_rollback()
         self.db_connection.db_activity_insert(activity_name, activity_overview, \
             activity_short_overview, activity_type, activity_itemid, activity_userid,\
-            activity_log_severity
+            activity_log_severity)
 
 
     @pytest.mark.parametrize(("days_old"), [
