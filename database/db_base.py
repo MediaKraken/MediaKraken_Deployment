@@ -79,8 +79,11 @@ def db_table_count(self, table_name):
     """
     # return count of records in table
     """
-    self.db_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
-    return self.db_cursor.fetchone()[0]
+    try:
+        self.db_cursor.execute('select count(*) from ' + table_name) # can't %s due to ' inserted
+        return self.db_cursor.fetchone()[0]
+    except:
+        return None
 
 
 def db_query(self, query_string):
@@ -88,5 +91,8 @@ def db_query(self, query_string):
     # general run anything
     """
     logging.debug("query: %s", query_string)
-    self.db_cursor.execute(query_string)
-    return self.db_cursor.fetchall()
+    try:
+        self.db_cursor.execute(query_string)
+        return self.db_cursor.fetchall()
+    except:
+        return None

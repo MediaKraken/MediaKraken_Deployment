@@ -49,23 +49,23 @@ class TestDatabaseBase(object):
         self.db_connection.db_table_index_check(resource_name)
 
 
-    @pytest.mark.parametrize(("table_name"), [
-        ('mm_media'),
-        ('fake_table')])
-    def test_db_table_count(self, table_name):
+    @pytest.mark.parametrize(("table_name", "expected_result'), [
+        ('mm_options_and_status', 1),
+        ('fake_table', None)])
+    def test_db_table_count(self, table_name, expected_result):
         """
         # return count of records in table
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_table_count(table_name)
+        assert self.db_connection.db_table_count(table_name) == expected_result
 
 
-    @pytest.mark.parametrize(("query_string"), [
-        ('select 1 from mm_media'),
-        ('select fake_colum from fake_table')])
-    def test_db_query(self, query_string):
+    @pytest.mark.parametrize(("query_string", "expected_result"), [
+        ('select 1 from mm_media', 1),
+        ('select fake_colum from fake_table', None)])
+    def test_db_query(self, query_string, expected_result):
         """
         # general run anything
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_query(query_string)
+        assert self.db_connection.db_query(query_string) == expected_result
