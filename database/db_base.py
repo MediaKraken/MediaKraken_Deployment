@@ -71,7 +71,7 @@ def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
-    self.db_cursor.execute('SELECT to_regclass(\'public.%s\')', (resource_name,))
+    self.db_cursor.execute('SELECT to_regclass(\'public.%s\')' % (resource_name,))
     return self.db_cursor.fetchone()[0]
 
 
