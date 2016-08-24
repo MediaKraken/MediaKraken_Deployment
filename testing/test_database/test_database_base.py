@@ -49,7 +49,7 @@ class TestDatabaseBase(object):
         self.db_connection.db_table_index_check(resource_name)
 
 
-    @pytest.mark.parametrize(("table_name", "expected_result'), [
+    @pytest.mark.parametrize(("table_name", "expected_result"), [
         ('mm_options_and_status', 1),
         ('fake_table', None)])
     def test_db_table_count(self, table_name, expected_result):
