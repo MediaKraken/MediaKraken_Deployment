@@ -65,13 +65,13 @@ class TestDatabaseMediaRemote(object):
 
     @pytest.mark.parametrize(("date_last_sync", "sync_movie", "sync_tv", "sync_sports",\
             "sync_music", "sync_music_video", "sync_book"), [
-                (20160824, True, None, None, None, None, None),
-                (20160824, None, True, None, None, None, None),
-                (20160824, None, None, True, None, None, None),
-                (20160824, None, None, None, True, None, None),
-                (20160824, None, None, None, None, True, None),
-                (20160824, None, None, None, None, None, True),
-                (20160824, None, None, None, None, None, None)])
+                ('2016-08-24', True, None, None, None, None, None),
+                ('2016-08-24', None, True, None, None, None, None),
+                ('2016-08-24', None, None, True, None, None, None),
+                ('2016-08-24', None, None, None, True, None, None),
+                ('2016-08-24', None, None, None, None, True, None),
+                ('2016-08-24', None, None, None, None, None, True),
+                ('2016-08-24', None, None, None, None, None, None)])
     def test_db_media_remote_read_new(self, date_last_sync, sync_movie, sync_tv,\
             sync_sports, sync_music, sync_music_video, sync_book):
         """
