@@ -72,5 +72,5 @@ class TestDatabaseNas(object):
 #
 #    def db_nas_read(self, guid):
 #        """
-#        # find detials by nas
+#        # find details by nas
 #        """

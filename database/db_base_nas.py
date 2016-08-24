@@ -62,7 +62,7 @@ def db_nas_delete(self, guid):
 
 def db_nas_read(self, guid):
     """
-    # find detials by nas
+    # find details by nas
     """
     self.db_cursor.execute('select mm_nas_json from mm_nas where mm_nas_id = %s', (guid,))
     try:
