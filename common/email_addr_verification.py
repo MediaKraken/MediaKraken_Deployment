@@ -24,14 +24,15 @@ word = "(?:%s|%s)" % (atom, quoted_string)
 domain = "%s(?:\\x2e%s)*" % (sub_domain, sub_domain)
 local_part = "%s(?:\\x2e%s)*" % (word, word)
 addr_spec = "%s\\x40%s" % (local_part, domain)
-
 email_address = re.compile('\A%s\Z' % addr_spec)
 
+
 def Check_Email(email_address_to_check):
-    if (repr(email_address_to_check), email_address.match(email_address_to_check))[1] == None:
+    if (repr(email_address_to_check), email_address.match(email_address_to_check))[1] is None:
         return False # invalid
     else:
         return True # valid
+
 
 ##if __name__ == '__main__':
 ##  addresses = (
@@ -47,7 +48,7 @@ def Check_Email(email_address_to_check):
 ##  )
 ##  for address in addresses:
 ##    print "%s : %s" % (repr(address), email_address.match(address))
-##    if (repr(address), email_address.match(address))[1] == None:
+##    if (repr(address), email_address.match(address))[1] is None:
 ##        print "pooched"
 ##    else:
 ##        print "ok"
