@@ -88,7 +88,7 @@ class TestDatabaseMetadataPeople(object):
         # does person exist already by host/id
         """
         self.db_connection.db_rollback()
-        assert self.db_connection.db_meta_person_id_count(host_type, guid) = expected_result
+        assert self.db_connection.db_meta_person_id_count(host_type, guid) == expected_result
 
 
     # insert person
