@@ -49,7 +49,7 @@ def db_sync_list(self, offset=None, records=None, user_guid=None):
         if offset is None:
             self.db_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to,'\
                 ' mm_sync_options_json from mm_sync where mm_sync_options_json->\'User\' ? %s'\
-                ' order by mm_sync_options_json->\'Priority\' desc, mm_sync_path')
+                ' order by mm_sync_options_json->\'Priority\' desc, mm_sync_path', (user_guid,))
         else:
             self.db_cursor.execute('select mm_sync_guid uuid, mm_sync_path, mm_sync_path_to,'\
                 ' mm_sync_options_json from mm_sync where mm_sync_guid in (select mm_sync_guid'\
