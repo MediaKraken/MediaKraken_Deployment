@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -74,11 +75,23 @@ class TestDatabaseTVSchedule(object):
    #     self.db_connection.db_rollback()
 
 
-    # insert program info
-    # def db_tv_program_insert(self, program_id, program_json):
-    #    self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("program_id", "program_json"), [
+        ('100', json.dumps({'program': 'stuff'})),
+        ('100', json.dumps({'program': 'stuff update'}))]) # to test update
+    def db_tv_program_insert(self, program_id, program_json):
+        """
+        # insert program info
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_tv_program_insert(program_id, program_json)
 
 
-    # tv shows for schedule display
-    # def db_tv_schedule_by_date(self, display_date):
-     #   self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("display_date"), [
+        ('20160820'),
+        ('19700501')])
+    def test_db_tv_schedule_by_date(self, display_date):
+        """
+        # tv shows for schedule display
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_tv_schedule_by_date(display_date)
