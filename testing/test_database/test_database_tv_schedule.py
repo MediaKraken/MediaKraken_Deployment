@@ -78,7 +78,7 @@ class TestDatabaseTVSchedule(object):
     @pytest.mark.parametrize(("program_id", "program_json"), [
         ('100', json.dumps({'program': 'stuff'})),
         ('100', json.dumps({'program': 'stuff update'}))]) # to test update
-    def db_tv_program_insert(self, program_id, program_json):
+    def test_db_tv_program_insert(self, program_id, program_json):
         """
         # insert program info
         """
