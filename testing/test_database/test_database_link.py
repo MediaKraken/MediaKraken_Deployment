@@ -60,7 +60,7 @@ class TestDatabaseLink(object):
         self.db_connection.db_link_list(offset, records)
 
 
-    def test_db_link_insert(self, link_json):
+    def test_db_link_insert(self):
         """
         # insert link job
         """
