@@ -58,19 +58,37 @@ class TestDatabaseMetadataPeople(object):
         self.db_connection.db_meta_person_list(offset, records)
 
 
-    # return person data
-    # def db_meta_person_by_guid(self, guid):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("guid"), [
+        ('b5dbb1f7-f172-4d04-897d-f925f2200f8f'),
+        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')]) # TODO real id
+    def test_db_meta_person_by_guid(self, guid):
+        """
+        # return person data
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_person_by_guid(guid)
 
 
-    # return person data by name
-    # def db_meta_person_by_name(self, person_name):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("person_name"), [
+        ('fakename'),
+        ('fakename2')]) # TODO real name
+    def test_db_meta_person_by_name(self, person_name):
+        """
+        # return person data by name
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_person_by_name(person_name)
 
 
-    # does person exist already by host/id
-    # def db_meta_person_id_count(self, host_type, guid):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("host_type", "guid", "expected_result"), [
+        ('TMDB', 169, 1),
+        ('fake', 1000, 0)])
+    def test_db_meta_person_id_count(self, host_type, guid, expected_result):
+        """
+        # does person exist already by host/id
+        """
+        self.db_connection.db_rollback()
+        assert self.db_connection.db_meta_person_id_count(host_type, guid) = expected_result
 
 
     # insert person
@@ -83,6 +101,12 @@ class TestDatabaseMetadataPeople(object):
 #         self.db_connection.db_rollback()
 
 
-    # find other media for person
-    # def db_meta_person_as_seen_in(self, person_guid):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("person_guid"), [
+        ('b5dbb1f7-f172-4d04-897d-f925f2200f8f'),
+        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')]) # TODO real id
+    def test_db_meta_person_as_seen_in(self, person_guid):
+        """
+        # find other media for person
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_person_as_seen_in(person_guid)
