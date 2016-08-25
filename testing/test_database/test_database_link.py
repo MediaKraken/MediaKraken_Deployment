@@ -65,7 +65,7 @@ class TestDatabaseLink(object):
         # insert link job
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_link_insert(json.dumps('test': 'stuff'))
+        self.new_guid = self.db_connection.db_link_insert(json.dumps({'test': 'stuff'}))
         self.db_connection.db_commit()
 
 
