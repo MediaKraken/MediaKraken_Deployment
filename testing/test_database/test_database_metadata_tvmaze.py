@@ -54,7 +54,7 @@ class TestDatabaseMetadatatvmaze(object):
         """
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_metatvmaze_insert(series_id_json, tvmaze_name,\
-            show_detail, image_json):
+            show_detail, image_json)
 
 
     # updated
