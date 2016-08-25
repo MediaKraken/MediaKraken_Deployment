@@ -66,8 +66,8 @@ class TestDatabaseAudit(object):
 
 
     @pytest.mark.parametrize(("dir_path", "class_guid"), [
-        ('/home/spoot/fakedirzz', 'realclassguid'),
-        ('/home/spoot', 'realclassguid')])
+        ('/home/spoot/fakedirzz', 'b3420d91-999b-4d10-a582-3cddef2ce278'),
+        ('/home/spoot', '18479e1a-68a4-4137-8c96-b7d7dab5c66f')])
     def test_db_audit_path_add(self, dir_path, class_guid):
         """
         ## add media path
