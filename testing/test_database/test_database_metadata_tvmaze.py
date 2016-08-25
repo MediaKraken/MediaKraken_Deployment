@@ -48,12 +48,12 @@ class TestDatabaseMetadatatvmaze(object):
     @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "image_json"), [
         (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
         (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), json.dumps({'T': 'M'}))])
-    def test_db_metatvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
+    def test_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
         """
         # insert
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_metatvmaze_insert(series_id_json, tvmaze_name,\
+        self.new_guid = self.db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
             show_detail, image_json)
 
 
@@ -61,6 +61,7 @@ class TestDatabaseMetadatatvmaze(object):
     @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail"), [
         (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'})),
         (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}))])
-    def test_db_metatvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
+    def test_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
         self.db_connection.db_rollback()
-        self.db_connection.db_metatvmaze_update(series_id_json, tvmaze_name, show_detail, tvmaze_id)
+        self.db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,\
+            show_detail, tvmaze_id)
