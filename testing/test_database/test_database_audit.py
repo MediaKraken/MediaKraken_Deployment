@@ -111,23 +111,17 @@ class TestDatabaseAudit(object):
         self.db_connection.db_audit_paths(offset, records)
 
 
-    @pytest.mark.parametrize(("dir_id"), [
-        ('fake_guid'),
-        (self.new_guid)])
-    def test_db_audit_path_by_uuid(self, dir_id):
+    def test_db_audit_path_by_uuid(self):
         """
         ## lib data per id
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_audit_path_by_uuid(dir_id)
+        self.db_connection.db_audit_path_by_uuid(self.new_guid)
 
 
-    @pytest.mark.parametrize(("lib_guid"), [
-        ('fake_guid'),
-        (self.new_guid)])
-    def test_db_audit_path_delete(self, lib_guid):
+    def test_db_audit_path_delete(self):
         """
         ## remove media path
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_audit_path_delete(self, lib_guid)
+        self.db_connection.db_audit_path_delete(self.new_guid)
