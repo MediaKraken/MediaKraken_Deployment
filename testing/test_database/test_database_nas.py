@@ -32,7 +32,7 @@ class TestDatabaseNas(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-        self.new_guid
+        self.new_guid = None
 
 
     @classmethod
