@@ -77,7 +77,7 @@ class TestDatabaseTuner(object):
         self.db_connection.db_commit()
 
 
-     def test_db_tuner_by_serial(self, serial_no):
+     def test_db_tuner_by_serial(self):
          """
          # find detials by hardware id (serial)
          """
@@ -85,7 +85,7 @@ class TestDatabaseTuner(object):
          self.db_connection.db_tuner_by_serial('test2')
 
 
-    def test_db_tuner_delete(self, guid):
+    def test_db_tuner_delete(self):
         """
         # delete record
         """
