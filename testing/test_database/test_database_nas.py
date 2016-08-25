@@ -63,7 +63,7 @@ class TestDatabaseNas(object):
         # insert record
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_nas_insert(self, nas_json)
+        self.new_guid = self.db_connection.db_nas_insert(nas_json)
 
 
     def test_db_nas_update(self):

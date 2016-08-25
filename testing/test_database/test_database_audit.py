@@ -95,7 +95,7 @@ class TestDatabaseAudit(object):
         ## update the timestamp for directory scans
         """
         self.db_connection.db_rollback()
-        self.db_conenction.db_audit_directory_timestamp_update(dir_path)
+        self.db_connection.db_audit_directory_timestamp_update(dir_path)
 
 
     ## read the paths to audit
