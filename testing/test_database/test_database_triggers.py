@@ -31,6 +31,7 @@ class TestDatabaseTriggers(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -38,9 +39,12 @@ class TestDatabaseTriggers(object):
         self.db_connection.db_close()
 
 
-    # create/insert a trigger
-    # def db_trigger_insert(self, command_list):
-#         self.db_connection.db_rollback()
+    def test_db_trigger_insert(self):
+        """
+        # create/insert a trigger
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_trigger_insert(('ls', '-al'))
 
 
     def test_db_triggers_read(self):
@@ -51,6 +55,9 @@ class TestDatabaseTriggers(object):
         self.db_connection.db_triggers_read()
 
 
-    # remove trigger
-    # def db_triggers_delete(self, guid):
-#         self.db_connection.db_rollback()
+    def test_db_triggers_delete(self):
+        """
+        # remove trigger
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_triggers_delete(self.new_guid)
