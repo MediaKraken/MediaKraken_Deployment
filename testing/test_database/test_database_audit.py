@@ -73,7 +73,7 @@ class TestDatabaseAudit(object):
         ## add media path
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_audit_path_add(self, dir_path, class_guid)
+        self.new_guid = self.db_connection.db_audit_path_add(dir_path, class_guid)
 
 
     @pytest.mark.parametrize(("dir_path"), [
