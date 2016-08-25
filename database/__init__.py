@@ -181,10 +181,10 @@ class MKServerDatabase(object):
         db_read_tvmeta_episode
     from database.db_base_metadata_tvmaze import db_meta_tvmaze_changed_uuid,\
         db_meta_tvmaze_insert,\
-        db_meta_tvmaze_update,\
-        db_notification_delete
+        db_meta_tvmaze_update
     from database.db_base_notification import db_notification_insert,\
-        db_notification_read
+        db_notification_read,\
+        db_notification_delete
     from database.db_base_option_status import db_opt_status_read,\
         db_opt_status_update,\
         db_opt_status_update_scan,\
