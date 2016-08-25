@@ -69,9 +69,16 @@ class TestDatabaseUsers(object):
         self.db_connection.db_user_detail(guid)
 
 
-    # remove user
-    # def db_user_delete(self, user_guid):
-        #self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("user_guid"), [
+        (1),
+        (923894894893)]) # not exist
+    def test_db_user_delete(self, user_guid):
+        """
+        # remove user
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_user_delete(user_guid)
+        self.db_connection.db_rollback()
 
 
     # verify user logon
