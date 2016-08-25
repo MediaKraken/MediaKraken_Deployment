@@ -46,16 +46,19 @@ class TestDatabaseSync(object):
         self.db_connection.db_sync_list_count()
 
 
-    @pytest.mark.parametrize(("offset", "records"), [
-        (None, None),
-        (100, 100),
-        (100000000, 1000)])
-    def test_db_sync_list(self, offset, records):
+    @pytest.mark.parametrize(("offset", "records", "user_guid"), [
+        (None, None, None),
+        (100, 100, None),
+        (100000000, 1000, None),
+        (None, None, 1),
+        (100, 100, 1),
+        (100000000, 1000, 1)])
+    def test_db_sync_list(self, offset, records, user_guid):
         """
         # return list of sync jobs
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_sync_list(offset, records)
+        self.db_connection.db_sync_list(offset, records, user_guid)
 
 
     # insert sync job

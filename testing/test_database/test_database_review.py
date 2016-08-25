@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -38,16 +39,34 @@ class TestDatabaseReview(object):
         self.db_connection.db_close()
 
 
-    # count reviews for media
-    # def db_review_count(self, metadata_id):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("metadata_id"), [
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776'), #fake id
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776')]) # TODO real one
+    def test_db_review_count(self, metadata_id):
+        """
+        # count reviews for media
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_review_count(metadata_id)
 
 
-    # grab reviews for metadata
-    # def db_review_list_by_tmdb_guid(self, metadata_id):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("metadata_id"), [
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776'), #fake id
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776')]) # TODO real one
+    def test_db_review_list_by_tmdb_guid(self, metadata_id):
+        """
+        # grab reviews for metadata
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_review_list_by_tmdb_guid(metadata_id)
 
 
-    # insert record
-    # def db_review_insert(self, metadata_id, review_json):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("metadata_id", "review_json"), [
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776', json.dumps({'test': 123})), #fake id
+        ('ea0e5d88-4c7d-4c2b-b8df-6112a41ee776', json.dumps({'test2': 1323233}))]) # TODO real one
+    def test_db_review_insert(self, metadata_id, review_json):
+        """
+        # insert record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_review_insert(metadata_id, review_json)
