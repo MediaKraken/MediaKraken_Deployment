@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseDownload(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -38,9 +40,13 @@ class TestDatabaseDownload(object):
         self.db_connection.db_close()
 
 
-    # create/insert a download
-    # def db_download_insert(self, provider, down_json):
-#        self.db_connection.db_rollback()
+    def test_db_download_insert(self):
+        """
+        # create/insert a download
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_download_insert('themovedb',\
+            json.dumps({'test': 234}))
 
 
     @pytest.mark.parametrize(("provider_name"), [
@@ -54,15 +60,25 @@ class TestDatabaseDownload(object):
         self.db_connection.db_download_read_provider(provider_name)
 
 
-    # remove download
-    # def db_download_delete(self, guid):
-#        self.db_connection.db_rollback()
+    def test_db_download_update_provider(self):
+        """
+        # update provider
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_download_update_provider('thetvdb', self.new_guid)
 
 
-    # update provdier
-    # def db_download_update_provider(self, provider_name, guid):
-#        self.db_connection.db_rollback()
+    def test_db_download_update(self):
+        """
+        Update the json for download
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_download_update(json.dumps({'test2': 23}), self.new_guid)
 
 
-    # def db_download_update(self, update_json, guid):
-#        self.db_connection.db_rollback()
+    def test_db_download_delete(self):
+        """
+        # remove download
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_download_delete(self.new_guid)

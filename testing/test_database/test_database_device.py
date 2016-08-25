@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseDevices(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -62,20 +64,33 @@ class TestDatabaseDevices(object):
         self.db_connection.db_device_list(device_type, offset, records)
 
 
-    # insert record
-    # def db_device_insert(self, device_type, device_json):
-#        self.db_connection.db_rollback()
+    def test_db_device_insert(self):
+        """
+        # insert record
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_device_insert('test', json.dumps({'dev': 23}))
 
 
-    # update record
-    # def db_device_update(self, guid, device_type, device_json):
-#        self.db_connection.db_rollback()
+    def test_db_device_update(self):
+        """
+        # update record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_device_update(self.new_guid, 'test2', json.dumps({'dev2': 22333}))
 
 
-    # find detials by id
-    # def db_device_read(self, guid):
-#        self.db_connection.db_rollback()
+    def test_db_device_read(self):
+        """
+        # find detials by id
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_device_read(self.new_guid)
 
-    # delete record
-    # def db_device_delete(self, guid):
-#        self.db_connection.db_rollback()
+
+    def test_db_device_delete(self):
+        """
+        # delete record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_device_delete(self.new_guid)
