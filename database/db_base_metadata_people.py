@@ -150,6 +150,8 @@ def db_meta_person_as_seen_in(self, person_guid):
     # find other media for person
     """
     row_data = self.db_meta_person_by_guid(person_guid)
+    if row_data is None: # exist on not found person
+        return None
     logging.debug("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':
         sql_params = row_data['mmp_person_media_id']['id'],
