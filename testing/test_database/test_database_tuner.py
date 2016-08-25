@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseTuner(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -58,21 +60,35 @@ class TestDatabaseTuner(object):
         self.db_connection.db_tuner_list(offset, records)
 
 
-    # insert record
-    # def db_tuner_insert(self, tuner_json):
-#        self.db_connection.db_rollback()
+    def test_db_tuner_insert(self):
+        """
+        # insert record
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_tuner_insert(json.dumps({'ID': 'test'}))
 
 
-    # update record
-    # def db_tuner_update(self, guid, tuner_json):
-#        self.db_connection.db_rollback()
+    def test_db_tuner_update(self):
+        """
+        # update record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_tuner_update(self.new_guid, json.dumps({{'ID': 'test2'}}))
+        self.db_connection.db_commit()
 
 
-    # delete record
-    # def db_tuner_delete(self, guid):
-#        self.db_connection.db_rollback()
+     def test_db_tuner_by_serial(self, serial_no):
+         """
+         # find detials by hardware id (serial)
+         """
+         self.db_connection.db_rollback()
+         self.db_connection.db_tuner_by_serial('test2')
 
 
-    # find detials by hardware id (serial)
-    # def db_tuner_by_serial(self, serial_no):
-#         self.db_connection.db_rollback()
+    def test_db_tuner_delete(self, guid):
+        """
+        # delete record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_tuner_delete(self.new_guid)
+        self.db_connection.db_commit()

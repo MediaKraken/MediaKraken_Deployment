@@ -31,6 +31,7 @@ class TestDatabaseNotification(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -47,7 +48,8 @@ class TestDatabaseNotification(object):
         Test notice insert
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_notification_insert(notification_data, notification_dismissable)
+        self.new_guid = self.db_connection.db_notification_insert(notification_data,\
+            notification_dismissable)
 
 
     @pytest.mark.parametrize(("offset", "records"), [
@@ -62,6 +64,9 @@ class TestDatabaseNotification(object):
         self.db_connection.db_notification_read(offset, records)
 
 
-    # remove noticications
-    # def db_notification_delete(self, notification_uuid):
-#         self.db_connection.db_rollback()
+     def db_notification_delete(self):
+         """
+         # remove noticications
+         """
+         self.db_connection.db_rollback()
+         self.db_connection.db_notification_delete(self.new_guid)
