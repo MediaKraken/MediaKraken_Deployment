@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseNas(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid
 
 
     @classmethod
@@ -42,6 +44,7 @@ class TestDatabaseNas(object):
         """
         # count nas
         """
+        self.db_connection.db_rollback()
         self.db_connection.db_nas_count()
 
 
@@ -49,28 +52,41 @@ class TestDatabaseNas(object):
         """
         # read nas
         """
+        self.db_connection.db_rollback()
         self.db_connection.db_nas_list()
 
 
-#    def db_nas_insert(self, nas_json):
-#        """
-#        # insert record
-#        """
-#
-#
-#    def db_nas_update(self, guid, nas_json):
-#        """
-#        # update record
-#        """
-#
-#
-#    def db_nas_delete(self, guid):
-#        """
-#        # delete record
-#        """
-#
-#
-#    def db_nas_read(self, guid):
-#        """
-#        # find details by nas
-#        """
+    @pytest.mark.parametrize(("nas_json"), [
+        (json.dumps({'Nas': 234}))])
+    def test_db_nas_insert(self, nas_json):
+        """
+        # insert record
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_nas_insert(self, nas_json)
+
+
+    def test_db_nas_update(self):
+        """
+        # update record
+        """
+        self.db_connection.db_rollback()
+        self.db_nas_update(self.new_guid, json.dumps({'Nas': 484884}))
+        self.db_connection.db_commit()
+
+
+    def test_db_nas_read(self):
+        """
+        # find details by nas
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_nas_read(self.new_guid)
+
+
+    def test_db_nas_delete(self):
+        """
+        # delete record
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_nas_delete(self.new_guid)
+        self.db_connection.db_commit()
