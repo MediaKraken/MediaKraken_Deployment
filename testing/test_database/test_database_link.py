@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseLink(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -58,11 +60,19 @@ class TestDatabaseLink(object):
         self.db_connection.db_link_list(offset, records)
 
 
-    # insert sync job
-    # def db_Link_Insert(self, link_json):
-#        self.db_connection.db_rollback()
+    def test_db_link_insert(self, link_json):
+        """
+        # insert link job
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_link_insert(json.dumps('test': 'stuff'))
+        self.db_connection.db_commit()
 
 
-    # delete sync job
-    # def db_Link_Delete(self, sync_guid):
-#        self.db_connection.db_rollback()
+    def test_db_link_delete(self):
+        """
+        # delete link job
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_link_delete(self.new_guid)
+        self.db_connection.db_commit()
