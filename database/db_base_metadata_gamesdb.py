@@ -27,7 +27,7 @@ def db_meta_gamesdb_system_insert(self, platform_id, platform_name,\
     # insert gamesdb game system
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_metadata_gamedb_systems_info(gsdb_id_pk,'\
+    self.db_cursor.execute('insert into mm_metadata_gamedb_systems_info(gsdb_id,'\
         ' gsdb_game_system_id, gsdb_game_system_name, gsdb_game_system_alias,'\
         ' gsdb_game_system_json) values (%s, %s, %s, %s, %s)',\
         (new_guid, platform_id, platform_name, platform_alias, platform_json))
