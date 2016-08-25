@@ -52,8 +52,8 @@ def db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,\
     """
     Update tv series in db
     """
-    #self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,
-        #mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s
-        #where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',
-        #(series_id_json, tvmaze_name, show_detail, tvmaze_id))
+    self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s,'\
+        'mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s '\
+        'where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s',\
+        (series_id_json, tvmaze_name, show_detail, tvmaze_id))
     pass
