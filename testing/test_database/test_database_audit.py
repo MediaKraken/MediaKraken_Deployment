@@ -90,12 +90,12 @@ class TestDatabaseAudit(object):
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
-    def test_db_audit_directory_timestamp_update(self, dir_path):
+    def test_db_audit_dir_timestamp_update(self, dir_path):
         """
         ## update the timestamp for directory scans
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_audit_directory_timestamp_update(dir_path)
+        self.db_connection.db_audit_dir_timestamp_update(dir_path)
 
 
     ## read the paths to audit
