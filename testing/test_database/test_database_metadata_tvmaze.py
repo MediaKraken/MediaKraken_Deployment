@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import pytest
+import json
 import sys
 sys.path.append('.')
 import database as database_base
@@ -31,6 +32,7 @@ class TestDatabaseMetadatatvmaze(object):
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.new_guid = None
 
 
     @classmethod
@@ -43,11 +45,22 @@ class TestDatabaseMetadatatvmaze(object):
 #        self.db_connection.db_rollback()
 
 
-    # insert
-    # def db_metatvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "image_json"), [
+        (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
+        (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), json.dumps({'T': 'M'}))])
+    def test_db_metatvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
+        """
+        # insert
+        """
+        self.db_connection.db_rollback()
+        self.new_guid = self.db_connection.db_metatvmaze_insert(series_id_json, tvmaze_name,\
+            show_detail, image_json):
 
 
     # updated
-    # def db_metatvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
-#         self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "image_json"), [
+        (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
+        (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), json.dumps({'T': 'M'}))])
+    def test_db_metatvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
+        self.db_connection.db_rollback()
+        self.db_connection.db_metatvmaze_update(series_id_json, tvmaze_name, show_detail, tvmaze_id)
