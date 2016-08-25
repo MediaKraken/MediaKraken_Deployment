@@ -313,7 +313,7 @@ def user_tv_page():
     page, per_page, offset = common_pagination.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
-    for row_data in g.db_connection.db_web_tvmedia_list('TV Show', None, per_page, False, offset):
+    for row_data in g.db_connection.db_web_tvmedia_list(None, per_page, False, offset):
         # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*),
         # 3 - mm_metadata_tvshow_localimage_json
         try:
@@ -327,7 +327,7 @@ def user_tv_page():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(\
-                                                      'TV Show', None, None),
+                                                      None, None),
                                                   record_name='media',
                                                   format_total=True,
                                                   format_number=True,
