@@ -58,9 +58,9 @@ class TestDatabaseMetadatatvmaze(object):
 
 
     # updated
-    @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "image_json"), [
-        (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
-        (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), json.dumps({'T': 'M'}))])
+    @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail"), [
+        (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'})),
+        (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}))])
     def test_db_metatvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
         self.db_connection.db_rollback()
         self.db_connection.db_metatvmaze_update(series_id_json, tvmaze_name, show_detail, tvmaze_id)
