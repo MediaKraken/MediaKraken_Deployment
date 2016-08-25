@@ -64,10 +64,10 @@ class TestDatabaseNotification(object):
         self.db_connection.db_notification_read(offset, records)
 
 
-     def test_db_notification_delete(self):
-         """
-         # remove noticications
-         """
-         self.db_connection.db_rollback()
-         self.db_connection.db_notification_delete(self.new_guid)
-         self.db_connection.db_commit()
+    def test_db_notification_delete(self):
+        """
+        # remove noticications
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_notification_delete(self.new_guid)
+        self.db_connection.db_commit()

@@ -77,12 +77,12 @@ class TestDatabaseTuner(object):
         self.db_connection.db_commit()
 
 
-     def test_db_tuner_by_serial(self):
-         """
-         # find detials by hardware id (serial)
-         """
-         self.db_connection.db_rollback()
-         self.db_connection.db_tuner_by_serial('test2')
+    def test_db_tuner_by_serial(self):
+        """
+        # find detials by hardware id (serial)
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_tuner_by_serial('test2')
 
 
     def test_db_tuner_delete(self):
