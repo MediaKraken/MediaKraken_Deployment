@@ -71,7 +71,7 @@ class TestDatabaseNas(object):
         # update record
         """
         self.db_connection.db_rollback()
-        self.db_nas_update(self.new_guid, json.dumps({'Nas': 484884}))
+        self.db_connection.db_nas_update(self.new_guid, json.dumps({'Nas': 484884}))
         self.db_connection.db_commit()
 
 
