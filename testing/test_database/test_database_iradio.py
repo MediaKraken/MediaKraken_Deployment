@@ -38,9 +38,15 @@ class TestDatabaseiradio(object):
         self.db_connection.db_close()
 
 
-    # insert iradio channel
-    # def db_iradio_insert(self, radio_channel):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("radio_channel"), [
+        ('http://www.mediakraken.org'),
+        ('http://www.mediakraken.org')]) # so it dupes
+    def test_db_iradio_insert(self, radio_channel):
+        """
+        # insert iradio channel
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_iradio_insert(radio_channel)
 
 
     @pytest.mark.parametrize(("active_station"), [
