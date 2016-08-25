@@ -54,4 +54,3 @@ def db_notification_delete(self, notification_uuid):
     """
     self.db_cursor.execute('delete from mm_notification where mm_notification_guid = %s',\
         (notification_uuid,))
-    self.db_cursor.commit()
