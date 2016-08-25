@@ -73,7 +73,7 @@ class TestDatabaseTuner(object):
         # update record
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_tuner_update(self.new_guid, json.dumps({{'ID': 'test2'}}))
+        self.db_connection.db_tuner_update(self.new_guid, json.dumps({'ID': 'test2'}))
         self.db_connection.db_commit()
 
 
