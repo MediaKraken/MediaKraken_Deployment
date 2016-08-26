@@ -244,22 +244,6 @@ def admin_server_settings():
                            form=AdminSettingsForm(request.form))
 
 
-@blueprint.route("/database")
-@blueprint.route("/database/")
-@login_required
-@admin_required
-def admin_database_statistics():
-    """
-    Display database statistics page
-    """
-    db_stats_count = []
-    for row_data in g.db_connection.db_pgsql_row_count():
-        db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
-    return render_template("admin/admin_server_database_stats.html",
-                           data_db_size=g.db_connection.db_pgsql_table_sizes(),
-                           data_db_count=db_stats_count)
-
-
 @blueprint.before_request
 def before_request():
     """
