@@ -253,7 +253,7 @@ def admin_log_mediakraken():
     Display server settings page
     """
     log_list = common_file.com_file_dir_list('../log_debug', 'log', False, False, True, False)
-    return render_template("admin/admin_server_log_list.html", data_list=log_list))
+    return render_template("admin/admin_server_log_list.html", data_list=log_list)
 
 
 @blueprint.before_request
