@@ -29,7 +29,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///user.db"
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'user.db')
     DEBUG_TB_ENABLED = False # Disable Debug toolbar
 
 
