@@ -40,6 +40,7 @@ def com_net_mediakraken_find_server():
         logging.critical('Network_Find_Server: Failed to create socket')
         sys.exit()
     server_hosts_found = {}
+    logging.info("end time %s", t_end)
     while time.time() < t_end:
         try:
             search_socket.sendto("who is MediaKrakenServer?", ('<broadcast>', 9101))
