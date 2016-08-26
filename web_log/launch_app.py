@@ -13,7 +13,7 @@ from WebLog.app import create_app
 from common import common_logging
 
 # start logging
-common_logging.com_logging_start('../log/WebLog_WebApp')
+common_logging.com_logging_start('../log_debug/WebLog_WebApp')
 logging.info('Creating weblog instance')
 # defaults to PROD config
 application = create_app()
