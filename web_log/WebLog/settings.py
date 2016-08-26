@@ -38,7 +38,7 @@ class DevConfig(Config):
     """Development configuration."""
     ENV = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///user.db"
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'user.db')
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True # Don't bundle/minify static assets
     CACHE_TYPE = 'simple' # Can be "memcached", "redis", etc.
