@@ -72,9 +72,15 @@ class TestDatabaseCollection(object):
         self.db_connection.db_collection_guid_by_name(collection_name)
 
 
-    # find guid of collection name
-    # def db_collection_by_tmdb(self, tmdb_id):
-#        self.db_connection.db_rollback()
+    @pytest.mark.parametrize(("tmdb_id"), [
+        (393379),
+        (2)]) # fake id
+    def test_db_collection_by_tmdb(self, tmdb_id):
+        """
+        # find guid of collection id
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_collection_by_tmdb(tmdb_id)
 
 
     # insert collection
