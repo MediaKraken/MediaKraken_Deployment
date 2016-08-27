@@ -100,3 +100,6 @@
 [submodule "Flask-WTF"]
 	path = Flask-WTF
 	url = ../Flask-WTF
+[submodule "pytvdbapi"]
+	path = pytvdbapi
+	url = ../pytvdbapi
