@@ -58,3 +58,18 @@
 [submodule "tmdbsimple"]
 	path = tmdbsimple
 	url = ../tmdbsimple
+[submodule "fastnumbers"]
+	path = fastnumbers
+	url = ../fastnumbers
+[submodule "Flask"]
+	path = Flask
+	url = ../Flask
+[submodule "twisted"]
+	path = twisted
+	url = ../twisted
+[submodule "scandir"]
+	path = scandir
+	url = ../scandir
+[submodule "kivy"]
+	path = kivy
+	url = ../kivy

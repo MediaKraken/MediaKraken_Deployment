@@ -20,7 +20,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 import time
-import scandir
+# built into 3.5 so try first then fallback to py2.x lib
+try:
+    from os import scandir, walk
+except ImportError:
+    from scandir import scandir, walk
 try:
     import cPickle as pickle
 except:
