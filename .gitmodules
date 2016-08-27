@@ -73,3 +73,9 @@
 [submodule "kivy"]
 	path = kivy
 	url = ../kivy
+[submodule "flask-sqlalchemy"]
+	path = flask-sqlalchemy
+	url = ../flask-sqlalchemy
+[submodule "rxv"]
+	path = rxv
+	url = ../rxv
