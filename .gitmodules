@@ -14,71 +14,71 @@
 	path = KrakenStreamer
 	url = ../KrakenStreamer
 [submodule "pitchfork"]
-	path = pitchfork
+	path = submodule/pitchfork
 	url = ../pitchfork
 [submodule "subliminal"]
-	path = subliminal
+	path = submodule/subliminal
 	url = ../subliminal
 [submodule "xmltodict"]
-	path = xmltodict
+	path = submodule/xmltodict
 	url = ../xmltodict
 [submodule "guessit"]
-	path = guessit
+	path = submodule/guessit
 	url = ../guessit
 [submodule "videojs-contrib-hls"]
-	path = videojs-contrib-hls
+	path = submodule/videojs-contrib-hls
 	url = ../videojs-contrib-hls
 [submodule "video.js"]
-	path = video.js
+	path = submodule/video.js
 	url = ../video.js
 [submodule "videojs-youtube"]
-	path = videojs-youtube
+	path = submodule/videojs-youtube
 	url = ../videojs-youtube
 [submodule "videojs-vimeo"]
-	path = videojs-vimeo
+	path = submodule/videojs-vimeo
 	url = ../videojs-vimeo
 [submodule "omdb.py"]
-	path = omdb.py
+	path = submodule/omdb.py
 	url = ../omdb.py
 [submodule "python-twitch"]
-	path = python-twitch
+	path = submodule/python-twitch
 	url = ../python-twitch
 [submodule "psycopg2"]
-	path = psycopg2
+	path = submodule/psycopg2
 	url = ../psycopg2
 [submodule "pygal"]
-	path = pygal
+	path = submodule/pygal
 	url = ../pygal
 [submodule "watchdog"]
-	path = watchdog
+	path = submodule/watchdog
 	url = ../watchdog
 [submodule "natsort"]
-	path = natsort
+	path = submodule/natsort
 	url = ../natsort
 [submodule "tmdbsimple"]
-	path = tmdbsimple
+	path = submodule/tmdbsimple
 	url = ../tmdbsimple
 [submodule "fastnumbers"]
-	path = fastnumbers
+	path = submodule/fastnumbers
 	url = ../fastnumbers
 [submodule "Flask"]
-	path = Flask
+	path = submodule/Flask
 	url = ../Flask
 [submodule "twisted"]
-	path = twisted
+	path = submodule/twisted
 	url = ../twisted
 [submodule "scandir"]
-	path = scandir
+	path = submodule/scandir
 	url = ../scandir
 [submodule "kivy"]
-	path = kivy
+	path = submodule/kivy
 	url = ../kivy
 [submodule "flask-sqlalchemy"]
-	path = flask-sqlalchemy
+	path = submodule/flask-sqlalchemy
 	url = ../flask-sqlalchemy
 [submodule "rxv"]
-	path = rxv
+	path = submodule/rxv
 	url = ../rxv
 [submodule "passwordmeter"]
-	path = passwordmeter
+	path = submodule/passwordmeter
 	url = ../passwordmeter
