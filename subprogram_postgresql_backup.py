@@ -43,7 +43,7 @@ os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass')\
     + ' pg_dump -U '\
     + config_handle.get('DB Connections', 'PostDBUser') + ' '\
     + config_handle.get('DB Connections', 'PostDBName') + ' -F c -f '\
-    + option_config_json['MediaKrakenServer']['BackupLocal'] + '/' + backup_file_name)
+    + os.path.join(option_config_json['MediaKrakenServer']['BackupLocal'], backup_file_name))
 
 cloud_handle = common_cloud.CommonCloud(option_config_json)
 # grab settings and options
