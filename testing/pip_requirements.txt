@@ -5,3 +5,4 @@ selenium
 coverage
 pytest-cov
 tox
+pyflakes
