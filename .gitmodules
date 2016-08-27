@@ -37,3 +37,24 @@
 [submodule "videojs-vimeo"]
 	path = videojs-vimeo
 	url = ../videojs-vimeo
+[submodule "omdb.py"]
+	path = omdb.py
+	url = ../omdb.py
+[submodule "python-twitch"]
+	path = python-twitch
+	url = ../python-twitch
+[submodule "psycopg2"]
+	path = psycopg2
+	url = ../psycopg2
+[submodule "pygal"]
+	path = pygal
+	url = ../pygal
+[submodule "watchdog"]
+	path = watchdog
+	url = ../watchdog
+[submodule "natsort"]
+	path = natsort
+	url = ../natsort
+[submodule "tmdbsimple"]
+	path = tmdbsimple
+	url = ../tmdbsimple
