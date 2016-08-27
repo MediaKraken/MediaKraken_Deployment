@@ -88,3 +88,15 @@
 [submodule "rtsimple"]
 	path = submodule/rtsimple
 	url = ../rtsimple
+[submodule "flask-paginate"]
+	path = submodule/flask-paginate
+	url = ../flask-paginate
+[submodule "Flask-Moment"]
+	path = submodule/Flask-Moment
+	url = ../Flask-Moment
+[submodule "Flask-Login"]
+	path = Flask-Login
+	url = ../Flask-Login
+[submodule "Flask-WTF"]
+	path = Flask-WTF
+	url = ../Flask-WTF
