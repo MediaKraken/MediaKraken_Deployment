@@ -95,11 +95,14 @@
 	path = submodule/Flask-Moment
 	url = ../Flask-Moment
 [submodule "Flask-Login"]
-	path = Flask-Login
+	path = submodule/Flask-Login
 	url = ../Flask-Login
 [submodule "Flask-WTF"]
-	path = Flask-WTF
+	path = submodule/Flask-WTF
 	url = ../Flask-WTF
 [submodule "pytvdbapi"]
-	path = pytvdbapi
+	path = submodule/pytvdbapi
 	url = ../pytvdbapi
+[submodule "pillow"]
+	path = submodule/pillow
+	url = ../pillow
