@@ -58,7 +58,6 @@ from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from common import common_network
 from common import common_thetvdb
-import database as database_base
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -103,7 +102,8 @@ else:
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0] / common_metadata_limiter.API_LIMIT['anidb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]\
+     / common_metadata_limiter.API_LIMIT['anidb'][1])
 def anidb(thread_db, download_data):
     """
     Rate limiter for AniDB
@@ -115,19 +115,22 @@ def anidb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0] / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]\
+     / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
 def chart_lyrics(thread_db, download_data):
     """
     Rate limiter for Chart Lyrics
     """
-    logging.debug("here i am in chart_lyrics rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in chart_lyrics rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0] / common_metadata_limiter.API_LIMIT['comicvine'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]\
+     / common_metadata_limiter.API_LIMIT['comicvine'][1])
 def comicvine(thread_db, download_data):
     """
     Rate limiter for ComicVine
@@ -139,7 +142,8 @@ def comicvine(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0] / common_metadata_limiter.API_LIMIT['giantbomb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]\
+     / common_metadata_limiter.API_LIMIT['giantbomb'][1])
 def giantbomb(thread_db, download_data):
     """
     Rate limiter for GiantBomb
@@ -151,7 +155,8 @@ def giantbomb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0] / common_metadata_limiter.API_LIMIT['imdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]\
+     / common_metadata_limiter.API_LIMIT['imdb'][1])
 def imdb(thread_db, download_data):
     """
     Rate limiter for IMDB
@@ -163,7 +168,8 @@ def imdb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0] / common_metadata_limiter.API_LIMIT['imvdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]\
+     / common_metadata_limiter.API_LIMIT['imvdb'][1])
 def imvdb(thread_db, download_data):
     """
     Rate limiter for IMVdb
@@ -175,31 +181,36 @@ def imvdb(thread_db, download_data):
             thread_db.db_download_update_provider('theaudiodb', download_data['mdq_id'])
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0] / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]\
+     / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
 def musicbrainz(thread_db, download_data):
     """
     Rate limiter for MusicBrainz
     """
-    logging.debug("here i am in musicbrainz rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in musicbrainz rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['netflixroulette'][0] / common_metadata_limiter.API_LIMIT['netflixroulette'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['netflixroulette'][0]\
+     / common_metadata_limiter.API_LIMIT['netflixroulette'][1])
 def netflixroulette(thread_db, download_data):
     """
     Rate limiter for NetflixRoulette
     """
-    logging.debug("here i am in netflixroulette rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in netflixroulette rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0] / common_metadata_limiter.API_LIMIT['omdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]\
+     / common_metadata_limiter.API_LIMIT['omdb'][1])
 def omdb(thread_db, download_data):
     """
     Rate limiter for OMDB
@@ -211,7 +222,8 @@ def omdb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0] / common_metadata_limiter.API_LIMIT['pitchfork'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]\
+     / common_metadata_limiter.API_LIMIT['pitchfork'][1])
 def pitchfork(thread_db, download_data):
     """
     Rate limiter for Pitchfork
@@ -223,53 +235,62 @@ def pitchfork(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['rotten_tomatoes'][0] / common_metadata_limiter.API_LIMIT['rotten_tomatoes'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['rotten_tomatoes'][0]\
+     / common_metadata_limiter.API_LIMIT['rotten_tomatoes'][1])
 def rotten_tomatoes(thread_db, download_data):
     """
     Rate limiter for Rotten Tomatoes
     """
-    logging.debug("here i am in rotten_tomatoes rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in rotten_tomatoes rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0] / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]\
+     / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
 def televisiontunes(thread_db, download_data):
     """
     Rate limiter for Television Tunes
     """
-    logging.debug("here i am in televisiontunes rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in televisiontunes rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0] / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]\
+     / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
 def theaudiodb(thread_db, download_data):
     """
     Rate limiter for TheAudioDB
     """
-    logging.debug("here i am in theaudiodb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in theaudiodb rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0] / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]\
+    / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
 def thegamesdb(thread_db, download_data):
     """
     Rate limiter for thegamesdb
     """
-    logging.debug("here i am in thegamesdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in thegamesdb rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thelogodb'][0] / common_metadata_limiter.API_LIMIT['thelogodb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['thelogodb'][0]\
+     / common_metadata_limiter.API_LIMIT['thelogodb'][1])
 def thelogodb(thread_db, download_data):
     """
     Rate limiter for thelogodb
@@ -281,56 +302,70 @@ def thelogodb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0] / common_metadata_limiter.API_LIMIT['themoviedb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]\
+     / common_metadata_limiter.API_LIMIT['themoviedb'][1])
 def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
     logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_uuid = metadata_movie.movie_search_tmdb(thread_db, download_data['mdq_download_json']['Path'])
+        metadata_uuid = metadata_movie.movie_search_tmdb(thread_db,\
+            download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
             thread_db.db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
             # determine if the metadata is not downloaded
-            if thread_db.db_meta_guid_by_tmdb(download_data['mdq_download_json']['ProviderMetaID']) is None:
+            if thread_db.db_meta_guid_by_tmdb(\
+                    download_data['mdq_download_json']['ProviderMetaID']) is None:
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
             else:
                 thread_db.db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         if download_data['mdq_download_json']['ProviderMetaID'][0:2] != 'tt': # imdb id check
-            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(download_data['mdq_download_json']['ProviderMetaID'])
+            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
+                download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
                 download_data['mdq_download_json'].update({'ProviderMetaID': tmdb_id})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
         else:
-            metadata_movie.movie_fetch_save_tmdb(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
+            metadata_movie.movie_fetch_save_tmdb(thread_db,\
+                download_data['mdq_download_json']['ProviderMetaID'])
             download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
+        metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db,\
+            download_data['mdq_download_json']['ProviderMetaID'])
         download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-        thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), download_data['mdq_id'])
+        thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+            download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        metadata_movie.movie_fetch_save_tmdb_review(thread_db, download_data['mdq_download_json']['ProviderMetaID'])
+        metadata_movie.movie_fetch_save_tmdb_review(thread_db,\
+            download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_Download_Delete(download_data['mdq_id'])
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0] / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]\
+     / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
 def thesportsdb(thread_db, download_data):
     """
     Rate limiter for TheSportsDB
     """
-    logging.debug("here i am in thesportsdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in thesportsdb rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0] / common_metadata_limiter.API_LIMIT['thetvdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]\
+     / common_metadata_limiter.API_LIMIT['thetvdb'][1])
 def thetvdb(thread_db, download_data):
     """
     Rate limiter for theTVdb
@@ -342,7 +377,8 @@ def thetvdb(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0] / common_metadata_limiter.API_LIMIT['tvmaze'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]\
+     / common_metadata_limiter.API_LIMIT['tvmaze'][1])
 def tvmaze(thread_db, download_data):
     """
     Rate limiter for TVMaze
@@ -354,7 +390,8 @@ def tvmaze(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0] / common_metadata_limiter.API_LIMIT['tv_intros'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]\
+     / common_metadata_limiter.API_LIMIT['tv_intros'][1])
 def tv_intros(thread_db, download_data):
     """
     Rate limiter for TV Intros
@@ -366,12 +403,14 @@ def tv_intros(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvshowtime'][0] / common_metadata_limiter.API_LIMIT['tvshowtime'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['tvshowtime'][0]\
+     / common_metadata_limiter.API_LIMIT['tvshowtime'][1])
 def tvshowtime(thread_db, download_data):
     """
     Rate limiter for TVShowTime
     """
-    logging.debug("here i am in tvshowtime rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in tvshowtime rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":

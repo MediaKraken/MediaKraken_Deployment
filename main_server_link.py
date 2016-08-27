@@ -46,7 +46,6 @@ metaapp = None
 def signal_receive(signum, frame):
     global proc_ffserver
     print('CHILD Link: Received USR1')
-    os.kill(proc_ffserver.pid)
     sys.stdout.flush()
     sys.exit(0)
 
@@ -100,7 +99,7 @@ class TheaterFactory(ClientFactory):
         return self.protocol
 
 
-class MediaKrakenApp():
+class MediaKrakenApp(object):
     connection = None
 
 
@@ -134,7 +133,8 @@ class MediaKrakenApp():
         """
         Process network message from server
         """
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         logging.debug('message: %s', messageWords[0])
         logging.debug("len: %s", len(server_msg))
         logging.debug("chunks: %s", len(messageWords))
@@ -151,25 +151,32 @@ class MediaKrakenApp():
             sys.exit(0)
         elif messageWords[0] == "RECEIVENEWMEDIA":
             for new_media in pickle.loads(messageWords[1]):
-                logging.debgu("new media: %s", new_media)
-                # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json, 3-mm_metadata_media_id jsonb
+                logging.debug("new media: %s", new_media)
+                # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
+                # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
                 if new_media[1] == 'Movie':
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db_connection.db_meta_guid_by_tmdb(new_media[3]['TMDB'])
+                        metadata_guid = self.db_connection.db_meta_guid_by_tmdb(\
+                            new_media[3]['TMDB'])
                         if metadata_guid is None:
-                            metadata_guid = self.db_connection.db_meta_guid_by_tvdb(new_media[3]['thetvdb'])
+                            metadata_guid = self.db_connection.db_meta_guid_by_tvdb(\
+                                new_media[3]['thetvdb'])
                 elif new_media[1] == 'TV Show':
-                    metadata_guid = self.db_connection.db_metaTV_guid_by_imdb(new_media[3]['imdb'])
+                    metadata_guid = self.db_connection.db_metatv_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db_connection.db_metaTV_guid_by_tvmaze(new_media[3]['tvmaze'])
+                        metadata_guid = self.db_connection.db_metatv_guid_by_tvmaze(\
+                            new_media[3]['tvmaze'])
                         if metadata_guid is None:
-                            metadata_guid = self.db_connection.db_metatv_guid_by_tvdb(new_media[3]['thetvdb'])
+                            metadata_guid = self.db_connection.db_metatv_guid_by_tvdb(\
+                                new_media[3]['thetvdb'])
                             if metadata_guid is None:
-                                metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(new_media[3]['TVRage'])
+                                metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(\
+                                    new_media[3]['TVRage'])
                 elif new_media[1] == 'Sports':
-                    metadata_guid = self.db_connection.db_metaSports_guid_by_thesportsdb(new_media[3]['thesportsdb'])
+                    metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(\
+                        new_media[3]['thesportsdb'])
                 elif new_media[1] == 'Music':
                     pass
                 elif new_media[1] == 'Book':
@@ -192,7 +199,7 @@ class MediaKrakenApp():
 if __name__ == '__main__':
     # store pid for initd
     pid = os.getpid()
-    op = open("/var/mm_link.pid", "w")
-    op.write("%s" % pid)
-    op.close()
+    file_handle = open("/var/mm_link.pid", "w")
+    file_handle.write("%s" % pid)
+    file_handle.close()
     MediaKrakenApp().build()

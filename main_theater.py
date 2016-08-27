@@ -16,9 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.6'
-
 from __future__ import absolute_import, division, print_function, unicode_literals
+__version__ = '0.1.6'
 from common import common_logging
 import locale
 locale.setlocale(locale.LC_ALL, '')

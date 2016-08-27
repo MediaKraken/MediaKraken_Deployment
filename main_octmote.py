@@ -16,8 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.6'
 from __future__ import absolute_import, division, print_function, unicode_literals
+__version__ = '0.1.6'
 import logging  # pylint: disable=W0611
 # import plyer to fetch UID of devices
 from plyer import uniqueid
