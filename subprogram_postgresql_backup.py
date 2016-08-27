@@ -45,13 +45,13 @@ os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass')\
     + config_handle.get('DB Connections', 'PostDBName') + ' -F c -f '\
     + option_config_json['MediaKrakenServer']['BackupLocal'] + '/' + backup_file_name)
 
-cloud_handle = common_cloud.CommonCloud(option_config_json)
+cloud_handle = common_cloud.CommonCloud()
 # grab settings and options
 option_json = db_connection.db_opt_status_read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
     cloud_handle.com_cloud_file_store(option_json['Backup']['BackupType'],\
-    option_config_json['MediaKrakenServer']['BackupLocal'] + '/'\
-    + backup_file_name, backup_file_name, True)
+    os.join(option_config_json['MediaKrakenServer']['BackupLocal'],\
+    backup_file_name), backup_file_name, True)
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,\
