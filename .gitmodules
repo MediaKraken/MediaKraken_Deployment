@@ -79,3 +79,6 @@
 [submodule "rxv"]
 	path = rxv
 	url = ../rxv
+[submodule "passwordmeter"]
+	path = passwordmeter
+	url = ../passwordmeter
