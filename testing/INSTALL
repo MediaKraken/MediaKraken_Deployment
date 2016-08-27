@@ -7,6 +7,8 @@ sudo pip install -r pip_requirements.txt
 browse to https://www.google.com/intl/en-US/chrome/browser/desktop/index.html
 download and install
 
+grabed newest cloc (1.7) and threw in /usr/bin/
+
 aptget python-pylirc default-jdk
 
 browse to http://www.opera.com/
