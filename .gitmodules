@@ -38,7 +38,7 @@
 	path = submodule/videojs-vimeo
 	url = ../videojs-vimeo
 [submodule "omdb.py"]
-	path = submodule/omdb.py
+	path = submodule/omdbpy
 	url = ../omdb.py
 [submodule "python-twitch"]
 	path = submodule/python-twitch
