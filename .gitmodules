@@ -106,3 +106,6 @@
 [submodule "pillow"]
 	path = submodule/pillow
 	url = ../pillow
+[submodule "boto"]
+	path = submodule/boto
+	url = ../boto
