@@ -82,3 +82,9 @@
 [submodule "passwordmeter"]
 	path = submodule/passwordmeter
 	url = ../passwordmeter
+[submodule "python-feedgen"]
+	path = submodule/python-feedgen
+	url = ../python-feedgen
+[submodule "rtsimple"]
+	path = submodule/rtsimple
+	url = ../rtsimple
