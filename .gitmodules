@@ -16,3 +16,24 @@
 [submodule "pitchfork"]
 	path = pitchfork
 	url = ../pitchfork
+[submodule "subliminal"]
+	path = subliminal
+	url = ../subliminal
+[submodule "xmltodict"]
+	path = xmltodict
+	url = ../xmltodict
+[submodule "guessit"]
+	path = guessit
+	url = ../guessit
+[submodule "videojs-contrib-hls"]
+	path = videojs-contrib-hls
+	url = ../videojs-contrib-hls
+[submodule "video.js"]
+	path = video.js
+	url = ../video.js
+[submodule "videojs-youtube"]
+	path = videojs-youtube
+	url = ../videojs-youtube
+[submodule "videojs-vimeo"]
+	path = videojs-vimeo
+	url = ../videojs-vimeo
