@@ -13,3 +13,6 @@
 [submodule "KrakenStreamer"]
 	path = KrakenStreamer
 	url = ../KrakenStreamer
+[submodule "pitchfork"]
+	path = pitchfork
+	url = ../pitchfork
