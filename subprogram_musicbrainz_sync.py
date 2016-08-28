@@ -42,7 +42,7 @@ def signal_receive(signum, frame):
     sys.exit(0)
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
+    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
 else:
     signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
