@@ -27,7 +27,7 @@ from common import common_hardware_roku
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD Roku Thumbnail: Received USR1')
     # remove pid
     os.remove(pid_file)

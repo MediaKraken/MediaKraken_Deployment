@@ -42,7 +42,7 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
 pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Sub_Game_Audit', False, False, None)
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     global global_end_program
     global_end_program = True
     print('CHILD %6s: Received USR1' % pid)

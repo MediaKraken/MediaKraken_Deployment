@@ -30,7 +30,7 @@ import time  # yes, use both otherwise some time code below breaks
 import signal
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD Reactor String: Received USR1')
     sys.stdout.flush()
     sys.exit(0)

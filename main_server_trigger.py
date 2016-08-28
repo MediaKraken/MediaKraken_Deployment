@@ -31,7 +31,7 @@ except:
     import pickle
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD Main Trigger: Received USR1')
     os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db

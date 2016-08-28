@@ -33,7 +33,7 @@ except:
     pass
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     logging.info('CHILD Main: Received USR1')
     os.kill(proc.pid, signal.SIGTERM)
     os.kill(proc_image.pid, signal.SIGTERM)

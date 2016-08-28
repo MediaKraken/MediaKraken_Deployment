@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-sys.path.append('.')
 from common import common_config_ini
 from common import common_network_cifs
 from common import common_ffmpeg
@@ -95,7 +94,7 @@ common_file.com_file_save_data(pid_file, 'Sub_File_Scan', False, False, None)
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD File Scan: Received USR1')
     # remove pid
     os.remove(pid_file)

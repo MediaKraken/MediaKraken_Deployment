@@ -36,7 +36,7 @@ pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Chromecast_Scan', False, False, None)
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     global global_end_program
     global_end_program = True
     print('CHILD Tuner Scan: Received USR1')

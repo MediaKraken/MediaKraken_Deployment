@@ -25,7 +25,7 @@ from common import common_config_ini
 from common import common_logging
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD URL Check: Received USR1')
     # remove pid
     os.remove(pid_file)

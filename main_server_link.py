@@ -43,7 +43,7 @@ networkProtocol = None
 metaapp = None
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     global proc_ffserver
     print('CHILD Link: Received USR1')
     sys.stdout.flush()

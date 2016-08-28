@@ -31,7 +31,7 @@ import db_base_brainz as database_base_brainz
 pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD Mbrainz Sync: Received USR1')
     # remove pid
     os.remove(pid_file)

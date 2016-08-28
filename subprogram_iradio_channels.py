@@ -31,7 +31,7 @@ import signal
 pid_file = './pid/' + str(os.getpid())
 common_file.com_file_save_data(pid_file, 'Sub_iRadio', False, False, None)
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     print('CHILD Cron: Received USR1')
     # remove pid
     os.remove(pid_file)

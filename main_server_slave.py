@@ -64,7 +64,7 @@ class RepeatTimer(Thread):
         self.finished.set()
 
 
-def signal_receive(signum, frame):
+def signal_receive(signum, frame): # pylint: disable=W0613
     global proc_ffserver
     print('CHILD Slave: Received USR1')
     os.kill(proc_ffserver.pid)
