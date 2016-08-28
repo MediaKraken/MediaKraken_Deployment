@@ -109,3 +109,6 @@
 [submodule "boto"]
 	path = submodule/boto
 	url = ../boto
+[submodule "mpv"]
+	path = submodule/mpv
+	url = ../mpv
