@@ -22,7 +22,6 @@ import logging  # pylint: disable=W0611
 # import plyer to fetch UID of devices
 from plyer import uniqueid
 import json
-import sys
 import os
 from common import common_database_octmote
 from common import common_iscp
@@ -83,7 +82,8 @@ from kivy.uix.listview import ListView, ListItemButton
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.image import Image
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty, StringProperty, ObjectProperty
+from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
+     StringProperty, ObjectProperty
 from kivy.uix.popup import Popup
 from functools import partial
 
@@ -157,7 +157,8 @@ class OctMoteApp(App):
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],\
                     group='mediakraken_server',)
-                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select, found_server))
+                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,\
+                    found_server))
                 self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
         else:
             # go back to main menu
@@ -225,7 +226,8 @@ class OctMoteApp(App):
         for base_device in com_Database_Octmote.com_db_Device_List():
             btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,\
                 group='setup_base_device_button',)
-            btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Device_Selected, base_device[0]))
+            btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Device_Selected,\
+                base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
             self.base_device_guid_dict[base_device[0]] = base_device[1]
         # clear the children and reload to pick up new records
@@ -287,7 +289,8 @@ class OctMoteApp(App):
     def Setup_Import_Item_Json(self, *args):
         try:
             json_data = json.loads(self.root.ids.setup_item_json.text)
-            item_guid = com_Database_Octmote.OctMote_Database_Sqlite3_Item_Insert(self.root.ids.setup_item_name.text, json_data)
+            item_guid = com_Database_Octmote.OctMote_Database_Sqlite3_Item_Insert(\
+                self.root.ids.setup_item_name.text, json_data)
             # add guid to items in memory
             self.base_item_guid_dict[item_guid] = self.root.ids.setup_item_name.text
         except:
@@ -302,24 +305,28 @@ class OctMoteApp(App):
             # check to see if rs232 device is already open
             if json_data["Protocol"]["Method"].lower() == "rs232":
                 if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
-                    self.rs232_devices_dict[json_data["Protocol"]["Host IP"]] = com_telnet.OctMote_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
-                com_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.rs232_devices_dict[json_data["Protocol"]["Host IP"]]\
+                        = common_telnet.OctMote_Telnet_Open_Device(\
+                        json_data["Protocol"]["Host IP"],\
+                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
+                        json_data["Protocol"]["Password"])
+                common_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
+                    json_data["Protocol"]["Host IP"]],\
+                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
                 pass
             # check to see if IR device is already open
             elif json_data["Protocol"]["Method"].lower() == "ir":
                 if not json_data["fake"] in self.ir_devices_dict:
                     pass
-                pass
             # check to see if lan device already open
             elif json_data["Protocol"]["Method"].lower() == "lan":
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.lan_devices_dict:
                    pass
-                pass
             elif json_data["Protocol"]["Method"].lower() == "telnet":
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
-                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]] = com_Telnet.MK_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
-                com_Telnet.MK_Telnet_Write_Device(self.telnet_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]] = common_telnet.MK_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
+                common_telnet.MK_Telnet_Write_Device(self.telnet_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
                 # check to see if serial device already opened
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.serial_devices_dict:
@@ -329,11 +336,15 @@ class OctMoteApp(App):
                 # check to see if eiscp device already open
                 if not json_data["Protocol"]["Host IP"] in self.eiscp_devices_dict:
                     pass
-                pass
             elif json_data["Protocol"]["Method"].lower() == "kivy":
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.kivy_lan_devices_dict:
-                    self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])] = (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])
-                com_Kodi.com_network_Kodi_Command(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"],\
+                        json_data["Protocol"]["Hardware Port"])]\
+                        = (json_data["Protocol"]["Host IP"],\
+                        json_data["Protocol"]["Hardware Port"])
+                com_Kodi.com_network_Kodi_Command(json_data["Protocol"]["Host IP"],\
+                    json_data["Protocol"]["Hardware Port"],\
+                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
                 pass
             else:
@@ -513,7 +524,8 @@ class OctMoteApp(App):
 
 
     def main_remote_event_button_calibration_convergance_quad_top_right(self):
-        self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top Right"))
+        self.main_remote_control_event_process(("Calibration", "Convergance",\
+            "Quandrant Top Right"))
 
 
     def main_remote_event_button_calibration_convergance_quad_right(self):
@@ -525,11 +537,13 @@ class OctMoteApp(App):
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom_left(self):
-        self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Bottom Left"))
+        self.main_remote_control_event_process(("Calibration", "Convergance",\
+            "Quandrant Bottom Left"))
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom_right(self):
-        self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Bottom Right"))
+        self.main_remote_control_event_process(("Calibration", "Convergance",\
+            "Quandrant Bottom Right"))
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom(self):

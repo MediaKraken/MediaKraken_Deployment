@@ -114,7 +114,8 @@ from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.image import Image, AsyncImage
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty, StringProperty, ObjectProperty
+from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
+     StringProperty, ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.settings import SettingsWithSidebar
@@ -324,29 +325,41 @@ class MediaKrakenApp(App):
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
-            networkProtocol.sendString("IMAGE MAIN MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE MOVIE MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE MAIN MOVIE None Backdrop")
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE MOVIE MOVIE None Backdrop")
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")
             # refreshs for tv stuff
-            networkProtocol.sendString("IMAGE TV TVSHOW None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE TV TVSHOW None Backdrop")
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")
             # refreshs for game stuff
-            networkProtocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")
             # refreshs for books stuff
-            networkProtocol.sendString("IMAGE BOOK BOOK None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE BOOK BOOK None Backdrop")
             # refresh music stuff
-            networkProtocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")
             # refresh image stuff
-            networkProtocol.sendString("IMAGE IMAGE IMAGE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            networkProtocol.sendString("IMAGE IMAGE IMAGE None Backdrop")
 
 
     def process_message(self, server_msg):
         """
         Process network message from server
         """
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         if messageWords[0] != "IMAGE":
             logging.debug("Got Message: %s", server_msg)
         logging.debug('message: %s', messageWords[0])
@@ -419,7 +432,8 @@ class MediaKrakenApp(App):
                 except:
                     pass
                 try:
-                    stream_codec = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                    stream_codec\
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
@@ -535,7 +549,8 @@ class MediaKrakenApp(App):
         self.media_guid = args[0]
         networkProtocol.sendString("VIDEODETAIL " + args[0])
         # grab poster
-        networkProtocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])  # request main screen background refresh
+        # request main screen background refresh
+        networkProtocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])
 
 
     # genre select
