@@ -79,9 +79,9 @@ if __name__ == '__main__':
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
-    sslContext = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
     reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ListenPort']),\
-        MediaKrakenServerApp(), sslContext)
+        MediaKrakenServerApp(),\
+        ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
     reactor.run()
     # remove pid
     os.remove(pid_file)

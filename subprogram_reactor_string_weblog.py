@@ -42,7 +42,7 @@ def signal_receive(signum, frame): # pylint: disable=W0613
 class MediaKrakenServerApp(Factory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/WebLog_Subprogram_Reactor_String')
+        common_logging.com_logging_start('./log_debug/WebLog_Subprogram_Reactor_String')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
@@ -61,6 +61,6 @@ if __name__ == '__main__':
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
     # setup for the ssl keys
-    ssl_context = ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem')
-    reactor.listenSSL(8901, MediaKrakenServerApp(), ssl_context)
+    reactor.listenSSL(8901, MediaKrakenServerApp(),\
+        ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
     reactor.run()

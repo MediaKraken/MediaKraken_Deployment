@@ -73,7 +73,7 @@ def update_insert_show(tvmaze_id, update_rec=None):
     #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_TheMaze_Show_by_ID(\
+        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_themaze_show_by_id(\
             tvmaze_id, None, None, None, True))}})
     except:
         pass
@@ -100,10 +100,10 @@ def update_insert_show(tvmaze_id, update_rec=None):
             'imdb':imdb_id, 'thetvdb':thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db_connection.db_metatvmaze_Insert(series_id_json, tvmaze_name,\
+            db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json))
         else:
-            db_connection.db_metatvmaze_Update(series_id_json, tvmaze_name,\
+            db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,\
                 json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
@@ -118,14 +118,14 @@ def update_insert_show(tvmaze_id, update_rec=None):
 # grab updated show list with epoc data
 tvshow_updated = 0
 tvshow_inserted = 0
-tvmaze = common_metadata_tvmaze.com_meta_tvmaze_API()
-result = tvmaze.com_meta_themaze_show_updated()
+tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
+result = tvmaze.com_meta_tvmaze_show_updated()
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.debug("id: %s", tvmaze_id)
     # check to see if allready downloaded
-    results = db_connection.db_metaTV_guid_by_tvmaze(str(tvmaze_id))
+    results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:
