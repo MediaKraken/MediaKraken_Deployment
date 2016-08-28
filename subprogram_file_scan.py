@@ -19,19 +19,18 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-from .common import common_config_ini
-from .common import common_network_cifs
-from .common import common_ffmpeg
-from .common import common_file
-from .common import common_logging
-from .common import common_string
-import _strptime # to handle threading
+sys.path.append('.')
+from common import common_config_ini
+from common import common_network_cifs
+from common import common_ffmpeg
+from common import common_file
+from common import common_logging
+from common import common_string
 from datetime import datetime # to handle threading
 import os
 import uuid
 import signal
 from concurrent import futures
-import database as database_base
 import time
 import json
 import locale
