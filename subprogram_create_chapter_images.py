@@ -43,6 +43,9 @@ total_images_created = 0
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Chapter Image: Received USR1')
     # remove pid
     os.remove(pid_file)

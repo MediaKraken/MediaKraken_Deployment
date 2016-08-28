@@ -31,6 +31,9 @@ metaapp = None
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     global proc_ffserver
     print('CHILD Slave: Received USR1')
     sys.stdout.flush()

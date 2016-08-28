@@ -31,6 +31,9 @@ import signal
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Reactor String: Received USR1')
     sys.stdout.flush()
     sys.exit(0)

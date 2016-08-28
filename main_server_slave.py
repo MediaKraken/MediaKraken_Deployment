@@ -65,6 +65,9 @@ class RepeatTimer(Thread):
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Slave: Received USR1')
     os.kill(proc_ffserver.pid)
     sys.stdout.flush()

@@ -95,6 +95,9 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD File Scan: Received USR1')
     # remove pid
     os.remove(pid_file)

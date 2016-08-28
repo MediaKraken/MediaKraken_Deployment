@@ -36,6 +36,9 @@ common_file.com_file_save_data(pid_file, 'Schedules Direct Update', False, False
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Schedules Direct Update: Received USR1')
     # remove pid
     os.remove(pid_file)

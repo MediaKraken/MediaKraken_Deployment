@@ -28,6 +28,9 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Roku Thumbnail: Received USR1')
     # remove pid
     os.remove(pid_file)

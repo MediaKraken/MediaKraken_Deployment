@@ -26,6 +26,9 @@ from common import common_logging
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     logging.info('CHILD Main: Received USR1')
     os.kill(proc.pid, signal.SIGTERM)
     os.kill(proc_web_app.pid, signal.SIGTERM)

@@ -36,6 +36,9 @@ __version__ = json.dumps({"Version": "0.1.6"})
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Main API: Received USR1')
     sys.stdout.flush()
     sys.exit(0)

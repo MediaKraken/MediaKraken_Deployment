@@ -39,6 +39,9 @@ common_file.com_file_save_data(pid_file, 'Sub_Reactor_String', False, False, Non
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
     print('CHILD Reactor String: Received USR1')
     # remove pid
     os.remove(pid_file)
