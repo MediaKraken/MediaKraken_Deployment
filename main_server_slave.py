@@ -65,7 +65,6 @@ class RepeatTimer(Thread):
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
-    global proc_ffserver
     print('CHILD Slave: Received USR1')
     os.kill(proc_ffserver.pid)
     sys.stdout.flush()
@@ -148,7 +147,7 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        config_handle, option_config_json, db_connection = common_config_ini.com_config_read()        
+        config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
         reactor.connectSSL(option_config_json['MediaKrakenServer']['Host'],\
             option_config_json['MediaKrakenServer']['Port'],\
             TheaterFactory(self), ssl.ClientContextFactory())
@@ -159,8 +158,8 @@ class MediaKrakenApp():
         """
         Process network message from server
         """
-        global proc_ffserver
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         logging.debug('message: %s', messageWords[0])
         logging.debug("len: %s", len(server_msg))
         logging.debug("chunks: %s", len(messageWords))
@@ -189,7 +188,6 @@ class MediaKrakenApp():
                 common_system.com_system_virtual_memory(False)))
         elif messageWords[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
-            status_timer.cancel()
             sys.exit(0)
         else:
             logging.debug("unknown message type")
@@ -199,7 +197,6 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
-    global proc_ffserver
     # store pid for initd
     pid = os.getpid()
     op = open("/var/mm_slave.pid", "w")

@@ -19,14 +19,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import json
 import signal
 import os
 from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_metadata
-from common import common_network
 from common import common_metadata_tmdb
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -80,7 +78,8 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path,\
         backdrop_path, collection_id):
     global total_collections_downloaded
     # store/update the record
-    collection_guid = db_connection.db_collection_by_tmdb(collection_id) # don't string this since it's a pure result store
+    # don't string this since it's a pure result store
+    collection_guid = db_connection.db_collection_by_tmdb(collection_id)
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
@@ -119,13 +118,19 @@ guid_list = []
 first_record = True
 for row_data in db_connection.db_media_collection_scan():
     #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
-    if old_collection_name != row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']:
+    if old_collection_name != row_data['mm_metadata_json']['Meta']['TMDB']['Meta']\
+            ['belongs_to_collection']['name']:
         if not first_record:
-            store_update_record(db_connection, old_collection_name, guid_list, old_poster_path, old_backdrop_path, old_id)
-        old_collection_name = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['name']
-        old_poster_path = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['poster_path']
-        old_backdrop_path = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['backdrop_path']
-        old_id = row_data['mm_metadata_json']['Meta']['TMDB']['Meta']['belongs_to_collection']['id']
+            store_update_record(db_connection, old_collection_name, guid_list,\
+                old_poster_path, old_backdrop_path, old_id)
+        old_collection_name = row_data['mm_metadata_json']['Meta']['TMDB']\
+            ['Meta']['belongs_to_collection']['name']
+        old_poster_path = row_data['mm_metadata_json']['Meta']['TMDB']\
+            ['Meta']['belongs_to_collection']['poster_path']
+        old_backdrop_path = row_data['mm_metadata_json']['Meta']['TMDB']\
+            ['Meta']['belongs_to_collection']['backdrop_path']
+        old_id = row_data['mm_metadata_json']['Meta']['TMDB']\
+            ['Meta']['belongs_to_collection']['id']
         guid_list = []
         first_record = False
     guid_list.append(row_data['mm_metadata_guid'])

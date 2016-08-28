@@ -1,3 +1,6 @@
+"""
+Vacuum tables
+"""
 # based on code from
 # http://rendykstan.github.io/blog/2013/04/04/postgresql-vacuum-and-analyze-maintenance-and-performance/
 
