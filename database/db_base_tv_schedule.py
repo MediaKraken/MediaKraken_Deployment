@@ -25,8 +25,8 @@ def db_tv_stations_read(self):
     """
     # read the stations
     """
-    self.db_cursor.execute('select mm_tv_stations_id,mm_tv_station_name,mv_tv_station_id,'\
-        'mv_tv_station_channel from mm_tv_stations')
+    self.db_cursor.execute('select mm_tv_stations_id,mm_tv_station_name,mm_tv_station_id,'\
+        'mm_tv_station_channel from mm_tv_stations')
     return self.db_cursor.fetchall()
 
 
@@ -34,7 +34,7 @@ def db_tv_stations_read_stationid_list(self):
     """
     # read the stationid list
     """
-    self.db_cursor.execute('select mv_tv_station_id from mm_tv_stations')
+    self.db_cursor.execute('select mm_tv_station_id from mm_tv_stations')
     return self.db_cursor.fetchall()
 
 
@@ -44,8 +44,8 @@ def db_tv_station_insert(self, station_id, channel_id):
     """
     if self.db_tv_station_exist(station_id, channel_id) == 0:
         new_guid = str(uuid.uuid4())
-        self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id, mv_tv_station_id,'\
-            ' mv_tv_station_channel) values (%s, %s, %s)',\
+        self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id, mm_tv_station_id,'\
+            ' mm_tv_station_channel) values (%s, %s, %s)',\
             (new_guid, station_id, channel_id))
         return new_guid
 
@@ -54,8 +54,8 @@ def db_tv_station_exist(self, station_id, channel_id):
     """
     # channel exist check
     """
-    self.db_cursor.execute('select count(*) from mm_tv_stations where mv_tv_station_id = %s'\
-        ' and mv_tv_station_channel = %s', (station_id, channel_id))
+    self.db_cursor.execute('select count(*) from mm_tv_stations where mm_tv_station_id = %s'\
+        ' and mm_tv_station_channel = %s', (station_id, channel_id))
     return self.db_cursor.fetchone()[0]
 
 
@@ -64,7 +64,7 @@ def db_tv_station_update(self, station_name, station_id, station_json):
     # update station/channel info
     """
     self.db_cursor.execute('update mm_tv_stations set mm_tv_station_name = %s,'\
-        ' mv_tv_station_json = %s where mv_tv_station_id = %s',\
+        ' mm_tv_station_json = %s where mm_tv_station_id = %s',\
         (station_name, station_json, station_id))
 
 
@@ -111,8 +111,8 @@ def db_tv_schedule_by_date(self, display_date):
     """
     # tv shows for schedule display
     """
-    self.db_cursor.execute('select mm_tv_station_name, mv_tv_station_channel,'\
+    self.db_cursor.execute('select mm_tv_station_name, mm_tv_station_channel,'\
         ' mm_tv_schedule_json from mm_tv_stations, mm_tv_schedule'\
-        ' where mm_tv_schedule_station_id = mv_tv_station_id and mm_tv_schedule_date = %s'\
+        ' where mm_tv_schedule_station_id = mm_tv_station_id and mm_tv_schedule_date = %s'\
         ' order by mm_tv_station_name, mm_tv_schedule_json->\'airDateTime\'', (display_date,))
     return self.db_cursor.fetchall()

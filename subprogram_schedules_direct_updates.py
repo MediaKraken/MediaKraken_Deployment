@@ -125,7 +125,7 @@ logging.debug("list: %s", db_connection.db_tv_stations_read_stationid_list())
 # grab all stations in DB
 for station_id in db_connection.db_tv_stations_read_stationid_list():
     # fetch all schedules for station
-    station_fetch.append(station_id['mv_tv_station_id'])
+    station_fetch.append(station_id['mm_tv_station_id'])
 
 
 # set here so it exists at the "end" of processing
