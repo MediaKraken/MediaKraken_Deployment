@@ -36,8 +36,51 @@ from twisted.protocols.basic import Int32StringReceiver
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import ssl
+import kivy
+kivy.require('1.9.1')
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.dropdown import DropDown
+from kivy.uix.spinner import Spinner
+from kivy.uix.widget import Widget
+from kivy.core.window import Window
+from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.listview import ListView, ListItemButton
+from kivy.adapters.listadapter import ListAdapter
+from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.image import Image, AsyncImage
+from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
+     StringProperty, ObjectProperty
+from kivy.uix.popup import Popup
+from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.settings import SettingsWithSidebar
+from kivy.clock import Clock
+from kivy.loader import Loader
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.stacklayout import StackLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.filechooser import FileChooserListView
+from kivy.lang import Builder
+from kivy.base import EventLoop
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.network.urlrequest import UrlRequest
+from kivy.graphics.instructions import Canvas
+from kivy.graphics import Color, Rectangle
+from kivy.cache import Cache
+from kivy.animation import Animation
+from kivy.metrics import sp
+from kivy.graphics import *
+from kivy.graphics.texture import Texture
+from functools import partial
+from MediaKrakenSettings import *
 
-networkProtocol = None
+network_protocol = None
 metaapp = None
 
 
@@ -56,9 +99,9 @@ class TheaterClient(Int32StringReceiver):
 
 
     def connectionMade(self):
-        global networkProtocol
+        global network_protocol
         self.connStatus = TheaterClient.CONNECTED
-        networkProtocol = self
+        network_protocol = self
 
 
     def stringReceived(self, data):
@@ -93,36 +136,6 @@ class TheaterFactory(ClientFactory):
         logging.info('Connected to %s', str(addr))
         self.protocol = TheaterClient()
         return self.protocol
-
-
-import kivy
-kivy.require('1.9.1')
-from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import Spinner
-from kivy.uix.widget import Widget
-from kivy.core.window import Window
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.listview import ListView, ListItemButton
-from kivy.adapters.listadapter import ListAdapter
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.image import Image, AsyncImage
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
-     StringProperty, ObjectProperty
-from kivy.uix.popup import Popup
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.settings import SettingsWithSidebar
-from kivy.clock import Clock
-from kivy.loader import Loader
-from functools import partial
-from MediaKrakenSettings import *
 
 
 class MediaKraken(FloatLayout):
@@ -326,32 +339,32 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE MAIN MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE MAIN MOVIE None Backdrop")
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE MOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE MOVIE MOVIE None Backdrop")
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")
             # refreshs for tv stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE TV TVSHOW None Backdrop")
+            network_protocol.sendString("IMAGE TV TVSHOW None Backdrop")
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")
+            network_protocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")
             # refreshs for game stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")
+            network_protocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")
             # refreshs for books stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE BOOK BOOK None Backdrop")
+            network_protocol.sendString("IMAGE BOOK BOOK None Backdrop")
             # refresh music stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")
+            network_protocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")
+            network_protocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")
             # refresh image stuff
             # request main screen background refresh
-            networkProtocol.sendString("IMAGE IMAGE IMAGE None Backdrop")
+            network_protocol.sendString("IMAGE IMAGE IMAGE None Backdrop")
 
 
     def process_message(self, server_msg):
@@ -370,7 +383,7 @@ class MediaKrakenApp(App):
         except:
             pickle_data = None
         if messageWords[0] == "IDENT":
-            networkProtocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
+            network_protocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
                 + platform.node())
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
@@ -547,17 +560,17 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.debug("vid select: %s", args)
         self.media_guid = args[0]
-        networkProtocol.sendString("VIDEODETAIL " + args[0])
+        network_protocol.sendString("VIDEODETAIL " + args[0])
         # grab poster
         # request main screen background refresh
-        networkProtocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])
+        network_protocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])
 
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.debug("genre select: %s", args)
         self.media_genre = args[0]
-        networkProtocol.sendString("VIDEOGENRELIST " + args[0])
+        network_protocol.sendString("VIDEOGENRELIST " + args[0])
 
 
     # notification dialog
@@ -587,11 +600,11 @@ class MediaKrakenApp(App):
         logging.debug("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        networkProtocol.sendString(msg)
+        network_protocol.sendString(msg)
 
 
     def main_mediakraken_event_button_home(self, *args):
-        global networkProtocol
+        global network_protocol
         msg = args[0]
         logging.debug("home press: %s", args)
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
@@ -623,7 +636,7 @@ class MediaKrakenApp(App):
         else:
             logging.error("unknown button event")
         if msg is not None:
-            networkProtocol.sendString(msg)
+            network_protocol.sendString(msg)
 
 
     def theater_event_button_option_select(self, option_text, *args):
