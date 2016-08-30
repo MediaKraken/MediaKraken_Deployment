@@ -8,3 +8,4 @@ tox
 pyflakes
 pyproxmox
 requests
+pyvmomi
