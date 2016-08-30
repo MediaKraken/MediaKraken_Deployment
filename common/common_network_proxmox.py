@@ -100,13 +100,11 @@ class CommonNetworkProxMox(object):
     def com_net_prox_scan_methods(self, node_name='pve'):
         return self.proxmox_instance.getNodeScanMethods(node_name)
 
+
+    def com_net_prox_service_props(self, node_name='pve', service):
+        return self.proxmox_instance.getNodeServiceState(node_name, service)
+
 '''
-
-Node Methods
-
-    getNodeServiceState(node,service)
-"Read service properties"
-
     getNodeRRD(node)
 "Read node RRD statistics. Returns PNG"
 
@@ -141,7 +139,7 @@ Node Methods
     def com_net_prox_lxc_init_log(self, node_name='pve', vm_id):
         return self.proxmox_instance.getContainerInitLog(node_name, vm_id)
 
-        '''
+'''
 
 
     getContainerBeans(node,vmid)
@@ -183,23 +181,30 @@ Storage Methods
 
     getNodeStorageContent(node,storage)
 "List storage content. Returns JSON"
+'''
 
+    def com_net_prox_lxc_start(self, node_name='pve', vm_id):
+        return self.proxmox_instance.startOpenvzContainer(node_name, vm_id)
+
+'''
     getNodeStorageRRD(node,storage)
 "Read storage RRD statistics. Returns JSON"
 
     getNodeStorageRRDData(node,storage)
 "Read storage RRD statistics. Returns JSON"
 
-
-OpenVZ Methods
-
-    createOpenvzContainer(node,post_data)
-"Create or restore a container. Returns JSON Requires a dictionary of tuples formatted [('postname1','data'),('postname2','data')]"
-
-    mountOpenvzPrivate(node,vmid)
-"Mounts container private area. Returns JSON"
-
 '''
+    def com_net_prox_lxc_create(self, node_name='pve', vm_id):
+        return self.proxmox_instance.createOpenvzContainer(node_name, vm_id)
+
+
+    def com_net_prox_lxc_mnt_private(self, node_name='pve', vm_id):
+        return self.proxmox_instance.mountOpenvzPrivate(node_name, vm_id)
+
+
+    def com_net_prox_lxc_umnt_private(self, node_name='pve', vm_id):
+        return self.proxmox_instance.unmountOpenvzPrivate(node_name, vm_id)
+
 
     def com_net_prox_lxc_start(self, node_name='pve', vm_id):
         return self.proxmox_instance.startOpenvzContainer(node_name, vm_id)
@@ -211,32 +216,31 @@ OpenVZ Methods
 
     def com_net_prox_lxc_shutdown(self, node_name='pve', vm_id):
         return self.proxmox_instance.shutdownOpenvzContainer(node_name, vm_id)
-'''
 
-    unmountOpenvzPrivate(node,vmid)
-"Unmounts container private area. Returns JSON"
 
-    migrateOpenvzContainer(node,vmid,target)
-"Migrate the container to another node. Creates a new migration task. Returns JSON"
+    def com_net_prox_lxc_migreate(self, node_name='pve', vm_id, target_node):
+        return self.proxmox_instance.migrateOpenvzContainer(node_name, vm_id, target_node)
 
-KVM Methods
 
-    createVirtualMachine(node,post_data)
-"Create or restore a virtual machine. Returns JSON Requires a dictionary of tuples formatted [('postname1','data'),('postname2','data')]"
+    def com_net_prox_kvm_create(self, node_name='pve', vm_id, vm_config):
+        return self.proxmox_instance.createVirtualMachine(node_name, vm_id, vm_config)
 
-    cloneVirtualMachine(node,vmid,post_data)
-"Create a copy of virtual machine/template. Returns JSON Requires a dictionary of tuples formatted [('postname1','data'),('postname2','data')]"
 
-    resetVirtualMachine(node,vmid)
-"Reset a virtual machine. Returns JSON"
+    def com_net_prox_kvm_clone(self, node_name='pve', vm_id, vm_config):
+        return self.proxmox_instance.cloneVirtualMachine(node_name, vm_id, vm_config)
 
-    resumeVirtualMachine(node,vmid)
-"Resume a virtual machine. Returns JSON"
 
-    shutdownVirtualMachine(node,vmid)
-"Shut down a virtual machine. Returns JSON"
+    def com_net_prox_kvm_reset(self, node_name='pve', vm_id):
+        return self.proxmox_instance.resetVirtualMachine(node_name, vm_id)
 
-'''
+
+    def com_net_prox_kvm_resume(self, node_name='pve', vm_id):
+        return self.proxmox_instance.resumeVirtualMachine(node_name, vm_id)
+
+
+    def com_net_prox_kvm_shutdown(self, node_name='pve', vm_id):
+        return self.proxmox_instance.shutdownVirtualMachine(node_name, vm_id)
+
 
     def com_net_prox_kvm_start(self, node_name='pve', vm_id):
         return self.proxmox_instance.startVirtualMachine(node_name, vm_id)
@@ -254,14 +258,14 @@ KVM Methods
         return self.proxmox_instance.migrateVirtualMachine(node_name, vm_id, target_node)
 
 
-'''
-    monitorVirtualMachine(node,vmid,command)
-"Send monitor command to a virtual machine. Returns JSON"
+    def com_net_prox_kvm_monitor_cmd(self, node_name='pve', vm_id, monitor_command):
+        return self.proxmox_instance.monitorVirtualMachine(node_name, vm_id, monitor_command)
 
-    vncproxyVirtualMachine(node,vmid)
-"Creates a VNC Proxy for a virtual machine. Returns JSON"
 
-'''
+    def com_net_prox_kvm_vnc_proxy(self, node_name='pve', vm_id):
+        return self.proxmox_instance.vncproxyVirtualMachine(node_name, vm_id)
+
+
     def com_net_prox_kvm_snap_rollback(self, node_name='pve', vm_id, snap_name):
         return self.proxmox_instance.rollbackVirtualMachine(node_name, vm_id, snap_name)
 
@@ -336,12 +340,11 @@ POOLS
     setPoolData(poolid, post_data)
 "Update pool data."
 
-STORAGE
-
-    updateStorageConfiguration(storageid,post_data)
-"Update storage configuration"
-
 '''
+
+    def com_net_prox_storage_config(self, storage_id, storage_options):
+        return self.proxmox_instance.updateStorageConfiguration(storage_id, storage_options)
+
 
 stuff = CommonNetworkProxMox('10.0.0.190', 'root@pam', 'jenkinsbuild')
 print(stuff.com_net_prox_status())
