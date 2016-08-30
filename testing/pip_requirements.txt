@@ -6,3 +6,5 @@ coverage
 pytest-cov
 tox
 pyflakes
+pyproxmox
+requests
