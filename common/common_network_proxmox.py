@@ -146,23 +146,27 @@ Node Methods
     getNodeTaskStatusByUPID(node,upid)
 "Read task status. Returns JSON"
 
+'''
+    def com_net_prox_lxc_index(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getContainerIndex(node_name, vm_id)
 
-OpenVZ Methods
 
-    getContainerIndex(node,vmid)
-"Directory index. Returns JSON"
+    def com_net_prox_lxc_status(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getContainerStatus(node_name, vm_id)
 
-    getContainerStatus(node,vmid)
-"Get virtual machine status. Returns JSON"
+
+    def com_net_prox_lxc_config(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getContainerConfig(node_name, vm_id)
+
+
+    def com_net_prox_lxc_init_log(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getContainerInitLog(node_name, vm_id)
+
+        '''
+
 
     getContainerBeans(node,vmid)
 "Get container user_beancounters. Returns JSON"
-
-    getContainerConfig(node,vmid)
-"Get container configuration. Returns JSON"
-
-    getContainerInitLog(node,vmid)
-"Read init log. Returns JSON"
 
     getContainerRRD(node,vmid)
 "Read VM RRD statistics. Returns PNG"
@@ -170,16 +174,19 @@ OpenVZ Methods
     def getContainerRRDData(node,vmid)
 "Read VM RRD statistics. Returns RRD"
 
-KVM Methods
+'''
+    def com_net_prox_kvm_index(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getVirtualIndex(node_name, vm_id)
 
-    getVirtualIndex(node,vmid)
-"Directory index. Returns JSON"
 
-    getVirtualStatus(node,vmid)
-"Get virtual machine status. Returns JSON"
+    def com_net_prox_kvm_status(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getVirtualStatus(node_name, vm_id)
 
-    getVirtualConfig(node,vmid)
-"Get virtual machine configuration. Returns JSON"
+
+    def com_net_prox_kvm_config(self, node_name='pve', vm_id):
+        return self.proxmox_instance.getVirtualConfig(node_name, vm_id)
+
+'''
 
     getVirtualRRD(node,vmid)
 "Read VM RRD statistics. Returns JSON"
@@ -213,14 +220,19 @@ OpenVZ Methods
     mountOpenvzPrivate(node,vmid)
 "Mounts container private area. Returns JSON"
 
-    shutdownOpenvzContainer(node,vmid)
-"Shutdown the container. Returns JSON"
+'''
 
-    startOpenvzContainer(node,vmid)
-"Start the container. Returns JSON"
+    def com_net_prox_lxc_start(self, node_name='pve', vm_id):
+        return self.proxmox_instance.startOpenvzContainer(node_name, vm_id)
 
-    stopOpenvzContainer(node,vmid)
-"Stop the container. Returns JSON"
+
+    def com_net_prox_lxc_stop(self, node_name='pve', vm_id):
+        return self.proxmox_instance.stopOpenvzContainer(node_name, vm_id)
+
+
+    def com_net_prox_lxc_shutdown(self, node_name='pve', vm_id):
+        return self.proxmox_instance.shutdownOpenvzContainer(node_name, vm_id)
+'''
 
     unmountOpenvzPrivate(node,vmid)
 "Unmounts container private area. Returns JSON"
@@ -245,49 +257,60 @@ KVM Methods
     shutdownVirtualMachine(node,vmid)
 "Shut down a virtual machine. Returns JSON"
 
-    startVirtualMachine(node,vmid)
-"Start a virtual machine. Returns JSON"
+'''
 
-    stopVirtualMachine(node,vmid)
-"Stop a virtual machine. Returns JSON"
+    def com_net_prox_kvm_start(self, node_name='pve', vm_id):
+        return self.proxmox_instance.startVirtualMachine(node_name, vm_id)
 
-    suspendVirtualMachine(node,vmid)
-"Suspend a virtual machine. Returns JSON"
 
-    migrateVirtualMachine(node,vmid,target)
-"Migrate a virtual machine. Returns JSON"
+    def com_net_prox_kvm_stop(self, node_name='pve', vm_id):
+        return self.proxmox_instance.stopVirtualMachine(node_name, vm_id)
 
+
+    def com_net_prox_kvm_suspend(self, node_name='pve', vm_id):
+        return self.proxmox_instance.suspendVirtualMachine(node_name, vm_id)
+
+
+    def com_net_prox_kvm_migrate(self, node_name='pve', vm_id, target_node):
+        return self.proxmox_instance.migrateVirtualMachine(node_name, vm_id, target_node)
+
+
+'''
     monitorVirtualMachine(node,vmid,command)
 "Send monitor command to a virtual machine. Returns JSON"
 
     vncproxyVirtualMachine(node,vmid)
 "Creates a VNC Proxy for a virtual machine. Returns JSON"
 
-    rollbackVirtualMachine(node,vmid,snapname)
-"Rollback a snapshot of a virtual machine. Returns JSON"
+'''
+    def com_net_prox_kvm_snap_rollback(self, node_name='pve', vm_id, snap_name):
+        return self.proxmox_instance.rollbackVirtualMachine(node_name, vm_id, snap_name)
 
-    getSnapshotConfigVirtualMachine(node,vmid,snapname)
-"Get snapshot config of a virtual machine. Returns JSON"
 
-DELETE Methods
+    def com_net_prox_kvm_snap_config(self, node_name='pve', vm_id, snap_name):
+        return self.proxmox_instance.getSnapshotConfigVirtualMachine(node_name, vm_id, snap_name)
 
-OPENVZ
 
-    deleteOpenvzContainer(node,vmid)
-"Deletes the specified openvz container"
+    def com_net_prox_lxc_delete(self, node_name='pve', vm_id):
+        return self.proxmox_instance.deleteOpenvzContainer(node_name, vm_id)
+'''
 
 NODE
 
     deleteNodeNetworkConfig(node)
 "Revert network configuration changes."
 
-    deleteNodeInterface(node,interface)
-"Delete network device configuration"
+'''
 
-KVM
+    def com_net_prox_nic_delete(self, node_name='pve', vm_id, nic_name):
+        return self.proxmox_instance.deleteNodeInterface(node_name, vm_id, nic_name)
 
-    deleteVirtualMachine(node,vmid)
-"Destroy the vm (also delete all used/owned volumes)."
+
+    def com_net_prox_kvm_delete(self, node_name='pve', vm_id):
+        return self.proxmox_instance.deleteVirtualMachine(node_name, vm_id)
+
+'''
+
 
 POOLS
 
@@ -299,28 +322,29 @@ STORAGE
     deleteStorageConfiguration(storageid)
 "Delete storage configuration"
 
-PUT Methods
+'''
+    def com_net_prox_set_dns(self, node_name='pve', dns_domain):
+        return self.proxmox_instance.setNodeDNSDomain(node_name, dns_domain)
 
-NODE
 
-    setNodeDNSDomain(node,domain)
-"Set the nodes DNS search domain"
+    def com_net_prox_set_subscription(self, node_name='pve', sub_key):
+        return self.proxmox_instance.setNodeSubscriptionKey(node_name, sub_key)
 
-    setNodeSubscriptionKey(node,key)
-"Set the nodes subscription key"
 
-    setNodeTimeZone(node,timezone)
-"Set the nodes timezone"
+    def com_net_prox_set_timezone(self, node_name='pve', timezone):
+        return self.proxmox_instance.setNodeTimeZone(node_name, timezone)
 
-OPENVZ
 
-    setOpenvzContainerOptions(node,vmid,post_data)
-"Set openvz virtual machine options."
+    def com_net_prox_lxc_set_config(self, node_name='pve', vm_id, vm_options):
+        return self.proxmox_instance.setOpenvzContainerOptions(node_name, vm_id, vm_options)
+'''
 
 KVM
 
-    setVirtualMachineOptions(node,vmide,post_data)
-"Set KVM virtual machine options."
+'''
+    def com_net_prox_kvm_set_config(self, node_name='pve', vm_id, vm_options):
+        return self.proxmox_instance.setVirtualMachineOptions(node_name, vm_id, vm_options)
+'''
 
     sendKeyEventVirtualMachine(node,vmid, key)
 "Send key event to virtual machine"
