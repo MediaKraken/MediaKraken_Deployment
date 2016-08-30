@@ -9,3 +9,4 @@ pyflakes
 pyproxmox
 requests
 pyvmomi
+pyvbox
