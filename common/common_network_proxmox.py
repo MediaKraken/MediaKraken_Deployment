@@ -100,27 +100,6 @@ class CommonNetworkProxMox(object):
     def com_net_prox_scan_methods(self, node_name='pve'):
         return self.proxmox_instance.getNodeScanMethods(node_name)
 
-
-stuff = CommonNetworkProxMox('10.0.0.190', 'root@pam', 'jenkinsbuild')
-print(stuff.com_net_prox_status())
-print(stuff.com_net_prox_backup_sch())
-print(stuff.com_net_prox_cluster_nextid())
-print(stuff.com_net_prox_net_list())
-print(stuff.com_net_prox_net_interface())
-print(stuff.com_net_prox_service_list())
-print(stuff.com_net_prox_openvz_containers())
-print(stuff.com_net_prox_vm_containers())
-print(stuff.com_net_prox_storage_status())
-print(stuff.com_net_prox_node_status())
-print(stuff.com_net_prox_node_system_logs())
-print(stuff.com_net_prox_net_dns())
-print(stuff.com_net_prox_finished_tasks())
-print(stuff.com_net_prox_get_usb())
-print(stuff.com_net_prox_lvm_group())
-print(stuff.com_net_prox_nfs())
-print(stuff.com_net_prox_iscsi())
-print(stuff.com_net_prox_scan_methods())
-
 '''
 
 Node Methods
@@ -363,3 +342,23 @@ STORAGE
 "Update storage configuration"
 
 '''
+
+stuff = CommonNetworkProxMox('10.0.0.190', 'root@pam', 'jenkinsbuild')
+print(stuff.com_net_prox_status())
+print(stuff.com_net_prox_backup_sch())
+print(stuff.com_net_prox_cluster_nextid())
+print(stuff.com_net_prox_net_list())
+print(stuff.com_net_prox_net_interface())
+print(stuff.com_net_prox_service_list())
+print(stuff.com_net_prox_openvz_containers())
+print(stuff.com_net_prox_vm_containers())
+print(stuff.com_net_prox_storage_status())
+print(stuff.com_net_prox_node_status())
+print(stuff.com_net_prox_node_system_logs())
+print(stuff.com_net_prox_net_dns())
+print(stuff.com_net_prox_finished_tasks())
+print(stuff.com_net_prox_get_usb())
+print(stuff.com_net_prox_lvm_group())
+print(stuff.com_net_prox_nfs())
+print(stuff.com_net_prox_iscsi())
+print(stuff.com_net_prox_scan_methods())
