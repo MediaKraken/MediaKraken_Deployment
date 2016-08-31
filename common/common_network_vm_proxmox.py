@@ -48,9 +48,9 @@ class CommonNetworkProxMox(object):
                                  cookies=self.prox_ticket,
                                  headers=self.httpheaders).json()
 
-    """
-    Cluster API
-    """
+    ###
+    # Cluster API
+    ###
     def com_net_prox_api_version(self):
         """
         # grab version of api from node
@@ -65,9 +65,9 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('get', 'cluster')
 
 
-    """
-    LXC api calls
-    """
+    ###
+    # LXC api calls
+    ###
     def com_net_prox_node_lxc_list(self, node_name):
         """
         Get a list of the lxc vms on node
@@ -87,7 +87,7 @@ class CommonNetworkProxMox(object):
         """
         Start lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/start'\
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/start'\
             % (node_name, vm_id))
 
 
@@ -95,12 +95,13 @@ class CommonNetworkProxMox(object):
         """
         Stop lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/stop' % (node_name, vm_id))
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/stop'\
+            % (node_name, vm_id))
 
 
-    """
-    QEMU api calls
-    """
+    ###
+    # QEMU api calls
+    ###
     def com_net_prox_node_qemu_list(self, node_name):
         """
         Get a list of the qemu vms on node
@@ -120,7 +121,7 @@ class CommonNetworkProxMox(object):
         """
         Start qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/start'\
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/start'\
             % (node_name, vm_id))
 
 
@@ -128,13 +129,5 @@ class CommonNetworkProxMox(object):
         """
         Stop qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/stop'\
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/stop'\
             % (node_name, vm_id))
-
-
-testn = CommonNetworkProxMox('10.0.0.190', 'root@pam', 'jenkinsbuild')
-print(testn.com_net_prox_api_version())
-print(testn.com_net_prox_cluster_ndx())
-print(testn.com_net_prox_node_lxc_list('pve'))
-print(testn.com_net_prox_node_qemu_list('pve'))
-print(testn.com_net_prox_node_qemu_status('pve', 104))
