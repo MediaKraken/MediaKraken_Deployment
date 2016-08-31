@@ -112,3 +112,6 @@
 [submodule "mpv"]
 	path = submodule/mpv
 	url = ../mpv
+[submodule "pyproxmox"]
+	path = submodule/pyproxmox
+	url = ../pyproxmox
