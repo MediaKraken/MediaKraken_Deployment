@@ -6,6 +6,3 @@ coverage
 pytest-cov
 tox
 pyflakes
-requests
-pyvmomi
-pyvbox
