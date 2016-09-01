@@ -133,7 +133,7 @@ meta_program_fetch = []
 # grab station info from SD
 if len(station_fetch) > 5000:
     logging.critical("Too many channels!!!!  Exiting...")
-elif len(station_fetch > 0:
+elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
