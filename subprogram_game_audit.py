@@ -370,7 +370,7 @@ class GameAuditer(threading.Thread):
             '(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
             'gc_category from game_info,gui_db.game_audit,game_systems,game_category'\
             ' where gi_id = gui_db.game_audit.ga_game_id and gs_id = gi_system_id'\
-            ' and gi_gc_category = gc_id union all select 'Arcade',gi_short_name,gi_long_name,'\
+            ' and gi_gc_category = gc_id union all select \'Arcade\',gi_short_name,gi_long_name,'\
             'gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
             'gc_category from game_info,gui_db.game_audit,game_category where gi_system_id = 0'\
             ' and gi_id = gui_db.game_audit.ga_game_id and gi_gc_category = gc_id')
@@ -449,7 +449,8 @@ class GameAuditer(threading.Thread):
             for gameData in gameSystem[1]:
                 if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal"\
                     and gameData[1][2] != "Horizontal")\
-                    or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical" and gameData[1][2] != "Vertical") or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
+                    or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical"\
+                    and gameData[1][2] != "Vertical") or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
                     pass
                 else:
                     if first_record:
