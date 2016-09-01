@@ -85,9 +85,6 @@
 [submodule "python-feedgen"]
 	path = submodule/python-feedgen
 	url = ../python-feedgen
-[submodule "rtsimple"]
-	path = submodule/rtsimple
-	url = ../rtsimple
 [submodule "flask-paginate"]
 	path = submodule/flask-paginate
 	url = ../flask-paginate
@@ -112,6 +109,3 @@
 [submodule "mpv"]
 	path = submodule/mpv
 	url = ../mpv
-[submodule "pyproxmox"]
-	path = submodule/pyproxmox
-	url = ../pyproxmox
