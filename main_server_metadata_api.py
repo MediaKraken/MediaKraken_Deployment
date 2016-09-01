@@ -238,18 +238,19 @@ def pitchfork(thread_db, download_data):
         pass
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['rotten_tomatoes'][0]\
-     / common_metadata_limiter.API_LIMIT['rotten_tomatoes'][1])
-def rotten_tomatoes(thread_db, download_data):
-    """
-    Rate limiter for Rotten Tomatoes
-    """
-    logging.debug("here i am in rotten_tomatoes rate %s",\
-        datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    if download_data['mdq_download_json']['Status'] == "Search":
-        pass
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
-        pass
+# they went pay only
+#@ratelimited(common_metadata_limiter.API_LIMIT['rotten_tomatoes'][0]\
+#     / common_metadata_limiter.API_LIMIT['rotten_tomatoes'][1])
+#def rotten_tomatoes(thread_db, download_data):
+#    """
+#    Rate limiter for Rotten Tomatoes
+#    """
+#    logging.debug("here i am in rotten_tomatoes rate %s",\
+#        datetime.datetime.now().strftime("%H:%M:%S.%f"))
+#    if download_data['mdq_download_json']['Status'] == "Search":
+#        pass
+#    elif download_data['mdq_download_json']['Status'] == "Fetch":
+#        pass
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]\

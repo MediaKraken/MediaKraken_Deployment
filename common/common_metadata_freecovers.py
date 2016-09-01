@@ -21,47 +21,47 @@
 Apparenlty their API was disabled a year ago due to abuse
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-import urllib2
-import urllib
-
-'''
-Anime DVD
-Blu-Ray Movie
-DVD Movie
-HD-DVD Movie
-GameCube
-Music CD
-Music DVD
-Other
-Other Console
-PC Apps
-PC Games
-Playstation
-Playstation 2
-Playstation 3
-PSP
-Soundtrack
-TV Series
-VCD
-VHS
-Wii
-Xbox
-Xbox 360
-'''
-
-def com_freecovers_search(search_string, search_categories):
-    """
-    # general freecovers search
-    """
-    #xml_data = parse(common_network.mk_network_fetch_from_url
-#('http://www.freecovers.net/api/search/' + search_string, None))
-    #for node in xml_data.getElementsByTagName('name'):
-    request = urllib2.Request('http://www.freecovers.net/api/search/',\
-        urllib.urlencode({'search': search_string}))
-    handler = urllib2.urlopen(request)
-    print(handler.read())
-
-
-# com_freecovers_search('Megadeath', None)
+#from __future__ import absolute_import, division, print_function, unicode_literals
+#import logging # pylint: disable=W0611
+#import urllib2
+#import urllib
+#
+#'''
+#Anime DVD
+#Blu-Ray Movie
+#DVD Movie
+#HD-DVD Movie
+#GameCube
+#Music CD
+#Music DVD
+#Other
+#Other Console
+#PC Apps
+#PC Games
+#Playstation
+#Playstation 2
+#Playstation 3
+#PSP
+#Soundtrack
+#TV Series
+#VCD
+#VHS
+#Wii
+#Xbox
+#Xbox 360
+#'''
+#
+#def com_freecovers_search(search_string, search_categories):
+#    """
+#    # general freecovers search
+#    """
+#    #xml_data = parse(common_network.mk_network_fetch_from_url
+##('http://www.freecovers.net/api/search/' + search_string, None))
+#    #for node in xml_data.getElementsByTagName('name'):
+#    request = urllib2.Request('http://www.freecovers.net/api/search/',\
+#        urllib.urlencode({'search': search_string}))
+#    handler = urllib2.urlopen(request)
+#    print(handler.read())
+#
+#
+## com_freecovers_search('Megadeath', None)

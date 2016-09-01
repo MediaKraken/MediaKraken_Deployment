@@ -23,7 +23,7 @@ API_LIMIT = {
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections
     'pitchfork': (9999, 1), # no mention of limits 7/29/2016
-    'rotten_tomatoes': (9999, 1),
+#    'rotten_tomatoes': (9999, 1), # they went pay only
     'televisiontunes': (1, 1), # since I'm scraping
     'theaudiodb': (9999, 1), # no mention of limits 7/29/2016
     'thegamesdb': (9999, 1), # no mention of limits 7/29/2016

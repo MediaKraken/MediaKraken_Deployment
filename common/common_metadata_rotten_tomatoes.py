@@ -16,26 +16,30 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-import rtsimple as rt
+#
+# they decided to go pay only
+#
 
-
-class CommonMetadataRottenTomatoes(object):
-    """
-    Class for interfacing with rotten tomatoes
-    """
-    def __init__(self, option_config_json):
-        rt.API_KEY = option_config_json['API']['RottenTomatoes']
-
-
-    def com_rt_search(self, movie_title, movie_year=None):
-        """
-        # search for movie title and year
-        """
-        movie = rt.Movies()
-        response = movie.search(q=movie_title)
-        for movie_data in movie.movies:
-            logging.info("rt: %s %s %s", movie_data['title'], movie_data['id'],\
-                movie_data['alternate_ids'])
-        return movie
+#from __future__ import absolute_import, division, print_function, unicode_literals
+#import logging # pylint: disable=W0611
+#import rtsimple as rt
+#
+#
+#class CommonMetadataRottenTomatoes(object):
+#    """
+#    Class for interfacing with rotten tomatoes
+#    """
+#    def __init__(self, option_config_json):
+#        rt.API_KEY = option_config_json['API']['RottenTomatoes']
+#
+#
+#    def com_rt_search(self, movie_title, movie_year=None):
+#        """
+#        # search for movie title and year
+#        """
+#        movie = rt.Movies()
+#        response = movie.search(q=movie_title)
+#        for movie_data in movie.movies:
+#            logging.info("rt: %s %s %s", movie_data['title'], movie_data['id'],\
+#                movie_data['alternate_ids'])
+#        return movie
