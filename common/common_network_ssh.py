@@ -54,5 +54,8 @@ class CommonNetworkSSH(object):
             print('... ' + line.strip('\n'))
 
 
-    def com_net_ssh_clsoe(self):
+    def com_net_ssh_close(self):
+        """
+        Close the ssh connection
+        """
         self.ssh_connection.close()
