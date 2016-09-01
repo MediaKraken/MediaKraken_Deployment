@@ -80,7 +80,7 @@ except:
 logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    proc_ssl = subprocess.Popen(['python', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
@@ -132,23 +132,23 @@ watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=False)
+proc = subprocess.Popen(['./subprogram_reactor_string'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'],\
+proc_image = subprocess.Popen(['./subprogram_reactor_web_images'],\
     shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
-proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
+proc_broadcast = subprocess.Popen(['./subprogram_broadcast'], shell=False)
 logging.info("Broadcast PID: %s", proc_broadcast.pid)
 
 
 # fire up cron service
-proc_cron = subprocess.Popen(['python', './subprogram_cron_checker.py'], shell=False)
+proc_cron = subprocess.Popen(['./subprogram_cron_checker'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
 
 
@@ -161,19 +161,19 @@ else:
 
 
 # fire up trigger procress
-proc_trigger = subprocess.Popen(['python', 'main_server_trigger.py'], shell=False)
+proc_trigger = subprocess.Popen(['./main_server_trigger'], shell=False)
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
 # fire up api server
-proc_api = subprocess.Popen(['python', 'main_server_api.py'], shell=False)
+proc_api = subprocess.Popen(['./main_server_api'], shell=False)
 logging.info("API PID: %s", proc_api.pid)
 
 
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
-    proc_link = subprocess.Popen(['python', 'main_server_link.py', link_data[2]['IP'],\
+    proc_link = subprocess.Popen(['./main_server_link', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
