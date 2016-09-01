@@ -51,3 +51,7 @@ class CommonNetworkSSH(object):
             get_pty=True)
         for line in ssh_stdout:
             print('... ' + line.strip('\n'))
+
+
+    def com_net_ssh_clsoe(self):
+        self.ssh_connection.close()
