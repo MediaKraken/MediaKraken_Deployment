@@ -112,34 +112,113 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('get', 'cluster/backup')
 
 
+    def com_net_prox_cluster_backup_create(self, post_data_json):
+        """
+        Create new vzdump backup job.
+        """
+        return self.com_net_prox_api_call('post', 'cluster/backup', post_data_json)
+
+
+    def com_net_prox_cluster_backup_conf(self, backup_id):
+        """
+        Read vzdump backup job definition.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/backup/%s' % backup_id)
+
+
+    def com_net_prox_cluster_backup_update(self, backup_id, post_data_json):
+        """
+        Update vzdump backup job definition.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/backup/%s' % backup_id, post_data_json)
+
+
+    def com_net_prox_cluster_backup_delete(self, backup_id):
+        """
+        Delete vzdump backup job definition.
+        """
+        return self.com_net_prox_api_call('delete', 'cluster/backup/%s' % backup_id)
+
+
     ###
     # Cluster/firewall API
     ###
+    def com_net_prox_cluster_firewall(self):
+        """
+        Directory index.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/firewall')
 
 
     ###
     # Cluster/ha API
     ###
+    def com_net_prox_cluster_ha(self):
+        """
+        Directory index.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/ha')
+
+
+    def com_net_prox_cluster_ha_groups(self):
+        """
+        Get HA groups.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/ha/groups')
+
+
+    def com_net_prox_cluster_ha_group_create(self, post_data_json):
+        """
+        Create a new HA group.
+        """
+        return self.com_net_prox_api_call('put', 'cluster/ha/groups', post_data_json)
 
 
     ###
     # Cluster/log API
     ###
+    def com_net_prox_cluster_log(self):
+        """
+        Read cluster log
+        """
+        return self.com_net_prox_api_call('get', 'cluster/log')
 
 
     ###
     # Cluster/nextid API
     ###
+    def com_net_prox_cluster_nextid(self):
+        """
+        Get next free VMID. If you pass an VMID it will raise an error if the ID is already used.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/nextid')
 
 
     ###
     # Cluster/options API
     ###
+    def com_net_prox_cluster_options(self):
+        """
+        Get datacenter options.
+        """
+        return self.com_net_prox_api_call('get', 'cluster/options')
+
+
+    def com_net_prox_cluster_options_update(self, post_data_json):
+        """
+        Set datacenter options.
+        """
+        return self.com_net_prox_api_call('put', 'cluster/options', post_data_json)
 
 
     ###
     # Cluster/resources API
     ###
+    def com_net_prox_cluster_resources(self):
+        """
+        Resources index (cluster wide).
+        """
+        return self.com_net_prox_api_call('get', 'cluster/resources')
 
 
     ###
@@ -155,6 +234,11 @@ class CommonNetworkProxMox(object):
     ###
     # Cluster/tasks API
     ###
+    def com_net_prox_cluster_tasks(self):
+        """
+        List recent tasks (cluster wide).
+        """
+        return self.com_net_prox_api_call('get', 'cluster/tasks')
 
 
     ###
@@ -443,7 +527,7 @@ class CommonNetworkProxMox(object):
         """
         Update pool
         """
-        return self.com_net_prox_api_call('post', 'pools/%s' %s pool_name, post_data_json)
+        return self.com_net_prox_api_call('post', 'pools/%s' % pool_name, post_data_json)
 
 
     def com_net_prox_pool_delete(self, pool_name):
