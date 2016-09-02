@@ -24,6 +24,7 @@ from common import common_hash
 from . import metadata_anime
 from . import metadata_game
 from . import metadata_movie
+from . import metadata_music
 from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person

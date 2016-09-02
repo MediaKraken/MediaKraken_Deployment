@@ -479,7 +479,8 @@ def worker(content_providers):
             if metadata_uuid is not None:
                 logging.debug("update: %s %s",\
                     row_data['mdq_download_json']['MediaID'], metadata_uuid)
-                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'], metadata_uuid)
+                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
+                    metadata_uuid)
                 thread_db.db_download_delete(row_data['mdq_id'])
     time.sleep(1)
     thread_db.db_commit()
