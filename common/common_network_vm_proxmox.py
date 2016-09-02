@@ -319,6 +319,47 @@ class CommonNetworkProxMox(object):
     ###
     # Nodes/network
     ###
+    def com_net_prox_net(self, node_name):
+        """
+        List available networks
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/network' % node_name)
+
+
+    def com_net_prox_net_create(self, node_name, post_data_json):
+        """
+        List available networks
+        """
+        return self.com_net_prox_api_call('put', 'nodes/%s/network' % node_name, post_data_json)
+
+
+    def com_net_prox_net_delete(self, node_name, post_data_json):
+        """
+        Revert network configuration changes.
+        """
+        return self.com_net_prox_api_call('delete', 'nodes/%s/network' % node_name, post_data_json)
+
+
+    def com_net_prox_net_nic_conf(self, node_name, iface):
+        """
+        Read network device configuration
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' % (node_name, iface))
+
+
+    def com_net_prox_net_nic_conf_update(self, node_name, iface, post_data_json):
+        """
+        Update network device configuration
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s'\
+            % (node_name, iface), post_data_json)
+
+
+    def com_net_prox_net_nic_conf_delete(self, node_name, iface):
+        """
+        Delete network device configuration
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' % (node_name, iface))
 
 
     ###
@@ -374,16 +415,131 @@ class CommonNetworkProxMox(object):
     ###
     # Nodes/scan
     ###
+    def com_net_prox_node_scan(self, node_name):
+        """
+        Index of available scan methods
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan' % node_name)
+
+
+    def com_net_prox_node_scan_glusterfs(self, node_name, post_data_json):
+        """
+        Scan remote GlusterFS server.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/glusterfs' % node_name,\
+            post_data_json)
+
+
+    def com_net_prox_node_scan_iscsi(self, node_name, post_data_json):
+        """
+        Scan remote iSCSI server.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/iscsi' % node_name,\
+            post_data_json)
+
+
+    def com_net_prox_node_scan_lvm(self, node_name):
+        """
+        List local LVM volume groups.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvm' % node_name)
+
+
+    def com_net_prox_node_scan_lvmthin(self, node_name, post_data_json):
+        """
+        List local LVM Thin Pools.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvmthin' % node_name,\
+            post_data_json)
+
+
+    def com_net_prox_node_scan_nfs(self, node_name, post_data_json):
+        """
+        Scan remote NFS server.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/nfs' % node_name,\
+            post_data_json)
+
+
+    def com_net_prox_node_scan_usb(self, node_name):
+        """
+        List local USB devices.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/usb' % node_name)
+
+
+    def com_net_prox_node_scan_zfs(self, node_name):
+        """
+        Scan zfs pool list on local node.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/zfs' % node_name)
 
 
     ###
     # Nodes/services
     ###
+    def com_net_prox_node_services(self, node_name):
+        """
+        Service list.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services' % node_name)
+
+
+    def com_net_prox_node_services_ndx(self, node_name, service_id):
+        """
+        Directory index
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s' % (node_name, service_id))
+
+
+    def com_net_prox_node_service_reload(self, node_name, service_id):
+        """
+        Reload service.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/relaod'\
+            % (node_name, service_id))
+
+
+    def com_net_prox_node_service_restart(self, node_name, service_id):
+        """
+        Restart service.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/restart'\
+            % (node_name, service_id))
+
+
+    def com_net_prox_node_service_start(self, node_name, service_id):
+        """
+        Start service.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/start'\
+            % (node_name, service_id))
+
+
+    def com_net_prox_node_service_state(self, node_name, service_id):
+        """
+        Service state.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/state'\
+            % (node_name, service_id))
+
+
+    def com_net_prox_node_service_stop(self, node_name, service_id):
+        """
+        Stop service.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/stop'\
+            % (node_name, service_id))
 
 
     ###
     # Nodes/storage
     ###
+    def com_net_prox_node_storage_status(self, node_name, post_data_json):
+        """
+        Get status for all datastores.
+        """
+        return self.com_net_prox_api_call('get', 'nodes/%s/storage' % node_name, post_data_json)
 
 
     ###
