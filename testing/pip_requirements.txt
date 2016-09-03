@@ -6,4 +6,5 @@ coverage
 pytest-cov
 tox
 pyflakes
-pytest-xdist
+pytest-timeout
+
