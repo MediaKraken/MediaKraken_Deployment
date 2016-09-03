@@ -62,9 +62,9 @@ else:
 # verify themovietb key exists
 if option_config_json['API']['theMovieDB'] is not None:
     # setup the thmdb class
-    TMDB_API_Connection = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+    TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
-    TMDB_API_Connection = None
+    TMDB_API_CONNECTION = None
     logging.critical("themoviedb API not available. Exiting program...")
     sys.exit(0)
 
@@ -73,24 +73,23 @@ total_collections_downloaded = 0
 # same code in subprogram match anime scudlee
 def store_update_record(db_connection, collection_name, guid_list, poster_path,\
         backdrop_path, collection_id):
-    global total_collections_downloaded
     # store/update the record
     # don't string this since it's a pure result store
     collection_guid = db_connection.db_collection_by_tmdb(collection_id)
     logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_API_Connection.com_tmdb_metadata_collection_by_id(collection_id)
+        collection_meta = TMDB_API_CONNECTION.com_tmdb_meta_collection_by_id(collection_id)
         logging.debug("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
-            image_poster_path = common_metadata.com_metadata_image_path(collection_name,\
+            image_poster_path = common_metadata.com_meta_image_path(collection_name,\
                 'poster', 'tmdb', poster_path)
         else:
             image_poster_path = ''
         # backdrop path
         if backdrop_path is not None:
-            image_backdrop_path = common_metadata.com_metadata_image_path(collection_name,\
+            image_backdrop_path = common_metadata.com_meta_image_path(collection_name,\
                 'backdrop', 'tmdb', backdrop_path)
         else:
             image_backdrop_path = ''

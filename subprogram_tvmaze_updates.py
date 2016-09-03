@@ -65,7 +65,7 @@ def update_insert_show(tvmaze_id, update_rec=None):
     #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_themaze_show_by_id(\
+        show_full_json = ({'Meta': {'tvmaze': json.loads(tvmaze.com_meta_tvmaze_show_by_id(\
             tvmaze_id, None, None, None, True))}})
     except:
         pass

@@ -73,11 +73,11 @@ def movie_fetch_save(tmdb_id):
     metadata_uuid = None
     logging.debug("fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
-    result_json = tmdb.com_tmdb_metadata_by_id(tmdb_id)
+    result_json = tmdb.com_tmdb_meta_by_id(tmdb_id)
     if result_json is not None:
         logging.debug("here I am")
-        series_id_json, result_json, image_json = tmdb.com_tmdb_metadata_info_build(result_json)
-        cast_json = tmdb.com_tmdb_metadata_cast_by_id(tmdb_id)
+        series_id_json, result_json, image_json = tmdb.com_tmdb_meta_info_build(result_json)
+        cast_json = tmdb.com_tmdb_meta_cast_by_id(tmdb_id)
         # set and insert the record
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': cast_json['cast'],\
             'Crew': cast_json['crew']}}})
@@ -94,7 +94,7 @@ def movie_fetch_save(tmdb_id):
             if 'crew' in cast_json:
                 db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
             # grab reviews
-            review_json = tmdb.com_tmdb_metadata_review_by_id(tmdb_id)
+            review_json = tmdb.com_tmdb_meta_review_by_id(tmdb_id)
             if review_json['total_results'] > 0:
                 review_json_id = ({'TMDB': str(review_json['id'])})
                 logging.debug("review: %s", review_json_id)
@@ -109,10 +109,10 @@ def movie_fetch_save(tmdb_id):
 
 # grab the updated data
 tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
-for movie_change in tmdb.com_tmdb_metadata_changes_movie()['results']:
+for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     logging.debug("mov: %s", movie_change['id'])
     movie_fetch_save(movie_change['id'])
-for tv_change in tmdb.com_tmdb_metadata_changes_tv()['results']:
+for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
     logging.debug("tv: %s", tv_change['id'])
     movie_fetch_save(tv_change['id'])
 

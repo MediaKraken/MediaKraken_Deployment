@@ -78,8 +78,11 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
     if 'image' in row_data['mm_metadata_tvshow_json']\
             and row_data['mm_metadata_tvshow_json']['image'] is not None:
         if 'original' in row_data['mm_metadata_tvshow_json']['image']:
-            poster_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['name'], 'poster'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['image']['original'].rsplit('.', 1)[1]))
-            common_network.mk_network_fetch_from_url(row_data['mm_metadata_tvshow_json']['image']['original'], poster_image_local)
+            poster_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+                row_data['mm_metadata_tvshow_json']['name'], 'poster'), (str(uuid.uuid4())\
+                + '.' + row_data['mm_metadata_tvshow_json']['image']['original'].rsplit('.', 1)[1]))
+            common_network.mk_network_fetch_from_url(\
+                row_data['mm_metadata_tvshow_json']['image']['original'], poster_image_local)
     # generate image json
     json_image_data = {'Images': {'tvmaze': {'Banner': None, 'Fanart': None,\
         'Poster': poster_image_local, 'Cast': {}, 'Characters': {}, 'Episodes': {}, "Redo": False}}}
@@ -88,17 +91,24 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
         if cast_member['person']['image'] is not None\
                 and 'original' in cast_member['person']['image']:
             # determine path and fetch image/save
-            cast_image_local = os.path.join(common_metadata.com_meta_image_file_path(cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.' + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
+            cast_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+                cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.'\
+                + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
             logging.debug("one: %s", cast_image_local)
-            common_network.mk_network_fetch_from_url(cast_member['person']['image']['original'], cast_image_local)
-            json_image_data['Images']['tvmaze']['Cast'][cast_member['person']['id']] = cast_image_local
+            common_network.mk_network_fetch_from_url(cast_member['person']['image']['original'],\
+                cast_image_local)
+            json_image_data['Images']['tvmaze']['Cast'][cast_member['person']['id']]\
+                = cast_image_local
             total_cast_images += 1
         if 'image' in cast_member['character']:
             if cast_member['character']['image'] is not None:
                 if 'original' in cast_member['character']['image']:
-                    char_image_local = os.path.join(common_metadata.com_meta_image_file_path(cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.' + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
+                    char_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+                        cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.'\
+                        + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
                     logging.debug("two: %s", char_image_local)
-                    common_network.mk_network_fetch_from_url(cast_member['character']['image']['original'], char_image_local)
+                    common_network.mk_network_fetch_from_url(\
+                        cast_member['character']['image']['original'], char_image_local)
                     json_image_data['Images']['tvmaze']['Characters'][cast_member['character']['id']] = char_image_local
                     total_char_images += 1
     # process episode data
@@ -109,7 +119,8 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
                     episode_info['name'], 'backdrop'), (str(uuid.uuid4()) + '.'\
                     + episode_info['image']['original'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
-                common_network.mk_network_fetch_from_url(episode_info['image']['original'], eps_image_local)
+                common_network.mk_network_fetch_from_url(episode_info['image']['original'],\
+                    eps_image_local)
                 json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']] = eps_image_local
                 total_episode_images += 1
     db_connection.db_meta_tvshow_update_image(json.dumps(json_image_data), row_data[1])
