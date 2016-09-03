@@ -20,18 +20,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 from common import common_config_ini
-from common import common_file
 from common import common_logging
-import os
 import signal
 from concurrent import futures
 import subprocess
 from datetime import timedelta
-
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Sync', False, False, None)
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -39,8 +32,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD Sync: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -58,13 +49,16 @@ def worker(row_data):
     ffmpeg_params = ['ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
         row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
-        ffmpeg_params.extend(('-fs', row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
+        ffmpeg_params.extend(('-fs',\
+            row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
         ffmpeg_params.extend(('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
     if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
-        ffmpeg_params.extend(('-ac', row_data['mm_sync_options_json']['Options']['AudioChannels'].encode('utf8')))
+        ffmpeg_params.extend(('-ac',\
+            row_data['mm_sync_options_json']['Options']['AudioChannels'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
-        ffmpeg_params.extend(('-acodec', row_data['mm_sync_options_json']['Options']['ACodec'].encode('utf8')))
+        ffmpeg_params.extend(('-acodec',\
+            row_data['mm_sync_options_json']['Options']['ACodec'].encode('utf8')))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
     ffmpeg_params.append(row_data['mm_sync_path_to'].encode('utf8') + "."\
@@ -138,6 +132,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-# remove pid
-os.remove(pid_file)

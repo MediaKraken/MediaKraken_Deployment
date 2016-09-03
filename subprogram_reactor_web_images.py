@@ -19,19 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import signal
-import os
 import sys
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor
 from twisted.internet import ssl
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Web_Image', False, False, None)
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -39,8 +33,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('Web Image CHILD: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     sys.stdout.flush()
     sys.exit(0)
 
@@ -62,7 +54,3 @@ reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ImageWeb']),\
     Site(File(option_config_json['MediaKrakenServer']['MetadataImageLocal'])),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
-
-
-# remove pid
-os.remove(pid_file)

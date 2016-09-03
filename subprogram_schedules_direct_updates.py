@@ -19,20 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import os
 import signal
 import json
-import time
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_schedules_direct
 import locale
 locale.setlocale(locale.LC_ALL, '')
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Schedules Direct Update', False, False, None)
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -40,8 +33,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD Schedules Direct Update: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -60,7 +51,8 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.debug("array: %s", meta_program_fetch)
     meta_program_json = sd.com_schedules_direct_program_info(json.dumps(meta_program_fetch))
     logging.debug("result: %s", meta_program_json)
-#   meta_program_json = sd.com_Schedules_Direct_Program_Desc(json.dumps([{'programID': program_json['programID']}]))
+#   meta_program_json = sd.com_Schedules_Direct_Program_Desc(\
+    #json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
         db_connection.db_tv_program_insert(program_json['programID'], json.dumps(program_data))
 
@@ -78,7 +70,7 @@ db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Sta
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
-sd = com_schedules_direct.CommonSchedulesDirect()
+sd = common_schedules_direct.CommonSchedulesDirect()
 sd.com_schedules_direct_login(option_config_json['SD']['User'],\
     option_config_json['SD']['Password'])
 status_data = sd.com_schedules_direct_status()
@@ -115,10 +107,12 @@ else:
 #    logging.debug("Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
 #        logging.debug("stationschannel: %s", channel_meta)
-#        db_connection.db_tv_station_update(channel_meta['name'], channel_meta['stationID'], json.dumps(channel_meta))
+#        db_connection.db_tv_station_update(channel_meta['name'], channel_meta['stationID'],\
+# json.dumps(channel_meta))
 
 
-# TODO downloading a generic description of a program - good for what the show is......not an episode itself
+# TODO downloading a generic description of a program\
+# - good for what the show is......not an episode itself
 
 station_fetch = []
 logging.debug("list: %s", db_connection.db_tv_stations_read_stationid_list())
@@ -137,11 +131,15 @@ elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
-        # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15', u'modified': u'2016-06-14T23:07:05Z', u'md5': u'2aEwFuhZCqJSHKabBbR/Sg'}, 
+        # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15',
+    #u'modified': u'2016-06-14T23:07:05Z', u'md5': u'2aEwFuhZCqJSHKabBbR/Sg'},
         meta_program_fetch = []
        # for each program in station schedule result
         for program_json in station_json['programs']:
-            # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}], u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000, u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z', u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
+            # {u'ratings': [{u'body': u'USA Parental Rating', u'code': u'TV14'}],
+        # u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000,
+        # u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z',
+        #  u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
             db_connection.db_tv_schedule_insert(station_json['stationID'],\
                 program_json['airDateTime'], json.dumps(program_json))
             logging.debug("what: %s", program_json['programID'])
@@ -169,7 +167,3 @@ db_connection.db_commit()
 
 # close DB
 db_connection.db_close()
-
-
-# remove pid
-os.remove(pid_file)

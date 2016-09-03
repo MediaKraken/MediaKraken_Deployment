@@ -24,17 +24,12 @@ import signal
 from common import common_file
 from common import common_logging
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Subtitle_Down', False, False, None)
 
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD Subtitle: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     sys.stdout.flush()
     sys.exit(0)
 
@@ -53,7 +48,6 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Subtitle_Download
 total_download_attempts = 0
 # main code
 def main(argv):
-    global total_download_attempts
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files
@@ -75,5 +69,3 @@ def main(argv):
 
 if __name__ == "__main__":
     print('Total subtitle download attempts: %s', total_download_attempts)
-    # remove pid
-    os.remove(pid_file)

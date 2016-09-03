@@ -19,32 +19,25 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import os
 import signal
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata
 from common import common_network
 from common import common_metadata_thelogodb
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Logo_Downloader', False, False, None)
-
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD Logo: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
@@ -61,13 +54,14 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Logo_Download')
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-logo_connection = common_metadata_thelogodb.com_thelogodb_API()
+logo_connection = common_metadata_thelogodb.CommonMetadataTheLogoDB()
 total_download_attempts = 0
 # main code
 def main(argv):
-    for channel_info in logo_connection.com_thelogodb_Fetch_Latest()['channels']:
+    for channel_info in logo_connection.com_thelogodb_fetch_latest()['channels']:
         # fetch and store logo image
-        image_file_path = com_metadata.com_meta_image_file_path(channel_info['strChannel'], 'logo')
+        image_file_path = common_metadata.com_meta_image_file_path(\
+            channel_info['strChannel'], 'logo')
         logging.debug("image: %s", image_file_path)
         common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 
@@ -91,5 +85,3 @@ if __name__ == "__main__":
 #    db_connection.db_commit()
 #    # close DB
 #    db_connection.db_close()
-#    # remove pid
-#    os.remove(pid_file)

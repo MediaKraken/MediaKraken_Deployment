@@ -85,11 +85,6 @@ media_extension_skip_ffmpeg = [
 ]
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_File_Scan', False, False, None)
-
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
 
@@ -99,8 +94,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD File Scan: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -270,7 +263,8 @@ for row_data in db_connection.db_audit_paths():
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
-        addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
+        addr, share, path\
+            = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
         smb_stuff.com_cifs_connect(addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
             if datetime.strptime(time.ctime(\
@@ -322,7 +316,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-
-# remove pid
-os.remove(pid_file)

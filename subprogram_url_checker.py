@@ -35,6 +35,7 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     sys.stdout.flush()
     sys.exit(0)
 
+
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
 else:

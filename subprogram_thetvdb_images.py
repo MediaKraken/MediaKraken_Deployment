@@ -24,7 +24,6 @@ import signal
 import json
 import sys
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata
 from common import common_network
@@ -32,18 +31,11 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'TVDB_Images_Known', False, False, None)
-
-
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD thetvdb Images: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -87,7 +79,8 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'] is not None:
         poster_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
             row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'poster'),\
-            (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
+            (str(uuid.uuid4()) + '.'\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'].rsplit('.', 1)[1]))
         common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
             + row_data['mm_metadata_tvshow_json']['Meta']['Series']['poster'], poster_image_local)
 
@@ -95,7 +88,10 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
     banner_image_local = None
     if 'banner' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'] is not None:
-        banner_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
+        banner_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+            row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'banner'),\
+            (str(uuid.uuid4()) + '.'\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'].rsplit('.', 1)[1]))
         common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
             + row_data['mm_metadata_tvshow_json']['Meta']['Series']['banner'], banner_image_local)
 
@@ -103,7 +99,10 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
     fanart_image_local = None
     if 'fanart' in row_data['mm_metadata_tvshow_json']['Meta']['Series']\
             and row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'] is not None:
-        fanart_image_local = os.path.join(common_metadata.com_meta_image_file_path(row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'), (str(uuid.uuid4()) + '.' + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
+        fanart_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+            row_data['mm_metadata_tvshow_json']['Meta']['Series']['SeriesName'], 'fanart'),\
+            (str(uuid.uuid4()) + '.'\
+            + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'].rsplit('.', 1)[1]))
         common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
             + row_data['mm_metadata_tvshow_json']['Meta']['Series']['fanart'], fanart_image_local)
 
@@ -122,12 +121,15 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
                 logging.debug("wha: %s", cast_member)
                 if cast_member['Image'] is not None:
                     # determine path and fetch image/save
-                    cast_image_local = os.path.join(common_metadata.com_meta_image_file_path(cast_member['Name'],\
-                        'person'), (str(uuid.uuid4()) + '.' + cast_member['Image'].rsplit('.', 1)[1]))
+                    cast_image_local\
+                        = os.path.join(common_metadata.com_meta_image_file_path(\
+                        cast_member['Name'], 'person'), (str(uuid.uuid4()) + '.'\
+                        + cast_member['Image'].rsplit('.', 1)[1]))
                     logging.debug("one: %s", cast_image_local)
                     common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                         + cast_member['Image'], cast_image_local)
-                    json_image_data['Images']['thetvdb']['Cast'][cast_member['id']] = cast_image_local
+                    json_image_data['Images']['thetvdb']['Cast'][cast_member['id']]\
+                        = cast_image_local
                     total_cast_images += 1
             logging.debug("cast: %s", json_image_data)
 
@@ -136,8 +138,10 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
         for episode_info in row_data['mm_metadata_tvshow_json']['Meta']['Episode']:
             logging.debug("episode: %s", episode_info)
             if episode_info['filename'] is not None:
-                eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(episode_info['EpisodeName'],\
-                'backdrop'), (str(uuid.uuid4()) + '.' + episode_info['filename'].rsplit('.', 1)[1]))
+                eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
+                episode_info['EpisodeName'],\
+                'backdrop'), (str(uuid.uuid4()) + '.'\
+                + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.debug("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                     + episode_info['filename'], eps_image_local)

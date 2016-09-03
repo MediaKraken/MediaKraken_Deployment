@@ -25,18 +25,13 @@ import signal
 import subprocess
 import os
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata
 #from common import common_system
 from concurrent import futures
-import database as database_base
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Chapter_Images', False, False, None)
 
 # set before everything else
 total_images_created = 0
@@ -47,8 +42,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD Chapter Image: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -154,7 +147,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-
-# remove pid
-os.remove(pid_file)

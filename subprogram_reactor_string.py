@@ -25,17 +25,10 @@ from twisted.internet.protocol import Factory
 import sys
 from network import network_base_string as network_base
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from time import time
 import time  # yes, use both otherwise some time code below breaks
-import os
 import signal
-
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Reactor_String', False, False, None)
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -43,8 +36,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD Reactor String: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     self.db_connection.db_rollback()
     self.db_connection.db_close()
@@ -83,5 +74,3 @@ if __name__ == '__main__':
         MediaKrakenServerApp(),\
         ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
     reactor.run()
-    # remove pid
-    os.remove(pid_file)

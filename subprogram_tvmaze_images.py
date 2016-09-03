@@ -24,7 +24,6 @@ import signal
 import json
 import sys
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata
 from common import common_network
@@ -32,18 +31,11 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'tvmaze_Images_Known', False, False, None)
-
-
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD tvmaze Images: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()

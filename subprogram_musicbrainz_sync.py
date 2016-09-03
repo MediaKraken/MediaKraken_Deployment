@@ -19,30 +19,24 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import os
 import signal
 import json
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 import db_base_brainz as database_base_brainz
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Musicbrainz_Sync', False, False, None)
 
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD Mbrainz Sync: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
@@ -103,5 +97,3 @@ db_connection.db_commit()
 # close DB
 db_brainz.db_close()
 db_connection.db_close()
-# remove pid
-os.remove(pid_file)

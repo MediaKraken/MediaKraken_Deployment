@@ -23,26 +23,20 @@ from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_network_radio
-import os
 import signal
 
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_iRadio', False, False, None)
 
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD Cron: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 # grab some dirs to scan and thread out the scans
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -83,6 +77,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-# remove pid
-os.remove(pid_file)

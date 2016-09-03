@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import os
 import signal
 import json
 import xmltodict
@@ -27,29 +26,23 @@ import zipfile
 import zlib
 import time
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata_thetvdb
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'TheTVDB Update', False, False, None)
-
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD TheTVDB Update: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
@@ -76,7 +69,8 @@ tvshow_updated = 0
 tvshow_inserted = 0
 thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 option_json, status_json = db_connection.db_opt_status_read()
-#for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc(status_json['thetvdb_Updated_Epoc'])):
+#for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc\
+#(status_json['thetvdb_Updated_Epoc'])):
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
@@ -136,7 +130,3 @@ db_connection.db_commit()
 
 # close DB
 db_connection.db_close()
-
-
-# remove pid
-os.remove(pid_file)

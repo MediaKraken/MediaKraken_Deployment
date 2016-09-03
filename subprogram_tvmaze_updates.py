@@ -19,19 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-import os
 import signal
 import json
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata_tvmaze
 import locale
 locale.setlocale(locale.LC_ALL, '')
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'tvmaze Update', False, False, None)
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -39,8 +33,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD tvmaze Update: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -158,7 +150,3 @@ db_connection.db_commit()
 
 # close DB
 db_connection.db_close()
-
-
-# remove pid
-os.remove(pid_file)

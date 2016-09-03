@@ -20,10 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 from common import common_hardware_chromecast
-from common import common_file
 from common import common_logging
 from common import common_config_ini
-import os
 import json
 import signal
 import locale
@@ -31,20 +29,11 @@ locale.setlocale(locale.LC_ALL, '')
 #lock = threading.Lock()
 
 
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Chromecast_Scan', False, False, None)
-
-
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
-    global global_end_program
-    global_end_program = True
     print('CHILD Tuner Scan: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
@@ -103,6 +92,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-# remove pid
-os.remove(pid_file)

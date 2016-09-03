@@ -20,29 +20,22 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 import signal
-import os
 from common import common_config_ini
-from common import common_file
 from common import common_logging
 from common import common_metadata_scudlee
 
-
-# create the file for pid
-pid_file = './pid/' + str(os.getpid())
-common_file.com_file_save_data(pid_file, 'Sub_Anime_Match', False, False, None)
 
 def signal_receive(signum, frame): # pylint: disable=W0613
     """
     Handle signal interupt
     """
     print('CHILD Anime: Received USR1')
-    # remove pid
-    os.remove(pid_file)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Anime_Scudlee')
@@ -105,6 +98,3 @@ db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
 db_connection.db_commit()
 # close the database
 db_connection.db_close()
-
-# remove pid
-os.remove(pid_file)
