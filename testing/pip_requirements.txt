@@ -7,4 +7,5 @@ pytest-cov
 tox
 pyflakes
 pytest-timeout
+pytest-profiling
 
