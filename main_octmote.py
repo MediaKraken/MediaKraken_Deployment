@@ -320,24 +320,38 @@ class OctMoteApp(App):
                     pass
             # check to see if lan device already open
             elif json_data["Protocol"]["Method"].lower() == "lan":
-                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.lan_devices_dict:
+                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
+                        in self.lan_devices_dict:
                    pass
             elif json_data["Protocol"]["Method"].lower() == "telnet":
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
-                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]] = common_telnet.MK_Telnet_Open_Device(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"], json_data["Protocol"]["Password"])
-                common_telnet.MK_Telnet_Write_Device(self.telnet_devices_dict[json_data["Protocol"]["Host IP"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]]\
+                        = common_telnet.MK_Telnet_Open_Device(json_data["Protocol"]["Host IP"],\
+                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
+                        json_data["Protocol"]["Password"])
+                common_telnet.MK_Telnet_Write_Device(\
+                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],\
+                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
                 # check to see if serial device already opened
-                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.serial_devices_dict:
-                    self.serial_devices_dict[(json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])] = com_Serial.MK_Serial_Open_Device(json_data["Protocol"]["Hardware Port"], json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"], json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
-                com_Serial.MK_Serial_Write_Device(self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]], self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
+                        in self.serial_devices_dict:
+                    self.serial_devices_dict[(json_data["Protocol"]["Host IP"],\
+                        json_data["Protocol"]["Hardware Port"])]\
+                        = com_Serial.MK_Serial_Open_Device(json_data["Protocol"]["Hardware Port"],\
+                        json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],\
+                        json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
+                com_Serial.MK_Serial_Write_Device(\
+                    self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],\
+                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "eiscp":
                 # check to see if eiscp device already open
                 if not json_data["Protocol"]["Host IP"] in self.eiscp_devices_dict:
                     pass
             elif json_data["Protocol"]["Method"].lower() == "kivy":
-                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) in self.kivy_lan_devices_dict:
+                if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
+                        in self.kivy_lan_devices_dict:
                     self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Hardware Port"])]\
                         = (json_data["Protocol"]["Host IP"],\
@@ -367,255 +381,441 @@ class OctMoteApp(App):
 #####################################################
     # main calibration events
     def main_remote_event_button_calibration_black_level(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Black Level"))
 
 
     def main_remote_event_button_calibration_brightness(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Brightness"))
 
 
     def main_remote_event_button_calibration_brightness_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Brightness Up"))
 
 
     def main_remote_event_button_calibration_brightness_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Brightness Down"))
 
 
     def main_remote_event_button_calibration_color(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color"))
 
 
     def main_remote_event_button_calibration_color_temp(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Temperature"))
 
 
     def main_remote_event_button_calibration_color_temp_r(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Temp R"))
 
 
     def main_remote_event_button_calibration_color_temp_g(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Temp G"))
 
 
     def main_remote_event_button_calibration_color_temp_b(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Temp B"))
 
 
     def main_remote_event_button_calibration_color_balance_r(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Balance R"))
 
 
     def main_remote_event_button_calibration_color_balance_g(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Balance G"))
 
 
     def main_remote_event_button_calibration_color_balance_b(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Balance B"))
 
 
     def main_remote_event_button_calibration_color_density_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Density Up"))
 
 
     def main_remote_event_button_calibration_color_density_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Color Density Down"))
 
 
     def main_remote_event_button_calibration_contrast(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Contrast"))
 
 
     def main_remote_event_button_calibration_constrast_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Contrast Up"))
 
 
     def main_remote_event_button_calibration_constrast_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Contrast Down"))
 
 
     # calbration convergance
     def main_remote_event_button_calibration_convergance_blanking(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking"))
 
 
     def main_remote_event_button_calibration_convergance_blanking_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking On"))
 
 
     def main_remote_event_button_calibration_convergance_blanking_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking Off"))
 
 
     def main_remote_event_button_calibration_convergance_bow(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Bow"))
 
 
     def main_remote_event_button_calibration_convergance_dynamic(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Dynamic"))
 
 
     def main_remote_event_button_calibration_convergance_edge_linearity(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Edge Linearity"))
 
 
     def main_remote_event_button_calibration_convergance_keystone(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone"))
 
 
     def main_remote_event_button_calibration_convergance_keystone_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Up"))
 
 
     def main_remote_event_button_calibration_convergance_keystone_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Down"))
 
 
     def main_remote_event_button_calibration_convergance_keystone_left(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Left"))
 
 
     def main_remote_event_button_calibration_convergance_keystone_right(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Right"))
 
 
     def main_remote_event_button_calibration_convergance_linearity(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Linearity"))
 
 
     def main_remote_event_button_calibration_convergance_overscan_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan On"))
 
 
     def main_remote_event_button_calibration_convergance_overscan_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan Off"))
 
 
     def main_remote_event_button_calibration_convergance_phase(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Phase"))
 
 
     def main_remote_event_button_calibration_convergance_pincushion(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Pincushion"))
 
 
     def main_remote_event_button_calibration_convergance_shift(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Shift"))
 
 
     def main_remote_event_button_calibration_convergance_size(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Size"))
 
 
     def main_remote_event_button_calibration_convergance_skew(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Skew"))
 
 
     def main_remote_event_button_calibration_convergance_static(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Static"))
 
 
     def main_remote_event_button_calibration_convergance_quad_top_left(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top Left"))
 
 
     def main_remote_event_button_calibration_convergance_quad_top(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top"))
 
 
     def main_remote_event_button_calibration_convergance_quad_top_right(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance",\
             "Quandrant Top Right"))
 
 
     def main_remote_event_button_calibration_convergance_quad_right(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Right"))
 
 
     def main_remote_event_button_calibration_convergance_quad_left(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Left"))
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom_left(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance",\
             "Quandrant Bottom Left"))
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom_right(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance",\
             "Quandrant Bottom Right"))
 
 
     def main_remote_event_button_calibration_convergance_quad_bottom(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Bottom"))
 
 
     def main_remote_event_button_calibration_convergance_vertical_center(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Veritcal Center"))
 
 
     def main_remote_event_button_calibration_convergance_vertical_size(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Vertical Size"))
 
 
     # calibration continued
     def main_remote_event_button_calibration_detail(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Detail"))
 
 
     def main_remote_event_button_calibration_detail_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Detail Up"))
 
 
     def main_remote_event_button_calibration_detail_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Detail Down"))
 
 
     def main_remote_event_button_calibration_gamma(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Gamma"))
 
 
     def main_remote_event_button_calibration_gamma_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Gamma Up"))
 
 
     def main_remote_event_button_calibration_gamma_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Gamma Down"))
 
 
     def main_remote_event_button_calibration_hue(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Hue"))
 
 
     def main_remote_event_button_calibration_hue_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Hue Up"))
 
 
     def main_remote_event_button_calibration_hue_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Hue Down"))
 
 
     def main_remote_event_button_calibration_tint(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Tint"))
 
 
     def main_remote_event_button_calibration_tint_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Tint Up"))
 
 
     def main_remote_event_button_calibration_tint_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Tint Down"))
 
 
     def main_remote_event_button_calibration_sharpness(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Sharpness"))
 
 
     def main_remote_event_button_calibration_sharpness_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Sharpness Up"))
 
 
     def main_remote_event_button_calibration_sharpness_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Calibration", "Sharpness Down"))
 
 
@@ -623,333 +823,576 @@ class OctMoteApp(App):
     # main remote control events
     # application
     def main_remote_event_button_commands_application_amazon(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Amazon Instant Video"))
 
 
     def main_remote_event_button_commands_application_emby(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Emby"))
 
 
     def main_remote_event_button_commands_application_hbogo(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "HBO Go"))
 
 
     def main_remote_event_button_commands_application_hulu(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Hulu Plus"))
 
 
     def main_remote_event_button_commands_application_kodi(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Kodi"))
 
 
     def main_remote_event_button_commands_application_netflix(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Netflix"))
 
 
     def main_remote_event_button_commands_application_pandora(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Pandora"))
 
 
     def main_remote_event_button_commands_application_plex(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Plex"))
 
 
     def main_remote_event_button_commands_application_siriusxm(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "SiriusXM"))
 
 
     def main_remote_event_button_commands_application_slingtv(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "sling TV"))
 
 
     def main_remote_event_button_commands_application_vudu(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Application", "Vudu"))
 
 
     # aspect ratio
     def main_remote_event_button_commands_aspect_next(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Next Ratio"))
 
 
     def main_remote_event_button_commands_aspect_auto(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Auto"))
 
 
     def main_remote_event_button_commands_aspect_native(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Native"))
 
 
     def main_remote_event_button_commands_aspect_letterbox(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Letterbox"))
 
 
     def main_remote_event_button_commands_aspect_real(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Real"))
 
 
     def main_remote_event_button_commands_aspect_4x3(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "4:3"))
 
 
     def main_remote_event_button_commands_aspect_1x2(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "1:1"))
 
 
     def main_remote_event_button_commands_aspect_1x85(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "1.85"))
 
 
     def main_remote_event_button_commands_aspect_2x35(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "2.35"))
 
 
     def main_remote_event_button_commands_aspect_16x9(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "16:9"))
 
 
     def main_remote_event_button_commands_aspect_16x10(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "16:10"))
 
 
     # hardware
     def main_remote_event_button_commands_hardware_channel(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Channel"))
 
 
     def main_remote_event_button_commands_hardware_crt_b(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Blue"))
 
 
     def main_remote_event_button_commands_hardware_crt_g(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Green"))
 
 
     def main_remote_event_button_commands_hardware_crt_r(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Red"))
 
 
     def main_remote_event_button_commands_hardware_cut_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Cut-Off"))
 
 
     def main_remote_event_button_commands_hardware_lamp_hour_reset(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Lamp Hour Reset"))
 
 
     def main_remote_event_button_commands_hardware_luminance(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Luminance"))
 
 
     def main_remote_event_button_commands_hardware_optical_zoom_shift(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Optical Zoom Shift"))
 
 
     def main_remote_event_button_commands_hardware_optical_focus_shift(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Optical Focus Shift"))
 
 
     def main_remote_event_button_commands_hardware_projection_mode(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Projection Mode"))
 
 
     def main_remote_event_button_commands_hardware_reset(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Reset"))
 
 
     def main_remote_event_button_commands_hardware_shutter_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Shutter On"))
 
 
     def main_remote_event_button_commands_hardware_shutter_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Shutter Off"))
 
 
     def main_remote_event_button_commands_hardware_unit(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Unit"))
 
 
     def main_remote_event_button_commands_hardware_whisper_mode(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Hardware", "Whisper Mode"))
 
 
     # misc
     def main_remote_event_button_commands_misc_background(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Background"))
 
 
     def main_remote_event_button_commands_misc_cc_display(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Closed Caption Display"))
 
 
     def main_remote_event_button_commands_misc_film_mode(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Film Mode"))
 
 
     def main_remote_event_button_commands_misc_freeze(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze"))
 
 
     def main_remote_event_button_commands_misc_freeze_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze On"))
 
 
     def main_remote_event_button_commands_misc_freeze_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze Off"))
 
 
     def main_remote_event_button_commands_misc_language(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Language"))
 
 
     def main_remote_event_button_commands_misc_osd(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD"))
 
 
     def main_remote_event_button_commands_misc_osd_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD On"))
 
 
     def main_remote_event_button_commands_misc_osd_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD Off"))
 
 
     def main_remote_event_button_commands_misc_startup_image_yes(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Startup Image Yes"))
 
 
     def main_remote_event_button_commands_misc_startup_image_no(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Misc", "Startup Image No"))
 
 
     # navigation
     def main_remote_event_button_commands_left(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Direction", "Left"))
 
 
     def main_remote_event_button_commands_right(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Direction", "Right"))
 
 
     def main_remote_event_button_commands_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Direction", "Up"))
 
 
     def main_remote_event_button_commands_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Direction", "Down"))
 
 
     def main_remote_event_button_commands_one(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "One"))
 
 
     def main_remote_event_button_commands_two(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Two"))
 
 
     def main_remote_event_button_commands_three(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Three"))
 
 
     def main_remote_event_button_commands_four(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Four"))
 
 
     def main_remote_event_button_commands_five(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Five"))
 
 
     def main_remote_event_button_commands_six(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Six"))
 
 
     def main_remote_event_button_commands_seven(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Seven"))
 
 
     def main_remote_event_button_commands_eight(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Eight"))
 
 
     def main_remote_event_button_commands_nine(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Numeric", "Nine"))
 
 
     def main_remote_event_button_commands_fast_rewind(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Fast Rewind"))
 
 
     def main_remote_event_button_commands_chapter_rewind(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Chapter Rewind"))
 
 
     def main_remote_event_button_commands_fast_forward(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Fast Forward"))
 
 
     def main_remote_event_button_commands_chapter_forward(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Chapter Forward"))
 
 
     def main_remote_event_button_commands_play(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Play"))
 
 
     def main_remote_event_button_commands_pause(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Pause"))
 
 
     def main_remote_event_button_commands_stop(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Stop"))
 
 
     def main_remote_event_button_commands_info(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Info"))
 
 
     def main_remote_event_button_commands_record(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Navigation", "Record"))
 
 
     # power
     def main_remote_event_button_commands_power_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Power", "On"))
 
 
     def main_remote_event_button_commands_power_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Power", "Off"))
 
 
     def main_remote_event_button_commands_power_standy(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Power", "Standby"))
 
 
     # sound
     def main_remote_event_button_commands_sound_mute(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Sound", "Mute"))
 
 
     def main_remote_event_button_commands_sound_unmute(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Sound", "UnMute"))
 
 
     def main_remote_event_button_commands_sound_volume_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Sound", "Volume Up"))
 
 
     def main_remote_event_button_commands_sound_volume_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Sound", "Volume Down"))
 
 
     # zoom
     def main_remote_event_button_commands_zoom_zoom(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Zoom", "Zoom"))
 
 
     def main_remote_event_button_commands_zoom_up(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Zoom", "Zoom Up"))
 
 
     def main_remote_event_button_commands_zoom_down(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Commands", "Zoom", "Zoom Down"))
 
 
@@ -957,266 +1400,461 @@ class OctMoteApp(App):
     # querys
     # library media
     def main_remote_event_button_query_library_media_albums(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Albums"))
 
 
     def main_remote_event_button_query_library_media_artists(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Artists"))
 
 
     def main_remote_event_button_query_library_media_movies(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Movies"))
 
 
     def main_remote_event_button_query_library_media_music_videos(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Music Videos"))
 
 
     def main_remote_event_button_query_library_media_songs(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Songs"))
 
 
     def main_remote_event_button_query_library_media_tv_shows(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Media", "TV Shows"))
 
 
     # librrary playlist
     def main_remote_event_button_query_library_playlist_audio(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Playlist", "Audio"))
 
 
     def main_remote_event_button_query_library_playlist_video(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Library", "Playlist", "Video"))
 
 
     # more queries
     def main_remote_event_button_query_api_commands(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "API Commands"))
 
 
     def main_remote_event_button_query_aspect_ratio(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Aspect Ratio"))
 
 
     def main_remote_event_button_query_blank_status(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Blank Status"))
 
 
     def main_remote_event_button_query_brightness(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Brightness"))
 
 
     def main_remote_event_button_query_codec(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Codec (Playing Media)"))
 
 
     def main_remote_event_button_query_color_video(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Color (Video)"))
 
 
     def main_remote_event_button_query_color_mode(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Color Mode"))
 
 
     def main_remote_event_button_query_color_temp(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Color Temp"))
 
 
     def main_remote_event_button_query_company_name(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Company Name"))
 
 
     def main_remote_event_button_query_contrast(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Contrast"))
 
 
     def main_remote_event_button_query_density(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Density"))
 
 
     def main_remote_event_button_query_error_status(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Error Status"))
 
 
     def main_remote_event_button_query_filter_time(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Filter Time"))
 
 
     def main_remote_event_button_query_gain_green(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Gain Green"))
 
 
     def main_remote_event_button_query_gain_blue(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Gain Blue"))
 
 
     def main_remote_event_button_query_gain_red(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Gain Red"))
 
 
     def main_remote_event_button_query_input_selected(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Input Selected"))
 
 
     def main_remote_event_button_query_lamp_hours(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Lamp Hours"))
 
 
     def main_remote_event_button_query_lamp_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Lamp Off"))
 
 
     def main_remote_event_button_query_lamp_on(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Lamp On"))
 
 
     def main_remote_event_button_query_lamp_on_off(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Lamp On/Off"))
 
 
     def main_remote_event_button_query_model_name(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Model Name"))
 
 
     def main_remote_event_button_query_mute_status(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Mute Status"))
 
 
     def main_remote_event_button_query_native_resolution(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Native Resolution"))
 
 
     def main_remote_event_button_query_overscan_ratio(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Overscan Ratio"))
 
 
     def main_remote_event_button_query_power_state(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Power State"))
 
 
     def main_remote_event_button_query_projection_mode(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Projection Mode"))
 
 
     def main_remote_event_button_query_serial_number(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Serial Number"))
 
 
     def main_remote_event_button_query_sharpness(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Sharpness"))
 
 
     def main_remote_event_button_query_status(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Status"))
 
 
     def main_remote_event_button_query_tint_video(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Tint (Video)"))
 
 
     def main_remote_event_button_query_volume(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Query", "Volume"))
 
 
 #####################################################
     # source
     def main_remote_event_button_source_aux1(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "AUX1"))
 
 
     def main_remote_event_button_source_aux2(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "AUX2"))
 
 
     def main_remote_event_button_source_bluray(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "BluRay"))
 
 
     def main_remote_event_button_source_cable_tv(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Cable/TV"))
 
 
     def main_remote_event_button_source_composite(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Composite"))
 
 
     def main_remote_event_button_source_component(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Component"))
 
 
     def main_remote_event_button_source_dvd(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "DVD"))
 
 
     def main_remote_event_button_source_game(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Game"))
 
 
     def main_remote_event_button_source_hdmi1(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI1"))
 
 
     def main_remote_event_button_source_hdmi2(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI2"))
 
 
     def main_remote_event_button_source_hdmi3(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI3"))
 
 
     def main_remote_event_button_source_hdmi4(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI4"))
 
 
     def main_remote_event_button_source_hdmi5(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI5"))
 
 
     def main_remote_event_button_source_hdmi6(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI6"))
 
 
     def main_remote_event_button_source_hdmi7(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI7"))
 
 
     def main_remote_event_button_source_hdmi8(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "HDMI8"))
 
 
     def main_remote_event_button_source_input(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Input"))
 
 
     def main_remote_event_button_source_laserdisc(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "LaserDisc"))
 
 
     def main_remote_event_button_source_net_usb(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Net/USB"))
 
 
     def main_remote_event_button_source_phono(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Phono"))
 
 
     def main_remote_event_button_source_rgb1(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "RGB1"))
 
 
     def main_remote_event_button_source_rgb2(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "RGB2"))
 
 
     def main_remote_event_button_source_satellite(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "Satellite"))
 
 
     def main_remote_event_button_source_svideo(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "S-Video"))
 
 
     def main_remote_event_button_source_usb(self):
+        """
+        Process button event
+        """
         self.main_remote_control_event_process(("Source", "USB"))
 
 
