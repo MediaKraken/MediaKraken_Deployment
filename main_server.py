@@ -65,17 +65,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
 # start logging
 common_logging.com_logging_start()
 
-# store pid for initd
-pid = os.getpid()
-logging.info('MediaKraken_PID %s', pid)
-try:
-    op = open("/var/mm_server.pid", "w")
-    op.write("%s" % pid)
-    op.close()
-except:
-    #op = open("mm_server.pid", "w")
-    pass
-
 
 logging.info('Check Certs')
 # check for and create ssl certs if needed

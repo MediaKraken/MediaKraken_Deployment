@@ -199,9 +199,4 @@ class MediaKrakenApp(object):
 
 
 if __name__ == '__main__':
-    # store pid for initd
-    pid = os.getpid()
-    file_handle = open("/var/mm_link.pid", "w")
-    file_handle.write("%s" % pid)
-    file_handle.close()
     MediaKrakenApp().build()

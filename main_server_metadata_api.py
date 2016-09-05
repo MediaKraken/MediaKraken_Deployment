@@ -79,13 +79,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     sys.exit(0)
 
 
-# store pid for initd
-pid = os.getpid()
-op = open("/var/mm_server_metadata_api.pid", "w")
-op.write("%s" % pid)
-op.close()
-
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 

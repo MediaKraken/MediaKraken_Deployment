@@ -200,11 +200,6 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
-    # store pid for initd
-    pid = os.getpid()
-    op = open("/var/mm_slave.pid", "w")
-    op.write("%s" % pid)
-    op.close()
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)

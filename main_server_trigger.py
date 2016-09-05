@@ -23,7 +23,6 @@ from common import common_config_ini
 from common import common_logging
 import subprocess
 import signal
-import os
 import time
 try:
     import cPickle as pickle
@@ -36,7 +35,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     Handle signal interupt
     """
     print('CHILD Main Trigger: Received USR1')
-    os.kill(proc_trigger.pid, signal.SIGTERM)
     # cleanup db
     db_connection.db_rollback()
     # log stop
@@ -45,13 +43,6 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
-
-
-# store pid for initd
-pid = os.getpid()
-op = open("/var/mm_server_trigger.pid", "w")
-op.write("%s" % pid)
-op.close()
 
 
 # start logging
@@ -98,7 +89,3 @@ db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
-
-
-# stop children
-os.kill(proc_trigger.pid, signal.SIGTERM)
