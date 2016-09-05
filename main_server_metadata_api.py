@@ -21,7 +21,6 @@ import logging # pylint: disable=W0611
 import json
 import sys
 import signal
-import os
 import time
 import datetime
 from metadata import metadata_anime
@@ -131,7 +130,8 @@ def comicvine(thread_db, download_data):
     """
     Rate limiter for ComicVine
     """
-    logging.debug("here i am in comicvine rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in comicvine rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -144,7 +144,8 @@ def giantbomb(thread_db, download_data):
     """
     Rate limiter for GiantBomb
     """
-    logging.debug("here i am in giantbomb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in giantbomb rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -224,7 +225,8 @@ def pitchfork(thread_db, download_data):
     """
     Rate limiter for Pitchfork
     """
-    logging.debug("here i am in pitchfork rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in pitchfork rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -292,7 +294,8 @@ def thelogodb(thread_db, download_data):
     """
     Rate limiter for thelogodb
     """
-    logging.debug("here i am in thelogodb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in thelogodb rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -312,7 +315,8 @@ def themoviedb(thread_db, download_data):
         if metadata_uuid is None:
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
-            thread_db.db_update_media_id(download_data['mdq_download_json']['Media'], metadata_uuid)
+            thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
+                metadata_uuid)
             # determine if the metadata is not downloaded
             if thread_db.db_meta_guid_by_tmdb(\
                     download_data['mdq_download_json']['ProviderMetaID']) is None:
@@ -393,7 +397,8 @@ def tv_intros(thread_db, download_data):
     """
     Rate limiter for TV Intros
     """
-    logging.debug("here i am in tv_intros rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug("here i am in tv_intros rate %s",\
+        datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":

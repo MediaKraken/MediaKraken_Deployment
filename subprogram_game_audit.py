@@ -302,7 +302,8 @@ class ROMFileParser(object):
                 if rom_hash_data == db_hash_dict[1]:
                     Client_GlobalData.found_rom_ids.append(db_hash_dict[0])
                     Client_GlobalData.found_rom_paths.append(fileHASHNameListSingle[item_ndx])
-                    # if sha1 there is almost no chance of dupe so remove hash to speed up rest of checks
+                    # if sha1 there is almost no chance of dupe
+                    # so remove hash to speed up rest of checks
                     db_full_hash_dict.remove(db_hash_dict)
                     break
             item_ndx += 1
@@ -410,7 +411,8 @@ class GameAuditer(threading.Thread):
                 game_name = sql_row[2]
             if old_system_long_name != sql_row[0]:
                 if len(game_info) > 0:
-                    Client_GlobalData.audit_gameList[old_system_long_name] = copy.deepcopy(game_info.items())
+                    Client_GlobalData.audit_gameList[old_system_long_name]\
+                        = copy.deepcopy(game_info.items())
                     Client_GlobalData.audit_gameList[old_system_long_name].sort()
                 old_system_long_name = sql_row[0]
                 game_info = {}
@@ -418,7 +420,8 @@ class GameAuditer(threading.Thread):
                 game_players, str(sql_row[3]), game_category
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
-            Client_GlobalData.audit_gameList[old_system_long_name] = copy.deepcopy(game_info.items())
+            Client_GlobalData.audit_gameList[old_system_long_name]\
+                = copy.deepcopy(game_info.items())
             Client_GlobalData.audit_gameList[old_system_long_name].sort()
         curs_game_info.close()
         conn_game_info.close()
@@ -438,12 +441,14 @@ class GameAuditer(threading.Thread):
         old_system_long_name = None
         first_record = True
         for gameSystem in Client_GlobalData.audit_gameList.iteritems():
-            # need to break down gameSystem as technically it's all the systems and data underneath it
+            # need to break down gameSystem as technically it's
+            # all the systems and data underneath it
             for gameData in gameSystem[1]:
                 if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal"\
                     and gameData[1][2] != "Horizontal")\
                     or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical"\
-                    and gameData[1][2] != "Vertical") or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
+                    and gameData[1][2] != "Vertical")\
+                    or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
                     pass
                 else:
                     if first_record:
