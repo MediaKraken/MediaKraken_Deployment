@@ -19,12 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-from common import common_config_ini
-from common import common_network_cifs
-from common import common_ffmpeg
-from common import common_file
-from common import common_logging
-from common import common_string
 from datetime import datetime # to handle threading
 import os
 import uuid
@@ -34,10 +28,16 @@ import time
 import json
 import locale
 locale.setlocale(locale.LC_ALL, '')
+from common import common_config_ini
+from common import common_network_cifs
+from common import common_ffmpeg
+from common import common_file
+from common import common_logging
+from common import common_string
 #lock = threading.Lock()
 
 
-media_extension = [
+MEDIA_EXTENSION = [
     'webm',
     'mkv',
     'flv',
@@ -76,7 +76,7 @@ media_extension = [
 ]
 
 
-media_extension_skip_ffmpeg = [
+MEDIA_EXTENSION_SKIP_FFMPEG = [
     'pdf',
     'zip',
     '7z',
@@ -133,7 +133,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
             pass # already scanned, skip
         else:
             fileName, fileExtension = os.path.splitext(file_name)
-            if fileExtension[1:].lower() in media_extension:
+            if fileExtension[1:].lower() in MEDIA_EXTENSION:
                 total_files += 1
                 fileName, fileExtension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
@@ -148,7 +148,7 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif fileExtension.lower() in media_extension_skip_ffmpeg:
+                elif fileExtension.lower() in MEDIA_EXTENSION_SKIP_FFMPEG:
                     media_ffprobe_json = None
                 else:
                     if file_name.find('/trailers/') != -1 or file_name.find('/theme.mp3') != -1\

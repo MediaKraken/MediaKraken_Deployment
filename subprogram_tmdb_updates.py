@@ -22,11 +22,11 @@ import sys
 import signal
 import json
 import uuid
+import locale
+locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tmdb
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -68,8 +68,10 @@ movie_updated = 0
 movie_inserted = 0
 
 
-# fetch from tmdb
 def movie_fetch_save(tmdb_id):
+    """
+    # fetch from tmdb
+    """
     metadata_uuid = None
     logging.debug("fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id

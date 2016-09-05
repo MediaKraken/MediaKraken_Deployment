@@ -21,9 +21,14 @@ import logging # pylint: disable=W0611
 import musicbrainzngs
 
 '''
-A musicbrainz release represents the unique release (i.e. issuing) of a product on a specific date with specific release information such as the country, label, barcode, packaging, etc. If you walk into a store and purchase an album or single, they're each represented in musicbrainz as one release.
+A musicbrainz release represents the unique release (i.e. issuing) of a product on a
+specific date with specific release information such as the country, label, barcode,
+packaging, etc. If you walk into a store and purchase an album or single, they're each
+represented in musicbrainz as one release.
 
-A recording is an entity in musicbrainz which can be linked to tracks on releases. Each track must always be associated with a single recording, but a recording can be linked to any number of tracks.
+A recording is an entity in musicbrainz which can be linked to tracks on releases.
+Each track must always be associated with a single recording, but a recording can
+be linked to any number of tracks.
 
 '''
 
@@ -35,7 +40,8 @@ class CommonMetadataMusicbrainz(object):
     def __init__(self, option_config_json):
         global musicbrainzngs
         # If you plan to submit data, authenticate
-        #musicbrainzngs.auth(option_config_json.get('MediaBrainz','User').strip(), option_config_json.get('MediaBrainz','Password').strip())
+        #musicbrainzngs.auth(option_config_json.get('MediaBrainz','User').strip(),
+        #option_config_json.get('MediaBrainz','Password').strip())
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
         musicbrainzngs.set_useragent("MediaKraken_Server", "0.1.6",\
             "spootdev@gmail.com https://github.com/MediaKraken_Deployment")

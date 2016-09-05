@@ -21,11 +21,11 @@ import logging # pylint: disable=W0611
 import sys
 import signal
 import json
+import locale
+locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tvmaze
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613

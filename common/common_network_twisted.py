@@ -19,8 +19,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from . import common_file
+try:
+    import cPickle as pickle
+except:
+    import pickle
 import sys
+import subprocess
+import platform
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
@@ -90,7 +95,7 @@ class TheaterFactory(ClientFactory):
         return self.protocol
 
 
-class MediaKrakenApp():
+class MediaKrakenApp(object):
     connection = None
 
 
@@ -120,16 +125,16 @@ class MediaKrakenApp():
         """
         Process network message from server
         """
-        messageWords = server_msg.split(' ', 1)
-        logging.debug('message: %s', messageWords[0])
+        message_words = server_msg.split(' ', 1)
+        logging.debug('message: %s', message_words[0])
         logging.debug("len: %s", len(server_msg))
-        logging.debug("chunks: %s", len(messageWords))
+        logging.debug("chunks: %s", len(message_words))
         msg = None
-        if messageWords[0] == "IDENT":
+        if message_words[0] == "IDENT":
             msg = "VALIDATE " + "slave" + " " + "password" + " " + platform.node()
         # user commands
-        elif messageWords[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(messageWords[1], shell=False))
+        elif message_words[0] == "PLAYMEDIA":
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1], shell=False))
         else:
             logging.debug("unknown message type")
         if msg is not None:
