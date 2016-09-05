@@ -71,7 +71,7 @@ class MediaKrakenAPI(object):
     # channels and all the subroutes
     with app.subroute("/Channels") as app:
         @app.route("/")
-        def artists(self, request):
+        def channels(self, request):
             return None
 
 
@@ -121,7 +121,7 @@ class MediaKrakenAPI(object):
 
         @app.route("/ItemsSync/<synctime>")
         def user_items_sync(self, request, synctime):
-            logggin.debug("req: %s", request.content.getvalue())
+            logging.debug("req: %s", request.content.getvalue())
             items_added = []
             for row_data in self.db_connection.db_kodi_user_sync_list_added(synctime):
                 items_added.append(row_data[0])
@@ -140,24 +140,24 @@ class MediaKrakenAPI(object):
 
         @app.route("/Pref/<guid>")
         def user_pref(self, request, guid):
-            logging.debug("reqpref:", request.content.getvalue(), guid)
+            logging.debug("reqpref: %s %s", request.content.getvalue(), guid)
             json_data = {
-                  "Name": "",
-                  "ServerId": "",
-                  "ServerName": "",
+                "Name": "",
+                "ServerId": "",
+                "ServerName": "",
 #                  "ConnectUserName": "",
 #                  "ConnectUserId": "",
 #                  "ConnectLinkType": "",
-                  "Id": "",
-                  "OfflinePassword": "",
-                  "OfflinePasswordSalt": "",
-                  "PrimaryImageTag": "",
-                  "HasPassword": False,
-                  "HasConfiguredPassword": False,
-                  "HasConfiguredEasyPassword": False,
-                  "LastLoginDate": "Date",
-                  "LastActivityDate": "Date",
-                  "Configuration": {
+                "Id": "",
+                "OfflinePassword": "",
+                "OfflinePasswordSalt": "",
+                "PrimaryImageTag": "",
+                "HasPassword": False,
+                "HasConfiguredPassword": False,
+                "HasConfiguredEasyPassword": False,
+                "LastLoginDate": "Date",
+                "LastActivityDate": "Date",
+                "Configuration": {
                     "AudioLanguagePreference": "",
                     "PlayDefaultAudioTrack": False,
                     "SubtitleLanguagePreference": "",
@@ -165,22 +165,22 @@ class MediaKrakenAPI(object):
                     "DisplayUnairedEpisodes": False,
                     "GroupMoviesIntoBoxSets": False,
                     "ExcludeFoldersFromGrouping": [
-                      ""
+                    ""
                     ],
                     "GroupedFolders": [
-                      ""
+                    ""
                     ],
                     "SubtitleMode": "",
                     "DisplayCollectionsView": False,
                     "DisplayFoldersView": False,
                     "EnableLocalPassword": False,
                     "OrderedViews": [
-                      ""
+                    ""
                     ],
                     "IncludeTrailersInSuggestions": False,
                     "EnableCinemaMode": False,
                     "LatestItemsExcludes": [
-                      ""
+                    ""
                     ],
                     "PlainFolderViews": [
                       ""
