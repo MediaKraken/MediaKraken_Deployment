@@ -19,10 +19,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 __version__ = '0.1.6'
 import logging  # pylint: disable=W0611
-# import plyer to fetch UID of devices
-from plyer import uniqueid
 import json
 import os
+# import plyer to fetch UID of devices
+from plyer import uniqueid
 from common import common_database_octmote
 from common import common_iscp
 from common import common_lirc
@@ -116,6 +116,12 @@ class OctMoteApp(App):
         self.remote_mode_details_item = None
         self.remote_mode_currrent_item = None
         self.OctMote_Server_Connection_Data = None
+        self.server_list = None
+        self.server_user_list = None
+        self.global_selected_user_id = None
+        self.emby_user_connection_json = None
+        self.json_text = None
+        self._notification_popup = None
 
 
     def exit_program(self):
@@ -330,7 +336,7 @@ class OctMoteApp(App):
             elif json_data["Protocol"]["Method"].lower() == "lan":
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
                         in self.lan_devices_dict:
-                   pass
+                    pass
             elif json_data["Protocol"]["Method"].lower() == "telnet":
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
@@ -347,10 +353,10 @@ class OctMoteApp(App):
                         in self.serial_devices_dict:
                     self.serial_devices_dict[(json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Hardware Port"])]\
-                        = com_Serial.MK_Serial_Open_Device(json_data["Protocol"]["Hardware Port"],\
+                        = common_serial.MK_Serial_Open_Device(json_data["Protocol"]["Hardware Port"],\
                         json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],\
                         json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
-                com_Serial.MK_Serial_Write_Device(\
+                common_serial.MK_Serial_Write_Device(\
                     self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],\
                     self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "eiscp":
@@ -364,7 +370,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Hardware Port"])]\
                         = (json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Hardware Port"])
-                com_Kodi.com_network_Kodi_Command(json_data["Protocol"]["Host IP"],\
+                common_kodi.com_network_Kodi_Command(json_data["Protocol"]["Host IP"],\
                     json_data["Protocol"]["Hardware Port"],\
                     self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
