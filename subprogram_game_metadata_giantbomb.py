@@ -60,7 +60,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print('bomb game info download attempts: %s', total_download_attempts)
+    print('bomb game info download attempts: %s' % total_download_attempts)
     # send notications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(locale.format('%d',\

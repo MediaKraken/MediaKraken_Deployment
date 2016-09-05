@@ -56,7 +56,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 
 if __name__ == "__main__":
-    print('IGDB game info download attempts: %s', total_download_attempts)
+    print('IGDB game info download attempts: %s' % total_download_attempts)
     # send notications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(locale.format('%d',\
