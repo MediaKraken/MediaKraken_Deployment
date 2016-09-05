@@ -35,7 +35,7 @@ from common import common_network
 from common import common_roku_network
 from common import common_serial
 from common import common_ssdp
-from common import common_telnet
+from common import common_network_telnet
 
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
@@ -115,7 +115,7 @@ class OctMoteApp(App):
         self.base_layout_guid_dict = None
         self.remote_mode_details_item = None
         self.remote_mode_currrent_item = None
-        self.OctMote_Server_Connection_Data = None
+        self.octmote_server_connection_data = None
         self.server_list = None
         self.server_user_list = None
         self.global_selected_user_id = None
@@ -125,7 +125,7 @@ class OctMoteApp(App):
 
 
     def exit_program(self):
-        com_Database_Octmote.com_db_Close()
+        common_database_octmote.com_db_close()
 
 
     def dismiss_popup(self):
@@ -139,7 +139,7 @@ class OctMoteApp(App):
         self.remote_mode_details_item = {}
         self.remote_mode_currrent_item = 'Default'
         # open database files
-        self.OctMote_Server_Connection_Data = common_database_octmote.com_db_open()
+        self.octmote_server_connection_data = common_database_octmote.com_db_open()
         # fetch and import any item/layout files
         common_json.com_json_find()
         root = OctMote()
@@ -148,8 +148,8 @@ class OctMoteApp(App):
 
 
     def connect_to_server(self):
-        reactor.connectSSL(self.OctMote_Server_Connection_Data[0],\
-            self.OctMote_Server_Connection_Data[1], EchoFactory(self), ssl.ClientContextFactory())
+        reactor.connectSSL(self.octmote_server_connection_data[0],\
+            self.octmote_server_connection_data[1], EchoFactory(self), ssl.ClientContextFactory())
 
 
     def on_connection(self, connection):
@@ -166,7 +166,7 @@ class OctMoteApp(App):
 
 
     def mediakraken_find_server_list(self):
-        self.server_list = com_MediaKraken.com_network_mediakraken_find_server()
+        self.server_list = common_mediakraken.com_network_mediakraken_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],\
@@ -320,11 +320,11 @@ class OctMoteApp(App):
             if json_data["Protocol"]["Method"].lower() == "rs232":
                 if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
                     self.rs232_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_telnet.OctMote_Telnet_Open_Device(\
+                        = common_network_telnet.OctMote_Telnet_Open_Device(\
                         json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
                         json_data["Protocol"]["Password"])
-                common_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
+                common__network_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
                     json_data["Protocol"]["Host IP"]],\
                     self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
                 pass
@@ -341,10 +341,11 @@ class OctMoteApp(App):
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_telnet.MK_Telnet_Open_Device(json_data["Protocol"]["Host IP"],\
+                        = common_network_telnet.MK_Telnet_Open_Device(\
+                        json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
                         json_data["Protocol"]["Password"])
-                common_telnet.MK_Telnet_Write_Device(\
+                common_network_telnet.MK_Telnet_Write_Device(\
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],\
                     self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
@@ -353,7 +354,8 @@ class OctMoteApp(App):
                         in self.serial_devices_dict:
                     self.serial_devices_dict[(json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Hardware Port"])]\
-                        = common_serial.MK_Serial_Open_Device(json_data["Protocol"]["Hardware Port"],\
+                        = common_serial.MK_Serial_Open_Device(\
+                        json_data["Protocol"]["Hardware Port"],\
                         json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],\
                         json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
                 common_serial.MK_Serial_Write_Device(\
@@ -370,7 +372,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Hardware Port"])]\
                         = (json_data["Protocol"]["Host IP"],\
                         json_data["Protocol"]["Hardware Port"])
-                common_kodi.com_network_Kodi_Command(json_data["Protocol"]["Host IP"],\
+                common_kodi.com_network_kodi_command(json_data["Protocol"]["Host IP"],\
                     json_data["Protocol"]["Hardware Port"],\
                     self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
