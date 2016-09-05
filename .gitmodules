@@ -109,3 +109,21 @@
 [submodule "mpv"]
 	path = submodule/mpv
 	url = ../mpv
+[submodule "mame"]
+	path = submodule/mame
+	url = ../mame
+[submodule "pyinstaller"]
+	path = submodule/pyinstaller
+	url = ../pyinstaller
+[submodule "psutil"]
+	path = submodule/psutil
+	url = ../psutil
+[submodule "lame"]
+	path = submodule/lame
+	url = ../lame
+[submodule "pysmb"]
+	path = submodule/pysmb
+	url = ../pysmb
+[submodule "requests"]
+	path = submodule/requests
+	url = ../requests
