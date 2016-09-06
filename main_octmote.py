@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-__version__ = '0.1.6'
 import logging  # pylint: disable=W0611
 import json
 import os
@@ -42,6 +41,7 @@ from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
 install_twisted_reactor()
 from twisted.internet import ssl, reactor, protocol
+__version__ = '0.1.6'
 
 
 class EchoClient(protocol.Protocol):
@@ -179,30 +179,30 @@ class OctMoteApp(App):
             self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    def Emby_Find_Server_List(self):
+    def emby_find_server_list(self):
         self.server_list = common_emby_network.com_network_emby_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
-                btn1.bind(on_press=partial(self.Emby_Event_Button_Server_Select, found_server))
+                btn1.bind(on_press=partial(self.emby_event_button_server_select, found_server))
                 self.root.ids.server_list_layout.add_widget(btn1)
         else:
             # go back to main menu
             self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    def Emby_Event_Button_Server_Select(self, server_addr, *args):
+    def emby_event_button_server_select(self, server_addr, *args):
         self.server_user_list = common_emby_network.com_network_emby_find_users(server_addr)
         self.root.ids.user_list_layout.clear_widgets()
         self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
         for found_user in self.server_user_list:
             btn1 = ToggleButton(text=found_user, group='emby_user',)
-            btn1.bind(on_press=partial(self.Emby_Event_Button_User_Select, found_user))
+            btn1.bind(on_press=partial(self.emby_event_button_user_select, found_user))
             self.root.ids.user_list_layout.add_widget(btn1)
         self.global_selected_server_addr = server_addr
 
 
-    def Emby_Event_Button_User_Select(self, server_user, *args):
+    def emby_event_button_user_select(self, server_user, *args):
         print("button server user %s", server_user)
         self.global_selected_user_id = server_user
         self.login_password = ''
@@ -212,7 +212,7 @@ class OctMoteApp(App):
         self._popup.open()
 
 
-    def Emby_Event_Button_User_Select_Login(self, *args):
+    def emby_event_button_user_select_Login(self, *args):
         self.dismiss_popup()
         self.emby_user_connection_json = common_emby_network.com_network_emby_user_login(\
             self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
@@ -229,8 +229,10 @@ class OctMoteApp(App):
         self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    # setup button has been clicked
-    def main_OctMote_Setup_Screen(self, *args):
+    def main_octmote_setup_screen(self, *args):
+        """
+        # setup button has been clicked
+        """
         # clear the children and reload to pick up new records
         if self.base_device_guid_dict:
             self.root.ids.setup_base_device_gridlayout.clear_widgets()
@@ -240,7 +242,7 @@ class OctMoteApp(App):
         for base_device in common_database_octmote.com_db_device_list():
             btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,\
                 group='setup_base_device_button',)
-            btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Device_Selected,\
+            btn1.bind(on_press=partial(self.main_octmote_setup_base_device_selected,\
                 base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
             self.base_device_guid_dict[base_device[0]] = base_device[1]
@@ -253,23 +255,29 @@ class OctMoteApp(App):
         for item_device in common_database_octmote.com_db_item_list():
             btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,\
                 group='setup_item_device_button',)
-            btn1.bind(on_press=partial(self.main_OctMote_Setup_Base_Item_Selected, item_device[0]))
+            btn1.bind(on_press=partial(self.main_octmote_setup_base_item_selected, item_device[0]))
             self.root.ids.setup_base_item_gridlayout.add_widget(btn1)
             self.base_item_guid_dict[item_device[0]] = item_device[1]
 
 
-    # from setup screen a base device has been selected
-    def main_OctMote_Setup_Base_Device_Selected(self, *args):
+    def main_octmote_setup_base_device_selected(self, *args):
+        """
+        # from setup screen a base device has been selected
+        """
         pass
 
 
-    # from setup screen a device item has been selected
-    def main_OctMote_Setup_Base_Item_Selected(self, *args):
+    def main_octmote_setup_base_item_selected(self, *args):
+        """
+        # from setup screen a device item has been selected
+        """
         pass
 
 
-    # load json file dialog
     def show_load(self):
+        """
+        # load json file dialog
+        """
         content = OctMoteLoadDialog(load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Load Device Json File", content=content, size_hint=(0.9, 0.9))
         self._popup.open()
@@ -281,14 +289,16 @@ class OctMoteApp(App):
                 self.json_text = stream.read()
                 self.root.ids.setup_item_json.text = self.json_text
         except:
-            self.OctMote_Notification_Popup('Json Error', 'Not a text json file!')
+            self.octmote_notification_popup('Json Error', 'Not a text json file!')
         self.dismiss_popup()
         # pop up the finalize item import verification
         self.root.ids._screen_manager.current = 'Setup_Item_Import_Verify'
 
 
-    # notification dialog
-    def OctMote_Notification_Popup(self, header, message):
+    def octmote_notification_popup(self, header, message):
+        """
+        # notification dialog
+        """
         content = OctMoteNotificationScreen(ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
@@ -299,8 +309,10 @@ class OctMoteApp(App):
         self._notification_popup.dismiss()
 
 
-    # from verify button, load json into the database
-    def Setup_Import_Item_Json(self, *args):
+    def setup_import_item_json(self, *args):
+        """
+        # from verify button, load json into the database
+        """
         try:
             json_data = json.loads(self.root.ids.setup_item_json.text)
             item_guid = common_database_octmote.OctMote_Database_Sqlite3_Item_Insert(\
@@ -309,11 +321,13 @@ class OctMoteApp(App):
             self.base_item_guid_dict[item_guid] = self.root.ids.setup_item_name.text
         except:
             # do popup for json error
-            self.OctMote_Notification_Popup('Json Error', 'Unable to parse file!')
+            self.octmote_notification_popup('Json Error', 'Unable to parse file!')
 
 
-    # process remote control button
     def main_remote_control_event_process(self, action_type_list):
+        """
+        # process remote control button
+        """
         try:
             json_data = json.loads(self.remote_mode_details_item[self.remote_mode_currrent_item])
             # check to see if rs232 device is already open
@@ -326,7 +340,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Password"])
                 common__network_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
                     json_data["Protocol"]["Host IP"]],\
-                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
                 pass
             # check to see if IR device is already open
             elif json_data["Protocol"]["Method"].lower() == "ir":
@@ -347,7 +361,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Password"])
                 common_network_telnet.MK_Telnet_Write_Device(\
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],\
-                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
                 # check to see if serial device already opened
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
@@ -360,7 +374,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
                 common_serial.MK_Serial_Write_Device(\
                     self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],\
-                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "eiscp":
                 # check to see if eiscp device already open
                 if not json_data["Protocol"]["Host IP"] in self.eiscp_devices_dict:
@@ -374,7 +388,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Hardware Port"])
                 common_kodi.com_network_kodi_command(json_data["Protocol"]["Host IP"],\
                     json_data["Protocol"]["Hardware Port"],\
-                    self.OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list))
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
                 pass
             else:
@@ -383,8 +397,10 @@ class OctMoteApp(App):
             pass
 
 
-    # grab data from json for command being issued
-    def OctMote_JSON_Fetch_Data_For_Command(json_data, action_type_list):
+    def octmote_json_fetch_data_for_command(json_data, action_type_list):
+        """
+        # grab data from json for command being issued
+        """
         first_time = True
         for commands in action_type_list:
             if first_time:
