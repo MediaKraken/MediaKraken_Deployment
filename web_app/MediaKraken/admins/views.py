@@ -17,6 +17,7 @@ blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="..
 import flask
 from flask_login import current_user
 from functools import wraps
+from functools import partial
 from MediaKraken.admins.forms import CronEditForm
 from MediaKraken.admins.forms import LibraryAddEditForm
 from MediaKraken.admins.forms import BackupEditForm
