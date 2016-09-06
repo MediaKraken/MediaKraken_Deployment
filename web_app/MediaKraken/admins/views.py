@@ -671,7 +671,7 @@ def admin_listdir(path):
 
     try:
         path = os.path.normpath(path)
-        ospath = os.path.join(root_directory, path)
+        ospath = os.path.join('/', path)
         files = list(map(partial(gather_fileinfo, path, ospath), os.listdir(ospath)))
         files = list(filter(lambda file: file is not None, files))
         files.sort(key=lambda i: (i['type'] == 'file' and '1' or '0') + i['filename'].lower())
