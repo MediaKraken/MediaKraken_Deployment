@@ -48,6 +48,9 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Subtitle_Download
 total_download_attempts = 0
 # main code
 def main(argv):
+    """
+    Main function
+    """
     # parse arguments
     sub_lang = "en"
     # search the directory for filter files

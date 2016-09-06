@@ -24,7 +24,8 @@ import time
 import os
 import signal
 import psutil
-import subprocessfrom common import common_config_ini
+import subprocess
+from common import common_config_ini
 from common import common_logging
 
 
@@ -34,13 +35,14 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     """
     print('CHILD Cron: Received USR1')
     # term all running crons
-    if pid_data in pid_dict:
+    for pid_data in pid_dict:
         os.kill(pid_dict[pid_data], signal.SIGTERM)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
+
 
 # grab some dirs to scan and thread out the scans
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -59,7 +61,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 
 # start loop for cron checks
-pid_dict = {}
+pid_dict = {} # pylint: disable=C0103
 while 1:
     for row_data in db_connection.db_cron_list(True):  # only grab enabled ones
         # place holders for pid

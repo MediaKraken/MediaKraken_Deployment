@@ -58,6 +58,9 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 total_download_attempts = 0
 # main code
 def main(argv):
+    """
+    Main function
+    """
     global total_download_attempts
     # parse arguments
     sub_lang = "en"

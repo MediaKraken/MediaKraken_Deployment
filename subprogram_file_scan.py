@@ -209,6 +209,9 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
 
 
 def worker(audit_directory):
+    """
+    Worker thread for each directory
+    """
     data1, data2, dir_guid = audit_directory
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
@@ -240,7 +243,7 @@ db_connection.db_activity_insert('MediaKraken_Server File Scan Start', None,\
 
 
 # load in all media from DB
-global_known_media = []
+global_known_media = [] # pylint: disable=C0103
 known_media = db_connection.db_known_media()
 # verify rows were returned
 if known_media is not None:
@@ -257,7 +260,7 @@ logging.debug('class: %s', class_text_dict)
 
 
 # determine directories to audit
-audit_directories = []
+audit_directories = [] # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC

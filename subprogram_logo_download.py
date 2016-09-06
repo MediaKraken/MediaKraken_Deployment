@@ -58,6 +58,9 @@ logo_connection = common_metadata_thelogodb.CommonMetadataTheLogoDB()
 total_download_attempts = 0
 # main code
 def main(argv):
+    """
+    Main function
+    """
     for channel_info in logo_connection.com_thelogodb_fetch_latest()['channels']:
         # fetch and store logo image
         image_file_path = common_metadata.com_meta_image_file_path(\

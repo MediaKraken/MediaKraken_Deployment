@@ -40,6 +40,9 @@ def signal_receive(signum, frame): # pylint: disable=W0613
 
 
 def worker(row_data):
+    """
+    Worker ffmpeg thread for each sync job
+    """
     logging.debug("row: %s", row_data)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
@@ -73,7 +76,7 @@ def worker(row_data):
     while True:
         line = ffmpeg_pid.stdout.readline()
         if line != '':
-            logging.debug("ffmpeg out: %", line.rstrip())
+            logging.debug('ffmpeg out: %' % line.rstrip())
             if line.find("Duration:") != -1:
                 media_duration = timedelta(line.split(': ', 1)[1].split(',', 1)[0])
             elif line[0:5] == "frame":

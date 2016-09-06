@@ -516,161 +516,161 @@ class OctMoteApp(App):
 
 
     # calbration convergance
-    def main_evt_cal_convergance_blanking(self):
+    def main_evt_cal_conv_blanking(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking"))
 
 
-    def main_evt_cal_convergance_blanking_on(self):
+    def main_evt_cal_conv_blanking_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking On"))
 
 
-    def main_evt_cal_convergance_blanking_off(self):
+    def main_evt_cal_conv_blanking_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking Off"))
 
 
-    def main_evt_cal_convergance_bow(self):
+    def main_evt_cal_conv_bow(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Bow"))
 
 
-    def main_evt_cal_convergance_dynamic(self):
+    def main_evt_cal_conv_dynamic(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Dynamic"))
 
 
-    def main_evt_cal_convergance_edge_linearity(self):
+    def main_evt_cal_conv_edge_linearity(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Edge Linearity"))
 
 
-    def main_evt_cal_convergance_keystone(self):
+    def main_evt_cal_conv_keystone(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone"))
 
 
-    def main_evt_cal_convergance_keystone_up(self):
+    def main_evt_cal_conv_keystone_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Up"))
 
 
-    def main_evt_cal_convergance_keystone_down(self):
+    def main_evt_cal_conv_keystone_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Down"))
 
 
-    def main_evt_cal_convergance_keystone_left(self):
+    def main_evt_cal_conv_keystone_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Left"))
 
 
-    def main_evt_cal_convergance_keystone_right(self):
+    def main_evt_cal_conv_keystone_right(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Right"))
 
 
-    def main_evt_cal_convergance_linearity(self):
+    def main_evt_cal_conv_linearity(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Linearity"))
 
 
-    def main_evt_cal_convergance_overscan_on(self):
+    def main_evt_cal_conv_overscan_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan On"))
 
 
-    def main_evt_cal_convergance_overscan_off(self):
+    def main_evt_cal_conv_overscan_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan Off"))
 
 
-    def main_evt_cal_convergance_phase(self):
+    def main_evt_cal_conv_phase(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Phase"))
 
 
-    def main_evt_cal_convergance_pincushion(self):
+    def main_evt_cal_conv_pincushion(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Pincushion"))
 
 
-    def main_evt_cal_convergance_shift(self):
+    def main_evt_cal_conv_shift(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Shift"))
 
 
-    def main_evt_cal_convergance_size(self):
+    def main_evt_cal_conv_size(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Size"))
 
 
-    def main_evt_cal_convergance_skew(self):
+    def main_evt_cal_conv_skew(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Skew"))
 
 
-    def main_evt_cal_convergance_static(self):
+    def main_evt_cal_conv_static(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Static"))
 
 
-    def main_evt_cal_convergance_quad_top_left(self):
+    def main_evt_cal_conv_quad_top_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top Left"))
 
 
-    def main_evt_cal_convergance_quad_top(self):
+    def main_evt_cal_conv_quad_top(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top"))
 
 
-    def main_evt_cal_convergance_quad_top_right(self):
+    def main_evt_cal_conv_quad_top_right(self):
         """
         Process button event
         """
@@ -678,21 +678,21 @@ class OctMoteApp(App):
             "Quandrant Top Right"))
 
 
-    def main_evt_cal_convergance_quad_right(self):
+    def main_evt_cal_conv_quad_right(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Right"))
 
 
-    def main_evt_cal_convergance_quad_left(self):
+    def main_evt_cal_conv_quad_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Left"))
 
 
-    def main_evt_cal_convergance_quad_bottom_left(self):
+    def main_evt_cal_conv_quad_bottom_left(self):
         """
         Process button event
         """
@@ -700,7 +700,7 @@ class OctMoteApp(App):
             "Quandrant Bottom Left"))
 
 
-    def main_evt_cal_convergance_quad_bottom_right(self):
+    def main_evt_cal_conv_quad_bottom_right(self):
         """
         Process button event
         """
@@ -708,21 +708,21 @@ class OctMoteApp(App):
             "Quandrant Bottom Right"))
 
 
-    def main_evt_cal_convergance_quad_bottom(self):
+    def main_evt_cal_conv_quad_bottom(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Bottom"))
 
 
-    def main_evt_cal_convergance_vertical_center(self):
+    def main_evt_cal_conv_vertical_center(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Veritcal Center"))
 
 
-    def main_evt_cal_convergance_vertical_size(self):
+    def main_evt_cal_conv_vertical_size(self):
         """
         Process button event
         """

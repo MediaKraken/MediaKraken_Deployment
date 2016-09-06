@@ -37,8 +37,8 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     """
     print('CHILD Reactor String: Received USR1')
     # cleanup db
-    self.db_connection.db_rollback()
-    self.db_connection.db_close()
+    db_connection.db_rollback()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
@@ -50,15 +50,13 @@ class MediaKrakenServerApp(Factory):
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
-        # open the database
-        config_handle, option_config_json, self.db_connection = common_config_ini.com_config_read()
         # preload some data from database
-        self.genre_list = self.db_connection.db_meta_genre_list()
+        self.genre_list = db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
 
     def buildProtocol(self, addr):
-        return network_base.mediakraken_network_events(self.users, self.db_connection,\
+        return network_base.mediakraken_network_events(self.users, db_connection,\
             self.genre_list)
 
 
