@@ -6,35 +6,45 @@
 {% endfor %}
 {% endblock %}
 {% block header %}
-<h1>
-    {% for parent in file_parent %}
-    <a href="{{ url_for('admins.admin_fs_browse', path=parent[0]) }}">{{ parent[1] }}</a>
-    <span> / </span>
-    {% endfor %}
-    {{ file.name }}
-</h1>
-{% endblock %}
-{% block content %}
-{% if file %}
-<table class="browser">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Size</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for f in file %}
-        <tr>
-            <td>
-                <a href="{{ url_for('admins.admin_fs_browse', path=f[0][1:]) }}">{{ f[0] }}</a>
-            </td>
-            <td>{{ f[1] }}</td>
-        </tr>
+<html>
+    <head>
+        <title>Directory Browser - {{ path }}</title>
+        <link rel="stylesheet" href="{{ url_for('mediabrowser.static', filename='../../static/css/fs_style.css') }}" />
+    </head>
+    <body class="list">
+        {% if path != '.' %}
+        <div>
+            <img src="{{ url_for('mediabrowser.static', filename='../../images/fs/parent.png') }}" />
+            <a href="{{ url_for('mediabrowser.listdir', path=parent) }}">
+                Parent Directory
+            </a>
+        </div>
+        {% endif %}
+
+        {% for file in files %}
+        {% if file['type'] == 'file' %}
+        <div>
+            <video src="{{ url_for('mediabrowser.thumbnail_video', path=file['fullpath']) }}"
+                poster="{{ url_for('mediabrowser.static', filename='../../images/fs/spinner.gif') }}"
+                autoplay="" loop="true" width="100" height="60">
+            </video>
+            <a href="{{ url_for('mediabrowser.watch', path=file['fullpath']) }}">
+                {{ file['filename'] }}
+            </a>
+        </div>
+        {% endif %}
+
+        {% if file['type'] == 'directory' %}
+        <div>
+            <img src="{{ url_for('mediabrowser.static', filename='../../images/fs/directory.png') }}" />
+            <a href="{{ file['link'] }}">
+                {{ file['filename'] }}
+            </a>
+        </div>
+        {% endif %}
         {% endfor %}
-    </tbody>
-</table>
-<p><input class="btn btn-default btn-submit" type="submit" name="select" value="Select Directory"></p>
+    </body>
+    <p><input class="btn btn-default btn-submit" type="submit" name="select" value="Select Directory"></p>
 {% else %}
 <p>No files in directory</p>
 {% endif %}

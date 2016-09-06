@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+import pygal
+import json
+import logging # pylint: disable=W0611
+import os
+import sys
+sys.path.append('..')
 from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session
+     url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
 blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
@@ -16,14 +22,6 @@ from MediaKraken.admins.forms import DLNAEditForm
 from MediaKraken.admins.forms import UserEditForm
 from MediaKraken.admins.forms import AdminSettingsForm
 
-import pygal
-import json
-import logging # pylint: disable=W0611
-import subprocess
-import platform
-import os
-import sys
-sys.path.append('..')
 from common import common_config_ini
 from common import common_network_cifs
 from common import common_cloud
@@ -123,7 +121,8 @@ def admins():
                                g.db_connection.db_matched_media_count(), True),
                            data_count_streamed_media=locale.format('%d', 0, True),
                            data_zfs_active=common_zfs.com_zfs_available(),
-                           data_library=locale.format('%d', g.db_connection.db_audit_paths_count(), True),
+                           data_library=locale.format('%d',\
+                               g.db_connection.db_audit_paths_count(), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages
@@ -140,12 +139,12 @@ def admin_users():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db_connection.db_user_list_name_count(),
-                                record_name='users',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_user_list_name_count(),
+                                                  record_name='users',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('admin/admin_users.html',
                            users=g.db_connection.db_user_list_name(offset, per_page),
                            page=page,
@@ -184,12 +183,12 @@ def admin_cron_display_all():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db_connection.db_cron_list_count(False),
-                                record_name='Cron Jobs',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_cron_list_count(False),
+                                                  record_name='Cron Jobs',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template('admin/admin_cron.html',
                            media_cron=g.db_connection.db_cron_list(False, offset, per_page),
                            page=page,
@@ -225,7 +224,7 @@ def admin_tvtuners():
         tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
         + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],\
         row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
-    return render_template("admin/admin_tvtuners.html", data_tuners = tv_tuners)
+    return render_template("admin/admin_tvtuners.html", data_tuners=tv_tuners)
 
 
 @blueprint.route("/nas", methods=["GET", "POST"])
@@ -287,12 +286,12 @@ def admin_library():
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db_connection.db_audit_paths_count(),
-                                record_name='library dir(s)',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_audit_paths_count(),
+                                                  record_name='library dir(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template("admin/admin_library.html",
                            media_dir=g.db_connection.db_audit_paths(offset, per_page),
                            page=page,
@@ -312,7 +311,8 @@ def admin_library_edit_page():
             if request.form['action_type'] == 'Add':
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
-                    addr, share, path = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
+                    addr, share, path\
+                        = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
                     smb_stuff = common_network_cifs.com_cifs_Share_API()
                     smb_stuff.com_cifs_Connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
@@ -331,7 +331,8 @@ def admin_library_edit_page():
                     return redirect(url_for('admins.admin_library_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
-                    g.db_connection.db_audit_path_add(request.form['library_path'], request.form['Lib_Class'])
+                    g.db_connection.db_audit_path_add(request.form['library_path'],\
+                        request.form['Lib_Class'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:
@@ -348,7 +349,7 @@ def admin_library_edit_page():
         if row_data[2]: # flagged for display
             class_list.append((row_data[0], row_data[1]))
     return render_template("admin/admin_library_edit.html", form=form,
-                           data_class = class_list)
+                           data_class=class_list)
 
 
 @blueprint.route('/library_delete', methods=["POST"])
@@ -431,19 +432,20 @@ def admin_backup():
     backup_files = []
     for backup_local in common_file.com_file_dir_list(\
             option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local', common_string.com_string_bytes2human(backup_local[1])))
+        backup_files.append((backup_local[0], 'Local',\
+            common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in common_cloud.com_cloud_backup_list():
         backup_files.append((backup_cloud.name, backup_cloud.type,\
             common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=len(backup_files),
-                                record_name='backups',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=len(backup_files),
+                                                  record_name='backups',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
@@ -525,12 +527,12 @@ def admin_server_link_server():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db_connection.db_link_list_count(),
-                                record_name='linked servers',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_link_list_count(),
+                                                  record_name='linked servers',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
     return render_template("admin/admin_link.html",
                            data=g.db_connection.db_link_list(offset, per_page),
                            page=page,
@@ -590,10 +592,10 @@ def admin_chart_browser():
     line_chart = pygal.Line()
     line_chart.title = 'Browser usage'
     line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Firefox', [None, None,    0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-    line_chart.add('IE',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('Others',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
+    line_chart.add('Firefox', [None, None, 0, 16.6, 25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
+    line_chart.add('Chrome', [None, None, None, None, None, None, 0, 3.9, 10.8, 23.8, 35.3])
+    line_chart.add('IE', [85.8, 84.6, 84.7, 74.5, 66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
+    line_chart.add('Others', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
     return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
@@ -606,12 +608,12 @@ def admin_chart_client_usage():
     line_chart = pygal.Line()
     line_chart.title = 'Client usage'
     line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Theater', [None, None,    0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Roku',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-    line_chart.add('Web',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('iOS',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
-    line_chart.add('Android',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
-    line_chart.add('Tizen',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
+    line_chart.add('Theater', [None, None, 0, 16.6, 25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
+    line_chart.add('Roku', [None, None, None, None, None, None, 0, 3.9, 10.8, 23.8, 35.3])
+    line_chart.add('Web', [85.8, 84.6, 84.7, 74.5, 66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
+    line_chart.add('iOS', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Android', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Tizen', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
     return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
@@ -650,6 +652,36 @@ def admin_fs_browse(path):
             browse_parent.append((build_path, path_part))
     return render_template("admin/admin_fs_browse.html", file=browse_file,
                            file_parent=browse_parent)
+
+
+@blueprint.route('/', defaults={'path': ''})
+@blueprint.route('/<path:path>/list')
+def admin_listdir(path):
+    def gather_fileinfo(path, ospath, filename):
+        osfilepath = os.path.join(ospath, filename)
+        if os.path.isdir(osfilepath) and not filename.startswith('.'):
+            return {'type': 'directory', 'filename': filename,
+                    'link': url_for('mediabrowser.listdir',
+                                    path=os.path.join(path, filename))}
+        else:
+            if not get_video_mime_type(osfilepath):
+                return None
+            else:
+                return {'type': 'file', 'filename': filename,
+                        'fullpath': os.path.join(path, filename)}
+
+    try:
+        path = os.path.normpath(path)
+        ospath = os.path.join(root_directory, path)
+        files = list(map(partial(gather_fileinfo, path, ospath), os.listdir(ospath)))
+        files = list(filter(lambda file: file is not None, files))
+        files.sort(key=lambda i: (i['type'] == 'file' and '1' or '0') + i['filename'].lower())
+        return render_template('admin/admin_fs_browse.html',
+                               files=files,
+                               parent=os.path.dirname(path),
+                               path=path)
+    except FileNotFoundError:
+        abort(404)
 
 
 @blueprint.before_request
