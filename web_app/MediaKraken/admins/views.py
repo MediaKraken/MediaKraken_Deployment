@@ -679,7 +679,7 @@ def admin_listdir(path):
                                files=files,
                                parent=os.path.dirname(path),
                                path=path)
-    except FileNotFoundError:
+    except IOError:
         abort(404)
 
 
