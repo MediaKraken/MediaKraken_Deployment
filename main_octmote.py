@@ -122,6 +122,10 @@ class OctMoteApp(App):
         self.emby_user_connection_json = None
         self.json_text = None
         self._notification_popup = None
+        self.global_selected_server_addr = None
+        self.login_password = None
+        self._popup = None
+        self.global_url_headers = None
 
 
     def exit_program(self):
@@ -212,7 +216,7 @@ class OctMoteApp(App):
         self._popup.open()
 
 
-    def emby_event_button_user_select_Login(self, *args):
+    def emby_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         self.emby_user_connection_json = common_emby_network.com_network_emby_user_login(\
             self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
@@ -229,7 +233,7 @@ class OctMoteApp(App):
         self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    def main_octmote_setup_screen(self, *args):
+    def main_setup_screen(self, *args):
         """
         # setup button has been clicked
         """
@@ -242,7 +246,7 @@ class OctMoteApp(App):
         for base_device in common_database_octmote.com_db_device_list():
             btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,\
                 group='setup_base_device_button',)
-            btn1.bind(on_press=partial(self.main_octmote_setup_base_device_selected,\
+            btn1.bind(on_press=partial(self.main_setup_base_device_selected,\
                 base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
             self.base_device_guid_dict[base_device[0]] = base_device[1]
@@ -255,19 +259,19 @@ class OctMoteApp(App):
         for item_device in common_database_octmote.com_db_item_list():
             btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,\
                 group='setup_item_device_button',)
-            btn1.bind(on_press=partial(self.main_octmote_setup_base_item_selected, item_device[0]))
+            btn1.bind(on_press=partial(self.main_setup_base_item_selected, item_device[0]))
             self.root.ids.setup_base_item_gridlayout.add_widget(btn1)
             self.base_item_guid_dict[item_device[0]] = item_device[1]
 
 
-    def main_octmote_setup_base_device_selected(self, *args):
+    def main_setup_base_device_selected(self, *args):
         """
         # from setup screen a base device has been selected
         """
         pass
 
 
-    def main_octmote_setup_base_item_selected(self, *args):
+    def main_setup_base_item_selected(self, *args):
         """
         # from setup screen a device item has been selected
         """
@@ -412,119 +416,119 @@ class OctMoteApp(App):
 
 #####################################################
     # main calibration events
-    def main_evt_cal_black_level(self):
+    def evt_cal_black_level(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Black Level"))
 
 
-    def main_evt_cal_brightness(self):
+    def evt_cal_brightness(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Brightness"))
 
 
-    def main_evt_cal_brightness_up(self):
+    def evt_cal_brightness_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Brightness Up"))
 
 
-    def main_evt_cal_brightness_down(self):
+    def evt_cal_brightness_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Brightness Down"))
 
 
-    def main_evt_cal_color(self):
+    def evt_cal_color(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color"))
 
 
-    def main_evt_cal_color_temp(self):
+    def evt_cal_color_temp(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Temperature"))
 
 
-    def main_evt_cal_color_temp_r(self):
+    def evt_cal_color_temp_r(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Temp R"))
 
 
-    def main_evt_cal_color_temp_g(self):
+    def evt_cal_color_temp_g(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Temp G"))
 
 
-    def main_evt_cal_color_temp_b(self):
+    def evt_cal_color_temp_b(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Temp B"))
 
 
-    def main_evt_cal_color_balance_r(self):
+    def evt_cal_color_balance_r(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Balance R"))
 
 
-    def main_evt_cal_color_balance_g(self):
+    def evt_cal_color_balance_g(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Balance G"))
 
 
-    def main_evt_cal_color_balance_b(self):
+    def evt_cal_color_balance_b(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Balance B"))
 
 
-    def main_evt_cal_color_density_up(self):
+    def evt_cal_color_density_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Density Up"))
 
 
-    def main_evt_cal_color_density_down(self):
+    def evt_cal_color_density_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Color Density Down"))
 
 
-    def main_evt_cal_contrast(self):
+    def evt_cal_contrast(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Contrast"))
 
 
-    def main_evt_cal_constrast_up(self):
+    def evt_cal_constrast_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Contrast Up"))
 
 
-    def main_evt_cal_constrast_down(self):
+    def evt_cal_constrast_down(self):
         """
         Process button event
         """
@@ -532,161 +536,161 @@ class OctMoteApp(App):
 
 
     # calbration convergance
-    def main_evt_cal_conv_blanking(self):
+    def evt_cal_conv_blanking(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking"))
 
 
-    def main_evt_cal_conv_blanking_on(self):
+    def evt_cal_conv_blanking_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking On"))
 
 
-    def main_evt_cal_conv_blanking_off(self):
+    def evt_cal_conv_blanking_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Blanking Off"))
 
 
-    def main_evt_cal_conv_bow(self):
+    def evt_cal_conv_bow(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Bow"))
 
 
-    def main_evt_cal_conv_dynamic(self):
+    def evt_cal_conv_dynamic(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Dynamic"))
 
 
-    def main_evt_cal_conv_edge_linearity(self):
+    def evt_cal_conv_edge_linearity(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Edge Linearity"))
 
 
-    def main_evt_cal_conv_keystone(self):
+    def evt_cal_conv_keystone(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone"))
 
 
-    def main_evt_cal_conv_keystone_up(self):
+    def evt_cal_conv_keystone_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Up"))
 
 
-    def main_evt_cal_conv_keystone_down(self):
+    def evt_cal_conv_keystone_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Down"))
 
 
-    def main_evt_cal_conv_keystone_left(self):
+    def evt_cal_conv_keystone_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Left"))
 
 
-    def main_evt_cal_conv_keystone_right(self):
+    def evt_cal_conv_keystone_right(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Keystone Right"))
 
 
-    def main_evt_cal_conv_linearity(self):
+    def evt_cal_conv_linearity(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Linearity"))
 
 
-    def main_evt_cal_conv_overscan_on(self):
+    def evt_cal_conv_overscan_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan On"))
 
 
-    def main_evt_cal_conv_overscan_off(self):
+    def evt_cal_conv_overscan_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Overscan Off"))
 
 
-    def main_evt_cal_conv_phase(self):
+    def evt_cal_conv_phase(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Phase"))
 
 
-    def main_evt_cal_conv_pincushion(self):
+    def evt_cal_conv_pincushion(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Pincushion"))
 
 
-    def main_evt_cal_conv_shift(self):
+    def evt_cal_conv_shift(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Shift"))
 
 
-    def main_evt_cal_conv_size(self):
+    def evt_cal_conv_size(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Size"))
 
 
-    def main_evt_cal_conv_skew(self):
+    def evt_cal_conv_skew(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Skew"))
 
 
-    def main_evt_cal_conv_static(self):
+    def evt_cal_conv_static(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Static"))
 
 
-    def main_evt_cal_conv_quad_top_left(self):
+    def evt_cal_conv_quad_top_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top Left"))
 
 
-    def main_evt_cal_conv_quad_top(self):
+    def evt_cal_conv_quad_top(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Top"))
 
 
-    def main_evt_cal_conv_quad_top_right(self):
+    def evt_cal_conv_quad_top_right(self):
         """
         Process button event
         """
@@ -694,21 +698,21 @@ class OctMoteApp(App):
             "Quandrant Top Right"))
 
 
-    def main_evt_cal_conv_quad_right(self):
+    def evt_cal_conv_quad_right(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Right"))
 
 
-    def main_evt_cal_conv_quad_left(self):
+    def evt_cal_conv_quad_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Left"))
 
 
-    def main_evt_cal_conv_quad_bottom_left(self):
+    def evt_cal_conv_quad_bottom_left(self):
         """
         Process button event
         """
@@ -716,7 +720,7 @@ class OctMoteApp(App):
             "Quandrant Bottom Left"))
 
 
-    def main_evt_cal_conv_quad_bottom_right(self):
+    def evt_cal_conv_quad_bottom_right(self):
         """
         Process button event
         """
@@ -724,21 +728,21 @@ class OctMoteApp(App):
             "Quandrant Bottom Right"))
 
 
-    def main_evt_cal_conv_quad_bottom(self):
+    def evt_cal_conv_quad_bottom(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Quandrant Bottom"))
 
 
-    def main_evt_cal_conv_vertical_center(self):
+    def evt_cal_conv_vertical_center(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Convergance", "Veritcal Center"))
 
 
-    def main_evt_cal_conv_vertical_size(self):
+    def evt_cal_conv_vertical_size(self):
         """
         Process button event
         """
@@ -746,105 +750,105 @@ class OctMoteApp(App):
 
 
     # calibration continued
-    def main_evt_cal_detail(self):
+    def evt_cal_detail(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Detail"))
 
 
-    def main_evt_cal_detail_up(self):
+    def evt_cal_detail_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Detail Up"))
 
 
-    def main_evt_cal_detail_down(self):
+    def evt_cal_detail_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Detail Down"))
 
 
-    def main_evt_cal_gamma(self):
+    def evt_cal_gamma(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Gamma"))
 
 
-    def main_evt_cal_gamma_up(self):
+    def evt_cal_gamma_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Gamma Up"))
 
 
-    def main_evt_cal_gamma_down(self):
+    def evt_cal_gamma_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Gamma Down"))
 
 
-    def main_evt_cal_hue(self):
+    def evt_cal_hue(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Hue"))
 
 
-    def main_evt_cal_hue_up(self):
+    def evt_cal_hue_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Hue Up"))
 
 
-    def main_evt_cal_hue_down(self):
+    def evt_cal_hue_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Hue Down"))
 
 
-    def main_evt_cal_tint(self):
+    def evt_cal_tint(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Tint"))
 
 
-    def main_evt_cal_tint_up(self):
+    def evt_cal_tint_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Tint Up"))
 
 
-    def main_evt_cal_tint_down(self):
+    def evt_cal_tint_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Tint Down"))
 
 
-    def main_evt_cal_sharpness(self):
+    def evt_cal_sharpness(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Sharpness"))
 
 
-    def main_evt_cal_sharpness_up(self):
+    def evt_cal_sharpness_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Calibration", "Sharpness Up"))
 
 
-    def main_evt_cal_sharpness_down(self):
+    def evt_cal_sharpness_down(self):
         """
         Process button event
         """
@@ -854,77 +858,77 @@ class OctMoteApp(App):
 #####################################################
     # main remote control events
     # application
-    def main_evt_commands_application_amazon(self):
+    def evt_cmd_application_amazon(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Amazon Instant Video"))
 
 
-    def main_evt_commands_application_emby(self):
+    def evt_cmd_application_emby(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Emby"))
 
 
-    def main_evt_commands_application_hbogo(self):
+    def evt_cmd_application_hbogo(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "HBO Go"))
 
 
-    def main_evt_commands_application_hulu(self):
+    def evt_cmd_application_hulu(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Hulu Plus"))
 
 
-    def main_evt_commands_application_kodi(self):
+    def evt_cmd_application_kodi(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Kodi"))
 
 
-    def main_evt_commands_application_netflix(self):
+    def evt_cmd_application_netflix(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Netflix"))
 
 
-    def main_evt_commands_application_pandora(self):
+    def evt_cmd_application_pandora(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Pandora"))
 
 
-    def main_evt_commands_application_plex(self):
+    def evt_cmd_application_plex(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "Plex"))
 
 
-    def main_evt_commands_application_siriusxm(self):
+    def evt_cmd_application_siriusxm(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "SiriusXM"))
 
 
-    def main_evt_commands_application_slingtv(self):
+    def evt_cmd_application_slingtv(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Application", "sling TV"))
 
 
-    def main_evt_commands_application_vudu(self):
+    def evt_cmd_application_vudu(self):
         """
         Process button event
         """
@@ -932,77 +936,77 @@ class OctMoteApp(App):
 
 
     # aspect ratio
-    def main_evt_commands_aspect_next(self):
+    def evt_cmd_aspect_next(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Next Ratio"))
 
 
-    def main_evt_commands_aspect_auto(self):
+    def evt_cmd_aspect_auto(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Auto"))
 
 
-    def main_evt_commands_aspect_native(self):
+    def evt_cmd_aspect_native(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Native"))
 
 
-    def main_evt_commands_aspect_letterbox(self):
+    def evt_cmd_aspect_letterbox(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Letterbox"))
 
 
-    def main_evt_commands_aspect_real(self):
+    def evt_cmd_aspect_real(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "Real"))
 
 
-    def main_evt_commands_aspect_4x3(self):
+    def evt_cmd_aspect_4x3(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "4:3"))
 
 
-    def main_evt_commands_aspect_1x2(self):
+    def evt_cmd_aspect_1x2(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "1:1"))
 
 
-    def main_evt_commands_aspect_1x85(self):
+    def evt_cmd_aspect_1x85(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "1.85"))
 
 
-    def main_evt_commands_aspect_2x35(self):
+    def evt_cmd_aspect_2x35(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "2.35"))
 
 
-    def main_evt_commands_aspect_16x9(self):
+    def evt_cmd_aspect_16x9(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Aspect Ratio", "16:9"))
 
 
-    def main_evt_commands_aspect_16x10(self):
+    def evt_cmd_aspect_16x10(self):
         """
         Process button event
         """
@@ -1010,105 +1014,105 @@ class OctMoteApp(App):
 
 
     # hardware
-    def main_evt_commands_hardware_channel(self):
+    def evt_cmd_hardware_channel(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Channel"))
 
 
-    def main_evt_commands_hardware_crt_b(self):
+    def evt_cmd_hardware_crt_b(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Blue"))
 
 
-    def main_evt_commands_hardware_crt_g(self):
+    def evt_cmd_hardware_crt_g(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Green"))
 
 
-    def main_evt_commands_hardware_crt_r(self):
+    def evt_cmd_hardware_crt_r(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "CRT Red"))
 
 
-    def main_evt_commands_hardware_cut_off(self):
+    def evt_cmd_hardware_cut_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Cut-Off"))
 
 
-    def main_evt_commands_hardware_lamp_hour_reset(self):
+    def evt_cmd_hardware_lamp_hour_reset(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Lamp Hour Reset"))
 
 
-    def main_evt_commands_hardware_luminance(self):
+    def evt_cmd_hardware_luminance(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Luminance"))
 
 
-    def main_evt_commands_hardware_optical_zoom_shift(self):
+    def evt_cmd_hardware_optical_zoom_shift(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Optical Zoom Shift"))
 
 
-    def main_evt_commands_hardware_optical_focus_shift(self):
+    def evt_cmd_hardware_optical_focus_shift(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Optical Focus Shift"))
 
 
-    def main_evt_commands_hardware_projection_mode(self):
+    def evt_cmd_hardware_projection_mode(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Projection Mode"))
 
 
-    def main_evt_commands_hardware_reset(self):
+    def evt_cmd_hardware_reset(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Reset"))
 
 
-    def main_evt_commands_hardware_shutter_on(self):
+    def evt_cmd_hardware_shutter_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Shutter On"))
 
 
-    def main_evt_commands_hardware_shutter_off(self):
+    def evt_cmd_hardware_shutter_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Shutter Off"))
 
 
-    def main_evt_commands_hardware_unit(self):
+    def evt_cmd_hardware_unit(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Hardware", "Unit"))
 
 
-    def main_evt_commands_hardware_whisper_mode(self):
+    def evt_cmd_hardware_whisper_mode(self):
         """
         Process button event
         """
@@ -1116,84 +1120,84 @@ class OctMoteApp(App):
 
 
     # misc
-    def main_evt_commands_misc_background(self):
+    def evt_cmd_misc_background(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Background"))
 
 
-    def main_evt_commands_misc_cc_display(self):
+    def evt_cmd_misc_cc_display(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Closed Caption Display"))
 
 
-    def main_evt_commands_misc_film_mode(self):
+    def evt_cmd_misc_film_mode(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Film Mode"))
 
 
-    def main_evt_commands_misc_freeze(self):
+    def evt_cmd_misc_freeze(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze"))
 
 
-    def main_evt_commands_misc_freeze_on(self):
+    def evt_cmd_misc_freeze_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze On"))
 
 
-    def main_evt_commands_misc_freeze_off(self):
+    def evt_cmd_misc_freeze_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Freeze Off"))
 
 
-    def main_evt_commands_misc_language(self):
+    def evt_cmd_misc_language(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Language"))
 
 
-    def main_evt_commands_misc_osd(self):
+    def evt_cmd_misc_osd(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD"))
 
 
-    def main_evt_commands_misc_osd_on(self):
+    def evt_cmd_misc_osd_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD On"))
 
 
-    def main_evt_commands_misc_osd_off(self):
+    def evt_cmd_misc_osd_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "OSD Off"))
 
 
-    def main_evt_commands_misc_startup_image_yes(self):
+    def evt_cmd_misc_startup_image_yes(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Misc", "Startup Image Yes"))
 
 
-    def main_evt_commands_misc_startup_image_no(self):
+    def evt_cmd_misc_startup_image_no(self):
         """
         Process button event
         """
@@ -1201,154 +1205,154 @@ class OctMoteApp(App):
 
 
     # navigation
-    def main_evt_commands_left(self):
+    def evt_cmd_left(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Direction", "Left"))
 
 
-    def main_evt_commands_right(self):
+    def evt_cmd_right(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Direction", "Right"))
 
 
-    def main_evt_commands_up(self):
+    def evt_cmd_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Direction", "Up"))
 
 
-    def main_evt_commands_down(self):
+    def evt_cmd_down(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Direction", "Down"))
 
 
-    def main_evt_commands_one(self):
+    def evt_cmd_one(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "One"))
 
 
-    def main_evt_commands_two(self):
+    def evt_cmd_two(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Two"))
 
 
-    def main_evt_commands_three(self):
+    def evt_cmd_three(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Three"))
 
 
-    def main_evt_commands_four(self):
+    def evt_cmd_four(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Four"))
 
 
-    def main_evt_commands_five(self):
+    def evt_cmd_five(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Five"))
 
 
-    def main_evt_commands_six(self):
+    def evt_cmd_six(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Six"))
 
 
-    def main_evt_commands_seven(self):
+    def evt_cmd_seven(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Seven"))
 
 
-    def main_evt_commands_eight(self):
+    def evt_cmd_eight(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Eight"))
 
 
-    def main_evt_commands_nine(self):
+    def evt_cmd_nine(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Numeric", "Nine"))
 
 
-    def main_evt_commands_fast_rewind(self):
+    def evt_cmd_fast_rewind(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Fast Rewind"))
 
 
-    def main_evt_commands_chapter_rewind(self):
+    def evt_cmd_chapter_rewind(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Chapter Rewind"))
 
 
-    def main_evt_commands_fast_forward(self):
+    def evt_cmd_fast_forward(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Fast Forward"))
 
 
-    def main_evt_commands_chapter_forward(self):
+    def evt_cmd_chapter_forward(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Chapter Forward"))
 
 
-    def main_evt_commands_play(self):
+    def evt_cmd_play(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Play"))
 
 
-    def main_evt_commands_pause(self):
+    def evt_cmd_pause(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Pause"))
 
 
-    def main_evt_commands_stop(self):
+    def evt_cmd_stop(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Stop"))
 
 
-    def main_evt_commands_info(self):
+    def evt_cmd_info(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Navigation", "Info"))
 
 
-    def main_evt_commands_record(self):
+    def evt_cmd_record(self):
         """
         Process button event
         """
@@ -1356,21 +1360,21 @@ class OctMoteApp(App):
 
 
     # power
-    def main_evt_commands_power_on(self):
+    def evt_cmd_power_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Power", "On"))
 
 
-    def main_evt_commands_power_off(self):
+    def evt_cmd_power_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Power", "Off"))
 
 
-    def main_evt_commands_power_standy(self):
+    def evt_cmd_power_standy(self):
         """
         Process button event
         """
@@ -1378,28 +1382,28 @@ class OctMoteApp(App):
 
 
     # sound
-    def main_evt_commands_sound_mute(self):
+    def evt_cmd_sound_mute(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Sound", "Mute"))
 
 
-    def main_evt_commands_sound_unmute(self):
+    def evt_cmd_sound_unmute(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Sound", "UnMute"))
 
 
-    def main_evt_commands_sound_volume_up(self):
+    def evt_cmd_sound_volume_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Sound", "Volume Up"))
 
 
-    def main_evt_commands_sound_volume_down(self):
+    def evt_cmd_sound_volume_down(self):
         """
         Process button event
         """
@@ -1407,21 +1411,21 @@ class OctMoteApp(App):
 
 
     # zoom
-    def main_evt_commands_zoom_zoom(self):
+    def evt_cmd_zoom_zoom(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Zoom", "Zoom"))
 
 
-    def main_evt_commands_zoom_up(self):
+    def evt_cmd_zoom_up(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Commands", "Zoom", "Zoom Up"))
 
 
-    def main_evt_commands_zoom_down(self):
+    def evt_cmd_zoom_down(self):
         """
         Process button event
         """
@@ -1431,42 +1435,42 @@ class OctMoteApp(App):
 #####################################################
     # querys
     # library media
-    def main_evt_query_library_media_albums(self):
+    def evt_query_library_media_albums(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Albums"))
 
 
-    def main_evt_query_library_media_artists(self):
+    def evt_query_library_media_artists(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Artists"))
 
 
-    def main_evt_query_library_media_movies(self):
+    def evt_query_library_media_movies(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Movies"))
 
 
-    def main_evt_query_library_media_music_videos(self):
+    def evt_query_library_media_music_videos(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Music Videos"))
 
 
-    def main_evt_query_library_media_songs(self):
+    def evt_query_library_media_songs(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Media", "Songs"))
 
 
-    def main_evt_query_library_media_tv_shows(self):
+    def evt_query_library_media_tv_shows(self):
         """
         Process button event
         """
@@ -1474,14 +1478,14 @@ class OctMoteApp(App):
 
 
     # librrary playlist
-    def main_evt_query_library_playlist_audio(self):
+    def evt_query_library_playlist_audio(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Library", "Playlist", "Audio"))
 
 
-    def main_evt_query_library_playlist_video(self):
+    def evt_query_library_playlist_video(self):
         """
         Process button event
         """
@@ -1489,224 +1493,224 @@ class OctMoteApp(App):
 
 
     # more queries
-    def main_evt_query_api_commands(self):
+    def evt_query_api_commands(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "API Commands"))
 
 
-    def main_evt_query_aspect_ratio(self):
+    def evt_query_aspect_ratio(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Aspect Ratio"))
 
 
-    def main_evt_query_blank_status(self):
+    def evt_query_blank_status(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Blank Status"))
 
 
-    def main_evt_query_brightness(self):
+    def evt_query_brightness(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Brightness"))
 
 
-    def main_evt_query_codec(self):
+    def evt_query_codec(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Codec (Playing Media)"))
 
 
-    def main_evt_query_color_video(self):
+    def evt_query_color_video(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Color (Video)"))
 
 
-    def main_evt_query_color_mode(self):
+    def evt_query_color_mode(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Color Mode"))
 
 
-    def main_evt_query_color_temp(self):
+    def evt_query_color_temp(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Color Temp"))
 
 
-    def main_evt_query_company_name(self):
+    def evt_query_company_name(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Company Name"))
 
 
-    def main_evt_query_contrast(self):
+    def evt_query_contrast(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Contrast"))
 
 
-    def main_evt_query_density(self):
+    def evt_query_density(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Density"))
 
 
-    def main_evt_query_error_status(self):
+    def evt_query_error_status(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Error Status"))
 
 
-    def main_evt_query_filter_time(self):
+    def evt_query_filter_time(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Filter Time"))
 
 
-    def main_evt_query_gain_green(self):
+    def evt_query_gain_green(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Gain Green"))
 
 
-    def main_evt_query_gain_blue(self):
+    def evt_query_gain_blue(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Gain Blue"))
 
 
-    def main_evt_query_gain_red(self):
+    def evt_query_gain_red(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Gain Red"))
 
 
-    def main_evt_query_input_selected(self):
+    def evt_query_input_selected(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Input Selected"))
 
 
-    def main_evt_query_lamp_hours(self):
+    def evt_query_lamp_hours(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Lamp Hours"))
 
 
-    def main_evt_query_lamp_off(self):
+    def evt_query_lamp_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Lamp Off"))
 
 
-    def main_evt_query_lamp_on(self):
+    def evt_query_lamp_on(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Lamp On"))
 
 
-    def main_evt_query_lamp_on_off(self):
+    def evt_query_lamp_on_off(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Lamp On/Off"))
 
 
-    def main_evt_query_model_name(self):
+    def evt_query_model_name(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Model Name"))
 
 
-    def main_evt_query_mute_status(self):
+    def evt_query_mute_status(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Mute Status"))
 
 
-    def main_evt_query_native_resolution(self):
+    def evt_query_native_resolution(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Native Resolution"))
 
 
-    def main_evt_query_overscan_ratio(self):
+    def evt_query_overscan_ratio(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Overscan Ratio"))
 
 
-    def main_evt_query_power_state(self):
+    def evt_query_power_state(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Power State"))
 
 
-    def main_evt_query_projection_mode(self):
+    def evt_query_projection_mode(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Projection Mode"))
 
 
-    def main_evt_query_serial_number(self):
+    def evt_query_serial_number(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Serial Number"))
 
 
-    def main_evt_query_sharpness(self):
+    def evt_query_sharpness(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Sharpness"))
 
 
-    def main_evt_query_status(self):
+    def evt_query_status(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Status"))
 
 
-    def main_evt_query_tint_video(self):
+    def evt_query_tint_video(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Query", "Tint (Video)"))
 
 
-    def main_evt_query_volume(self):
+    def evt_query_volume(self):
         """
         Process button event
         """
@@ -1715,175 +1719,175 @@ class OctMoteApp(App):
 
 #####################################################
     # source
-    def main_evt_source_aux1(self):
+    def evt_source_aux1(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "AUX1"))
 
 
-    def main_evt_source_aux2(self):
+    def evt_source_aux2(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "AUX2"))
 
 
-    def main_evt_source_bluray(self):
+    def evt_source_bluray(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "BluRay"))
 
 
-    def main_evt_source_cable_tv(self):
+    def evt_source_cable_tv(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Cable/TV"))
 
 
-    def main_evt_source_composite(self):
+    def evt_source_composite(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Composite"))
 
 
-    def main_evt_source_component(self):
+    def evt_source_component(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Component"))
 
 
-    def main_evt_source_dvd(self):
+    def evt_source_dvd(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "DVD"))
 
 
-    def main_evt_source_game(self):
+    def evt_source_game(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Game"))
 
 
-    def main_evt_source_hdmi1(self):
+    def evt_source_hdmi1(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI1"))
 
 
-    def main_evt_source_hdmi2(self):
+    def evt_source_hdmi2(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI2"))
 
 
-    def main_evt_source_hdmi3(self):
+    def evt_source_hdmi3(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI3"))
 
 
-    def main_evt_source_hdmi4(self):
+    def evt_source_hdmi4(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI4"))
 
 
-    def main_evt_source_hdmi5(self):
+    def evt_source_hdmi5(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI5"))
 
 
-    def main_evt_source_hdmi6(self):
+    def evt_source_hdmi6(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI6"))
 
 
-    def main_evt_source_hdmi7(self):
+    def evt_source_hdmi7(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI7"))
 
 
-    def main_evt_source_hdmi8(self):
+    def evt_source_hdmi8(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "HDMI8"))
 
 
-    def main_evt_source_input(self):
+    def evt_source_input(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Input"))
 
 
-    def main_evt_source_laserdisc(self):
+    def evt_source_laserdisc(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "LaserDisc"))
 
 
-    def main_evt_source_net_usb(self):
+    def evt_source_net_usb(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Net/USB"))
 
 
-    def main_evt_source_phono(self):
+    def evt_source_phono(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Phono"))
 
 
-    def main_evt_source_rgb1(self):
+    def evt_source_rgb1(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "RGB1"))
 
 
-    def main_evt_source_rgb2(self):
+    def evt_source_rgb2(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "RGB2"))
 
 
-    def main_evt_source_satellite(self):
+    def evt_source_satellite(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "Satellite"))
 
 
-    def main_evt_source_svideo(self):
+    def evt_source_svideo(self):
         """
         Process button event
         """
         self.main_remote_control_event_process(("Source", "S-Video"))
 
 
-    def main_evt_source_usb(self):
+    def evt_source_usb(self):
         """
         Process button event
         """
