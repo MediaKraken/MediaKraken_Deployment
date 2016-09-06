@@ -17,8 +17,8 @@
 '''
 
 # general pin input/output for motion detector device
-import Adafruit_BBIO.GPIO as GPIO
 import time
+import Adafruit_BBIO.GPIO as GPIO
 
 GPIO.setup('P9_15', GPIO.IN)
 

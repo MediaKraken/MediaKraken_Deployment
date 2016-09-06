@@ -20,10 +20,10 @@
 from Arduino import Arduino
 
 # Arduino UNO R3
-Arduino_Board_NeoPixel = Arduino('9600', port="/dev/ttyACM0")   # Neo1
-Arduino_Board_Stepper = Arduino('9600', port="/dev/ttyACM1")    # Stp1
+ARDUINO_BOARD_NEOPIXEL = Arduino('9600', port="/dev/ttyACM0")   # Neo1
+ARDUINO_BOARD_STEPPER = Arduino('9600', port="/dev/ttyACM1")    # Stp1
 # Arduino Mega 2560
-Arduino_Board_LCD_Center = Arduino('9600', port="/dev/ttyACM2")
+ARDUINO_BOARD_LCD_CENTER = Arduino('9600', port="/dev/ttyACM2")
 
 
 def com_arduino_usb_serial_digitalwrite(board_type, pin_number, pin_high_low):
@@ -32,9 +32,9 @@ def com_arduino_usb_serial_digitalwrite(board_type, pin_number, pin_high_low):
 
 def com_arduino_usb_serial_writestring(board_type, serial_string):
     if board_type == "Neo1":
-        Arduino_Board_NeoPixel.SoftwareSerial.write(serial_string)
+        ARDUINO_BOARD_NEOPIXEL.SoftwareSerial.write(serial_string)
     else:
-        Arduino_Board_Stepper.SoftwareSerial.write(serial_string)
+        ARDUINO_BOARD_STEPPER.SoftwareSerial.write(serial_string)
 
 
 def com_arduino_usb_serial_receivestring():
@@ -42,9 +42,9 @@ def com_arduino_usb_serial_receivestring():
 
 
 #while True:
-#    Arduino_Board_NeoPixel.SoftwareSerial.write("test") #Send some data
+#    ARDUINO_BOARD_NEOPIXEL.SoftwareSerial.write("test") #Send some data
 #    time.sleep(1)
-#    Arduino_Board_NeoPixel.digitalWrite(13, "HIGH")
+#    ARDUINO_BOARD_NEOPIXEL.digitalWrite(13, "HIGH")
 #    time.sleep(1)
-#    Arduino_Board_NeoPixel.digitalWrite(13, "LOW") #Set digital pin 13 voltage
+#    ARDUINO_BOARD_NEOPIXEL.digitalWrite(13, "LOW") #Set digital pin 13 voltage
 #    time.sleep(1)

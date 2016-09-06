@@ -19,14 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
-from common import common_config_ini
-from common import common_logging
 import datetime
 import time
 import os
 import signal
 import psutil
-import subprocess
+import subprocessfrom common import common_config_ini
+from common import common_logging
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -35,8 +34,8 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     """
     print('CHILD Cron: Received USR1')
     # term all running crons
-    if row_data[1] in pid_dict:
-        os.kill(row_data[1], signal.SIGTERM)
+    if pid_data in pid_dict:
+        os.kill(pid_dict[pid_data], signal.SIGTERM)
     # cleanup db
     db_connection.db_rollback()
     db_connection.db_close()
