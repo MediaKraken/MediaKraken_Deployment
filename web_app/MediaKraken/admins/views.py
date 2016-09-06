@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+import locale
+locale.setlocale(locale.LC_ALL, '')
 import pygal
 import json
 import logging # pylint: disable=W0611
@@ -34,9 +36,6 @@ from common import common_transmission
 from common import common_zfs
 import database as database_base
 
-
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 outside_ip = None
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
