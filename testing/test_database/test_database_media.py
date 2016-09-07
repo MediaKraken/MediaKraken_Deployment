@@ -184,7 +184,7 @@ class TestDatabaseMedia(object):
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, False),  # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),   # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found    
+        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
     def test_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
         """
         # set favorite status for media
@@ -274,7 +274,7 @@ class TestDatabaseMedia(object):
 
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
+        ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
     def test_db_read_media_metadata_both(self, media_guid):
         """
         # read in metadata by id

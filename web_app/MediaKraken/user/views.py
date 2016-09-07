@@ -33,6 +33,7 @@ from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 from common import common_string
+from common import common_zfs
 import database as database_base
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
@@ -1035,7 +1036,7 @@ def movie_detail(guid):
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_Review_List_by_TMDB_GUID(json_metaid['TMDB'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['TMDB'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
             for review_data in review_json[1]['TMDB']['results']:
@@ -1572,7 +1573,8 @@ def metadata_movie_detail(guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
+    data_vote_count = locale.format('%d',\
+        json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
     # build gen list
     genres_list = ''
     for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
@@ -1580,12 +1582,14 @@ def metadata_movie_detail(guid):
     # build production list
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
-        production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
+        production_list\
+            += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
     image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
         if json_imagedata['Images']['TMDB']['Poster'] is not None:
-            data_poster_image = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
+            data_poster_image\
+                = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
         else:
             data_poster_image = None
     except:
@@ -1593,7 +1597,8 @@ def metadata_movie_detail(guid):
     # background image
     try:
         if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1731,7 +1736,8 @@ def metadata_tvshow_detail(guid):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+            data_overview\
+                = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list
@@ -1822,7 +1828,8 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+            data_overview\
+                = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
         # build gen list

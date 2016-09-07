@@ -405,7 +405,7 @@ def admin_backup_delete_page():
     if file_type == "Local":
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
-        common_cloud.com_cloud_File_Delete('awss3', file_path, True)
+        common_cloud.com_cloud_file_delete('awss3', file_path, True)
     return json.dumps({'status': 'OK'})
 
 
