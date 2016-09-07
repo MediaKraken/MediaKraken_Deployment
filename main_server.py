@@ -109,7 +109,7 @@ else:
 
 # look for infiniband rdma devices
 if rmda_enabled_os:
-    rmda_devices = com_RMDA.mk_rdma_get_devices()
+    rmda_devices = common_rmda.com_rdma_get_devices()
     if rmda_devices is None:
         rmda_enabled_os = False
 
