@@ -58,8 +58,10 @@ else:
 
 # same code in subprograb update create collections
 def store_update_record(db_connection, collection_name, guid_list):
+    """
     # store/update the record
-    collection_guid = db_connection.db_Collection_by_Name(collection_name)
+    """
+    collection_guid = db_connection.db_collection_by_name(collection_name)
     if collection_guid is None:
         # insert
         db_connection.db_collection_insert(collection_name, guid_list)
