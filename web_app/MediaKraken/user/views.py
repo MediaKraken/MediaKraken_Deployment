@@ -3,7 +3,8 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify, redirect, url_for
+from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+    redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
 #from flask_table import Table, Col, create_table
@@ -714,6 +715,8 @@ def user_video_player_videojs(mtype, guid):
     # grab the guid from the comboindex
     media_guid_index = request.form["Video_Track"]
     media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
+    if media_path is None:
+        abort(404)
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
     logging.debug("aud: %s", audio_track_index)
