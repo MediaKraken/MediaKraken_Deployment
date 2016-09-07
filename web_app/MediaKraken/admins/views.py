@@ -634,37 +634,19 @@ def admin_database_statistics():
                            data_db_count=db_stats_count)
 
 
-@blueprint.route('/browse', defaults={'path': 'home/metaman/'})
-@blueprint.route('/browse/', defaults={'path': 'home/metaman/'})
-@blueprint.route('/browse/<path:path>')
-@login_required
-@admin_required
-def admin_fs_browse(path):
-    browse_file = common_file.com_file_Dir_List('/' + path, None, False, False, True, True)
-    browse_parent = []
-    build_path = ''
-    for path_part in path.split('/'):
-        if len(path_part) > 0:
-            if build_path == '':
-                build_path += path_part # to "skip" leading slash for path
-            else:
-                build_path += '/' + path_part
-            browse_parent.append((build_path, path_part))
-    return render_template("admin/admin_fs_browse.html", file=browse_file,
-                           file_parent=browse_parent)
-
-
 @blueprint.route('/', defaults={'path': ''})
 @blueprint.route('/<path:path>/list')
+@login_required
+@admin_required
 def admin_listdir(path):
     def gather_fileinfo(path, ospath, filename):
         osfilepath = os.path.join(ospath, filename)
         if os.path.isdir(osfilepath) and not filename.startswith('.'):
-            return {'type': 'directory', 'filename': filename,
+            return {'type': 'd', 'filename': filename,
                     'link': url_for('admins.admin_listdir',
                                     path=os.path.join(path, filename))}
         else:
-            return {'type': 'file', 'filename': filename,
+            return {'type': 'f', 'filename': filename,
                     'fullpath': os.path.join(path, filename)}
 
     try:
