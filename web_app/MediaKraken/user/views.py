@@ -713,7 +713,11 @@ def user_video_player_videojs(mtype, guid):
     """
     logging.debug("videojs: %s %s", mtype, guid)
     # grab the guid from the comboindex
-    media_guid_index = request.form["Video_Track"]
+    # use try since people can go here "by-hand"
+    try:
+        media_guid_index = request.form["Video_Track"]
+    else:
+        abort(500)
     media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
     if media_path is None:
         abort(404)
