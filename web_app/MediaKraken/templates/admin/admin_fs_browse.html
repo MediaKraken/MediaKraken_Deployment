@@ -8,7 +8,7 @@
 {% block header %}
 {% if files %}
     <head>
-        <title>Directory Browser - {{ path }}</title>
+        <title>MediaKraken Browser - {{ path }}</title>
         <link rel="stylesheet" href="{{ url_for('user.static', filename='../../static/css/fs_style.css') }}" />
     </head>
     <body class="list">
@@ -20,15 +20,13 @@
                 </a>
             </div>
         {% endif %}
-
         {% for file in files %}
-            {% if file['type'] == 'file' %}
+            {% if file['type'] == 'f' %}
                 <div>
                     {{ file['filename'] }}
                 </div>
             {% endif %}
-    
-            {% if file['type'] == 'directory' %}
+            {% if file['type'] == 'd' %}
                 <div>
                     <img src="{{ url_for('user.static', filename='../../static/images/fs/directory.png') }}" />
                     <a href="{{ file['link'] }}">
