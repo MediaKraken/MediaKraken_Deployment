@@ -661,7 +661,7 @@ def admin_listdir(path):
         osfilepath = os.path.join(ospath, filename)
         if os.path.isdir(osfilepath) and not filename.startswith('.'):
             return {'type': 'directory', 'filename': filename,
-                    'link': url_for('mediabrowser.listdir',
+                    'link': url_for('admins.admin_listdir',
                                     path=os.path.join(path, filename))}
         else:
             return {'type': 'file', 'filename': filename,
