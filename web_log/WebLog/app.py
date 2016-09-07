@@ -35,7 +35,6 @@ def create_app(config_object=ProdConfig):
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
-    ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg']
 
 #    app.config['UPLOADED_PHOTOS_DEST'] = '/tmp/testuploadext'
 #    upload_user_image = UploadSet('user_image', IMAGES)

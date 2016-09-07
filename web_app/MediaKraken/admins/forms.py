@@ -109,7 +109,7 @@ class AdminSettingsForm(Form):
     metadata_source_down_tvdb = BooleanField('thetvdb')
     metadata_source_down_freedb = BooleanField('FreeDB')
     metadata_source_down_mbrainz = BooleanField('Music Brainz')
-    metadata_source_down_rt = BooleanField('Rotten Tomatoes')
+    #metadata_source_down_rt = BooleanField('Rotten Tomatoes')
     metadata_source_down_anidb = BooleanField('AnimeDB')
     metadata_source_down_chartlyrics = BooleanField('Chart Lyrics')
     metadata_source_down_opensub = BooleanField('OpenSubtitles')

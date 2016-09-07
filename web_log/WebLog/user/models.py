@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import datetime as dt
 from flask_login import UserMixin
-from sqlalchemy.dialects.postgresql import JSON
 from WebLog.extensions import bcrypt
 from WebLog.database import (
     Column,
@@ -28,7 +26,6 @@ class Role(SurrogatePK, Model):
 
 
 class User(UserMixin, SurrogatePK, Model):
-
     __tablename__ = 'log_user'
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)

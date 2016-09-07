@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import subprocess
 import sys
-from common import common_logging
 import getopt
+from common import common_logging
 
 
 def main(argv):

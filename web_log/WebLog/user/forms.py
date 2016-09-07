@@ -1,14 +1,18 @@
+"""
+User registration form
+"""
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
+from wtforms import TextField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
-from decimal import ROUND_UP
 from .models import User
 
 
-# new user registration
 class RegisterForm(Form):
+    """
+    # new user registration
+    """
     username = TextField('Username',
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',

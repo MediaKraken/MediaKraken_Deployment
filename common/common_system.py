@@ -175,9 +175,6 @@ def com_process_list(process_name=None):
     Get processes and optionally check for one
     """
     if process_name is not None:
-        if process_name in psutil.process_iter():
-            return True
-        else:
-            return False
+        return process_name in psutil.process_iter()
     else:
         return psutil.process_iter()

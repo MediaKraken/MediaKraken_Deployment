@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor # pylint: disable=W0611
 

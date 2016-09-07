@@ -8,29 +8,16 @@ from flask_login import login_required
 from flask_login import current_user
 #from flask_table import Table, Col, create_table
 from flask_paginate import Pagination
-from fractions import Fraction
 blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
-import pygal
 import logging # pylint: disable=W0611
-import datetime
-import uuid
-import json
-import subprocess
-import natsort
-import os
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_file
-from common import common_google
-from common import common_network_twitch
-from common import common_network_vimeo
-from common import common_network_youtube
 from common import common_pagination
-from common import common_string
 import database as database_base
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
@@ -46,21 +33,6 @@ def flash_errors(form):
                 getattr(form, field).label.text,
                 error
             ))
-
-
-@blueprint.route('/upload_image', methods=['GET', 'POST'])
-@login_required
-def upload_image():
-    """
-    Allow user to upload image
-    """
-    if request.method == 'POST' and 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        rec = Photo(filename=filename, user=g.user.id)
-        rec.store()
-        flash("Photo saved.")
-        return redirect(url_for('show', id=rec.id))
-    return render_template('upload.html')
 
 
 @blueprint.route("/")
@@ -124,28 +96,6 @@ def search(name):
                            per_page=per_page,
                            pagination=pagination,
                           )
-
-
-# https://github.com/Bouni/HTML5-jQuery-Flask-file-upload
-@blueprint.route('/upload', methods=['POST'])
-@blueprint.route('/upload/', methods=['POST'])
-@login_required
-def upload():
-    """
-    Handle file upload from user
-    """
-    if request.method == 'POST':
-        file_handle = request.files['file']
-        if file_handle and allowed_file(file_handle.filename):
-            now = datetime.now()
-            filename = os.path.join(app.config_handle['UPLOAD_FOLDER'], "%s.%s"\
-                % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file_handle.filename.rsplit('.', 1)[1]))
-            file_handle.save(filename)
-            return jsonify({"success": True})
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @blueprint.before_request

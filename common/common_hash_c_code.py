@@ -1,3 +1,6 @@
+"""
+C code for faster hashing
+"""
 COM_SHA1_HEADER_CODE = '''
     /*
      *  sha1.h
