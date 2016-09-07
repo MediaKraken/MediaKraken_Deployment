@@ -664,11 +664,8 @@ def admin_listdir(path):
                     'link': url_for('mediabrowser.listdir',
                                     path=os.path.join(path, filename))}
         else:
-            if not get_video_mime_type(osfilepath):
-                return None
-            else:
-                return {'type': 'file', 'filename': filename,
-                        'fullpath': os.path.join(path, filename)}
+            return {'type': 'file', 'filename': filename,
+                    'fullpath': os.path.join(path, filename)}
 
     try:
         path = os.path.normpath(path)
