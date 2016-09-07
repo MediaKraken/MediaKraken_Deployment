@@ -730,7 +730,8 @@ def user_video_player_videojs(mtype, guid):
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
         acodecs=['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
         proc=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
-            "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks + ["-vf"] + subtracks\
+            "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks\
+            + ["-vf"] + subtracks\
             + ["yadif=0:0:0", vid_name], shell=False)
         logging.info("FFMPEG Pid: %s", proc.pid)
 
