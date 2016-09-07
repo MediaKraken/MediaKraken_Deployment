@@ -6,8 +6,11 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 from decimal import ROUND_UP
 from .models import User
 
-# for editing the movie metadata
+
 class MetaMovieEditForm(Form):
+    """
+    # for editing the movie metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     alt_name = TextField('Alternate Name', validators=[DataRequired()])
     overview = TextAreaField('Overview', validators=[DataRequired()])
@@ -21,8 +24,11 @@ class MetaMovieEditForm(Form):
             return False
         return True
 
-# for editing the album metadata
+
 class MetaAlbumEditForm(Form):
+    """
+    # for editing the album metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
@@ -35,8 +41,11 @@ class MetaAlbumEditForm(Form):
             return False
         return True
 
-# for editing the song metadata
+
 class MetaSongEditForm(Form):
+    """
+    # for editing the song metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     lyrics = TextAreaField('Lyrics', validators=[DataRequired()])
@@ -50,8 +59,11 @@ class MetaSongEditForm(Form):
             return False
         return True
 
-# for editing the tvshow metadata
+
 class MetaTVShowEditForm(Form):
+    """
+    # for editing the tvshow metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
@@ -64,8 +76,11 @@ class MetaTVShowEditForm(Form):
             return False
         return True
 
-# for editing the tvshow episode metadata
+
 class MetaTVShowEpisodeEditForm(Form):
+    """
+    # for editing the tvshow episode metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
@@ -78,8 +93,11 @@ class MetaTVShowEpisodeEditForm(Form):
             return False
         return True
 
-# for editing the game metadata
+
 class MetaGameEditForm(Form):
+    """
+    # for editing the game metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
@@ -92,8 +110,11 @@ class MetaGameEditForm(Form):
             return False
         return True
 
-# for editing the game system metadata
+
 class MetaGameSystemEditForm(Form):
+    """
+    # for editing the game system metadata
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 

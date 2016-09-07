@@ -19,11 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 __version__ = '0.1.6'
 import logging # pylint: disable=W0611
-import os
 import platform
-import subprocess
-from threading import Timer
-from threading import Event, Thread
 try:
     import cPickle as pickle
 except:
@@ -31,7 +27,6 @@ except:
 import sys
 from common import common_config_ini
 from common import common_logging
-from common import common_system
 
 
 # import twisted files that are required

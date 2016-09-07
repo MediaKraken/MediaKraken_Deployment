@@ -404,7 +404,9 @@ class MediaKrakenApp(App):
             list_view = ListView(adapter=list_adapter)
             for video_list in pickle_data:
                 btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
-                    size_hint_y=None, width=self.root.ids.theater_media_video_list_scrollview.width, height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                    size_hint_y=None,\
+                    width=self.root.ids.theater_media_video_list_scrollview.width,\
+                    height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "VIDEODETAIL":
@@ -485,7 +487,9 @@ class MediaKrakenApp(App):
             for genre_list in pickle_data:
                 logging.debug("genlist: %s", genre_list)
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',\
-                    size_hint_y=None, width=self.root.ids.theater_media_genre_list_scrollview.width, height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
+                    size_hint_y=None,\
+                    width=self.root.ids.theater_media_genre_list_scrollview.width,\
+                    height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "PERSONLIST":
