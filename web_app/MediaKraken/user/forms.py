@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
+from wtforms import TextField, PasswordField, TextAreaField, BooleanField,\
+     SelectField, DecimalField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from decimal import ROUND_UP
 from .models import User
@@ -21,9 +22,9 @@ class SyncEditForm(Form):
         ('mp4', 'MPEG-4 (mp4)'), ('mpeg', 'MPEG-2'), ('avi', 'Audio Video Interleaved (avi)')])
     target_codec = SelectField("Codec", choices=[('h264', 'H.264 AVC'), ('hevc', 'H.265 HEVC'),\
         ('flv1', 'Flash Video'), ('mpeg2video', 'MPEG-2'), ('Copy', 'Copy')])
-# flv1                 FLV / Sorenson Spark / Sorenson H.263 (Flash Video) (decoders: flv ) (encoders: flv )
-# h264                 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 (encoders: libx264 libx264rgb )
-# hevc                 H.265 / HEVC (High Efficiency Video Coding) (encoders: libx265 )
+# flv1     FLV / Sorenson Spark / Sorenson H.263 (Flash Video) (decoders: flv ) (encoders: flv )
+# h264     H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 (encoders: libx264 libx264rgb )
+# hevc          H.265 / HEVC (High Efficiency Video Coding) (encoders: libx265 )
 # mpeg2video           MPEG-2 video (decoders: mpeg2video mpegvideo )
     target_audio_channels = SelectField("Audio Channels", choices=[('1.0', '1.0 Mono'),\
         ('2.0', '2.0 Stereo'), ('3.0', '3.0 Surround'), ('5.1', '5.1 Surround'),\

@@ -232,7 +232,8 @@ def user_music_video_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_music_video'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
                                                   format_number=True,
@@ -619,17 +620,27 @@ def user_livetv_page(schedule_date, schedule_time):
             if 'audioProperties' in row_data[2]:
                 for audio_features in row_data[2]['audioProperties']:
                     if audio_features == "cc":
-                        audio_html += '<img src="../../../static/images/media_flags/caption-icon.png" alt="Closed Caption" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'caption-icon.png" alt="Closed Caption"'\
+                            ' style="width:15px;height:15px;">'
                     elif audio_features == "stereo":
-                        audio_html += '<img src="../../../static/images/media_flags/audio_channels/2.png" alt="Stereo Sound" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'audio_channels/2.png" alt="Stereo Sound"'\
+                            ' style="width:15px;height:15px;">'
                     elif audio_features == "DD 5.1":
-                        audio_html += '<img src="../../../static/images/media_flags/audio_channels/6.png" alt="DD 5.1" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'audio_channels/6.png" alt="DD 5.1" style="width:15px;height:15px;">'
                     elif audio_features == "SAP":
-                        audio_html += '<img src="../../../static/images/media_flags/sap-icon.png" alt="SAP" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'sap-icon.png" alt="SAP" style="width:15px;height:15px;">'
                     elif audio_features == "dvs":
-                        audio_html += '<img src="../../../static/images/media_flags/dvs-icon.png" alt="Descriptive Video Service" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'dvs-icon.png" alt="Descriptive Video Service"'\
+                            ' style="width:15px;height:15px;">'
                     elif audio_features == "DD":
-                        audio_html += '<img src="../../../static/images/media_flags/audio_codec/dolby_digital.png" alt="Dolby Digital" style="width:15px;height:15px;">'
+                        audio_html += '<img src="../../../static/images/media_flags/'\
+                            'audio_codec/dolby_digital.png" alt="Dolby Digital"'\
+                            ' style="width:15px;height:15px;">'
 # TODO
 #    Atmos - Dolby Atmos
 #    Dolby
@@ -641,30 +652,40 @@ def user_livetv_page(schedule_date, schedule_time):
             if 'videoProperties' in row_data[2]:
                 for video_features in row_data[2]['videoProperties']:
                     if video_features == "3d":
-                        video_html += '<img src="../../../static/images/3D.png" alt="3D" style="width:15px;height:15px;">'
+                        video_html += '<img src="../../../static/images/3D.png" alt="3D"'\
+                            ' style="width:15px;height:15px;">'
                     elif video_features == "hdtv":
-                        video_html += '<img src="../../../static/images/media_flags/video_resolution.png" alt="HDTV" style="width:15px;height:15px;">'
+                        video_html += '<img src="../../../static/images/media_flags/'\
+                            'video_resolution.png" alt="HDTV" style="width:15px;height:15px;">'
 # TODO
-#    enhanced - Enhanced is better video quality than Standard Definition, but not true High Definition. (720p / 1080i)
+#    enhanced - Enhanced is better video quality than Standard Definition,
+                            #but not true High Definition. (720p / 1080i)
 #    letterbox
 #    sdtv
-#    uhdtv - the content is in "UHDTV"; this is provider-dependent and does not imply any particular resolution or encoding
+#    uhdtv - the content is in "UHDTV"; this is provider-dependent and does not imply
+                            #any particular resolution or encoding
 
             rating_html = ""
             if 'ratings' in row_data[2]:
                 for rating_features in row_data[2]['ratings']:
                     if rating_features['code'] == "TVG":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-G.png" alt="TV-G" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-G.png" alt="TV-G" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVY7":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-Y7.png" alt="TV-Y7" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-Y7.png" alt="TV-Y7" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVY":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-Y.png" alt="TV-Y" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-Y.png" alt="TV-Y" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVPG":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-PG.png" alt="TV-PG" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-PG.png" alt="TV-PG" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TV14":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-14.png" alt="TV-14" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-14.png" alt="TV-14" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVMA":
-                        rating_html += '<img src="../../../static/images/media_flags/content_rating/TV-MA.png" alt="TV-MA" style="width:15px;height:15px;">'
+                        rating_html += '<img src="../../../static/images/media_flags/'\
+                            'content_rating/TV-MA.png" alt="TV-MA" style="width:15px;height:15px;">'
             channel_data += '<td colspan="' + str(next_md) + '\">' + row_data[2]['programID']\
                 + audio_html + rating_html + '</td>'
             md_used += next_md
@@ -735,8 +756,8 @@ def user_video_player_videojs(mtype, guid):
     # fire up ffmpeg process
     if mtype == "hls":
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
-        acodecs=['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
-        proc=subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
+        acodecs = ['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
+        proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
             "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks\
             + ["-vf"] + subtracks\
             + ["yadif=0:0:0", vid_name], shell=False)
@@ -823,7 +844,8 @@ def user_movie_page(genre):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
-    for row_data in g.db_connection.db_web_media_list(g.db_connection.db_media_uuid_by_class('Movie'),\
+    for row_data in g.db_connection.db_web_media_list(\
+            g.db_connection.db_media_uuid_by_class('Movie'),\
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,\
             offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
@@ -832,7 +854,8 @@ def user_movie_page(genre):
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
-            watched_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Watched']
+            watched_status\
+                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Watched']
         except:
             watched_status = False
         # set synced
@@ -847,7 +870,8 @@ def user_movie_page(genre):
             poo_status = False
         # set fav
         try:
-            favorite_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Favorite']
+            favorite_status\
+                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Favorite']
         except:
             favorite_status = False
         # set mismatch
@@ -929,7 +953,9 @@ def movie_detail(guid):
         # build production list
         production_list = ''
         for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
-            production_list += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
+            production_list\
+                += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name']\
+                + ', ')
         # budget format
         budget = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
         # revenue format
@@ -1373,13 +1399,16 @@ def report_display_all_media_known_video():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_web_media_list_count(g.db_connection.db_media_uuid_by_class('Movie')),
+                                                  total=g.db_connection.db_web_media_list_count(\
+                                                      g.db_connection.db_media_uuid_by_class(\
+                                                      'Movie')),
                                                   record_name='Known Videos',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/reports/report_all_known_media_video.html',
-                           media=g.db_connection.db_web_media_list(g.db_connection.db_media_uuid_by_class('Movie'),\
+                           media=g.db_connection.db_web_media_list(\
+                               g.db_connection.db_media_uuid_by_class('Movie'),\
                                offset=offset, list_limit=per_page),
                            page=page,
                            per_page=per_page,
@@ -1446,7 +1475,8 @@ def metadata_person_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_person'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_person'),
                                                   record_name='People',
                                                   format_total=True,
                                                   format_number=True,
@@ -1469,7 +1499,8 @@ def metadata_music_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_music'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_music'),
                                                   record_name='music',
                                                   format_total=True,
                                                   format_number=True,
@@ -1492,7 +1523,8 @@ def metadata_music_video_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_music_video'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
                                                   format_number=True,
@@ -1515,7 +1547,8 @@ def metadata_music_album_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_music_album'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_music_album'),
                                                   record_name='music album',
                                                   format_total=True,
                                                   format_number=True,
@@ -1578,7 +1611,8 @@ def metadata_movie_detail(guid):
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
-                           data_budget=locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
+                           data_budget=locale.format('%d',\
+                               json_metadata['Meta']['TMDB']['Meta']['budget'], True)
                           )
 
 
@@ -1626,7 +1660,8 @@ def metadata_movie_collection_list():
                 row_data['mm_metadata_collection_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_collection'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_collection'),
                                                   record_name='movie collection(s)',
                                                   format_total=True,
                                                   format_number=True,
@@ -1737,7 +1772,8 @@ def metadata_tvshow_detail(guid):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1828,7 +1864,8 @@ def metadata_tvshow_season_detail_page(guid, season):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1865,7 +1902,8 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image\
+                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
         else:
             data_background_image = None
     except:
@@ -1926,7 +1964,8 @@ def metadata_game_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_game_software_info'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_game_software_info'),
                                                   record_name='Games',
                                                   format_total=True,
                                                   format_number=True,
