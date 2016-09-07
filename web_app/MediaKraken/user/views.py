@@ -717,7 +717,7 @@ def user_video_player_videojs(mtype, guid):
     try:
         media_guid_index = request.form["Video_Track"]
     else:
-        abort(500)
+        abort(404)
     media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
     if media_path is None:
         abort(404)
