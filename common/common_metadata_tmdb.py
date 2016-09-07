@@ -48,7 +48,7 @@ class CommonMetadataTMDB(object):
                         or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
                         or str(int(movie_year) + 1) == s['release_date'].split('-', 1)[0]):
                 if not id_only:
-                    return 'info', com_tmdb_meta_by_ID(s['id'])
+                    return 'info', self.com_tmdb_meta_by_id(s['id'])
                 else:
                     return 'idonly', s['id'] #, s['title']
         return 're', search.results
