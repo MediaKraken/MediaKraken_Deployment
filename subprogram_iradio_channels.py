@@ -58,7 +58,7 @@ db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 # start code for updating iradio database
-#common_network_Radio.com_network_Radio()
+common_network_radio.com_net_radio()
 
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)

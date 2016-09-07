@@ -71,4 +71,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print('Total subtitle download attempts: %s', total_download_attempts)
+    print('Total subtitle download attempts: %s' % total_download_attempts)

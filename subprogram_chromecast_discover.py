@@ -74,7 +74,7 @@ for row_data in chrome.com_chromecast_discover_dict():
     logging.debug("Connected!")
     cast_json = chrome.com_chromecast_info()
     logging.debug("Cast: %s", cast_json)
-    print("status: %s", chrome.com_chromecast_status())
+    print("status: %s" % chrome.com_chromecast_status())
     db_connection.db_device_insert('cast', json.dumps({cast_json}))
 
 
