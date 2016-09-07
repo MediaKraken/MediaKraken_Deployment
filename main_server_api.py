@@ -284,7 +284,7 @@ class MediaKrakenAPI(object):
         @app.route("/Configuration")
         def system_configuration(self, request):
             options_json, status_json = self.db_connection.db_opt_status_read()
-            loggin.debug("otions: %s", options_json)
+            logging.debug("otions: %s", options_json)
             return str(options_json['MaxResumePct'])
 
 
@@ -312,5 +312,6 @@ if __name__ == '__main__':
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     run_api = MediaKrakenAPI()
-    run_api.app.run("localhost", int(self.option_config_json['MediaKrakenServer']['APIPort']))
+    run_api.app.run("localhost", int(option_config_json['MediaKrakenServer']['APIPort']))
