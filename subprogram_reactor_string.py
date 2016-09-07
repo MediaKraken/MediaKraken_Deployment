@@ -26,8 +26,7 @@ import sys
 from network import network_base_string as network_base
 from common import common_config_ini
 from common import common_logging
-from time import time
-import time  # yes, use both otherwise some time code below breaks
+import time
 import signal
 
 

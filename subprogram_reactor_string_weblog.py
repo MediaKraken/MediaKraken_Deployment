@@ -25,8 +25,7 @@ from twisted.internet.protocol import Factory
 import sys
 from network import network_base_string_weblog as network_base
 from common import common_logging
-from time import time
-import time  # yes, use both otherwise some time code below breaks
+import time
 import signal
 
 
