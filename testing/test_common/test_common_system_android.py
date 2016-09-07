@@ -29,7 +29,7 @@ class TestAndroidHardwareInstance(object):
 
     @classmethod
     def setup_class(self):
-        self.android_connection = common_system_Android.MK_Android_Hardware_Instance()
+        self.android_connection = common_system_android.CommonAndroidHardwareInstance()
 
 
     @classmethod
@@ -38,30 +38,30 @@ class TestAndroidHardwareInstance(object):
 
 
     # return the dpi for the device
-    def test_MK_Android_Get_DPI(self):
+    def test_com_android_get_dpi(self):
         """
         Test function
         """
-        self.android_connection.MK_Android_Get_DPI()
+        self.android_connection.com_android_get_dpi()
 
 
     # vibrate the device
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def test_MK_Android_Vibrate(self, vibrate_time):
+    def test_com_android_vibrate(self, vibrate_time):
         """
         Test function
         """
-        self.android_connection.MK_Android_Vibrate(vibrate_time)
+        self.android_connection.com_android_vibrate(vibrate_time)
 
 
     # return data from the motion controller
     @pytest.mark.parametrize(("vibrate_time"), [
         (0.5),
         (5)])
-    def test_MK_Android_Motion(self, time_range):
+    def test_com_android_motion(self, time_range):
         """
         Test function
         """
-        self.android_connection.MK_Android_Motion(time_range)
+        self.android_connection.com_android_motion(time_range)
