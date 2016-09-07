@@ -14,7 +14,7 @@
     <body class="list">
         {% if path != '.' %}
             <div>
-                <img src="{{ url_for('user.static', filename='../../images/fs/parent.png') }}" />
+                <img src="{{ url_for('user.static', filename='../../static/images/fs/parent.png') }}" />
                 <a href="{{ url_for('admins.admin_listdir', path=parent) }}">
                     Parent Directory
                 </a>
@@ -30,7 +30,7 @@
     
             {% if file['type'] == 'directory' %}
                 <div>
-                    <img src="{{ url_for('user.static', filename='../../images/fs/directory.png') }}" />
+                    <img src="{{ url_for('user.static', filename='../../static/images/fs/directory.png') }}" />
                     <a href="{{ file['link'] }}">
                         {{ file['filename'] }}
                     </a>
