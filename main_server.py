@@ -16,29 +16,28 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging # pylint: disable=W0611
 import sys
 import subprocess
 import signal
-import logging
 import os
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
-import MK_Common_Watchdog
+from common import common_config_ini
+from common import common_logging
+from common import common_watchdog
 rmda_enabled_os = False
 try:
-    import MK_Common_RMDA
+    from common import common_rmda
     rmda_enabled_os = True
 except:
     pass
-import database as database_base
 
 
-def signal_receive(signum, frame):
-    logging.infol('CHILD Main: Received USR1')
+def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
+    logging.info('CHILD Main: Received USR1')
     os.kill(proc.pid, signal.SIGTERM)
     os.kill(proc_image.pid, signal.SIGTERM)
     os.kill(proc_cron.pid, signal.SIGTERM)
@@ -50,71 +49,59 @@ def signal_receive(signum, frame):
     for link_data in link_pid.keys():
         os.kill(link_pid[link_data], signal.SIGTERM)
     # stop watchdog
-    watchdog.MK_Common_Watchdog_Stop()
+    watchdog.com_watchdog_stop()
     # cleanup db
-    db.MK_Server_Database_Rollback()
+    db_connection.db_rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop', u'ServerStop', None, None, u'System')
+    db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+        'ServerStop', None, None, 'System')
     # commit
-    db.MK_Server_Database_Commit()
-    db.MK_Server_Database_Close()
+    db_connection.db_commit()
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
 
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start()
-
-# store pid for initd
-pid = os.getpid()
-logging.info('MediaKraken_PID %s', pid)
-try:
-    op = open("/var/mm_server.pid", "w")
-    op.write("%s" % pid)
-    op.close()
-except:
-    #op = open("mm_server.pid", "w")
-    pass
+common_logging.com_logging_start()
 
 
 logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    proc_ssl = subprocess.Popen(['python', './subprogram/subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
         sys.exit()
 
 
+logging.info("Open DB")
+# open the database
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
+
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
-if not os.path.isdir(Config.get('MediaKrakenServer', 'MetadataImageLocal').strip()):
+if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
     logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s", Config.get('MediaKrakenServer', 'MetadataImageLocal').strip())
+    logging.critical("Invalid Path: %s" %\
+        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
     sys.exit()
-if not os.path.isdir(Config.get('MediaKrakenServer', 'BackupLocal').strip()):
+if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s", Config.get('MediaKrakenServer', 'BackupLocal').strip())
+    logging.critical("Invalid Path: %s" %\
+        option_config_json['MediaKrakenServer']['BackupLocal'])
     sys.exit()
 
 
-logging.info("Open DB")
-# open the database
-db = database_base.MK_Server_Database()
-try:
-    db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
-except:
-    logging.critical("Cannot open database. Exiting...")
-    sys.exit()
-
-
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Start', None, u'System: Server Start', u'ServerStart', None, None, u'System')
+db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
+        'ServerStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
+    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
 else:
     signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
@@ -122,34 +109,35 @@ else:
 
 # look for infiniband rdma devices
 if rmda_enabled_os:
-    rmda_devices = MK_Common_RMDA.MK_RDMA_Get_Devices()
+    rmda_devices = common_rmda.com_rdma_get_devices()
     if rmda_devices is None:
         rmda_enabled_os = False
 
 
 logging.info("Start Watchdog")
 # startup watchdog
-watchdog = MK_Common_Watchdog.MK_Common_Watchdog_API()
-watchdog.MK_Common_Watchdog_Start(db.MK_Server_Database_Audit_Paths(None, None))
+watchdog = common_watchdog.CommonWatchdog()
+watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram/subprogram_reactor_string.py'], shell=False)
+proc = subprocess.Popen(['./subprogram_reactor_string'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram/subprogram_reactor_web_images.py'], shell=False)
+proc_image = subprocess.Popen(['./subprogram_reactor_web_images'],\
+    shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
-proc_broadcast = subprocess.Popen(['python', './subprogram/subprogram_broadcast.py'], shell=False)
+proc_broadcast = subprocess.Popen(['./subprogram_broadcast'], shell=False)
 logging.info("Broadcast PID: %s", proc_broadcast.pid)
 
 
 # fire up cron service
-proc_cron = subprocess.Popen(['python', './subprogram/subprogram_cron_checker.py'], shell=False)
+proc_cron = subprocess.Popen(['./subprogram_cron_checker'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
 
 
@@ -162,25 +150,28 @@ else:
 
 
 # fire up trigger procress
-proc_trigger = subprocess.Popen(['python', 'main_trigger.py'], shell=False)
+proc_trigger = subprocess.Popen(['./main_server_trigger'], shell=False)
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
 # fire up api server
-proc_api = subprocess.Popen(['python', 'main_api.py'], shell=False)
+proc_api = subprocess.Popen(['./main_server_api'], shell=False)
 logging.info("API PID: %s", proc_api.pid)
 
 
 # fire up link servers
 link_pid = {}
-for link_data in db.MK_Server_Database_Link_List():
-    proc_link = subprocess.Popen(['python', 'main_link.py', link_data[2]['IP'], str(link_data[2]['Port'])], shell=False)
+for link_data in db_connection.db_link_list():
+    proc_link = subprocess.Popen(['./main_server_link', link_data[2]['IP'],\
+        str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
 
 
 # fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http', '--chdir=./web_app', '--ini', './web_app/metaman_uwsgi.ini'], shell=False)
+proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
+        '--chdir=./server/web_app', '--ini', './server/web_app/mediakraken_uwsgi.ini'],\
+        shell=False)
 
 
 # hold here
@@ -188,18 +179,19 @@ proc_web_app.wait()
 
 
 # stop watchdog
-watchdog.MK_Common_Watchdog_Stop()
+watchdog.com_watchdog_stop()
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Server Stop', None, u'System: Server Stop', u'ServerStop', None, None, u'System')
+db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+         'ServerStop', None, None, 'System')
 
 # commit
-db.MK_Server_Database_Commit()
+db_connection.db_commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
+db_connection.db_close()
 
 
 # stop children

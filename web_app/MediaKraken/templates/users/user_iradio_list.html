@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <script src="../../static/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+    </head>
+    {% if media %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div id="container">
+        {% for row_data in media %}
+        {% if row_data[2] == None %}
+        <a href= {{ "../iradio_detail/" + row_data[0] }} > {{row_data[1]}}</a>
+        {% else %}
+        <a href= {{ "../iradio_detail/" + row_data[0] }} >
+        <img src= {{ "../static/meta/" + row_data[0].replace('../','') }} height="200" width="132">
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No internet radio stations found.</p>
+    {% endif %}
+</body>
+{% endblock %}

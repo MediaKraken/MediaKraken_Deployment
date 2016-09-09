@@ -16,31 +16,30 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging # pylint: disable=W0611
 try:
     import cPickle as pickle
 except:
     import pickle
 from twisted.web.static import File
 from klein import Klein
-import database as database_base
 import json
 import datetime
 import signal
-import logging
 import sys
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
+from common import common_config_ini
+from common import common_logging
 
 
-__version__ = json.dumps({"Version": "0.0.1"})
+__version__ = json.dumps({"Version": "0.1.6"})
 
 
-def signal_receive(signum, frame):
-    print 'CHILD Main API: Received USR1'
+def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
+    print('CHILD Main API: Received USR1')
     sys.stdout.flush()
     sys.exit(0)
 
@@ -50,11 +49,12 @@ class MediaKrakenAPI(object):
 
 
     def __init__(self):
-        self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        # open the database
+        self.config_handle, self.option_config_json,\
+            self.db_connection = common_config_ini.com_config_read()
         self.user_xref = []
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_API')
+        common_logging.com_logging_start('./log/MediaKraken_API')
 
 
     @app.route('/')
@@ -71,7 +71,7 @@ class MediaKrakenAPI(object):
     # channels and all the subroutes
     with app.subroute("/Channels") as app:
         @app.route("/")
-        def artists(self, request):
+        def channels(self, request):
             return None
 
 
@@ -105,7 +105,7 @@ class MediaKrakenAPI(object):
         def user_authenticate(self, request):
             logging.debug("req: %s", request.content.getvalue())
             # {"username": "quinn", "password": "da39a3ee5e6b4b0d3255bfef95601890afd80709"}
-            return pickle.dumps(self.db.MK_Server_Database_User_Login_Kodi(request.content.getvalue()))
+            return pickle.dumps(self.db_connection.db_user_login_kodi(request.content.getvalue()))
 
 
         @app.route("/FavoriteItems")
@@ -115,17 +115,21 @@ class MediaKrakenAPI(object):
 
         @app.route("/Items/<guid>")
         def user_items(self, request, guid):
-            #json_data = db.
+            #json_data = db_connection.
             return None
 
 
         @app.route("/ItemsSync/<synctime>")
         def user_items_sync(self, request, synctime):
-            logggin.debug("req: %s", request.content.getvalue())
+            logging.debug("req: %s", request.content.getvalue())
             items_added = []
-            for row_data in self.db.MK_Server_Database_Kodi_User_Sync_List_Added(synctime):
+            for row_data in self.db_connection.db_kodi_user_sync_list_added(synctime):
                 items_added.append(row_data[0])
-            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""], "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0, "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int", "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False, "Key": "", "ItemId": ""}]}
+            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],\
+                "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,\
+                "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int",\
+                "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False,\
+                "Key": "", "ItemId": ""}]}
             return pickle.dumps(sync_json)
 
 
@@ -136,24 +140,24 @@ class MediaKrakenAPI(object):
 
         @app.route("/Pref/<guid>")
         def user_pref(self, request, guid):
-            logging.debug("reqpref:", request.content.getvalue(), guid)
+            logging.debug("reqpref: %s %s", request.content.getvalue(), guid)
             json_data = {
-                  "Name": "",
-                  "ServerId": "",
-                  "ServerName": "",
+                "Name": "",
+                "ServerId": "",
+                "ServerName": "",
 #                  "ConnectUserName": "",
 #                  "ConnectUserId": "",
 #                  "ConnectLinkType": "",
-                  "Id": "",
-                  "OfflinePassword": "",
-                  "OfflinePasswordSalt": "",
-                  "PrimaryImageTag": "",
-                  "HasPassword": False,
-                  "HasConfiguredPassword": False,
-                  "HasConfiguredEasyPassword": False,
-                  "LastLoginDate": "Date",
-                  "LastActivityDate": "Date",
-                  "Configuration": {
+                "Id": "",
+                "OfflinePassword": "",
+                "OfflinePasswordSalt": "",
+                "PrimaryImageTag": "",
+                "HasPassword": False,
+                "HasConfiguredPassword": False,
+                "HasConfiguredEasyPassword": False,
+                "LastLoginDate": "Date",
+                "LastActivityDate": "Date",
+                "Configuration": {
                     "AudioLanguagePreference": "",
                     "PlayDefaultAudioTrack": False,
                     "SubtitleLanguagePreference": "",
@@ -161,22 +165,22 @@ class MediaKrakenAPI(object):
                     "DisplayUnairedEpisodes": False,
                     "GroupMoviesIntoBoxSets": False,
                     "ExcludeFoldersFromGrouping": [
-                      ""
+                    ""
                     ],
                     "GroupedFolders": [
-                      ""
+                    ""
                     ],
                     "SubtitleMode": "",
                     "DisplayCollectionsView": False,
                     "DisplayFoldersView": False,
                     "EnableLocalPassword": False,
                     "OrderedViews": [
-                      ""
+                    ""
                     ],
                     "IncludeTrailersInSuggestions": False,
                     "EnableCinemaMode": False,
                     "LatestItemsExcludes": [
-                      ""
+                    ""
                     ],
                     "PlainFolderViews": [
                       ""
@@ -244,7 +248,7 @@ class MediaKrakenAPI(object):
         @app.route("/Public")
         def user_public(self, request):
             user_data = []
-            for row_data in self.db.MK_Server_Database_User_List_Name(None, None):
+            for row_data in self.db_connection.db_user_list_name(None, None):
                 user_data.append((row_data[0], row_data[1], None))
             logging.debug("userdat: %s", user_data)
             return pickle.dumps(user_data)
@@ -279,8 +283,8 @@ class MediaKrakenAPI(object):
     with app.subroute("/System") as app:
         @app.route("/Configuration")
         def system_configuration(self, request):
-            options_json, status_json = self.db.MK_Server_Database_Option_Status_Read()
-            loggin.debug("otions: %s", options_json)
+            options_json, status_json = self.db_connection.db_opt_status_read()
+            logging.debug("otions: %s", options_json)
             return str(options_json['MaxResumePct'])
 
 
@@ -304,9 +308,10 @@ class MediaKrakenAPI(object):
 
 if __name__ == '__main__':
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
+        signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
     else:
         signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
         signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     run_api = MediaKrakenAPI()
-    run_api.app.run("localhost", int(Config.get('MediaKrakenServer', 'APIPort').strip()))
+    run_api.app.run("localhost", int(option_config_json['MediaKrakenServer']['APIPort']))

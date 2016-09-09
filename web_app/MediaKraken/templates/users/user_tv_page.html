@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <script src="../../static/js/jquery.min.js" type="text/javascript"></script>
+    </head>
+    {% if media %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div id="the-node">
+        {% for row_data in media %}
+        <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 count -->
+        <div class="wrapper">
+            <a href= {{ "../tv_show_detail/" + row_data[1] }} >
+            {% if row_data[2] == None %}
+            <img src= "../../static/images/Missing_Icon.png" height="300" width="200">
+            </a>
+            <div class="description">
+                <p class="description_content">{{row_data[0] + " - " + row_data[3]}}</p>
+            </div>
+            {% else %}
+            <img src= {{ "../../static/meta/images/" + row_data[2].replace('../','') }} height="300" width="200">
+            </a>
+            <div class="description">
+                <p class="description_content">{{row_data[3]}}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No TV media found.</p>
+    {% endif %}
+</body>
+{% endblock %}

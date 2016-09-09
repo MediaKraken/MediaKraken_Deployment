@@ -1,0 +1,200 @@
+Linux Mint 17.1:
+# for remote access
+sudo apt-get install openssh-server
+
+# grab newest updates
+sudo apt-get update && sudo apt-get upgrade
+# if kernel update
+sudo reboot
+
+# setup postgresql
+sudo nano /etc/apt/sources.list.d/pgdg.list
+# add
+deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+  sudo apt-key add -
+sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install postgresql-9.5 postgresql-client-9.5 postgresql-server-dev-9.5
+
+# install metaman deps
+sudo apt-get install git python-psutil python-pip build-essential libibverbs-dev python-dev nbd-client nfs-common python-babelfish python-cddb python-musicbrainzngs python-libdiscid sqlitebrowser python-psutil libffi-dev nginx python-redis redis-server libsnmp-dev
+
+# install and divert to "correct" name
+sudo apt-get install ack-grep
+sudo dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep 
+
+
+sudo pip install 'requests[security]'
+sudo pip install -r pip_packages_ubuntu.txt
+# following needed
+sudo pip install cython
+
+
+# rest should be in packages....so, don't do
+sudo pip install tmdbsimple rtsimple plyer dropbox boto watchdog
+sudo pip install --upgrade google-api-python-client
+sudo pip install Flask
+sudo pip install Flask-WeasyPrint
+sudo pip install Flask-Login Flask-Cache Flask-Bcrypt Flask-WTF Flask-Babel Flask-Mail Flask-Openid Flask-Table Flask-Paginate Flask-Moment Flask-SSLify Flask-KVSession
+sudo pip install onedrivesdk
+sudo pip install pytvmaze
+sudo pip install fastnumbers natsort xmltodict
+sudo pip install ipgetter trakt transmissionrpc
+sudo pip install pytvdbapi fuzzywuzzy ip2country youtube_dl subliminal httplib2 oauth2client python-nest uritemplate Flask-gzip feedgen gamesdb imdbpie nest easysnmp steam asyncio onedrivesdk guessit passwordmeter
+
+# setup share
+mkdir /home/spoot/nfsmount
+mount up the media share
+mkdir /tmp/instance
+chmod -R 777 /tmp/instance
+
+# clone codebase
+mkdir github
+cd github
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Build
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Common
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Server
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Tools
+
+# if will be doing client as well.
+git clone -b dev https://github.com/Meta-Man/Meta-Man.OctMote
+git clone -b dev https://github.com/Meta-Man/Meta-Man.OctMote.Remote
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Theater
+
+# untar pythonconcurrent future
+sudo python setup.py install
+
+# build newer source
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf psutil*
+cd psutil-release-3.4.2
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip isoparser-master.zip
+cd isoparser-master
+python setup.py install
+
+tar -xvzf python-rdma*
+cd python-rdma-python-rdma-0.3
+sudo python setup.py install
+
+unzip requests-master.zip
+cd requests-master
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf ip2country*
+cd ip2country
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf pythonfutures*
+cd pythonfutures-3.0.5
+sudo python setup.py install
+
+
+
+# setup postgresql user
+sudo adduser metamanpg
+sudo su - postgres
+psql
+CREATE USER metamanpg WITH PASSWORD 'metamanpg';
+CREATE DATABASE metamandb OWNER metamanpg;
+\q
+exit
+
+# setup the newest stable build
+sudo add-apt-repository ppa:kivy-team/kivy
+sudo apt-get update && sudo apt-get dist-upgrade
+sudo apt-get install python-kivy
+
+******** optional ease of postgresql admin
+sudo nano /etc/postgresql/9.5/main/postgresql.conf
+add "listen_addresses = '*'"
+sudo nano /etc/postgresql/9.5/main/pg_hba.conf
+# add host line for remote access
+change local add all peer to md5 for backup login
+sudo service postgresql restart
+
+****** if in vmware
+sudo apt-get install open-vm-tools
+
+******* nginx 
+sudo pip install uwsgi
+????? uwsgi-python
+
+#nano /etc/nginx/conf.d/metaman.conf
+sudo nano /etc/nginx/nginx.conf
+- kick up worker threads
+- replace server with this
+'''
+server {
+    root /home/metaman/github/Meta-Man.Server/web_app;
+    listen      80;
+    server_name localhost;
+    charset     utf-8;
+    client_max_body_size 75M;
+    access_log /var/log/nginx/metaman.net_access.log;
+    error_log /var/log/nginx/metaman.net_error.log;
+
+    location  /static {
+      alias  /home/metaman/github/Meta-Man.Server/web_app/MetaMan/;
+    }
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/metaman_uwsgi.sock;
+    }
+}
+
+
+run database build script
+
+********* headless experiments (works - but should no longer be needed since dropped kivy in server component)
+sudo apt-get install xvfb
+
+Xvfb :99 -ac -screen 0 1280x1024x24 &
+
+*******  new twisted exp  (15.3) - did NOT fix the 16384 ssl issue
+sudo pip install service_identity
+
+
+unzip isoparser-master.zip
+
+hdtuner stuff
+sudo apt-get install libgtk2.0-dev
+in lib dir in build
+#tar -xvf libhdhomerun_20150826.tgz
+#tar -xvf hdhomerun_config_gui_20150826.tgz
+#cd hdhomerun_config_gui
+#./configure
+#make
+#sudo make install
+
+
+unzip libhdhomerun-master.zip
+cd libhdhomerun-master/
+sudo cp libhdhomerun.so /usr/local/lib/.
+
+sudo ldconfig
+#unzip PyHdHomeRun-master.zip
+#cd PyHdHomeRun-master
+#sudo python setup.py install
+
+unzip libhdhomerun_python-master.zip
+cd libhdhomerun_python-master
+copy the libhome.* to /usr/include/
+sudo python setup.py build_ext --inplace
+sudo cp hdhomerun.so /usr/local/lib/.
+sudo ldconfig
+sudo python setup.py install
+/usr/local/lib/python2.7/dist-packages/hdhomerun.so
+
+
+
+git clone -b dev https://github.com/Meta-Man/libhdhomerun_python
+
+flashed to newer firmware

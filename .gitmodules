@@ -1,18 +1,3 @@
-[submodule "MediaKraken_Common"]
-	path = MediaKraken_Common
-	url = ../MediaKraken_Common
-[submodule "MediaKraken_Testing"]
-	path = MediaKraken_Testing
-	url = ../MediaKraken_Testing
-[submodule "MediaKraken_Server"]
-	path = MediaKraken_Server
-	url = ../MediaKraken_Server
-[submodule "MediaKraken_Slave"]
-	path = MediaKraken_Slave
-	url = ../MediaKraken_Slave
-[submodule "MediaKraken_Theater"]
-	path = MediaKraken_Theater
-	url = ../MediaKraken_Theater
 [submodule "MediaKraken_Tizen"]
 	path = MediaKraken_Tizen
 	url = ../MediaKraken_Tizen
@@ -25,6 +10,6 @@
 [submodule "MediaKraken_Build"]
 	path = MediaKraken_Build
 	url = ../MediaKraken_Build
-[submodule "MediaKraken_Octmote"]
-	path = MediaKraken_Octmote
-	url = ../MediaKraken_Octmote
+[submodule "KrakenStreamer"]
+	path = KrakenStreamer
+	url = ../KrakenStreamer

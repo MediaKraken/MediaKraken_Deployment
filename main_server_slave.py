@@ -16,26 +16,21 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
-
-# pull in the ini file config
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken_Slave.ini")
+from __future__ import absolute_import, division, print_function, unicode_literals
+__version__ = '0.1.6'
+import logging # pylint: disable=W0611
 import os
 import platform
 import subprocess
-import logging
-from threading import Timer
 from threading import Event, Thread
 try:
     import cPickle as pickle
 except:
     import pickle
 import sys
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
-import MK_Common_System
+from common import common_config_ini
+from common import common_logging
+from common import common_system
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
@@ -69,9 +64,11 @@ class RepeatTimer(Thread):
         self.finished.set()
 
 
-def signal_receive(signum, frame):
-    global proc_ffserver
-    print 'CHILD Slave: Received USR1'
+def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
+    print('CHILD Slave: Received USR1')
     os.kill(proc_ffserver.pid)
     sys.stdout.flush()
     sys.exit(0)
@@ -138,24 +135,34 @@ class MediaKrakenApp():
     def build(self):
         global metaapp
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Slave')
+        common_logging.com_logging_start('./log/MediaKraken_Slave')
         root = MediaKrakenApp()
         metaapp = self
         self.connect_to_server()
         # start up the cpu timer
-        status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE ' + pickle.dumps(MK_Common_System.MK_Common_System_CPU_Usage(False))))
+        status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\
+            + pickle.dumps(common_system.com_system_cpu_usage(False))))
         status_timer.start()
         return root
 
 
     def connect_to_server(self):
-        reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(), int(self.config.get('MediaKrakenServer', 'Port').strip()), TheaterFactory(self), ssl.ClientContextFactory())
+        """
+        Connect to media server
+        """
+        config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+        reactor.connectSSL(option_config_json['MediaKrakenServer']['Host'],\
+            option_config_json['MediaKrakenServer']['Port'],\
+            TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
     def process_message(self, server_msg):
-        global proc_ffserver
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        """
+        Process network message from server
+        """
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         logging.debug('message: %s', messageWords[0])
         logging.debug("len: %s", len(server_msg))
         logging.debug("chunks: %s", len(messageWords))
@@ -173,16 +180,17 @@ class MediaKrakenApp():
             self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(messageWords[1], shell=False))
         # admin commands
         elif messageWords[0] == "CPUUSAGE":
-            msg = 'CPUUSAGE ' + pickle.dumps(MK_Common_System.MK_Common_System_CPU_Usage(True))
+            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(True))
         elif messageWords[0] == "DISKUSAGE":
-            msg = 'DISKUSAGE ' + pickle.dumps(MK_Common_System.MK_Common_System_Disk_Usage_All(True))
+            msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
         elif messageWords[0] == "MEMUSAGE":
-            msg = 'MEMUSAGE ' + pickle.dumps(MK_Common_System.MK_Common_System_Virtual_Memory(False))
+            msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
         elif messageWords[0] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((MK_Common_System.MK_Common_System_CPU_Usage(True), MK_Common_System.MK_Common_System_Disk_Usage_All(True), MK_Common_System.MK_Common_System_Virtual_Memory(False)))
+            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),\
+                common_system.com_system_disk_usage_all(True),\
+                common_system.com_system_virtual_memory(False)))
         elif messageWords[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
-            status_timer.cancel()
             sys.exit(0)
         else:
             logging.debug("unknown message type")
@@ -192,12 +200,6 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
-    global proc_ffserver
-    # store pid for initd
-    pid = os.getpid()
-    op = open("/var/mm_slave.pid", "w")
-    op.write("%s" % pid)
-    op.close()
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)

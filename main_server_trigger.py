@@ -16,58 +16,49 @@
   MA 02110-1301, USA.
 '''
 
-# pull in the ini file config
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging # pylint: disable=W0611
 import sys
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
+from common import common_config_ini
+from common import common_logging
 import subprocess
 import signal
-import logging
-import os
 import time
-import database as database_base
 try:
     import cPickle as pickle
 except:
     import pickle
 
 
-def signal_receive(signum, frame):
-    print 'CHILD Main Trigger: Received USR1'
-    os.kill(proc_trigger.pid, signal.SIGTERM)
+def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
+    print('CHILD Main Trigger: Received USR1')
     # cleanup db
-    db.MK_Server_Database_Rollback()
+    db_connection.db_rollback()
     # log stop
-    db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
-    db.MK_Server_Database_Close()
+    db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,\
+        'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
+    db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
 
 
-# store pid for initd
-pid = os.getpid()
-op = open("/var/mm_server_trigger.pid", "w")
-op.write("%s" % pid)
-op.close()
-
-
 # start logging
-MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Trigger')
+common_logging.com_logging_start('./log/MediaKraken_Trigger')
 
 
 # open the database
-db = database_base.MK_Server_Database()
-db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Start', None, u'System: Trigger Start', u'ServerTriggerStart', None, None, u'System')
+db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+    'ServerTriggerStart', None, None, 'System')
 
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c
+    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
 else:
     signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
     signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
@@ -75,7 +66,7 @@ else:
 
 while True:
     # check for new "triggers"
-    for row_data in db.MK_Server_Database_Triggers_Read():
+    for row_data in db_connection.db_triggers_read():
         # fire up cron service
         command_list = []
         for command_data in pickle.loads(str(row_data[1])):
@@ -83,21 +74,18 @@ while True:
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.debug("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db.MK_Server_Database_Triggers_Delete(row_data[0])
+        db_connection.db_triggers_delete(row_data[0])
     time.sleep(1)
 
 
 # log stop
-db.MK_Server_Database_Activity_Insert(u'MediaKraken_Trigger Stop', None, u'System: Trigger Stop', u'ServerTriggerStop', None, None, u'System')
+db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,\
+    'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 
 # commit
-db.MK_Server_Database_Commit()
+db_connection.db_commit()
 
 
 # close the database
-db.MK_Server_Database_Close()
-
-
-# stop children
-os.kill(proc_trigger.pid, signal.SIGTERM)
+db_connection.db_close()

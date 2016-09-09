@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
-
+from __future__ import absolute_import, division, print_function, unicode_literals
+__version__ = '0.1.6'
+from common import common_logging
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import platform
@@ -25,10 +26,8 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import logging
+import logging # pylint: disable=W0611
 import sys
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
@@ -37,8 +36,51 @@ from twisted.protocols.basic import Int32StringReceiver
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import ssl
+import kivy
+kivy.require('1.9.1')
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.dropdown import DropDown
+from kivy.uix.spinner import Spinner
+from kivy.uix.widget import Widget
+from kivy.core.window import Window
+from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.listview import ListView, ListItemButton
+from kivy.adapters.listadapter import ListAdapter
+from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.image import Image, AsyncImage
+from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
+     StringProperty, ObjectProperty
+from kivy.uix.popup import Popup
+from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.settings import SettingsWithSidebar
+from kivy.clock import Clock
+from kivy.loader import Loader
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.stacklayout import StackLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.filechooser import FileChooserListView
+from kivy.lang import Builder
+from kivy.base import EventLoop
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.network.urlrequest import UrlRequest
+from kivy.graphics.instructions import Canvas
+from kivy.graphics import Color, Rectangle
+from kivy.cache import Cache
+from kivy.animation import Animation
+from kivy.metrics import sp
+from kivy.graphics import *
+from kivy.graphics.texture import Texture
+from functools import partial
+from MediaKrakenSettings import *
 
-networkProtocol = None
+network_protocol = None
 metaapp = None
 
 
@@ -57,9 +99,9 @@ class TheaterClient(Int32StringReceiver):
 
 
     def connectionMade(self):
-        global networkProtocol
+        global network_protocol
         self.connStatus = TheaterClient.CONNECTED
-        networkProtocol = self
+        network_protocol = self
 
 
     def stringReceived(self, data):
@@ -80,47 +122,20 @@ class TheaterFactory(ClientFactory):
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error', 'Lost connection to MediaKraken_server.')
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+            'Lost connection to MediaKraken_server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
-        MediaKrakenApp.MediaKraken_Notification_Popup(metaapp, 'Connection Error', 'Could not connect to MediaKraken_server.')
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+            'Could not connect to MediaKraken_server.')
 
 
     def buildProtocol(self, addr):
         logging.info('Connected to %s', str(addr))
         self.protocol = TheaterClient()
         return self.protocol
-
-
-import kivy
-kivy.require('1.9.1')
-from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import Spinner
-from kivy.uix.widget import Widget
-from kivy.core.window import Window
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.listview import ListView, ListItemButton
-from kivy.adapters.listadapter import ListAdapter
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.image import Image, AsyncImage
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty, StringProperty, ObjectProperty
-from kivy.uix.popup import Popup
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.settings import SettingsWithSidebar
-from kivy.clock import Clock
-from kivy.loader import Loader
-from functools import partial
-from MediaKrakenSettings import *
 
 
 class MediaKraken(FloatLayout):
@@ -163,7 +178,7 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Theater')
+        common_logging.com_logging_start('./log/MediaKraken_Theater')
         return root
 
 
@@ -208,7 +223,15 @@ class MediaKrakenApp(App):
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
             elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
+            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
                 self.root.ids._screen_manager.current = 'Main_Theater_Home'
             pass
         elif keycode[1] == 'enter':
@@ -252,6 +275,9 @@ class MediaKrakenApp(App):
 
 
     def build_config(self, config):
+        """
+        Build base config
+        """
         config.setdefaults('MediaKrakenServer', {
             'Host': '127.0.0.1',
             'Port': 8098})
@@ -287,11 +313,11 @@ class MediaKrakenApp(App):
 
 
     def build_settings(self, settings):
-        settings.add_json_panel('MediaKraken', self.config, data=metaman_settings_base_json)
-        settings.add_json_panel('Audio', self.config, data=metaman_settings_audio_json)
-        settings.add_json_panel('Video', self.config, data=metaman_settings_video_json)
-        settings.add_json_panel('Library', self.config, data=metaman_settings_library_json)
-        settings.add_json_panel('Playback', self.config, data=metaman_settings_playback_json)
+        settings.add_json_panel('MediaKraken', self.config, data=mediakraken_settings_base_json)
+        settings.add_json_panel('Audio', self.config, data=mediakraken_settings_audio_json)
+        settings.add_json_panel('Video', self.config, data=mediakraken_settings_video_json)
+        settings.add_json_panel('Library', self.config, data=mediakraken_settings_library_json)
+        settings.add_json_panel('Playback', self.config, data=mediakraken_settings_playback_json)
 
 
     def on_config_change(self, config, section, key, value):
@@ -300,7 +326,9 @@ class MediaKrakenApp(App):
 
     def connect_to_server(self):
         if self.config is not None:
-            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(), int(self.config.get('MediaKrakenServer', 'Port').strip()), TheaterFactory(self), ssl.ClientContextFactory())
+            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
+                int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+                TheaterFactory(self), ssl.ClientContextFactory())
             reactor.run()
 
 
@@ -310,26 +338,41 @@ class MediaKrakenApp(App):
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
-            networkProtocol.sendString("IMAGE MAIN MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE MOVIE MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE MAIN MOVIE None Backdrop")
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE MOVIE MOVIE None Backdrop")
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")
             # refreshs for tv stuff
-            networkProtocol.sendString("IMAGE TV TVSHOW None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE TV TVSHOW None Backdrop")
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")
             # refreshs for game stuff
-            networkProtocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")
             # refreshs for books stuff
-            networkProtocol.sendString("IMAGE BOOK BOOK None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE BOOK BOOK None Backdrop")
             # refresh music stuff
-            networkProtocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")  # request main screen background refresh
-            networkProtocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")
             # refresh image stuff
-            networkProtocol.sendString("IMAGE IMAGE IMAGE None Backdrop")  # request main screen background refresh
+            # request main screen background refresh
+            network_protocol.sendString("IMAGE IMAGE IMAGE None Backdrop")
 
 
     def process_message(self, server_msg):
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        """
+        Process network message from server
+        """
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         if messageWords[0] != "IMAGE":
             logging.debug("Got Message: %s", server_msg)
         logging.debug('message: %s', messageWords[0])
@@ -340,7 +383,8 @@ class MediaKrakenApp(App):
         except:
             pickle_data = None
         if messageWords[0] == "IDENT":
-            networkProtocol.sendString("VALIDATE " + "admin" + " " + "password" + " " + platform.node())
+            network_protocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
+                + platform.node())
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         # after login receive the list of users to possibly login with
@@ -353,12 +397,17 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif messageWords[0] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index, rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter, cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+            args_converter = lambda row_index,\
+                rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
+            list_adapter = ListAdapter(data=data, args_converter=args_converter,\
+                cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
             list_view = ListView(adapter=list_adapter)
             for video_list in pickle_data:
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list', size_hint_y=None, width=self.root.ids.theater_media_video_list_scrollview.width, height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.Theater_Event_Button_Video_Select, video_list[1]))
+                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
+                    size_hint_y=None,\
+                    width=self.root.ids.theater_media_video_list_scrollview.width,\
+                    height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
@@ -372,12 +421,12 @@ class MediaKrakenApp(App):
             #self.root.ids.theater_media_video_rating = row_data[3]['']
             self.root.ids.theater_media_video_runtime.text = str(metadata_json['runtime'])
             self.root.ids.theater_media_video_overview.text = metadata_json['overview']
-            genres_list = u''
+            genres_list = ''
             for ndx in range(0, len(metadata_json['genres'])):
                 genres_list += (metadata_json['genres'][ndx]['name'] + ', ')
             self.root.ids.theater_media_video_genres.text = genres_list[:-2]
 #"LocalImages": {"Banner": "", "Fanart": "", "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
-            production_list = u''
+            production_list = ''
             for ndx in range(0, len(metadata_json['production_companies'])):
                 production_list += (metadata_json['production_companies'][ndx]['name'] + ', ')
             self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
@@ -398,7 +447,8 @@ class MediaKrakenApp(App):
                 except:
                     pass
                 try:
-                    stream_codec = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                    stream_codec\
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
@@ -409,10 +459,10 @@ class MediaKrakenApp(App):
                     logging.debug('sub')
             # populate the audio streams to select
             self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
-            self.root.ids.theater_media_video_audio_spinner.text = u'None'
+            self.root.ids.theater_media_video_audio_spinner.text = 'None'
             # populate the subtitle options
             self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
-            self.root.ids.theater_media_video_subtitle_spinner.text = u'None'
+            self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
 #            # populate the chapter grid
 #            for chapter_info in ffprobe_json['chapters']:
 #                # media_json['ChapterImages']
@@ -436,7 +486,10 @@ class MediaKrakenApp(App):
             logging.debug("gen")
             for genre_list in pickle_data:
                 logging.debug("genlist: %s", genre_list)
-                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list', size_hint_y=None, width=self.root.ids.theater_media_genre_list_scrollview.width, height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
+                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',\
+                    size_hint_y=None,\
+                    width=self.root.ids.theater_media_genre_list_scrollview.width,\
+                    height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
         elif messageWords[0] == "PERSONLIST":
@@ -470,23 +523,34 @@ class MediaKrakenApp(App):
             logging.error("unknown message type")
 
 
-    # image loaders
     def _image_loaded_detail_movie(self, proxyImage):
+        """
+        Load movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.theater_media_video_poster.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_demo(self, proxyImage):
+        """
+        Load home image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_movie(self, proxyImage):
+        """
+        Load home movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
 
 
     def _image_loaded_home_new_movie(self, proxyImage):
+        """
+        Load new movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
 
@@ -497,23 +561,24 @@ class MediaKrakenApp(App):
 
 
     # video select
-    def Theater_Event_Button_Video_Select(self, *args):
+    def theater_event_button_video_select(self, *args):
         logging.debug("vid select: %s", args)
         self.media_guid = args[0]
-        networkProtocol.sendString("VIDEODETAIL " + args[0])
+        network_protocol.sendString("VIDEODETAIL " + args[0])
         # grab poster
-        networkProtocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])  # request main screen background refresh
+        # request main screen background refresh
+        network_protocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])
 
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.debug("genre select: %s", args)
         self.media_genre = args[0]
-        networkProtocol.sendString("VIDEOGENRELIST " + args[0])
+        network_protocol.sendString("VIDEOGENRELIST " + args[0])
 
 
     # notification dialog
-    def MediaKraken_Notification_Popup(self, header, message):
+    def mediakraken_notification_popup(self, header, message):
         content = MediaKrakenNotificationScreen(ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
@@ -521,10 +586,13 @@ class MediaKrakenApp(App):
 
 
     def dismiss_notification_popup(self):
+        """
+        Dismiss notification popup
+        """
         self._notification_popup.dismiss()
 
 
-    def Theater_Event_Button_User_Select_Login(self, *args):
+    def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.debug("button server user login %s", self.global_selected_user_id)
         logging.debug("login: %s", self.login_password)
@@ -532,18 +600,19 @@ class MediaKrakenApp(App):
         self.root.ids._screen_manager.current = 'Main_Remote'
 
 
-    def main_metaman_event_button_video_play(self, *args):
+    def main_mediakraken_event_button_video_play(self, *args):
         logging.debug("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        networkProtocol.sendString(msg)
+        network_protocol.sendString(msg)
 
 
-    def main_metaman_event_button_home(self, *args):
-        global networkProtocol
+    def main_mediakraken_event_button_home(self, *args):
+        global network_protocol
         msg = args[0]
         logging.debug("home press: %s", args)
-        if args[0] == 'in_progress' or args[0] == 'recent_addition' or args[0] == 'movie' or args[0] == 'video':
+        if args[0] == 'in_progress' or args[0] == 'recent_addition'\
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
@@ -571,10 +640,10 @@ class MediaKrakenApp(App):
         else:
             logging.error("unknown button event")
         if msg is not None:
-            networkProtocol.sendString(msg)
+            network_protocol.sendString(msg)
 
 
-    def Theater_Event_Button_Option_Select(self, option_text, *args):
+    def theater_event_button_option_select(self, option_text, *args):
         logging.debug("button server options %s", option_text)
         if option_text == 'Audio Settings':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Settings_Audio'

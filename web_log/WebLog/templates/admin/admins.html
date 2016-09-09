@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>MetaMan Admin</title>
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="../../static/js/html5.js"></script>
+        <![endif]-->
+        <link href="../../static/css/style.min.css" rel="stylesheet">
+        <link href="../../static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+    </head>
+    <body id="data_background">
+        <!-- Main -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- Left column -->
+                    <p><strong><i class="glyphicon glyphicon-wrench"></i> Tools</strong></p>
+                    <hr>
+                    <ul class="nav nav-stacked">
+                        <li class="nav-header">
+                            <a href="#" data-toggle="collapse" data-target="#userMenu">Settings <i class="glyphicon glyphicon-chevron-down"></i></a>
+                            <ul class="nav nav-stacked collapse in" id="userMenu">
+                                <li><a href="./settings"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+                                <li><a href="./backup"><i class="glyphicon glyphicon-hdd"></i> Backup</a></li>
+                                <li><a href="./users"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /col-3 -->
+                <div class="col-sm-9">
+                    <!-- column 2 -->
+                    <div class="row">
+                        <!-- center left-->
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4>Server Info</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <p><small><b>Server Name:</b> {{ data_server_info_server_name }}</small></p>
+                                    <p><small><b>Uptime:</b> {{ data_server_uptime }}</small></p>
+                                    <p>
+                                        <small>
+                                            <b>IP Internal:</b>
+                                            {% for nic_data in data_server_info_server_ip %}
+                                    <p class="tab">{{ nic_data }}</p>
+                                    {% endfor %}
+                                    </small></p>
+                                    <p><small><b>Port:</b> {{ data_server_info_server_port }}</small></p>
+                                    <p><small><b>IP External:</b> {{ data_server_info_server_ip_external }}</small></p>
+                                    <p><small><b>Version:</b> {{ data_server_info_server_version }}</small></p>
+                                </div>
+                                <!--/panel-body-->
+                            </div>
+                            <!--/panel-body-->
+                        </div>
+                        <!--/panel-->
+                </div>
+                <!--/col-->
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Notices</h4>
+                        </div>
+                        <div class="panel-body">
+                            {% if data_alerts_dismissable %}
+                            <div class="alert alert-info">
+                                {% for row_data in data_alerts_dismissable %}
+                                <p><button type="button" class="close" data-dismiss="alert">×</button>
+                                    {{ row_data[1] }}
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if data_alerts %}
+                            {% for row_data in data_alerts_dismissable %}
+                            <p> {{ row_data[1] }} </p>
+                            {% endfor %}
+                            {% endif %}
+                            {% if not data_alerts_dismissable and not data_alerts %}
+                            <p>No alerts.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Status</h4>
+                        </div>
+                        <div class="panel-body">
+                            <small>Media Match</small>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                    <span class="sr-only">60% Complete (warning)</span>
+                                </div>
+                            </div>
+                            <small>Backup Progress</small>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                    <span class="sr-only">80% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/panel-body-->
+                    </div>
+                    <!--/panel-->
+                </div>
+                <!--/col-span-6-->
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-span-9-->
+        </div>
+        </div>
+        <script src="../../static/js/jquery.min.js"></script>
+        <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../../static/js/scripts.js"></script>
+    </body>
+</html>
+{% endblock %}

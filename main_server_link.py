@@ -16,28 +16,18 @@
   MA 02110-1301, USA.
 '''
 
-__version__ = '0.1.0'
-
-# pull in the ini file config
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("MediaKraken.ini")
-import os
+from __future__ import absolute_import, division, print_function, unicode_literals
+__version__ = '0.1.6'
+import logging # pylint: disable=W0611
 import platform
-import subprocess
-from threading import Timer
-from threading import Event, Thread
 try:
     import cPickle as pickle
 except:
     import pickle
 import sys
-import logging
-sys.path.append("../MediaKraken_Common")
-import MK_Common_Logging
-import MK_Common_System
-sys.path.append("./") # for db import
-import database as database_base
+from common import common_config_ini
+from common import common_logging
+
 
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
@@ -48,10 +38,11 @@ networkProtocol = None
 metaapp = None
 
 
-def signal_receive(signum, frame):
-    global proc_ffserver
-    print 'CHILD Link: Received USR1'
-    os.kill(proc_ffserver.pid)
+def signal_receive(signum, frame): # pylint: disable=W0613
+    """
+    Handle signal interupt
+    """
+    print('CHILD Link: Received USR1')
     sys.stdout.flush()
     sys.exit(0)
 
@@ -105,13 +96,13 @@ class TheaterFactory(ClientFactory):
         return self.protocol
 
 
-class MediaKrakenApp():
+class MediaKrakenApp(object):
     connection = None
 
 
     def exit_program(self):
         # close the database
-        self.db.MK_Server_Database_Close()
+        self.db_connection.db_close()
 
 
     def build(self):
@@ -119,21 +110,28 @@ class MediaKrakenApp():
         root = MediaKrakenApp()
         metaapp = self
         # start logging
-        MK_Common_Logging.MK_Common_Logging_Start('./log/MediaKraken_Link')
+        common_logging.com_logging_start('./log/MediaKraken_Link')
         # open the database
-        self.db = database_base.MK_Server_Database()
-        self.db.MK_Server_Database_Open(Config.get('DB Connections', 'PostDBHost').strip(), Config.get('DB Connections', 'PostDBPort').strip(), Config.get('DB Connections', 'PostDBName').strip(), Config.get('DB Connections', 'PostDBUser').strip(), Config.get('DB Connections', 'PostDBPass').strip())
+        config_handle, option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()
         return root
 
 
     def connect_to_server(self):
-        reactor.connectSSL(sys.argv[1], int(sys.argv[2]), TheaterFactory(self), ssl.ClientContextFactory())
+        """
+        Connect to media server
+        """
+        reactor.connectSSL(sys.argv[1], int(sys.argv[2]),\
+            TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
     def process_message(self, server_msg):
-        messageWords = server_msg.split(' ', 1)  # otherwise the pickle can end up in thousands of chunks
+        """
+        Process network message from server
+        """
+        # otherwise the pickle can end up in thousands of chunks
+        messageWords = server_msg.split(' ', 1)
         logging.debug('message: %s', messageWords[0])
         logging.debug("len: %s", len(server_msg))
         logging.debug("chunks: %s", len(messageWords))
@@ -150,25 +148,32 @@ class MediaKrakenApp():
             sys.exit(0)
         elif messageWords[0] == "RECEIVENEWMEDIA":
             for new_media in pickle.loads(messageWords[1]):
-                logging.debgu("new media: %s", new_media)
-                # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json, 3-mm_metadata_media_id jsonb
+                logging.debug("new media: %s", new_media)
+                # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
+                # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
                 if new_media[1] == 'Movie':
-                    metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_IMDB(new_media[3]['IMDB'])
+                    metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_TMDB(new_media[3]['TMDB'])
+                        metadata_guid = self.db_connection.db_meta_guid_by_tmdb(\
+                            new_media[3]['TMDB'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.MK_Server_Database_Metadata_GUID_By_TVDB(new_media[3]['theTVDB'])
+                            metadata_guid = self.db_connection.db_meta_guid_by_tvdb(\
+                                new_media[3]['thetvdb'])
                 elif new_media[1] == 'TV Show':
-                    metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_IMDB(new_media[3]['IMDB'])
+                    metadata_guid = self.db_connection.db_metatv_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVMaze(new_media[3]['TVMaze'])
+                        metadata_guid = self.db_connection.db_metatv_guid_by_tvmaze(\
+                            new_media[3]['tvmaze'])
                         if metadata_guid is None:
-                            metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVDB(new_media[3]['theTVDB'])
+                            metadata_guid = self.db_connection.db_metatv_guid_by_tvdb(\
+                                new_media[3]['thetvdb'])
                             if metadata_guid is None:
-                                metadata_guid = self.db.MK_Server_Database_MetadataTV_GUID_By_TVRage(new_media[3]['TVRage'])
+                                metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(\
+                                    new_media[3]['TVRage'])
                 elif new_media[1] == 'Sports':
-                    metadata_guid = self.db.MK_Server_Database_MetadataSports_GUID_By_TheSportsDB(new_media[3]['TheSportsDB'])
+                    metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(\
+                        new_media[3]['thesportsdb'])
                 elif new_media[1] == 'Music':
                     pass
                 elif new_media[1] == 'Book':
@@ -177,8 +182,10 @@ class MediaKrakenApp():
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
-                self.db.MK_Server_Database_Insert_Remote_Media(link_server, new_media[0], self.db.MK_Server_Database_Media_UUID_By_Class(new_media[1]), new_media[2], metadata_guid)
-            self.db.MK_Server_Database_Commit()
+                self.db_connection.db_insert_remote_media(link_server, new_media[0],\
+                    self.db_connection.db_media_uuid_by_class(new_media[1]),\
+                    new_media[2], metadata_guid)
+            self.db_connection.db_commit()
         else:
             logging.debug("unknown message type")
         if msg is not None:
@@ -187,9 +194,4 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
-    # store pid for initd
-    pid = os.getpid()
-    op = open("/var/mm_link.pid", "w")
-    op.write("%s" % pid)
-    op.close()
     MediaKrakenApp().build()

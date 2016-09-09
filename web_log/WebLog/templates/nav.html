@@ -1,0 +1,64 @@
+<head>
+    <meta charset="UTF-8">
+    <script src="../static/js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('nav li ul').hide().removeClass('fallback');
+            $('nav li').hover(function () {
+                $('ul', this).stop().slideToggle(200);
+            });
+        });
+    </script>
+</head>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('public.home') }}" id="menu_home">Debug Logs</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% if current_user and current_user.is_authenticated %}
+                <li><a href="{{ url_for('user.members') }}" id="menu_media">Media</a></li>
+                {% if current_user.is_admin %}
+                <li><a href="{{ url_for('admins.logs_mediakraken') }}" id="menu_sync">MediaKraken</a></li>
+                <li><a href="{{ url_for('admins.logs_kodi') }}" id="menu_sync">Kodi</a></li>
+                {% endif %}
+                {% endif %}
+                <li><a href="{{ url_for('public.about') }}" id="menu_about">About</a></li>
+                <li>
+                    <p class="navbar-text">{{ moment().format('LLL') }}  {{ moment().fromNow(refresh = True) }}</p>
+                </li>
+            </ul>
+            {% if current_user and current_user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <p class="navbar-text"><a class="navbar-link" href="{{ url_for('user.members') }}">Logged in as {{ current_user.username }}</a></p>
+                </li>
+                <li><a class="navbar-link" href="{{ url_for('public.logout') }}"><i class="fa fa-sign-out"></i></a></li>
+            </ul>
+            {% elif form %}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('public.register') }}" id="menu_sign_up"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+            </ul>
+            <form id="loginForm" method="POST" class="navbar-form form-inline navbar-right" action="/" role="login">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.username(placeholder="Username", class_="form-control", id="main_username") }}
+                    {{ form.password(placeholder="Password", class_="form-control", id="main_password") }}
+                </div>
+                <button type="submit" formmethod="post" class="btn btn-default" id="main_button_login">Log in</button>
+            </form>
+            {% endif %}
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>

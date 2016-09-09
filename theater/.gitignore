@@ -1,0 +1,4 @@
+*.mkv
+*.pyc
+/metaman.ini
+*.md~
