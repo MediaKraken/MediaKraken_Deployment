@@ -180,8 +180,10 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
         logging.debug("movie db meta: %s", metadata_uuid)
+        # no matches by name/year
         if metadata_uuid is None:
             if imdb_id is not None or tmdb_id is not None:
+                # id is known from nfo/xml but not in db yet so fetch data
                 if tmdb_id is not None:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
                 else:
@@ -191,7 +193,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 # set provider last so it's not picked up by the wrong thread
                 db_connection.db_download_update_provider('themoviedb', download_que_id)
             else:
-                # search themoviedb since not matched above via DB
+                # search themoviedb since not matched above via DB or nfo/xml
                 download_que_json.update({'Status': 'Search'})
                 db_connection.db_download_update(json.dumps(download_que_json),\
                     download_que_id)
