@@ -81,15 +81,19 @@ def nfo_xml_db_lookup(db_connection, nfo_data, xml_data, download_que_json, down
                 pass
         # RT
     if tmdb_id is not None:
+        # see if in local database by id
         metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
         if metadata_uuid is None:
+            # not in local database, set for fetch by id
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
             db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
             db_connection.db_download_update_provider('themoviedb', download_que_id)
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
+        # see if in local database by id
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
         if metadata_uuid is None:
+            # not in local database, set for fetch by id
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
             db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
             db_connection.db_download_update_provider('imdb', download_que_id)
@@ -133,15 +137,19 @@ def nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data, download_que_json, d
             pass
     # RT
     if tvdb_id is not None:
+        # see if in local database by id
         metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
         if metadata_uuid is None:
+            # not in local database, set for fetch by id
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tvdb_id})
             db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
             db_connection.db_download_update_provider('thetvdb', download_que_id)
             metadata_uuid = download_que_json['MetaNewID']
     if metadata_uuid is None and imdb_id is not None:
+        # see if in local database by id
         metadata_uuid = db_connection.db_metaTV_guid_by_imdb(imdb_id)
         if metadata_uuid is None:
+            # not in local database, set for fetch by id
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
             db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
             db_connection.db_download_update_provider('imdb', download_que_id)
