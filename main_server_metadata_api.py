@@ -72,7 +72,7 @@ def signal_receive(signum, frame): # pylint: disable=W0613
     db_connection.db_rollback()
     # log stop
     db_connection.db_activity_insert('MediaKraken_Metadata API Stop', None,\
-        'System: Metadata API Stop', 'ServerMetadataAPIStop',\ None, None, 'System')
+        'System: Metadata API Stop', 'ServerMetadataAPIStop', None, None, 'System')
     db_connection.db_close()
     sys.stdout.flush()
     sys.exit(0)
@@ -456,8 +456,7 @@ def worker(content_providers):
             elif content_providers == 'Z':
                 metadata_uuid = metadata_identification.metadata_identification(thread_db,\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                    row_data['mdq_download_json']['Path'], row_data['mdq_download_json'],\
-                    row_data['mdq_id'])
+                    row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
                     logging.debug("update: %s %s",\
