@@ -29,7 +29,6 @@ from common import common_metadata_movie_theme
 from common import common_metadata_movie_trailer
 from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
-from common import common_metadata_rotten_tomatoes
 from common import common_metadata_tmdb
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -137,9 +136,10 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
 def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id):
     """
     Movie lookup
+    This is the main function called from metadata_identification
     """
     if not hasattr(metadata_movie_lookup, "metadata_last_id"):
-        metadata_movie_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        metadata_movie_lookup.metadata_last_id = None # it doesn't exist yet, so initialize it
         metadata_movie_lookup.metadata_last_title = None
         metadata_movie_lookup.metadata_last_year = None
         metadata_movie_lookup.metadata_last_imdb = None
@@ -150,11 +150,11 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # check for dupes by name/year
     if 'year' in file_name:
         if file_name['title'] == metadata_movie_lookup.metadata_last_title\
-            and file_name['year'] == metadata_movie_lookup.metadata_last_year:
+                and file_name['year'] == metadata_movie_lookup.metadata_last_year:
             return metadata_movie_lookup.metadata_last_id
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         return metadata_movie_lookup.metadata_last_id
-    # grab by nfo/xml data
+    # grab nfo/xml file data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     # lookup by id's occur in nfo/xml code below!
     metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection,\
