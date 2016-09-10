@@ -315,7 +315,7 @@ def themoviedb(thread_db, download_data):
                 thread_db.db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         logging.debug('themoviedb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
-        if download_data['mdq_download_json']['ProviderMetaID'][0:2] != 'tt': # imdb id check
+        if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
                 download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
