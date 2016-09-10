@@ -22,9 +22,9 @@ import os
 import time
 # built into 3.5 so try first then fallback to py2.x lib
 try:
-    from os import scandir, walk
+    from os import walk
 except ImportError:
-    from scandir import scandir, walk
+    from scandir import walk
 try:
     import cPickle as pickle
 except:
