@@ -31,7 +31,6 @@ from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
 from common import common_metadata_tmdb
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
-
 from . import metadata_nfo_xml
 
 
@@ -69,7 +68,7 @@ def movie_search_tmdb(db_connection, file_name):
         elif match_response == 're':
             # multiple results
             logging.info("movielookup multiple results: %s", match_result)
-    return metadata_uuid
+    return metadata_uuid, match_result
 
 
 def movie_fetch_save_tmdb(db_connection, tmdb_id):
