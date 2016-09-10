@@ -107,7 +107,7 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                     else:
                         match_list.append(os.path.join(dir_name, file_name))
         else:
-            for root, dirs, files in scandir.walk(dir_name): # pylint: disable=W0612
+            for root, dirs, files in walk(dir_name): # pylint: disable=W0612
                 for file_name in files:
                     if filter_text is not None:
                         if file_name.endswith(filter_text):
