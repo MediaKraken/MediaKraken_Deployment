@@ -295,20 +295,23 @@ def themoviedb(thread_db, download_data):
     """
     logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_uuid = metadata_movie.movie_search_tmdb(thread_db,\
+        metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
-        if metadata_uuid is None:
+        # if match_result is an int, that means the lookup found a match but isn't in db
+        if metadata_uuid is None and type(match_result) != int:
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
-            thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
-                metadata_uuid)
-            # determine if the metadata is not downloaded
-            if thread_db.db_meta_guid_by_tmdb(\
-                    download_data['mdq_download_json']['ProviderMetaID']) is None:
+            if metadata_uuid is None:
+                # not in the db so mark fetch                
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                     download_data['mdq_id'])
             else:
+                # update with found metadata uuid from db
+                thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
+                    metadata_uuid)
+                # found so remove from download que
                 thread_db.db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         if download_data['mdq_download_json']['ProviderMetaID'][0:2] != 'tt': # imdb id check
