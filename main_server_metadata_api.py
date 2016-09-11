@@ -302,7 +302,7 @@ def themoviedb(thread_db, download_data):
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
             if metadata_uuid is None:
-                # not in the db so mark fetch                
+                # not in the db so mark fetch
                 download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\

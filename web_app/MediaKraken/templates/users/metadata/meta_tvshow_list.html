@@ -19,7 +19,7 @@
                 {% if row_data[3] == None %}
                 <img src= "../../static/images/Missing_Icon.png" height="300" width="200">
                 {% else %}
-                <img src= {{ "../../static/meta/images/" + row_data[3].replace('../','') }} height="300" width="200">
+                <img src= {{ "../../static/meta/images/" + row_data[3] }} height="300" width="200">
                 {% endif %}
                 </a>
                 {% if row_data[2] != None %}

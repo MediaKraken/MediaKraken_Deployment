@@ -19,7 +19,7 @@
         <a href= {{ "../games_detail/" + row_data[1] }} > {{row_data[0]}}</a>
         {% else %}
         <a href= {{ "../games_detail/" + row_data[1] }} >
-        <img src= {{ "../static/meta/" + row_data[2].replace('../','') }} height="200" width="132">
+        <img src= {{ "../static/meta/images/" + row_data[2] }} height="200" width="132">
         </a>
         {% endif %}
         {% endfor %}

@@ -26,14 +26,12 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_file
 from common import common_google
 from common import common_network_twitch
 from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 from common import common_string
-from common import common_zfs
 import database as database_base
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
@@ -280,11 +278,10 @@ def user_sports_detail_page(guid):
     """
     Display sports detail page
     """
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
         if json_metadata['LocalImages']['Poster'] is not None:
-            data_poster_image = json_metadata['LocalImages']['Poster'].replace(image_location, '')
+            data_poster_image = json_metadata['LocalImages']['Poster']
         else:
             data_poster_image = None
     except:
@@ -292,8 +289,7 @@ def user_sports_detail_page(guid):
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -321,8 +317,7 @@ def user_tv_page():
         # 3 - mm_metadata_tvshow_localimage_json
         try:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
-                row_data['mm_metadata_tvshow_localimage_json'].replace(\
-                option_config_json['MediaKrakenServer']['MetadataImageLocal'], ''),\
+                row_data['mm_metadata_tvshow_localimage_json'],\
                 locale.format('%d', row_data['mm_count'], True)))
         except:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
@@ -418,17 +413,15 @@ def user_tv_show_detail_page(guid):
         production_list = ''
         #for ndx in range(0,len(json_metadata['production_companies'])):
         #    production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
-        image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
         # poster image
         try:
-            data_poster_image = data_metadata[3].replace(image_location, '')
+            data_poster_image = data_metadata[3]
         except:
             data_poster_image = None
         # background image
         try:
             if json_metadata['LocalImages']['Backdrop'] is not None:
-                data_background_image\
-                    = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+                data_background_image = json_metadata['LocalImages']['Backdrop']
             else:
                 data_background_image = None
         except:
@@ -449,7 +442,6 @@ def user_tv_show_detail_page(guid):
                                json_metadata=json_metadata,
                                data_genres=data_genres_list[:-2],
                                data_production=production_list[:-2],
-                               data_image_local=image_location,
                                data_guid=guid,
                                data_overview=data_overview,
                                data_rating=data_rating,
@@ -524,17 +516,15 @@ def user_tv_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
 
     data_episode_count = g.db_connection.db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
-        data_poster_image = data_metadata[3].replace(image_location, '')
+        data_poster_image = data_metadata[3]
     except:
         data_poster_image = None
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -545,7 +535,6 @@ def user_tv_season_detail_page(guid, season):
                            data_overview=data_overview,
                            data_rating=data_rating,
                            data_first_aired=data_first_aired,
-                           data_image_local=image_location,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count
@@ -561,23 +550,20 @@ def user_tv_episode_detail_page(guid, season, episode):
     Display tv episode detail page
     """
     data_episode_detail = g.db_connection.db_read_tvmetadata_episode(guid, season, episode)
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
-        data_poster_image = data_metadata[3].replace(image_location, '')
+        data_poster_image = data_metadata[3]
     except:
         data_poster_image = None
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
         data_background_image = None
     return render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
-                           data_image_local=image_location,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                           )
@@ -844,7 +830,6 @@ def user_movie_page(genre):
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     for row_data in g.db_connection.db_web_media_list(\
             g.db_connection.db_media_uuid_by_class('Movie'),\
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,\
@@ -877,7 +862,7 @@ def user_movie_page(genre):
             favorite_status = False
         # set mismatch
         try:
-            match_status = json_media['MatchFlag']
+            match_status = row_data['MatchFlag']
         except:
             match_status = False
         logging.debug("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
@@ -885,7 +870,7 @@ def user_movie_page(genre):
         if 'TMDB' in json_image['Images'] and 'Poster' in json_image['Images']['TMDB']\
                 and json_image['Images']['TMDB']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],\
-                json_image['Images']['TMDB']['Poster'].replace(image_location, ''),\
+                json_image['Images']['TMDB']['Poster'],\
                 watched_status, sync_status, poo_status, favorite_status, match_status))
         else:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,\
@@ -987,7 +972,6 @@ def movie_detail(guid):
                 + str(json_ffmpeg['streams'][0]['height'])
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
-        image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
         # check to see if there are other version of this video file (dvd, hddvd, etc)
         vid_versions = g.db_connection.db_media_by_metadata_guid(data[1])  # metadata guid
         # audio and sub sreams
@@ -1019,8 +1003,7 @@ def movie_detail(guid):
         # poster image
         try:
             if json_imagedata['Images']['TMDB']['Poster'] is not None:
-                data_poster_image\
-                    = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
+                data_poster_image = json_imagedata['Images']['TMDB']['Poster']
             else:
                 data_poster_image = None
         except:
@@ -1028,8 +1011,7 @@ def movie_detail(guid):
         # background image
         try:
             if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-                data_background_image\
-                    = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
+                data_background_image = json_imagedata['Images']['TMDB']['Backdrop']
             else:
                 data_background_image = None
         except:
@@ -1070,7 +1052,6 @@ def movie_detail(guid):
                                data_file=data_file,
                                data_file_size=file_size,
                                data_bitrate=bitrate,
-                               data_image_local=image_location,
                                data_guid=guid,
                                data_playback_url='/users/playvideo_videojs/hls/'+guid,
                                data_detail_url='/users/movie_detail/'+guid,
@@ -1139,8 +1120,7 @@ def user_album_list_page():
     for row_data in g.db_connection.db_media_album_list(offset, per_page):
         try:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],\
-                row_data['mm_metadata_album_json'].replace(\
-                option_config_json['MediaKrakenServer']['MetadataImageLocal'], '')))
+                row_data['mm_metadata_album_json']))
         except:
             media.append((row_data['mm_metadata_album_guid'],\
                 row_data['mm_metadata_album_name'], None))
@@ -1446,12 +1426,10 @@ def metadata_person_detail(guid):
     meta_data = g.db_connection.db_meta_person_by_guid(guid)
     json_metadata = meta_data['mmp_person_meta_json']
     json_imagedata = meta_data['mmp_person_image']
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
-            data_person_image = "../../static/meta/images/"\
-                + json_imagedata['Images']['Poster'].replace(image_location, '').replace('../', '')
+            data_person_image = "../../static/meta/images/" + json_imagedata['Images']['Poster']
         else:
             data_person_image = None
     except:
@@ -1462,7 +1440,6 @@ def metadata_person_detail(guid):
                            json_metadata=json_metadata,
                            data_person_image=data_person_image,
                            data_also_media=meta_also_media,
-                           data_image_local=image_location
                           )
 
 
@@ -1584,12 +1561,11 @@ def metadata_movie_detail(guid):
     for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
         production_list\
             += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
         if json_imagedata['Images']['TMDB']['Poster'] is not None:
             data_poster_image\
-                = json_imagedata['Images']['TMDB']['Poster'].replace(image_location, '')
+                = json_imagedata['Images']['TMDB']['Poster']
         else:
             data_poster_image = None
     except:
@@ -1597,8 +1573,7 @@ def metadata_movie_detail(guid):
     # background image
     try:
         if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-            data_background_image\
-                = json_imagedata['Images']['TMDB']['Backdrop'].replace(image_location, '')
+            data_background_image = json_imagedata['Images']['TMDB']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1607,7 +1582,6 @@ def metadata_movie_detail(guid):
 #    review = g.db_connection.db_Review_List(data[1])
     return render_template('users/metadata/meta_movie_detail.html',
                            # data_media_ids=data[1],
-                           data_image_local=image_location,
                            data_name=data[2],
                            json_metadata=json_metadata,
                            data_genres=genres_list[:-2],
@@ -1641,7 +1615,6 @@ def metadata_movie_list():
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                           image_location=option_config_json['MediaKrakenServer']['MetadataImageLocal'],
                           )
 
 
@@ -1658,8 +1631,7 @@ def metadata_movie_collection_list():
         try:
             media.append((row_data['mm_metadata_collection_guid'],\
                 row_data['mm_metadata_collection_name'],\
-                row_data['mm_metadata_collection_imagelocal_json']['Poster'].replace(\
-                option_config_json['MediaKrakenServer']['MetadataImageLocal'], '')))
+                row_data['mm_metadata_collection_imagelocal_json']['Poster']))
         except:
             media.append((row_data['mm_metadata_collection_guid'],\
                 row_data['mm_metadata_collection_name'], None))
@@ -1688,11 +1660,10 @@ def metadata_movie_collection_detail(guid):
     data_metadata = g.db_connection.db_collection_read_by_guid(guid)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
-    image_location = option_config_json.get('MediaKrakenServer', 'MetadataImageLocal').strip()
     # poster image
     try:
         if json_imagedata['Poster'] is not None:
-            data_poster_image = json_imagedata['Poster'].replace(image_location, '')
+            data_poster_image = json_imagedata['Poster']
         else:
             data_poster_image = None
     except:
@@ -1700,7 +1671,7 @@ def metadata_movie_collection_detail(guid):
     # background image
     try:
         if json_imagedata['Backdrop'] is not None:
-            data_background_image = json_imagedata['Backdrop'].replace(image_location, '')
+            data_background_image = json_imagedata['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1769,17 +1740,15 @@ def metadata_tvshow_detail(guid):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
-        data_poster_image = data_metadata[3].replace(image_location, '')
+        data_poster_image = data_metadata[3]
     except:
         data_poster_image = None
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1862,17 +1831,15 @@ def metadata_tvshow_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db_connection.db_read_tvmetadata_season_eps_list(guid, int(season))
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
-        data_poster_image = data_metadata[3].replace(image_location, '')
+        data_poster_image = data_metadata[3]
     except:
         data_poster_image = None
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1884,7 +1851,6 @@ def metadata_tvshow_season_detail_page(guid, season):
                            data_overview=data_overview,
                            data_rating=data_rating,
                            data_first_aired=data_first_aired,
-                           data_image_local=image_location,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count
@@ -1900,17 +1866,15 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
     Display tvshow episode metadata detail
     """
     data_metadata = g.db_connection.db_read_tvmetadata_episode(guid, season, episode)
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     # poster image
     try:
-        data_poster_image = data_metadata[3].replace(image_location, '')  # TODO dictcursor
+        data_poster_image = data_metadata[3]
     except:
         data_poster_image = None
     # background image
     try:
         if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image\
-                = json_metadata['LocalImages']['Backdrop'].replace(image_location, '')
+            data_background_image = json_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1923,7 +1887,6 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
                            data_episode=episode,
                            data_overview=data_metadata[5],
                            data_first_aired=data_metadata[3],
-                           data_image_local=image_location,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                           )
@@ -1938,15 +1901,9 @@ def metadata_tvshow_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    image_location = option_config_json['MediaKrakenServer']['MetadataImageLocal']
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page):
-        image_data = row_data[3]  # TODO json dictcursor
-        try:
-            image_data = image_data.replace(image_location, '')
-        except:
-            pass
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],\
-            row_data['mm_metadata_tvshow_name'], row_data[2], image_data))  # TODO dictcursor
+            row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3]))  # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_tvshow_list_count(),

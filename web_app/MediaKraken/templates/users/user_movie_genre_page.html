@@ -15,7 +15,7 @@
         {% for row_data in media %}
         <div class="main_photo">
             <a href= {{ "../movie_detail/" + row_data[1] }} >
-            <img src= {{ "../../static/images/genre/" + row_data[2].replace('../','').replace(' ', '%20') }} height="300" width="200">
+            <img src= {{ "../../static/images/genre/" + row_data[2].replace(' ', '%20') }} height="300" width="200">
             </a>
             <div class="description">
                 <p class="description_content_left">{{row_data[0] + ' - ' + row_data[1]}}</p>
