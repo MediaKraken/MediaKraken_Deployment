@@ -57,10 +57,16 @@ def worker(worker_file_list):
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # begin image generation
+    chapter_count = 0
     for chapter_data in json_obj['chapters']:
+        chapter_count += 1
         # file path, time, output name
-        file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,\
-            'chapter'), (str(uuid.uuid4()) + '.png'))
+        # check image save option whether to save this in media folder or metadata folder
+        if option_config_json['MetadataImageLocal'] == False:
+            image_file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,\
+                'chapter'), (str(uuid.uuid4()) + '.png'))
+        else:
+            image_file_path = os.path.join(media_path, 'chapters', (str(chapter_count) + '.png'))
         command_list = []
         command_list.append('ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input
@@ -73,14 +79,14 @@ def worker(worker_file_list):
         command_list.append(media_path)
         command_list.append('-vframes')
         command_list.append('1')
-        command_list.append(file_path)
+        command_list.append(image_file_path)
         ffmpeg_proc = subprocess.Popen(command_list, shell=False)
         ffmpeg_proc.wait() # wait for subprocess to finish to not flood with ffmpeg processes
         # as the worker might see it as finished if allowed to continue
-        chapter_image_list[chapter_data['tags']['title']] = file_path
+        chapter_image_list[chapter_data['tags']['title']] = image_file_path
         total_images_created += 1
     if json_data is None:
-        json_data = json.dumps({'ChapterScan':False, 'ChapterImages':chapter_image_list})
+        json_data = json.dumps({'ChapterScan': False, 'ChapterImages': chapter_image_list})
     else:
         json_data['ChapterScan'] = False
         json_data['ChapterImages'] = chapter_image_list
