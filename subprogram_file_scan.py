@@ -72,7 +72,8 @@ MEDIA_EXTENSION = [
     'chd',
     'zip',
     '7z',
-    'pdf'
+    'pdf',
+    'srt',
 ]
 
 
@@ -81,7 +82,8 @@ MEDIA_EXTENSION_SKIP_FFMPEG = [
     'zip',
     '7z',
     'iso',
-    'chd'
+    'chd',
+    'srt',
 ]
 
 
