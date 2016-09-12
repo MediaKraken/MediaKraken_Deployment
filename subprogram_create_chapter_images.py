@@ -66,7 +66,8 @@ def worker(worker_file_list):
             image_file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,\
                 'chapter'), (str(uuid.uuid4()) + '.png'))
         else:
-            image_file_path = os.path.join(media_path, 'chapters', (str(chapter_count) + '.png'))
+            image_file_path = os.path.join(os.path.dirname(media_path),\
+                'chapters', (str(chapter_count) + '.png'))
         command_list = []
         command_list.append('ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input
