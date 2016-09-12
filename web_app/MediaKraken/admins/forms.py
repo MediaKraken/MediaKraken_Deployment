@@ -109,12 +109,12 @@ class AdminSettingsForm(Form):
     metadata_source_down_tvdb = BooleanField('thetvdb')
     metadata_source_down_freedb = BooleanField('FreeDB')
     metadata_source_down_mbrainz = BooleanField('Music Brainz')
-    #metadata_source_down_rt = BooleanField('Rotten Tomatoes')
     metadata_source_down_anidb = BooleanField('AnimeDB')
     metadata_source_down_chartlyrics = BooleanField('Chart Lyrics')
     metadata_source_down_opensub = BooleanField('OpenSubtitles')
     metadata_source_down_pitchfork = BooleanField('pitchfork')
     metadata_source_down_imvdb = BooleanField('imvdb')
+    metadata_source_down_omdb = BooleanField('omdb')
     metadata_source_down_netflixroulette = BooleanField('netflixroulette')
     metadata_sync_path = TextField('Metadata Sync Path',\
         validators=[DataRequired(), Length(min=1, max=250)])
