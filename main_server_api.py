@@ -30,9 +30,7 @@ import signal
 import sys
 from common import common_config_ini
 from common import common_logging
-
-
-__version__ = json.dumps({"Version": "0.1.6"})
+from common import common_version
 
 
 def signal_receive(signum, frame): # pylint: disable=W0613
@@ -59,7 +57,7 @@ class MediaKrakenAPI(object):
 
     @app.route('/')
     def home(self, request):
-        return __version__
+        return common_version.APP_VERSION
 
     # shows and all the subroutes
     with app.subroute("/Artists") as app:

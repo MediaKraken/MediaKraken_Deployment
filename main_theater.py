@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-__version__ = '0.1.6'
 from common import common_logging
+from common import common_version
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import platform

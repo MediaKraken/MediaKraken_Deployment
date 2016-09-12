@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-__version__ = '0.1.6'
 import logging # pylint: disable=W0611
 import platform
 try:
@@ -27,7 +26,7 @@ except:
 import sys
 from common import common_config_ini
 from common import common_logging
-
+from common import common_version
 
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory

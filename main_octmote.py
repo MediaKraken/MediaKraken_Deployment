@@ -35,6 +35,7 @@ from common import common_roku_network
 from common import common_serial
 from common import common_ssdp
 from common import common_network_telnet
+from common import common_version
 
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
@@ -228,7 +229,7 @@ class OctMoteApp(App):
                                    'Client' : "Android",
                                    'Device' : "Samsung Galaxy SIII",
                                    'DeviceId' : uniqueid.id,
-                                   'Version' : __version__}
+                                   'Version' : common_version.APP_VERSION}
         # go back to main menu
         self.root.ids._screen_manager.current = 'Main_Remote'
 
