@@ -92,13 +92,14 @@ class AdminSettingsForm(Form):
     user_password_lock = SelectField('Lock account after failed attempts',\
         choices=[('Never', 'Never'), ('3', '3'), ('5', '5'), ('10', '10')])
     metadata_download_metadata = BooleanField('Download Metadata')
-    metadata_artwork_with_media = BooleanField('Download Artwork')
+    metadata_artwork_metadata = BooleanField('Download Artwork')
     #language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     #('Days', 'Days'), ('Weekly', 'Weekly')])
     #country = SelectField('Interval', choices=[('Hours', 'Hours'),\
     #('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
     metadata_path = TextField('Metadata Path', validators=[DataRequired(), Length(min=1, max=250)])
+    metadata_with_media = BooleanField('Metadata with Media')
     metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
     metadata_sub_episode_down = BooleanField('Download TV Subtitle')
     #meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\

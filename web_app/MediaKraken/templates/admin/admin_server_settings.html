@@ -37,8 +37,8 @@
                 {{form.metadata_download_metadata(placeholder="Download artwork and metadata from the internet", class_="form-control")}}
             </div>
             <div class="form-group">
-                {{form.metadata_artwork_with_media.label}}
-                {{form.metadata_artwork_with_media(placeholder="Artwork and metadata with media", class_="form-control")}}
+                {{form.metadata_artwork_metadata.label}}
+                {{form.metadata_artwork_metadata(placeholder="Artwork and metadata with media", class_="form-control")}}
             </div>
             <p>Preferred download language</p>
             <select name="Meta_Lang", id="meta_lang">
@@ -59,6 +59,10 @@
             <div class="form-group">
                 {{form.metadata_path.label}}
                 {{form.metadata_path(placeholder="Metadata Path", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.metadata_with_media.label}}
+                {{form.metadata_with_media(placeholder="Save metadata with media", class_="form-control")}}
             </div>
         </form>
         <p>nfo file support</p>
