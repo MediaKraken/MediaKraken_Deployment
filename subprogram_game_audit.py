@@ -24,7 +24,6 @@ import os
 import copy
 import zipfile
 import time
-import signal
 from StringIO import StringIO
 import multiprocessing
 from threading import Thread
@@ -34,21 +33,11 @@ SHA1 = hashlib.sha1()
 import os.path
 from common import common_config_ini
 from common import common_file
+from common import common_signal
 import pylzma
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
 
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD %6s: Received USR1' % pid)
-    # cleanup db
-    db_connection.db_rollback()
-    db_connection.db_close()
-    sys.stdout.flush()
-    sys.exit(0)
 
 lock = threading.Lock()
 
@@ -472,12 +461,8 @@ class GameAuditer(threading.Thread):
         return gameList
 
 if __name__ == '__main__':
-    # grab some dirs to scan and thread out the scans
-    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
-    else:
-        signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     gameAuditer = GameAuditer()
     gameAuditer.baseDirectories = ['../roms']
     gameAuditer.audit()

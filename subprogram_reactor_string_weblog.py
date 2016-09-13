@@ -25,17 +25,8 @@ from twisted.internet.protocol import Factory
 import sys
 from network import network_base_string_weblog as network_base
 from common import common_logging
+from common import common_signal
 import time
-import signal
-
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD Reactor String: Received USR1')
-    sys.stdout.flush()
-    sys.exit(0)
 
 
 class MediaKrakenServerApp(Factory):
@@ -54,11 +45,8 @@ class MediaKrakenServerApp(Factory):
 
 
 if __name__ == '__main__':
-    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
-    else:
-        signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-        signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # setup for the ssl keys
     reactor.listenSSL(8901, MediaKrakenServerApp(),\
         ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))

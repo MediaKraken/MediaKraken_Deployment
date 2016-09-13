@@ -23,6 +23,12 @@ import os
 from common import common_config_ini
 from common import common_cloud
 from common import common_logging
+from common import common_signal
+
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Backup')

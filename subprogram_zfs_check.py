@@ -18,22 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import sys
 from common import common_config_ini
 from common import common_logging
 from common import common_zfs
-
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD ZFS Health Scan: Received USR1')
-    # cleanup db
-    db_connection.db_rollback()
-    db_connection.db_close()
-    sys.stdout.flush()
-    sys.exit(0)
 
 
 # start logging

@@ -22,6 +22,11 @@ import subprocess
 import sys
 import getopt
 from common import common_logging
+from common import common_signal
+
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 
 def main(argv):

@@ -18,27 +18,18 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import sys
 from common import common_config_ini
 from common import common_hardware_hdhomerun
 from common import common_logging
 from common import common_string
+from common import common_signal
 import json
-import signal
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD Tuner Scan: Received USR1')
-    # cleanup db
-    db_connection.db_rollback()
-    db_connection.db_close()
-    sys.stdout.flush()
-    sys.exit(0)
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 
 # start logging
@@ -52,14 +43,6 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Start', None,\
     'System: Server Tuner Scan Start', 'ServerTunerScanStart', None, None, 'System')
-
-
-# grab some dirs to scan and thread out the scans
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
-else:
-    signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-    signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 
 tuners_added = 0
