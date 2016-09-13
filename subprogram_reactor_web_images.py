@@ -39,7 +39,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Image
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 # read in paths to add to reactor
 root = Resource()
-root.putChild('static/prox/' + option_config_json['MediaKrakenServer']['MetadataImageLocal'])
+root.putChild('static/prox/1', File(option_config_json['MediaKrakenServer']['MetadataImageLocal']))
 for row_data in db_connection.db_audit_paths():
     root.putChild('static/prox/' + row_data['mm_media_dir_guid'],\
         File(row_data['mm_media_dir_path']))
