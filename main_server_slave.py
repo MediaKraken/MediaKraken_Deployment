@@ -29,6 +29,7 @@ except:
 import sys
 from common import common_config_ini
 from common import common_logging
+from common import common_signal
 from common import common_system
 from common import common_version
 from twisted.internet.protocol import ClientFactory
@@ -62,16 +63,6 @@ class RepeatTimer(Thread):
 
     def cancel(self):
         self.finished.set()
-
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD Slave: Received USR1')
-    os.kill(proc_ffserver.pid)
-    sys.stdout.flush()
-    sys.exit(0)
 
 
 class TheaterClient(Int32StringReceiver):
@@ -200,6 +191,8 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)

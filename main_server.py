@@ -24,6 +24,7 @@ import signal
 import os
 from common import common_config_ini
 from common import common_logging
+from common import common_signal
 from common import common_watchdog
 rmda_enabled_os = False
 try:
@@ -33,33 +34,8 @@ except:
     pass
 
 
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    logging.info('CHILD Main: Received USR1')
-    os.kill(proc.pid, signal.SIGTERM)
-    os.kill(proc_image.pid, signal.SIGTERM)
-    os.kill(proc_cron.pid, signal.SIGTERM)
-    os.kill(proc_broadcast.pid, signal.SIGTERM)
-    os.kill(proc_ffserver.pid, signal.SIGTERM)
-    os.kill(proc_web_app.pid, signal.SIGTERM)
-    os.kill(proc_trigger, signal.SIGTERM)
-    os.kill(proc_api, signal.SIGTERM)
-    for link_data in link_pid.keys():
-        os.kill(link_pid[link_data], signal.SIGTERM)
-    # stop watchdog
-    watchdog.com_watchdog_stop()
-    # cleanup db
-    db_connection.db_rollback()
-    # log stop
-    db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
-        'ServerStop', None, None, 'System')
-    # commit
-    db_connection.db_commit()
-    db_connection.db_close()
-    sys.stdout.flush()
-    sys.exit(0)
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 
 # start logging
@@ -98,13 +74,6 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
         'ServerStart', None, None, 'System')
-
-
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
-else:
-    signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-    signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
 
 
 # look for infiniband rdma devices

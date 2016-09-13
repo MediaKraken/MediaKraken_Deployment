@@ -33,6 +33,7 @@ from common import common_mediakraken
 from common import common_network
 from common import common_roku_network
 from common import common_serial
+from common import common_signal
 from common import common_ssdp
 from common import common_network_telnet
 from common import common_version
@@ -1896,6 +1897,8 @@ class OctMoteApp(App):
 
 
 if __name__ == '__main__':
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
     Builder.load_file('kivy_layouts/main.kv')
     Builder.load_file('kivy_layouts/OctMote_KV_Layout_Load_Dialog.kv')

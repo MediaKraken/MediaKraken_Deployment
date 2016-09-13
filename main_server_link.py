@@ -26,8 +26,8 @@ except:
 import sys
 from common import common_config_ini
 from common import common_logging
+from common import common_signal
 from common import common_version
-
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
@@ -35,15 +35,6 @@ from twisted.protocols.basic import Int32StringReceiver
 
 networkProtocol = None
 metaapp = None
-
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    print('CHILD Link: Received USR1')
-    sys.stdout.flush()
-    sys.exit(0)
 
 
 class TheaterClient(Int32StringReceiver):
@@ -193,4 +184,6 @@ class MediaKrakenApp(object):
 
 
 if __name__ == '__main__':
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     MediaKrakenApp().build()

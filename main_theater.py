@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_logging
+from common import common_signal
 from common import common_version
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -27,7 +28,6 @@ try:
 except:
     import pickle
 import logging # pylint: disable=W0611
-import sys
 #install_twisted_rector must be called before importing the reactor
 from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
@@ -654,6 +654,8 @@ class MediaKrakenApp(App):
 
 
 if __name__ == '__main__':
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
     Builder.load_file('kivy_layouts/main.kv')
     Builder.load_file('kivy_layouts/KV_Layout_Load_Dialog.kv')
