@@ -1,0 +1,46 @@
+win7
+all patches.....
+
+install 32b python 2.7.12
+# pip is included in python on windows
+
+#
+smartgit
+clone deployment to docs/github
+clone submodules to docs/sub
+
+# make sure you have the newest version
+python -m pip install --upgrade pip wheel setuptools
+
+grab vc for python
+http://aka.ms/vcpython27
+
+pip install --upgrade -r pipeline-build-os-pip-server-windows.txt
+
+
+fails
+Adafruit_BBIO
+easysnmp
+python-ldap
+lxml
+
+
+instlal inno setup unicode version
+
+
+-----------------
+
+install postgresql
+metamanpg pass
+
+create metamandb
+and user metamanpg
+new option, new login role
+change owner of metamandb
+
+
+
+
+
+populate db via db_setup.py
+

@@ -1,0 +1,126 @@
+# this is for dev purposes now
+# to create the server follow instructions in Meta-Man.Build
+
+install from 10.3 RElease
+
+esxi6
+other
+freebsd 64 bit
+
+vmxnet3 for 40gb
+
+no distribution select
+
+
+ufs
+entire
+gpt
+
+dhcp
+
+sshd
+ntpd
+** shoulda added the ports thingie
+remove dumpdev
+
+reboot
+
+freebsd-update fetch
+freebsd-update install
+reboot
+
+# if in VM
+pkg install open-vm-tools
+
+*************************************
+# if u want su access to user
+pw user mod spoot -G wheel
+
+pkg install git nginx postgresql95-server autoconf automake autoconf autogen devel/py-pip unzip cmake redis cython nano
+
+libxml2-dev
+
+**** stuff from ubuntu
+libibverbs-dev python-dev nbd-client nfs-common python-babelfish python-cddb python-libdiscid sqlitebrowser libffi-dev  python-redis ack-grep libxslt-dev lib32z1-dev libsnmp-dev libpcre3 libpcre3-dev cifs-utils yasm shtool libtool libsmbclient-dev libhdhomerun-dev
+****
+
+# clone codebase
+mkdir /home/metaman/github
+cd /home/metaman/github
+git clone https://github.com/Meta-Man/Meta-Man.Build
+git clone https://github.com/Meta-Man/Meta-Man.Common
+git clone https://github.com/Meta-Man/Meta-Man.Server
+
+
+
+******* below todo yet
+AS USER!!!!!!!! (bah, as root as see what breaks)
+# pip and stuff
+pip install --upgrade pip
+cd /usr/home/metaman/github/Meta-Man.Build/build_deployment_scripts
+pip install 'requests[security]' --upgrade
+pip install -r pip_packages_freebsd.txt
+
+
+# build newer source
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+tar -xvzf psutil*
+cd psutil-release-4.2.0
+sudo python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+unzip isoparser-master.zip
+cd isoparser-master
+python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+tar -xvzf python-rdma*
+cd python-rdma-python-rdma-0.3
+sudo python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+unzip requests-master.zip
+cd requests-master
+sudo python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+tar -xvzf ip2c*
+cd ip2c*
+sudo python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+tar -xvzf pythonfutures*
+cd pythonfutures-3.0.5
+sudo python setup.py install
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+unzip libhdhomerun-master.zip
+cd libhdhomerun-master
+sudo cp *.h /usr/include/libhdhomerun/.
+make
+sudo cp libhdhomerun.so /usr/lib/libhdhomerun.so.1.0.0
+
+sudo ldconfig
+
+cd /usr/home/metaman/github/Meta-Man.Build/lib
+unzip libhdhomerun_python-master.zip
+cd libhdhomerun_python-master
+sudo python setup.py install
+
+
+
+# setup to autostart
+vmware_guest_vmblock_enable="YES"
+vmware_guest_vmhgfs_enable="YES"
+vmware_guest_vmmemctl_enable="YES"
+vmware_guest_vmxnet_enable="YES"
+vmware_guestd_enable="YES"
+postgresql_enable="YES"
+redis_enable="YES"
+* to /etc/rc.conf
+
+# add to fstab
+fdesc	/dev/fd		fdescfs		rw	0	0
+
+# redis setup
+/usr/local/etc/redis.conf

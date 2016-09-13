@@ -1,0 +1,13 @@
+x64 3.4.3
+
+vnx3
+16g disk  lvm/os
+4096 mem
+64 mem video
+hostname
+mkserver	mkslave		mktheater
+
+pass: metaman
+UTC
+
+flip cdrom to client device and disconnect

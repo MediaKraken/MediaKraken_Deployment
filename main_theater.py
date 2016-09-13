@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-__version__ = '0.1.6'
 from common import common_logging
+from common import common_version
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import platform
@@ -123,13 +123,13 @@ class TheaterFactory(ClientFactory):
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
         MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
-            'Lost connection to MediaKraken_server.')
+            'Lost connection to MediaKraken server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
         MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
-            'Could not connect to MediaKraken_server.')
+            'Could not connect to MediaKraken server.')
 
 
     def buildProtocol(self, addr):

@@ -1,0 +1,14 @@
+PATHAPP="/home/metaman/Meta-Man.Server/main.py &"
+PIDAPP="/var/mm_slave.pid"
+case $1 in
+        start)
+                echo "starting"
+                $(python $PATHAPP)
+        ;;
+        stop)
+                echo "stoping"
+                PID=$(cat $PIDAPP)
+                kill $PID
+        ;;
+
+esac

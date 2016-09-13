@@ -1,0 +1,49 @@
+# this is for dev purposes now
+# to create the slave follow instructions in Meta-Man.Build
+
+present 8gb lun
+boot from alpine linux 3.2.3 x64 Vanilla iso
+install to hd selecting lvmsys
+
+# update the system
+apk update
+apk upgrade
+apk add tzdata readline-dev tcl-dev python-dev libxml2-dev git cython-dev
+apk add yasm cmake autoconf automake bash
+apk add gettext-dev freetype-dev py-openssl libtool
+apk add py-setuptools build-base alpine-sdk linux-headers
+apk add py-six libffi-dev py-crypto py-pip nfs-utils cifs-utils
+
+rc-update add nfsmount default
+
+# add user
+add user metaman
+su metaman
+
+# grab metaman code
+mkdir ~/github
+cd ~/github
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Build
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Common
+git clone -b dev https://github.com/Meta-Man/Meta-Man.Server
+
+# as root again
+cd /home/metaman/github/Meta-Man.Build/lib
+tar xvjf Twisted*
+cd Twisted-15.4.0
+python setup.py install
+
+tar -xvzf pyutil*
+python setup.py install
+
+cp ffpmeg bins from master server images
+cp host/* /usr/local/bin/
+
+# as root
+pip install --upgrade pip
+pip install cryptography
+pip install service_identity
+
+mount up file system with nfsvers=3
+
+rm -R ~/github/Meta-Man/Meta-Man.Build

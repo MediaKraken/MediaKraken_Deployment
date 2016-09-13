@@ -15,7 +15,7 @@
         <a href= {{ "../vimeo_detail/" + row_data[1] }} > {{row_data[0]}}</a>
         {% else %}
         <a href= {{ "../vimeo_detail/" + row_data[1] }} >
-        <img src= {{ "../../static/meta/images/" + row_data[2].replace('../','') }} height="300" width="200">
+        <img src= {{ "../../static/meta/images/" + row_data[2] }} height="300" width="200">
         </a>
         {% endif %}
         {% endfor %}

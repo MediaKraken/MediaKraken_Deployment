@@ -233,21 +233,6 @@ def pitchfork(thread_db, download_data):
         pass
 
 
-# they went pay only
-#@ratelimited(common_metadata_limiter.API_LIMIT['rotten_tomatoes'][0]\
-#     / common_metadata_limiter.API_LIMIT['rotten_tomatoes'][1])
-#def rotten_tomatoes(thread_db, download_data):
-#    """
-#    Rate limiter for Rotten Tomatoes
-#    """
-#    logging.debug("here i am in rotten_tomatoes rate %s",\
-#        datetime.datetime.now().strftime("%H:%M:%S.%f"))
-#    if download_data['mdq_download_json']['Status'] == "Search":
-#        pass
-#    elif download_data['mdq_download_json']['Status'] == "Fetch":
-#        pass
-
-
 @ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]\
      / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
 def televisiontunes(thread_db, download_data):
@@ -310,23 +295,27 @@ def themoviedb(thread_db, download_data):
     """
     logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_uuid = metadata_movie.movie_search_tmdb(thread_db,\
+        metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
-        if metadata_uuid is None:
+        # if match_result is an int, that means the lookup found a match but isn't in db
+        if metadata_uuid is None and type(match_result) != int:
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
         else:
-            thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
-                metadata_uuid)
-            # determine if the metadata is not downloaded
-            if thread_db.db_meta_guid_by_tmdb(\
-                    download_data['mdq_download_json']['ProviderMetaID']) is None:
+            if metadata_uuid is None:
+                # not in the db so mark fetch
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
                 download_data['mdq_download_json'].update({'Status': 'Fetch'})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                     download_data['mdq_id'])
             else:
+                # update with found metadata uuid from db
+                thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
+                    metadata_uuid)
+                # found so remove from download que
                 thread_db.db_Download_Delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        if download_data['mdq_download_json']['ProviderMetaID'][0:2] != 'tt': # imdb id check
+        logging.debug('themoviedb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
+        if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
                 download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
@@ -426,62 +415,62 @@ def worker(content_providers):
     logging.debug("name: %s", content_providers)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
-#    while True:
-    for row_data in thread_db.db_download_read_provider(content_providers):
-        logging.debug("row: %s", row_data)
-        # mdq_id,mdq_download_json
-        if content_providers == 'anidb':
-            anidb(thread_db, row_data)
-        elif content_providers == 'chart_lyrics':
-            chart_lyrics(thread_db, row_data)
-        elif content_providers == 'comicvine':
-            comicvine(thread_db, row_data)
-        elif content_providers == 'giantbomb':
-            giantbomb(thread_db, row_data)
-        elif content_providers == 'imdb':
-            imdb(thread_db, row_data)
-        elif content_providers == 'imvdb':
-            imvdb(thread_db, row_data)
-        elif content_providers == 'netflixroulette':
-            netflixroulette(thread_db, row_data)
-        elif content_providers == 'omdb':
-            omdb(thread_db, row_data)
-        elif content_providers == 'pitchfork':
-            pitchfork(thread_db, row_data)
-        elif content_providers == 'televisiontunes':
-            televisiontunes(thread_db, row_data)
-        elif content_providers == 'theaudiodb':
-            theaudiodb(thread_db, row_data)
-        elif content_providers == 'thegamesdb':
-            thegamesdb(thread_db, row_data)
-        elif content_providers == 'thelogodb':
-            thelogodb(thread_db, row_data)
-        elif content_providers == 'themoviedb':
-            themoviedb(thread_db, row_data)
-        elif content_providers == 'thesportsdb':
-            thesportsdb(thread_db, row_data)
-        elif content_providers == 'thetvdb':
-            thetvdb(thread_db, row_data)
-        elif content_providers == 'tv_intros':
-            tv_intros(thread_db, row_data)
-        elif content_providers == 'tvmaze':
-            tvmaze(thread_db, row_data)
-        elif content_providers == 'tvshowtime':
-            tvshowtime(thread_db, row_data)
-        elif content_providers == 'Z':
-            metadata_uuid = metadata_identification.metadata_identification(thread_db,\
-                class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                row_data['mdq_download_json']['Path'], row_data['mdq_download_json'],\
-                row_data['mdq_id'])
-            # update the media row with the json media id AND THE proper NAME!!!
-            if metadata_uuid is not None:
-                logging.debug("update: %s %s",\
-                    row_data['mdq_download_json']['MediaID'], metadata_uuid)
-                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
-                    metadata_uuid)
-                thread_db.db_download_delete(row_data['mdq_id'])
-    time.sleep(1)
-    thread_db.db_commit()
+    while True:
+        for row_data in thread_db.db_download_read_provider(content_providers):
+            logging.debug("row: %s", row_data)
+            # mdq_id,mdq_download_json
+            if content_providers == 'anidb':
+                anidb(thread_db, row_data)
+            elif content_providers == 'chart_lyrics':
+                chart_lyrics(thread_db, row_data)
+            elif content_providers == 'comicvine':
+                comicvine(thread_db, row_data)
+            elif content_providers == 'giantbomb':
+                giantbomb(thread_db, row_data)
+            elif content_providers == 'imdb':
+                imdb(thread_db, row_data)
+            elif content_providers == 'imvdb':
+                imvdb(thread_db, row_data)
+            elif content_providers == 'netflixroulette':
+                netflixroulette(thread_db, row_data)
+            elif content_providers == 'omdb':
+                omdb(thread_db, row_data)
+            elif content_providers == 'pitchfork':
+                pitchfork(thread_db, row_data)
+            elif content_providers == 'televisiontunes':
+                televisiontunes(thread_db, row_data)
+            elif content_providers == 'theaudiodb':
+                theaudiodb(thread_db, row_data)
+            elif content_providers == 'thegamesdb':
+                thegamesdb(thread_db, row_data)
+            elif content_providers == 'thelogodb':
+                thelogodb(thread_db, row_data)
+            elif content_providers == 'themoviedb':
+                themoviedb(thread_db, row_data)
+            elif content_providers == 'thesportsdb':
+                thesportsdb(thread_db, row_data)
+            elif content_providers == 'thetvdb':
+                thetvdb(thread_db, row_data)
+            elif content_providers == 'tv_intros':
+                tv_intros(thread_db, row_data)
+            elif content_providers == 'tvmaze':
+                tvmaze(thread_db, row_data)
+            elif content_providers == 'tvshowtime':
+                tvshowtime(thread_db, row_data)
+            elif content_providers == 'Z':
+                metadata_uuid = metadata_identification.metadata_identification(thread_db,\
+                    class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                    row_data['mdq_download_json'], row_data['mdq_id'])
+                # update the media row with the json media id AND THE proper NAME!!!
+                if metadata_uuid is not None:
+                    logging.debug("update: %s %s",\
+                        row_data['mdq_download_json']['MediaID'], metadata_uuid)
+                    thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
+                        metadata_uuid)
+                    thread_db.db_download_delete(row_data['mdq_id'])
+        thread_db.db_commit()
+        time.sleep(1)
+        break # TODO for now testing.......
     thread_db.db_close()
     return
 

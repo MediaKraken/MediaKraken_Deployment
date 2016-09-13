@@ -26,18 +26,15 @@ from common import common_file
 
 
 # return file modfication date in datetime format
-@pytest.mark.parametrize(("file_name"), [
-    ("./cache/cache.iso"),
-    ("./cache/cache_fake.iso")])
-def test_common_file_modification_timestamp(file_name):
+@pytest.mark.parametrize(("file_name", "expected_result"), [
+    ("./cache/cache.iso", True),
+    ("./cache/cache_fake.iso", None)])
+def test_common_file_modification_timestamp(file_name, expected_result):
     """
     Test function
     """
-    if file_name == "./cache/cache.iso":
-        assert isinstance(common_file.com_file_modification_timestamp(file_name),\
-            datetime.datetime) == True
-    else:
-        assert common_file.com_file_modification_timestamp(file_name) is None
+    assert isinstance(common_file.com_file_modification_timestamp(file_name, expected_result),\
+        datetime.datetime) == expected_result
 
 
 # save data as file

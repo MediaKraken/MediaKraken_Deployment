@@ -13,13 +13,13 @@
 {% if data %}
   <div id="movie_detail">
       {% if data_background_image is not none %}
-          <img alt="fs_bg_image" src= {{ "../../../static/meta/images/" + data_background_image.replace('../','') }} id="fs_bg_image" >
+          <img alt="fs_bg_image" src= {{ "../../../static/meta/images/" + data_background_image }} id="fs_bg_image" >
       {% endif %}
       <div id="movie_image_div" class="table-responsive">
           {% if data_poster_image is none %}
               <img class="center" src= {{ "../../../static/images/Missing_Icon.png" }} >
           {% else %}
-              <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image.replace('../','') }} >
+              <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image }} >
           {% endif %}
         <table class="table table-hover">
         <tbody>
@@ -69,7 +69,7 @@
                       {% if data_episode_count[episode_info][1] == "Missing_Icon.png" %}
                           <img src= {{ "../../../static/images/Missing_Icon.png" }} alt= {{ "../../../static/meta/images/Missing_Icon.png" }} height="200" width="300">
                       {% else %}
-                          <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1].replace(data_image_local,"") }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1].replace(data_image_local,"") }} height="210" width="350">
+                          <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] }} height="210" width="350">
                       {% endif %}
                       </a>
                         <div class="description">  

@@ -1,0 +1,30 @@
+sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/postgres.list
+sudo apt-get install wget ca-certificates
+sudo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql-9.5
+
+
+sudo service postgresql stop
+sudo su postgres
+pg_dropcluster 9.5 main
+pg_upgradecluster 9.4 main
+pg_dropcluster 9.4 main
+exit
+sudo service postgresql restart
+
+
+
+***********
+boxes to update
+**octspoo
+**prod
+**dev
+link 1
+link 2
+link 3
+ova
+virtuabox ova
+
+* just gneral notes
+pg_createcluster 9.5 main

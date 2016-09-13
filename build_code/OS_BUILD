@@ -1,0 +1,56 @@
+# this is the base for server and slave os's
+Install Alpine 3.2.3 x64
+16GB scsi
+10gb vnet3
+lvm
+sys
+UTC timezone
+
+# build process for the following vm's
+apk add git
+git clone https://github.com/MediaKraken/MediaKraken_Deployment
+cd MediaKraken_Deployment
+
+# MM Server OS Build
+mmserver
+10.0.0.22
+root/mediakraken
+adduser mediakraken
+./scripts/build_server_os.sh
+OVA: MK_Server_OS_Build
+
+# MM Server Slave OS Deploy (don't need a build, as copy from main server)
+mmslave
+10.0.0.23
+root/mediakraken
+OVA: MM_Server_Slave_OS_Deploy
+adduser mediakraken
+apk add py-pip nfs-utils cifs-utils cmake alpine-sdk python-dev linux-headers libffi-dev openssl-dev
+pip install --upgrade pip
+pip install twisted
+pip install psutil
+pip install pyopenssl
+pip install service_identity
+rc-update add nfsmount default
+then run the deploy_slave_os.sh script in mm_server_os_build
+poweroff
+snap OVA
+xfer to website for downloads
+
+# MM Theater OS Build
+# this install is built on mint 17.2
+theateros
+10.0.0.84
+mediakraken/mediakraken
+./scripts/build_theater_os.sh
+in mediakraken home dir
+############# out of date!!!!!!!!!!!!!!!!!
+git clone https://github.com/MediaKraken/MediaKraken_OS
+OVA: MK_Theater_OS_Build
+
+# MM Windows Build
+Windows 2003?
+32-bit!
+64G scsi
+kick up vid mem to 64m
+

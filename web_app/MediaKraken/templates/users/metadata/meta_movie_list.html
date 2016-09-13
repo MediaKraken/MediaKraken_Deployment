@@ -30,7 +30,7 @@
                 {% endif %}
                 {% else %}
                 <a href= {{ "../meta_movie_detail/" + row_data[0] }} >
-                <img src= {{ "../../static/meta/images/" + row_data[3].replace(image_location,'').replace('../','') }} height="300" width="200">
+                <img src= {{ "../../static/meta/images/" + row_data[3] }} height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[2]}}</p>

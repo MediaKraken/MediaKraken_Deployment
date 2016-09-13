@@ -1,0 +1,20 @@
+mini 16.04
+
+4096 mem
+16g disk
+
+metaman/metaman
+
+mkserver	mkslave		mktheater
+
+no autopatch
+
+openssh server
+utc
+apt-get update on 8/27/2016
+
+theater = xubuntu minimal (fires up gui fine)
+
+ended up being 16.04.01 during network install
+
+remove cd drive

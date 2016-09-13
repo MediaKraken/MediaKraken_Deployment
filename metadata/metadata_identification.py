@@ -32,11 +32,12 @@ from . import metadata_sports
 from . import metadata_tv
 
 
-def metadata_identification(db_connection, class_text, media_file_path, download_que_json,\
+def metadata_identification(db_connection, class_text, download_que_json,\
         download_que_id):
     """
     Determine which provider to start lookup via class text
     """
+    media_file_path = download_que_json['Path']
     logging.debug("Ident: %s %s %s %s", class_text, media_file_path, download_que_json,\
         download_que_id)
     metadata_uuid = None
