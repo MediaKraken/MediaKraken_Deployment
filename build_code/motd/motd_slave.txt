@@ -1,0 +1,5 @@
+Welcome to MediaKraken Slave Server!
+
+This is a dedicated OS build based on Alpine Linux for the MediaKraken Server Slave application. 
+
+Enjoy!

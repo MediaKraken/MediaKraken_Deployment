@@ -1,0 +1,17 @@
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+
+sudo apt-get install rpm2cpio bridge-utils expect ruby
+grab sdk
+chmod +x 
+run
+
+install
+
+run tizen update manager
+update/download/install all
+
+cancel emulator
+

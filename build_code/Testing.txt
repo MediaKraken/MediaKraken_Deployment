@@ -1,0 +1,27 @@
+file scan with no media dirs
+
+new user
+    have to flag user as admin and relog
+
+add dirs just fine to media dir
+kick off scan adds trigger
+
+runngin trigger program seperately....
+    seems to kick off subprograms fine
+    and removes the triggers as run
+
+
+running match program seperately.....
+    runs
+
+
+movie detail crash
+    
+
+
+
+loading tested...done
+python db_setup_bulk_themoviedb_netfetch.py - meta and images are fine along with cast/crew
+db_setup_bulk_freedb.py - loads files from local
+
+python db_setup_bulk_tvmaze_netfetch.py - meta and "blank" images are fine

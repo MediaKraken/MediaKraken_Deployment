@@ -1,0 +1,41 @@
+# ini files and such - categories
+http://www.mameworld.info/mameinfo/download/Mameinfo%20+%20MAMEUI-inifiles-0170%20(r44909).7z
+# Mameinfo dir can go away
+copy the MAMEUI-inifiles
+
+# mame history - mame game descriptions and such
+http://www.arcade-history.com/dats/history170.7z
+
+# get messinfo.dat - includes softwarelist now
+http://www.progettosnaps.net/messinfo/
+
+# game hashs for mame.....are in mame windows download in hash
+
+
+
+Run the following to build the metadata
+Step 2 - insert mame json data - about 38k rows
+Step 6 - insert "mess" hashes -
+
+***************
+mv MAME 0.169 EXTRAs/* to arcade/.
+mv MAME 0.170 ROMs/* to aracde/roms/.
+mv MAME 0.170 CHDs/* to arcade/roms/.
+
+eh, maybe should combine these........
+
+# arcade stuff
+arcade
+	roms
+	dir = chd
+	extras
+
+mv MAME 0.170 Software List ROMs/* to roms/.
+mv MAME 0.169 Software List CHDs/* to roms/.
+then CP -R
+
+# mess stuff
+roms
+	dir = system
+	dir-dir = system/chd
+extras

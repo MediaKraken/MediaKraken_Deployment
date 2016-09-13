@@ -1,0 +1,13 @@
+pytest
+pytest-xdist
+pytest-selenium
+selenium
+coverage
+pytest-cov
+tox
+pyflakes
+requests
+pyvmomi
+pyvbox
+pyinstaller
+paramiko

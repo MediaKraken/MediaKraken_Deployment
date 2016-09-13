@@ -1,0 +1,18 @@
+server {
+    root /home/metaman/github/MediaKraken_Deployment/web_log;
+    listen      80;
+    server_name localhost;
+    charset     utf-8;
+    client_max_body_size 75M;
+    access_log /var/log/nginx/debug_log.net_access.log;
+    error_log /var/log/nginx/debug_log.net_error.log;
+
+    location  /static {
+      alias  /home/metaman/github/MediaKraken_Deployment/web_log/WebLog/;
+    }
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/debug_uwsgi.sock;
+    }
+}

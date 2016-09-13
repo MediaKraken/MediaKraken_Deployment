@@ -1,0 +1,11 @@
+*.19-Mar-2015_ 80000.sql
+*.sql
+*.list
+*.actresses.list.swp
+*.swp
+/metamanpg
+*.backup
+/mbdump.tar.bz2
+/freedb-complete-20150701.tar.bz2
+/thetvdbpublic.sql.bz2
+/Jan-22-2015.rar

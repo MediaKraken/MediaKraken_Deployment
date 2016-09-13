@@ -1,0 +1,146 @@
+# for dev purposes......use build
+
+installed from mini ubuntu 15.10 iso
+install with LVM
+max for space (16gb lun presented)
+
+host:
+mmprod
+
+user/pass:
+metaman/metaman
+
+no autoupdates
+
+openssh server
+
+grub to masterloader
+UTC
+
+*********** after install
+
+# grab newest updates
+sudo apt-get update && sudo apt-get upgrade
+# if kernel update
+sudo reboot
+
+# install postgresql and rest of deps
+sudo apt-get install postgresql-9.4 postgresql-client-9.4 postgresql-server-dev-9.4 git python-pip build-essential libibverbs-dev python-dev nbd-client nfs-common python-babelfish python-cddb python-libdiscid sqlitebrowser libffi-dev nginx cython python-redis redis-server ack-grep libxml2-dev libxslt-dev lib32z1-dev libsnmp-dev libpcre3 libpcre3-dev cifs-utils yasm autoconf automake autoconf autogen shtool libtool libsmbclient-dev cmake unzip libhdhomerun-dev ntp libjpeg libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev libldap2-dev libsasl2-dev portaudio19-dev python-pylirc default-jdk arduino
+
+# if in vmware
+sudo apt-get install open-vm-tools
+
+
+# clone codebase
+mkdir /home/metaman/github
+cd /home/metaman/github
+git clone https://github.com/Meta-Man/Meta-Man.Build
+git clone https://github.com/Meta-Man/Meta-Man.Common
+git clone https://github.com/Meta-Man/Meta-Man.Server
+
+
+# pip and stuff
+sudo easy_install pip
+cd /home/metaman/github/Meta-Man.Build/build_deployment_scripts
+sudo pip install requests[security] --upgrade
+sudo pip install -r pip_packages_ubuntu.txt
+
+
+# build newer source
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf psutil*
+cd psutil-4.3.0
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip isoparser-master.zip
+cd isoparser-master
+python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf python-rdma*
+cd python-rdma-python-rdma-0.3
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip requests-master.zip
+cd requests-master
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf ip2c*
+cd ip2c*
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+tar -xvzf pythonfutures*
+cd pythonfutures-3.0.5
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip NetflixRouletteAPI-5.0.zip
+cd NetflixRouletteAPI-5.0
+sudo python setup.py install
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip libhdhomerun-master.zip
+cd libhdhomerun-master
+sudo cp *.h /usr/include/libhdhomerun/.
+make
+sudo cp libhdhomerun.so /usr/lib/libhdhomerun.so.1.0.0
+
+sudo ldconfig
+
+cd /home/metaman/github/Meta-Man.Build/lib
+unzip libhdhomerun_python-master.zip
+cd libhdhomerun_python-master
+sudo python setup.py install
+
+
+# setup postgresql user
+sudo su - postgres
+psql
+CREATE USER metamanpg WITH PASSWORD 'metamanpg';
+CREATE DATABASE metamandb OWNER metamanpg;
+\q
+exit
+
+
+# optional ease of postgresql admin
+sudo nano /etc/postgresql/9.4/main/postgresql.conf
+add "listen_addresses = '*'"
+sudo nano /etc/postgresql/9.4/main/pg_hba.conf
+# add host line for remote access (optional)
+sudo service postgresql restart
+
+
+# nginx setup
+# # might have to apt-get remove python-pip
+# easy_install pip
+sudo mkdir /var/log/uwsgi
+sudo pip install uwsgi 
+sudo apt-get install uwsgi-plugin-python
+
+copy the nginx file to /etc/nginx/sites-available/
+
+
+******************************************
+
+
+# setup share
+mkdir /home/spoot/nfsmount
+mount up the media share
+mkdir /tmp/instance
+chmod -R 777 /tmp/instance
+
+
+# setup ffmpeg
+# this should TODO be from the build
+sudo apt-get install ffmpeg
+
+
+run script to create db schema
+
+****************
+reboot server to check everything starts up
+
