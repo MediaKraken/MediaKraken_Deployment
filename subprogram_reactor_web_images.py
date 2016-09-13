@@ -22,6 +22,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_signal
 from twisted.web.server import Site
+from twisted.web.resource import Resource
 from twisted.web.static import File
 from twisted.internet import reactor
 from twisted.internet import ssl
@@ -34,9 +35,15 @@ common_signal.com_signal_set_break()
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
+
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
-# simple reactor to present images to clients
-reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ImageWeb']),\
-    Site(File(option_config_json['MediaKrakenServer']['MetadataImageLocal'])),\
+# read in paths to add to reactor
+root = Resource()
+root.putChild('static/prox/' + option_config_json['MediaKrakenServer']['MetadataImageLocal'])
+for row_data in db_connection.db_audit_paths():
+    root.putChild('static/prox/' + row_data['mm_media_dir_guid'],\
+        File(row_data['mm_media_dir_path']))
+# create and launch reactor
+reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ImageWeb']), Site(root),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
