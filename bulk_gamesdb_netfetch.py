@@ -22,7 +22,7 @@ locale.setlocale(locale.LC_ALL, '')
 import json
 import xmltodict
 from common import common_config_ini
-from common import common_metadata_gamesdb
+from common import common_metadata_thegamesdb
 
 
 # init totals
