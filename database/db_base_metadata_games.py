@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import uuid
 
 
 def db_meta_game_system_by_guid(self, guid):
@@ -141,3 +142,16 @@ def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
         ' where gi_game_info_json->\'@name\' = %s and gi_system_id = %s',\
         (game_name, game_system_short_name))
     return self.db_cursor.fetchall()
+
+
+def db_meta_games_system_insert(self, platform_id, platform_name,\
+        platform_alias, platform_json=None):
+    """
+    # insert game system
+    """
+    new_guid = str(uuid.uuid4())
+    self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'\
+        ' gs_game_system_id, gs_game_system_name, gs_game_system_alias,'\
+        ' gs_game_system_json) values (%s, %s, %s, %s, %s)',\
+        (new_guid, platform_id, platform_name, platform_alias, platform_json))
+    return new_guid
