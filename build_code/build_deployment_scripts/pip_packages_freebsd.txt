@@ -43,7 +43,6 @@ oauth2client
 python-nest
 uritemplate
 feedgen
-gamesdb
 imdbpie
 nest
 twisted
