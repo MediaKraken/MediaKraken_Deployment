@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import sys
 from common import common_hardware_chromecast
 from common import common_logging
 from common import common_config_ini
