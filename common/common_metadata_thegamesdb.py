@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import xmltodict
 import requests
-from . import common_network
 
 
 class CommonMetadataGamesDB(object):
@@ -38,7 +37,7 @@ class CommonMetadataGamesDB(object):
         Get platform list
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformsList.php',\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_platform_by_id(self, platform_id):
@@ -46,7 +45,7 @@ class CommonMetadataGamesDB(object):
         Platform info by id
         """
         return xmltodict.parse(requests.get('GetPlatform.php?id=%s' % platform_id,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_by_name(self, game_name):
@@ -55,7 +54,7 @@ class CommonMetadataGamesDB(object):
         """
         return xmltodict.parse(requests.get('GetGamesList.php?name=%s'\
                                % game_name.replace(' ','%20'),\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_by_id(self, game_id):
@@ -63,7 +62,7 @@ class CommonMetadataGamesDB(object):
         # game by id
         """
         return xmltodict.parse(requests.get('GetGamesList.php?id=%s' % game_id,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_art_by_id(self, game_id):
@@ -71,7 +70,7 @@ class CommonMetadataGamesDB(object):
         # game by id
         """
         return xmltodict.parse(requests.get('GetArt.php?id=%s' % game_id,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_by_platform_id(self, platform_id):
@@ -79,7 +78,7 @@ class CommonMetadataGamesDB(object):
         Games by platform id
         """
         return xmltodict.parse(requests.get('GetPlatformGames.php?platform=%s' % platform_id,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_by_platform_name(self, platform_name):
@@ -87,7 +86,7 @@ class CommonMetadataGamesDB(object):
         Games by platform id
         """
         return xmltodict.parse(requests.get('PlatformGames.php?platform=%s' % platform_name,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
 
 
     def com_meta_gamesdb_games_updated_seconds(self, update_time):
@@ -95,4 +94,4 @@ class CommonMetadataGamesDB(object):
         Games updated in last n seconds
         """
         return xmltodict.parse(requests.get('Updates.php?time=%s' % update_time,\
-                               verify=False, headers=self.httpheaders))
+                               verify=False, headers=self.httpheaders).text)
