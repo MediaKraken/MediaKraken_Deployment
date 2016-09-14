@@ -39,7 +39,7 @@ db_connection.db_activity_insert('theGamesDB Batch Start', None,\
     'System: Server theGamesDB Start', 'ServerthegamesDBStart', None, None, 'System')
 
 
-GAMESDB_CONNECTION = common_metadata_gamesdb.CommonMetadataGamesDB()
+GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 
 # grab and insert all platforms
