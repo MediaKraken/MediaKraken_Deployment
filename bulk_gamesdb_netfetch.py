@@ -17,71 +17,64 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import ConfigParser
-Config = ConfigParser.ConfigParser()
-Config.read("../../MediaKraken.ini")
-
-import sys
-import json
-import xmltodict
-sys.path.append("../../")
-sys.path.append("../../common")
-from common import common_metadata_gamesdb
-import database as database_base
-
-# import localization
 import locale
 locale.setlocale(locale.LC_ALL, '')
+import json
+import xmltodict
+from common import common_config_ini
+from common import common_metadata_gamesdb
 
+
+# init totals
 total_game_systems = 0
 total_games = 0
+
+
 # open the database
-db = database_base.MKServerDatabase()
-db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),\
-     Config.get('DB Connections', 'PostDBPort').strip(),\
-     Config.get('DB Connections', 'PostDBName').strip(),\
-     Config.get('DB Connections', 'PostDBUser').strip(),\
-     Config.get('DB Connections', 'PostDBPass').strip())
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db.db_activity_insert('MediaKraken_Server theGamesDB Batch Start', None,\
+db_connection.db_activity_insert('theGamesDB Batch Start', None,\
     'System: Server theGamesDB Start', 'ServerthegamesDBStart', None, None, 'System')
 
 
-gamesdb_connection = common_metadata_gamesdb.CommonMetadataGamesDB()
+GAMESDB_CONNECTION = common_metadata_gamesdb.CommonMetadataGamesDB()
+
 
 # grab and insert all platforms
-for platform in gamesdb_connection.com_meta_gamesdb_platform_list():
+for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list():
     # fetch platform info
     platform_json\
-        = xmltodict.parse(gamesdb_connection.com_meta_gamesdb_platform_by_id(platform.id))
+        = xmltodict.parse(GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(platform.id))
     # store record
-    db.db_meta_gamesdb_system_insert(platform.id, platform.name, platform.alias,\
+    db_connection.db_meta_gamesdb_system_insert(platform.id, platform.name, platform.alias,\
         json.dumps(platform_json))
     # fetch all games for platform
     for game_data in xmltodict.parse(\
-            gamesdb_connection.com_meta_gamesdb_games_by_platform_id(platform.id)):
+            GAMESDB_CONNECTION.com_meta_gamesdb_games_by_platform_id(platform.id)):
         print("game_data %s", game_data)
 
+
 # log end
-db.db_activity_insert('MediaKraken_Server theGamesDB Batch Stop', None,\
+db_connection.db_activity_insert('theGamesDB Batch Stop', None,\
     'System: Server theGamesDB Stop', 'ServerthegamesDBStop', None, None, 'System')
 
 
 # send notications
 if total_games > 0:
-    db.db_notification_insert(locale.format('%d', total_games, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_games, True)\
         + " games(s) metadata added.", True)
 
+
 if total_game_systems > 0:
-    db.db_notification_insert(locale.format('%d', total_game_systems, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)\
         + " game system(s) metadata added.", True)
 
 
 # commit all changes
-db.db_commit()
+db_connection.db_commit()
 
 
 # close DB
-db.db_close()
+db_connection.db_close()
