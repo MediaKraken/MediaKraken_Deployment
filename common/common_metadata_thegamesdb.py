@@ -18,130 +18,77 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from gamesdb.api import API
+from . import common_network
+import xmltodict
 
-'''
-Game
-    id
-    title
-    release_date
-    platform
-    overview
-    esrb_rating
-    genres
-    players
-    coop
-    youtube_url
-    publisher
-    developer
-    rating
-    logo_url
 
-Platform
-    id
-    name
-    alias
-    console
-    controller
-    overview
-    developer
-    manufacturer
-    cpu
-    memory
-    graphics
-    sound
-    display
-    media
-    max_controllers
-    rating
-'''
-
-# setup class so I don't define the api resource unless I'm doing a lookup
 class CommonMetadataGamesDB(object):
     """
-    Class for interfacing with GamesDB
+    Class for interfacing with theGamesDB
     """
     def __init__(self):
-        self.gamesdb_api = API()
+        self.BASE_URL = 'http://thegamesdb.net/api/'
 
 
     def com_meta_gamesdb_platform_list(self):
         """
         Get platform list
         """
-        platform_list = self.gamesdb_api.get_platforms_list()
-        for platform in platform_list:
-            print(platform.id, "-", platform.name, "-", platform.alias)
-        return platform_list
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            self.BASE_URL + 'GetPlatformsList.php'))
 
 
     def com_meta_gamesdb_platform_by_id(self, platform_id):
         """
         Platform info by id
         """
-        game_platform = self.gamesdb_api.get_platform(platform_id)
-        print(game_platform.name)
-        print(game_platform.overview)
-        return game_platform
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'GetPlatform.php?id=%s', platform_id))
 
 
-    def com_meta_gamesdb_games_by_name_or(self, game_name):
+    def com_meta_gamesdb_games_by_name(self, game_name):
         """
-        # 'mega man' as mega OR man
+        # 'mega man'
         """
-        for game in self.gamesdb_api.get_game(name=game_name):
-            print(game.title)
-            print(game.platform)
-            print(game.release_date)
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'GetGamesList.php?name=%s', game_name.replace(' ','%20')))
 
 
-    def com_meta_gamesdb_games_by_name_and(self, game_name):
+    def com_meta_gamesdb_games_by_id(self, game_id):
         """
-        # 'mega man' as mega AND man
+        # game by id
         """
-        for game in self.gamesdb_api.get_games_list(name=game_name):
-            print(game.title)
-            print(game.platform)
-            print(game.release_date)
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'GetGamesList.php?id=%s', game_id))
 
 
-    def com_meta_gamesdb_games_by_name_and_platform_or(self, game_name, platform_name,\
-            game_genre=None):
+    def com_meta_gamesdb_games_art_by_id(self, game_id):
         """
-        Fetch games by name OR platform
+        # game by id
         """
-        for game in self.gamesdb_api.get_game(name=game_name, platform=platform_name,\
-                genre=game_genre):
-            print(game.title)
-            print(game.platform)
-
-
-    def com_meta_gamesdb_games_by_name_and_platform_and(self, game_name, platform_name,\
-            game_genre=None):
-        """
-        Fetch games by name AND platform
-        """
-        for game in self.gamesdb_api.get_games_list(name=game_name, platform=platform_name,\
-                genre=game_genre):
-            print(game.title)
-            print(game.platform)
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'GetArt.php?id=%s', game_id))
 
 
     def com_meta_gamesdb_games_by_platform_id(self, platform_id):
         """
         Games by platform id
         """
-        for game in self.gamesdb_api.get_platform_games(platform_id):
-            print(game.id, "-", game.title, "-", game.release_date)
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'GetPlatformGames.php?platform=%s', platform_id))
 
 
-    def com_meta_gamesdb_games_by_id(self, game_id):
+    def com_meta_gamesdb_games_by_platform_name(self, platform_name):
         """
-        Games by game id
+        Games by platform id
         """
-        game = self.gamesdb_api.get_game(id=game_id)
-        print(game.title)
-        print(game.overview)
-        print(game.genres)
-        print(game.developer)
-        return game
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'PlatformGames.php?platform=%s', platform_name))
+
+
+    def com_meta_gamesdb_games_updated_seconds(self, update_time):
+        """
+        Games updated in last n seconds
+        """
+        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
+            'Updates.php?time=%s', update_time))
