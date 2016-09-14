@@ -125,8 +125,8 @@ class MKServerDatabase(object):
         db_meta_game_system_list,\
         db_meta_game_list_count,\
         db_meta_game_list,\
-        db_meta_game_by_guid
-    from database.db_base_metadata_gamesdb import db_meta_gamesdb_system_insert
+        db_meta_game_by_guid,\
+        db_meta_games_system_insert
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew
     from database.db_base_metadata_music import db_music_lookup,\
         db_meta_musician_by_guid,\
