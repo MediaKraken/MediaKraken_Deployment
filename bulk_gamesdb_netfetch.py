@@ -43,7 +43,7 @@ GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 
 # grab and insert all platforms
-for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Data']['Platforms']:
+for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms']:
     print(platform)
     # fetch platform info
 #    platform_json\
