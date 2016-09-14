@@ -23,8 +23,8 @@ from common import common_logging
 from common import common_signal
 from twisted.web.server import Site
 from twisted.web.resource import Resource
-from twisted.web.static import File
 from twisted.internet import reactor
+from twisted.web.static import File
 from twisted.internet import ssl
 
 
@@ -37,6 +37,8 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Image
 
 
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
+
 # read in paths to add to reactor
 root = Resource()
 root.putChild('prox-1', File(option_config_json['MediaKrakenServer']['MetadataImageLocal']))
