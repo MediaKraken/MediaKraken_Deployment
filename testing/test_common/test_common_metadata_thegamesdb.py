@@ -51,7 +51,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Platform info by id
         """
-        self.gamesdb_connection.com_meta_gamesdb_platform_by_id(self, platform_id)
+        self.gamesdb_connection.com_meta_gamesdb_platform_by_id(platform_id)
 
 
     @pytest.mark.parametrize(("game_name"), [
@@ -61,7 +61,7 @@ class TestCommonMetadataGamesDB(object):
         """
         # 'mega man'
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_name(self, game_name)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_name(game_name)
 
 
     @pytest.mark.parametrize(("game_id"), [
@@ -71,7 +71,7 @@ class TestCommonMetadataGamesDB(object):
         """
         # game by id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_id(self, game_id)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_id(game_id)
 
 
     @pytest.mark.parametrize(("game_id"), [
@@ -81,7 +81,7 @@ class TestCommonMetadataGamesDB(object):
         """
         # game by id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_art_by_id(self, game_id)
+        self.gamesdb_connection.com_meta_gamesdb_games_art_by_id(game_id)
 
 
     @pytest.mark.parametrize(("platform_id"), [
@@ -91,7 +91,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(self, platform_id)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(platform_id)
 
 
     @pytest.mark.parametrize(("platform_name"), [
@@ -101,7 +101,7 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(self, platform_name)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(platform_name)
 
 
     @pytest.mark.parametrize(("update_time"), [
@@ -110,4 +110,4 @@ class TestCommonMetadataGamesDB(object):
         """
         Games updated in last n seconds
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(self, update_time)
+        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(update_time)
