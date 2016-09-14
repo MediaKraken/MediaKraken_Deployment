@@ -18,8 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from . import common_network
 import xmltodict
+import requests
+from . import common_network
 
 
 class CommonMetadataGamesDB(object):
@@ -28,67 +29,70 @@ class CommonMetadataGamesDB(object):
     """
     def __init__(self):
         self.BASE_URL = 'http://thegamesdb.net/api/'
+        self.httpheaders = {'Accept': 'application/json',\
+            'Content-Type': 'application/x-www-form-urlencoded'}
 
 
     def com_meta_gamesdb_platform_list(self):
         """
         Get platform list
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            self.BASE_URL + 'GetPlatformsList.php'))
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformsList.php',\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_platform_by_id(self, platform_id):
         """
         Platform info by id
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'GetPlatform.php?id=%s', platform_id))
+        return xmltodict.parse(requests.get('GetPlatform.php?id=%s' % platform_id,\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_by_name(self, game_name):
         """
         # 'mega man'
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'GetGamesList.php?name=%s', game_name.replace(' ','%20')))
+        return xmltodict.parse(requests.get('GetGamesList.php?name=%s'\
+                               % game_name.replace(' ','%20'),\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_by_id(self, game_id):
         """
         # game by id
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'GetGamesList.php?id=%s', game_id))
+        return xmltodict.parse(requests.get('GetGamesList.php?id=%s' % game_id,\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_art_by_id(self, game_id):
         """
         # game by id
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'GetArt.php?id=%s', game_id))
+        return xmltodict.parse(requests.get('GetArt.php?id=%s' % game_id,\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_by_platform_id(self, platform_id):
         """
         Games by platform id
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'GetPlatformGames.php?platform=%s', platform_id))
+        return xmltodict.parse(requests.get('GetPlatformGames.php?platform=%s' % platform_id,\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_by_platform_name(self, platform_name):
         """
         Games by platform id
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'PlatformGames.php?platform=%s', platform_name))
+        return xmltodict.parse(requests.get('PlatformGames.php?platform=%s' % platform_name,\
+                               verify=False, headers=self.httpheaders))
 
 
     def com_meta_gamesdb_games_updated_seconds(self, update_time):
         """
         Games updated in last n seconds
         """
-        return xmltodict.parse(common_network.mk_network_fetch_from_url(\
-            'Updates.php?time=%s', update_time))
+        return xmltodict.parse(requests.get('Updates.php?time=%s' % update_time,\
+                               verify=False, headers=self.httpheaders))
