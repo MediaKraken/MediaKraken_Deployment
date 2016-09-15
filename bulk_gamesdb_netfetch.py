@@ -49,14 +49,15 @@ for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Pla
             # fetch platform info
             platform_json = GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(game_systems['id'])
             # store record
+            try:
+                system_alias = game_systems['alias']
+            except KeyError:
+                system_alias = None
             db_connection.db_meta_games_system_insert(game_systems['id'],\
                                                       game_systems['name'],\
-                                                      game_systems['alias'],\
+                                                      system_alias,\
                                                       json.dumps(platform_json))
-#    # fetch all games for platform
-#    for game_data in 
-#            GAMESDB_CONNECTION.com_meta_gamesdb_games_by_platform_id(platform.id):
-#        print("game_data %s", game_data
+            db_connection.db_commit()
 
 
 # log end
