@@ -43,16 +43,19 @@ GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 
 # grab and insert all platforms
-platform_data = GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items()
-print(platform_data)
-for platform in platform_data[1]:
-    print(platform)
-    # fetch platform info
-#    platform_json\
-#        = xmltodict.parse(GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(platform['id']))
-#    # store record
-#    db_connection.db_meta_games_system_insert(platform['id'], platform['name'], platform['alias'],\
-#        json.dumps(platform_json))
+for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items()[0]:
+    if platform != 'Platform':
+        for game_systems in platform:
+            print(game_systems)
+            # fetch platform info
+            platform_json\
+                = xmltodict.parse(GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(\
+                                  game_systems['id']))
+            # store record
+            db_connection.db_meta_games_system_insert(game_systems['id'],\
+                                                      game_systems['name'],\
+                                                      game_systems['alias'],\
+                                                      json.dumps(platform_json))
 #    # fetch all games for platform
 #    for game_data in xmltodict.parse(\
 #            GAMESDB_CONNECTION.com_meta_gamesdb_games_by_platform_id(platform.id)):
