@@ -24,13 +24,13 @@ import sys
 import time
 
 
-def com_net_mediakraken_find_server():
+def com_net_mediakraken_find_server(server_seconds=1):
     """
     # create dictionary containing
     # Address = Id, Name
     """
-    # search for servers for one second
-    t_end = time.time() + 1
+    # search for servers for n second
+    t_end = time.time() + server_seconds
     # create upd socket
     try:
         search_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
