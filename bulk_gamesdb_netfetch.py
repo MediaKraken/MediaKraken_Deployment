@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import json
-import xmltodict
 from common import common_config_ini
 from common import common_metadata_thegamesdb
 
@@ -48,17 +47,15 @@ for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Pla
         for game_systems in platform:
             print(game_systems)
             # fetch platform info
-            platform_json\
-                = xmltodict.parse(GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(\
-                                  game_systems['id']))
+            platform_json = GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(game_systems['id'])
             # store record
             db_connection.db_meta_games_system_insert(game_systems['id'],\
                                                       game_systems['name'],\
                                                       game_systems['alias'],\
                                                       json.dumps(platform_json))
 #    # fetch all games for platform
-#    for game_data in xmltodict.parse(\
-#            GAMESDB_CONNECTION.com_meta_gamesdb_games_by_platform_id(platform.id)):
+#    for game_data in 
+#            GAMESDB_CONNECTION.com_meta_gamesdb_games_by_platform_id(platform.id):
 #        print("game_data %s", game_data
 
 
