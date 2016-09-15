@@ -27,28 +27,11 @@ addr_spec = "%s\\x40%s" % (local_part, domain)
 email_address = re.compile('\A%s\Z' % addr_spec)
 
 
-def Check_Email(email_address_to_check):
+def email_addr_verify(email_address_to_check):
+    """
+    Verify email addr
+    """
     if (repr(email_address_to_check), email_address.match(email_address_to_check))[1] is None:
         return False # invalid
     else:
         return True # valid
-
-
-##if __name__ == '__main__':
-##  addresses = (
-##    'cal@iamcalx.com',
-##    'cal+henderson@iamcalx.com',
-##    'cal henderson@iamcalx.com',
-##    '"cal henderson"@iamcalx.com',
-##    'cal@iamcalx',
-##    'cal@iamcalx com',
-##    'cal@hello world.com',
-##    'cal@[hello world].com',
-##    'abcdefghijklmnopqrstuvwxyz@abcdefghijklmnopqrstuvwxyz'
-##  )
-##  for address in addresses:
-##    print "%s : %s" % (repr(address), email_address.match(address))
-##    if (repr(address), email_address.match(address))[1] is None:
-##        print "pooched"
-##    else:
-##        print "ok"
