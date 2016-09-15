@@ -111,13 +111,16 @@ class MediaKrakenApp(object):
         return root
 
 
-    def connect_to_server(self):
+    def connect_to_server(self, host_port, host_addr, use_ssl=True):
         """
         Connect to debug server
         """
-        reactor.connectSSL(option_config_json['MediaKrakenServer']['Host'],\
-            option_config_json['MediaKrakenServer']['Port'],\
-            TheaterFactory(self), ssl.ClientContextFactory())
+        if use_ssl:
+            reactor.connectSSL(host_addr, host_port,\
+                TheaterFactory(self), ssl.ClientContextFactory())
+        else:
+            reactor.connectTCP(host_addr, host_port,\
+                TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
 
