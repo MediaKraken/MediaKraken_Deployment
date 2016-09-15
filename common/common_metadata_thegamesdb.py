@@ -44,7 +44,7 @@ class CommonMetadataGamesDB(object):
         """
         Platform info by id
         """
-        return xmltodict.parse(requests.get('GetPlatform.php?id=%s' % platform_id,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatform.php?id=%s' % platform_id,\
                                verify=False, headers=self.httpheaders).text)
 
 
@@ -52,7 +52,7 @@ class CommonMetadataGamesDB(object):
         """
         # 'mega man'
         """
-        return xmltodict.parse(requests.get('GetGamesList.php?name=%s'\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'\
                                % game_name.replace(' ','%20'),\
                                verify=False, headers=self.httpheaders).text)
 
@@ -61,7 +61,7 @@ class CommonMetadataGamesDB(object):
         """
         # game by id
         """
-        return xmltodict.parse(requests.get('GetGamesList.php?id=%s' % game_id,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?id=%s' % game_id,\
                                verify=False, headers=self.httpheaders).text)
 
 
@@ -69,7 +69,7 @@ class CommonMetadataGamesDB(object):
         """
         # game by id
         """
-        return xmltodict.parse(requests.get('GetArt.php?id=%s' % game_id,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetArt.php?id=%s' % game_id,\
                                verify=False, headers=self.httpheaders).text)
 
 
@@ -77,7 +77,8 @@ class CommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get('GetPlatformGames.php?platform=%s' % platform_id,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'\
+                                            % platform_id,\
                                verify=False, headers=self.httpheaders).text)
 
 
@@ -85,7 +86,8 @@ class CommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get('PlatformGames.php?platform=%s' % platform_name,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'\
+                                            % platform_name,\
                                verify=False, headers=self.httpheaders).text)
 
 
@@ -93,5 +95,5 @@ class CommonMetadataGamesDB(object):
         """
         Games updated in last n seconds
         """
-        return xmltodict.parse(requests.get('Updates.php?time=%s' % update_time,\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,\
                                verify=False, headers=self.httpheaders).text)
