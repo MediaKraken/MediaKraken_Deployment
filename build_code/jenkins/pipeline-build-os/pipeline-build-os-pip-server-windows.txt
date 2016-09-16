@@ -26,7 +26,6 @@ Flask-Moment
 Flask-Assets
 Flask-SQLAlchemy
 Flask-Migrate
-Flask-Debugtoolbar
 Flask-KVSession
 ipgetter
 pytvdbapi

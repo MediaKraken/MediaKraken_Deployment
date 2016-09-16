@@ -26,7 +26,6 @@ Flask-KVSession
 Flask-Assets
 Flask-SQLAlchemy
 Flask-Migrate
-Flask-Debugtoolbar
 ipgetter
 pytvdbapi
 fuzzywuzzy

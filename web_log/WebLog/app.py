@@ -15,7 +15,6 @@ from WebLog.extensions import (
     db,
     login_manager,
     migrate,
-    debug_toolbar,
 )
 from WebLog import public, user, admins
 
@@ -50,7 +49,6 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     return None
 
