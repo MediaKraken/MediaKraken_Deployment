@@ -94,12 +94,14 @@ common_signal.com_signal_set_break()
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
 
 
-# TODO move this into worker function......no reason for this to be seperate anymore
-# perform media scan
-def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known_media_file,\
-        dir_guid, class_text_dict):
-    total_files = 0
-    logging.info("Scan dir: %s %s", dir_path, media_class_type_uuid)
+def worker(audit_directory):
+    """
+    Worker thread for each directory
+    """
+    dir_path, media_class_type_uuid, dir_guid = audit_directory
+    # open the database
+    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    logging.debug('value=%s', dir_path)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,\
@@ -120,9 +122,10 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
         file_data = common_file.com_file_dir_list(dir_path, None, True, False)
     total_file_in_dir = len(file_data)
     total_scanned = 0
+    total_files = 0
     for file_name in file_data:
         # TODO whined about converting both to utf8
-        if file_name in known_media_file:
+        if file_name in global_known_media:
             pass # already scanned, skip
         else:
             fileName, fileExtension = os.path.splitext(file_name)
@@ -192,28 +195,14 @@ def mk_server_media_scan_audit(thread_db, dir_path, media_class_type_uuid, known
         total_scanned += 1
         thread_db.db_audit_path_update_status(dir_guid,\
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
-                + ' / ' + locale.format('%d', total_file_in_dir, True),\
-                'Pct': (total_scanned / total_file_in_dir) * 100}))
+            + ' / ' + locale.format('%d', total_file_in_dir, True),\
+            'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
     thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doens't show up
-    thread_db.db_commit()
-    return total_files
-
-
-def worker(audit_directory):
-    """
-    Worker thread for each directory
-    """
-    data1, data2, dir_guid = audit_directory
-    # open the database
-    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
-    logging.debug('value=%s', data1)
-    total_files = mk_server_media_scan_audit(thread_db, data1, data2, global_known_media,\
-        dir_guid, class_text_dict)
     if total_files > 0:
         thread_db.db_notification_insert(locale.format('%d', total_files, True)\
-            + " file(s) added from " + data1, True)
+            + " file(s) added from " + dir_path, True)
     thread_db.db_commit()
     thread_db.db_close()
     return
