@@ -49,7 +49,7 @@ else:
     TVMAZE_CONNECTION = None
 
 
-def tv_search_tvdb(db_connection, file_name):
+def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
