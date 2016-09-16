@@ -42,7 +42,8 @@ class MKServerDatabase(object):
         db_download_read_provider,\
         db_download_delete,\
         db_download_update_provider,\
-        db_download_update
+        db_download_update,\
+        db_download_que_exists
     from database.db_base_kodi import db_kodi_user_sync,\
         db_kodi_user_sync_added
     from database.db_base_iradio import db_iradio_insert,\

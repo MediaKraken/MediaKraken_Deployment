@@ -283,10 +283,18 @@ def themoviedb(thread_db, download_data):
         else:
             if metadata_uuid is None:
                 # not in the db so mark fetch
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
+                # first verify a download que record doesn't exist for this id
+                metadata_uuid = thread_db.db_download_que_exists('themoviedb', str(match_result))
+                if metadata_uuid is not None:
+                    thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
+                        metadata_uuid)
+                    # found so remove from download que
+                    thread_db.db_Download_Delete(download_data['mdq_id'])
+                else:
+                    download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+                    download_data['mdq_download_json'].update({'Status': 'Fetch'})
+                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                        download_data['mdq_id'])
             else:
                 # update with found metadata uuid from db
                 thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
