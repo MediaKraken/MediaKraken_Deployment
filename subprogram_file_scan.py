@@ -148,10 +148,10 @@ def worker(audit_directory):
                     media_ffprobe_json = None
                 else:
                     if file_name.find('/trailers/') != -1\
-                            or file_name.find('/theme.mp3') != -1\
-                            or file_name.find('/theme.mp4') != -1\
                             or file_name.find('\\trailers\\') != -1\
+                            or file_name.find('/theme.mp3') != -1\
                             or file_name.find('\\theme.mp3') != -1\
+                            or file_name.find('/theme.mp4') != -1\
                             or file_name.find('\\theme.mp4') != -1:
                         media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
@@ -174,8 +174,8 @@ def worker(audit_directory):
                         media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/theme.mp3') != -1\
-                                    or file_name.find('/theme.mp4') != -1\
                                     or file_name.find('\\theme.mp3') != -1\
+                                    or file_name.find('/theme.mp4') != -1\
                                     or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
                     # determine ffmpeg json data
