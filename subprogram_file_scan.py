@@ -128,26 +128,27 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass # already scanned, skip
         else:
-            fileName, fileExtension = os.path.splitext(file_name)
-            if fileExtension[1:].lower() in MEDIA_EXTENSION:
+            filename_base, file_extension = os.path.splitext(file_name)
+            if file_extension[1:].lower() in MEDIA_EXTENSION:
                 total_files += 1
-                fileName, fileExtension = os.path.splitext(file_name)
+                filename_base, file_extension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
                 # video game data, don't do ffmpeg
                 if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
-                    if fileExtension.lower() == 'iso':
+                    if file_extension.lower() == 'iso':
                         new_class_type_uuid = class_text_dict['Game ISO']
-                    elif fileExtension.lower() == 'chd':
+                    elif file_extension.lower() == 'chd':
                         new_class_type_uuid = class_text_dict['Game CHD']
                     else:
                         new_class_type_uuid = class_text_dict['Game ROM']
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif fileExtension.lower() in MEDIA_EXTENSION_SKIP_FFMPEG:
+                elif file_extension.lower() in MEDIA_EXTENSION_SKIP_FFMPEG:
                     media_ffprobe_json = None
                 else:
-                    if file_name.find('/trailers/') != -1 or file_name.find('/theme.mp3') != -1\
+                    if file_name.find('/trailers/') != -1\
+                            or file_name.find('/theme.mp3') != -1\
                             or file_name.find('/theme.mp4') != -1\
                             or file_name.find('\\trailers\\') != -1\
                             or file_name.find('\\theme.mp3') != -1\
