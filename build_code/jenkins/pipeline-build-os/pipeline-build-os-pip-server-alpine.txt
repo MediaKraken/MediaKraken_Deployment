@@ -22,7 +22,6 @@ Flask-Mail
 Flask-Openid
 Flask-Paginate
 Flask-Moment
-Flask-SSLify
 Flask-KVSession
 Flask-Assets
 Flask-SQLAlchemy

@@ -23,7 +23,6 @@ Flask-Mail
 Flask-Openid
 Flask-Paginate
 Flask-Moment
-Flask-SSLify
 Flask-Assets
 Flask-SQLAlchemy
 Flask-Migrate
