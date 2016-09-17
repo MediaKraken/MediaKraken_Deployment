@@ -291,8 +291,6 @@ def themoviedb(thread_db, download_data):
                 if metadata_uuid is not None:
                     thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
                         metadata_uuid)
-                    # found so remove from download que
-                    thread_db.db_Download_Delete(download_data['mdq_id'])
                 else:
                     download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
                     download_data['mdq_download_json'].update({'Status': 'Fetch'})
@@ -302,8 +300,8 @@ def themoviedb(thread_db, download_data):
                 # update with found metadata uuid from db
                 thread_db.db_update_media_id(download_data['mdq_download_json']['Media'],\
                     metadata_uuid)
-                # found so remove from download que
-                thread_db.db_Download_Delete(download_data['mdq_id'])
+                # found in database so remove from download que
+                thread_db.db_download_delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         logging.debug('themoviedb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
         if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
@@ -330,7 +328,8 @@ def themoviedb(thread_db, download_data):
         logging.debug('themoviedb fetchreview')
         metadata_movie.movie_fetch_save_tmdb_review(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_Download_Delete(download_data['mdq_id'])
+        # review is last.....so can delete download que
+        thread_db.db_download_delete(download_data['mdq_id'])
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]\
@@ -463,8 +462,9 @@ def worker(content_providers):
                         metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
-                    logging.debug("Z del: %s", row_data['mdq_id'])
-                    thread_db.db_download_delete(row_data['mdq_id'])
+                    # uh, just cuz it matched doesn't means it's downloaded yet....don't delete
+#                    logging.debug("Z del: %s", row_data['mdq_id'])
+#                    thread_db.db_download_delete(row_data['mdq_id'])
         thread_db.db_commit()
         time.sleep(1)
         break # TODO for now testing.......
