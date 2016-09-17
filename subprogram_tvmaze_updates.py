@@ -72,8 +72,8 @@ def update_insert_show(tvmaze_id, update_rec=None):
             imdb_id = str(show_detail['externals']['imdb'])
         except:
             imdb_id = None
-        series_id_json = json.dumps({'tvmaze':str(tvmaze_id), 'TVRage':tvrage_id,\
-            'imdb':imdb_id, 'thetvdb':thetvdb_id})
+        series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,\
+            'imdb': imdb_id, 'thetvdb': thetvdb_id})
         if update_rec is None:
             image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
             db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
