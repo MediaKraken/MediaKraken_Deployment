@@ -274,9 +274,12 @@ def themoviedb(thread_db, download_data):
     Rate limiter for theMovieDB
     """
     logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
+        logging.debug('themoviedb search')
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
+        logging.debug('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
         # if match_result is an int, that means the lookup found a match but isn't in db
         if metadata_uuid is None and type(match_result) != int:
             thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
@@ -317,12 +320,14 @@ def themoviedb(thread_db, download_data):
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                 download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
+        logging.debug('themoviedb fetchcastcrew')
         metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
         download_data['mdq_download_json'].update({'Status': 'FetchReview'})
         thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
             download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
+        logging.debug('themoviedb fetchreview')
         metadata_movie.movie_fetch_save_tmdb_review(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_Download_Delete(download_data['mdq_id'])
@@ -446,15 +451,19 @@ def worker(content_providers):
             elif content_providers == 'tvshowtime':
                 tvshowtime(thread_db, row_data)
             elif content_providers == 'Z':
+                logging.debug('Z: class: %s rowid: %s json: %s',\
+                    class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                    row_data['mdq_id'], row_data['mdq_download_json'])
                 metadata_uuid = metadata_identification.metadata_identification(thread_db,\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
-                    logging.debug("update: %s %s",\
-                        row_data['mdq_download_json']['MediaID'], metadata_uuid)
+                    logging.debug("Z update: metaid: %s json: %s ",\
+                        metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
+                    logging.debug("Z del: %s", row_data['mdq_id'])
                     thread_db.db_download_delete(row_data['mdq_id'])
         thread_db.db_commit()
         time.sleep(1)
