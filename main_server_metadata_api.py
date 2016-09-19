@@ -321,7 +321,7 @@ def themoviedb(thread_db, download_data):
         logging.debug('themoviedb fetchcastcrew')
         metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'],\
-            download_data['mdq_download_json']['MetaNewID')
+            download_data['mdq_download_json']['MetaNewID'])
         download_data['mdq_download_json'].update({'Status': 'FetchReview'})
         thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
             download_data['mdq_id'])
