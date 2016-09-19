@@ -96,7 +96,8 @@ def nfo_xml_db_lookup(db_connection, nfo_data, xml_data, download_que_json, down
             # not in local database, set for fetch by id
             download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
             db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-            db_connection.db_download_update_provider('imdb', download_que_id)
+            # yes, grab data from themoviedb for imdbid
+            db_connection.db_download_update_provider('themoviedb', download_que_id)
             metadata_uuid = download_que_json['MetaNewID']
 #    if metadata_uuid is None and rt_id is not None:
 #        metadata_uuid = db_connection.db_meta_guid_by_rt(rt_id)
