@@ -308,7 +308,7 @@ def themoviedb(thread_db, download_data):
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
                 download_data['mdq_download_json']['ProviderMetaID'])
             if tmdb_id is not None:
-                download_data['mdq_download_json'].update({'ProviderMetaID': tmdb_id})
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                     download_data['mdq_id'])
         else:
