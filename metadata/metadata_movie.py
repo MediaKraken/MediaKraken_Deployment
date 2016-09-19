@@ -112,7 +112,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
         return None
 
 
-def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id):
+def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     """
     Save cast/crew
     """
@@ -122,7 +122,7 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id):
     if 'crew' in cast_json:
         db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
     # update the metadata record with the cast info
-    db_connection.db_meta_movie_update_castcrew(tmdb_id, cast_json)
+    db_connection.db_meta_movie_update_castcrew(tmdb_id, cast_json, metadata_id)
 
 
 def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
