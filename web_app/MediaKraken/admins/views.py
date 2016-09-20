@@ -312,21 +312,21 @@ def admin_library_edit_page():
             if request.form['action_type'] == 'Add':
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
-                    addr, share, path\
-                        = common_string.UNC_To_Addr_Share_Path(request.form['library_path'])
-                    smb_stuff = common_network_cifs.com_cifs_Share_API()
-                    smb_stuff.com_cifs_Connect(addr)
+                    addr, share, path = common_string.com_string_unc_to_addr_path(\
+                        request.form['library_path'])
+                    smb_stuff = common_network_cifs.CommonCIFSShare()
+                    smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
-                        smb_stuff.com_cifs_Close()
+                        smb_stuff.com_cifs_close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))
-                    smb_stuff.com_cifs_Close()
+                    smb_stuff.com_cifs_close()
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO
-                    smb_stuff = common_network_cifs.com_cifs_Share_API()
-                    smb_stuff.com_cifs_Connect(ip_addr, user_name='guest', user_password='')
-                    smb_stuff.com_cifs_Share_Directory_Check(share_name, dir_path)
-                    smb_stuff.com_cifs_Close()
+                    smb_stuff = common_network_cifs.CommonCIFSShare()
+                    smb_stuff.com_cifs_connect(ip_addr, user_name='guest', user_password='')
+                    smb_stuff.com_cifs_share_directory_check(share_name, dir_path)
+                    smb_stuff.com_cifs_close()
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))
