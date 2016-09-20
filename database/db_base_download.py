@@ -82,4 +82,4 @@ def db_download_que_exists(self, provider_name, provider_id):
     logging.debug('que exits: %s %s', provider_name, provider_id)
     return self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
-        ' and mdq_download_json->>\'Status\' <> \'Search\'', (provider_name, provider_id))
+        ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1', (provider_name, provider_id))
