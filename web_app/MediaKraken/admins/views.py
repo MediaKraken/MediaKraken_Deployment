@@ -233,6 +233,9 @@ def admin_tvtuners():
 @login_required
 @admin_required
 def admin_nas():
+    """
+    List all NAS devices
+    """
     nas_devices = []
     return render_template("admin/admin_nas.html", data_nas=nas_devices)
 
@@ -260,6 +263,9 @@ def admin_transmission():
 @login_required
 @admin_required
 def admin_transmission_delete_page():
+    """
+    Delete torrent from transmission
+    """
     #g.db_connection.db_Audit_Path_Delete(request.form['id'])
     #g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
@@ -269,6 +275,9 @@ def admin_transmission_delete_page():
 @login_required
 @admin_required
 def admin_transmission_edit_page():
+    """
+    Edit a torrent from transmission
+    """
     #g.db_connection.db_Audit_Path_Delete(request.form['id'])
     #g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
@@ -306,6 +315,9 @@ def admin_library():
 @login_required
 @admin_required
 def admin_library_edit_page():
+    """
+    allow user to edit lib
+    """
     form = LibraryAddEditForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -640,6 +652,9 @@ def admin_database_statistics():
 @login_required
 @admin_required
 def admin_listdir(path):
+    """
+    Local file browser
+    """
     def gather_fileinfo(path, ospath, filename):
         osfilepath = os.path.join(ospath, filename)
         if os.path.isdir(osfilepath) and not filename.startswith('.'):
