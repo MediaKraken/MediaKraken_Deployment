@@ -71,7 +71,7 @@ def movie_search_tmdb(db_connection, file_name):
     return metadata_uuid, match_result
 
 
-def movie_fetch_save_tmdb(db_connection, tmdb_id):
+def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # fetch from tmdb
     """
@@ -86,7 +86,6 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id):
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
         logging.debug("series: %s", series_id_json)
         # set and insert the record
-        metadata_uuid = str(uuid.uuid4())
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
     else:
