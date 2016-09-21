@@ -192,13 +192,11 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
                 else:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                db_connection.db_download_update(json.dumps(download_que_json),\
-                    download_que_id)
             else:
                 # search themoviedb since not matched above via DB or nfo/xml
                 download_que_json.update({'Status': 'Search'})
-                db_connection.db_download_update(json.dumps(download_que_json),\
-                    download_que_id)
+            db_connection.db_download_update(json.dumps(download_que_json),\
+                download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('themoviedb', download_que_id)
     # set last values to negate lookups for same title/show
