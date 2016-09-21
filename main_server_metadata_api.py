@@ -288,6 +288,7 @@ def themoviedb(thread_db, download_data):
                 # not in the db so mark fetch
                 # first verify a download que record doesn't exist for this id
                 metadata_uuid = thread_db.db_download_que_exists('themoviedb', str(match_result))
+                logging.debug('metaquelook: %s', metadata_uuid)
                 if metadata_uuid is not None:
                     thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
