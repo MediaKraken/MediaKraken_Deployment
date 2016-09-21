@@ -79,10 +79,12 @@ def db_download_que_exists(self, provider_name, provider_id):
     """
     See if download que record exists for provider and id
     """
+    # include search to find OTHER records besides the row that's
+    # doing the query itself
     logging.debug('que exits: %s %s', provider_name, provider_id)
     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
-        ' limit 1', (provider_name, provider_id))
+        ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1', (provider_name, provider_id))
     # if no data, send none back
     try:
         return self.db_cursor.fetchone()[0]
