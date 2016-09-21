@@ -160,7 +160,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         return metadata_movie_lookup.metadata_last_id
     # grab nfo/xml file data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
-    # lookup by id's occur in nfo/xml code below!
+    # lookup by id's occur in nfo/xml nfo_xml_db_lookup below!
     metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection,\
         nfo_data, xml_data, download_que_json, download_que_id)
     logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id,\
@@ -195,6 +195,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
             else:
                 # search themoviedb since not matched above via DB or nfo/xml
                 download_que_json.update({'Status': 'Search'})
+            # save the updated status
             db_connection.db_download_update(json.dumps(download_que_json),\
                 download_que_id)
             # set provider last so it's not picked up by the wrong thread
