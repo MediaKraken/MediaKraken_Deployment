@@ -11,6 +11,11 @@ main_server_metadata_api.py
 	if not a "Z" record, process the provider function that's controlled by limiter
 		if "Search"
 		if "Fetch"
+# TODO so, set tmdbid instead of imdb as default to save a call
+# nvm, tmdbid is set first
+			if imdb id - do call for flipping over to themoviedb id
+			else - fetch data
+				set to fetchcastcrew
 		if "FetchCastCrew"
 			fetch and save cast/crew
 			set to fetch review
