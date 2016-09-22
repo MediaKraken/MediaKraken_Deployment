@@ -1,0 +1,38 @@
+Media match flow:
+
+subprogram_file_scan.py
+	finds all media from media dir's
+	create DL "Z" record for each media file
+		{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv", "Status": null, "ClassID": "928c56c3-253d-4e30-924e-5698be6d3d39", "MediaID": "8e38c5d1-fcf4-43ab-93d6-09c9cbc59741", "MetaNewID": "7ffc7bc5-b9c7-4d22-86ee-08987dec796d", "ProviderMetaID": null}
+
+
+main_server_metadata_api.py
+	worker thread for each provider and "Z" records
+	if "Z" record
+		if name/year is equal last, use last metadata_uuid used
+			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
+		grab provider id's from nfo/xml
+		if ids are found in nfo/xml
+			check ids against local db
+			if found, set id from db to media and delete DL record
+			if not found, set id to DL record and set FETCH (FETCH only if FETCH doesn't already exist) (if FETCH already exists, use that recoreds metadata_uuid and delete DL record)
+		if ids are NOT found in nfo/xml then do a local db lookup via name/year
+			if found, use matched metadata_uuid and delete DL record
+			not found, set SEARCH DL record to primary provider for class type
+	if "provider" record
+		if SEARCH
+			do provider api call by name/year
+			if not found set next provider for class type
+			if ids found via provider api call
+				check local db for metadata match
+					if yes, set metadata id from local record and delete DL record
+					if no, set DL record to FETCH for match from api call (FETCH only if FETCH doesn't already exist) (if FETCH already exists, use that recoreds metadata_uuid and delete DL record)
+		if FETCH
+			download/save metatdata info
+			set dl record to FETCHCASTCREW
+		if FETCHCASTCREW
+			fetch/save cast/crew data
+			set dl record to FETCHREVIEW
+		if FETCHREVIEW
+			fetch/save review data
+			delete DL record as it's the last stage

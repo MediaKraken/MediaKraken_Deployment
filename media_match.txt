@@ -10,6 +10,18 @@ main_server_metadata_api.py
 	worker thread for each provider and "Z" records
 	if not a "Z" record, process the provider function that's controlled by limiter
 		if "Search"
+			metadata_uuid, match_result = metadata_movie.movie_search_tmdb (api call search by name/year)
+				metadata_uuid = db_connection.db_meta_guid_by_tmdb - after id, see if local db
+			if no match, set dl que to omdb search
+			if metauuid is none
+				metadata_uuid = thread_db.db_download_que_exists
+				if metauuid is not none - id'd
+					set metaid on media record
+				else
+					set dl to fetch
+			else
+				set metaid on media record
+				delete dl record
 		if "Fetch"
 # TODO so, set tmdbid instead of imdb as default to save a call
 # nvm, tmdbid is set first
