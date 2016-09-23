@@ -17,16 +17,18 @@ main_server_metadata_api.py
 		in provider code, if name/year is equal last, use last metadata_uuid used - again since in thread so all shows could be in a row (0.1.8)
 			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already (0.1.8)
 		grab provider id's from nfo/xml (0.1.8)
-
-		if ids are found in nfo/xml
-			check ids against local db
-			if found, set id from db to media and delete DL record
-			if not found, set id to DL record and set FETCH
-				(FETCH only if FETCH doesn't already exist)
-				(if FETCH already exists, use that recoreds metadata_uuid and delete DL record)
-		if ids are NOT found in nfo/xml then do a local db lookup via name/year
-			if found, use matched metadata_uuid and delete DL record
+		if ids are found in nfo/xml (0.1.8)
+			if ids found = last ids found, return last metadata_uuid (0.1.8)
+			check ids against local db (0.1.8)
+			if found, set id from db to media and delete DL record (0.1.8)
+			if not found, set id to DL record and set FETCH (0.1.8)
+				(FETCH only if FETCH doesn't already exist) (0.1.8)
+				(if FETCH already exists, use that recoreds metadata_uuid and delete DL record) (0.1.8)
+		if ids are NOT found in nfo/xml then do a local db lookup via name/year (0.1.8)
+			if found, use matched metadata_uuid and delete DL record (0.1.8)
 			not found, set SEARCH DL record to primary provider for class type
+
+		set last used ids/meta/title/year/etc (0.1.8)
 	if "provider" record
 		if SEARCH
 			do provider api call by name/year

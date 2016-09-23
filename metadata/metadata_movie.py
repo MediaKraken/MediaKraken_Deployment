@@ -160,27 +160,56 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
         return metadata_movie_lookup.metadata_last_id
-    # grab nfo/xml file data
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
-
-
-
-    # lookup by id's occur in nfo/xml nfo_xml_db_lookup below!
-    metadata_uuid, imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_db_lookup(db_connection,\
-        nfo_data, xml_data, download_que_json, download_que_id)
-
-    logging.debug("movie look: %s %s %s %s %s %s %s", metadata_uuid, imdb_id, tmdb_id, rt_id,\
+    # determine provider id's from nfo/xml if they exist
+    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(\
+        metadata_nfo_xml.nfo_xml_file(media_file_path))
+    logging.debug("movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,\
         metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
         metadata_movie_lookup.metadata_last_rt)
+    # if same as last, return last id and save lookup
+    if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
+        return metadata_movie_lookup.metadata_last_id
+    if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
+        return metadata_movie_lookup.metadata_last_id
+    if rt_id is not None and rt_id == metadata_movie_lookup.metadata_last_rt:
+        return metadata_movie_lookup.metadata_last_id
+    # if ids from nfo/xml, query local db to see if exist
+    if tmdb_id is not None:
+        metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
+    if imdb_id is not None and metadata_uuid is None:
+        metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
+    if rt_id is not None and metadata_uuid is None:
+        metadata_uuid = db_connection.db_meta_guid_by_rt(rt_id)
+    # if ids from nfo/xml on local db
+    if metadata_uuid is not None:
+        db_connection.db_download_delete(download_que_id)
+        return metadata_uuid
+    else:
+        # id is known from nfo/xml but not in db yet so fetch data
+        if tmdb_id is not None or imdb_id is not None:
+            if tmdb_id is not None:
+                dl_meta = db_connection.db_download_que_exists('themoviedb', str(tmdb_id))
+                if dl_meta is None:
+                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
+                    db_connection.db_download_update(json.dumps(download_que_json),\
+                        download_que_id)
+                    # set provider last so it's not picked up by the wrong thread too early
+                    db_connection.db_download_update_provider('themoviedb', download_que_id)
+                else:
+                    db_connection.db_download_delete(download_que_id)
+                    metadata_uuid = dl_meta
+            else:
+                dl_meta = db_connection.db_download_que_exists('themoviedb', imdb_id)
+                if dl_meta is None:
+                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
+                    db_connection.db_download_update(json.dumps(download_que_json),\
+                        download_que_id)
+                    # set provider last so it's not picked up by the wrong thread too early
+                    db_connection.db_download_update_provider('themoviedb', download_que_id)
+                else:
+                    db_connection.db_download_delete(download_que_id)
+                    metadata_uuid = dl_meta
     if metadata_uuid is None:
-        # if same as last, return last id and save lookup
-        # check these dupes as the nfo/xml files might not exist to pull the metadata id from
-        if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
-            return metadata_movie_lookup.metadata_last_id
-        if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
-            return metadata_movie_lookup.metadata_last_id
-        if rt_id is not None and rt_id == metadata_movie_lookup.metadata_last_rt:
-            return metadata_movie_lookup.metadata_last_id
         # no ids found on the local database so begin name/year searches
         logging.debug("movie db lookup")
         # db lookup by name and year (if available)
@@ -190,17 +219,13 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
         logging.debug("movie db meta: %s", metadata_uuid)
-        # no matches by name/year
-        if metadata_uuid is None:
-            if imdb_id is not None or tmdb_id is not None:
-                # id is known from nfo/xml but not in db yet so fetch data
-                if tmdb_id is not None:
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
-                else:
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-            else:
-                # search themoviedb since not matched above via DB or nfo/xml
-                download_que_json.update({'Status': 'Search'})
+        if metadata_uuid is not None:
+            # match found by title/year on local db so purge dl record
+            db_connection.db_download_delete(download_que_id)
+        else:
+            # no matches by name/year
+            # search themoviedb since not matched above via DB or nfo/xml
+            download_que_json.update({'Status': 'Search'})
             # save the updated status
             db_connection.db_download_update(json.dumps(download_que_json),\
                 download_que_id)

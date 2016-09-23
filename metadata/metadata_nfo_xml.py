@@ -49,11 +49,10 @@ def nfo_xml_file(media_file_path):
     return nfo_data, xml_data
 
 
-def nfo_xml_db_lookup(db_connection, nfo_data, xml_data, download_que_json, download_que_id):
+def nfo_xml_id_lookup(nfo_data, xml_data):
     """
     Lookup by id's in nfo/xml files
     """
-    metadata_uuid = None
     imdb_id = None
     tmdb_id = None
     rt_id = None
@@ -80,41 +79,13 @@ def nfo_xml_db_lookup(db_connection, nfo_data, xml_data, download_que_json, down
             except:
                 pass
         # RT
-    if tmdb_id is not None:
-        # see if in local database by id
-        metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
-#        if metadata_uuid is None:
-#            # not in local database, set for fetch by id
-#            download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tmdb_id})
-#            db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-#            db_connection.db_download_update_provider('themoviedb', download_que_id)
-#            metadata_uuid = download_que_json['MetaNewID']
-    if metadata_uuid is None and imdb_id is not None:
-        # see if in local database by id
-        metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
-#        if metadata_uuid is None:
-#            # not in local database, set for fetch by id
-#            download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-#            db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-#            # yes, grab data from themoviedb for imdbid
-#            db_connection.db_download_update_provider('themoviedb', download_que_id)
-#            metadata_uuid = download_que_json['MetaNewID']
-#    if metadata_uuid is None and rt_id is not None:
-#        metadata_uuid = db_connection.db_meta_guid_by_rt(rt_id)
-#        if metadata_uuid is None:
-#            download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': rt_id})
-#            db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-#            db_connection.db_download_update_provider('rotten_tomatoes',\
-#                download_que_json['mdq_id'])
-#            metadata_uuid = download_que_json['MetaNewID']
-    return (metadata_uuid, imdb_id, tmdb_id, rt_id)
+    return (imdb_id, tmdb_id, rt_id)
 
 
-def nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data, download_que_json, download_que_id):
+def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     """
     Look up id's in nfo/xml db lookup for tv
     """
-    metadata_uuid = None
     imdb_id = None
     tvdb_id = None
     # load both fields for more data in media_id_json on db
@@ -127,6 +98,7 @@ def nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data, download_que_json, d
             imdb_id = nfo_data['episodedetails']['imdbid']
         except:
             pass
+    # RT
     if xml_data is not None and imdb_id is None and tvdb_id is None:
         try:
             tvdb_id = xml_data['episodedetails']['tvdbid']
@@ -137,22 +109,4 @@ def nfo_xml_db_lookup_tv(db_connection, nfo_data, xml_data, download_que_json, d
         except:
             pass
     # RT
-    if tvdb_id is not None:
-        # see if in local database by id
-        metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
-#        if metadata_uuid is None:
-#            # not in local database, set for fetch by id
-#            download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': tvdb_id})
-#            db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-#            db_connection.db_download_update_provider('thetvdb', download_que_id)
-#            metadata_uuid = download_que_json['MetaNewID']
-    if metadata_uuid is None and imdb_id is not None:
-        # see if in local database by id
-        metadata_uuid = db_connection.db_metaTV_guid_by_imdb(imdb_id)
-#        if metadata_uuid is None:
-#            # not in local database, set for fetch by id
-#            download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-#            db_connection.db_download_update(json.dumps(download_que_json), download_que_id)
-#            db_connection.db_download_update_provider('imdb', download_que_id)
-#            metadata_uuid = download_que_json['MetaNewID']
-    return (metadata_uuid, imdb_id, tvdb_id)
+    return (imdb_id, tvdb_id)
