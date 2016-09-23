@@ -64,7 +64,7 @@ def movie_search_tmdb(db_connection, file_name):
             logging.debug("db result: %s", metadata_uuid)
         elif match_response == 'info':
             # store new metadata record and set uuid
-            pass
+            logging.info("movielookup info results: %s", match_result)
         elif match_response == 're':
             # multiple results
             logging.info("movielookup multiple results: %s", match_result)

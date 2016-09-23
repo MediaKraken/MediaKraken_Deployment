@@ -82,6 +82,7 @@ def db_download_que_exists(self, provider_name, provider_id):
     # include search to find OTHER records besides the row that's
     # doing the query itself
     # TODO   wait, the other records would be in search mode too
+    # TODO perhaps use the dl que id....and a not to see if other recs
     logging.debug('que exits: %s %s', provider_name, provider_id)
     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
