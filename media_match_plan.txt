@@ -26,8 +26,7 @@ main_server_metadata_api.py
 				(if FETCH already exists, use that recoreds metadata_uuid and delete DL record) (0.1.8)
 		if ids are NOT found in nfo/xml then do a local db lookup via name/year (0.1.8)
 			if found, use matched metadata_uuid and delete DL record (0.1.8)
-			not found, set SEARCH DL record to primary provider for class type
-
+			not found, set SEARCH DL record to primary provider for class type (0.1.8)
 		set last used ids/meta/title/year/etc (0.1.8)
 	if "provider" record
 		if SEARCH
