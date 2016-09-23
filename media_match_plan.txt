@@ -1,6 +1,6 @@
 Media match flow:
 
-subprogram_file_scan.py
+subprogram_file_scan.py (0.1.8 done)
 	finds all media from media dir's
 	create DL "Z" record for each media file
 		{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv",
@@ -9,11 +9,15 @@ subprogram_file_scan.py
 
 
 main_server_metadata_api.py
-	worker thread for each provider and "Z" records
-	if "Z" record
-		if name/year is equal last, use last metadata_uuid used
-			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
-		grab provider id's from nfo/xml
+	worker thread for each provider and "Z" records (0.1.8)
+	if "Z" record (0.1.8)
+		if name/year is equal last, use last metadata_uuid used (0.1.8)
+			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already (0.1.8)
+		start search by calling - metadata_uuid = metadata_identification.metadata_identification (0.1.8)
+		in provider code, if name/year is equal last, use last metadata_uuid used - again since in thread so all shows could be in a row (0.1.8)
+			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already (0.1.8)
+		grab provider id's from nfo/xml (0.1.8)
+
 		if ids are found in nfo/xml
 			check ids against local db
 			if found, set id from db to media and delete DL record

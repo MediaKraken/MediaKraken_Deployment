@@ -37,36 +37,35 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     """
     Determine which provider to start lookup via class text
     """
-    media_file_path = download_que_json['Path']
-    logging.debug("Ident: %s %s %s %s", class_text, media_file_path, download_que_json,\
+    logging.debug("Ident: %s %s %s %s", class_text, download_que_json['Path'], download_que_json,\
         download_que_id)
     metadata_uuid = None
     # find data by class type
     if class_text == "Adult":
         pass
     elif class_text == "Anime":
-        metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection, media_file_path,
-            download_que_json, download_que_id)
+        metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection,\
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Book":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,\
-            media_file_path, download_que_json, download_que_id)
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Game CHD":
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(\
-            os.path.splitext(media_file_path)[0]), lookup_system_id)
+            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(media_file_path)
+            sha1_value = common_hash.com_hash_sha1_c(download_que_json['Path'])
             metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_value)
     elif class_text == "Game ISO":
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(\
-            os.path.splitext(media_file_path)[0]), lookup_system_id)
+            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(media_file_path)
+            sha1_value = common_hash.com_hash_sha1_c(download_que_json['Path'])
             metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_value)
     elif class_text == "Game ROM":
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(\
-            os.path.splitext(media_file_path)[0]), lookup_system_id)
+            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_hash = common_hash.com_hash_sha1_by_filename(media_file_path)
+            sha1_hash = common_hash.com_hash_sha1_by_filename(download_que_json['Path'])
             if sha1_hash is not None:
                 # TODO lookup the sha1
                 pass
@@ -74,59 +73,59 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Magazine":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,\
-            media_file_path, download_que_json, download_que_id)
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Movie":
-        metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection, media_file_path,\
-            download_que_json, download_que_id)
+        metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Movie Theme":
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
-            os.path.abspath(media_file_path.replace('/theme/', ''))))
+            os.path.abspath(download_que_json['Path'].replace('/theme/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
             guid = db_connection.db_read_media_path_like(os.path.dirname(\
-                os.path.abspath(media_file_path.replace('/backdrops/', ''))))
+                os.path.abspath(download_que_json['Path'].replace('/backdrops/', ''))))
             if guid is not None:
                 metadata_uuid = guid
             else:
                 pass  # TODO lookup properly
     elif class_text == "Movie Trailer":
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
-            os.path.abspath(media_file_path.replace('/trailers/', ''))))
+            os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
             pass  # TODO lookup properly
     elif class_text == "Music":
-        metadata_uuid = metadata_music.metadata_music_lookup(db_connection, media_file_path,\
-            download_que_json, download_que_id)
+        metadata_uuid = metadata_music.metadata_music_lookup(db_connection,\
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
     elif class_text == "Music Video":
         metadata_uuid = metadata_music_video.metadata_music_video_lookup(db_connection,\
-            media_file_path, download_que_json, download_que_id)
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Picture":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":
-        metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection, media_file_path,\
-            download_que_json, download_que_id)
+        metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,\
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
     elif class_text == "TV Show":
-        metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection, media_file_path,\
-            download_que_json, download_que_id)
+        metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
+            download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "TV Theme":
         guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
-            os.path.abspath(media_file_path.replace('/theme/', ''))))
+            os.path.abspath(download_que_json['Path'].replace('/theme/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
             pass  # TODO lookup properly
     elif class_text == "TV Trailer":
         guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
-            os.path.abspath(media_file_path.replace('/trailers/', ''))))
+            os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:

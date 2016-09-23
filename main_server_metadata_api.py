@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 import json
 import time
 import datetime
+from guessit import guessit
 from metadata import metadata_anime
 from metadata import metadata_game
 from metadata import metadata_identification
@@ -410,6 +411,10 @@ def worker(content_providers):
     logging.debug("name: %s", content_providers)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    # setup last used id's per thread
+    metadata_last_id = None
+    metadata_last_title = None
+    metadata_last_year = None
     while True:
         for row_data in thread_db.db_download_read_provider(content_providers):
             logging.debug("row: %s", row_data)
@@ -456,6 +461,19 @@ def worker(content_providers):
                 logging.debug('Z: class: %s rowid: %s json: %s',\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_id'], row_data['mdq_download_json'])
+                # determine file name/etc for handling name/year skips
+                file_name = guessit(row_data['mdq_download_json']['Path'])
+                # check for dupes by name/year
+                if metadata_last_id is not None:
+                    if 'year' in file_name:
+                        if file_name['title'] == metadata_last_title\
+                                and file_name['year'] == metadata_last_year:
+                            thread_db.db_download_delete(row_data['mdq_id'])
+                            return metadata_last_id
+                    elif file_name['title'] == metadata_last_title:
+                        thread_db.db_download_delete(row_data['mdq_id'])
+                        return metadata_last_id
+                # begin id process
                 metadata_uuid = metadata_identification.metadata_identification(thread_db,\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_download_json'], row_data['mdq_id'])
@@ -465,9 +483,8 @@ def worker(content_providers):
                         metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
-                    # uh, just cuz it matched doesn't means it's downloaded yet....don't delete
-#                    logging.debug("Z del: %s", row_data['mdq_id'])
-#                    thread_db.db_download_delete(row_data['mdq_id'])
+                # allow NONE to be set so, unmatched stuff can work for skipping
+                metadata_last_id = metadata_uuid
         thread_db.db_commit()
         time.sleep(1)
         break # TODO for now testing.......
