@@ -29,7 +29,6 @@ main_server_metadata_api.py
 			not found, set SEARCH DL record to primary provider for class type (0.1.8)
 		set last used ids/meta/title/year/etc (0.1.8)
 	if "provider" record (0.1.8)
-
 		if SEARCH (0.1.8)
 			do provider api call by name/year (0.1.8)
 			if not found set next provider for class type (0.1.8)
@@ -48,3 +47,32 @@ main_server_metadata_api.py
 		if FETCHREVIEW (0.1.8)
 			fetch/save review data (0.1.8)
 			delete DL record as it's the last stage (0.1.8)
+
+*********
+Testing:
+Blade Runner			xml
+	srt file....search - since nfo/xml check doesn't drop the lang
+Das Boot			xml
+	mkv........search - since nfo/xml check isn't dropping -cd1/2 etc
+Donnie Darko			xml
+	mkv......fetch as tt in nfo/xml
+Identity			---
+	mkv......search as no nfo/xml
+King Arthur			xml
+	srt file.....search - since nfo/xml check doesn't drop the lang
+MD Geist			xml
+	srt file....search - since nfo/xml check doesn't drop the lang
+Snow White and the Huntsman	nfo
+	mkv......fetch....from nfo file
+The Professional		xml
+	mkv........fetch...from xml
+
+subprogram_file_scan.py
+	added 30 rows to media
+	added 30 rows to download que (all Z records and Status: null)
+
+main_server_metadata_api.py
+	
+
+
+
