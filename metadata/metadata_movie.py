@@ -160,8 +160,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         db_connection.db_download_delete(download_que_id)
         return metadata_movie_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
-    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(\
-        metadata_nfo_xml.nfo_xml_file(media_file_path))
+    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
+    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     logging.debug("movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,\
         metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
         metadata_movie_lookup.metadata_last_rt)
