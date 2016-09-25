@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 from common import common_file
-from common import common_file_extention
+from common import common_file_extentions
 import xmltodict
 
 
@@ -35,7 +35,7 @@ def nfo_xml_file(media_file_path):
         ext_check = media_file_path[-4:].lower().split(".")[-1]
     except:
         ext_check = None
-    if ext_check in common_file_extention.SUBTITLE_EXTENSION:
+    if ext_check in common_file_extentions.SUBTITLE_EXTENSION:
         # need to chop off the lang too, the split works even with no .lang in name
         nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 2)[0] + '.xml'

@@ -74,5 +74,12 @@ subprogram_file_scan.py
 main_server_metadata_api.py
 	
 
+**********************
+
+subprogram_file_scan.py
+	added 30 rows to media
+	added 30 rows to download que (all Z records and Status: null)
+
+main_server_metadata_api.py
 
 
