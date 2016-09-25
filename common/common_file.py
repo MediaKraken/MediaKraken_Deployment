@@ -96,8 +96,7 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
             if filter_text is not None:
                 for file_name in os.listdir(dir_name):
                     # filter text such as '.txt'
-                    if file_name.rsplit('.', 1)[1] in filter_text:
-                    #if file_name.endswith(filter_text):
+                    if file_name.endswith(filter_text):
                         match_list.append(os.path.join(dir_name, file_name))
             else:
                 for file_name in os.listdir(dir_name):
@@ -111,7 +110,6 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                 for file_name in files:
                     if filter_text is not None:
                         if file_name.endswith(filter_text):
-                            #logging.debug(os.path.join(root, file_name))
                             match_list.append(os.path.join(root, file_name))
                     else:
                         if directory_only:
