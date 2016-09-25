@@ -30,60 +30,11 @@ from common import common_config_ini
 from common import common_network_cifs
 from common import common_ffmpeg
 from common import common_file
+from common import common_file_extention
 from common import common_logging
 from common import common_signal
 from common import common_string
 #lock = threading.Lock()
-
-
-MEDIA_EXTENSION = [
-    'webm',
-    'mkv',
-    'flv',
-    'vob',
-    'ogv',
-    'ogg',
-    'drc',
-    'mng',
-    'avi',
-    'mov',
-    'qt',
-    'wmv',
-    'wma',
-    'yuv',
-    'rm',
-    'rmvb',
-    'asf',
-    'mp4',
-    'm4p',
-    'm4v',
-    'mpg',
-    'mp2',
-    'mpeg',
-    'mpe',
-    'mp3',
-    'flac',
-    'mpv',
-    'm2v',
-    'm4v',
-    'nsv',
-    'iso',
-    'chd',
-    'zip',
-    '7z',
-    'pdf',
-    'srt',
-]
-
-
-MEDIA_EXTENSION_SKIP_FFMPEG = [
-    'pdf',
-    'zip',
-    '7z',
-    'iso',
-    'chd',
-    'srt',
-]
 
 
 # set signal exit breaks
@@ -129,7 +80,7 @@ def worker(audit_directory):
             pass # already scanned, skip
         else:
             filename_base, file_extension = os.path.splitext(file_name)
-            if file_extension[1:].lower() in MEDIA_EXTENSION:
+            if file_extension[1:].lower() in common_file_extention.MEDIA_EXTENSION:
                 total_files += 1
                 filename_base, file_extension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
@@ -144,7 +95,8 @@ def worker(audit_directory):
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif file_extension.lower() in MEDIA_EXTENSION_SKIP_FFMPEG:
+                elif file_extension.lower() in common_file_extention.MEDIA_EXTENSION_SKIP_FFMPEG\
+                        or file_extension.lower() in common_file_extention.SUBTITLE_EXTENSION:
                     media_ffprobe_json = None
                 else:
                     if file_name.find('/trailers/') != -1\
@@ -178,6 +130,8 @@ def worker(audit_directory):
                                     or file_name.find('/theme.mp4') != -1\
                                     or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
+                    elif file_extension.lower() in common_file_extention.SUBTITLE_EXTENSION:
+                        new_class_type_uuid = class_text_dict['Subtitle']
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
                         file_name\
