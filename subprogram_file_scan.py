@@ -80,7 +80,7 @@ def worker(audit_directory):
             pass # already scanned, skip
         else:
             filename_base, file_extension = os.path.splitext(file_name)
-            if file_extension[1:].lower() in common_file_extention.MEDIA_EXTENSION:
+            if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION:
                 total_files += 1
                 filename_base, file_extension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
@@ -95,8 +95,8 @@ def worker(audit_directory):
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif file_extension.lower() in common_file_extention.MEDIA_EXTENSION_SKIP_FFMPEG\
-                        or file_extension.lower() in common_file_extention.SUBTITLE_EXTENSION:
+                elif file_extension.lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG\
+                        or file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
                     media_ffprobe_json = None
                 else:
                     if file_name.find('/trailers/') != -1\
@@ -130,7 +130,7 @@ def worker(audit_directory):
                                     or file_name.find('/theme.mp4') != -1\
                                     or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
-                    elif file_extension.lower() in common_file_extention.SUBTITLE_EXTENSION:
+                    elif file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
                         new_class_type_uuid = class_text_dict['Subtitle']
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
