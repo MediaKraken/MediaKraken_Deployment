@@ -81,7 +81,7 @@ def worker(audit_directory):
         else:
             filename_base, file_extension = os.path.splitext(file_name)
             if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION\
-                    or file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
+                    or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
                 total_files += 1
                 filename_base, file_extension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
