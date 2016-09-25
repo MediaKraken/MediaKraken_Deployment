@@ -30,7 +30,7 @@ from common import common_config_ini
 from common import common_network_cifs
 from common import common_ffmpeg
 from common import common_file
-from common import common_file_extention
+from common import common_file_extentions
 from common import common_logging
 from common import common_signal
 from common import common_string
