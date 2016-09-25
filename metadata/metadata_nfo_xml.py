@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import json
 import os
 from common import common_file
 import xmltodict
@@ -30,16 +29,21 @@ def nfo_xml_file(media_file_path):
     """
     # TODO search for tvinfo.nfo and use ID from that if exists
     xml_data = None
-    # check for NFO as no need to do lookup  media_file_path = mm_media_path
-    nfo_file_check = os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
-        os.path.basename(media_file_path).rsplit('.', 1)[0] + '.nfo')
+    # check for NFO or XML as no need to do lookup if ID found in it
+    if media_file_path[-4:].lower() == '.srt':
+        # need to chop off the lang too
+        nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
+        xml_file_name = media_file_path.rsplit('.', 2)[0] + '.xml'
+    else:
+        nfo_file_check = media_file_path.rsplit('.', 1)[0] + '.nfo'
+        xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
+    logging.debug('nfo file: %s', nfo_file_check)
+    logging.debug('xml file: %s', xml_file_name)
     if os.path.isfile(nfo_file_check): # check for nfo
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:
         nfo_data = None
         # only check for xml if nfo doesn't exist
-        xml_file_name = os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
-            os.path.basename(media_file_path).rsplit('.', 1)[0] + '.xml')
         if os.path.isfile(xml_file_name): # check for xml
             xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
@@ -47,6 +51,31 @@ def nfo_xml_file(media_file_path):
             xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(\
                 os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
     return nfo_data, xml_data
+
+
+#def nfo_xml_file(media_file_path):
+#    """
+#    Find and load nfo and xml file(s) if they exist
+#    """
+#    # TODO search for tvinfo.nfo and use ID from that if exists
+#    xml_data = None
+#    # check for NFO as no need to do lookup
+#    nfo_file_check = os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
+#        os.path.basename(media_file_path).rsplit('.', 1)[0] + '.nfo')
+#    if os.path.isfile(nfo_file_check): # check for nfo
+#        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+#    else:
+#        nfo_data = None
+#        # only check for xml if nfo doesn't exist
+#        xml_file_name = os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
+#            os.path.basename(media_file_path).rsplit('.', 1)[0] + '.xml')
+#        if os.path.isfile(xml_file_name): # check for xml
+#            xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
+#        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
+#                'movie.xml')):
+#            xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(\
+#                os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
+#    return nfo_data, xml_data
 
 
 def nfo_xml_id_lookup(nfo_data, xml_data):
