@@ -64,6 +64,8 @@ SUBTITLE_EXTENSION = [
     'ssa',
     'ass',
     'vtt',
+    'sub',
+    'idx',
 ]
 
 
