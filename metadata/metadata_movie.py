@@ -147,6 +147,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_movie_lookup.metadata_last_imdb = None
         metadata_movie_lookup.metadata_last_tmdb = None
         metadata_movie_lookup.metadata_last_rt = None
+    metadata_uuid = None
     # determine file name/etc for handling name/year skips
     file_name = guessit(media_file_path)
     logging.debug('movielook filename: %s', file_name)
