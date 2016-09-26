@@ -81,5 +81,6 @@ subprogram_file_scan.py
 	added 30 rows to download que (all Z records and Status: null)
 
 main_server_metadata_api.py
+	four run mm_metadata_json is being wiped out!!!!!!!!!!!!
 
 

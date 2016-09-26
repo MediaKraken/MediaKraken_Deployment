@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 from datetime import datetime # to handle threading
 import os
 import uuid
+import re
 from concurrent import futures
 import time
 import json
@@ -79,6 +80,17 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass # already scanned, skip
         else:
+            # check for "stacked" media file
+            head, base_file_name = os.path.split(file_name)
+            if common_string.stack_cd.search(base_file_name) is not None\
+                    or common_string.stack_part.search(base_file_name) is not None\
+                    or common_string.stack_dvd.search(base_file_name) is not None\
+                    or common_string.stack_pt.search(base_file_name) is not None\
+                    or common_string.stack_disk.search(base_file_name) is not None\
+                    or common_string.stack_disc.search(base_file_name) is not None:
+                pass
+
+
             filename_base, file_extension = os.path.splitext(file_name)
             if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION\
                     or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:

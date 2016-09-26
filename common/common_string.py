@@ -23,6 +23,14 @@ from socket import inet_ntoa
 import passwordmeter
 
 
+stack_cd = re.compile('-cd\d', re.IGNORECASE)
+stack_part = re.compile('-​part\d​', re.IGNORECASE)
+stack_dvd = re.compile('-​dvd\d', re.IGNORECASE)
+stack_pt = re.compile('-​pt\d', re.IGNORECASE)
+stack_disk = re.compile('-​disk\d​', re.IGNORECASE)
+stack_disc = re.compile('-​disc\d', re.IGNORECASE)
+
+
 def com_string_repl_func(m):
     """process regular expression match groups for word upper-casing problem"""
     return m.group(1) + m.group(2).upper()
