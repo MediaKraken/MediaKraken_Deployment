@@ -41,32 +41,20 @@ class CommonTheTVDB(object):
             show_title, show_language))
 
 
-    def com_thetvdb_search(self, show_title, show_year, show_id, show_language, save_db=True):
+    def com_thetvdb_search(self, show_title, show_year, show_language, save_db=True):
         """
         # search for show
         """
-        if show_id is not None:
-            show_data = self.tvdb_connection.get_series(show_id, show_language)
+        if show_year is not None:
+            logging.debug("bah2 %s", show_title + ' ' + str(show_year))
+            # this generally fails if I include year....
+            show_data = self.tvdb_connection.search(show_title, show_language)
         else:
-            if show_year is not None:
-                logging.debug("bah2 %s", show_title + ' ' + str(show_year))
-                # this generally fails if I include year....
-                show_data = self.tvdb_connection.search(show_title, show_language)
-            else:
-                show_data = self.tvdb_connection.search(show_title, show_language)
+            show_data = self.tvdb_connection.search(show_title, show_language)
         logging.debug("tvdb search: %s", show_data)
         if len(show_data) > 0:
             show = show_data[0]
             return show.SeriesID
-            #show.update()
-#            # save to local cache for future reference
-#            if save_db:
-#                metadata_uuid = com_thetvdb_Show_DB_Save(show)
-#                return metadata_uuid
-#            else:
-#                show_dict = com_thetvdb_Show_Details(show_data)
-#                com_file.com_file_Save_Data('./cache/' + show_title + '.dat', show_dict, True)
-#                return show_dict
         return None
 
 

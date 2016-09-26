@@ -36,7 +36,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 # verify thetvdb key exists for search
 if option_config_json['API']['theTVdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-    # show xml downloader and general api interface
+    # tvshow xml downloader and general api interface
     THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 else:
     THETVDB_CONNECTION = None
@@ -49,18 +49,43 @@ else:
     TVMAZE_CONNECTION = None
 
 
+def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
+    """
+    # tvmaze search
+    """
+    metadata_uuid = None
+    tvmaze_id = None
+    if TVMAZE_CONNECTION is not None:
+        if 'year' in file_name:
+            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],\
+                file_name['year'], lang_code, True))
+        else:
+            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],\
+                None, lang_code, True))
+        logging.debug("response: %s", tvmaze_id)
+        if tvmaze_id is not None:
+            # since there has been NO match whatsoever.....can "wipe" out everything
+            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
+            logging.debug("dbjson: %s", media_id_json)
+            # check to see if metadata exists for tvmaze id
+            metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
+            logging.debug("db result: %s", metadata_uuid)
+    return metadata_uuid, tvmaze_id
+
+
 def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
     metadata_uuid = None
+    tvdb_id = None
     if THETVDB_CONNECTION is not None:
         if 'year' in file_name:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
-                file_name['year'], tvdb_id, lang_code, True))
+                file_name['year'], lang_code, True))
         else:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
-                None, tvdb_id, lang_code, True))
+                None, lang_code, True))
         logging.debug("response: %s", tvdb_id)
         if tvdb_id is not None:
             # since there has been NO match whatsoever.....can "wipe" out everything
@@ -69,7 +94,7 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
             # check to see if metadata exists for TVDB id
             metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
             logging.debug("db result: %s", metadata_uuid)
-    return metadata_uuid
+    return metadata_uuid, tvdb_id
 
 
 def tv_fetch_save_tvdb(db_connection, tvdb_id):
@@ -144,6 +169,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
             # search thetvdb since not matched above via DB
             # TODO insert que search record
             pass
+
     # set last values to negate lookups for same show
     metadata_tv_lookup.metadata_last_id = metadata_uuid
     metadata_tv_lookup.metadata_last_title = file_name['title']

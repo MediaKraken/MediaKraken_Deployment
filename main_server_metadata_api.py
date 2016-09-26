@@ -85,6 +85,7 @@ def anidb(thread_db, download_data):
     Rate limiter for AniDB
     """
     logging.debug("here i am in anidb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -99,6 +100,7 @@ def chart_lyrics(thread_db, download_data):
     """
     logging.debug("here i am in chart_lyrics rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -113,6 +115,7 @@ def comicvine(thread_db, download_data):
     """
     logging.debug("here i am in comicvine rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -127,6 +130,7 @@ def giantbomb(thread_db, download_data):
     """
     logging.debug("here i am in giantbomb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -140,6 +144,7 @@ def imdb(thread_db, download_data):
     Rate limiter for IMDB
     """
     logging.debug("here i am in imdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -153,6 +158,7 @@ def imvdb(thread_db, download_data):
     Rate limiter for IMVdb
     """
     logging.debug("here i am in imvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         metadata_uuid = metadata_music_video.metadata_music_video_lookup()
         if metadata_uuid is None:
@@ -167,6 +173,7 @@ def musicbrainz(thread_db, download_data):
     """
     logging.debug("here i am in musicbrainz rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -181,6 +188,7 @@ def netflixroulette(thread_db, download_data):
     """
     logging.debug("here i am in netflixroulette rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -194,6 +202,7 @@ def omdb(thread_db, download_data):
     Rate limiter for OMDB
     """
     logging.debug("here i am in omdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -208,6 +217,7 @@ def pitchfork(thread_db, download_data):
     """
     logging.debug("here i am in pitchfork rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -222,6 +232,7 @@ def televisiontunes(thread_db, download_data):
     """
     logging.debug("here i am in televisiontunes rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -236,6 +247,7 @@ def theaudiodb(thread_db, download_data):
     """
     logging.debug("here i am in theaudiodb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
 
@@ -248,6 +260,7 @@ def thegamesdb(thread_db, download_data):
     """
     logging.debug("here i am in thegamesdb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -262,6 +275,7 @@ def thelogodb(thread_db, download_data):
     """
     logging.debug("here i am in thelogodb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -346,6 +360,7 @@ def thesportsdb(thread_db, download_data):
     """
     logging.debug("here i am in thesportsdb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -359,10 +374,27 @@ def thetvdb(thread_db, download_data):
     Rate limiter for theTVdb
     """
     logging.debug("here i am in thetvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
-        pass
+        logging.debug('thetvdb search')
+        metadata_uuid, match_result =  metadata_tv.tv_search_tvdb(thread_db,\
+            download_data['mdq_download_json']['Path'])
+        if metadata_uuid is None:
+            if match_result is None:
+                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+            else:
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+                download_data['mdq_download_json'].update({'Status': 'Fetch'})
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
+        else:
+            # update with found metadata uuid from db
+            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
+                metadata_uuid)
+            # found in database so remove from download que
+            thread_db.db_download_delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        pass
+        logging.debug('thetvdb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]\
@@ -372,10 +404,27 @@ def tvmaze(thread_db, download_data):
     Rate limiter for TVMaze
     """
     logging.debug("here i am in tvmaze rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
-        pass
+        logging.debug('tvmaze search')
+        metadata_uuid, match_result =  metadata_tv.tv_search_tvmaze(thread_db,\
+            download_data['mdq_download_json']['Path'])
+        if metadata_uuid is None:
+            if match_result is None:
+                thread_db.db_download_update_provider('thetvdb', download_data['mdq_id'])
+            else:
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+                download_data['mdq_download_json'].update({'Status': 'Fetch'})
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
+        else:
+            # update with found metadata uuid from db
+            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
+                metadata_uuid)
+            # found in database so remove from download que
+            thread_db.db_download_delete(download_data['mdq_id'])
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        pass
+        logging.debug('tvmaze fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]\
@@ -386,6 +435,7 @@ def tv_intros(thread_db, download_data):
     """
     logging.debug("here i am in tv_intros rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -400,6 +450,7 @@ def tvshowtime(thread_db, download_data):
     """
     logging.debug("here i am in tvshowtime rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
         pass
     elif download_data['mdq_download_json']['Status'] == "Fetch":
