@@ -21,7 +21,6 @@ import logging # pylint: disable=W0611
 from datetime import datetime # to handle threading
 import os
 import uuid
-import re
 from concurrent import futures
 import time
 import json
