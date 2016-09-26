@@ -79,20 +79,27 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass # already scanned, skip
         else:
-            # check for "stacked" media file
-            head, base_file_name = os.path.split(file_name)
-            if common_string.stack_cd.search(base_file_name) is not None\
-                    or common_string.stack_part.search(base_file_name) is not None\
-                    or common_string.stack_dvd.search(base_file_name) is not None\
-                    or common_string.stack_pt.search(base_file_name) is not None\
-                    or common_string.stack_disk.search(base_file_name) is not None\
-                    or common_string.stack_disc.search(base_file_name) is not None:
-                pass
-
-
             filename_base, file_extension = os.path.splitext(file_name)
             if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION\
                     or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
+                save_dl_record = True
+                # check for "stacked" media file
+                head, base_file_name = os.path.split(file_name)
+                if common_string.stack_cd.search(base_file_name) is not None\
+                        or common_string.stack_part.search(base_file_name) is not None\
+                        or common_string.stack_dvd.search(base_file_name) is not None\
+                        or common_string.stack_pt.search(base_file_name) is not None\
+                        or common_string.stack_disk.search(base_file_name) is not None\
+                        or common_string.stack_disc.search(base_file_name) is not None:
+                    # check to see if it's part one or not
+                    if common_string.stack_cd1.search(base_file_name) is None\
+                            or common_string.stack_part1.search(base_file_name) is None\
+                            or common_string.stack_dvd1.search(base_file_name) is None\
+                            or common_string.stack_pt1.search(base_file_name) is None\
+                            or common_string.stack_disk1.search(base_file_name) is None\
+                            or common_string.stack_disc1.search(base_file_name) is None:
+                        # it's not a part one here so, no DL record needed
+                        save_dl_record = False
                 total_files += 1
                 filename_base, file_extension = os.path.splitext(file_name)
                 new_class_type_uuid = media_class_type_uuid
@@ -155,10 +162,11 @@ def worker(audit_directory):
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,\
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
-                # media id begin and download que insert
-                thread_db.db_download_insert('Z', json.dumps({'MediaID': media_id,\
-                    'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,\
-                    'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
+                if save_dl_record:
+                    # media id begin and download que insert
+                    thread_db.db_download_insert('Z', json.dumps({'MediaID': media_id,\
+                        'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,\
+                        'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
         thread_db.db_audit_path_update_status(dir_guid,\
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
