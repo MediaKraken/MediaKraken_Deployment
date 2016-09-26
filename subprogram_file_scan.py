@@ -93,11 +93,11 @@ def worker(audit_directory):
                         or common_string.stack_disc.search(base_file_name) is not None:
                     # check to see if it's part one or not
                     if common_string.stack_cd1.search(base_file_name) is None\
-                            or common_string.stack_part1.search(base_file_name) is None\
-                            or common_string.stack_dvd1.search(base_file_name) is None\
-                            or common_string.stack_pt1.search(base_file_name) is None\
-                            or common_string.stack_disk1.search(base_file_name) is None\
-                            or common_string.stack_disc1.search(base_file_name) is None:
+                            and common_string.stack_part1.search(base_file_name) is None\
+                            and common_string.stack_dvd1.search(base_file_name) is None\
+                            and common_string.stack_pt1.search(base_file_name) is None\
+                            and common_string.stack_disk1.search(base_file_name) is None\
+                            and common_string.stack_disc1.search(base_file_name) is None:
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 total_files += 1
