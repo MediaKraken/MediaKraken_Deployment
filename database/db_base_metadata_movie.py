@@ -20,14 +20,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def db_meta_movie_update_castcrew(self, tmdb_id, cast_crew_json, metadata_id):
+def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     """
     Update the cast/crew for selected media
     """
+    logging.debug('upt castcrew: %s', metadata_id)
     self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
-        ' where mm_metadata_media_id->\'TMDB\' ? %s', (tmdb_id,))
+        ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json = self.db_cursor.fetchone()['mm_metadata_json'].update(\
         {'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
+    logging.debug('upt: %s', cast_crew_json)
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
         ' where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
     self.db_commit()
