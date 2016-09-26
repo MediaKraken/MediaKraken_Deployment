@@ -85,19 +85,19 @@ def worker(audit_directory):
                 save_dl_record = True
                 # check for "stacked" media file
                 head, base_file_name = os.path.split(file_name)
-                if common_string.stack_cd.search(base_file_name) is not None\
-                        or common_string.stack_part.search(base_file_name) is not None\
-                        or common_string.stack_dvd.search(base_file_name) is not None\
-                        or common_string.stack_pt.search(base_file_name) is not None\
-                        or common_string.stack_disk.search(base_file_name) is not None\
-                        or common_string.stack_disc.search(base_file_name) is not None:
+                if common_string.STACK_CD.search(base_file_name) is not None\
+                        or common_string.STACK_PART.search(base_file_name) is not None\
+                        or common_string.STACK_DVD.search(base_file_name) is not None\
+                        or common_string.STACK_PT.search(base_file_name) is not None\
+                        or common_string.STACK_DISK.search(base_file_name) is not None\
+                        or common_string.STACK_DISC.search(base_file_name) is not None:
                     # check to see if it's part one or not
-                    if common_string.stack_cd1.search(base_file_name) is None\
-                            and common_string.stack_part1.search(base_file_name) is None\
-                            and common_string.stack_dvd1.search(base_file_name) is None\
-                            and common_string.stack_pt1.search(base_file_name) is None\
-                            and common_string.stack_disk1.search(base_file_name) is None\
-                            and common_string.stack_disc1.search(base_file_name) is None:
+                    if common_string.STACK_CD1.search(base_file_name) is None\
+                            and common_string.STACK_PART1.search(base_file_name) is None\
+                            and common_string.STACK_DVD1.search(base_file_name) is None\
+                            and common_string.STACK_PT1.search(base_file_name) is None\
+                            and common_string.STACK_DISK1.search(base_file_name) is None\
+                            and common_string.STACK_DISC1.search(base_file_name) is None:
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 total_files += 1
