@@ -32,9 +32,9 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     cast_crew_json_row = self.db_cursor.fetchone()
     logging.debug('row: %s', cast_crew_json_row)
     if 'cast' in cast_crew_json:
-        cast_crew_json_row['mm_metadata_json'].update({'Cast': cast_crew_json['cast']})
+        cast_crew_json_row['mm_metadata_json']['Meta']['TMDB'].update({'Cast': cast_crew_json['cast']})
     if 'crew' in cast_crew_json:
-        cast_crew_json_row['mm_metadata_json'].update({'Crew': cast_crew_json['crew']})
+        cast_crew_json_row['mm_metadata_json']['Meta']['TMDB'].update({'Crew': cast_crew_json['crew']})
 
     logging.debug('upt: %s', cast_crew_json_row)
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
