@@ -25,7 +25,7 @@ import passwordmeter
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
 STACK_CD1 = re.compile('-cd1(?!\d)', re.IGNORECASE)
-STACK_PART = re.compile('-​part\d​', re.IGNORECASE)
+STACK_PART = re.compile('-part\d', re.IGNORECASE)
 STACK_PART1 = re.compile('-​part1(?!\d)​', re.IGNORECASE)
 STACK_DVD = re.compile('-​dvd\d', re.IGNORECASE)
 STACK_DVD1 = re.compile('-​dvd1(?!\d)', re.IGNORECASE)
