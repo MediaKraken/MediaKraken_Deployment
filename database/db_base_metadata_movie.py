@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import json
 
 
 def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
@@ -27,9 +28,13 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     logging.debug('upt castcrew: %s', metadata_id)
     self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
         ' where mm_metadata_guid = %s', (metadata_id,))
-    cast_crew_json = self.db_cursor.fetchone()['mm_metadata_json'].update(\
+
+    cast_crew_json = self.db_cursor.fetchone()
+    logging.debug('row: %s', cast_crew_json)
+    cast_crew_json['mm_metadata_json'].update(\
         {'Cast': cast_crew_json['cast'], 'Crew': cast_crew_json['crew']})
+
     logging.debug('upt: %s', cast_crew_json)
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
-        ' where mm_metadata_guid = %s', (cast_crew_json, metadata_id))
+        ' where mm_metadata_guid = %s', (json.dumps(cast_crew_json), metadata_id))
     self.db_commit()
