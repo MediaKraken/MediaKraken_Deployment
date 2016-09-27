@@ -28,7 +28,7 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     logging.debug('upt castcrew: %s', metadata_id)
     self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
         ' where mm_metadata_guid = %s', (metadata_id,))
-    cast_crew_json_row = self.db_cursor.fetchone()
+    cast_crew_json_row = self.db_cursor.fetchone()[0]
     logging.debug('row: %s', cast_crew_json_row)
     if 'cast' in cast_crew_json:
         cast_crew_json_row['mm_metadata_json'].update(\
