@@ -33,8 +33,6 @@ from metadata import metadata_person
 from metadata import metadata_sports
 from metadata import metadata_tv
 from common import common_config_ini
-from common import common_file
-from common import common_hash
 from common.common_metadata_limiter import *
 from common import common_logging
 from common import common_metadata
@@ -54,7 +52,6 @@ from common import common_metadata_tmdb
 from common import common_metadata_tv_intro
 from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
-from common import common_network
 from common import common_signal
 from common import common_thetvdb
 from concurrent import futures
