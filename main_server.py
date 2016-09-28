@@ -73,7 +73,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
-        'ServerStart', None, None, 'System')
+                                 'ServerStart', None, None, 'System')
 
 
 # look for infiniband rdma devices
@@ -135,7 +135,8 @@ for link_data in db_connection.db_link_list():
 
 # fire up uwsgi server
 proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
-        '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
+                                 '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'],\
+                                 shell=False)
 
 
 # hold here
