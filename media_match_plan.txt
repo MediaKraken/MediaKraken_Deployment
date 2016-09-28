@@ -1,11 +1,16 @@
 Media match flow:
 
-subprogram_file_scan.py (0.1.8 done)
-	finds all media from media dir's
-	create DL "Z" record for each media file
-		{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv",
-		"Status": null, "ClassID": "928c56c3-253d-4e30-924e-5698be6d3d39", "MediaID": "8e38c5d1-fcf4-43ab-93d6-09c9cbc59741",
-		"MetaNewID": "7ffc7bc5-b9c7-4d22-86ee-08987dec796d", "ProviderMetaID": null}
+subprogram_file_scan.py (0.1.9 done)
+	finds all media from media dir's (via file extention - include subtitles)
+	check to see if in global known media
+	if not in known media
+		save media to db
+		if part 1 of "stacked" media
+			create DL "Z" record for each media file
+				{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv",
+				"Status": null, "ClassID": "928c56c3-253d-4e30-924e-5698be6d3d39",
+				"MediaID": "8e38c5d1-fcf4-43ab-93d6-09c9cbc59741",
+				"MetaNewID": "7ffc7bc5-b9c7-4d22-86ee-08987dec796d", "ProviderMetaID": null}
 
 
 main_server_metadata_api.py
@@ -81,6 +86,13 @@ subprogram_file_scan.py
 	added 30 rows to download que (all Z records and Status: null)
 
 main_server_metadata_api.py
-	four run mm_metadata_json is being wiped out!!!!!!!!!!!!
+	four run mm_metadata_json is being wiped out!!!!!!!!!!!! - fixed
+
+**********************
+
+subprogram_file_scan.py
+	added 29 rows to media
+	added 29 rows to download que (all Z records and Status: null)
+
 
 
