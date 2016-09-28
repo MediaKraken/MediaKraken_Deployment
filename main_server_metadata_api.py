@@ -310,6 +310,9 @@ def themoviedb(thread_db, download_data):
                     # found in database so remove from download que
                     thread_db.db_download_delete(download_data['mdq_id'])
                 else:
+                    thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
+                                                 metadata_uuid)
+                    # TODO put uuid on media record here?  add to match plan docs
                     download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
                     download_data['mdq_download_json'].update({'Status': 'Fetch'})
                     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
