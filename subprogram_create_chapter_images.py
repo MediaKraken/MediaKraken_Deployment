@@ -62,7 +62,7 @@ def worker(worker_file_list):
                 os.makedirs(image_file_path)
             image_file_path = os.path.join(image_file_path, (str(chapter_count) + '.png'))
         command_list = []
-        command_list.append('ffmpeg')
+        command_list.append('./bin/ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input
         command_list.append('-ss')
         # format the seconds to what ffmpeg is looking for

@@ -43,11 +43,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        logging.debug('subprogram_ffmpeg_process.py -i <inputfile> -o <outputfile>')
+        logging.debug('subprogram_ffmpeg_process -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            logging.debug('subprogram_ffmpeg_process.py -i <inputfile> -o <outputfile>')
+            logging.debug('subprogram_ffmpeg_process -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -60,7 +60,7 @@ def main(argv):
     subproccess_args.extend(audio_codec)
     subproccess_args.extend(('-o', outputfile))
     # kick off ffmpeg process
-    proc = subprocess.Popen(['ffmpeg', subproccess_args], shell=False)
+    proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
     logging.debug("FFMpeg PID %s:", proc.pid)
     proc.wait()
 

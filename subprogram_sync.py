@@ -36,7 +36,7 @@ def worker(row_data):
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
+    ffmpeg_params = ['./bin/ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
         row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs',\

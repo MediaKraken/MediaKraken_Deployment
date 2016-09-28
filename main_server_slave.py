@@ -194,7 +194,7 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # fire up ffserver
-    proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
+    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()
     # stop ffserver and timer

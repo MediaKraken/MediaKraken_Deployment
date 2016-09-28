@@ -93,7 +93,8 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
                     logging.debug("two: %s", char_image_local)
                     common_network.mk_network_fetch_from_url(\
                         cast_member['character']['image']['original'], char_image_local)
-                    json_image_data['Images']['tvmaze']['Characters'][cast_member['character']['id']] = char_image_local
+                    json_image_data['Images']['tvmaze']['Characters']\
+                        [cast_member['character']['id']] = char_image_local
                     total_char_images += 1
     # process episode data
     for episode_info in row_data['mm_metadata_tvshow_json']['_embedded']['episodes']:
@@ -105,7 +106,8 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
                 logging.debug("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url(episode_info['image']['original'],\
                     eps_image_local)
-                json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']] = eps_image_local
+                json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']]\
+                    = eps_image_local
                 total_episode_images += 1
     db_connection.db_meta_tvshow_update_image(json.dumps(json_image_data), row_data[1])
     # commit

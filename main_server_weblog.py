@@ -37,7 +37,7 @@ common_logging.com_logging_start()
 logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    proc_ssl = subprocess.Popen(['python', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['subprogram_ssl_keygen'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
@@ -45,7 +45,7 @@ if not os.path.isfile('./key/cacert.pem'):
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor_string_weblog.py'], shell=False)
+proc = subprocess.Popen(['subprogram_reactor_string_weblog'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 

@@ -128,8 +128,8 @@ if movie_inserted > 0:
     create_collection_trigger = True
 # update collection
 if create_collection_trigger:
-    db_connection.db_trigger_insert(('python',\
-        './subprogram_update_create_collections.py'))
+    db_connection.db_trigger_insert((\
+        'subprogram_update_create_collections'))
 
 
 # commit all changes
