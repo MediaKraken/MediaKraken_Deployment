@@ -84,6 +84,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         logging.debug('mtheme guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
+            db_connection.db_download_delete(download_que_id)
         else:
             pass  # TODO lookup properly
     elif class_text == "Movie Trailer":
@@ -92,6 +93,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         logging.debug('mtrailer guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
+            db_connection.db_download_delete(download_que_id)
         else:
             pass  # TODO lookup properly
     elif class_text == "Music":
