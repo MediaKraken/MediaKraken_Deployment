@@ -2,11 +2,13 @@ Media match flow:
 
 subprogram_file_scan.py (0.1.9 done)
 	finds all media from media dir's (via file extention - include subtitles)
-	check to see if in global known media
+	check to see if in global known media (ie....already in database)
 	if not in known media
+		if game iso/chd - set new media class
+		if trailer/theme/etc - set new media class
 		save media to db
-		if part 1 of "stacked" media
-			create DL "Z" record for each media file
+		if part 1 of "stacked" media or a stand-alone file
+			create DL "Z" record for each media file (this is what's used to ID/match later on)
 				{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv",
 				"Status": null, "ClassID": "928c56c3-253d-4e30-924e-5698be6d3d39",
 				"MediaID": "8e38c5d1-fcf4-43ab-93d6-09c9cbc59741",
