@@ -95,8 +95,7 @@ logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['subprogram_reactor_web_images'],\
-    shell=False)
+proc_image = subprocess.Popen(['subprogram_reactor_web_images'], shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
@@ -136,8 +135,7 @@ for link_data in db_connection.db_link_list():
 
 # fire up uwsgi server
 proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
-        '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'],\
-        shell=False)
+        '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'], shell=False)
 
 
 # hold here
@@ -150,7 +148,7 @@ watchdog.com_watchdog_stop()
 
 # log stop
 db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
-         'ServerStop', None, None, 'System')
+                                 'ServerStop', None, None, 'System')
 
 # commit
 db_connection.db_commit()
