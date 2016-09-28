@@ -79,16 +79,12 @@ def metadata_identification(db_connection, class_text, download_que_json,\
             download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Movie Theme":
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
-            os.path.abspath(download_que_json['Path'].replace('/theme/', ''))))
+            os.path.abspath(\
+            download_que_json['Path'].replace('/theme/', '').replace('/backdrops/', ''))))
         if guid is not None:
             metadata_uuid = guid
         else:
-            guid = db_connection.db_read_media_path_like(os.path.dirname(\
-                os.path.abspath(download_que_json['Path'].replace('/backdrops/', ''))))
-            if guid is not None:
-                metadata_uuid = guid
-            else:
-                pass  # TODO lookup properly
+            pass  # TODO lookup properly
     elif class_text == "Movie Trailer":
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
             os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
