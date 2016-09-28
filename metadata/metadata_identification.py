@@ -81,6 +81,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
             os.path.abspath(\
             download_que_json['Path'].replace('/theme/', '').replace('/backdrops/', ''))))
+        logging.debug('mtheme guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
         else:
@@ -88,6 +89,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     elif class_text == "Movie Trailer":
         guid = db_connection.db_read_media_path_like(os.path.dirname(\
             os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
+        logging.debug('mtrailer guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
         else:
