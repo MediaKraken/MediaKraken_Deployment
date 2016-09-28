@@ -136,7 +136,6 @@ class NetworkEvents(Int32StringReceiver):
         # metadata commands
         elif message_words[0] == "IMAGE":
             lookup_id = None
-            uuid_found = False
             # message_words[1] is returned to show client which one is being refreshed
             media_id = None
             if message_words[3] == 'None': # random movie selection
@@ -176,32 +175,32 @@ class NetworkEvents(Int32StringReceiver):
         # admin commands
         elif message_words[0] == "ScanMedia":
             # popen expects a list
-            self.proc_file_scan = subprocess.Popen(['python',\
-                './subprogram_file_scan.py'], shell=False)
+            self.proc_file_scan = subprocess.Popen([\
+                'subprogram_file_scan'], shell=False)
         elif message_words[0] == "ScanMediaStop":
             os.killpg(self.proc_file_scan.pid, signal.SIGUSR1)
         elif message_words[0] == "MatchMedia":
             # popen expects a list
-            self.proc_media_match = subprocess.Popen(['python',\
-                './subprogram_match_known_media.py'], shell=False)
+            self.proc_media_match = subprocess.Popen([\
+                'subprogram_match_known_media'], shell=False)
         elif message_words[0] == "MatchMediaStop":
             os.killpg(self.proc_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CreateChapterImage":
             # popen expects a list
-            self.proc_chapter_create = subprocess.Popen(['python',\
-                './subprogram_create_chapter_images.py'], shell=False)
+            self.proc_chapter_create = subprocess.Popen([\
+                'subprogram_create_chapter_images'], shell=False)
         elif message_words[0] == "CreateChapterImageStop":
             os.killpg(self.proc_chapter_create.pid, signal.SIGUSR1)
         elif message_words[0] == "ScudLeeAnimeMatch":
             # popen expects a list
-            self.proc_anime_match = subprocess.Popen(['python',\
-                './subprogram_match_anime_id_scudlee.py'], shell=False)
+            self.proc_anime_match = subprocess.Popen([\
+                'subprogram_match_anime_id_scudlee'], shell=False)
         elif message_words[0] == "ScudLeeAnimeMatchStop":
             os.killpg(self.proc_anime_match.pid, signal.SIGUSR1)
         elif message_words[0] == "SubtitleMedia":
             # popen expects a list
-            self.proc_subtitle_media_match = subprocess.Popen(['python',\
-                './subprogram_subtitle_downloader.py'], shell=False)
+            self.proc_subtitle_media_match = subprocess.Popen([\
+                'subprogram_subtitle_downloader'], shell=False)
         elif message_words[0] == "SubtitleMediaStop":
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CPUUSAGE":
