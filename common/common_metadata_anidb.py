@@ -75,9 +75,9 @@ class CommonMetadataANIdb(object):
             # check to see if local titles file is older than 24 hours
             if common_file.com_file_modification_timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
-                com_net_anidb_fetch_titles_file('dat')
+                self.com_net_anidb_fetch_titles_file('dat')
                 # since new titles file....recheck by title
-                com_net_anidb_aid_by_title(title_to_search)
+                self.com_net_anidb_aid_by_title(title_to_search)
             else:
                 return None
         else:
