@@ -34,6 +34,8 @@ def com_tvtheme_download(media_name):
         logging.debug('href: %s', data['href'])
         common_network.mk_network_fetch_from_url("http://www.televisiontunes.com"\
             + data['href'], 'theme.mp3')
+        return True #success
+    return False # no match
 
 
-# com_TVTheme_Download("V")
+# com_tvtheme_download("V")
