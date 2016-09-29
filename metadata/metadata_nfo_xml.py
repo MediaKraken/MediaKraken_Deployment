@@ -93,7 +93,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
 
 def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     """
-    Look up id's in nfo/xml db lookup for tv
+    Look up id's in nfo/xml lookup for tv
     """
     imdb_id = None
     tvdb_id = None

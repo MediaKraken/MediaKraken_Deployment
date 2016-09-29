@@ -147,7 +147,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_movie_lookup.metadata_last_imdb = None
         metadata_movie_lookup.metadata_last_tmdb = None
         metadata_movie_lookup.metadata_last_rt = None
-    metadata_uuid = None
+    metadata_uuid = None # so not found checks verify later
     # determine file name/etc for handling name/year skips
     file_name = guessit(media_file_path)
     logging.debug('movielook filename: %s', file_name)
@@ -168,10 +168,13 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_movie_lookup.metadata_last_rt)
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
+        db_connection.db_download_delete(download_que_id)
         return metadata_movie_lookup.metadata_last_id
     if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
+        db_connection.db_download_delete(download_que_id)
         return metadata_movie_lookup.metadata_last_id
     if rt_id is not None and rt_id == metadata_movie_lookup.metadata_last_rt:
+        db_connection.db_download_delete(download_que_id)
         return metadata_movie_lookup.metadata_last_id
     # if ids from nfo/xml, query local db to see if exist
     if tmdb_id is not None:
@@ -183,7 +186,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # if ids from nfo/xml on local db
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
-        return metadata_uuid
+        # fall through here to set last name/year id's
     else:
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
