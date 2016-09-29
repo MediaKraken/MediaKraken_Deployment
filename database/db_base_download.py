@@ -75,18 +75,17 @@ def db_download_update(self, update_json, guid):
     self.db_commit()
 
 
-def db_download_que_exists(self, provider_name, provider_id):
+def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
     """
     See if download que record exists for provider and id
     """
     # include search to find OTHER records besides the row that's
     # doing the query itself
-    # TODO   wait, the other records would be in search mode too
-    # TODO perhaps use the dl que id....and a not to see if other recs
-    logging.debug('que exits: %s %s', provider_name, provider_id)
+    logging.debug('que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
-        ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1', (provider_name, provider_id))
+        ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',\
+        (download_que_uuid, provider_name, provider_id))
     # if no data, send none back
     try:
         return self.db_cursor.fetchone()[0]

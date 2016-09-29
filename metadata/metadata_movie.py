@@ -199,7 +199,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
-                dl_meta = db_connection.db_download_que_exists('themoviedb', imdb_id)
+                dl_meta = db_connection.db_download_que_exists(download_que_id,\
+                    'themoviedb', imdb_id)
                 if dl_meta is None:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     db_connection.db_download_update(json.dumps(download_que_json),\
