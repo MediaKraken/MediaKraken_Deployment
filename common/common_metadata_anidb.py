@@ -115,6 +115,9 @@ class CommonMetadataANIdb(object):
 
 ''' # works
 common_database_octmote.com_db_Open()
-com_net_anidb_Save_Title_Data_To_DB('./Temp_anidb_Titles.gz')
+com_net_anidb_connect
+com_net_anidb_save_title_data_to_db('./Temp_anidb_Titles.gz')
+com_net_anidb_logout
 common_database_octmote.com_db_Close()
+com_net_anidb_stop
 '''
