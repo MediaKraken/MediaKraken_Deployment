@@ -81,6 +81,8 @@ def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
     """
     # include search to find OTHER records besides the row that's
     # doing the query itself
+    # this should now catch anything that's Fetch+, there should also technically
+    # only ever be one Fetch+, rest should be search
     logging.debug('que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\

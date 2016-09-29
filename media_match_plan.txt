@@ -47,8 +47,10 @@ main_server_metadata_api.py
 				check local db for metadata match via provider id returned (0.1.8)
 					if yes, set metadata id from local record and delete DL record (0.1.8)
 					if no, set metadata id from DL record, set DL record to FETCH for match from api call (0.1.8)
-						(FETCH only if FETCH doesn't already exist) (0.1.8)
-						(if FETCH already exists, use that recoreds metadata_uuid and delete DL record) (0.1.8)
+						if FETCH+ already exists
+							use that records metadata_uuid and delete DL record)
+						else:
+							set id to DL record and set FETCH
 		if FETCH (0.1.8)
 			download/save metatdata info (0.1.8)
 			set dl record to FETCHCASTCREW (0.1.8)
