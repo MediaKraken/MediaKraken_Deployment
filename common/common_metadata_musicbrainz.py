@@ -73,7 +73,7 @@ class CommonMetadataMusicbrainz(object):
         """
         global musicbrainzngs
         if disc_id is not None:
-            result = musicbrainzngs.get_releases_by_discid(disc.id,\
+            result = musicbrainzngs.get_releases_by_discid(disc_id,\
                 includes=["artists", "recordings"])
         else:
             result = musicbrainzngs.search_releases(artist=artist_name, release=artist_recording,\
