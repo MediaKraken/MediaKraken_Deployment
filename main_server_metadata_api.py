@@ -231,9 +231,12 @@ def televisiontunes(thread_db, download_data):
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     logging.debug('full downloaddata record: %s', download_data)
     if download_data['mdq_download_json']['Status'] == "Search":
-        pass
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
-        pass
+        # if download succeeds remove dl
+        if common_metadata_tv_theme.com_tvtheme_download(guessit(download_data['Path'])['title']):
+            thread_db.db_download_delete(download_data['mdq_id'])
+            # TODO add theme.mp3 dl'd above to media table
+        else:
+            thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]\
