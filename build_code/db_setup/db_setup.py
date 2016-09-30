@@ -287,6 +287,30 @@ if sql3_cursor.fetchone()[0] == 0:
             ' values (%s,%s,%s,%s)', sql_params)
 
 
+# create table for anime metadata
+sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'\
+    ' CONSTRAINT mm_metadata_anime_pk PRIMARY KEY, mm_metadata_anime_media_id jsonb,'\
+    ' mm_media_anime_name text,'\
+    ' mm_metadata_anime_json jsonb, mm_metadata_anime_localimage_json jsonb,'\
+    ' mm_metadata_anime_user_json jsonb)')
+if db_table_index_check('mm_metadata_anime_idx_name') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idx_name'\
+    ' ON mm_metadata_anime(mm_media_anime_name)')
+if db_table_index_check('mm_metadata_anime_idx_name_lower') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idx_name_lower'\
+        ' ON mm_metadata_anime(lower(mm_media_anime_name))')
+if db_table_index_check('mm_metadata_anime_idxgin_json') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_json'\
+        ' ON mm_metadata_anime USING gin (mm_metadata_anime_json)')
+if db_table_index_check('mm_metadata_aniem_idxgin_media_id') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_aniem_idxgin_media_id'\
+        ' ON mm_metadata_anime USING gin (mm_metadata_anime_media_id)')
+
+if db_table_index_check('mm_metadata_anime_idxgin_user_json') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_user_json'\
+        ' ON mm_metadata_anime USING gin (mm_metadata_anime_user_json)')
+
+
 # create table for metadata
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_metadata_movie (mm_metadata_guid uuid'\
     ' CONSTRAINT mm_metadata_pk PRIMARY KEY, mm_metadata_media_id jsonb, mm_media_name text,'\
