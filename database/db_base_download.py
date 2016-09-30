@@ -87,7 +87,7 @@ def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
         ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
         ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',\
-        (download_que_uuid, provider_name, provider_id))
+        (provider_name, provider_id, download_que_uuid))
     # if no data, send none back
     try:
         return self.db_cursor.fetchone()[0]
