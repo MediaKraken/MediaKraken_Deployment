@@ -21,7 +21,8 @@ import logging # pylint: disable=W0611
 import gzip
 import time
 import sys
-from . import common_database_octmote
+import json
+import xmltodict
 from . import common_file
 from . import common_network
 sys.path.append("./vault/lib")
@@ -32,36 +33,33 @@ class CommonMetadataANIdb(object):
     """
     Class for interfacing with anidb
     """
-    def __init__(self):
+    def __init__(self, db_connection):
         self.adba_connection = None
+        self.db_connection = db_connection
 
 
-    def com_net_anidb_fetch_titles_file(self, data_type='dat'):
+    def com_net_anidb_fetch_titles_file(self):
         """
         Fetch the tarball of anime titles
         """
-        if data_type == "dat":
-            data_file = 'http://anidb.net/api/anime-titles.dat.gz'
-        else:
-            data_file = 'http://anidb.net/api/anime-titles.xml.gz'
-        common_network.mk_network_fetch_from_url(data_file, './cache/anidb_titles.gz')
+        common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',\
+            './cache/anidb_titles.gz')
 
 
-    def com_net_anidb_save_title_data_to_db(self, title_file):
+    def com_net_anidb_save_title_data_to_db(self, title_file='./cache/anidb_titles.gz'):
         """
         Save anidb title data to database
         """
         file_handle = gzip.open(title_file, 'rb')
         file_content = file_handle.read()
         file_handle.close()
-        # loop throw the lines
-        sql_params_list = []
-        for ani_line in file_content.split('\n'):
-            if len(ani_line) > 6 and ani_line[0] != '#':
-                # not a comment so try to split the file via pipes with a limit of three fields
-                sql_fields = ani_line.split('|', 3)
-                sql_params_list.append(sql_fields)
-        common_database_octmote.com_db_anidb_title_insert(sql_params_list)
+        # loop through titles
+        for anime_title in xmltodict.parse(file_content)['animetitles']:
+            logging.debug('ani title: %s', anime_title)
+            self.db_connection.db_meta_anime_title_insert(\
+                json.dumps({'anidb': anime_title['anime aid']}),\
+                anime_title['title type="official" xml:lang="en"'],\
+                json.dumps(anime_title), None, None)
 
 
     def com_net_anidb_aid_by_title(self, title_to_search):
@@ -69,12 +67,12 @@ class CommonMetadataANIdb(object):
         Find AID by title
         """
         # check the local DB
-        local_db_result = common_database_octmote.com_db_anidb_title_search(title_to_search)
+        local_db_result = self.db_connection.db_meta_anime_title_search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
             if common_file.com_file_modification_timestamp(title_to_search) \
-                    < (time.time() - (1 * 86400)):
-                self.com_net_anidb_fetch_titles_file('xml')
+                    < (time.time() - 86400):
+                self.com_net_anidb_fetch_titles_file()
                 # since new titles file....recheck by title
                 self.com_net_anidb_aid_by_title(title_to_search)
             else:
