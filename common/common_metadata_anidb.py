@@ -45,7 +45,7 @@ class CommonMetadataANIdb(object):
             data_file = 'http://anidb.net/api/anime-titles.dat.gz'
         else:
             data_file = 'http://anidb.net/api/anime-titles.xml.gz'
-        common_network.mk_network_fetch_from_url(data_file, './Temp_anidb_Titles.gz')
+        common_network.mk_network_fetch_from_url(data_file, './cache/anidb_titles.gz')
 
 
     def com_net_anidb_save_title_data_to_db(self, title_file):
@@ -75,7 +75,7 @@ class CommonMetadataANIdb(object):
             # check to see if local titles file is older than 24 hours
             if common_file.com_file_modification_timestamp(title_to_search) \
                     < (time.time() - (1 * 86400)):
-                self.com_net_anidb_fetch_titles_file('dat')
+                self.com_net_anidb_fetch_titles_file('xml')
                 # since new titles file....recheck by title
                 self.com_net_anidb_aid_by_title(title_to_search)
             else:
@@ -92,7 +92,7 @@ class CommonMetadataANIdb(object):
         try:
             self.adba_connection.auth(user_name, user_password)
         except Exception, err_code:
-            logging.error("exception msg: " + str(err_code))
+            logging.error("exception msg: %s", err_code)
         return self.adba_connection
 
 
@@ -116,7 +116,7 @@ class CommonMetadataANIdb(object):
 ''' # works
 common_database_octmote.com_db_Open()
 com_net_anidb_connect
-com_net_anidb_save_title_data_to_db('./Temp_anidb_Titles.gz')
+com_net_anidb_save_title_data_to_db('./cache/anidb_titles.gz')
 com_net_anidb_logout
 common_database_octmote.com_db_Close()
 com_net_anidb_stop

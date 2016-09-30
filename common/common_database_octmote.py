@@ -276,26 +276,3 @@ class CommonDatabaseOctmote(object):
         """
         self.db_cursor.execute(sql_command)
         self.sql3_conn.commit()
-
-
-    def com_db_anidb_title_insert(self, sql_params_list):
-        """
-        Insert new anidb entries into database
-        """
-        self.db_cursor.execute("delete from octmote_anidb")
-        for sql_params in sql_params_list:
-            self.db_cursor.execute('insert into octmote_anidb (anidb_aid, anidb_type,'\
-                ' anidb_language, anidb_title) values (?,?,?,?)', sql_params)
-        self.sql3_conn.commit()
-
-
-    def com_db_anidb_title_search(self, title_to_search):
-        """
-        search for title
-        """
-        self.db_cursor.execute('select anidb_aid from octmote_anidb'\
-            ' where anidb_title = ? limit 1', (title_to_search,))
-        try:
-            return self.db_cursor.fetchone()[0]
-        except:
-            return None
