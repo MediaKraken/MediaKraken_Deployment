@@ -28,7 +28,6 @@ sys.path.append("./vault/lib")
 import adba
 
 
-# http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
 class CommonMetadataANIdb(object):
     """
     Class for interfacing with anidb
@@ -108,16 +107,3 @@ class CommonMetadataANIdb(object):
         Close the anidb connect and stop the thread
         """
         self.adba_connection.stop()
-
-
-# expericment code
-# works com_net_anidb_Fetch_Titles_File('dat')
-
-''' # works
-common_database_octmote.com_db_Open()
-com_net_anidb_connect
-com_net_anidb_save_title_data_to_db('./cache/anidb_titles.gz')
-com_net_anidb_logout
-common_database_octmote.com_db_Close()
-com_net_anidb_stop
-'''
