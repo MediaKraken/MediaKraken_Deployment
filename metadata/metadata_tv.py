@@ -176,7 +176,8 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         # id is known from nfo/xml but not in db yet so fetch data
         if tvdb_id is not None or imdb_id is not None:
             if tvdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists('thetvdb', str(tvdb_id))
+                dl_meta = db_connection.db_download_que_exists(download_que_id,\
+                                                               'thetvdb', str(tvdb_id))
                 if dl_meta is None:
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
                     db_connection.db_download_update(json.dumps(download_que_json),\
