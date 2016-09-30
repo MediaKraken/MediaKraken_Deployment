@@ -305,7 +305,19 @@ if db_table_index_check('mm_metadata_anime_idxgin_json') is None:
 if db_table_index_check('mm_metadata_aniem_idxgin_media_id') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_aniem_idxgin_media_id'\
         ' ON mm_metadata_anime USING gin (mm_metadata_anime_media_id)')
-
+# yes double paran is required
+if db_table_index_check('mm_metadata_anime_idxgin_media_id_anidb') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_anidb'\
+        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'anidb\'))')
+if db_table_index_check('mm_metadata_anime_idxgin_media_id_thetvdb') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_thetvdb'\
+        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'thetvdb\'))')
+if db_table_index_check('mm_metadata_anime_idxgin_media_id_tmdb') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb'\
+        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'TMDB\'))')
+if db_table_index_check('mm_metadata_anime_idxgin_media_id_imdb') is None:
+    sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb'\
+        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'imdb\'))')
 if db_table_index_check('mm_metadata_anime_idxgin_user_json') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_user_json'\
         ' ON mm_metadata_anime USING gin (mm_metadata_anime_user_json)')
