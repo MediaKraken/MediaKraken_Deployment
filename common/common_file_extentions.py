@@ -55,6 +55,7 @@ MEDIA_EXTENSION = [
     'zip',
     '7z',
     'pdf',
+    'lrc',
 ]
 
 
@@ -75,4 +76,5 @@ MEDIA_EXTENSION_SKIP_FFMPEG = [
     '7z',
     'iso',
     'chd',
+    'lrc',
 ]
