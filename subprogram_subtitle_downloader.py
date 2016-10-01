@@ -32,29 +32,25 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Subtitle_Download
 
 
 total_download_attempts = 0
-# main code
-def main(argv):
-    """
-    Main function
-    """
-    # parse arguments
-    sub_lang = "en"
-    # search the directory for filter files
-    for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',\
-            ('avi', 'mkv', 'mp4', 'm4v'), True):
-        # run the subliminal fetch for episode
-        logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
-        # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
-        # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
-        if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
-            # change working dir so srt is saved in the right spot
-            total_download_attempts += 1
-            os.chdir(media_row.rsplit('/', 1)[0])
-            file_handle = os.popen("subliminal -l " + sub_lang + " -- \""\
-                + media_row.encode("utf8") + "\"")
-            cmd_output = file_handle.read()
-            logging.debug("Download Status: %s", cmd_output)
 
 
-if __name__ == "__main__":
-    print('Total subtitle download attempts: %s' % total_download_attempts)
+# parse arguments
+sub_lang = "en"
+# search the directory for filter files
+for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',\
+        ('avi', 'mkv', 'mp4', 'm4v'), True):
+    # run the subliminal fetch for episode
+    logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
+    # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
+    # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
+    if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
+        # change working dir so srt is saved in the right spot
+        total_download_attempts += 1
+        os.chdir(media_row.rsplit('/', 1)[0])
+        file_handle = os.popen("subliminal -l " + sub_lang + " -- \""\
+            + media_row.encode("utf8") + "\"")
+        cmd_output = file_handle.read()
+        logging.debug("Download Status: %s", cmd_output)
+
+
+print('Total subtitle download attempts: %s' % total_download_attempts)
