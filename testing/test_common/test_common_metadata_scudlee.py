@@ -24,10 +24,9 @@ sys.path.append('.')
 from common import common_metadata_scudlee
 
 
-# def fetch the anime list by scudlee for thetvdb crossreference
 def test_mk_scudlee_fetch_xml():
     """
-    Test function
+    grab the data from github
     """
     common_metadata_scudlee.mk_scudlee_fetch_xml()
 
