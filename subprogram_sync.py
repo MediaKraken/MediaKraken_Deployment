@@ -37,21 +37,21 @@ def worker(row_data):
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb
     ffmpeg_params = ['./bin/ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
-        row_data['mm_sync_options_json']['Media GUID'])[0].encode('utf8')]
+        row_data['mm_sync_options_json']['Media GUID'])[0]]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs',\
-            row_data['mm_sync_options_json']['Options']['Size'].encode('utf8')))
+            row_data['mm_sync_options_json']['Options']['Size']))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
         ffmpeg_params.extend(('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
     if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
         ffmpeg_params.extend(('-ac',\
-            row_data['mm_sync_options_json']['Options']['AudioChannels'].encode('utf8')))
+            row_data['mm_sync_options_json']['Options']['AudioChannels']))
     if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
         ffmpeg_params.extend(('-acodec',\
-            row_data['mm_sync_options_json']['Options']['ACodec'].encode('utf8')))
+            row_data['mm_sync_options_json']['Options']['ACodec']))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
-    ffmpeg_params.append(row_data['mm_sync_path_to'].encode('utf8') + "."\
+    ffmpeg_params.append(row_data['mm_sync_path_to'] + "."\
         + row_data['mm_sync_options_json']['Options']['VContainer'])
     logging.debug("ffmpeg: %s", ffmpeg_params)
     ffmpeg_pid = subprocess.Popen(ffmpeg_params, shell=False, stdout=subprocess.PIPE)
