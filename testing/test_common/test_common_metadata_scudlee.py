@@ -32,9 +32,15 @@ def test_mk_scudlee_fetch_xml():
     common_metadata_scudlee.mk_scudlee_fetch_xml()
 
 
-# parse the anime list
-# def mk_scudlee_anime_list_parse(file_name=None):
+def test_mk_scudlee_anime_list_parse(file_name=None):
+    """
+    # parse the anime list
+    """
+    common_metadata_scudlee.mk_scudlee_anime_list_parse()
 
 
-# parse the movieset list
-# def mk_scudlee_anime_set_parse(file_name=None):
+def test_mk_scudlee_anime_set_parse(file_name=None):
+    """
+    # parse the movieset list
+    """
+    common_metadata_scudlee.mk_scudlee_anime_set_parse()
