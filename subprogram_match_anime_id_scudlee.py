@@ -62,8 +62,8 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
     logging.debug("row: %s", row_data)
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
-        if (row_data[1] == "OVA" or row_data[1] == "movie" or row_data[1] == "hentai"\
-                or row_data[1] == "web") and row_data[2] is None:
+        # just check for non int then it's a non tvdb id
+        if type(row_data[1]) != int and row_data[2] is None:
             pass
         else:
             # should be valid data, do the update
@@ -81,7 +81,9 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
+
 # commit all changes to db
 db_connection.db_commit()
+
 # close the database
 db_connection.db_close()
