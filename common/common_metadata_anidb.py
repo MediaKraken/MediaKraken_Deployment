@@ -42,24 +42,47 @@ class CommonMetadataANIdb(object):
         """
         Fetch the tarball of anime titles
         """
-        common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',\
-            './cache/anidb_titles.gz')
+        # check to see if local titles file is older than 24 hours
+        if common_file.com_file_modification_timestamp('./cache/anidb_titles.gz') \
+                < (time.time() - 86400):
+            common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',\
+                                                     './cache/anidb_titles.gz')
+            return True # new file
+        return False
 
 
     def com_net_anidb_save_title_data_to_db(self, title_file='./cache/anidb_titles.gz'):
         """
         Save anidb title data to database
         """
+        logging.debug('start')
         file_handle = gzip.open(title_file, 'rb')
-        file_content = file_handle.read()
+        #file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
+        anime_aid = None
+        anime_title = None
+        anime_title_ja = None
+        for file_line in file_handle.readlines():
+            #logging.debug('line: %s', file_line.decode('utf-8'))
+            if file_line.decode('utf-8').find('<anime aid="') != -1:
+                anime_aid = file_line.decode('utf-8').split('"', 1)[1].rsplit('"', 1)[0]
+                logging.debug('aid: %s', anime_aid)
+            elif file_line.decode('utf-8').find('title xml:lang="ja"') != -1:
+                anime_title_ja = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
+                logging.debug('title: %s', anime_title_ja)
+            elif file_line.decode('utf-8').find('title xml:lang="en"') != -1:
+                anime_title = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
+                logging.debug('title: %s', anime_title)
+            elif file_line.decode('utf-8').find('</anime>') != -1:
+                if anime_title is None:
+                    anime_title = anime_title_ja
+                self.db_connection.db_meta_anime_title_insert(\
+                    json.dumps({'anidb': anime_aid}), anime_title,\
+                    None , None, None)
+                # reset each time to handle ja when this doesn't exist
+                anime_title = None
+                logging.debug('end insert')
         file_handle.close()
-        # loop through titles
-        for anime_title in xmltodict.parse(file_content)['animetitles']:
-            logging.debug('ani title: %s', anime_title)
-            self.db_connection.db_meta_anime_title_insert(\
-                json.dumps({'anidb': anime_title['anime aid']}),\
-                anime_title['title type="official" xml:lang="en"'],\
-                json.dumps(anime_title), None, None)
+        logging.debug('end')
 
 
     def com_net_anidb_aid_by_title(self, title_to_search):
@@ -70,9 +93,7 @@ class CommonMetadataANIdb(object):
         local_db_result = self.db_connection.db_meta_anime_title_search(title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
-            if common_file.com_file_modification_timestamp(title_to_search) \
-                    < (time.time() - 86400):
-                self.com_net_anidb_fetch_titles_file()
+            if self.com_net_anidb_fetch_titles_file():
                 # since new titles file....recheck by title
                 self.com_net_anidb_aid_by_title(title_to_search)
             else:
