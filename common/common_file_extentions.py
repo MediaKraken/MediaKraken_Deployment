@@ -50,10 +50,6 @@ MEDIA_EXTENSION = [
     'm2v',
     'm4v',
     'nsv',
-    'iso',
-    'chd',
-    'zip',
-    '7z',
     'pdf',
     'lrc',
 ]
@@ -77,4 +73,11 @@ MEDIA_EXTENSION_SKIP_FFMPEG = [
     'iso',
     'chd',
     'lrc',
+]
+
+GAME_EXTENSION = [
+    'iso',
+    'chd',
+    'zip',
+    '7z',
 ]
