@@ -517,10 +517,10 @@ def worker(content_providers):
                 logging.debug('Z: class: %s rowid: %s json: %s',\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_id'], row_data['mdq_download_json'])
-                # determine file name/etc for handling name/year skips
-                file_name = guessit(row_data['mdq_download_json']['Path'])
                 # check for dupes by name/year
                 if metadata_last_id is not None:
+                    # determine file name/etc for handling name/year skips
+                    file_name = guessit(row_data['mdq_download_json']['Path'])
                     if 'year' in file_name:
                         if file_name['title'] == metadata_last_title\
                                 and file_name['year'] == metadata_last_year:
