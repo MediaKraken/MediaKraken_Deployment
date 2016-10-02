@@ -24,6 +24,7 @@ locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_anidb
+from common import common_metadata_scudlee
 from common import common_signal
 
 
@@ -51,6 +52,8 @@ anidb = common_metadata_anidb.CommonMetadataANIdb(db_connection)
 anidb.com_net_anidb_fetch_titles_file()
 # insert into db
 anidb.com_net_anidb_save_title_data_to_db()
+# grab latest scudlee udpate
+common_metadata_scudlee.mk_scudlee_fetch_xml()
 
 
 # log end
