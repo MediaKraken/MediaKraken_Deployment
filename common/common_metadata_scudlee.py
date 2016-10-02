@@ -44,13 +44,11 @@ def mk_scudlee_fetch_xml():
             './cache/anime-movieset-list.xml')
 
 
-def mk_scudlee_anime_list_parse(file_name=None):
+def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     """
     Parse the anime list
     """
     anime_cross_reference = []
-    if file_name is None:
-        file_name = './cache/anime-list.xml'
     itemlist = minidom.parse(file_name).getElementsByTagName('anime')
     for anime_data in itemlist:
         anidbid = anime_data.attributes['anidbid'].value
@@ -70,12 +68,10 @@ def mk_scudlee_anime_list_parse(file_name=None):
     return anime_cross_reference
 
 
-def mk_scudlee_anime_set_parse(file_name=None):
+def mk_scudlee_anime_set_parse(file_name='./cache/anime-movieset-list.xml'):
     """
     Parse the movieset list
     """
-    if file_name is None:
-        file_name = './cache/anime-movieset-list.xml'
     itemlist = minidom.parse(file_name).getElementsByTagName('set')
     collection_list = []
     for set_data in itemlist:
