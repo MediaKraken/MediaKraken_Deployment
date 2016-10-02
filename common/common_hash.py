@@ -48,7 +48,7 @@ def com_hash_sha1_by_filename(file_name):
                 hash_dict[zippedfile] = sha1_hash_data
             except:
                 Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
-                        + "|Error on SHA1 of file")
+                                                       + "|Error on SHA1 of file")
         zip_handle.close()
         if len(hash_dict) > 0:
             if len(hash_dict) == 1:
@@ -60,7 +60,6 @@ def com_hash_sha1_by_filename(file_name):
         return None
     elif file_name.endswith('7z'):
         try:
-            lock.acquire()
             file_handle = open(file_name, 'rb')
             archive = Archive7z(file_handle)
             filenames = archive.getnames()
@@ -75,7 +74,7 @@ def com_hash_sha1_by_filename(file_name):
                     hash_dict[filename] = sha1_hash_data
                 except:
                     Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
-                            + "|Error on SHA1 of file")
+                                                           + "|Error on SHA1 of file")
             file_handle.close()
             if len(hash_dict) > 0:
                 if len(hash_dict) == 1:

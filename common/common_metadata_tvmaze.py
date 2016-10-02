@@ -109,9 +109,8 @@ class CommonMetadatatvmaze(object):
         """
         # people search (doesnt' appear to have episode data here)
         """
-        url_opts = person_name,
         return common_network.mk_network_fetch_from_url(self.API_BASE_URL + 'search/people?q=%s'\
-            % url_opts)
+            % (person_name,))
 
 
     def com_meta_tvmaze_schedule(self, country_code=None, schedule_date=None):
