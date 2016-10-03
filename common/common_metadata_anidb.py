@@ -65,13 +65,13 @@ class CommonMetadataANIdb(object):
             #logging.debug('line: %s', file_line.decode('utf-8'))
             if file_line.decode('utf-8').find('<anime aid="') != -1:
                 anime_aid = file_line.decode('utf-8').split('"', 1)[1].rsplit('"', 1)[0]
-                logging.debug('aid: %s', anime_aid)
+                #logging.debug('aid: %s', anime_aid)
             elif file_line.decode('utf-8').find('title xml:lang="ja"') != -1:
                 anime_title_ja = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                logging.debug('title: %s', anime_title_ja)
+                #logging.debug('title: %s', anime_title_ja)
             elif file_line.decode('utf-8').find('title xml:lang="en"') != -1:
                 anime_title = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                logging.debug('title: %s', anime_title)
+                #logging.debug('title: %s', anime_title)
             elif file_line.decode('utf-8').find('</anime>') != -1:
                 if anime_title is None:
                     anime_title = anime_title_ja
@@ -80,7 +80,7 @@ class CommonMetadataANIdb(object):
                     None , None, None)
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None
-                logging.debug('end insert')
+                #logging.debug('end insert')
         file_handle.close()
         logging.debug('end')
 

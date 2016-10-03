@@ -52,7 +52,10 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     itemlist = minidom.parse(file_name).getElementsByTagName('anime')
     for anime_data in itemlist:
         anidbid = anime_data.attributes['anidbid'].value
-        tvdbid = anime_data.attributes['tvdbid'].value
+        try:
+            tvdbid = int(anime_data.attributes['tvdbid'].value)
+        except:
+            tvdbid = None
         try:
             imdbid = anime_data.attributes['imdbid'].value
         except:
@@ -64,7 +67,7 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
         except:
             # default season not gaurenteed to be there
             pass
-        anime_cross_reference.append((anidbid, tvdbid, imdbid, default_tvseason))
+        anime_cross_reference.append((anidbid, str(tvdbid), imdbid, default_tvseason))
     return anime_cross_reference
 
 

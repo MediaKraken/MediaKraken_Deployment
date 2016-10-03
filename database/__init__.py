@@ -119,7 +119,8 @@ class MKServerDatabase(object):
         db_find_metadata_guid,\
         db_meta_update_media_id_from_scudlee
     from database.db_base_metadata_anime import db_meta_anime_title_insert,\
-        db_meta_anime_title_search
+        db_meta_anime_title_search,\
+        db_meta_anime_update_meta_id
     from database.db_base_metadata_book import db_metabook_guid_by_isbn,\
         db_metabook_guid_by_name,\
         db_metabook_book_insert
