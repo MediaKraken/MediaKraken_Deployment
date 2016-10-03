@@ -33,7 +33,7 @@ def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,\
         ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json,'\
         ' mm_metadata_anime_mapping, mm_metadata_anime_mapping_before)\
         values (%s,%s,%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,\
-                                      ani_image_local, ani_user_json, mapping_data, before_data))
+        ani_image_local, ani_user_json, mapping_data, before_data))
     self.db_commit()
     return new_guid
 
@@ -51,12 +51,14 @@ def db_meta_anime_title_search(self, title_to_search):
         return None
 
 
-def db_meta_anime_update_meta_id(self, media_id_json):
+def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_before):
     """
     Update the media id json from scudlee data
     """
     logging.debug('ani_id_json %s', media_id_json)
-    self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s'\
+    self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s,'\
+                           ' mm_metadata_anime_mapping = %s, mm_metadata_anime_mapping_before = %s'\
                            ' where mm_metadata_anime_media_id->\'anidb\' ? %s',\
-                           (media_id_json, json.loads(media_id_json)['anidb']))
+                           (media_id_json, mapping_json, mapping_before,\
+                           json.loads(media_id_json)['anidb']))
     self.db_commit()
