@@ -62,3 +62,16 @@ def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_befo
                            (media_id_json, mapping_json, mapping_before,\
                            json.loads(media_id_json)['anidb']))
     self.db_commit()
+
+
+def db_meta_anime_meta_by_id(self, anidb_id):
+    """
+    Return count of records with id
+    """
+    logging.debug('exist ani: %s', anidb_id)
+    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'\
+        ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))
+    try:
+        return self.db_cursor.fetchone()['mm_metadata_anime_guid']
+    except:
+        return None

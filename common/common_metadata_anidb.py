@@ -73,11 +73,12 @@ class CommonMetadataANIdb(object):
                 anime_title = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
                 #logging.debug('title: %s', anime_title)
             elif file_line.decode('utf-8').find('</anime>') != -1:
-                if anime_title is None:
-                    anime_title = anime_title_ja
-                self.db_connection.db_meta_anime_title_insert(\
-                    json.dumps({'anidb': anime_aid}), anime_title,\
-                    None, None, None , None, None)
+                if self.db_connection.db_meta_anime_meta_by_id(anime_aid) is None:
+                    if anime_title is None:
+                        anime_title = anime_title_ja
+                    self.db_connection.db_meta_anime_title_insert(\
+                        json.dumps({'anidb': anime_aid}), anime_title,\
+                        None, None, None , None, None)
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None
                 #logging.debug('end insert')
