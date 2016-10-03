@@ -23,16 +23,17 @@ import json
 
 
 def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,\
-                               ani_image_local, ani_user_json):
+                               ani_image_local, ani_user_json, mapping_data, before_data):
     """
     Insert new anidb entries into database
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'\
         ' mm_metadata_anime_media_id, mm_media_anime_name, mm_metadata_anime_json,'\
-        ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json)\
-        values (%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,\
-                                      ani_image_local, ani_user_json))
+        ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json,'\
+        ' mm_metadata_anime_mapping, mm_metadata_anime_mapping_before)\
+        values (%s,%s,%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,\
+                                      ani_image_local, ani_user_json, mapping_data, before_data))
     self.db_commit()
     return new_guid
 

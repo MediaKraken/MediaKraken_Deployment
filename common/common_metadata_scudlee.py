@@ -55,33 +55,27 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     file_handle.close()
     for anime_data in itemlist['anime-list']['anime']:
         logging.debug('data %s:', anime_data)
-#    itemlist = minidom.parse(file_name).getElementsByTagName('anime')
-#    for anime_data in itemlist:
-#        anidbid = anime_data.attributes['anidbid'].value
-#        try:
-#            tvdbid = str(int(anime_data.attributes['tvdbid'].value)) # to make sure not web, etc
-#        except:
-#            tvdbid = None
-#        try:
-#            imdbid = anime_data.attributes['imdbid'].value
-#            if imdbid == 'unknown':
-#                imdbid = None
-#        except:
-#            # imdbid is not gaurenteed to be there
-#            imdbid = None
-#        default_tvseason = None
-#        try:
-#            default_tvseason = anime_data.attributes['defaulttvdbseason'].value
-#        except:
-#            # default season not gaurenteed to be there
-#            pass
-#        stuff = xmltodict.parse(anime_data)
-#        logging.debug('stuff %s', stuff)
-#        try:
-#            before_data = anime_data.attributes['before'].value
-#        except:
-#            before_data = None
-#        anime_cross_reference.append((anidbid, tvdbid, imdbid, default_tvseason, before_data))
+        try:
+            tvdbid = str(int(anime_data['tvdbid'])) # to make sure not web, etc
+        except:
+            tvdbid = None
+        try:
+            imdbid = anime_data['imdbid']
+            if imdbid == 'unknown':
+                imdbid = None
+        except:
+            imdbid = None
+        default_tvseason = anime_data['defaulttvdbseason']
+        try:
+            mapping_data = anime_data['mapping-list']
+        except:
+            mapping_data = None
+        try:
+            before_data = anime_data['before']
+        except:
+            before_data = None
+        anime_cross_reference.append((anime_data['anidbid'], tvdbid, imdbid,\
+                                      default_tvseason, mapping_data, before_data))
     return anime_cross_reference
 
 

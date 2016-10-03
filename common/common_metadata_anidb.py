@@ -77,7 +77,7 @@ class CommonMetadataANIdb(object):
                     anime_title = anime_title_ja
                 self.db_connection.db_meta_anime_title_insert(\
                     json.dumps({'anidb': anime_aid}), anime_title,\
-                    None , None, None)
+                    None, None, None , None, None)
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None
                 #logging.debug('end insert')
