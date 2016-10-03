@@ -61,6 +61,8 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
         except:
             # imdbid is not gaurenteed to be there
             imdbid = None
+        if imdbid == 'unknown':
+            imdbid = None
         default_tvseason = None
         try:
             default_tvseason = anime_data.attributes['defaulttvdbseason'].value
