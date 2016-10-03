@@ -55,9 +55,12 @@ anidb.com_net_anidb_save_title_data_to_db()
 # grab latest scudlee udpate
 common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
-for anidbid, tvdbid, imdbid, default_tvseason in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    logging.debug('ani %s, tv %s, imdb %s, default %s:', anidbid, tvdbid, imdbid, default_tvseason)
-    db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid, 'thetvdb': tvdbid, 'imdb': imdbid, 'default': default_tvseason}))
+for anidbid, tvdbid, imdbid, default_tvseason, before_data\
+        in common_metadata_scudlee.mk_scudlee_anime_list_parse():
+    logging.debug('ani %s, tv %s, imdb %s, default %s, before %s:', anidbid, tvdbid, imdbid,\
+                  default_tvseason, before_data)
+    db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid, 'thetvdb': tvdbid,\
+        'imdb': imdbid, 'default': default_tvseason, 'before': before_data}))
 # store the xref collection data
 for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     pass

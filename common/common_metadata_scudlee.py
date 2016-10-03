@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import time
 import os
+import xmltodict
 from xml.dom import minidom
 from . import common_file
 from . import common_network
@@ -49,27 +50,38 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     Parse the anime list
     """
     anime_cross_reference = []
-    itemlist = minidom.parse(file_name).getElementsByTagName('anime')
-    for anime_data in itemlist:
-        anidbid = anime_data.attributes['anidbid'].value
-        try:
-            tvdbid = str(int(anime_data.attributes['tvdbid'].value)) # to make sure not web, etc
-        except:
-            tvdbid = None
-        try:
-            imdbid = anime_data.attributes['imdbid'].value
-            if imdbid == 'unknown':
-                imdbid = None
-        except:
-            # imdbid is not gaurenteed to be there
-            imdbid = None
-        default_tvseason = None
-        try:
-            default_tvseason = anime_data.attributes['defaulttvdbseason'].value
-        except:
-            # default season not gaurenteed to be there
-            pass
-        anime_cross_reference.append((anidbid, tvdbid, imdbid, default_tvseason))
+    file_handle = open(file_name, 'r')
+    itemlist = xmltodict.parse(file_handle.read())
+    file_handle.close()
+    for anime_data in itemlist['anime-list']['anime']:
+        logging.debug('data %s:', anime_data)
+#    itemlist = minidom.parse(file_name).getElementsByTagName('anime')
+#    for anime_data in itemlist:
+#        anidbid = anime_data.attributes['anidbid'].value
+#        try:
+#            tvdbid = str(int(anime_data.attributes['tvdbid'].value)) # to make sure not web, etc
+#        except:
+#            tvdbid = None
+#        try:
+#            imdbid = anime_data.attributes['imdbid'].value
+#            if imdbid == 'unknown':
+#                imdbid = None
+#        except:
+#            # imdbid is not gaurenteed to be there
+#            imdbid = None
+#        default_tvseason = None
+#        try:
+#            default_tvseason = anime_data.attributes['defaulttvdbseason'].value
+#        except:
+#            # default season not gaurenteed to be there
+#            pass
+#        stuff = xmltodict.parse(anime_data)
+#        logging.debug('stuff %s', stuff)
+#        try:
+#            before_data = anime_data.attributes['before'].value
+#        except:
+#            before_data = None
+#        anime_cross_reference.append((anidbid, tvdbid, imdbid, default_tvseason, before_data))
     return anime_cross_reference
 
 
