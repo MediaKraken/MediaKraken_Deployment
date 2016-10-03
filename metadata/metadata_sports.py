@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 import json
+from . import metadata
 from common import common_config_ini
 from common import common_metadata_thesportsdb
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()

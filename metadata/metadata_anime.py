@@ -18,7 +18,19 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from . import metadata
 from guessit import guessit
+from common import common_config_ini
+from common import common_metadata_anidb
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+# verify provider key exists
+if option_config_json['API']['AniDB'] is not None:
+    # setup the thmdb class
+    ANIDB_CONNECTION = common_metadata_anidb.CommonMetadataANIdb(option_config_json)
+else:
+    ANIDB_CONNECTION = None
 
 
 def metadata_anime_lookup(db_connection, media_file_path, download_que_id):
