@@ -30,8 +30,10 @@ from common import common_metadata_movie_trailer
 from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
 from common import common_metadata_tmdb
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 from . import metadata_nfo_xml
+
+
+config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify themovietb key exists
