@@ -56,16 +56,16 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     for anime_data in itemlist['anime-list']['anime']:
         logging.debug('data %s:', anime_data)
         try:
-            tvdbid = str(int(anime_data['tvdbid'])) # to make sure not web, etc
+            tvdbid = str(int(anime_data['@tvdbid'])) # to make sure not web, etc
         except:
             tvdbid = None
         try:
-            imdbid = anime_data['imdbid']
+            imdbid = anime_data['@imdbid']
             if imdbid == 'unknown':
                 imdbid = None
         except:
             imdbid = None
-        default_tvseason = anime_data['defaulttvdbseason']
+        default_tvseason = anime_data['@defaulttvdbseason']
         try:
             mapping_data = anime_data['mapping-list']
         except:
@@ -74,7 +74,7 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
             before_data = anime_data['before']
         except:
             before_data = None
-        anime_cross_reference.append((anime_data['anidbid'], tvdbid, imdbid,\
+        anime_cross_reference.append((anime_data['@anidbid'], tvdbid, imdbid,\
                                       default_tvseason, mapping_data, before_data))
     return anime_cross_reference
 
