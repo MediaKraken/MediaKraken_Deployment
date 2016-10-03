@@ -290,8 +290,8 @@ if sql3_cursor.fetchone()[0] == 0:
 # create table for anime metadata
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'\
     ' CONSTRAINT mm_metadata_anime_pk PRIMARY KEY, mm_metadata_anime_media_id jsonb,'\
-    ' mm_media_anime_name text,'\
-    ' mm_metadata_anime_json jsonb, mm_metadata_anime_localimage_json jsonb,'\
+    ' mm_media_anime_name text, mm_metadata_anime_json jsonb, mm_metadata_anime_mapping jsonb,'\
+    ' mm_metadata_anime_mapping_before text, mm_metadata_anime_localimage_json jsonb,'\
     ' mm_metadata_anime_user_json jsonb)')
 if db_table_index_check('mm_metadata_anime_idx_name') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idx_name'\
