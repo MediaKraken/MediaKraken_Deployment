@@ -136,10 +136,7 @@ def imvdb(thread_db, download_data):
     Rate limiter for IMVdb
     """
     logging.debug("here i am in imvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_uuid = metadata_music_video.metadata_music_video_lookup()
-        if metadata_uuid is None:
-            thread_db.db_download_update_provider('theaudiodb', download_data['mdq_id'])
+    metadata_general.metadata_process(thread_db, 'imvdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]\
@@ -193,13 +190,7 @@ def televisiontunes(thread_db, download_data):
     """
     logging.debug("here i am in televisiontunes rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    if download_data['mdq_download_json']['Status'] == "Search":
-        # if download succeeds remove dl
-        if common_metadata_tv_theme.com_tvtheme_download(guessit(download_data['Path'])['title']):
-            thread_db.db_download_delete(download_data['mdq_id'])
-            # TODO add theme.mp3 dl'd above to media table
-        else:
-            thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+    metadata_general.metadata_process(thread_db, 'televisiontunes', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]\
@@ -263,26 +254,7 @@ def thetvdb(thread_db, download_data):
     Rate limiter for theTVdb
     """
     logging.debug("here i am in thetvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    if download_data['mdq_download_json']['Status'] == "Search":
-        logging.debug('thetvdb search')
-        metadata_uuid, match_result =  metadata_tv.tv_search_tvdb(thread_db,\
-            download_data['mdq_download_json']['Path'])
-        if metadata_uuid is None:
-            if match_result is None:
-                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
-            else:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
-        else:
-            # update with found metadata uuid from db
-            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                metadata_uuid)
-            # found in database so remove from download que
-            thread_db.db_download_delete(download_data['mdq_id'])
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
-        logging.debug('thetvdb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
+    metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]\
@@ -292,26 +264,7 @@ def tvmaze(thread_db, download_data):
     Rate limiter for TVMaze
     """
     logging.debug("here i am in tvmaze rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    if download_data['mdq_download_json']['Status'] == "Search":
-        logging.debug('tvmaze search')
-        metadata_uuid, match_result =  metadata_tv.tv_search_tvmaze(thread_db,\
-            download_data['mdq_download_json']['Path'])
-        if metadata_uuid is None:
-            if match_result is None:
-                thread_db.db_download_update_provider('thetvdb', download_data['mdq_id'])
-            else:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
-        else:
-            # update with found metadata uuid from db
-            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                metadata_uuid)
-            # found in database so remove from download que
-            thread_db.db_download_delete(download_data['mdq_id'])
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
-        logging.debug('tvmaze fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
+    metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]\

@@ -19,7 +19,17 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
+from guessit import guessit
+from common import common_metadata_tv_theme
+from . import metadata_anime
+from . import metadata_game
 from . import metadata_movie
+from . import metadata_music
+from . import metadata_music_video
+from . import metadata_periodicals
+from . import metadata_person
+from . import metadata_sports
+from . import metadata_tv
 
 
 def metadata_process(thread_db, provider_name, download_data):
@@ -44,7 +54,19 @@ def metadata_search(thread_db, provider_name, download_data):
     """
     Search for metadata via specified provider
     """
-    if provider_name == 'themoviedb':
+    metadata_uuid = None
+    if provider_name == 'imvdb':
+        metadata_uuid = metadata_music_video.metadata_music_video_lookup()
+        if metadata_uuid is None:
+            thread_db.db_download_update_provider('theaudiodb', download_data['mdq_id'])
+    elif provider_name == 'televisiontunes':
+        # if download succeeds remove dl
+        if common_metadata_tv_theme.com_tvtheme_download(guessit(download_data['Path'])['title']):
+            thread_db.db_download_delete(download_data['mdq_id'])
+            # TODO add theme.mp3 dl'd above to media table
+        else:
+            thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+    elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
         logging.debug('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
@@ -70,12 +92,34 @@ def metadata_search(thread_db, provider_name, download_data):
                     download_data['mdq_download_json'].update({'Status': 'Fetch'})
                     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                         download_data['mdq_id'])
+    elif provider_name == 'thetvdb':
+        metadata_uuid, match_result =  metadata_tv.tv_search_tvdb(thread_db,\
+            download_data['mdq_download_json']['Path'])
+        if metadata_uuid is None:
+            if match_result is None:
+                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
             else:
-                # update with found metadata uuid from db
-                thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                    metadata_uuid)
-                # found in database so remove from download que
-                thread_db.db_download_delete(download_data['mdq_id'])
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+                download_data['mdq_download_json'].update({'Status': 'Fetch'})
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
+    elif provider_name == 'tvmaze':
+        metadata_uuid, match_result =  metadata_tv.tv_search_tvmaze(thread_db,\
+            download_data['mdq_download_json']['Path'])
+        if metadata_uuid is None:
+            if match_result is None:
+                thread_db.db_download_update_provider('thetvdb', download_data['mdq_id'])
+            else:
+                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+                download_data['mdq_download_json'].update({'Status': 'Fetch'})
+                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    download_data['mdq_id'])
+    if metadata_uuid is not None:
+        # update with found metadata uuid from db
+        thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
+            metadata_uuid)
+        # found in database so remove from download que
+        thread_db.db_download_delete(download_data['mdq_id'])
 
 
 def metadata_fetch(thread_db, provider_name, download_data):
