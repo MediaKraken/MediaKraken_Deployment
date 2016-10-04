@@ -24,6 +24,7 @@ import datetime
 from guessit import guessit
 from metadata import metadata_anime
 from metadata import metadata_game
+from metadata import metadata_general
 from metadata import metadata_identification
 from metadata import metadata_movie
 from metadata import metadata_music_video
@@ -290,69 +291,7 @@ def themoviedb(thread_db, download_data):
     """
     logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     logging.debug('full downloaddata record: %s', download_data)
-    if download_data['mdq_download_json']['Status'] == "Search":
-        logging.debug('themoviedb search')
-        metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
-            download_data['mdq_download_json']['Path'])
-        logging.debug('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
-        # if match_result is an int, that means the lookup found a match but isn't in db
-        if metadata_uuid is None and type(match_result) != int:
-            thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
-        else:
-            if metadata_uuid is None:
-                # not in the db so mark fetch
-                # first verify a download que record doesn't exist for this id
-                metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],\
-                    'themoviedb', str(match_result))
-                logging.debug('metaquelook: %s', metadata_uuid)
-                if metadata_uuid is not None:
-                    thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                        metadata_uuid)
-                    # found in database so remove from download que
-                    thread_db.db_download_delete(download_data['mdq_id'])
-                else:
-                    thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                                                 metadata_uuid)
-                    download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                    download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                        download_data['mdq_id'])
-            else:
-                # update with found metadata uuid from db
-                thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
-                    metadata_uuid)
-                # found in database so remove from download que
-                thread_db.db_download_delete(download_data['mdq_id'])
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
-        logging.debug('themoviedb fetch %s', download_data['mdq_download_json']['ProviderMetaID'])
-        if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
-            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
-                download_data['mdq_download_json']['ProviderMetaID'])
-            if tmdb_id is not None:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
-        else:
-            metadata_movie.movie_fetch_save_tmdb(thread_db,\
-                download_data['mdq_download_json']['ProviderMetaID'],\
-                download_data['mdq_download_json']['MetaNewID'])
-            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                download_data['mdq_id'])
-    elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        logging.debug('themoviedb fetchcastcrew')
-        metadata_movie.movie_fetch_save_tmdb_cast_crew(thread_db,\
-            download_data['mdq_download_json']['ProviderMetaID'],\
-            download_data['mdq_download_json']['MetaNewID'])
-        download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-        thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-            download_data['mdq_id'])
-    elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        logging.debug('themoviedb fetchreview')
-        metadata_movie.movie_fetch_save_tmdb_review(thread_db,\
-            download_data['mdq_download_json']['ProviderMetaID'])
-        # review is last.....so can delete download que
-        thread_db.db_download_delete(download_data['mdq_id'])
+    metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]\
