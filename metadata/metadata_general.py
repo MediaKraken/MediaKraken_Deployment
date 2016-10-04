@@ -55,30 +55,33 @@ def metadata_search(thread_db, provider_name, download_data):
     Search for metadata via specified provider
     """
     metadata_uuid = None
+    set_fetch = False
+    lookup_halt = False
+    update_provider = None
     if provider_name == 'imvdb':
         metadata_uuid = metadata_music_video.metadata_music_video_lookup()
         if metadata_uuid is None:
-            thread_db.db_download_update_provider('theaudiodb', download_data['mdq_id'])
+            update_provider = 'theaudiodb'
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
         if common_metadata_tv_theme.com_tvtheme_download(guessit(download_data['Path'])['title']):
             thread_db.db_download_delete(download_data['mdq_id'])
             # TODO add theme.mp3 dl'd above to media table
         else:
-            thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+            lookup_halt = True
     elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
         logging.debug('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
         # if match_result is an int, that means the lookup found a match but isn't in db
         if metadata_uuid is None and type(match_result) != int:
-            thread_db.db_download_update_provider('omdb', download_data['mdq_id'])
+            update_provider = 'omdb'
         else:
             if metadata_uuid is None:
                 # not in the db so mark fetch
                 # first verify a download que record doesn't exist for this id
                 metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],\
-                    'themoviedb', str(match_result))
+                    provider_name, str(match_result))
                 logging.debug('metaquelook: %s', metadata_uuid)
                 if metadata_uuid is not None:
                     thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
@@ -97,23 +100,31 @@ def metadata_search(thread_db, provider_name, download_data):
             download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
-                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+                lookup_halt = True
             else:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
+                set_fetch = True
     elif provider_name == 'tvmaze':
         metadata_uuid, match_result =  metadata_tv.tv_search_tvmaze(thread_db,\
             download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
-                thread_db.db_download_update_provider('thetvdb', download_data['mdq_id'])
+                update_provider = 'thetvdb'
             else:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
-                download_data['mdq_download_json'].update({'Status': 'Fetch'})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
+                set_fetch = True
+
+    # if search is being updated to new provider
+    if update_provider is not None:
+        thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
+    # if lookup halt set to ZZ so it doesn't get picked up my metadata dl ques
+    if lookup_halt:
+        thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+    # if set fetch, set provider id and status on dl record
+    if set_fetch:
+            download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+            download_data['mdq_download_json'].update({'Status': 'Fetch'})
+            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                download_data['mdq_id'])
+    # uuid found on local db
     if metadata_uuid is not None:
         # update with found metadata uuid from db
         thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
