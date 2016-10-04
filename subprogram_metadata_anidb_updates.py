@@ -61,8 +61,8 @@ for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data\
     logging.debug('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,\
                   tvdbid, imdbid, default_tvseason, mapping_data, before_data)
     db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,\
-        'thetvdb': tvdbid, 'imdb': imdbid},\
-        json.dumps({'Default': default_tvseason, 'Map': mapping_data}), before_data))
+        'thetvdb': tvdbid, 'imdb': imdbid}),\
+        json.dumps({'Default': default_tvseason, 'Map': mapping_data}), before_data)
 
 # store the xref collection data
 for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
