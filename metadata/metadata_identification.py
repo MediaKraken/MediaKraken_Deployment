@@ -21,7 +21,6 @@ import logging # pylint: disable=W0611
 import uuid
 import os
 from common import common_hash
-from . import metadata
 from . import metadata_anime
 from . import metadata_game
 from . import metadata_movie
