@@ -23,6 +23,7 @@ from . import metadata_movie
 
 
 def metadata_process(thread_db, provider_name, download_data):
+    logging.debug('full downloaddata record: %s', download_data)
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
         logging.debug('%s search', provider_name)
