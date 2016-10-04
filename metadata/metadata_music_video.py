@@ -20,9 +20,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 import json
-from . import metadata
 from common import common_config_ini
 from common import common_metadata_imvdb
+
+
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
 
 
@@ -39,7 +40,7 @@ def imvdb_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """
-    # check for same show variables
+    # check for same variables
     if not hasattr(imvdb_lookup, "metadata_last_id"):
         imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
         imvdb_lookup.metadata_last_band = None
