@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import os
-from . import metadata
 from common import common_config_ini
 from common import common_metadata_isbndb
 config_handle, option_config_json, db_connection = common_config_ini.com_config_read()

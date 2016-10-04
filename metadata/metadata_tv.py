@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import json
 from guessit import guessit
-from . import metadata
 from common import common_config_ini
 from common import common_thetvdb
 from common import common_metadata_anidb
