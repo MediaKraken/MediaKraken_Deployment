@@ -22,7 +22,6 @@ import gzip
 import time
 import sys
 import json
-import xmltodict
 from . import common_file
 from . import common_network
 sys.path.append("./vault/lib")

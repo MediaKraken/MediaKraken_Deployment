@@ -57,7 +57,8 @@ def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_befo
     """
     logging.debug('ani_id_json %s', media_id_json)
     self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s,'\
-                           ' mm_metadata_anime_mapping = %s, mm_metadata_anime_mapping_before = %s'\
+                           ' mm_metadata_anime_mapping = %s,'\
+                           ' mm_metadata_anime_mapping_before = %s'\
                            ' where mm_metadata_anime_media_id->\'anidb\' ? %s',\
                            (media_id_json, mapping_json, mapping_before,\
                            json.loads(media_id_json)['anidb']))
