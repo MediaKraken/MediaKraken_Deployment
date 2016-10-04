@@ -55,6 +55,7 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     file_handle.close()
     for anime_data in itemlist['anime-list']['anime']:
         logging.debug('data %s:', anime_data)
+        logging.debug('key %s', anime_data.keys())
         try:
             tvdbid = str(int(anime_data['@tvdbid'])) # to make sure not web, etc
         except:
@@ -65,7 +66,10 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
                 imdbid = None
         except:
             imdbid = None
-        default_tvseason = anime_data['@defaulttvdbseason']
+        try:
+            default_tvseason = anime_data['@defaulttvdbseason']
+        except:
+            default_tvseason = None
         try:
             mapping_data = anime_data['mapping-list']
         except:
