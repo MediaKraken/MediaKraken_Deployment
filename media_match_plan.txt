@@ -110,8 +110,7 @@ subprogram_file_scan.py (0.1.10)
 subprogram_file_scan.py
 	thread out each media dir for scanning below
 	finds all media from each media dir (via file extention - include subtitles)
-	check to see if in global known media (ie, on local db)
-	if not in known media
+	if not in known media (ie....local db)
 		if game iso/chd - set new media class
 		if trailer/theme/etc - set new media class
 		if part 1 of "stacked" media or standalone media file
@@ -125,44 +124,55 @@ subprogram_file_scan.py
 
 main_server_metadata_api.py
 	worker thread for each provider and "Z" records
-	if "Z" record (0.1.8)
-		if name/year is equal last, use last metadata_uuid used (0.1.8)
-			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already (0.1.8)
-		start search by calling - metadata_uuid = metadata_identification.metadata_identification (0.1.8)
-		in provider code, if name/year is equal last, use last metadata_uuid used - again since in thread so all shows could be in a row (0.1.8)
-			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already (0.1.8)
-		grab provider id's from nfo/xml (0.1.8)
-		if provider ids are found in nfo/xml (0.1.8)
-			if provider ids found = last provider ids found, delete DL record and return last metadata_uuid (0.1.8)
-			check provider ids against local db (0.1.8)
-			if found, set id from db to media and delete DL record (0.1.8)
-			if not found
+	# these are the initial records saying you need to match against a media file
+	if "Z" record
+		if name/year is equal last
+			use last metadata_uuid used
+			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
+		start search by calling - metadata_uuid = metadata_identification.metadata_identification
+		in ident code by media type, if name/year is equal last
+			use last metadata_uuid used - again since in thread so all shows could be in a row
+			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
+		grab provider id's from nfo/xml
+		if provider ids are found in nfo/xml
+			if provider ids = last provider ids found
+				delete DL record
+				return last metadata_uuid
+			if provider ids in local db
+				set id from db to media and delete DL record
+			if not found in local db
 				if FETCH+ already exists
-					use that records metadata_uuid and delete DL record)
+					use that records metadata_uuid and delete DL record
 				else:
 					set id to DL record and set FETCH
-		if providers ids are NOT found in nfo/xml then do a local db lookup via name/year (0.1.8)
-			if found, use matched metadata_uuid and delete DL record (0.1.8)
-			not found, set SEARCH DL record to primary provider for class type (0.1.8)
-		store used ids/meta/title/year/etc (0.1.8)
-	if "provider" record (0.1.8)
-		if SEARCH (0.1.8)
-			do provider api call by name/year (0.1.8)
-			if not found set next provider for class type (0.1.8)
-			if ids found via provider api call (0.1.8)
-				check local db for metadata match via provider id returned (0.1.8)
-					if yes, set metadata id from local record and delete DL record (0.1.8)
-					if no, set metadata id from DL record, set DL record to FETCH for match from api call (0.1.8)
+		if providers ids are NOT found in nfo/xml
+			then do a local db lookup via name/year
+			if found
+				use matched metadata_uuid
+				delete DL record 
+			not found
+				set SEARCH DL record to primary provider for class type 
+		store used ids/meta/title/year/etc for last ids used
+	# after initial 
+	if "provider" record 
+		if SEARCH 
+			do provider api call by name/year 
+			if not found set next provider for class type
+			if ids found via provider api call
+				check local db for metadata match via provider id returned 
+					if yes, set metadata id from local record and delete DL record 
+					if no, set metadata id from DL record
+						set DL record to FETCH for match from api call 
 						if FETCH+ already exists
 							use that records metadata_uuid and delete DL record)
 						else:
 							set id to DL record and set FETCH
-		if FETCH (0.1.8)
-			download/save metatdata info (0.1.8)
-			set dl record to FETCHCASTCREW (0.1.8)
-		if FETCHCASTCREW (0.1.8)
-			fetch/save cast/crew data (0.1.8)
-			set dl record to FETCHREVIEW (0.1.8)
-		if FETCHREVIEW (0.1.8)
-			fetch/save review data (0.1.8)
-			delete DL record as it's the last stage (0.1.8)
+		if FETCH
+			download/save metatdata info
+			set dl record to FETCHCASTCREW
+		if FETCHCASTCREW 
+			fetch/save cast/crew data 
+			set dl record to FETCHREVIEW 
+		if FETCHREVIEW
+			fetch/save review data 
+			delete DL record as it's the last stage
