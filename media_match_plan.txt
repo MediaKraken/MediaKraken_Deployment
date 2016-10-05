@@ -110,29 +110,33 @@ subprogram_file_scan.py (0.1.10)
 subprogram_file_scan.py
 	thread out each media dir for scanning below
 	finds all media from each media dir (via file extention - include subtitles)
+		if dir update date < last scan date skip dir
 	if not in known media (ie....local db)
 		if game iso/chd - set new media class
 		if trailer/theme/etc - set new media class
+		if audio/video/etc file
+			ffprobe the media stats
 		if part 1 of "stacked" media or standalone media file
-			create DL "Z" record for each media file
+			create DLQ "Z" record for each media file
 				{"Path": "/home/metaman/nfsmount/ZZ_Test/Movies/Donnie Darko (2001)/Donnie Darko (2001).mkv",
 				"Status": null, "ClassID": "928c56c3-253d-4e30-924e-5698be6d3d39",
 				"MediaID": "8e38c5d1-fcf4-43ab-93d6-09c9cbc59741",
 				"MetaNewID": "7ffc7bc5-b9c7-4d22-86ee-08987dec796d", "ProviderMetaID": null}
-	if in known media - go along merry way to next file found in dir
+		save media and ffprobe json to db
+	if in known media - go along merry way to next file found in lib dir
 
 
 main_server_metadata_api.py
 	worker thread for each provider and "Z" records
-	# these are the initial records saying you need to match against a media file
+	# these Z records are the initial records saying you need to match against a media file
 	if "Z" record
 		if name/year is equal last
 			use last metadata_uuid used
-			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
+			delete DLQ record as then there is a previous rec that should be doing fetch/etc or was in DB already
 		start search by calling - metadata_uuid = metadata_identification.metadata_identification
 		in ident code by media type, if name/year is equal last
 			use last metadata_uuid used - again since in thread so all shows could be in a row
-			delete DL record as then there is a previous rec that should be doing fetch/etc or was in DB already
+			delete DLQ record as then there is a previous rec that should be doing fetch/etc or was in DB already
 		grab provider id's from nfo/xml
 		if provider ids are found in nfo/xml
 			if provider ids = last provider ids found
@@ -144,14 +148,14 @@ main_server_metadata_api.py
 				if FETCH+ already exists
 					use that records metadata_uuid and delete DL record
 				else:
-					set id to DL record and set FETCH
+					set id to DLQ record and set FETCH
 		if providers ids are NOT found in nfo/xml
 			then do a local db lookup via name/year
 			if found
 				use matched metadata_uuid
-				delete DL record 
+				delete DLQ record 
 			not found
-				set SEARCH DL record to primary provider for class type 
+				set SEARCH DLQ record to primary provider for class type 
 		store used ids/meta/title/year/etc for last ids used
 	# after initial 
 	if "provider" record 
@@ -166,13 +170,13 @@ main_server_metadata_api.py
 						if FETCH+ already exists
 							use that records metadata_uuid and delete DL record)
 						else:
-							set id to DL record and set FETCH
+							set id to DLQ record and set FETCH
 		if FETCH
 			download/save metatdata info
-			set dl record to FETCHCASTCREW
+			set dlq record to FETCHCASTCREW
 		if FETCHCASTCREW 
 			fetch/save cast/crew data 
-			set dl record to FETCHREVIEW 
+			set dlq record to FETCHREVIEW 
 		if FETCHREVIEW
 			fetch/save review data 
-			delete DL record as it's the last stage
+			delete DLQ record as it's the last stage
