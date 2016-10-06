@@ -346,22 +346,22 @@ def worker(content_providers):
                 logging.debug('Z: class: %s rowid: %s json: %s',\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_id'], row_data['mdq_download_json'])
+                metadata_uuid = None
                 # check for dupes by name/year
-                if metadata_last_id is not None:
-                    # determine file name/etc for handling name/year skips
-                    file_name = guessit(row_data['mdq_download_json']['Path'])
-                    if 'year' in file_name:
-                        if file_name['title'] == metadata_last_title\
-                                and file_name['year'] == metadata_last_year:
-                            thread_db.db_download_delete(row_data['mdq_id'])
-                            return metadata_last_id
-                    elif file_name['title'] == metadata_last_title:
+                file_name = guessit(row_data['mdq_download_json']['Path'])
+                if 'year' in file_name:
+                    if file_name['title'] == metadata_last_title\
+                            and file_name['year'] == metadata_last_year:
                         thread_db.db_download_delete(row_data['mdq_id'])
-                        return metadata_last_id
-                # begin id process
-                metadata_uuid = metadata_identification.metadata_identification(thread_db,\
-                    class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                    row_data['mdq_download_json'], row_data['mdq_id'])
+                        metadata_uuid = metadata_last_id
+                elif file_name['title'] == metadata_last_title:
+                    thread_db.db_download_delete(row_data['mdq_id'])
+                    metadata_uuid = metadata_last_id
+                if metadata_uuid is None:
+                    # begin id process
+                    metadata_uuid = metadata_identification.metadata_identification(thread_db,\
+                        class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                        row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
                     logging.debug("Z update: metaid: %s json: %s ",\
@@ -370,6 +370,11 @@ def worker(content_providers):
                         metadata_uuid)
                 # allow NONE to be set so, unmatched stuff can work for skipping
                 metadata_last_id = metadata_uuid
+                metadata_last_title = file_name['title']
+                try:
+                    metadata_last_year = file_name['year']
+                except:
+                    metadata_last_year = None
         thread_db.db_commit()
         time.sleep(1)
         break # TODO for now testing.......

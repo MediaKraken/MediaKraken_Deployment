@@ -130,53 +130,73 @@ main_server_metadata_api.py
 	worker thread for each provider and "Z" records
 	# these Z records are the initial records saying you need to match against a media file
 	if "Z" record
-		if name/year is equal last
+		# don't have to check last != none as title/year won't match last none's
+		if name/year is equal last name/year
 			use last metadata_uuid used
 			delete DLQ record as then there is a previous rec that should be doing fetch/etc or was in DB already
-		start search by calling - metadata_uuid = metadata_identification.metadata_identification
-		in ident code by media type, if name/year is equal last
-			use last metadata_uuid used - again since in thread so all shows could be in a row
-			delete DLQ record as then there is a previous rec that should be doing fetch/etc or was in DB already
-		grab provider id's from nfo/xml
-		if provider ids are found in nfo/xml
-			if provider ids = last provider ids found
-				delete DL record
-				return last metadata_uuid
-			if provider ids in local db
-				set id from db to media and delete DL record
-			if not found in local db
-				if FETCH+ already exists
-					use that records metadata_uuid and delete DL record
-				else:
-					set id to DLQ record and set FETCH
-		if providers ids are NOT found in nfo/xml
-			then do a local db lookup via name/year
-			if found
-				use matched metadata_uuid
-				delete DLQ record 
-			not found
-				set SEARCH DLQ record to primary provider for class type 
+
+		if metadata_uuid is none, start search by calling - metadata_uuid = metadata_identification.metadata_identification
+			# in ident code by media type
+			if name/year is equal last
+				use last metadata_uuid used - again since in thread so all shows could be in a row
+				delete DLQ record as then there is a previous rec that should be doing fetch/etc or was in DB already
+
+			grab provider id's from nfo/xml
+			if provider ids are found in nfo/xml
+				if provider ids = last provider ids found
+					delete DL record
+					return last metadata_uuid used
+				if provider ids in local db
+					set id from db to media record
+					delete DLQ record
+				if not found in local db
+					if FETCH+ already exists
+						use that records metadata_uuid
+						delete DLQ record
+					else:
+						set id to DLQ record
+						set FETCH
+			if providers ids are NOT found in nfo/xml
+				then do a local db lookup via name/year
+				if found
+					use matched metadata_uuid
+					delete DLQ record 
+				not found
+					set SEARCH DLQ record to primary provider for class type 
+		if metadata_uuid is not NOne
+			set metadata id on media record
 		store used ids/meta/title/year/etc for last ids used
+
 	# after initial 
 	if "provider" record 
 		if SEARCH 
 			do provider api call by name/year 
-			if not found set next provider for class type
+			if not found
+				set next provider for class type
 			if ids found via provider api call
 				check local db for metadata match via provider id returned 
-					if yes, set metadata id from local record and delete DL record 
-					if no, set metadata id from DL record
+					if yes
+						set metadata id from local db record
+						delete DL record 
+					if no
+						set metadata id from DL record
 						set DL record to FETCH for match from api call 
 						if FETCH+ already exists
-							use that records metadata_uuid and delete DL record)
+							use that records metadata_uuid
+							delete DL record
 						else:
-							set id to DLQ record and set FETCH
+							set id to DLQ record
+							set FETCH
+
 		if FETCH
 			download/save metatdata info
 			set dlq record to FETCHCASTCREW
+
 		if FETCHCASTCREW 
 			fetch/save cast/crew data 
 			set dlq record to FETCHREVIEW 
+
 		if FETCHREVIEW
 			fetch/save review data 
 			delete DLQ record as it's the last stage
+
