@@ -75,7 +75,11 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
             tmdb_id = xml_data['movie']['tmdbid']
         except:
             pass
-        # RT
+        # TODO RT
+        try: # not all nfo's have the rt
+            tmdb_id = xml_data['movie']['fakert']
+        except:
+            pass
     if xml_data is not None:
         if imdb_id is None:
             try: # not all xmls's will have the imdb
@@ -87,7 +91,12 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                 tmdb_id = xml_data['movie']['tmdbid']
             except:
                 pass
-        # RT
+        # TODO RT
+        if rt_id is None:
+            try: # not all xml's have the rt
+                rt_id = xml_data['movie']['fakert']
+            except:
+                pass
     return (imdb_id, tmdb_id, rt_id)
 
 
@@ -97,6 +106,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     """
     imdb_id = None
     tvdb_id = None
+    rt_id = None
     # load both fields for more data in media_id_json on db
     if nfo_data is not None:
         try:
@@ -107,8 +117,12 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
             imdb_id = nfo_data['episodedetails']['imdbid']
         except:
             pass
-    # RT
-    if xml_data is not None and imdb_id is None and tvdb_id is None:
+    # TODO RT
+        try:
+            rt_id = nfo_data['episodedetails']['fakert']
+        except:
+            pass
+    if xml_data is not None:
         try:
             tvdb_id = xml_data['episodedetails']['tvdbid']
         except:
@@ -117,5 +131,9 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
             imdb_id = xml_data['episodedetails']['imdbid']
         except:
             pass
-    # RT
-    return (imdb_id, tvdb_id)
+    # TODO RT
+        try:
+            rt_id = xml_data['episodedetails']['fakert']
+        except:
+            pass
+    return (imdb_id, tvdb_id, rt_id)

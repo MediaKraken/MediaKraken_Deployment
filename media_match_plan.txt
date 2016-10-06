@@ -143,12 +143,12 @@ main_server_metadata_api.py
 
 			grab provider id's from nfo/xml
 			if provider ids are found in nfo/xml
-				if provider ids = last provider ids found
+				if provider ids not none and = last provider ids found
 					delete DL record
 					return last metadata_uuid used
 				if provider ids in local db
-					set id from db to media record
 					delete DLQ record
+					set id from db to media record
 				if not found in local db
 					if FETCH+ already exists
 						use that records metadata_uuid

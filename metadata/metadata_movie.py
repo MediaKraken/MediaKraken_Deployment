@@ -50,6 +50,7 @@ def movie_search_tmdb(db_connection, file_name):
     logging.debug("search tmdb: %s", file_name)
     file_name = guessit(file_name)
     metadata_uuid = None
+    match_result = None
     if TMDB_CONNECTION is not None:
         # try to match ID ONLY
         if 'year' in file_name:
@@ -158,9 +159,11 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         if file_name['title'] == metadata_movie_lookup.metadata_last_title\
                 and file_name['year'] == metadata_movie_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
+            # don't need to set last......since they are equal
             return metadata_movie_lookup.metadata_last_id
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
@@ -171,12 +174,15 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     if rt_id is not None and rt_id == metadata_movie_lookup.metadata_last_rt:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # if ids from nfo/xml, query local db to see if exist
     if tmdb_id is not None:
