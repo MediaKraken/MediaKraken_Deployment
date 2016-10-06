@@ -71,13 +71,13 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path,\
             image_poster_path = common_metadata.com_meta_image_path(collection_name,\
                 'poster', 'tmdb', poster_path)
         else:
-            image_poster_path = ''
+            image_poster_path = None
         # backdrop path
         if backdrop_path is not None:
             image_backdrop_path = common_metadata.com_meta_image_path(collection_name,\
                 'backdrop', 'tmdb', backdrop_path)
         else:
-            image_backdrop_path = ''
+            image_backdrop_path = None
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
         db_connection.db_collection_insert(collection_name, guid_list,\
             collection_meta, localimage_json)
