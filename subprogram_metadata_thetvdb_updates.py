@@ -68,7 +68,8 @@ for row_data in update_item['Data']['Series']:
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],\
-            'thetvdb': str(row_data['id']), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
+            'thetvdb': str(row_data['id']),\
+            'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         db_connection.db_metatvdb_insert(series_id_json,\
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta':\
                 {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
