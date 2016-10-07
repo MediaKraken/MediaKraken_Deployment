@@ -364,7 +364,7 @@ def worker(content_providers):
                         row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
-                    logging.debug("Z update: metaid: %s json: %s ",\
+                    logging.debug("Z update: metaid: %s json mediaid: %s ",\
                         metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
