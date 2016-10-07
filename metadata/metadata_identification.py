@@ -127,15 +127,23 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "TV Theme":
-        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
-            os.path.abspath(download_que_json['Path'].replace('/theme/', ''))))
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_Path_Like(os.path.abspath(\
+                download_que_json['Path'].replace('\\theme', '')))
+        else:
+            guid = db_connection.db_read_media_Path_Like(os.path.abspath(\
+                download_que_json['Path'].replace('/theme', '')))
         if guid is not None:
             metadata_uuid = guid
         else:
             pass  # TODO lookup properly
     elif class_text == "TV Trailer":
-        guid = db_connection.db_read_media_Path_Like(os.path.dirname(\
-            os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_Path_Like(os.path.abspath(\
+                download_que_json['Path'].replace('\\trailers', '').rsplit('\\',1)[0]))
+        else:
+            guid = db_connection.db_read_media_Path_Like(os.path.abspath(\
+                download_que_json['Path'].replace('/trailers', '').rsplit('/',1)[0]))
         if guid is not None:
             metadata_uuid = guid
         else:
