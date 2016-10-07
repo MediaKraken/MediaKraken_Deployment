@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import uuid
+import sys
 import os
 from common import common_hash
 from . import metadata_anime
@@ -78,9 +79,14 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Movie Theme":
-        guid = db_connection.db_read_media_path_like(os.path.dirname(\
-            os.path.abspath(\
-            download_que_json['Path'].replace('/theme/', '').replace('/backdrops/', ''))))
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('\\theme', '').replace('\\backdrops', '')\
+                .rsplit('\\',1)[0]))
+        else:
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('/theme', '').replace('/backdrops', '')\
+                .rsplit('/',1)[0]))
         logging.debug('mtheme guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
@@ -88,8 +94,12 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         else:
             pass  # TODO lookup properly
     elif class_text == "Movie Trailer":
-        guid = db_connection.db_read_media_path_like(os.path.dirname(\
-            os.path.abspath(download_que_json['Path'].replace('/trailers/', ''))))
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('\\trailers', '').rsplit('\\',1)[0]))
+        else:
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('/trailers', '').rsplit('/',1)[0]))
         logging.debug('mtrailer guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
