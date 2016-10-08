@@ -82,22 +82,40 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
         except:
             pass
     if xml_data is not None:
-        if imdb_id is None:
-            try: # not all xmls's will have the imdb
-                imdb_id = nfo_data['movie']['imdbid']
-            except:
-                pass
-        if tmdb_id is None:
-            try: # not all xml's have the movie/tmdb
-                tmdb_id = xml_data['movie']['tmdbid']
-            except:
-                pass
-        # TODO RT
-        if rt_id is None:
-            try: # not all xml's have the rt
-                rt_id = xml_data['movie']['fakert']
-            except:
-                pass
+        if 'movie' in nfo_data: # standard nfo/xml file
+            if imdb_id is None:
+                try: # not all xmls's will have the imdb
+                    imdb_id = nfo_data['movie']['imdbid']
+                except:
+                    pass
+            if tmdb_id is None:
+                try: # not all xml's have the movie/tmdb
+                    tmdb_id = xml_data['movie']['tmdbid']
+                except:
+                    pass
+            # TODO RT
+            if rt_id is None:
+                try: # not all xml's have the rt
+                    rt_id = xml_data['movie']['fakert']
+                except:
+                    pass
+        else: # movie.xml
+            if imdb_id is None:
+                try: # not all xmls's will have the imdb
+                    imdb_id = nfo_data['Title']['IMDB']
+                except:
+                    pass
+            if tmdb_id is None:
+                try: # not all xml's have the movie/tmdb
+                    tmdb_id = xml_data['Title']['TMDbId']
+                except:
+                    pass
+            # TODO RT
+            if rt_id is None:
+                try: # not all xml's have the rt
+                    rt_id = xml_data['Title']['RottenTomatoesId']
+                except:
+                    pass
     logging.info('nfo/xml imdb %s, tmdb %s, rt %s', imdb_id, tmdb_id, rt_id)
     return (imdb_id, tmdb_id, rt_id)
 
