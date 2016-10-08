@@ -45,7 +45,7 @@ class CommonLDAP(object):
         """
         Ldap logon check
         """
-        logging.debug("ldap login: %s", user_name)
+        logging.info("ldap login: %s", user_name)
         try:
             dn_name = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
             self.con.simple_bind_s(dn_name, user_password)

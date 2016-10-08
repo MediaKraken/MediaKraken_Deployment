@@ -82,7 +82,7 @@ def anidb(thread_db, download_data):
     """
     Rate limiter for AniDB
     """
-    logging.debug("here i am in anidb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in anidb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'anidb', download_data)
 
 
@@ -92,7 +92,7 @@ def chart_lyrics(thread_db, download_data):
     """
     Rate limiter for Chart Lyrics
     """
-    logging.debug("here i am in chart_lyrics rate %s",\
+    logging.info("here i am in chart_lyrics rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'chart_lyrics', download_data)
 
@@ -103,7 +103,7 @@ def comicvine(thread_db, download_data):
     """
     Rate limiter for ComicVine
     """
-    logging.debug("here i am in comicvine rate %s",\
+    logging.info("here i am in comicvine rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'comicvine', download_data)
 
@@ -114,7 +114,7 @@ def giantbomb(thread_db, download_data):
     """
     Rate limiter for GiantBomb
     """
-    logging.debug("here i am in giantbomb rate %s",\
+    logging.info("here i am in giantbomb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'giantbomb', download_data)
 
@@ -125,7 +125,7 @@ def imdb(thread_db, download_data):
     """
     Rate limiter for IMDB
     """
-    logging.debug("here i am in imdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in imdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'imdb', download_data)
 
 
@@ -135,7 +135,7 @@ def imvdb(thread_db, download_data):
     """
     Rate limiter for IMVdb
     """
-    logging.debug("here i am in imvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in imvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'imvdb', download_data)
 
 
@@ -145,7 +145,7 @@ def musicbrainz(thread_db, download_data):
     """
     Rate limiter for MusicBrainz
     """
-    logging.debug("here i am in musicbrainz rate %s",\
+    logging.info("here i am in musicbrainz rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
 
@@ -156,7 +156,7 @@ def netflixroulette(thread_db, download_data):
     """
     Rate limiter for NetflixRoulette
     """
-    logging.debug("here i am in netflixroulette rate %s",\
+    logging.info("here i am in netflixroulette rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'netflixroulette', download_data)
 
@@ -167,7 +167,7 @@ def omdb(thread_db, download_data):
     """
     Rate limiter for OMDB
     """
-    logging.debug("here i am in omdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in omdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
 
 
@@ -177,7 +177,7 @@ def pitchfork(thread_db, download_data):
     """
     Rate limiter for Pitchfork
     """
-    logging.debug("here i am in pitchfork rate %s",\
+    logging.info("here i am in pitchfork rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
 
@@ -188,7 +188,7 @@ def televisiontunes(thread_db, download_data):
     """
     Rate limiter for Television Tunes
     """
-    logging.debug("here i am in televisiontunes rate %s",\
+    logging.info("here i am in televisiontunes rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'televisiontunes', download_data)
 
@@ -199,7 +199,7 @@ def theaudiodb(thread_db, download_data):
     """
     Rate limiter for TheAudioDB
     """
-    logging.debug("here i am in theaudiodb rate %s",\
+    logging.info("here i am in theaudiodb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'theaudiodb', download_data)
 
@@ -210,7 +210,7 @@ def thegamesdb(thread_db, download_data):
     """
     Rate limiter for thegamesdb
     """
-    logging.debug("here i am in thegamesdb rate %s",\
+    logging.info("here i am in thegamesdb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
 
@@ -221,7 +221,7 @@ def thelogodb(thread_db, download_data):
     """
     Rate limiter for thelogodb
     """
-    logging.debug("here i am in thelogodb rate %s",\
+    logging.info("here i am in thelogodb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thelogodb', download_data)
 
@@ -232,7 +232,7 @@ def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
-    logging.debug("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
 
 
@@ -242,7 +242,7 @@ def thesportsdb(thread_db, download_data):
     """
     Rate limiter for TheSportsDB
     """
-    logging.debug("here i am in thesportsdb rate %s",\
+    logging.info("here i am in thesportsdb rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
@@ -253,7 +253,7 @@ def thetvdb(thread_db, download_data):
     """
     Rate limiter for theTVdb
     """
-    logging.debug("here i am in thetvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in thetvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
 
 
@@ -263,7 +263,7 @@ def tvmaze(thread_db, download_data):
     """
     Rate limiter for TVMaze
     """
-    logging.debug("here i am in tvmaze rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in tvmaze rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
 
 
@@ -273,7 +273,7 @@ def tv_intros(thread_db, download_data):
     """
     Rate limiter for TV Intros
     """
-    logging.debug("here i am in tv_intros rate %s",\
+    logging.info("here i am in tv_intros rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
 
@@ -284,7 +284,7 @@ def tvshowtime(thread_db, download_data):
     """
     Rate limiter for TVShowTime
     """
-    logging.debug("here i am in tvshowtime rate %s",\
+    logging.info("here i am in tvshowtime rate %s",\
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
@@ -293,7 +293,7 @@ def worker(content_providers):
     """
     Worker thread for limiter
     """
-    logging.debug("name: %s", content_providers)
+    logging.info("name: %s", content_providers)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # setup last used id's per thread
@@ -302,7 +302,7 @@ def worker(content_providers):
     metadata_last_year = None
     while True:
         for row_data in thread_db.db_download_read_provider(content_providers):
-            logging.debug("row: %s", row_data)
+            logging.info("row: %s", row_data)
             # mdq_id,mdq_download_json
             if content_providers == 'anidb':
                 anidb(thread_db, row_data)
@@ -343,7 +343,7 @@ def worker(content_providers):
             elif content_providers == 'tvshowtime':
                 tvshowtime(thread_db, row_data)
             elif content_providers == 'Z':
-                logging.debug('Z: class: %s rowid: %s json: %s',\
+                logging.info('Z: class: %s rowid: %s json: %s',\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_id'], row_data['mdq_download_json'])
                 metadata_uuid = None
@@ -364,7 +364,7 @@ def worker(content_providers):
                         row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
-                    logging.debug("Z update: metaid: %s json mediaid: %s ",\
+                    logging.info("Z update: metaid: %s json mediaid: %s ",\
                         metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
@@ -392,7 +392,7 @@ for class_data in db_connection.db_media_class_list(None, None):
 with futures.ThreadPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
     futures = [executor.submit(worker, n) for n in common_metadata_limiter.API_LIMIT.keys()]
     for future in futures:
-        logging.debug(future.result())
+        logging.info(future.result())
 
 
 # log stop

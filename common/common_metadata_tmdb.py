@@ -37,11 +37,11 @@ class CommonMetadataTMDB(object):
         """
         # search for movie title and year
         """
-        logging.debug("tmdb search %s %s", movie_title, movie_year)
+        logging.info("tmdb search %s %s", movie_title, movie_year)
         search = tmdb.Search()
         response = search.movie(query=movie_title)
         for s in search.results:
-            logging.debug("result: %s %s %s", s['title'], s['id'],\
+            logging.info("result: %s %s %s", s['title'], s['id'],\
                 s['release_date'].split('-', 1)[0])
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                     or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
@@ -158,7 +158,7 @@ class CommonMetadataTMDB(object):
         """
         # download info and set data to be ready for insert into database
         """
-        logging.debug('tmdb info build: %s', result_json)
+        logging.info('tmdb info build: %s', result_json)
         # create file path for poster
         file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
             'poster')

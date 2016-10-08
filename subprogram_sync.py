@@ -30,7 +30,7 @@ def worker(row_data):
     """
     Worker ffmpeg thread for each sync job
     """
-    logging.debug("row: %s", row_data)
+    logging.info("row: %s", row_data)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
@@ -53,7 +53,7 @@ def worker(row_data):
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."\
         + row_data['mm_sync_options_json']['Options']['VContainer'])
-    logging.debug("ffmpeg: %s", ffmpeg_params)
+    logging.info("ffmpeg: %s", ffmpeg_params)
     ffmpeg_pid = subprocess.Popen(ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
     #  Duration: 01:31:10.10, start: 0.000000, bitrate: 4647 kb/s
@@ -63,7 +63,7 @@ def worker(row_data):
     while True:
         line = ffmpeg_pid.stdout.readline()
         if line != '':
-            logging.debug('ffmpeg out: %' % line.rstrip())
+            logging.info('ffmpeg out: %' % line.rstrip())
             if line.find("Duration:") != -1:
                 media_duration = timedelta(line.split(': ', 1)[1].split(',', 1)[0])
             elif line[0:5] == "frame":
@@ -106,7 +106,7 @@ sync_data = db_connection.db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
-        logging.debug(future.result())
+        logging.info(future.result())
 
 
 # log end

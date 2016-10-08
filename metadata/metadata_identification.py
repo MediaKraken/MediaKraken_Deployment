@@ -38,7 +38,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     """
     Determine which provider to start lookup via class text
     """
-    logging.debug("Ident: %s %s %s %s", class_text, download_que_json['Path'], download_que_json,\
+    logging.info("Ident: %s %s %s %s", class_text, download_que_json['Path'], download_que_json,\
         download_que_id)
     metadata_uuid = None
     # find data by class type
@@ -88,7 +88,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
             guid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/')\
                 .rsplit('/',1)[0]))
-        logging.debug('mtheme guid: %s', guid)
+        logging.info('mtheme guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
             db_connection.db_download_delete(download_que_id)
@@ -102,7 +102,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         else:
             guid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('/trailers/', '/').rsplit('/',1)[0]))
-        logging.debug('mtrailer guid: %s', guid)
+        logging.info('mtrailer guid: %s', guid)
         if guid is not None:
             metadata_uuid = guid
             db_connection.db_download_delete(download_que_id)
@@ -162,5 +162,5 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         pass
     elif class_text == "Video Game Superplay":
         pass
-    logging.debug("Meta id ident return: %s", metadata_uuid)
+    logging.info("Meta id ident return: %s", metadata_uuid)
     return metadata_uuid

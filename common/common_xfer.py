@@ -41,7 +41,7 @@ class FileSenderThread(threading.Thread):
             clientsocket.connect((self.host, self.port))
             for fileindex in xrange(0, len(self.filenames)):
                 data = open(self.filelocations[fileindex], 'rb').read()
-                logging.debug("fn: %s %s", self.filenames[fileindex],\
+                logging.info("fn: %s %s", self.filenames[fileindex],\
                     type(self.filenames[fileindex]))
                 clientsocket.sendall("FILE"+struct.pack("<i256s", len(data),\
                     str(self.filenames[fileindex])))
@@ -67,13 +67,13 @@ class FileReceiverThread(threading.Thread):
 
     def run(self):
         try:
-            logging.debug('Listening for response on port %s', self.receive_port)
+            logging.info('Listening for response on port %s', self.receive_port)
             localsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             localsocket.settimeout(60.0)
             localsocket.bind(('', self.receive_port))
             localsocket.listen(1)
             con, addr = localsocket.accept()
-            logging.debug('Connection address: %s', addr)
+            logging.info('Connection address: %s', addr)
             con.settimeout(60.0)
             while True:
                 data = getallbytes(con, 4)
@@ -85,22 +85,22 @@ class FileReceiverThread(threading.Thread):
                     data = getallbytes(con, 260)
                     self.filesize, filename = struct.unpack("<i256s", data)
                     filename = filename.replace('\0', '')
-                    logging.debug("%s %s", self.filesize, filename)
+                    logging.info("%s %s", self.filesize, filename)
                     filename = str(filename)
-                    logging.debug('filename %s', filename)
+                    logging.info('filename %s', filename)
                     file_handle = open('../roms/' + filename, 'wb')
                     fileleft = self.filesize
                     while fileleft:
                         data = con.recv(min(fileleft, 1024))
                         fileleft = max(0, fileleft - len(data))
                         self.filedone = self.filesize - fileleft
-                        logging.debug('percent done %s', self.filedone * 100 / self.filesize)
+                        logging.info('percent done %s', self.filedone * 100 / self.filesize)
                         file_handle.write(data)
                     file_handle.close()
-                    logging.debug('file finished')
+                    logging.info('file finished')
                 else:
                     raise Exception('ERROR GETTING FILES (NO FILE OR FEND)')
-            logging.debug('Finished getting all files!')
+            logging.info('Finished getting all files!')
             del localsocket
         except socket.error as msg:
             logging.error("Transfer Failed: %s", str(msg))

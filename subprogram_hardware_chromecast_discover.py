@@ -50,13 +50,13 @@ devices_added = 0
 
 # look for devices
 chrome = common_hardware_chromecast.CommonHardwareChromecast()
-logging.debug("Chrome: %s", chrome)
+logging.info("Chrome: %s", chrome)
 for row_data in chrome.com_chromecast_discover_dict():
-    logging.debug("Dict: %s", row_data)
+    logging.info("Dict: %s", row_data)
     chrome.com_chromecast_connect_by_name(row_data)
-    logging.debug("Connected!")
+    logging.info("Connected!")
     cast_json = chrome.com_chromecast_info()
-    logging.debug("Cast: %s", cast_json)
+    logging.info("Cast: %s", cast_json)
     print("status: %s" % chrome.com_chromecast_status())
     db_connection.db_device_insert('cast', json.dumps({cast_json}))
 

@@ -42,8 +42,8 @@ def nfo_xml_file(media_file_path):
     else:
         nfo_file_check = media_file_path.rsplit('.', 1)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
-    logging.debug('nfo file: %s', nfo_file_check)
-    logging.debug('xml file: %s', xml_file_name)
+    logging.info('nfo file: %s', nfo_file_check)
+    logging.info('xml file: %s', xml_file_name)
     if os.path.isfile(nfo_file_check): # check for nfo
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:

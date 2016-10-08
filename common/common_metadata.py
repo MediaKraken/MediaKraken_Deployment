@@ -66,7 +66,7 @@ def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
-    logging.debug("filename: %s", media_name)
+    logging.info("filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
         if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename

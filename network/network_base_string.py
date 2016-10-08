@@ -86,8 +86,8 @@ class NetworkEvents(Int32StringReceiver):
         """
         msg = None
         message_words = data.split(' ')
-        logging.debug('GOT Data: %s', data)
-        logging.debug('Message: %s', message_words[0])
+        logging.info('GOT Data: %s', data)
+        logging.info('Message: %s', message_words[0])
         if message_words[0] == "VALIDATE":
             # have to create the self.player data so network knows how to send data back
             self.user_host_name = message_words[1]
@@ -98,7 +98,7 @@ class NetworkEvents(Int32StringReceiver):
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[message_words[1]] = self
-            logging.debug("user: %s %s", self.user_host_name, self.user_ip_addy)
+            logging.info("user: %s %s", self.user_host_name, self.user_ip_addy)
             if self.user_user_name == 'link':
                 pass
         elif message_words[0] == "PING":  # Client_Network
@@ -212,7 +212,7 @@ class NetworkEvents(Int32StringReceiver):
             logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            logging.debug("should be sending data")
+            logging.info("should be sending data")
             self.send_single_user(msg)
 
 
@@ -222,7 +222,7 @@ class NetworkEvents(Int32StringReceiver):
         """
         for user_host_name, protocol in self.users.iteritems(): # pylint: disable=W0612
             if protocol == self:
-                logging.debug('send single: %s', message)
+                logging.info('send single: %s', message)
                 protocol.sendString(message.encode("utf8"))
                 break
 
@@ -233,7 +233,7 @@ class NetworkEvents(Int32StringReceiver):
         """
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_verified == 1:
-                logging.debug('send all: %s', message)
+                logging.info('send all: %s', message)
                 protocol.sendString(message.encode("utf8"))
 
 
@@ -243,7 +243,7 @@ class NetworkEvents(Int32StringReceiver):
         """
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_slave:
-                logging.debug('send all slave: %s', message)
+                logging.info('send all slave: %s', message)
                 protocol.sendString(message.encode("utf8"))
 
 
@@ -253,5 +253,5 @@ class NetworkEvents(Int32StringReceiver):
         """
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_link:
-                logging.debug('send all link: %s', message)
+                logging.info('send all link: %s', message)
                 protocol.sendString(message.encode("utf8"))

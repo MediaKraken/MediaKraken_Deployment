@@ -33,9 +33,9 @@ common_signal.com_signal_set_break()
 
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
-    logging.debug("array: %s", meta_program_fetch)
+    logging.info("array: %s", meta_program_fetch)
     meta_program_json = sd.com_schedules_direct_program_info(json.dumps(meta_program_fetch))
-    logging.debug("result: %s", meta_program_json)
+    logging.info("result: %s", meta_program_json)
 #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(\
     #json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
@@ -85,13 +85,13 @@ else:
 #for line_name in sd.com_Schedules_Direct_Lineup_List()['lineups']:
 #    # channel map
 #    channel_map = sd.com_Schedules_Direct_Lineup_Channel_Map(line_name['lineup'])
-#    logging.debug("Map: %s", channel_map['map'])
+#    logging.info("Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
-#        logging.debug("mapchannel: %s", channel_id)
+#        logging.info("mapchannel: %s", channel_id)
 #        db_connection.db_tv_station_insert(channel_id['stationID'], channel_id['channel'])
-#    logging.debug("Stations: %s", channel_map['stations'])
+#    logging.info("Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
-#        logging.debug("stationschannel: %s", channel_meta)
+#        logging.info("stationschannel: %s", channel_meta)
 #        db_connection.db_tv_station_update(channel_meta['name'], channel_meta['stationID'],\
 # json.dumps(channel_meta))
 
@@ -100,7 +100,7 @@ else:
 # - good for what the show is......not an episode itself
 
 station_fetch = []
-logging.debug("list: %s", db_connection.db_tv_stations_read_stationid_list())
+logging.info("list: %s", db_connection.db_tv_stations_read_stationid_list())
 # grab all stations in DB
 for station_id in db_connection.db_tv_stations_read_stationid_list():
     # fetch all schedules for station
@@ -127,7 +127,7 @@ elif len(station_fetch) > 0:
         #  u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
             db_connection.db_tv_schedule_insert(station_json['stationID'],\
                 program_json['airDateTime'], json.dumps(program_json))
-            logging.debug("what: %s", program_json['programID'])
+            logging.info("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])
             if len(meta_program_fetch) >= 500:

@@ -59,7 +59,7 @@ def com_net_emby_find_server():
             if data_block["Address"] in server_hosts_found.keys():
                 pass
             else:
-                logging.debug("addr:" + data_block["Address"] + " : " + data_block["Id"] + " : "\
+                logging.info("addr:" + data_block["Address"] + " : " + data_block["Id"] + " : "\
                     + data_block["Name"])
                 server_hosts_found[data_block["Address"]] = (data_block["Id"], data_block["Name"])
         except socket.error, msg:

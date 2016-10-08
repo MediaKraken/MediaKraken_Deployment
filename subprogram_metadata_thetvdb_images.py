@@ -54,7 +54,7 @@ total_episode_images = 0
 
 # grab ones without image data
 for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
-    logging.debug("json: %s", row_data['mm_metadata_tvshow_json']['Meta']['Series'])
+    logging.info("json: %s", row_data['mm_metadata_tvshow_json']['Meta']['Series'])
     # this is "removed" via the query ['Meta']['thetvdb']
 
     # grab poster
@@ -94,39 +94,39 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
     json_image_data = {'Images': {'thetvdb': {'Banner': banner_image_local,\
         'Fanart': fanart_image_local, 'Poster': poster_image_local, 'Cast': {},\
         'Characters': {}, 'Episodes': {}, "Redo": False}}}
-    logging.debug("image: %s", json_image_data)
+    logging.info("image: %s", json_image_data)
 
     # process person and character data
     if 'Cast' in row_data['mm_metadata_tvshow_json']\
             and row_data['mm_metadata_tvshow_json']['Cast'] is not None:
-        logging.debug("huh?: %s", row_data['mm_metadata_tvshow_json']['Cast'])
+        logging.info("huh?: %s", row_data['mm_metadata_tvshow_json']['Cast'])
         if 'Actor' in row_data['mm_metadata_tvshow_json']['Cast']:
             for cast_member in row_data['mm_metadata_tvshow_json']['Cast']['Actor']:
-                logging.debug("wha: %s", cast_member)
+                logging.info("wha: %s", cast_member)
                 if cast_member['Image'] is not None:
                     # determine path and fetch image/save
                     cast_image_local\
                         = os.path.join(common_metadata.com_meta_image_file_path(\
                         cast_member['Name'], 'person'), (str(uuid.uuid4()) + '.'\
                         + cast_member['Image'].rsplit('.', 1)[1]))
-                    logging.debug("one: %s", cast_image_local)
+                    logging.info("one: %s", cast_image_local)
                     common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                         + cast_member['Image'], cast_image_local)
                     json_image_data['Images']['thetvdb']['Cast'][cast_member['id']]\
                         = cast_image_local
                     total_cast_images += 1
-            logging.debug("cast: %s", json_image_data)
+            logging.info("cast: %s", json_image_data)
 
     # process episode data
     if 'Episode' in row_data['mm_metadata_tvshow_json']['Meta']:
         for episode_info in row_data['mm_metadata_tvshow_json']['Meta']['Episode']:
-            logging.debug("episode: %s", episode_info)
+            logging.info("episode: %s", episode_info)
             if episode_info['filename'] is not None:
                 eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
                 episode_info['EpisodeName'],\
                 'backdrop'), (str(uuid.uuid4()) + '.'\
                 + episode_info['filename'].rsplit('.', 1)[1]))
-                logging.debug("eps: %s", eps_image_local)
+                logging.info("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                     + episode_info['filename'], eps_image_local)
                 json_image_data['Images']['thetvdb']['Episodes'][episode_info['id']]\

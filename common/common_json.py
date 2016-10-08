@@ -33,7 +33,7 @@ def com_json_find():
     else:
         file_path = './OctMote_Json/'
     for file_name in glob.glob(file_path + "*.txt"):
-        logging.debug(file_name)
+        logging.info(file_name)
         com_json_import(file_name)
 
 
@@ -41,7 +41,7 @@ def com_json_import(file_name):
     """
     Import new jsons into database or update them if found
     """
-    logging.debug("json import: %s", file_name)
+    logging.info("json import: %s", file_name)
     file_handle = open(file_name, 'r')
     json_data = file_handle.read()
     file_handle.close()

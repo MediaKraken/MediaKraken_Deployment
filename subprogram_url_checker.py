@@ -42,7 +42,7 @@ db_connection.db_activity_insert('MediaKraken_Server URL Scan Start', None,\
 # go through ALL known media files
 for row_data in db_connection.db_known_media():
 #TODO  actually, this should probably be the metadata
-    logging.debug(row_data)
+    logging.info(row_data)
 
 
 # log end

@@ -30,7 +30,7 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', N
 
 # vacuum all the tables
 for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
-    logging.debug(row)
+    logging.info(row)
     db_connection.db_pgsql_vacuum_table(row['relname'])
 
 

@@ -132,7 +132,7 @@ def user_internet_twitch():
     twitch_api = common_network_twitch.CommonNetworkTwitch()
     twitch_media = []
     for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
-        logging.debug("stream: %s", stream_data)
+        logging.info("stream: %s", stream_data)
         try:
             if stream_data['stream']['game'] is None:
                 twitch_media.append((stream_data['stream']['name'],\
@@ -162,7 +162,7 @@ def user_internet_twitch_stream_detail(stream_name):
     """
     #twitch_api = common_network_Twitch.com_Twitch_API()
     #media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
-    #logging.debug("str detail: %s", media)
+    #logging.info("str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
 
@@ -719,7 +719,7 @@ def user_video_player_videojs(mtype, guid):
     """
     Display video playback page
     """
-    logging.debug("videojs: %s %s", mtype, guid)
+    logging.info("videojs: %s %s", mtype, guid)
     # grab the guid from the comboindex
     # use try since people can go here "by-hand"
     try:
@@ -731,10 +731,10 @@ def user_video_player_videojs(mtype, guid):
         abort(404)
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
-    logging.debug("aud: %s", audio_track_index)
+    logging.info("aud: %s", audio_track_index)
     atracks=['-map ' + audio_track_index] # 0:0 as example # pylint: disable=C0326
     subtitle_track_index = request.form["Video_Play_Subtitles"]
-    logging.debug("sub: %s", subtitle_track_index)
+    logging.info("sub: %s", subtitle_track_index)
     if subtitle_track_index is not None:
         subtracks = ['subtitles=' + media_path, 'language=' + subtitle_track_index]
     else:
@@ -757,7 +757,7 @@ def user_video_player_videojs(mtype, guid):
         #pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
     else:
         pass_guid = guid
-    logging.debug("hls path: %s", pass_guid)
+    logging.info("hls path: %s", pass_guid)
     return render_template("users/user_playback_videojs.html", data_desc=('Movie title'),
                            data_guid=pass_guid,
                            data_mtype=mtype)
@@ -836,7 +836,7 @@ def user_movie_page(genre):
             offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
         # 4 - mm_metadata_localimage_json
-        logging.debug("row2: %s", row_data['mm_media_json'])
+        logging.info("row2: %s", row_data['mm_media_json'])
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
@@ -865,7 +865,7 @@ def user_movie_page(genre):
             match_status = row_data['MatchFlag']
         except:
             match_status = False
-        logging.debug("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
+        logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
             favorite_status, match_status)
         if 'TMDB' in json_image['Images'] and 'Poster' in json_image['Images']['TMDB']\
                 and json_image['Images']['TMDB']['Poster'] is not None:
@@ -1323,7 +1323,7 @@ def report_display_all_duplicates_detail(guid):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
-        logging.debug("media: %s", media_data['mm_media_ffprobe_json'])
+        logging.info("media: %s", media_data['mm_media_ffprobe_json'])
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
                 media.append((media_data['mm_media_guid'], media_data['mm_media_path'],\
@@ -2029,7 +2029,7 @@ def media_status(guid, media_type, event_type):
     """
     Set media status for specified media, user
     """
-    logging.debug('media status: %s %s %s', guid, media_type, event_type)
+    logging.info('media status: %s %s %s', guid, media_type, event_type)
     if media_type == "movie":
         if event_type == "watched":
             g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)

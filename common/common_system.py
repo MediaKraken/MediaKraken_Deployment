@@ -33,7 +33,7 @@ def pprint_ntuple(nt_result, return_value=None):
         value = getattr(nt_result, name)
         if name != 'percent':
             value = common_string.com_string_bytes2human(value)
-        logging.debug('%-10s : %7s', name.capitalize(), value)
+        logging.info('%-10s : %7s', name.capitalize(), value)
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
         return tuple_print
@@ -52,7 +52,7 @@ def com_system_virtual_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.debug('%-10s : %7s', (name.capitalize(), value))
+            #logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -70,7 +70,7 @@ def com_system_swap_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.debug('%-10s : %7s', (name.capitalize(), value))
+            #logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 

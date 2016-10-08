@@ -62,10 +62,10 @@ class EchoFactory(protocol.ClientFactory):
         self.app = app
 
     def clientConnectionLost(self, conn, reason):
-        logging.debug("Connection Lost")
+        logging.info("Connection Lost")
 
     def clientConnectionFailed(self, conn, reason):
-        logging.debug("Connection Failed")
+        logging.info("Connection Failed")
 
 
 import kivy

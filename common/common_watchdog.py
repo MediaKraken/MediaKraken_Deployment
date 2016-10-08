@@ -79,7 +79,7 @@ class CommonWatchdog(object):
         self.observer = Observer()
         # pull in all the audit dirs
         for row_data in paths_to_watch:
-            logging.debug("path: %s", row_data[0])
+            logging.info("path: %s", row_data[0])
             if os.path.isdir(row_data[0]) and not os.path.ismount(row_data[0]):
                 self.observer.schedule(event_handler, path=row_data[0], recursive=False)
         self.observer.start()

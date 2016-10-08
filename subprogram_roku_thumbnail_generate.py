@@ -49,7 +49,7 @@ for row_data in db_connection.db_known_media():
 #TODO  actually, this should probably be the metadata
 # TODO the common roku code has the bif/thumb gen
 
-    logging.debug(row_data)
+    logging.info(row_data)
 
 
 # send notications

@@ -50,7 +50,7 @@ def main(argv):
     sub_lang = "en"
     # search the directory for filter files
     for media_row in common_file.com_file_dir_list():
-        logging.debug(media_row)
+        logging.info(media_row)
 
 
 if __name__ == "__main__":

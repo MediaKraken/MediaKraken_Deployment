@@ -154,9 +154,9 @@ class MediaKrakenApp():
         """
         # otherwise the pickle can end up in thousands of chunks
         messageWords = server_msg.split(' ', 1)
-        logging.debug('message: %s', messageWords[0])
-        logging.debug("len: %s", len(server_msg))
-        logging.debug("chunks: %s", len(messageWords))
+        logging.info('message: %s', messageWords[0])
+        logging.info("len: %s", len(server_msg))
+        logging.info("chunks: %s", len(messageWords))
         msg = None
         try:
             pickle_data = pickle.loads(messageWords[1])
@@ -184,9 +184,9 @@ class MediaKrakenApp():
             os.kill(proc_ffserver.pid)
             sys.exit(0)
         else:
-            logging.debug("unknown message type")
+            logging.info("unknown message type")
         if msg is not None:
-            logging.debug("should be sending data")
+            logging.info("should be sending data")
             networkProtocol.sendString(msg)
 
 

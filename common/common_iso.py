@@ -33,5 +33,5 @@ class CommonISO(object):
         """
         Open the iso file for parsing (url or file)
         """
-        logging.debug("iso url/file: %s", url_file)
+        logging.info("iso url/file: %s", url_file)
         self.iso = isoparser.parse(url_file)

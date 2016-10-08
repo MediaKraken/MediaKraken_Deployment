@@ -56,7 +56,7 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
-    logging.debug("mov: %s", movie_change['id'])
+    logging.info("mov: %s", movie_change['id'])
     dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
     if dl_meta is None:
         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
@@ -65,7 +65,7 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
 
 # process tv changes
 for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
-    logging.debug("tv: %s", tv_change['id'])
+    logging.info("tv: %s", tv_change['id'])
     dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(tv_change['id']))
     if dl_meta is None:
         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\

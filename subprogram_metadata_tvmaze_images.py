@@ -55,7 +55,7 @@ total_episode_images = 0
 
 # grab tvmaze ones without image data
 for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
-    logging.debug("json: %s", row_data['mm_metadata_tvshow_json'])
+    logging.info("json: %s", row_data['mm_metadata_tvshow_json'])
     # this is "removed" via the query ['Meta']['tvmaze']
     # grab poster
     poster_image_local = None
@@ -78,7 +78,7 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
             cast_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
                 cast_member['person']['name'], 'person'), (str(uuid.uuid4()) + '.'\
                 + cast_member['person']['image']['original'].rsplit('.', 1)[1]))
-            logging.debug("one: %s", cast_image_local)
+            logging.info("one: %s", cast_image_local)
             common_network.mk_network_fetch_from_url(cast_member['person']['image']['original'],\
                 cast_image_local)
             json_image_data['Images']['tvmaze']['Cast'][cast_member['person']['id']]\
@@ -90,7 +90,7 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
                     char_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
                         cast_member['character']['name'], 'character'), (str(uuid.uuid4()) + '.'\
                         + cast_member['character']['image']['original'].rsplit('.', 1)[1]))
-                    logging.debug("two: %s", char_image_local)
+                    logging.info("two: %s", char_image_local)
                     common_network.mk_network_fetch_from_url(\
                         cast_member['character']['image']['original'], char_image_local)
                     json_image_data['Images']['tvmaze']['Characters']\
@@ -103,7 +103,7 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('tvmaze'):
                 eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
                     episode_info['name'], 'backdrop'), (str(uuid.uuid4()) + '.'\
                     + episode_info['image']['original'].rsplit('.', 1)[1]))
-                logging.debug("eps: %s", eps_image_local)
+                logging.info("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url(episode_info['image']['original'],\
                     eps_image_local)
                 json_image_data['Images']['tvmaze']['Episodes'][episode_info['id']]\

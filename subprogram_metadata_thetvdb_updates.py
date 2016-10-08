@@ -58,7 +58,7 @@ option_json, status_json = db_connection.db_opt_status_read()
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
-    logging.debug(row_data['id'])
+    logging.info(row_data['id'])
     # look for previous data
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
@@ -89,7 +89,7 @@ for row_data in update_item['Data']['Series']:
     db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
-    logging.debug(row_data)
+    logging.info(row_data)
 
 
 # set the epoc date

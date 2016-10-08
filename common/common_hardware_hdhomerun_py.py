@@ -49,7 +49,7 @@ class CommonHardwareHDHomeRunPY(object):
         Get tuner status
         """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        logging.debug(vstatus)
+        logging.info(vstatus)
 
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
@@ -58,7 +58,7 @@ class CommonHardwareHDHomeRunPY(object):
         """
         device_adapter.set_tuner_vchannel(vchannel)
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        logging.debug(vstatus)
+        logging.info(vstatus)
 
 
     def set_stream(self, device_adapter, vchannel, target_uri):
@@ -73,7 +73,7 @@ class CommonHardwareHDHomeRunPY(object):
         """
         Get supported info
         """
-        logging.debug(device_adapter.get_supported())
+        logging.info(device_adapter.get_supported())
 
 
     def scan(self, device_adapter):
@@ -97,7 +97,7 @@ devices = test_class.com_HDHomeRun_List()
 
 i = 0
 for device in devices:
-    logging.debug("%d: %s" % (i, device))
+    logging.info("%d: %s" % (i, device))
     i += 1
 
 first_device_str = ("%s-%d" % (devices[0].nice_device_id, 1))

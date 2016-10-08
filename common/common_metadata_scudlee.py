@@ -54,8 +54,8 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     itemlist = xmltodict.parse(file_handle.read())
     file_handle.close()
     for anime_data in itemlist['anime-list']['anime']:
-        logging.debug('data %s:', anime_data)
-        logging.debug('key %s', anime_data.keys())
+        logging.info('data %s:', anime_data)
+        logging.info('key %s', anime_data.keys())
         try:
             tvdbid = str(int(anime_data['@tvdbid'])) # to make sure not web, etc
         except:

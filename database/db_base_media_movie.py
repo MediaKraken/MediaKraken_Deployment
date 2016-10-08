@@ -63,7 +63,7 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
     """
     # web media count
     """
-    logging.debug("classuid: %s %s", class_guid, list_type)
+    logging.info("classuid: %s %s", class_guid, list_type)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -173,7 +173,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
     """
     # web media return
     """
-    logging.debug("classuid: %s %s %s", class_guid, list_type, list_genre)
+    logging.info("classuid: %s %s %s", class_guid, list_type, list_genre)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":

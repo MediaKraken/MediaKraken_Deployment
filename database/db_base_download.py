@@ -59,7 +59,7 @@ def db_download_update_provider(self, provider_name, guid):
     """
     Update provider
     """
-    logging.debug('download update provider: %s %s', provider_name, guid)
+    logging.info('download update provider: %s %s', provider_name, guid)
     self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',\
         (provider_name, guid))
     self.db_commit()
@@ -69,7 +69,7 @@ def db_download_update(self, update_json, guid):
     """
     Update download que record
     """
-    logging.debug('download update: %s %s', update_json, guid)
+    logging.info('download update: %s %s', update_json, guid)
     self.db_cursor.execute('update mm_download_que set mdq_download_json = %s where mdq_id = %s',\
         (update_json, guid))
     self.db_commit()
@@ -83,7 +83,7 @@ def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    logging.debug('que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
+    logging.info('que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
             ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\

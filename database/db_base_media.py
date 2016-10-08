@@ -320,7 +320,7 @@ def db_read_media_path_like(self, media_path):
     # do a like class path match for trailers and extras
     """
     # use like since I won't be using the "root" directory but media within it
-    logging.debug('path like: %s', media_path)
+    logging.info('path like: %s', media_path)
     self.db_cursor.execute('select mm_media_metadata_guid from mm_media'\
         ' where mm_media_path LIKE %s and mm_media_metadata_guid IS NOT NULL limit 1',\
         ((media_path + '%'),))

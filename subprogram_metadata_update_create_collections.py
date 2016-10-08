@@ -61,11 +61,11 @@ def store_update_record(db_connection, collection_name, guid_list, poster_path,\
     # store/update the record
     # don't string this since it's a pure result store
     collection_guid = db_connection.db_collection_by_tmdb(collection_id)
-    logging.debug("colfsdfsd: %s %s", collection_id, collection_guid)
+    logging.info("colfsdfsd: %s %s", collection_id, collection_guid)
     if collection_guid is None:
         # insert
         collection_meta = TMDB_API_CONNECTION.com_tmdb_meta_collection_by_id(collection_id)
-        logging.debug("col: %s", collection_meta)
+        logging.info("col: %s", collection_meta)
         # poster path
         if poster_path is not None:
             image_poster_path = common_metadata.com_meta_image_path(collection_name,\

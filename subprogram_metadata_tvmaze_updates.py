@@ -53,13 +53,13 @@ def update_insert_show(tvmaze_id, update_rec=None):
             tvmaze_id, None, None, None, True))}})
     except:
         pass
-    logging.debug("full: %s", show_full_json)
+    logging.info("full: %s", show_full_json)
     if show_full_json is not None:
 #        for show_detail in show_full_json:
         show_detail = show_full_json['Meta']['tvmaze']
-        logging.debug("detail: %s", show_detail)
+        logging.info("detail: %s", show_detail)
         tvmaze_name = show_detail['name']
-        logging.debug("name: %s", tvmaze_name)
+        logging.info("name: %s", tvmaze_name)
         try:
             tvrage_id = str(show_detail['externals']['tvrage'])
         except:
@@ -99,14 +99,14 @@ result = tvmaze.com_meta_tvmaze_show_updated()
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
-    logging.debug("id: %s", tvmaze_id)
+    logging.info("id: %s", tvmaze_id)
     # check to see if allready downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
         # TODO if results['updated'] < tvmaze_time:
         #update_insert_show(tvmaze_id, results[0]) # update the guid
-        logging.debug("update")
+        logging.info("update")
         tvshow_updated += 1
     else:
         # insert new record as it's a new show

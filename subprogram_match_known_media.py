@@ -32,15 +32,15 @@ for row_data in db_connection.db_known_media_all_unmatched():
     metadata_uuid = None
     if row_data['mm_media_class_guid'] is not None:
         try:
-            logging.debug("class_uuid: %s %s", row_data['mm_media_class_guid'],\
+            logging.info("class_uuid: %s %s", row_data['mm_media_class_guid'],\
                 row_data['mm_media_path'])
         except:
-            logging.debug("unable to print file")
+            logging.info("unable to print file")
     metadata_uuid = metadata_identification(db_connection, row_data['mm_media_class_guid'],\
         row_data['mm_media_path'])
     # update the media row with the json media id AND THE proper NAME!!!
     if metadata_uuid is not None:
-        logging.debug("update: %s %s", row_data['mm_media_guid'], metadata_uuid)
+        logging.info("update: %s %s", row_data['mm_media_guid'], metadata_uuid)
         db_connection.db_update_media_id(row_data['mm_media_guid'], metadata_uuid)
         files_added += 1
     db_connection.db_opt_status_update_scan(json.dumps({'Status': 'Media lookup: '

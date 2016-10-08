@@ -36,7 +36,7 @@ class CommonAndroidHardwareInstance(object):
         """
         Return the dpi for the device
         """
-        logging.debug('DPI is %s', self.android_hardware.getDPI())
+        logging.info('DPI is %s', self.android_hardware.getDPI())
         return self.android_hardware.getDPI()
 
 
@@ -54,7 +54,7 @@ class CommonAndroidHardwareInstance(object):
         self.android_hardware.accelerometerEnable(True)
         accel_data = []
         for ndx in xrange(time_range): # pylint: disable=W0612
-            logging.debug('Motion: %s', self.android_hardware.accelerometerReading())
+            logging.info('Motion: %s', self.android_hardware.accelerometerReading())
             accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)
         return accel_data

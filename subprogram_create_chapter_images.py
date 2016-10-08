@@ -41,7 +41,7 @@ def worker(worker_file_list):
     global total_images_created
     chapter_image_list = {}
     json_id, json_data, json_obj, media_path = worker_file_list
-    #logging.debug('value=%s', json_id)
+    #logging.info('value=%s', json_id)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # begin image generation
@@ -125,7 +125,7 @@ if len(file_list) > 0:
     with futures.ThreadPoolExecutor(len(file_list)) as executor:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
-            logging.debug(future.result())
+            logging.info(future.result())
 
 
 # send notications

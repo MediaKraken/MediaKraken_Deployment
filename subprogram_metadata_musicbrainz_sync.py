@@ -57,14 +57,14 @@ for row_data in db_brainz.db_brainz_all_artists():
         + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),\
         'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':'\
         + str(row_data['end_date_day']))}))
-    logging.debug(row_data)
+    logging.info(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],\
             json.dumps({'musicbrainz':row_data_album['gid']}),\
             json.dumps({'Commment':row_data_album['comment'],\
             'Language': row_data_album['language'], 'Barcode': row_data_album['barcode']}))
-        logging.debug(row_data_album)
+        logging.info(row_data_album)
 '''
         # fetch all the songs from brainz
         for row_data in db_brainz.db_Brainz_All_Songs():

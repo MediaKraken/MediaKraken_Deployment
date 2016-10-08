@@ -52,7 +52,7 @@ def worker(audit_directory):
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
-    logging.debug('value=%s', dir_path)
+    logging.info('value=%s', dir_path)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,\
@@ -206,7 +206,7 @@ known_media = None
 class_text_dict = {}
 for class_data in db_connection.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
-logging.debug('class: %s', class_text_dict)
+logging.info('class: %s', class_text_dict)
 
 
 # determine directories to audit
@@ -255,7 +255,7 @@ if len(audit_directories) > 0:
     with futures.ThreadPoolExecutor(len(audit_directories)) as executor:
         futures = [executor.submit(worker, n) for n in audit_directories]
         for future in futures:
-            logging.debug(future.result())
+            logging.info(future.result())
 
 
 # log end

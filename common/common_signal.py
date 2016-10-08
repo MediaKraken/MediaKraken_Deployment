@@ -27,7 +27,7 @@ def com_signal_receive(signum, frame, pid_dict=None): # pylint: disable=W0613
     """
     Handle signal interupt
     """
-    logging.debug('Application: Received USR1')
+    logging.info('Application: Received USR1')
     if pid_dict is not None:
         # term all running pids
         for pid_data in pid_dict:

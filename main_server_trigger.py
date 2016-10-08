@@ -53,7 +53,7 @@ while True:
         for command_data in pickle.loads(str(row_data[1])):
             command_list.append(command_data)
         proc_trigger = subprocess.Popen(command_list, shell=False)
-        logging.debug("Trigger PID: %s", proc_trigger.pid)
+        logging.info("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
         db_connection.db_triggers_delete(row_data[0])
     time.sleep(1)

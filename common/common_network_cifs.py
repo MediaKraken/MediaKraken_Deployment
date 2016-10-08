@@ -93,7 +93,7 @@ class CommonCIFSShare(object):
         """
         file_names = []
         for row_data in self.smb_conn.listPath(share_name, path_text):
-            logging.debug(row_data.filename)
+            logging.info(row_data.filename)
             file_names.append(row_data.filename)
         return file_names
 

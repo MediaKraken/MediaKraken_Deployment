@@ -91,7 +91,7 @@ class MediaKrakenAPI(object):
     with app.subroute("/Users") as app:
         @app.route("/AuthenticateByName")
         def user_authenticate(self, request):
-            logging.debug("req: %s", request.content.getvalue())
+            logging.info("req: %s", request.content.getvalue())
             # {"username": "quinn", "password": "da39a3ee5e6b4b0d3255bfef95601890afd80709"}
             return pickle.dumps(self.db_connection.db_user_login_kodi(request.content.getvalue()))
 
@@ -109,7 +109,7 @@ class MediaKrakenAPI(object):
 
         @app.route("/ItemsSync/<synctime>")
         def user_items_sync(self, request, synctime):
-            logging.debug("req: %s", request.content.getvalue())
+            logging.info("req: %s", request.content.getvalue())
             items_added = []
             for row_data in self.db_connection.db_kodi_user_sync_list_added(synctime):
                 items_added.append(row_data[0])
@@ -128,7 +128,7 @@ class MediaKrakenAPI(object):
 
         @app.route("/Pref/<guid>")
         def user_pref(self, request, guid):
-            logging.debug("reqpref: %s %s", request.content.getvalue(), guid)
+            logging.info("reqpref: %s %s", request.content.getvalue(), guid)
             json_data = {
                 "Name": "",
                 "ServerId": "",
@@ -238,7 +238,7 @@ class MediaKrakenAPI(object):
             user_data = []
             for row_data in self.db_connection.db_user_list_name(None, None):
                 user_data.append((row_data[0], row_data[1], None))
-            logging.debug("userdat: %s", user_data)
+            logging.info("userdat: %s", user_data)
             return pickle.dumps(user_data)
 
 
@@ -272,7 +272,7 @@ class MediaKrakenAPI(object):
         @app.route("/Configuration")
         def system_configuration(self, request):
             options_json, status_json = self.db_connection.db_opt_status_read()
-            logging.debug("otions: %s", options_json)
+            logging.info("otions: %s", options_json)
             return str(options_json['MaxResumePct'])
 
 

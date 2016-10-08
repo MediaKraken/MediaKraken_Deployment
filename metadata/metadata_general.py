@@ -33,20 +33,20 @@ from . import metadata_tv
 
 
 def metadata_process(thread_db, provider_name, download_data):
-    logging.debug('full downloaddata record: %s', download_data)
+    logging.info('full downloaddata record: %s', download_data)
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        logging.debug('%s search', provider_name)
+        logging.info('%s search', provider_name)
         metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        logging.debug('%s fetch %s', provider_name,\
+        logging.info('%s fetch %s', provider_name,\
                       download_data['mdq_download_json']['ProviderMetaID'])
         metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        logging.debug('%s fetchcastcrew', provider_name)
+        logging.info('%s fetchcastcrew', provider_name)
         metadata_castcrew(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        logging.debug('%s fetchreview', provider_name)
+        logging.info('%s fetchreview', provider_name)
         metadata_review(thread_db, provider_name, download_data)
 
 
@@ -79,7 +79,7 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,\
             download_data['mdq_download_json']['Path'])
-        logging.debug('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
+        logging.info('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
         # if match_result is an int, that means the lookup found a match but isn't in db
         if metadata_uuid is None and type(match_result) != int:
             update_provider = 'omdb'
@@ -116,7 +116,7 @@ def metadata_search(thread_db, provider_name, download_data):
         # first verify a download que record doesn't exist for this id
         metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],\
             provider_name, str(match_result))
-        logging.debug('metaquelook: %s', metadata_uuid)
+        logging.info('metaquelook: %s', metadata_uuid)
         if metadata_uuid is not None:
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
                 metadata_uuid)

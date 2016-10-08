@@ -58,7 +58,7 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data\
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    logging.debug('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,\
+    logging.info('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,\
                   tvdbid, imdbid, default_tvseason, mapping_data, before_data)
     db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,\
         'thetvdb': tvdbid, 'imdb': imdbid}),\

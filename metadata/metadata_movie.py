@@ -47,7 +47,7 @@ def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
-    logging.debug("search tmdb: %s", file_name)
+    logging.info("search tmdb: %s", file_name)
     file_name = guessit(file_name)
     metadata_uuid = None
     match_result = None
@@ -59,11 +59,11 @@ def movie_search_tmdb(db_connection, file_name):
         else:
             match_response, match_result = TMDB_CONNECTION.com_tmdb_search(\
                 file_name['title'], None, True)
-        logging.debug("response: %s %s", match_response, match_result)
+        logging.info("response: %s %s", match_response, match_result)
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
             metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
-            logging.debug("db result: %s", metadata_uuid)
+            logging.info("db result: %s", metadata_uuid)
         elif match_response == 'info':
             # store new metadata record and set uuid
             logging.info("movielookup info results: %s", match_result)
@@ -77,16 +77,16 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # fetch from tmdb
     """
-    logging.debug("tmdb fetch: %s", tmdb_id)
+    logging.info("tmdb fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_meta_by_id(tmdb_id)
-    logging.debug("uh: %s", result_json)
+    logging.info("uh: %s", result_json)
     if result_json is not None:
         series_id_json, result_json, image_json\
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json)
         # set and insert the record
         meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
-        logging.debug("series: %s", series_id_json)
+        logging.info("series: %s", series_id_json)
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
@@ -100,7 +100,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
     # fetch from tmdb via imdb
     """
     result_json = TMDB_CONNECTION.com_tmdb_meta_by_imdb_id(imdb_id)
-    logging.debug("uhimdb: %s", result_json)
+    logging.info("uhimdb: %s", result_json)
     if result_json is not None:
         # find call for tmdb returns the other sections
         # {u'tv_season_results': [], u'tv_episode_results': [], u'person_results': [],\
@@ -133,7 +133,7 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     review_json = TMDB_CONNECTION.com_tmdb_meta_review_by_id(tmdb_id)
     if review_json['total_results'] > 0:
         review_json_id = ({'TMDB': str(review_json['id'])})
-        logging.debug("review: %s", review_json_id)
+        logging.info("review: %s", review_json_id)
         db_connection.db_review_insert(json.dumps(review_json_id),\
             json.dumps({'TMDB': review_json}))
 
@@ -153,7 +153,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     metadata_uuid = None # so not found checks verify later
     # determine file name/etc for handling name/year skips
     file_name = guessit(media_file_path)
-    logging.debug('movielook filename: %s', file_name)
+    logging.info('movielook filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:
         if file_name['title'] == metadata_movie_lookup.metadata_last_title\
@@ -168,7 +168,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
-    logging.debug("movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,\
+    logging.info("movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,\
         metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
         metadata_movie_lookup.metadata_last_rt)
     # if same as last, return last id and save lookup
@@ -224,14 +224,14 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                     metadata_uuid = dl_meta
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        logging.debug("movie db lookup")
+        logging.info("movie db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],\
                 file_name['year'])
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
-        logging.debug("movie db meta: %s", metadata_uuid)
+        logging.info("movie db meta: %s", metadata_uuid)
         if metadata_uuid is not None:
             # match found by title/year on local db so purge dl record
             db_connection.db_download_delete(download_que_id)

@@ -122,9 +122,9 @@ class MediaKrakenApp(object):
         """
         # otherwise the pickle can end up in thousands of chunks
         messageWords = server_msg.split(' ', 1)
-        logging.debug('message: %s', messageWords[0])
-        logging.debug("len: %s", len(server_msg))
-        logging.debug("chunks: %s", len(messageWords))
+        logging.info('message: %s', messageWords[0])
+        logging.info("len: %s", len(server_msg))
+        logging.info("chunks: %s", len(messageWords))
         msg = None
         try:
             pickle_data = pickle.loads(messageWords[1])
@@ -138,7 +138,7 @@ class MediaKrakenApp(object):
             sys.exit(0)
         elif messageWords[0] == "RECEIVENEWMEDIA":
             for new_media in pickle.loads(messageWords[1]):
-                logging.debug("new media: %s", new_media)
+                logging.info("new media: %s", new_media)
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
@@ -177,9 +177,9 @@ class MediaKrakenApp(object):
                     new_media[2], metadata_guid)
             self.db_connection.db_commit()
         else:
-            logging.debug("unknown message type")
+            logging.info("unknown message type")
         if msg is not None:
-            logging.debug("should be sending data")
+            logging.info("should be sending data")
             networkProtocol.sendString(msg)
 
 

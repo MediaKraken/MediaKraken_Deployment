@@ -223,7 +223,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
             (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_guid']
-        logging.debug("db find metadata guid: %s", metadata_guid)
+        logging.info("db find metadata guid: %s", metadata_guid)
         break
     return metadata_guid
 
@@ -248,7 +248,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,\
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        logging.debug("id: %s %s %s", media_tvid, media_imdbid, media_aniid)
+        logging.info("id: %s %s %s", media_tvid, media_imdbid, media_aniid)
         json_data = json.loads(row_data['mm_metadata_media_id'])
         if media_imdbid is not None:
             json_data.update({'imdb':media_imdbid})
@@ -263,7 +263,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,\
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        logging.debug("id2: %s %s %s", media_tvid, media_imdbid, media_aniid)
+        logging.info("id2: %s %s %s", media_tvid, media_imdbid, media_aniid)
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])
         if media_imdbid is not None:
             json_data.update({'imdb':media_imdbid})

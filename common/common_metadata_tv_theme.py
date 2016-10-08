@@ -31,7 +31,7 @@ def com_tvtheme_download(media_name):
         + common_string.com_string_title(media_name).replace(' ', '_')\
         + ".html", None)).find(id="download_song")
     if data is not None:
-        logging.debug('href: %s', data['href'])
+        logging.info('href: %s', data['href'])
         common_network.mk_network_fetch_from_url("http://www.televisiontunes.com"\
             + data['href'], 'theme.mp3')
         return True #success

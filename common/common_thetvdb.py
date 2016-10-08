@@ -46,12 +46,12 @@ class CommonTheTVDB(object):
         # search for show
         """
         if show_year is not None:
-            logging.debug("bah2 %s", show_title + ' ' + str(show_year))
+            logging.info("bah2 %s", show_title + ' ' + str(show_year))
             # this generally fails if I include year....
             show_data = self.tvdb_connection.search(show_title, show_language)
         else:
             show_data = self.tvdb_connection.search(show_title, show_language)
-        logging.debug("tvdb search: %s", show_data)
+        logging.info("tvdb search: %s", show_data)
         if len(show_data) > 0:
             show = show_data[0]
             return show.SeriesID
@@ -156,6 +156,6 @@ class CommonTheTVDB(object):
             # loop through the episodes
             for ep_ndx in range(0, show_number_episodes):
                 episode = season[ep_ndx]
-                logging.debug(episode.EpisodeNumber)
-                logging.debug(episode.EpisodeName)
+                logging.info(episode.EpisodeNumber)
+                logging.info(episode.EpisodeName)
         return show_dict

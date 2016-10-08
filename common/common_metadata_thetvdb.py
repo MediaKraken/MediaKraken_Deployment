@@ -57,7 +57,7 @@ class CommonMetadataTheTVDB(object):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
-        logging.debug("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
+        logging.info("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
         try:
             # TODO catch errors
             show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
@@ -69,13 +69,13 @@ class CommonMetadataTheTVDB(object):
         for zippedshowFile in show_zip.namelist():
             if zippedshowFile == 'en.xml':
                 xml_show_data = xmltodict.parse(show_zip.read(zippedshowFile))
-                logging.debug("xml show: %s", xml_show_data)
+                logging.info("xml show: %s", xml_show_data)
             elif zippedshowFile == 'actors.xml':
                 xml_actor_data = xmltodict.parse(show_zip.read(zippedshowFile))
-                logging.debug("xml actor: %s", xml_actor_data)
+                logging.info("xml actor: %s", xml_actor_data)
             elif zippedshowFile == 'banners.xml':
                 xml_banners_data = xmltodict.parse(show_zip.read(zippedshowFile))
-                logging.debug("xml banner: %s", xml_banners_data)
+                logging.info("xml banner: %s", xml_banners_data)
         return (xml_show_data, xml_actor_data['Actors'], xml_banners_data['Banners'])
 
 

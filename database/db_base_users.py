@@ -68,7 +68,7 @@ def db_user_login_kodi(self, user_data):
     self.db_cursor.execute('select id,password from mm_user where username = %s',\
         (user_data['username'],))
     result = self.db_cursor.fetchone()
-    logging.debug("what: %s", result)
+    logging.info("what: %s", result)
     if result is not None:
         if user_data['password'] == result['password'] or True: # pass matches
             # TODO passowrd validation

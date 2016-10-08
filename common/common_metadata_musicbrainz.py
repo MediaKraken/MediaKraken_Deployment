@@ -63,7 +63,7 @@ class CommonMetadataMusicbrainz(object):
         #print "{}, by {}".format(rel['title'], rel["artist-credit-phrase"])
         if 'date' in rel:
             pass
-        logging.debug("musicbrainz ID: {}".format(rel['id']))
+        logging.info("musicbrainz ID: {}".format(rel['id']))
 
 
     def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,\
@@ -83,7 +83,7 @@ class CommonMetadataMusicbrainz(object):
             return None
         else:
             for (idx, release) in enumerate(result['release-list']):
-                logging.debug("match #{}:".format(idx+1))
+                logging.info("match #{}:".format(idx+1))
                 self.show_release_details(release)
             return release['id']
 
@@ -101,6 +101,6 @@ class CommonMetadataMusicbrainz(object):
             return None
         else:
             for (idx, release) in enumerate(result['recording-list']):
-                logging.debug("match #{}:".format(idx+1))
+                logging.info("match #{}:".format(idx+1))
                 self.show_release_details(release)
             return release['id']

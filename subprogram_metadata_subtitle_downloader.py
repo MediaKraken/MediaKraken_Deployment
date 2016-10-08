@@ -40,7 +40,7 @@ sub_lang = "en"
 for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',\
         ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
-    logging.debug("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
+    logging.info("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
     # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
     if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
@@ -49,7 +49,7 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',\
         os.chdir(media_row.rsplit('/', 1)[0])
         file_handle = os.popen("subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
         cmd_output = file_handle.read()
-        logging.debug("Download Status: %s", cmd_output)
+        logging.info("Download Status: %s", cmd_output)
 
 
 print('Total subtitle download attempts: %s' % total_download_attempts)

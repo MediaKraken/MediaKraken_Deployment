@@ -49,7 +49,7 @@ def main(argv):
         # fetch and store logo image
         image_file_path = common_metadata.com_meta_image_file_path(\
             channel_info['strChannel'], 'logo')
-        logging.debug("image: %s", image_file_path)
+        logging.info("image: %s", image_file_path)
         common_network.mk_network_fetch_from_url(channel_info['strLogoWide'], image_file_path)
 
 # {"idChannel":"6613","strChannel":"Absolute 80s","strPackageIDs":",190,",

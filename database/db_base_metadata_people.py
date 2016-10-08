@@ -102,7 +102,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     try:
         for person_data in person_json:
-            #logging.debug("person data: %s", person_data)
+            #logging.info("person data: %s", person_data)
     #        person_data = json.dumps(person_data)
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
@@ -118,7 +118,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                    logging.debug("skippy")
+                    logging.info("skippy")
                 else:
                     self.db_metdata_person_insert(person_name,\
                         json.dumps({'Host': meta_type, 'id': person_id}), None,\
@@ -138,7 +138,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_name = None
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                logging.debug("skippy")
+                logging.info("skippy")
             else:
                 self.db_metdata_person_insert(person_name,\
                     json.dumps({'Host': meta_type, 'id': person_id}), None,\
@@ -152,7 +152,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     row_data = self.db_meta_person_by_guid(person_guid)
     if row_data is None: # exit on not found person
         return None
-    logging.debug("row_data: %s", row_data[1])
+    logging.info("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'TMDB':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\

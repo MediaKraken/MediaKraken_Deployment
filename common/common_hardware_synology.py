@@ -33,7 +33,7 @@ class CommonSynology(object):
         """
         Connect to synology
         """
-        logging.debug("syn connect: %s", addr)
+        logging.info("syn connect: %s", addr)
         self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
 
 
