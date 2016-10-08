@@ -73,19 +73,19 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
         except:
             pass
         try: # not all nfo's have the movie/tmdb
-            tmdb_id = xml_data['movie']['tmdbid']
+            tmdb_id = nfo_data['movie']['tmdbid']
         except:
             pass
         # TODO RT
         try: # not all nfo's have the rt
-            tmdb_id = xml_data['movie']['fakert']
+            tmdb_id = nfo_data['movie']['fakert']
         except:
             pass
     if xml_data is not None:
-        if 'movie' in nfo_data: # standard nfo/xml file
+        if 'movie' in xml_data: # standard nfo/xml file
             if imdb_id is None:
                 try: # not all xmls's will have the imdb
-                    imdb_id = nfo_data['movie']['imdbid']
+                    imdb_id = xml_data['movie']['imdbid']
                 except:
                     pass
             if tmdb_id is None:
@@ -102,7 +102,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
         else: # movie.xml
             if imdb_id is None:
                 try: # not all xmls's will have the imdb
-                    imdb_id = nfo_data['Title']['IMDB']
+                    imdb_id = xml_data['Title']['IMDB']
                 except:
                     pass
             if tmdb_id is None:
