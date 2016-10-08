@@ -83,7 +83,7 @@ def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    logging.info('que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
+    logging.info('db que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
             ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\

@@ -50,6 +50,7 @@ def db_close(self):
     """
     # close main db file
     """
+    logging.info('db close')
     self.sql3_conn.close()
 
 
@@ -57,6 +58,7 @@ def db_commit(self):
     """
     # commit changes to media database
     """
+    logging.info('db commit')
     self.sql3_conn.commit()
 
 
@@ -64,6 +66,7 @@ def db_rollback(self):
     """
     # rollback
     """
+    logging.info('db rollback')
     self.sql3_conn.rollback()
 
 

@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import json
 import time
 import datetime
 from guessit import guessit
@@ -293,7 +292,7 @@ def worker(content_providers):
     """
     Worker thread for limiter
     """
-    logging.info("name: %s", content_providers)
+    logging.info("worker meta api name: %s", content_providers)
     # open the database
     config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
     # setup last used id's per thread
@@ -302,7 +301,7 @@ def worker(content_providers):
     metadata_last_year = None
     while True:
         for row_data in thread_db.db_download_read_provider(content_providers):
-            logging.info("row: %s", row_data)
+            logging.info("worker meta api row: %s", row_data)
             # mdq_id,mdq_download_json
             if content_providers == 'anidb':
                 anidb(thread_db, row_data)
@@ -343,7 +342,7 @@ def worker(content_providers):
             elif content_providers == 'tvshowtime':
                 tvshowtime(thread_db, row_data)
             elif content_providers == 'Z':
-                logging.info('Z: class: %s rowid: %s json: %s',\
+                logging.info('worker Z meta api: class: %s rowid: %s json: %s',\
                     class_text_dict[row_data['mdq_download_json']['ClassID']],\
                     row_data['mdq_id'], row_data['mdq_download_json'])
                 metadata_uuid = None
@@ -357,6 +356,7 @@ def worker(content_providers):
                 elif file_name['title'] == metadata_last_title:
                     thread_db.db_download_delete(row_data['mdq_id'])
                     metadata_uuid = metadata_last_id
+                logging.info("worker Z meta api uuis: %s file: %s", metadata_uuid, file_name)
                 if metadata_uuid is None:
                     # begin id process
                     metadata_uuid = metadata_identification.metadata_identification(thread_db,\
@@ -364,7 +364,7 @@ def worker(content_providers):
                         row_data['mdq_download_json'], row_data['mdq_id'])
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
-                    logging.info("Z update: metaid: %s json mediaid: %s ",\
+                    logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",\
                         metadata_uuid, row_data['mdq_download_json']['MediaID'])
                     thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
                         metadata_uuid)
