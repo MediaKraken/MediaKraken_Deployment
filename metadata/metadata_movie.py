@@ -207,6 +207,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 dl_meta = db_connection.db_download_que_exists(download_que_id,\
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
+                    metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
                     db_connection.db_download_update(json.dumps(download_que_json),\
                         download_que_id)
@@ -219,6 +220,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 dl_meta = db_connection.db_download_que_exists(download_que_id,\
                     'themoviedb', imdb_id)
                 if dl_meta is None:
+                    metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     db_connection.db_download_update(json.dumps(download_que_json),\
                         download_que_id)
