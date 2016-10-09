@@ -33,7 +33,7 @@ else:
     THESPORTSDB_CONNECTION = None
 
 
-def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
+def metadata_sports_lookup(db_connection, media_file_path, download_que_json, download_que_id):
     """
     Lookup sporting event by name
     """
