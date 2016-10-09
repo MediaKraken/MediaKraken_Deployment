@@ -179,6 +179,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                 dl_meta = db_connection.db_download_que_exists(download_que_id,\
                                                                'thetvdb', str(tvdb_id))
                 if dl_meta is None:
+                    metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
                     db_connection.db_download_update(json.dumps(download_que_json),\
                         download_que_id)
@@ -191,6 +192,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                 dl_meta = db_connection.db_download_que_exists(download_que_id,\
                     'thetvdb', imdb_id)
                 if dl_meta is None:
+                    metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     db_connection.db_download_update(json.dumps(download_que_json),\
                         download_que_id)
