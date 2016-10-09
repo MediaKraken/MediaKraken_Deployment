@@ -73,3 +73,4 @@ onkyo-eiscp
 pycrypto
 Adafruit_BBIO
 arduino-python
+NetflixRouletteAPI
