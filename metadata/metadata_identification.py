@@ -78,6 +78,18 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     elif class_text == "Movie":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id)
+    elif class_text == "Movie Extras":
+        # include end slash so media doesn't get chopped up
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\',1)[0]))
+        else:
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('/extras/', '/').rsplit('/',1)[0]))
+        if guid is not None:
+            metadata_uuid = guid
+        else:
+            pass  # TODO lookup properly
     elif class_text == "Movie Theme":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -125,6 +137,18 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
+    elif class_text == "TV Extras":
+        # include end slash so media doesn't get chopped up
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\',1)[0]))
+        else:
+            guid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('/extras/', '/').rsplit('/',1)[0]))
+        if guid is not None:
+            metadata_uuid = guid
+        else:
+            pass  # TODO lookup properly
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id)
