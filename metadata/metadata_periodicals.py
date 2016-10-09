@@ -31,7 +31,8 @@ else:
     ISBNDB_CONNECTION = None
 
 
-def metadata_periodicals_lookup(db_connection, media_file_path, download_que_id):
+def metadata_periodicals_lookup(db_connection, media_file_path,\
+                                download_que_json, download_que_id):
     """
     Lookup via isdb and then name
     """
