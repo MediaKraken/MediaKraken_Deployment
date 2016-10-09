@@ -280,9 +280,10 @@ if db_table_index_check('mm_media_class_idx_type') is None:
     sql3_cursor.execute('CREATE INDEX mm_media_class_idx_type'\
         ' ON mm_media_class(mm_media_class_type)')
 # add media classes
-sql3_cursor.execute('select count(*) from mm_media_class')
-if sql3_cursor.fetchone()[0] == 0:
-    for media_class in base_media_classes:
+for media_class in base_media_classes:
+    sql3_cursor.execute('select count(*) from mm_media_class where mm_media_class_type = %s',\
+                        (media_class[0],))
+    if sql3_cursor.fetchone()[0] == 0:
         sql_params = str(uuid.uuid4()), media_class[0], media_class[1], media_class[2]
         sql3_cursor.execute('insert into mm_media_class (mm_media_class_guid,'\
             'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'\
