@@ -56,7 +56,7 @@ def worker(audit_directory):
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,\
-        json.dumps({'Status': 'File scan', 'Pct': 100}))
+        json.dumps({'Status': 'File search scan', 'Pct': 0}))
     thread_db.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
