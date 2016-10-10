@@ -46,7 +46,7 @@ def db_pgsql_row_count(self):
     self.db_cursor.execute('SELECT nspname AS schemaname,relname,reltuples FROM pg_class C'\
                            ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)'\
                            ' WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\')'\
-                           ' AND relkind='r' ORDER BY reltuples DESC')
+                           ' AND relkind=\'r\' ORDER BY reltuples DESC')
     return self.db_cursor.fetchall()
 
 
