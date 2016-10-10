@@ -641,7 +641,7 @@ def admin_database_statistics():
     """
     db_stats_count = []
     for row_data in g.db_connection.db_pgsql_row_count():
-        db_stats_count.append((row_data[0], locale.format('%d', row_data[1], True)))
+        db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count)
