@@ -1709,7 +1709,7 @@ def metadata_tvshow_detail(guid):
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     logging.info('meta tvshow json: %s', json_metadata)
-    if 'TVMaze' in json_metadata['Meta']:
+    if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
         else:
