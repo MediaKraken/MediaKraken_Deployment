@@ -69,7 +69,7 @@ class CommonMetadatatvmaze(object):
             self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
 
 
-    def com_meta_tvmaze_show_by_id(self, tvmaze_id, tvrage_id, imdb_id, tvdb_id,\
+    def com_meta_tvmaze_show_by_id(self, tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,\
             embed_info=True):
         """
         # lookup specific id
