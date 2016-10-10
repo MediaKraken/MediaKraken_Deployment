@@ -1709,7 +1709,7 @@ def metadata_tvshow_detail(guid):
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     logging.info('meta tvshow json: %s', json_metadata)
-    if 'tvmaze' in json_metadata['Meta']:
+    if 'tvmaze' in json_metadata['Meta'].lower():
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
         else:
@@ -1732,7 +1732,7 @@ def metadata_tvshow_detail(guid):
         if 'genres' in json_metadata['Meta']['tvmaze']:
             for ndx in json_metadata['Meta']['tvmaze']['genres']:
                 data_genres_list += (ndx + ', ')
-    elif 'thetvdb' in json_metadata['Meta']:
+    elif 'thetvdb' in json_metadata['Meta'].lower():
         if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
             data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
         else:
