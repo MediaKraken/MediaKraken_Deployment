@@ -53,6 +53,8 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     """
     # tvmaze search
     """
+    logging.info("meta tv search tvmaze: %s", file_name)
+    file_name = guessit(file_name)
     metadata_uuid = None
     tvmaze_id = None
     if TVMAZE_CONNECTION is not None:
@@ -64,12 +66,13 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
                 None, lang_code, True))
         logging.info("response: %s", tvmaze_id)
         if tvmaze_id is not None:
-            # since there has been NO match whatsoever.....can "wipe" out everything
-            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
-            logging.info("dbjson: %s", media_id_json)
+#            # since there has been NO match whatsoever.....can "wipe" out everything
+#            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
+#            logging.info("dbjson: %s", media_id_json)
             # check to see if metadata exists for tvmaze id
             metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
             logging.info("db result: %s", metadata_uuid)
+    logging.info('meta tv uuid %s prov id: %s', metadata_uuid, tvmaze_id)
     return metadata_uuid, tvmaze_id
 
 
@@ -77,6 +80,8 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
+    logging.info("meta tv search tvdb: %s", file_name)
+    file_name = guessit(file_name)
     metadata_uuid = None
     tvdb_id = None
     if THETVDB_CONNECTION is not None:
@@ -88,12 +93,13 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
                 None, lang_code, True))
         logging.info("response: %s", tvdb_id)
         if tvdb_id is not None:
-            # since there has been NO match whatsoever.....can "wipe" out everything
-            media_id_json = json.dumps({'thetvdb': tvdb_id})
-            logging.info("dbjson: %s", media_id_json)
+#            # since there has been NO match whatsoever.....can "wipe" out everything
+#            media_id_json = json.dumps({'thetvdb': tvdb_id})
+#            logging.info("dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
             metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
             logging.info("db result: %s", metadata_uuid)
+    logging.info('meta tv uuid %s prov id: %s', metadata_uuid, tvdb_id)
     return metadata_uuid, tvdb_id
 
 
@@ -101,6 +107,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
     """
     # tvdb data fetch
     """
+    logging.info("meta tv tvdb save fetch: %s", tvdb_id)
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\
@@ -119,6 +126,13 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             db_connection.db_meta_person_insert_cast_crew('thetvdb',\
                 xml_actor_data['Actor'])
     return metadata_uuid
+
+
+def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
+    """
+    Fetch show data from tvmaze
+    """
+    # TODO
 
 
 def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id):
@@ -154,12 +168,15 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     # check these dupes as the nfo/xml files might not exist to pull the metadata id from
     if imdb_id is not None and imdb_id == metadata_tv_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_tv_lookup.metadata_last_id
     if tvdb_id is not None and tvdb_id == metadata_tv_lookup.metadata_last_tvdb:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_tv_lookup.metadata_last_id
     if rt_id is not None and rt_id == metadata_tv_lookup.metadata_last_rt:
         db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
         return metadata_tv_lookup.metadata_last_id
     # if ids from nfo/xml, query local db to see if exist
     if tvdb_id is not None:
@@ -169,6 +186,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     if rt_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_metatv_guid_by_rt(rt_id)
     # if ids from nfo/xml on local db
+    logging.info("meta tv metadata_uuid A: %s", metadata_uuid)
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
         # fall through here to set last name/year id's
@@ -201,6 +219,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
+    logging.info("meta tv metadata_uuid B: %s", metadata_uuid)
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
         logging.info("tv db lookup")
