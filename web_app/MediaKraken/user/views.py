@@ -923,7 +923,7 @@ def movie_detail(guid):
             logging.info("FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user.movie_detail', guid=guid))
     else:
-        data = g.db_connection.db_read_media_Metadata_Both(guid)
+        data = g.db_connection.db_read_media_metadata_both(guid)
         json_ffmpeg = data['mm_media_ffprobe_json']
         json_media = data['mm_media_json']
         json_metadata = data['mm_metadata_json']
