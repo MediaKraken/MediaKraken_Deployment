@@ -959,8 +959,11 @@ def movie_detail(guid):
             data_file = "NA"
         else:
             # aspect ratio
-            aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],\
-                json_ffmpeg['streams'][0]['height'])).replace('/', ':')
+            try:
+                aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],\
+                                            json_ffmpeg['streams'][0]['height'])).replace('/', ':')
+            except:
+                aspect_ratio = 'NA'
             # bitrate
             bitrate = common_string.com_string_bytes2human(float(json_ffmpeg['format']['bit_rate']))
             # file size
@@ -968,8 +971,11 @@ def movie_detail(guid):
             # calculate a better runtime
             minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
             hours, minutes = divmod(minutes, 60)
-            data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x'\
-                + str(json_ffmpeg['streams'][0]['height'])
+            try:
+                data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x'\
+                    + str(json_ffmpeg['streams'][0]['height'])
+            except:
+                data_resolution = 'NA'
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
         # check to see if there are other version of this video file (dvd, hddvd, etc)
