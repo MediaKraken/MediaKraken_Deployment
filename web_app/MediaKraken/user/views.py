@@ -295,7 +295,7 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db_connection.db_metathesportsdb_select_by_guid(guid),
+                           data=g.db_connection.db_metathesportsdb_select_guid(guid),
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                           )
