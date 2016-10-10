@@ -232,7 +232,7 @@ def user_music_video_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(\
-                                                      'mm_music_video'),
+                                                      'mm_metadata_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
                                                   format_number=True,
