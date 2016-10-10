@@ -973,8 +973,13 @@ def movie_detail(guid):
             # file size
             file_size = common_string.com_string_bytes2human(float(json_ffmpeg['format']['size']))
             # calculate a better runtime
-            minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
-            hours, minutes = divmod(minutes, 60)
+            try:
+                minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
+                hours, minutes = divmod(minutes, 60)
+            except:
+                hours = 0
+                minutes = 0
+                seconds = 0
             try:
                 data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x'\
                     + str(json_ffmpeg['streams'][0]['height'])
