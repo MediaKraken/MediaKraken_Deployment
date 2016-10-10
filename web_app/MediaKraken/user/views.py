@@ -1867,6 +1867,7 @@ def metadata_tvshow_season_detail_page(guid, season):
                            data_overview=data_overview,
                            data_rating=data_rating,
                            data_first_aired=data_first_aired,
+                           data_runtime=data_runtime,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count
