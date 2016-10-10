@@ -965,7 +965,11 @@ def movie_detail(guid):
             except:
                 aspect_ratio = 'NA'
             # bitrate
-            bitrate = common_string.com_string_bytes2human(float(json_ffmpeg['format']['bit_rate']))
+            try:
+                bitrate = common_string.com_string_bytes2human(\
+                    float(json_ffmpeg['format']['bit_rate']))
+            except:
+                bitrate = 'NA'
             # file size
             file_size = common_string.com_string_bytes2human(float(json_ffmpeg['format']['size']))
             # calculate a better runtime
