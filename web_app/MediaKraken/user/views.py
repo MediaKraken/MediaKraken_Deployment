@@ -1768,7 +1768,7 @@ def metadata_tvshow_detail(guid):
             data_background_image = None
     except:
         data_background_image = None
-    data_season_data = g.db_connection.db_read_tvmetadata_eps_season(guid)
+    data_season_data = g.db_connection.db_read_tvmeta_eps_season(guid)
 #    # build production list
 #    production_list = ''
 #    for ndx in range(0,len(json_metadata['production_companies'])):
