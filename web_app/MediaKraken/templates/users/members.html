@@ -65,10 +65,10 @@
     </p>
     {% for row_data in data_new_media %}
         {% if row_data[2] == "Movie" %}
-            <a href= {{ "../movie_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</a>
+            <a href= {{ "./movie_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</a>
         {% else %}
             {% if row_data[2] == "TV Show" %}
-                <a href= {{ "../tv_show_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</a>
+                <a href= {{ "./tv_show_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</a>
             {% else %}
                 <p class="burning"> {{ row_data[0] + ": " + row_data[2] }} </p>
             {% endif %}
