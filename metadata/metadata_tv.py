@@ -132,7 +132,10 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     Fetch show data from tvmaze
     """
+    logging.info("meta tv tvmaze save fetch: %s", tvmaze_id)
+    metadata_uuid = None
     # TODO
+    return metadata_uuid
 
 
 def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id):
