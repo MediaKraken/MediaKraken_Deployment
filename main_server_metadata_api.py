@@ -361,7 +361,7 @@ def worker(content_providers):
                     # begin id process
                     metadata_uuid = metadata_identification.metadata_identification(thread_db,\
                         class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                        row_data['mdq_download_json'], row_data['mdq_id'])
+                        row_data['mdq_download_json'], row_data['mdq_id'], file_name)
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
                     logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",\

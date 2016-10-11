@@ -140,7 +140,8 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
             json.dumps({'TMDB': review_json}))
 
 
-def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id,\
+                          file_name):
     """
     Movie lookup
     This is the main function called from metadata_identification
@@ -153,8 +154,6 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_movie_lookup.metadata_last_tmdb = None
         metadata_movie_lookup.metadata_last_rt = None
     metadata_uuid = None # so not found checks verify later
-    # determine file name/etc for handling name/year skips
-    file_name = guessit(media_file_path)
     logging.info('meta movie look filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:

@@ -33,7 +33,7 @@ from . import metadata_tv
 
 
 def metadata_identification(db_connection, class_text, download_que_json,\
-        download_que_id):
+        download_que_id, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """
@@ -76,7 +76,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
             download_que_json['Path'], download_que_json, download_que_id)
     elif class_text == "Movie":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
-            download_que_json['Path'], download_que_json, download_que_id)
+            download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
     elif class_text == "Movie Extras":
         # include end slash so media doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -148,7 +148,7 @@ def metadata_identification(db_connection, class_text, download_que_json,\
             pass  # TODO lookup properly
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
-            download_que_json['Path'], download_que_json, download_que_id)
+            download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
     elif class_text == "TV Theme":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':

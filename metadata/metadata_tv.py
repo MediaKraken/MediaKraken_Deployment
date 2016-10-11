@@ -138,7 +138,8 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     return metadata_uuid
 
 
-def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id,\
+                       file_name):
     """
     Lookup tv metadata
     """
@@ -151,8 +152,6 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_rt = None
     metadata_uuid = None # so not found checks verify later
-    # determine file name/etc for handling name/year skips
-    file_name = guessit(media_file_path)
     logging.info('tvlook filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:
