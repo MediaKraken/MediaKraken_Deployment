@@ -48,6 +48,9 @@ def metadata_process(thread_db, provider_name, download_data):
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
         logging.info('%s fetchreview', provider_name)
         metadata_review(thread_db, provider_name, download_data)
+    elif download_data['mdq_download_json']['Status'] == "FetchCollection":
+        logging.info('%s fetchcollection', provider_name)
+        metadata_collection(thread_db, provider_name, download_data)
 
 
 def metadata_search(thread_db, provider_name, download_data):
@@ -184,4 +187,15 @@ def metadata_review(thread_db, provider_name, download_data):
         metadata_movie.movie_fetch_save_tmdb_review(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
     # review is last.....so can delete download que
+    thread_db.db_download_delete(download_data['mdq_id'])
+
+
+def metadata_collection(thread_db, provider_name, download_data):
+    """
+    Fetch collection from specified provider
+    """
+    if provider_name == 'themoviedb':
+        metadata_movie.movie_fetch_save_tmdb_collection(thread_db,\
+            download_data['mdq_download_json']['ProviderMetaID'], download_data)
+    # only one record for this so nuke it
     thread_db.db_download_delete(download_data['mdq_id'])

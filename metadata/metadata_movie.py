@@ -22,6 +22,7 @@ import logging # pylint: disable=W0611
 import json
 from guessit import guessit
 from common import common_config_ini
+from common import common_metadata
 from common import common_metadata_anidb
 from common import common_metadata_imdb
 from common import common_metadata_movie_theme
@@ -138,6 +139,42 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
         logging.info("review: %s", review_json_id)
         db_connection.db_review_insert(json.dumps(review_json_id),\
             json.dumps({'TMDB': review_json}))
+
+
+def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
+    """
+    # grab collection
+    """
+    # store/update the record
+    # don't string this since it's a pure result store
+    collection_guid = db_connection.db_collection_by_tmdb(tmdb_collection_id)
+    logging.info("colfsdfsd: %s %s", tmdb_collection_id, collection_guid)
+    if collection_guid is None:
+        # insert
+        collection_meta = TMDB_CONNECTION.com_tmdb_meta_collection_by_id(tmdb_collection_id)
+        logging.info("col: %s", collection_meta)
+        # poster path
+        if download_data['Poster'] is not None:
+            image_poster_path = common_metadata.com_meta_image_path(download_data['Name'],\
+                'poster', 'tmdb', download_data['Poster'])
+        else:
+            image_poster_path = None
+        # backdrop path
+        if download_data['Backdrop'] is not None:
+            image_backdrop_path = common_metadata.com_meta_image_path(download_data['Name'],\
+                'backdrop', 'tmdb', download_data['Backdrop'])
+        else:
+            image_backdrop_path = None
+        localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
+        db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],\
+            collection_meta, localimage_json)
+        # commit all changes to db
+        db_connection.db_commit()
+        return 1 # to add totals later
+    else:
+        # update
+        #db_connection.db_collection_update(collection_guid, guid_list)
+        return 0 # to add totals later
 
 
 def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id,\

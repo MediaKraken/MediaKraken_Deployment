@@ -12,16 +12,17 @@
 
   You should have received a copy of the GNU General Public License
   version 2 along with this program; if not, write to the Free
-  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  Software Foundation, Inc., 51 Franklin Street,
+  Fifth Floor, Boston,
   MA 02110-1301, USA.
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import sys
+import json
 from common import common_config_ini
 from common import common_logging
-from common import common_metadata
 from common import common_metadata_tmdb
 from common import common_signal
 import locale
@@ -55,41 +56,6 @@ else:
     sys.exit(0)
 
 
-# same code in subprogram match anime scudlee
-def store_update_record(db_connection, collection_name, guid_list, poster_path,\
-        backdrop_path, collection_id):
-    # store/update the record
-    # don't string this since it's a pure result store
-    collection_guid = db_connection.db_collection_by_tmdb(collection_id)
-    logging.info("colfsdfsd: %s %s", collection_id, collection_guid)
-    if collection_guid is None:
-        # insert
-        collection_meta = TMDB_API_CONNECTION.com_tmdb_meta_collection_by_id(collection_id)
-        logging.info("col: %s", collection_meta)
-        # poster path
-        if poster_path is not None:
-            image_poster_path = common_metadata.com_meta_image_path(collection_name,\
-                'poster', 'tmdb', poster_path)
-        else:
-            image_poster_path = None
-        # backdrop path
-        if backdrop_path is not None:
-            image_backdrop_path = common_metadata.com_meta_image_path(collection_name,\
-                'backdrop', 'tmdb', backdrop_path)
-        else:
-            image_backdrop_path = None
-        localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
-        db_connection.db_collection_insert(collection_name, guid_list,\
-            collection_meta, localimage_json)
-        # commit all changes to db
-        db_connection.db_commit()
-        return 1 # to add totals later
-    else:
-        # update
-        #db_connection.db_collection_update(collection_guid, guid_list)
-        return 0 # to add totals later
-
-
 # pull in all metadata with part of collection in metadata
 old_collection_name = ''
 old_poster_path = None
@@ -103,9 +69,12 @@ for row_data in db_connection.db_media_collection_scan():
     if old_collection_name != row_data['mm_metadata_json']['Meta']\
             ['TMDB']['Meta']['belongs_to_collection']['name']:
         if not first_record:
-            total_collections_downloaded += store_update_record(db_connection,\
-                old_collection_name, guid_list,\
-                old_poster_path, old_backdrop_path, old_id)
+            db_connection.db_download_insert('themoviedb',\
+                json.dumps({'Status': 'FetchCollection',\
+                'Name': old_collection_name, 'GUID': guid_list,\
+                'Poster': old_poster_path, 'Backdrop': old_backdrop_path,\
+                'ProviderMetaID': str(old_id)}))
+            total_collections_downloaded += 1
         old_collection_name = row_data['mm_metadata_json']['Meta']\
             ['TMDB']['Meta']['belongs_to_collection']['name']
         old_poster_path = row_data['mm_metadata_json']['Meta']\
@@ -119,9 +88,12 @@ for row_data in db_connection.db_media_collection_scan():
     guid_list.append(row_data['mm_metadata_guid'])
 # do last insert/update
 if len(guid_list) > 0:
-    total_collections_downloaded += store_update_record(db_connection,\
-        old_collection_name, guid_list, old_poster_path,\
-        old_backdrop_path, old_id)
+    db_connection.db_download_insert('themoviedb',\
+        json.dumps({'Status': 'FetchCollection',\
+        'Name': old_collection_name, 'GUID': guid_list,\
+        'Poster': old_poster_path, 'Backdrop': old_backdrop_path,\
+        'ProviderMetaID': str(old_id)}))
+    total_collections_downloaded += 1
 
 
 if total_collections_downloaded > 0:
