@@ -48,6 +48,9 @@ def metadata_process(thread_db, provider_name, download_data):
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
         logging.info('%s fetchreview', provider_name)
         metadata_review(thread_db, provider_name, download_data)
+    elif download_data['mdq_download_json']['Status'] == "FetchImage":
+        logging.info('%s fetchimage', provider_name)
+        metadata_image(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
         logging.info('%s fetchcollection', provider_name)
         metadata_collection(thread_db, provider_name, download_data)
@@ -181,6 +184,13 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
         download_data['mdq_id'])
+
+
+def metadata_image(thread_db, provider_name, download_data):
+    """
+    Fetch image from specified provider
+    """
+    thread_db.db_download_delete(download_data['mdq_id'])
 
 
 def metadata_review(thread_db, provider_name, download_data):
