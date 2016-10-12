@@ -49,5 +49,5 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
     # setup for the ssl keys
     reactor.listenSSL(8901, MediaKrakenServerApp(),\
-        ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
+        ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()

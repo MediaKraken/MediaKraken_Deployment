@@ -53,5 +53,5 @@ if __name__ == '__main__':
     # setup for the ssl keys
     reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ListenPort']),\
         MediaKrakenServerApp(),\
-        ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
+        ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()
