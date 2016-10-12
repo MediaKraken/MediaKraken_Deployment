@@ -41,25 +41,23 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 total_download_attempts = 0
 # main code
-def main(argv):
-    """
-    Main function
-    """
-    global total_download_attempts
-    # parse arguments
-    sub_lang = "en"
-    # search the directory for filter files
-    for media_row in common_file.com_file_dir_list():
-        logging.info(media_row)
+# parse arguments
+sub_lang = "en"
+# search the directory for filter files
+for media_row in common_file.com_file_dir_list():
+    logging.info(media_row)
 
 
-if __name__ == "__main__":
-    print('Total lyrics download attempts: %s' % total_download_attempts)
-    # send notications
-    if total_download_attempts > 0:
-        db_connection.db_notification_insert(locale.format('%d',\
-            total_download_attempts, True) + " lyric(s) downloaded.", True)
-    # commit all changes
-    db_connection.db_commit()
-    # close DB
-    db_connection.db_close()
+print('Total lyrics download attempts: %s' % total_download_attempts)
+# send notications
+if total_download_attempts > 0:
+    db_connection.db_notification_insert(locale.format('%d',\
+        total_download_attempts, True) + " lyric(s) downloaded.", True)
+
+
+# commit all changes
+db_connection.db_commit()
+
+
+# close DB
+db_connection.db_close()
