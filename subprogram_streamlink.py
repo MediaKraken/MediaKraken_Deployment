@@ -30,7 +30,7 @@ common_signal.com_signal_set_break()
 
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_LiveStream')
+common_logging.com_logging_start('./log/MediaKraken_Subprogram_Streamlink')
 
 
 # open the database
@@ -38,8 +38,8 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server LiveStream Start', None,\
-    'System: Server LiveStream Start', 'ServerLiveStreamStart', None, None, 'System')
+db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,\
+    'System: Server Streamlink Start', 'ServerStreamlinkStart', None, None, 'System')
 
 
 # do the actual capture
@@ -50,8 +50,8 @@ subprocess.call(["./bin/streamlink", "twitch.tv/" + user, quality, "-o", filenam
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
-    'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
+db_connection.db_activity_insert('MediaKraken_Server Streamlink Stop', None,\
+    'System: Server Streamlink Stop', 'ServerStreamlinkStop', None, None, 'System')
 
 
 # commit all changes
