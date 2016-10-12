@@ -45,7 +45,7 @@ db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
 
 
 # grab the show data and update/insert respecitivey
-def update_insert_show(tvmaze_id, update_rec=None):
+def update_insert_show(tvmaze_id):
     #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
@@ -74,13 +74,9 @@ def update_insert_show(tvmaze_id, update_rec=None):
             imdb_id = None
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,\
             'imdb': imdb_id, 'thetvdb': thetvdb_id})
-        if update_rec is None:
-            image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
-                json.dumps(show_full_json), json.dumps(image_json))
-        else:
-            db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,\
-                json.dumps(show_full_json), json.dumps(image_json), str(tvmaze_id))
+        image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
+            json.dumps(show_full_json), json.dumps(image_json))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',\
@@ -110,7 +106,7 @@ for tvmaze_id, tvmaze_time in result.items():
         tvshow_updated += 1
     else:
         # insert new record as it's a new show
-        update_insert_show(tvmaze_id, None)
+        update_insert_show(tvmaze_id)
         tvshow_inserted += 1
 
 
