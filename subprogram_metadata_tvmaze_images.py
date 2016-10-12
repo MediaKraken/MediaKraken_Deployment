@@ -125,12 +125,15 @@ if total_episode_images > 0:
     db_connection.db_notification_insert(locale.format('%d', total_episode_images, True)\
         + " new TV episode image(s) added.", True)
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server tvmaze Images Stop', None,\
     'System: Server tvmaze Images Stop', 'ServertvmazeImagesStop', None, None, 'System')
 
+
 # commit all changes
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

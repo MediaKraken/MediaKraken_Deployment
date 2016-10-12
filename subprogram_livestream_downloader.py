@@ -53,8 +53,10 @@ subprocess.call(["livestreamer", "twitch.tv/"+user, quality, "-o", filename])
 db_connection.db_activity_insert('MediaKraken_Server LiveStream Stop', None,\
     'System: Server LiveStream Stop', 'ServerLiveStreamStop', None, None, 'System')
 
+
 # commit all changes
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

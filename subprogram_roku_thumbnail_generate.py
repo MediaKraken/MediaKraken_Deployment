@@ -57,12 +57,15 @@ if thumbnails_generated > 0:
     db_connection.db_notification_insert(locale.format('%d', thumbnails_generated, True)\
         + " Roku thumbnail(s) generated.", True)
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
+
 # commit all changes
 db_connection.db_commit()
+
 
 # close DB
 db_connection.db_close()

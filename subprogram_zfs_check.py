@@ -35,6 +35,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 db_connection.db_activity_insert('MediaKraken_Server ZFS Health Start', None,\
     'System: Server ZFS Health Start', 'ServerZFSScanStart', None, None, 'System')
 
+
 # health check
 zfs_result = common_zfs.com_zfs_health_check()
 if zfs_result is not None:
@@ -45,12 +46,15 @@ if zfs_result is not None:
             db_connection.db_notification_insert("ZFS zpool(s) degraded or offline!", True)
             break
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server ZFS Health Stop', None,\
     'System: Server ZFS Health Stop', 'ServerZFSScanStop', None, None, 'System')
 
+
 # commit
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

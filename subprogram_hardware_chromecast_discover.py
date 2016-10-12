@@ -70,8 +70,10 @@ if devices_added > 0:
 db_connection.db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,\
     'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
+
 # commit
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

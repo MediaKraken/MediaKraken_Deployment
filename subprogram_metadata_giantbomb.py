@@ -40,9 +40,6 @@ def main(argv):
     # search the directory for filter files
 
 
-
-
-
 if __name__ == "__main__":
     print('bomb game info download attempts: %s' % total_download_attempts)
     # send notications

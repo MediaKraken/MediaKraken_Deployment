@@ -78,5 +78,6 @@ while 1:
         logging.info(row_data)
     time.sleep(60) # sleep for 60 seconds
 
+
 # close the database
 db_connection.db_close()

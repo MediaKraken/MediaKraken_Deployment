@@ -41,8 +41,10 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,\
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
+
 # start code for updating iradio database
 common_network_radio.com_net_radio()
+
 
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
@@ -55,6 +57,7 @@ for row_data in radio_cache:
 # log end
 db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
     'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
+
 
 # commit
 db_connection.db_commit()

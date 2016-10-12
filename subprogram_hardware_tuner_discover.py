@@ -76,5 +76,6 @@ db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Stop', None,\
 # commit
 db_connection.db_commit()
 
+
 # close the database
 db_connection.db_close()

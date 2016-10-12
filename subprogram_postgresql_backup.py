@@ -59,12 +59,15 @@ if option_json['Backup']['BackupType'] != 'local':
     os.path.join(option_config_json['MediaKrakenServer']['BackupLocal'],\
     backup_file_name), backup_file_name, True)
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,\
     'System: Server DB Backup Stop', 'ServerBackupStop', None, None, 'System')
 
+
 # commit records
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

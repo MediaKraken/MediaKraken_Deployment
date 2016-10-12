@@ -72,12 +72,16 @@ for row_data in db_brainz.db_brainz_all_artists():
             db_connection.db_meta_song_add(row_data[99],json.dumps({ 'musicbrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
 '''
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,\
     'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None, None, 'System')
 
+
 # commit all changes to db
 db_connection.db_commit()
+
+
 # close DB
 db_brainz.db_close()
 db_connection.db_close()

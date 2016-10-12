@@ -105,8 +105,10 @@ if total_collections_downloaded > 0:
 db_connection.db_activity_insert('MediaKraken_Server Create Collection Stop', None,\
     'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
 
+
 # commit all changes to db
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

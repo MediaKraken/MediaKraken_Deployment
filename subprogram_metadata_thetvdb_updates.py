@@ -100,6 +100,7 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
     'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
 
+
 # send notications
 if tvshow_updated > 0:
     db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\

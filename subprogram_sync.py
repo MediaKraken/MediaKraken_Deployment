@@ -113,8 +113,10 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,\
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
+
 # commit all changes
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

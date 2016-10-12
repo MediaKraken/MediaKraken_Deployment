@@ -54,6 +54,7 @@ movie_inserted = 0
 # grab the updated data
 tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
+
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     logging.info("mov: %s", movie_change['id'])

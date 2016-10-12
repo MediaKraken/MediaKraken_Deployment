@@ -70,6 +70,7 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
             db_connection.db_meta_update_media_id_from_scudlee(row_data[1],\
                 row_data[2], row_data[0])
 
+
 # begin the collections match/create/update
 for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     #db_connection.db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
@@ -78,12 +79,15 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     else:
         store_update_record(db_connection, row_data[0], row_data[1])
 
+
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 
+
 # commit all changes to db
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

@@ -39,6 +39,7 @@ config_handle, option_config_json, db_connection = common_config_ini.com_config_
 db_connection.db_activity_insert('MediaKraken_Server URL Scan Start', None,\
     'System: Server URL Scan Start', 'ServerURLScanStart', None, None, 'System')
 
+
 # go through ALL known media files
 for row_data in db_connection.db_known_media():
 #TODO  actually, this should probably be the metadata
@@ -49,8 +50,10 @@ for row_data in db_connection.db_known_media():
 db_connection.db_activity_insert('MediaKraken_Server URL Scan Stop', None,\
     'System: Server URL Scan Stop', 'ServerURLScanStop', None, None, 'System')
 
+
 # commit all changes to db
 db_connection.db_commit()
+
 
 # close DB
 db_connection.db_close()
