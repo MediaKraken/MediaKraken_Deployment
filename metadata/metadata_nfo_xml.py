@@ -28,7 +28,6 @@ def nfo_xml_file(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
-    # TODO search for tvinfo.nfo and use ID from that if exists
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     try: # pull the "real" extention
@@ -56,6 +55,20 @@ def nfo_xml_file(media_file_path):
             logging.info('movie xml file found: %s', xml_file_name)
             xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(\
                 os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
+    return nfo_data, xml_data
+
+
+def nfo_xml_file_tv(media_file_path):
+    """
+    Find and load nfo and xml file(s) if they exist
+    """
+    xml_data = None
+    # check for NFO or XML as no need to do lookup if ID found in it
+    # TODO should check for one dir back too I spose
+    nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
+    if os.path.isfile(nfo_file_check): # check for nfo
+        logging.info('nfo tv file found: %s', nfo_file_check)
+        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     return nfo_data, xml_data
 
 

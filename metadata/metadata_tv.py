@@ -163,7 +163,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         db_connection.db_download_delete(download_que_id)
         return metadata_tv_lookup.metadata_last_id
     # grab by nfo/xml data
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
+    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
     imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
     logging.info("tv look: %s %s %s", imdb_id, tvdb_id, rt_id)
     # if same as last, return last id and save lookup
