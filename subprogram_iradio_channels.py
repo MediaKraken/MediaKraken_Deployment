@@ -47,7 +47,7 @@ common_network_radio.com_net_radio()
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
-    logging.info(row_data)
+    logging.info('radio cache: %s', row_data)
     db_connection.db_iradio_insert(row_data)
 
 #radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
@@ -58,6 +58,7 @@ db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
 
 # commit
 db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()
