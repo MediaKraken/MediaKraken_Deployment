@@ -22,7 +22,6 @@ from twisted.internet import ssl
 from twisted.internet import reactor
 #from twisted.internet import protocol
 from twisted.internet.protocol import Factory
-import sys
 from network import network_base_string_weblog as network_base
 from common import common_logging
 from common import common_signal
