@@ -65,7 +65,10 @@ def nfo_xml_file_tv(media_file_path):
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     # TODO should check for one dir back too I spose
-    nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
+    if media_file_path.find('/') != -1:
+        nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
+    else:
+        nfo_file_check = media_file_path.rsplit('\\', 1)[0] + 'tvinfo.nfo'
     if os.path.isfile(nfo_file_check): # check for nfo
         logging.info('nfo tv file found: %s', nfo_file_check)
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
