@@ -134,7 +134,46 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     logging.info("meta tv tvmaze save fetch: %s", tvmaze_id)
     metadata_uuid = None
-    # TODO
+    #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
+    show_full_json = None
+    try:
+        show_full_json = ({'Meta': {'tvmaze':\
+            json.loads(common_metadata_tvmaze.com_meta_tvmaze_show_by_id(\
+            tvmaze_id, None, None, None, True))}})
+    except:
+        pass
+    logging.info("tvmaze full: %s", show_full_json)
+    if show_full_json is not None:
+#        for show_detail in show_full_json:
+        show_detail = show_full_json['Meta']['tvmaze']
+        logging.info("detail: %s", show_detail)
+        tvmaze_name = show_detail['name']
+        logging.info("name: %s", tvmaze_name)
+        try:
+            tvrage_id = str(show_detail['externals']['tvrage'])
+        except:
+            tvrage_id = None
+        try:
+            thetvdb_id = str(show_detail['externals']['thetvdb'])
+        except:
+            thetvdb_id = None
+        try:
+            imdb_id = str(show_detail['externals']['imdb'])
+        except:
+            imdb_id = None
+        series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,\
+            'imdb': imdb_id, 'thetvdb': thetvdb_id})
+        image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
+            json.dumps(show_full_json), json.dumps(image_json))
+        # store person info
+        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
+                show_full_json['Meta']['tvmaze']['_embedded']['cast'])
+        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
+                show_full_json['Meta']['tvmaze']['_embedded']['crew'])
+        db_connection.db_commit()
     return metadata_uuid
 
 
