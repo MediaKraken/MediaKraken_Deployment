@@ -105,7 +105,7 @@ class CommonTheTVDB(object):
             json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
                 'Poster':poster_path}})
         # save the show data
-        com_database.db_meta_Save_Show(show_data.SeriesName,
+        com_database.db_meta_save_show(show_data.SeriesName,
             json_media_id, json_media_json)
 
         # store the season data
