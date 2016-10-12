@@ -60,6 +60,7 @@ def mk_network_send_email(email_receipient, email_subject, email_body):
     """
     Send email
     """
+    # TODO um, popped up Outlook window in windows
     email.send(recipient=email_receipient, subject=email_subject, text=email_body,\
         create_chooser=True)
 
