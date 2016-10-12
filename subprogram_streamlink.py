@@ -46,7 +46,7 @@ db_connection.db_activity_insert('MediaKraken_Server LiveStream Start', None,\
 filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - "\
     + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
-subprocess.call(["livestreamer", "twitch.tv/" + user, quality, "-o", filename])
+subprocess.call(["./bin/streamlink", "twitch.tv/" + user, quality, "-o", filename])
 
 
 # log end
