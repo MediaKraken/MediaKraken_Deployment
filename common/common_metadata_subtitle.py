@@ -20,8 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 #import subliminal
 import os
-import sys
-sys.path.append("./vault/lib")
 
 
 def com_meta_fetch_subtitle(file_name, sub_lang="en"):
@@ -29,7 +27,7 @@ def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     # fetch subtitles
     """
     #file_hash = com_Hash.com_hash_thesubdb(file_name)
-    command_handle = os.popen("subliminal -l " + sub_lang + " -- \'"\
+    command_handle = os.popen("./bin/subliminal -l " + sub_lang + " -- \'"\
         + file_name.encode("utf8") + "\'")
     cmd_output = command_handle.read()
     return cmd_output
