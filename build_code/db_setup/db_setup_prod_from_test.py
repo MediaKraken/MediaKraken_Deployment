@@ -35,8 +35,24 @@ sql3_cursor = sql3_conn.cursor()
 sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = 'mm_media'")
 if sql3_cursor.fetchone()[0] == 0:
     # truncate data
-    sql3_cursor.execute('truncate mm_user_activity,mm_media_dir,mm_loan,mm_media,'\
-        'mm_notification,mm_sync,mm_trigger,mm_link,mm_nas,mm_tuner')
+    sql3_cursor.execute('truncate '\
+        'mm_channel,'\
+        'mm_device,'\
+        'mm_download_que,'\
+        'mm_link,'\
+        'mm_loan,'\
+        'mm_media,'\
+        'mm_media_dir,'\
+        'mm_media_remote,'\
+        'mm_notification,'\
+        'mm_nas,'\
+        'mm_sync,'\
+        'mm_trigger,'\
+        'mm_tv_schedule,'\
+        'mm_tv_schedule_program,'\
+        'mm_tv_stations,'\
+        'mm_user_activity,'\
+        'mm_tuner')
     sql3_cursor.execute("delete from mm_user where mm_user_name != 'admin'")
     sql3_conn.commit()
     # create dump file
