@@ -18,10 +18,10 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest
 import json
 import sys
 sys.path.append('.')
+import pytest
 import database as database_base
 
 

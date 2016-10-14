@@ -153,34 +153,34 @@ class MediaKrakenApp():
         Process network message from server
         """
         # otherwise the pickle can end up in thousands of chunks
-        messageWords = server_msg.split(' ', 1)
-        logging.info('message: %s', messageWords[0])
+        message_words = server_msg.split(' ', 1)
+        logging.info('message: %s', message_words[0])
         logging.info("len: %s", len(server_msg))
-        logging.info("chunks: %s", len(messageWords))
+        logging.info("chunks: %s", len(message_words))
         msg = None
         try:
-            pickle_data = pickle.loads(messageWords[1])
+            pickle_data = pickle.loads(message_words[1])
         except:
             pickle_data = None
-        if messageWords[0] == "IDENT":
+        if message_words[0] == "IDENT":
             msg = "VALIDATE " + "slave" + " " + "password" + " " + platform.node()
-        elif messageWords[0] == "PING":  # Client_Network
+        elif message_words[0] == "PING":  # Client_Network
             msg = "PONG"
         # user commands
-        elif messageWords[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(messageWords[1], shell=False))
+        elif message_words[0] == "PLAYMEDIA":
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1], shell=False))
         # admin commands
-        elif messageWords[0] == "CPUUSAGE":
+        elif message_words[0] == "CPUUSAGE":
             msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(True))
-        elif messageWords[0] == "DISKUSAGE":
+        elif message_words[0] == "DISKUSAGE":
             msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
-        elif messageWords[0] == "MEMUSAGE":
+        elif message_words[0] == "MEMUSAGE":
             msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
-        elif messageWords[0] == "SYSSTATS":
+        elif message_words[0] == "SYSSTATS":
             msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),\
                 common_system.com_system_disk_usage_all(True),\
                 common_system.com_system_virtual_memory(False)))
-        elif messageWords[0] == "SHUTDOWN":
+        elif message_words[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
             sys.exit(0)
         else:
