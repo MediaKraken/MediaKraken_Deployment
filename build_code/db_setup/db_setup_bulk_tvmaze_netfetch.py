@@ -57,7 +57,7 @@ sql3_cursor.execute("SELECT COUNT (relname) as a FROM pg_class WHERE relname = '
 if sql3_cursor.fetchone()[0] > 0:
     for page_ndx in range(63, 75):
         print(page_ndx)
-        result = tvmaze.com_meta_TheMaze_Show_List(page_ndx)
+        result = tvmaze.com_meta_tvmaze_show_list(page_ndx)
         show_list_json = json.loads(result)
         for show_ndx in range(0, len(show_list_json)):
             tvmaze_id = show_list_json[show_ndx]['id']
