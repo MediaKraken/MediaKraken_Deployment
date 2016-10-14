@@ -82,7 +82,11 @@ def worker(row_data):
         # just go along merry way as ffmpeg shoulda output to mm_sync_path_to
         pass
     elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
-        pass
+        XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],\
+            row_data['mm_sync_options_json']['TargetPort'],\
+            row_data['mm_sync_path_to'] + "."\
+            + row_data['mm_sync_options_json']['Options']['VContainer'],\
+            row_data['mm_sync_path_to'])
     else: # cloud item
         CLOUD_HANDLE = common_cloud.CommonCloud()
         CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],\
