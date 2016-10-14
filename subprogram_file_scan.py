@@ -120,7 +120,7 @@ def worker(audit_directory):
                     if file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
                         new_class_type_uuid = class_text_dict['Subtitle']
                 else:
-                    if file_name.find('/trailers/') != -1\ # pylint: disable=R0916
+                    if file_name.find('/trailers/') != -1\
                             or file_name.find('\\trailers\\') != -1\
                             or file_name.find('/theme.mp3') != -1\
                             or file_name.find('\\theme.mp3') != -1\
