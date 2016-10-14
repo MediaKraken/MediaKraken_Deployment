@@ -1254,10 +1254,11 @@ def sync_edit(guid):
     Allow user to edit sync page
     """
     if request.method == 'POST':
-        sync_json = {"Type": request.form['target_type'],\
-            "Size": request.form['target_file_size'], 'Media GUID': guid,\
+        sync_json = {'Type': request.form['target_type'],\
+            'Media GUID': guid,\
             'Options': {'VContainer': request.form['target_container'],\
             'VCodec': request.form['target_codec'],\
+            'Size': request.form['target_file_size'],\
             'AudioChannels': request.form['target_audio_channels'],\
             'ACodec': request.form['target_audio_codec'],\
             'ASRate': request.form['target_sample_rate']},\
