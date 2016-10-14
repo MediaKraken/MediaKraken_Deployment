@@ -22,15 +22,15 @@ import subprocess
 import logging
 
 
-class TestSubprogramLivestreamDown(object):
+class TestSubprogramStreamlinkDown(object):
     """
     Test livestream download
     """
 
-    def test_sub_livestream_down(self):
+    def test_sub_streamlink_down(self):
         """
         Test function
         """
-        self.proc_info = subprocess.Popen(['./subprogram_livestream_downloader'], shell=False)
-        logging.info("PID: %s", self.proc_info.pid)
-        self.proc_info.wait()
+        proc_info = subprocess.Popen(['./subprogram_streamlink'], shell=False)
+        logging.info("PID: %s", proc_info.pid)
+        proc_info.wait()

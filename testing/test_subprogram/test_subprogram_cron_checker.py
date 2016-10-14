@@ -31,6 +31,6 @@ class TestSubprogramCronCheck(object):
         """
         Test function
         """
-        self.proc_info = subprocess.Popen(['./subprogram_cron_checker'], shell=False)
-        logging.info("PID: %s", self.proc_info.pid)
-        self.proc_info.wait()
+        proc_info = subprocess.Popen(['./subprogram_cron_checker'], shell=False)
+        logging.info("PID: %s", proc_info.pid)
+        proc_info.wait()

@@ -31,6 +31,12 @@ class TestSubprogramBroadcast(object):
     """
     Test broadcast
     """
+    def __init__(self):
+        """
+        Class init
+        """
+        self.proc_broadcast = None
+
 
     @classmethod
     def setup_class(self):
