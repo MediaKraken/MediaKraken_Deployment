@@ -18,9 +18,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from common import common_cloud
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
+from common import common_xfer
 from concurrent import futures
 import subprocess
 from datetime import timedelta
@@ -75,6 +77,17 @@ def worker(row_data):
         else:
             break
     ffmpeg_pid.wait()
+    # deal with converted file
+    if row_data['mm_sync_options_json']['Type'] == 'Local File System':
+        # just go along merry way as ffmpeg shoulda output to mm_sync_path_to
+        pass
+    elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
+        pass
+    else: # cloud item
+        CLOUD_HANDLE = common_cloud.CommonCloud()
+        CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],\
+            row_data['mm_sync_path_to'], row_data['mm_sync_path_to'] + "."\
+            + row_data['mm_sync_options_json']['Options']['VContainer'].split('/', 1)[1], False)
     thread_db.db_activity_insert('MediaKraken_Server Sync', None,\
         'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.db_sync_delete(row_data[0]) # guid of sync record
