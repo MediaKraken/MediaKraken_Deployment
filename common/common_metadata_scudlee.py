@@ -20,8 +20,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import time
 import os
-import xmltodict
 from xml.dom import minidom
+import xmltodict
 from . import common_file
 from . import common_network
 

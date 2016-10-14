@@ -22,7 +22,7 @@ import os
 import time
 # built into 3.5 so try first then fallback to py2.x lib
 try:
-    from os import walk
+    from os import walk # pylint: disable=C0412
 except ImportError:
     from scandir import walk
 try:

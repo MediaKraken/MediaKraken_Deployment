@@ -44,13 +44,6 @@ db_connection.db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
     'System: Server TMDB Start', 'ServertheTMDBStart', None, None, 'System')
 
 
-# grab the data
-tvshow_updated = 0
-tvshow_inserted = 0
-movie_updated = 0
-movie_inserted = 0
-
-
 # grab the updated data
 tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
@@ -77,30 +70,6 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
 # log end
 db_connection.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
     'System: Server TMDB Stop', 'ServertheTMDBStop', None, None, 'System')
-
-
-create_collection_trigger = False
-# send notications
-if tvshow_updated > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
-        + " TV show(s) metadata updated.", True)
-    create_collection_trigger = True
-if tvshow_inserted > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
-        + " TV show(s) metadata added.", True)
-    create_collection_trigger = True
-if movie_updated > 0:
-    db_connection.db_notification_insert(locale.format('%d', movie_updated, True)\
-        + " movie metadata updated.", True)
-    create_collection_trigger = True
-if movie_inserted > 0:
-    db_connection.db_notification_insert(locale.format('%d', movie_inserted, True)\
-        + " movie metadata added.", True)
-    create_collection_trigger = True
-# update collection
-if create_collection_trigger:
-    db_connection.db_trigger_insert((\
-        'subprogram_update_create_collections'))
 
 
 # commit all changes

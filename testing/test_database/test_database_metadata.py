@@ -40,7 +40,7 @@ class TestDatabaseMetadata(object):
 
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),   # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found    
+        ('04442b10-3fb5-4d87-95a6-b50dbd072633')])  # not found
     def test_db_read_media_metadata(self, media_guid):
         """
         # read in the media with corresponding metadata
