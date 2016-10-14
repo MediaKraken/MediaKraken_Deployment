@@ -85,6 +85,9 @@ metaapp = None
 
 
 class TheaterClient(Int32StringReceiver):
+    """
+    Twisted client class
+    """
     STARTED = 0
     CHECKING_PORT = 1
     CONNECTED = 2
@@ -94,13 +97,13 @@ class TheaterClient(Int32StringReceiver):
 
 
     def __init__(self):
-        self.MAX_LENGTH = 32000000
-        self.connStatus = TheaterClient.STARTED
+        self.MAX_LENGTH = 32000000 # pylint: disable=C0103
+        self.conn_status = TheaterClient.STARTED
 
 
     def connectionMade(self):
         global network_protocol
-        self.connStatus = TheaterClient.CONNECTED
+        self.conn_status = TheaterClient.CONNECTED
         network_protocol = self
 
 
@@ -110,6 +113,9 @@ class TheaterClient(Int32StringReceiver):
 
 
 class TheaterFactory(ClientFactory):
+    """
+    Twisted factory engine
+    """
 
     def __init__(self, app):
         self.app = app
@@ -143,21 +149,33 @@ class MediaKraken(FloatLayout):
 
 
 class MediaKrakenLoginScreen(BoxLayout):
+    """
+    Login screen
+    """
     password = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
 
 class MediaKrakenLoadDialog(FloatLayout):
+    """
+    Load file dialog
+    """
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
 
 class MediaKrakenNotificationScreen(BoxLayout):
+    """
+    Notification display
+    """
     message_text = ObjectProperty(None)
     ok_button = ObjectProperty(None)
 
 
 class MediaKrakenApp(App):
+    """
+    Main kivy app
+    """
     connection = None
 
     def exit_program(self):
@@ -193,7 +211,6 @@ class MediaKrakenApp(App):
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 # show media information overlay
                 pass
-            pass
         elif keycode[1] == 'up':
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
                 # scroll up a page of media
@@ -334,7 +351,7 @@ class MediaKrakenApp(App):
 
     # send refresh for images
     def main_image_refresh(self, *largs):
-        logging.dubg("image refresh")
+        logging.info("image refresh")
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
@@ -372,30 +389,31 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         # otherwise the pickle can end up in thousands of chunks
-        messageWords = server_msg.split(' ', 1)
-        if messageWords[0] != "IMAGE":
+        message_words = server_msg.split(' ', 1)
+        if message_words[0] != "IMAGE":
             logging.info("Got Message: %s", server_msg)
-        logging.info('message: %s', messageWords[0])
+        logging.info('message: %s', message_words[0])
         logging.info("len: %s", len(server_msg))
-        logging.info("chunks: %s", len(messageWords))
+        logging.info("chunks: %s", len(message_words))
         try:
-            pickle_data = pickle.loads(messageWords[1])
+            pickle_data = pickle.loads(message_words[1])
         except:
             pickle_data = None
-        if messageWords[0] == "IDENT":
+        if message_words[0] == "IDENT":
             network_protocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
                 + platform.node())
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         # after login receive the list of users to possibly login with
-        elif messageWords[0] == "USERLIST":
+        elif message_words[0] == "USERLIST":
             pass
-        elif messageWords[0] == 'VIDPLAY':
-            # AttributeError: 'NoneType' object has no attribute 'set_volume'  <- means can't find file
-            self.root.ids.theater_media_video_videoplayer.source = messageWords[1]
+        elif message_words[0] == 'VIDPLAY':
+            # AttributeError: 'NoneType' object has no attribute 
+            # 'set_volume'  <- means can't find file
+            self.root.ids.theater_media_video_videoplayer.source = message_words[1]
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
-        elif messageWords[0] == "VIDEOLIST":
+        elif message_words[0] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
             args_converter = lambda row_index,\
                 rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
@@ -409,7 +427,7 @@ class MediaKrakenApp(App):
                     height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
-        elif messageWords[0] == "VIDEODETAIL":
+        elif message_words[0] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
             # load vid detail
             # mm_media_name,mm_media_ffprobe_json,mm_media_json,mm_metadata_json
@@ -425,7 +443,8 @@ class MediaKrakenApp(App):
             for ndx in range(0, len(metadata_json['genres'])):
                 genres_list += (metadata_json['genres'][ndx]['name'] + ', ')
             self.root.ids.theater_media_video_genres.text = genres_list[:-2]
-#"LocalImages": {"Banner": "", "Fanart": "", "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
+            #"LocalImages": {"Banner": "", "Fanart": "",
+            #"Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
             production_list = ''
             for ndx in range(0, len(metadata_json['production_companies'])):
                 production_list += (metadata_json['production_companies'][ndx]['name'] + ', ')
@@ -474,15 +493,15 @@ class MediaKrakenApp(App):
 #                chapter_box.add_widget(chapter_label)
 #                chapter_box.add_widget(chapter_image)
 #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
-        elif messageWords[0] == "ALBUMLIST":
+        elif message_words[0] == "ALBUMLIST":
             pass
-        elif messageWords[0] == "ALBUMDETAIL":
+        elif message_words[0] == "ALBUMDETAIL":
             pass
-        elif messageWords[0] == "MUSICLIST":
+        elif message_words[0] == "MUSICLIST":
             pass
-        elif messageWords[0] == "AUDIODETAIL":
+        elif message_words[0] == "AUDIODETAIL":
             pass
-        elif messageWords[0] == "GENRELIST":
+        elif message_words[0] == "GENRELIST":
             logging.info("gen")
             for genre_list in pickle_data:
                 logging.info("genlist: %s", genre_list)
@@ -492,33 +511,33 @@ class MediaKrakenApp(App):
                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-        elif messageWords[0] == "PERSONLIST":
+        elif message_words[0] == "PERSONLIST":
             pass
-        elif messageWords[0] == "PERSONDETAIL":
+        elif message_words[0] == "PERSONDETAIL":
             pass
         # metadata images
-        elif messageWords[0] == "IMAGE":
+        elif message_words[0] == "IMAGE":
             if pickle_data[0] == "MAIN":
                 logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
                 self.demo_media_id = pickle_data[2]
-                proxyImage_demo = Loader.image(pickle_data[1])
-                proxyImage_demo.bind(on_load=self._image_loaded_home_demo)
+                proxy_image_demo = Loader.image(pickle_data[1])
+                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             elif pickle_data[0] == "MOVIE":
                 logging.info("here for movie refresh: %s", pickle_data[1])
-                proxyImage_movie = Loader.image(pickle_data[1])
-                proxyImage_movie.bind(on_load=self._image_loaded_home_movie)
+                proxy_image_movie = Loader.image(pickle_data[1])
+                proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
             elif pickle_data[0] == "NEWMOVIE":
                 logging.info("here for newmovie refresh: %s", pickle_data[1])
-                proxyImage_new_movie = Loader.image(pickle_data[1])
-                proxyImage_new_movie.bind(on_load=self._image_loaded_home_new_movie)
+                proxy_image_new_movie = Loader.image(pickle_data[1])
+                proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
             elif pickle_data[0] == "PROGMOVIE":
                 logging.info("here for progress movie refresh: %s", pickle_data[1])
-                proxyImage_prog_movie = Loader.image(pickle_data[1])
-                proxyImage_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
+                proxy_image_prog_movie = Loader.image(pickle_data[1])
+                proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
             elif pickle_data[0] == "MOVIEDETAIL":
                 logging.info("here for movie detail refresh: %s", pickle_data[1])
-                proxyImage_detail_movie = Loader.image(pickle_data[1])
-                proxyImage_detail_movie.bind(on_load=self._image_loaded_detail_movie)
+                proxy_image_detail_movie = Loader.image(pickle_data[1])
+                proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
         else:
             logging.error("unknown message type")
 

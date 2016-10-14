@@ -428,7 +428,7 @@ def user_tv_show_detail_page(guid):
             data_background_image = None
         # grab reviews
         #review = g.db_connection.db_Review_List(data[0])
-        data_season_data = g.db_connection.db_read_tvmetadata_eps_season(guid)
+        data_season_data = g.db_connection.db_read_tvmeta_eps_season(guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
         minutes, seconds = divmod((float(data_runtime) * 60), 60)
@@ -515,7 +515,7 @@ def user_tv_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
 
-    data_episode_count = g.db_connection.db_read_tvmetadata_season_eps_list(guid, int(season))
+    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -535,6 +535,7 @@ def user_tv_season_detail_page(guid, season):
                            data_overview=data_overview,
                            data_rating=data_rating,
                            data_first_aired=data_first_aired,
+                           data_runtime=data_runtime,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count
@@ -549,7 +550,7 @@ def user_tv_episode_detail_page(guid, season, episode):
     """
     Display tv episode detail page
     """
-    data_episode_detail = g.db_connection.db_read_tvmetadata_episode(guid, season, episode)
+    data_episode_detail = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -1347,7 +1348,8 @@ def report_display_all_duplicates_detail(guid):
                 break
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_media_duplicate_detail_count(guid)[0],
+                                                  total=g.db_connection.\
+                                                      db_media_duplicate_detail_count(guid)[0],
                                                   record_name='copies',
                                                   format_total=True,
                                                   format_number=True,
@@ -1620,7 +1622,8 @@ def metadata_movie_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_metadata_movie'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_movie'),
                                                   record_name='Movies',
                                                   format_total=True,
                                                   format_number=True,
@@ -1846,7 +1849,7 @@ def metadata_tvshow_season_detail_page(guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = g.db_connection.db_read_tvmetadata_season_eps_list(guid, int(season))
+    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -1882,7 +1885,7 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
     """
     Display tvshow episode metadata detail
     """
-    data_metadata = g.db_connection.db_read_tvmetadata_episode(guid, season, episode)
+    data_metadata = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -1920,7 +1923,7 @@ def metadata_tvshow_list():
     media_tvshow = []
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],\
-            row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3]))  # TODO dictcursor
+            row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3])) # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_tvshow_list_count(),
@@ -1981,13 +1984,15 @@ def metadata_game_system_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_meta_game_system_list_count(),
+                                                  total=g.db_connection.\
+                                                      db_meta_game_system_list_count(),
                                                   record_name='Game Systems',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_game_system_list.html',
-                           media_game_system=g.db_connection.db_meta_game_system_list(offset, per_page),
+                           media_game_system=g.db_connection.db_meta_game_system_list(\
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

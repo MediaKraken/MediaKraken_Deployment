@@ -81,10 +81,10 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         # include end slash so media doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\',1)[0]))
+                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('/extras/', '/').rsplit('/',1)[0]))
+                download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
@@ -94,11 +94,11 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('\\theme\\', '\\')\
-                .replace('\\backdrops\\', '\\').rsplit('\\',1)[0]))
+                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/')\
-                .rsplit('/',1)[0]))
+                .rsplit('/', 1)[0]))
         logging.info('mtheme guid: %s', metadata_uuid)
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
@@ -108,10 +108,10 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\',1)[0]))
+                download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('/trailers/', '/').rsplit('/',1)[0]))
+                download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
         logging.info('mtrailer guid: %s', metadata_uuid)
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
@@ -138,10 +138,10 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         # include end slash so media doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\',1)[0]))
+                download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('/extras/', '/').rsplit('/',1)[0]))
+                download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
@@ -154,11 +154,11 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('\\theme\\', '\\')\
-                .replace('\\backdrops\\', '\\').rsplit('\\',1)[0]))
+                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
                 download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/')\
-                .rsplit('/',1)[0]))
+                .rsplit('/', 1)[0]))
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
@@ -167,10 +167,10 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\',1)[0]))
+                download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-                download_que_json['Path'].replace('/trailers/', '/').rsplit('/',1)[0]))
+                download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
