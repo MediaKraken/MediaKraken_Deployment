@@ -13,8 +13,8 @@ class SyncEditForm(Form):
     # fields
     name = TextField("Name", validators=[DataRequired()])
     target_type = SelectField("Sync Type", choices=[('Local File System', 'Local File System'),\
-        ("Remote Client", "Remote Client"), ("Google Drive", "Google Drive"),\
-        ('Dropbox', 'Dropbox'), ('OneDrive', 'OneDrive'), ('AWS S3', 'AWS S3')])
+        ("Remote Client", "Remote Client"), ("google", "Google Drive"),\
+        ('dropbox', 'Dropbox'), ('onedrive', 'OneDrive'), ('awss3', 'AWS S3')])
     target_file_size = SelectField("File Size", choices=[('Clone', 'Clone'), ('250MB', '250MB'),\
         ('500MB', '500MB'), ('1GB', '1GB'), ('2GB', '2GB'), ('2.5GB', '2.5GB'), ('3GB', '3GB'),\
         ('4GB', '4GB'), ('5GB', '5GB'), ('10GB', '10GB'), ('25GB', '25GB')])
