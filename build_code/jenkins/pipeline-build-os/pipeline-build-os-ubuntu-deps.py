@@ -31,9 +31,9 @@ from common import common_network_vm_proxmox
 ###
 # Will be used to build the deps like FFMPEG
 ###
-JENKINS_BUILD_UBUNTU_VIM_LXC = 108
-JENKINS_BUILD_UBUNTU_VIM_LNX_IP = '10.0.0.153'
-FFMPEG_BRANCH = 'dev-0.1.6'
+JENKINS_BUILD_UBUNTU_VIM_LXC = 103
+JENKINS_BUILD_UBUNTU_VIM_LNX_IP = '10.0.0.90'
+FFMPEG_BRANCH = 'dev-0.1.11'
 
 
 # create prox class instance to use
@@ -89,14 +89,14 @@ SSH_BUILD.com_net_ssh_run_command('git checkout %s' % FFMPEG_BRANCH)
 SSH_BUILD.com_net_ssh_run_command('cd ..')
 
 
-# git pull down latest master
-SSH_BUILD.com_net_ssh_run_command('cd /home/metaman')
-if os.path.isdir('/home/metaman/MediaKraken_Submodules'):
-    SSH_BUILD.com_net_ssh_run_command('cd MediaKraken_Submodules')
-    SSH_BUILD.com_net_ssh_run_command('git pull --recurse-submodules')
-else:
-    SSH_BUILD.com_net_ssh_run_command('git clone --recursive https://github.com/'\
-        'MediaKraken/MediaKraken_Submodules')
+## git pull down latest master
+#SSH_BUILD.com_net_ssh_run_command('cd /home/metaman')
+#if os.path.isdir('/home/metaman/MediaKraken_Submodules'):
+#    SSH_BUILD.com_net_ssh_run_command('cd MediaKraken_Submodules')
+#    SSH_BUILD.com_net_ssh_run_command('git pull --recurse-submodules')
+#else:
+#    SSH_BUILD.com_net_ssh_run_command('git clone --recursive https://github.com/'\
+#        'MediaKraken/MediaKraken_Submodules')
 
 
 # build ffmpeg
