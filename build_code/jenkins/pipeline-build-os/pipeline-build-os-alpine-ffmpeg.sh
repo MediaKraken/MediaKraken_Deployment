@@ -10,9 +10,9 @@ make distclean
 
 cd ~/ffmpeg_sources
 #cp ~/github/Meta-Man.Build/lib/x265_1.9.tar.gz .
-cp /home/metaman/github/Meta-Man.Build/lib/x265_1.9.tar.gz .
-tar xzvf x265_1.9.tar.gz
-cd ~/ffmpeg_sources/x265_1.9/build/linux
+cp /home/metaman/github/build_code/lib/x265_2.0.tar.gz .
+tar xzvf x265_2.0.tar.gz
+cd ~/ffmpeg_sources/x265_2.0/build/linux
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
 make -j8
 make install

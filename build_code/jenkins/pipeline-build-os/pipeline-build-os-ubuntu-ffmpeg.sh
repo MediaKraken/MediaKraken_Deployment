@@ -9,7 +9,7 @@ make install
 make distclean
 
 cd ~/ffmpeg_sources
-cp ~/MediaKraken_Deployment/MediaKraken_Build/lib/x265_2.0.tar.gz .
+cp ~/MediaKraken_Deployment/build_code/lib/x265_2.0.tar.gz .
 tar xzvf x265_2.0.tar.gz
 cd ~/ffmpeg_sources/x265_2.0/build/linux
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
