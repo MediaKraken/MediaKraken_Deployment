@@ -54,24 +54,32 @@ SSH_BUILD = common_network_ssh.CommonNetworkSSH(JENKINS_BUILD_VIM_LNX_IP,\
     'metaman', 'metaman')
 
 # TODO rollback snap to base?
+# TODO postgresl
+#vi /etc/apt/sources.list.d/postgresql.list
+#deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.5
+#wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+#apt-get update
 
 # begin build of deps
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get update')
+SSH_BUILD.com_net_ssh_run_command('apt-get update')
 # auto yes to accept install
 # this list at the moment is for building pip install
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get -y install autoconf automake'\
-    ' build-essential libass-dev upx-ucl sshpass'\
+SSH_BUILD.com_net_ssh_run_command('apt-get -y install autoconf automake'\
+    ' build-essential libass-dev upx-ucl sshpass python-dev libxslt-dev'\
     ' libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev'\
     ' libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo'\
-    ' zlib1g-dev yasm cmake git curl wget libsmbclient-dev python-pip postgresql-server-dev-9.5'\
+    ' zlib1g-dev yasm cmake git curl wget libsmbclient-dev python-pip postgresql-server-dev-all'\
     ' libffi-dev libsnmp-dev libldap2-dev libsasl2-dev portaudio19-dev')
 # setup pip and pyinstaller
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install pyinstaller')
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install -r /home/metaman/MediaKraken_Deployment/'\
-    'MediaKraken_Build/jenkins/pipeline-build-os/pipeline-build-os-pip-server-debian.txt')
+SSH_BUILD.com_net_ssh_run_command('pip install --upgrade pip')
+SSH_BUILD.com_net_ssh_run_command('pip install pyinstaller')
+
+# TODO must do git pull before I can run.....der
+
+SSH_BUILD.com_net_ssh_run_command('pip install -r /home/metaman/MediaKraken_Deployment/'\
+    'build_code/jenkins/pipeline-build-os/pipeline-build-os-pip-server-debian.txt')
 # should fix pyopenssl error
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install requests[security]')
+SSH_BUILD.com_net_ssh_run_command('pip install requests[security]')
 
 
 # git pull down latest stage/RC code branch
@@ -100,7 +108,7 @@ SSH_BUILD.com_net_ssh_run_command('cd ..')
 
 
 # build ffmpeg
-SSH_BUILD.com_net_ssh_run_command('/home/metaman/MediaKraken_Deployment/MediaKraken_Build/jenkins'\
+SSH_BUILD.com_net_ssh_run_command('/home/metaman/MediaKraken_Deployment/build_code/jenkins'\
     '/pipeline-build-os/pipeline-build-os-debian-ffmpeg.sh')
 
 

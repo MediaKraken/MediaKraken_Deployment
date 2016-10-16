@@ -1,3 +1,4 @@
+setuptools>=18.5
 service_identity
 psutil
 requests>=2.11.1

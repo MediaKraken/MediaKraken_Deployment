@@ -69,7 +69,7 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get -y install autoconf automak
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install pyinstaller')
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install -r /home/metaman/MediaKraken_Deployment/'\
-    'MediaKraken_Build/jenkins/pipeline-build-os/pipeline-build-os-pip-server-ubuntu.txt')
+    'build_code/jenkins/pipeline-build-os/pipeline-build-os-pip-server-ubuntu.txt')
 # should fix pyopenssl error
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install requests[security]')
 
@@ -100,7 +100,7 @@ SSH_BUILD.com_net_ssh_run_command('cd ..')
 
 
 # build ffmpeg
-SSH_BUILD.com_net_ssh_run_command('/home/metaman/MediaKraken_Deployment/MediaKraken_Build/jenkins'\
+SSH_BUILD.com_net_ssh_run_command('/home/metaman/MediaKraken_Deployment/build_code/jenkins'\
     '/pipeline-build-os/pipeline-build-os-ubuntu-ffmpeg.sh')
 
 
