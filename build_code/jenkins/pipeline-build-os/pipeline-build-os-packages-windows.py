@@ -77,10 +77,8 @@ os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_lyrics_downloader.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_match_anime_id_scudlee.py')
-#run_command('pyinstaller --clean -F'\
-    #' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_match_known_media.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_musicbrainz_sync.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_musicbrainz_sync.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_postgresql_backup.py')
 os.system('pyinstaller --clean'\
