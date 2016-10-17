@@ -109,8 +109,6 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_lyrics_downloader.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_match_anime_id_scudlee.py')
-#run_command('pyinstaller --clean -F'\
-    #' /home/metaman/MediaKraken_Deployment/subprogram_match_known_media.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_musicbrainz_sync.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
