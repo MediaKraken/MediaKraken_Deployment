@@ -23,6 +23,8 @@ import time
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
+sys.path.append('..')
+import pipeline_packages_list
 from common import common_network_ssh
 from common import common_network_vm_proxmox
 
@@ -54,94 +56,17 @@ SSH_BUILD = common_network_ssh.CommonNetworkSSH(JENKINS_BUILD_UBUNTU_VIM_LNX_IP,
 
 # TODO rollback snap to base?
 
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
 
 # nuke previous pyinstaller directories to start fresh
 SSH_BUILD.com_net_ssh_run_command('rm -Rf /home/metaman/build')
 SSH_BUILD.com_net_ssh_run_command('rm -Rf /home/metaman/dist')
 
-# start building python "app"
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server_api.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server_link.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server_metadata_api.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server_slave.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/main_server_trigger.py')
 
-# start building the subprograms
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_broadcast.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_chromecast_discover.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_commercial_strip.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_create_chapter_images.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_cron_checker.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_file_scan.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_game_audit.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_giantbomb.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_igdb.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_iradio_channels.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_streamlink.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_logo_download.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_lyrics_downloader.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_match_anime_id_scudlee.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_musicbrainz_sync.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_postgresql_backup.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_postgresql_vacuum.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_reactor_string_weblog.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_reactor_string.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_reactor_web_images.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_roku_thumbnail_generate.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_schedules_direct_updates.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_ssl_keygen.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_subtitle_downloader.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_sync.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_thetvdb_images.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_thetvdb_updates.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_tuner_discover.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_tvmaze_images.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_tvmaze_updates.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_update_create_collections.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_zfs_check.py')
+# start building python programs
+for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
+    SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
+                                      ' /home/metaman/MediaKraken_Deployment/'\
+                                      + app_to_build + '.py')
 
 
 SSH_BUILD.com_net_ssh_close()

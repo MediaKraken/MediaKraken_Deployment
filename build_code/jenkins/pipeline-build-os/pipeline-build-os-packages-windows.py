@@ -52,7 +52,7 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_broadcast.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_chromecast_discover.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_hardware_chromecast_discover.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_commercial_strip.py')
 os.system('pyinstaller --clean'\
@@ -74,7 +74,7 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_logo_download.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_lyrics_downloader.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_lyrics_downloader.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_match_anime_id_scudlee.py')
 os.system('pyinstaller --clean'\
@@ -104,7 +104,7 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_thetvdb_updates.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_tuner_discover.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_hardware_tuner_discover.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_tvmaze_images.py')
 os.system('pyinstaller --clean'\

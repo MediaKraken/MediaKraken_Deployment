@@ -54,10 +54,6 @@ SSH_BUILD = common_network_ssh.CommonNetworkSSH(JENKINS_BUILD_UBUNTU_VIM_LNX_IP,
 
 # TODO rollback snap to base?
 
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
-# Don't build single file apps......as then it's alot of dupelicate imports
 
 # nuke previous pyinstaller directories to start fresh
 SSH_BUILD.com_net_ssh_run_command('rm -Rf /home/metaman/build')
@@ -81,7 +77,7 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_broadcast.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_chromecast_discover.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_hardware_chromecast_discover.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_commercial_strip.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
@@ -103,7 +99,7 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_logo_download.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_lyrics_downloader.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_lyrics_downloader.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_match_anime_id_scudlee.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
@@ -133,7 +129,7 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_thetvdb_updates.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_tuner_discover.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_hardware_tuner_discover.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_tvmaze_images.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
