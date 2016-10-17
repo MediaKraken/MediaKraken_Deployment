@@ -74,3 +74,4 @@ pycrypto
 Adafruit_BBIO
 arduino-python
 NetflixRouletteAPI
+python-libdiscid
