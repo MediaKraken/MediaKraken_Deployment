@@ -78,7 +78,7 @@ from kivy.metrics import sp
 from kivy.graphics import *
 from kivy.graphics.texture import Texture
 from functools import partial
-from MediaKrakenSettings import *
+from theater import MediaKrakenSettings
 
 network_protocol = None
 metaapp = None
@@ -676,9 +676,9 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
-    Builder.load_file('kivy_layouts/main.kv')
-    Builder.load_file('kivy_layouts/KV_Layout_Load_Dialog.kv')
-    Builder.load_file('kivy_layouts/KV_Layout_Login.kv')
-    Builder.load_file('kivy_layouts/KV_Layout_Notification.kv')
-    Builder.load_file('kivy_layouts/KV_Layout_Slider.kv')
+    Builder.load_file('theater/kivy_layouts/main.kv')
+    Builder.load_file('theater/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
+    Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
     MediaKrakenApp().build()
