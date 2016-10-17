@@ -64,13 +64,13 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_game_audit.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_game_metadata_giantbomb.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_giantbomb.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_game_metadata_igdb.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_igdb.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_iradio_channels.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_livestream_downloader.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_streamlink.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_logo_download.py')
 os.system('pyinstaller --clean'\

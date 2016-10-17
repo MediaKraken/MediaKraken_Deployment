@@ -93,13 +93,13 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_game_audit.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_game_metadata_giantbomb.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_giantbomb.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_game_metadata_igdb.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_igdb.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_iradio_channels.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_livestream_downloader.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_streamlink.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_logo_download.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
