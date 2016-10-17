@@ -88,7 +88,7 @@ SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo apt-get -y install postgresql ffmp
 # scp ffmpeg
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/ff*'\
-    ' metaman@' + JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP + ':/home/metaman/.')
+    ' metaman@%s:/home/metaman/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo mv /home/metaman/ff* /usr/bin/.')
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo ldconfig')
 
