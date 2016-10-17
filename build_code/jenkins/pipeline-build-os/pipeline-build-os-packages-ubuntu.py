@@ -33,7 +33,7 @@ from common import common_network_vm_proxmox
 ###
 JENKINS_BUILD_UBUNTU_VIM_LXC = 108
 JENKINS_BUILD_UBUNTU_VIM_LNX_IP = '10.0.0.153'
-FFMPEG_BRANCH = 'dev-0.1.6'
+FFMPEG_BRANCH = 'dev-0.1.11'
 
 
 # create prox class instance to use
@@ -145,8 +145,6 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_tvmaze_updates.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_update_create_collections.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_url_checker.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_zfs_check.py')
 
