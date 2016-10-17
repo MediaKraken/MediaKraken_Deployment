@@ -44,4 +44,4 @@ os.system('pyinstaller --clean'\
 # start building python programs
 for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
     os.system('pyinstaller --clean C:\\Users\\jenkinsbuild\\Documents\\github\\'\
-                                      + app_to_build + '.py')
+              + app_to_build + '.py')
