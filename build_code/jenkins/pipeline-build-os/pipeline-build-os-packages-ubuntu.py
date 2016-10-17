@@ -89,8 +89,6 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_cron_checker.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_ffmpeg_process.py')
-SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_file_scan.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_game_audit.py')
@@ -127,7 +125,7 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_ssl_keygen.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_subtitle_downloader.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_subtitle_downloader.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_sync.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\

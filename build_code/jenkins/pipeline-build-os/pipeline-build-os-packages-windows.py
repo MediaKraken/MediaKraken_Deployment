@@ -60,8 +60,6 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_cron_checker.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_ffmpeg_process.py')
-os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_file_scan.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_game_audit.py')
@@ -100,7 +98,7 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_ssl_keygen.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_subtitle_downloader.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_subtitle_downloader.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_sync.py')
 os.system('pyinstaller --clean'\
@@ -114,8 +112,6 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_tvmaze_updates.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_update_create_collections.py')
-os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_url_checker.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_update_create_collections.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_zfs_check.py')
