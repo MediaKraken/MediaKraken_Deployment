@@ -23,8 +23,8 @@ import time
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
-sys.path.append('..')
-from pipeline_packages_list import *
+sys.path.append('../MediaKraken-PyLint/build_code/jenkins/')
+import pipeline_packages_list
 from common import common_network_ssh
 from common import common_network_vm_proxmox
 
