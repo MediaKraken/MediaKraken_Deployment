@@ -53,7 +53,7 @@ PIPELINE_APP_LIST = [
                      'subprogram_metadata_thetvdb_updates',
                      'subprogram_metadata_tmdb_updates',
                      'subprogram_metadata_tvmaze_images',
-                     'subprogram_metadata_tvmaze_udpates',
+                     'subprogram_metadata_tvmaze_updates',
                      'subprogram_metadata_update_create_collections',
                      'subprogram_postgresql_backup',
                      'subprogram_postgresql_vacuum',
