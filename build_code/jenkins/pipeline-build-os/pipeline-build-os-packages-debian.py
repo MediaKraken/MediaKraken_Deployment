@@ -24,7 +24,7 @@ import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
 sys.path.append('..')
-import pipeline_packages_list
+from pipeline_packages_list import *
 from common import common_network_ssh
 from common import common_network_vm_proxmox
 
