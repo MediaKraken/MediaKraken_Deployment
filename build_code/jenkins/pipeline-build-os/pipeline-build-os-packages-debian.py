@@ -141,7 +141,7 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_tvmaze_updates.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_update_create_collections.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_update_create_collections.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_zfs_check.py')
 
