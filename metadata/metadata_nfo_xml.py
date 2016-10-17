@@ -86,15 +86,21 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
     if nfo_data is not None:
         try: # not all will have imdb
             imdb_id = nfo_data['movie']['imdbid']
+            if len(imdb_id) == 0:
+                imdb_id = None
         except:
             pass
         try: # not all nfo's have the movie/tmdb
             tmdb_id = nfo_data['movie']['tmdbid']
+            if len(tmdb_id) == 0:
+                tmdb_id = None
         except:
             pass
         # TODO RT
         try: # not all nfo's have the rt
-            tmdb_id = nfo_data['movie']['fakert']
+            rt_id = nfo_data['movie']['fakert']
+            if len(rt_id) == 0:
+                rt_id = None
         except:
             pass
     if xml_data is not None:
@@ -102,34 +108,46 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
             if imdb_id is None:
                 try: # not all xmls's will have the imdb
                     imdb_id = xml_data['movie']['imdbid']
+                    if len(imdb_id) == 0:
+                        imdb_id = None
                 except:
                     pass
             if tmdb_id is None:
                 try: # not all xml's have the movie/tmdb
                     tmdb_id = xml_data['movie']['tmdbid']
+                    if len(tmdb_id) == 0:
+                        tmdb_id = None
                 except:
                     pass
             # TODO RT
             if rt_id is None:
                 try: # not all xml's have the rt
                     rt_id = xml_data['movie']['fakert']
+                    if len(rt_id) == 0:
+                        rt_id = None
                 except:
                     pass
         else: # movie.xml
             if imdb_id is None:
                 try: # not all xmls's will have the imdb
                     imdb_id = xml_data['Title']['IMDB']
+                    if len(imdb_id) == 0:
+                        imdb_id = None
                 except:
                     pass
             if tmdb_id is None:
                 try: # not all xml's have the movie/tmdb
                     tmdb_id = xml_data['Title']['TMDbId']
+                    if len(tmdb_id) == 0:
+                        tmdb_id = None
                 except:
                     pass
             # TODO RT
             if rt_id is None:
                 try: # not all xml's have the rt
                     rt_id = xml_data['Title']['RottenTomatoesId']
+                    if len(rt_id) == 0:
+                        rt_id = None
                 except:
                     pass
     logging.info('nfo/xml imdb %s, tmdb %s, rt %s', imdb_id, tmdb_id, rt_id)
@@ -147,29 +165,41 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     if nfo_data is not None:
         try:
             tvdb_id = nfo_data['episodedetails']['tvdbid']
+            if len(tvdb_id) == 0:
+                tvdb_id = None
         except:
             pass
         try:
             imdb_id = nfo_data['episodedetails']['imdbid']
+            if len(imdb_id) == 0:
+                imdb_id = None
         except:
             pass
     # TODO RT
         try:
             rt_id = nfo_data['episodedetails']['fakert']
+            if len(rt_id) == 0:
+                rt_id = None
         except:
             pass
     if xml_data is not None:
         try:
             tvdb_id = xml_data['episodedetails']['tvdbid']
+            if len(tvdb_id) == 0:
+                tvdb_id = None
         except:
             pass
         try:
             imdb_id = xml_data['episodedetails']['imdbid']
+            if len(imdb_id) == 0:
+                imdb_id = None
         except:
             pass
     # TODO RT
         try:
             rt_id = xml_data['episodedetails']['fakert']
+            if len(rt_id) == 0:
+                rt_id = None
         except:
             pass
     logging.info('nfo/xml tv imdb %s, tvdb %s, rt %s', imdb_id, tvdb_id, rt_id)
