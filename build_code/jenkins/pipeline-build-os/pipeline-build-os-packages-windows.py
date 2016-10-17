@@ -100,15 +100,15 @@ os.system('pyinstaller --clean'\
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_sync.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_thetvdb_images.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_thetvdb_images.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_thetvdb_updates.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_thetvdb_updates.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_tuner_discover.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_tvmaze_images.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_tvmaze_images.py')
 os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_tvmaze_updates.py')
+    ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_tvmaze_updates.py')
 os.system('pyinstaller --clean'\
     ' C:\\Users\\jenkinsbuild\\Documents\\github\\subprogram_metadata_update_create_collections.py')
 os.system('pyinstaller --clean'\

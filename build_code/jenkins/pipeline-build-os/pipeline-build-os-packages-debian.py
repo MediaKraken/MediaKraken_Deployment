@@ -129,15 +129,15 @@ SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_sync.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_thetvdb_images.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_thetvdb_images.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_thetvdb_updates.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_thetvdb_updates.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_tuner_discover.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_tvmaze_images.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_tvmaze_images.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
-    ' /home/metaman/MediaKraken_Deployment/subprogram_tvmaze_updates.py')
+    ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_tvmaze_updates.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
     ' /home/metaman/MediaKraken_Deployment/subprogram_metadata_update_create_collections.py')
 SSH_BUILD.com_net_ssh_run_command('pyinstaller --clean'\
