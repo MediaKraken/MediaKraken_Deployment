@@ -83,14 +83,14 @@ SSH_DEPLOY.com_net_ssh_run_command('cd mediakraken')
 
 # install servers deps
 # way too many deps, so install ffmpeg to stomp over with compiled version
-SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo apt-get -y install postgresql ffmpeg'\
+SSH_DEPLOY.com_net_ssh_run_command('apt-get -y install postgresql ffmpeg'\
     ' libva-drm1 libva-x11-1 libsmbclient')
 # scp ffmpeg
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/ff*'\
     ' metaman@%s:/home/metaman/.' % JENKINS_DEPLOY_VIM_LNX_IP)
-SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo mv /home/metaman/ff* /usr/bin/.')
-SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo ldconfig')
+SSH_DEPLOY.com_net_ssh_run_command('mv /home/metaman/ff* /usr/bin/.')
+SSH_DEPLOY.com_net_ssh_run_command('ldconfig')
 
 # prep files to scp
 SSH_BUILD.com_net_ssh_run_command('mkdir /home/metaman/dist/xfer')
@@ -102,35 +102,35 @@ for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
                                       + '/ /home/metaman/dist/xfer/.')
 
 # scp actual programs
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -r -o StrictHostKeyChecking=no /home/metaman/dist/xfer/*'\
     ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # scp the password common
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -r -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Submodules/passwordmeter/'\
     'passwordmeter/res/common.txt'\
     ' metaman@%s:/home/metaman/mediakraken/passwordmeter/res/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # copy over config files
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Deployment/'\
     'MediaKraken.ini metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # copy postgresl user file
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Deployment/'\
     'build_code/jenkins/pipeline-deploy-os/pipeline-deploy-os-server-ubuntu-pgsql-user.sh'\
     ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 # create the postgresql user
-SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo /home/metaman/mediakraken/'\
+SSH_DEPLOY.com_net_ssh_run_command('/home/metaman/mediakraken/'\
     'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
 # remove user create script
 SSH_DEPLOY.com_net_ssh_run_command('rm /home/metaman/mediakraken/'\
     'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
 
 # copy ffmpeg and libs
-SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+SSH_BUILD.com_net_ssh_run_command('sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/*'\
     ' metaman@%s:/home/metaman/mediakraken/bin/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
