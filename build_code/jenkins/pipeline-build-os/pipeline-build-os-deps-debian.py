@@ -82,6 +82,8 @@ SSH_BUILD.com_net_ssh_run_command('pip install -r /home/metaman/MediaKraken_Depl
 SSH_BUILD.com_net_ssh_run_command('pip install requests[security]')
 
 
+# TODO easy_install zope.interface  didn't fix
+
 # git pull down latest stage/RC code branch
 SSH_BUILD.com_net_ssh_run_command('cd /home/metaman')
 if os.path.isdir('/home/metaman/MediaKraken_Deployment'):
