@@ -85,6 +85,15 @@ SSH_DEPLOY.com_net_ssh_run_command('cd mediakraken')
 # way too many deps, so install ffmpeg to stomp over with compiled version
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo apt-get -y install postgresql ffmpeg'\
     ' libva-drm1 libva-x11-1 libsmbclient')
+
+
+# nfs-common
+# nginx
+# redis-server
+# cifs-utils
+# libhdhomerun
+
+
 # scp ffmpeg
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/ff*'\
