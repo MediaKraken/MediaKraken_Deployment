@@ -40,6 +40,11 @@ common_signal.com_signal_set_break()
 # start logging
 common_logging.com_logging_start()
 
+logging.info(os.environ['PATH'])
+os.environ['PATH'] += ";./"
+logging.info(os.environ['PATH'])
+
+
 logging.info("what %s", '.' + os.getcwd() + '/subprogram_ssl_keygen')
 
 logging.info('Check Certs')
