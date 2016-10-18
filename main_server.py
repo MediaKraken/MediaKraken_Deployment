@@ -46,7 +46,7 @@ logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     logging.info('Cert not found, generating.')
-    proc_ssl = subprocess.Popen(['.' + os.getcwd() + '/subprogram_ssl_keygen'], shell=False)
+    proc_ssl = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
