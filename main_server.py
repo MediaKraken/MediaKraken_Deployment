@@ -33,7 +33,6 @@ try:
 except:
     pass
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
@@ -41,12 +40,13 @@ common_signal.com_signal_set_break()
 # start logging
 common_logging.com_logging_start()
 
+logging.info("what %s", '.' + os.getcwd() + '/subprogram_ssl_keygen')
 
 logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     logging.info('Cert not found, generating.')
-    proc_ssl = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
+    proc_ssl = subprocess.Popen(['.' + os.getcwd() + '/subprogram_ssl_keygen'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
