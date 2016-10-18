@@ -120,14 +120,14 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
 # copy postgresl user file
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Deployment/'\
-    'build_code/jenkins/pipeline-deploy-os/pipeline-deploy-os-server-ubuntu-pgsql-user.sh'\
+    'build_code/jenkins/pipeline-deploy-os/pipeline-deploy-os-server-pgsql-user-ubuntu.sh'\
     ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 # create the postgresql user
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo /home/metaman/mediakraken/'\
     'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
 # remove user create script
 SSH_DEPLOY.com_net_ssh_run_command('rm /home/metaman/mediakraken/'\
-    'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
+    'pipeline-deploy-os-server-pgsql-user-ubuntu.sh')
 
 # copy ffmpeg and libs
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
