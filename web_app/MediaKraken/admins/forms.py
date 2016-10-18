@@ -86,6 +86,8 @@ class UserEditForm(Form):
 class AdminSettingsForm(Form):
     servername = TextField('Server Name', validators=[DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
+    server_bind_addr = TextField('Bind Addr', validators=[Length(min=7, max=15)])
+    server_bind_port = TextField('Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',\
         choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'),\
         ('Quarter', 'Quarter'), ('6 Months', '6 Months'), ('Year', 'Year')])
