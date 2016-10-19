@@ -20,7 +20,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import time
-import os
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
@@ -68,7 +67,7 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get -y install autoconf automak
     ' ffmpeg libva-drm1 libva-x11-1 libsmbclient nfs-common nginx redis-server'\
     ' cifs-utils libdiscid-dev libjpeg-dev')
 
-# setup pip and pyinstaller
+# setup pip
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
 
 #SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install -r /home/metaman/'\
@@ -79,15 +78,20 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install requests[security]')
 
 
 # TODO
-# pipeline-deploy-os-server-pgsql-user-ubuntu.sh
+# ./pipeline-deploy-os-server-pgsql-user-ubuntu.sh
+SSH_BUILD.com_net_ssh_run_sudo_command('./pipeline-deploy-os-server-pgsql-user-ubuntu.sh')
+
 
 # TODO
 # ffmpeg
 
+
 # TODO
 # password files
 
+
 # TODO
 # source files for server only
+
 
 SSH_BUILD.com_net_ssh_close()

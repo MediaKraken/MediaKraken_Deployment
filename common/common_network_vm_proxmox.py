@@ -276,6 +276,14 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('get', 'nodes/%s/lxc' % node_name)
 
 
+    def com_net_prox_node_lxc_create(self, node_name, template_name):
+        """
+        create lxc on code
+        """
+        next_vim_id = self.com_net_prox_cluster_nextid()
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name)
+
+
     def com_net_prox_node_lxc_status(self, node_name, vm_id):
         """
         Get a status of the lxc vm
