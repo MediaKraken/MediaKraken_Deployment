@@ -6,3 +6,34 @@ yum -y install docker docker-registry
 systemctl enable docker.service
 systemctl start docker.service
 systemctl status docker.service
+
+
+
+---------------- ip 89 atm
+
+# list running images
+docker ps -a
+
+# list all the images on the system
+docker images
+
+
+docker -create --name="MediaKraken-Ubuntu" ubuntu:latest
+docker start b35f5914d17c
+
+docker exec -t -i b35f5914d17c /bin/bash
+
+docker start 516c31e78159
+docker exec -t -i 516c31e78159 /bin/bash
+
+
+docker run -i -t ubuntu /bin/bash
+
+# 3.4
+docker pull alpine
+
+# 16.04
+docker pull ubuntu
+
+# 9.6
+docker pull postgres
