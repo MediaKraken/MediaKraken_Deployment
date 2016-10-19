@@ -78,4 +78,16 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install requests[security]')
 
 
+# TODO
+# pipeline-deploy-os-server-pgsql-user-ubuntu.sh
+
+# TODO
+# ffmpeg
+
+# TODO
+# password files
+
+# TODO
+# source files for server only
+
 SSH_BUILD.com_net_ssh_close()
