@@ -64,12 +64,15 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get -y install autoconf automak
     ' libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev'\
     ' libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo'\
     ' zlib1g-dev yasm cmake curl wget libsmbclient-dev python-pip '\
-    ' libffi-dev libsnmp-dev libldap2-dev libsasl2-dev portaudio19-dev')
+    ' libffi-dev libsnmp-dev libldap2-dev libsasl2-dev portaudio19-dev'\
+    ' ffmpeg libva-drm1 libva-x11-1 libsmbclient nfs-common nginx redis-server'\
+    ' cifs-utils libdiscid-dev libjpeg-dev')
+
 # setup pip and pyinstaller
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
 
-#SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install -r /home/metaman/MediaKraken_Deployment/'\
-#    'build_code/jenkins/pipeline-build-os/pipeline-build-os-pip-server-ubuntu.txt')
+#SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install -r /home/metaman/'\
+#    'pipeline-build-os-pip-server-ubuntu.txt')
 
 # should fix pyopenssl error
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install requests[security]')
