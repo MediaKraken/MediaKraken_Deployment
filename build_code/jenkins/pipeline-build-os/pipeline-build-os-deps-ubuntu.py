@@ -82,8 +82,9 @@ if os.path.isdir('/home/metaman/MediaKraken_Deployment'):
     SSH_BUILD.com_net_ssh_run_command('cd MediaKraken_Deployment')
     SSH_BUILD.com_net_ssh_run_command('git pull --recurse-submodules')
 else:
-    SSH_BUILD.com_net_ssh_run_command('git clone --recursive -b dev-0.1.6 https://github.com/'\
-        'MediaKraken/MediaKraken_Deployment')
+    SSH_BUILD.com_net_ssh_run_command('git clone --recursive -b '\
+                                      + FFMPEG_BRANCH + ' https://github.com/'\
+                                      'MediaKraken/MediaKraken_Deployment')
     SSH_BUILD.com_net_ssh_run_command('cd MediaKraken_Deployment')
 # setup branch
 SSH_BUILD.com_net_ssh_run_command('cd MediaKraken_Build')
