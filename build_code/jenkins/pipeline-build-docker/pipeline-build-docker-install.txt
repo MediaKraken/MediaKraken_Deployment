@@ -1,0 +1,8 @@
+Centos 7.2 1511
+
+yum -y update
+# reboot if kernel updated
+yum -y install docker docker-registry
+systemctl enable docker.service
+systemctl start docker.service
+systemctl status docker.service
