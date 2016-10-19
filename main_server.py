@@ -40,7 +40,8 @@ common_signal.com_signal_set_break()
 # start logging
 common_logging.com_logging_start()
 
-logging.info(os.environ['PATH'])
+
+logging.info('PATH: %s' % os.environ['PATH'])
 #os.environ['PATH'] += ":./"
 #logging.info(os.environ['PATH'])
 
@@ -140,8 +141,10 @@ for link_data in db_connection.db_link_list():
 
 
 # fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
-                                 '--chdir=./web_app', '--ini', './web_app/mediakraken_uwsgi.ini'],\
+proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080',\
+                                 '--protocol', 'http',\
+                                 '--chdir=./web_app',\
+                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
                                  shell=False)
 
 
@@ -156,6 +159,7 @@ watchdog.com_watchdog_stop()
 # log stop
 db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
                                  'ServerStop', None, None, 'System')
+
 
 # commit
 db_connection.db_commit()
