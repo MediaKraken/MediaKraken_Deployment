@@ -18,9 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import init_calibre # pylint: disable=W0611
-import calibre
-import submodule
+import subprocess
 
 
-print(calibre.__version__)
+# notes on how to use the cli for the apps
+# https://manual.calibre-ebook.com/generated/en/cli-index.html
+
+
+def com_calibre_convert_ebook(target_file, target_format):
+    calibre_pid = subprocess.Popen(['./bin/ebook-convert', target_file, target_format])
+    return calibre_pid
