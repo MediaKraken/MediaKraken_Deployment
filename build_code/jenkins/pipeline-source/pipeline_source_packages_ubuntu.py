@@ -52,7 +52,7 @@ PACKAGES_SERVER_UBUNTU_1604 = [
     'nfs-common',
     'nginx',
     'redis-server',
-    ' cifs-utils',
+    'cifs-utils',
     ]
 
 
@@ -83,5 +83,5 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
     'libsasl2-dev',
     'portaudio19-dev',
     'nfs-common',
-    ' cifs-utils',
+    'cifs-utils',
     ]
