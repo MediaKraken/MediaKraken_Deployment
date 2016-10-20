@@ -50,8 +50,8 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
             ' scp -r -o StrictHostKeyChecking=no ./build_code/jenkins/pipeline-source/%s'\
             ' metaman@%s:/home/metaman/.' % (server_info[5], '10.0.0.109'))
         # run/install the pip packages
-        SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s', server_info[5])
-        SSH_BUILD.com_net_ssh_run_sudo_command('rm %s', server_info[5])
+        SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s' % server_info[5])
+        SSH_BUILD.com_net_ssh_run_sudo_command('rm %s' % server_info[5])
         # setup directories needed for app
         SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken')
         SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/bin')
