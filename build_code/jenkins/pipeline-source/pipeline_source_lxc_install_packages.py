@@ -49,6 +49,8 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
         SSH_BUILD = common_network_ssh.CommonNetworkSSH('10.0.0.109', 'metaman', 'metaman')
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get update')
         SSH_BUILD.com_net_ssh_run_sudo_command(command_string)
+        SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
+        print(pip_string)
         SSH_BUILD.com_net_ssh_run_sudo_command(pip_string)
         # close connection to this server
         SSH_BUILD.com_net_ssh_close()
