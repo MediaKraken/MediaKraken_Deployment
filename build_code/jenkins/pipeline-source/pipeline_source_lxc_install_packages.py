@@ -64,5 +64,46 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
             SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/backups')
             SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/passwordmeter')
             SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/passwordmeter/res')
+            # as server more code needed
+            for folder_name in ('database', 'metadata', 'network', 'web_app'):
+                SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                    ' scp -r -o StrictHostKeyChecking=no ./%s'\
+                    ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
+            # main server programs
+            for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
+                    'main_server_api.py', 'main_server_link.py', 'main_server_metadata_api.py',\
+                    'main_server_trigger.py'):
+                SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                    ' scp -r -o StrictHostKeyChecking=no ./%s'\
+                    ' metaman@%s:/home/metaman/.' % (program_name, '10.0.0.109'))
+            # subprograms
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./subprogram*.py'\
+                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+            # ini config
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./MediaKraken.ini'\
+                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+        else:
+            # move only slave programs
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./main_server_slave.py'\
+                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+            # ini config
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./MediaKraken_Slave.ini'\
+                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+        # move rest of server/slave code
+        # ffmpeg bins
+        # TODO!!!!!!!!
+        for folder_name in ('common', 'conf'):
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./%s'\
+                ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
+        # rest of general files
+        for file_name in ('README.md', 'LICENSE'):
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                ' scp -r -o StrictHostKeyChecking=no ./%s'\
+                ' metaman@%s:/home/metaman/.' % (file_name, '10.0.0.109'))
         # close connection to this server
         SSH_BUILD.com_net_ssh_close()
