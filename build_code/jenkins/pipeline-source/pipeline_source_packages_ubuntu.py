@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-PACKAGES_UBUNTU_1604 = [
+PACKAGES_SERVER_UBUNTU_1604 = [
     'autoconf',
     'automake',
     'build-essential',
@@ -44,6 +44,35 @@ PACKAGES_UBUNTU_1604 = [
     'libsmbclient-dev',
     'python-pip',
     'postgresql-server-dev-9.5',
+    'libffi-dev',
+    'libsnmp-dev',
+    'libldap2-dev',
+    'libsasl2-dev',
+    'portaudio19-dev',
+    ]
+
+
+PACKAGES_SLAVE_UBUNTU_1604 = [
+    'autoconf',
+    'automake',
+    'build-essential',
+    'libass-dev',
+    'libfreetype6-dev',
+    'libsdl1.2-dev',
+    'libtheora-dev',
+    'libtool',
+    'libva-dev',
+    'libvdpau-dev',
+    'libvorbis-dev',
+    'libxcb1-dev',
+    'libxcb-shm0-dev',
+    'libxcb-xfixes0-dev',
+    'pkg-config',
+    'texinfo',
+    'zlib1g-dev',
+    'yasm',
+    'cmake',
+    'libsmbclient-dev',
     'libffi-dev',
     'libsnmp-dev',
     'libldap2-dev',

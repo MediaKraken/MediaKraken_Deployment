@@ -30,27 +30,27 @@ import pipeline_source_lxc_definitions
 for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
     print('server: %s' % str(server_info))
     command_string = ''
-    pip_string = 'pip install --upgrade '
     # check to verify it needs to build lxc
     if server_info[1] == True:
         if server_info[3] == 'ubuntu' or server_info[3] == 'debian':
             command_string += 'sudo apt-get -y install '
-            pip_string = 'sudo ' + pip_string
         elif server_info[3] == 'alpine':
             command_string += 'apk add '
         # loop through commands and build install string
         for package_name in server_info[4]:
             command_string += package_name + ' '
         command_string = command_string.strip()
-        # loop through pip and build install string
-        for pip_name in server_info[5]:
-            pip_string += pip_name + ' '
         # connect to server via ssh
         SSH_BUILD = common_network_ssh.CommonNetworkSSH('10.0.0.109', 'metaman', 'metaman')
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get update')
         SSH_BUILD.com_net_ssh_run_sudo_command(command_string)
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
-        print(pip_string)
-        SSH_BUILD.com_net_ssh_run_sudo_command(pip_string)
+        # xfer pip file
+        SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            ' scp -r -o StrictHostKeyChecking=no ./build_code/jenkins/pipeline-source/%s'\
+            ' metaman@%s:/home/metaman/.' % (server_info[5], '10.0.0.109'))
+        # run/install the pip packages
+        SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s', server_info[5])
+        SSH_BUILD.com_net_ssh_run_sudo_command('rm %s', server_info[5])
         # close connection to this server
         SSH_BUILD.com_net_ssh_close()
