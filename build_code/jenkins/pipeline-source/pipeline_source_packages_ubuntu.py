@@ -49,6 +49,10 @@ PACKAGES_SERVER_UBUNTU_1604 = [
     'libldap2-dev',
     'libsasl2-dev',
     'portaudio19-dev',
+    'nfs-common',
+    'nginx',
+    'redis-server',
+    ' cifs-utils',
     ]
 
 
@@ -78,4 +82,6 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
     'libldap2-dev',
     'libsasl2-dev',
     'portaudio19-dev',
+    'nfs-common',
+    ' cifs-utils',
     ]
