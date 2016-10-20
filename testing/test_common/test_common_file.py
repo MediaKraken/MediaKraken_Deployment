@@ -22,7 +22,7 @@ import datetime
 import sys
 sys.path.append('.')
 from common import common_file
-import pytest
+import pytest # pylint: disable=W0611
 
 
 # return file modfication date in datetime format
