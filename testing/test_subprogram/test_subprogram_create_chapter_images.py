@@ -32,6 +32,7 @@ class TestSubprogramChapterImage(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['./subprogram_create_chapter_images'], shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_create_chapter_images.py'],\
+            shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

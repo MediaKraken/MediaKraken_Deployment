@@ -32,6 +32,6 @@ class TestSubprogramTheTVDBImages(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['./subprogram_thetvdb_images'], shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_thetvdb_images.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

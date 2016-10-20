@@ -32,6 +32,6 @@ class TestSubprogramFFMPEG(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['./subprogram_ffmpeg_process'], shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_ffmpeg_process.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

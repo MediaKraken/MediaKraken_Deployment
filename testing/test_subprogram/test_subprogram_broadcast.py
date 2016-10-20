@@ -42,7 +42,8 @@ class TestSubprogramBroadcast(object):
     @classmethod
     def setup_class(self):
         # fire up broadcast server
-        self.proc_broadcast = subprocess.Popen(['./subprogram_broadcast'], shell=False)
+        self.proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'],\
+            shell=False)
         logging.info("PID: %s", self.proc_broadcast.pid)
 
 

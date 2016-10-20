@@ -32,6 +32,6 @@ class TestSubprogramSSLKeygen(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_ssl_keygen.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

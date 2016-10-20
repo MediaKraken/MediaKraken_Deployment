@@ -32,6 +32,6 @@ class TestSubprogramLogoDown(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['./subprogram_logo_download'], shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_logo_download.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()
