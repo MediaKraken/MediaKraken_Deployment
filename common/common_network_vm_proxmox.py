@@ -284,7 +284,8 @@ class CommonNetworkProxMox(object):
         post_data = {'vmid': self.com_net_prox_cluster_nextid()['data'],\
                      'ostemplate': template_name, 'storage': storage_id,\
                      'cpulimit': 8, 'hostname': host_name,\
-                     'memory': memory_size, 'ostype': os_type}
+                     'memory': memory_size, 'ostype': os_type,\
+                     'password': 'metaman'}
                      #'net': 'name=eth0'}
                      #'rootfs': 'vm-118-disk-1a, size=32G'}
         return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name, post_data)
