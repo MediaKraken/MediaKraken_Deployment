@@ -85,11 +85,7 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
                 ' scp -r -o StrictHostKeyChecking=no ./MediaKraken.ini'\
                 ' metaman@%s:/home/metaman/.' % '10.0.0.109')
             # install calibre binaries for ebook conversion support
-            SSH_BUILD.com_net_ssh_run_command('wget -nv -O- https://raw.githubusercontent.com/'\
-                'kovidgoyal/calibre/master/setup/linux-installer.py |'\
-                ' python -c "import sys; main=lambda x,y:'\
-                'sys.stderr.write(\'Download failed\n\'); exec(sys.stdin.read());'\
-                ' main(\'/home/metaman/mediakraken/bin\', True)"')
+            SSH_BUILD.com_net_ssh_run_command("wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c \"import sys; main=lambda x,y:sys.stderr.write('Download failed'); exec(sys.stdin.read()); main('/home/metaman/mediakraken/bin', True)\"")
         else:
             # move only slave programs
             SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
