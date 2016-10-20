@@ -110,5 +110,9 @@ db_connection.db_activity_insert('MediaKraken_Server Create Collection Stop', No
 db_connection.db_commit()
 
 
+# vaccum tables that had records added
+db_connection.db_pgsql_vacuum_table('mm_metadata_collection')
+
+
 # close the database
 db_connection.db_close()

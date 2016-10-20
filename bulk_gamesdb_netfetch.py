@@ -80,5 +80,9 @@ if total_game_systems > 0:
 db_connection.db_commit()
 
 
+# vaccum tables that had records added
+db_connection.db_pgsql_vacuum_table('mm_metadata_game_systems_info')
+
+
 # close DB
 db_connection.db_close()

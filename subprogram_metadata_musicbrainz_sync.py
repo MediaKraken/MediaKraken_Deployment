@@ -82,6 +82,10 @@ db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,\
 db_connection.db_commit()
 
 
+# vaccum tables that had records added
+db_connection.db_pgsql_vacuum_table('mm_taketable')
+
+
 # close DB
 db_brainz.db_close()
 db_connection.db_close()

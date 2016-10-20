@@ -146,6 +146,12 @@ db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Sto
     'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 
+# vaccum tables that had records added
+db_connection.db_pgsql_vacuum_table('mm_tv_stations')
+db_connection.db_pgsql_vacuum_table('mm_tv_schedule')
+db_connection.db_pgsql_vacuum_table('mm_tv_schedule_program')
+
+
 # commit all changes to db
 db_connection.db_commit()
 

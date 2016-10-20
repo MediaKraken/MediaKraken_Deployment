@@ -63,5 +63,9 @@ db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
 db_connection.db_commit()
 
 
+# vaccum tables that had records added
+db_connection.db_pgsql_vacuum_table('mm_radio')
+
+
 # close the database
 db_connection.db_close()
