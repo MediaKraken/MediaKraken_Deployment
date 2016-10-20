@@ -52,5 +52,17 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
         # run/install the pip packages
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s', server_info[5])
         SSH_BUILD.com_net_ssh_run_sudo_command('rm %s', server_info[5])
+        # setup directories needed for app
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken')
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/bin')
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/cache')
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/conf')
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/key')
+        SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/log')
+        # it's setup for server....so more directories
+        if server_info[0].find('Server') != -1:
+            SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/backups')
+            SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/passwordmeter')
+            SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/passwordmeter/res')
         # close connection to this server
         SSH_BUILD.com_net_ssh_close()
