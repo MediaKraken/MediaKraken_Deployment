@@ -20,6 +20,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import pipeline_source_packages_ubuntu
+import pipeline_source_pip_definitions_ubuntu
 
 
 # find all templates in ZFSDir storage
@@ -29,13 +30,14 @@ import pipeline_source_packages_ubuntu
 BUILD_BRANCH = 'dev-0.1.11'
 SERVERS_TO_BUILD = [
     # VM name, Build lxc, image, package list
-    ('SourceAlpine33', False, 'imagetouse', 'alpine', []),
-    ('SourceAlpine34', False, 'imagetouse', 'alpine', []),
-    ('SourceDebian84', False, 'imagetouse', 'debian', []),
-    ('SourceDebian85', False, 'imagetouse', 'debian', []),
-    ('SourceDebian86', False, 'imagetouse', 'debian', []),
-    ('SourceUbuntu1504', False, 'imagetouse', 'ubuntu', []),
-    ('SourceUbuntu1510', False, 'imagetouse', 'ubuntu', []),
+    ('SourceAlpine33', False, 'imagetouse', 'alpine', [], []),
+    ('SourceAlpine34', False, 'imagetouse', 'alpine', [], []),
+    ('SourceDebian84', False, 'imagetouse', 'debian', [], []),
+    ('SourceDebian85', False, 'imagetouse', 'debian', [], []),
+    ('SourceDebian86', False, 'imagetouse', 'debian', [], []),
+    ('SourceUbuntu1504', False, 'imagetouse', 'ubuntu', [], []),
+    ('SourceUbuntu1510', False, 'imagetouse', 'ubuntu', [], []),
     ('SourceUbuntu1604', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
-         'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_UBUNTU_1604),
+         'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_UBUNTU_1604,\
+         pipeline_source_pip_definitions_ubuntu.PIP_UBUNTU_1604),
     ]
