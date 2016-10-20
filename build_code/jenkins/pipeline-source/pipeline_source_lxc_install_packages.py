@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import os
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
@@ -46,7 +47,7 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
         SSH_BUILD.com_net_ssh_run_sudo_command(command_string)
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade pip')
         # xfer pip file
-        SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+        os.system('sudo sshpass -p \'metaman\''\
             ' scp -r -o StrictHostKeyChecking=no ./build_code/jenkins/pipeline-source/%s'\
             ' metaman@%s:/home/metaman/.' % (server_info[5], '10.0.0.109'))
         # run/install the pip packages
@@ -66,45 +67,45 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
             SSH_BUILD.com_net_ssh_run_command('mkdir mediakraken/passwordmeter/res')
             # as server more code needed
             for folder_name in ('database', 'metadata', 'network', 'web_app'):
-                SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                os.system('sudo sshpass -p \'metaman\''\
                     ' scp -r -o StrictHostKeyChecking=no ./%s'\
                     ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
             # main server programs
             for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
                     'main_server_api.py', 'main_server_link.py', 'main_server_metadata_api.py',\
                     'main_server_trigger.py'):
-                SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+                os.system('sudo sshpass -p \'metaman\''\
                     ' scp -r -o StrictHostKeyChecking=no ./%s'\
                     ' metaman@%s:/home/metaman/.' % (program_name, '10.0.0.109'))
             # subprograms
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./subprogram*.py'\
                 ' metaman@%s:/home/metaman/.' % '10.0.0.109')
             # ini config
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./MediaKraken.ini'\
                 ' metaman@%s:/home/metaman/.' % '10.0.0.109')
             # install calibre binaries for ebook conversion support
             SSH_BUILD.com_net_ssh_run_command("wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c \"import sys; main=lambda x,y:sys.stderr.write('Download failed'); exec(sys.stdin.read()); main('/home/metaman/mediakraken/bin', True)\"")
         else:
             # move only slave programs
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./main_server_slave.py'\
                 ' metaman@%s:/home/metaman/.' % '10.0.0.109')
             # ini config
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./MediaKraken_Slave.ini'\
                 ' metaman@%s:/home/metaman/.' % '10.0.0.109')
         # move rest of server/slave code
         # ffmpeg bins
         # TODO!!!!!!!!
         for folder_name in ('common', 'conf'):
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./%s'\
                 ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
         # rest of general files
         for file_name in ('README.md', 'LICENSE'):
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
+            os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./%s'\
                 ' metaman@%s:/home/metaman/.' % (file_name, '10.0.0.109'))
         # close connection to this server
