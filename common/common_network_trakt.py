@@ -20,13 +20,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import trakt
 from trakt.calendar import PremiereCalendar
-from trakt import movies
-from trakt.movies import dismiss_recommendation
-from trakt.movies import get_recommended_movies
-from trakt.movies import Movie, rate_movies
-from trakt.people import Person
-from trakt.tv import TVShow
-from trakt.users import User
+from trakt.movies import (trending_movies, updated_movies, Movie, Release,
+                          dismiss_recommendation, get_recommended_movies,
+                          Translation)
+from trakt.tv import TVShow, TVSeason, TVEpisode
 
 
 class CommonNetworkTrakt(object):
@@ -53,3 +50,19 @@ class CommonNetworkTrakt(object):
         """
         #dismiss_recommendation(imdb_id='tt3139072', title='Son of Batman', year=2014)
         dismiss_recommendation(imdb_id=imdb_id, title=imdb_title, year=imdb_year)
+
+
+    def com_net_trakt_set_watching_movie(self, movie_name_year):
+        """
+        Set watching status on media
+        """
+        media_instance = Movie(movie_name_year)
+        media_instance.watching_now
+
+
+    def com_net_trakt_set_rating_movie(self, movie_name_year, media_rating):
+        """
+        Set user rating on media
+        """
+        media_instance = Movie(movie_name_year)
+        media_instance.rate(media_rating)
