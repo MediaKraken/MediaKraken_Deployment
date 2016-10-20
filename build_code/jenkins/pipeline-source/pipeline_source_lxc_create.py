@@ -19,31 +19,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import time
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
 from common import common_network_vm_proxmox
-import pipeline_source_packages_ubuntu
-
-
-# find all templates in ZFSDir storage
-# pvesm list ZFSDir -content vztmpl
-
-
-BUILD_BRANCH = 'dev-0.1.11'
-SERVERS_TO_BUILD = [
-    # VM name, Build lxc, image, package list
-    ('SourceAlpine33', False, 'imagetouse', 'alpine', []),
-    ('SourceAlpine34', False, 'imagetouse', 'alpine', []),
-    ('SourceDebian84', False, 'imagetouse', 'debian', []),
-    ('SourceDebian85', False, 'imagetouse', 'debian', []),
-    ('SourceDebian86', False, 'imagetouse', 'debian', []),
-    ('SourceUbuntu1504', False, 'imagetouse', 'ubuntu', []),
-    ('SourceUbuntu1510', False, 'imagetouse', 'ubuntu', []),
-    ('SourceUbuntu1604', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
-         'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_UBUNTU_1604),
-    ]
+import pipeline_source_lxc_definitions
 
 
 # create prox class instance to use
@@ -56,7 +36,7 @@ lxc_dict = {}
 for lxc_server in PROX_CONNECTION.com_net_prox_node_lxc_list('pve')['data']:
     lxc_dict[lxc_server['name']] = (lxc_server['vmid'], lxc_server['status'])
 print('lxc: %s' % lxc_dict)
-for server_info in SERVERS_TO_BUILD:
+for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
     print('server: %s' % str(server_info))
     # check to verify it needs to build lxc
     if server_info[1] == True:
