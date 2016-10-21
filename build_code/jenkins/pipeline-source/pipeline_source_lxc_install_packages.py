@@ -49,7 +49,7 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
         # xfer pip file
         os.system('sudo sshpass -p \'metaman\''\
             ' scp -r -o StrictHostKeyChecking=no ./build_code/jenkins/pipeline-source/%s'\
-            ' metaman@%s:/home/metaman/.' % (server_info[5], '10.0.0.109'))
+            ' metaman@%s:/home/metaman/mediakraken/.' % (server_info[5], '10.0.0.109'))
         # run/install the pip packages
         SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s' % server_info[5])
         SSH_BUILD.com_net_ssh_run_sudo_command('rm %s' % server_info[5])
@@ -69,44 +69,44 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
             for folder_name in ('database', 'metadata', 'network', 'web_app'):
                 os.system('sudo sshpass -p \'metaman\''\
                     ' scp -r -o StrictHostKeyChecking=no ./%s'\
-                    ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
+                    ' metaman@%s:/home/metaman/mediakraken/.' % (folder_name, '10.0.0.109'))
             # main server programs
             for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
                     'main_server_api.py', 'main_server_link.py', 'main_server_metadata_api.py',\
                     'main_server_trigger.py'):
                 os.system('sudo sshpass -p \'metaman\''\
                     ' scp -r -o StrictHostKeyChecking=no ./%s'\
-                    ' metaman@%s:/home/metaman/.' % (program_name, '10.0.0.109'))
+                    ' metaman@%s:/home/metaman/mediakraken/.' % (program_name, '10.0.0.109'))
             # subprograms
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./subprogram*.py'\
-                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+                ' metaman@%s:/home/metaman/mediakraken/.' % '10.0.0.109')
             # ini config
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./MediaKraken.ini'\
-                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+                ' metaman@%s:/home/metaman/mediakraken/.' % '10.0.0.109')
             # install calibre binaries for ebook conversion support
             SSH_BUILD.com_net_ssh_run_command("wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c \"import sys; main=lambda x,y:sys.stderr.write('Download failed'); exec(sys.stdin.read()); main('/home/metaman/mediakraken/bin', True)\"")
         else:
             # move only slave programs
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./main_server_slave.py'\
-                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+                ' metaman@%s:/home/metaman/mediakraken/.' % '10.0.0.109')
             # ini config
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./MediaKraken_Slave.ini'\
-                ' metaman@%s:/home/metaman/.' % '10.0.0.109')
+                ' metaman@%s:/home/metaman/mediakraken/.' % '10.0.0.109')
         # move rest of server/slave code
         # ffmpeg bins
         # TODO!!!!!!!!
         for folder_name in ('common', 'conf'):
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./%s'\
-                ' metaman@%s:/home/metaman/.' % (folder_name, '10.0.0.109'))
+                ' metaman@%s:/home/metaman/mediakraken/.' % (folder_name, '10.0.0.109'))
         # rest of general files
         for file_name in ('README.md', 'LICENSE'):
             os.system('sudo sshpass -p \'metaman\''\
                 ' scp -r -o StrictHostKeyChecking=no ./%s'\
-                ' metaman@%s:/home/metaman/.' % (file_name, '10.0.0.109'))
+                ' metaman@%s:/home/metaman/mediakraken/.' % (file_name, '10.0.0.109'))
         # close connection to this server
         SSH_BUILD.com_net_ssh_close()
