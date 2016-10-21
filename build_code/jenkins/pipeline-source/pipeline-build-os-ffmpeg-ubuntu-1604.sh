@@ -105,6 +105,14 @@ make -j8
 make install
 
 cd ~/ffmpeg_sources
+curl -L -O http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2
+tar xvf libtheora-1.1.1.tar.bz2
+cd libtheora-1.1.1
+./autogen.sh --with-ogg="$HOME/ffmpeg_build" --disable-examples --disable-shared
+make -j8
+make install
+
+cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
