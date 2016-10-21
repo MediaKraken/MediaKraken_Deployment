@@ -80,6 +80,22 @@ make install
 make clean
 
 cd ~/ffmpeg_sources
+curl -O http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+tar xzvf speexdsp-1.2rc3.tar.gz
+cd speexdsp-1.2rc3
+./configure
+make -j8
+make install
+
+cd ~/ffmpeg_sources
+curl -O http://downloads.xvid.org/downloads/xvidcore-1.3.4.tar.gz
+tar xzvf xvidcore-1.3.4.tar.gz
+cd xvidcore
+./configure
+make -j8
+make install
+
+cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
@@ -95,12 +111,14 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libfreetype \
     --enable-libmp3lame \
     --enable-libopus \
+    --enable-libsmbclient \
+    --enable-libspeex \
     --enable-libtheora \
     --enable-libvorbis \
     --enable-libvpx \
     --enable-libx264 \
     --enable-libx265 \
-    --enable-libsmbclient \
+    --enable-libxvid \
     --enable-version3
 make -j8
 make install
