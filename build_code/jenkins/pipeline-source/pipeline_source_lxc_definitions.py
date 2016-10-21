@@ -26,7 +26,7 @@ import pipeline_source_packages_ubuntu
 # pvesm list ZFSDir -content vztmpl
 
 
-BUILD_BRANCH = 'dev-0.1.11'
+BUILD_BRANCH = 'dev-0.1.12'
 SERVERS_TO_BUILD = [
     # 0 - hostname
     # 1 - create vm
