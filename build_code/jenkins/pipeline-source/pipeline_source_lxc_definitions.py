@@ -28,18 +28,25 @@ import pipeline_source_packages_ubuntu
 
 BUILD_BRANCH = 'dev-0.1.11'
 SERVERS_TO_BUILD = [
+    # 0 - hostname
+    # 1 - create vm
+    # 2 - lxc image to use
+    # 3 - base os name
+    # 4 - packages list to install
+    # 5 - pip list file to use
+    # 6 - IP addr of target
     # VM name, Build lxc, image, package list
-    ('SourceAlpine33Server', False, 'imagetouse', 'alpine', [], []),
-    ('SourceAlpine34Server', False, 'imagetouse', 'alpine', [], []),
-    ('SourceDebian84Server', False, 'imagetouse', 'debian', [], []),
-    ('SourceDebian85Server', False, 'imagetouse', 'debian', [], []),
-    ('SourceDebian86Server', False, 'imagetouse', 'debian', [], []),
-    ('SourceUbuntu1504Server', False, 'imagetouse', 'ubuntu', [], []),
-    ('SourceUbuntu1510Server', False, 'imagetouse', 'ubuntu', [], []),
+    ('SourceAlpine33Server', False, 'imagetouse', 'alpine', [], [], None),
+    ('SourceAlpine34Server', False, 'imagetouse', 'alpine', [], [], None),
+    ('SourceDebian84Server', False, 'imagetouse', 'debian', [], [], None),
+    ('SourceDebian85Server', False, 'imagetouse', 'debian', [], [], None),
+    ('SourceDebian86Server', False, 'imagetouse', 'debian', [], [], None),
+    ('SourceUbuntu1504Server', False, 'imagetouse', 'ubuntu', [], [], None),
+    ('SourceUbuntu1510Server', False, 'imagetouse', 'ubuntu', [], [], None),
     ('SourceUbuntu1604Server', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604,\
-         'pipeline-build-os-pip-server-ubuntu-1604.txt'),
+         'pipeline-build-os-pip-server-ubuntu-1604.txt', '10.0.0.109'),
     ('SourceUbuntu1604Slave', False, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604,\
-         'pipeline-build-os-pip-slave-ubuntu-1604.txt'),
+         'pipeline-build-os-pip-slave-ubuntu-1604.txt', None),
     ]
