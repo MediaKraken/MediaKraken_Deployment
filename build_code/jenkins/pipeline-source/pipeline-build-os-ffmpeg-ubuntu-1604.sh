@@ -1,5 +1,14 @@
 #!/bin/bash
 mkdir ~/ffmpeg_sources
+
+cd ~/ffmpeg_sources
+git clone git://github.com/yasm/yasm.git
+cd yasm
+./autogen.sh
+./configure
+make -j8
+make install
+
 cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
