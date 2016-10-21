@@ -26,8 +26,9 @@ make -j8
 make install
 
 cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
+wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master
+tar xzvf fdk-aac.tar.gz
+cd mstorsjo-fdk-aac*
 autoreconf -fiv
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared
 make -j8

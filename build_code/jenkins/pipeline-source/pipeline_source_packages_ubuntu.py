@@ -90,9 +90,12 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
 
 
 PACKAGES_FFMPEG_UBUNTU_1604 = [
+    'aclocal',
     'autoconf',
+#    'autoheader',
     'automake',
     'build-essential',
+    'cmake',
     'libass-dev',
     'libfreetype6-dev',
     'libsdl1.2-dev',
