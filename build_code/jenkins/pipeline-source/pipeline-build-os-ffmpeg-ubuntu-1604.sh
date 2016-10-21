@@ -12,7 +12,7 @@ make install
 cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
-./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --disable-opencl
 make -j8
 make install
 make distclean
@@ -48,7 +48,7 @@ cd ~/ffmpeg_sources
 git clone http://git.opus-codec.org/opus.git
 cd opus
 autoreconf -fiv
-./configure --prefix="$HOME/ffmpeg_build"
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared
 make -j8
 make install
 make distclean
@@ -74,7 +74,7 @@ make distclean
 cd ~/ffmpeg_sources
 git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
 cd libvpx
-./configure --prefix="$HOME/ffmpeg_build" --disable-examples
+./configure --prefix="$HOME/ffmpeg_build" --disable-examples --disable-unit-tests
 make -j8
 make install
 make clean
@@ -82,7 +82,26 @@ make clean
 cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
-PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --pkg-config-flags="--static" --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libsmbclient --enable-version3
+PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
+    --prefix="$HOME/ffmpeg_build" \
+    --pkg-config-flags="--static" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include" \
+    --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+    --bindir="$HOME/bin" \
+    --enable-gpl \
+    --enable-nonfree \
+    --enable-libass \
+    --enable-libfdk-aac \
+    --enable-libfreetype \
+    --enable-libmp3lame \
+    --enable-libopus \
+    --enable-libtheora \
+    --enable-libvorbis \
+    --enable-libvpx \
+    --enable-libx264 \
+    --enable-libx265 \
+    --enable-libsmbclient \
+    --enable-version3
 make -j8
 make install
 make distclean
