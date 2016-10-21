@@ -110,7 +110,6 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'pkg-config',
     'texinfo',
     'zlib1g-dev',
-    'yasm',
     'cmake',
     'libsmbclient-dev',
     'libffi-dev',
