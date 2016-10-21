@@ -39,7 +39,7 @@ SERVERS_TO_BUILD = [
     ('SourceUbuntu1604Server', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604,\
          'pipeline-build-os-pip-server-ubuntu-1604.txt'),
-    ('SourceUbuntu1604Slave', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
+    ('SourceUbuntu1604Slave', False, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604,\
          'pipeline-build-os-pip-slave-ubuntu-1604.txt'),
     ]
