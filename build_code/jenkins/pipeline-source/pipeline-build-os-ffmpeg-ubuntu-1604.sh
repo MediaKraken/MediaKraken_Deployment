@@ -53,9 +53,9 @@ make install
 make distclean
 
 cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
+curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.gz
+tar xzvf libvorbis-1.3.5.tar.gz
+cd libvorbis-1.3.5
 LDFLAGS="-L$HOME/ffmeg_build/lib" CPPFLAGS="-I$HOME/ffmpeg_build/include" ./configure --prefix="$HOME/ffmpeg_build" --with-ogg="$HOME/ffmpeg_build" --disable-shared
 make -j8
 make install
