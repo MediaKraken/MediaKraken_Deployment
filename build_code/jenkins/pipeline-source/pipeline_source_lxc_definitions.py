@@ -35,18 +35,22 @@ SERVERS_TO_BUILD = [
     # 4 - packages list to install
     # 5 - pip list file to use
     # 6 - IP addr of target
+    # 7 - ffmpeg build script
     # VM name, Build lxc, image, package list
-    ('SourceAlpine33Server', False, 'imagetouse', 'alpine', [], [], None),
-    ('SourceAlpine34Server', False, 'imagetouse', 'alpine', [], [], None),
-    ('SourceDebian84Server', False, 'imagetouse', 'debian', [], [], None),
-    ('SourceDebian85Server', False, 'imagetouse', 'debian', [], [], None),
-    ('SourceDebian86Server', False, 'imagetouse', 'debian', [], [], None),
-    ('SourceUbuntu1504Server', False, 'imagetouse', 'ubuntu', [], [], None),
-    ('SourceUbuntu1510Server', False, 'imagetouse', 'ubuntu', [], [], None),
+    ('SourceAlpine33Server', False, 'imagetouse', 'alpine', [], None, None, None),
+    ('SourceAlpine34Server', False, 'imagetouse', 'alpine', [], None, None, None),
+    ('SourceDebian84Server', False, 'imagetouse', 'debian', [], None, None, None),
+    ('SourceDebian85Server', False, 'imagetouse', 'debian', [], None, None, None),
+    ('SourceDebian86Server', False, 'imagetouse', 'debian', [], None, None, None),
+    ('SourceUbuntu1504Server', False, 'imagetouse', 'ubuntu', [], None, None, None),
+    ('SourceUbuntu1510Server', False, 'imagetouse', 'ubuntu', [], None, None, None),
+    ('SourceUbuntu1604FFMPEG', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
+         'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604,\
+         None, '10.0.0.104', 'pipeline-build-os-ffmpeg-ubuntu-1604.sh'),
     ('SourceUbuntu1604Server', True, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604,\
-         'pipeline-build-os-pip-server-ubuntu-1604.txt', '10.0.0.109'),
+         'pipeline-build-os-pip-server-ubuntu-1604.txt', '10.0.0.103', None),
     ('SourceUbuntu1604Slave', False, 'ZFSDir:vztmpl/ubuntu-16.04-standard_16.04-1_amd64.tar.gz',\
          'ubuntu', pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604,\
-         'pipeline-build-os-pip-slave-ubuntu-1604.txt', None),
+         'pipeline-build-os-pip-slave-ubuntu-1604.txt', None, None),
     ]
