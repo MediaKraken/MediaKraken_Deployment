@@ -113,4 +113,6 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'libffi-dev',
     'libldap2-dev',
     'libsasl2-dev',
+    'git',
+    'wget',
     ]
