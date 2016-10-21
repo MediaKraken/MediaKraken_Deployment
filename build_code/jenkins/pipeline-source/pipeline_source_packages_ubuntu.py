@@ -87,3 +87,30 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
     'nfs-common',
     'cifs-utils',
     ]
+
+
+PACKAGES_FFMPEG_UBUNTU_1604 = [
+    'autoconf',
+    'automake',
+    'build-essential',
+    'libass-dev',
+    'libfreetype6-dev',
+    'libsdl1.2-dev',
+    'libtheora-dev',
+    'libtool',
+    'libva-dev',
+    'libvdpau-dev',
+    'libvorbis-dev',
+    'libxcb1-dev',
+    'libxcb-shm0-dev',
+    'libxcb-xfixes0-dev',
+    'pkg-config',
+    'texinfo',
+    'zlib1g-dev',
+    'yasm',
+    'cmake',
+    'libsmbclient-dev',
+    'libffi-dev',
+    'libldap2-dev',
+    'libsasl2-dev',
+    ]
