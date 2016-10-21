@@ -69,7 +69,7 @@ SSH_BUILD.com_net_ssh_run_command('apt-get -y install autoconf automake'\
     ' libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev'\
     ' libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo'\
     ' zlib1g-dev yasm cmake git curl wget libsmbclient-dev python-pip postgresql-server-dev-all'\
-    ' libffi-dev libsnmp-dev libldap2-dev libsasl2-dev portaudio19-dev')
+    ' libffi-dev libsnmp-dev libldap2-dev libsasl2-dev portaudio19-dev libjpeg-dev')
 # setup pip and pyinstaller
 SSH_BUILD.com_net_ssh_run_command('pip install --upgrade pip')
 SSH_BUILD.com_net_ssh_run_command('pip install pyinstaller')

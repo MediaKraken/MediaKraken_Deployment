@@ -60,7 +60,7 @@ SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get update')
 # auto yes to accept install
 # this list at the moment is for building pip install
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo apt-get -y install autoconf automake'\
-    ' build-essential libass-dev upx-ucl sshpass'\
+    ' build-essential libass-dev upx-ucl sshpass libjpeg-dev'\
     ' libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev'\
     ' libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo'\
     ' zlib1g-dev yasm cmake git curl wget libsmbclient-dev python-pip postgresql-server-dev-9.5'\
