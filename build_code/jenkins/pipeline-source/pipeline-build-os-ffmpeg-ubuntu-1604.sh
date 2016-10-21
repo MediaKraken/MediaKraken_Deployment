@@ -90,7 +90,7 @@ make install
 cd ~/ffmpeg_sources
 curl -O http://downloads.xvid.org/downloads/xvidcore-1.3.4.tar.gz
 tar xzvf xvidcore-1.3.4.tar.gz
-cd xvidcore
+cd xvidcore/build/generic
 ./configure
 make -j8
 make install
