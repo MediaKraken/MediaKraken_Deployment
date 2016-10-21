@@ -80,9 +80,9 @@ make install
 make clean
 
 cd ~/ffmpeg_sources
-curl -L -O http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
-tar xzvf speexdsp-1.2rc3.tar.gz
-cd speexdsp-1.2rc3
+curl -L -O http://downloads.xiph.org/releases/speex/speex-1.2rc2.tar.gz
+tar xzvf speex-1.2rc2.tar.gz
+cd speex-1.2rc2
 ./configure
 make -j8
 make install
