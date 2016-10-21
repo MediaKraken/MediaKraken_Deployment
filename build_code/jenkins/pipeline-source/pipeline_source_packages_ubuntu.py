@@ -121,5 +121,4 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'wget',
     'libtool',
     'libfreetype6-dev',
-    'libsmbclient-dev',
     ]
