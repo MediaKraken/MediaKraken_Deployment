@@ -52,7 +52,8 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
                 ' scp -r -o StrictHostKeyChecking=no ./build_code/jenkins/pipeline-source/%s'\
                 ' metaman@%s:/home/metaman/.' % (server_info[7], server_info[6]))
             # run/install the pip packages
-            SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s' % server_info[5])
+            SSH_BUILD.com_net_ssh_run_sudo_command('sudo pip install --upgrade -r %s'\
+                % server_info[5])
             SSH_BUILD.com_net_ssh_run_sudo_command('rm %s' % server_info[5])
         if server_info[0].find('FFMPEG') != -1:
             # fire off build ffmpeg
@@ -83,7 +84,8 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
                         ' metaman@%s:/home/metaman/mediakraken/.' % (folder_name, server_info[6]))
                 # main server programs
                 for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
-                        'main_server_api.py', 'main_server_link.py', 'main_server_metadata_api.py',\
+                        'main_server_api.py', 'main_server_link.py',\
+                        'main_server_metadata_api.py',\
                         'main_server_trigger.py'):
                     os.system('sudo sshpass -p \'metaman\''\
                         ' scp -r -o StrictHostKeyChecking=no ./%s'\
