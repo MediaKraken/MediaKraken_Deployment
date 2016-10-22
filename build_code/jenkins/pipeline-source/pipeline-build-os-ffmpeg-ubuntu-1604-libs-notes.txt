@@ -29,6 +29,17 @@
   --enable-omx-rpi         enable OpenMAX IL code for Raspberry Pi [no] - not gunna be transcing on the pi
   --enable-libzvbi         enable teletext support via libzvbi [no]
   --enable-librubberband   enable rubberband needed for rubberband filter [no]
+  --enable-libcaca         enable textual display using libcaca [no]
+  --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no] - since using other lib
+  --enable-mmal            enable Broadcom Multi-Media Abstraction Layer (Raspberry Pi) via MMAL [no]
+  --enable-openal          enable OpenAL 1.1 capture support [no]
+  --enable-opengl          enable OpenGL rendering [no]
+  --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
+                           if openssl, librtmp or gmp is not used [no]
+  --enable-gmp             enable gmp, needed for rtmp(t)e support
+                           if openssl or librtmp is not used [no]
+  --disable-sdl2           disable sdl2 [autodetect]
+  --enable-libbs2b         enable bs2b DSP library [no]
 
 
 
@@ -49,7 +60,13 @@
   --enable-librtmp         enable RTMP[E] support via librtmp [no]
   --enable-libfontconfig   enable libfontconfig, useful for drawtext filter [no]
   --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
-  --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no]
+  --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
+  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
+  --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
+  --enable-netcdf          enable NetCDF, needed for sofalizer filter [no]
+  --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
+                           and libraw1394 [no]
+  --enable-libilbc         enable iLBC de/encoding via libilbc [no]
 
 
 
@@ -58,35 +75,18 @@
 
 
 
-
 # to do - perhaps
   --enable-frei0r          enable frei0r video filtering [no]
-  --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
-                           if openssl, librtmp or gmp is not used [no]
-  --enable-gmp             enable gmp, needed for rtmp(t)e support
-                           if openssl or librtmp is not used [no]
   --disable-iconv          disable iconv [autodetect]
   --enable-jni             enable JNI support [no]
   --enable-libbluray       enable BluRay reading using libbluray [no]
-  --enable-libbs2b         enable bs2b DSP library [no]
-  --enable-libcaca         enable textual display using libcaca [no]
   --enable-libcdio         enable audio CD grabbing with libcdio [no]
-  --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
-                           and libraw1394 [no]
   --enable-libebur128      enable libebur128 for EBU R128 measurement, needed for loudnorm filter [no]
-  --enable-libilbc         enable iLBC de/encoding via libilbc [no]
   --enable-libnut          enable NUT (de)muxing via libnut,
                            native (de)muxer exists [no]
-  --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
-  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
   --enable-libopencv       enable video filtering via libopencv [no]
-  --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
   --enable-libzimg         enable z.lib, needed for zscale filter [no]
-  --enable-netcdf          enable NetCDF, needed for sofalizer filter [no]
-  --enable-openal          enable OpenAL 1.1 capture support [no]
   --enable-opencl          enable OpenCL code
-  --enable-opengl          enable OpenGL rendering [no]
-  --disable-sdl2           disable sdl2 [autodetect]
 
 
   The following libraries provide various hardware acceleration features:
@@ -97,7 +97,6 @@
   --disable-dxva2          disable Microsoft DirectX 9 video acceleration code [autodetect]
   --enable-libmfx          enable Intel MediaSDK (AKA Quick Sync Video) code via libmfx [no]
   --enable-libnpp          enable Nvidia Performance Primitives-based code [no]
-  --enable-mmal            enable Broadcom Multi-Media Abstraction Layer (Raspberry Pi) via MMAL [no]
   --disable-nvenc          disable Nvidia video encoding code [autodetect]
   --enable-omx             enable OpenMAX IL code [no]
   --disable-vaapi          disable Video Acceleration API (mainly Unix/Intel) code [autodetect]

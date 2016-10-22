@@ -153,23 +153,44 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --bindir="$HOME/bin" \
     --enable-gpl \
     --enable-nonfree \
+    --enable-decklink \
     --enable-libass \
+    --enable-libcelt \
+    --enable-libdc1394 \
     --enable-libfdk-aac \
+    --enable-libflite \
+    --enable-libfontconfig \
     --enable-libfreetype \
+    --enable-libfribidi \
+    --enable-libgme \
+    --enable-libgsm \
+    --enable-libilbc \
     --enable-libmodplug \
     --enable-libmp3lame \
+    --enable-libopencore-amrnb \
+    --enable-libopencore-amrwb \
+    --enable-libopenmpt \
     --enable-libopus \
+    --enable-libpulse \
+    --enable-librtmp \
+    --enable-libschroedinger \
     --enable-libsmbclient \
+    --enable-libsnappy \
+    --enable-libsoxr \
     --enable-libspeex \
     --enable-libssh \
     --enable-libtheora \
+    --enable-libtwolame \
+    --enable-libv4l2 \
     --enable-libvidstab \
     --enable-libvorbis \
     --enable-libvpx \
+    --enable-libwavpack \
     --enable-libx264 \
     --enable-libx265 \
     --enable-libxavs \
     --enable-libxvid \
+    --enable-netcdf \
     --enable-openssl \
     --enable-version3
 make -j8
