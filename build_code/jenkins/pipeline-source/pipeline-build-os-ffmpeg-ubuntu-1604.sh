@@ -123,6 +123,14 @@ make -j8
 make install
 
 cd ~/ffmpeg_sources
+curl -L -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/libmodplug-0.8.8.5.tar.gz
+tar xzvf libmodplug-0.8.8.5.tar.gz
+cd libmodplug-0.8.8.5
+./configure
+make -j8
+make install
+
+cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
@@ -136,10 +144,12 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libass \
     --enable-libfdk-aac \
     --enable-libfreetype \
+    --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libopus \
     --enable-libsmbclient \
     --enable-libspeex \
+    --enable-libssh \
     --enable-libtheora \
     --enable-libvorbis \
     --enable-libvpx \
@@ -147,6 +157,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libx265 \
     --enable-libxavs \
     --enable-libxvid \
+    --enable-openssl \
     --enable-version3
 make -j8
 make install

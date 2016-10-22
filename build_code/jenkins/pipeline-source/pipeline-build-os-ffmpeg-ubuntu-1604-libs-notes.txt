@@ -6,14 +6,34 @@
   --enable-x11grab         enable X11 grabbing (legacy) [no]
   --enable-avisynth        enable reading of AviSynth script files [no]
   --enable-libopenjpeg     enable JPEG 2000 de/encoding via OpenJPEG [no] - shouldn't need jpeg stuff
+  --enable-libopenh264     enable H.264 encoding via OpenH264 [no] - since using x264
+  --enable-libkvazaar      enable HEVC encoding via libkvazaar [no] - since using x265
+  --disable-lzma           disable lzma [autodetect] - what for?
+  --disable-xlib           disable xlib [autodetect] - x11 stuff.....
+  --disable-zlib           disable zlib [autodetect] - what for?
+  --enable-libwebp         enable WebP encoding via libwebp [no] - image format
+  --disable-bzlib          disable bzlib [autodetect] - what for?
+  --enable-libzmq          enable message passing via libzmq [no]
+  --enable-libiec61883     enable iec61883 via libiec61883 [no] - firewire
+  --enable-libshine        enable fixed-point MP3 encoding via libshine [no] - since using lamemp3
+
 
 
 # to do
+  --enable-libcelt         enable CELT decoding via libcelt [no]   http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz  last update 5 years ago
+  --enable-libtwolame      enable MP2 encoding via libtwolame [no]
+  --enable-decklink        enable Blackmagic DeckLink I/O support [no] - hardware capture
+
+
+# trying now
+  --enable-libssh          enable SFTP protocol via libssh [no]
+  --enable-openssl         enable openssl, needed for https support
+                           if gnutls is not used [no]
+
 
 
 
 # to do - perhaps
-  --disable-bzlib          disable bzlib [autodetect]
   --enable-chromaprint     enable audio fingerprinting with chromaprint [no]    
   --enable-frei0r          enable frei0r video filtering [no]
   --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
@@ -28,7 +48,6 @@
   --enable-libbluray       enable BluRay reading using libbluray [no]
   --enable-libbs2b         enable bs2b DSP library [no]
   --enable-libcaca         enable textual display using libcaca [no]
-  --enable-libcelt         enable CELT decoding via libcelt [no]
   --enable-libcdio         enable audio CD grabbing with libcdio [no]
   --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
                            and libraw1394 [no]
@@ -39,52 +58,36 @@
   --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
   --enable-libgme          enable Game Music Emu via libgme [no]
   --enable-libgsm          enable GSM de/encoding via libgsm [no]
-  --enable-libiec61883     enable iec61883 via libiec61883 [no]
   --enable-libilbc         enable iLBC de/encoding via libilbc [no]
-  --enable-libkvazaar      enable HEVC encoding via libkvazaar [no]
-  --enable-libmodplug      enable ModPlug via libmodplug [no]
   --enable-libnut          enable NUT (de)muxing via libnut,
                            native (de)muxer exists [no]
   --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
   --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
   --enable-libopencv       enable video filtering via libopencv [no]
-  --enable-libopenh264     enable H.264 encoding via OpenH264 [no]
   --enable-libopenmpt      enable decoding tracked files via libopenmpt [no]
   --enable-libpulse        enable Pulseaudio input via libpulse [no]
   --enable-librubberband   enable rubberband needed for rubberband filter [no]
   --enable-librtmp         enable RTMP[E] support via librtmp [no]
   --enable-libschroedinger enable Dirac de/encoding via libschroedinger [no]
-  --enable-libshine        enable fixed-point MP3 encoding via libshine [no]
   --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
   --enable-libsoxr         enable Include libsoxr resampling [no]
-  --enable-libssh          enable SFTP protocol via libssh [no]
   --enable-libtesseract    enable Tesseract, needed for ocr filter [no]
-  --enable-libtwolame      enable MP2 encoding via libtwolame [no]
   --enable-libv4l2         enable libv4l2/v4l-utils [no]
   --enable-libvidstab      enable video stabilization using vid.stab [no]
   --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no]
   --enable-libwavpack      enable wavpack encoding via libwavpack [no]
-  --enable-libwebp         enable WebP encoding via libwebp [no]
-  --enable-libxavs         enable AVS encoding via xavs [no]
   --enable-libzimg         enable z.lib, needed for zscale filter [no]
-  --enable-libzmq          enable message passing via libzmq [no]
   --enable-libzvbi         enable teletext support via libzvbi [no]
-  --disable-lzma           disable lzma [autodetect]
-  --enable-decklink        enable Blackmagic DeckLink I/O support [no]
   --enable-mediacodec      enable Android MediaCodec support [no]
   --enable-netcdf          enable NetCDF, needed for sofalizer filter [no]
   --enable-openal          enable OpenAL 1.1 capture support [no]
   --enable-opencl          enable OpenCL code
   --enable-opengl          enable OpenGL rendering [no]
-  --enable-openssl         enable openssl, needed for https support
-                           if gnutls is not used [no]
   --disable-schannel       disable SChannel SSP, needed for TLS support on
                            Windows if openssl and gnutls are not used [autodetect]
   --disable-sdl2           disable sdl2 [autodetect]
   --disable-securetransport disable Secure Transport, needed for TLS support
                            on OSX if openssl and gnutls are not used [autodetect]
-  --disable-xlib           disable xlib [autodetect]
-  --disable-zlib           disable zlib [autodetect]
 
 
   The following libraries provide various hardware acceleration features:
