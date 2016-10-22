@@ -1,4 +1,5 @@
 #!/bin/bash
+#https://github.com/FFmpeg/FFmpeg/blob/master/configure
 mkdir ~/ffmpeg_sources
 
 cd ~/ffmpeg_sources
