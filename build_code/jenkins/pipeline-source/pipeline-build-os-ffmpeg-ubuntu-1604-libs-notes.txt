@@ -9,13 +9,12 @@
 
 
 # to do
-  --enable-libxavs         enable AVS encoding via xavs [no]
 
 
 
 # to do - perhaps
   --disable-bzlib          disable bzlib [autodetect]
-  --enable-chromaprint     enable audio fingerprinting with chromaprint [no]
+  --enable-chromaprint     enable audio fingerprinting with chromaprint [no]    
   --enable-frei0r          enable frei0r video filtering [no]
   --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
                            if openssl, librtmp or gmp is not used [no]

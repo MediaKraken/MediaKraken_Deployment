@@ -1,5 +1,6 @@
 #!/bin/bash
 #https://github.com/FFmpeg/FFmpeg/blob/master/configure
+
 mkdir ~/ffmpeg_sources
 
 cd ~/ffmpeg_sources
@@ -114,6 +115,14 @@ make -j8
 make install
 
 cd ~/ffmpeg_sources
+curl -L -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/xavs.tar.bz2
+tar xvf xavs.tar.bz2
+cd xavs
+./configure
+make -j8
+make install
+
+cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
@@ -136,6 +145,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libvpx \
     --enable-libx264 \
     --enable-libx265 \
+    --enable-libxavs \
     --enable-libxvid \
     --enable-version3
 make -j8
