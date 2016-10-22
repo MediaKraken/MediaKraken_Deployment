@@ -90,6 +90,7 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
 
 
 PACKAGES_FFMPEG_UBUNTU_1604 = [
+    'autotools-dev',
     'aclocal',
     'autoconf',
 #    'autoheader',

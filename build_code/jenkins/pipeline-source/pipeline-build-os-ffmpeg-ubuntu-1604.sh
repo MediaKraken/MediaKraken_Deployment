@@ -146,8 +146,19 @@ cd celt-0.11.1
 make -j8
 make install
 
+cd ~/ffmpeg_sources
+curl -L -O https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.2.7025-beta20.1.tar.gz
+tar xzvf libopenmpt-0.2.7025-beta20.1.tar.gz
+cd libopenmpt-0.2.7025
+make -j8
+make install
 
-
+cd ~/ffmpeg_sources
+git clone https://github.com/Distrotech/libilbc-webrtc.git
+cd libilbc-webrtc
+./configure
+make -j8
+make install
 
 cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
@@ -171,12 +182,12 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libfribidi \
     --enable-libgme \
     --enable-libgsm \
-#    --enable-libilbc \
+    --enable-libilbc \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libopencore-amrnb \
     --enable-libopencore-amrwb \
-#    --enable-libopenmpt \
+    --enable-libopenmpt \
     --enable-libopus \
     --enable-libpulse \
     --enable-librtmp \
