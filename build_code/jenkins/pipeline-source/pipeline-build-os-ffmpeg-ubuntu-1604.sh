@@ -171,6 +171,8 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --bindir="$HOME/bin" \
     --enable-gpl \
     --enable-nonfree \
+    --disable-d3d11va \
+    --disable-dxva2 \
 #    --enable-decklink \
     --enable-libass \
     --enable-libcelt \
