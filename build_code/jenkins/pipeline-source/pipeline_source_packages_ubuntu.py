@@ -122,4 +122,5 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'libfreetype6-dev',
     'libfribidi-dev',
     'libfontconfig-dev',
+    'libssh-dev',
     ]

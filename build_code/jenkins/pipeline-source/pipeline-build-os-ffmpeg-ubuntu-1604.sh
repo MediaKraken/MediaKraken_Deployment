@@ -131,6 +131,18 @@ make -j8
 make install
 
 cd ~/ffmpeg_sources
+curl -L -O https://github.com/MediaKraken-Dependancies/vid.stab/archive/release-0.98b.tar.gz
+tar xzvf release-0.98b.tar.gz
+cd vid.stab-release-0.98b
+cmake .
+make
+make install
+
+
+
+
+
+cd ~/ffmpeg_sources
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
@@ -151,6 +163,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libspeex \
     --enable-libssh \
     --enable-libtheora \
+    --enable-libvidstab \
     --enable-libvorbis \
     --enable-libvpx \
     --enable-libx264 \
