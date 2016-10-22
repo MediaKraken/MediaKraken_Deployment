@@ -46,7 +46,6 @@
 
 # to do
   --enable-decklink        enable Blackmagic DeckLink I/O support [no] - hardware capture
-  --enable-libv4l2         enable libv4l2/v4l-utils [no] - video for linux
 
   --enable-libilbc         enable iLBC de/encoding via libilbc [no]
   --enable-libopenmpt      enable decoding tracked files via libopenmpt [no] - mod tracker
@@ -72,6 +71,7 @@
   --enable-libschroedinger enable Dirac de/encoding via libschroedinger [no]
   --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
   --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
+  --enable-libv4l2         enable libv4l2/v4l-utils [no] - video for linux
 
 
 

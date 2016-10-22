@@ -160,7 +160,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --bindir="$HOME/bin" \
     --enable-gpl \
     --enable-nonfree \
-    --enable-decklink \
+#    --enable-decklink \
     --enable-libass \
     --enable-libcelt \
     --enable-libdc1394 \
@@ -171,12 +171,12 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libfribidi \
     --enable-libgme \
     --enable-libgsm \
-    --enable-libilbc \
+#    --enable-libilbc \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libopencore-amrnb \
     --enable-libopencore-amrwb \
-    --enable-libopenmpt \
+#    --enable-libopenmpt \
     --enable-libopus \
     --enable-libpulse \
     --enable-librtmp \

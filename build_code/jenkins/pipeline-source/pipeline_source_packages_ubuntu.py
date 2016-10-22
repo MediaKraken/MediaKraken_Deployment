@@ -138,4 +138,5 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'libschroedinger-dev',
     'libopencore-amrnb-dev',
     'libopencore-amrwb-dev',
+    'libv4l-dev',
     ]
