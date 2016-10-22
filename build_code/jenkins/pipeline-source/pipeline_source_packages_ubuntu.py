@@ -49,7 +49,7 @@ PACKAGES_SERVER_UBUNTU_1604 = [
     'libldap2-dev',
     'libsasl2-dev',
     'libjpeg-dev',
-    'libdiscid0-dev',
+    'libdiscid-dev',
     'portaudio19-dev',
     'nfs-common',
     'nginx',
