@@ -45,33 +45,34 @@
 
 
 # to do
-  --enable-libcelt         enable CELT decoding via libcelt [no]   http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz  last update 5 years ago
-  --enable-libtwolame      enable MP2 encoding via libtwolame [no]
   --enable-decklink        enable Blackmagic DeckLink I/O support [no] - hardware capture
-  --enable-libschroedinger enable Dirac de/encoding via libschroedinger [no]
   --enable-libv4l2         enable libv4l2/v4l-utils [no] - video for linux
-  --enable-libwavpack      enable wavpack encoding via libwavpack [no]
-  --enable-libgme          enable Game Music Emu via libgme [no]
-  --enable-libflite        enable flite (voice synthesis) support via libflite [no]
-  --enable-libsoxr         enable Include libsoxr resampling [no]
-  --enable-libpulse        enable Pulseaudio input via libpulse [no]
-  --enable-libgsm          enable GSM de/encoding via libgsm [no] - speech
-  --enable-libopenmpt      enable decoding tracked files via libopenmpt [no] - mod tracker
-  --enable-librtmp         enable RTMP[E] support via librtmp [no]
-  --enable-libfontconfig   enable libfontconfig, useful for drawtext filter [no]
-  --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
-  --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
-  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
-  --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
-  --enable-netcdf          enable NetCDF, needed for sofalizer filter [no]
-  --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
-                           and libraw1394 [no]
+
   --enable-libilbc         enable iLBC de/encoding via libilbc [no]
+  --enable-libopenmpt      enable decoding tracked files via libopenmpt [no] - mod tracker
 
 
 
 
 # trying now
+  --enable-libcelt         enable CELT decoding via libcelt [no]   http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz  last update 5 years ago
+  --enable-libtwolame      enable MP2 encoding via libtwolame [no]
+  --enable-libwavpack      enable wavpack encoding via libwavpack [no]
+  --enable-libflite        enable flite (voice synthesis) support via libflite [no]
+  --enable-librtmp         enable RTMP[E] support via librtmp [no]
+  --enable-libgme          enable Game Music Emu via libgme [no]
+  --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394 and libraw1394 [no]
+  --enable-libsoxr         enable Include libsoxr resampling [no]
+  --enable-libpulse        enable Pulseaudio input via libpulse [no]
+  --enable-netcdf          enable NetCDF, needed for sofalizer filter [no]
+  --enable-libgsm          enable GSM de/encoding via libgsm [no] - speech
+  --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
+  --enable-libfontconfig   enable libfontconfig, useful for drawtext filter [no]
+  --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
+  --enable-libschroedinger enable Dirac de/encoding via libschroedinger [no]
+  --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
+  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
+
 
 
 

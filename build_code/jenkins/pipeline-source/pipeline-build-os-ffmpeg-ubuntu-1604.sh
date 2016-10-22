@@ -138,6 +138,13 @@ cmake .
 make
 make install
 
+cd ~/ffmpeg_sources
+curl -L -O http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz
+tar xzvf celt-0.11.1.tar.gz
+cd celt-0.11.1
+./configure --with-ogg="$HOME/ffmpeg_build"
+make -j8
+make install
 
 
 
