@@ -32,7 +32,7 @@ header_file_lines =\
     'MAINTAINER spootdev@gmail.com\n'\
     '\n'\
     '# Update Software repository\n'\
-    'RUN apt-get -y update && apt_get -y install'\
+    'RUN apt-get -y update && apt-get -y install'\
 
 # build the slave server
 command_string = header_file_lines
