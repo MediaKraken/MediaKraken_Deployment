@@ -19,6 +19,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from shutil import copyfile
+import os
 import sys
 sys.path.append('.')
 import pipeline_source_packages_ubuntu
@@ -50,6 +51,8 @@ copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
          '../pipeline-build-docker/ComposeMediaKrakenSlave/'\
          'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
+os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenSlave/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
@@ -66,6 +69,8 @@ copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
          '../pipeline-build-docker/ComposeMediaKrakenServer/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
+os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenServer/'\
          'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
