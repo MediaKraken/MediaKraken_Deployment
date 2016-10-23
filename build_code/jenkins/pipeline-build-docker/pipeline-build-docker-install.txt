@@ -37,3 +37,6 @@ docker pull ubuntu:16.04
 
 # 9.6
 docker pull postgres:9.6
+
+
+docker build -t testthis .
