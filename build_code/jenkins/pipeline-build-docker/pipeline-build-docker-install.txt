@@ -30,10 +30,10 @@ docker exec -t -i 516c31e78159 /bin/bash
 docker run -i -t ubuntu /bin/bash
 
 # 3.4
-docker pull alpine
+docker pull alpine:3.4
 
 # 16.04
-docker pull ubuntu
+docker pull ubuntu:16.04
 
 # 9.6
-docker pull postgres
+docker pull postgres:9.6
