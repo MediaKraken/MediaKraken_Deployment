@@ -30,6 +30,10 @@ header_file_lines =\
     '\n'\
     'MAINTAINER spootdev@gmail.com\n'\
     '\n'\
+    '# Copy the files so the pip requirements file is there\n'\
+    'ADD . /code\n'\
+    'WORKDIR /code\n'\
+    '\n'\
     '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'\
 
