@@ -47,3 +47,14 @@ copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
+
+# build the server
+command_string = header_file_lines
+for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
+    command_string += ' ' + package_name
+command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'
+copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
+         '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
+file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
+file_handle.write(command_string)
+file_handle.close()
