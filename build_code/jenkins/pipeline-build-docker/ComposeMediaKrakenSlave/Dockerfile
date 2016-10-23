@@ -1,5 +1,5 @@
 FROM python:2.7
 ADD . /code
 WORKDIR /code
-RUN pip install -r ../../pipeline-source/pipeline-build-os-pip-slave-ubuntu-1604.txt
+RUN pip install -r requirements.txt
 CMD python app.py

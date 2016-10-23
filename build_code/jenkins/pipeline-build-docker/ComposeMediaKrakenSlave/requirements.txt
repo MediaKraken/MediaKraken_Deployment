@@ -1,0 +1,16 @@
+service_identity
+psutil
+requests>=2.11.1
+pyOpenSSL
+dropbox
+boto
+pylzma
+onedrivesdk
+httplib2
+oauth2client
+twisted
+trakt
+pysmb
+scandir
+synolopy
+pycrypto
