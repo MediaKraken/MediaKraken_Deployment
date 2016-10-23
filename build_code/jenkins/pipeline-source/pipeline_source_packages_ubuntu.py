@@ -86,6 +86,7 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
     'portaudio19-dev',
     'nfs-common',
     'cifs-utils',
+    'python-pip',
     ]
 
 
