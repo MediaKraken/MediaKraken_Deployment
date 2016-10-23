@@ -1,12 +1,12 @@
 version: '2'
 services:
-  web:
+  mkserver:
     build: .
     ports:
-     - "5000:5000"
+     - "8080:8080"
     volumes:
      - .:/code
     depends_on:
-     - redis
-  redis:
-    image: redis
+     - mkdatabase
+  mkdatabase:
+    image: postgres:9.6
