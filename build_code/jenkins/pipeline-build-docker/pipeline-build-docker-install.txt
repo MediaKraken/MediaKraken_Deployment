@@ -1,13 +1,16 @@
 Centos 7.2 1511
 
+rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
 yum -y update
 # reboot if kernel updated
-yum -y install docker docker-registry
+yum -y install docker docker-registry python-pip
 systemctl enable docker.service
 systemctl start docker.service
 systemctl status docker.service
 
-
+pip install --upgrade pip
+pip install docker-compose
+pip install --upgrade docker-compose
 
 ---------------- ip 89 atm
 
@@ -40,3 +43,4 @@ docker pull postgres:9.6
 
 
 docker build -t testthis .
+
