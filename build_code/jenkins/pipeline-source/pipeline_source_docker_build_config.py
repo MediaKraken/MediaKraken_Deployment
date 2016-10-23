@@ -43,9 +43,13 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
     command_string += ' ' + package_name
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
     command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'
+command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
+    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'
 copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenSlave/requirements.txt')
+copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
+         '../pipeline-build-docker/ComposeMediaKrakenSlave/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
@@ -56,9 +60,13 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
     command_string += ' ' + package_name
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
     command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'
+command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
+    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'
 copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
+copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
+         '../pipeline-build-docker/ComposeMediaKrakenServer/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
