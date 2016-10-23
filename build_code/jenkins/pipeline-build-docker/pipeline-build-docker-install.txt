@@ -20,6 +20,8 @@ docker ps -a
 # list all the images on the system
 docker images
 
+# remove image
+docker rmi imagename
 
 docker -create --name="MediaKraken-Ubuntu" ubuntu:latest
 docker start b35f5914d17c
@@ -28,7 +30,7 @@ docker exec -t -i b35f5914d17c /bin/bash
 
 docker start 516c31e78159
 docker exec -t -i 516c31e78159 /bin/bash
-
+docker stop b689515c712a
 
 docker run -i -t ubuntu /bin/bash
 
