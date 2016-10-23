@@ -45,4 +45,4 @@ docker pull postgres:9.6
 
 
 docker build -t testthis .
-docker-compose up
+docker-compose build
