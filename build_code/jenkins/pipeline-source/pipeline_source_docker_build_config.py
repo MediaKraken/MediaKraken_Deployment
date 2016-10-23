@@ -45,7 +45,8 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
     command_string += ' ' + package_name
 command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
-    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'
+    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
+    ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenSlave/requirements.txt')
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
@@ -64,7 +65,8 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
     command_string += ' ' + package_name
 command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
-    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'
+    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
+    ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
@@ -75,3 +77,8 @@ os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenServer/'\
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
+
+
+# TODO - need to wipe out the temp ffmpeg directories
+# --no-install-recommends   ?
+# remove curl and wget?

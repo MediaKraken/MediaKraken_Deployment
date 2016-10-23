@@ -20,6 +20,8 @@ docker ps -a
 # list all the images on the system
 docker images
 
+docker history d176660c1018
+
 # remove image
 docker rmi imagename
 
@@ -46,3 +48,8 @@ docker pull postgres:9.6
 
 docker build -t testthis .
 docker-compose build
+
+
+docker save composemediakrakenserver_mkserver > /home/save.tar
+
+docker export d176660c1018 > /home/export.tar
