@@ -53,3 +53,6 @@ docker-compose build
 docker save composemediakrakenserver_mkserver > /home/save.tar
 
 docker export d176660c1018 > /home/export.tar
+
+# build slave image
+docker build -t mkslave:dev-0.1.12 .
