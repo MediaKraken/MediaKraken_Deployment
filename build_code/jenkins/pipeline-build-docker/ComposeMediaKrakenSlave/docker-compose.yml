@@ -6,3 +6,7 @@ services:
      - "8080:8080"
     volumes:
      - .:/code
+    depends_on:
+     - mkbase
+  mkbase:
+    image: mediakraken/mkbase:dev-0.1.12
