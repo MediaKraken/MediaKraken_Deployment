@@ -29,11 +29,11 @@ header_file_lines =\
     '# Download base image Ubuntu 16.04\n'\
     'FROM ubuntu:16.04\n'\
     '\n'\
-    'MAINTAINER spootdev@gmail.com\n'\
+    'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
     '\n'\
     '# Copy the files so the pip requirements file is there\n'\
-    'ADD . /code\n'\
-    'WORKDIR /code\n'\
+    'ADD . /mediakraken\n'\
+    'WORKDIR /mediakraken\n'\
     '\n'\
     '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'\
@@ -47,7 +47,8 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
 command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
     ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'\
-    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin'
+    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin\n'
+command_string += 'ENTRYPOINT ["python", "main_server_slave.py"]\n'
 copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenSlave/requirements.txt')
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
@@ -68,7 +69,8 @@ for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
 command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
     ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'\
-    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin'
+    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin\n'
+command_string += 'ENTRYPOINT ["python", "main_server.py"]\n'
 copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
          '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
 copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
