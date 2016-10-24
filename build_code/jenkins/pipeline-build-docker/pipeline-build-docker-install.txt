@@ -12,7 +12,7 @@ pip install --upgrade pip
 pip install docker-compose
 pip install --upgrade docker-compose
 
----------------- ip 89 atm
+---------------- ip 134 atm
 
 # list running images
 docker ps -a
@@ -54,5 +54,15 @@ docker save composemediakrakenserver_mkserver > /home/save.tar
 
 docker export d176660c1018 > /home/export.tar
 
+
+
 # build slave image
-docker build -t mkslave:dev-0.1.12 .
+docker build -t mediakraken/mkslave:dev-0.1.12 .
+
+# build server
+docker build -t mediakraken/mkserver:dev-0.1.12 .
+
+
+# post em
+docker login
+docker push mediakraken/mkserver:dev-0.1.12

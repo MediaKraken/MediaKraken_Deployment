@@ -25,7 +25,7 @@ sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
 from common import common_network_ssh
 import pipeline_source_lxc_definitions
-
+import pipeline_source_packages_ubuntu
 
 # build the containers if not already exist
 for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
@@ -38,6 +38,8 @@ for server_info in pipeline_source_lxc_definitions.SERVERS_TO_BUILD:
         elif server_info[3] == 'alpine':
             command_string += 'apk add '
         # loop through commands and build install string
+        for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
+            command_string += package_name + ' '
         for package_name in server_info[4]:
             command_string += package_name + ' '
         command_string = command_string.strip()

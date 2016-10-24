@@ -38,24 +38,36 @@ header_file_lines =\
     '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'\
 
+# build base server
+command_string = header_file_lines
+for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
+    command_string += ' ' + package_name
+for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
+    command_string += ' ' + package_name
+command_string += ' && pip install --upgrade pip'\
+    ' && pip install -r requirements.txt'\
+    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
+    ' && apt-get autoremove && apt-get clean && apt-get autoclean'\
+    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin\n'
+copyfile('pipeline-build-os-pip-base-ubuntu-1604.txt',\
+         '../pipeline-build-docker/ComposeMediaKrakenBase/requirements.txt')
+copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
+         '../pipeline-build-docker/ComposeMediaKrakenBase/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
+os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenBase/'\
+         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
+file_handle = open('../pipeline-build-docker/ComposeMediaKrakenBase/Dockerfile', 'w+')
+file_handle.write(command_string)
+file_handle.close()
+
 # build the slave server
 command_string = header_file_lines
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
     command_string += ' ' + package_name
-for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
-    command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
-    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
-    ' && apt-get autoremove && apt-get clean && apt-get autoclean'\
-    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin\n'
+command_string += ' && pip install --upgrade pip'\
+    ' && pip install -r requirements.txt'\
+    ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += 'ENTRYPOINT ["python", "main_server_slave.py"]\n'
-copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
-         '../pipeline-build-docker/ComposeMediaKrakenSlave/requirements.txt')
-copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
-         '../pipeline-build-docker/ComposeMediaKrakenSlave/'\
-         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
-os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenSlave/'\
-         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
@@ -64,25 +76,14 @@ file_handle.close()
 command_string = header_file_lines
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
     command_string += ' ' + package_name
-for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
-    command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip && pip install -r requirements.txt'\
-    ' && ./pipeline-build-os-ffmpeg-ubuntu-1604.sh'\
-    ' && apt-get autoremove && apt-get clean && apt-get autoclean'\
-    ' && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin\n'
+command_string += ' && pip install --upgrade pip'\
+    ' && pip install -r requirements.txt'\
+    ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += 'ENTRYPOINT ["python", "main_server.py"]\n'
-copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
-         '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
-copyfile('pipeline-build-os-ffmpeg-ubuntu-1604.sh',\
-         '../pipeline-build-docker/ComposeMediaKrakenServer/'\
-         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
-os.system('chmod +x ../pipeline-build-docker/ComposeMediaKrakenServer/'\
-         'pipeline-build-os-ffmpeg-ubuntu-1604.sh')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
 
-
-# TODO - need to wipe out the temp ffmpeg directories
+# TODO
 # --no-install-recommends   ?
 # remove curl and wget?
