@@ -34,12 +34,12 @@ header_file_lines =\
     '# Copy the files so the pip requirements file is there\n'\
     'ADD . /mediakraken\n'\
     'WORKDIR /mediakraken\n'\
-    '\n'\
-    '# Update Software repository\n'\
-    'RUN apt-get -y update && apt-get -y install'\
+    '\n'
 
 # build base server
-command_string = header_file_lines
+command_string = header_file_lines + \
+    '# Update Software repository\n'\
+    'RUN apt-get -y update && apt-get -y install'
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
     command_string += ' ' + package_name
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_FFMPEG_UBUNTU_1604:
@@ -61,11 +61,18 @@ file_handle.write(command_string)
 file_handle.close()
 
 # build the slave server
-command_string = header_file_lines
-for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
-    command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip'\
-    ' && pip install -r requirements.txt'\
+if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
+    command_string = header_file_lines + \
+        '# Update Software repository\n'\
+        'RUN apt-get -y install'
+    for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
+        command_string += ' ' + package_name
+    command_string += ' && '
+else:
+    command_string = header_file_lines + \
+        '# Update Software repository\n'\
+        'RUN '
+command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += 'ENTRYPOINT ["python", "main_server_slave.py"]\n'
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
@@ -73,17 +80,20 @@ file_handle.write(command_string)
 file_handle.close()
 
 # build the server
-command_string = header_file_lines
-for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
-    command_string += ' ' + package_name
-command_string += ' && pip install --upgrade pip'\
-    ' && pip install -r requirements.txt'\
+if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
+    command_string = header_file_lines + \
+        '# Update Software repository\n'\
+        'RUN apt-get -y install'
+    for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
+        command_string += ' ' + package_name
+    command_string += ' && '
+else:
+    command_string = header_file_lines + \
+        '# Update Software repository\n'\
+        'RUN '
+command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += 'ENTRYPOINT ["python", "main_server.py"]\n'
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
-
-# TODO
-# --no-install-recommends   ?
-# remove curl and wget?
