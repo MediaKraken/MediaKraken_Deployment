@@ -10,7 +10,7 @@ services:
      - mkdatabase
     entrypoint: ./wait-for-it.sh mkdatabase:5432
   mkdatabase:
-    image: postgres:9.6
+    image: postgres:9.5.4
     environment:
       - POSTGRES_DB=metamandb
       - POSTGRES_PASSWORD=metamanpg
