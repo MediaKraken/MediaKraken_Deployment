@@ -8,4 +8,5 @@ ADD . /mediakraken
 WORKDIR /mediakraken
 
 # Update Software repository
-RUN pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autocleanENTRYPOINT ["python", "main_server_slave.py"]
+RUN pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autoclean
+ENTRYPOINT ["python", "main_server_slave.py"]

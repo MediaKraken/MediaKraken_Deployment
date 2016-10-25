@@ -8,4 +8,5 @@ ADD . /mediakraken
 WORKDIR /mediakraken
 
 # Update Software repository
-RUN apt-get -y install libdiscid-dev postgresql-server-dev-9.5 nginx redis-server && pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autocleanENTRYPOINT ["python", "main_server.py"]
+RUN apt-get -y install libdiscid-dev postgresql-server-dev-9.5 nginx redis-server && pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autoclean
+ENTRYPOINT ["python", "main_server.py"]

@@ -91,7 +91,7 @@ else:
         'RUN '
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
-command_string += 'ENTRYPOINT ["python", "main_server_slave.py"]\n'
+command_string += '\nENTRYPOINT ["python", "main_server_slave.py"]\n'
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
@@ -128,7 +128,7 @@ else:
         'RUN '
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
-command_string += 'ENTRYPOINT ["python", "main_server.py"]\n'
+command_string += '\nENTRYPOINT ["python", "main_server.py"]\n'
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
