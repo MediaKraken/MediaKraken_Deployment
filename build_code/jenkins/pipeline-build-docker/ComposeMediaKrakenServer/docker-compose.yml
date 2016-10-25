@@ -8,9 +8,9 @@ services:
     volumes:
      - .:/code
     depends_on:
-     - mkdatabase
+     - postgres
     entrypoint: ./wait-for-it.sh mkdatabase:5432
-  mkdatabase:
+  postgres:
     image: postgres:9.5.4
     environment:
       - POSTGRES_DB=metamandb
