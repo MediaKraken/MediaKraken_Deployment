@@ -1,6 +1,7 @@
 version: '2'
 services:
   mkserver:
+    container_name: mediakraken/mkhost
     image: mediakraken/mkserver:dev-0.1.12
     ports:
      - "8080:8080"
