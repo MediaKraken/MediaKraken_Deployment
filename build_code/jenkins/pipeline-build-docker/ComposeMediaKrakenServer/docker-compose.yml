@@ -10,8 +10,7 @@ services:
     depends_on:
      - postgres
     entrypoint: ./wait-for-it.sh mkdatabase:5432
+    env_file: ./mediakraken.env
   postgres:
     image: postgres:9.5.4
-    environment:
-      - POSTGRES_DB=metamandb
-      - POSTGRES_PASSWORD=metamanpg
+    env_file: ./mediakraken.env
