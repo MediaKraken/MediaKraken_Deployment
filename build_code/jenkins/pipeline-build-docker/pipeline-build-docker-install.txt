@@ -14,7 +14,7 @@ pip install --upgrade docker-compose
 
 ---------------- ip 134 atm
 
-# list running images
+# list running images (can leave off -a to show only running stuff and not exited stuff)
 docker ps -a
 
 # list all the images on the system
@@ -54,6 +54,13 @@ docker save composemediakrakenserver_mkserver > /home/save.tar
 
 docker export d176660c1018 > /home/export.tar
 
+
+# the below are for compose
+
+
+
+
+# the below methods will build one big image including base+server/slave
 # build base image
 docker build -t mediakraken/mkbase:dev-0.1.12 .
 
@@ -67,3 +74,14 @@ docker build -t mediakraken/mkserver:dev-0.1.12 .
 # post em
 docker login
 docker push mediakraken/mkserver:dev-0.1.12
+
+
+***********
+# start postrgresq container
+docker run --name 2417ea518abc -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker stop 2417ea518abc
+
+
+# connecto postgres container
+docker run --name some-app --link some-postgres:postgres -d application-that-uses-postgres
+
