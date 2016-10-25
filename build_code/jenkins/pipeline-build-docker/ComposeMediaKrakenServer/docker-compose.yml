@@ -13,4 +13,3 @@ services:
     environment:
 	POSTGRES_DB: metamandb
 	POSTGRES_PASSWORD: metamanpg
-
