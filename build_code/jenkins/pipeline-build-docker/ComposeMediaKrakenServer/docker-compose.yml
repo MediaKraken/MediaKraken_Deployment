@@ -8,8 +8,9 @@ services:
      - .:/code
     depends_on:
      - mkdatabase
-     - mkbase
   mkdatabase:
     image: postgres:9.6
-  mkbase:
-    image: mediakraken/mkbase:dev-0.1.12
+    environment:
+	- POSTGRES_DB: metamandb
+	- POSTGRES_PASSWORD: metamanpg
+
