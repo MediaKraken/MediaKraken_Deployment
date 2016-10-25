@@ -11,5 +11,5 @@ services:
   mkdatabase:
     image: postgres:9.6
     environment:
-	POSTGRES_DB: metamandb
-	POSTGRES_PASSWORD: metamanpg
+      - POSTGRES_DB: metamandb
+      - POSTGRES_PASSWORD: metamanpg
