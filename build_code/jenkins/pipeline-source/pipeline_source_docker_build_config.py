@@ -24,8 +24,10 @@ import sys
 sys.path.append('.')
 import pipeline_source_packages_ubuntu
 
+DEV_TO_BUILD = 'dev-0.1.12'
 
-header_file_lines =\
+# build base image
+command_string = \
     '# Download base image Ubuntu 16.04\n'\
     'FROM ubuntu:16.04\n'\
     '\n'\
@@ -34,10 +36,7 @@ header_file_lines =\
     '# Copy the files so the pip requirements file is there\n'\
     'ADD . /mediakraken\n'\
     'WORKDIR /mediakraken\n'\
-    '\n'
-
-# build base server
-command_string = header_file_lines + \
+    '\n'\
     '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
@@ -62,14 +61,32 @@ file_handle.close()
 
 # build the slave server
 if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
-    command_string = header_file_lines + \
+    command_string = \
+        '# Download base imag\n'\
+        'FROM mediakraken/mkbase:' + DEV_TO_BUILD + '\n'\
+        '\n'\
+        'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
+        '\n'\
+        '# Copy the files so the pip requirements file is there\n'\
+        'ADD . /mediakraken\n'\
+        'WORKDIR /mediakraken\n'\
+        '\n'\
         '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
         command_string += ' ' + package_name
     command_string += ' && '
 else:
-    command_string = header_file_lines + \
+    command_string = \
+        '# Download base image\n'\
+        'FROM mediakraken/mkbase:' + DEV_TO_BUILD + '\n'\
+        '\n'\
+        'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
+        '\n'\
+        '# Copy the files so the pip requirements file is there\n'\
+        'ADD . /mediakraken\n'\
+        'WORKDIR /mediakraken\n'\
+        '\n'\
         '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\
@@ -81,14 +98,32 @@ file_handle.close()
 
 # build the server
 if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
-    command_string = header_file_lines + \
+    command_string = \
+        '# Download base image\n'\
+        'FROM mediakraken/mkbase:' + DEV_TO_BUILD + '\n'\
+        '\n'\
+        'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
+        '\n'\
+        '# Copy the files so the pip requirements file is there\n'\
+        'ADD . /mediakraken\n'\
+        'WORKDIR /mediakraken\n'\
+        '\n'\
         '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
         command_string += ' ' + package_name
     command_string += ' && '
 else:
-    command_string = header_file_lines + \
+    command_string = \
+        '# Download base image\n'\
+        'FROM mediakraken/mkbase:' + DEV_TO_BUILD + '\n'\
+        '\n'\
+        'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
+        '\n'\
+        '# Copy the files so the pip requirements file is there\n'\
+        'ADD . /mediakraken\n'\
+        'WORKDIR /mediakraken\n'\
+        '\n'\
         '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\

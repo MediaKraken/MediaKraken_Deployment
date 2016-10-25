@@ -1,5 +1,5 @@
-# Download base image Ubuntu 16.04
-FROM ubuntu:16.04
+# Download base image
+FROM mediakraken/mkbase:dev-0.1.12
 
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 

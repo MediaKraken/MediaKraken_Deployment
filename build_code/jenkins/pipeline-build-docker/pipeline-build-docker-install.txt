@@ -54,7 +54,8 @@ docker save composemediakrakenserver_mkserver > /home/save.tar
 
 docker export d176660c1018 > /home/export.tar
 
-
+# build base image
+docker build -t mediakraken/mkbase:dev-0.1.12 .
 
 # build slave image
 docker build -t mediakraken/mkslave:dev-0.1.12 .
