@@ -92,6 +92,8 @@ else:
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += '\nENTRYPOINT ["python", "main_server_slave.py"]\n'
+copyfile('pipeline-build-os-pip-slave-ubuntu-1604.txt',\
+         '../pipeline-build-docker/ComposeMediaKrakenSlave/requirements.txt')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenSlave/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
@@ -129,6 +131,8 @@ else:
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
 command_string += '\nENTRYPOINT ["python", "main_server.py"]\n'
+copyfile('pipeline-build-os-pip-server-ubuntu-1604.txt',\
+         '../pipeline-build-docker/ComposeMediaKrakenServer/requirements.txt')
 file_handle = open('../pipeline-build-docker/ComposeMediaKrakenServer/Dockerfile', 'w+')
 file_handle.write(command_string)
 file_handle.close()
