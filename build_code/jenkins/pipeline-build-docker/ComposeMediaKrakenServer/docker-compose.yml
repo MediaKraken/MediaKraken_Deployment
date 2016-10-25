@@ -8,6 +8,7 @@ services:
      - .:/code
     depends_on:
      - mkdatabase
+    entrypoint: ./wait-for-it.sh mkdatabase:5432
   mkdatabase:
     image: postgres:9.6
     environment:
