@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <script src="../../static/js/jquery.min.js"></script>
+        <script src="../../static/js/jquery.shuffle.min.js"></script>
+        <link rel="stylesheet"  href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+    </head>
+    {% if media %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                {% for row_data in media %}
+                <tr>
+                    {% if row_data[3] == None %}
+                    <td>
+                        <a href= {{ "./user_music_album_detail/" + row_data[1] }} >
+                        <img src= {{ row_data[0] }} alt= {{ row_data[0] }} height="100" width="100">
+                        </a>
+                    </td>
+                    {% else %}
+                    <td>
+                        <a href= {{ "./user_music_album_detail/" + row_data[1] }} >
+                        <img src= {{ row_data[2] }} alt= {{ row_data[1] }} height="100" width="100">
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No album media found.</p>
+    {% endif %}
+    {% endblock %}
+</body>

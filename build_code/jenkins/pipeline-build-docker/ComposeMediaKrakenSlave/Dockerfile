@@ -7,7 +7,6 @@ MAINTAINER Quinn D Granfor, spootdev@gmail.com
 ADD requirements.txt /home/mediakraken
 WORKDIR /home/mediakraken
 
-COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/
 # Update Software repository
 RUN pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autoclean
 ENTRYPOINT ["python", "/home/mediakraken/main_server_slave.py"]

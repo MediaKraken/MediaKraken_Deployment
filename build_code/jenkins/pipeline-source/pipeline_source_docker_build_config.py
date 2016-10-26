@@ -18,7 +18,7 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from shutil import copyfile
+from shutil import copyfile, rmtree
 import os
 import sys
 sys.path.append('.')
@@ -37,6 +37,60 @@ def build_base_dir(server_copy=False):
     return command_string
 
 
+#nuke old directories
+try:
+    rmtree('/home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+           'jenkins/pipeline-build-docker/ComposeMediaKrakenServer/src')
+except:
+    pass
+try:
+    rmtree('/home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+           'jenkins/pipeline-build-docker/ComposeMediaKrakenSlave/src')
+except:
+    pass
+
+# build image sources
+for folder_name in ('fake_donotremove', 'common', 'conf'): # server, slave
+    print('F1: %s' % folder_name)
+    os.system('cp -R /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + folder_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenServer/src/')
+    os.system('cp -R /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + folder_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenSlave/src/')
+for file_name in ('README.md', 'LICENSE'): # server, slave
+    os.system('cp /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + file_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenServer/src/.')
+    os.system('cp /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + file_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenSlave/src/.')
+
+# server
+for folder_name in ('database', 'metadata', 'network', 'web_app'):
+    print('F2: %s' % folder_name)
+    os.system('cp -R /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + folder_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenServer/src/')
+for program_name in ('bulk_gamesdb_netfetch.py',\
+        'main_server.py',\
+        'main_server_api.py',\
+        'main_server_link.py',\
+        'main_server_metadata_api.py',\
+        'main_server_trigger.py',\
+        'subprogram*.py'):
+    print('F3: %s' % program_name)
+    os.system('cp /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + program_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenServer/src/.')
+
+# slave
+for program_name in ('main_server_slave.py', ''):
+    print('F4: %s' % program_name)
+    os.system('cp /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + program_name\
+             + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
+             'jenkins/pipeline-build-docker/ComposeMediaKrakenSlave/src/.')
+
 # build base image
 command_string = \
     '# Download base image Ubuntu 16.04\n'\
@@ -48,12 +102,8 @@ command_string = \
     'ADD requirements.txt /home/mediakraken\n'\
     'ADD pipeline-build-os-ffmpeg-ubuntu-1604.sh /home/mediakraken\n'\
     'WORKDIR /home/mediakraken\n'\
-    '\n'
-for folder_name in ('common', 'conf'):
-    command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name + ' /home/mediakraken/\n'
-for file_name in ('README.md', 'LICENSE'):
-    command_string += 'COPY /root/MediaKraken_Deployment/' + file_name + ' /home/mediakraken/\n'
-command_string += '# Update Software repository\n'\
+    '\n'\
+    '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
     command_string += ' ' + package_name
@@ -88,9 +138,8 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
         '# Copy the files so the pip requirements file is there\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
-        '\n'
-    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
-    command_string += '# Update Software repository\n'\
+        '\n'\
+        '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
         command_string += ' ' + package_name
@@ -105,9 +154,8 @@ else:
         '# Copy the files so the pip requirements file is there\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
-        '\n'
-    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
-    command_string += '# Update Software repository\n'\
+        '\n'\
+        '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
@@ -130,18 +178,8 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         '# Copy the files so the pip requirements file is there\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
-        '\n'
-    for folder_name in ('database', 'metadata', 'network', 'web_app'):
-        command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\
-            + ' /home/mediakraken/\n'
-    for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
-            'main_server_api.py', 'main_server_link.py',\
-            'main_server_metadata_api.py',\
-            'main_server_trigger.py',\
-            'subprogram*.py'):
-        command_string += 'COPY /root/MediaKraken_Deployment/' + program_name\
-            + ' /home/mediakraken/\n'
-    command_string += '# Update Software repository\n'\
+        '\n'\
+        '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
         command_string += ' ' + package_name
@@ -156,18 +194,8 @@ else:
         '# Copy the files so the pip requirements file is there\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
-        '\n'
-    for folder_name in ('database', 'metadata', 'network', 'web_app'):
-        command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\
-            + ' /home/mediakraken/\n'
-    for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
-            'main_server_api.py', 'main_server_link.py',\
-            'main_server_metadata_api.py',\
-            'main_server_trigger.py',\
-            'subprogram*.py'):
-        command_string += 'COPY /root/MediaKraken_Deployment/' + program_name\
-            + ' /home/mediakraken/\n'
-    command_string += '# Update Software repository\n'\
+        '\n'\
+        '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\
     ' && apt-get autoremove && apt-get clean && apt-get autoclean'
