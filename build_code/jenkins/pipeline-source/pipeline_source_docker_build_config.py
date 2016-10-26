@@ -45,8 +45,8 @@ command_string = \
     'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
     '\n'\
     '# Copy the files so the pip requirements file is there\n'\
-    'ADD . /mediakraken\n'\
-    'WORKDIR /mediakraken\n'\
+    'ADD . /home/mediakraken\n'\
+    'WORKDIR /home/mediakraken\n'\
     '\n'
 for folder_name in ('common', 'conf'):
     command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name + ' /home/mediakraken/\n'
@@ -85,8 +85,8 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /mediakraken\n'\
-        'WORKDIR /mediakraken\n'\
+        'ADD . /home/mediakraken\n'\
+        'WORKDIR /home/mediakraken\n'\
         '\n'
     command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
@@ -102,8 +102,8 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /mediakraken\n'\
-        'WORKDIR /mediakraken\n'\
+        'ADD . /home/mediakraken\n'\
+        'WORKDIR /home/mediakraken\n'\
         '\n'
     command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
@@ -127,8 +127,8 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /mediakraken\n'\
-        'WORKDIR /mediakraken\n'\
+        'ADD . /home/mediakraken\n'\
+        'WORKDIR /home/mediakraken\n'\
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\
@@ -153,8 +153,8 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /mediakraken\n'\
-        'WORKDIR /mediakraken\n'\
+        'ADD . /home/mediakraken\n'\
+        'WORKDIR /home/mediakraken\n'\
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\

@@ -4,8 +4,8 @@ FROM ubuntu:16.04
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
 # Copy the files so the pip requirements file is there
-ADD . /mediakraken
-WORKDIR /mediakraken
+ADD . /home/mediakraken
+WORKDIR /home/mediakraken
 
 COPY /root/MediaKraken_Deployment/common /home/mediakraken/
 COPY /root/MediaKraken_Deployment/conf /home/mediakraken/

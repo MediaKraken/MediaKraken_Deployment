@@ -4,8 +4,8 @@ FROM mediakraken/mkbase:dev-0.1.12
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
 # Copy the files so the pip requirements file is there
-ADD . /mediakraken
-WORKDIR /mediakraken
+ADD . /home/mediakraken
+WORKDIR /home/mediakraken
 
 COPY /root/MediaKraken_Deployment/database /home/mediakraken/
 COPY /root/MediaKraken_Deployment/metadata /home/mediakraken/
