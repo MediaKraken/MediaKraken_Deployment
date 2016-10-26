@@ -49,9 +49,9 @@ command_string = \
     'WORKDIR /mediakraken\n'\
     '\n'
 for folder_name in ('common', 'conf'):
-    command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name + ' /home/mediakraken/.\n'
+    command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name + ' /home/mediakraken/\n'
 for file_name in ('README.md', 'LICENSE'):
-    command_string += 'COPY /root/MediaKraken_Deployment/' + file_name + ' /home/mediakraken/.\n'
+    command_string += 'COPY /root/MediaKraken_Deployment/' + file_name + ' /home/mediakraken/\n'
 command_string += '# Update Software repository\n'\
     'RUN apt-get -y update && apt-get -y install'
 for package_name in pipeline_source_packages_ubuntu.PACKAGES_BASE_UBUNTU_1604:
@@ -88,7 +88,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
         'ADD . /mediakraken\n'\
         'WORKDIR /mediakraken\n'\
         '\n'
-    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/.\n'
+    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604:
@@ -105,7 +105,7 @@ else:
         'ADD . /mediakraken\n'\
         'WORKDIR /mediakraken\n'\
         '\n'
-    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/.\n'
+    command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\
@@ -132,14 +132,14 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\
-            + ' /home/mediakraken/.\n'
+            + ' /home/mediakraken/\n'
     for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
             'main_server_api.py', 'main_server_link.py',\
             'main_server_metadata_api.py',\
             'main_server_trigger.py',\
             'subprogram*.py'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + program_name\
-            + ' /home/mediakraken/.\n'
+            + ' /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
         'RUN apt-get -y install'
     for package_name in pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604:
@@ -158,14 +158,14 @@ else:
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + folder_name\
-            + ' /home/mediakraken/.\n'
+            + ' /home/mediakraken/\n'
     for program_name in ('bulk_gamesdb_netfetch.py', 'main_server.py',\
             'main_server_api.py', 'main_server_link.py',\
             'main_server_metadata_api.py',\
             'main_server_trigger.py',\
             'subprogram*.py'):
         command_string += 'COPY /root/MediaKraken_Deployment/' + program_name\
-            + ' /home/mediakraken/.\n'
+            + ' /home/mediakraken/\n'
     command_string += '# Update Software repository\n'\
         'RUN '
 command_string += 'pip install -r requirements.txt'\
