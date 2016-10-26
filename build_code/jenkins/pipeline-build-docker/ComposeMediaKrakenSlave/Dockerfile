@@ -7,6 +7,7 @@ MAINTAINER Quinn D Granfor, spootdev@gmail.com
 ADD . /mediakraken
 WORKDIR /mediakraken
 
+ADD /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/.
 # Update Software repository
 RUN pip install -r requirements.txt && apt-get autoremove && apt-get clean && apt-get autoclean
-ENTRYPOINT ["python", "main_server_slave.py"]
+ENTRYPOINT ["python", "/home/mediakraken/main_server_slave.py"]

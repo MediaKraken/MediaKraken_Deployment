@@ -11,6 +11,8 @@ systemctl status docker.service
 pip install --upgrade pip
 pip install docker-compose
 pip install --upgrade docker-compose
+pip install docker-squash
+
 
 ---------------- ip 134 atm
 

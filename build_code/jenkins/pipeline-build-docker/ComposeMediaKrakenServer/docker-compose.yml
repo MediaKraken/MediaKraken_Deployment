@@ -11,6 +11,7 @@ services:
      - postgres
     entrypoint: ./wait-for-it.sh mkdatabase:5432
     env_file: ./mediakraken.env
+    command: ["python", "main_server.py"]
   postgres:
     image: postgres:9.5.4
     env_file: ./mediakraken.env
