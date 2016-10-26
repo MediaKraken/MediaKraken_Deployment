@@ -29,11 +29,15 @@ DEV_TO_BUILD = 'dev-0.1.12'
 
 def build_base_dir(server_copy=False):
     if server_copy:
-        command_string = '&& mkdir mediakraken/backups && mkdir mediakraken/passwordmeter'\
-            ' && mkdir mediakraken/passwordmeter/res'
+        command_string = '&& mkdir /home/mediakraken/backups'\
+            ' && mkdir /home/mediakraken/passwordmeter'\
+            ' && mkdir /home/mediakraken/passwordmeter/res'
     else:
-        command_string = ' && mkdir mediakraken/bin && mkdir mediakraken/cache'\
-        ' && mkdir mediakraken/conf mkdir mediakraken/key && mkdir mediakraken/log'
+        command_string = ' && mkdir /home/mediakraken/bin'\
+            ' && mkdir /home/mediakraken/cache'\
+            ' && mkdir /home/mediakraken/conf'\
+            ' && mkdir /home/mediakraken/key'\
+            ' && mkdir /home/mediakraken/log'
     return command_string
 
 
