@@ -45,7 +45,8 @@ command_string = \
     'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
     '\n'\
     '# Copy the files so the pip requirements file is there\n'\
-    'ADD . /home/mediakraken\n'\
+    'ADD requirements.txt /home/mediakraken\n'\
+    'ADD pipeline-build-os-ffmpeg-ubuntu-1604.sh /home/mediakraken\n'\
     'WORKDIR /home/mediakraken\n'\
     '\n'
 for folder_name in ('common', 'conf'):
@@ -85,7 +86,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /home/mediakraken\n'\
+        'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'
     command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
@@ -102,7 +103,7 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /home/mediakraken\n'\
+        'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'
     command_string += 'COPY /root/MediaKraken_Deployment/main_server_slave.py /home/mediakraken/\n'
@@ -127,7 +128,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /home/mediakraken\n'\
+        'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):
@@ -153,7 +154,7 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
-        'ADD . /home/mediakraken\n'\
+        'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'
     for folder_name in ('database', 'metadata', 'network', 'web_app'):

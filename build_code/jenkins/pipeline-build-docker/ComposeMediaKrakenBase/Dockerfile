@@ -4,7 +4,8 @@ FROM ubuntu:16.04
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
 # Copy the files so the pip requirements file is there
-ADD . /home/mediakraken
+ADD requirements.txt /home/mediakraken
+ADD pipeline-build-os-ffmpeg-ubuntu-1604.sh /home/mediakraken
 WORKDIR /home/mediakraken
 
 COPY /root/MediaKraken_Deployment/common /home/mediakraken/
