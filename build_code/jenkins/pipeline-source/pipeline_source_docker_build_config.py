@@ -99,6 +99,7 @@ command_string = \
     'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
     '\n'\
     '# Copy the files so the pip requirements file is there\n'\
+    'RUN mkdir /home/mediakraken'\
     'ADD requirements.txt /home/mediakraken\n'\
     'ADD pipeline-build-os-ffmpeg-ubuntu-1604.sh /home/mediakraken\n'\
     'WORKDIR /home/mediakraken\n'\
@@ -136,6 +137,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SLAVE_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'RUN mkdir /home/mediakraken'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
@@ -152,6 +154,7 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'RUN mkdir /home/mediakraken'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
@@ -176,6 +179,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'RUN mkdir /home/mediakraken'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
@@ -192,6 +196,7 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'RUN mkdir /home/mediakraken'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
