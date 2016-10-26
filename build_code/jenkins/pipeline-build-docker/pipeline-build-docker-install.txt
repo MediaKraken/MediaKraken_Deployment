@@ -1,3 +1,17 @@
+debian 8.6
+apt-get install apt-transport-https ca-certificates
+apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+nano /etc/apt/sources.list.d/docker.list
+deb https://apt.dockerproject.org/repo debian-jessie main
+apt-get install docker-engine python-pip libyaml-dev
+service docker start
+docker run hello-world
+pip install --upgrade pip
+pip install docker-compose
+pip install --upgrade docker-compose
+pip install docker-squash
+
+
 Centos 7.2 1511
 
 rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
@@ -46,6 +60,9 @@ docker pull ubuntu:16.04
 
 # 9.6
 docker pull postgres:9.6
+
+# 9.5.4
+docker pull postgres:9.5.4
 
 
 docker build -t testthis .
