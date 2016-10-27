@@ -133,3 +133,44 @@ docker network ls
 docker network create --driver bridge mknetwork
 
 
+******************************
+
+# create swarm manager
+docker swarm init
+
+# list running swarm services
+docker service ls
+
+
+
+# use this to get uuid for swarm to join?
+docker swarm join-token manager
+
+# join swam as another manager?
+docker swarm join \
+    --token SWMTKN-1-2lptlwq6p1ddt0t6qpil2p904qlmrwnrik7f5a2c0gdvvs7hn4-cuxeu68q9ec159axrciz6wbqf \10.105.30.12:2377
+
+# swam workers
+docker-machine env WORKER1
+eval $(docker-machine env WORKER1)
+docker swarm join \
+    --token SWMTKN-1-2lptlwq6p1ddt0t6qpil2p904qlmrwnrik7f5a2c0gdvvs7hn4-138uv6z599o1q9gki9wzwumn7 \ 10.105.30.12:2377
+
+# list swarm nodes
+docker node ls
+
+# exit swarm
+docker swarm leave
+
+# remove node from manager node
+docker node rm node-2
+
+#since manger also defaults to worker........drain it
+docker node update --availability drain <NODE>
+
+
+docker service create --publish 9000:9000 --name guid swarm-mode-guid
+curl localhost:9000/guid
+docker service scale guid=3
+docker service scale guid=0
+docker service rm guid
