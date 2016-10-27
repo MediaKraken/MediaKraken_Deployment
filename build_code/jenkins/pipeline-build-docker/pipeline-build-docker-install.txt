@@ -3,6 +3,7 @@ apt-get install apt-transport-https ca-certificates
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 nano /etc/apt/sources.list.d/docker.list
 deb https://apt.dockerproject.org/repo debian-jessie main
+apt-get update
 apt-get install docker-engine python-pip libyaml-dev
 service docker start
 docker run hello-world
