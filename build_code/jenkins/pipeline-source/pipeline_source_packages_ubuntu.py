@@ -55,7 +55,6 @@ PACKAGES_BASE_UBUNTU_1604 = [
 
 
 PACKAGES_SERVER_UBUNTU_1604 = [
-    'libdiscid-dev',
     'postgresql-server-dev-9.5',
     'nginx',
     'redis-server',
@@ -63,6 +62,11 @@ PACKAGES_SERVER_UBUNTU_1604 = [
 
 
 PACKAGES_SLAVE_UBUNTU_1604 = [
+    ]
+
+
+PACKAGES_THEATER_UBUNTU_1604 = [
+    'libdiscid-dev',
     ]
 
 
