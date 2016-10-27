@@ -1,0 +1,12 @@
+plyer
+pylzma
+fastnumbers
+natsort
+xmltodict
+steam
+futures
+pygal
+pillow
+python-ldap
+pyaudio
+python-libdiscid
