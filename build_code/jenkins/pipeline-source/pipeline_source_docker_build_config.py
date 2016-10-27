@@ -181,6 +181,7 @@ if len(pipeline_source_packages_ubuntu.PACKAGES_SERVER_UBUNTU_1604) > 0:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'ADD wait-for-it.sh /home/mediakraken\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
@@ -197,6 +198,7 @@ else:
         'MAINTAINER Quinn D Granfor, spootdev@gmail.com\n'\
         '\n'\
         '# Copy the files so the pip requirements file is there\n'\
+        'ADD wait-for-it.sh /home/mediakraken\n'\
         'ADD requirements.txt /home/mediakraken\n'\
         'WORKDIR /home/mediakraken\n'\
         '\n'\
