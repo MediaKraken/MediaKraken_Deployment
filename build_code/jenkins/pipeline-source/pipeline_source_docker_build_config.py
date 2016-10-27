@@ -54,7 +54,7 @@ except:
     pass
 
 # build image sources
-for folder_name in ('fake_donotremove', 'common', 'conf'): # server, slave
+for folder_name in ('fake_donotremove', 'common', 'conf', 'database'): # server, slave
     print('F1: %s' % folder_name)
     os.system('cp -R /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + folder_name\
              + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
@@ -71,7 +71,7 @@ for file_name in ('README.md', 'LICENSE'): # server, slave
              'jenkins/pipeline-build-docker/ComposeMediaKrakenSlave/src/.')
 
 # server
-for folder_name in ('database', 'metadata', 'network', 'web_app'):
+for folder_name in ('metadata', 'network', 'web_app'):
     print('F2: %s' % folder_name)
     os.system('cp -R /home/spoot/github/MediaKraken/MediaKraken_Deployment/' + folder_name\
              + ' /home/spoot/github/MediaKraken/MediaKraken_Deployment/build_code/'\
