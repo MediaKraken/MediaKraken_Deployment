@@ -7,6 +7,7 @@ services:
      - "5000:8080"
     volumes:
      - .:/code
+    restart: unless-stopped
     depends_on:
      - postgres
     entrypoint: ./wait-for-postgres.sh postgres:5432
