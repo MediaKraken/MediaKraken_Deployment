@@ -9,7 +9,7 @@ services:
      - .:/code
     depends_on:
      - postgres
-    entrypoint: /home/mediakraken/wait-for-it.sh postgres:5432
+    entrypoint: ./wait-for-postgres.sh postgres:5432
     env_file: ./mediakraken.env
     command: ["python", "main_server.py"]
   postgres:
