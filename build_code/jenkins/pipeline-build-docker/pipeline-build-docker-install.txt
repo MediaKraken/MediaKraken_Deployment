@@ -28,7 +28,7 @@ pip install --upgrade docker-compose
 pip install docker-squash
 
 
----------------- ip 134 atm
+---------------- ip 125 atm
 
 # list running images (can leave off -a to show only running stuff and not exited stuff)
 docker ps -a
