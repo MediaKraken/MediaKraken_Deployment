@@ -41,6 +41,11 @@ docker history d176660c1018
 # remove image
 docker rmi imagename
 
+
+# look at the info of the image/container
+docker inspect a33bebd9d1f3
+
+
 docker -create --name="MediaKraken-Ubuntu" ubuntu:latest
 docker start b35f5914d17c
 
@@ -103,4 +108,21 @@ docker stop 2417ea518abc
 
 # connecto postgres container
 docker run --name some-app --link some-postgres:postgres -d application-that-uses-postgres
+
+
+
+
+
+
+docker run -t -i mediakraken/mkslave:dev-0.1.12 /bin/bash
+docker exec -t -i mediakraken/mkslave:dev-0.1.12 /bin/bash
+
+docker exec -t -i a33bebd9d1f3 /bin/bash
+
+
+docker ps -a
+# grab container id
+docker export contid > dump.tar
+tar it
+
 
