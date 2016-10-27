@@ -1,12 +1,10 @@
+service_identity
 plyer
 pylzma
-fastnumbers
-natsort
-xmltodict
-steam
 futures
 pygal
 pillow
-python-ldap
 pyaudio
 python-libdiscid
+twisted
+kivy

@@ -66,6 +66,7 @@ PACKAGES_SLAVE_UBUNTU_1604 = [
 
 
 PACKAGES_THEATER_UBUNTU_1604 = [
+    'python-pip',
     'libdiscid-dev',
     ]
 
