@@ -9,5 +9,5 @@ ADD requirements.txt /home/mediakraken
 WORKDIR /home/mediakraken
 
 # Update Software repository
-RUN apk add --update py-pip && pip install -r requirements.txt
+RUN apk add --update py-pip && pip install -r requirements.txt && pip uninstall pytest_runner
 ENTRYPOINT ["python", "/home/mediakraken/main_server_trigger.py"]
