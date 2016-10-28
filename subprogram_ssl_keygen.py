@@ -18,23 +18,19 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from subprocess import Popen, PIPE
+from subprocess import Popen
 import shutil
 import sys
 import os
 
 
 # generate key
+PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
+    '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',\
+    '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.com'], shell=False)
+PROC.wait() # have to do here so the move has sumthing to move
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
-        '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000', '-config',\
-        './key/openssl.cfg'], shell=False)
-    PROC.wait() # have to do here so the move has sumthing to move
     shutil.move('privkey.pem', './key/.')
     shutil.move('cacert.pem', './key/.')
 else:
-    PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
-        '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',\
-        '-config', './key/openssl.cfg'], shell=False, stdin=PIPE)
-    PROC.wait() # have to do here so the move has sumthing to move
     os.system('mv %s %s' % ('*.pem', './key/.'))
