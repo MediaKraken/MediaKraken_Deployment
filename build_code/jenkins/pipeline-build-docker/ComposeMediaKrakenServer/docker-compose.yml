@@ -10,9 +10,9 @@ services:
       - /home/mediakraken/log:/var/log/mediakraken
     restart: unless-stopped
     depends_on:
-     - postgres
+      - postgres
     env_file: ./mediakraken.env
     command: ["python", "main_server.py"]
   postgres:
-    image: postgres:9.5.4
+    image: mediakraken/mkdatabase:dev-0.1.12
     env_file: ./mediakraken.env
