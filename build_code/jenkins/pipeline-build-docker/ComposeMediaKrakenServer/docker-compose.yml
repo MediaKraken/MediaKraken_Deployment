@@ -4,10 +4,10 @@ services:
     container_name: mkhost
     image: mediakraken/mkserver:dev-0.1.12
     ports:
-     - "5000:8080"
+      - "5000:8080"
     volumes:
-     - .:/code
-     - /home/mediakraken/log:/var/log/mediakraken
+      - .:/code
+      - /home/mediakraken/log:/var/log/mediakraken
     restart: unless-stopped
     depends_on:
      - postgres
