@@ -95,6 +95,9 @@ docker build -t mediakraken/mkslave:dev-0.1.12 .
 # build server
 docker build -t mediakraken/mkserver:dev-0.1.12 .
 
+# build database
+docker build -t mediakraken/mkdatabase:dev-0.1.12 .
+
 
 # post em
 docker login
