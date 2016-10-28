@@ -1,0 +1,10 @@
+Adafruit_BBIO
+arduino-python
+docker-py
+easysnmp
+feedgen
+nest
+passwordmeter
+psycopg2
+pychromecast
+rxv

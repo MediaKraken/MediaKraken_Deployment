@@ -20,7 +20,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 
-PACKAGES_BASE_UBUNTU_1604 = [
+PACKAGES_BASE_ALPINE_34 = [
     'autoconf',
     'automake',
     'build-essential',
@@ -53,28 +53,28 @@ PACKAGES_BASE_UBUNTU_1604 = [
     ]
 
 
-PACKAGES_SERVER_UBUNTU_1604 = [
+PACKAGES_SERVER_ALPINE_34 = [
     'nginx',
-    'postgresql-server-dev-9.5',
+    'postgresql-server-dev',
     'redis-server',
     ]
 
 
-PACKAGES_SLAVE_UBUNTU_1604 = [
+PACKAGES_SLAVE_ALPINE_34 = [
     ]
 
 
-PACKAGES_THEATER_UBUNTU_1604 = [
+PACKAGES_THEATER_ALPINE_34 = [
     'libdiscid-dev',
     'python-pip',
     ]
 
 
-PACKAGES_METADATA_UBUNTU_1604 = [
+PACKAGES_METADATA_ALPINE_34 = [
     ]
 
 
-PACKAGES_FFMPEG_UBUNTU_1604 = [
+PACKAGES_FFMPEG_ALPINE_34 = [
     'autoconf',
     'automake',
     'autotools-dev',

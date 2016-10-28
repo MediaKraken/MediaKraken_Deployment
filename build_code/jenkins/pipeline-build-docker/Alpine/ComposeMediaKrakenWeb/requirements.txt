@@ -1,0 +1,16 @@
+Flask
+Flask-WeasyPrint
+Flask-Login
+Flask-Cache
+Flask-Bcrypt
+Flask-WTF
+Flask-Babel
+Flask-Mail
+Flask-Openid
+Flask-Paginate
+Flask-Moment
+Flask-Assets
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-KVSession
+ipgetter
