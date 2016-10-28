@@ -10,7 +10,6 @@ services:
     restart: unless-stopped
     depends_on:
      - postgres
-    entrypoint: ./wait-for-postgres.sh postgres:5432
     env_file: ./mediakraken.env
     command: ["python", "main_server.py"]
   postgres:
