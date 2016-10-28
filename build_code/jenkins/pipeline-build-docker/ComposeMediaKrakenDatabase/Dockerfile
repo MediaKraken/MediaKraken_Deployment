@@ -4,7 +4,7 @@ FROM alpine:3.4
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
 # Update Software repository
-RUN apk add --update postgresql-9.5.4-r0 postgresql-contrib-9.5.4-r0 postgresql-client-9.5.4-r0
+RUN apk add --update postgresql postgresql-contrib postgresql-client
 
 ENV PATH /usr/lib/postgresql/9.5/bin:$PATH
 ENV PGDATA /var/lib/postgresql/data
