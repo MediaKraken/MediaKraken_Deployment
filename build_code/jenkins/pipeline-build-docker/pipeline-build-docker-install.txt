@@ -129,7 +129,8 @@ docker ps -a
 docker export contid > dump.tar
 tar it
 
-
+# alpine shell
+docker run -it --rm alpine /bin/ash
 
 docker network ls
 
