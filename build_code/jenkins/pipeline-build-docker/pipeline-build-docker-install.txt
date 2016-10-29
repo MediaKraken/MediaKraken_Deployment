@@ -122,7 +122,14 @@ docker stop 2417ea518abc
 docker run --name some-app --link some-postgres:postgres -d application-that-uses-postgres
 
 
+# these work
+docker build -t mediakraken/mkbase2:dev-0.1.12 .
+docker run  -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d mediakraken/mkbase2:dev-0.1.12
 
+
+# maikelvl - gives bad password
+docker build -t mediakraken/mkbase3:dev-0.1.12 .
+docker run  -e POSTGRES_PASSWORD=mysecretpassword -p 5433:5432 -d mediakraken/mkbase3:dev-0.1.12
 
 
 

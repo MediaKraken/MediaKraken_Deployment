@@ -34,5 +34,7 @@ RUN apk update && apk add build-base readline-dev openssl-dev zlib-dev libxml2-d
 VOLUME /var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
 EXPOSE 5432
 CMD ["postgres"]
