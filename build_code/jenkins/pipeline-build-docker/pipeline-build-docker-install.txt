@@ -103,6 +103,10 @@ docker build -t mediakraken/mkdatabase:dev-0.1.12 .
 docker build -t mediakraken/mkmetadata:dev-0.1.12 .
 
 
+# nginx
+docker build -t mediakraken/mknginx:dev-0.1.12 .
+
+
 # post em
 docker login
 docker push mediakraken/mkserver:dev-0.1.12
