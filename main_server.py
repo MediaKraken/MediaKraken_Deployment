@@ -26,12 +26,12 @@ from common import common_config_ini
 from common import common_logging
 from common import common_signal
 from common import common_watchdog
-rmda_enabled_os = False
-try:
-    from common import common_rmda
-    rmda_enabled_os = True
-except:
-    pass
+#rmda_enabled_os = False
+#try:
+#    from common import common_rmda
+#    rmda_enabled_os = True
+#except:
+#    pass
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -81,11 +81,11 @@ db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Serv
                                  'ServerStart', None, None, 'System')
 
 
-# look for infiniband rdma devices
-if rmda_enabled_os:
-    rmda_devices = common_rmda.com_rdma_get_devices()
-    if rmda_devices is None:
-        rmda_enabled_os = False
+## look for infiniband rdma devices
+#if rmda_enabled_os:
+#    rmda_devices = common_rmda.com_rdma_get_devices()
+#    if rmda_devices is None:
+#        rmda_enabled_os = False
 
 
 logging.info("Start Watchdog")
