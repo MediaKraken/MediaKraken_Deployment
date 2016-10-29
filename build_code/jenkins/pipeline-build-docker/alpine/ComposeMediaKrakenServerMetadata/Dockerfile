@@ -25,4 +25,5 @@ RUN apk add --update \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip
+  && rm requirements.txt
 CMD ["python", "/home/mediakraken/main_server_trigger.py"]
