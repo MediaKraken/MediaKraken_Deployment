@@ -99,6 +99,10 @@ docker build -t mediakraken/mkserver:dev-0.1.12 .
 docker build -t mediakraken/mkdatabase:dev-0.1.12 .
 
 
+# build metadata
+docker build -t mediakraken/mkmetadata:dev-0.1.12 .
+
+
 # post em
 docker login
 docker push mediakraken/mkserver:dev-0.1.12
