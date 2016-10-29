@@ -15,9 +15,11 @@ RUN apk add --update \
 
 USER postgres
 
-ENV PATH /usr/lib/postgresql/9.5/bin:$PATH
-ENV PGDATA /var/lib/postgresql/data
-VOLUME /var/lib/postgresql/data
+#ENV PATH /usr/lib/postgresql/9.5/bin:$PATH
+#ENV PGDATA /var/lib/postgresql/data
+
+# Add VOLUMEs to allow backup of config, logs and databases
+VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 EXPOSE 5432
 CMD ["postgres"]
