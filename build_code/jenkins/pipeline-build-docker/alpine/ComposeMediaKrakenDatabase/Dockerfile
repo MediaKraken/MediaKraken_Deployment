@@ -17,9 +17,5 @@ ENV PATH /usr/lib/postgresql/9.5/bin:$PATH
 ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 
-COPY docker-entrypoint.sh /
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
 EXPOSE 5432
 CMD ["postgres"]
