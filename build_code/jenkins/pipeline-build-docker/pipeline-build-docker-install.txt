@@ -85,6 +85,9 @@ docker export d176660c1018 > /home/export.tar
 
 
 
+
+
+
 # the below methods will build one big image including base+server/slave
 # build base image
 docker build -t mediakraken/mkbase:dev-0.1.12 .
@@ -97,15 +100,18 @@ docker build -t mediakraken/mkserver:dev-0.1.12 .
 
 # build database
 docker build -t mediakraken/mkdatabase:dev-0.1.12 .
-
+docker run  -e POSTGRES_PASSWORD=mysecretpassword -p 5433:5432 -d mediakraken/mkdatabase:dev-0.1.12
 
 # build metadata
 docker build -t mediakraken/mkmetadata:dev-0.1.12 .
 
-
 # nginx
 docker build -t mediakraken/mknginx:dev-0.1.12 .
 
+# linking?
+docker run --name mediakraken --link mediakraken/mkdatabase:dev-0.1.12 -d mediakraken/mkserver:dev-0.1.12
+
+docker exec -t -i 1c1e2dc7f4bc /bin/ash
 
 # post em
 docker login
