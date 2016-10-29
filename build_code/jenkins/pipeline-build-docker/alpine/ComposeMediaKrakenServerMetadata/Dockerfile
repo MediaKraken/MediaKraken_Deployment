@@ -1,11 +1,11 @@
-LABEL www.mediakraken.org.version="dev-0.1.12"
-LABEL www.mediakraken.org.release-date="2016-10-28"
-LABEL Description="This image downloads and maintains all metadata"
-
 # Download base image
 FROM alpine:3.4 
 
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
+
+LABEL www.mediakraken.org.version="dev-0.1.12"
+LABEL www.mediakraken.org.release-date="2016-10-28"
+LABEL Description="This image downloads and maintains all metadata"
 
 # Copy the source files for the app
 ADD src /home/mediakraken
