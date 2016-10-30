@@ -204,3 +204,8 @@ curl localhost:9000/guid
 docker service scale guid=3
 docker service scale guid=0
 docker service rm guid
+
+
+
+***********
+41 - link containers class
