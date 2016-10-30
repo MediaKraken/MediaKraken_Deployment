@@ -14,6 +14,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  ack \
   gcc \
   libxml2-dev \
   libxslt-dev \
@@ -22,7 +23,9 @@ RUN apk add --update \
   nginx \
   py-cffi \
   py-pip \
+  py-redis \
   python-dev \
+  redis \
   && pip install -r requirements.txt \
   && apk del \
   gcc \
@@ -30,5 +33,9 @@ RUN apk add --update \
   linux-headers \
   py-pip \
   python-dev \
-  && rm requirements.txt
+  && rm requirements.txt \
+  && apk add \
+  uwsgi-python \
+  uwsgi-router_uwsgi \
+  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/.
 
