@@ -1,0 +1,21 @@
+The following ports must be opened:
+    2377 (TCP) - Cluster management
+    7946 (TCP and UDP) - Nodes communication
+    4789 (TCP and UDP) - Overlay network traffic
+
+
+swarm create
+
+swarm join --advertise=<node_ip:2375> token://<cluster_id>
+
+
+
+docker network create \
+  --driver overlay \
+  --subnet 10.0.100.0/24 \
+  mknetwork
+
+
+
+
+docker-compose up -d  

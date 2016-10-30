@@ -159,6 +159,10 @@ docker network ls
 docker network create --driver bridge mknetwork
 
 
+
+https://www.youtube.com/watch?v=KC4Ad1DS8xU
+
+
 ******************************
 
 # create swarm manager
