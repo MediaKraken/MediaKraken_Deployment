@@ -24,12 +24,11 @@ docker-compose build
 
 
 
-API
-	Host the API webapp for things like Kodi, etc
-Base
+BaseFFMPEG
 	the base image for ffmpeg deps
-Database
+Database - Builds and runs
 	Hosts the postgresql database
+	docker build -t mediakraken/mkdatabase:dev-0.1.12 .
 Metadata
 	Host the metadata fetcher
 Nginx
@@ -38,6 +37,12 @@ Server
 	Kicks off the other main programs
 Source
 	Hosts the app source code for ease of testing and file stack host
-Web
-	Hosts the uswgi webapp
+WebAPI
+	Host the API webapp for things like Kodi, etc
+WebBase
+	Hosts the flask and other web deps
+	docker build -t mediakraken/mkwebbase:dev-0.1.12 .
+WebServer
+	Hosts the uswgi webapp for the server interface
+
 
