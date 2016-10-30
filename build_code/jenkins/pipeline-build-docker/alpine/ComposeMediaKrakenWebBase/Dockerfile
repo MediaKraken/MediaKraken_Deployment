@@ -8,8 +8,8 @@ LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image holds the base image for web/flask"
 
 # copy PIP requirements
-ADD requirements.txt /home/mediakraken
-WORKDIR /home/mediakraken
+ADD requirements.txt /mediakraken
+WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \

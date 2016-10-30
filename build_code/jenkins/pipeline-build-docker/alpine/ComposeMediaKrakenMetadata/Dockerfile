@@ -8,10 +8,10 @@ LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image downloads and maintains all metadata"
 
 # Copy the source files for the app
-ADD src /home/mediakraken
+ADD src /mediakraken
 # copy PIP requirements
-ADD requirements.txt /home/mediakraken
-WORKDIR /home/mediakraken
+ADD requirements.txt /mediakraken
+WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
@@ -26,4 +26,4 @@ RUN apk add --update \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip
   && rm requirements.txt
-CMD ["python", "/home/mediakraken/main_server_trigger.py"]
+CMD ["python", "/mediakraken/main_server_trigger.py"]
