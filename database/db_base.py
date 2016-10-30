@@ -25,7 +25,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor # pylint: disable=W0611
 
 
-def db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
+def db_open(self):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -35,7 +35,7 @@ def db_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % (postdbname, postdbuser, postdbhost, int(postdbport), postdbpass))
+        % ('metamandb', 'metamanpg', 'mkdatabase', 5432, 'metamanpg'))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
