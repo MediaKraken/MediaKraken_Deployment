@@ -8,7 +8,6 @@ docker swarm
 docker-compose up -d
 
 
-
 # Stop the MediaKraken application suite. This will also remove the containers
 docker-compose down
 
@@ -16,6 +15,8 @@ docker-compose down
 # show console output (good for crashes)
 docker-compose logs
 
+
+*************************************************
 
 
 # build the image/containers to run
