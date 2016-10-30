@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet"  href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <script src="../../static/js/jquery.min.js"></script>
+    </head>
+    {% if media_game %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Game Name</th>
+                    <th>Year</th>
+                    <th>System</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in media_game %}
+                <tr>
+                    <td>{{ loop.index + (page - 1) * per_page }}</td>
+                    <td><a href = {{"../meta_game_detail/" + row_data[0]}}>{{ row_data[1] }}</a></td>
+                    <td>{{ row_data[2] }}</td>
+                    <td>{{ row_data[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No game data found.</p>
+    {% endif %}
+</body>
+{% endblock %}
