@@ -15,9 +15,15 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --update \
   gcc \
+  libxml2-dev \
+  libxslt-dev \
+  py-cffi \
   py-pip \
+  python-dev \
+  musl-dev \
   && pip install -r requirements.txt \
   && del gcc \
-  py-pip
+  py-pip \
+  python-dev
   && rm requirements.txt
 
