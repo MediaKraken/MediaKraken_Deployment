@@ -17,6 +17,7 @@ RUN apk add --update \
   gcc \
   libxml2-dev \
   libxslt-dev \
+  linux-headers \
   musl-dev \
   py-cffi \
   py-pip \
@@ -25,6 +26,7 @@ RUN apk add --update \
   && apk del \
   gcc \
   musl-dev \
+  linux-headers \
   py-pip \
   python-dev
   && rm requirements.txt
