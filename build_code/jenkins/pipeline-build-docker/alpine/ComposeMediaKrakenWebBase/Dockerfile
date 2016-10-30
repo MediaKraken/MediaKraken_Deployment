@@ -19,6 +19,7 @@ RUN apk add --update \
   libxslt-dev \
   linux-headers \
   musl-dev \
+  nginx \
   py-cffi \
   py-pip \
   python-dev \
@@ -28,6 +29,6 @@ RUN apk add --update \
   musl-dev \
   linux-headers \
   py-pip \
-  python-dev
+  python-dev \
   && rm requirements.txt
 
