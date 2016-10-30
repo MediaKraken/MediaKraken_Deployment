@@ -21,3 +21,23 @@ docker-compose logs
 
 # build the image/containers to run
 docker-compose build
+
+
+
+API
+	Host the API webapp for things like Kodi, etc
+Base
+	the base image for ffmpeg deps
+Database
+	Hosts the postgresql database
+Metadata
+	Host the metadata fetcher
+Nginx
+	Host the ssl, static data webserver
+Server
+	Kicks off the other main programs
+Source
+	Hosts the app source code for ease of testing and file stack host
+Web
+	Hosts the uswgi webapp
+
