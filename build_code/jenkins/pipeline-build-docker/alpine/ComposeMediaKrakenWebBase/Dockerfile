@@ -17,12 +17,14 @@ RUN apk add --update \
   gcc \
   libxml2-dev \
   libxslt-dev \
+  musl-dev \
   py-cffi \
   py-pip \
   python-dev \
-  musl-dev \
   && pip install -r requirements.txt \
-  && del gcc \
+  && apk del \
+  gcc \
+  musl-dev \
   py-pip \
   python-dev
   && rm requirements.txt
