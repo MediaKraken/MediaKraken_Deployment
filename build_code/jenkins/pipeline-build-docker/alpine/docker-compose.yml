@@ -1,15 +1,17 @@
 version: '2'
 
+ENV MKVERSION="dev-0.1.12"
+
 services:
   app:
-    image: mediakraken/mkserver:dev-0.1.12
+    image: mediakraken/mkserver:$MKVERSION
     ports:
       - "8900:8080"
     networks:
       - mknetwork
 
   database:
-    image: mediakraken/mkdatabase:dev-0.1.12
+    image: mediakraken/mkdatabase::$MKVERSION
     environment: POSTGRES_PASSWORD: jf2049jf42j
     networks:
       - mknetwork
