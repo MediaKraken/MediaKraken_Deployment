@@ -13,6 +13,7 @@ ADD pipeline-build-os-ffmpeg-alpine.sh /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  python \
   alpine-sdk \
   yasm-dev \
   autoconf \
