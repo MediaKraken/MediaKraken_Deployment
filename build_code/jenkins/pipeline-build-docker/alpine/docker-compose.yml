@@ -1,16 +1,19 @@
 version: '2'
+# MediaKraken
 
 services:
+  # Main app server which controls the show and transcodes
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
     ports:
-      - "8903:8080"
+      - "8903:5000"
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
 
+  # slave app server which transcodes
   appslave:
     build:
       context: ./ComposeMediaKrakenSlave
@@ -18,6 +21,7 @@ services:
     networks:
       - mediakraken-network
 
+  # Postgresql server
   database:
     build:
       context: ./ComposeMediaKrakenDatabase
@@ -27,6 +31,7 @@ services:
     networks:
       - mediakraken-dbnetwork
 
+  # Runs the webapi for 3rd party clients
   webapi:
     build:
       context: ./ComposeMediaKrakenWebAPI
@@ -36,6 +41,7 @@ services:
     networks:
       - mediakraken-dbnetwork
 
+  # Runs the web service for the main server application
   webserver:
     build:
       context: ./ComposeMediaKrakenWebServer
@@ -45,13 +51,16 @@ services:
     networks:
       - mediakraken-dbnetwork
 
+# Local host volumes for persistant data
 volumes:
-  redis-data:
+  database-data:
     driver: local
 
+# Docker private networks
 networks:
+  # Twisted communications network
   mediakraken-network:
     driver: overlay
+  # Database communications network
   mediakraken-dbnetwork:
     driver: overlay
-
