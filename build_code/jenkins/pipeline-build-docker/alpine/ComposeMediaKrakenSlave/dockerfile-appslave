@@ -13,12 +13,3 @@ LABEL Description="This image holds the main slave app"
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
-  alpine-sdk \
-  py-pip \
-  python-dev \
-  && pip install -r requirements.txt \
-  apk del \
-  alpine-sdk \
-  py-pip \
-  python-dev
