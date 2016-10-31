@@ -3,24 +3,56 @@ version: '2'
 ENV MKVERSION="dev-0.1.12"
 
 services:
-  app:
-    image: mediakraken/mkserver:$MKVERSION
+  container_name: mediakraken
+
+  appserver:
+    build:
+      context: ./ComposeMediaKrakenServer
+      dockerfile: dockerfile-appserver
+    networks:
+      - mediakraken-network
+      - mediakraken-dbnetwork
+
+  appslave:
+    build:
+      context: ./ComposeMediaKrakenSlave
+      dockerfile: dockerfile-appslave
+    networks:
+      - mediakraken-network
+
+  database:
+    build:
+      context: ./ComposeMediaKrakenDatabase
+      dockerfile: dockerfile-database
+    environment: POSTGRES_PASSWORD: jf2049jf42j
+    networks:
+      - mediakraken-dbnetwork
+
+  webapi:
+    build:
+      context: ./ComposeMediaKrakenWebAPI
+      dockerfile: dockerfile-webapi
+    ports:
+      - "8901:8080"
+    networks:
+      - mediakraken-dbnetwork
+
+  webserver:
+    build:
+      context: ./ComposeMediaKrakenWebServer
+      dockerfile: dockerfile-webserver
     ports:
       - "8900:8080"
     networks:
-      - mknetwork
-
-  database:
-    image: mediakraken/mkdatabase::$MKVERSION
-    environment: POSTGRES_PASSWORD: jf2049jf42j
-    networks:
-      - mknetwork
+      - mediakraken-dbnetwork
 
 volumes:
   redis-data:
     driver: local
 
 networks:
-  mknetwork:
+  mediakraken-network:
+    driver: overlay
+  mediakraken-dbnetwork:
     driver: overlay
 
