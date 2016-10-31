@@ -15,6 +15,8 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   postgresql-dev \
+  py-pip \
   && pip install -r requirements.txt \
   && apk del \
-  postgresql-dev
+  postgresql-dev \
+  py-pip
