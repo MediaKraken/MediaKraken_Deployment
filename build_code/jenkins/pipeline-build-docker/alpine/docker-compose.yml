@@ -1,7 +1,5 @@
 version: '2'
 
-ENV MKVERSION="dev-0.1.12"
-
 services:
   container_name: mediakraken
 
