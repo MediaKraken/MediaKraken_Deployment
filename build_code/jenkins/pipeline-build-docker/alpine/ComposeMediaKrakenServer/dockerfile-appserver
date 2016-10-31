@@ -12,4 +12,8 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN pip install -r requirements.txt
+RUN apk add --update \
+  postgresql-dev \
+  && pip install -r requirements.txt \
+  && apk del \
+  postgresql-dev
