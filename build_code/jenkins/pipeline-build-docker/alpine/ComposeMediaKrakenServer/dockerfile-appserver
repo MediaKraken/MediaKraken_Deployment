@@ -39,4 +39,4 @@ RUN apk add --update \
   py-pip \
   python-dev
 
-ENTRYPOINT ["python", "/mediakraken/main_server.py"]
+ENTRYPOINT ["python", "main_server.py"]
