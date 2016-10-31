@@ -65,7 +65,7 @@ services:
 networks:
   # Twisted communications network
   mediakraken-network:
-    driver: overlay
+    driver: bridge
   # Database communications network
   mediakraken-dbnetwork:
-    driver: overlay
+    driver: bridge

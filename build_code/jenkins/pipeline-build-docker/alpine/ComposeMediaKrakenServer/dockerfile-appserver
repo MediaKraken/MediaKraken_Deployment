@@ -38,3 +38,5 @@ RUN apk add --update \
   postgresql-dev \
   py-pip \
   python-dev
+
+ENTRYPOINT ["python", "main_server.py"]
