@@ -16,3 +16,10 @@ Flask-Migrate
 Flask-KVSession
 ipgetter
 uwsgi
+pygal
+natsort
+fastnumbers
+PyVimeo
+python-twitch
+transmissionrpc
+passwordmeter

@@ -10,4 +10,5 @@ pytvdbapi
 pytvmaze
 tmdbsimple
 xmltodict
-
+subliminal
+steam
