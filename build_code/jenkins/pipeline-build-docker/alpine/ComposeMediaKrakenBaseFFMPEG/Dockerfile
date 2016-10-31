@@ -8,49 +8,32 @@ LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image holds the base ffmpeg for server/slave"
 
 RUN apk add --upgrade \
-  gcc \
+  alpine-sdk \
   autoconf \
   automake \
-  autotools-dev \
-  build-essential \
   cmake \
-  curl \
-  libdc1394-22-dev \
-  flite1-dev \
-  git \
+  flite-dev \
   libass-dev \
   libffi-dev \
-  libfontconfig1-dev \
-  libfreetype6-dev \
-  libfribidi-dev \
-  libgme-dev \
-  libgsm1-dev \
-  libldap2-dev \
-  libnetcdf-dev \
-  libopencore-amrnb-dev \
-  libopencore-amrwb-dev \
-  libpulse-dev \
-  librtmp-dev \
-  libsasl2-dev \
-  libschroedinger-dev \
-  libsdl1.2-dev \
-  libsmbclient-dev \
-  libsnappy-dev \
+  fontconfig-dev \
+  freetype-dev \
+  fribidi-dev \
+  gpgme-dev \
+  gsm-dev \
+  rtmpdump-dev \
+  libgsasl-dev \
+  sdl-dev \
+  snappy-dev \
   libssh-dev \
-  libsoxr-dev \
-  libtheora-dev \
+  soxr-dev \
   libtool \
-  libtwolame-dev \
-  libv4l-dev \
+  v4l-utils-dev \
   libva-dev \
   libvdpau-dev \
-  libvorbis-dev \
-  libwavpack-dev \
-  libxcb-shm0-dev \
-  libxcb-xfixes0-dev \
-  libxcb1-dev \
-  pkg-config \
+  wavpack-dev \
   texinfo \
   wget \
-  zlib1g-dev \
-  && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin
+  zlib-dev \
+  && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
+  && apk del \
+  alpine-sdk
