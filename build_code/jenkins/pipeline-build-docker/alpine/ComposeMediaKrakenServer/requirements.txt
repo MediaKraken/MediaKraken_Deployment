@@ -1,4 +1,3 @@
-Adafruit_BBIO
 arduino-python
 docker-py
 easysnmp
