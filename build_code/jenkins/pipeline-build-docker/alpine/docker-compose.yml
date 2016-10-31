@@ -5,6 +5,8 @@ services:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
+    ports:
+      - "8903:8080"
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork

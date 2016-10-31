@@ -38,7 +38,7 @@ common_logging.com_logging_start('./log/MediaKraken_Trigger')
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\

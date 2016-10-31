@@ -31,7 +31,7 @@ from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from . import metadata_nfo_xml
 
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify thetvdb key exists for search
 if option_config_json['API']['theTVdb'] is not None:

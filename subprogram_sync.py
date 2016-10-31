@@ -34,7 +34,7 @@ def worker(row_data):
     """
     logging.info("row: %s", row_data)
     # open the database
-    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb
@@ -110,7 +110,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start

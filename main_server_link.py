@@ -102,7 +102,7 @@ class MediaKrakenApp(object):
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_Link')
         # open the database
-        config_handle, option_config_json, self.db_connection = common_config_ini.com_config_read()
+        option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()
         return root
 

@@ -36,7 +36,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 outside_ip = None
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def flash_errors(form):

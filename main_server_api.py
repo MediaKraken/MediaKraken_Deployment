@@ -297,6 +297,6 @@ class MediaKrakenAPI(object):
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read()
     run_api = MediaKrakenAPI()
     run_api.app.run("localhost", int(option_config_json['MediaKrakenServer']['APIPort']))

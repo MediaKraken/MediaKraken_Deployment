@@ -36,7 +36,7 @@ common_signal.com_signal_set_break()
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Web_Images')
 
 
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # read in paths to add to reactor

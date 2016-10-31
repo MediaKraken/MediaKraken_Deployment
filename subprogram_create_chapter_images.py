@@ -42,7 +42,7 @@ def worker(worker_file_list):
     json_id, json_data, json_obj, media_path = worker_file_list
     #logging.info('value=%s', json_id)
     # open the database
-    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, thread_db = common_config_ini.com_config_read()
     # begin image generation
     chapter_count = 0
     first_image = True
@@ -102,7 +102,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Im
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start

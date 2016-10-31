@@ -51,7 +51,7 @@ def worker(audit_directory):
     """
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
-    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, thread_db = common_config_ini.com_config_read()
     logging.info('value=%s', dir_path)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
@@ -188,7 +188,7 @@ def worker(audit_directory):
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
