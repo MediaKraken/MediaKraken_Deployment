@@ -7,6 +7,11 @@ LABEL www.mediakraken.org.version="dev-0.1.12"
 LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image holds the base ffmpeg for server/slave"
 
+RUN mkdir /mediakraken
+# copy ffmpeg build
+ADD pipeline-build-os-ffmpeg-alpine.sh /mediakraken
+WORKDIR /mediakraken
+
 RUN apk add --upgrade \
   alpine-sdk \
   yasm-dev \
@@ -35,6 +40,7 @@ RUN apk add --upgrade \
   texinfo \
   wget \
   zlib-dev \
+  && pipeline-build-os-ffmpeg-alpine.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \
   alpine-sdk \
