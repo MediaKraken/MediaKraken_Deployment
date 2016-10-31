@@ -27,7 +27,7 @@ services:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
     environment:
-      - POSTGRES_PASSWORD=jf2049jf42j
+      - POSTGRES_PASSWORD=jf20CHANGEME49jf42j
     networks:
       - mediakraken-dbnetwork
 
@@ -53,8 +53,8 @@ services:
 
 # Local host volumes for persistant data
 volumes:
-  database-data:
-    driver: local
+  - ./log:/var/log/mediakraken
+  - /var/lib/postgresql:/var/lib/postgresql
 
 # Docker private networks
 networks:
