@@ -9,6 +9,7 @@ LABEL Description="This image holds the base ffmpeg for server/slave"
 
 RUN apk add --upgrade \
   alpine-sdk \
+  yasm-dev \
   autoconf \
   automake \
   cmake \
@@ -36,4 +37,5 @@ RUN apk add --upgrade \
   zlib-dev \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \
-  alpine-sdk
+  alpine-sdk \
+  yasm-dev
