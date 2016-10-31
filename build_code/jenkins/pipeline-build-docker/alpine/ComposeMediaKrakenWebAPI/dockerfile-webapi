@@ -7,3 +7,6 @@ LABEL www.mediakraken.org.version="dev-0.1.12"
 LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image hosts web/flask API"
 
+# Copy the source files for the app
+ADD src /mediakraken
+
