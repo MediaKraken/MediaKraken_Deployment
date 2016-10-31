@@ -16,4 +16,4 @@ ADD src /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-ENTRYPOINT ["python", "main_server_slave.py"]
+ENTRYPOINT ["python", "/mediakraken/main_server_slave.py"]
