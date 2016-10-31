@@ -15,6 +15,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  postgresql-client \
   gcc \
   linux-headers \
   musl-dev \
@@ -26,4 +27,4 @@ RUN apk add --update \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip
   && rm requirements.txt
-CMD ["python", "/mediakraken/main_server_trigger.py"]
+CMD ["python", "main_server_trigger.py"]

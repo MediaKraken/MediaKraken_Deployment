@@ -16,4 +16,28 @@ ADD src /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
+RUN apk add --update \
+  postgresql-client \
+  alpine-sdk \
+  libxml2-dev \
+  libxslt-dev \
+  linux-headers \
+  musl-dev \
+  net-snmp \
+  net-snmp-dev \
+  postgresql-dev \
+  py-pip \
+  python-dev \
+  && pip install -r requirements.txt \
+  && apk del \
+  alpine-sdk \
+  libxml2-dev \
+  libxslt-dev \
+  linux-headers \
+  musl-dev \
+  net-snmp-dev \
+  postgresql-dev \
+  py-pip \
+  python-dev
+
 ENTRYPOINT ["python", "main_server_slave.py"]
