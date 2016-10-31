@@ -31,7 +31,7 @@ docker-compose build
 
 BaseFFMPEG
 	the base image for ffmpeg deps
-	docker build -t mediakraken/mkbase:dev-0.1.12 .
+	docker build -t mediakraken/mkbaseffmpeg:dev-0.1.12 .
 Database - Builds and runs
 	Hosts the postgresql database
 	docker build -t mediakraken/mkdatabase:dev-0.1.12 .
