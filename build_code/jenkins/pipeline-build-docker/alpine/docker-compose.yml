@@ -20,7 +20,8 @@ services:
     build:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
-    environment: POSTGRES_PASSWORD="jf2049jf42j"
+    environment:
+      - POSTGRES_PASSWORD=jf2049jf42j
     networks:
       - mediakraken-dbnetwork
 
