@@ -1,8 +1,6 @@
 version: '2'
 
 services:
-  container_name: mediakraken
-
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
