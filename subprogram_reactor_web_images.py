@@ -46,6 +46,6 @@ for row_data in db_connection.db_audit_paths():
     root.putChild('prox-' + row_data['mm_media_dir_guid'],\
         File(row_data['mm_media_dir_path']))
 # create and launch reactor
-reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ImageWeb']), Site(root),\
+reactor.listenSSL(5001 , Site(root),\
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()

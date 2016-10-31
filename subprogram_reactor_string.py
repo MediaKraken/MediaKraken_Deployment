@@ -51,7 +51,6 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
     config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
-    reactor.listenSSL(int(option_config_json['MediaKrakenServer']['ListenPort']),\
-        MediaKrakenServerApp(),\
+    reactor.listenSSL(5000, MediaKrakenServerApp(),\
         ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()
