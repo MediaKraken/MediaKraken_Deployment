@@ -7,7 +7,8 @@ LABEL www.mediakraken.org.version="dev-0.1.12"
 LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image holds the main server app"
 
-RUN mkdir /mediakraken
+# don't create /mediakraken as it's in the base image
+
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
