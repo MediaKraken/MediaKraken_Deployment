@@ -40,7 +40,7 @@ RUN apk add --update \
   texinfo \
   wget \
   zlib-dev \
-  && pipeline-build-os-ffmpeg-alpine.sh \
+  && /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \
   alpine-sdk \

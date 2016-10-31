@@ -18,6 +18,11 @@ docker-compose logs
 
 *************************************************
 
+10.0.0.111 - ubuntu mirror
+10.0.0.160 - alpine mirror
+10.0.0.113 - pip mirror (not done)
+
+
 
 # build the image/containers to run
 docker-compose build
