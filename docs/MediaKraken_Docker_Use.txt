@@ -25,7 +25,7 @@ docker-compose logs
 
 
 # build the image/containers to run
-docker-compose build
+docker-compose build xxxxx - xxxxx optional for image to build
 
 
 
@@ -34,13 +34,14 @@ BaseFFMPEG
 	docker build -t mediakraken/mkbaseffmpeg:dev-0.1.12 .
 Database - Builds and runs
 	Hosts the postgresql database
-	docker build -t mediakraken/mkdatabase:dev-0.1.12 .
 Metadata
 	Host the metadata fetcher
 Nginx
 	Host the ssl, static data webserver
 Server
-	Kicks off the other main programs
+	Kicks off the other main programs and ffmpeg
+Slave
+	Slave image for server/ffmpeg
 Source
 	Hosts the app source code for ease of testing and file stack host
 WebAPI
