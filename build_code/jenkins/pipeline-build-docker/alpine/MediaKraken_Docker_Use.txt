@@ -19,7 +19,7 @@ docker-compose logs
 *************************************************
 
 10.0.0.111 - ubuntu mirror
-10.0.0.160 - alpine mirror
+10.0.0.160 - alpine mirror - http://10.0.0.160/alpine/v3.4/main/x86_64/
 10.0.0.113 - pip mirror (not done)
 
 
