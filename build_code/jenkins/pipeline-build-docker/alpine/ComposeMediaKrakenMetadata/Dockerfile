@@ -27,4 +27,5 @@ RUN apk add --update \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip
   && rm requirements.txt
+
 CMD ["python", "main_server_trigger.py"]
