@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkwebbase
+FROM mediakraken/mkwebbase:dev-0.1.12
 
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
