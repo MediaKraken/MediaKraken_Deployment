@@ -37,4 +37,5 @@ pyaudio
 onkyo-eiscp
 psutil
 twisted
+setuptools
 
