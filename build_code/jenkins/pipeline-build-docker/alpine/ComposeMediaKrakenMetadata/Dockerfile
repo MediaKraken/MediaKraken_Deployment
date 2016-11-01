@@ -26,6 +26,7 @@ RUN apk add --update \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip
   && rm requirements.txt
 
+ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 

@@ -43,6 +43,7 @@ RUN apk add --update \
   py-pip \
   python-dev
 
+ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
