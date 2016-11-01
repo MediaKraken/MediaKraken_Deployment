@@ -24,7 +24,8 @@ docker-compose logs
 
 
 testing
-docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver5 alpine_appserver
+docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver7 alpine_appserver
 # can ping mkdatabase then......
 
 

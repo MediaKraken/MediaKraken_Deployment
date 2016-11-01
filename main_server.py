@@ -65,11 +65,11 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
-if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
-    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s" %\
-        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
-    sys.exit()
+#if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
+#    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
+#    logging.critical("Invalid Path: %s" %\
+#        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
+#    sys.exit()
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
     logging.critical("Invalid Path: %s" %\
