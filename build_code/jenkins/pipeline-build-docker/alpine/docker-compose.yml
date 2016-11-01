@@ -10,6 +10,7 @@ services:
     container_name: mkserver
     depends_on:
       - database
+    entrypoint: ./wait-for-it.sh database:5432
     ports:
       - "8903:5000"
     volumes:
@@ -26,6 +27,7 @@ services:
 #    container_name: mkslave
 #    depends_on:
 #      - database
+#    entrypoint: ./wait-for-it.sh database:5432
 #    volumes:
 #      - ./log:/var/log/mediakraken
 #    networks:
@@ -54,6 +56,7 @@ services:
 #    container_name: mkwebapi
 #    depends_on:
 #      - database
+#    entrypoint: ./wait-for-it.sh database:5432
 #    ports:
 #      - "8901:8080"
 #    volumes:
@@ -69,6 +72,7 @@ services:
     container_name: mkwebapp
     depends_on:
       - database
+    entrypoint: ./wait-for-it.sh database:5432
     ports:
       - "8900:8080"
     volumes:
