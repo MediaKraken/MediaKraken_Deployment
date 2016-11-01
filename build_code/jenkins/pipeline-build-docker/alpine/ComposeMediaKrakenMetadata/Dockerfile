@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  bash \
   postgresql-client \
   gcc \
   linux-headers \
