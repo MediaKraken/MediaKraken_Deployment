@@ -47,5 +47,5 @@ ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
-ENTRYPOINT ["/bin/ash"]
+CMD ["/bin/ash"]
 #ENTRYPOINT ["python", "main_server.py"]
