@@ -36,4 +36,5 @@ pillow
 pyaudio
 onkyo-eiscp
 psutil
+twisted
 

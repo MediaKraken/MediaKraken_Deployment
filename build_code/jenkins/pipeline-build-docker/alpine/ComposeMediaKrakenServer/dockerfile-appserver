@@ -19,12 +19,17 @@ WORKDIR /mediakraken
 RUN apk add --update \
   postgresql-client \
   alpine-sdk \
+  libffi-dev \
+  openldap-dev \
+  jpeg-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
   musl-dev \
   net-snmp \
   net-snmp-dev \
+  openldap-dev \
+  portaudio-dev \
   postgresql-dev \
   py-pip \
   python-dev \
