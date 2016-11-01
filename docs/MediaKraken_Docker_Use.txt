@@ -1,5 +1,5 @@
 Prerequisites:
-docker
+docker 1.12.3
 docker-compose
 docker swarm
 
