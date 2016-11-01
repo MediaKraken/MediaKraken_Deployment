@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import subprocess
 import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT # pylint: disable=W0611
@@ -42,8 +43,14 @@ def db_open(self):
     self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
         ' WHERE relname = \'mm_media\'')
     if self.db_cursor.fetchone()['a'] == 0:
-        logging.critical("Database is not populated!")
-        sys.exit()
+        logging.info("Database is not populated! Attempting to create.")
+        try:
+            db_create_pid = subprocess.Popen("python", "./db_create_update.py")
+            db_create_pid.wait()
+            logging.info("Database has been created!")
+        except:
+            logging.critical("Could not find/create database! Exiting...")
+            sys.exit()
 
 
 def db_close(self):
