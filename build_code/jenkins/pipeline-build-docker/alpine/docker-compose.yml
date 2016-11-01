@@ -21,6 +21,7 @@ services:
     build:
       context: ./ComposeMediaKrakenSlave
       dockerfile: dockerfile-appslave
+    container_name: mediakraken/mkslave
     volumes:
       - ./log:/var/log/mediakraken
     networks:
@@ -33,6 +34,7 @@ services:
       dockerfile: dockerfile-database
     environment:
       - POSTGRES_PASSWORD=jf20CHANGEME49jf42j
+    container_name: mediakraken/mkdatabase
     volumes:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
@@ -43,6 +45,7 @@ services:
     build:
       context: ./ComposeMediaKrakenWebAPI
       dockerfile: dockerfile-webapi
+    container_name: mediakraken/mkwebapi
     ports:
       - "8901:8080"
     volumes:
@@ -55,6 +58,7 @@ services:
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
+    container_name: mediakraken/mkwebapp
     ports:
       - "8900:8080"
     volumes:

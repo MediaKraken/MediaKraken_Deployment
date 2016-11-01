@@ -31,7 +31,7 @@ docker-compose build xxxxx - xxxxx optional for image to build
 
 BaseFFMPEG
 	the base image for ffmpeg deps
-	docker build -t mediakraken/mkbaseffmpeg:dev-0.1.12 .
+	docker build -t mediakraken/mkbaseffmpeg .
 Database - Builds and runs
 	Hosts the postgresql database
 Metadata
@@ -48,7 +48,7 @@ WebAPI
 	Host the API webapp for things like Kodi, etc
 WebBase
 	Hosts the flask and other web deps
-	docker build -t mediakraken/mkwebbase:dev-0.1.12 .
+	docker build -t mediakraken/mkwebbase .
 WebServer
 	Hosts the uswgi webapp for the server interface
 
