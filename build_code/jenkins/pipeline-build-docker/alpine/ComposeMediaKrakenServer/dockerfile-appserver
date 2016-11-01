@@ -9,9 +9,6 @@ LABEL Description="This image holds the main server app"
 
 # don't create /mediakraken as it's in the base image
 
-# Copy the source files for the app
-ADD src /mediakraken
-
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
@@ -44,5 +41,8 @@ RUN apk add --update \
   postgresql-dev \
   py-pip \
   python-dev
+
+# Copy the source files for the app
+ADD src /mediakraken
 
 ENTRYPOINT ["python", "main_server.py"]
