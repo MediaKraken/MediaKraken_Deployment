@@ -41,7 +41,9 @@ RUN apk add --update \
   net-snmp-dev \
   postgresql-dev \
   py-pip \
-  python-dev
+  python-dev \
+  && apk add \
+  py-setuptools
 
 ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app

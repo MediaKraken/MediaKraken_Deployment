@@ -38,6 +38,7 @@ RUN apk add --update \
   && apk add \
   uwsgi-python \
   uwsgi-router_uwsgi \
+  py-setuptools \
   && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/. \
   && rc-update add nginx \
   && rc-update add redis
