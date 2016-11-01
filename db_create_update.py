@@ -637,10 +637,11 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_options_and_status'\
     ' mm_options_json jsonb, mm_status_json jsonb)')
 sql3_cursor.execute('select count(*) from mm_options_and_status')
 if sql3_cursor.fetchone()[0] == 0:
-    sql_params = str(uuid.uuid4()), json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0}, 'MaxResumePct': 5,\
+    sql_params = str(uuid.uuid4()), json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
+    'MaxResumePct': 5,\
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
-        'MetadataImageLocal': '/home/metaman/github/MediaKraken_Deployment/server/web_app/MetaMan/static/meta/images',\
-        'BackupLocal': '/home/metaman/github/MediaKraken_Deployment/server/backups/'},\
+        'MetadataImageLocal': '/mediakraken/web_app/MediaKraken/static/meta/images',\
+        'BackupLocal': '/mediakraken/backups/'},\
     'API': {'MediaBrainz': None, 'AniDB': None, 'theTVdb': '147CB43DCA8B61B7',\
         'theMovieDB': 'f72118d1e84b8a1438935972a9c37cac',\
         'TheSportsDB': '4352761817344', 'TheLogoDB': None, 'OpenSubtitles': None,\
