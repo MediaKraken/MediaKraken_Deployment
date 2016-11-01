@@ -8,6 +8,8 @@ services:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
     container_name: mkserver
+    depends_on:
+      - database
     ports:
       - "8903:5000"
     volumes:
@@ -22,6 +24,8 @@ services:
 #      context: ./ComposeMediaKrakenSlave
 #      dockerfile: dockerfile-appslave
 #    container_name: mkslave
+#    depends_on:
+#      - database
 #    volumes:
 #      - ./log:/var/log/mediakraken
 #    networks:
@@ -48,6 +52,8 @@ services:
 #      context: ./ComposeMediaKrakenWebAPI
 #      dockerfile: dockerfile-webapi
 #    container_name: mkwebapi
+#    depends_on:
+#      - database
 #    ports:
 #      - "8901:8080"
 #    volumes:
@@ -61,6 +67,8 @@ services:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
     container_name: mkwebapp
+    depends_on:
+      - database
     ports:
       - "8900:8080"
     volumes:
