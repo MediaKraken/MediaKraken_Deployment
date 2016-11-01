@@ -33,6 +33,9 @@ RUN apk update && apk add build-base readline-dev openssl-dev zlib-dev libxml2-d
 
 VOLUME /var/lib/postgresql/data
 
+COPY db_user_create.sh /
+RUN /db_user_create.sh
+
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
