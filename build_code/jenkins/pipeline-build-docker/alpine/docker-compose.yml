@@ -1,8 +1,6 @@
 version: '2'
 # MediaKraken
 
-DBPASS=jf20CHANGEME49jf42j
-
 services:
   # Main app server which controls the show and transcodes
   appserver:
