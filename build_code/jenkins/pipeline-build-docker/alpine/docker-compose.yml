@@ -7,6 +7,7 @@ services:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
+    container_name: mediakraken/mkserver
     ports:
       - "8903:5000"
     volumes:
