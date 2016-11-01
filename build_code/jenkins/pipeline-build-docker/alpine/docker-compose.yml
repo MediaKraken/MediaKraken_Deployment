@@ -33,6 +33,8 @@ services:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
     environment:
+      - POSTGRES_DB=metamandb
+      - POSTGRES_USER=metamanpg
       - POSTGRES_PASSWORD=jf20CHANGEME49jf42j
     container_name: mkdatabase
     volumes:
