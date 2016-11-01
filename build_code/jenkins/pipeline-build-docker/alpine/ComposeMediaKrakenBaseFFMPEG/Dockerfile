@@ -14,6 +14,7 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   python \
+  openrc \
   alpine-sdk \
   yasm-dev \
   autoconf \

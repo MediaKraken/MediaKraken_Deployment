@@ -21,6 +21,7 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   nginx \
+  openrc \
   py-cffi \
   py-pip \
   py-redis \
