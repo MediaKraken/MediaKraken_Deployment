@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import uuid
+import os
 import psycopg2
 import json
 
@@ -66,7 +67,7 @@ base_media_classes = (
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"\
-    " host='mkdatabase' password='jf20CHANGEME49jf42j'")
+    " host='mkdatabase' password=%s" % os.environ['POSTGRES_PASSWORD'])
 sql3_cursor = sql3_conn.cursor()
 
 

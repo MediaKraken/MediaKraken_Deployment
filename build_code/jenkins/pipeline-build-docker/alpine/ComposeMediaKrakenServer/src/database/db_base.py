@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import subprocess
 import sys
+import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
@@ -36,7 +37,7 @@ def db_open(self):
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % ('metamandb', 'metamanpg', 'mkdatabase', 5432, 'jf20CHANGEME49jf42j'))
+        % ('metamandb', 'metamanpg', 'mkdatabase', 5432, os.environ['POSTGRES_PASSWORD']))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')

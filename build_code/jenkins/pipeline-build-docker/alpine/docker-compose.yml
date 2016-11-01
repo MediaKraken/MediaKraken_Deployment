@@ -1,12 +1,16 @@
 version: '2'
 # MediaKraken
 
+DBPASS=jf20CHANGEME49jf42j
+
 services:
   # Main app server which controls the show and transcodes
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
       - database
@@ -24,6 +28,8 @@ services:
 #    build:
 #      context: ./ComposeMediaKrakenSlave
 #      dockerfile: dockerfile-appslave
+#    environment:
+#      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkslave
 #    depends_on:
 #      - database
@@ -41,7 +47,7 @@ services:
     environment:
       - POSTGRES_DB=metamandb
       - POSTGRES_USER=metamanpg
-      - POSTGRES_PASSWORD=jf20CHANGEME49jf42j
+      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     volumes:
       - /var/lib/postgresql:/var/lib/postgresql
@@ -53,6 +59,8 @@ services:
 #    build:
 #      context: ./ComposeMediaKrakenWebAPI
 #      dockerfile: dockerfile-webapi
+#    environment:
+#      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
 #    depends_on:
 #      - database
@@ -69,6 +77,8 @@ services:
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
       - database
