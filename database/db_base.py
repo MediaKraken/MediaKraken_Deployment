@@ -45,7 +45,8 @@ def db_open(self):
     if self.db_cursor.fetchone()['a'] == 0:
         logging.info("Database is not populated! Attempting to create.")
         try:
-            db_create_pid = subprocess.Popen("python", "./db_create_update.py")
+            db_create_pid = subprocess.Popen(['python', './db_create_update.py'],\
+                shell=False)
             db_create_pid.wait()
             logging.info("Database has been created!")
         except:
