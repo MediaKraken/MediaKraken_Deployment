@@ -17,15 +17,15 @@ services:
       - mediakraken-dbnetwork
 
   # slave app server which transcodes
-  appslave:
-    build:
-      context: ./ComposeMediaKrakenSlave
-      dockerfile: dockerfile-appslave
-    container_name: mkslave
-    volumes:
-      - ./log:/var/log/mediakraken
-    networks:
-      - mediakraken-network
+#  appslave:
+#    build:
+#      context: ./ComposeMediaKrakenSlave
+#      dockerfile: dockerfile-appslave
+#    container_name: mkslave
+#    volumes:
+#      - ./log:/var/log/mediakraken
+#    networks:
+#      - mediakraken-network
 
   # Postgresql server
   database:
@@ -41,17 +41,17 @@ services:
       - mediakraken-dbnetwork
 
   # Runs the webapi for 3rd party clients
-  webapi:
-    build:
-      context: ./ComposeMediaKrakenWebAPI
-      dockerfile: dockerfile-webapi
-    container_name: mkwebapi
-    ports:
-      - "8901:8080"
-    volumes:
-      - ./log:/var/log/mediakraken
-    networks:
-      - mediakraken-dbnetwork
+#  webapi:
+#    build:
+#      context: ./ComposeMediaKrakenWebAPI
+#      dockerfile: dockerfile-webapi
+#    container_name: mkwebapi
+#    ports:
+#      - "8901:8080"
+#    volumes:
+#      - ./log:/var/log/mediakraken
+#    networks:
+#      - mediakraken-dbnetwork
 
   # Runs the web service for the main server application
   webserver:
