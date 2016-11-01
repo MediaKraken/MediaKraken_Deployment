@@ -7,9 +7,6 @@ LABEL www.mediakraken.org.version="dev-0.1.12"
 LABEL www.mediakraken.org.release-date="2016-10-28"
 LABEL Description="This image holds the image for the web server app"
 
-RUN apk add --update \
-  bash
-
 ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
