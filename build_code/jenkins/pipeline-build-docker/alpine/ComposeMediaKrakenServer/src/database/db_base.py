@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import subprocess
 import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT # pylint: disable=W0611
@@ -35,15 +36,21 @@ def db_open(self):
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % ('metamandb', 'metamanpg', 'mkdatabase', 5432, 'metamanpg'))
+        % ('metamandb', 'metamanpg', 'mkdatabase', 5432, 'jf20CHANGEME49jf42j'))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
         ' WHERE relname = \'mm_media\'')
     if self.db_cursor.fetchone()['a'] == 0:
-        logging.critical("Database is not populated!")
-        sys.exit()
+        logging.info("Database is not populated! Attempting to create.")
+        try:
+            db_create_pid = subprocess.Popen("python", "./db_create_update.py")
+            db_create_pid.wait()
+            logging.info("Database has been created!")
+        except:
+            logging.critical("Could not find/create database! Exiting...")
+            sys.exit()
 
 
 def db_close(self):
