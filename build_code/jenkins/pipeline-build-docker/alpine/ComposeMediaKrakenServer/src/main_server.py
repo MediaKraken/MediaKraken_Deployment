@@ -144,10 +144,11 @@ for link_data in db_connection.db_link_list():
 #                                 '--chdir=./web_app',\
 #                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
 #                                 shell=False)
+## hold here
+#proc_web_app.wait()
 
-# hold here
-proc_web_app.wait()
-
+# this will key off the string reactor...only reason is so watchdog doesn't shut down
+proc.wait()
 
 # stop watchdog
 watchdog.com_watchdog_stop()
