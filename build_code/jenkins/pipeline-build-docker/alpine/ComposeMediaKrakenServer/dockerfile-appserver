@@ -49,8 +49,8 @@ ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 ADD ip2country /mediakraken
-RUN python ip2country/setup.py install \
-  && rm -R ip2country
+RUN python ./ip2country/setup.py install \
+  && rm -R ./ip2country
 
 CMD ["/bin/ash"]
 #ENTRYPOINT ["python", "main_server.py"]
