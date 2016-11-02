@@ -38,7 +38,8 @@ RUN apk add --update \
   py-pip \
   python-dev \
   && apk add \
-  py-setuptools
+  py-setuptools \
+  && rm requirements.txt
 
 # Copy the source files for the app
 ADD src /mediakraken
