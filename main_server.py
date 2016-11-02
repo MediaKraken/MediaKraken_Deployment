@@ -124,9 +124,9 @@ proc_trigger = subprocess.Popen(['python', './main_server_trigger.py'], shell=Fa
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
-# fire up api server
-proc_api = subprocess.Popen(['python', './main_server_api.py'], shell=False)
-logging.info("API PID: %s", proc_api.pid)
+## fire up api server
+#proc_api = subprocess.Popen(['python', './main_server_api.py'], shell=False)
+#logging.info("API PID: %s", proc_api.pid)
 
 
 # fire up link servers
@@ -138,13 +138,12 @@ for link_data in db_connection.db_link_list():
     link_pid[link_data[0]] = proc_link.pid
 
 
-# fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080',\
-                                 '--protocol', 'http',\
-                                 '--chdir=./web_app',\
-                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
-                                 shell=False)
-
+## fire up uwsgi server
+#proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080',\
+#                                 '--protocol', 'http',\
+#                                 '--chdir=./web_app',\
+#                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
+#                                 shell=False)
 
 # hold here
 proc_web_app.wait()
