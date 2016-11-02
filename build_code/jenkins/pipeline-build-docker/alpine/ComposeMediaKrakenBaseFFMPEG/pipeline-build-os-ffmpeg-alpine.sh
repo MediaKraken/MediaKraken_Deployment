@@ -46,6 +46,7 @@ make install
 make distclean
 
 cd ~/ffmpeg_sources
+
 curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
 tar xzvf libogg-1.3.2.tar.gz
 cd libogg-1.3.2
@@ -177,8 +178,8 @@ cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I$HOME/ffmpeg_build/include" \
-    --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include" \
+    --extra-ldflags="-L$HOME/ffmpeg_build/lib -L/usr/local/lib" \
     --bindir="$HOME/bin" \
     --enable-gpl \
     --enable-nonfree \
