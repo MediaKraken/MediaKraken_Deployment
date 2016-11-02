@@ -55,5 +55,6 @@ RUN cd ip2country \
   && rm -R ./ip2country \
   && rm requirements.txt
 
+EXPOSE 5000
 #CMD ["/bin/ash"]
 ENTRYPOINT ["python", "main_server.py"]
