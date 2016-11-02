@@ -49,7 +49,7 @@ class MediaKrakenServerApp(Factory):
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
     reactor.listenSSL(5000, MediaKrakenServerApp(),\
         ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
