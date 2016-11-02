@@ -38,4 +38,5 @@ onkyo-eiscp
 psutil
 twisted
 setuptools
+ipgetter
 
