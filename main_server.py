@@ -115,7 +115,7 @@ logging.info("Cron PID: %s", proc_cron.pid)
 
 
 # fire up ffserver
-proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
+proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
 logging.info("FFServer PID: %s", proc_ffserver.pid)
 
 
