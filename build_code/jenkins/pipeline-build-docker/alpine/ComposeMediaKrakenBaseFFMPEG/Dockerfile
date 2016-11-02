@@ -16,6 +16,7 @@ RUN apk add --update \
   python \
   openrc \
   alpine-sdk \
+  yasm \
   yasm-dev \
   autoconf \
   automake \
@@ -23,6 +24,8 @@ RUN apk add --update \
   flite-dev \
   libass-dev \
   libffi-dev \
+  libmodplug-dev \
+  libvpx-dev \
   fontconfig-dev \
   freetype-dev \
   fribidi-dev \

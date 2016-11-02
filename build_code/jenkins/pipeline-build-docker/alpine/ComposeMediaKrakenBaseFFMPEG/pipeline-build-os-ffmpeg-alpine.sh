@@ -150,6 +150,26 @@ cd libilbc-webrtc
 make -j8
 make install
 
+# skipping for now
+#    --enable-decklink \
+#    --enable-libcelt \
+#    --enable-libgme \
+#    --enable-libilbc \
+#    --enable-libopencore-amrnb \
+#    --enable-libopencore-amrwb \
+#    --enable-libopenmpt \
+#    --enable-libpulse \
+#    --enable-libschroedinger \
+#    --enable-libsmbclient \
+#    --enable-libspeex \
+#    --enable-libtheora \
+#    --enable-libtwolame \
+#    --enable-libv4l2 \
+#    --enable-libvidstab \
+#    --enable-libxavs \
+#    --enable-netcdf \
+#    --enable-libdc1394 \
+
 cd ~/ffmpeg_sources
 # grab the newest only
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
@@ -164,44 +184,26 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-nonfree \
     --disable-d3d11va \
     --disable-dxva2 \
-#    --enable-decklink \
     --enable-libass \
-    --enable-libcelt \
-    --enable-libdc1394 \
     --enable-libfdk-aac \
     --enable-libflite \
     --enable-libfontconfig \
     --enable-libfreetype \
     --enable-libfribidi \
-    --enable-libgme \
     --enable-libgsm \
-    --enable-libilbc \
     --enable-libmodplug \
     --enable-libmp3lame \
-    --enable-libopencore-amrnb \
-    --enable-libopencore-amrwb \
-    --enable-libopenmpt \
     --enable-libopus \
-    --enable-libpulse \
     --enable-librtmp \
-    --enable-libschroedinger \
-    --enable-libsmbclient \
     --enable-libsnappy \
     --enable-libsoxr \
-    --enable-libspeex \
     --enable-libssh \
-    --enable-libtheora \
-    --enable-libtwolame \
-    --enable-libv4l2 \
-    --enable-libvidstab \
     --enable-libvorbis \
     --enable-libvpx \
     --enable-libwavpack \
     --enable-libx264 \
     --enable-libx265 \
-    --enable-libxavs \
     --enable-libxvid \
-    --enable-netcdf \
     --enable-openssl \
     --enable-version3
 make -j8
