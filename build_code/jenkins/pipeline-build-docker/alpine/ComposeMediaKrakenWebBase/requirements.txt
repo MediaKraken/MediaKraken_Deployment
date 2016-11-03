@@ -28,3 +28,4 @@ passwordmeter
 psycopg2
 plyer
 psutil
+google-api-python-client
