@@ -27,3 +27,4 @@ transmissionrpc
 passwordmeter
 psycopg2
 plyer
+psutil
