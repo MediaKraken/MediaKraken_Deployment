@@ -25,3 +25,4 @@ PyVimeo
 python-twitch
 transmissionrpc
 passwordmeter
+psycopg2

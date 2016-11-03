@@ -14,6 +14,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  postgresql-client \
   ack \
   gcc \
   libxml2-dev \
@@ -26,6 +27,7 @@ RUN apk add --update \
   py-pip \
   py-redis \
   python-dev \
+  postgresql-dev \
   redis \
   && pip install -r requirements.txt \
   && apk del \
@@ -34,6 +36,7 @@ RUN apk add --update \
   linux-headers \
   py-pip \
   python-dev \
+  postgresql-dev \
   && rm requirements.txt \
   && apk add \
   uwsgi-python \
