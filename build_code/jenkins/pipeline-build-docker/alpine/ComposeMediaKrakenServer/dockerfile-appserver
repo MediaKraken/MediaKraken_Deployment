@@ -57,4 +57,4 @@ RUN cd ip2country \
 
 EXPOSE 5000
 #CMD ["/bin/ash"]
-ENTRYPOINT ["python", "main_server.py"]
+CMD ["python", "main_server.py"]
