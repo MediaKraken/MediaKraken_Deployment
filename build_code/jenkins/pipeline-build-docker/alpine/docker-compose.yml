@@ -1,6 +1,8 @@
 version: '2'
 # MediaKraken
 
+# Volumes are HOST directory and then CONTAINER directory
+
 services:
   # Main app server which controls the show and transcodes
   appserver:
@@ -12,11 +14,11 @@ services:
     container_name: mkserver
     depends_on:
       - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server.py
     ports:
       - "8903:5000"
     volumes:
-      - /mediakraken/log:/var/log/mediakraken
+      - /var/log/mediakraken:/mediakraken/log
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
@@ -33,7 +35,7 @@ services:
 #      - database
 #    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
 #    volumes:
-#      - ./log:/var/log/mediakraken
+#      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-network
 
@@ -66,7 +68,7 @@ services:
 #    ports:
 #      - "8901:8080"
 #    volumes:
-#      - /mediakraken/log:/var/log/mediakraken
+#      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-dbnetwork
 
@@ -80,11 +82,11 @@ services:
     container_name: mkwebapp
     depends_on:
       - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
     volumes:
-      - /mediakraken/log:/var/log/mediakraken
+      - /var/log/mediakraken:/mediakraken/log
     networks:
       - mediakraken-dbnetwork
 
