@@ -29,3 +29,4 @@ psycopg2
 plyer
 psutil
 google-api-python-client
+youtube_dl
