@@ -27,7 +27,8 @@ testing
 docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
 docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver440 alpine_appserver
 
-docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_web3220 alpine_webserver
+
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_web50 alpine_webserver
 # after attach
 uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
 
