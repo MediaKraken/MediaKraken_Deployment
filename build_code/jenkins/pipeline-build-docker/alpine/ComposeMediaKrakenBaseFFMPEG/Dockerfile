@@ -15,6 +15,13 @@ WORKDIR /mediakraken
 RUN apk add --update \
   gettext \
   python \
+  lame-dev \
+  opus-dev \
+  libogg-dev \
+  libvorbis-dev \
+  speex-dev \
+  xvidcore-dev \
+  libtheora-dev \
   openrc \
   alpine-sdk \
   yasm \
