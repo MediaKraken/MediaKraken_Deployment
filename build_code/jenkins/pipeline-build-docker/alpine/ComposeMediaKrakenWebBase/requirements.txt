@@ -30,3 +30,4 @@ plyer
 psutil
 google-api-python-client
 youtube_dl
+pysmb
