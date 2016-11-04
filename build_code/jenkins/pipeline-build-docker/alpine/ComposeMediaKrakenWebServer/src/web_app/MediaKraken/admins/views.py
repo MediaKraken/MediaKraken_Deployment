@@ -40,7 +40,7 @@ import database as database_base
 
 
 outside_ip = None
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 CLOUD_HANDLE = common_cloud.CommonCloud()
