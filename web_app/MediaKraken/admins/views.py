@@ -43,7 +43,7 @@ outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-CLOUD_HANDLE = common_cloud.CommonCloud()
+CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
 
 
 def flash_errors(form):
