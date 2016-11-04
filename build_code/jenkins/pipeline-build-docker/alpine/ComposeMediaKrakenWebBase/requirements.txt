@@ -34,3 +34,4 @@ pysmb
 boto
 dropbox
 onedrivesdk
+cssmin
