@@ -22,6 +22,7 @@ services:
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
   # slave app server which transcodes
 #  appslave:
@@ -38,6 +39,7 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-network
+#    restart: unless-stopped
 
   # Postgresql server
   database:
@@ -53,6 +55,7 @@ services:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
   # Runs the webapi for 3rd party clients
 #  webapi:
@@ -71,6 +74,7 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-dbnetwork
+#    restart: unless-stopped
 
   # Runs the web service for the main server application
   webserver:
@@ -89,6 +93,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
     networks:
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
 # Docker private networks
 networks:
