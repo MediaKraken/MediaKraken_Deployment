@@ -31,7 +31,7 @@ RUN apk update && apk add build-base readline-dev openssl-dev zlib-dev libxml2-d
     apk --purge del build-base openssl-dev zlib-dev libxml2-dev wget gnupg ca-certificates && \
     rm -r /tmp/postgresql-$PG_VERSION* /var/cache/apk/*
 
-VOLUME /var/lib/postgresql/data
+VOLUME /var/lib/postgresql/data:/var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
