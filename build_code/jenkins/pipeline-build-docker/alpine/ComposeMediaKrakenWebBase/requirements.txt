@@ -31,3 +31,6 @@ psutil
 google-api-python-client
 youtube_dl
 pysmb
+boto
+dropbox
+onedrivesdk
