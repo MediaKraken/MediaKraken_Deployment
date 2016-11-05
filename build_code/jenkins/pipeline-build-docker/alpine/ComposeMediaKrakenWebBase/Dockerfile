@@ -14,9 +14,6 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
-  ca-certificates \
-  supervisor \
-  rsyslog \
   postgresql-client \
   ack \
   gcc \
@@ -24,14 +21,12 @@ RUN apk add --update \
   libxslt-dev \
   linux-headers \
   musl-dev \
-  nginx \
   openrc \
   py-cffi \
   py-pip \
   py-redis \
   python-dev \
   postgresql-dev \
-  redis \
   && pip install -r requirements.txt \
   && apk del \
   gcc \
@@ -45,8 +40,5 @@ RUN apk add --update \
   uwsgi-python \
   uwsgi-router_uwsgi \
   py-setuptools \
-  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/. \
-  && rc-update add nginx \
-  && rc-update add redis
-
+  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/.
 
