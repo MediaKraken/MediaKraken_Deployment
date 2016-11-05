@@ -77,10 +77,17 @@ services:
 #    restart: unless-stopped
 
   # runs the nginx proxy service
-#  nginx:
-#    build:
-#      context: ./ComposeMediaKrakenNginx
-#      dockerfile: dockerfile-nginx
+  nginx:
+    build:
+      context: ./ComposeMediaKrakenNginx
+      dockerfile: dockerfile-nginx
+    container_name: mknginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
@@ -105,7 +112,7 @@ services:
     depends_on:
       - database
       - redis
-#      - nginx
+      - nginx
     entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
