@@ -23,6 +23,8 @@ import time
 import sys
 sys.path.append('.')
 sys.path.append('../MediaKraken-PyLint') # for jenkins server
+sys.path.append('../MediaKraken-PyLint/build_code/jenkins/')
+import pipeline_packages_list
 from common import common_network_ssh
 from common import common_network_vm_proxmox
 
@@ -30,10 +32,10 @@ from common import common_network_vm_proxmox
 ###
 # Will be used to deploy ubuntu server
 ###
-JENKINS_BUILD_UBUNTU_VIM_LXC = 108
-JENKINS_BUILD_UBUNTU_VIM_LNX_IP = '10.0.0.153'
-JENKINS_DEPLOY_UBUNTU_VIM_LXC = 106
-JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP = '10.0.0.166'
+JENKINS_BUILD_VIM_LXC = 103
+JENKINS_BUILD_VIM_LNX_IP = '10.0.0.90'
+JENKINS_DEPLOY_VIM_LXC = 108
+JENKINS_DEPLOY_VIM_LNX_IP = '10.0.0.101'
 
 
 # create prox class instance to use
@@ -43,25 +45,25 @@ PROX_CONNECTION = common_network_vm_proxmox.CommonNetworkProxMox('10.0.0.190', '
 
 # check status of ubuntu build vm
 if PROX_CONNECTION.com_net_prox_node_lxc_status('pve',\
-        JENKINS_BUILD_UBUNTU_VIM_LXC)['data']['status'] == 'stopped':
+        JENKINS_BUILD_VIM_LXC)['data']['status'] == 'stopped':
     # start up the vm
-    PROX_CONNECTION.com_net_prox_node_lxc_start('pve', JENKINS_BUILD_UBUNTU_VIM_LXC)
+    PROX_CONNECTION.com_net_prox_node_lxc_start('pve', JENKINS_BUILD_VIM_LXC)
     time.sleep(120) # wait two minutes for box to boot
 
 
 # check status of ubuntu deploy vm
 if PROX_CONNECTION.com_net_prox_node_lxc_status('pve',\
-        JENKINS_DEPLOY_UBUNTU_VIM_LXC)['data']['status'] == 'stopped':
+        JENKINS_DEPLOY_VIM_LXC)['data']['status'] == 'stopped':
     # start up the vm
-    PROX_CONNECTION.com_net_prox_node_lxc_start('pve', JENKINS_DEPLOY_UBUNTU_VIM_LXC)
+    PROX_CONNECTION.com_net_prox_node_lxc_start('pve', JENKINS_DEPLOY_VIM_LXC)
     time.sleep(120) # wait two minutes for box to boot
 
 
 # connect to server via ssh
-SSH_DEPLOY = common_network_ssh.CommonNetworkSSH(JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP,\
+SSH_DEPLOY = common_network_ssh.CommonNetworkSSH(JENKINS_DEPLOY_VIM_LNX_IP,\
     'metaman', 'metaman')
 
-SSH_BUILD = common_network_ssh.CommonNetworkSSH(JENKINS_BUILD_UBUNTU_VIM_LNX_IP,\
+SSH_BUILD = common_network_ssh.CommonNetworkSSH(JENKINS_BUILD_VIM_LNX_IP,\
     'metaman', 'metaman')
 
 
@@ -82,130 +84,63 @@ SSH_DEPLOY.com_net_ssh_run_command('cd mediakraken')
 # install servers deps
 # way too many deps, so install ffmpeg to stomp over with compiled version
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo apt-get -y install postgresql ffmpeg'\
-    ' libva-drm1 libva-x11-1 libsmbclient')
+    ' libva-drm1 libva-x11-1 libsmbclient nfs-common nginx redis-server'\
+    ' cifs-utils')
+
+
+# libhdhomerun
+
+
 # scp ffmpeg
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/ff*'\
-    ' metaman@10.0.0.166:/home/metaman/.')
+    ' metaman@%s:/home/metaman/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo mv /home/metaman/ff* /usr/bin/.')
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo ldconfig')
 
 # prep files to scp
 SSH_BUILD.com_net_ssh_run_command('mkdir /home/metaman/dist/xfer')
 SSH_BUILD.com_net_ssh_run_command('rm -Rf /home/metaman/dist/xfer/*')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server_api/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server_link/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server_metadata_api/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server_slave/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/main_server_trigger/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_broadcast/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_chromecast_discover/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_commercial_strip/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_create_chapter_images/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_cron_checker/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_ffmpeg_process/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_file_scan/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_game_audit/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_game_metadata_giantbomb/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_game_metadata_igdb/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_iradio_channels/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_livestream_downloader/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_logo_download/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_lyrics_downloader/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_match_anime_id_scudlee/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_musicbrainz_sync/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_postgresql_backup/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_postgresql_vacuum/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_reactor_string_weblog/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_reactor_string/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_reactor_web_images/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_roku_thumbnail_generate/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_schedules_direct_updates/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_ssl_keygen/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_subtitle_downloader/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_sync/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_thetvdb_images/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_thetvdb_updates/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_tuner_discover/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_tvmaze_images/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_tvmaze_updates/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_update_create_collections/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_url_checker/ /home/metaman/dist/xfer/.')
-SSH_BUILD.com_net_ssh_run_command(\
-    'rsync -r /home/metaman/dist/subprogram_zfs_check/ /home/metaman/dist/xfer/.')
+
+# move all programs
+for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
+    SSH_BUILD.com_net_ssh_run_command('rsync -r /home/metaman/dist/' + app_to_build\
+                                      + '/ /home/metaman/dist/xfer/.')
 
 # scp actual programs
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -r -o StrictHostKeyChecking=no /home/metaman/dist/xfer/*'\
-    ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
+    ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # scp the password common
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -r -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Submodules/passwordmeter/'\
     'passwordmeter/res/common.txt'\
-    ' metaman@%s:/home/metaman/mediakraken/passwordmeter/res/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
+    ' metaman@%s:/home/metaman/mediakraken/passwordmeter/res/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # copy over config files
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Deployment/'\
-    'MediaKraken.ini metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
+    'MediaKraken.ini metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 # copy postgresl user file
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/MediaKraken_Deployment/'\
-    'MediaKraken_Build/jenkins/pipeline-deploy-os/pipeline-deploy-os-server-ubuntu-pgsql-user.sh'\
-    ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
+    'build_code/jenkins/pipeline-deploy-os/pipeline-deploy-os-server-pgsql-user-ubuntu.sh'\
+    ' metaman@%s:/home/metaman/mediakraken/.' % JENKINS_DEPLOY_VIM_LNX_IP)
+
 # create the postgresql user
 SSH_DEPLOY.com_net_ssh_run_sudo_command('sudo /home/metaman/mediakraken/'\
     'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
+
 # remove user create script
 SSH_DEPLOY.com_net_ssh_run_command('rm /home/metaman/mediakraken/'\
-    'pipeline-deploy-os-server-ubuntu-pgsql-user.sh')
+    'pipeline-deploy-os-server-pgsql-user-ubuntu.sh')
 
 # copy ffmpeg and libs
 SSH_BUILD.com_net_ssh_run_sudo_command('sudo sshpass -p \'metaman\''\
     ' scp -o StrictHostKeyChecking=no /home/metaman/bin/*'\
-    ' metaman@%s:/home/metaman/mediakraken/bin/.' % JENKINS_DEPLOY_UBUNTU_VIM_LNX_IP)
+    ' metaman@%s:/home/metaman/mediakraken/bin/.' % JENKINS_DEPLOY_VIM_LNX_IP)
 
 SSH_DEPLOY.com_net_ssh_close()
 SSH_BUILD.com_net_ssh_close()

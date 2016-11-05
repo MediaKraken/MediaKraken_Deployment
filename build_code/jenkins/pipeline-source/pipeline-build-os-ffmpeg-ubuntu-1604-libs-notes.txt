@@ -1,0 +1,85 @@
+# following packages are not included
+  --enable-libxcb          enable X11 grabbing using XCB [autodetect]
+  --enable-libxcb-shm      enable X11 grabbing shm communication [autodetect]
+  --enable-libxcb-xfixes   enable X11 grabbing mouse rendering [autodetect]
+  --enable-libxcb-shape    enable X11 grabbing shape rendering [autodetect]
+  --enable-x11grab         enable X11 grabbing (legacy) [no]
+  --enable-avisynth        enable reading of AviSynth script files [no]
+  --enable-libopenjpeg     enable JPEG 2000 de/encoding via OpenJPEG [no] - shouldn't need jpeg stuff
+  --enable-libopenh264     enable H.264 encoding via OpenH264 [no] - since using x264
+  --enable-libkvazaar      enable HEVC encoding via libkvazaar [no] - since using x265
+  --disable-lzma           disable lzma [autodetect] - what for?
+  --disable-xlib           disable xlib [autodetect] - x11 stuff.....
+  --disable-zlib           disable zlib [autodetect] - what for?
+  --enable-libwebp         enable WebP encoding via libwebp [no] - image format
+  --disable-bzlib          disable bzlib [autodetect] - what for?
+  --enable-libzmq          enable message passing via libzmq [no]
+  --enable-libiec61883     enable iec61883 via libiec61883 [no] - firewire
+  --enable-libshine        enable fixed-point MP3 encoding via libshine [no] - since using lamemp3
+  --enable-chromaprint     enable audio fingerprinting with chromaprint [no]    
+  --enable-gnutls          enable gnutls, needed for https support - using openssh
+                           if openssl is not used [no]
+  --disable-securetransport disable Secure Transport, needed for TLS support
+                           on OSX if openssl and gnutls are not used [autodetect]
+  --enable-ladspa          enable LADSPA audio filtering [no]
+  --disable-schannel       disable SChannel SSP, needed for TLS support on
+                           Windows if openssl and gnutls are not used [autodetect]
+  --enable-libtesseract    enable Tesseract, needed for ocr filter [no]
+  --enable-mediacodec      enable Android MediaCodec support [no]
+  --enable-omx-rpi         enable OpenMAX IL code for Raspberry Pi [no] - not gunna be transcing on the pi
+  --enable-libzvbi         enable teletext support via libzvbi [no]
+  --enable-librubberband   enable rubberband needed for rubberband filter [no]
+  --enable-libcaca         enable textual display using libcaca [no]
+  --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no] - since using other lib
+  --enable-mmal            enable Broadcom Multi-Media Abstraction Layer (Raspberry Pi) via MMAL [no]
+  --enable-openal          enable OpenAL 1.1 capture support [no]
+  --enable-opengl          enable OpenGL rendering [no]
+  --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
+                           if openssl, librtmp or gmp is not used [no]
+  --enable-gmp             enable gmp, needed for rtmp(t)e support
+                           if openssl or librtmp is not used [no]
+  --disable-sdl2           disable sdl2 [autodetect]
+  --enable-libbs2b         enable bs2b DSP library [no]
+
+
+
+
+# to do
+  --enable-decklink        enable Blackmagic DeckLink I/O support [no] - hardware capture
+
+
+
+
+# trying now
+
+
+
+
+# to do - perhaps
+  --enable-frei0r          enable frei0r video filtering [no]
+  --disable-iconv          disable iconv [autodetect]
+  --enable-jni             enable JNI support [no]
+  --enable-libbluray       enable BluRay reading using libbluray [no]
+  --enable-libcdio         enable audio CD grabbing with libcdio [no]
+  --enable-libebur128      enable libebur128 for EBU R128 measurement, needed for loudnorm filter [no]
+  --enable-libnut          enable NUT (de)muxing via libnut,
+                           native (de)muxer exists [no]
+  --enable-libopencv       enable video filtering via libopencv [no]
+  --enable-libzimg         enable z.lib, needed for zscale filter [no]
+  --enable-opencl          enable OpenCL code
+
+
+  The following libraries provide various hardware acceleration features:
+  --disable-audiotoolbox   disable Apple AudioToolbox code [autodetect]
+  --enable-cuda            enable dynamically linked Nvidia CUDA code [no]
+  --enable-cuvid           enable Nvidia CUVID support [autodetect]
+  --enable-libmfx          enable Intel MediaSDK (AKA Quick Sync Video) code via libmfx [no]
+  --enable-libnpp          enable Nvidia Performance Primitives-based code [no]
+  --disable-nvenc          disable Nvidia video encoding code [autodetect]
+  --enable-omx             enable OpenMAX IL code [no]
+
+  --disable-vaapi          disable Video Acceleration API (mainly Unix/Intel) code [autodetect]
+  --disable-vda            disable Apple Video Decode Acceleration code [autodetect]
+  --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
+  --disable-videotoolbox   disable VideoToolbox code [autodetect]
+

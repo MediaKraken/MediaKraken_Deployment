@@ -22,7 +22,7 @@ import os
 import json
 from common import common_config_ini
 from common import common_metadata_thesportsdb
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify thesportsdb key exists
@@ -33,23 +33,23 @@ else:
     THESPORTSDB_CONNECTION = None
 
 
-def metadata_sports_lookup(db_connection, media_file_path, download_que_id):
+def metadata_sports_lookup(db_connection, media_file_path, download_que_json, download_que_id):
     """
     Lookup sporting event by name
     """
     stripped_name = os.path.basename(media_file_path.replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
-        logging.debug("searching: %s", stripped_name)
+        logging.info("searching: %s", stripped_name)
         thesportsdb_data =\
                 THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(stripped_name)
-        logging.debug("sports return: %s", thesportsdb_data)
+        logging.info("sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
                 # TODO "find" the rigth event by name?  if multiples?
-                metadata_uuid = db_connection.db_metaSports_guid_by_thesportsdb(\
+                metadata_uuid = db_connection.db_meta_sports_guid_by_thesportsdb(\
                     thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
                     image_json = {'Images': {'thesportsdb': {'Characters': {}, 'Banner': None,\

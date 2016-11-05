@@ -1,0 +1,10 @@
+service_identity
+plyer
+pylzma
+futures
+pygal
+pillow
+pyaudio
+python-libdiscid
+twisted
+kivy

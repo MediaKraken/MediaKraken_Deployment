@@ -18,23 +18,28 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest
+import pytest # pylint: disable=W0611
 import sys
 sys.path.append('.')
 from common import common_metadata_scudlee
 
 
-# def fetch the anime list by scudlee for thetvdb crossreference
 def test_mk_scudlee_fetch_xml():
     """
-    Test function
+    grab the data from github
     """
     common_metadata_scudlee.mk_scudlee_fetch_xml()
 
 
-# parse the anime list
-# def mk_scudlee_anime_list_parse(file_name=None):
+def test_mk_scudlee_anime_list_parse(file_name=None):
+    """
+    # parse the anime list
+    """
+    common_metadata_scudlee.mk_scudlee_anime_list_parse()
 
 
-# parse the movieset list
-# def mk_scudlee_anime_set_parse(file_name=None):
+def test_mk_scudlee_anime_set_parse(file_name=None):
+    """
+    # parse the movieset list
+    """
+    common_metadata_scudlee.mk_scudlee_anime_set_parse()

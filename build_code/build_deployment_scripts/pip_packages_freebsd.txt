@@ -27,11 +27,9 @@ Flask-Mail
 Flask-Openid
 Flask-Paginate
 Flask-Moment
-Flask-SSLify
 Flask-Assets
 Flask-SQLAlchemy
 Flask-Migrate
-Flask-Debugtoolbar
 Flask-KVSession
 ipgetter
 pytvdbapi
@@ -43,7 +41,6 @@ oauth2client
 python-nest
 uritemplate
 feedgen
-gamesdb
 imdbpie
 nest
 twisted

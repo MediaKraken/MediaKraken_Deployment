@@ -18,18 +18,18 @@
 
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest
 import datetime
 import sys
 sys.path.append('.')
 from common import common_file
+import pytest # pylint: disable=W0611
 
 
 # return file modfication date in datetime format
 @pytest.mark.parametrize(("file_name", "expected_result"), [
     ("./cache/cache.iso", True),
     ("./cache/cache_fake.iso", None)])
-def test_common_file_modification_timestamp(file_name, expected_result):
+def test_com_file_modification_timestamp(file_name, expected_result):
     """
     Test function
     """
@@ -60,7 +60,7 @@ def test_com_file_save_data(file_name, data_block, as_pickle, with_timestamp, fi
     ('./cache/HashCalc.txt', True),
     ('./cache/pickle.txt', True),
     ('./cache/pickle.txt', False)])
-def test_common_file_load_data(file_name, as_pickle):
+def test_com_file_load_data(file_name, as_pickle):
     """
     Test function
     """
@@ -70,31 +70,31 @@ def test_common_file_load_data(file_name, as_pickle):
 # find all filters files in directory
 @pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size",\
         "directory_only"), [
-    ('./cachenotfound', None, False, False, False, False),
-    ('./cache', None, False, False, False, False),
-    ('./cache', None, True, False, False, False),
-    ('./cache', None, False, True, False, False),
-    ('./cache', None, False, False, True, False),
-    ('./cache', None, False, False, False, True),
-    ('./cache', "waffle", True, False, False, False),
-    ('./cache', "waffle", False, True, False, False),
-    ('./cache', "waffle", False, False, True, False),
-    ('./cache', "waffle", False, False, False, True),
-    ('./cache', None, True, True, False, False),
-    ('./cache', None, True, True, True, False),
-    ('./cache', None, False, True, True, False),
-    ('./cache', None, False, True, False, True),
-    ('./cache', None, False, True, True, True),
-    ('./cache', None, True, True, False, True),
-    ('./cache', None, True, True, True, True),
-    ('./cache', "waffle", True, True, False, False),
-    ('./cache', "waffle", True, True, True, False),
-    ('./cache', "waffle", False, True, True, False),
-    ('./cache', "waffle", False, True, False, True),
-    ('./cache', "waffle", False, True, True, True),
-    ('./cache', "waffle", True, True, False, True),
-    ('./cache', "waffle", True, True, True, True)])
-def test_common_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,\
+            ('./cachenotfound', None, False, False, False, False),
+            ('./cache', None, False, False, False, False),
+            ('./cache', None, True, False, False, False),
+            ('./cache', None, False, True, False, False),
+            ('./cache', None, False, False, True, False),
+            ('./cache', None, False, False, False, True),
+            ('./cache', "waffle", True, False, False, False),
+            ('./cache', "waffle", False, True, False, False),
+            ('./cache', "waffle", False, False, True, False),
+            ('./cache', "waffle", False, False, False, True),
+            ('./cache', None, True, True, False, False),
+            ('./cache', None, True, True, True, False),
+            ('./cache', None, False, True, True, False),
+            ('./cache', None, False, True, False, True),
+            ('./cache', None, False, True, True, True),
+            ('./cache', None, True, True, False, True),
+            ('./cache', None, True, True, True, True),
+            ('./cache', "waffle", True, True, False, False),
+            ('./cache', "waffle", True, True, True, False),
+            ('./cache', "waffle", False, True, True, False),
+            ('./cache', "waffle", False, True, False, True),
+            ('./cache', "waffle", False, True, True, True),
+            ('./cache', "waffle", True, True, False, True),
+            ('./cache', "waffle", True, True, True, True)])
+def test_com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,\
         directory_only):
     """
     Test function
@@ -104,7 +104,7 @@ def test_common_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_s
 
 
 # throw out junk entries in files list
-def test_common_file_remove_junk():
+def test_com_file_remove_junk():
     """
     Test function
     """
@@ -117,7 +117,7 @@ def test_common_file_remove_junk():
     ('./cache/HashCalcfull album.txt', True),
     ('./cache/picklefull length.txt', True),
     ('./cache/pickle.txt', False)])
-def test_common_file_is_junk(file_name, expected_result):
+def test_com_file_is_junk(file_name, expected_result):
     """
     Test function
     """

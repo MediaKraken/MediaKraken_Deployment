@@ -22,7 +22,9 @@ import os
 import json
 from common import common_config_ini
 from common import common_metadata_imvdb
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify imvdb key exists
@@ -38,7 +40,7 @@ def imvdb_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """
-    # check for same show variables
+    # check for same variables
     if not hasattr(imvdb_lookup, "metadata_last_id"):
         imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
         imvdb_lookup.metadata_last_band = None
@@ -52,22 +54,22 @@ def imvdb_lookup(db_connection, file_name):
     # set name for lookups
     band_name = band_name.replace(' ', '-')
     song_name = song_name.replace(' ', '-')
-    logging.debug('mv title: %s, %s', band_name, song_name)
+    logging.info('mv title: %s, %s', band_name, song_name)
     # if same as last, return last id and save lookup
     if band_name == imvdb_lookup.metadata_last_band\
             and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
     metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
-    logging.debug("uuid: %s", metadata_uuid)
+    logging.info("uuid: %s", metadata_uuid)
     if metadata_uuid == []:
         metadata_uuid = None
     if metadata_uuid is None:
         if IMVDB_CONNECTION is not None:
             imvdb_json = IMVDB_CONNECTION.com_imvdb_search_video(band_name, song_name)
-            logging.debug("imvdb return: %s", imvdb_json)
+            logging.info("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:
-                logging.debug("vid data: %s", video_data)
+                logging.info("vid data: %s", video_data)
                 if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                     db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],\
                         video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),\

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+    <h1>Cron Modification</h1>
+    <br>
+    <form id="croneditForm" class="form form-cronedit" method="POST" action="" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.name.label}}
+            {{form.name(placeholder="Name", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.description.label}}
+            {{form.description(placeholder="Description", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.enabled.label}}
+            {{form.enabled(placeholder="Enabled", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.interval.label}}
+            {{form.interval(placeholder="Interval", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.time.label}}
+            {{form.time(placeholder="Time", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.script_path.label}}
+            {{form.script_path(placeholder="Script Path", class_="form-control")}}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" value="Update"></p>
+    </form>
+</div>
+{% endblock %}

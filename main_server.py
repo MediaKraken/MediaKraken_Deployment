@@ -24,52 +24,33 @@ import signal
 import os
 from common import common_config_ini
 from common import common_logging
+from common import common_signal
 from common import common_watchdog
-rmda_enabled_os = False
-try:
-    from common import common_rmda
-    rmda_enabled_os = True
-except:
-    pass
+#rmda_enabled_os = False
+#try:
+#    from common import common_rmda
+#    rmda_enabled_os = True
+#except:
+#    pass
 
-
-def signal_receive(signum, frame): # pylint: disable=W0613
-    """
-    Handle signal interupt
-    """
-    logging.info('CHILD Main: Received USR1')
-    os.kill(proc.pid, signal.SIGTERM)
-    os.kill(proc_image.pid, signal.SIGTERM)
-    os.kill(proc_cron.pid, signal.SIGTERM)
-    os.kill(proc_broadcast.pid, signal.SIGTERM)
-    os.kill(proc_ffserver.pid, signal.SIGTERM)
-    os.kill(proc_web_app.pid, signal.SIGTERM)
-    os.kill(proc_trigger, signal.SIGTERM)
-    os.kill(proc_api, signal.SIGTERM)
-    for link_data in link_pid.keys():
-        os.kill(link_pid[link_data], signal.SIGTERM)
-    # stop watchdog
-    watchdog.com_watchdog_stop()
-    # cleanup db
-    db_connection.db_rollback()
-    # log stop
-    db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
-        'ServerStop', None, None, 'System')
-    # commit
-    db_connection.db_commit()
-    db_connection.db_close()
-    sys.stdout.flush()
-    sys.exit(0)
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 
 # start logging
 common_logging.com_logging_start()
 
 
+logging.info('PATH: %s' % os.environ['PATH'])
+#os.environ['PATH'] += ":./"
+#logging.info(os.environ['PATH'])
+
+
 logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    proc_ssl = subprocess.Popen(['./subprogram_ssl_keygen'], shell=False)
+    logging.info('Cert not found, generating.')
+    proc_ssl = subprocess.Popen(['python', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
@@ -78,17 +59,17 @@ if not os.path.isfile('./key/cacert.pem'):
 
 logging.info("Open DB")
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
-if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
-    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s" %\
-        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
-    sys.exit()
+#if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
+#    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
+#    logging.critical("Invalid Path: %s" %\
+#        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
+#    sys.exit()
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
     logging.critical("Invalid Path: %s" %\
@@ -97,21 +78,14 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
-        'ServerStart', None, None, 'System')
+                                 'ServerStart', None, None, 'System')
 
 
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    signal.signal(signal.SIGBREAK, signal_receive)   # ctrl-c # pylint: disable=E1101
-else:
-    signal.signal(signal.SIGTSTP, signal_receive)   # ctrl-z
-    signal.signal(signal.SIGUSR1, signal_receive)   # ctrl-c
-
-
-# look for infiniband rdma devices
-if rmda_enabled_os:
-    rmda_devices = common_rmda.com_rdma_get_devices()
-    if rmda_devices is None:
-        rmda_enabled_os = False
+## look for infiniband rdma devices
+#if rmda_enabled_os:
+#    rmda_devices = common_rmda.com_rdma_get_devices()
+#    if rmda_devices is None:
+#        rmda_enabled_os = False
 
 
 logging.info("Start Watchdog")
@@ -121,62 +95,60 @@ watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['./subprogram_reactor_string'], shell=False)
+proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up web image server
-proc_image = subprocess.Popen(['./subprogram_reactor_web_images'],\
-    shell=False)
+proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
 logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
-proc_broadcast = subprocess.Popen(['./subprogram_broadcast'], shell=False)
+proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
 logging.info("Broadcast PID: %s", proc_broadcast.pid)
 
 
 # fire up cron service
-proc_cron = subprocess.Popen(['./subprogram_cron_checker'], shell=False)
+proc_cron = subprocess.Popen(['python', './subprogram_cron_checker.py'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
 
 
 # fire up ffserver
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    pass
-else:
-    proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
-    logging.info("FFServer PID: %s", proc_ffserver.pid)
+proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
+logging.info("FFServer PID: %s", proc_ffserver.pid)
 
 
 # fire up trigger procress
-proc_trigger = subprocess.Popen(['./main_server_trigger'], shell=False)
+proc_trigger = subprocess.Popen(['python', './main_server_trigger.py'], shell=False)
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
-# fire up api server
-proc_api = subprocess.Popen(['./main_server_api'], shell=False)
-logging.info("API PID: %s", proc_api.pid)
+## fire up api server
+#proc_api = subprocess.Popen(['python', './main_server_api.py'], shell=False)
+#logging.info("API PID: %s", proc_api.pid)
 
 
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
-    proc_link = subprocess.Popen(['./main_server_link', link_data[2]['IP'],\
+    proc_link = subprocess.Popen(['python', './main_server_link.py', link_data[2]['IP'],\
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
 
 
-# fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080', '--protocol', 'http',\
-        '--chdir=./server/web_app', '--ini', './server/web_app/mediakraken_uwsgi.ini'],\
-        shell=False)
+## fire up uwsgi server
+#proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080',\
+#                                 '--protocol', 'http',\
+#                                 '--chdir=./web_app',\
+#                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
+#                                 shell=False)
+## hold here
+#proc_web_app.wait()
 
-
-# hold here
-proc_web_app.wait()
-
+# this will key off the string reactor...only reason is so watchdog doesn't shut down
+proc.wait()
 
 # stop watchdog
 watchdog.com_watchdog_stop()
@@ -184,7 +156,8 @@ watchdog.com_watchdog_stop()
 
 # log stop
 db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
-         'ServerStop', None, None, 'System')
+                                 'ServerStop', None, None, 'System')
+
 
 # commit
 db_connection.db_commit()
@@ -200,8 +173,8 @@ os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
 os.kill(proc_ffserver.pid, signal.SIGTERM)
-os.kill(proc_web_app.pid, signal.SIGTERM)
+#os.kill(proc_web_app.pid, signal.SIGTERM)
 os.kill(proc_trigger, signal.SIGTERM)
-os.kill(proc_api, signal.SIGTERM)
+#os.kill(proc_api, signal.SIGTERM)
 for link_data in link_pid.keys():
     os.kill(link_pid[link_data], signal.SIGTERM)

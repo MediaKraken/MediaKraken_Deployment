@@ -1,0 +1,72 @@
+Prerequisites:
+docker 1.12.3
+docker-compose
+docker swarm
+
+
+# Start up the MediaKraken application suite:
+docker-compose up -d
+
+
+# Stop the MediaKraken application suite. This will also remove the containers
+docker-compose down
+
+
+# show console output (good for crashes)
+docker-compose logs
+
+
+*************************************************
+
+10.0.0.111 - ubuntu mirror
+10.0.0.160 - alpine mirror - http://10.0.0.160/alpine/v3.4/main/x86_64/
+10.0.0.113 - pip mirror (not done)
+
+
+testing
+docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver440 alpine_appserver
+
+
+docker run --network=alpine_mediakraken-dbnetwork -p 8900:8080 --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_web50 alpine_webserver
+# after attach
+uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+
+# can ping mkdatabase then......
+
+# rename
+docker tag server:latest myname/server:latest
+
+docker tag alpine_nginx:latest mediakraken/mknginx:latest
+docker tag alpine_redis:latest mediakraken/mkredis:latest
+docker tag alpine_webserver:latest mediakraken/mkwebserver:latest
+
+# build the image/containers to run
+docker-compose build xxxxx - xxxxx optional for image to build
+
+
+
+BaseFFMPEG
+	the base image for ffmpeg deps
+	docker build -t mediakraken/mkbaseffmpeg .
+Database - Builds and runs
+	Hosts the postgresql database
+Metadata
+	Host the metadata fetcher
+Nginx
+	Host the ssl, static data webserver
+Server
+	Kicks off the other main programs and ffmpeg
+Slave
+	Slave image for server/ffmpeg
+Source
+	Hosts the app source code for ease of testing and file stack host
+WebAPI
+	Host the API webapp for things like Kodi, etc
+WebBase
+	Hosts the flask and other web deps
+	docker build -t mediakraken/mkwebbase .
+WebServer
+	Hosts the uswgi webapp for the server interface
+
+

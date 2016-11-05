@@ -1,0 +1,7 @@
+psutil
+twisted
+pysmb
+dropbox
+boto
+synolopy
+onedrivesdk

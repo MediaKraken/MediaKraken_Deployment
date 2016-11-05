@@ -4,9 +4,6 @@
 [submodule "MediaKraken_Roku"]
 	path = MediaKraken_Roku
 	url = ../MediaKraken_Roku
-[submodule "MediaKraken_Kodi"]
-	path = MediaKraken_Kodi
-	url = ../MediaKraken_Kodi
 [submodule "KrakenStreamer"]
 	path = KrakenStreamer
 	url = ../KrakenStreamer

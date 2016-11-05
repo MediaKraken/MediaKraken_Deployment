@@ -1,3 +1,5 @@
 *.swp
 /replace_ran.txt
 *.spec
+*.txt~
+*.swo

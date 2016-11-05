@@ -1,0 +1,14 @@
+beautifulsoup4
+guessit
+imdbpie
+musicbrainzngs
+NetflixRouletteAPI
+omdb
+pitchfork
+psycopg2
+pytvdbapi
+pytvmaze
+tmdbsimple
+xmltodict
+subliminal
+steam

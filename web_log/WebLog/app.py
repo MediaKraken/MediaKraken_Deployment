@@ -3,7 +3,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask, render_template
 from flask_moment import Moment
-from flask_sslify import SSLify
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
 from flask_kvsession import KVSessionExtension
@@ -16,7 +15,6 @@ from WebLog.extensions import (
     db,
     login_manager,
     migrate,
-    debug_toolbar,
 )
 from WebLog import public, user, admins
 
@@ -42,7 +40,6 @@ def create_app(config_object=ProdConfig):
 #    configure_uploads(app, photos)
 
     moment = Moment(app)
-    #sslify = SSLify(app)
     return app
 
 
@@ -52,7 +49,6 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     return None
 
