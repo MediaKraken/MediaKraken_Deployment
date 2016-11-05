@@ -6,9 +6,7 @@ version: '2'
 services:
   # Main app server which controls the show and transcodes
   appserver:
-    build:
-      context: ./alpine/ComposeMediaKrakenServer
-      dockerfile: dockerfile-appserver
+    image: mediakraken/mkserver:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
@@ -22,12 +20,11 @@ services:
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
   # slave app server which transcodes
 #  appslave:
-#    build:
-#      context: ./alpine/ComposeMediaKrakenSlave
-#      dockerfile: dockerfile-appslave
+#    image: mediakraken/mkslave:latest
 #    environment:
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkslave
@@ -38,12 +35,11 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-network
+#    restart: unless-stopped
 
   # Postgresql server
   database:
-    build:
-      context: ./alpine/ComposeMediaKrakenDatabase
-      dockerfile: dockerfile-database
+    image: mediakraken/mkdatabase:latest
     environment:
       - POSTGRES_DB=metamandb
       - POSTGRES_USER=metamanpg
@@ -53,12 +49,11 @@ services:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
   # Runs the webapi for 3rd party clients
 #  webapi:
-#    build:
-#      context: ./alpine/ComposeMediaKrakenWebAPI
-#      dockerfile: dockerfile-webapi
+#    image: mediakraken/mkwebapi:latest
 #    environment:
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
@@ -71,17 +66,39 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #    networks:
 #      - mediakraken-dbnetwork
+#    restart: unless-stopped
+
+  # runs the nginx proxy service
+  nginx:
+    image: mediakraken/mknginx:latest
+    container_name: mknginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+
+  # runs the redis service for flask
+  redis:
+    image: mediakraken/mkredis:latest
+    container_name: mkredis
+    ports:
+      - "6379:6379"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
 
   # Runs the web service for the main server application
   webserver:
-    build:
-      context: ./alpine/ComposeMediaKrakenWebServer
-      dockerfile: dockerfile-webserver
+    image: mediakraken/mkwebserver:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
       - database
+      - redis
+      - nginx
     entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
@@ -89,6 +106,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
     networks:
       - mediakraken-dbnetwork
+    restart: unless-stopped
 
 # Docker private networks
 networks:
