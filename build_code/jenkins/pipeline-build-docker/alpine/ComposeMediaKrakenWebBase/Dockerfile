@@ -14,6 +14,9 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  ca-certificates \
+  supervisor \
+  rsyslog \
   postgresql-client \
   ack \
   gcc \
