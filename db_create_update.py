@@ -543,7 +543,8 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'\
 
 # create the table for "triggers"
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'\
-    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea)')
+    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'\
+    ' mm_trigger_background boolean)')
 
 
 ## create table for country
