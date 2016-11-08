@@ -39,4 +39,4 @@ psutil
 twisted
 setuptools
 ipgetter
-
+apache-libcloud
