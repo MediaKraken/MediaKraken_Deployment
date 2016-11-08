@@ -41,7 +41,8 @@ def db_triggers_read(self):
     """
     # read the triggers
     """
-    self.db_cursor.execute('select mm_trigger_guid,mm_trigger_command,mm_trigger_background from mm_trigger')
+    self.db_cursor.execute('select mm_trigger_guid,mm_trigger_command,'\
+        'mm_trigger_background from mm_trigger')
     return self.db_cursor.fetchall()
 
 
