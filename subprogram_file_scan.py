@@ -159,7 +159,7 @@ def worker(audit_directory):
                     if file_name[:1] == "\\":
                         file_name\
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    media_ffprobe_json = None # common_ffmpeg.com_ffmpeg_media_attr(file_name)
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})
