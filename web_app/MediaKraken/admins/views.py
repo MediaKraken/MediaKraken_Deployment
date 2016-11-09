@@ -97,9 +97,8 @@ def admins():
         else:
             data_alerts.append((row_data['mm_notification_guid'],\
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
-    # TODO temp
     data_transmission_active = False
-    if g.db_connection.db_opt_status_read()['mm_options_json']['TransmiTODO'] != None:
+    if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] != None:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
