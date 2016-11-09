@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import json
 from common import common_config_ini
 from common import common_logging
 from common import common_ffmpeg
@@ -42,5 +43,8 @@ while 1:
         ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(row_data['mm_media_path'])
         if ffprobe_json is not None:
             # update record with new ffprobe data
+            pass
         else:
             # update record with "hold" item
+            ffprobe_json = {'FFProbe': 'Fail'}
+        db_connection.db_media_ffmeg_update(row_data['mm_media_guid'], json.dumps(ffprobe_json))
