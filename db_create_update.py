@@ -651,7 +651,7 @@ if sql3_cursor.fetchone()[0] == 0:
     'MediaBrainz': {'Host': '10.0.0.35', 'Port': 5000, 'User': None, 'Password': None,\
         'BrainzDBHost': '10.0.0.35', 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
         'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\
-    'Transmission': {'Host': '10.0.0.151', 'Port': 9091},\
+    'Transmission': {'Host': None, 'Port': 9091},\
     'Dropbox': {'APIKey': None, 'APISecret': None},\
     'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',\
         'BackupBucket': 'mkbackup'},\
