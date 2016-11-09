@@ -643,11 +643,19 @@ if sql3_cursor.fetchone()[0] == 0:
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
         'MetadataImageLocal': '/mediakraken/web_app/MediaKraken/static/meta/images',\
         'BackupLocal': '/mediakraken/backups/'},\
-    'API': {'MediaBrainz': None, 'AniDB': None, 'theTVdb': '147CB43DCA8B61B7',\
+    'API': {'MediaBrainz': None, \
+        'AniDB': None, \
+        'theTVdb': '147CB43DCA8B61B7',\
         'theMovieDB': 'f72118d1e84b8a1438935972a9c37cac',\
-        'TheSportsDB': '4352761817344', 'TheLogoDB': None, 'OpenSubtitles': None,\
-        'Google': None, 'GlobalCache': None, 'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
-        'ISBNdb': '25C8IT4I', 'IMVDb': None, 'TVMaze': None},\
+        'TheSportsDB': '4352761817344', \
+        'TheLogoDB': None, \
+        'OpenSubtitles': None,\
+        'Google': None, \
+        'GlobalCache': None, \
+        'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
+        'ISBNdb': '25C8IT4I', \
+        'IMVDb': None, \
+        'TVMaze': None},\
     'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,\
         'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
         'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\
@@ -659,7 +667,7 @@ if sql3_cursor.fetchone()[0] == 0:
     'GoogleDrive': {'SecretFile': None},\
     'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},\
     'SD': {'User': None, 'Password': None},\
-    }), json.dumps({'thetvdb_Updated_Epoc':0})
+    }), json.dumps({'thetvdb_Updated_Epoc': 0})
     sql3_cursor.execute('insert into mm_options_and_status (mm_options_and_status_guid,'\
         'mm_options_json,mm_status_json) values (%s,%s,%s)', sql_params)
 
