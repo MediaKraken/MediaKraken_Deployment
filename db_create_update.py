@@ -648,8 +648,8 @@ if sql3_cursor.fetchone()[0] == 0:
         'TheSportsDB': '4352761817344', 'TheLogoDB': None, 'OpenSubtitles': None,\
         'Google': None, 'GlobalCache': None, 'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
         'ISBNdb': '25C8IT4I', 'IMVDb': None, 'TVMaze': None},\
-    'MediaBrainz': {'Host': '10.0.0.35', 'Port': 5000, 'User': None, 'Password': None,\
-        'BrainzDBHost': '10.0.0.35', 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
+    'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,\
+        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
         'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\
     'Transmission': {'Host': None, 'Port': 9091},\
     'Dropbox': {'APIKey': None, 'APISecret': None},\
