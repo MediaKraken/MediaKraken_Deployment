@@ -371,6 +371,6 @@ def db_read_media_ffprobe(self):
     """
     Read in all media that needs ffprobe
     """
-    self.db_cursor.execute('select mm_media_guid from mm_media'\
+    self.db_cursor.execute('select mm_media_guid,mm_media_path from mm_media'\
         ' where mm_media_ffprobe_json is NULL')
     return self.db_cursor.fetchall()

@@ -39,4 +39,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # main code
 while 1:
     for row_data in db_connection.db_read_media_ffprobe():
-        ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(row_data[''])
+        ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(row_data['mm_media_path'])
+        if ffprobe_json is not None:
+            # update record with new ffprobe data
+        else:
+            # update record with "hold" item
