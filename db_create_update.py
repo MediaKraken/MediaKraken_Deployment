@@ -643,6 +643,7 @@ if sql3_cursor.fetchone()[0] == 0:
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
         'MetadataImageLocal': '/mediakraken/web_app/MediaKraken/static/meta/images',\
         'BackupLocal': '/mediakraken/backups/'},\
+    'Maintenance': None, \
     'API': {'MediaBrainz': None, \
         'AniDB': None, \
         'theTVdb': '147CB43DCA8B61B7',\
