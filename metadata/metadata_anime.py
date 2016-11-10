@@ -131,11 +131,14 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
 
-# themoviedb 
-# tvmaze
-# thetvdb
-# anidb
+        if metadata_uuid is None and tvmaze_id is not None:
+            pass
 
+        if metadata_uuid is None and thetvdb_id is not None:
+            pass
+
+        if metadata_uuid is None and anidb_id is not None:
+            pass
 
     logging.info("meta anime metadata_uuid B: %s", metadata_uuid)
     if metadata_uuid is None:
