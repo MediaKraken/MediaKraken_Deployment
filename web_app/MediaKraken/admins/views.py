@@ -493,7 +493,8 @@ def admin_server_stat():
     return render_template("admin/admin_server_stats.html",
                            data_disk=common_system.com_system_disk_usage_all(True),
                            data_cpu_usage=common_system.com_system_cpu_usage(True),
-                           data_mem_usage=common_system.com_system_virtual_memory(None))
+                           data_mem_usage=common_system.com_system_virtual_memory(None),
+                           data_network_io=common_network.mk_network_io_counter())
 
 
 @blueprint.route("/server_stat_slave")
