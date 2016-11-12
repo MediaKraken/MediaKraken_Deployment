@@ -73,7 +73,7 @@ services:
     image: mediakraken/mkmail:latest
     container_name: mkmail
     ports:
-      - "25:25"
+      - "587:587"
     networks:
       - mediakraken-network
     restart: unless-stopped
