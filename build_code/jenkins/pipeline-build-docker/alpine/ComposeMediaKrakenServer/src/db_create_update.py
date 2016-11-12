@@ -439,6 +439,11 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KEY,'
     ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_table_index_check('mm_user_idx_username') is None:
     sql3_cursor.execute('CREATE INDEX mm_user_idx_username ON mm_user(username)')
+sql3_cursor.execute('select count(*) from mm_user')
+if sql3_cursor.fetchone()[0] == 0:
+    sql3_cursor.execute('insert into mm_user (id, username, email, password, created_at,'\
+        ' active, is_admin, user_json, lang) values (Null, "admin", Null, "", Null, True,'\
+        ' True, Null, Null)')
 
 
 # add table for reviews
@@ -543,7 +548,8 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'\
 
 # create the table for "triggers"
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'\
-    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea)')
+    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'\
+    ' mm_trigger_background boolean)')
 
 
 ## create table for country
@@ -642,15 +648,24 @@ if sql3_cursor.fetchone()[0] == 0:
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
         'MetadataImageLocal': '/mediakraken/web_app/MediaKraken/static/meta/images',\
         'BackupLocal': '/mediakraken/backups/'},\
-    'API': {'MediaBrainz': None, 'AniDB': None, 'theTVdb': '147CB43DCA8B61B7',\
+    'Maintenance': None, \
+    'API': {'MediaBrainz': None, \
+        'AniDB': None, \
+        'theTVdb': '147CB43DCA8B61B7',\
         'theMovieDB': 'f72118d1e84b8a1438935972a9c37cac',\
-        'TheSportsDB': '4352761817344', 'TheLogoDB': None, 'OpenSubtitles': None,\
-        'Google': None, 'GlobalCache': None, 'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
-        'ISBNdb': '25C8IT4I', 'IMVDb': None, 'TVMaze': None},\
-    'MediaBrainz': {'Host': '10.0.0.35', 'Port': 5000, 'User': None, 'Password': None,\
-        'BrainzDBHost': '10.0.0.35', 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
+        'TheSportsDB': '4352761817344', \
+        'TheLogoDB': None, \
+        'OpenSubtitles': None,\
+        'Google': None, \
+        'GlobalCache': None, \
+        'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
+        'ISBNdb': '25C8IT4I', \
+        'IMVDb': None, \
+        'TVMaze': None},\
+    'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,\
+        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
         'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\
-    'Transmission': {'Host': '10.0.0.151', 'Port': 9091},\
+    'Transmission': {'Host': None, 'Port': 9091},\
     'Dropbox': {'APIKey': None, 'APISecret': None},\
     'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',\
         'BackupBucket': 'mkbackup'},\
@@ -658,7 +673,7 @@ if sql3_cursor.fetchone()[0] == 0:
     'GoogleDrive': {'SecretFile': None},\
     'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},\
     'SD': {'User': None, 'Password': None},\
-    }), json.dumps({'thetvdb_Updated_Epoc':0})
+    }), json.dumps({'thetvdb_Updated_Epoc': 0})
     sql3_cursor.execute('insert into mm_options_and_status (mm_options_and_status_guid,'\
         'mm_options_json,mm_status_json) values (%s,%s,%s)', sql_params)
 
