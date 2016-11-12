@@ -81,7 +81,7 @@ services:
     build:
       context: ./ComposeMediaKrakenMail
       dockerfile: dockerfile-mail
-    containe_name: mkmail
+    container_name: mkmail
     ports:
       - "25:25"
     networks:

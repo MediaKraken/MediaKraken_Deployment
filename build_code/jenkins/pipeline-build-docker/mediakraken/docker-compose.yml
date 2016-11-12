@@ -68,6 +68,16 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
+  # mail service
+  mail:
+    image: mediakraken/mkmail:latest
+    container_name: mkmail
+    ports:
+      - "25:25"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+
   # runs the nginx proxy service
   nginx:
     image: mediakraken/mknginx:latest
