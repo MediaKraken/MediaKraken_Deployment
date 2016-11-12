@@ -439,12 +439,6 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KEY,'
     ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_table_index_check('mm_user_idx_username') is None:
     sql3_cursor.execute('CREATE INDEX mm_user_idx_username ON mm_user(username)')
-#sql3_cursor.execute('select count(*) from mm_user')
-#if sql3_cursor.fetchone()[0] == 0:
-#    sql3_cursor.execute('insert into mm_user (id, username, email, password, created_at,'\
-#        ' active, is_admin, user_json, lang) values (Null, "mkadmin",'\
-#        ' "$2b$13$xp0tiR9azTPLmh60E4GapeeUbnoPAB/RsO/fMISzFWFCl3I/lVWfK", "", Null, True,'\
-#        ' True, Null, Null)')
 
 
 # add table for reviews
