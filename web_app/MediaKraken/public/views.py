@@ -11,6 +11,7 @@ from MediaKraken.public.forms import LoginForm
 from MediaKraken.user.forms import RegisterForm
 from MediaKraken.utils import flash_errors
 import logging # pylint: disable=W0611
+import database as database_base
 
 # this fixes the login issue!!!!!!!!!!!!!!!!!!!!!!!!!
 #blueprint = Blueprint('public', __name__, url_prefix='/public', static_folder="../static")
@@ -59,10 +60,19 @@ def register():
     """
     form = RegisterForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
+        admin_user = False
+        # if first user set it as administrator
+        db_connection = database_base.MKServerDatabase()
+        db_connection.db_open()
+        if db_connection.db_table_count('mm_user') == 0:
+            admin_user = True
+        db_connection.db_close()
+        # add the user
         new_user = User.create(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data,
-                        active=True)
+                        active=True,
+                        is_admin=admin_user)
         flash("Thank you for registering. You can now log in.", 'success')
         return redirect(url_for('public.home'))
     else:
