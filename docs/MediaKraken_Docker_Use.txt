@@ -51,6 +51,8 @@ BaseFFMPEG
 	docker build -t mediakraken/mkbaseffmpeg .
 Database - Builds and runs
 	Hosts the postgresql database
+Mail
+	Host the mail server
 Metadata
 	Host the metadata fetcher
 Nginx
