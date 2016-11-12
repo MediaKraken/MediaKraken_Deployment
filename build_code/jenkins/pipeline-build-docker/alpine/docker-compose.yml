@@ -76,18 +76,6 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
-  # mail service
-  mail:
-    build:
-      context: ./ComposeMediaKrakenMail
-      dockerfile: dockerfile-mail
-    container_name: mkmail
-    ports:
-      - "587:587"
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
-
   # runs the nginx proxy service
   nginx:
     build:
