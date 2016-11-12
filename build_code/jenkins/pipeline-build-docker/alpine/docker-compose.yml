@@ -119,6 +119,7 @@ services:
     volumes:
       - /var/log/mediakraken:/mediakraken/log
     networks:
+      - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
 
