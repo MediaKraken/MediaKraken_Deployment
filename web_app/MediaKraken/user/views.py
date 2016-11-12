@@ -2094,11 +2094,7 @@ def before_request():
     Executes before each request
     """
     g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    g.db_connection.db_open()
 
 
 @blueprint.teardown_request
