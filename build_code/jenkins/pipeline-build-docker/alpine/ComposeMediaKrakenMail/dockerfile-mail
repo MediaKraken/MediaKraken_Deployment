@@ -19,7 +19,6 @@ RUN	true && \
 COPY	supervisord.conf /etc/supervisord.conf
 COPY	rsyslog.conf /etc/rsyslog.conf
 COPY	postfix.sh /postfix.sh
-RUN	chmod +x /postfix.sh
 
 VOLUME	[ "/var/spool/postfix", "/etc/postfix" ]
 
