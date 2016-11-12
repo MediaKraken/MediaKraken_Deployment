@@ -97,8 +97,9 @@ def admins():
         else:
             data_alerts.append((row_data['mm_notification_guid'],\
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
-    # TODO temp
-    data_transmission_active = True
+    data_transmission_active = False
+    if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] != None:
+        data_transmission_active = True
     # set the scan info
     data_scan_info = []
     scanning_json = g.db_connection.db_opt_status_read()['mm_status_json']
@@ -492,7 +493,8 @@ def admin_server_stat():
     return render_template("admin/admin_server_stats.html",
                            data_disk=common_system.com_system_disk_usage_all(True),
                            data_cpu_usage=common_system.com_system_cpu_usage(True),
-                           data_mem_usage=common_system.com_system_virtual_memory(None))
+                           data_mem_usage=common_system.com_system_virtual_memory(None),
+                           data_network_io=common_network.mk_network_io_counter())
 
 
 @blueprint.route("/server_stat_slave")

@@ -45,3 +45,4 @@ docs/_build
 # Virtualenvs
 env/
 /web_secret_key.txt
+/mediakraken_uwsgi.ini
