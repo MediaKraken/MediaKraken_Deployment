@@ -14,7 +14,6 @@ pip install docker-squash
 
 
 Centos 7.2 1511
-
 rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
 yum -y update
 # reboot if kernel updated
@@ -28,6 +27,15 @@ pip install docker-compose
 pip install --upgrade docker-compose
 pip install docker-squash
 
+
+alpine 3.4.3 (virt)
+vi /etc/apk/repositories
+# uncomment community
+apk update && apk add docker py-pip
+pip install docker-compose
+rc-update add docker boot
+service docker start
+pip install --upgrade pip
 
 ---------------- ip 125 atm
 
