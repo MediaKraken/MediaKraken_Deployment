@@ -68,7 +68,7 @@ common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 
 
 # open the database
-config_handle, option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 db_connection.db_activity_insert('MediaKraken_Metadata API Start', None,\
@@ -294,7 +294,7 @@ def worker(content_providers):
     """
     logging.info("worker meta api name: %s", content_providers)
     # open the database
-    config_handle, option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, thread_db = common_config_ini.com_config_read()
     # setup last used id's per thread
     metadata_last_id = None
     metadata_last_title = None

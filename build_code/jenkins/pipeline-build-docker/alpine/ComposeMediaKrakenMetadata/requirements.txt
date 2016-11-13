@@ -1,3 +1,4 @@
+pylzma
 beautifulsoup4
 guessit
 imdbpie
