@@ -25,7 +25,6 @@ from threading import Thread
 import urllib2
 import socket
 import sys
-from plyer import email
 import psutil
 import ipgetter
 from . import wol
@@ -54,15 +53,6 @@ def mk_network_wol(mac_address):
     Send wake on lan even to mac address
     """
     wol.send_magic_packet(mac_address)
-
-
-def mk_network_send_email(email_receipient, email_subject, email_body):
-    """
-    Send email
-    """
-    # TODO um, popped up Outlook window in windows
-    email.send(recipient=email_receipient, subject=email_subject, text=email_body,\
-        create_chooser=True)
 
 
 def mk_network_get_mac():
