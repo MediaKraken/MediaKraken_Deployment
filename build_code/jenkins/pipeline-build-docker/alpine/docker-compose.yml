@@ -76,6 +76,22 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
+  metadata:
+    build:
+      context: ./ComposeMediaKrakenMetadata
+      dockerfile: dockerfile-metadata
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkmetadata
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+
   # runs the nginx proxy service
   nginx:
     build:
