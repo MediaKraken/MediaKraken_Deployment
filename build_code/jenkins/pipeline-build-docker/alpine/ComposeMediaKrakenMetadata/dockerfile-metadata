@@ -7,6 +7,7 @@ LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image downloads and maintains all metadata"
 
 # copy PIP requirements
+RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
