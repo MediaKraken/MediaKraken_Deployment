@@ -3,8 +3,7 @@ FROM alpine:3.4
 
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
-LABEL www.mediakraken.org.version="dev-0.1.12"
-LABEL www.mediakraken.org.release-date="2016-10-28"
+LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the base image for web/flask"
 
 RUN mkdir /mediakraken
