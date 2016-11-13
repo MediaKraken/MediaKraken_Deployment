@@ -27,6 +27,8 @@ RUN apk add --update \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
   && rm requirements.txt
+  && apk add \
+  py-setuptools
 
 ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
