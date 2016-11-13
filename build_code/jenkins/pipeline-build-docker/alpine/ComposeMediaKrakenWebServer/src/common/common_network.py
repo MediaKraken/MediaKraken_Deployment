@@ -25,8 +25,6 @@ from threading import Thread
 import urllib2
 import socket
 import sys
-import psutil
-import ipgetter
 from . import wol
 
 
@@ -69,6 +67,7 @@ def mk_network_get_outside_ip():
     """
     #whatismyip = 'http://checkip.dyndns.org/'
     #return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
+    import ipgetter
     return ipgetter.myip()
 
 
@@ -131,6 +130,7 @@ def mk_network_io_counter(show_nic=False):
     """
     Get network io
     """
+    import psutil
     return psutil.net_io_counters(pernic=show_nic)
 
 
@@ -138,6 +138,7 @@ def mk_network_connections():
     """
     Show network connections
     """
+    import psutil
     return psutil.net_connections()
 
 
@@ -145,6 +146,7 @@ def mk_network_ip_addr():
     """
     Show ip addys
     """
+    import psutil
     return psutil.net_if_addrs()
 
 
@@ -152,4 +154,5 @@ def mk_network_stats():
     """
     Show netowrk stats
     """
+    import psutil
     return psutil.net_if_stats()
