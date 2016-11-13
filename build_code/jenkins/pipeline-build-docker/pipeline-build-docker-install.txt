@@ -30,7 +30,7 @@ pip install docker-squash
 
 alpine 3.4.3 (virt)
 vi /etc/apk/repositories
-# uncomment community
+# uncomment edge community (for newest docker)
 apk update && apk add docker py-pip
 pip install docker-compose
 rc-update add docker boot
