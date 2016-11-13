@@ -68,6 +68,7 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
+  # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
     environment:
