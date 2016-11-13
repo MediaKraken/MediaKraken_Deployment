@@ -25,7 +25,6 @@ from threading import Thread
 import urllib2
 import socket
 import sys
-import ipgetter
 from . import wol
 
 
@@ -68,6 +67,7 @@ def mk_network_get_outside_ip():
     """
     #whatismyip = 'http://checkip.dyndns.org/'
     #return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
+    import ipgetter
     return ipgetter.myip()
 
 
