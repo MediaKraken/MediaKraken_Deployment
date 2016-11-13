@@ -21,6 +21,7 @@ RUN apk add --update \
   python-dev \
   py-pip \
   libffi-dev \
+  python \
   && pip install pytest-runner \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \

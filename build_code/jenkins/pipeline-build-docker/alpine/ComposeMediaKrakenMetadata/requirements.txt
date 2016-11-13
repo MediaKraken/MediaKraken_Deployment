@@ -12,3 +12,4 @@ tmdbsimple
 xmltodict
 subliminal
 steam
+setuptools
