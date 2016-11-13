@@ -19,6 +19,7 @@ API_LIMIT = {
     'giantbomb': (1, 1), # (4-16-2016)
     'imdb': (9999, 1), # no mention of limits 7/29/2016
     'imvdb': (1000, 60), # 1000 per minute (6/30/2016)
+    'lastfm': (5,1), # five per second (11/8/2016)
     'musicbrainz': (9999, 1),
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections

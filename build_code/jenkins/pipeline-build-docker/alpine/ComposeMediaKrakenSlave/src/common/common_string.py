@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import re
 from socket import inet_ntoa
-import passwordmeter
 
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
@@ -71,6 +70,7 @@ def com_string_password_test(password_text):
     """
     Test password strength
     """
+    import passwordmeter
     ratings = (
         'Infinitely weak',
         'Extremely weak',

@@ -365,3 +365,21 @@ def db_read_media_new(self, days_old=7, offset=None, records=None):
             ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),\
             offset, records))
     return self.db_cursor.fetchall()
+
+
+def db_read_media_ffprobe(self):
+    """
+    Read in all media that needs ffprobe
+    """
+    self.db_cursor.execute('select mm_media_guid,b from mm_media'\
+        ' where mm_media_ffprobe_json is NULL')
+    return self.db_cursor.fetchall()
+
+
+def db_media_ffmeg_update(self, media_guid, ffmpeg_json):
+    """
+    Update the ffprobe json data
+    """
+    self.db_cursor.execute('update mm_media set mm_media_ffprobe_json = %s'\
+        ' where mm_media_guid = %s', (ffmpeg_json, media_guid))
+    self.db_commit()

@@ -18,6 +18,27 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import smtplib
 
+# http://stackoverflow.com/users/547050/david-okwii
+# code from stackoverflow
+def com_net_send_email(user, pwd, recipient, subject, body):
+    gmail_user = user
+    gmail_pwd = pwd
+    FROM = user
+    TO = recipient if type(recipient) is list else [recipient]
+    SUBJECT = subject
+    TEXT = body
 
-APP_VERSION = '0.2.0'
+    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.ehlo()
+        server.starttls()
+        server.login(gmail_user, gmail_pwd)
+        server.sendmail(FROM, TO, message)
+        server.close()
+        logging.info('successfully sent the mail')
+    except:
+        logging.info("failed to send mail")

@@ -90,7 +90,9 @@ class MKServerDatabase(object):
         db_media_watched_checkpoint_update,\
         db_media_favorite_status_update,\
         db_media_poo_status_update,\
-        db_media_mismatch_status_update
+        db_media_mismatch_status_update,\
+        db_read_media_ffprobe,\
+        db_media_ffmeg_update
     from database.db_base_media_movie import db_web_media_list_count,\
         db_media_movie_count_by_genre,\
         db_web_media_list,\
