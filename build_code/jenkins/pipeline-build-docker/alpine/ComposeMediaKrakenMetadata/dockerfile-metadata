@@ -26,7 +26,7 @@ RUN apk add --update \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
-  && rm requirements.txt
+  && rm requirements.txt \
   && apk add \
   py-setuptools
 
