@@ -251,11 +251,11 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,\
         logging.info("id: %s %s %s", media_tvid, media_imdbid, media_aniid)
         json_data = json.loads(row_data['mm_metadata_media_id'])
         if media_imdbid is not None:
-            json_data.update({'imdb':media_imdbid})
+            json_data.update({'imdb': media_imdbid})
         if media_tvid is not None:
-            json_data.update({'thetvdb':media_tvid})
+            json_data.update({'thetvdb': media_tvid})
         if media_aniid is not None:
-            json_data.update({'anidb':media_aniid})
+            json_data.update({'anidb': media_aniid})
         self.db_cursor.execute('update mm_metadata_movie set mm_metadata_media_id = %s'\
             ' where mm_metadata_guid = %s', (json.dumps(json_data), row_data['mm_metadata_guid']))
     # lookup id from series
@@ -266,11 +266,11 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,\
         logging.info("id2: %s %s %s", media_tvid, media_imdbid, media_aniid)
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])
         if media_imdbid is not None:
-            json_data.update({'imdb':media_imdbid})
+            json_data.update({'imdb': media_imdbid})
         if media_tvid is not None:
-            json_data.update({'thetvdb':media_tvid})
+            json_data.update({'thetvdb': media_tvid})
         if media_aniid is not None:
-            json_data.update({'anidb':media_aniid})
+            json_data.update({'anidb': media_aniid})
         self.db_cursor.execute('update mm_metadata_tvshow set mm_metadata_media_tvshow_id = %s'\
             ' where mm_metadata_tvshow_guid = %s', (json.dumps(json_data),\
             row_data['mm_metadata_tvshow_guid']))
