@@ -74,7 +74,7 @@ class CommonCIFSShare(object):
         client_name = 'My Computer'
         self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,\
             use_ntlm_v2=True)
-        self.smb_conn.connect(ip_addr.encode('utf8'), 139)
+        self.smb_conn.connect(str(ip_addr), 139)
 
 
     def com_cifs_share_list_by_connection(self):
