@@ -86,7 +86,7 @@ services:
     container_name: mkmetadata
     depends_on:
       - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
     networks:

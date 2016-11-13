@@ -29,4 +29,5 @@ ADD wait-for-it.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
-CMD ["python", "main_server_metadata_api.py"]
+CMD ["/bin/ash"]
+#CMD ["python", "main_server_metadata_api.py"]
