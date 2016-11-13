@@ -22,7 +22,7 @@ services:
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
-      - host
+    network_mode: "host"
     restart: unless-stopped
 
   # slave app server which transcodes
