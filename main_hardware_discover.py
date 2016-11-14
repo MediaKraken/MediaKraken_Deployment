@@ -41,10 +41,13 @@ tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
     media_devices.append({'Model': row_tuner.get_var(item='/sys/model'),\
-        'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
+        'HWModel': row_tuner.get_var(item='/sys/hwmodel'),\
+        'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\
         'IP': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip()),\
-        'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}})
+        'Firmware': row_tuner.get_version(),\
+        'Active': True,\
+        'Channels': {}})
 
 
 # chromecast discover
@@ -56,7 +59,7 @@ while True:
         logging.info('chromescan out: %' % line.rstrip())
         if line.find(":") != -1:
             media_devices.append({'Chrome IP': line.split(':')[0].strip(),\
-                                   'Chrome Name': line.split(':')[1].strip()})
+                                 'Chrome Name': line.split(':')[1].strip()})
     else:
         break
 chrome_pid.wait()
