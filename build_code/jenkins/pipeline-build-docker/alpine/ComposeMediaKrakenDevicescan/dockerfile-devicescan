@@ -21,7 +21,9 @@ RUN tar -xvf libhdhomerun* \
   && cd libhdhomerun \
   && make \
   && make install \
-  && apk del alpine-sdk
+  && apk del alpine-sdk \
+  && cd .. \
+  && rm libhdhomerun* \
 
 CMD ["/bin/ash"]
 
