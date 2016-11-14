@@ -20,7 +20,7 @@ ADD src /mediakraken
 RUN tar -xvf libhdhomerun* \
   && cd libhdhomerun \
   && make \
-  && make install
+  && make install \
   && apk del alpine-sdk
 
 CMD ["/bin/ash"]
