@@ -57,6 +57,16 @@ services:
       - mediakraken-dbnetwork
     restart: unless-stopped
 
+  # scan for new hardware devices
+  devicescan:
+    build:
+      context: ./ComposeMediaKrakenDevicescan
+      dockerfile: dockerfile-devicescan
+    container_name: mkdevicescan
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    restart: never
+
   # Runs the webapi for 3rd party clients
 #  webapi:
 #    build:
