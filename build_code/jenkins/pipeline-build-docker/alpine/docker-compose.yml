@@ -65,6 +65,7 @@ services:
     container_name: mkdevicescan
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+    network_mode: host
     restart: never
 
   # Runs the webapi for 3rd party clients
