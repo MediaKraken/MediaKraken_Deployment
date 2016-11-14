@@ -18,7 +18,6 @@ ADD src /mediakraken
 
 RUN tar -xvf libhdhomerun* \
   && cd libhdhomerun \
-  && ./configure \
   && make \
   && make install
 
