@@ -16,6 +16,12 @@ RUN apk add --update \
 # Copy the source files for the app
 ADD src /mediakraken
 
+RUN tar -xvf libhdhomerun* \
+  && cd libhdhomerun \
+  && ./configure \
+  && make \
+  && make install
+
 CMD ["/bin/ash"]
 
 
