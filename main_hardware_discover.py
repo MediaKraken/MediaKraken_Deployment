@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import json
 import subprocess
 from common import common_hardware_hdhomerun
 from common import common_file
@@ -61,4 +60,4 @@ while True:
         break
 chrome_pid.wait()
 
-common_file.com_file_save_data('Device_Scan', media_devices, as_pickle=True, False, None)
+common_file.com_file_save_data('Device_Scan', media_devices, True, False, None)
