@@ -22,7 +22,6 @@ services:
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
-      - host
     restart: unless-stopped
 
   # slave app server which transcodes
@@ -149,5 +148,3 @@ networks:
   # Database communications network
   mediakraken-dbnetwork:
     driver: bridge
-  host:
-    external: True
