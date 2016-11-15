@@ -14,7 +14,7 @@ module = Extension(
     name = 'hdhomerun',
     sources = source_files,
     libraries = ['hdhomerun'],
-    include_dirs = ['../libhdhomerun'],
+    include_dirs = ['libhdhomerun'],
     extra_compile_args=['-std=c99'],
     extra_link_args=[],
 )
