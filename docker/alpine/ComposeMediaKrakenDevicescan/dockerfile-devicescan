@@ -23,7 +23,7 @@ RUN apk add --update \
   && make install \
   && apk del alpine-sdk \
   && cd .. \
-  && rm libhdhomerun* \
+  && rm -R libhdhomerun \
   && cd PyHdHomeRun \
   && python setup.py \
   && cd .. \
