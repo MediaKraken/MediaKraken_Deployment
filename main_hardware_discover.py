@@ -68,6 +68,7 @@ chrome_pid.wait()
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
+    logging.info("roku: %s", roku)
     media_devices.append({'Roku': roku})
 
 
