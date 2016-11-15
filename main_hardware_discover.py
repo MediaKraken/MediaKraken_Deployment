@@ -35,8 +35,9 @@ common_signal.com_signal_set_break()
 common_logging.com_logging_start('./log/MediaKraken_Hardware_Discovery')
 
 
-# tuner discovery
 media_devices = []
+
+# tuner discovery
 tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
