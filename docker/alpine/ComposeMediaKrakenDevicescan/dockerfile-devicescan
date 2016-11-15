@@ -6,24 +6,30 @@ MAINTAINER Quinn D Granfor, spootdev@gmail.com
 LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image scans for new hardware devices"
 
-RUN mkdir /mediakraken
+RUN mkdir /mediakraken \
+  && mkdir /mediakraken/build
 WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
   python \
-  alpine-sdk
-
-# Copy the source files for the app
-ADD src /mediakraken
-
-RUN tar -xvf libhdhomerun* \
+  alpine-sdk \
+  && tar -xvf libhdhomerun* \
   && cd libhdhomerun \
   && make \
   && make install \
   && apk del alpine-sdk \
   && cd .. \
   && rm libhdhomerun* \
+
+# Copy the source files for the app
+ADD src /mediakraken
+ADD PyHdHomeRun /mediakraken/build
+
+RUN cd build \
+  && python setup.py \
+  && cd .. \
+  && rm -R build
 
 CMD ["/bin/ash"]
 
