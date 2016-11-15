@@ -12,7 +12,7 @@ WORKDIR /mediakraken
 # add hdhomerun lib to install
 ADD PyHdHomeRun /mediakraken/PyHdHomeRun
 ADD libhdhomerun /mediakraken/libhdhomerun
-ADD hdhomerun-0.2 /mediakraken/hdhomerun-0.2
+ADD libhdhomerun_python /mediakraken/libhdhomerun_python
 
 # Update repository and install packages
 RUN apk add --update \
@@ -30,10 +30,10 @@ RUN apk add --update \
   && python setup.py install \
   && cd .. \
   && rm -R PyHdHomeRun \
-  && cd hdhomerun-0.2 \
+  && cd libhdhomerun_python \
   && python setup.py install \
   && cd .. \
-  && rm -R hdhomerun-0.2
+  && rm -R libhdhomerun_python
 
 # Copy the source files for the app
 ADD src /mediakraken
