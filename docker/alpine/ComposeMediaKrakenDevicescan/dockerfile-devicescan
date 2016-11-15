@@ -20,14 +20,15 @@ RUN apk add --update \
   py-setuptools \
   && cd libhdhomerun \
   && make \
-  && make install \
   && apk del alpine-sdk \
   && cd .. \
-#  && rm -R libhdhomerun
-#  && cd PyHdHomeRun \
-#  && python setup.py \
-#  && cd .. \
-#  && rm -R PyHdHomeRun
+  && mv ./libhdhomerun/hdhomerun_config . \
+  && mv ./libhdhomerun/libhdhomerun.so /usr/lib/. \
+  && rm -R libhdhomerun \
+  && cd PyHdHomeRun \
+  && python setup.py install \
+  && cd .. \
+  && rm -R PyHdHomeRun
 
 # Copy the source files for the app
 ADD src /mediakraken
