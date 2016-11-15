@@ -64,6 +64,7 @@ services:
       context: ./ComposeMediaKrakenDevicescan
       dockerfile: dockerfile-devicescan
     container_name: mkdevicescan
+    entrypoint: python main_hardware_discover.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
