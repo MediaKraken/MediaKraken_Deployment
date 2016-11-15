@@ -35,7 +35,7 @@ services:
     container_name: mkslave
     depends_on:
       - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server_slave.py
+    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
     networks:
