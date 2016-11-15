@@ -11,13 +11,12 @@ WORKDIR /mediakraken
 
 # add hdhomerun lib to install
 ADD PyHdHomeRun /mediakraken/PyHdHomeRun
-ADD libhdhomerun_20161107.tgz /mediakraken
+ADD libhdhomerun /mediakraken/libhdhomerun
 
 # Update repository and install packages
 RUN apk add --update \
   python \
   alpine-sdk \
-  && tar -xvf libhdhomerun* \
   && cd libhdhomerun \
   && make \
   && make install \
