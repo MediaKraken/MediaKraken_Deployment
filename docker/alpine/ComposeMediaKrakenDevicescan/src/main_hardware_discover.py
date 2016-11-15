@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import subprocess
 from common import common_hardware_hdhomerun
+from common import common_hardware_roku_network
 from common import common_file
 from common import common_logging
 from common import common_string
@@ -34,16 +35,20 @@ common_signal.com_signal_set_break()
 common_logging.com_logging_start('./log/MediaKraken_Hardware_Discovery')
 
 
-# tuner discovery
 media_devices = []
+
+# tuner discovery
 tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
     media_devices.append({'Model': row_tuner.get_var(item='/sys/model'),\
-        'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
+        'HWModel': row_tuner.get_var(item='/sys/hwmodel'),\
+        'Name': row_tuner.get_name(),\
         'ID': str(hex(row_tuner.get_device_id())),\
         'IP': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip()),\
-        'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}})
+        'Firmware': row_tuner.get_version(),\
+        'Active': True,\
+        'Channels': {}})
 
 
 # chromecast discover
@@ -55,9 +60,16 @@ while True:
         logging.info('chromescan out: %' % line.rstrip())
         if line.find(":") != -1:
             media_devices.append({'Chrome IP': line.split(':')[0].strip(),\
-                                   'Chrome Name': line.split(':')[1].strip()})
+                                 'Chrome Name': line.split(':')[1].strip()})
     else:
         break
 chrome_pid.wait()
 
-common_file.com_file_save_data('Device_Scan', media_devices, True, False, None)
+
+# roku discover
+for roku in common_hardware_roku_network.com_roku_network_discovery():
+    logging.info("roku: %s", roku)
+    media_devices.append({'Roku': roku})
+
+
+common_file.com_file_save_data('./devices/Device_Scan', media_devices, True, False, None)
