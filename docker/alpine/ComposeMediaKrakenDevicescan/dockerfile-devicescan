@@ -6,9 +6,12 @@ MAINTAINER Quinn D Granfor, spootdev@gmail.com
 LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image scans for new hardware devices"
 
-RUN mkdir /mediakraken \
-  && mkdir /mediakraken/build
+RUN mkdir /mediakraken
 WORKDIR /mediakraken
+
+# add hdhomerun lib to install
+ADD PyHdHomeRun /mediakraken/PyHdHomeRun
+ADD libhdhomerun_20161107.tgz /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
@@ -21,15 +24,13 @@ RUN apk add --update \
   && apk del alpine-sdk \
   && cd .. \
   && rm libhdhomerun* \
+  && cd PyHdHomeRun \
+  && python setup.py \
+  && cd .. \
+  && rm -R PyHdHomeRun
 
 # Copy the source files for the app
 ADD src /mediakraken
-ADD PyHdHomeRun /mediakraken/build
-
-RUN cd build \
-  && python setup.py \
-  && cd .. \
-  && rm -R build
 
 CMD ["/bin/ash"]
 
