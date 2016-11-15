@@ -44,7 +44,7 @@ RUN apk add --update \
   && apk add \
   py-setuptools
 
-ADD wait-for-it.sh /mediakraken
+ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 ADD ip2country /mediakraken/ip2country

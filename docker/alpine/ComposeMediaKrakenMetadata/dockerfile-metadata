@@ -30,9 +30,8 @@ RUN apk add --update \
   && apk add \
   py-setuptools
 
-ADD wait-for-it.sh /mediakraken
+ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
 CMD ["/bin/ash"]
-#CMD ["python", "main_server_metadata_api.py"]
