@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+hdhomerun/__init__.py
+hdhomerun/hdhomerun.py
+hdhomerun.egg-info/PKG-INFO
+hdhomerun.egg-info/SOURCES.txt
+hdhomerun.egg-info/dependency_links.txt
+hdhomerun.egg-info/not-zip-safe
+hdhomerun.egg-info/top_level.txt
