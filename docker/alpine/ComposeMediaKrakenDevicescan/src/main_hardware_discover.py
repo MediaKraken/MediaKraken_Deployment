@@ -52,8 +52,8 @@ for row_tuner in tuner_api.com_hdhomerun_list():
 
 
 # chromecast discover
-chrome_pid = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py'],\
-                              shell=False, stdout=subprocess.PIPE)
+chrome_pid = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
+                               '-devicelist'], shell=False, stdout=subprocess.PIPE)
 while True:
     line = chrome_pid.stdout.readline()
     if line != '':
