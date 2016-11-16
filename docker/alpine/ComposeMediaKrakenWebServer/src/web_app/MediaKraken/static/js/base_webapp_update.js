@@ -37,6 +37,51 @@ $(function() {
 	});
 });
 
+function EditShare(elm) {
+	localStorage.setItem('editShareId',$(elm).attr('data-id'));
+	$.ajax({
+		url : '../getShareById',
+		data : {id:$(elm).attr('data-id')},
+		type : 'POST',
+		success: function(res){
+			var data = JSON.parse(res);
+			$('#editShareType').val(data['Type']);
+			$('#editShareUser').val(data['User']);
+			$('#editSharePassword').val(data['Password']);
+			$('#editShareServer').val(data['Server']);
+			$('#editSharePath').val(data['Path']);
+			$('#editShareModal').modal();			
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+$(function() {
+	$('#btnShareUpdate').click(function() {
+	    $.ajax({
+		url: '../updateShare',
+		data: {
+		    new_share_type: $('#editShareType').val(),
+		    new_share_user: $('#editShareUser').val(),
+		    new_share_password: $('#editSharePassword').val(),
+		    new_share_server: $('#editShareServer').val(),
+		    new_share_path: $('#editSharePath').val(),
+		    id: localStorage.getItem('editShareId')
+		},
+		type: 'POST',
+		success: function(res) {
+		    $('#editShareModal').modal('hide');
+		    // Re populate the grid
+		},
+		error: function(error) {
+		    console.log(error);
+		}
+	    });
+	});
+});
+
 function EditTransmission(elm) {
 	localStorage.setItem('editId',$(elm).attr('data-id'));
 	$.ajax({

@@ -79,6 +79,33 @@ function Library_Delete() {
     });
 }
 
+function ConfirmShareDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#delete_share').modal();
+}
+
+function Share_Delete() {
+    $.ajax({
+        url: '../share_delete',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#delete_share').modal('hide');
+                window.location = '../share';
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
 function ConfirmUserDelete(elem) {
     localStorage.setItem('deleteId', $(elem).attr('data-id'));
     $('#delete_user').modal();

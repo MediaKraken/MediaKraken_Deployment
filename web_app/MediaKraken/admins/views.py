@@ -20,6 +20,7 @@ from functools import wraps
 from functools import partial
 from MediaKraken.admins.forms import CronEditForm
 from MediaKraken.admins.forms import LibraryAddEditForm
+from MediaKraken.admins.forms import ShareAddEditForm
 from MediaKraken.admins.forms import BackupEditForm
 from MediaKraken.admins.forms import DLNAEditForm
 from MediaKraken.admins.forms import UserEditForm
@@ -128,6 +129,8 @@ def admins():
                            data_zfs_active=common_zfs.com_zfs_available(),
                            data_library=locale.format('%d',\
                                g.db_connection.db_audit_paths_count(), True),
+                           data_share=locale.format('%d',\
+                               g.db_connection.db_audit_shares_count(), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages
@@ -402,6 +405,81 @@ def getLibraryById():
 def updateLibrary():
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],\
         request.form['new_class'], request.form['id'])
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint.route("/share", methods=["GET", "POST"])
+@blueprint.route("/share/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_share():
+    """
+    List all share/mounts
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_audit_share_count(),
+                                                  record_name='share(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
+    return render_template("admin/admin_share.html",
+                           media_dir=g.db_connection.db_audit_shares(offset, per_page),
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination,
+                          )
+
+
+@blueprint.route("/share_edit", methods=["GET", "POST"])
+@blueprint.route("/share_edit/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_share_edit_page():
+    """
+    allow user to edit share
+    """
+    form = ShareAddEditForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        else:
+            flash_errors(form)
+    return render_template("admin/admin_share_edit.html", form=form)
+
+
+@blueprint.route('/share_delete', methods=["POST"])
+@login_required
+@admin_required
+def admin_share_delete_page():
+    """
+    Delete share action 'page'
+    """
+    g.db_connection.db_audit_share_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint.route('/getShareById', methods=['POST'])
+@login_required
+@admin_required
+def getShareById():
+    result = g.db_connection.db_audit_share_by_uuid(request.form['id'])
+    return json.dumps({'Id': result['mm_share_dir_guid'],\
+        'Path': result['mm_share_dir_path']})
+
+
+@blueprint.route('/updateShare', methods=['POST'])
+@login_required
+@admin_required
+def updateShare():
+    g.db_connection.db_audit_share_update_by_uuid(request.form['new_share_type'],\
+                                                  request.form['new_share_user'],\
+                                                  request.form['new_share_password'],\
+                                                  request.form['new_share_server'],\
+                                                  request.form['new_share_path'],\
+                                                  request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

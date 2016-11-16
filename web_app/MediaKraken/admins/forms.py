@@ -5,13 +5,32 @@ from wtforms import TextField, PasswordField, TextAreaField, BooleanField, Selec
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from decimal import ROUND_UP
 
-# for editing the library
-class LibraryAddEditForm(Form):
+
+# for editing the shares
+class ShareAddEditForm(Form):
     #description = TextAreaField('Description', validators=[DataRequired()])
     storage_mount_type = SelectField('Share type',\
         choices=[('UNC', 'UNC'), ('SMB/CIFS', 'SMB'), ('NFS', 'NFS')])
     storage_mount_user = TextField('Share User')
     storage_mount_password = TextField('Share Password')
+    storage_mount_server = TextField('Server')
+    storage_mount_path = TextField('Path')
+
+
+    def __init__(self, *args, **kwargs):
+        super(LibraryAddEditForm, self).__init__(*args, **kwargs)
+
+
+    def validate(self):
+        initial_validation = super(LibraryAddEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+# for editing the library
+class LibraryAddEditForm(Form):
+    #description = TextAreaField('Description', validators=[DataRequired()])
     library_path = TextField('Library Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
 

@@ -77,6 +77,13 @@ def db_table_index_check(resource_name):
     return query_data
 
 
+# create tables for media shares to mount
+sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_guid uuid'\
+    ' CONSTRAINT mm_media_share_pk PRIMARY KEY, mm_media_share_type text,'\
+    ' mm_media_share_user text, mm_media_share_password text,'\
+    ' mm_media_share_server text, mm_media_share_path text)')
+
+
 # create tables for media directories to scan
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'\
     ' CONSTRAINT mm_media_dir_pk PRIMARY KEY, mm_media_dir_path text,'\
