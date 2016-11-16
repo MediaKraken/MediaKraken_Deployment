@@ -338,12 +338,17 @@ def admin_library_edit_page():
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
+                # smb/cifs mounts
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(ip_addr, user_name='guest', user_password='')
                     smb_stuff.com_cifs_share_directory_check(share_name, dir_path)
                     smb_stuff.com_cifs_close()
+                # nfs mount
+                elif request.form['library_path'][0:3] == "nfs":
+                    # TODO
+                    pass
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins.admin_library_edit_page'))

@@ -8,6 +8,10 @@ from decimal import ROUND_UP
 # for editing the library
 class LibraryAddEditForm(Form):
     #description = TextAreaField('Description', validators=[DataRequired()])
+    storage_mount_type = SelectField('Share type',\
+        choices=[('UNC', 'UNC'), ('SMB/CIFS', 'SMB'), ('NFS', 'NFS')])
+    storage_mount_user = TextField('Share User')
+    storage_mount_password = TextField('Share Password')
     library_path = TextField('Library Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
 

@@ -6,8 +6,22 @@
     <form id="libraryaddeditForm" class="form form-libraryedit" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{form.library_path.label}}
-            {{form.library_path(placeholder="Library Path", class_="form-control")}}
+            <div class="form-group">
+                {{form.storage_mount_type.label}}
+                {{form.storage_mount_type(placeholder="Share Type", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.storage_mount_user.label}}
+                {{form.storage_mount_user(placeholder="Share User", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.storage_mount_password.label}}
+                {{form.storage_mount_password(placeholder="Share Password", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.library_path.label}}
+                {{form.library_path(placeholder="Library Path", class_="form-control")}}
+            </div>
         </div>
         <select name="Lib_Class", id="lib_class">
             {% for class_data in data_class %}
