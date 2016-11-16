@@ -81,7 +81,7 @@ services:
 #    container_name: mkwebapi
 #    depends_on:
 #      - database
-#    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30
+#    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_api --ini ./web_api/mediakraken_uwsgi_alpine.ini
 #    ports:
 #      - "8901:8080"
 #    volumes:
