@@ -13,7 +13,6 @@ class MKServerDatabase(object):
         db_activity_purge
     from database.db_base_audit import db_audit_path_status,\
         db_audit_path_update_status,\
-        db_audit_paths_count,\
         db_audit_path_update_by_uuid,\
         db_audit_path_add,\
         db_audit_path_check,\
