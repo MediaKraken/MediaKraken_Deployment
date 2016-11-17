@@ -18,11 +18,11 @@ class ShareAddEditForm(Form):
 
 
     def __init__(self, *args, **kwargs):
-        super(LibraryAddEditForm, self).__init__(*args, **kwargs)
+        super(ShareAddEditForm, self).__init__(*args, **kwargs)
 
 
     def validate(self):
-        initial_validation = super(LibraryAddEditForm, self).validate()
+        initial_validation = super(ShareAddEditForm, self).validate()
         if not initial_validation:
             return False
         return True
