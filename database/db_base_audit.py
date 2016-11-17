@@ -40,14 +40,6 @@ def db_audit_path_update_status(self, lib_guid, status_json):
         ' where mm_media_dir_guid = %s', (status_json, lib_guid,))
 
 
-def db_audit_paths_count(self):
-    """
-    # read the paths to audit
-    """
-    self.db_cursor.execute('select count(*) from mm_media_dir')
-    return self.db_cursor.fetchone()[0]
-
-
 def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     # update audit path
@@ -92,7 +84,6 @@ def db_audit_dir_timestamp_update(self, dir_path):
         ' where mm_media_dir_path = %s', (datetime.datetime.now(), dir_path))
 
 
-# TODO subselect speed
 def db_audit_paths(self, offset=None, records=None):
     """
     # read the paths to audit
