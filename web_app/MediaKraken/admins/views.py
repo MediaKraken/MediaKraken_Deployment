@@ -419,7 +419,7 @@ def admin_share():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_audit_share_count(),
+                                                  total=g.db_connection.db_table_count('mm_media_share'),
                                                   record_name='share(s)',
                                                   format_total=True,
                                                   format_number=True,

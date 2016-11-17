@@ -128,7 +128,9 @@ def admins():
                            data_count_streamed_media=locale.format('%d', 0, True),
                            data_zfs_active=common_zfs.com_zfs_available(),
                            data_library=locale.format('%d',\
-                               g.db_connection.db_audit_paths_count(), True),
+                               g.db_connection.db_table_count('mm_media_dir'), True),
+                           data_share=locale.format('%d',\
+                               g.db_connection.db_table_count('mm_media_share'), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages
@@ -417,7 +419,7 @@ def admin_share():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_audit_share_count(),
+                                                  total=g.db_connection.db_table_count('mm_media_share'),
                                                   record_name='share(s)',
                                                   format_total=True,
                                                   format_number=True,

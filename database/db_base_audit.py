@@ -112,3 +112,55 @@ def db_audit_path_by_uuid(self, dir_id):
         return self.db_cursor.fetchone()
     except:
         return None
+
+
+def db_audit_shares(self, offset=None, records=None):
+    """
+    # read the shares list
+    """
+    if offset is None:
+        self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'\
+            ' mm_media_share_user, mm_media_share_password, mm_media_share_server,'\
+            ' mm_media_share_path from mm_media_share'\
+            ' order by mm_media_share_type, mm_media_share_server, mm_media_share_path')
+    else:
+        self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'\
+            ' mm_media_share_user, mm_media_share_password, mm_media_share_server,'\
+            ' mm_media_share_path from mm_media_share'\
+            ' order by mm_media_share_type, mm_media_share_server, mm_media_share_path'\
+            ' offset %s limit %s', (offset, records))
+    return self.db_cursor.fetchall()
+
+
+def db_audit_share_delete(self, share_guid):
+    """
+    # remove share
+    """
+    self.db_cursor.execute('delete from mm_media_share where mm_media_share_guid = %s',\
+                           (share_guid,))
+
+
+def db_audit_share_by_uuid(self, share_id):
+    """
+    # share per id
+    """
+    self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'\
+            ' mm_media_share_user, mm_media_share_password, mm_media_share_server,'\
+            ' mm_media_share_path,'\
+            ' from mm_media_share where mm_media_share_guid = %s', (share_id,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_audit_share_update_by_uuid(self, share_type, share_user, share_password, share_server,\
+                                  share_path, share_id):
+    """
+    # update share
+    """
+    self.db_cursor.execute('update mm_media_share set mm_media_share_type = %s,'\
+        ' mm_media_share_user = %s, mm_media_share_password = %s',\
+        ' mm_media_share_server = %s where mm_media_share_path = %s',\
+        ' where mm_media_share_guid = %s'
+        (share_type, share_user, share_password, share_server, share_path, share_id))
