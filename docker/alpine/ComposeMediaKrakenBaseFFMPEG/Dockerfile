@@ -58,4 +58,5 @@ RUN apk add --update \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \
   alpine-sdk \
-  yasm-dev
+  yasm-dev \
+  && rm -rf /var/cache/apk/*

@@ -39,5 +39,5 @@ RUN apk add --update \
   uwsgi-python \
   uwsgi-router_uwsgi \
   py-setuptools \
-  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/.
-
+  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/. \
+  && rm -rf /var/cache/apk/*

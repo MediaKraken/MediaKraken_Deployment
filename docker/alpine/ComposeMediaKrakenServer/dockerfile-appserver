@@ -13,6 +13,8 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  cifs-utils \
+  nfs-utils \
   postgresql-client \
   openssl \
   alpine-sdk \
@@ -42,7 +44,8 @@ RUN apk add --update \
   py-pip \
   python-dev \
   && apk add \
-  py-setuptools
+  py-setuptools \
+  && rm -rf /var/cache/apk/*
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

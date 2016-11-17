@@ -6,6 +6,11 @@ MAINTAINER Quinn D Granfor, spootdev@gmail.com
 LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the image for the web server app"
 
+RUN apk add --update \
+  cifs-utils \
+  nfs-utils \
+  && rm -rf /var/cache/apk/*
+
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
