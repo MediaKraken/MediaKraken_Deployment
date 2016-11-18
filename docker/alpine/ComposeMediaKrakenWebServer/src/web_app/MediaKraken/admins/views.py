@@ -443,6 +443,8 @@ def admin_share_edit_page():
     form = ShareAddEditForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
+            logging.info('here')
+            logging.info(request.form['action_type'])
             if request.form['action_type'] == 'Add':
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
