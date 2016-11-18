@@ -445,7 +445,7 @@ def admin_share_edit_page():
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
                 # check for UNC
-                if request.form['storage_mount_type'] == "UNC":
+                if request.form['storage_mount_type'] == "unc":
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
                         request.form['share_path'])
                     logging.info('unc info: %s %s %s' % (addr, share, path))
@@ -458,7 +458,7 @@ def admin_share_edit_page():
                     smb_stuff.com_cifs_close()
 
                 # smb/cifs mounts
-                elif request.form['storage_mount_type'] == "SMB":
+                elif request.form['storage_mount_type'] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],\
@@ -467,7 +467,7 @@ def admin_share_edit_page():
                         request.form['share_path'])
                     smb_stuff.com_cifs_close()
                 # nfs mount
-                elif request.form['storage_mount_type'] == "NFS":
+                elif request.form['storage_mount_type'] == "nfs":
                     # TODO
                     pass
                 elif not os.path.isdir(request.form['storage_mount_path']):

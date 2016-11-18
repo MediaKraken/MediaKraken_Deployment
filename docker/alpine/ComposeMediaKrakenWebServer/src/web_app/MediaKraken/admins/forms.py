@@ -10,10 +10,10 @@ from decimal import ROUND_UP
 class ShareAddEditForm(Form):
     #description = TextAreaField('Description', validators=[DataRequired()])
     storage_mount_type = SelectField('Share type',\
-        choices=[('UNC', 'UNC'), ('SMB/CIFS', 'SMB'), ('NFS', 'NFS')])
+        choices=[('unc', 'UNC'), ('smb', 'SMB/CIFS'), ('nfs', 'NFS')])
     storage_mount_user = TextField('Share User')
     storage_mount_password = TextField('Share Password')
-    storage_mount_server = TextField('Server')
+    storage_mount_server = TextField('Share hostname or IP address')
     storage_mount_path = TextField('Path')
 
 
