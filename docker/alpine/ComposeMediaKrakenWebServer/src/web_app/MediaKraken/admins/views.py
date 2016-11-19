@@ -452,6 +452,9 @@ def admin_share_edit_page():
                 if request.form['storage_mount_type'] == "unc":
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
                         request.form['share_path'])
+                    if addr is None: # total junk path for UNC
+                        flash("Invalid UNC path.", 'error')
+                        return redirect(url_for('admins.admin_share_edit_page'))
                     logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
