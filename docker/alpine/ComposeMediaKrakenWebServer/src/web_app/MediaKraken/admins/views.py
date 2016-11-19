@@ -441,7 +441,9 @@ def admin_share_edit_page():
     allow user to edit share
     """
     form = ShareAddEditForm(request.form)
+    logging.info('hereeditshare')
     if request.method == 'POST':
+        logging.info('herepost')
         if form.validate_on_submit():
             logging.info('here')
             logging.info(request.form['action_type'])
