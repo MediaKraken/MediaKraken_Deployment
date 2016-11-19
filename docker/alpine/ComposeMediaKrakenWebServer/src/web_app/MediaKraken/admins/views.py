@@ -445,9 +445,9 @@ def admin_share_edit_page():
     if request.method == 'POST':
         logging.info('herepost')
         if form.validate_on_submit():
-            logging.info('here')
-            logging.info(request.form['action_type'])
+            logging.info('action %s' % request.form['action_type'])
             if request.form['action_type'] == 'Add':
+                logging.info('type %s' % request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
