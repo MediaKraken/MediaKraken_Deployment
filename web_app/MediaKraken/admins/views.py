@@ -334,6 +334,9 @@ def admin_library_edit_page():
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
                         request.form['library_path'])
                     logging.info('smb info: %s %s %s' % (addr, share, path))
+                    if addr is None: # total junk path for UNC
+                        flash("Invalid UNC path.", 'error')
+                        return redirect(url_for('admins.admin_library_edit_page'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
