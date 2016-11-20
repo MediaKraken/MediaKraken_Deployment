@@ -468,7 +468,6 @@ def admin_share_edit_page():
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
-
                 # smb/cifs mounts
                 elif request.form['storage_mount_type'] == "smb":
                     # TODO
@@ -492,7 +491,6 @@ def admin_share_edit_page():
                         request.form['Lib_Class'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_share'))
-
                 else:
                     flash("Share already mapped.", 'error')
                     return redirect(url_for('admins.admin_share_edit_page'))
