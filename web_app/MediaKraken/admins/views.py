@@ -453,8 +453,10 @@ def admin_share_edit_page():
                 logging.info('type %s' % request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
+                    logging.info('herepost2')
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
                         request.form['share_path'])
+                    logging.info('herepost3')
                     if addr is None: # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_share_edit_page'))
