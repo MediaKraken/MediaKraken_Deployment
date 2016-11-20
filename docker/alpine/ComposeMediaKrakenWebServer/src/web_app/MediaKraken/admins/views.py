@@ -460,19 +460,21 @@ def admin_share_edit_page():
                         return redirect(url_for('admins.admin_share_edit_page'))
                     logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(addr)
+                    smb_stuff.com_cifs_connect(addr, \
+                        user_name = request.form['storage_mount_user'], \
+                        user_password = request.form['storage_mount_password'])
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
-
                 # smb/cifs mounts
                 elif request.form['storage_mount_type'] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],\
-                        user_name='guest', user_password='')
+                        user_name = request.form['storage_mount_user'], \
+                        user_password = request.form['storage_mount_password'])
                     smb_stuff.com_cifs_share_directory_check(share_name,\
                         request.form['storage_mount_path'])
                     smb_stuff.com_cifs_close()
@@ -489,7 +491,6 @@ def admin_share_edit_page():
                         request.form['Lib_Class'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_share'))
-
                 else:
                     flash("Share already mapped.", 'error')
                     return redirect(url_for('admins.admin_share_edit_page'))
