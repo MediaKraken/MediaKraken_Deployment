@@ -489,8 +489,11 @@ def admin_share_edit_page():
                     return redirect(url_for('admins.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
-                    g.db_connection.db_audit_share_add(request.form['storage_mount_path'],\
-                        request.form['Lib_Class'])
+                    g.db_connection.db_audit_share_add(request.form['storage_mount_type'], \
+                                                       request.form['storage_mount_user'], \
+                                                       request.form['storage_mount_password'], \
+                                                       request.form['storage_mount_server'], \
+                                                       request.form['storage_mount_path'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_share'))
                 else:

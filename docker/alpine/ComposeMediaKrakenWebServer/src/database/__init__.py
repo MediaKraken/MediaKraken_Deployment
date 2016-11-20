@@ -23,7 +23,9 @@ class MKServerDatabase(object):
         db_audit_shares,\
         db_audit_share_delete,\
         db_audit_share_by_uuid,\
-        db_audit_share_update_by_uuid
+        db_audit_share_update_by_uuid,\
+        db_audit_share_check,\
+        db_audit_share_add
     from database.db_base_channel import db_channel_insert
     from database.db_base_collection import db_media_collection_scan,\
         db_collection_guid_by_name,\
