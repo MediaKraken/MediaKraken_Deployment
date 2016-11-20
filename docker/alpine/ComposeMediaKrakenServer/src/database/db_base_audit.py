@@ -56,14 +56,15 @@ def db_audit_path_delete(self, lib_guid):
     self.db_cursor.execute('delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
-def db_audit_path_add(self, dir_path, class_guid):
+def db_audit_path_add(self, dir_path, class_guid, share_guid):
     """
     # add media path
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
-        ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)',\
-        (new_guid, dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
+        ' mm_media_dir_class_type, mm_media_dir_last_scanned, mm_media_dir_share_guid)'\
+        ' values (%s,%s,%s,%s,%s)',\
+        (new_guid, dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), share_guid))
     return new_guid
 
 
@@ -164,3 +165,24 @@ def db_audit_share_update_by_uuid(self, share_type, share_user, share_password, 
         ' mm_media_share_server = %s where mm_media_share_path = %s',\
         ' where mm_media_share_guid = %s'
         (share_type, share_user, share_password, share_server, share_path, share_id))
+
+
+def db_audit_share_check(self, dir_path):
+    """
+    # share path check (dupes)
+    """
+    self.db_cursor.execute('select count(*) from mm_media_share where mm_media_share_path = %s',\
+        (dir_path,))
+    return self.db_cursor.fetchone()[0]
+
+
+def db_audit_share_add(self, share_type, share_user, share_password, share_server, share_path):
+    """
+    # add share path
+    """
+    new_guid = str(uuid.uuid4())
+    self.db_cursor.execute('insert into mm_media_share (mm_media_share_guid,'\
+        ' mm_media_share_type, mm_media_share_user, mm_media_share_password,'\
+        ' mm_media_share_server, mm_media_share_path) values (%s,%s,%s,%s, %s, %s)',\
+        (new_guid, share_type, share_user, share_password, share_server, share_path))
+    return new_guid

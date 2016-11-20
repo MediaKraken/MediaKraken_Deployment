@@ -56,14 +56,15 @@ def db_audit_path_delete(self, lib_guid):
     self.db_cursor.execute('delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
-def db_audit_path_add(self, dir_path, class_guid):
+def db_audit_path_add(self, dir_path, class_guid, share_guid):
     """
     # add media path
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid, mm_media_dir_path,'\
-        ' mm_media_dir_class_type, mm_media_dir_last_scanned) values (%s,%s,%s,%s)',\
-        (new_guid, dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1)))
+        ' mm_media_dir_class_type, mm_media_dir_last_scanned, mm_media_dir_share_guid)'\
+        ' values (%s,%s,%s,%s,%s)',\
+        (new_guid, dir_path, class_guid, psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), share_guid))
     return new_guid
 
 
