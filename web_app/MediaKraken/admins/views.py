@@ -361,7 +361,7 @@ def admin_library_edit_page():
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
                     g.db_connection.db_audit_path_add(request.form['library_path'],\
-                        request.form['Lib_Class'])
+                        request.form['Lib_Class'], request.form['Lib_Share'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_library'))
                 else:

@@ -88,7 +88,7 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_g
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'\
     ' CONSTRAINT mm_media_dir_pk PRIMARY KEY, mm_media_dir_path text,'\
     ' mm_media_dir_class_type uuid, mm_media_dir_last_scanned timestamp,'\
-    ' mm_media_dir_status jsonb)')
+    ' mm_media_dir_share_guid uuid, mm_media_dir_status jsonb)')
 
 
 '''
