@@ -39,16 +39,16 @@
                 {% for row_data in media_dir %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td>{{ row_data[0] }}</td>
                     <td>{{ row_data[1] }}</td>
                     <td>{{ row_data[2] }}</td>
                     <td>{{ row_data[3] }}</td>
+                    <td>{{ row_data[4] }}</td>
                     <div class="pull-right action-buttons">
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[4] }} data-toggle="modal" data-target="#editShareModal" onclick="EditShare(this)" ><span class="glyphicon glyphicon-pencil"></span></button></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editShareModal" onclick="EditShare(this)" ><span class="glyphicon glyphicon-pencil"></span></button></a>
                         </td>
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[4] }} onclick="ConfirmShareDelete(this)" ><span class="glyphicon glyphicon-trash"></span></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmShareDelete(this)" ><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </div>
                     {% endfor %}
