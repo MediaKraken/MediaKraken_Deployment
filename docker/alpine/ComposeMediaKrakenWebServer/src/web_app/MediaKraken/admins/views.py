@@ -463,12 +463,12 @@ def admin_share_edit_page():
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'], \
                         user_name = request.form['storage_mount_user'], \
                         user_password = request.form['storage_mount_password'])
-                    if not smb_stuff.com_cifs_share_directory_check(\
-                            request.form['storage_mount_server'], \
-                            request.form['storage_mount_path']):
-                        smb_stuff.com_cifs_close()
-                        flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins.admin_share_edit_page'))
+#                    if not smb_stuff.com_cifs_share_directory_check(\
+#                            request.form['storage_mount_server'], \
+#                            request.form['storage_mount_path']):
+#                        smb_stuff.com_cifs_close()
+#                        flash("Invalid UNC path.", 'error')
+#                        return redirect(url_for('admins.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
                 elif request.form['storage_mount_type'] == "smb":
