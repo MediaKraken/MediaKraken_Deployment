@@ -453,17 +453,19 @@ def admin_share_edit_page():
                 logging.info('type %s' % request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
-                    addr, share, path = common_string.com_string_unc_to_addr_path(\
-                        request.form['storage_mount_path'])
-                    if addr is None: # total junk path for UNC
-                        flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins.admin_share_edit_page'))
-                    logging.info('unc info: %s %s %s' % (addr, share, path))
+#                    addr, share, path = common_string.com_string_unc_to_addr_path(\
+#                        request.form['storage_mount_path'])
+#                    if addr is None: # total junk path for UNC
+#                        flash("Invalid UNC path.", 'error')
+#                        return redirect(url_for('admins.admin_share_edit_page'))
+#                    logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(addr, \
+                    smb_stuff.com_cifs_connect(request.form['storage_mount_server'], \
                         user_name = request.form['storage_mount_user'], \
                         user_password = request.form['storage_mount_password'])
-                    if not smb_stuff.com_cifs_share_directory_check(share, path):
+                    if not smb_stuff.com_cifs_share_directory_check(\
+                            request.form['storage_mount_server'], \
+                            request.form['storage_mount_path']):
                         smb_stuff.com_cifs_close()
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_share_edit_page'))
