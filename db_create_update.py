@@ -84,7 +84,7 @@ if sql3_cursor.fetchone()[0] == 0:
     # initial changes to docker db which should never get executed again
     sql3_cursor.execute('DROP TABLE IF EXISTS mm_media_dir')
     sql3_cursor.execute('DROP TABLE IF EXISTS mm_media_share')
-    sql3_cursor.execute('insert into mm_version (mm_version_no) values ("1")')
+    sql3_cursor.execute('insert into mm_version (mm_version_no) values (\'1\')')
 
 
 # create tables for media shares to mount
