@@ -388,7 +388,7 @@ def admin_library_edit_page():
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + ":" + row_data['mm_media_share_path']
-        share_list.append((row_data['mm_media_share_guid'], share_name))
+        share_list.append((share_name, row_data['mm_media_share_guid']))
 
     return render_template("admin/admin_library_edit.html", form=form,
                    data_class=class_list,
