@@ -19,13 +19,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import subprocess
+import os
 
 
 def com_net_share_mount(db_connection):
     # mount the share/dirs
     for share in db_connection.db_audit_shares():
-        logging.info('Attempting mount of %s %s %s' % share['mm_media_share_type'], \
-                     share['mm_media_share_server'], share['mm_media_share_path'])
+        logging.info('Attempting mount of %s %s %s', (share['mm_media_share_type'], \
+                     share['mm_media_share_server'], share['mm_media_share_path']))
+        # check for and create mount point
+        if os.path.isdir('./mnt/' + share['mm_media_share_guid']):
+            pass
+        else:
+            proc_dir = subprocess.Popen(['mkdir', './mnt/' + share['mm_media_share_guid']])
+            proc_dir.wait()
         mount_command = []
         mount_command.append('mount')
         mount_command.append('-t')
