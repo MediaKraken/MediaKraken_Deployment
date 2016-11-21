@@ -241,6 +241,7 @@ class MKServerDatabase(object):
         db_user_detail,\
         db_user_delete,\
         db_user_login_kodi
+    from database.db_base_version import db_version_check
 
     # class variables
     sql3_conn = None
