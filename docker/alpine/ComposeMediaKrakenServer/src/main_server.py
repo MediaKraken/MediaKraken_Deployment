@@ -24,6 +24,7 @@ import signal
 import os
 from common import common_config_ini
 from common import common_logging
+from common import common_network_share
 from common import common_signal
 from common import common_watchdog
 from common import common_version
@@ -63,6 +64,10 @@ logging.info("Open DB")
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
+db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
+                                 'ServerStart', None, None, 'System')
+
+
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
     db_create_pid = subprocess.Popen(['python', './db_create_update.py'], shell=False)
@@ -85,8 +90,8 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     sys.exit()
 
 
-db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
-                                 'ServerStart', None, None, 'System')
+# mount all the shares
+common_network_share.com_net_share_mount(db_connection)
 
 
 ## look for infiniband rdma devices
