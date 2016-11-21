@@ -26,6 +26,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_signal
 from common import common_watchdog
+from common import common_version
 #rmda_enabled_os = False
 #try:
 #    from common import common_rmda
@@ -60,6 +61,13 @@ if not os.path.isfile('./key/cacert.pem'):
 logging.info("Open DB")
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+# check db version
+if db_connection.db_version_check() != common_version.DB_VERSION:
+    db_create_pid = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+    db_create_pid.wait()
+    logging.info("Database has been upgraded!")
 
 
 logging.info("Validate Paths")
@@ -124,11 +132,6 @@ proc_trigger = subprocess.Popen(['python', './main_server_trigger.py'], shell=Fa
 logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
-## fire up api server
-#proc_api = subprocess.Popen(['python', './main_server_api.py'], shell=False)
-#logging.info("API PID: %s", proc_api.pid)
-
-
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
@@ -138,15 +141,7 @@ for link_data in db_connection.db_link_list():
     link_pid[link_data[0]] = proc_link.pid
 
 
-## fire up uwsgi server
-#proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8080',\
-#                                 '--protocol', 'http',\
-#                                 '--chdir=./web_app',\
-#                                 '--ini', './web_app/mediakraken_uwsgi.ini'],\
-#                                 shell=False)
 ## hold here
-#proc_web_app.wait()
-
 # this will key off the string reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
@@ -173,8 +168,8 @@ os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
 os.kill(proc_ffserver.pid, signal.SIGTERM)
-os.kill(proc_web_app.pid, signal.SIGTERM)
+#os.kill(proc_web_app.pid, signal.SIGTERM)
 os.kill(proc_trigger, signal.SIGTERM)
-os.kill(proc_api, signal.SIGTERM)
+#os.kill(proc_api, signal.SIGTERM)
 for link_data in link_pid.keys():
     os.kill(link_pid[link_data], signal.SIGTERM)

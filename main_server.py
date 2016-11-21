@@ -26,6 +26,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_signal
 from common import common_watchdog
+from common import common_version
 #rmda_enabled_os = False
 #try:
 #    from common import common_rmda
@@ -60,6 +61,13 @@ if not os.path.isfile('./key/cacert.pem'):
 logging.info("Open DB")
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+# check db version
+if db_connection.db_version_check() != common_version.DB_VERSION:
+    db_create_pid = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+    db_create_pid.wait()
+    logging.info("Database has been upgraded!")
 
 
 logging.info("Validate Paths")
