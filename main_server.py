@@ -68,15 +68,12 @@ db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Serv
                                  'ServerStart', None, None, 'System')
 
 
-# check db version (try as version table might not exist)
-try:
-    if db_connection.db_version_check() != common_version.DB_VERSION:
-        db_create_pid = subprocess.Popen(['python', './db_update_version.py'], shell=False)
-        db_create_pid.wait()
-except:
-    db_create_pid = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+# check db version
+if db_connection.db_version_check() != common_version.DB_VERSION:
+    logging.info('Database upgrade in progress...')
+    db_create_pid = subprocess.Popen(['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
-    logging.info("Database has been upgraded!")
+    logging.info('Database upgrade complete.')
 
 
 logging.info("Validate Paths")
