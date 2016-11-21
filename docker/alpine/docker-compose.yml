@@ -24,6 +24,10 @@ services:
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # slave app server which transcodes
   appslave:
@@ -41,6 +45,10 @@ services:
     networks:
       - mediakraken-network
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # Postgresql server
   database:
@@ -106,6 +114,10 @@ services:
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # runs the nginx proxy service
   nginx:
@@ -153,6 +165,10 @@ services:
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
 # Docker private networks
 networks:
