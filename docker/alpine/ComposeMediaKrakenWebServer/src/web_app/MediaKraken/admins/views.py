@@ -377,14 +377,6 @@ def admin_library_edit_page():
     for row_data in g.db_connection.db_media_class_list():
         if row_data['mm_media_class_display']: # flagged for display
             class_list.append((row_data['mm_media_class_type'], row_data['mm_media_class_guid']))
-
-# mm_media_share_guid, 0
-# mm_media_share_type, 1
-# mm_media_share_user, 2
-# mm_media_share_password, 3
-# mm_media_share_server, 4
-# mm_media_share_path 5
-
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + ":" + row_data['mm_media_share_path']
