@@ -77,6 +77,16 @@ def db_table_index_check(resource_name):
     return query_data
 
 
+# create table for version
+sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no text)')
+sql3_cursor.execute('select count(*) from mm_version')
+if sql3_cursor.fetchone()[0] == 0:
+    # initial changes to docker db which should never get executed again
+    sql3_cursor.execute('DROP TABLE IF EXISTS mm_media_dir')
+    sql3_cursor.execute('DROP TABLE IF EXISTS mm_media_share')
+    sql3_cursor.execute('insert into mm_version (mm_version_no) values ("dev-0.2.0")')
+
+
 # create tables for media shares to mount
 sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_guid uuid'\
     ' CONSTRAINT mm_media_share_pk PRIMARY KEY, mm_media_share_type text,'\
@@ -89,6 +99,9 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid 
     ' CONSTRAINT mm_media_dir_pk PRIMARY KEY, mm_media_dir_path text,'\
     ' mm_media_dir_class_type uuid, mm_media_dir_last_scanned timestamp,'\
     ' mm_media_dir_share_guid uuid, mm_media_dir_status jsonb)')
+if db_table_index_check('mm_media_dir_idx_share') is None:
+    sql3_cursor.execute(\
+        'CREATE INDEX mm_media_dir_idx_share ON mm_media_dir(mm_media_dir_share_guid)')
 
 
 '''
