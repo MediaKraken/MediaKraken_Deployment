@@ -24,8 +24,12 @@ docker-compose logs
 
 
 testing
+
+docker exec -it [container-id] /bin/ash
+
+
 docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
-docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver44440 alpine_appserver
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver5450 alpine_appserver
 
 docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_metadata3323 alpine_metadata
 
