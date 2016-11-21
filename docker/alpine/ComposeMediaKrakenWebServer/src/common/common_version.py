@@ -22,4 +22,4 @@ import logging # pylint: disable=W0611
 
 APP_VERSION = '0.2.0'
 
-DB_VERSION = '2'
+DB_VERSION = '1'
