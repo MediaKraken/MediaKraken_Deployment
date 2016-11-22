@@ -42,3 +42,25 @@ def com_net_kodi_command(host_ip, host_port, kodi_command):
     return kodi_response
 
 #MK_Network_Kodi_Command('10.1.0.20', 9090, KODI_SHOW_INFO)
+
+
+def com_net_kodi_media_update(db_connection, movie_data=False, collections_data=False, \
+                              tv_data=False, music_data=False, music_video_data=False):
+    """
+    return media to kodi plugin
+    """
+    movie_list = []
+    if movie_data:
+        for movie_row in db_connection.db_kodi_user_sync_movie():
+            # title, plot, shortplot, tagline, votecount, rating, writer, year, imdb, sorttitle,
+            # runtime, mpaa, genre, director, studio, trailer, country, movieid, date_added, cast
+            movie_list.append({'title': movie_row[0], 'plot': movie_row[1], \
+                               'shortplot': movie_row[2], 'tagline': movie_row[3], \
+                               'votecount': movie_row[4], 'rating': movie_row[5], \
+                               'writer': movie_row[6], 'year': movie_row[7], \
+                               'imdb': movie_row[8], 'sorttitle': movie_row[9], \
+                               'runtime': movie_row[10], 'mpaa': movie_row[11], \
+                               'genre': movie_row[12], 'director': movie_row[13], \
+                               'studio': movie_row[14], 'trailer': movie_row[15], \
+                               'country': movie_row[16], 'movieid': movie_row[17], \
+                               'date_added': movie_row[18], 'cast': movie_row[19]})
