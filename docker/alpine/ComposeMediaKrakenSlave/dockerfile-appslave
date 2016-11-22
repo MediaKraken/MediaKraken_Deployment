@@ -13,6 +13,8 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  cifs-utils \
+  nfs-utils \
   bash \
   postgresql-client \
   alpine-sdk \
