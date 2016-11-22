@@ -49,8 +49,16 @@ class MKServerDatabase(object):
         db_download_update_provider,\
         db_download_update,\
         db_download_que_exists
-    from database.db_base_kodi import db_kodi_user_sync,\
-        db_kodi_user_sync_added
+    from database.db_base_kodi import db_kodi_user_sync_movie,\
+        db_kodi_user_sync_added,\
+        db_kodi_user_sync_collection,\
+        db_kodi_user_sync_tv_shows,\
+        db_kodi_user_sync_music_videos,\
+        db_kodi_user_sync_tv_seasons,\
+        db_kodi_user_sync_tv_episodes,\
+        db_kodi_user_sync_music_artists,\
+        db_kodi_user_sync_music_albums,\
+        db_kodi_user_sync_music_songs
     from database.db_base_iradio import db_iradio_insert,\
         db_iradio_list_count,\
         db_iradio_list
