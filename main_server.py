@@ -129,8 +129,8 @@ logging.info("Cron PID: %s", proc_cron.pid)
 
 
 # fire up ffserver
-proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
-logging.info("FFServer PID: %s", proc_ffserver.pid)
+#proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
+#logging.info("FFServer PID: %s", proc_ffserver.pid)
 
 
 # fire up trigger procress
