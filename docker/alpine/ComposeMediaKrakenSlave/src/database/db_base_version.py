@@ -20,6 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-APP_VERSION = '0.2.0'
-
-DB_VERSION = '1'
+def db_version_check(self):
+    self.db_cursor.execute('select mm_version_no from mm_version')
+    return self.db_cursor.fetchone()[0]

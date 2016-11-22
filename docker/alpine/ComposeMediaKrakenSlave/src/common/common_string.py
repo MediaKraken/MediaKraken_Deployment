@@ -108,5 +108,8 @@ def com_string_unc_to_addr_path(unc_path):
     """
     Break up unc to parts
     """
-    return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
-        '\\'.join(unc_path.split('\\', 5)[4:]))
+    try:
+        return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
+                '\\'.join(unc_path.split('\\', 5)[4:]))
+    except:
+        return None, None, None
