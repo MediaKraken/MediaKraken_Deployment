@@ -64,3 +64,19 @@ def com_net_kodi_media_update(db_connection, movie_data=False, collections_data=
                                'studio': movie_row[14], 'trailer': movie_row[15], \
                                'country': movie_row[16], 'movieid': movie_row[17], \
                                'date_added': movie_row[18], 'cast': movie_row[19]})
+    collections_list = []
+    if collections_data:
+        for collection_row in db_connection.db_kodi_user_sync_collection():
+            collections_list.append({})
+    tv_list = []
+    if tv_data:
+        for tv_row in db_connection.db_kodi_user_sync_tv_shows():
+            tv_list.append({})
+    music_list = []
+    if music_data:
+        for music_row in db_connection.db_kodi_user_sync_music_songs():
+            music_list.append({})
+    music_video_list = []
+    if music_video_data:
+        for music_video_row in db_connection.db_kodi_user_sync_music_videos():
+            music_video_list.append({})
