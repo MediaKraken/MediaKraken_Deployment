@@ -170,6 +170,22 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # runs the phppgadmin
+  phppgadmin:
+    build:
+      context: ./Docker-Phppgadmin
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkphppgadmin
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./run.sh
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+
+
 # Docker private networks
 networks:
   # Twisted communications network
