@@ -181,6 +181,8 @@ services:
     depends_on:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./run.sh
+    ports:
+      - "12345:80"
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
