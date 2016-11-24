@@ -31,5 +31,4 @@ RUN chmod -v +x /run.sh
 
 EXPOSE 80
 
-#CMD ["/run.sh"]
-CMD ["/bin/bash"]
+CMD ["/run.sh"]
