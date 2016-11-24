@@ -33,6 +33,7 @@ RUN apk add --update \
   postgresql-dev \
   py-pip \
   python-dev \
+  openrc \
   && pip install -r requirements.txt \
   && apk del \
   alpine-sdk \
