@@ -9,7 +9,8 @@ LABEL Description="This image holds the image for the web server app"
 RUN apk add --update \
   cifs-utils \
   nfs-utils \
-  && rm -rf /var/cache/apk/*
+  && rm -rf /var/cache/apk/* \
+  && rc-service netmount start
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

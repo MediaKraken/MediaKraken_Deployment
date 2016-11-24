@@ -31,7 +31,8 @@ RUN apk add --update \
   && rm requirements.txt \
   && apk add \
   py-setuptools \
-  && rm -rf /var/cache/apk/*
+  && rm -rf /var/cache/apk/* \
+  && rc-service netmount start
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
