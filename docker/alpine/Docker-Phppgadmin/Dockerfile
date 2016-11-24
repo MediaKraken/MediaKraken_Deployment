@@ -24,7 +24,7 @@ RUN ln -sf /dev/stdout /var/log/apache2/access.log \
   && rm -rf /var/lib/apt/lists/*
 
 ADD config.inc.php /var/www/html/conf/config.inc.php
-
+ADD wait-for-it-bash.sh /var/www/html
 ADD run.sh /run.sh
 
 RUN chmod -v +x /run.sh
