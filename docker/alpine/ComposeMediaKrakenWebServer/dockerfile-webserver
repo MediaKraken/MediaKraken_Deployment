@@ -9,6 +9,7 @@ LABEL Description="This image holds the image for the web server app"
 RUN apk add --update \
   cifs-utils \
   nfs-utils \
+  openrc \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount
 
