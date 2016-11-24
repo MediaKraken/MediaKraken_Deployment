@@ -3,14 +3,14 @@ FROM debian:jessie
 MAINTAINER Pierre-Antoine 'ZHAJOR' Tible <antoinetible@gmail.com>
 
 RUN apt-get update \
- && apt-get -y install apache2 libapache2-mod-php5 php5 php5-pgsql wget unzip \
- && apt-get clean
+  && apt-get -y install apache2 libapache2-mod-php5 php5 php5-pgsql wget unzip \
+  && apt-get clean
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV PORT=5432
-ENV HOST=database
+ENV HOST=mkdatabase
 
 WORKDIR /var/www/html
 
