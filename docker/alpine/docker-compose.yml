@@ -176,6 +176,7 @@ services:
       context: ./Docker-Phppgadmin
       dockerfile: Dockerfile
     environment:
+      - HOST=mkdatabase
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkphppgadmin
     depends_on:
