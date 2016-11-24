@@ -1,0 +1,11 @@
+mounted instantly on mkprod
+mount -t nfs4 10.1.0.10:/ /home/spoot/nfsmount
+fs works fine
+
+# below for prod
+(rw,fsid=0,async,no_subtree_check,no_auth_nlm,insecure,no_root_squash)
+same no dir
+
+*********************************************************
+
+
