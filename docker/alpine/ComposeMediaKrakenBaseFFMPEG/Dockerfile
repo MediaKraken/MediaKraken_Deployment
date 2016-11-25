@@ -4,7 +4,7 @@ FROM alpine:3.4
 MAINTAINER Quinn D Granfor, spootdev@gmail.com
 
 LABEL www.mediakraken.org.version="dev-0.2.0"
-LABEL Description="This image holds the base ffmpeg for server/slave"
+LABEL Description="This image holds the base ffmpeg for slave"
 
 RUN mkdir /mediakraken && mkdir /mediakraken/bin
 # copy ffmpeg build
