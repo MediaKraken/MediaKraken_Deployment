@@ -113,9 +113,9 @@ proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=Fals
 logging.info("Reactor PID: %s", proc.pid)
 
 
-# fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
-logging.info("Reactor Web Image PID: %s", proc_image.pid)
+## fire up web image server
+#proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
+#logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
@@ -171,7 +171,7 @@ db_connection.db_close()
 
 # stop children
 os.kill(proc.pid, signal.SIGTERM)
-os.kill(proc_image.pid, signal.SIGTERM)
+#os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
 #os.kill(proc_ffserver.pid, signal.SIGTERM)
