@@ -76,6 +76,10 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     logging.info('Database upgrade complete.')
 
 
+# mount all the shares first so paths exist for validation
+common_network_share.com_net_share_mount(db_connection.db_audit_shares())
+
+
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
@@ -89,10 +93,6 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     logging.critical("Invalid Path: %s" %\
         option_config_json['MediaKrakenServer']['BackupLocal'])
     sys.exit()
-
-
-# mount all the shares
-common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
 
 ## look for infiniband rdma devices
