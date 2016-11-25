@@ -22,9 +22,9 @@ import subprocess
 import os
 
 
-def com_net_share_mount(db_connection):
+def com_net_share_mount(share_list):
     # mount the share/dirs
-    for share in db_connection.db_audit_shares():
+    for share in share_list:
         logging.info('Attempting mount of %s %s %s', (share['mm_media_share_type'], \
                      share['mm_media_share_server'], share['mm_media_share_path']))
         # check for and create mount point
@@ -46,7 +46,7 @@ def com_net_share_mount(db_connection):
             mount_command.append('./mnt/%s' % share['mm_media_share_guid'])
         else:
             # unc/smb
-#            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
+    #            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
             mount_command.append('cifs')
             mount_command.append('//' + share['mm_media_share_server'] + '/' \
                                  + share['mm_media_share_path'])

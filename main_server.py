@@ -92,7 +92,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 # mount all the shares
-common_network_share.com_net_share_mount(db_connection)
+common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
 
 ## look for infiniband rdma devices
