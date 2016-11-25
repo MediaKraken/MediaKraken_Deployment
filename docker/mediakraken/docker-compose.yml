@@ -21,21 +21,29 @@ services:
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # slave app server which transcodes
-#  appslave:
-#    image: mediakraken/mkslave:latest
-#    environment:
-#      - POSTGRES_PASSWORD=${DBPASS}
-#    container_name: mkslave
-#    depends_on:
-#      - database
-#    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#    networks:
-#      - mediakraken-network
-#    restart: unless-stopped
+  appslave:
+    image: mediakraken/mkslave:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkslave
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_slave.py
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # Postgresql server
   database:
@@ -50,6 +58,17 @@ services:
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
+
+  # scan for new hardware devices
+  devicescan:
+    image: mediakraken/mkdevicescan:latest
+    container_name: mkdevicescan
+    entrypoint: python main_hardware_discover.py
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+      - /var/opt/mediakraken/devices:/mediakraken/devices
+    network_mode: host
+    restart: never
 
   # Runs the webapi for 3rd party clients
 #  webapi:
@@ -82,6 +101,10 @@ services:
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
   # runs the nginx proxy service
   nginx:
@@ -123,6 +146,10 @@ services:
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
 
 # Docker private networks
 networks:
