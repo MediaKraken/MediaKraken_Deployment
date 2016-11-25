@@ -1,6 +1,5 @@
 cython
 Flask
-Flask-WeasyPrint
 Flask-Login
 Flask-Cache
 Flask-Bcrypt
