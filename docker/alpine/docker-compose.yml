@@ -173,12 +173,12 @@ services:
   # runs the phppgadmin
   phppgadmin:
     build:
-      context: ./Docker-Phppgadmin
-      dockerfile: Dockerfile
+      context: ./ComposeMediaKrakenPHPPGAdmin
+      dockerfile: dockerfile-phppgadmin
     container_name: mkphppgadmin
     depends_on:
       - database
-    entrypoint: ./wait-for-it-bash.sh -h database -p 5432 -t 30 -- /run.sh
+    entrypoint: ./wait-for-it-bash.sh -h database -p 5432 -t 30 -- /usr/sbin/httpd -DFOREGROUND
     ports:
       - "12345:80"
     networks:

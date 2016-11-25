@@ -1,0 +1,29 @@
+# Download base image
+FROM alpine:3.4
+
+MAINTAINER Quinn D Granfor, spootdev@gmail.com
+
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image holds the image for the phppgadmin"
+
+RUN apk add --update \
+  openrc\ 
+  lighttpd php5-common php5-iconv php5-json php5-gd php5-curl php5-xml php5-pgsql php5-imap php5-cgi fcgi \
+  php5-pdo php5-pdo_pgsql php5-soap php5-xmlrpc php5-posix php5-mcrypt php5-gettext php5-ldap php5-ctype php5-dom \
+  postgresql-client php-pgsql \
+  && rc-service lighttpd start && rc-update add lighttpd default
+
+
+#vi /etc/lighttpd/lighttpd.conf
+
+# uncommnet
+#include "mod_fastcgi.conf"
+
+
+
+
+
+
+EXPOSE 80
+CMD ["/bin/ash"]
+
