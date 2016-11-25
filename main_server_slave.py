@@ -29,6 +29,7 @@ except:
 import sys
 from common import common_config_ini
 from common import common_logging
+from common import common_network_share
 from common import common_signal
 from common import common_system
 from common import common_version
@@ -193,6 +194,11 @@ class MediaKrakenApp():
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
+    logging.info("Open DB")
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read()
+    # mount all the shares first so paths exist for validation
+    common_network_share.com_net_share_mount(db_connection.db_audit_shares())
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
