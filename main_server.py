@@ -26,7 +26,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_network_share
 from common import common_signal
-from common import common_watchdog
+#from common import common_watchdog
 from common import common_version
 #rmda_enabled_os = False
 #try:
@@ -102,10 +102,10 @@ common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 #        rmda_enabled_os = False
 
 
-logging.info("Start Watchdog")
-# startup watchdog
-watchdog = common_watchdog.CommonWatchdog()
-watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
+#logging.info("Start Watchdog")
+## startup watchdog
+#watchdog = common_watchdog.CommonWatchdog()
+#watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -152,8 +152,8 @@ for link_data in db_connection.db_link_list():
 proc.wait()
 
 
-# stop watchdog
-watchdog.com_watchdog_stop()
+## stop watchdog
+#watchdog.com_watchdog_stop()
 
 
 # log stop
