@@ -151,6 +151,7 @@ for link_data in db_connection.db_link_list():
 # this will key off the string reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
+
 # stop watchdog
 watchdog.com_watchdog_stop()
 
@@ -173,7 +174,7 @@ os.kill(proc.pid, signal.SIGTERM)
 os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
-os.kill(proc_ffserver.pid, signal.SIGTERM)
+#os.kill(proc_ffserver.pid, signal.SIGTERM)
 #os.kill(proc_web_app.pid, signal.SIGTERM)
 os.kill(proc_trigger, signal.SIGTERM)
 #os.kill(proc_api, signal.SIGTERM)

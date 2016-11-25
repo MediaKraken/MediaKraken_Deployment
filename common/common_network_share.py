@@ -46,7 +46,7 @@ def com_net_share_mount(share_list):
             mount_command.append('./mnt/%s' % share['mm_media_share_guid'])
         else:
             # unc/smb
-    #            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
+#            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
             mount_command.append('cifs')
             mount_command.append('//' + share['mm_media_share_server'] + '/' \
                                  + share['mm_media_share_path'])
