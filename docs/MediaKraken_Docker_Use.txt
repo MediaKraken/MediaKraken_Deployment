@@ -62,20 +62,20 @@ docker-compose build xxxxx - xxxxx optional for image to build
 BaseFFMPEG
 	the base image for ffmpeg deps
 	docker build -t mediakraken/mkbaseffmpeg .
-Database - Builds and runs
+Database
 	Hosts the postgresql database
-Mail
-	Host the mail server
+Devicescan
+	Runs on HOST network to scan for devices
 Metadata
 	Host the metadata fetcher
 Nginx
 	Host the ssl, static data webserver
+PHPPGAdmin
+	hosts the phppgadmin for testing
 Server
 	Kicks off the other main programs and ffmpeg
 Slave
 	Slave image for server/ffmpeg
-Source
-	Hosts the app source code for ease of testing and file stack host
 WebAPI
 	Host the API webapp for things like Kodi, etc
 WebBase
@@ -83,5 +83,4 @@ WebBase
 	docker build -t mediakraken/mkwebbase .
 WebServer
 	Hosts the uswgi webapp for the server interface
-
 
