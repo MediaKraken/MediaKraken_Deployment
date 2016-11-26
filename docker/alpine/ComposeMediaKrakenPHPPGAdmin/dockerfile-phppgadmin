@@ -8,6 +8,7 @@ LABEL Description="This image holds the image for the phppgadmin"
 
 RUN apk add --update \
   lighttpd \
+  php5-fpm \
   php5-common \
   php5-iconv \ 
   php5-json \
