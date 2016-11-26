@@ -176,9 +176,7 @@ services:
       context: ./ComposeMediaKrakenPHPPGAdmin
       dockerfile: dockerfile-phppgadmin
     container_name: mkphppgadmin
-    depends_on:
-      - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- /bin/ash
+    entrypoint: /usr/sbin/lighttpd -D -f /etc/lighttpd/lighttpd.conf
     ports:
       - "12345:80"
     networks:
