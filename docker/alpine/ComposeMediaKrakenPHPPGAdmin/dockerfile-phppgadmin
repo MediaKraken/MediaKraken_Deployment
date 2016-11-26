@@ -8,26 +8,26 @@ LABEL Description="This image holds the image for the phppgadmin"
 
 RUN apk add --update \
   lighttpd \
-  php-common \
-  php-iconv \ 
-  php-json \
-  php-gd \
-  php-curl \
-  php-xml \
-  php-pgsql \
-  php-imap \
-  php-cgi \
+  php5-common \
+  php5-iconv \ 
+  php5-json \
+  php5-gd \
+  php5-curl \
+  php5-xml \
+  php5-pgsql \
+  php5-imap \
+  php5-cgi \
   fcgi \
-  php-pdo \
-  php-pdo_pgsql \
-  php-soap \
-  php-xmlrpc \
-  php-posix \
-  php-mcrypt \
-  php-gettext \
-  php-ldap \
-  php-ctype \
-  php-dom \
+  php5-pdo \
+  php5-pdo_pgsql \
+  php5-soap \
+  php5-xmlrpc \
+  php5-posix \
+  php5-mcrypt \
+  php5-gettext \
+  php5-ldap \
+  php5-ctype \
+  php5-dom \
   postgresql-client \
   && rm -rf /var/cache/apk/*
   && adduser www-data -G www-data -H -s /bin/false -D
