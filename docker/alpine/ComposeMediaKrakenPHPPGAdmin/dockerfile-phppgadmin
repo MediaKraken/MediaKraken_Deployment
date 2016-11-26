@@ -41,7 +41,7 @@ ADD index.php /var/www/localhost/htdocs
 
 ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/
 
-RUN /var/www/localhost/htdocs/phpPgAdmin-5.1 /var/www/localhost/htdocs/phppgadmin
+RUN mv /var/www/localhost/htdocs/phpPgAdmin-5.1 /var/www/localhost/htdocs/phppgadmin
 
 ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
 
