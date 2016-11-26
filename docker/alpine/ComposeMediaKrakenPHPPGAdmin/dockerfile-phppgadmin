@@ -19,10 +19,14 @@ RUN mkdir -p /usr/share/webapps/
 
 ADD phpPgAdmin-5.1.tar.bz2 /usr/share/webapps/phppgadmin
 
+ADD wait-for-it-ash.sh /usr/share/webapps
+
 ADD config.inc.php /usr/share/webapps/phppgadmin/conf/config.inc.php
 
 RUN chmod -R 777 /usr/share/webapps/ \
   && ln -s /usr/share/webapps/phppgadmin/ /var/www/localhost/htdocs/phppgadmin
+
+WORKDIR /usr/share/webapps
 
 EXPOSE 80
 CMD ["/bin/ash"]

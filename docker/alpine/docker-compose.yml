@@ -178,7 +178,7 @@ services:
     container_name: mkphppgadmin
     depends_on:
       - database
-    entrypoint: ./wait-for-it-bash.sh -h database -p 5432 -t 30 -- /usr/sbin/httpd -DFOREGROUND
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- /usr/sbin/httpd -DFOREGROUND
     ports:
       - "12345:80"
     networks:
