@@ -7,20 +7,38 @@ LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the image for the phppgadmin"
 
 RUN apk add --update \
-  openrc \
-  lighttpd php5-common php5-iconv php5-json php5-gd php5-curl php5-xml php5-pgsql php5-imap php5-cgi fcgi \
-  php5-pdo php5-pdo_pgsql php5-soap php5-xmlrpc php5-posix php5-mcrypt php5-gettext php5-ldap php5-ctype php5-dom \
-  postgresql-client
+  lighttpd \
+  php-common \
+  php-iconv \ 
+  php-json \
+  php-gd \
+  php-curl \
+  php-xml \
+  php-pgsql \
+  php-imap \
+  php-cgi \
+  fcgi \
+  php-pdo \
+  php-pdo_pgsql \
+  php-soap \
+  php-xmlrpc \
+  php-posix \
+  php-mcrypt \
+  php-gettext \
+  php-ldap \
+  php-ctype \
+  php-dom \
+  postgresql-client \
+  && rm -rf /var/cache/apk/*
+  && adduser www-data -G www-data -H -s /bin/false -D
 
-COPY etc/lighttpd/* /etc/lighttpd/
+ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+ADD index.php /var/www/localhost/htdocs
 
 ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/phppgadmin
 
 ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
-
-RUN chown -R lighttpd: /var/www/localhost/htdocs/ \
-  && mkdir -p /var/run/lighttpd/ \
-  && chown -R lighttpd /var/run/lighttpd
 
 EXPOSE 80
 
