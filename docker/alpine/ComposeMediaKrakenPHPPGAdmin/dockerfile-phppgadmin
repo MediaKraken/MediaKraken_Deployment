@@ -19,6 +19,7 @@ ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/phppgadmin
 ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
 
 RUN chown -R lighttpd: /var/www/localhost/htdocs/ \
+  && mkdir -p /var/run/lighttpd/ \
   && chown -R lighttpd /var/run/lighttpd
 
 EXPOSE 80
