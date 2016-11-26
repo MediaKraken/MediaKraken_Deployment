@@ -10,24 +10,22 @@ RUN apk add --update \
   openrc \
   lighttpd php5-common php5-iconv php5-json php5-gd php5-curl php5-xml php5-pgsql php5-imap php5-cgi fcgi \
   php5-pdo php5-pdo_pgsql php5-soap php5-xmlrpc php5-posix php5-mcrypt php5-gettext php5-ldap php5-ctype php5-dom \
-  postgresql-client \
-  && rc-update add lighttpd default
+  postgresql-client
 
 RUN sed -i 's/#   include "mod_fastcgi.conf"/    include "mod_fastcgi.conf"/g' /etc/lighttpd/lighttpd.conf
+
+COPY etc/lighttpd/* /etc/lighttpd/
 
 RUN mkdir -p /usr/share/webapps/
 
 ADD phpPgAdmin-5.1.tar.bz2 /usr/share/webapps/phppgadmin
-
-ADD wait-for-it-ash.sh /usr/share/webapps
 
 ADD config.inc.php /usr/share/webapps/phppgadmin/conf/config.inc.php
 
 RUN chmod -R 777 /usr/share/webapps/ \
   && ln -s /usr/share/webapps/phppgadmin/ /var/www/localhost/htdocs/phppgadmin
 
-WORKDIR /usr/share/webapps
-
 EXPOSE 80
+
 CMD ["/bin/ash"]
 
