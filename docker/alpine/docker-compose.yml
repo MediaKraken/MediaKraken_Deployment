@@ -176,7 +176,8 @@ services:
       context: ./ComposeMediaKrakenPHPPGAdmin
       dockerfile: dockerfile-phppgadmin
     container_name: mkphppgadmin
-    entrypoint: php-fpm -D && lighttpd -D -f /etc/lighttpd/lighttpd.conf
+#    entrypoint: php-fpm -D && lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
     ports:
       - "12345:80"
     networks:

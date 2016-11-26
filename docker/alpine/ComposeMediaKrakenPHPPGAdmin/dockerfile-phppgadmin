@@ -31,7 +31,9 @@ RUN apk add --update \
   php5-dom \
   postgresql-client \
   && rm -rf /var/cache/apk/* \
-  && adduser www-data -G www-data -H -s /bin/false -D
+  && adduser www-data -G www-data -H -s /bin/false -D \
+  && mkdir /run/lighttpd \
+  && chmod 777 /run/lighttpd
 
 ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
 
