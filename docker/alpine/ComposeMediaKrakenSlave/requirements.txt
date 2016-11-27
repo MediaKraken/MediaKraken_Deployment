@@ -1,3 +1,4 @@
+pyopenssl
 psycopg2
 psutil
 twisted
