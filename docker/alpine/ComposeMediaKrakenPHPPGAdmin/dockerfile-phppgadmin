@@ -1,8 +1,7 @@
 # Download base image
 FROM alpine:3.4
 
-MAINTAINER Quinn D Granfor, spootdev@gmail.com
-
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the image for the phppgadmin"
 
