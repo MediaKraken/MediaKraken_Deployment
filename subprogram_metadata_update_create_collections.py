@@ -47,7 +47,7 @@ db_connection.db_activity_insert('MediaKraken_Server Create Collection Start', N
 
 
 # verify themovietb key exists
-if option_config_json['API']['theMovieDB'] is not None:
+if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
     TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
@@ -67,7 +67,7 @@ total_collections_downloaded = 0
 for row_data in db_connection.db_media_collection_scan():
     #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
     if old_collection_name != row_data['mm_metadata_json']['Meta']\
-            ['TMDB']['Meta']['belongs_to_collection']['name']:
+            ['tmdb']['Meta']['belongs_to_collection']['name']:
         if not first_record:
             db_connection.db_download_insert('themoviedb',\
                 json.dumps({'Status': 'FetchCollection',\
@@ -76,13 +76,13 @@ for row_data in db_connection.db_media_collection_scan():
                 'ProviderMetaID': str(old_id)}))
             total_collections_downloaded += 1
         old_collection_name = row_data['mm_metadata_json']['Meta']\
-            ['TMDB']['Meta']['belongs_to_collection']['name']
+            ['tmdb']['Meta']['belongs_to_collection']['name']
         old_poster_path = row_data['mm_metadata_json']['Meta']\
-            ['TMDB']['Meta']['belongs_to_collection']['poster_path']
+            ['tmdb']['Meta']['belongs_to_collection']['poster_path']
         old_backdrop_path = row_data['mm_metadata_json']['Meta']\
-            ['TMDB']['Meta']['belongs_to_collection']['backdrop_path']
+            ['tmdb']['Meta']['belongs_to_collection']['backdrop_path']
         old_id = row_data['mm_metadata_json']['Meta']\
-            ['TMDB']['Meta']['belongs_to_collection']['id']
+            ['tmdb']['Meta']['belongs_to_collection']['id']
         guid_list = []
         first_record = False
     guid_list.append(row_data['mm_metadata_guid'])

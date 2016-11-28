@@ -107,7 +107,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
                 person_name = person_data['person']['name']
-            elif meta_type == "TMDB":
+            elif meta_type == "tmdb":
                 person_id = person_data['id']
                 person_name = person_data['name']
             elif meta_type == "thetvdb":
@@ -127,7 +127,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
             person_name = person_json['person']['name']
-        elif meta_type == "TMDB":
+        elif meta_type == "tmdb":
             person_id = person_json['id']
             person_name = person_json['name']
         elif meta_type == "thetvdb":
@@ -153,11 +153,11 @@ def db_meta_person_as_seen_in(self, person_guid):
     if row_data is None: # exit on not found person
         return None
     logging.info("row_data: %s", row_data[1])
-    if row_data['mmp_person_media_id']['Host'] == 'TMDB':
+    if row_data['mmp_person_media_id']['Host'] == 'tmdb':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
-            'mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'TMDB\'->\'Cast\''\
+            'mm_metadata_localimage_json->\'Images\'->\'tmdb\'->\'Poster\''\
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'tmdb\'->\'Cast\''\
             ' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],

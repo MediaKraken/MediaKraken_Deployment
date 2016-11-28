@@ -29,7 +29,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify provider key exists
-if option_config_json['API']['AniDB'] is not None:
+if option_config_json['API']['anidb'] is not None:
     # setup the connection class
     ANIDB_CONNECTION = common_metadata_anidb.CommonMetadataANIdb(option_config_json)
 else:

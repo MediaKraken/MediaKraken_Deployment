@@ -146,7 +146,7 @@ class MediaKrakenApp(object):
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
                         metadata_guid = self.db_connection.db_meta_guid_by_tmdb(\
-                            new_media[3]['TMDB'])
+                            new_media[3]['tmdb'])
                         if metadata_guid is None:
                             metadata_guid = self.db_connection.db_meta_guid_by_tvdb(\
                                 new_media[3]['thetvdb'])
@@ -160,7 +160,7 @@ class MediaKrakenApp(object):
                                 new_media[3]['thetvdb'])
                             if metadata_guid is None:
                                 metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(\
-                                    new_media[3]['TVRage'])
+                                    new_media[3]['tvrage'])
                 elif new_media[1] == 'Sports':
                     metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(\
                         new_media[3]['thesportsdb'])

@@ -26,7 +26,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify thesportsdb key exists
-if option_config_json['API']['TheSportsDB'] is not None:
+if option_config_json['API']['thesportsdb'] is not None:
     THESPORTSDB_CONNECTION\
         = common_metadata_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
 else:
