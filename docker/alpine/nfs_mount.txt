@@ -9,3 +9,16 @@ same no dir
 *********************************************************
 
 
+
+
+
+still fails asking if root
+docker exec -it --privileged=true 62e /bin/ash
+
+dmesg
+# output from above
+[333377.534255] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[ash:20533] uid/euid:0/0 gid/egid:0/0
+[333377.537597] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /sbin/mount.nfs[mount.nfs:20550] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0
+[333377.647108] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /sbin/mount.nfs[mount.nfs:20550] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0
+
+/mediakraken #
