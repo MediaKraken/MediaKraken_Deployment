@@ -6,6 +6,7 @@ version: '2'
 services:
   # Main app server which controls the show and transcodes
   appserver:
+    privileged: true
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
@@ -31,6 +32,7 @@ services:
 
   # slave app server which transcodes
   appslave:
+    privileged: true
     build:
       context: ./ComposeMediaKrakenSlave
       dockerfile: dockerfile-appslave
@@ -100,6 +102,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
+    privileged: true
     build:
       context: ./ComposeMediaKrakenMetadata
       dockerfile: dockerfile-metadata
@@ -146,6 +149,7 @@ services:
 
   # Runs the web service for the main server application
   webserver:
+    privileged: true
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
