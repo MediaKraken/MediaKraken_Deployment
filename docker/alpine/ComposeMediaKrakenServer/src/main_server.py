@@ -26,7 +26,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_network_share
 from common import common_signal
-from common import common_watchdog
+#from common import common_watchdog
 from common import common_version
 #rmda_enabled_os = False
 #try:
@@ -76,6 +76,10 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     logging.info('Database upgrade complete.')
 
 
+# mount all the shares first so paths exist for validation
+common_network_share.com_net_share_mount(db_connection.db_audit_shares())
+
+
 logging.info("Validate Paths")
 # validate paths in ini file
 # keep the checks split so user can be told which one is wrong
@@ -91,10 +95,6 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     sys.exit()
 
 
-# mount all the shares
-common_network_share.com_net_share_mount(db_connection)
-
-
 ## look for infiniband rdma devices
 #if rmda_enabled_os:
 #    rmda_devices = common_rmda.com_rdma_get_devices()
@@ -102,10 +102,10 @@ common_network_share.com_net_share_mount(db_connection)
 #        rmda_enabled_os = False
 
 
-logging.info("Start Watchdog")
-# startup watchdog
-watchdog = common_watchdog.CommonWatchdog()
-watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
+#logging.info("Start Watchdog")
+## startup watchdog
+#watchdog = common_watchdog.CommonWatchdog()
+#watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
@@ -113,9 +113,9 @@ proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=Fals
 logging.info("Reactor PID: %s", proc.pid)
 
 
-# fire up web image server
-proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
-logging.info("Reactor Web Image PID: %s", proc_image.pid)
+## fire up web image server
+#proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
+#logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up broadcast server
@@ -151,8 +151,9 @@ for link_data in db_connection.db_link_list():
 # this will key off the string reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
-# stop watchdog
-watchdog.com_watchdog_stop()
+
+## stop watchdog
+#watchdog.com_watchdog_stop()
 
 
 # log stop
@@ -170,10 +171,10 @@ db_connection.db_close()
 
 # stop children
 os.kill(proc.pid, signal.SIGTERM)
-os.kill(proc_image.pid, signal.SIGTERM)
+#os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
-os.kill(proc_ffserver.pid, signal.SIGTERM)
+#os.kill(proc_ffserver.pid, signal.SIGTERM)
 #os.kill(proc_web_app.pid, signal.SIGTERM)
 os.kill(proc_trigger, signal.SIGTERM)
 #os.kill(proc_api, signal.SIGTERM)

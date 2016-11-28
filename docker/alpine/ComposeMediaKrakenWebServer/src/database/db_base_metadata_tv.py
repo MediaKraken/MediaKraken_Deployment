@@ -86,7 +86,7 @@ def db_metatv_guid_by_tvrage(self, tvrage_uuid):
     # metadata guid by tvrage id
     """
     self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
-        ' where mm_metadata_media_tvshow_id->\'TVRage\' ? %s', (tvrage_uuid,))
+        ' where mm_metadata_media_tvshow_id->\'tvrage\' ? %s', (tvrage_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:
@@ -98,7 +98,7 @@ def db_metatv_guid_by_rt(self, rt_uuid):
     # metadata guid by tvrage id
     """
     self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
-        ' where mm_metadata_media_tvshow_id->\'RottenTomatoes\' ? %s', (rt_uuid,))
+        ' where mm_metadata_media_tvshow_id->\'rottentomatoes\' ? %s', (rt_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:

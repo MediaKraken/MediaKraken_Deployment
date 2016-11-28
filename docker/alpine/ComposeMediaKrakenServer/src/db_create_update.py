@@ -180,7 +180,7 @@ if db_table_index_check('mm_metadata_tvshow_idxgin_media_id_thetvdb') is None:
         ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'thetvdb\'))')
 if db_table_index_check('mm_metadata_tvshow_idxgin_media_id_tmdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tmdb'\
-        ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'TMDB\'))')
+        ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'tmdb\'))')
 if db_table_index_check('mm_metadata_tvshow_idxgin_media_id_thetvdbseries') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdbseries'\
         ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'thetvdbSeries\'))')
@@ -218,7 +218,7 @@ if db_table_index_check('mm_metadata_sports_idxgin_media_id_thetvdb') is None:
         ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'thetvdb\'))')
 if db_table_index_check('mm_metadata_sports_idxgin_media_id_tmdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_sports_idxgin_media_id_tmdb'\
-        ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'TMDB\'))')
+        ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'tmdb\'))')
 if db_table_index_check('mm_metadata_sports_idxgin_media_id_thetvdbseries') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdbseries'\
         ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'thetvdbSeries\'))')
@@ -338,7 +338,7 @@ if db_table_index_check('mm_metadata_anime_idxgin_media_id_thetvdb') is None:
         ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'thetvdb\'))')
 if db_table_index_check('mm_metadata_anime_idxgin_media_id_tmdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb'\
-        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'TMDB\'))')
+        ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'tmdb\'))')
 if db_table_index_check('mm_metadata_anime_idxgin_media_id_imdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb'\
         ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'imdb\'))')
@@ -368,7 +368,7 @@ if db_table_index_check('mm_metadata_idxgin_media_id_thetvdb') is None:
         ' ON mm_metadata_movie USING gin ((mm_metadata_media_id->\'thetvdb\'))')
 if db_table_index_check('mm_metadata_idxgin_media_id_tmdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_idxgin_media_id_tmdb'\
-        ' ON mm_metadata_movie USING gin ((mm_metadata_media_id->\'TMDB\'))')
+        ' ON mm_metadata_movie USING gin ((mm_metadata_media_id->\'tmdb\'))')
 if db_table_index_check('mm_metadata_idxgin_media_id_imdb') is None:
     sql3_cursor.execute('CREATE INDEX mm_metadata_idxgin_media_id_imdb'\
         ' ON mm_metadata_movie USING gin ((mm_metadata_media_id->\'imdb\'))')
@@ -508,16 +508,16 @@ base_cron = [
     ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
     # media/metadata subprograms
     ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
-    ('Station Logo Fetch', 'Grab new logos from thelogodb', './subprogram_logo_download.py'),
+    ('Station Logo Fetch', 'Grab new logos from TheLogoDB', './subprogram_logo_download.py'),
     ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
     ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
     ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
-    ('thetvdb Images', 'Grab missing thetvdb images', './subprogram_thetvdb_images.py'),
-    ('thetvdb Update', 'Grab updated thetvdb metadata', './subprogram_thetvdb_updates.py'),
+    ('TheTVDB Images', 'Grab missing TheTVDB images', './subprogram_thetvdb_images.py'),
+    ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_thetvdb_updates.py'),
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_tmdb_updates.py'),
-    ('tvmaze Images', 'Grab missing tvmaze images', './subprogram_tvmaze_images.py'),
-    ('tvmaze Update', 'Grab updated tvmaze metadata', './subprogram_tvmze_updates.py'),
+    ('TVmaze Images', 'Grab missing TVmaze images', './subprogram_tvmaze_images.py'),
+    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_update_create_collections.py'),
     # normal subprograms
     ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
@@ -525,7 +525,7 @@ base_cron = [
     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
     ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
-    ('Sync', 'Sync/transcode media', './subprogram_sync.py'),
+    ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
     ('Tuner', 'Scan for tuner device(s)', './subprogram_tuner_discover.py'),
     ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
     ]
@@ -568,7 +568,9 @@ sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid
 
 
 ## create table for country
-#sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_country (mm_country_guid uuid CONSTRAINT mm_country_guid_pk PRIMARY KEY, mm_country_name text, mm_country_code text, mm_country_lang_guid uuid)')
+#sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_country (mm_country_guid uuid'\
+#' CONSTRAINT mm_country_guid_pk PRIMARY KEY, mm_country_name text,'\
+#' mm_country_code text, mm_country_lang_guid uuid)')
 #if db_table_index_check('mm_country_idx_name') is None:
 #    sql3_cursor.execute('CREATE INDEX mm_country_idx_name ON mm_country(mm_country_name)')
 #if db_table_index_check('mm_country_idx_code') is None:
@@ -664,19 +666,19 @@ if sql3_cursor.fetchone()[0] == 0:
         'MetadataImageLocal': '/mediakraken/web_app/MediaKraken/static/meta/images',\
         'BackupLocal': '/mediakraken/backups/'},\
     'Maintenance': None, \
-    'API': {'MediaBrainz': None, \
-        'AniDB': None, \
-        'theTVdb': '147CB43DCA8B61B7',\
-        'theMovieDB': 'f72118d1e84b8a1438935972a9c37cac',\
-        'TheSportsDB': '4352761817344', \
-        'TheLogoDB': None, \
-        'OpenSubtitles': None,\
-        'Google': None, \
-        'GlobalCache': None, \
-        'RottenTomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
-        'ISBNdb': '25C8IT4I', \
-        'IMVDb': None, \
-        'TVMaze': None},\
+    'API': {'mediabrainz': None, \
+        'anidb': None, \
+        'thetvdb': '147CB43DCA8B61B7',\
+        'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',\
+        'thesportsdb': '4352761817344', \
+        'thelogodb': None, \
+        'opensubtitles': None,\
+        'google': None, \
+        'globalcache': None, \
+        'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',\
+        'isbndb': '25C8IT4I', \
+        'imvdb': None, \
+        'tvmaze': None},\
     'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,\
         'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
         'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\

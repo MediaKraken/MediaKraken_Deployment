@@ -30,7 +30,7 @@ class CommonMetadataTMDB(object):
     Class for interfacing with TMDB
     """
     def __init__(self, option_config_json):
-        tmdb.API_KEY = option_config_json['API']['theMovieDB']
+        tmdb.API_KEY = option_config_json['API']['themoviedb']
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
@@ -180,9 +180,9 @@ class CommonMetadataTMDB(object):
                     + result_json['backdrop_path'], file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case
-        series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'TMDB':str(result_json['id'])})
+        series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'tmdb':str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'TMDB':{'Backdrop': backdrop_file_path,\
+        image_json = ({'Images': {'tmdb':{'Backdrop': backdrop_file_path,\
             'Poster': poster_file_path}}})
    #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

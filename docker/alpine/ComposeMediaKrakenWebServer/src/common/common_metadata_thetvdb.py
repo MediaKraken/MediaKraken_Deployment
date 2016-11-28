@@ -33,7 +33,7 @@ class CommonMetadataTheTVDB(object):
     Class for interfacing with TheTVDB
     """
     def __init__(self, option_config_json):
-        self.thetvdb_connection = option_config_json['API']['theTVdb']
+        self.thetvdb_connection = option_config_json['API']['thetvdb']
 
 
     def com_meta_thetvdb_updates(self, frequency='day'):

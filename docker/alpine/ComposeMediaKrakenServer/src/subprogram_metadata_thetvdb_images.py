@@ -1,4 +1,5 @@
-'''
+
++'''
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -44,7 +45,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Images Start', None,\
-    'System: Server tvmaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
+    'System: Server thetvdb Images Start', 'ServerTVDBImagesStart', None, None, 'System')
 
 
 # prep totals

@@ -40,7 +40,7 @@ def db_meta_update(self, series_id_json, result_json, image_json):
     """
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_media_id = %s,'\
         ' mm_media_name = %s, mm_metadata_json = %s, mm_metadata_localimage_json = %s'\
-        ' where mm_metadata_media_id->\'TMDB\' ? %s', (series_id_json, result_json['title'],\
+        ' where mm_metadata_media_id->\'tmdb\' ? %s', (series_id_json, result_json['title'],\
         json.dumps(result_json), json.dumps(image_json), str(result_json['id'])))
 
 
@@ -49,7 +49,7 @@ def db_meta_genre_list_count(self):
     # count all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
-        '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie')
+        '->\'Meta\'->\'tmdb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
 
@@ -59,13 +59,13 @@ def db_meta_genre_list(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
-            '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
-            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+            '->\'Meta\'->\'tmdb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
+            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'tmdb\''\
             '->\'Meta\'->\'genres\')::jsonb')
     else:
         self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'\
-            '->\'Meta\'->\'TMDB\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
-            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+            '->\'Meta\'->\'tmdb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'\
+            ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'tmdb\''\
             '->\'Meta\'->\'genres\')::jsonb offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
@@ -75,9 +75,9 @@ def db_meta_movie_count_genre(self):
     # movie count by genre
     """
     self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\''\
-        '->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''\
-        '->\'TMDB\'->\'Meta\'->\'genres\') from mm_metadata_movie group by gen'\
-        ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'TMDB\''\
+        '->\'tmdb\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''\
+        '->\'tmdb\'->\'Meta\'->\'genres\') from mm_metadata_movie group by gen'\
+        ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'tmdb\''\
         '->\'Meta\'->\'genres\')::jsonb ')
     return self.db_cursor.fetchall()
 
@@ -111,7 +111,7 @@ def db_meta_guid_by_tmdb(self, tmdb_uuid):
     # see if metadata exists type and id
     """
     self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'\
-        ' where mm_metadata_media_id->\'TMDB\' ? %s', (str(tmdb_uuid),))
+        ' where mm_metadata_media_id->\'tmdb\' ? %s', (str(tmdb_uuid),))
     try:
         return self.db_cursor.fetchone()['mm_metadata_guid']
     except:
@@ -123,7 +123,7 @@ def db_meta_guid_by_rt(self, rt_uuid):
     # see if metadata exists type and id
     """
     self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'\
-        ' where mm_metadata_media_id->\'RT\' ? %s', (str(rt_uuid),))
+        ' where mm_metadata_media_id->\'rt\' ? %s', (str(rt_uuid),))
     try:
         return self.db_cursor.fetchone()['mm_metadata_guid']
     except:
@@ -146,7 +146,7 @@ def db_meta_tmdb_count(self, tmdb_id):
     # see if metadata exists via themovedbid
     """
     self.db_cursor.execute('select count(*) from mm_metadata_movie'\
-        ' where mm_metadata_media_id->\'TMDB\' ? %s', (str(tmdb_id),))
+        ' where mm_metadata_media_id->\'tmdb\' ? %s', (str(tmdb_id),))
     return self.db_cursor.fetchone()[0]
 
 
@@ -156,13 +156,13 @@ def db_meta_movie_list(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
-            'mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\','\
-            ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
+            'mm_metadata_json->\'Meta\'->\'tmdb\'->\'Meta\'->\'release_date\','\
+            ' mm_metadata_localimage_json->\'Images\'->\'tmdb\'->\'Poster\''\
             ' from mm_metadata_movie order by LOWER(mm_media_name)')
     else:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
-            'mm_metadata_json->\'Meta\'->\'TMDB\'->\'Meta\'->\'release_date\','\
-            ' mm_metadata_localimage_json->\'Images\'->\'TMDB\'->\'Poster\''\
+            'mm_metadata_json->\'Meta\'->\'tmdb\'->\'Meta\'->\'release_date\','\
+            ' mm_metadata_localimage_json->\'Images\'->\'tmdb\'->\'Poster\''\
             ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'\
             ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'\
             ' order by mm_media_name', (offset, records))

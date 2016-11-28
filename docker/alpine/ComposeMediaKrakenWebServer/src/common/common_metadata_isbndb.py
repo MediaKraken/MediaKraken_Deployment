@@ -26,7 +26,7 @@ class CommonMetadataISBNdb(object):
     Class for interfacing with isbndb
     """
     def __init__(self, option_config_json):
-        self.api_key = option_config_json['API']['ISBNdb']
+        self.api_key = option_config_json['API']['isbndb']
 
 
     # http://isbndb.com/api/v2/docs/authors
