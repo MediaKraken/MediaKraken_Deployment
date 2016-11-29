@@ -1,3 +1,8 @@
+pysmb
+dropbox
+boto
+synolopy
+onedrivesdk
 arduino-python
 docker-py
 easysnmp
