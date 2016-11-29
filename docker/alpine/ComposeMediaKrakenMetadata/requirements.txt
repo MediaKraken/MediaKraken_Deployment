@@ -1,3 +1,4 @@
+service_identity
 pylzma
 beautifulsoup4
 guessit
