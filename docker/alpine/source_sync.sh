@@ -1,4 +1,3 @@
-
 # devicescanner
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
 cp /home/spoot/MediaKraken_Deployment/main_hardware_discover.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
