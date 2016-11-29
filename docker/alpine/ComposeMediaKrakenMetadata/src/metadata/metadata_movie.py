@@ -37,7 +37,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify themovietb key exists
-if option_config_json['API']['theMovieDB'] is not None:
+if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
     TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
@@ -87,7 +87,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id_json, result_json, image_json\
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json)
         # set and insert the record
-        meta_json = ({'Meta': {'TMDB': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
+        meta_json = ({'Meta': {'tmdb': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
         logging.info("series: %s", series_id_json)
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
@@ -122,9 +122,9 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     """
     cast_json = TMDB_CONNECTION.com_tmdb_meta_cast_by_id(tmdb_id)
     if 'cast' in cast_json:
-        db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['cast'])
+        db_connection.db_meta_person_insert_cast_crew('tmdb', cast_json['cast'])
     if 'crew' in cast_json:
-        db_connection.db_meta_person_insert_cast_crew('TMDB', cast_json['crew'])
+        db_connection.db_meta_person_insert_cast_crew('tmdb', cast_json['crew'])
     # update the metadata record with the cast info
     db_connection.db_meta_movie_update_castcrew(cast_json, metadata_id)
 
@@ -135,10 +135,10 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     review_json = TMDB_CONNECTION.com_tmdb_meta_review_by_id(tmdb_id)
     if review_json['total_results'] > 0:
-        review_json_id = ({'TMDB': str(review_json['id'])})
+        review_json_id = ({'tmdb': str(review_json['id'])})
         logging.info("review: %s", review_json_id)
         db_connection.db_review_insert(json.dumps(review_json_id),\
-            json.dumps({'TMDB': review_json}))
+            json.dumps({'tmdb': review_json}))
 
 
 def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):

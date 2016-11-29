@@ -27,7 +27,7 @@ class CommonMetadataTheLogoDB(object):
     Class for interfacing with thelogodb
     """
     def __init__(self, option_config_json):
-        self.logo_api_key = option_config_json['API']['TheLogoDB']
+        self.logo_api_key = option_config_json['API']['thelogodb']
 
 
     def com_thelogodb_fetch_latest(self):

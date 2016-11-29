@@ -29,7 +29,7 @@ class CommonTheTVDB(object):
     Class for interfacing with thetvdb
     """
     def __init__(self, option_config_json):
-        self.tvdb_connection = api.TVDB(option_config_json['API']['theTVdb'], actors=True,\
+        self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,\
             ignore_case=True)
 
 
@@ -118,8 +118,8 @@ class CommonTheTVDB(object):
 # mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
-        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'', 'RT':'',\
-            'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
+        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'tmdb':'', 'anidb':'', 'rt':'',\
+            'omdb':'', 'fanart':'', 'screengrabber':'', 'zap2it':''})
     #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
     #    self.db_cursor.execute('insert into mm_metadata (mm_metadata_guid,\

@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 from pyhdhomerun.adapter import HdhrUtility, HdhrDeviceQuery
 from pyhdhomerun.constants import MAP_US_BCAST
 
+# https://github.com/dsoprea/PyHdHomeRun - forked to MK
 
 class CommonHardwareHDHomeRunPY(object):
     """

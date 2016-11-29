@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -18,21 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import json
-from . import common_network
 
 
-class CommonMetadataTheLogoDB(object):
-    """
-    Class for interfacing with thelogodb
-    """
-    def __init__(self, option_config_json):
-        self.logo_api_key = option_config_json['API']['thelogodb']
-
-
-    def com_thelogodb_fetch_latest(self):
-        """
-        Grab newest releases
-        """
-        return json.loads(common_network.mk_network_fetch_from_url(\
-            'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))
+def db_version_check(self):
+    self.db_cursor.execute('select mm_version_no from mm_version')
+    return self.db_cursor.fetchone()[0]

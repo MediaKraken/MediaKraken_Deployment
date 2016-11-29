@@ -47,8 +47,8 @@ def db_media_movie_count_by_genre(self, class_guid):
     # movie count by genre
     """
     self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\''\
-        '->\'TMDB\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''\
-        '->\'TMDB\'->\'Meta\'->\'genres\') from ((select distinct on (mm_media_metadata_guid)'\
+        '->\'tmdb\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''\
+        '->\'tmdb\'->\'Meta\'->\'genres\') from ((select distinct on (mm_media_metadata_guid)'\
         ' mm_metadata_json from mm_media, mm_metadata_movie where mm_media_class_guid = %s'\
         ' and mm_media_metadata_guid = mm_metadata_guid) union (select distinct'\
         ' on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote,'\
