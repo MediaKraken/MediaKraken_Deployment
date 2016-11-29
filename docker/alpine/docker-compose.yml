@@ -21,6 +21,7 @@ services:
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
@@ -44,6 +45,7 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
     restart: unless-stopped
@@ -114,6 +116,7 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -165,6 +168,7 @@ services:
       - "8900:8080"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
