@@ -169,7 +169,8 @@ class MediaKrakenApp():
             msg = "PONG"
         # user commands
         elif message_words[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1], shell=False))
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1], \
+                shell=False))
         # admin commands
         elif message_words[0] == "CPUUSAGE":
             msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(True))
@@ -200,7 +201,8 @@ if __name__ == '__main__':
     # mount all the shares first so paths exist for validation
     common_network_share.com_net_share_mount(db_connection.db_audit_shares())
     # fire up ffserver
-    proc_ffserver = subprocess.Popen(['ffserver', '-f', './conf/ffserver.conf'], shell=False)
+    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], \
+        shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()
     # stop ffserver and timer
