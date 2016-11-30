@@ -42,7 +42,7 @@ class MediaKrakenServerApp(Factory):
 
 
     def buildProtocol(self, addr):
-        return network_base.mediakraken_network_events(self.users, db_connection,\
+        return network_base.NetworkEvents(self.users, db_connection,\
             self.genre_list)
 
 
