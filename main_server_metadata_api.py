@@ -62,7 +62,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 
 # build image directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/a'):
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
     pass
 else:
     build_image_dirs()
