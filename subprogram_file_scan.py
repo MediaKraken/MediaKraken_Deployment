@@ -143,7 +143,8 @@ def worker(audit_directory):
                         if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Extras']
                         elif thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Show' \
-                                or thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Episode' \
+                                or thread_db.db_media_class_by_uuid(\
+                                media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Extras']
                     elif file_name.find('/backdrops/') != -1\
