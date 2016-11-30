@@ -118,6 +118,7 @@ services:
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -170,6 +171,7 @@ services:
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
