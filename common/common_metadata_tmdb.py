@@ -162,6 +162,7 @@ class CommonMetadataTMDB(object):
         # create file path for poster
         file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
             'poster')
+        logging.info('tmdb image path: %s', file_path)
         poster_file_path = None
         if result_json['poster_path'] is not None:
             file_path += result_json['poster_path']
