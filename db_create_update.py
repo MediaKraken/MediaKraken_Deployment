@@ -663,7 +663,7 @@ if sql3_cursor.fetchone()[0] == 0:
     sql_params = str(uuid.uuid4()), json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
     'MaxResumePct': 5,\
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
-        'MetadataImageLocal': './static/meta/images',\
+        'MetadataImageLocal': '',\
         'BackupLocal': '/mediakraken/backups/'},\
     'Maintenance': None, \
     'API': {'mediabrainz': None, \
