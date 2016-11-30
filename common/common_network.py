@@ -32,6 +32,7 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     Download image file from specified url to save in specific directory
     """
+    logging.info('dl url %s', directory)
     try:
         imagefile = urllib2.urlopen(url)
         if directory is not None:
