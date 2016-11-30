@@ -57,7 +57,7 @@ chrome_pid = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.
 while True:
     line = chrome_pid.stdout.readline()
     if line != '':
-        logging.info('chromescan out: %' % line.rstrip())
+        logging.info('chromescan out: %s' % line.rstrip())
         if line.find(":") != -1:
             media_devices.append({'Chrome IP': line.split(':')[0].strip(),\
                                  'Chrome Name': line.split(':')[1].strip()})
