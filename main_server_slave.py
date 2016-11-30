@@ -142,9 +142,7 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        option_config_json, db_connection = common_config_ini.com_config_read()
-        reactor.connectSSL(option_config_json['MediaKrakenServer']['Host'],\
-            option_config_json['MediaKrakenServer']['Port'],\
+        reactor.connectSSL('mkserver', 5000,\
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
