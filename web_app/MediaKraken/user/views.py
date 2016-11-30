@@ -1262,7 +1262,9 @@ def sync_edit(guid):
             'AudioChannels': request.form['target_audio_channels'],\
             'ACodec': request.form['target_audio_codec'],\
             'ASRate': request.form['target_sample_rate']},\
-            'Priority': request.form['target_priority'], 'Status': 'Scheduled', 'Progress': 0}
+            'Priority': request.form['target_priority'], \
+            'Status': 'Scheduled', \
+            'Progress': 0}
         g.db_connection.db_sync_insert(request.form['name'],\
             request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
