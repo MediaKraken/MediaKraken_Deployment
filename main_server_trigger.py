@@ -57,7 +57,7 @@ while True:
         logging.info("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
         db_connection.db_triggers_delete(row_data[0])
-        trigger_pid_list.append(proc_trigger.pid())
+        trigger_pid_list.append(proc_trigger.pid)
     time.sleep(1)
 
 
