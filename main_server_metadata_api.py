@@ -386,7 +386,7 @@ def worker(content_providers):
                     metadata_last_year = None
         thread_db.db_commit()
         time.sleep(1)
-        break # TODO for now testing.......
+#        break # TODO for now testing.......
     thread_db.db_close()
     return
 
