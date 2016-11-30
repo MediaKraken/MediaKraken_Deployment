@@ -18,8 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import os
 import time
 import datetime
+from build_image_directory import build_image_dirs
 from guessit import guessit
 from metadata import metadata_anime
 from metadata import metadata_game
@@ -57,6 +59,13 @@ from common import common_thetvdb
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')
+
+
+# build image directories if needed
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/a'):
+    pass
+else:
+    build_image_dirs()
 
 
 # set signal exit breaks
