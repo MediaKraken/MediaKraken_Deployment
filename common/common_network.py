@@ -23,6 +23,7 @@ import re
 #import time
 from threading import Thread
 import urllib2
+import ssl
 import socket
 import sys
 from . import wol
@@ -34,7 +35,7 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     logging.info('dl %s url %s' % (url, directory))
     try:
-        imagefile = urllib2.urlopen(url)
+        imagefile = urllib2.urlopen(url, context=ssl._create_unverified_context())
         if directory is not None:
             localfile = open(directory, 'wb')
             localfile.write(imagefile.read())
