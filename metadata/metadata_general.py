@@ -108,6 +108,8 @@ def metadata_search(thread_db, provider_name, download_data):
                 update_provider = 'thetvdb'
             else:
                 set_fetch = True
+    elif provider_name == 'omdb':
+        lookup_halt = True
 
     # if search is being updated to new provider
     if update_provider is not None:
