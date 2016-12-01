@@ -103,7 +103,8 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
-            pass  # TODO lookup properly
+            metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
+                download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
     elif class_text == "Movie Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -116,7 +117,8 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
-            pass  # TODO lookup properly
+            metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,\
+                download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id)
