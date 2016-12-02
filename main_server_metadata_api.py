@@ -309,6 +309,7 @@ def worker(content_providers):
     metadata_last_title = None
     metadata_last_year = None
     while True:
+        logging.info('worker thread before read provider')
         for row_data in thread_db.db_download_read_provider(content_providers):
             logging.info("worker meta api row: %s", row_data)
             # mdq_id,mdq_download_json
