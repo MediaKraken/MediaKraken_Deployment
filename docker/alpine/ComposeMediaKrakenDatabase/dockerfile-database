@@ -34,5 +34,10 @@ VOLUME /var/lib/postgresql/data:/var/lib/postgresql/data
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/post/access.log
+RUN ln -sf /dev/stderr /var/log/post/error.log
+VOLUME /var/log/post:/var/log/post
+
 EXPOSE 5432
 CMD ["postgres"]
