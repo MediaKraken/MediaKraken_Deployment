@@ -67,7 +67,7 @@ base_media_classes = (
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"\
-    " host='mkdatabase' password=%s" % os.environ['POSTGRES_PASSWORD'])
+    " host='%s' password=%s" % (os.environ['POSTGRES_HOST'], os.environ['POSTGRES_PASSWORD']))
 sql3_cursor = sql3_conn.cursor()
 
 
