@@ -131,7 +131,7 @@ def metadata_search(thread_db, provider_name, download_data):
             # found in database so remove from download que
             thread_db.db_download_delete(download_data['mdq_id'])
         else:
-            metadata_uuid = download_data['MetaNewID']
+            metadata_uuid = download_data['mdq_download_json']['MetaNewID']
             logging.info('meta: %s', metadata_uuid)
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
                                          download_data['mdq_download_json']['MetaNewID'])
