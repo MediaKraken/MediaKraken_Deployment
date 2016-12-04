@@ -359,6 +359,7 @@ def user_tv_show_detail_page(guid):
         data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
+            #data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
             if 'runtime' in json_metadata['Meta']['tvmaze']:
                 data_runtime = json_metadata['Meta']['tvmaze']['runtime']
             else:

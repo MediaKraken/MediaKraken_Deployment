@@ -194,12 +194,15 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     logging.info('tvlook filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:
+        logging.info('tv here 1')
         if file_name['title'] == metadata_tv_lookup.metadata_last_title\
                 and file_name['year'] == metadata_tv_lookup.metadata_last_year:
+            logging.info('tv here 2')
             db_connection.db_download_delete(download_que_id)
             logging.info('meta tv return 1 %s',  metadata_tv_lookup.metadata_last_id)
             return metadata_tv_lookup.metadata_last_id
     elif file_name['title'] == metadata_tv_lookup.metadata_last_title:
+        logging.info('tv here 3')
         db_connection.db_download_delete(download_que_id)
         logging.info('meta tv return 2 %s',  metadata_tv_lookup.metadata_last_id)
         return metadata_tv_lookup.metadata_last_id
