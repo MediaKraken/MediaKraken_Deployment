@@ -167,6 +167,9 @@ def metadata_identification(db_connection, class_text, download_que_json,\
         else:
             metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
                 download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
+            if metadata_uuid is None:
+                # TODO so, the show hasn't been fetched yet.....so, no path match
+                db_connection.db_download_update_provider('ZZ', download_que_id)
     elif class_text == "TV Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
