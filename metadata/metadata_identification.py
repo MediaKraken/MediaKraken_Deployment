@@ -152,24 +152,31 @@ def metadata_identification(db_connection, class_text, download_que_json,\
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
             download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
-#    elif class_text == "TV Theme":
-#        # include end slash so theme.mp3 doesn't get chopped up
-#        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-#            metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-#                download_que_json['Path'].replace('\\theme\\', '\\')\
-#                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
-#        else:
-#            metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
-#                download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/')\
-#                .rsplit('/', 1)[0]))
-#        if metadata_uuid is not None:
-#            db_connection.db_download_delete(download_que_id)
-#        else:
-#            metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
-#                download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
-#            if metadata_uuid is None:
-#                # TODO so, the show hasn't been fetched yet.....so, no path match
-#                db_connection.db_download_update_provider('ZZ', download_que_id)
+    elif class_text == "TV Theme":
+        logging.info('tv theme ident')
+        # include end slash so theme.mp3 doesn't get chopped up
+        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+            metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('\\theme\\', '\\')\
+                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
+        else:
+            logging.info('tv theme ident 2')
+            metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(\
+                download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/')\
+                .rsplit('/', 1)[0]))
+            logging.info('tv theme ident 3')
+        if metadata_uuid is not None:
+            logging.info('tv theme ident 4')
+            db_connection.db_download_delete(download_que_id)
+        else:
+            logging.info('tv theme ident 5')
+            metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,\
+                download_que_json['Path'], download_que_json, download_que_id, guessit_file_name)
+            logging.info('tv theme ident 6')
+            if metadata_uuid is None:
+                logging.info('tv theme ident 7')
+                # TODO so, the show hasn't been fetched yet.....so, no path match
+                db_connection.db_download_update_provider('ZZ', download_que_id)
     elif class_text == "TV Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
