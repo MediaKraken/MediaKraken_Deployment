@@ -197,10 +197,13 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         if file_name['title'] == metadata_tv_lookup.metadata_last_title\
                 and file_name['year'] == metadata_tv_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
+            logging.info('meta tv return 1 %s',  metadata_tv_lookup.metadata_last_id)
             return metadata_tv_lookup.metadata_last_id
     elif file_name['title'] == metadata_tv_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
+        logging.info('meta tv return 2 %s',  metadata_tv_lookup.metadata_last_id)
         return metadata_tv_lookup.metadata_last_id
+    logging.info('tv before nfo/xml')
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
     imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
