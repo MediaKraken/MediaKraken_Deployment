@@ -165,6 +165,9 @@ def metadata_fetch(thread_db, provider_name, download_data):
                 download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                     download_data['mdq_id'])
+            else:
+                # TODO this is kinda bad if you have a valid id
+                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
         else:
             metadata_movie.movie_fetch_save_tmdb(thread_db,\
                 download_data['mdq_download_json']['ProviderMetaID'],\
