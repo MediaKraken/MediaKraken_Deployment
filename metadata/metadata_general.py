@@ -179,6 +179,10 @@ def metadata_fetch(thread_db, provider_name, download_data):
         metadata_tv.tv_fetch_save_tvmaze(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
+    elif provider_name == 'thetvdb':
+        metadata_tv.tv_fetch_save_tvdb(thread_db,\
+            download_data['mdq_download_json']['ProviderMetaID'])
+        thread_db.db_download_delete(download_data['mdq_id'])
 
 
 def metadata_castcrew(thread_db, provider_name, download_data):
