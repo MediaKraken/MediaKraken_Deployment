@@ -112,19 +112,25 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data\
         = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
+    logging.info('tv fetch save tvdb show %s', xml_show_data)
     if xml_show_data is not None:
+        logging.info('insert')
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],\
             'thetvdb': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
+        logging.info('insert 2')
         metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,\
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb':\
             {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
             'Banner': xml_banners_data}}}), json.dumps(image_json))
+        logging.info('insert 3')
         # insert cast info
         if xml_actor_data is not None:
             db_connection.db_meta_person_insert_cast_crew('thetvdb',\
                 xml_actor_data['Actor'])
+        logging.info('insert 4')
+        db_connection.db_commit()
     return metadata_uuid
 
 
