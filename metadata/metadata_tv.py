@@ -117,7 +117,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         logging.info('insert')
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],\
+        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],\
             'thetvdb': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         logging.info('insert 2')
         metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,\
