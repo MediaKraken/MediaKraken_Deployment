@@ -1,5 +1,4 @@
-
-+'''
+'''
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -124,9 +123,9 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
             logging.info("episode: %s", episode_info)
             if episode_info['filename'] is not None:
                 eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
-                episode_info['EpisodeName'],\
-                'backdrop'), (str(uuid.uuid4()) + '.'\
-                + episode_info['filename'].rsplit('.', 1)[1]))
+                    episode_info['EpisodeName'],\
+                    'backdrop'), (str(uuid.uuid4()) + '.'\
+                    + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.info("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                     + episode_info['filename'], eps_image_local)
