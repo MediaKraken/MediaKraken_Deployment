@@ -150,7 +150,6 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         pass
     logging.info("tvmaze full: %s", show_full_json)
     if show_full_json is not None:
-#        for show_detail in show_full_json:
         show_detail = show_full_json['Meta']['tvmaze']
         logging.info("detail: %s", show_detail)
         tvmaze_name = show_detail['name']
