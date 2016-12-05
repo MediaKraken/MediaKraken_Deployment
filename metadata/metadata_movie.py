@@ -135,7 +135,8 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     # grab reviews
     """
     review_json = TMDB_CONNECTION.com_tmdb_meta_review_by_id(tmdb_id)
-    if review_json['total_results'] > 0:
+    # review record doesn't exist on all media
+    if review_json is not None and review_json['total_results'] > 0:
         review_json_id = ({'tmdb': str(review_json['id'])})
         logging.info("review: %s", review_json_id)
         db_connection.db_review_insert(json.dumps(review_json_id),\
