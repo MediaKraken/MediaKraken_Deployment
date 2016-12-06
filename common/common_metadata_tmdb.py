@@ -31,6 +31,7 @@ class CommonMetadataTMDB(object):
     """
     def __init__(self, option_config_json):
         tmdb.API_KEY = option_config_json['API']['themoviedb']
+        self.API_KEY = option_config_json['API']['themoviedb']
 
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
@@ -53,9 +54,18 @@ class CommonMetadataTMDB(object):
         return 're', search.results
 
 
+    def com_tmdb_metadata_by_id(self, tmdb_id):
+        """
+        Fetch all metadata by id to reduce calls
+        """
+        return common_network.mk_network_fetch_from_url('https://api.themoviedb.org/3/movie/%s'\
+            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos', \
+            (tmdb_id, self.API_KEY))
+
+
     def com_tmdb_meta_by_id(self, tmdb_id):
         """
-        # search by tmdb
+        # movie info by tmdb
         """
         movie = tmdb.Movies(tmdb_id)
         try:
@@ -68,7 +78,7 @@ class CommonMetadataTMDB(object):
 
     def com_tmdb_meta_cast_by_id(self, tmdb_id):
         """
-        # search by tmdb
+        # cast by tmdb
         """
         movie = tmdb.Movies(tmdb_id)
         try:
