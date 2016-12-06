@@ -87,11 +87,18 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id_json, result_json, image_json\
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json)
         # set and insert the record
-        meta_json = ({'Meta': {'tmdb': {'Meta': result_json, 'Cast': None, 'Crew': None}}})
+        meta_json = ({'Meta': {'tmdb': {'Meta': result_json}}})
         logging.info("series: %s", series_id_json)
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
+        if 'credits' in result_json: # cast/crew doesn't exist on all media
+            if 'cast' in result_json['credits']:
+                db_connection.db_meta_person_insert_cast_crew('tmdb', \
+                                                              result_json['credits']['cast'])
+            if 'crew' in result_json['credits']:
+                db_connection.db_meta_person_insert_cast_crew('tmdb', \
+                                                              result_json['credits']['crew'])
     else:
         metadata_uuid = None
     logging.info('meta movie save fetch uuid %s', metadata_uuid)
