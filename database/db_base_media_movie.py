@@ -174,6 +174,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',\
     # web media return
     """
     logging.info("classuid: %s %s %s", class_guid, list_type, list_genre)
+    logging.info("group and remote: %s %s", group_collection, include_remote)
+    logging.info("list, offset: %s %s", list_limit, offset)
     #messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
