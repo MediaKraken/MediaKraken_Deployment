@@ -92,6 +92,19 @@ class CommonMetadataTMDB(object):
         return metadata
 
 
+    def com_tmdb_meta_release_by_id(self, tmdb_id):
+        """
+        # release by tmdb
+        """
+        movie = tmdb.Movies(tmdb_id)
+        try:
+            metadata = movie.releases()
+        except Exception as err_code:
+            logging.error("TMDB Fetch Releases Error: %s", str(err_code))
+            metadata = None
+        return metadata
+
+
 # TODO
 #The supported external sources for each object are as follows:
 #    Movies: imdb_id
