@@ -172,9 +172,10 @@ def metadata_fetch(thread_db, provider_name, download_data):
             metadata_movie.movie_fetch_save_tmdb(thread_db,\
                 download_data['mdq_download_json']['ProviderMetaID'],\
                 download_data['mdq_download_json']['MetaNewID'])
-            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                download_data['mdq_id'])
+            thread_db.db_download_delete(download_data['mdq_id'])
+#            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
+#            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+#                download_data['mdq_id'])
     elif provider_name == 'tvmaze':
         metadata_tv.tv_fetch_save_tvmaze(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
