@@ -44,7 +44,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Images Start', None,\
-    'System: Server tvmaze Images Start', 'ServerTVDBImagesStart', None, None, 'System')
+    'System: Server thetvdb Images Start', 'ServerTVDBImagesStart', None, None, 'System')
 
 
 # prep totals
@@ -123,9 +123,9 @@ for row_data in db_connection.db_meta_tvshow_images_to_update('thetvdb'):
             logging.info("episode: %s", episode_info)
             if episode_info['filename'] is not None:
                 eps_image_local = os.path.join(common_metadata.com_meta_image_file_path(\
-                episode_info['EpisodeName'],\
-                'backdrop'), (str(uuid.uuid4()) + '.'\
-                + episode_info['filename'].rsplit('.', 1)[1]))
+                    episode_info['EpisodeName'],\
+                    'backdrop'), (str(uuid.uuid4()) + '.'\
+                    + episode_info['filename'].rsplit('.', 1)[1]))
                 logging.info("eps: %s", eps_image_local)
                 common_network.mk_network_fetch_from_url("https://thetvdb.com/banners/"\
                     + episode_info['filename'], eps_image_local)

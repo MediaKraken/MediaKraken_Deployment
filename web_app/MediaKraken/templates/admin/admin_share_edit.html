@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+    <h1>Share/Mount Addition</h1>
+    <br>
+    <form id="shareaddeditForm" class="form form-shareedit" method="POST" action="" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.storage_mount_type.label}}
+            {{form.storage_mount_type(placeholder="Share Type", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.storage_mount_server.label}}
+            {{form.storage_mount_server(placeholder="Hostname or IP", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.storage_mount_path.label}}
+            {{form.storage_mount_path(placeholder="Path", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.storage_mount_user.label}}
+            {{form.storage_mount_user(placeholder="guest", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.storage_mount_password.label}}
+            {{form.storage_mount_password(placeholder="", class_="form-control")}}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" name="action_type" value="Add"></p>
+        <p><input class="btn btn-default btn-submit" type="submit" name="action_type" value="Browse..."></p>
+    </form>
+</div>
+{% endblock %}

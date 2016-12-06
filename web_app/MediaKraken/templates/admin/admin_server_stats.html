@@ -74,5 +74,40 @@
         </table>
     </div>
     {% endif %}
+    {% if data_network_io %}
+    <div class="table-responsive">
+        <h3>Network IO</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Interface</th>
+                    <th>Bytes Sent</th>
+                    <th>Bytes Received</th>
+                    <th>Packets Sent</th>
+                    <th>Packets Received</th>
+                    <th>Error In</th>
+                    <th>Error Out</th>
+                    <th>Drop In</th>
+                    <th>Drop Out</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in data_network_io %}
+                <tr>
+                    <td>{{ row_data[0] }}</td>
+                    <td>{{ row_data[1] }}</td>
+                    <td>{{ row_data[2] }}</td>
+                    <td>{{ row_data[3] }}</td>
+                    <td>{{ row_data[4] }}</td>
+                    <td>{{ row_data[5] }}</td>
+                    <td>{{ row_data[6] }}</td>
+                    <td>{{ row_data[7] }}</td>
+                    <td>{{ row_data[8] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 </body>
 {% endblock %}

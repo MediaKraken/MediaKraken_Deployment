@@ -13,14 +13,19 @@ class MKServerDatabase(object):
         db_activity_purge
     from database.db_base_audit import db_audit_path_status,\
         db_audit_path_update_status,\
-        db_audit_paths_count,\
         db_audit_path_update_by_uuid,\
         db_audit_path_add,\
         db_audit_path_check,\
         db_audit_dir_timestamp_update,\
         db_audit_paths,\
         db_audit_path_delete,\
-        db_audit_path_by_uuid
+        db_audit_path_by_uuid,\
+        db_audit_shares,\
+        db_audit_share_delete,\
+        db_audit_share_by_uuid,\
+        db_audit_share_update_by_uuid,\
+        db_audit_share_check,\
+        db_audit_share_add
     from database.db_base_channel import db_channel_insert
     from database.db_base_collection import db_media_collection_scan,\
         db_collection_guid_by_name,\
@@ -44,8 +49,16 @@ class MKServerDatabase(object):
         db_download_update_provider,\
         db_download_update,\
         db_download_que_exists
-    from database.db_base_kodi import db_kodi_user_sync,\
-        db_kodi_user_sync_added
+    from database.db_base_kodi import db_kodi_user_sync_movie,\
+        db_kodi_user_sync_added,\
+        db_kodi_user_sync_collection,\
+        db_kodi_user_sync_tv_shows,\
+        db_kodi_user_sync_music_videos,\
+        db_kodi_user_sync_tv_seasons,\
+        db_kodi_user_sync_tv_episodes,\
+        db_kodi_user_sync_music_artists,\
+        db_kodi_user_sync_music_albums,\
+        db_kodi_user_sync_music_songs
     from database.db_base_iradio import db_iradio_insert,\
         db_iradio_list_count,\
         db_iradio_list
@@ -90,7 +103,9 @@ class MKServerDatabase(object):
         db_media_watched_checkpoint_update,\
         db_media_favorite_status_update,\
         db_media_poo_status_update,\
-        db_media_mismatch_status_update
+        db_media_mismatch_status_update,\
+        db_read_media_ffprobe,\
+        db_media_ffmeg_update
     from database.db_base_media_movie import db_web_media_list_count,\
         db_media_movie_count_by_genre,\
         db_web_media_list,\
@@ -234,6 +249,7 @@ class MKServerDatabase(object):
         db_user_detail,\
         db_user_delete,\
         db_user_login_kodi
+    from database.db_base_version import db_version_check
 
     # class variables
     sql3_conn = None

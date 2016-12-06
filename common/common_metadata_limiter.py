@@ -19,6 +19,7 @@ API_LIMIT = {
     'giantbomb': (1, 1), # (4-16-2016)
     'imdb': (9999, 1), # no mention of limits 7/29/2016
     'imvdb': (1000, 60), # 1000 per minute (6/30/2016)
+    'lastfm': (5,1), # five per second (11/8/2016)
     'musicbrainz': (9999, 1),
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections
@@ -27,8 +28,8 @@ API_LIMIT = {
     'theaudiodb': (9999, 1), # no mention of limits 7/29/2016
     'thegamesdb': (9999, 1), # no mention of limits 7/29/2016
     'thelogodb': (9999, 1), # no mention of limits 7/29/2016
-    'themoviedb': (30, 10), # We currently rate limit requests to 30
-    # requests every 10 seconds. (4-16-2016)
+    'themoviedb': (40, 10), # We currently rate limit requests to 40
+    # requests every 10 seconds. (12-05-2016)
     'thesportsdb': (9999, 1), # no mention of limits 7/29/2016
     'thetvdb': (9999, 1), # no mention of limits besides play nice (4-16-2016)
     'tv_intros': (1, 1), # since I'm scraping

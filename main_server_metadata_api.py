@@ -18,8 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import os
 import time
 import datetime
+from build_image_directory import build_image_dirs
 from guessit import guessit
 from metadata import metadata_anime
 from metadata import metadata_game
@@ -57,6 +59,13 @@ from common import common_thetvdb
 from concurrent import futures
 import locale
 locale.setlocale(locale.LC_ALL, '')
+
+
+# build image directories if needed
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
+    pass
+else:
+    build_image_dirs()
 
 
 # set signal exit breaks
@@ -300,6 +309,7 @@ def worker(content_providers):
     metadata_last_title = None
     metadata_last_year = None
     while True:
+        logging.info('worker thread before read provider %s', content_providers)
         for row_data in thread_db.db_download_read_provider(content_providers):
             logging.info("worker meta api row: %s", row_data)
             # mdq_id,mdq_download_json
@@ -377,7 +387,7 @@ def worker(content_providers):
                     metadata_last_year = None
         thread_db.db_commit()
         time.sleep(1)
-        break # TODO for now testing.......
+#        break # TODO for now testing.......
     thread_db.db_close()
     return
 
@@ -389,7 +399,8 @@ for class_data in db_connection.db_media_class_list(None, None):
 
 
 # grab the rate limiting providers and populate threads
-with futures.ThreadPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
+#with futures.ThreadPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
+with futures.ProcessPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
     futures = [executor.submit(worker, n) for n in common_metadata_limiter.API_LIMIT.keys()]
     for future in futures:
         logging.info(future.result())

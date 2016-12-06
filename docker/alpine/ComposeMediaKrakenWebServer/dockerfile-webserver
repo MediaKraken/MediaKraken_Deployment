@@ -1,0 +1,24 @@
+# Download base image
+FROM mediakraken/mkwebbase
+
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image holds the image for the web server app"
+
+RUN apk add --update \
+  cifs-utils \
+  nfs-utils \
+  openrc \
+  && rm -rf /var/cache/apk/* \
+  && rc-update add netmount \
+  && rc-update add rpcbind
+
+ADD wait-for-it-ash.sh /mediakraken
+# Copy the source files for the app
+ADD src /mediakraken
+
+WORKDIR /mediakraken
+
+EXPOSE 8080
+CMD ["/bin/ash"]
+

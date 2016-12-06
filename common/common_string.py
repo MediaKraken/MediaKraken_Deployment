@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import re
 from socket import inet_ntoa
-import passwordmeter
 
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
@@ -71,6 +70,7 @@ def com_string_password_test(password_text):
     """
     Test password strength
     """
+    import passwordmeter
     ratings = (
         'Infinitely weak',
         'Extremely weak',
@@ -108,5 +108,8 @@ def com_string_unc_to_addr_path(unc_path):
     """
     Break up unc to parts
     """
-    return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
-        '\\'.join(unc_path.split('\\', 5)[4:]))
+    try:
+        return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
+                '\\'.join(unc_path.split('\\', 5)[4:]))
+    except:
+        return None, None, None

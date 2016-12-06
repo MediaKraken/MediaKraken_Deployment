@@ -29,10 +29,10 @@ from . import common_network
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 base_image_path = option_config_json['MediaKrakenServer']['MetadataImageLocal']
-if base_image_path.endswith('/'):
-    pass
-else:
-    base_image_path += '/'
+#if base_image_path.endswith('/'):
+#    pass
+#else:
+#    base_image_path += '/'
 
 
 def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
@@ -78,6 +78,7 @@ def com_meta_image_file_path(media_name, media_type):
     except:
         file_path = os.path.join(base_image_path, media_type,\
             random.choice(string.ascii_lowercase))
+    logging.info('file image path: %s', file_path)
     return file_path
 
 

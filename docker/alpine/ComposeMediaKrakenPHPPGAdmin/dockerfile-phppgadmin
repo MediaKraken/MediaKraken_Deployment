@@ -1,0 +1,50 @@
+# Download base image
+FROM alpine:3.4
+
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image holds the image for the phppgadmin"
+
+RUN apk add --update \
+  lighttpd \
+  php5-fpm \
+  php5-common \
+  php5-iconv \ 
+  php5-json \
+  php5-gd \
+  php5-curl \
+  php5-xml \
+  php5-pgsql \
+  php5-imap \
+  php5-cgi \
+  fcgi \
+  php5-pdo \
+  php5-pdo_pgsql \
+  php5-soap \
+  php5-xmlrpc \
+  php5-posix \
+  php5-mcrypt \
+  php5-gettext \
+  php5-ldap \
+  php5-ctype \
+  php5-dom \
+  postgresql-client \
+  && rm -rf /var/cache/apk/* \
+  && adduser www-data -G www-data -H -s /bin/false -D \
+  && mkdir /run/lighttpd \
+  && chmod 777 /run/lighttpd
+
+ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+ADD index.php /var/www/localhost/htdocs
+
+ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/
+
+RUN mv /var/www/localhost/htdocs/phpPgAdmin-5.1 /var/www/localhost/htdocs/phppgadmin
+
+ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
+
+EXPOSE 80
+
+CMD ["/bin/ash"]
+

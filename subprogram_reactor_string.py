@@ -42,8 +42,10 @@ class MediaKrakenServerApp(Factory):
 
 
     def buildProtocol(self, addr):
-        return network_base.mediakraken_network_events(self.users, db_connection,\
-            self.genre_list)
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        return network_base.NetworkEvents(self.users, db_connection,\
+            self.genre_list, option_config_json)
 
 
 if __name__ == '__main__':

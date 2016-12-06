@@ -1,5 +1,0 @@
-psycopg2
-psutil
-twisted
-passwordmeter
-setuptools

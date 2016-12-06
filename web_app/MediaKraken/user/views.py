@@ -359,6 +359,7 @@ def user_tv_show_detail_page(guid):
         data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
+            #data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
             if 'runtime' in json_metadata['Meta']['tvmaze']:
                 data_runtime = json_metadata['Meta']['tvmaze']['runtime']
             else:
@@ -868,10 +869,10 @@ def user_movie_page(genre):
             match_status = False
         logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
             favorite_status, match_status)
-        if 'TMDB' in json_image['Images'] and 'Poster' in json_image['Images']['TMDB']\
-                and json_image['Images']['TMDB']['Poster'] is not None:
+        if 'tmdb' in json_image['Images'] and 'Poster' in json_image['Images']['tmdb']\
+                and json_image['Images']['tmdb']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],\
-                json_image['Images']['TMDB']['Poster'],\
+                json_image['Images']['tmdb']['Poster'],\
                 watched_status, sync_status, poo_status, favorite_status, match_status))
         else:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,\
@@ -932,21 +933,21 @@ def movie_detail(guid):
         json_metaid = data['mm_metadata_media_id']
         # vote count format
         data_vote_count = locale.format('%d',\
-            json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
+            json_metadata['Meta']['tmdb']['Meta']['vote_count'], True)
         # build gen list
         genres_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
-            genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
+        for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['genres'])):
+            genres_list += (json_metadata['Meta']['tmdb']['Meta']['genres'][ndx]['name'] + ', ')
         # build production list
         production_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
+        for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['production_companies'])):
             production_list\
-                += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name']\
+                += (json_metadata['Meta']['tmdb']['Meta']['production_companies'][ndx]['name']\
                 + ', ')
         # budget format
-        budget = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['budget'], True)
+        budget = locale.format('%d', json_metadata['Meta']['tmdb']['Meta']['budget'], True)
         # revenue format
-        revenue = locale.format('%d', json_metadata['Meta']['TMDB']['Meta']['revenue'], True)
+        revenue = locale.format('%d', json_metadata['Meta']['tmdb']['Meta']['revenue'], True)
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
             aspect_ratio = "NA"
@@ -1018,26 +1019,26 @@ def movie_detail(guid):
                     subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
         # poster image
         try:
-            if json_imagedata['Images']['TMDB']['Poster'] is not None:
-                data_poster_image = json_imagedata['Images']['TMDB']['Poster']
+            if json_imagedata['Images']['tmdb']['Poster'] is not None:
+                data_poster_image = json_imagedata['Images']['tmdb']['Poster']
             else:
                 data_poster_image = None
         except:
             data_poster_image = None
         # background image
         try:
-            if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-                data_background_image = json_imagedata['Images']['TMDB']['Backdrop']
+            if json_imagedata['Images']['tmdb']['Backdrop'] is not None:
+                data_background_image = json_imagedata['Images']['tmdb']['Backdrop']
             else:
                 data_background_image = None
         except:
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['TMDB'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['tmdb'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
-            for review_data in review_json[1]['TMDB']['results']:
+            for review_data in review_json[1]['tmdb']['results']:
                 review.append((review_data['author'], review_data['url'], review_data['content']))
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
@@ -1262,7 +1263,9 @@ def sync_edit(guid):
             'AudioChannels': request.form['target_audio_channels'],\
             'ACodec': request.form['target_audio_codec'],\
             'ASRate': request.form['target_sample_rate']},\
-            'Priority': request.form['target_priority'], 'Status': 'Scheduled', 'Progress': 0}
+            'Priority': request.form['target_priority'], \
+            'Status': 'Scheduled', \
+            'Progress': 0}
         g.db_connection.db_sync_insert(request.form['name'],\
             request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
@@ -1569,29 +1572,29 @@ def metadata_movie_detail(guid):
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
     data_vote_count = locale.format('%d',\
-        json_metadata['Meta']['TMDB']['Meta']['vote_count'], True)
+        json_metadata['Meta']['tmdb']['Meta']['vote_count'], True)
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['genres'])):
-        genres_list += (json_metadata['Meta']['TMDB']['Meta']['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['genres'])):
+        genres_list += (json_metadata['Meta']['tmdb']['Meta']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['TMDB']['Meta']['production_companies'])):
+    for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['production_companies'])):
         production_list\
-            += (json_metadata['Meta']['TMDB']['Meta']['production_companies'][ndx]['name'] + ', ')
+            += (json_metadata['Meta']['tmdb']['Meta']['production_companies'][ndx]['name'] + ', ')
     # poster image
     try:
-        if json_imagedata['Images']['TMDB']['Poster'] is not None:
+        if json_imagedata['Images']['tmdb']['Poster'] is not None:
             data_poster_image\
-                = json_imagedata['Images']['TMDB']['Poster']
+                = json_imagedata['Images']['tmdb']['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Images']['TMDB']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['TMDB']['Backdrop']
+        if json_imagedata['Images']['tmdb']['Backdrop'] is not None:
+            data_background_image = json_imagedata['Images']['tmdb']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1609,7 +1612,7 @@ def metadata_movie_detail(guid):
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
                            data_budget=locale.format('%d',\
-                               json_metadata['Meta']['TMDB']['Meta']['budget'], True)
+                               json_metadata['Meta']['tmdb']['Meta']['budget'], True)
                           )
 
 
@@ -2094,11 +2097,7 @@ def before_request():
     Executes before each request
     """
     g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open(config_handle.get('DB Connections', 'PostDBHost').strip(),\
-        config_handle.get('DB Connections', 'PostDBPort').strip(),\
-        config_handle.get('DB Connections', 'PostDBName').strip(),\
-        config_handle.get('DB Connections', 'PostDBUser').strip(),\
-        config_handle.get('DB Connections', 'PostDBPass').strip())
+    g.db_connection.db_open()
 
 
 @blueprint.teardown_request

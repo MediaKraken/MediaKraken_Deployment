@@ -41,30 +41,30 @@
                     <tr>
                         <div id="textbox">
                             <p class="alignleft">Title: {{data_name}}</p>
-                            <p class="alignright">Release Date: {{json_metadata['Meta']['TMDB']['Meta']['release_date']}}</p>
+                            <p class="alignright">Release Date: {{json_metadata['Meta']['tmdb']['Meta']['release_date']}}</p>
                         </div>
                         <div style="clear: both;"></div>
-                        {% if json_metadata['Meta']['TMDB']['Meta']['tagline'] and json_metadata['Meta']['TMDB']['Meta']['tagline'] != '-' %}
-                        <p>{{json_metadata['Meta']['TMDB']['Meta']['tagline']}}</p>
+                        {% if json_metadata['Meta']['tmdb']['Meta']['tagline'] and json_metadata['Meta']['tmdb']['Meta']['tagline'] != '-' %}
+                        <p>{{json_metadata['Meta']['tmdb']['Meta']['tagline']}}</p>
                         {% endif %}
-                        {% if json_metadata['Meta']['TMDB']['Meta']['original_title'] and json_metadata['Meta']['TMDB']['Meta']['original_title'] != data_name %}
-                        <p>Alternate Title: {{json_metadata['Meta']['TMDB']['Meta']['original_title']}}</p>
+                        {% if json_metadata['Meta']['tmdb']['Meta']['original_title'] and json_metadata['Meta']['tmdb']['Meta']['original_title'] != data_name %}
+                        <p>Alternate Title: {{json_metadata['Meta']['tmdb']['Meta']['original_title']}}</p>
                         {% endif %}
                         {% if data_genres %}
                         <p>Genres: {{data_genres}}</p>
                         {% endif %}
                         <div id="textbox">
-                            <p class="alignleft">User Rating Avg: {{json_metadata['Meta']['TMDB']['Meta']['vote_average']}} with {{json_metadata['Meta']['TMDB']['Meta']['vote_count']}} vote(s)</p>
-                            <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['Meta']['TMDB']['Meta']['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
+                            <p class="alignleft">User Rating Avg: {{json_metadata['Meta']['tmdb']['Meta']['vote_average']}} with {{json_metadata['Meta']['tmdb']['Meta']['vote_count']}} vote(s)</p>
+                            <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['Meta']['tmdb']['Meta']['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
                         </div>
                         <div style="clear: both;"></div>
                         {% if data_budget != "0" %}
                         <p>Budget: {{data_budget}}</p>
                         {% endif %}
-                        {% if json_metadata['Meta']['TMDB']['Meta']['homepage'] %}
-                        <p>Homepage: <a href = {{json_metadata['Meta']['TMDB']['Meta']['homepage']}}>{{json_metadata['Meta']['TMDB']['Meta']['homepage']}}</a></p>
+                        {% if json_metadata['Meta']['tmdb']['Meta']['homepage'] %}
+                        <p>Homepage: <a href = {{json_metadata['Meta']['tmdb']['Meta']['homepage']}}>{{json_metadata['Meta']['tmdb']['Meta']['homepage']}}</a></p>
                         {% endif %}
-                        <p>Overview: {{json_metadata['Meta']['TMDB']['Meta']['overview']}}</p>
+                        <p>Overview: {{json_metadata['Meta']['tmdb']['Meta']['overview']}}</p>
                         {% if data_production %}
                         <p>Production Companies: {{data_production}}</p>
                         {% endif %}

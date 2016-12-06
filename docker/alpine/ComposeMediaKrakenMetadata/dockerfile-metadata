@@ -1,0 +1,42 @@
+# Download base image
+FROM alpine:3.4 
+
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image downloads and maintains all metadata"
+
+# copy PIP requirements
+RUN mkdir /mediakraken
+ADD requirements.txt /mediakraken
+WORKDIR /mediakraken
+
+# Update repository and install packages
+RUN apk add --update \
+  cifs-utils \
+  nfs-utils \
+  postgresql-client \
+  gcc \
+  linux-headers \
+  musl-dev \
+  postgresql-dev \
+  python-dev \
+  py-pip \
+  libffi-dev \
+  python \
+  openrc \
+  && pip install pytest-runner \
+  && pip install -r requirements.txt \
+  && pip uninstall -y pytest_runner \
+  && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
+  && rm requirements.txt \
+  && apk add \
+  py-setuptools \
+  && rm -rf /var/cache/apk/* \
+  && rc-update add netmount \
+  && rc-update add rpcbind
+
+ADD wait-for-it-ash.sh /mediakraken
+# Copy the source files for the app
+ADD src /mediakraken
+
+CMD ["/bin/ash"]

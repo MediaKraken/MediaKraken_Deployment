@@ -72,6 +72,8 @@ def nfo_xml_file_tv(media_file_path):
     if os.path.isfile(nfo_file_check): # check for nfo
         logging.info('nfo tv file found: %s', nfo_file_check)
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+    else:
+        nfo_data = None
     return nfo_data, xml_data
 
 

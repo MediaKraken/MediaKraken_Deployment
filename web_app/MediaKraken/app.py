@@ -26,7 +26,7 @@ def create_app(config_object=ProdConfig):
     :param config_object: The configuration object to use.
     """
     app = Flask(__name__)
-    KVSessionExtension(RedisStore(redis.StrictRedis()), app)
+    KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

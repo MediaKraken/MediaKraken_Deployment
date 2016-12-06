@@ -1,0 +1,161 @@
+version: '2'
+# MediaKraken
+
+# Volumes are HOST directory and then CONTAINER directory
+
+services:
+  # Main app server which controls the show and transcodes
+  appserver:
+    image: mediakraken/mkserver:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkserver
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server.py
+    ports:
+      - "8903:5000"
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-network
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+
+  # slave app server which transcodes
+  appslave:
+    image: mediakraken/mkslave:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkslave
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_slave.py
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+
+  # Postgresql server
+  database:
+    image: mediakraken/mkdatabase:latest
+    environment:
+      - POSTGRES_DB=metamandb
+      - POSTGRES_USER=metamanpg
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkdatabase
+    volumes:
+      - /var/lib/postgresql:/var/lib/postgresql
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+
+  # scan for new hardware devices
+  devicescan:
+    image: mediakraken/mkdevicescan:latest
+    container_name: mkdevicescan
+    entrypoint: python main_hardware_discover.py
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+      - /var/opt/mediakraken/devices:/mediakraken/devices
+    network_mode: host
+    restart: never
+
+  # Runs the webapi for 3rd party clients
+#  webapi:
+#    image: mediakraken/mkwebapi:latest
+#    environment:
+#      - POSTGRES_PASSWORD=${DBPASS}
+#    container_name: mkwebapi
+#    depends_on:
+#      - database
+#    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+#    ports:
+#      - "8901:8080"
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#    networks:
+#      - mediakraken-dbnetwork
+#    restart: unless-stopped
+
+  # runs the server to fetch/process all metadata
+  metadata:
+    image: mediakraken/mkmetadata:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkmetadata
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+
+  # runs the nginx proxy service
+  nginx:
+    image: mediakraken/mknginx:latest
+    container_name: mknginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+
+  # runs the redis service for flask
+  redis:
+    image: mediakraken/mkredis:latest
+    container_name: mkredis
+    ports:
+      - "6379:6379"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+
+  # Runs the web service for the main server application
+  webserver:
+    image: mediakraken/mkwebserver:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkwebapp
+    depends_on:
+      - database
+      - redis
+      - nginx
+    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    ports:
+      - "8900:8080"
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken-network
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+    # to allow mount nfs/cifs
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+
+# Docker private networks
+networks:
+  # Twisted communications network
+  mediakraken-network:
+    driver: bridge
+  # Database communications network
+  mediakraken-dbnetwork:
+    driver: bridge

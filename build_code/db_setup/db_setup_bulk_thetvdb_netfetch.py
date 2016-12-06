@@ -34,7 +34,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 # verify thetvdb key exists
-if Config.get('API', 'theTVdb').strip() != 'None':
+if Config.get('API', 'thetvdb').strip() != 'None':
     thetvdb_api_connection = common_metadata_thetvdb.CommonMetadataTheTVDB()
 else:
     thetvdb_api_connection = None

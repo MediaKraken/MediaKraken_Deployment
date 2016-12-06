@@ -108,6 +108,8 @@ def metadata_search(thread_db, provider_name, download_data):
                 update_provider = 'thetvdb'
             else:
                 set_fetch = True
+    elif provider_name == 'omdb':
+        lookup_halt = True
 
     # if search is being updated to new provider
     if update_provider is not None:
@@ -129,13 +131,17 @@ def metadata_search(thread_db, provider_name, download_data):
             # found in database so remove from download que
             thread_db.db_download_delete(download_data['mdq_id'])
         else:
-            metadata_uuid = download_data['MetaNewID']
+            metadata_uuid = download_data['mdq_download_json']['MetaNewID']
+            logging.info('meta: %s', metadata_uuid)
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],\
                                          download_data['mdq_download_json']['MetaNewID'])
+            logging.info('after media id')
             download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
+            logging.info('after json update')
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                 download_data['mdq_id'])
+            logging.info('after update')
         return # no need to continue with checks
     # uuid found on local db
     if metadata_uuid is not None:
@@ -159,6 +165,9 @@ def metadata_fetch(thread_db, provider_name, download_data):
                 download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
                 thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
                     download_data['mdq_id'])
+            else:
+                # TODO this is kinda bad if you have a valid id
+                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
         else:
             metadata_movie.movie_fetch_save_tmdb(thread_db,\
                 download_data['mdq_download_json']['ProviderMetaID'],\
@@ -168,6 +177,10 @@ def metadata_fetch(thread_db, provider_name, download_data):
                 download_data['mdq_id'])
     elif provider_name == 'tvmaze':
         metadata_tv.tv_fetch_save_tvmaze(thread_db,\
+            download_data['mdq_download_json']['ProviderMetaID'])
+        thread_db.db_download_delete(download_data['mdq_id'])
+    elif provider_name == 'thetvdb':
+        metadata_tv.tv_fetch_save_tvdb(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
 

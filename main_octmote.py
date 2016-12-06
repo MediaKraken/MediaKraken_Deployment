@@ -43,7 +43,6 @@ from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
 install_twisted_reactor()
 from twisted.internet import ssl, reactor, protocol
-__version__ = '0.1.6'
 
 
 class EchoClient(protocol.Protocol):

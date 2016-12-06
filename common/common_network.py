@@ -23,11 +23,9 @@ import re
 #import time
 from threading import Thread
 import urllib2
+import ssl
 import socket
 import sys
-from plyer import email
-import psutil
-import ipgetter
 from . import wol
 
 
@@ -35,8 +33,9 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     Download image file from specified url to save in specific directory
     """
+    logging.info('dl %s url %s' % (url, directory))
     try:
-        imagefile = urllib2.urlopen(url)
+        imagefile = urllib2.urlopen(url, context=ssl._create_unverified_context())
         if directory is not None:
             localfile = open(directory, 'wb')
             localfile.write(imagefile.read())
@@ -56,15 +55,6 @@ def mk_network_wol(mac_address):
     wol.send_magic_packet(mac_address)
 
 
-def mk_network_send_email(email_receipient, email_subject, email_body):
-    """
-    Send email
-    """
-    # TODO um, popped up Outlook window in windows
-    email.send(recipient=email_receipient, subject=email_subject, text=email_body,\
-        create_chooser=True)
-
-
 def mk_network_get_mac():
     """
     Get MAC address
@@ -79,6 +69,7 @@ def mk_network_get_outside_ip():
     """
     #whatismyip = 'http://checkip.dyndns.org/'
     #return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
+    import ipgetter
     return ipgetter.myip()
 
 
@@ -141,6 +132,7 @@ def mk_network_io_counter(show_nic=False):
     """
     Get network io
     """
+    import psutil
     return psutil.net_io_counters(pernic=show_nic)
 
 
@@ -148,6 +140,7 @@ def mk_network_connections():
     """
     Show network connections
     """
+    import psutil
     return psutil.net_connections()
 
 
@@ -155,6 +148,7 @@ def mk_network_ip_addr():
     """
     Show ip addys
     """
+    import psutil
     return psutil.net_if_addrs()
 
 
@@ -162,4 +156,5 @@ def mk_network_stats():
     """
     Show netowrk stats
     """
+    import psutil
     return psutil.net_if_stats()

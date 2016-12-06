@@ -24,18 +24,43 @@ docker-compose logs
 
 
 testing
+
+docker exec -it [container-id] /bin/ash
+
+
 docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
-docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver440 alpine_appserver
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver544450 alpine_appserver
+
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_metadata3323 alpine_metadata
 
 
 docker run --network=alpine_mediakraken-dbnetwork -p 8900:8080 --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_web50 alpine_webserver
 # after attach
 uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
 
+
+docker run --net=host -itd --name=alpine_devicescan449 alpine_devicescan
+
+
+docker run --network=alpine_mediakraken-dbnetwork -p 12345:80 -itd --name=alpine_phppgadmin494 alpine_phppgadmin
+
+
+docker run -t -i alpine:latest /bin/ash
+
+
 # can ping mkdatabase then......
 
 # rename
 docker tag server:latest myname/server:latest
+
+docker push [OPTIONS] NAME[:TAG]
+
+
+docker tag alpine_database:latest mediakraken/mkdatabase:latest
+docker push mediakraken/mkdatabase:latest
+
+docker push mediakraken/mkbaseffmpeg:latest
+
 
 docker tag alpine_nginx:latest mediakraken/mknginx:latest
 docker tag alpine_redis:latest mediakraken/mkredis:latest
@@ -49,18 +74,20 @@ docker-compose build xxxxx - xxxxx optional for image to build
 BaseFFMPEG
 	the base image for ffmpeg deps
 	docker build -t mediakraken/mkbaseffmpeg .
-Database - Builds and runs
+Database
 	Hosts the postgresql database
+Devicescan
+	Runs on HOST network to scan for devices
 Metadata
 	Host the metadata fetcher
 Nginx
 	Host the ssl, static data webserver
+PHPPGAdmin
+	hosts the phppgadmin for testing
 Server
 	Kicks off the other main programs and ffmpeg
 Slave
 	Slave image for server/ffmpeg
-Source
-	Hosts the app source code for ease of testing and file stack host
 WebAPI
 	Host the API webapp for things like Kodi, etc
 WebBase
@@ -68,5 +95,4 @@ WebBase
 	docker build -t mediakraken/mkwebbase .
 WebServer
 	Hosts the uswgi webapp for the server interface
-
 

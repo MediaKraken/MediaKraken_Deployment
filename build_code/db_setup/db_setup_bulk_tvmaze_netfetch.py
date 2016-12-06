@@ -89,7 +89,7 @@ if sql3_cursor.fetchone()[0] > 0:
                         imdb_id = str(show_full_json['externals']['imdb'])
                     except:
                         imdb_id = None
-                    series_id_json = json.dumps({'tvmaze':str(tvmaze_id), 'TVRage':tvrage_id,\
+                    series_id_json = json.dumps({'tvmaze':str(tvmaze_id), 'tvrage':tvrage_id,\
                         'imdb':imdb_id, 'thetvdb':thetvdb_id})
                     image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {},\
                         "Redo": True}}}

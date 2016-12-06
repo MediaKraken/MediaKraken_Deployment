@@ -1,0 +1,24 @@
+mounted instantly on mkprod
+mount -t nfs4 10.1.0.10:/ /home/spoot/nfsmount
+fs works fine
+
+# below for prod
+(rw,fsid=0,async,no_subtree_check,no_auth_nlm,insecure,no_root_squash)
+same no dir
+
+*********************************************************
+
+
+
+
+
+still fails asking if root
+docker exec -it --privileged=true 62e /bin/ash
+
+dmesg
+# output from above
+[333377.534255] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[ash:20533] uid/euid:0/0 gid/egid:0/0
+[333377.537597] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /sbin/mount.nfs[mount.nfs:20550] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0
+[333377.647108] grsec: From 10.0.0.114: use of CAP_SYS_ADMIN in chroot denied for /sbin/mount.nfs[mount.nfs:20550] uid/euid:0/0 gid/egid:0/0, parent /bin/busybox[mount:20549] uid/euid:0/0 gid/egid:0/0
+
+/mediakraken #

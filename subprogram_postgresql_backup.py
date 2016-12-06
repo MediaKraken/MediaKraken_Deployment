@@ -45,10 +45,10 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', N
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
-os.system('PGPASSWORD=' + config_handle.get('DB Connections', 'PostDBPass')\
+os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD']\
     + ' pg_dump -U '\
-    + config_handle.get('DB Connections', 'PostDBUser') + ' '\
-    + config_handle.get('DB Connections', 'PostDBName') + ' -F c -f '\
+    + 'metamanpg' + ' '\
+    + 'metamandb' + ' -F c -f '\
     + os.path.join(option_config_json['MediaKrakenServer']['BackupLocal'], backup_file_name))
 
 

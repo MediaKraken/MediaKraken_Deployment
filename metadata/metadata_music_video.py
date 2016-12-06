@@ -28,7 +28,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # verify imvdb key exists
-if option_config_json['API']['IMVDb'] is not None:
+if option_config_json['API']['imvdb'] is not None:
     IMVDB_CONNECTION\
         = common_metadata_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
 else:

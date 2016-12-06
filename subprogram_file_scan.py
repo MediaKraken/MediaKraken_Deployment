@@ -28,7 +28,6 @@ locale.setlocale(locale.LC_ALL, '')
 from concurrent import futures
 from common import common_config_ini
 from common import common_network_cifs
-from common import common_ffmpeg
 from common import common_file
 from common import common_file_extentions
 from common import common_logging
@@ -141,9 +140,11 @@ def worker(audit_directory):
                             else:
                                 new_class_type_uuid = class_text_dict['TV Theme']
                     elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                        if media_class_text == 'Movie':
+                        if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Extras']
-                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode'\
+                        elif thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Show' \
+                                or thread_db.db_media_class_by_uuid(\
+                                media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Extras']
                     elif file_name.find('/backdrops/') != -1\
@@ -159,7 +160,7 @@ def worker(audit_directory):
                     if file_name[:1] == "\\":
                         file_name\
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    media_ffprobe_json = None # common_ffmpeg.com_ffmpeg_media_attr(file_name)
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
                     'ChapterScan': True})

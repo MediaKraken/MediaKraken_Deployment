@@ -45,6 +45,7 @@ db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Tri
     'ServerTriggerStart', None, None, 'System')
 
 
+trigger_pid_list = []
 while True:
     # check for new "triggers"
     for row_data in db_connection.db_triggers_read():
@@ -56,6 +57,7 @@ while True:
         logging.info("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
         db_connection.db_triggers_delete(row_data[0])
+        trigger_pid_list.append(proc_trigger.pid)
     time.sleep(1)
 
 

@@ -5,6 +5,11 @@
     <br>
     <form id="libraryaddeditForm" class="form form-libraryedit" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
+        <select name="Lib_Share", id="lib_share">
+            {% for share_data in data_share %}
+            <option value={{share_data[1]}}>{{share_data[0]}}</option>
+            {% endfor %}
+        </select>
         <div class="form-group">
             {{form.library_path.label}}
             {{form.library_path(placeholder="Library Path", class_="form-control")}}
