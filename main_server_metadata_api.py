@@ -358,6 +358,7 @@ def worker(content_providers):
                 metadata_uuid = None
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
+                logging.info('worker Z filename: %s', file_name)
                 if 'year' in file_name:
                     if file_name['title'] == metadata_last_title\
                             and file_name['year'] == metadata_last_year:
