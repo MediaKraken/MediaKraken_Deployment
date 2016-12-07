@@ -389,7 +389,6 @@ def worker(content_providers):
                         metadata_last_year = None
                 else: # invalid guessit guess so set to ZZ to skip for now
                     thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
-
         thread_db.db_commit()
         time.sleep(1)
 #        break # TODO for now testing.......
