@@ -63,6 +63,14 @@ class CommonMetadataTMDB(object):
             (tmdb_id, self.API_KEY))
 
 
+    def com_tmdb_metadata_id_max(self):
+        """
+        Grab high metadata id
+        """
+        return common_network.mk_network_fetch_from_url('https://api.themoviedb.org/3/movie/latest'\
+            '?api_key=%s' % self.API_KEY)['id']
+
+
     def com_tmdb_meta_by_id(self, tmdb_id):
         """
         # movie info by tmdb
