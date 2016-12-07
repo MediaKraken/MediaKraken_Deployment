@@ -9,6 +9,12 @@ cp -R /home/spoot/MediaKraken_Deployment/metadata /home/spoot/MediaKraken_Deploy
 cp /home/spoot/MediaKraken_Deployment/main_server_metadata_api.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/build_image_directory.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 
+# metdata builder
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadataPreload/src/.
+cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadataPreload/src/.
+cp -R /home/spoot/MediaKraken_Deployment/metadata /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadataPreload/src/.
+cp /home/spoot/MediaKraken_Deployment/bulk_themoviedb_netfetch.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadataPreload/src/.
+
 # server
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
@@ -34,3 +40,4 @@ cp -R /home/spoot/MediaKraken_Deployment/web_app /home/spoot/MediaKraken_Deploym
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/web_app /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
+
