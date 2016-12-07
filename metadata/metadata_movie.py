@@ -112,9 +112,6 @@ def movie_fetch_tmdb_imdb(imdb_id):
     result_json = TMDB_CONNECTION.com_tmdb_meta_by_imdb_id(imdb_id)
     logging.info("uhimdb: %s", result_json)
     if result_json is not None:
-        # find call for tmdb returns the other sections
-        # {u'tv_season_results': [], u'tv_episode_results': [], u'person_results': [],\
-        # u'tv_results': [], u'movie_results': []}
         try:
             return result_json['movie_results'][0]['id']
         except:
