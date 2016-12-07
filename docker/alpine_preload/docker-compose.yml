@@ -1,0 +1,17 @@
+version: '2'
+# MediaKraken preloader
+
+# Volumes are HOST directory and then CONTAINER directory
+
+services:
+  # runs the server to fetch/process all metadata
+  metadatapreload:
+    build:
+      context: ./ComposeMediaKrakenMetadataPreload
+      dockerfile: dockerfile-metadata-preload
+    environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkmetadatapreload
+    entrypoint: /bin/ash
+    restart: never
