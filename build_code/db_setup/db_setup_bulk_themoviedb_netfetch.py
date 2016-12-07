@@ -88,7 +88,7 @@ Config.read("../../MediaKraken_Server/MediaKraken.ini")
 # verify themovietb key exists
 if Config.get('API', 'themoviedb').strip() != 'None':
     # setup the thmdb class
-    TMDB_API_CONNECTION = common_metadata_tmdb.com_metadata_tmdb_API()
+    TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB()
     print("Using key %s", Config.get('API', 'themoviedb').strip())
 else:
     TMDB_API_CONNECTION = None
