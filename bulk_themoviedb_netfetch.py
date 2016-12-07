@@ -52,5 +52,9 @@ if TMDB_API_CONNECTION is not None:
 db_connection.db_commit()
 
 
+# vaccuum
+db_connection.db_pgsql_vacuum_table('mm_download_que')
+
+
 # close DB
 db_connection.db_close()
