@@ -45,6 +45,7 @@ def mk_network_fetch_from_url(url, directory=None):
         logging.error('you got an error with the code %s', err_code)
         return None
     if directory is None:
+        logging.info('network dir read')
         return datafile.read()
 
 
