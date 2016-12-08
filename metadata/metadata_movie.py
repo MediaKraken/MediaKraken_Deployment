@@ -99,7 +99,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             if 'crew' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('tmdb', \
                                                               result_json['credits']['crew'])
-    else:
+    else: # is this is None......404, no record by this id
         metadata_uuid = None
     logging.info('meta movie save fetch uuid %s', metadata_uuid)
     return metadata_uuid
