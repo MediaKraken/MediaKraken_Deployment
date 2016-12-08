@@ -82,7 +82,8 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     logging.info("meta movie tmdb save fetch: %s", tmdb_id)
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
-    logging.info("meta movie save fetch result: %s", result_json)
+    logging.info("meta movie code: %s", result_json.status_code)
+    logging.info("meta movie save fetch result: %s", result_json.json())
     if result_json is not None:
         series_id_json, result_json, image_json\
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json)

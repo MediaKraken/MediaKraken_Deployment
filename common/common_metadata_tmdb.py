@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import os
 import json
+import requests
 from . import common_metadata
 from . import common_network
 import tmdbsimple as tmdb
@@ -58,7 +59,10 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata by id to reduce calls
         """
-        return common_network.mk_network_fetch_from_url('https://api.themoviedb.org/3/movie/%s'\
+#        return common_network.mk_network_fetch_from_url('https://api.themoviedb.org/3/movie/%s'\
+#            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' % \
+#            (tmdb_id, self.API_KEY))
+        return requests.get('https://api.themoviedb.org/3/movie/%s'\
             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' % \
             (tmdb_id, self.API_KEY))
 
