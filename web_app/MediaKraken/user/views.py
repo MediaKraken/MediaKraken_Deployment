@@ -554,13 +554,13 @@ def user_tv_episode_detail_page(guid, season, episode):
     data_episode_detail = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
     # poster image
     try:
-        data_poster_image = data_metadata[3]
+        data_poster_image = data_episode_detail[3]
     except:
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if data_episode_detail['LocalImages']['Backdrop'] is not None:
+            data_background_image = data_episode_detail['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1897,8 +1897,8 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if data_metadata['LocalImages']['Backdrop'] is not None:
+            data_background_image = data_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
