@@ -110,7 +110,7 @@ class CommonTheTVDB(object):
 
         # store the season data
     # atm not using season data anyways
-    #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'TMDB':'', 'anidb':'',\
+    #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'',\
 # 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #    db_meta_Save_Season(self,season_json):
     #    sql_params = str(uuid.uuid4()),season_json
@@ -118,7 +118,7 @@ class CommonTheTVDB(object):
 # mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
-        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'tmdb':'', 'anidb':'', 'rt':'',\
+        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'', 'rt':'',\
             'omdb':'', 'fanart':'', 'screengrabber':'', 'zap2it':''})
     #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json

@@ -129,7 +129,7 @@ if TMDB_API_CONNECTION is not None:
                     = TMDB_API_CONNECTION.com_tmdb_metadata_info_build(result_json)
                 cast_json = TMDB_API_CONNECTION.com_tmdb_metadata_cast_by_id(tmdb_to_fetch)
                 # set and insert the record
-                meta_json = ({'Meta': {'tmdb': {'Meta': result_json, 'Cast': cast_json['cast'],\
+                meta_json = ({'Meta': {'themoviedb': {'Meta': result_json, 'Cast': cast_json['cast'],\
                     'Crew': cast_json['crew']}}})
                 sql_params = str(uuid.uuid4()), series_id_json, result_json['title'],\
                     json.dumps(meta_json), json.dumps(image_json)
@@ -139,16 +139,16 @@ if TMDB_API_CONNECTION is not None:
                     ' mm_metadata_localimage_json) values (%s,%s,%s,%s,%s)', sql_params)
                 # store person info
                 if 'cast' in cast_json:
-                    db.db_meta_person_insert_cast_crew('tmdb', cast_json['cast'])
+                    db.db_meta_person_insert_cast_crew('themoviedb', cast_json['cast'])
                 if 'crew' in cast_json:
-                    db.db_meta_person_insert_cast_crew('tmdb', cast_json['crew'])
+                    db.db_meta_person_insert_cast_crew('themoviedb', cast_json['crew'])
                 # grab reviews
                 review_json = TMDB_API_CONNECTION.com_tmdb_metadata_review_by_id(tmdb_to_fetch)
                 if review_json['total_results'] > 0:
-                    review_json_id = ({'tmdb': str(review_json['id'])})
+                    review_json_id = ({'themoviedb': str(review_json['id'])})
                     print("rewview: %s", review_json_id)
                     sql_params = str(uuid.uuid4()), json.dumps(review_json_id),\
-                        json.dumps({'tmdb': review_json})
+                        json.dumps({'themoviedb': review_json})
                     sql3_cursor.execute('insert into mm_review (mm_review_guid,'\
                         ' mm_review_metadata_id, mm_review_json) values (%s,%s,%s)', sql_params)
                 sql3_conn.commit()

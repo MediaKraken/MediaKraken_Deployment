@@ -106,7 +106,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
                 person_name = person_data['person']['name']
-            elif meta_type == "tmdb":
+            elif meta_type == "themoviedb":
                 person_id = person_data['id']
                 person_name = person_data['name']
             elif meta_type == "thetvdb":
@@ -119,14 +119,18 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
                     logging.info("skippy")
                 else:
+                    # insert download record for bio/info
+                    self.db_download_insert(meta_type, json.dumps({"Status": "FetchPersonBio", \
+                        "ProviderMetaID": str(person_id)}))
+                    # insert person record
                     self.db_metdata_person_insert(person_name,\
                         json.dumps({meta_type: str(person_id)}), None,\
-                        json.dumps({'ImageFetch': True}))
+                        json.dumps({'ImageFetch': None}))
     except:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
             person_name = person_json['person']['name']
-        elif meta_type == "tmdb":
+        elif meta_type == "themoviedb":
             person_id = person_json['id']
             person_name = person_json['name']
         elif meta_type == "thetvdb":
@@ -139,9 +143,10 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 logging.info("skippy")
             else:
+                # insert person record
                 self.db_metdata_person_insert(person_name,\
                     json.dumps({meta_type: str(person_id)}), None,\
-                    json.dumps({'ImageFetch': True}))
+                    json.dumps({'ImageFetch': None}))
 
 
 def db_meta_person_as_seen_in(self, person_guid):
@@ -152,7 +157,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     if row_data is None: # exit on not found person
         return None
     logging.info("row_data: %s", row_data[1])
-    if row_data['mmp_person_media_id']['Host'] == 'tmdb':
+    if row_data['mmp_person_media_id']['Host'] == 'themoviedb':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
             'mm_metadata_localimage_json->\'Images\'->\'tmdb\'->\'Poster\''\

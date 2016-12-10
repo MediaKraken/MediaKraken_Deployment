@@ -54,6 +54,9 @@ def metadata_process(thread_db, provider_name, download_data):
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
         logging.info('%s fetchcollection', provider_name)
         metadata_collection(thread_db, provider_name, download_data)
+    elif download_data['mdq_download_json']['Status'] == "FetchPersonBio":
+        logging.info('%s fetch person bio', provider_name)
+        metadata_person(thread_db, provider_name, download_data)
 
 
 def metadata_search(thread_db, provider_name, download_data):

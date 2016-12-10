@@ -229,9 +229,9 @@ class CommonMetadataTMDB(object):
                     + file_path)
             backdrop_file_path = file_path
         # its a number so make it a string just in case
-        series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'tmdb':str(result_json['id'])})
+        series_id_json = json.dumps({'imdb':result_json['imdb_id'], 'themoviedb':str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'tmdb':{'Backdrop': backdrop_file_path,\
+        image_json = ({'Images': {'themoviedb':{'Backdrop': backdrop_file_path,\
             'Poster': poster_file_path}}})
    #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

@@ -88,17 +88,17 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id_json, result_json, image_json\
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
         # set and insert the record
-        meta_json = ({'Meta': {'tmdb': {'Meta': result_json}}})
+        meta_json = ({'Meta': {'themoviedb': {'Meta': result_json}}})
         logging.info("series: %s", series_id_json)
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
         if 'credits' in result_json: # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('tmdb', \
+                db_connection.db_meta_person_insert_cast_crew('themoviedb', \
                                                               result_json['credits']['cast'])
             if 'crew' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('tmdb', \
+                db_connection.db_meta_person_insert_cast_crew('themoviedb', \
                                                               result_json['credits']['crew'])
     else: # is this is None......404, no record by this id TODO handle 404's better
         metadata_uuid = None
@@ -128,9 +128,9 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     cast_json = TMDB_CONNECTION.com_tmdb_meta_cast_by_id(tmdb_id)
     if cast_json is not None: # cast/crew doesn't exist on all media
         if 'cast' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew('tmdb', cast_json['cast'])
+            db_connection.db_meta_person_insert_cast_crew('themoviedb', cast_json['cast'])
         if 'crew' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew('tmdb', cast_json['crew'])
+            db_connection.db_meta_person_insert_cast_crew('themoviedb', cast_json['crew'])
         # update the metadata record with the cast info
         db_connection.db_meta_movie_update_castcrew(cast_json, metadata_id)
 
@@ -142,10 +142,10 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     review_json = TMDB_CONNECTION.com_tmdb_meta_review_by_id(tmdb_id)
     # review record doesn't exist on all media
     if review_json is not None and review_json['total_results'] > 0:
-        review_json_id = ({'tmdb': str(review_json['id'])})
+        review_json_id = ({'themoviedb': str(review_json['id'])})
         logging.info("review: %s", review_json_id)
         db_connection.db_review_insert(json.dumps(review_json_id),\
-            json.dumps({'tmdb': review_json}))
+            json.dumps({'themoviedb': review_json}))
 
 
 def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
@@ -163,13 +163,13 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         # poster path
         if download_data['Poster'] is not None:
             image_poster_path = common_metadata.com_meta_image_path(download_data['Name'],\
-                'poster', 'tmdb', download_data['Poster'])
+                'poster', 'themoviedb', download_data['Poster'])
         else:
             image_poster_path = None
         # backdrop path
         if download_data['Backdrop'] is not None:
             image_backdrop_path = common_metadata.com_meta_image_path(download_data['Name'],\
-                'backdrop', 'tmdb', download_data['Backdrop'])
+                'backdrop', 'themoviedb', download_data['Backdrop'])
         else:
             image_backdrop_path = None
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}

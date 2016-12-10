@@ -81,7 +81,7 @@ class TestDatabaseMetadataPeople(object):
 
 
     @pytest.mark.parametrize(("host_type", "guid", "expected_result"), [
-        ('TMDB', 169, 0), # TODO set back to 1 with real id
+        ('themoviedb', 169, 0), # TODO set back to 1 with real id
         ('fake', 1000, 0)])
     def test_db_meta_person_id_count(self, host_type, guid, expected_result):
         """

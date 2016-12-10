@@ -65,8 +65,8 @@ def db_known_remote_media_count(self):
 #    metadata_guid = None
 #    for row_data in link_records:
 #        if row_data[1] == 'Movie':
-#            if 'TMDB' in row_data[3]:
-#                metadata_guid = db_meta_guid_by_tmdb(row_data[3]['TMDB'])
+#            if 'themoviedb' in row_data[3]:
+#                metadata_guid = db_meta_guid_by_tmdb(row_data[3]['themoviedb'])
 #            if metadata_guid is None and 'imdb' in row_data[3]:
 #                metadata_guid = db_meta_guid_by_imdb(row_data[3]['imdb'])
 #            if metadata_guid is None and 'thetvdb' in row_data[3]:
