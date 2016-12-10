@@ -59,9 +59,6 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata by id to reduce calls
         """
-#        return common_network.mk_network_fetch_from_url('https://api.themoviedb.org/3/movie/%s'\
-#            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' % \
-#            (tmdb_id, self.API_KEY))
         return requests.get('https://api.themoviedb.org/3/movie/%s'\
             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' % \
             (tmdb_id, self.API_KEY))
