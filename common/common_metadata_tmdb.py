@@ -64,6 +64,15 @@ class CommonMetadataTMDB(object):
             (tmdb_id, self.API_KEY))
 
 
+    def com_tmdb_metadata_bio_by_id(self, tmdb_id):
+        """
+        Fetch all metadata bio by id to reduce calls
+        """
+        return requests.get('https://api.themoviedb.org/3/person/%s'\
+            '?api_key=%s&append_to_response=combined_credits,external_ids,images' % \
+            (tmdb_id, self.API_KEY))
+
+
     def com_tmdb_metadata_id_max(self):
         """
         Grab high metadata id
