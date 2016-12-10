@@ -143,6 +143,9 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 logging.info("skippy")
             else:
+                # insert download record for bio/info
+                self.db_download_insert(meta_type, json.dumps({"Status": "FetchPersonBio", \
+                    "ProviderMetaID": str(person_id)}))
                 # insert person record
                 self.db_metdata_person_insert(person_name,\
                     json.dumps({meta_type: str(person_id)}), None,\
