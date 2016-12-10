@@ -103,7 +103,6 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     try:
         for person_data in person_json:
             #logging.info("person data: %s", person_data)
-    #        person_data = json.dumps(person_data)
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
                 person_name = person_data['person']['name']
@@ -111,7 +110,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_id = person_data['id']
                 person_name = person_data['name']
             elif meta_type == "thetvdb":
-                person_id = int(person_data['id'])
+                person_id = person_data['id']
                 person_name = person_data['Name']
             else:
                 person_id = None
@@ -121,8 +120,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     logging.info("skippy")
                 else:
                     self.db_metdata_person_insert(person_name,\
-                        json.dumps({'Host': meta_type, 'id': person_id}), None,\
-                        json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
+                        json.dumps({meta_type: str(person_id)}), None,\
+                        json.dumps({'ImageFetch': True}))
     except:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
@@ -131,7 +130,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_id = person_json['id']
             person_name = person_json['name']
         elif meta_type == "thetvdb":
-            person_id = int(person_json['id'])
+            person_id = person_json['id']
             person_name = person_json['Name']
         else:
             person_id = None
@@ -141,8 +140,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 logging.info("skippy")
             else:
                 self.db_metdata_person_insert(person_name,\
-                    json.dumps({'Host': meta_type, 'id': person_id}), None,\
-                    json.dumps({'ImageFetch': True})) #, 'Prof': person_data['profile_path']}))
+                    json.dumps({meta_type: str(person_id)}), None,\
+                    json.dumps({'ImageFetch': True}))
 
 
 def db_meta_person_as_seen_in(self, person_guid):
