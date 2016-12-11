@@ -51,9 +51,9 @@ if sql3_cursor.fetchone()[0] == 0:
         'mm_tv_schedule,'\
         'mm_tv_schedule_program,'\
         'mm_tv_stations,'\
+        'mm_user,'\
         'mm_user_activity,'\
         'mm_tuner')
-    sql3_cursor.execute("delete from mm_user where mm_user_name != 'admin'")
     sql3_conn.commit()
     # create dump file
     proc = subprocess.Popen(['pg_dump', '-Fc', 'metamandb', '>',\
