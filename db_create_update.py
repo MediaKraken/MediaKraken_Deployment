@@ -474,11 +474,11 @@ if db_table_index_check('mm_metadata_review_idx_metadata_uuid') is None:
 
 
 # add table to store cd discid's
-sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_discid (mm_discid_guid uuid'\
-    ' CONSTRAINT mm_discid_guid_pk PRIMARY KEY, mm_discid_discid text,'\
-    ' mm_discid_media_info jsonb)')
-if db_table_index_check('mm_discid_idx_discid') is None:
-    sql3_cursor.execute('CREATE INDEX mm_discid_idx_discid ON mm_discid(mm_discid_discid)')
+#sql3_cursor.execute('CREATE TABLE IF NOT EXISTS mm_discid (mm_discid_guid uuid'\
+#    ' CONSTRAINT mm_discid_guid_pk PRIMARY KEY, mm_discid_discid text,'\
+#    ' mm_discid_media_info jsonb)')
+#if db_table_index_check('mm_discid_idx_discid') is None:
+#    sql3_cursor.execute('CREATE INDEX mm_discid_idx_discid ON mm_discid(mm_discid_discid)')
 
 
 # create table for metadata collections
