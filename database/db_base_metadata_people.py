@@ -124,8 +124,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                         "ProviderMetaID": str(person_id)}))
                     # insert person record
                     self.db_metdata_person_insert(person_name,\
-                        json.dumps({meta_type: str(person_id)}), None,\
-                        json.dumps({'ImageFetch': None}))
+                        json.dumps({meta_type: str(person_id)}), None, None)
     except:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
@@ -148,8 +147,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     "ProviderMetaID": str(person_id)}))
                 # insert person record
                 self.db_metdata_person_insert(person_name,\
-                    json.dumps({meta_type: str(person_id)}), None,\
-                    json.dumps({'ImageFetch': None}))
+                    json.dumps({meta_type: str(person_id)}), None, None)
 
 
 def db_meta_person_as_seen_in(self, person_guid):
