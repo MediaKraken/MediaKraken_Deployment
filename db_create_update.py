@@ -508,26 +508,26 @@ base_cron = [
     ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
     # media/metadata subprograms
     ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
-    ('Station Logo Fetch', 'Grab new logos from TheLogoDB', './subprogram_logo_download.py'),
+#    ('Station Logo Fetch', 'Grab new logos from TheLogoDB', './subprogram_logo_download.py'),
     ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
     ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
     ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
-    ('TheTVDB Images', 'Grab missing TheTVDB images', './subprogram_thetvdb_images.py'),
+#    ('TheTVDB Images', 'Grab missing TheTVDB images', './subprogram_thetvdb_images.py'),
     ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_thetvdb_updates.py'),
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_tmdb_updates.py'),
-    ('TVmaze Images', 'Grab missing TVmaze images', './subprogram_tvmaze_images.py'),
+#    ('TVmaze Images', 'Grab missing TVmaze images', './subprogram_tvmaze_images.py'),
     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_update_create_collections.py'),
     # normal subprograms
-    ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
+#    ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
     ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
     ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
     ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
-    ('Tuner', 'Scan for tuner device(s)', './subprogram_tuner_discover.py'),
-    ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
+#    ('Tuner', 'Scan for tuner device(s)', './subprogram_tuner_discover.py'),
+#    ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
     ]
 # create base cron entries
 sql3_cursor.execute('select count(*) from mm_cron')
