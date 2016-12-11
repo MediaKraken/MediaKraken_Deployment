@@ -613,9 +613,9 @@ if db_table_index_check('mm_user_group_idx_name') is None:
 sql3_cursor.execute('select count(*) from mm_user_group')
 if sql3_cursor.fetchone()[0] == 0:
     base_group = [('Administrator', 'Server administrator',\
-        json.dumps({'Admin': True, 'PreviewOnly':False})), ('User', 'General user',\
-        json.dumps({'Admin': False, 'PreviewOnly':False})), ('Guest', 'Guest (Preview only)',\
-        json.dumps({'Admin': False, 'PreviewOnly':True}))]
+        json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',\
+        json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',\
+        json.dumps({'Admin': False, 'PreviewOnly': True}))]
     # create base group entries
     for base_item in base_group:
         sql_params = str(uuid.uuid4()), base_item[0], base_item[1], base_item[2]
@@ -680,8 +680,8 @@ if sql3_cursor.fetchone()[0] == 0:
         'imvdb': None, \
         'tvmaze': None},\
     'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,\
-        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': 'musicbrainz',\
-        'BrainzDBUser': 'musicbrainz', 'BrainzDBPass': 'musicbrainz'},\
+        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,\
+        'BrainzDBUser': None, 'BrainzDBPass': None},\
     'Transmission': {'Host': None, 'Port': 9091},\
     'Dropbox': {'APIKey': None, 'APISecret': None},\
     'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',\
@@ -700,7 +700,7 @@ sql3_cursor.execute('create table IF NOT EXISTS mm_metadata_game_software_info (
     ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_json jsonb)')
 if db_table_index_check('gi_system_id_ndx') is None:
     sql3_cursor.execute('CREATE INDEX gi_system_id_ndx'\
-        ' on mm_metadata_game_software_info (gi_system_id);')  # so can match systems quickly
+        ' on mm_metadata_game_software_info (gi_system_id);') # so can match systems quickly
 if db_table_index_check('mm_game_info_idxgin_json') is None:
     sql3_cursor.execute('CREATE INDEX mm_game_info_idxgin_json'\
         ' ON mm_metadata_game_software_info USING gin (gi_game_info_json)')
