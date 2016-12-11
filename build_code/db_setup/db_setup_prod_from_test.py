@@ -57,7 +57,7 @@ if sql3_cursor.fetchone()[0] == 0:
     sql3_conn.commit()
     # create dump file
     proc = subprocess.Popen(['pg_dump', '-Fc', 'metamandb', '>',\
-        '../sql_dumps/MediaKraken_SQL_Dump' + '_' + time.strftime("%Y%m%d%H%M%S") + '.dump'],\
+        './MediaKraken_SQL_Dump' + '_' + time.strftime("%Y%m%d%H%M%S") + '.dump'],\
         shell=False)
     print("PG dump PID: %s", proc.pid)
     proc.wait()
