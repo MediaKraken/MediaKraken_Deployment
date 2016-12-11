@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def metadata_person(thread_db, provider_name, download_data):
+def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     """
     fetch person bio
     """

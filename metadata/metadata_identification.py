@@ -28,6 +28,7 @@ from . import metadata_movie
 from . import metadata_music
 from . import metadata_music_video
 from . import metadata_periodicals
+from . import metadata_person
 from . import metadata_sports
 from . import metadata_tv
 
