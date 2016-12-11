@@ -114,7 +114,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = person_data['Name']
             else:
                 person_id = None
-                person_name = None
+                #person_name = None # not used later so don't set
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
                     logging.info("skippy")
@@ -137,7 +137,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_name = person_json['Name']
         else:
             person_id = None
-            person_name = None
+            #person_name = None # not used later so don't set
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 logging.info("skippy")
