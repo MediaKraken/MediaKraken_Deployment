@@ -174,7 +174,8 @@ class MKServerDatabase(object):
         db_meta_person_by_guid,\
         db_meta_person_by_name,\
         db_meta_person_insert_cast_crew,\
-        db_metdata_person_insert,\
+        db_meta_person_insert,\
+        db_meta_person_update,\
         db_meta_person_id_count,\
         db_meta_person_as_seen_in
     from database.db_base_metadata_sports import db_meta_sports_guid_by_thesportsdb,\

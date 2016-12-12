@@ -92,13 +92,9 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     """
     file_path = com_meta_image_file_path(media_name, media_type)
     # determine url and such
-    if source_link == "tmdb":
-        url = 'https://image.tmdb.org/'
-        if media_type == "poster":
-            url += '/t/p/original'
-        else:
-            url += '/t/p/original'
-    elif source_link == "thetvdb":
+    if source_link == 'themoviedb':
+        url = 'https://image.tmdb.org/t/p/original/'
+    elif source_link == 'thetvdb':
         url = 'https://thetvdb.com/banners/'
         # the following is part of the json data so no need for this
 #        if media_type == 'banner':
@@ -109,10 +105,10 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
 #            url += 'posters/'
 #        elif media_type == 'actor':
 #           url += 'actors/'
-    elif source_link == "thelogodb":
+    elif source_link == 'thelogodb':
         # simply a placeholder so I don't ponder about this one in the future
         url = ''
-    elif source_link == "tvmaze":
+    elif source_link == 'tvmaze':
         # simply a placeholder so I don't ponder about this one in the future
         url = ''
     file_path += source_file
