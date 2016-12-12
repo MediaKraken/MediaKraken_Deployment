@@ -94,8 +94,7 @@ class CommonMetadataTMDB(object):
                         + image_file_path)
                 person_file_paths.append(image_file_path)
         # set local image json
-        image_json = ({'Images': {'themoviedb':{'Profiles': person_file_paths}}})
-        return image_json
+        return ({'Images': {'themoviedb':{'Profiles': person_file_paths}}})
 
 
     def com_tmdb_metadata_id_max(self):
