@@ -38,13 +38,21 @@ else:
 
 
 if TMDB_API_CONNECTION is not None:
-    # start up the range fetches
+    # start up the range fetches for movie
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_id_max()):
         # check to see if we already have it
         if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
                 and db_connection.db_download_que_exists(None, 'themoviedb', \
                 str(tmdb_to_fetch)) is None:
             db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch", \
+                "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
+    # start up the range fetchs for person
+    for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_bio_id_max()):
+        # check to see if we already have it
+        if db_connection.db_meta_tmdb_bio_count(tmdb_to_fetch) == 0 \
+                and db_connection.db_download_bio_que_exists('themoviedb', \
+                str(tmdb_to_fetch)) is None:
+            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "FetchPersonBio", \
                 "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
 
 
