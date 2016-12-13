@@ -45,3 +45,4 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     if result_json.status_code == 200:
         thread_db.db_meta_person_update(provider_name, download_data['ProviderMetaID'], \
             result_json.json(), common_metadata_tmdb.com_tmdb_meta_bio_image_build())
+        thread_db.db_download_delete(download_data['mdq_id'])

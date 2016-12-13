@@ -54,9 +54,6 @@ def metadata_process(thread_db, provider_name, download_data):
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
         logging.info('%s fetchcollection', provider_name)
         metadata_collection(thread_db, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "FetchPersonBio":
-        logging.info('%s fetch person bio', provider_name)
-        metadata_person(thread_db, provider_name, download_data)
 
 
 def metadata_search(thread_db, provider_name, download_data):
@@ -156,29 +153,35 @@ def metadata_search(thread_db, provider_name, download_data):
         return # no need to continue with checks
 
 
-def metadata_fetch(thread_db, provider_name, download_data):
+def metadata_fetch(thread_db, provider_name, download_que_type, download_data):
     """
     Fetch main metadata for specified provider
     """
     if provider_name == 'themoviedb':
-        if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
-            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
-                download_data['mdq_download_json']['ProviderMetaID'])
-            if tmdb_id is not None:
-                download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
-                thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-                    download_data['mdq_id'])
+        if download_data['mqd_que_type'] == 3: # person info
+            logging.info('%s fetch person bio', provider_name)
+            metadata_person.metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+        elif download_data['mqd_que_type'] == 0 or download_data['mqd_que_type'] == 1: # movie
+            if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
+                tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(\
+                    download_data['mdq_download_json']['ProviderMetaID'])
+                if tmdb_id is not None:
+                    download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
+                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                        download_data['mdq_id'])
+                else:
+                    # TODO this is kinda bad if you have a valid id
+                    thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
             else:
-                # TODO this is kinda bad if you have a valid id
-                thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
-        else:
-            metadata_movie.movie_fetch_save_tmdb(thread_db,\
-                download_data['mdq_download_json']['ProviderMetaID'],\
-                download_data['mdq_download_json']['MetaNewID'])
-            thread_db.db_download_delete(download_data['mdq_id'])
-#            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-#            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
-#                download_data['mdq_id'])
+                metadata_movie.movie_fetch_save_tmdb(thread_db,\
+                    download_data['mdq_download_json']['ProviderMetaID'],\
+                    download_data['mdq_download_json']['MetaNewID'])
+                thread_db.db_download_delete(download_data['mdq_id'])
+    #            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
+    #            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+    #                download_data['mdq_id'])
+        else: #tv
+            pass
     elif provider_name == 'tvmaze':
         metadata_tv.tv_fetch_save_tvmaze(thread_db,\
             download_data['mdq_download_json']['ProviderMetaID'])

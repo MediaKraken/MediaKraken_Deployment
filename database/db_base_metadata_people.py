@@ -130,7 +130,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     logging.info("skippy")
                 else:
                     # insert download record for bio/info
-                    self.db_download_insert(meta_type, json.dumps({"Status": "FetchPersonBio", \
+                    self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
                         "ProviderMetaID": str(person_id)}))
                     # insert person record
                     self.db_metdata_person_insert(person_name,\
@@ -153,7 +153,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 logging.info("skippy")
             else:
                 # insert download record for bio/info
-                self.db_download_insert(meta_type, json.dumps({"Status": "FetchPersonBio", \
+                self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
                     "ProviderMetaID": str(person_id)}))
                 # insert person record
                 self.db_metdata_person_insert(person_name,\
