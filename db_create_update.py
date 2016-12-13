@@ -738,6 +738,9 @@ sql3_cursor.execute('create table IF NOT EXISTS mm_download_que (mdq_id uuid'\
     ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mdq_download_json jsonb)')
 if db_table_index_check('mm_download_idx_provider') is None:
     sql3_cursor.execute('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
+if db_table_index_check('mm_download_que_idxgin_meta_json') is None:
+    sql3_cursor.execute('CREATE INDEX mm_download_que_idxgin_meta_json'\
+        ' ON mm_download_que USING gin (mdq_download_json)')
 
 
 # tuners
