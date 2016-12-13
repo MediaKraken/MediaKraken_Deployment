@@ -153,10 +153,11 @@ def metadata_search(thread_db, provider_name, download_data):
         return # no need to continue with checks
 
 
-def metadata_fetch(thread_db, provider_name, download_que_type, download_data):
+def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
+    logging.info('metadata_fetch: %s %s', provider_name, download_data)
     if provider_name == 'themoviedb':
         if download_data['mqd_que_type'] == 3: # person info
             logging.info('%s fetch person bio', provider_name)
