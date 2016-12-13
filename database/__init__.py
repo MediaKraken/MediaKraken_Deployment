@@ -48,7 +48,8 @@ class MKServerDatabase(object):
         db_download_delete,\
         db_download_update_provider,\
         db_download_update,\
-        db_download_que_exists
+        db_download_que_exists,\
+        db_download_bio_que_exists
     from database.db_base_kodi import db_kodi_user_sync_movie,\
         db_kodi_user_sync_added,\
         db_kodi_user_sync_collection,\

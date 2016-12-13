@@ -99,3 +99,15 @@ def db_download_que_exists(self, download_que_uuid, provider_name, provider_id):
         return self.db_cursor.fetchone()[0]
     except:
         return None
+
+
+def db_download_bio_que_exists(self, provider_name, provider_id):
+    """
+    See if download que record exists for provider and id
+    """
+    logging.info('db bio que exits: %s %s %s', provider_name, provider_id)
+    self.db_cursor.execute('select count(*) from mm_download_que'\
+        ' where mdq_provider = %s and mdq_download_json->\'ProviderMetaID\' ? %s'\
+        ' limit 1',\
+        (provider_name, provider_id))
+    return self.db_cursor.fetchone()[0]
