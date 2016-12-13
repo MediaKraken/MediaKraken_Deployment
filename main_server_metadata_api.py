@@ -35,6 +35,7 @@ from metadata import metadata_person
 from metadata import metadata_sports
 from metadata import metadata_tv
 from common import common_config_ini
+from common.common_exceptions import *
 from common.common_metadata_limiter import *
 from common import common_logging
 from common import common_metadata
@@ -297,6 +298,7 @@ def tvshowtime(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
 
+@reraise_with_stack
 def worker(content_providers):
     """
     Worker thread for limiter
