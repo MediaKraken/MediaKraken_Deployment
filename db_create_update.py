@@ -746,6 +746,7 @@ if db_table_index_check('mqd_que_type_idx_name') is None:
     sql3_cursor.execute('CREATE INDEX mqd_que_type_idx_name'\
         ' ON mm_download_que(mqd_que_type)')
 # type
+# 0 - initial insert and/or defualt for the provider
 # 1 - movie
 # 2 - tv
 # 3 - person

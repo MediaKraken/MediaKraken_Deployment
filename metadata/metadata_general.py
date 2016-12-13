@@ -122,7 +122,7 @@ def metadata_search(thread_db, provider_name, download_data):
     # if set fetch, set provider id and status on dl record
     if set_fetch:
         # first verify a download que record doesn't exist for this id
-        metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],\
+        metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'], 0,\
             provider_name, str(match_result))
         logging.info('metaquelook: %s', metadata_uuid)
         if metadata_uuid is not None:
@@ -139,7 +139,7 @@ def metadata_search(thread_db, provider_name, download_data):
             download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
             logging.info('after json update')
-            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), \
                 download_data['mdq_id'])
             logging.info('after update')
         return # no need to continue with checks
@@ -167,7 +167,7 @@ def metadata_fetch(thread_db, provider_name, download_que_type, download_data):
                     download_data['mdq_download_json']['ProviderMetaID'])
                 if tmdb_id is not None:
                     download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
-                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), \
                         download_data['mdq_id'])
                 else:
                     # TODO this is kinda bad if you have a valid id
@@ -178,7 +178,7 @@ def metadata_fetch(thread_db, provider_name, download_que_type, download_data):
                     download_data['mdq_download_json']['MetaNewID'])
                 thread_db.db_download_delete(download_data['mdq_id'])
     #            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-    #            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),\
+    #            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), \
     #                download_data['mdq_id'])
         else: #tv
             pass
