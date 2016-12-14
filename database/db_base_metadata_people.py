@@ -109,6 +109,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     # batch insert from json of crew/cast
     """
+    logging.info('db person insert cast crew: %s %s', meta_type, person_json)
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     try:
         for person_data in person_json:
