@@ -135,7 +135,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
                         "ProviderMetaID": str(person_id)}))
                     # insert person record
-                    self.db_metdata_person_insert(person_name,\
+                    self.db_meta_person_insert(person_name,\
                         json.dumps({meta_type: str(person_id)}), None, None)
     except:
         if meta_type == "tvmaze":
@@ -158,7 +158,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
                     "ProviderMetaID": str(person_id)}))
                 # insert person record
-                self.db_metdata_person_insert(person_name,\
+                self.db_meta_person_insert(person_name,\
                     json.dumps({meta_type: str(person_id)}), None, None)
 
 
