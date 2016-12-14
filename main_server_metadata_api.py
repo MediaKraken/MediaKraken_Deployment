@@ -410,8 +410,8 @@ for class_data in db_connection.db_media_class_list(None, None):
 
 
 # grab the rate limiting providers and populate threads
-#with futures.ThreadPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
-with futures.ProcessPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
+with futures.ThreadPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
+#with futures.ProcessPoolExecutor(len(common_metadata_limiter.API_LIMIT.keys())) as executor:
     try:
         futures = [executor.submit(worker, n) for n in common_metadata_limiter.API_LIMIT.keys()]
         for future in futures:
