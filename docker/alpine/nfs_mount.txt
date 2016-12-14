@@ -10,6 +10,7 @@ same no dir
 docker
 
 10.0.0.67:/ on /home/mediakraken/zfsspoo type nfs4 (rw,relatime,vers=4.0,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=10.0.0.169,local_lock=none,addr=10.0.0.67)
+mount -t nfs4 10.0.0.67:/ /home/mediakraken/zfsspoo
 
 
 
