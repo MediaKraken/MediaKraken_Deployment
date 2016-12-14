@@ -7,6 +7,7 @@ cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployme
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp -R /home/spoot/MediaKraken_Deployment/metadata /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_metadata_api.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
+cp /home/spoot/MediaKraken_Deployment/main_server_metadata_api_worker.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/build_image_directory.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 
 # metdata builder
