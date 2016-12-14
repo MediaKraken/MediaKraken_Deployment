@@ -282,7 +282,7 @@ def main(argv):
     Worker thread for limiter
     """
     # start logging
-    common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_%s', argv)
+    common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_' + argv)
     content_providers = argv
     logging.info("worker meta api name: %s", content_providers)
     # open the database

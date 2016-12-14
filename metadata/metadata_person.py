@@ -37,7 +37,7 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     """
     fetch person bio
     """
-    logging.info("meta person tmdb save fetch: %s", download_data['ProviderMetaID'])
+    logging.info("meta person tmdb save fetch: %s", download_data)
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(download_data['ProviderMetaID'])
     logging.info("meta person code: %s", result_json.status_code)

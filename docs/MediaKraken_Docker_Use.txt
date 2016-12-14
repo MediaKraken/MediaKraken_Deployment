@@ -39,6 +39,13 @@ docker run --network=alpine_mediakraken-dbnetwork -p 8900:8080 --env POSTGRES_PA
 uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
 
 
+
+
+docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_HOST=10.0.0.194 --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpinemetadata4334 alpine_metadata
+
+
+
+
 docker run --net=host -itd --name=alpine_devicescan449 alpine_devicescan
 
 
