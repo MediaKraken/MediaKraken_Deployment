@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import subprocess
 from build_image_directory import build_image_dirs
-from common.common_metadata_limiter import *
+from common import common_metadata_limiter
 from common import common_signal
 
 
