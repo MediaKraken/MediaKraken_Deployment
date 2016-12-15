@@ -752,6 +752,15 @@ if db_table_index_check('mqd_que_type_idx_name') is None:
 # 3 - person
 
 
+# download image que
+sql3_cursor.execute('create table IF NOT EXISTS mm_download_image_que (mdq_image_id uuid'\
+    ' CONSTRAINT mdq_image_id_pk primary key, mdq_image_provider text,'\
+    'mdq_image_download_json jsonb)')
+if db_table_index_check('mm_image_download_idx_provider') is None:
+    sql3_cursor.execute('CREATE INDEX mm_image_download_idx_provider'\
+                        ' ON mm_download_image_que(mdq_image_provider)')
+
+
 # tuners
 sql3_cursor.execute('create table IF NOT EXISTS mm_tuner (mm_tuner_id uuid'\
     ' CONSTRAINT mm_tuner_id_pk primary key, mm_tuner_json jsonb)')
