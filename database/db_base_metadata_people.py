@@ -102,7 +102,7 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '\
                            'mmp_person_image = %s where mmp_person_media_id->\'' \
-                           + provider_name + '\' = %s', \
+                           + provider_name + '\' ? %s', \
                            (json.dumps(person_bio), json.dumps(person_image), str(provider_uuid)))
 
 
