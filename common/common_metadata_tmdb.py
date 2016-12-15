@@ -83,16 +83,15 @@ class CommonMetadataTMDB(object):
             'person')
         logging.info('tmdb bio image path: %s', image_file_path)
         person_file_paths = []
-        if ['combined_credits']['cast'] in result_json:
-            for profile_image in result_json['combined_credits']['cast']:
-                image_file_path += profile_image['poster_path']
-                if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
-                                      + image_file_path):
-                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
-                        + profile_image['poster_path'], \
-                        '/mediakraken/web_app/MediaKraken/static/meta/images/' \
-                        + image_file_path)
-                person_file_paths.append(image_file_path)
+        for profile_image in result_json['combined_credits']['cast']:
+            image_file_path += profile_image['poster_path']
+            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                                  + image_file_path):
+                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                    + profile_image['poster_path'], \
+                    '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                    + image_file_path)
+            person_file_paths.append(image_file_path)
         # set local image json
         return ({'Images': {'themoviedb':{'Profiles': person_file_paths}}})
 
