@@ -23,8 +23,6 @@ import xmltodict
 import zipfile
 import zlib
 import time
-import locale
-locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_thetvdb
@@ -49,8 +47,6 @@ db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None
 
 
 # grab the data
-tvshow_updated = 0
-tvshow_inserted = 0
 thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 option_json, status_json = db_connection.db_opt_status_read()
 #for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc\
@@ -78,13 +74,12 @@ for row_data in update_item['Data']['Series']:
         if xml_actor_data is not None:
             db_connection.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
         db_connection.db_commit()
-        tvshow_inserted += 1
         time.sleep(5) # delays for 5 seconds
     else:
         # update instead
         #db_connection.db_metatvdb_update(series_id_json,\
         # xml_show_data['Data']['Series']['SeriesName'], row_data['id'])
-        tvshow_updated += 1
+        pass
     # commit each just cuz
     db_connection.db_commit()
 # grab banner info
@@ -99,15 +94,6 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 # log end
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
     'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
-
-
-# send notications
-if tvshow_updated > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
-        + " TV show(s) metadata updated.", True)
-if tvshow_inserted > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
-        + " TV show(s) metadata added.", True)
 
 
 # commit all changes

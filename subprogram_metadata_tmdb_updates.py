@@ -19,8 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
-import locale
-locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tmdb
@@ -51,19 +49,28 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     logging.info("mov: %s", movie_change['id'])
-    dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
-    if dl_meta is None:
+    if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
+        dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
+        if dl_meta is None:
+            db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
+                'Path': None, 'ClassID': None, 'Status': 'Fetch',\
+                'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
+    else:
         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
-            'Path': None, 'ClassID': None, 'Status': 'Fetch',\
+            'Path': None, 'ClassID': None, 'Status': 'Update',\
             'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
+
 
 # process tv changes
 for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
     logging.info("tv: %s", tv_change['id'])
-    dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(tv_change['id']))
-    if dl_meta is None:
+    if db_connection.db_metatv_guid_by_tmdb(str(tv_change['id'])) is None:
+        dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(tv_change['id']))
+        if dl_meta is None:
+            status_type = 'Fetch'
+    else:
         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
-            'Path': None, 'ClassID': None, 'Status': 'Fetch',\
+            'Path': None, 'ClassID': None, 'Status': 'Update',\
             'MetaNewID': None, 'ProviderMetaID': str(tv_change['id'])}))
 
 
