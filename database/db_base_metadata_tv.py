@@ -93,6 +93,18 @@ def db_metatv_guid_by_tvrage(self, tvrage_uuid):
         return None
 
 
+def db_metatv_guid_by_tmdb(self, tmdb_uuid):
+    """
+    # metadata guid by tmdb id
+    """
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        ' where mm_metadata_media_tvshow_id->\'themoviedb\' ? %s', (tmdb_uuid,))
+    try:
+        return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
+    except:
+        return None
+
+
 def db_metatv_guid_by_rt(self, rt_uuid):
     """
     # metadata guid by tvrage id

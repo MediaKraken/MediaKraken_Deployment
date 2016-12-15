@@ -190,6 +190,8 @@ class MKServerDatabase(object):
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb,\
         db_metatv_guid_by_tvdb,\
         db_metatv_guid_by_tvmaze,\
+        db_metatv_guid_by_tmdb,\
+        db_metatv_guid_by_rt,\
         db_meta_tvshow_list_count,\
         db_meta_tvshow_list,\
         db_meta_tvshow_detail,\
