@@ -33,4 +33,3 @@ def db_version_update(self, version_no):
     update db version
     """
     self.db_cursor.execute('update mm_version set mm_version_no = %s', version_no)
-    self.db_cursor.db_commit()
