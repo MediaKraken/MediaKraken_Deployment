@@ -38,6 +38,8 @@ common_signal.com_signal_set_break()
 # fire up the image downloader
 proc_image_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker_image.py'], \
                                     shell=False)
+
+
 # fire up the workers for each provider
 for meta_provider in common_metadata_limiter.API_LIMIT.keys():
     proc_api_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker.py', \
