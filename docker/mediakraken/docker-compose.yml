@@ -59,6 +59,14 @@ services:
       - mediakraken-dbnetwork
     restart: unless-stopped
 
+  # pgbouncer
+  pgbounce:
+    image: mediakraken/mkpgbounce:latest
+    container_name: mkpgbounce
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+
   # scan for new hardware devices
   devicescan:
     image: mediakraken/mkdevicescan:latest
