@@ -73,6 +73,16 @@ services:
       - mediakraken-dbnetwork
     restart: unless-stopped
 
+  # pgbouncer
+  pgbounce:
+    build:
+      context: ./ComposeMediaKrakenPGBouncer
+      dockerfile: dockerfile-pgbouncer
+    container_name: mkpgbounce
+    networks:
+      - mediakraken-dbnetwork
+    restart: unless-stopped
+
   # scan for new hardware devices
   devicescan:
     build:
