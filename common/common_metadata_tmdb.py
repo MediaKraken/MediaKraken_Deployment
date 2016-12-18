@@ -73,7 +73,7 @@ class CommonMetadataTMDB(object):
             (tmdb_id, self.API_KEY))
 
 
-    def com_tmdb_meta_bio_image_build(self, result_json):
+    def com_tmdb_meta_bio_image_build(self, thread_db, result_json):
         """
         # download info and set data to be ready for insert into database
         """
@@ -87,10 +87,15 @@ class CommonMetadataTMDB(object):
             if profile_image['poster_path'] is not None:
                 if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
                                       + image_file_path + profile_image['poster_path']):
-                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                    thread_db.db_download_image_insert('themoviedb', \
+                        json.dumps({'url': 'https://image.tmdb.org/t/p/original'\
                         + profile_image['poster_path'], \
-                        '/mediakraken/web_app/MediaKraken/static/meta/images/' \
-                        + image_file_path + profile_image['poster_path'])
+                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                        + image_file_path + profile_image['poster_path']}))
+#                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+#                        + profile_image['poster_path'], \
+#                        '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+#                        + image_file_path + profile_image['poster_path'])
             person_file_paths.append(image_file_path)
         # set local image json
         return ({'Images': {'themoviedb':{'Profiles': person_file_paths}}})
