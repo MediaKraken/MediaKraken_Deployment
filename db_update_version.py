@@ -17,10 +17,24 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import os
-import psycopg2
-import json
+import subprocess
+from common import common_config_ini
+from common import common_version
 
 
-pass
+# open the database
+option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+# add download image que
+if common_version.DB_VERSION == "2":
+    proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+    db_connection.db_version_update("3")
+
+
+# commit
+db_connection.db_commit()
+
+
+# close the database
+db_connection.db_close()
