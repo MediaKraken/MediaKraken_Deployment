@@ -29,7 +29,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # add download image que
 if common_version.DB_VERSION == "2":
     proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
-    db_connection.db_version_update("3")
+    db_connection.db_version_update("2")
 
 
 # commit
