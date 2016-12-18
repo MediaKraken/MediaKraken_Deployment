@@ -187,17 +187,17 @@ services:
       - DAC_READ_SEARCH
 
   # runs the phppgadmin
-  phppgadmin:
-    build:
-      context: ./ComposeMediaKrakenPHPPGAdmin
-      dockerfile: dockerfile-phppgadmin
-    container_name: mkphppgadmin
-    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
-    ports:
-      - "12345:80"
-    networks:
-      - mediakraken-dbnetwork
-    restart: unless-stopped
+#  phppgadmin:
+#    build:
+#      context: ./ComposeMediaKrakenPHPPGAdmin
+#      dockerfile: dockerfile-phppgadmin
+#    container_name: mkphppgadmin
+#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+#    ports:
+#      - "12345:80"
+#    networks:
+#      - mediakraken-dbnetwork
+#    restart: unless-stopped
 
 # Docker private networks
 networks:
