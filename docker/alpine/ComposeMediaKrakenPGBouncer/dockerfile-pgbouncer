@@ -1,14 +1,10 @@
 FROM alpine:edge
-
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL www.mediakraken.org.version="dev-0.2.0"
-LABEL Description="This image hosts the pgbounce for postgresql"
+MAINTAINER George Kutsurua <g.kutsurua@gmail.com>
 
 RUN apk update && \
-  apk add c-ares-dev libevent openssl && \
-  mkdir -p /var/log/pgbouncer /var/run/pgbouncer && \
-  chown postgres:postgres /var/log/pgbouncer /var/run/pgbouncer \
-  && rm -rf /var/cache/apk/*
+    apk add c-ares-dev libevent openssl && \
+    mkdir -p /var/log/pgbouncer /var/run/pgbouncer && \
+    chown postgres:postgres /var/log/pgbouncer /var/run/pgbouncer
 
 COPY bin/pgbouncer-1.7.2 /usr/local/bin/pgbouncer
 COPY pgbouncer.ini /etc/pgbouncer/pgbouncer.ini
