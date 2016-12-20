@@ -11,7 +11,8 @@ RUN apk --update add git build-base automake libtool m4 autoconf libevent-dev op
 	./configure --prefix=/usr/local --with-libevent=/usr/lib && \
 	make && make install && \
 	apk del git build-base automake autoconf m4 && \
-	rm -f /var/cache/apk/* 
+	rm -f /var/cache/apk/* \
+        && cd .. && rm -Rf pgbouncer
 
 ADD entrypoint.sh ./
 
