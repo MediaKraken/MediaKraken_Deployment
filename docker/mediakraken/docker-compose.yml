@@ -8,6 +8,9 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
@@ -17,6 +20,8 @@ services:
       - "8903:5000"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /var/opt/mediakraken/devices:/mediakraken/devices
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
@@ -30,6 +35,9 @@ services:
   appslave:
     image: mediakraken/mkslave:latest
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
@@ -37,6 +45,7 @@ services:
     entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
     restart: unless-stopped
@@ -49,8 +58,8 @@ services:
   database:
     image: mediakraken/mkdatabase:latest
     environment:
-      - POSTGRES_DB=metamandb
-      - POSTGRES_USER=metamanpg
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     volumes:
@@ -62,6 +71,10 @@ services:
   # pgbouncer
   pgbounce:
     image: mediakraken/mkpgbounce:latest
+    environment:
+      - DB_HOST=${DBDATABASE}
+      - DB_USER=${DBUSER}
+      - DB_PASSWORD=${DBPASS}
     container_name: mkpgbounce
     networks:
       - mediakraken-dbnetwork
@@ -82,11 +95,14 @@ services:
 #  webapi:
 #    image: mediakraken/mkwebapi:latest
 #    environment:
+#      - POSTGRES_DB=${DBDATABASE}
+#      - POSTGRES_USER=${DBUSER}
+#      - POSTGRES_HOST=${DBHOST}
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
 #    depends_on:
 #      - database
-#    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30
+#    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_api --ini ./web_api/mediakraken_uwsgi_alpine.ini
 #    ports:
 #      - "8901:8080"
 #    volumes:
@@ -99,6 +115,9 @@ services:
   metadata:
     image: mediakraken/mkmetadata:latest
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
@@ -106,6 +125,8 @@ services:
     entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -139,6 +160,9 @@ services:
   webserver:
     image: mediakraken/mkwebserver:latest
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
@@ -150,6 +174,8 @@ services:
       - "8900:8080"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken-network
       - mediakraken-dbnetwork
@@ -167,3 +193,4 @@ networks:
   # Database communications network
   mediakraken-dbnetwork:
     driver: bridge
+

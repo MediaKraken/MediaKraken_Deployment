@@ -6,11 +6,12 @@ version: '2'
 services:
   # Main app server which controls the show and transcodes
   appserver:
-    privileged: true
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
@@ -34,11 +35,12 @@ services:
 
   # slave app server which transcodes
   appslave:
-    privileged: true
     build:
       context: ./ComposeMediaKrakenSlave
       dockerfile: dockerfile-appslave
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
@@ -63,8 +65,8 @@ services:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
     environment:
-      - POSTGRES_DB=metamandb
-      - POSTGRES_USER=metamanpg
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     volumes:
@@ -78,6 +80,10 @@ services:
     build:
       context: ./ComposeMediaKrakenPGBouncer
       dockerfile: dockerfile-pgbouncer
+    environment:
+      - DB_HOST=${DBDATABASE}
+      - DB_USER=${DBUSER}
+      - DB_PASSWORD=${DBPASS}
     container_name: mkpgbounce
     networks:
       - mediakraken-dbnetwork
@@ -102,6 +108,8 @@ services:
 #      context: ./ComposeMediaKrakenWebAPI
 #      dockerfile: dockerfile-webapi
 #    environment:
+#      - POSTGRES_DB=${DBDATABASE}
+#      - POSTGRES_USER=${DBUSER}
 #      - POSTGRES_HOST=${DBHOST}
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
@@ -118,11 +126,12 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    privileged: true
     build:
       context: ./ComposeMediaKrakenMetadata
       dockerfile: dockerfile-metadata
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
@@ -168,11 +177,12 @@ services:
 
   # Runs the web service for the main server application
   webserver:
-    privileged: true
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
     environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
       - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
@@ -217,3 +227,4 @@ networks:
   # Database communications network
   mediakraken-dbnetwork:
     driver: bridge
+
