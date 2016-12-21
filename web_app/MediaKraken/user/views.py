@@ -694,6 +694,32 @@ def user_livetv_detail_page(guid):
     return render_template("users/user_livetv_page.html")
 
 
+@blueprint.route('/cast/<action>/<guid>/')
+@blueprint.route('/cast/<action>/<guid>')
+@login_required
+def user_cast(action, guid):
+    """
+    Display chromecast actions page
+    """
+    if action == 'base':
+        pass
+    elif action == 'back':
+        pass
+    elif action == 'rewind':
+        pass
+    elif action == 'stop':
+        pass
+    elif action == 'play':
+        pass
+    elif action == 'pause':
+        pass
+    elif action == 'ff':
+        pass
+    elif action == 'forward':
+        pass
+    return render_template("users/user_playback_cast.html")
+
+
 @blueprint.route('/playvideo/<guid>/')
 @blueprint.route('/playvideo/<guid>')
 @login_required
