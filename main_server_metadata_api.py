@@ -18,8 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
+import logging
 import subprocess
 from build_image_directory import build_image_dirs
+from common import common_logging
 from common import common_metadata_limiter
 from common import common_signal
 
@@ -35,8 +37,13 @@ else:
 common_signal.com_signal_set_break()
 
 
+# start logging
+common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
+
+
 # fire up the workers for each provider
 for meta_provider in common_metadata_limiter.API_LIMIT.keys():
+    logging.info("meta_provider: %s", meta_provider)
     proc_api_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker.py', \
                                        meta_provider], shell=False)
 
