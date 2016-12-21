@@ -79,7 +79,7 @@ services:
       context: ./ComposeMediaKrakenPGBouncer
       dockerfile: dockerfile-pgbouncer
     environment:
-      - DB_HOST=${DBDATABASE}
+      - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
       - POOL_MODE=session
