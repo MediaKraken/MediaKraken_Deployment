@@ -277,110 +277,102 @@ def tvshowtime(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
 
-def main(argv):
-    """
-    Worker thread for limiter
-    """
-    content_providers = argv
-    logging.info("worker meta api name: %s", content_providers)
-    # open the database
-    option_config_json, thread_db = common_config_ini.com_config_read()
-    # table the class_text into a dict...will lessen the db calls
-    class_text_dict = {}
-    for class_data in thread_db.db_media_class_list(None, None):
-        class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
-    # setup last used id's per thread
-    metadata_last_id = None
-    metadata_last_title = None
-    metadata_last_year = None
-    while True:
-        logging.info('worker thread before read provider %s', content_providers)
-        for row_data in thread_db.db_download_read_provider(content_providers):
-            logging.info("worker meta api row: %s", row_data)
-            # mdq_id,mdq_download_json
-            if content_providers == 'anidb':
-                anidb(thread_db, row_data)
-            elif content_providers == 'chart_lyrics':
-                chart_lyrics(thread_db, row_data)
-            elif content_providers == 'comicvine':
-                comicvine(thread_db, row_data)
-            elif content_providers == 'giantbomb':
-                giantbomb(thread_db, row_data)
-            elif content_providers == 'imdb':
-                imdb(thread_db, row_data)
-            elif content_providers == 'imvdb':
-                imvdb(thread_db, row_data)
-            elif content_providers == 'netflixroulette':
-                netflixroulette(thread_db, row_data)
-            elif content_providers == 'omdb':
-                omdb(thread_db, row_data)
-            elif content_providers == 'pitchfork':
-                pitchfork(thread_db, row_data)
-            elif content_providers == 'televisiontunes':
-                televisiontunes(thread_db, row_data)
-            elif content_providers == 'theaudiodb':
-                theaudiodb(thread_db, row_data)
-            elif content_providers == 'thegamesdb':
-                thegamesdb(thread_db, row_data)
-            elif content_providers == 'thelogodb':
-                thelogodb(thread_db, row_data)
-            elif content_providers == 'themoviedb':
-                themoviedb(thread_db, row_data)
-            elif content_providers == 'thesportsdb':
-                thesportsdb(thread_db, row_data)
-            elif content_providers == 'thetvdb':
-                thetvdb(thread_db, row_data)
-            elif content_providers == 'tv_intros':
-                tv_intros(thread_db, row_data)
-            elif content_providers == 'tvmaze':
-                tvmaze(thread_db, row_data)
-            elif content_providers == 'tvshowtime':
-                tvshowtime(thread_db, row_data)
-            elif content_providers == 'Z':
-                logging.info('worker Z meta api: class: %s rowid: %s json: %s',\
-                    class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                    row_data['mdq_id'], row_data['mdq_download_json'])
-                metadata_uuid = None
-                # check for dupes by name/year
-                file_name = guessit(row_data['mdq_download_json']['Path'])
-                logging.info('worker Z filename: %s', file_name)
-                if 'title' in file_name:
-                    if 'year' in file_name:
-                        if file_name['title'] == metadata_last_title\
-                                and file_name['year'] == metadata_last_year:
-                            thread_db.db_download_delete(row_data['mdq_id'])
-                            metadata_uuid = metadata_last_id
-                    elif file_name['title'] == metadata_last_title:
+# start logging
+common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_' + str(sys.argv[1]))
+content_providers = str(sys.argv[1])
+logging.info("worker meta api name: %s", content_providers)
+# open the database
+option_config_json, thread_db = common_config_ini.com_config_read()
+# table the class_text into a dict...will lessen the db calls
+class_text_dict = {}
+for class_data in thread_db.db_media_class_list(None, None):
+    class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
+# setup last used id's per thread
+metadata_last_id = None
+metadata_last_title = None
+metadata_last_year = None
+while True:
+    logging.info('worker thread before read provider %s', content_providers)
+    for row_data in thread_db.db_download_read_provider(content_providers):
+        logging.info("worker meta api row: %s", row_data)
+        # mdq_id,mdq_download_json
+        if content_providers == 'anidb':
+            anidb(thread_db, row_data)
+        elif content_providers == 'chart_lyrics':
+            chart_lyrics(thread_db, row_data)
+        elif content_providers == 'comicvine':
+            comicvine(thread_db, row_data)
+        elif content_providers == 'giantbomb':
+            giantbomb(thread_db, row_data)
+        elif content_providers == 'imdb':
+            imdb(thread_db, row_data)
+        elif content_providers == 'imvdb':
+            imvdb(thread_db, row_data)
+        elif content_providers == 'netflixroulette':
+            netflixroulette(thread_db, row_data)
+        elif content_providers == 'omdb':
+            omdb(thread_db, row_data)
+        elif content_providers == 'pitchfork':
+            pitchfork(thread_db, row_data)
+        elif content_providers == 'televisiontunes':
+            televisiontunes(thread_db, row_data)
+        elif content_providers == 'theaudiodb':
+            theaudiodb(thread_db, row_data)
+        elif content_providers == 'thegamesdb':
+            thegamesdb(thread_db, row_data)
+        elif content_providers == 'thelogodb':
+            thelogodb(thread_db, row_data)
+        elif content_providers == 'themoviedb':
+            themoviedb(thread_db, row_data)
+        elif content_providers == 'thesportsdb':
+            thesportsdb(thread_db, row_data)
+        elif content_providers == 'thetvdb':
+            thetvdb(thread_db, row_data)
+        elif content_providers == 'tv_intros':
+            tv_intros(thread_db, row_data)
+        elif content_providers == 'tvmaze':
+            tvmaze(thread_db, row_data)
+        elif content_providers == 'tvshowtime':
+            tvshowtime(thread_db, row_data)
+        elif content_providers == 'Z':
+            logging.info('worker Z meta api: class: %s rowid: %s json: %s',\
+                class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                row_data['mdq_id'], row_data['mdq_download_json'])
+            metadata_uuid = None
+            # check for dupes by name/year
+            file_name = guessit(row_data['mdq_download_json']['Path'])
+            logging.info('worker Z filename: %s', file_name)
+            if 'title' in file_name:
+                if 'year' in file_name:
+                    if file_name['title'] == metadata_last_title\
+                            and file_name['year'] == metadata_last_year:
                         thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
-                    logging.info("worker Z meta api uuid: %s file: %s", metadata_uuid, file_name)
-                    if metadata_uuid is None:
-                        # begin id process
-                        metadata_uuid = metadata_identification.metadata_identification(thread_db,\
-                            class_text_dict[row_data['mdq_download_json']['ClassID']],\
-                            row_data['mdq_download_json'], row_data['mdq_id'], file_name)
-                    # update the media row with the json media id AND THE proper NAME!!!
-                    if metadata_uuid is not None:
-                        logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",\
-                            metadata_uuid, row_data['mdq_download_json']['MediaID'])
-                        thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
-                            metadata_uuid)
-                    # allow NONE to be set so, unmatched stuff can work for skipping
-                    metadata_last_id = metadata_uuid
-                    metadata_last_title = file_name['title']
-                    try:
-                        metadata_last_year = file_name['year']
-                    except:
-                        metadata_last_year = None
-                else: # invalid guessit guess so set to ZZ to skip for now
-                    thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
-        thread_db.db_commit()
-        time.sleep(1)
+                elif file_name['title'] == metadata_last_title:
+                    thread_db.db_download_delete(row_data['mdq_id'])
+                    metadata_uuid = metadata_last_id
+                logging.info("worker Z meta api uuid: %s file: %s", metadata_uuid, file_name)
+                if metadata_uuid is None:
+                    # begin id process
+                    metadata_uuid = metadata_identification.metadata_identification(thread_db,\
+                        class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                        row_data['mdq_download_json'], row_data['mdq_id'], file_name)
+                # update the media row with the json media id AND THE proper NAME!!!
+                if metadata_uuid is not None:
+                    logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",\
+                        metadata_uuid, row_data['mdq_download_json']['MediaID'])
+                    thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
+                        metadata_uuid)
+                # allow NONE to be set so, unmatched stuff can work for skipping
+                metadata_last_id = metadata_uuid
+                metadata_last_title = file_name['title']
+                try:
+                    metadata_last_year = file_name['year']
+                except:
+                    metadata_last_year = None
+            else: # invalid guessit guess so set to ZZ to skip for now
+                thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
+    thread_db.db_commit()
+    time.sleep(1)
 #        break # TODO for now testing.......
-    thread_db.db_close()
-
-
-if __name__ == "__main__":
-    # start logging
-    common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_' + str(sys.argv[1]))
-    main(str(sys.argv[1]))
+thread_db.db_close()
