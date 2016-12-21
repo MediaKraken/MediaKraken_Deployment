@@ -75,9 +75,10 @@ def db_meta_person_id_count(self, host_type, guid):
     # does person exist already by host/id
     """
     self.db_cursor.execute('select count(*) from mm_metadata_person'\
-        ' where mmp_person_media_id @> \'{"Host":"' + host_type\
-        + '"}\' and mmp_person_media_id @> \'{"id":%s}\'', (guid,))
+        ' where mmp_person_media_id @> \'{"' + host_type + '":"' + guid + '"}\'')
     return self.db_cursor.fetchone()[0]
+# works after the refactor
+# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"themoviedb": "22358"}'
 # works in postgresql
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}'
     #and mmp_person_meta_json @> '{"id":169}'
