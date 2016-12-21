@@ -84,6 +84,7 @@ services:
       - DB_HOST=${DBDATABASE}
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
+      - POOL_MODE=session
     container_name: mkpgbounce
     networks:
       - mediakraken-dbnetwork
