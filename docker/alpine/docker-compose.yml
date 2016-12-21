@@ -12,7 +12,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
@@ -41,7 +40,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
@@ -111,7 +109,6 @@ services:
 #    environment:
 #      - POSTGRES_DB=${DBDATABASE}
 #      - POSTGRES_USER=${DBUSER}
-#      - POSTGRES_HOST=${DBHOST}
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
 #    depends_on:
@@ -133,7 +130,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
@@ -184,7 +180,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
