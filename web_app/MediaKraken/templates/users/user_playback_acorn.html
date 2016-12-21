@@ -5,6 +5,10 @@
     <head>
         <meta charset="utf-8" />
         <title>MediaKraken Video Player</title>
+        <!-- Acorn Media Player specific -->
+        <link href="../../static/acornmediaplayer/acornmediaplayer.base.min.css" rel="stylesheet" type="text/css">
+        <!-- Theme -->
+        <link href="../../static/acornmediaplayer/themes/access/acorn.access.min.css" rel="stylesheet" type="text/css">
         <link href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
@@ -23,6 +27,24 @@
                 </figcaption>
             </figure>
         </section>
+        <!-- Required by Acorn Media Player -->
+        <script src="../../static/js/jquery.min.js"></script>
+        <script src="../../static/js/jquery-ui.min.js"></script>
+        <!-- Optional - for older browser support - Webshim Polyfill -->
+        <script src="../../static/js/modernizr.custom.min.js"></script>
+        <script src="../../static/js/polyfiller.min.js"></script>
+        <script>
+            if(window.webshims) {
+                webshims.polyfill('mediaelement');
+            }
+        </script>
+        <script src="../../static/acornmediaplayer/jquery.acornmediaplayer.min.js"></script>
+        <!-- Call the plugin -->
+        <script>
+            jQuery(function() {
+                jQuery('video, audio').acornMediaPlayer();
+            });
+        </script>
     </body>
 </html>
 {% endblock %}
