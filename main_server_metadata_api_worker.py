@@ -278,7 +278,7 @@ def tvshowtime(thread_db, download_data):
 
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_' + str(sys.argv[1]))
+common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
 logging.info("worker meta api name: %s", content_providers)
 # open the database
