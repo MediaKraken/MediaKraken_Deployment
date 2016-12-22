@@ -710,7 +710,8 @@ def user_cast(action, guid):
     elif action == 'stop':
         pass
     elif action == 'play':
-        pass
+        cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
+            '-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
         pass
     elif action == 'ff':
