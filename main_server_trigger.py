@@ -51,12 +51,12 @@ while True:
     for row_data in db_connection.db_triggers_read():
         # fire up cron service
         command_list = []
-        for command_data in pickle.loads(str(row_data[1])):
+        for command_data in pickle.loads(str(row_data['mm_trigger_command'])):
             command_list.append(command_data)
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.info("Trigger PID: %s", proc_trigger.pid)
         # remove trigger from DB
-        db_connection.db_triggers_delete(row_data[0])
+        db_connection.db_triggers_delete(row_data['mm_trigger_guid'])
         trigger_pid_list.append(proc_trigger.pid)
     time.sleep(1)
 
