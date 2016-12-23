@@ -1499,6 +1499,16 @@ def metadata_person_list():
     Display person list page
     """
     page, per_page, offset = common_pagination.get_page_items()
+    person_list = []
+    for person_data in g.db_connection.db_meta_person_list(offset, per_page):
+        if person_data['mmp_person_image'] is not None:
+            if 'themoviedb' in person_data['mmp_person_image']['Images']:
+                person_image = \
+                    person_data['mmp_person_image']['Images']['themoviedb']['Profiles'][0] \
+                    + person_data['mmp_images'][0]['file_path']
+        else:
+            person_image = "../../static/images/person_missing.png"
+        person_list.append((person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(\
@@ -1508,7 +1518,7 @@ def metadata_person_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_people_list.html',
-                           media_person=g.db_connection.db_meta_person_list(offset, per_page),
+                           media_person=person_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
