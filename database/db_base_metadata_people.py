@@ -35,12 +35,13 @@ def db_meta_person_list(self, offset=None, records=None):
     # return list of people
     """
     if offset is None:
-        self.db_cursor.execute('select mmp_id,mmp_person_name, mmp_person_image'\
+        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
+            'mmp_person_meta_json->\'images\''\
             ' from mm_metadata_person order by mmp_person_name')
     else:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image'\
-            ' from mm_metadata_person where mmp_id in (select mmp_id from mm_metadata_person'\
-            ' order by mmp_person_name offset %s limit %s) order by mmp_person_name',\
+        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
+            'mmp_person_meta_json->\'images\''\
+            ' from mm_metadata_person offset %s limit %s order by mmp_person_name',\
             (offset, records))
     return self.db_cursor.fetchall()
 
