@@ -1501,6 +1501,7 @@ def metadata_person_list():
     page, per_page, offset = common_pagination.get_page_items()
     person_list = []
     for person_data in g.db_connection.db_meta_person_list(offset, per_page):
+        logging.info('person data: %s', person_data)
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 person_image = \
