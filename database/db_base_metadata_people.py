@@ -41,7 +41,7 @@ def db_meta_person_list(self, offset=None, records=None):
     else:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
             'mmp_person_meta_json->\'images\',mmp_person_image'\
-            ' from mm_metadata_person offset %s limit %s order by mmp_person_name',\
+            ' from mm_metadata_person order by mmp_person_name offset %s limit %s',\
             (offset, records))
     return self.db_cursor.fetchall()
 
