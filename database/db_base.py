@@ -39,7 +39,8 @@ def db_open(self):
     self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
         % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432, \
         os.environ['POSTGRES_PASSWORD']))
-    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
+    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    #self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
