@@ -82,10 +82,9 @@ services:
       - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
-      - POOL_MODE=session
-      - MAX_CLIENT_CONN=150
-      - MAX_USER_CONNECTIONS=150
-      - DEFAULT_POOL_SIZE=125
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=100
+      - DEFAULT_POOL_SIZE=50
     container_name: mkpgbounce
     networks:
       - mediakraken-dbnetwork
