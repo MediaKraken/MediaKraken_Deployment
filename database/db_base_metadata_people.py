@@ -36,11 +36,11 @@ def db_meta_person_list(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
-            'mmp_person_meta_json->\'images\' as mmp_images,mmp_person_image'\
+            'mmp_person_meta_json->\'images\''\
             ' from mm_metadata_person order by mmp_person_name')
     else:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
-            'mmp_person_meta_json->\'images\',mmp_person_image'\
+            'mmp_person_meta_json->\'images\''\
             ' from mm_metadata_person order by mmp_person_name offset %s limit %s',\
             (offset, records))
     return self.db_cursor.fetchall()
