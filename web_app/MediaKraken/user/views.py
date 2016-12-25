@@ -1507,7 +1507,7 @@ def metadata_person_list():
                 try:
                     person_image = \
                         person_data['mmp_person_image']['Images']['themoviedb']['Profiles'][0] \
-                        + person_data['mmp_person_meta_json']['images']['profiles'][0]['file_path']
+                        + person_data['mmp_person_meta_json']['profiles'][0]['file_path']
                 except:
                     person_image = "../../static/images/person_missing.png"
         else:
