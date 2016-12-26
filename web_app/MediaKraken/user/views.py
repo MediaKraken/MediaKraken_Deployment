@@ -1503,13 +1503,13 @@ def metadata_person_list():
     for person_data in g.db_connection.db_meta_person_list(offset, per_page):
         logging.info('person data: %s', person_data)
         logging.info('im: %s', person_data['mmp_person_image'])
-        logging.info('stuff %s', person_data['mmp_person_meta_json'])
+        logging.info('stuff %s', person_data['mmp_meta'])
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:
                     person_image = \
                         person_data['mmp_person_image']['Images']['themoviedb']['Profiles'][0] \
-                        + person_data['mmp_person_meta_json']['profiles'][0]['file_path']
+                        + person_data['mmp_meta']['profiles'][0]['file_path']
                 except:
                     person_image = "../../static/images/person_missing.png"
         else:
