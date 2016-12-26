@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
-      - database
+      - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server.py
     ports:
       - "8903:5000"
@@ -39,7 +39,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
-      - database
+      - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
@@ -78,6 +78,8 @@ services:
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbounce
+    depends_on:
+      - database
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -102,7 +104,7 @@ services:
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
 #    depends_on:
-#      - database
+#      - pgbounce
 #    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_api --ini ./web_api/mediakraken_uwsgi_alpine.ini
 #    ports:
 #      - "8901:8080"
@@ -121,7 +123,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
-      - database
+      - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
@@ -165,7 +167,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
-      - database
+      - pgbounce
       - redis
       - nginx
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
