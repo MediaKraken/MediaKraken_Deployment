@@ -15,6 +15,7 @@ RUN apk --update add git build-base automake libtool m4 autoconf libevent-dev op
         && cd .. && rm -Rf pgbouncer
 
 ADD entrypoint.sh ./
+ADD wait-for-it-ash.sh ./
 
 ENTRYPOINT ["./entrypoint.sh"]
 

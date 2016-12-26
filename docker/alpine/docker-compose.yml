@@ -89,7 +89,7 @@ services:
     container_name: mkpgbounce
     depends_on:
       - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
