@@ -10,7 +10,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
@@ -37,7 +36,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
@@ -72,9 +70,13 @@ services:
   pgbounce:
     image: mediakraken/mkpgbounce:latest
     environment:
-      - DB_HOST=${DBDATABASE}
+      - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=500
+      - DEFAULT_POOL_SIZE=85
+      - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbounce
     networks:
       - mediakraken-dbnetwork
@@ -97,7 +99,6 @@ services:
 #    environment:
 #      - POSTGRES_DB=${DBDATABASE}
 #      - POSTGRES_USER=${DBUSER}
-#      - POSTGRES_HOST=${DBHOST}
 #      - POSTGRES_PASSWORD=${DBPASS}
 #    container_name: mkwebapi
 #    depends_on:
@@ -117,7 +118,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
@@ -162,7 +162,6 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
