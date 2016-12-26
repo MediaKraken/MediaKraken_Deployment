@@ -62,8 +62,8 @@ class TestDatabaseReview(object):
 
 
     @pytest.mark.parametrize(("metadata_id", "review_json"), [
-        (json.dumps({'TMDB': 3}), json.dumps({'test': 123})), #fake id
-        (json.dumps({'TMDB': 3}), json.dumps({'test2': 1323233}))]) # TODO real one
+        (json.dumps({'themoviedb': 3}), json.dumps({'test': 123})), #fake id
+        (json.dumps({'themoviedb': 3}), json.dumps({'test2': 1323233}))]) # TODO real one
     def test_db_review_insert(self, metadata_id, review_json):
         """
         # insert record

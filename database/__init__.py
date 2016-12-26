@@ -49,6 +49,9 @@ class MKServerDatabase(object):
         db_download_update_provider,\
         db_download_update,\
         db_download_que_exists
+    from database.db_base_download_images import db_download_image_insert,\
+        db_download_image_read,\
+        db_download_image_delete
     from database.db_base_kodi import db_kodi_user_sync_movie,\
         db_kodi_user_sync_added,\
         db_kodi_user_sync_collection,\
@@ -174,7 +177,8 @@ class MKServerDatabase(object):
         db_meta_person_by_guid,\
         db_meta_person_by_name,\
         db_meta_person_insert_cast_crew,\
-        db_metdata_person_insert,\
+        db_meta_person_insert,\
+        db_meta_person_update,\
         db_meta_person_id_count,\
         db_meta_person_as_seen_in
     from database.db_base_metadata_sports import db_meta_sports_guid_by_thesportsdb,\
@@ -189,6 +193,8 @@ class MKServerDatabase(object):
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb,\
         db_metatv_guid_by_tvdb,\
         db_metatv_guid_by_tvmaze,\
+        db_metatv_guid_by_tmdb,\
+        db_metatv_guid_by_rt,\
         db_meta_tvshow_list_count,\
         db_meta_tvshow_list,\
         db_meta_tvshow_detail,\
@@ -249,7 +255,8 @@ class MKServerDatabase(object):
         db_user_detail,\
         db_user_delete,\
         db_user_login_kodi
-    from database.db_base_version import db_version_check
+    from database.db_base_version import db_version_check,\
+        db_version_update
 
     # class variables
     sql3_conn = None

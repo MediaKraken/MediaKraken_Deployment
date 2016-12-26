@@ -31,21 +31,21 @@ from . import wol
 
 def mk_network_fetch_from_url(url, directory=None):
     """
-    Download image file from specified url to save in specific directory
+    Download data from specified url to save in specific directory
     """
     logging.info('dl %s url %s' % (url, directory))
     try:
-        imagefile = urllib2.urlopen(url, context=ssl._create_unverified_context())
+        datafile = urllib2.urlopen(url, context=ssl._create_unverified_context())
         if directory is not None:
             localfile = open(directory, 'wb')
-            localfile.write(imagefile.read())
-            imagefile.close()
+            localfile.write(datafile.read())
+            datafile.close()
             localfile.close()
     except urllib2.URLError, err_code:
         logging.error('you got an error with the code %s', err_code)
         return None
     if directory is None:
-        return imagefile.read()
+        return datafile.read()
 
 
 def mk_network_wol(mac_address):

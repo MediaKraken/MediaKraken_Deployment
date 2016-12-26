@@ -18,3 +18,33 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from common import common_config_ini
+from common import common_metadata_tmdb
+
+
+option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+# verify themoviedb key exists
+if option_config_json['API']['themoviedb'] is not None:
+    # setup the thmdb class
+    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+else:
+    TMDB_CONNECTION = None
+
+
+def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
+    """
+    fetch person bio
+    """
+    logging.info("meta person tmdb save fetch: %s", download_data)
+    # fetch and save json data via tmdb id
+    result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(\
+        download_data['mdq_download_json']['ProviderMetaID'])
+    logging.info("meta person code: %s", result_json.status_code)
+    logging.info("meta person save fetch result: %s", result_json.json())
+    if result_json.status_code == 200:
+        thread_db.db_meta_person_update(provider_name, \
+            download_data['mdq_download_json']['ProviderMetaID'], result_json.json(), \
+            TMDB_CONNECTION.com_tmdb_meta_bio_image_build(thread_db, result_json.json()))
+        thread_db.db_download_delete(download_data['mdq_id'])

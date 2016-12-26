@@ -19,8 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
-import locale
-locale.setlocale(locale.LC_ALL, '')
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tvmaze
@@ -45,8 +43,6 @@ db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
 
 
 # grab updated show list with epoc data
-tvshow_updated = 0
-tvshow_inserted = 0
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
 #for show_list_json in result:
@@ -60,27 +56,16 @@ for tvmaze_id, tvmaze_time in result.items():
         # TODO if results['updated'] < tvmaze_time:
         #update_insert_show(tvmaze_id, results[0]) # update the guid
         logging.info("update")
-        tvshow_updated += 1
     else:
         if db_connection.db_download_que_exists(None, 'tvmaze', tvmaze_id) is None:
             # insert new record as it's a new show
             db_connection.db_download_insert('tvmaze', json.dumps({'Status': 'Fetch',\
                 'ProviderMetaID': tvmaze_id}))
-            tvshow_inserted += 1
 
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,\
     'System: Server tvmaze Stop', 'ServerthetvmazeStop', None, None, 'System')
-
-
-# send notications
-if tvshow_updated > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_updated, True)\
-        + " TV show(s) metadata updated.", True)
-if tvshow_inserted > 0:
-    db_connection.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
-        + " TV show(s) metadata added.", True)
 
 
 # commit all changes to db

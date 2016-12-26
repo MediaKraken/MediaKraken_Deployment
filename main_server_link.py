@@ -146,7 +146,7 @@ class MediaKrakenApp(object):
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
                         metadata_guid = self.db_connection.db_meta_guid_by_tmdb(\
-                            new_media[3]['tmdb'])
+                            new_media[3]['themoviedb'])
                         if metadata_guid is None:
                             metadata_guid = self.db_connection.db_meta_guid_by_tvdb(\
                                 new_media[3]['thetvdb'])

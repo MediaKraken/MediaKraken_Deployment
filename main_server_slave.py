@@ -171,7 +171,7 @@ class MediaKrakenApp():
                 shell=False))
         # admin commands
         elif message_words[0] == "CPUUSAGE":
-            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(True))
+            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
         elif message_words[0] == "DISKUSAGE":
             msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
         elif message_words[0] == "MEMUSAGE":

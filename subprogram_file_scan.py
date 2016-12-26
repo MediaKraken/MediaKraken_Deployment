@@ -169,7 +169,7 @@ def worker(audit_directory):
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
                 if save_dl_record:
                     # media id begin and download que insert
-                    thread_db.db_download_insert('Z', json.dumps({'MediaID': media_id,\
+                    thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,\
                         'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,\
                         'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1

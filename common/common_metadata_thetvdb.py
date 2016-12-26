@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 import zipfile
 import StringIO
 import xmltodict
+import requests
 from . import common_network
 
 '''
@@ -58,13 +59,21 @@ class CommonMetadataTheTVDB(object):
         xml_actor_data = None
         xml_banners_data = None
         logging.info("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
-        try:
-            # TODO catch errors
-            show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
-                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
-                + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
-        except:
+        
+        show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection\
+                + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
+        if show_data.status_code == 200:
+            show_zip = zipfile.ZipFile(StringIO.StringIO(show_data.content))
+        else:
             return (None, None, None)
+#        try:
+#            # TODO catch errors
+#            show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
+#                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
+#                + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
+#        except:
+#            return (None, None, None)
+
         # for the individual show data
         for zippedshowFile in show_zip.namelist():
             if zippedshowFile == 'en.xml':

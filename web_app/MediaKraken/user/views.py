@@ -554,13 +554,13 @@ def user_tv_episode_detail_page(guid, season, episode):
     data_episode_detail = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
     # poster image
     try:
-        data_poster_image = data_metadata[3]
+        data_poster_image = data_episode_detail[3]
     except:
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if data_episode_detail['LocalImages']['Backdrop'] is not None:
+            data_background_image = data_episode_detail['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -692,6 +692,33 @@ def user_livetv_detail_page(guid):
     Display live tv detail page
     """
     return render_template("users/user_livetv_page.html")
+
+
+@blueprint.route('/cast/<action>/<guid>/')
+@blueprint.route('/cast/<action>/<guid>')
+@login_required
+def user_cast(action, guid):
+    """
+    Display chromecast actions page
+    """
+    if action == 'base':
+        pass
+    elif action == 'back':
+        pass
+    elif action == 'rewind':
+        pass
+    elif action == 'stop':
+        pass
+    elif action == 'play':
+        cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
+            '-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
+    elif action == 'pause':
+        pass
+    elif action == 'ff':
+        pass
+    elif action == 'forward':
+        pass
+    return render_template("users/user_playback_cast.html")
 
 
 @blueprint.route('/playvideo/<guid>/')
@@ -869,10 +896,10 @@ def user_movie_page(genre):
             match_status = False
         logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
             favorite_status, match_status)
-        if 'tmdb' in json_image['Images'] and 'Poster' in json_image['Images']['tmdb']\
-                and json_image['Images']['tmdb']['Poster'] is not None:
+        if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb']\
+                and json_image['Images']['themoviedb']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],\
-                json_image['Images']['tmdb']['Poster'],\
+                json_image['Images']['themoviedb']['Poster'],\
                 watched_status, sync_status, poo_status, favorite_status, match_status))
         else:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,\
@@ -933,21 +960,21 @@ def movie_detail(guid):
         json_metaid = data['mm_metadata_media_id']
         # vote count format
         data_vote_count = locale.format('%d',\
-            json_metadata['Meta']['tmdb']['Meta']['vote_count'], True)
+            json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
         # build gen list
         genres_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['genres'])):
-            genres_list += (json_metadata['Meta']['tmdb']['Meta']['genres'][ndx]['name'] + ', ')
+        for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
+            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
         # build production list
         production_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['production_companies'])):
+        for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
             production_list\
-                += (json_metadata['Meta']['tmdb']['Meta']['production_companies'][ndx]['name']\
+                += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']\
                 + ', ')
         # budget format
-        budget = locale.format('%d', json_metadata['Meta']['tmdb']['Meta']['budget'], True)
+        budget = locale.format('%d', json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
         # revenue format
-        revenue = locale.format('%d', json_metadata['Meta']['tmdb']['Meta']['revenue'], True)
+        revenue = locale.format('%d', json_metadata['Meta']['themoviedb']['Meta']['revenue'], True)
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
             aspect_ratio = "NA"
@@ -1019,26 +1046,26 @@ def movie_detail(guid):
                     subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
         # poster image
         try:
-            if json_imagedata['Images']['tmdb']['Poster'] is not None:
-                data_poster_image = json_imagedata['Images']['tmdb']['Poster']
+            if json_imagedata['Images']['themoviedb']['Poster'] is not None:
+                data_poster_image = json_imagedata['Images']['themoviedb']['Poster']
             else:
                 data_poster_image = None
         except:
             data_poster_image = None
         # background image
         try:
-            if json_imagedata['Images']['tmdb']['Backdrop'] is not None:
-                data_background_image = json_imagedata['Images']['tmdb']['Backdrop']
+            if json_imagedata['Images']['themoviedb']['Backdrop'] is not None:
+                data_background_image = json_imagedata['Images']['themoviedb']['Backdrop']
             else:
                 data_background_image = None
         except:
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['tmdb'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
-            for review_data in review_json[1]['tmdb']['results']:
+            for review_data in review_json[1]['themoviedb']['results']:
                 review.append((review_data['author'], review_data['url'], review_data['content']))
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
@@ -1472,6 +1499,22 @@ def metadata_person_list():
     Display person list page
     """
     page, per_page, offset = common_pagination.get_page_items()
+    person_list = []
+    for person_data in g.db_connection.db_meta_person_list(offset, per_page):
+        logging.info('person data: %s', person_data)
+        logging.info('im: %s', person_data['mmp_person_image'])
+        logging.info('stuff %s', person_data['mmp_meta'])
+        if person_data['mmp_person_image'] is not None:
+            if 'themoviedb' in person_data['mmp_person_image']['Images']:
+                try:
+                    person_image = "../../static/meta/images/" + \
+                        person_data['mmp_person_image']['Images']['themoviedb']['Profiles'][0] \
+                        + person_data['mmp_meta']['profiles'][0]['file_path']
+                except:
+                    person_image = "../../static/images/person_missing.png"
+        else:
+            person_image = "../../static/images/person_missing.png"
+        person_list.append((person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(\
@@ -1481,7 +1524,7 @@ def metadata_person_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_people_list.html',
-                           media_person=g.db_connection.db_meta_person_list(offset, per_page),
+                           media_person=person_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -1572,29 +1615,29 @@ def metadata_movie_detail(guid):
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
     data_vote_count = locale.format('%d',\
-        json_metadata['Meta']['tmdb']['Meta']['vote_count'], True)
+        json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['genres'])):
-        genres_list += (json_metadata['Meta']['tmdb']['Meta']['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
+        genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['tmdb']['Meta']['production_companies'])):
+    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
         production_list\
-            += (json_metadata['Meta']['tmdb']['Meta']['production_companies'][ndx]['name'] + ', ')
+            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
     # poster image
     try:
-        if json_imagedata['Images']['tmdb']['Poster'] is not None:
+        if json_imagedata['Images']['themoviedb']['Poster'] is not None:
             data_poster_image\
-                = json_imagedata['Images']['tmdb']['Poster']
+                = json_imagedata['Images']['themoviedb']['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Images']['tmdb']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['tmdb']['Backdrop']
+        if json_imagedata['Images']['themoviedb']['Backdrop'] is not None:
+            data_background_image = json_imagedata['Images']['themoviedb']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -1612,7 +1655,7 @@ def metadata_movie_detail(guid):
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
                            data_budget=locale.format('%d',\
-                               json_metadata['Meta']['tmdb']['Meta']['budget'], True)
+                               json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
                           )
 
 
@@ -1897,8 +1940,8 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if data_metadata['LocalImages']['Backdrop'] is not None:
+            data_background_image = data_metadata['LocalImages']['Backdrop']
         else:
             data_background_image = None
     except:

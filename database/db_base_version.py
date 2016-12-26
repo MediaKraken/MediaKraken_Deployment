@@ -21,5 +21,15 @@ import logging # pylint: disable=W0611
 
 
 def db_version_check(self):
+    """
+    query db version
+    """
     self.db_cursor.execute('select mm_version_no from mm_version')
     return self.db_cursor.fetchone()[0]
+
+
+def db_version_update(self, version_no):
+    """
+    update db version
+    """
+    self.db_cursor.execute('update mm_version set mm_version_no = %s', version_no)

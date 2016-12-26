@@ -131,7 +131,7 @@ class AdminSettingsForm(Form):
     #('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     metadata_source_down_tvmaze = BooleanField('tvmaze')
-    metadata_source_down_tmdb = BooleanField('TMDB')
+    metadata_source_down_tmdb = BooleanField('themoviedb')
     metadata_source_down_tvdb = BooleanField('thetvdb')
     metadata_source_down_freedb = BooleanField('FreeDB')
     metadata_source_down_mbrainz = BooleanField('Music Brainz')

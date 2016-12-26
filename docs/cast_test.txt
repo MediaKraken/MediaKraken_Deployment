@@ -1,0 +1,121 @@
+# nuttin
+python stream2chromecast.py -devicename 10.0.0.56 '/home/spoot/nfsmount/HTPC_MediaBrowser/Laserdisc/Dudes (1987)/Dudes (1987).mkv'
+
+# works
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 1000k -b:a 128k' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Laserdisc/Dudes (1987)/Dudes (1987).mkv'
+
+# stutter alot
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 1000k -b:a 128k' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Rip/Nightcrawler (2014)/Nightcrawler (2014).mkv'
+
+# nope
+python stream2chromecast.py -devicename 10.0.0.56 -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+
+
+
+add buffer of 5 meg
+-transcodebufsize 5242880
+
+-vcodec libx264
+
+-c:v libx264 -c:a libfaac
+
+-transcodeopts '-c:v copy -c:a ac3'
+
+# coming through with sound as 5.1 - no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 3000k -b:a 128k'-transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+# 5.1......no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 5000k -b:a 128k'-transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+# 5.`.....no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 1000k -b:a 128k'-transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1....no vid
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-f mp4 -b:v 1000k -b:a 128k'-transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1....no vid
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-f mp4'-transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+aac encoder death
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a libfaac' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+
+video and audio....stereo but that might be the video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a libfdk_aac' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Attack on Titan (2013)/Attack on Titan - 1x23 - Smile.mp4'
+
+# nuttin - ffmpeg is 600% use
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a libfdk_aac' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Stargate_Universe (2009)/Season 1/Stargate Universe S01E19 Incursion Part 1 1080p BluRay 5.1 EN.mp4'
+
+# same as above
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 1000k -b:a 128k -c:v libx264 -c:a libfdk_aac' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Stargate_Universe (2009)/Season 1/Stargate Universe S01E19 Incursion Part 1 1080p BluRay 5.1 EN.mp4'
+
+# same as above
+python stream2chromecast.py -devicename 10.0.0.56 -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Stargate_Universe (2009)/Season 1/Stargate Universe S01E19 Incursion Part 1 1080p BluRay 5.1 EN.mp4'
+
+
+# audio and no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-b:v 3000k -b:a 128k' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Army of Darkness (1993)/Army of Darkness (1993).mkv'
+
+# nuttin
+python stream2chromecast.py -devicename 10.0.0.56 -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Army of Darkness (1993)/Army of Darkness (1993).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+# nuttin
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-f mp4 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+2 chanel audio but video plays
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Justified (2010)/Season 4/justified.s04e09.hdtv.x264-2hd.mp4'
+
+5.1 and video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Spartacus (2010)/03.Spartacus.War.Of.The.DamedS03.Season.3.COMPLETE.720p.Bluray.x264.anoXmous/04/Spartacus.S03E04.720p.BluRay.x264.anoXmous_.mp4'
+
+# audio and video works
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Laserdisc/Kafka (1991)/Kafka (1991).mkv'
+
+5.1 and video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Neighbors (2014)/Neighbors (2014).avi'
+
+# 5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+
+nuttin
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v mpeg4 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-vcodec libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+
+# video but "pcm" audio - actually no audio
+python stream2chromecast.py -devicename 10.0.0.56 '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+
+# nuttin
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/Movie_Misc/Point Break (2015)/Point Break (2015).mkv'
+
+5.1 audio, no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -b:a 128k -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -b:v 1000k -c:a ac3 -b:a 128k -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+# audio, no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-vcodec libx264 -b:v 1000k -c:a ac3 -b:a 128k -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+# audio, no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-vcodec mpeg4 -b:v 1000k -c:a ac3 -b:a 128k -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Aliens (1986)/Aliens (1986).mkv'
+
+5.1 audio
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/16 Blocks (2006)/16 Blocks (2006).mkv'
