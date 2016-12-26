@@ -158,7 +158,7 @@ services:
 
   # Runs the web service for the main server application
   webserver:
-    image: mediakraken/mkwebserver:latest
+    image: mediakraken/mkwebapp:latest
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
