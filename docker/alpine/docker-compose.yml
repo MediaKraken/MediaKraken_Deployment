@@ -158,6 +158,8 @@ services:
     build:
       context: ./ComposeMediaKrakenMusicBrainz
       dockerfile: Dockerfile
+    environment:
+      - BRAINZCODE=${BRAINZCODE}
     container_name: mkbrainz
     networks:
       - mediakraken-network
