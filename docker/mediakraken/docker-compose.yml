@@ -150,6 +150,17 @@ services:
       - mediakraken-network
     restart: unless-stopped
 
+  # runs the openldap
+  openldap:
+    image: mediakraken/mkopenldap:latest
+    container_name: mkopenldap
+    ports:
+      - "389:389"
+      - "636:636"
+    networks:
+      - mediakraken-network
+    restart: unless-stopped
+
   # runs the redis service for flask
   redis:
     image: mediakraken/mkredis:latest
