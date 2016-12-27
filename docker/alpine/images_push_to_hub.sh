@@ -1,3 +1,4 @@
+docker push mediakraken/mkbrainz:latest
 docker push mediakraken/mkslave:latest
 docker push mediakraken/mkserver:latest
 docker push mediakraken/mkdatabase:latest
