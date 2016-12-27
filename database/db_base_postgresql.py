@@ -73,9 +73,9 @@ def db_pgsql_vacuum_table(self, table_name):
     # vacuum table
     """
     if self.db_pgsql_table_exits(table_name) is not None:
-        self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        #self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)
         self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
-        self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
+        #self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
     else:
         logging.info('Vacuum table missing: %s', table_name)
 
