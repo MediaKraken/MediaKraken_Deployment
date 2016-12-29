@@ -13,23 +13,15 @@ from WebLog.admins.forms import BackupEditForm
 from WebLog.admins.forms import UserEditForm
 from WebLog.admins.forms import AdminSettingsForm
 
-import pygal
 import json
 import logging # pylint: disable=W0611
-import subprocess
-import platform
-import os
 import sys
 sys.path.append('..')
 from common import common_config_ini
-from common import common_network_cifs
-from common import common_cloud
 from common import common_file
 from common import common_network
 from common import common_pagination
-from common import common_string
 from common import common_system
-import database as database_base
 
 
 import locale
@@ -132,12 +124,12 @@ def admin_users():
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
-                                per_page=per_page,
-                                total=g.db_connection.db_user_list_name_count(),
-                                record_name='users',
-                                format_total=True,
-                                format_number=True,
-                                )
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_user_list_name_count(),
+                                                  record_name='users',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                  )
     return render_template('admin/admin_users.html',
                            users=g.db_connection.db_user_list_name(offset, per_page),
                            page=page,
@@ -168,69 +160,6 @@ def admin_user_delete_page():
     g.db_connection.db_user_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
-
-
-@blueprint.route('/backup_delete', methods=["POST"])
-@login_required
-@admin_required
-def admin_backup_delete_page():
-    """
-    Delete backup file action 'page'
-    """
-    file_path, file_type = request.form['id'].split('|')
-    if file_type == "Local":
-        os.remove(file_path)
-    elif file_type == "AWS" or file_type == "AWS S3":
-        common_cloud.com_cloud_file_delete('awss3', file_path, True)
-    return json.dumps({'status': 'OK'})
-
-
-@blueprint.route("/backup", methods=["GET", "POST"])
-@blueprint.route("/backup/", methods=["GET", "POST"])
-@login_required
-@admin_required
-def admin_backup():
-    """
-    List backups from local fs and cloud
-    """
-    form = BackupEditForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            if request.form['backup'] == 'Update':
-                pass
-            elif request.form['backup'] == 'Start Backup':
-                g.db_connection.db_trigger_insert(('python',\
-                    './subprogram_postgresql_backup.py')) # this commits
-                flash("Postgresql Database Backup Task Submitted.")
-        else:
-            flash_errors(form)
-    backup_enabled = False
-    backup_files = []
-    for backup_local in common_file.com_file_dir_list(\
-            option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local',\
-            common_string.com_string_bytes2human(backup_local[1])))
-    # cloud backup list
-    for backup_cloud in common_cloud.com_cloud_backup_list():
-        backup_files.append((backup_cloud.name, backup_cloud.type,\
-            common_string.com_string_bytes2human(backup_cloud.size)))
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=len(backup_files),
-                                                  record_name='backups',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                 )
-    return render_template("admin/admin_backup.html", form=form,
-                           backup_list=sorted(backup_files, reverse=True),
-                           data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=common_cloud.cloud_backup_class,
-                           data_enabled=backup_enabled,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination
-                          )
 
 
 @blueprint.route("/settings")

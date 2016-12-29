@@ -304,7 +304,8 @@ def admin_library():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_media_dir'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_media_dir'),
                                                   record_name='library dir(s)',
                                                   format_total=True,
                                                   format_number=True,
@@ -333,7 +334,7 @@ def admin_library_edit_page():
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(\
                         request.form['library_path'])
-                    logging.info('smb info: %s %s %s' % (addr, share, path))
+                    logging.info('smb info: %s %s %s', (addr, share, path))
                     if addr is None: # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins.admin_library_edit_page'))
@@ -383,8 +384,8 @@ def admin_library_edit_page():
         share_list.append((share_name, row_data['mm_media_share_guid']))
 
     return render_template("admin/admin_library_edit.html", form=form,
-                   data_class=class_list,
-                   data_share=share_list)
+                           data_class=class_list,
+                           data_share=share_list)
 
 
 @blueprint.route('/library_delete', methods=["POST"])
@@ -428,7 +429,8 @@ def admin_share():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_media_share'),
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_media_share'),
                                                   record_name='share(s)',
                                                   format_total=True,
                                                   format_number=True,
@@ -454,9 +456,9 @@ def admin_share_edit_page():
     if request.method == 'POST':
         logging.info('herepost')
         if form.validate_on_submit():
-            logging.info('action %s' % request.form['action_type'])
+            logging.info('action %s', request.form['action_type'])
             if request.form['action_type'] == 'Add':
-                logging.info('type %s' % request.form['storage_mount_type'])
+                logging.info('type %s', request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
 #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
@@ -467,8 +469,8 @@ def admin_share_edit_page():
 #                    logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'], \
-                        user_name = request.form['storage_mount_user'], \
-                        user_password = request.form['storage_mount_password'])
+                        user_name=request.form['storage_mount_user'], \
+                        user_password=request.form['storage_mount_password'])
 #                    if not smb_stuff.com_cifs_share_directory_check(\
 #                            request.form['storage_mount_server'], \
 #                            request.form['storage_mount_path']):
@@ -481,8 +483,8 @@ def admin_share_edit_page():
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],\
-                        user_name = request.form['storage_mount_user'], \
-                        user_password = request.form['storage_mount_password'])
+                        user_name=request.form['storage_mount_user'], \
+                        user_password=request.form['storage_mount_password'])
                     smb_stuff.com_cifs_share_directory_check(share_name,\
                         request.form['storage_mount_path'])
                     smb_stuff.com_cifs_close()
@@ -627,6 +629,9 @@ def admin_backup():
 @login_required
 @admin_required
 def ffmpeg_stat():
+    """
+    Redirect to ffmeg stats
+    """
     return redirect("http://www.example.com/status.html", code=302)  # status.html is ffmpeg page
 
 
@@ -723,6 +728,9 @@ def admin_link_delete_page():
 @login_required
 @admin_required
 def admin_cloud_google_drive():
+    """
+    browse google drive
+    """
     return render_template("admin/cloud/cloud_google_drive.html")
 
 
@@ -731,6 +739,9 @@ def admin_cloud_google_drive():
 @login_required
 @admin_required
 def admin_cloud_onedrive():
+    """
+    browse onedrive
+    """
     return render_template("admin/cloud/cloud_onedrive.html")
 
 
@@ -739,6 +750,9 @@ def admin_cloud_onedrive():
 @login_required
 @admin_required
 def admin_cloud_aws_s3():
+    """
+    browse aws
+    """
     return render_template("admin/cloud/cloud_aws_s3.html")
 
 
@@ -747,6 +761,9 @@ def admin_cloud_aws_s3():
 @login_required
 @admin_required
 def admin_cloud_dropbox():
+    """
+    browse dropbox
+    """
     return render_template("admin/cloud/cloud_dropbox.html")
 
 
