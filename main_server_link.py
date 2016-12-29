@@ -27,7 +27,6 @@ import sys
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
-from common import common_version
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl

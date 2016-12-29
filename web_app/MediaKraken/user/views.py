@@ -964,7 +964,8 @@ def movie_detail(guid):
         # build gen list
         genres_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
+            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] \
+                + ', ')
         # build production list
         production_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
@@ -1071,7 +1072,8 @@ def movie_detail(guid):
         data_json_media_chapters = []
         try:
             for chap_data in natsort.natsorted(json_media['ChapterImages']):
-                data_json_media_chapters.append((chap_data, json_media['ChapterImages'][chap_data]))
+                data_json_media_chapters.append((chap_data, \
+                    json_media['ChapterImages'][chap_data]))
         except:
             pass
         # set watched and sync
@@ -2144,7 +2146,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception):
+def teardown_request(exception): # pylint: disable=W0613
     """
     Executes after each request
     """
