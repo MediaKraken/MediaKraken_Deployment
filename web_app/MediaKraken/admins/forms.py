@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+from decimal import ROUND_UP
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
-from decimal import ROUND_UP
 
 
 # for editing the shares
 class ShareAddEditForm(Form):
+    """
+    for editing the shares
+    """
     #description = TextAreaField('Description', validators=[DataRequired()])
     storage_mount_type = SelectField('Share type',\
         choices=[('unc', 'UNC'), ('smb', 'SMB/CIFS'), ('nfs', 'NFS')])
@@ -28,8 +31,10 @@ class ShareAddEditForm(Form):
         return True
 
 
-# for editing the library
 class LibraryAddEditForm(Form):
+    """
+    for editing the library
+    """
     #description = TextAreaField('Description', validators=[DataRequired()])
     library_path = TextField('Library Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
@@ -45,8 +50,10 @@ class LibraryAddEditForm(Form):
         return True
 
 
-# for editing backups
 class BackupEditForm(Form):
+    """
+    for editing backups
+    """
     enabled = BooleanField('Enabled')
     #interval = SelectField('Interval', choices=[('Hours', 'Hours'),\
     #('Days', 'Days'), ('Weekly', 'Weekly')])
@@ -64,8 +71,10 @@ class BackupEditForm(Form):
         return True
 
 
-# for editing dlna
 class DLNAEditForm(Form):
+    """
+    for editing dlna
+    """
     enabled = BooleanField('Enabled')
 
 
@@ -80,8 +89,10 @@ class DLNAEditForm(Form):
         return True
 
 
-# for editing user
 class UserEditForm(Form):
+    """
+    for editing user
+    """
     username = TextField('Username',
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
@@ -105,8 +116,10 @@ class UserEditForm(Form):
         return True
 
 
-# for editing user
 class AdminSettingsForm(Form):
+    """
+    for editing user
+    """
     servername = TextField('Server Name', validators=[DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
     server_bind_addr = TextField('Bind Addr', validators=[Length(min=7, max=15)])
@@ -157,8 +170,10 @@ class AdminSettingsForm(Form):
         return True
 
 
-# for editing the cron jobs
 class CronEditForm(Form):
+    """
+    for editing the cron jobs
+    """
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
