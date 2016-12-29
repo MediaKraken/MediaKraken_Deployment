@@ -24,7 +24,6 @@ from common import common_config_ini
 
 
 # media classes
-# when adding new classes must update subprogram_match_known_media program as well
 base_media_classes = (
     ("Adult", "Video", True),
     ("Anime", "Video", True),
