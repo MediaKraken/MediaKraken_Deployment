@@ -498,7 +498,7 @@ base_cron = [
     ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_thetvdb_updates.py'),
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_tmdb_updates.py'),
 #    ('TVmaze Images', 'Grab missing TVmaze images', './subprogram_tvmaze_images.py'),
-    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmze_updates.py'),
+    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmaze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_update_create_collections.py'),
     # normal subprograms
 #    ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
@@ -633,9 +633,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'\
     ' mm_options_json jsonb, mm_status_json jsonb)')
 #db_connection.db_query('select count(*) from mm_options_and_status')
 #if db_connection.fetchone()[0] == 0:
-db_connection.db_query(('insert into mm_options_and_status (mm_options_and_status_guid,'\
-    'mm_options_json,mm_status_json) values (%s,%s,%s)', (str(uuid.uuid4()), \
-    json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
+db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
     'MaxResumePct': 5,\
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
         'MetadataImageLocal': '',\
@@ -665,7 +663,7 @@ db_connection.db_query(('insert into mm_options_and_status (mm_options_and_statu
     'GoogleDrive': {'SecretFile': None},\
     'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},\
     'SD': {'User': None, 'Password': None},\
-    }), json.dumps({'thetvdb_Updated_Epoc': 0}))))
+    }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 
 # create table game_info
