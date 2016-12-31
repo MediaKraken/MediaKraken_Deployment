@@ -290,7 +290,8 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
 for media_class in base_media_classes:
     db_connection.db_query('insert into mm_media_class (mm_media_class_guid,'\
         'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'\
-        ' values (%s,%s,%s,%s)' % str(uuid.uuid4()), media_class[0], media_class[1], media_class[2])
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), media_class[0], \
+        media_class[1], media_class[2]))
 
 
 # create table for anime metadata
@@ -518,9 +519,9 @@ base_cron = [
 for base_item in base_cron:
     db_connection.db_query('insert into mm_cron (mm_cron_guid, mm_cron_name,'\
         ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'\
-        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)' % str(uuid.uuid4()), base_item[0], \
+        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), base_item[0], \
         base_item[1], False, 'Days 1',\
-        psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2])
+        psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2]))
 
 
 # create iradio tables
@@ -603,7 +604,7 @@ base_group = [('Administrator', 'Server administrator',\
 for base_item in base_group:
     db_connection.db_query('insert into mm_user_group (mm_user_group_guid,'\
         ' mm_user_group_name, mm_user_group_description, mm_user_group_rights_json)'\
-        ' values (%s,%s,%s,%s)' % str(uuid.uuid4()), base_item[0], base_item[1], base_item[2])
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), base_item[0], base_item[1], base_item[2]))
 
 
 # create table for user profiles
@@ -632,8 +633,8 @@ base_user = (
     )
 for base_item in base_user:
     db_connection.db_query('insert into mm_user_profile (mm_user_profile_guid,'\
-        ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)' \
-        % str(uuid.uuid4()), base_item[0], base_item[1])
+        ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)', \
+        (str(uuid.uuid4()), base_item[0], base_item[1]))
 
 
 # create options and status table
@@ -643,7 +644,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'\
 #db_connection.db_query('select count(*) from mm_options_and_status')
 #if db_connection.fetchone()[0] == 0:
 db_connection.db_query('insert into mm_options_and_status (mm_options_and_status_guid,'\
-    'mm_options_json,mm_status_json) values (%s,%s,%s)' % str(uuid.uuid4()), \
+    'mm_options_json,mm_status_json) values (%s,%s,%s)', (str(uuid.uuid4()), \
     json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
     'MaxResumePct': 5,\
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
@@ -674,7 +675,7 @@ db_connection.db_query('insert into mm_options_and_status (mm_options_and_status
     'GoogleDrive': {'SecretFile': None},\
     'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},\
     'SD': {'User': None, 'Password': None},\
-    }), json.dumps({'thetvdb_Updated_Epoc': 0}))
+    }), json.dumps({'thetvdb_Updated_Epoc': 0})))
 
 
 # create table game_info
