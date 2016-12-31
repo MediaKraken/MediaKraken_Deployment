@@ -18,6 +18,16 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import uuid
+
+
+def db_media_class_insert(self, class_name, class_type, display_class):
+    """
+    insert media class
+    """
+    self.db_cursor.execute('insert into mm_media_class (mm_media_class_guid,'\
+        'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'\
+        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), class_name, class_type, display_class))
 
 
 def db_media_class_list_count(self):

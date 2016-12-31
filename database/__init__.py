@@ -36,7 +36,8 @@ class MKServerDatabase(object):
         db_collection_by_tmdb
     from database.db_base_cron import db_cron_list_count,\
         db_cron_list,\
-        db_cron_time_update
+        db_cron_time_update,\
+        db_cron_insert
     from database.db_base_device import db_device_count,\
         db_device_list,\
         db_device_insert,\
@@ -70,6 +71,7 @@ class MKServerDatabase(object):
         db_link_insert,\
         db_link_delete
     from database.db_base_media_class import db_media_class_list_count,\
+        db_media_class_insert,\
         db_media_class_list,\
         db_media_class_by_uuid,\
         db_media_uuid_by_class
@@ -254,7 +256,9 @@ class MKServerDatabase(object):
         db_user_list_name,\
         db_user_detail,\
         db_user_delete,\
-        db_user_login_kodi
+        db_user_login_kodi,\
+        db_user_group_insert,\
+        db_user_profile_insert
     from database.db_base_version import db_version_check,\
         db_version_update
 

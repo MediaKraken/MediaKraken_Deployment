@@ -19,6 +19,18 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import datetime
+import uuid
+
+
+def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron_last_run, \
+                   cron_file_path):
+    """
+    insert cron job
+    """
+    self.db_cursor.execute('insert into mm_cron (mm_cron_guid, mm_cron_name,'\
+        ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'\
+        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), cron_name, \
+        cron_desc, cron_enabled, cron_schedule, cron_last_run, cron_file_path))
 
 
 def db_cron_list_count(self, enabled_only=False):
