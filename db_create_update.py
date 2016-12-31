@@ -295,7 +295,7 @@ for media_class in base_media_classes:
     sql_params = str(uuid.uuid4()), media_class[0], media_class[1], media_class[2]
     db_connection.db_query('insert into mm_media_class (mm_media_class_guid,'\
         'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'\
-        ' values (%s,%s,%s,%s)', sql_params)
+        ' values (%s,%s,%s,%s)' % sql_params)
 
 
 # create table for anime metadata
@@ -525,7 +525,7 @@ for base_item in base_cron:
         psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2]
     db_connection.db_query('insert into mm_cron (mm_cron_guid, mm_cron_name,'\
         ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'\
-        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)', sql_params)
+        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)' % sql_params)
 
 
 # create iradio tables
@@ -609,7 +609,7 @@ for base_item in base_group:
     sql_params = str(uuid.uuid4()), base_item[0], base_item[1], base_item[2]
     db_connection.db_query('insert into mm_user_group (mm_user_group_guid,'\
         ' mm_user_group_name, mm_user_group_description, mm_user_group_rights_json)'\
-        ' values (%s,%s,%s,%s)', sql_params)
+        ' values (%s,%s,%s,%s)' % sql_params)
 
 
 # create table for user profiles
@@ -639,7 +639,7 @@ base_user = (
 for base_item in base_user:
     sql_params = str(uuid.uuid4()), base_item[0], base_item[1]
     db_connection.db_query('insert into mm_user_profile (mm_user_profile_guid,'\
-        ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)', sql_params)
+        ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)' % sql_params)
 
 
 # create options and status table
@@ -680,7 +680,7 @@ sql_params = str(uuid.uuid4()), json.dumps({'Backup':{'BackupType': 'awss3', 'In
 'SD': {'User': None, 'Password': None},\
 }), json.dumps({'thetvdb_Updated_Epoc': 0})
 db_connection.db_query('insert into mm_options_and_status (mm_options_and_status_guid,'\
-    'mm_options_json,mm_status_json) values (%s,%s,%s)', sql_params)
+    'mm_options_json,mm_status_json) values (%s,%s,%s)' % sql_params)
 
 
 # create table game_info
