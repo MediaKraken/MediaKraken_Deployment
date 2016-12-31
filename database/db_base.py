@@ -109,8 +109,8 @@ def db_query(self, query_string):
     # general run anything
     """
     logging.info("query: %s", query_string)
+    self.db_cursor.execute(query_string)
     try:
-        self.db_cursor.execute(query_string)
         return self.db_cursor.fetchall()
     except:
         return None
