@@ -288,8 +288,8 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
         ' ON mm_media_class(mm_media_class_type)')
 # add media classes
 for media_class in base_media_classes:
-    db_connection.db_query('select count(*) from mm_media_class where mm_media_class_type = %s',\
-                        (media_class[0],))
+    db_connection.db_query('select count(*) from mm_media_class where mm_media_class_type = %s' \
+                           % media_class[0])
     if db_connection.fetchone()[0] == 0:
         sql_params = str(uuid.uuid4()), media_class[0], media_class[1], media_class[2]
         db_connection.db_query('insert into mm_media_class (mm_media_class_guid,'\
