@@ -18,15 +18,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import os
 import database as database_base
 
 
-def com_config_read():
+def com_config_read(db_build=False):
     """
     Read in the database connection and open unless specified not too
     """
     # open the database
     db_connection = database_base.MKServerDatabase()
-    db_connection.db_open()
+    db_connection.db_open(db_build)
     return db_connection.db_opt_status_read()['mm_options_json'], db_connection

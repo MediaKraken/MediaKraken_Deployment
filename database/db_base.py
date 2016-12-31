@@ -27,7 +27,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor # pylint: disable=W0611
 
 
-def db_open(self, docker=True):
+def db_open(self, db_build=False):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -36,7 +36,7 @@ def db_open(self, docker=True):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
-    if docker:
+    if db_build == False:
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
             % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432, \
             os.environ['POSTGRES_PASSWORD']))
