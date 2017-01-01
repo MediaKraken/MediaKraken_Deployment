@@ -81,7 +81,7 @@ def db_meta_person_id_count(self, host_type, guid):
 # works after the refactor
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"themoviedb": "22358"}'
 # works in postgresql
-# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"TMDB"}'
+# select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"themoviedb"}'
     #and mmp_person_meta_json @> '{"id":169}'
 
 
@@ -175,8 +175,8 @@ def db_meta_person_as_seen_in(self, person_guid):
     if row_data['mmp_person_media_id']['Host'] == 'themoviedb':
         sql_params = row_data['mmp_person_media_id']['id'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
-            'mm_metadata_localimage_json->\'Images\'->\'tmdb\'->\'Poster\''\
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'tmdb\'->\'Cast\''\
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''\
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''\
             ' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],
