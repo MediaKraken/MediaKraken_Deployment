@@ -222,8 +222,12 @@ def user_books_add():
         class_uuid = g.db_connection.db_media_uuid_by_class('Book')
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
-                g.db_connection.db_insert_media(str(uuid.uuid4()), None, class_uuid,\
-                    str(uuid.uuid4()), None, json.dumps({'isbn': book_item.strip()}))
+                media_id = str(uuid.uuid4())
+                g.db_connection.db_insert_media(media_id, None, class_uuid,\
+                    None, None, None)
+                g.db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,\
+                    'Path': None, 'ClassID': class_uuid, 'Status': None,\
+                    'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
         return redirect(url_for('user.user_books_add'))
     form = BookAddForm(request.form, csrf_enabled=False)
