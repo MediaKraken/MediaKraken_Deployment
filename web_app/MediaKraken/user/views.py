@@ -8,6 +8,7 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 #from flask_table import Table, Col, create_table
+from MediaKraken.user.forms import BookAddForm
 from MediaKraken.user.forms import SyncEditForm
 from flask_paginate import Pagination
 from fractions import Fraction
@@ -208,6 +209,26 @@ def user_books_list():
     Display books page
     """
     return render_template("users/user_books_list.html")
+
+
+@blueprint.route('/books_add', methods=['GET', 'POST'])
+@blueprint.route('/books_add/', methods=['GET', 'POST'])
+@login_required
+def user_books_add():
+    """
+    Display books add page
+    """
+    if request.method == 'POST':
+        class_uuid = g.db_connection.db_media_uuid_by_class('Book')
+        for book_item in request.form['book_list']:
+            g.db_connection.db_insert_media(str(uuid.uuid4()), None, class_uuid,\
+        str(uuid.uuid4()), None, json.dumps({'isbn': book_item}))
+        g.db_connection.db_commit()
+        return redirect(url_for('user.books_add'))
+    form = BookAddForm(request.form, csrf_enabled=False)
+    if form.validate_on_submit():
+        pass
+    return render_template("users/user_books_add.html", form=form)
 
 
 # 3d

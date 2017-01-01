@@ -70,6 +70,8 @@ class MKServerDatabase(object):
         db_link_list,\
         db_link_insert,\
         db_link_delete
+    from database.db_base_media_books import db_media_book_list_count,\
+        db_media_book_list
     from database.db_base_media_class import db_media_class_list_count,\
         db_media_class_insert,\
         db_media_class_list,\

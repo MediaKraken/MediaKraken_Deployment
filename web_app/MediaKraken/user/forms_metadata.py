@@ -7,6 +7,22 @@ from decimal import ROUND_UP
 from .models import User
 
 
+class BookAddForm(Form):
+    """
+    # for adding books
+    """
+    book_list = TextAreaField('Books ISBNs', validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(BookAddForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(BookAddForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
 class MetaMovieEditForm(Form):
     """
     # for editing the movie metadata
