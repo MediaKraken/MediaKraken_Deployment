@@ -222,7 +222,7 @@ def user_books_add():
         class_uuid = g.db_connection.db_media_uuid_by_class('Book')
         for book_item in request.form['book_list']:
             g.db_connection.db_insert_media(str(uuid.uuid4()), None, class_uuid,\
-        str(uuid.uuid4()), None, json.dumps({'isbn': book_item}))
+                str(uuid.uuid4()), None, json.dumps({'isbn': book_item}))
         g.db_connection.db_commit()
         return redirect(url_for('user.books_add'))
     form = BookAddForm(request.form, csrf_enabled=False)
