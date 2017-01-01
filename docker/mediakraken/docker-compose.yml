@@ -121,14 +121,14 @@ services:
       - DAC_READ_SEARCH
 
   # musicbrainz replicator
-  brainz:
-    image: mediakraken/mkbrainz:latest
-    environment:
-      - BRAINZCODE=${BRAINZCODE}
-    container_name: mkbrainz
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
+#  brainz:
+#    image: mediakraken/mkbrainz:latest
+#    environment:
+#      - BRAINZCODE=${BRAINZCODE}
+#    container_name: mkbrainz
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the nginx proxy service
   nginx:
