@@ -12,7 +12,7 @@ class BookAddForm(Form):
     """
     # for adding books
     """
-    book_list = TextAreaField('Books ISBNs', validators=[DataRequired()])
+    book_list = TextAreaField('Book ISBN(s)', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(BookAddForm, self).__init__(*args, **kwargs)
