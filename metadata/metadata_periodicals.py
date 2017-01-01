@@ -37,15 +37,22 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
     Lookup via isdb and then name
     """
     metadata_uuid = None
-    # try to pull isbn out..might not be long enough, so try
-    try:
-        metadata_uuid = db_connection.db_metabook_guid_by_isbn(media_file_path[-10:],\
-            media_file_path[-13:])
-    except:
-        pass
+    if download_que_json['ProviderMetaID'] is not None:
+        metadata_uuid = db_connection.db_metabook_guid_by_isbn(\
+            download_que_json['ProviderMetaID'], download_que_json['ProviderMetaID'])
+    else:
+        # try to pull isbn out..might not be long enough, so try
+        try:
+            metadata_uuid = db_connection.db_metabook_guid_by_isbn(media_file_path[-10:],\
+                media_file_path[-13:])
+        except:
+            pass
     if metadata_uuid is None:
-        lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
-        metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
+        if download_que_json['ProviderMetaID'] is not None:
+            lookup_name = download_que_json['ProviderMetaID']
+        else:
+            lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
+            metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
         if metadata_uuid is None and ISBNDB_CONNECTION is not None:
             json_data = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
             if json_data is None or 'error' in json_data:
