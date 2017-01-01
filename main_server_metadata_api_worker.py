@@ -127,6 +127,16 @@ def imvdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'imvdb', download_data)
 
 
+@ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]\
+     / common_metadata_limiter.API_LIMIT['isbndb'][1])
+def isbndb(thread_db, download_data):
+    """
+    Rate limiter for isbndb
+    """
+    logging.info("here i am in isbndb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    metadata_general.metadata_process(thread_db, 'isbndb', download_data)
+
+
 @ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]\
      / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
 def musicbrainz(thread_db, download_data):
@@ -308,6 +318,8 @@ while True:
             imdb(thread_db, row_data)
         elif content_providers == 'imvdb':
             imvdb(thread_db, row_data)
+        elif content_providers == 'isbndb':
+            isbndb(thread_db, row_data)
         elif content_providers == 'netflixroulette':
             netflixroulette(thread_db, row_data)
         elif content_providers == 'omdb':
