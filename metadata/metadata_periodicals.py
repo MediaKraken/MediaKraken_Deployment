@@ -46,7 +46,10 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
         if api_response.status_code == 200:
             # TODO verify decent results before insert
             logging.info('resp json %s', api_response.json())
-            metadata_uuid = db_connection.db_metabook_book_insert(api_response.json())
+            if 'error' in api_response.json():
+                pass
+            else:
+                metadata_uuid = db_connection.db_metabook_book_insert(api_response.json())
     logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
     return metadata_uuid, match_result
 
