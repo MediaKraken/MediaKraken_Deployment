@@ -68,10 +68,6 @@ def db_meta_book_insert(self, json_data):
     #json_data = json.dumps(json_data)
     logging.info('book insert %s', json_data)
     logging.info('book insert data %s', json_data['data'])
-    logging.info('book insert data 0 %s', json_data['data'][0])
-    logging.info('book insert data 10 %s', json_data['data'][0]['isbn10'])
-    logging.info('book insert data 13 %s', json_data['data'][0]['isbn13'])
-    logging.info('book insert data title %s', json_data['data'][0]['title'])
     insert_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'\
         ' mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name,'\
