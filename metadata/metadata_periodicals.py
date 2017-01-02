@@ -64,7 +64,7 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
     # check if isbn in metaid
     if download_que_json['ProviderMetaID'] is not None:
         # check local database
-        metadata_uuid = db_connection.db_metabook_guid_by_isbn(\
+        metadata_uuid = db_connection.db_meta_book_guid_by_isbn(\
             download_que_json['ProviderMetaID'], download_que_json['ProviderMetaID'])
     else:
         # try to pull isbn out..might not be long enough, so try
