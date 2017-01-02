@@ -59,5 +59,6 @@ def db_metabook_book_insert(self, json_data):
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'\
         ' mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name,'\
         ' mm_metadata_book_json) values (%s,%s,%s,%s,%s)',\
-        (insert_uuid, json_data['isbn10'], json_data['isbn13'], json_data['title'], json_data))
+        (insert_uuid, json_data['data'][0]['isbn10'], json_data['data'][0]['isbn13'], \
+         json_data['data'][0]['title'], json_data['data'][0]))
     return insert_uuid
