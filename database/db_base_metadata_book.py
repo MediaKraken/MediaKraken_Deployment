@@ -82,7 +82,7 @@ def db_meta_book_by_uuid(self, book_uuid):
     grab book by uuid
     """
     self.db_cursor.execute('select mm_metadata_book_json from mm_metadata_book '\
-                           'where mm_metadata_book_guid = %s')
+                           'where mm_metadata_book_guid = %s', book_uuid)
     try:
         return self.db_cursor.fetchone()
     except:
