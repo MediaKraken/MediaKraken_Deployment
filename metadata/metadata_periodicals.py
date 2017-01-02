@@ -67,24 +67,16 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
         except:
             pass
     if metadata_uuid is None:
-
-        if download_que_json['ProviderMetaID'] is not None:
-            lookup_name = download_que_json['ProviderMetaID']
-        else:
+        if download_que_json['ProviderMetaID'] is None:
             lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
             metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
-            
-            
-
-            # no matches by name/year
-            # search isbndb since not matched above via DB or nfo/xml
+        if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})
             # save the updated status
             db_connection.db_download_update(json.dumps(download_que_json),\
                 download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('isbndb', download_que_id)
-
     else:
         # meta uuid is found so delete
         db_connection.db_download_delete(download_que_id)
