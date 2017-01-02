@@ -147,7 +147,8 @@ class MKServerDatabase(object):
     from database.db_base_metadata_book import db_meta_book_list,\
         db_meta_book_guid_by_isbn,\
         db_meta_book_guid_by_name,\
-        db_meta_book_insert
+        db_meta_book_insert,\
+        db_meta_book_by_uuid
     from database.db_base_metadata_games import db_meta_game_system_by_guid,\
         db_meta_game_system_list_count,\
         db_meta_game_system_list,\

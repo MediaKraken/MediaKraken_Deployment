@@ -75,3 +75,15 @@ def db_meta_book_insert(self, json_data):
         (insert_uuid, json_data['data'][0]['isbn10'], json_data['data'][0]['isbn13'], \
          json_data['data'][0]['title'], json.dumps(json_data['data'][0])))
     return insert_uuid
+
+
+def db_meta_book_by_uuid(self, book_uuid):
+    """
+    grab book by uuid
+    """
+    self.db_cursor.execute('select mm_metadata_book_json from mm_metadata_book '\
+                           'where mm_metadata_book_guid = %s')
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None

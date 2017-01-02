@@ -1589,6 +1589,19 @@ def metadata_periodical_list():
                           )
 
 
+@blueprint.route('/meta_periodical_detail/<guid>/')
+@blueprint.route('/meta_periodical_detail/<guid>')
+@login_required
+def metadata_periodical_detail(guid):
+    """
+    Display periodical detail page
+    """
+    return render_template('users/metadata/meta_periodical_detail.html',
+                           json_metadata=g.db_connection.db_meta_book_by_uuid(guid),
+                           data_item_image="../../static/images/Missing_Icon.png",
+                          )
+    
+    
 @blueprint.route('/metadata_music_list')
 @blueprint.route('/metadata_music_list/')
 @login_required
