@@ -50,7 +50,7 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
                 logging.info('error skipp')
             else:
                 metadata_uuid = db_connection.db_metabook_book_insert(\
-                    api_response.json()['data'])
+                    api_response.json())
     logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
     return metadata_uuid, match_result
 
