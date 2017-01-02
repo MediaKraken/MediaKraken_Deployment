@@ -52,6 +52,7 @@ def db_metabook_book_insert(self, json_data):
     # insert metadata json from isbndb
     """
     #json_data = json.dumps(json_data)
+    logging.info('book insert %s', json_data)
     insert_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'\
         ' mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name,'\
