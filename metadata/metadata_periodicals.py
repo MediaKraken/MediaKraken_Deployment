@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import os
+import json
 from common import common_config_ini
 from common import common_metadata_isbndb
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -31,13 +32,31 @@ else:
     ISBNDB_CONNECTION = None
 
 
+def metadata_periodicals_search_isbndb(db_connection, lookup_name):
+    """
+    search isbndb
+    """
+    logging.info("meta book search isbndb: %s", lookup_name)
+    metadata_uuid = None
+    match_result = None
+    if ISBNDB_CONNECTION is not None:
+        api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
+        if api_response.status_code == 200:
+            # TODO verify decent results before insert
+            metadata_uuid = db_connection.db_metabook_book_insert(api_response.json())
+    logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
+    return metadata_uuid, match_result
+
+
 def metadata_periodicals_lookup(db_connection, media_file_path,\
                                 download_que_json, download_que_id):
     """
-    Lookup via isdb and then name
+    Lookup via isbn and then name
     """
-    metadata_uuid = None
+    metadata_uuid = None # so not found checks verify later
+    # check if isbn in metaid
     if download_que_json['ProviderMetaID'] is not None:
+        # check local database
         metadata_uuid = db_connection.db_metabook_guid_by_isbn(\
             download_que_json['ProviderMetaID'], download_que_json['ProviderMetaID'])
     else:
@@ -48,16 +67,25 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
         except:
             pass
     if metadata_uuid is None:
+
         if download_que_json['ProviderMetaID'] is not None:
             lookup_name = download_que_json['ProviderMetaID']
         else:
             lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
             metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
-        if metadata_uuid is None and ISBNDB_CONNECTION is not None:
-            json_data = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
-            if json_data is None or 'error' in json_data:
-                logging.error("isbn book error: %s", json_data)
-            else:
-                # TODO verify decent results before insert
-                metadata_uuid = db_connection.db_metabook_book_insert(json_data)
+            
+            
+
+            # no matches by name/year
+            # search isbndb since not matched above via DB or nfo/xml
+            download_que_json.update({'Status': 'Search'})
+            # save the updated status
+            db_connection.db_download_update(json.dumps(download_que_json),\
+                download_que_id)
+            # set provider last so it's not picked up by the wrong thread
+            db_connection.db_download_update_provider('isbndb', download_que_id)
+
+    else:
+        # meta uuid is found so delete
+        db_connection.db_download_delete(download_que_id)
     return metadata_uuid

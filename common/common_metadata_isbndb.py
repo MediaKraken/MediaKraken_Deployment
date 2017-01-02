@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import requests
 from . import common_network
 
 
@@ -80,5 +81,5 @@ class CommonMetadataISBNdb(object):
         """
         Search
         """
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
-            + self.api_key + '/book/' + book_info, None)
+        return requests.get('http://isbndb.com/api/v2/json/'\
+            + self.api_key + '/book/' + book_info)

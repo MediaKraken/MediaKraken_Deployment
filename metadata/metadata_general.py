@@ -72,6 +72,10 @@ def metadata_search(thread_db, provider_name, download_data):
                 update_provider = 'theaudiodb'
             else:
                 set_fetch = True
+    elif provider_name == 'isbndb':
+        metadata_uuid, match_result = metadata_periodicals.metadata_periodicals_search_isbndb()
+        if metadata_uuid is None:
+            lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
         metadata_uuid = common_metadata_tv_theme.com_tvtheme_download(\
