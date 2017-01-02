@@ -22,7 +22,21 @@ import uuid
 import json
 
 
-def db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
+def db_meta_book_list(self, offset=None, records=None):
+    """
+    book list
+    """
+    if offset is None:
+        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '\
+            'from mm_metadata_book order by mm_metadata_book_name')
+    else:
+        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '\
+            'from mm_metadata_book order by mm_metadata_book_name '\
+            'offset %s limit %s', (offset, records))
+    return self.db_cursor.fetchall()
+
+
+def db_meta_book_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
     """
     # metadata guid by isbm id
     """
@@ -35,7 +49,7 @@ def db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
         return None
 
 
-def db_metabook_guid_by_name(self, book_name):
+def db_meta_book_guid_by_name(self, book_name):
     """
     # metadata guid by name
     """
@@ -47,7 +61,7 @@ def db_metabook_guid_by_name(self, book_name):
         return None
 
 
-def db_metabook_book_insert(self, json_data):
+def db_meta_book_insert(self, json_data):
     """
     # insert metadata json from isbndb
     """

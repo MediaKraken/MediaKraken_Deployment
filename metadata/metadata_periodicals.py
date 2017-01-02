@@ -49,7 +49,7 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
             if 'error' in api_response.json():
                 logging.info('error skipp')
             else:
-                metadata_uuid = db_connection.db_metabook_book_insert(\
+                metadata_uuid = db_connection.db_meta_book_book_insert(\
                     api_response.json())
     logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
     return metadata_uuid, match_result
@@ -69,14 +69,14 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
     else:
         # try to pull isbn out..might not be long enough, so try
         try:
-            metadata_uuid = db_connection.db_metabook_guid_by_isbn(media_file_path[-10:],\
+            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(media_file_path[-10:],\
                 media_file_path[-13:])
         except:
             pass
     if metadata_uuid is None:
         if download_que_json['ProviderMetaID'] is None:
             lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
-            metadata_uuid = db_connection.db_metabook_guid_by_name(lookup_name)
+            metadata_uuid = db_connection.db_meta_book_guid_by_name(lookup_name)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})
             # save the updated status

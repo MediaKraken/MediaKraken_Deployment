@@ -1559,6 +1559,36 @@ def metadata_person_list():
                           )
 
 
+@blueprint.route('/meta_periodical_list')
+@blueprint.route('/meta_periodical_list/')
+@login_required
+def metadata_periodical_list():
+    """
+    Display periodical list page
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    item_list = []
+    for item_data in g.db_connection.db_meta_book_list(offset, per_page):
+        logging.info('person data: %s', item_data)
+        item_image = "../../static/images/Missing_Icon.png"
+        item_list.append((item_data['mm_metadata_book_guid'], \
+                          item_data['mm_metadata_book_name'], item_image))
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_table_count(\
+                                                      'mm_metadata_book'),
+                                                  record_name='Periodical',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
+    return render_template('users/metadata/meta_periodical_list.html',
+                           media_person=item_list,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination,
+                          )
+
+
 @blueprint.route('/metadata_music_list')
 @blueprint.route('/metadata_music_list/')
 @login_required
