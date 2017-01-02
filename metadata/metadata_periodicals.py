@@ -39,8 +39,10 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     logging.info("meta book search isbndb: %s", lookup_name)
     metadata_uuid = None
     match_result = None
+    logging.info('wh %s', ISBNDB_CONNECTION)
     if ISBNDB_CONNECTION is not None:
         api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
+        logging.info('response %s', api_response)
         if api_response.status_code == 200:
             # TODO verify decent results before insert
             metadata_uuid = db_connection.db_metabook_book_insert(api_response.json())
