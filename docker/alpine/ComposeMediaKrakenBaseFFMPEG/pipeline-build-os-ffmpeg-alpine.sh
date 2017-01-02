@@ -183,6 +183,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-nonfree \
     --disable-d3d11va \
     --disable-dxva2 \
+    --disable-debug \
     --enable-libass \
     --enable-libfdk-aac \
     --enable-libflite \
