@@ -152,14 +152,12 @@ cd libilbc-webrtc
 make -j16
 make install
 
-
 cd ~/ffmpeg_sources
 curl -L -O https://github.com/samba-team/samba/archive/samba-4.4.5.tar.gz
 tar xzvf samba-4.4.5.tar.gz
 
 # skipping for now
 #    --enable-decklink \
-#    --enable-libcelt \
 #    --enable-libgme \
 #    --enable-libilbc \
 #    --enable-libopencore-amrnb \
@@ -189,6 +187,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --disable-dxva2 \
     --disable-debug \
     --enable-libass \
+    --enable-libcelt \
     --enable-libfdk-aac \
     --enable-libflite \
     --enable-libfontconfig \
