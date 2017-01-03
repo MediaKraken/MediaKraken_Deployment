@@ -11,8 +11,8 @@ ADD pipeline-build-os-ffmpeg-alpine.sh /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  libsmbclient \
   gettext \
-  python \
   lame-dev \
   opus-dev \
   libogg-dev \

@@ -5,16 +5,16 @@ cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic --disable-opencl
-make -j8
+make -j16
 make install
 make distclean
 
 cd ~/ffmpeg_sources
-curl -L -O https://get.videolan.org/x265/x265_2.1.tar.gz
-tar xzvf x265_2.1.tar.gz
-cd ~/ffmpeg_sources/x265_2.1/build/linux
+curl -L -O https://get.videolan.org/x265/x265_2.2.tar.gz
+tar xzvf x265_2.2.tar.gz
+cd ~/ffmpeg_sources/x265_2.2/build/linux
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
-make -j8
+make -j16
 make install
 
 cd ~/ffmpeg_sources
@@ -23,7 +23,7 @@ tar xzvf fdk-aac.tar.gz
 cd mstorsjo-fdk-aac*
 autoreconf -fiv
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared
-make -j8
+make -j16
 make install
 make distclean
 
@@ -32,7 +32,7 @@ make distclean
 #tar xzvf lame-3.99.5.tar.gz
 #cd lame-3.99.5
 #./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --disable-shared --enable-nasm
-#make -j8
+#make -j16
 #make install
 #make distclean
 
@@ -41,7 +41,7 @@ make distclean
 #cd opus
 #autoreconf -fiv
 #./configure --prefix="$HOME/ffmpeg_build" --disable-shared
-#make -j8
+#make -j16
 #make install
 #make distclean
 
@@ -50,7 +50,7 @@ make distclean
 #tar xzvf libogg-1.3.2.tar.gz
 #cd libogg-1.3.2
 #./configure --prefix="$HOME/ffmpeg_build" --disable-shared
-#make -j8
+#make -j16
 #make install
 #make distclean
 
@@ -59,7 +59,7 @@ make distclean
 #tar xzvf libvorbis-1.3.5.tar.gz
 #cd libvorbis-1.3.5
 #LDFLAGS="-L$HOME/ffmeg_build/lib" CPPFLAGS="-I$HOME/ffmpeg_build/include" ./configure --prefix="$HOME/ffmpeg_build" --with-ogg="$HOME/ffmpeg_build" --disable-shared
-#make -j8
+#make -j16
 #make install
 #make distclean
 
@@ -68,7 +68,7 @@ cd ~/ffmpeg_sources
 git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
 cd libvpx
 ./configure --prefix="$HOME/ffmpeg_build" --disable-examples --enable-pic --disable-unit-tests
-make -j8
+make -j16
 make install
 make clean
 
@@ -77,7 +77,7 @@ make clean
 #tar xzvf speex-1.2rc2.tar.gz
 #cd speex-1.2rc2
 #./configure
-#make -j8
+#make -j16
 #make install
 
 #cd ~/ffmpeg_sources
@@ -85,7 +85,7 @@ make clean
 #tar xzvf xvidcore-1.3.4.tar.gz
 #cd xvidcore/build/generic
 #./configure
-#make -j8
+#make -j16
 #make install
 
 # alpine has 0.13.2
@@ -95,7 +95,7 @@ tar xzvf 0.13.4.tar.gz
 cd libass-0.13.4
 ./autogen.sh
 ./configure
-make -j8
+make -j16
 make install
 
 #cd ~/ffmpeg_sources
@@ -103,7 +103,7 @@ make install
 #tar xvf libtheora-1.1.1.tar.bz2
 #cd libtheora-1.1.1
 #./autogen.sh --with-ogg="$HOME/ffmpeg_build" --disable-examples --disable-shared
-#make -j8
+#make -j16
 #make install
 
 cd ~/ffmpeg_sources
@@ -111,7 +111,7 @@ curl -L -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/xavs
 tar xvf xavs.tar.bz2
 cd xavs
 ./configure
-make -j8
+make -j16
 make install
 
 #cd ~/ffmpeg_sources
@@ -119,7 +119,7 @@ make install
 #tar xzvf libmodplug-0.8.8.5.tar.gz
 #cd libmodplug-0.8.8.5
 #./configure
-#make -j8
+#make -j16
 #make install
 
 cd ~/ffmpeg_sources
@@ -135,22 +135,27 @@ curl -L -O http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz
 tar xzvf celt-0.11.1.tar.gz
 cd celt-0.11.1
 ./configure --with-ogg="$HOME/ffmpeg_build"
-make -j8
+make -j16
 make install
 
 cd ~/ffmpeg_sources
 curl -L -O https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.2.7025-beta20.1.tar.gz
 tar xzvf libopenmpt-0.2.7025-beta20.1.tar.gz
 cd libopenmpt-0.2.7025
-make -j8
+make -j16
 make install
 
 cd ~/ffmpeg_sources
 git clone https://github.com/Distrotech/libilbc-webrtc.git
 cd libilbc-webrtc
 ./configure
-make -j8
+make -j16
 make install
+
+
+cd ~/ffmpeg_sources
+curl -L -O https://github.com/samba-team/samba/archive/samba-4.4.5.tar.gz
+tar xzvf samba-4.4.5.tar.gz
 
 # skipping for now
 #    --enable-decklink \
@@ -161,7 +166,6 @@ make install
 #    --enable-libopencore-amrwb \
 #    --enable-libpulse \
 #    --enable-libschroedinger \
-#    --enable-libsmbclient \
 #    --enable-libtwolame \
 #    --enable-libv4l2 \
 #    --enable-libvidstab \
@@ -176,7 +180,7 @@ cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.4.5/source3/include" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib -L/usr/local/lib" \
     --bindir="$HOME/bin" \
     --enable-gpl \
@@ -196,6 +200,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libopenmpt \
     --enable-libopus \
     --enable-librtmp \
+    --enable-libsmbclient \
     --enable-libsnappy \
     --enable-libsoxr \
     --enable-libspeex \
@@ -209,7 +214,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libxvid \
     --enable-openssl \
     --enable-version3
-make -j8
+make -j16
 make install
 make distclean
 hash -r
