@@ -161,5 +161,6 @@ python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movf
 python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -movflags faststart+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv 
 
 
-
+# um, no video.......I dtop the c:v copy it plays with blocks
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -movflags faststart+frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Cobra\ \(1986\)/Cobra\ \(1986\).mkv
 
