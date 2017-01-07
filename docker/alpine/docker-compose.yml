@@ -234,6 +234,8 @@ services:
     build:
       context: ./ComposeMediaKrakenCelery
       dockerfile: Dockerfile
+    environment:
+      - CELERY_BROKER_URL=amqp://rabbitmq:5672//
     container_name: mkcelery
     depends_on:
       - rabbitmq
