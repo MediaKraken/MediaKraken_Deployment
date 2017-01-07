@@ -235,6 +235,8 @@ services:
       context: ./ComposeMediaKrakenCelery
       dockerfile: Dockerfile
     container_name: mkcelery
+    depends_on:
+      - rabbitmq
     restart: unless-stopped
     networks:
       - mediakraken-mq
@@ -259,6 +261,8 @@ services:
     environment:
       - broker=amqp://$RABBIT_HOST:5672//
     container_name: mkflower
+    depends_on:
+      - celery
     ports:
       - "5555:5555"
     volumes:
