@@ -270,7 +270,7 @@ services:
 # Docker private networks
 networks:
   # mq network
-  mediakraken-mq
+  mediakraken-mq:
     driver: bridge
   # Twisted communications network
   mediakraken-network:
