@@ -32,7 +32,6 @@ python-nest
 uritemplate
 trakt
 passwordmeter
-klein
 futures
 PyVimeo
 flickrapi
@@ -41,7 +40,7 @@ pillow
 pyaudio
 onkyo-eiscp
 psutil
-twisted
+celery
 setuptools
 ipgetter
 apache-libcloud
