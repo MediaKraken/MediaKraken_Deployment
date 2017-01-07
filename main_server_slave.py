@@ -27,18 +27,15 @@ try:
 except:
     import pickle
 import sys
+from common import common_celery
 from common import common_config_ini
 from common import common_logging
 from common import common_network_share
 from common import common_signal
 from common import common_system
 from common import common_version
-from twisted.internet.protocol import ClientFactory
-from twisted.internet import reactor, ssl
-from twisted.protocols.basic import Int32StringReceiver
 
-networkProtocol = None
-metaapp = None
+
 proc_ffserver = None
 
 
@@ -66,58 +63,7 @@ class RepeatTimer(Thread):
         self.finished.set()
 
 
-class TheaterClient(Int32StringReceiver):
-    STARTED = 0
-    CHECKING_PORT = 1
-    CONNECTED = 2
-    NOTSTARTED = 3
-    PORTCLOSED = 4
-    CLOSED = 5
-
-
-    def __init__(self):
-        self.MAX_LENGTH = 32000000
-        self.connStatus = TheaterClient.STARTED
-
-
-    def connectionMade(self):
-        global networkProtocol
-        self.connStatus = TheaterClient.CONNECTED
-        networkProtocol = self
-
-
-    def stringReceived(self, data):
-        MediaKrakenApp.process_message(metaapp, data)
-
-
-class TheaterFactory(ClientFactory):
-
-
-    def __init__(self, app):
-        self.app = app
-        self.protocol = None
-
-
-    def startedConnecting(self, connector):
-        logging.info('Started to connect to %s', connector.getDestination())
-
-
-    def clientConnectionLost(self, conn, reason):
-        logging.info("Connection Lost")
-
-
-    def clientConnectionFailed(self, conn, reason):
-        logging.info("Connection Failed")
-
-
-    def buildProtocol(self, addr):
-        logging.info('Connected to %s', str(addr))
-        self.protocol = TheaterClient()
-        return self.protocol
-
-
 class MediaKrakenApp():
-    connection = None
 
 
     def exit_program(self):
@@ -125,9 +71,7 @@ class MediaKrakenApp():
 
 
     def build(self):
-        global metaapp
         root = MediaKrakenApp()
-        metaapp = self
         self.connect_to_server()
         # start up the cpu timer
         status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\

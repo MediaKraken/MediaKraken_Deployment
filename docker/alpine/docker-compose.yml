@@ -225,6 +225,44 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
+  # celery
+  celery:
+    build:
+      context: ./ComposeMediaKrakenCelery
+      dockerfile: Dockerfile
+    container_name: mkcelery
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
+  # rabbitmq
+  rabbitmq:
+    build:
+      context: ./ComposeMediaKrakenRabbitMQ
+      dockerfile: Dockerfile
+    container_name: mkrabbitmq
+    ports:
+      - "5672:5672"
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
+  # flower monitor for celery
+  flower:
+    build:
+      context: ./ComposeMediaKrakenFlower
+      dockerfile: Dockerfile
+    environment:
+      - broker=amqp://$RABBIT_HOST:5672//
+    container_name: mkflower
+    ports:
+      - "5555:5555"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
 # Docker private networks
 networks:
   # Twisted communications network
