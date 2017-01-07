@@ -259,7 +259,7 @@ services:
       context: ./ComposeMediaKrakenFlower
       dockerfile: Dockerfile
     environment:
-      - broker=amqp://rabbitmq:5672//
+      - broker=amqp://rabbitmq:5672// --basic_auth=guest:guest
     container_name: mkflower
     depends_on:
       - celery
