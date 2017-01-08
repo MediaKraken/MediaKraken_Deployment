@@ -237,7 +237,8 @@ services:
       context: ./ComposeMediaKrakenCelery
 #      dockerfile: Dockerfile
       dockerfile: dockerfile-celery
-    environment: CELERY_BROKER_URL=amqp://guest:guest@rabbit//
+    environment: 
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbit//
     container_name: mkcelery
     depends_on:
       - rabbit
