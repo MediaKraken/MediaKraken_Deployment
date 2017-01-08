@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from mediakraken.common.common_celery import app
 import time
+import common_ffmpeg
 
 
 @app.task
@@ -29,3 +30,11 @@ def longtime_add(x, y):
     time.sleep(5)
     print('long time task finished')
     return x + y
+    
+    
+@app.task
+def com_celery_task_ffprobe(file_name):
+    """
+    run the ffprobe task on file to return json
+    """
+    return common_ffmpeg.com_ffmpeg_media_attr(file_name)
