@@ -246,7 +246,7 @@ services:
 
   # rabbitmq
   # https://github.com/maryvilledev/alpine-rmq
-  rabbitmq:
+  rabbit:
     build:
       context: ./ComposeMediaKrakenRabbitMQ
       dockerfile: Dockerfile
