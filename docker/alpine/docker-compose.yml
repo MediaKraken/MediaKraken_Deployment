@@ -254,9 +254,9 @@ services:
       dockerfile: Dockerfile
     container_name: mkrabbitmq
     ports:
-      - "5671:5671"
+#      - "5671:5671"
       - "5672:5672"
-      - "15671:15671"
+#      - "15671:15671"
       - "15672:15672"
     restart: unless-stopped
     networks:
@@ -264,22 +264,22 @@ services:
 
   # flower monitor for celery
   # https://github.com/RobbieClarken/docker-flower
-  flower:
-    build:
-      context: ./ComposeMediaKrakenFlower
-      dockerfile: Dockerfile
-    environment:
-      - broker=amqp://rabbitmq:5672// --basic_auth=guest:guest
-    container_name: mkflower
-    depends_on:
-      - celery
-    ports:
-      - "5555:5555"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
-    networks:
-      - mediakraken-mq
+#  flower:
+#    build:
+#      context: ./ComposeMediaKrakenFlower
+#      dockerfile: Dockerfile
+#    environment:
+#      - broker=amqp://rabbit:5672// --basic_auth=guest:guest
+#    container_name: mkflower
+#    depends_on:
+#      - celery
+#    ports:
+#      - "5555:5555"
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#    restart: unless-stopped
+#    networks:
+#      - mediakraken-mq
 
 # Docker private networks
 networks:
