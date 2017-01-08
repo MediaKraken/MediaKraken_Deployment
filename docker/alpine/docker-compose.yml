@@ -230,12 +230,13 @@ services:
 #    restart: unless-stopped
 
   # celery
+  # https://github.com/docker-library/celery/blob/master/4.0/Dockerfile
   celery:
     build:
       context: ./ComposeMediaKrakenCelery
       dockerfile: Dockerfile
     environment:
-      - CELERY_BROKER_URL=amqp://rabbitmq:5672//
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
     container_name: mkcelery
     depends_on:
       - rabbitmq
@@ -244,6 +245,7 @@ services:
       - mediakraken-mq
 
   # rabbitmq
+  # https://github.com/maryvilledev/alpine-rmq
   rabbitmq:
     build:
       context: ./ComposeMediaKrakenRabbitMQ
@@ -256,6 +258,7 @@ services:
       - mediakraken-mq
 
   # flower monitor for celery
+  # https://github.com/RobbieClarken/docker-flower
   flower:
     build:
       context: ./ComposeMediaKrakenFlower
