@@ -19,3 +19,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from celery import Celery
+
+
+app = Celery('mk_celery',
+             broker='amqp://guest@rabbit',
+             backend='amqp://guest@rabbit',
+             include=['mk_celery.tasks'])
