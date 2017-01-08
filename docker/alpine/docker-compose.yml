@@ -231,10 +231,12 @@ services:
 
   # celery
   # https://github.com/docker-library/celery/blob/master/4.0/Dockerfile
+  # https://github.com/it-herz/docker-celery
   celery:
     build:
       context: ./ComposeMediaKrakenCelery
-      dockerfile: Dockerfile
+#      dockerfile: Dockerfile
+      dockerfile: dockerfile-celery
     container_name: mkcelery
     depends_on:
       - rabbit
