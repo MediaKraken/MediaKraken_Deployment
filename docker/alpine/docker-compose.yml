@@ -235,16 +235,14 @@ services:
     build:
       context: ./ComposeMediaKrakenCelery
       dockerfile: Dockerfile
-    environment:
-      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
     container_name: mkcelery
     depends_on:
-      - rabbitmq
+      - rabbit
     restart: unless-stopped
     networks:
       - mediakraken-mq
 
-  # rabbitmq
+  # rabbit
   # https://github.com/maryvilledev/alpine-rmq
   rabbit:
     build:
