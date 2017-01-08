@@ -18,10 +18,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from celery import Celery
+from mediakraken.common.common_celery import app
+import time
 
 
-app = Celery('mediakraken',
-             broker='amqp://guest@rabbit',
-             backend='amqp://guest@rabbit',
-             include=['mediakraken.common.common_celery_tasks'])
+@app.task
+def longtime_add(x, y):
+    print('long time task begins')
+    # sleep 5 seconds
+    time.sleep(5)
+    print('long time task finished')
+    return x + y
