@@ -30,8 +30,8 @@ def longtime_add(x, y):
     time.sleep(5)
     print('long time task finished')
     return x + y
-    
-    
+
+
 @app.task
 def com_celery_task_ffprobe(file_name):
     """
