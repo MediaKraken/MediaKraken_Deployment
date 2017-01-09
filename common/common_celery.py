@@ -24,4 +24,6 @@ from celery import Celery
 app = Celery('mediakraken',
              broker='amqp://guest@rabbit',
              backend='amqp://guest@rabbit',
-             include=['mediakraken.common.common_celery_tasks'])
+             include=['mediakraken.common.common_celery_tasks', \
+                      'mediakraken.common.common_celery_tasks_chromecast',\
+                      'mediakraken.common.common_celery_tasks_hdhomerun'])
