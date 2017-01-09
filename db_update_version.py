@@ -33,6 +33,9 @@ if common_version.DB_VERSION == "2":
         db_connection.db_version_update("2")
 
 
+# drop trigger table since moving to celery?
+
+
 # commit
 db_connection.db_commit()
 
