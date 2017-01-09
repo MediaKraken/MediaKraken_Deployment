@@ -56,7 +56,7 @@ def com_celery_chrome_mute(media_json):
 @app.task
 def com_celery_chrome_vol_up(media_json):
     """
-    play media file to chromecast
+    chromecast volume up
     """
     pass
 
@@ -64,7 +64,7 @@ def com_celery_chrome_vol_up(media_json):
 @app.task
 def com_celery_chrome_vol_down(media_json):
     """
-    play media file to chromecast
+    chromecast volume down
     """
     pass
 
@@ -72,7 +72,7 @@ def com_celery_chrome_vol_down(media_json):
 @app.task
 def com_celery_chrome_vol_set(media_json):
     """
-    play media file to chromecast
+    chromecast volume set
     """
     pass
 
