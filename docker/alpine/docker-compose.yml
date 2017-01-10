@@ -24,6 +24,7 @@ services:
       - /var/opt/mediakraken/devices:/mediakraken/devices
       - /home/mediakraken:/mediakraken/mnt
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -49,6 +50,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -125,6 +127,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
@@ -204,6 +207,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -225,8 +229,61 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
+  # celery
+  # https://github.com/docker-library/celery/blob/master/4.0/Dockerfile
+  # https://github.com/it-herz/docker-celery
+  celery:
+    build:
+      context: ./ComposeMediaKrakenCelery
+#      dockerfile: Dockerfile
+      dockerfile: dockerfile-celery
+    container_name: mkcelery
+    depends_on:
+      - rabbit
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
+  # rabbit
+  # https://github.com/maryvilledev/alpine-rmq
+  rabbit:
+    build:
+      context: ./ComposeMediaKrakenRabbitMQ
+      dockerfile: Dockerfile
+    container_name: mkrabbitmq
+    ports:
+#      - "5671:5671"
+      - "5672:5672"
+#      - "15671:15671"
+      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
+  # flower monitor for celery
+  # https://github.com/RobbieClarken/docker-flower
+#  flower:
+#    build:
+#      context: ./ComposeMediaKrakenFlower
+#      dockerfile: Dockerfile
+#    environment:
+#      - broker=amqp://rabbit:5672// --basic_auth=guest:guest
+#    container_name: mkflower
+#    depends_on:
+#      - celery
+#    ports:
+#      - "5555:5555"
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#    restart: unless-stopped
+#    networks:
+#      - mediakraken-mq
+
 # Docker private networks
 networks:
+  # mq network
+  mediakraken-mq:
+    driver: bridge
   # Twisted communications network
   mediakraken-network:
     driver: bridge

@@ -34,3 +34,4 @@ boto
 dropbox
 onedrivesdk
 cssmin
+celery

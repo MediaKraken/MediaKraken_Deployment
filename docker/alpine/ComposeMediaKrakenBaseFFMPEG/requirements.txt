@@ -1,5 +1,4 @@
 psutil
-twisted
 pysmb
 dropbox
 boto

@@ -27,6 +27,7 @@ try:
 except:
     import pickle
 import sys
+from common import common_celery
 from common import common_config_ini
 from common import common_logging
 from common import common_network_share
@@ -36,6 +37,7 @@ from common import common_version
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
+
 
 networkProtocol = None
 metaapp = None
@@ -62,10 +64,6 @@ class RepeatTimer(Thread):
                 count += 1
 
 
-    def cancel(self):
-        self.finished.set()
-
-
 class TheaterClient(Int32StringReceiver):
     STARTED = 0
     CHECKING_PORT = 1
@@ -88,6 +86,10 @@ class TheaterClient(Int32StringReceiver):
 
     def stringReceived(self, data):
         MediaKrakenApp.process_message(metaapp, data)
+
+
+    def cancel(self):
+        self.finished.set()
 
 
 class TheaterFactory(ClientFactory):
@@ -117,7 +119,6 @@ class TheaterFactory(ClientFactory):
 
 
 class MediaKrakenApp():
-    connection = None
 
 
     def exit_program(self):
@@ -125,9 +126,7 @@ class MediaKrakenApp():
 
 
     def build(self):
-        global metaapp
         root = MediaKrakenApp()
-        metaapp = self
         self.connect_to_server()
         # start up the cpu timer
         status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\

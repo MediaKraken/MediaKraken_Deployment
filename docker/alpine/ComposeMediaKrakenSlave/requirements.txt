@@ -2,6 +2,7 @@ service_identity
 pyopenssl
 psycopg2
 psutil
+celery
 twisted
 passwordmeter
 setuptools
