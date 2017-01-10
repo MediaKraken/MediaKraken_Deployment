@@ -10,12 +10,11 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
-      - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server.py
+      - pgbounce
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
     ports:
       - "8903:5000"
     volumes:
@@ -37,17 +36,17 @@ services:
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
-      - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_slave.py
+      - pgbounce
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
+      - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -72,10 +71,17 @@ services:
   pgbounce:
     image: mediakraken/mkpgbounce:latest
     environment:
-      - DB_HOST=${DBDATABASE}
+      - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=500
+      - DEFAULT_POOL_SIZE=85
+      - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbounce
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -91,38 +97,17 @@ services:
     network_mode: host
     restart: never
 
-  # Runs the webapi for 3rd party clients
-#  webapi:
-#    image: mediakraken/mkwebapi:latest
-#    environment:
-#      - POSTGRES_DB=${DBDATABASE}
-#      - POSTGRES_USER=${DBUSER}
-#      - POSTGRES_HOST=${DBHOST}
-#      - POSTGRES_PASSWORD=${DBPASS}
-#    container_name: mkwebapi
-#    depends_on:
-#      - database
-#    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_api --ini ./web_api/mediakraken_uwsgi_alpine.ini
-#    ports:
-#      - "8901:8080"
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#    networks:
-#      - mediakraken-dbnetwork
-#    restart: unless-stopped
-
   # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
-      - database
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
+      - pgbounce
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -135,6 +120,16 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # musicbrainz replicator
+#  brainz:
+#    image: mediakraken/mkbrainz:latest
+#    environment:
+#      - BRAINZCODE=${BRAINZCODE}
+#    container_name: mkbrainz
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
+
   # runs the nginx proxy service
   nginx:
     image: mediakraken/mknginx:latest
@@ -145,6 +140,17 @@ services:
     networks:
       - mediakraken-network
     restart: unless-stopped
+
+  # runs the openldap
+#  openldap:
+#    image: mediakraken/mkopenldap:latest
+#    container_name: mkopenldap
+#    ports:
+#      - "389:389"
+#      - "636:636"
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
@@ -158,18 +164,17 @@ services:
 
   # Runs the web service for the main server application
   webserver:
-    image: mediakraken/mkwebserver:latest
+    image: mediakraken/mkwebapp:latest
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
-      - POSTGRES_HOST=${DBHOST}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
-      - database
+      - pgbounce
       - redis
       - nginx
-    entrypoint: ./wait-for-it.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
     volumes:

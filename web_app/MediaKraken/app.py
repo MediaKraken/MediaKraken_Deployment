@@ -5,6 +5,7 @@ from flask import Flask, render_template
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
+from celery import Celery
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
 from MediaKraken.settings import ProdConfig
@@ -17,6 +18,20 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
+
+
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
+                    broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    celery.Task = ContextTask
+    return celery
 
 
 def create_app(config_object=ProdConfig):
@@ -39,7 +54,11 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-
+    app.config.update(
+        CELERY_BROKER_URL='redis://localhost:6379',
+        CELERY_RESULT_BACKEND='redis://localhost:6379'
+    )
+    celery = make_celery(app)
     moment = Moment(app)
     return app
 

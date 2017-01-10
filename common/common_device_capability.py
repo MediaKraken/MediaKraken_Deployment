@@ -25,26 +25,34 @@ DEVICE_COMPATIBILITY = {
     'ATV': {
         'NP': {},
         'Shield': {},
-        'S805': {}
+        'S805': {},
+        'S905': {},
         },
     'Chromecast': {
-        'V1': {'VidContainer': ['mp4', 'webm'], 'VidCodec': ['x264', 'vp8'],
-               'AudioCodec': ['aac', 'mp3', 'ogg', 'opus'], 'AudioChannel': None, 'AudioPass': [],
-               'ImageFormat': [], 'MaxImageRes': None,
-               'MaxRes': None},
-        'V2': {}
+        'V2': {'VidContainer': ['mp4', 'webm'], 'VidCodec': ['x264', 'vp8'],
+               'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus'], 
+               'AudioChannel': ['6.1'], 'AudioPass': ['ac3', 'eac3'],
+               'ImageFormat': ['BMP', 'GIF', 'JPEG', 'PNG', 'WEBP'], 'MaxImageRes': '1280x720',
+               'MaxRes': ['720/60', '1080/30']},
+        'Ultra': {'MaxRes': '2160/60'}
         },
     'Fire': {
         'Stick': {},
-        'TV': {}
+        'TV': {},
         },
     'Raspberry': {
         'P1': {},
         'P2': {},
-        'P3': {}
+        'P3': {},
+        'Zero': {},
         },
     'Roku': {},
-    'Webbrowser': {},
+    'Webbrowser': {
+        'Chrome': {},
+        'Firefox': {},
+        'IE': {},
+        'Safari': {},
+        },
 }
 
 

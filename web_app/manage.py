@@ -8,13 +8,10 @@ from flask_migrate import MigrateCommand
 
 from MediaKraken.app import create_app
 from MediaKraken.user.models import User
-from MediaKraken.settings import DevConfig, ProdConfig
+from MediaKraken.settings import ProdConfig
 from MediaKraken.database import db
 
-if os.environ.get("MEDIAKRAKEN_ENV") == 'prod':
-    app = create_app(ProdConfig)
-else:
-    app = create_app(DevConfig)
+app = create_app(ProdConfig)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_PATH = os.path.join(HERE, 'tests')

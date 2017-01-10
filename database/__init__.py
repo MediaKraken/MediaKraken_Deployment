@@ -36,7 +36,8 @@ class MKServerDatabase(object):
         db_collection_by_tmdb
     from database.db_base_cron import db_cron_list_count,\
         db_cron_list,\
-        db_cron_time_update
+        db_cron_time_update,\
+        db_cron_insert
     from database.db_base_device import db_device_count,\
         db_device_list,\
         db_device_insert,\
@@ -69,7 +70,10 @@ class MKServerDatabase(object):
         db_link_list,\
         db_link_insert,\
         db_link_delete
+    from database.db_base_media_books import db_media_book_list_count,\
+        db_media_book_list
     from database.db_base_media_class import db_media_class_list_count,\
+        db_media_class_insert,\
         db_media_class_list,\
         db_media_class_by_uuid,\
         db_media_uuid_by_class
@@ -140,9 +144,11 @@ class MKServerDatabase(object):
         db_meta_anime_title_search,\
         db_meta_anime_update_meta_id,\
         db_meta_anime_meta_by_id
-    from database.db_base_metadata_book import db_metabook_guid_by_isbn,\
-        db_metabook_guid_by_name,\
-        db_metabook_book_insert
+    from database.db_base_metadata_book import db_meta_book_list,\
+        db_meta_book_guid_by_isbn,\
+        db_meta_book_guid_by_name,\
+        db_meta_book_insert,\
+        db_meta_book_by_uuid
     from database.db_base_metadata_games import db_meta_game_system_by_guid,\
         db_meta_game_system_list_count,\
         db_meta_game_system_list,\
@@ -214,7 +220,8 @@ class MKServerDatabase(object):
     from database.db_base_option_status import db_opt_status_read,\
         db_opt_status_update,\
         db_opt_status_update_scan,\
-        db_opt_status_update_scan_rec
+        db_opt_status_update_scan_rec,\
+        db_opt_status_insert
     from database.db_base_postgresql import db_pgsql_table_sizes,\
         db_pgsql_row_count,\
         db_pgsql_vacuum_stat_by_day,\
@@ -254,7 +261,9 @@ class MKServerDatabase(object):
         db_user_list_name,\
         db_user_detail,\
         db_user_delete,\
-        db_user_login_kodi
+        db_user_login_kodi,\
+        db_user_group_insert,\
+        db_user_profile_insert
     from database.db_base_version import db_version_check,\
         db_version_update
 

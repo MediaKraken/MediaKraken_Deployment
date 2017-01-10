@@ -15,8 +15,8 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkserver
     depends_on:
-      - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server.py
+      - pgbounce
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
     ports:
       - "8903:5000"
     volumes:
@@ -43,7 +43,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
-      - database
+      - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
@@ -87,6 +87,9 @@ services:
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbounce
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -104,27 +107,6 @@ services:
     network_mode: host
     restart: never
 
-  # Runs the webapi for 3rd party clients
-#  webapi:
-#    build:
-#      context: ./ComposeMediaKrakenWebAPI
-#      dockerfile: dockerfile-webapi
-#    environment:
-#      - POSTGRES_DB=${DBDATABASE}
-#      - POSTGRES_USER=${DBUSER}
-#      - POSTGRES_PASSWORD=${DBPASS}
-#    container_name: mkwebapi
-#    depends_on:
-#      - database
-#    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_api --ini ./web_api/mediakraken_uwsgi_alpine.ini
-#    ports:
-#      - "8901:8080"
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#    networks:
-#      - mediakraken-dbnetwork
-#    restart: unless-stopped
-
   # runs the server to fetch/process all metadata
   metadata:
     build:
@@ -136,8 +118,8 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkmetadata
     depends_on:
-      - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- python main_server_metadata_api.py
+      - pgbounce
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -149,6 +131,18 @@ services:
     cap_add:
       - SYS_ADMIN
       - DAC_READ_SEARCH
+
+  # musicbrainz replicator
+#  brainz:
+#    build:
+#      context: ./ComposeMediaKrakenMusicBrainz
+#      dockerfile: Dockerfile
+#    environment:
+#      - BRAINZCODE=${BRAINZCODE}
+#    container_name: mkbrainz
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the nginx proxy service
   nginx:
@@ -162,6 +156,19 @@ services:
     networks:
       - mediakraken-network
     restart: unless-stopped
+
+  # runs the openldap
+#  openldap:
+#    build:
+#      context: ./ComposeMediaKrakenOpenLDAP
+#      dockerfile: dockerfile-openldap
+#    container_name: mkopenldap
+#    ports:
+#      - "389:389"
+#      - "636:636"
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
@@ -186,10 +193,10 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkwebapp
     depends_on:
-      - database
+      - pgbounce
       - redis
       - nginx
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
     volumes:

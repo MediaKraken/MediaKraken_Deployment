@@ -126,8 +126,6 @@ class MediaKrakenApp():
 
     def build(self):
         global metaapp
-        # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Slave')
         root = MediaKrakenApp()
         metaapp = self
         self.connect_to_server()
@@ -162,13 +160,19 @@ class MediaKrakenApp():
         except:
             pickle_data = None
         if message_words[0] == "IDENT":
-            msg = "VALIDATE " + "slave" + " " + "password" + " " + platform.node()
+            msg = "VALIDATE " + "slave" + " " + " " + " " + platform.node()
         elif message_words[0] == "PING":  # Client_Network
             msg = "PONG"
         # user commands
         elif message_words[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1], \
-                shell=False))
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]), \
+                shell=False)
+        elif message_words[0] == "CASTMEDIA":
+            cast_option = pickle.loads(message_words[1])
+            self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "\
+                "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "\
+                "-movflags faststart+empty_moov' -transcode %s", (cast_option[0], \
+                cast_option[1])), shell=False)
         # admin commands
         elif message_words[0] == "CPUUSAGE":
             msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
@@ -191,13 +195,15 @@ class MediaKrakenApp():
 
 
 if __name__ == '__main__':
+    # start logging
+    common_logging.com_logging_start('./log/MediaKraken_Slave')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     logging.info("Open DB")
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read()
     # mount all the shares first so paths exist for validation
-    common_network_share.com_net_share_mount(db_connection.db_audit_shares())
+    # TODO common_network_share.com_net_share_mount(db_connection.db_audit_shares())
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], \
         shell=False)

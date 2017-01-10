@@ -119,3 +119,48 @@ python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -
 
 5.1 audio
 python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -frag_duration 3000' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/16 Blocks (2006)/16 Blocks (2006).mkv'
+
+
+# works
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/Laserdisc/Run\ \(1991\)/Run\ \(1991\).mkv 
+
+
+
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Army of Darkness (1993)/Army of Darkness (1993).mkv'
+
+
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags frag_keyframe+empty_moov' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/DVD_Dir_Cut/Donnie Darko (2001)/Donnie Darko (2001).mkv'
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags frag_keyframe+empty_moov' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/TV_Shows_Misc/Justified (2010)/Season 4/justified.s04e09.hdtv.x264-2hd.mp4'
+
+
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -movflags frag_keyframe+empty_moov' -transcode '/home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Aliens (1986)/Aliens (1986).mkv'
+
+
+# works.....blocky
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v libx264 -c:a ac3 -movflags frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv 
+
+# works.....blocky
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv
+
+# audio......no video
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv  
+
+# no vid
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags faststart' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv  
+
+# works.....blocky
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags faststart+frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv  
+
+# no vid
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags faststart+frag_keyframe' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv  
+
+# works....blocky
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:a ac3 -movflags faststart+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv 
+
+# works......not blocky
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -movflags faststart+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Pacific_Rim\ \(2013\)/Pacific_Rim\ \(2013\).mkv 
+
+
+# um, no video.......I dtop the c:v copy it plays with blocks
+python stream2chromecast.py -devicename 10.0.0.56 -transcodeopts '-c:v copy -c:a ac3 -movflags faststart+frag_keyframe+empty_moov' -transcode /home/spoot/nfsmount/HTPC_MediaBrowser/BluRay/Cobra\ \(1986\)/Cobra\ \(1986\).mkv
+

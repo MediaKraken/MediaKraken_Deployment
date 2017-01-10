@@ -24,7 +24,6 @@ from common import common_config_ini
 
 
 # media classes
-# when adding new classes must update subprogram_match_known_media program as well
 base_media_classes = (
     ("Adult", "Video", True),
     ("Anime", "Video", True),
@@ -64,7 +63,7 @@ base_media_classes = (
 
 
 # open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
+db_connection = common_config_ini.com_config_read(True)
 
 
 # create table for version
@@ -289,13 +288,7 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
         ' ON mm_media_class(mm_media_class_type)')
 # add media classes
 for media_class in base_media_classes:
-    db_connection.db_query('select count(*) from mm_media_class where mm_media_class_type = %s',\
-                        (media_class[0],))
-    if db_connection.fetchone()[0] == 0:
-        sql_params = str(uuid.uuid4()), media_class[0], media_class[1], media_class[2]
-        db_connection.db_query('insert into mm_media_class (mm_media_class_guid,'\
-            'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'\
-            ' values (%s,%s,%s,%s)', sql_params)
+    db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
 
 
 # create table for anime metadata
@@ -505,7 +498,7 @@ base_cron = [
     ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_thetvdb_updates.py'),
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_tmdb_updates.py'),
 #    ('TVmaze Images', 'Grab missing TVmaze images', './subprogram_tvmaze_images.py'),
-    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmze_updates.py'),
+    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmaze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_update_create_collections.py'),
     # normal subprograms
 #    ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
@@ -518,14 +511,11 @@ base_cron = [
 #    ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
     ]
 # create base cron entries
-db_connection.db_query('select count(*) from mm_cron')
-if db_connection.fetchone()[0] == 0:
-    for base_item in base_cron:
-        sql_params = str(uuid.uuid4()), base_item[0], base_item[1], False, 'Days 1',\
-            psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2]
-        db_connection.db_query('insert into mm_cron (mm_cron_guid, mm_cron_name,'\
-            ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'\
-            ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)', sql_params)
+#db_connection.db_query('select count(*) from mm_cron')
+#if db_connection.fetchone()[0] == 0:
+for base_item in base_cron:
+    db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',\
+        psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2])
 
 
 # create iradio tables
@@ -598,18 +588,15 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_group (mm_user_group_
     ' mm_user_group_description text, mm_user_group_rights_json jsonb)')
 if db_connection.db_table_index_check('mm_user_group_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_group_idx_name ON mm_user_group(mm_user_group_name)')
-db_connection.db_query('select count(*) from mm_user_group')
-if db_connection.fetchone()[0] == 0:
-    base_group = [('Administrator', 'Server administrator',\
-        json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',\
-        json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',\
-        json.dumps({'Admin': False, 'PreviewOnly': True}))]
-    # create base group entries
-    for base_item in base_group:
-        sql_params = str(uuid.uuid4()), base_item[0], base_item[1], base_item[2]
-        db_connection.db_query('insert into mm_user_group (mm_user_group_guid,'\
-            ' mm_user_group_name, mm_user_group_description, mm_user_group_rights_json)'\
-            ' values (%s,%s,%s,%s)', sql_params)
+#db_connection.db_query('select count(*) from mm_user_group')
+#if db_connection.fetchone()[0] == 0:
+base_group = [('Administrator', 'Server administrator',\
+    json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',\
+    json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',\
+    json.dumps({'Admin': False, 'PreviewOnly': True}))]
+# create base group entries
+for base_item in base_group:
+    db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
 
 
 # create table for user profiles
@@ -619,36 +606,34 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_profile (mm_user_prof
 if db_connection.db_table_index_check('mm_user_profile_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_profile_idx_name'\
         ' ON mm_user_profile(mm_user_profile_name)')
-db_connection.db_query('select count(*) from mm_user_profile')
-if db_connection.fetchone()[0] == 0:
-    # NC17, R, PG-13, PG, G
-    base_user = (
-        ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,\
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,\
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,\
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,\
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,\
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,\
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,\
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,\
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,\
-            '3D': False, 'Internet': False, 'Lang': 'en'}))
-        )
-    for base_item in base_user:
-        sql_params = str(uuid.uuid4()), base_item[0], base_item[1]
-        db_connection.db_query('insert into mm_user_profile (mm_user_profile_guid,'\
-            ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)', sql_params)
+#db_connection.db_query('select count(*) from mm_user_profile')
+#if db_connection.fetchone()[0] == 0:
+# NC17, R, PG-13, PG, G
+base_user = (
+    ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,\
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,\
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,\
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,\
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,\
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,\
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,\
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,\
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,\
+        '3D': False, 'Internet': False, 'Lang': 'en'}))
+    )
+for base_item in base_user:
+    db_connection.db_user_profile_insert(base_item[0], base_item[1])
 
 
 # create options and status table
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'\
     ' (mm_options_and_status_guid uuid CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'\
     ' mm_options_json jsonb, mm_status_json jsonb)')
-db_connection.db_query('select count(*) from mm_options_and_status')
-if db_connection.fetchone()[0] == 0:
-    sql_params = str(uuid.uuid4()), json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
+#db_connection.db_query('select count(*) from mm_options_and_status')
+#if db_connection.fetchone()[0] == 0:
+db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},\
     'MaxResumePct': 5,\
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,\
         'MetadataImageLocal': '',\
@@ -678,9 +663,7 @@ if db_connection.fetchone()[0] == 0:
     'GoogleDrive': {'SecretFile': None},\
     'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},\
     'SD': {'User': None, 'Password': None},\
-    }), json.dumps({'thetvdb_Updated_Epoc': 0})
-    db_connection.db_query('insert into mm_options_and_status (mm_options_and_status_guid,'\
-        'mm_options_json,mm_status_json) values (%s,%s,%s)', sql_params)
+    }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 
 # create table game_info

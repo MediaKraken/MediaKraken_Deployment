@@ -18,8 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import subprocess
-import sys
 import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT # pylint: disable=W0611
@@ -27,7 +25,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
 from psycopg2.extras import DictCursor # pylint: disable=W0611
 
 
-def db_open(self):
+def db_open(self, db_build=False):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -36,25 +34,29 @@ def db_open(self):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
-    self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-        % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432, \
-        os.environ['POSTGRES_PASSWORD']))
+    if db_build == False:
+        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
+            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432, \
+            os.environ['POSTGRES_PASSWORD']))
+    else:
+        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='postgres'"\
+                                          " host='localhost' port=5432 password=''")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     #self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
-    self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
-        ' WHERE relname = \'mm_media\'')
-    if self.db_cursor.fetchone()['a'] == 0:
-        logging.info("Database is not populated! Attempting to create.")
-        try:
-            db_create_pid = subprocess.Popen(['python', './db_create_update.py'],\
-                shell=False)
-            db_create_pid.wait()
-            logging.info("Database has been created!")
-        except:
-            logging.critical("Could not find/create database! Exiting...")
-            sys.exit()
+#    self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
+#        ' WHERE relname = \'mm_media\'')
+#    if self.db_cursor.fetchone()['a'] == 0:
+#        logging.info("Database is not populated! Attempting to create.")
+#        try:
+#            db_create_pid = subprocess.Popen(['python', './db_create_update.py'],\
+#                shell=False)
+#            db_create_pid.wait()
+#            logging.info("Database has been created!")
+#        except:
+#            logging.critical("Could not find/create database! Exiting...")
+#            sys.exit()
 
 
 def db_close(self):
@@ -105,8 +107,8 @@ def db_query(self, query_string):
     # general run anything
     """
     logging.info("query: %s", query_string)
+    self.db_cursor.execute(query_string)
     try:
-        self.db_cursor.execute(query_string)
         return self.db_cursor.fetchall()
     except:
         return None

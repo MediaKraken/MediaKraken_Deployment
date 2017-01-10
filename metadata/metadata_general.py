@@ -66,12 +66,18 @@ def metadata_search(thread_db, provider_name, download_data):
     lookup_halt = False
     update_provider = None
     if provider_name == 'imvdb':
-        metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup()
+        metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup(thread_db,\
+            download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'theaudiodb'
             else:
                 set_fetch = True
+    elif provider_name == 'isbndb':
+        metadata_uuid, match_result = metadata_periodicals.metadata_periodicals_search_isbndb(\
+            thread_db, download_data['mdq_download_json']['ProviderMetaID'])
+        if metadata_uuid is None:
+            lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
         metadata_uuid = common_metadata_tv_theme.com_tvtheme_download(\
