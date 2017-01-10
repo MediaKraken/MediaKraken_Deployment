@@ -49,14 +49,13 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg']
-
 #    app.config['UPLOADED_PHOTOS_DEST'] = '/tmp/testuploadext'
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
     app.config.update(
-        CELERY_BROKER_URL='redis://localhost:6379',
-        CELERY_RESULT_BACKEND='redis://localhost:6379'
+        CELERY_BROKER_URL='amqp://guest@mkrabbit',
+        CELERY_RESULT_BACKEND='amqp://guest@mkrabbit'
     )
     celery = make_celery(app)
     moment = Moment(app)
