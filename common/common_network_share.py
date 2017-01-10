@@ -25,8 +25,8 @@ import os
 def com_net_share_mount(share_list):
     # mount the share/dirs
     for share in share_list:
-        logging.info('Attempting mount of %s %s %s', (share['mm_media_share_type'], \
-                     share['mm_media_share_server'], share['mm_media_share_path']))
+        logging.info('Attempting mount of %s %s %s', share['mm_media_share_type'], \
+                     share['mm_media_share_server'], share['mm_media_share_path'])
         # check for and create mount point
         if os.path.isdir('./mnt/' + share['mm_media_share_guid']):
             pass
