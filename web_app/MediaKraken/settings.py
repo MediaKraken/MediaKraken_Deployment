@@ -28,6 +28,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://metamanpg:"\
-        + os.environ['POSTGRES_PASSWORD'] + "@mkdatabase/metamandb"
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":"\
+        + os.environ['POSTGRES_PASSWORD'] + "@mkpgbounce:6432/" \
+        + os.environ['POSTGRES_DB']
     DEBUG_TB_ENABLED = False # Disable Debug toolbar
