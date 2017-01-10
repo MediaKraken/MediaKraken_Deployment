@@ -37,21 +37,19 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # preload some data from database
-        self.genre_list = db_connection.db_meta_genre_list()
+        self.option_config_json, self.db_connection = common_config_ini.com_config_read()
+        self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
 
     def buildProtocol(self, addr):
-        # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read()
-        return network_base.NetworkEvents(self.users, db_connection,\
-            self.genre_list, option_config_json)
+        return network_base.NetworkEvents(self.users, self.db_connection,\
+            self.genre_list, self.option_config_json)
 
 
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    option_config_json, db_connection = common_config_ini.com_config_read()
     # setup for the ssl keys
     reactor.listenSSL(5000, MediaKrakenServerApp(),\
         ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
