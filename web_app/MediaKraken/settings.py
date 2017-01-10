@@ -24,7 +24,6 @@ class Config(object):
     CACHE_TYPE = 'simple' # Can be "memcached", "redis", etc.
 
 
-#class DevConfig(Config): # for flipping to debug
 class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
@@ -32,15 +31,3 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://metamanpg:"\
         + os.environ['POSTGRES_PASSWORD'] + "@mkdatabase/metamandb"
     DEBUG_TB_ENABLED = False # Disable Debug toolbar
-
-
-#class ProdConfig(Config): # for flipping to debug
-class DevConfig(Config):
-    """Development configuration."""
-    ENV = 'dev'
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://metamanpg:"\
-        + os.environ['POSTGRES_PASSWORD'] + "@mkdatabase/metamandb"
-    DEBUG_TB_ENABLED = True
-    ASSETS_DEBUG = True # Don't bundle/minify static assets
-    CACHE_TYPE = 'simple' # Can be "memcached", "redis", etc.
