@@ -42,7 +42,7 @@ class MediaKrakenServerApp(Factory):
         logging.info("Ready for connections!")
         # setup celery instance for consumer
         self.celery = common_celery.app
-        self.celery.start()
+        self.celery.start(['worker'])
 
 
     def buildProtocol(self, addr):
