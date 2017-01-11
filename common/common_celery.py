@@ -26,6 +26,6 @@ def com_celery_init():
     return Celery('mediakraken',
                  broker='amqp://guest@mkrabbitmq',
                  backend='amqp://guest@mkrabbitmq',
-                 include=['mediakraken.common.common_celery_tasks', \
-                          'mediakraken.common.common_celery_tasks_chromecast',\
-                          'mediakraken.common.common_celery_tasks_hdhomerun'])
+                 include=['common.common_celery_tasks', \
+                          'common.common_celery_tasks_chromecast',\
+                          'common.common_celery_tasks_hdhomerun'])
