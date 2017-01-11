@@ -139,7 +139,7 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL('mkserver', 5000,\
+        reactor.connectSSL('mkserver', 8903,\
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
