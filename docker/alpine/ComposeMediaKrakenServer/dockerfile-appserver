@@ -60,6 +60,6 @@ RUN cd ip2country \
   && rm -R ./ip2country \
   && rm requirements.txt
 
-EXPOSE 5000
+EXPOSE 8903
 
 CMD ["/bin/ash"]
