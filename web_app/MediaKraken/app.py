@@ -54,8 +54,8 @@ def create_app(config_object=ProdConfig):
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
     app.config.update(
-        CELERY_BROKER_URL='amqp://guest@mkrabbit',
-        CELERY_RESULT_BACKEND='amqp://guest@mkrabbit'
+        CELERY_BROKER_URL='amqp://guest@mkrabbitmq',
+        CELERY_RESULT_BACKEND='amqp://guest@mkrabbitmq'
     )
     celery = make_celery(app)
     moment = Moment(app)

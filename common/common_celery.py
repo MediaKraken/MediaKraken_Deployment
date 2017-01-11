@@ -24,8 +24,8 @@ from celery import Celery
 def com_celery_init():
     logging.info('celery start')
     return Celery('mediakraken',
-                 broker='amqp://guest@mkrabbit',
-                 backend='amqp://guest@mkrabbit',
+                 broker='amqp://guest@mkrabbitmq',
+                 backend='amqp://guest@mkrabbitmq',
                  include=['mediakraken.common.common_celery_tasks', \
                           'mediakraken.common.common_celery_tasks_chromecast',\
                           'mediakraken.common.common_celery_tasks_hdhomerun'])
