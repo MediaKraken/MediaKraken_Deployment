@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from mediakraken.common.common_celery import app
+from common_celery import app
 import time
 import common_ffmpeg
 
