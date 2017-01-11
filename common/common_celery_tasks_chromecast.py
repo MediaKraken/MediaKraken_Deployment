@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-import common_celery
+from . import common_celery
 
 
 @common_celery.app.task
