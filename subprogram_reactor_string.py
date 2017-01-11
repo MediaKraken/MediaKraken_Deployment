@@ -41,7 +41,7 @@ class MediaKrakenServerApp(Factory):
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
         # setup celery instance for consumer
-        self.celery = common_celery.com_celery_init()
+        self.celery = common_celery.app
         self.celery.start()
 
 
