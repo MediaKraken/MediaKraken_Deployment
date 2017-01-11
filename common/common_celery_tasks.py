@@ -18,12 +18,12 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from common_celery import app
 import time
+import common_celery
 import common_ffmpeg
 
 
-@app.task
+@common_celery.app.task
 def longtime_add(x, y):
     print('long time task begins')
     # sleep 5 seconds
@@ -32,7 +32,7 @@ def longtime_add(x, y):
     return x + y
 
 
-@app.task
+@common_celery.app.task
 def com_celery_task_ffprobe(file_name):
     """
     run the ffprobe task on file to return json

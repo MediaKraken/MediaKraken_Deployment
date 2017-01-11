@@ -18,10 +18,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from common_celery import app
+import common_celery
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_play(media_json):
     """
     play media file to chromecast
@@ -29,7 +29,7 @@ def com_celery_chrome_play(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_stop(media_json):
     """
     stop media file to chromecast
@@ -37,7 +37,7 @@ def com_celery_chrome_stop(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_pause(media_json):
     """
     pause media file to chromecast
@@ -45,7 +45,7 @@ def com_celery_chrome_pause(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_mute(media_json):
     """
     mute audio chromecast
@@ -53,7 +53,7 @@ def com_celery_chrome_mute(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_vol_up(media_json):
     """
     chromecast volume up
@@ -61,7 +61,7 @@ def com_celery_chrome_vol_up(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_vol_down(media_json):
     """
     chromecast volume down
@@ -69,7 +69,7 @@ def com_celery_chrome_vol_down(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_vol_set(media_json):
     """
     chromecast volume set
@@ -77,7 +77,7 @@ def com_celery_chrome_vol_set(media_json):
     pass
 
 
-@app.task
+@common_celery.app.task
 def com_celery_chrome_status(chrome_json):
     """
     chromecast status
