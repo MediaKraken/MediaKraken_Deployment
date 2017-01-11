@@ -22,6 +22,7 @@ from celery import Celery
 
 
 def com_celery_init():
+    logging.info('celery start')
     return Celery('mediakraken',
                  broker='amqp://guest@mkrabbit',
                  backend='amqp://guest@mkrabbit',

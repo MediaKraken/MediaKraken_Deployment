@@ -20,9 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from twisted.internet import ssl
 from twisted.internet import reactor
-#from twisted.internet import protocol
 from twisted.internet.protocol import Factory
 from network import network_base_string as network_base
+from common import common_celery
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
@@ -40,6 +40,9 @@ class MediaKrakenServerApp(Factory):
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
+        # setup celery instance for consumer
+        self.celery = common_celery.com_celery_init()
+        self.celery.start()
 
 
     def buildProtocol(self, addr):

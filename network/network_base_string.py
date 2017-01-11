@@ -30,7 +30,6 @@ except:
     import pickle
 from twisted.protocols.basic import Int32StringReceiver
 import ip2country
-from common import common_celery
 from common import common_network
 
 
@@ -61,9 +60,6 @@ class NetworkEvents(Int32StringReceiver):
         self.proc_chapter_create = None
         self.proc_anime_match = None
         self.proc_subtitle_media_match = None
-        # setup celery instance for consumer
-        self.celery = common_celery.com_celery_init()
-        self.celery.start()
 
 
     def connectionMade(self):
