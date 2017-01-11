@@ -18,6 +18,7 @@ services:
       - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
     ports:
+      - "5000:5000"
       - "8903:5000"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
