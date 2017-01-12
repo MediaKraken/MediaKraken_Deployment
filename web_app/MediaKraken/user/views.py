@@ -462,7 +462,7 @@ def user_tv_show_detail_page(guid):
         hours, minutes = divmod(minutes, 60)
         # set watched
         try:
-            watched_status = json_media['UserStats'][current_user.get_id()]
+            watched_status = json_metadata['UserStats'][current_user.get_id()]
         except:
             watched_status = False
         return render_template('users/user_tv_show_detail.html', data=data_metadata[0],
@@ -1190,10 +1190,10 @@ def user_album_list_page():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db_connection.db_media_album_list(offset, per_page):
-        try:
+        if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],\
                 row_data['mm_metadata_album_json']))
-        except:
+        else:
             media.append((row_data['mm_metadata_album_guid'],\
                 row_data['mm_metadata_album_name'], None))
     pagination = common_pagination.get_pagination(page=page,
