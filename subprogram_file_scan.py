@@ -203,7 +203,8 @@ known_media = db_connection.db_known_media()
 # verify rows were returned
 if known_media is not None:
     for media_row in known_media:
-        global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
+        if media_row['mm_media_path'] is not None:
+            global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
 known_media = None
 
 
