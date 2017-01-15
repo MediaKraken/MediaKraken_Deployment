@@ -18,6 +18,7 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
+mk_celery = None
 
 
 def make_celery(app):
@@ -40,6 +41,7 @@ def create_app(config_object=ProdConfig):
 
     :param config_object: The configuration object to use.
     """
+    global mk_celery
     app = Flask(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
