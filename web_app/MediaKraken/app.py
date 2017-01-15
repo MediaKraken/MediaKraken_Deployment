@@ -21,8 +21,12 @@ from MediaKraken import public, user, admins
 
 
 def make_celery(app):
-    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
-                    broker=app.config['CELERY_BROKER_URL'])
+    celery = Celery('mediakraken',
+             broker='amqp://guest@mkrabbitmq',
+             backend='amqp://guest@mkrabbitmq',
+             include=['common.common_celery_tasks', \
+                      'common.common_celery_tasks_chromecast',\
+                      'common.common_celery_tasks_hdhomerun'])
     celery.conf.update(app.config)
     TaskBase = celery.Task
     class ContextTask(TaskBase):
@@ -53,13 +57,6 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    app.config.update(
-        CELERY_BROKER_URL='amqp://guest@mkrabbitmq',
-        CELERY_RESULT_BACKEND='amqp://guest@mkrabbitmq',
-        CELERY_INCLUDE=['common.common_celery_tasks', \
-                      'common.common_celery_tasks_chromecast',\
-                      'common.common_celery_tasks_hdhomerun']
-    )
     mk_celery = make_celery(app)
     moment = Moment(app)
     return app
