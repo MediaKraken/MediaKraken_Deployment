@@ -18,7 +18,6 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
-mk_celery = None
 
 
 def make_celery(app):
@@ -41,7 +40,6 @@ def create_app(config_object=ProdConfig):
 
     :param config_object: The configuration object to use.
     """
-    global mk_celery
     app = Flask(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
@@ -57,7 +55,10 @@ def create_app(config_object=ProdConfig):
 #    configure_uploads(app, photos)
     app.config.update(
         CELERY_BROKER_URL='amqp://guest@mkrabbitmq',
-        CELERY_RESULT_BACKEND='amqp://guest@mkrabbitmq'
+        CELERY_RESULT_BACKEND='amqp://guest@mkrabbitmq',
+        CELERY_INCLUDE=['common.common_celery_tasks', \
+                      'common.common_celery_tasks_chromecast',\
+                      'common.common_celery_tasks_hdhomerun']
     )
     mk_celery = make_celery(app)
     moment = Moment(app)
