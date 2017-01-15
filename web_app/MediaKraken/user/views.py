@@ -731,19 +731,27 @@ def user_cast(action, guid):
         pass
     elif action == 'back':
         pass
-    elif action == 'rewind':
-        pass
+#    elif action == 'rewind':
+#        pass
     elif action == 'stop':
-        pass
+        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'play':
-        cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
-            '-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
+        g.celery.com_celery_chrome_play(json.dumps({'user': g.current_user, \
+            'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
+        #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
+        #'-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
-        pass
-    elif action == 'ff':
-        pass
+        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+#    elif action == 'ff':
+#        pass
     elif action == 'forward':
         pass
+    elif action == 'mute':
+        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+    elif action == 'vol_up':
+        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+    elif action == 'vol down':
+        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     return render_template("users/user_playback_cast.html")
 
 
@@ -1600,8 +1608,8 @@ def metadata_periodical_detail(guid):
                            json_metadata=g.db_connection.db_meta_book_by_uuid(guid),
                            data_item_image="../../static/images/Missing_Icon.png",
                           )
-    
-    
+
+
 @blueprint.route('/metadata_music_list')
 @blueprint.route('/metadata_music_list/')
 @login_required
