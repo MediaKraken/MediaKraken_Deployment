@@ -44,6 +44,7 @@ from common import common_metadata_limiter
 from common import common_metadata_musicbrainz
 from common import common_metadata_netflixroulette
 from common import common_metadata_omdb
+from common import common_metadata_open_library
 from common import common_metadata_pitchfork
 from common import common_metadata_theaudiodb
 from common import common_metadata_thegamesdb
@@ -169,6 +170,16 @@ def omdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
 
 
+@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]\
+     / common_metadata_limiter.API_LIMIT['omdb'][1])
+def openlibrary(thread_db, download_data):
+    """
+    Rate limiter for openlibrary
+    """
+    logging.info("here i am in openlib rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    metadata_general.metadata_process(thread_db, 'openlibrary', download_data)
+    
+    
 @ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]\
      / common_metadata_limiter.API_LIMIT['pitchfork'][1])
 def pitchfork(thread_db, download_data):

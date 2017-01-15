@@ -24,6 +24,7 @@ API_LIMIT = {
     'musicbrainz': (9999, 1),
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections
+    'openlibrary': (100, 300), # 1/14/2017 100 every 5 minutes
     'pitchfork': (9999, 1), # no mention of limits 7/29/2016
     'televisiontunes': (1, 1), # since I'm scraping
     'theaudiodb': (9999, 1), # no mention of limits 7/29/2016
