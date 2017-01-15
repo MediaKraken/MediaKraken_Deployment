@@ -7,7 +7,6 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-from MediaKraken.app import mk_celery
 #from flask_table import Table, Col, create_table
 from MediaKraken.user.forms import BookAddForm
 from MediaKraken.user.forms import SyncEditForm

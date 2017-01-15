@@ -15,5 +15,4 @@ from common import common_logging
 # start logging
 common_logging.com_logging_start('../log/MediaKraken_WebApp')
 logging.info('Creating webapp instance')
-# defaults to PROD config
 application = create_app()
