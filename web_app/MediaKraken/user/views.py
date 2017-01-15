@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
+from app import mk_celery
 #from flask_table import Table, Col, create_table
 from MediaKraken.user.forms import BookAddForm
 from MediaKraken.user.forms import SyncEditForm
@@ -734,24 +735,24 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'play':
-        g.celery.com_celery_chrome_play(json.dumps({'user': g.current_user, \
+        mk_celery.com_celery_chrome_play(json.dumps({'user': g.current_user, \
             'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
         #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
         #'-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
-        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'vol_up':
-        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'vol down':
-        g.celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     return render_template("users/user_playback_cast.html")
 
 

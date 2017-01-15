@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask, render_template, g
+from flask import Flask, render_template
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
@@ -57,7 +57,7 @@ def create_app(config_object=ProdConfig):
         CELERY_BROKER_URL='amqp://guest@mkrabbitmq',
         CELERY_RESULT_BACKEND='amqp://guest@mkrabbitmq'
     )
-    g.celery = make_celery(app)
+    mk_celery = make_celery(app)
     moment = Moment(app)
     return app
 
