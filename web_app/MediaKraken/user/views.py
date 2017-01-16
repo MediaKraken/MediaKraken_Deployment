@@ -734,24 +734,24 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        current_app.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'play':
-        mk_celery.com_celery_chrome_play(json.dumps({'user': g.current_user, \
+        current_app.com_celery_chrome_play(json.dumps({'user': g.current_user, \
             'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
         #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
         #'-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
-        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        current_app.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        current_app.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'vol_up':
-        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        current_app.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     elif action == 'vol down':
-        mk_celery.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
+        current_app.com_celery_chrome_stop(json.dumps({'user': g.current_user}))
     return render_template("users/user_playback_cast.html")
 
 
