@@ -9,7 +9,7 @@ from flask_login import login_required
 from flask_login import current_user
 from flask_paginate import Pagination
 from fractions import Fraction
-blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_sports", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
