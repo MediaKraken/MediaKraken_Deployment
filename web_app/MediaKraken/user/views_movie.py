@@ -243,7 +243,8 @@ def metadata_movie_detail(guid):
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
         production_list\
-            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
+            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] \
+            + ', ')
     # poster image
     try:
         if json_imagedata['Images']['themoviedb']['Poster'] is not None:

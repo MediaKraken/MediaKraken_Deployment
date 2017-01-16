@@ -27,7 +27,7 @@
             <ul class="nav navbar-nav">
                 {% if current_user and current_user.is_authenticated %}
                 <li><a href="{{ url_for('user.members') }}" id="menu_media">Media</a></li>
-                <li><a href="{{ url_for('user.sync_display_all') }}" id="menu_sync">Sync</a></li>
+                <li><a href="{{ url_for('user_sync.sync_display_all') }}" id="menu_sync">Sync</a></li>
                 <li>
                     <a href="#" id="menu_metadata">Metadata</a>
                     <ul class="dropdown-menu">
