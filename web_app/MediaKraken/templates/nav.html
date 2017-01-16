@@ -31,17 +31,17 @@
                 <li>
                     <a href="#" id="menu_metadata">Metadata</a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('user.metadata_movie_list') }}" id="menu_metadata_movies">Movies</a></li>
-                        <li><a href="{{ url_for('user.metadata_movie_collection_list') }}" id="menu_metadata_movie_collection">Movie Collection</a></li>
-                        <li><a href="{{ url_for('user.metadata_tvshow_list') }}" id="menu_metadata_tv_shows">TV Shows</a></li>
+                        <li><a href="{{ url_for('user_movie.meta_movie_list') }}" id="menu_metadata_movies">Movies</a></li>
+                        <li><a href="{{ url_for('user_movie.meta_movie_collection_list') }}" id="menu_metadata_movie_collection">Movie Collection</a></li>
+                        <li><a href="{{ url_for('user_tv.meta_tvshow_list') }}" id="menu_metadata_tv_shows">TV Shows</a></li>
                         <li><a href="{{ url_for('user.metadata_music_list') }}" id="menu_metadata_music">Music</a></li>
                         <li><a href="{{ url_for('user.metadata_music_album_list') }}" id="menu_metadata_music_albums">Music Albums</a></li>
-                        <li><a href="{{ url_for('user.metadata_music_video_list') }}" id="menu_metadata_music_videos">Music Videos</a></li>
-                        <li><a href="{{ url_for('user_sports.metadata_sports_list') }}" id="menu_metadata_sports">Sports</a></li>
-                        <li><a href="{{ url_for('user.metadata_game_list') }}" id="menu_metadata_games">Games</a></li>
-                        <li><a href="{{ url_for('user.metadata_game_system_list') }}" id="menu_metadata_game_systems">Game Systems</a></li>
+                        <li><a href="{{ url_for('user_music_video.meta_music_video_list') }}" id="menu_metadata_music_videos">Music Videos</a></li>
+                        <li><a href="{{ url_for('user_sports.meta_sports_list') }}" id="menu_metadata_sports">Sports</a></li>
+                        <li><a href="{{ url_for('user_games.meta_game_list') }}" id="menu_metadata_games">Games</a></li>
+                        <li><a href="{{ url_for('user_games.meta_game_system_list') }}" id="menu_metadata_game_systems">Game Systems</a></li>
                         <li><a href="{{ url_for('user.metadata_person_list') }}" id="menu_metadata_people">People</a></li>
-                        <li><a href="{{ url_for('user.metadata_periodical_list') }}" id="menu_metadata_periodical">Periodical</a></li>
+                        <li><a href="{{ url_for('user_periodical.meta_periodical_list') }}" id="menu_metadata_periodical">Periodical</a></li>
                         <li><a href="{{ url_for('user.class_display_all') }}" id="menu_metadata_class_list">Metadata Class List</a></li>
                     </ul>
                 </li>

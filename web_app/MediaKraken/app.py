@@ -70,7 +70,16 @@ def register_extensions(app):
 def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(user.views_3d.blueprint)
+    app.register_blueprint(user.views_games.blueprint)
+    app.register_blueprint(user.views_images.blueprint)
+    app.register_blueprint(user.views_internet.blueprint)
+    app.register_blueprint(user.views_movie.blueprint)
+    app.register_blueprint(user.views_music_video.blueprint)
+    app.register_blueprint(user.views_periodicals.blueprint)
     app.register_blueprint(user.views_sports.blueprint)
+    app.register_blueprint(user.views_sync.blueprint)
+    app.register_blueprint(user.views_tv.blueprint)
     app.register_blueprint(admins.views.blueprint)
     return None
 
