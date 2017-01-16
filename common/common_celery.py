@@ -21,9 +21,11 @@ import logging # pylint: disable=W0611
 from celery import Celery
 
 
-app = Celery('mediakraken',
-             broker='amqp://guest@mkrabbitmq',
-             backend='amqp://guest@mkrabbitmq',
-             include=['common.common_celery_tasks', \
-                      'common.common_celery_tasks_chromecast',\
-                      'common.common_celery_tasks_hdhomerun'])
+def com_celery_init():
+    app = Celery('mediakraken',
+                 broker='amqp://guest@mkrabbitmq',
+                 backend='amqp://guest@mkrabbitmq',
+                 include=['common.common_celery_tasks', \
+                          'common.common_celery_tasks_chromecast',\
+                          'common.common_celery_tasks_hdhomerun'])
+    return app

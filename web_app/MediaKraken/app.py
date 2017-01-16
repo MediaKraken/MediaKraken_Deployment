@@ -5,7 +5,6 @@ from flask import Flask, render_template
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
-from celery import Celery
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
 from MediaKraken.settings import ProdConfig
@@ -18,15 +17,11 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
+from common import common_celery
 
 
 def make_celery(app):
-    celery = Celery('mediakraken',
-             broker='amqp://guest@mkrabbitmq',
-             backend='amqp://guest@mkrabbitmq',
-             include=['common.common_celery_tasks', \
-                      'common.common_celery_tasks_chromecast',\
-                      'common.common_celery_tasks_hdhomerun'])
+    celery = common_celery.com_celery_init()
     celery.conf.update(app.config)
     TaskBase = celery.Task
     class ContextTask(TaskBase):
