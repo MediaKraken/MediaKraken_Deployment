@@ -21,8 +21,8 @@ from common import common_celery
 
 
 def make_celery(app):
-    celery = common_celery.com_celery_init()
-    celery.conf.update(app.config)
+    celery = common_celery.app
+    #celery.conf.update(app.config)
     TaskBase = celery.Task
     class ContextTask(TaskBase):
         abstract = True
