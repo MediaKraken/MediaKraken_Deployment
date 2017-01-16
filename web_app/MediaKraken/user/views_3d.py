@@ -7,19 +7,15 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-from fractions import Fraction
 blueprint = Blueprint("user_3d", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
-import json
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_google
 from common import common_pagination
-from common import common_string
 import database as database_base
 
 

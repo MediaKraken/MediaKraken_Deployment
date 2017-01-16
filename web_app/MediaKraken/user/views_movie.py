@@ -18,7 +18,6 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_google
 from common import common_pagination
 from common import common_string
 import database as database_base
