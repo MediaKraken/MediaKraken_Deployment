@@ -8,7 +8,6 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 from MediaKraken.user.forms import BookAddForm
-from flask_paginate import Pagination
 from fractions import Fraction
 blueprint = Blueprint("user_periodicals", __name__, url_prefix='/users', static_folder="../static")
 import locale
@@ -21,9 +20,6 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_google
-from common import common_network_twitch
-from common import common_network_vimeo
-from common import common_network_youtube
 from common import common_pagination
 from common import common_string
 import database as database_base

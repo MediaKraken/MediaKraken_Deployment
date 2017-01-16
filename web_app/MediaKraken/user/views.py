@@ -7,13 +7,10 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-#from flask_table import Table, Col, create_table
-from flask_paginate import Pagination
 from fractions import Fraction
 blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
-import pygal
 import logging # pylint: disable=W0611
 import datetime
 import uuid
@@ -25,12 +22,10 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_google
-from common import common_network_twitch
-from common import common_network_vimeo
-from common import common_network_youtube
 from common import common_pagination
 from common import common_string
 import database as database_base
+
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
