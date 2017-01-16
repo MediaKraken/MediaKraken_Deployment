@@ -27,6 +27,9 @@ from common import common_string
 import database as database_base
 
 
+option_config_json, db_connection = common_config_ini.com_config_read()
+
+
 # list of spoting events
 @blueprint.route("/sports")
 @blueprint.route("/sports/")
@@ -115,3 +118,20 @@ def metadata_sports_detail(guid):
     """
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
                            data=g.db_connection.db_meta_sports_by_guid(guid))
+
+
+@blueprint.before_request
+def before_request():
+    """
+    Executes before each request
+    """
+    g.db_connection = database_base.MKServerDatabase()
+    g.db_connection.db_open()
+
+
+@blueprint.teardown_request
+def teardown_request(exception): # pylint: disable=W0613
+    """
+    Executes after each request
+    """
+    g.db_connection.db_close()
