@@ -727,6 +727,8 @@ def user_cast(action, guid):
     """
     Display chromecast actions page
     """
+    logging.info('cast action: %s', action)
+    logging.info('case user: %s', g.current_user)
     if action == 'base':
         pass
     elif action == 'back':
