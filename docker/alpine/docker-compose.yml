@@ -155,7 +155,6 @@ services:
       dockerfile: dockerfile-nginx
     container_name: mknginx
     ports:
-      - "80:80"
       - "443:443"
     networks:
       - mediakraken-network
@@ -268,7 +267,7 @@ services:
 #      context: ./ComposeMediaKrakenFlower
 #      dockerfile: Dockerfile
 #    environment:
-#      - broker=amqp://rabbit:5672// --basic_auth=guest:guest
+#      - broker=amqp://guest@mkrabbitmq
 #    container_name: mkflower
 #    depends_on:
 #      - celery
