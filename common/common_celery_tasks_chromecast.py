@@ -26,6 +26,7 @@ def com_celery_chrome_play(media_json):
     """
     play media file to chromecast
     """
+    logging.info('task: play')
     pass
 
 
@@ -34,6 +35,7 @@ def com_celery_chrome_stop(media_json):
     """
     stop media file to chromecast
     """
+    logging.info('task: stop')
     pass
 
 
@@ -42,6 +44,7 @@ def com_celery_chrome_pause(media_json):
     """
     pause media file to chromecast
     """
+    logging.info('task: pause')
     pass
 
 
@@ -50,6 +53,7 @@ def com_celery_chrome_mute(media_json):
     """
     mute audio chromecast
     """
+    logging.info('task: mute')
     pass
 
 
@@ -58,6 +62,7 @@ def com_celery_chrome_vol_up(media_json):
     """
     chromecast volume up
     """
+    logging.info('task: vol up')
     pass
 
 
@@ -66,6 +71,7 @@ def com_celery_chrome_vol_down(media_json):
     """
     chromecast volume down
     """
+    logging.info('task: vol down')
     pass
 
 
@@ -74,6 +80,7 @@ def com_celery_chrome_vol_set(media_json):
     """
     chromecast volume set
     """
+    logging.info('task: vol set')
     pass
 
 
@@ -82,4 +89,5 @@ def com_celery_chrome_status(chrome_json):
     """
     chromecast status
     """
+    logging.info('task: status')
     pass
