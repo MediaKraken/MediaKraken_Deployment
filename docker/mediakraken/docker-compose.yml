@@ -22,6 +22,7 @@ services:
       - /var/opt/mediakraken/devices:/mediakraken/devices
       - /home/mediakraken:/mediakraken/mnt
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -46,6 +47,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -114,6 +116,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
@@ -136,7 +139,6 @@ services:
     image: mediakraken/mknginx:latest
     container_name: mknginx
     ports:
-      - "80:80"
       - "443:443"
     networks:
       - mediakraken-network
@@ -183,6 +185,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -191,8 +194,25 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # rabbit
+  # https://github.com/maryvilledev/alpine-rmq
+  rabbit:
+    image: mediakraken/mkrabbitmq:latest
+    container_name: mkrabbitmq
+    ports:
+#      - "5671:5671"
+      - "5672:5672"
+#      - "15671:15671"
+      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
 # Docker private networks
 networks:
+  # mq network
+  mediakraken-mq:
+    driver: bridge
   # Twisted communications network
   mediakraken-network:
     driver: bridge
