@@ -57,7 +57,7 @@ def user_cast(action, guid):
         current_app.com_celery_chrome_stop(json.dumps({'user': current_user.get_id()}))
     elif action == 'vol down':
         current_app.com_celery_chrome_stop(json.dumps({'user': current_user.get_id()}))
-    return render_template("users/user_playback_cast.html")
+    return render_template("users/user_playback_cast.html", data_uuid=guid)
 
 
 @blueprint.before_request
