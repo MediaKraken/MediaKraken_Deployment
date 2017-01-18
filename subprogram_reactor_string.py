@@ -42,7 +42,8 @@ class MediaKrakenServerApp(Factory):
         logging.info("Ready for connections!")
         # setup celery instance for consumer
         self.celery = common_celery.app
-        self.celery.start(argv=['celery', '-A', 'mkque', 'worker'])
+        self.celery.start(argv=['celery', 'worker'])
+#        self.celery.start(argv=['celery', '-A', 'mkque', 'worker'])
 
 #        celery -A tasks worker -Q high --concurrency=2
 #        celery -A tasks worker -Q normal --concurrency=1
