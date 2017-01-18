@@ -272,7 +272,7 @@ services:
 #      - broker=amqp://guest@mkrabbitmq
 #    container_name: mkflower
 #    depends_on:
-#      - celery
+#      - rabbit
 #    ports:
 #      - "5555:5555"
 #    volumes:
