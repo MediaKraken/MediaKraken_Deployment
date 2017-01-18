@@ -40,10 +40,10 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        common_celery_tasks_chromecast.com_celery_chrome_stop.delay(\
-            json.dumps({'user': current_user.get_id()}))
+        common_celery_tasks_chromecast.com_celery_chrome_stop.apply_async(\
+            json.dumps({'user': current_user.get_id()}), queue='mkque')
     elif action == 'play':
-        common_celery_tasks_chromecast.com_celery_chrome_play.delay(\
+        common_celery_tasks_chromecast.com_celery_chrome_play.apply_async(queue='mkque', \
             json.dumps({'user': current_user.get_id(), \
             'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
         #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
