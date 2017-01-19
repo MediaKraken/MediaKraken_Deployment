@@ -43,7 +43,7 @@ class MediaKrakenServerApp(Factory):
         # setup celery instance for consumer
         self.celery = common_celery.app
         # concurrenty arg is threads but defaults to number of CPUs available
-        self.celery.start(argv=['celery', 'worker', '-Q', 'mkque'])
+        self.celery.start(argv=['celery', 'worker', '-Q', 'mkque', '-E'])
 #        self.celery.start(argv=['celery', '-A', 'mkque', 'worker'])
 
 #        celery -A tasks worker -Q high --concurrency=2
