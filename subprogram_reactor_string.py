@@ -42,8 +42,7 @@ class MediaKrakenServerApp(Factory):
         logging.info("Ready for connections!")
         # setup celery instance for consumer
         self.celery = common_celery.app
-        # The number of worker processes/threads can be changed using the —concurrency argument 
-        # and defaults to the number of CPUs available on the machine.
+        # concurrenty arg is threads but defaults to number of CPUs available
         self.celery.start(argv=['celery', 'worker', '-Q', 'mkque'])
 #        self.celery.start(argv=['celery', '-A', 'mkque', 'worker'])
 
