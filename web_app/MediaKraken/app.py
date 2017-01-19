@@ -23,6 +23,7 @@ from common import common_celery
 def make_celery(app):
     celery = common_celery.app
     #celery.conf.update(app.config)
+    celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
     TaskBase = celery.Task
     class ContextTask(TaskBase):
         abstract = True

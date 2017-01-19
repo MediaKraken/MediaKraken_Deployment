@@ -27,4 +27,3 @@ app = Celery('mkque',
              include=['common.common_celery_tasks', \
                       'common.common_celery_tasks_chromecast',\
                       'common.common_celery_tasks_hdhomerun'])
-app.conf.update(CELERY_DEFAULT_QUEUE='mkque')
