@@ -33,6 +33,11 @@ cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployme
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_slave.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 
+# theater 
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+cp -R /home/spoot/MediaKraken_Deployment/network /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+cp /home/spoot/MediaKraken_Deployment/main_theater.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+
 # webapi
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebAPI/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebAPI/src/.

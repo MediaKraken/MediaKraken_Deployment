@@ -1,0 +1,41 @@
+# Download base image
+FROM alpine:3.4 
+
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image holds the theater app for testing"
+
+RUN mkdir /mediakraken
+
+# copy PIP requirements
+ADD requirements.txt /mediakraken
+WORKDIR /mediakraken
+
+RUN apk update \
+  && setup-xorg-base \
+  && apk add --update \
+  xfce4 \
+  xf86-input-mouse \
+  xf86-input-keyboard \
+  xf86-video-vmware \
+  python \
+  cifs-utils \
+  nfs-utils \
+  py-pip \
+  && pip install -r requirements.txt \
+  && apk del \
+  py-pip \
+  && apk add \
+  py-setuptools \
+  && rm requirements.txt \
+  && rm -rf /var/cache/apk/* \
+  && rc-update add netmount \
+  && rc-update add dbus \
+  && rc-update add rpcbind \
+  && rc-update add lxdm
+
+ADD wait-for-it-ash.sh /mediakraken
+# Copy the source files for the app
+ADD src /mediakraken
+
+CMD ["/bin/ash"]
