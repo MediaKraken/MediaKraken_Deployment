@@ -25,6 +25,7 @@ RUN apk add --update \
   nfs-utils \
   py-pip \
   alpine-sdk \
+  cython \
   && pip install -r requirements.txt \
   && apk del \
   py-pip \
