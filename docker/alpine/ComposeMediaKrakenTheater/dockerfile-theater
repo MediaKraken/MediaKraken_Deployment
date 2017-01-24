@@ -28,6 +28,9 @@ RUN apk add --update \
   cython \
   python-dev \
   libffi-dev \
+  openssl-dev \
+  gstreamer1-dev \
+  sdl2-dev \
   && pip install -r requirements.txt \
   && apk del \
   py-pip \
