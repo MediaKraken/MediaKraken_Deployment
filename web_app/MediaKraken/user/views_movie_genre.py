@@ -30,9 +30,9 @@ def user_movie_genre_page():
     Display movies split up by genre
     """
     media = []
-    for row_data in g.db_connection.db_media_movie_count_by_genre(\
+    for row_data in g.db_connection.db_media_movie_count_by_genre(
             g.db_connection.db_media_uuid_by_class('Movie')):
-        media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True),\
+        media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True),
             row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
@@ -46,9 +46,9 @@ def user_movie_page(genre):
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_web_media_list(\
-            g.db_connection.db_media_uuid_by_class('Movie'),\
-            list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,\
+    for row_data in g.db_connection.db_web_media_list(
+            g.db_connection.db_media_uuid_by_class('Movie'),
+            list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
             offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
         # 4 - mm_metadata_localimage_json
@@ -81,18 +81,18 @@ def user_movie_page(genre):
             match_status = row_data['MatchFlag']
         except:
             match_status = False
-        logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,\
+        logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,
             favorite_status, match_status)
         if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb']\
                 and json_image['Images']['themoviedb']['Poster'] is not None:
-            media.append((row_data['mm_media_name'], row_data['mm_media_guid'],\
-                json_image['Images']['themoviedb']['Poster'],\
+            media.append((row_data['mm_media_name'], row_data['mm_media_guid'],
+                json_image['Images']['themoviedb']['Poster'],
                 watched_status, sync_status, poo_status, favorite_status, match_status))
         else:
-            media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,\
+            media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,
                 watched_status, sync_status, poo_status, favorite_status, match_status))
-    total = g.db_connection.db_web_media_list_count(\
-        g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,\
+    total = g.db_connection.db_web_media_list_count(
+        g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True)
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

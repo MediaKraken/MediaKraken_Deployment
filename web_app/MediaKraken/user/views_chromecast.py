@@ -40,26 +40,26 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        common_celery_tasks_chromecast.com_celery_chrome_stop.apply_async(args=[\
+        common_celery_tasks_chromecast.com_celery_chrome_stop.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
     elif action == 'play':
-        common_celery_tasks_chromecast.com_celery_chrome_play.apply_async(args=[\
-            json.dumps({'user': current_user.get_id(), \
+        common_celery_tasks_chromecast.com_celery_chrome_play.apply_async(args=[
+            json.dumps({'user': current_user.get_id(),
             'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
         #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
         #'-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
-        common_celery_tasks_chromecast.com_celery_chrome_pause.apply_async(args=[\
+        common_celery_tasks_chromecast.com_celery_chrome_pause.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        common_celery_tasks_chromecast.com_celery_chrome_mute.apply_async(args=[\
+        common_celery_tasks_chromecast.com_celery_chrome_mute.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
     elif action == 'vol_up':
-        common_celery_tasks_chromecast.com_celery_chrome_vol_up.apply_async(args=[\
+        common_celery_tasks_chromecast.com_celery_chrome_vol_up.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
     elif action == 'vol down':
         common_celery_tasks_chromecast.com_celery_chrome_vol_down.apply_async(args=[\

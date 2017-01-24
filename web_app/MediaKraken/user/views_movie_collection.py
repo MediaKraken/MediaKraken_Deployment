@@ -33,15 +33,15 @@ def metadata_movie_collection_list():
     media = []
     for row_data in g.db_connection.db_collection_list(offset, per_page):
         try:
-            media.append((row_data['mm_metadata_collection_guid'],\
-                row_data['mm_metadata_collection_name'],\
+            media.append((row_data['mm_metadata_collection_guid'],
+                row_data['mm_metadata_collection_name'],
                 row_data['mm_metadata_collection_imagelocal_json']['Poster']))
         except:
-            media.append((row_data['mm_metadata_collection_guid'],\
+            media.append((row_data['mm_metadata_collection_guid'],
                 row_data['mm_metadata_collection_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_collection'),
                                                   record_name='movie collection(s)',
                                                   format_total=True,

@@ -32,7 +32,7 @@ def metadata_music_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_music'),
                                                   record_name='music',
                                                   format_total=True,
@@ -56,7 +56,7 @@ def metadata_music_album_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_music_album'),
                                                   record_name='music album',
                                                   format_total=True,

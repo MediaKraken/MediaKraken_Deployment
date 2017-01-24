@@ -59,8 +59,8 @@ def report_display_all_duplicates_detail(guid):
         logging.info("media: %s", media_data['mm_media_ffprobe_json'])
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
-                media.append((media_data['mm_media_guid'], media_data['mm_media_path'],\
-                    str(stream_data['width']) + 'x' + str(stream_data['height']),\
+                media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
+                    str(stream_data['width']) + 'x' + str(stream_data['height']),
                     media_data['mm_media_ffprobe_json']['format']['duration']))
                 break
     pagination = common_pagination.get_pagination(page=page,
@@ -88,7 +88,7 @@ def report_display_all_media():
     page, per_page, offset = common_pagination.get_page_items()
     media_data = []
     for row_data in g.db_connection.db_known_media(offset, per_page):
-        media_data.append((row_data['mm_media_path'],\
+        media_data.append((row_data['mm_media_path'],
             common_string.com_string_bytes2human(os.path.getsize(row_data['mm_media_path']))))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -114,16 +114,16 @@ def report_display_all_media_known_video():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_web_media_list_count(\
-                                                      g.db_connection.db_media_uuid_by_class(\
+                                                  total=g.db_connection.db_web_media_list_count(
+                                                      g.db_connection.db_media_uuid_by_class(
                                                       'Movie')),
                                                   record_name='Known Videos',
                                                   format_total=True,
                                                   format_number=True,
                                                  )
     return render_template('users/reports/report_all_known_media_video.html',
-                           media=g.db_connection.db_web_media_list(\
-                               g.db_connection.db_media_uuid_by_class('Movie'),\
+                           media=g.db_connection.db_web_media_list(
+                               g.db_connection.db_media_uuid_by_class('Movie'),
                                offset=offset, list_limit=per_page),
                            page=page,
                            per_page=per_page,

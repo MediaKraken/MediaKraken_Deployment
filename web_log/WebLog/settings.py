@@ -13,7 +13,7 @@ class Config(object):
     else:
         data = os.urandom(24).encode('hex')
         common_file.com_file_save_data('web_secret_key_debug.txt', data, False)
-    SECRET_KEY = os_env.get('WEBLOG_SECRET',\
+    SECRET_KEY = os_env.get('WEBLOG_SECRET',
         common_file.com_file_load_data('web_secret_key_debug.txt', False))
     APP_DIR = os.path.abspath(os.path.dirname(__file__)) # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))

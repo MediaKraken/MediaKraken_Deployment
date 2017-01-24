@@ -104,8 +104,8 @@ def user_video_player(guid):
     audio_track_index = request.form["Video_Play_Audio_Track"]
     subtitle_track_index = request.form["Video_Play_Subtitles"]
     # launch ffmpeg to ffserver procecss
-    proc_ffserver = subprocess.Popen(['ffmpeg', '-i',\
-        g.db_connection.db_media_path_by_uuid(media_guid_index)[0],\
+    proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
+        g.db_connection.db_media_path_by_uuid(media_guid_index)[0],
         'http://localhost:8900/stream.ffm'], shell=False)
     logging.info("FFServer PID: %s", proc_ffserver.pid)
     return render_template("users/user_playback.html", data_desc=('Movie title'))
@@ -143,7 +143,7 @@ def user_video_player_videojs(mtype, guid):
     if mtype == "hls":
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
         acodecs = ['aac', '-ac:a:0', '2', '-vbr', '5'] # pylint: disable=C0326
-        proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",\
+        proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",
             "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks\
             + ["-vf"] + subtracks\
             + ["yadif=0:0:0", vid_name], shell=False)
@@ -222,10 +222,10 @@ def user_album_list_page():
     media = []
     for row_data in g.db_connection.db_media_album_list(offset, per_page):
         if 'mm_metadata_album_json' in row_data:
-            media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],\
+            media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                 row_data['mm_metadata_album_json']))
         else:
-            media.append((row_data['mm_metadata_album_guid'],\
+            media.append((row_data['mm_metadata_album_guid'],
                 row_data['mm_metadata_album_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

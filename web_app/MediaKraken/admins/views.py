@@ -93,10 +93,10 @@ def admins():
     # read in the notifications
     for row_data in g.db_connection.db_notification_read():
         if row_data['mm_notification_dismissable']: # check for dismissable
-            data_alerts_dismissable.append((row_data['mm_notification_guid'],\
+            data_alerts_dismissable.append((row_data['mm_notification_guid'],
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
         else:
-            data_alerts.append((row_data['mm_notification_guid'],\
+            data_alerts.append((row_data['mm_notification_guid'],
                 row_data['mm_notification_text'], row_data['mm_notification_time']))
     data_transmission_active = False
     if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] != None:
@@ -109,7 +109,7 @@ def admins():
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count=locale.format('%d',\
+                           data_user_count=locale.format('%d',
                                g.db_connection.db_user_list_name_count(), True),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
@@ -121,15 +121,15 @@ def admins():
                            data_active_streams=locale.format('%d', 0, True),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
-                           data_count_media_files=locale.format('%d',\
+                           data_count_media_files=locale.format('%d',
                                g.db_connection.db_known_media_count(), True),
-                           data_count_matched_media=locale.format('%d',\
+                           data_count_matched_media=locale.format('%d',
                                g.db_connection.db_matched_media_count(), True),
                            data_count_streamed_media=locale.format('%d', 0, True),
                            data_zfs_active=common_zfs.com_zfs_available(),
-                           data_library=locale.format('%d',\
+                           data_library=locale.format('%d',
                                g.db_connection.db_table_count('mm_media_dir'), True),
-                           data_share=locale.format('%d',\
+                           data_share=locale.format('%d',
                                g.db_connection.db_table_count('mm_media_share'), True),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
@@ -169,7 +169,7 @@ def admin_user_detail(guid):
     """
     Display user details
     """
-    return render_template('admin/admin_user_detail.html',\
+    return render_template('admin/admin_user_detail.html',
         data_user=g.db_connection.db_user_detail(guid))
 
 
@@ -230,7 +230,7 @@ def admin_tvtuners():
     tv_tuners = []
     for row_data in g.db_connection.db_tuner_list():
         tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
-        + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],\
+        + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],
         row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
     return render_template("admin/admin_tvtuners.html", data_tuners=tv_tuners)
 
@@ -260,7 +260,7 @@ def admin_transmission():
     if trans_connection is not None:
         torrent_no = 1
         for torrent in trans_connection.com_trans_get_torrent_list():
-            transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,\
+            transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,
                 torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
     return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
@@ -304,7 +304,7 @@ def admin_library():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_media_dir'),
                                                   record_name='library dir(s)',
                                                   format_total=True,
@@ -332,7 +332,7 @@ def admin_library_edit_page():
             if request.form['action_type'] == 'Add':
                 # check for UNC
                 if request.form['library_path'][:1] == "\\":
-                    addr, share, path = common_string.com_string_unc_to_addr_path(\
+                    addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
                     logging.info('smb info: %s %s %s', (addr, share, path))
                     if addr is None: # total junk path for UNC
@@ -361,7 +361,7 @@ def admin_library_edit_page():
                     return redirect(url_for('admins.admin_library_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
-                    g.db_connection.db_audit_path_add(request.form['library_path'],\
+                    g.db_connection.db_audit_path_add(request.form['library_path'],
                         request.form['Lib_Class'], request.form['Lib_Share'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_library'))
@@ -405,7 +405,7 @@ def admin_library_delete_page():
 @admin_required
 def getLibraryById():
     result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
-    return json.dumps({'Id': result['mm_media_dir_guid'],\
+    return json.dumps({'Id': result['mm_media_dir_guid'],
         'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
 
 
@@ -413,7 +413,7 @@ def getLibraryById():
 @login_required
 @admin_required
 def updateLibrary():
-    g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],\
+    g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
         request.form['new_class'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
@@ -429,7 +429,7 @@ def admin_share():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_media_share'),
                                                   record_name='share(s)',
                                                   format_total=True,
@@ -468,8 +468,8 @@ def admin_share_edit_page():
 #                        return redirect(url_for('admins.admin_share_edit_page'))
 #                    logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(request.form['storage_mount_server'], \
-                        user_name=request.form['storage_mount_user'], \
+                    smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
+                        user_name=request.form['storage_mount_user'],
                         user_password=request.form['storage_mount_password'])
 #                    if not smb_stuff.com_cifs_share_directory_check(\
 #                            request.form['storage_mount_server'], \
@@ -482,10 +482,10 @@ def admin_share_edit_page():
                 elif request.form['storage_mount_type'] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(request.form['storage_mount_server'],\
-                        user_name=request.form['storage_mount_user'], \
+                    smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
+                        user_name=request.form['storage_mount_user'],
                         user_password=request.form['storage_mount_password'])
-                    smb_stuff.com_cifs_share_directory_check(share_name,\
+                    smb_stuff.com_cifs_share_directory_check(share_name,
                         request.form['storage_mount_path'])
                     smb_stuff.com_cifs_close()
                 # nfs mount
@@ -497,10 +497,10 @@ def admin_share_edit_page():
                     return redirect(url_for('admins.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
-                    g.db_connection.db_audit_share_add(request.form['storage_mount_type'], \
-                                                       request.form['storage_mount_user'], \
-                                                       request.form['storage_mount_password'], \
-                                                       request.form['storage_mount_server'], \
+                    g.db_connection.db_audit_share_add(request.form['storage_mount_type'],
+                                                       request.form['storage_mount_user'],
+                                                       request.form['storage_mount_password'],
+                                                       request.form['storage_mount_server'],
                                                        request.form['storage_mount_path'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_share'))
@@ -532,7 +532,7 @@ def admin_share_delete_page():
 @admin_required
 def getShareById():
     result = g.db_connection.db_audit_share_by_uuid(request.form['id'])
-    return json.dumps({'Id': result['mm_share_dir_guid'],\
+    return json.dumps({'Id': result['mm_share_dir_guid'],
         'Path': result['mm_share_dir_path']})
 
 
@@ -540,11 +540,11 @@ def getShareById():
 @login_required
 @admin_required
 def updateShare():
-    g.db_connection.db_audit_share_update_by_uuid(request.form['new_share_type'],\
-                                                  request.form['new_share_user'],\
-                                                  request.form['new_share_password'],\
-                                                  request.form['new_share_server'],\
-                                                  request.form['new_share_path'],\
+    g.db_connection.db_audit_share_update_by_uuid(request.form['new_share_type'],
+                                                  request.form['new_share_user'],
+                                                  request.form['new_share_password'],
+                                                  request.form['new_share_server'],
+                                                  request.form['new_share_path'],
                                                   request.form['id'])
     return json.dumps({'status': 'OK'})
 
@@ -590,20 +590,20 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db_connection.db_trigger_insert(('python',\
+                g.db_connection.db_trigger_insert(('python',
                     './subprogram_postgresql_backup.py')) # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_dir_list(\
+    for backup_local in common_file.com_file_dir_list(
             option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local',\
+        backup_files.append((backup_local[0], 'Local',
             common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in CLOUD_HANDLE.com_cloud_backup_list():
-        backup_files.append((backup_cloud.name, backup_cloud.type,\
+        backup_files.append((backup_cloud.name, backup_cloud.type,
             common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,

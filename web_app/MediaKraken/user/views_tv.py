@@ -37,15 +37,15 @@ def user_tv_page():
         # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*),
         # 3 - mm_metadata_tvshow_localimage_json
         try:
-            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
-                row_data['mm_metadata_tvshow_localimage_json'],\
+            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
+                row_data['mm_metadata_tvshow_localimage_json'],
                 locale.format('%d', row_data['mm_count'], True)))
         except:
-            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],\
+            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
                 None, locale.format('%d', row_data['mm_count'], True)))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_web_tvmedia_list_count(\
+                                                  total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None),
                                                   record_name='media',
                                                   format_total=True,
@@ -94,7 +94,7 @@ def user_tv_show_detail_page(guid):
             else:
                 data_first_aired = None
             if 'summary' in json_metadata['Meta']['tvmaze']:
-                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>',\
+                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>',
                     '').replace('</p>', '')
             else:
                 data_overview = None
@@ -512,7 +512,7 @@ def metadata_tvshow_list():
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page):
-        media_tvshow.append((row_data['mm_metadata_tvshow_guid'],\
+        media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
             row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3])) # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

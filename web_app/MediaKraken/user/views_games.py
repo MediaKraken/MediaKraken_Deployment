@@ -52,7 +52,7 @@ def metadata_game_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_game_software_info'),
                                                   record_name='Games',
                                                   format_total=True,
@@ -95,7 +95,7 @@ def metadata_game_system_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_game_system_list.html',
-                           media_game_system=g.db_connection.db_meta_game_system_list(\
+                           media_game_system=g.db_connection.db_meta_game_system_list(
                                offset, per_page),
                            page=page,
                            per_page=per_page,

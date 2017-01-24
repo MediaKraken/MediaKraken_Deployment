@@ -56,18 +56,18 @@ def sync_edit(guid):
     Allow user to edit sync page
     """
     if request.method == 'POST':
-        sync_json = {'Type': request.form['target_type'],\
-            'Media GUID': guid,\
-            'Options': {'VContainer': request.form['target_container'],\
-            'VCodec': request.form['target_codec'],\
-            'Size': request.form['target_file_size'],\
-            'AudioChannels': request.form['target_audio_channels'],\
-            'ACodec': request.form['target_audio_codec'],\
-            'ASRate': request.form['target_sample_rate']},\
-            'Priority': request.form['target_priority'], \
-            'Status': 'Scheduled', \
+        sync_json = {'Type': request.form['target_type'],
+            'Media GUID': guid,
+            'Options': {'VContainer': request.form['target_container'],
+            'VCodec': request.form['target_codec'],
+            'Size': request.form['target_file_size'],
+            'AudioChannels': request.form['target_audio_channels'],
+            'ACodec': request.form['target_audio_codec'],
+            'ASRate': request.form['target_sample_rate']},
+            'Priority': request.form['target_priority'],
+            'Status': 'Scheduled',
             'Progress': 0}
-        g.db_connection.db_sync_insert(request.form['name'],\
+        g.db_connection.db_sync_insert(request.form['name'],
             request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))

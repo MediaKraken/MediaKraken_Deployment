@@ -45,7 +45,7 @@ def user_internet_youtube():
     """
     Display youtube page
     """
-    return render_template("users/user_internet_youtube.html",\
+    return render_template("users/user_internet_youtube.html",
         media=common_google.com_google_youtube_feed_list('top_rated'))
 
 
@@ -74,19 +74,19 @@ def user_internet_twitch():
         logging.info("stream: %s", stream_data)
         try:
             if stream_data['stream']['game'] is None:
-                twitch_media.append((stream_data['stream']['name'],\
+                twitch_media.append((stream_data['stream']['name'],
                     stream_data['stream']['preview']['medium'], 'Not Available'))
             else:
-                twitch_media.append((stream_data['stream']['name'],\
+                twitch_media.append((stream_data['stream']['name'],
                     stream_data['stream']['preview']['medium'], stream_data['stream']['game']))
         except:
             if stream_data['stream']['channel']['game'] is None:
-                twitch_media.append((stream_data['stream']['channel']['name'],\
-                    stream_data['stream']['preview']['medium'],\
+                twitch_media.append((stream_data['stream']['channel']['name'],
+                    stream_data['stream']['preview']['medium'],
                     'Not Available'))
             else:
-                twitch_media.append((stream_data['stream']['channel']['name'],\
-                    stream_data['stream']['preview']['medium'],\
+                twitch_media.append((stream_data['stream']['channel']['name'],
+                    stream_data['stream']['preview']['medium'],
                     stream_data['stream']['channel']['game']))
     return render_template("users/user_internet_twitch.html", media=twitch_media)
 

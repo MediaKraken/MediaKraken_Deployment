@@ -51,8 +51,8 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
-            proc_ffserver = subprocess.Popen(['ffmpeg', '-i',\
-                g.db_connection.db_media_path_by_uuid(media_guid_index)[0],\
+            proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
+                g.db_connection.db_media_path_by_uuid(media_guid_index)[0],
                 'http://localhost:8900/stream.ffm'], shell=False)
             logging.info("FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user.movie_detail', guid=guid))
@@ -64,18 +64,18 @@ def movie_detail(guid):
         json_imagedata = data['mm_metadata_localimage_json']
         json_metaid = data['mm_metadata_media_id']
         # vote count format
-        data_vote_count = locale.format('%d',\
+        data_vote_count = locale.format('%d',
             json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
         # build gen list
         genres_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] \
+            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name']
                 + ', ')
         # build production list
         production_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
             production_list\
-                += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']\
+                += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
                 + ', ')
         # budget format
         budget = locale.format('%d', json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
@@ -95,13 +95,13 @@ def movie_detail(guid):
         else:
             # aspect ratio
             try:
-                aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],\
+                aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],
                                             json_ffmpeg['streams'][0]['height'])).replace('/', ':')
             except:
                 aspect_ratio = 'NA'
             # bitrate
             try:
-                bitrate = common_string.com_string_bytes2human(\
+                bitrate = common_string.com_string_bytes2human(
                     float(json_ffmpeg['format']['bit_rate']))
             except:
                 bitrate = 'NA'
@@ -146,7 +146,7 @@ def movie_detail(guid):
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
-                    audio_streams.append((len(audio_streams), (stream_codec + stream_language\
+                    audio_streams.append((len(audio_streams), (stream_codec + stream_language
                         + stream_title)[:-3]))
                 elif stream_info['codec_type'] == 'subtitle':
                     subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
@@ -177,7 +177,7 @@ def movie_detail(guid):
         data_json_media_chapters = []
         try:
             for chap_data in natsort.natsorted(json_media['ChapterImages']):
-                data_json_media_chapters.append((chap_data, \
+                data_json_media_chapters.append((chap_data,
                     json_media['ChapterImages'][chap_data]))
         except:
             pass
@@ -233,7 +233,7 @@ def metadata_movie_detail(guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = locale.format('%d',\
+    data_vote_count = locale.format('%d',
         json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
     # build gen list
     genres_list = ''
@@ -243,7 +243,7 @@ def metadata_movie_detail(guid):
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
         production_list\
-            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] \
+            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
             + ', ')
     # poster image
     try:
@@ -274,7 +274,7 @@ def metadata_movie_detail(guid):
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
-                           data_budget=locale.format('%d',\
+                           data_budget=locale.format('%d',
                                json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
                           )
 
@@ -289,7 +289,7 @@ def metadata_movie_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_movie'),
                                                   record_name='Movies',
                                                   format_total=True,

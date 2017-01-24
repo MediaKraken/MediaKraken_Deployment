@@ -48,10 +48,10 @@ def user_books_add():
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
-                g.db_connection.db_insert_media(media_id, None, class_uuid,\
+                g.db_connection.db_insert_media(media_id, None, class_uuid,
                     None, None, None)
-                g.db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,\
-                    'Path': None, 'ClassID': class_uuid, 'Status': None,\
+                g.db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
+                    'Path': None, 'ClassID': class_uuid, 'Status': None,
                     'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
         return redirect(url_for('user.user_books_add'))
@@ -73,11 +73,11 @@ def metadata_periodical_list():
     for item_data in g.db_connection.db_meta_book_list(offset, per_page):
         logging.info('person data: %s', item_data)
         item_image = "../../static/images/Missing_Icon.png"
-        item_list.append((item_data['mm_metadata_book_guid'], \
+        item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_book'),
                                                   record_name='Periodical',
                                                   format_total=True,

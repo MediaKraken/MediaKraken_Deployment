@@ -32,7 +32,7 @@ def user_music_video_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
@@ -56,7 +56,7 @@ def metadata_music_video_list():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(\
+                                                  total=g.db_connection.db_table_count(
                                                       'mm_metadata_music_video'),
                                                   record_name='music video',
                                                   format_total=True,
