@@ -27,6 +27,7 @@ RUN apk add --update \
   alpine-sdk \
   cython \
   python-dev \
+  libffi-dev \
   && pip install -r requirements.txt \
   && apk del \
   py-pip \
