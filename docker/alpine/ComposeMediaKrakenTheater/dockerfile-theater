@@ -11,13 +11,15 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk update \
-  && setup-xorg-base \
-  && apk add --update \
-  xfce4 \
+RUN apk add --update \
+  xorg-server \
+  xf86-video-vesa \
+  xf86-video-modesetting \
+  xf86-input-evdev \
   xf86-input-mouse \
   xf86-input-keyboard \
-  xf86-video-vmware \
+  udev \
+  xfce4 \
   python \
   cifs-utils \
   nfs-utils \
@@ -32,7 +34,10 @@ RUN apk update \
   && rc-update add netmount \
   && rc-update add dbus \
   && rc-update add rpcbind \
-  && rc-update add lxdm
+  && rc-update add lxdm \
+  && rc-update -q del mdev sysinit \
+  && rc-update -q add udev sysinit \
+  && rc-update -q add udev-postmount default
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
