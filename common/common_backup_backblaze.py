@@ -61,7 +61,7 @@ class CommonBackupBackblaze(object):
         if dir_password is None:
             self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
         else:
-            self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name,\
+            self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name,
                     multithread=True, password=dir_password)
 
 
@@ -72,6 +72,6 @@ class CommonBackupBackblaze(object):
         if file_password is None:
             response = self.b2_blaze.download_file_by_name(file_name, local_file_name)
         else:
-            response = self.b2_blaze.download_file_by_name(file_name, local_file_name,\
+            response = self.b2_blaze.download_file_by_name(file_name, local_file_name,
                     password=file_password)
         logging.info("b2 down: %s", response)

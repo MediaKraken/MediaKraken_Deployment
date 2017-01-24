@@ -29,8 +29,8 @@ class CommonCloudDropbox(object):
         # set active false so if following falls
         self.active = False
         if option_config_json['Dropbox']['APIKey'] is not None:
-            self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(\
-                option_config_json['Dropbox']['APIKey'],\
+            self.flow = dropbox.client.DropboxOAuth2FlowNoRedirect(
+                option_config_json['Dropbox']['APIKey'],
                 option_config_json['Dropbox']['APISecret'])
             self.active = True
         self.client = None

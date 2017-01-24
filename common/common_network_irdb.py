@@ -35,7 +35,7 @@ def com_irdb_device_types_by_brand(brand_text):
     """
     # get device types by brand
     """
-    return json.loads(common_network.mk_network_fetch_from_url(\
+    return json.loads(common_network.mk_network_fetch_from_url(
         'http://irdb.tk/api/devicetype/?brand=' + brand_text, None))
 
 
@@ -43,7 +43,7 @@ def com_irdb_codesets_brand_device(brand_text, device_type):
     """
     # See which sets of codes we have for that brand and device type:
     """
-    return json.loads(common_network.mk_network_fetch_from_url(\
+    return json.loads(common_network.mk_network_fetch_from_url(
         'http://irdb.tk/api/codeset/?brand=' + brand_text + '&devicetype=' + device_type, None))
 
 

@@ -37,7 +37,7 @@ total_download_attempts = 0
 # parse arguments
 sub_lang = "en"
 # search the directory for filter files
-for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',\
+for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
     logging.info("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")

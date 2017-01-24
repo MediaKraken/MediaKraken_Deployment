@@ -43,7 +43,7 @@ class CommonMetadataMusicbrainz(object):
         #musicbrainzngs.auth(option_config_json.get('MediaBrainz','User').strip(),
         #option_config_json.get('MediaBrainz','Password').strip())
         # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
-        musicbrainzngs.set_useragent("MediaKraken_Server", "0.1.6",\
+        musicbrainzngs.set_useragent("MediaKraken_Server", "0.1.6",
             "spootdev@gmail.com https://github.com/MediaKraken_Deployment")
         # If you are connecting to a development server
         if option_config_json['MediaBrainz']['Host'] != 'None':
@@ -66,17 +66,17 @@ class CommonMetadataMusicbrainz(object):
         logging.info("musicbrainz ID: {}".format(rel['id']))
 
 
-    def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,\
+    def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,
             artist_recording=None, return_limit=5, strict_flag=False):
         """
         # search by artist and album name
         """
         global musicbrainzngs
         if disc_id is not None:
-            result = musicbrainzngs.get_releases_by_discid(disc_id,\
+            result = musicbrainzngs.get_releases_by_discid(disc_id,
                 includes=["artists", "recordings"])
         else:
-            result = musicbrainzngs.search_releases(artist=artist_name, release=artist_recording,\
+            result = musicbrainzngs.search_releases(artist=artist_name, release=artist_recording,
                 limit=return_limit, strict=strict_flag)
         if not result['release-list']:
             logging.error("no release found")
@@ -88,13 +88,13 @@ class CommonMetadataMusicbrainz(object):
             return release['id']
 
 
-    def com_mediabrainz_get_recordings(self, artist_name=None, release_name=None,\
+    def com_mediabrainz_get_recordings(self, artist_name=None, release_name=None,
             song_name=None, return_limit=5, strict_flag=False):
         """
         # search by artist and song name
         """
         global musicbrainzngs
-        result = musicbrainzngs.search_recordings(artist=artist_name, release=release_name,\
+        result = musicbrainzngs.search_recordings(artist=artist_name, release=release_name,
             recording=song_name, limit=return_limit, strict=strict_flag)
         if not result['recording-list']:
             logging.error("no recording found")

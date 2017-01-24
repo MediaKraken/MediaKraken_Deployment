@@ -32,7 +32,7 @@ class TestSubprogramRokuThumbGen(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_roku_thumbnail_generate.py'],\
+        proc_info = subprocess.Popen(['python', './subprogram_roku_thumbnail_generate.py'],
             shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

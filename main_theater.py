@@ -128,13 +128,13 @@ class TheaterFactory(ClientFactory):
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
-        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',
             'Lost connection to MediaKraken server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
-        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',
             'Could not connect to MediaKraken server.')
 
 
@@ -343,8 +343,8 @@ class MediaKrakenApp(App):
 
     def connect_to_server(self):
         if self.config is not None:
-            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
+                int(self.config.get('MediaKrakenServer', 'Port').strip()),
                 TheaterFactory(self), ssl.ClientContextFactory())
             reactor.run()
 
@@ -415,15 +415,15 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif message_words[0] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index,\
+            args_converter = lambda row_index,
                 rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter,\
+            list_adapter = ListAdapter(data=data, args_converter=args_converter,
                 cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
             list_view = ListView(adapter=list_adapter)
             for video_list in pickle_data:
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
-                    size_hint_y=None,\
-                    width=self.root.ids.theater_media_video_list_scrollview.width,\
+                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
+                    size_hint_y=None,
+                    width=self.root.ids.theater_media_video_list_scrollview.width,
                     height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
@@ -505,9 +505,9 @@ class MediaKrakenApp(App):
             logging.info("gen")
             for genre_list in pickle_data:
                 logging.info("genlist: %s", genre_list)
-                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',\
-                    size_hint_y=None,\
-                    width=self.root.ids.theater_media_genre_list_scrollview.width,\
+                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
+                    size_hint_y=None,
+                    width=self.root.ids.theater_media_genre_list_scrollview.width,
                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)

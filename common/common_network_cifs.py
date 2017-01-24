@@ -43,7 +43,7 @@ class CommonNetworkCIFSShareURL(object):
         Grab file from CIFS
         """
         # For paths/files with unicode characters, simply pass in the URL as an unicode string
-        file_con = self.director.open(\
+        file_con = self.director.open(
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
         # Process file_con like a file-like object and then close it.
         file_con.close()
@@ -53,8 +53,8 @@ class CommonNetworkCIFSShareURL(object):
         """
         Post file via CIFS
         """
-        file_con = self.director.open(\
-            'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',\
+        file_con = self.director.open(
+            'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',
             data=open(file_path, 'rb'))
         file_con.close()
 
@@ -73,7 +73,7 @@ class CommonCIFSShare(object):
         """
         server_name = 'Server'
         client_name = 'My Computer'
-        self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,\
+        self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,
             use_ntlm_v2=True)
         self.smb_conn.connect(ip_addr, 139)
 

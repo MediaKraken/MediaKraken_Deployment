@@ -113,10 +113,10 @@ class MediaKrakenAPI(object):
             items_added = []
             for row_data in self.db_connection.db_kodi_user_sync_list_added(synctime):
                 items_added.append(row_data[0])
-            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],\
-                "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,\
-                "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int",\
-                "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False,\
+            sync_json = {"ItemsAdded": items_added, "ItemsRemoved": [""], "ItemsUpdated": [""],
+                "UserDataChanged": [{"Rating": 0, "PlayedPercentage": 0,
+                "UnplayedItemCount": "int", "PlaybackPositionTicks": "long", "PlayCount": "int",
+                "IsFavorite": False, "Likes": False, "LastPlayedDate": "Date", "Played": False,
                 "Key": "", "ItemId": ""}]}
             return pickle.dumps(sync_json)
 

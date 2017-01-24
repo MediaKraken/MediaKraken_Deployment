@@ -44,7 +44,7 @@ class TestCommonCloudAWSS3(object):
         ("./cache/HashCalc.txt", "HashCalc.txt", True),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", False),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
-    def test_com_aws_s3_upload(self, source_path, destination_filename,\
+    def test_com_aws_s3_upload(self, source_path, destination_filename,
             backup_bucket = False):
         """
         Test function

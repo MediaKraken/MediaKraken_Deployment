@@ -110,7 +110,7 @@ class MediaKrakenApp(object):
         """
         Connect to media server
         """
-        reactor.connectSSL(sys.argv[1], int(sys.argv[2]),\
+        reactor.connectSSL(sys.argv[1], int(sys.argv[2]),
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
@@ -144,24 +144,24 @@ class MediaKrakenApp(object):
                 if new_media[1] == 'Movie':
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db_connection.db_meta_guid_by_tmdb(\
+                        metadata_guid = self.db_connection.db_meta_guid_by_tmdb(
                             new_media[3]['themoviedb'])
                         if metadata_guid is None:
-                            metadata_guid = self.db_connection.db_meta_guid_by_tvdb(\
+                            metadata_guid = self.db_connection.db_meta_guid_by_tvdb(
                                 new_media[3]['thetvdb'])
                 elif new_media[1] == 'TV Show':
                     metadata_guid = self.db_connection.db_metatv_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
-                        metadata_guid = self.db_connection.db_metatv_guid_by_tvmaze(\
+                        metadata_guid = self.db_connection.db_metatv_guid_by_tvmaze(
                             new_media[3]['tvmaze'])
                         if metadata_guid is None:
-                            metadata_guid = self.db_connection.db_metatv_guid_by_tvdb(\
+                            metadata_guid = self.db_connection.db_metatv_guid_by_tvdb(
                                 new_media[3]['thetvdb'])
                             if metadata_guid is None:
-                                metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(\
+                                metadata_guid = self.db_connection.db_metatv_guid_by_tvrage(
                                     new_media[3]['tvrage'])
                 elif new_media[1] == 'Sports':
-                    metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(\
+                    metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(
                         new_media[3]['thesportsdb'])
                 elif new_media[1] == 'Music':
                     pass
@@ -171,8 +171,8 @@ class MediaKrakenApp(object):
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
-                self.db_connection.db_insert_remote_media(link_server, new_media[0],\
-                    self.db_connection.db_media_uuid_by_class(new_media[1]),\
+                self.db_connection.db_insert_remote_media(link_server, new_media[0],
+                    self.db_connection.db_media_uuid_by_class(new_media[1]),
                     new_media[2], metadata_guid)
             self.db_connection.db_commit()
         else:

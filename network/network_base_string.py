@@ -109,9 +109,9 @@ class NetworkEvents(Int32StringReceiver):
 #        elif message_words[0] == "RECEIVENEWMEDIA":
 #            self.db_connection.db_Media_Link_New_Data(pickle.loads(message_words[1])
         elif message_words[0] == "REQUESTNEWMEDIA":
-            msg = "RECEIVENEWMEDIA " + pickle.dumps(\
-                self.db_connection.db_Media_Link_Read_New(pickle.loads(message_words[1]),\
-                message_words[2], message_words[3], message_words[4], message_words[5],\
+            msg = "RECEIVENEWMEDIA " + pickle.dumps(
+                self.db_connection.db_Media_Link_Read_New(pickle.loads(message_words[1]),
+                message_words[2], message_words[3], message_words[4], message_words[5],
                 message_words[6], message_words[7]))
         elif message_words[0] == "PlayUUID" or message_words[0] == "demo":
             media_path = self.db_connection.db_media_path_by_uuid(message_words[1])[0]
@@ -119,7 +119,7 @@ class NetworkEvents(Int32StringReceiver):
                 if True:
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',\
+                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
                         media_path, http_link], shell=False)
                     http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
                         + self.server_port_ffmpeg + '/stream.ffm'
@@ -161,44 +161,44 @@ class NetworkEvents(Int32StringReceiver):
             msg = "GENRELIST " + pickle.dumps(self.genre_list)
         # theater data
         elif message_words[0] == "VIDEODETAIL":
-            msg = "VIDEODETAIL " + pickle.dumps(\
+            msg = "VIDEODETAIL " + pickle.dumps(
                 self.db_connection.db_read_media_Metadata_Both(message_words[1]))
         elif message_words[0] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(\
-                self.db_connection.db_media_uuid_by_class("Movie"),\
+            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
+                self.db_connection.db_media_uuid_by_class("Movie"),
                     message_words[0], message_words[1]))
         elif message_words[0] == "movie" or message_words[0] == "recent_addition"\
                 or message_words[0] == 'in_progress' or message_words[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(\
+            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
                 self.db_connection.db_media_uuid_by_class("Movie"), message_words[0]))
         # admin commands
         elif message_words[0] == "ScanMedia":
             # popen expects a list
-            self.proc_file_scan = subprocess.Popen([\
+            self.proc_file_scan = subprocess.Popen([
                 'subprogram_file_scan'], shell=False)
         elif message_words[0] == "ScanMediaStop":
             os.killpg(self.proc_file_scan.pid, signal.SIGUSR1)
         elif message_words[0] == "MatchMedia":
             # popen expects a list
-            self.proc_media_match = subprocess.Popen([\
+            self.proc_media_match = subprocess.Popen([
                 'subprogram_match_known_media'], shell=False)
         elif message_words[0] == "MatchMediaStop":
             os.killpg(self.proc_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CreateChapterImage":
             # popen expects a list
-            self.proc_chapter_create = subprocess.Popen([\
+            self.proc_chapter_create = subprocess.Popen([
                 'subprogram_create_chapter_images'], shell=False)
         elif message_words[0] == "CreateChapterImageStop":
             os.killpg(self.proc_chapter_create.pid, signal.SIGUSR1)
         elif message_words[0] == "ScudLeeAnimeMatch":
             # popen expects a list
-            self.proc_anime_match = subprocess.Popen([\
+            self.proc_anime_match = subprocess.Popen([
                 'subprogram_match_anime_id_scudlee'], shell=False)
         elif message_words[0] == "ScudLeeAnimeMatchStop":
             os.killpg(self.proc_anime_match.pid, signal.SIGUSR1)
         elif message_words[0] == "SubtitleMedia":
             # popen expects a list
-            self.proc_subtitle_media_match = subprocess.Popen([\
+            self.proc_subtitle_media_match = subprocess.Popen([
                 'subprogram_subtitle_downloader'], shell=False)
         elif message_words[0] == "SubtitleMediaStop":
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)

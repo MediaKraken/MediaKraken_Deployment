@@ -24,7 +24,7 @@ def db_media_album_count(self):
     """
     Album count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'\
+    self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
         ' where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
     sql_data = self.db_cursor.fetchall()
     if sql_data is None:
@@ -38,14 +38,14 @@ def db_media_album_list(self, offset=None, per_page=None):
     """
     # TODO only grab the image part of the json for list
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'\
-            'mm_metadata_album_json from mm_metadata_album, mm_media'\
-            ' where mm_media_metadata_guid = mm_metadata_album_guid'\
+        self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
+            'mm_metadata_album_json from mm_metadata_album, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_album_guid'
             ' group by mm_metadata_album_guid order by mm_metadata_album_name')
     else:
-        self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'\
-            'mm_metadata_album_json from mm_metadata_album, mm_media'\
-            ' where mm_media_metadata_guid = mm_metadata_album_guid'\
-            ' group by mm_metadata_album_guid order by mm_metadata_album_name'\
+        self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
+            'mm_metadata_album_json from mm_metadata_album, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_album_guid'
+            ' group by mm_metadata_album_guid order by mm_metadata_album_name'
             ' offset %s limit %s', (offset, per_page))
     return self.db_cursor.fetchall()

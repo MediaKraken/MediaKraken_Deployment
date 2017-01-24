@@ -22,17 +22,17 @@ import uuid
 import json
 
 
-def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,\
+def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,
                                ani_image_local, ani_user_json, mapping_data, before_data):
     """
     Insert new anidb entries into database
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'\
-        ' mm_metadata_anime_media_id, mm_media_anime_name, mm_metadata_anime_json,'\
-        ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json,'\
+    self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'
+        ' mm_metadata_anime_media_id, mm_media_anime_name, mm_metadata_anime_json,'
+        ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json,'
         ' mm_metadata_anime_mapping, mm_metadata_anime_mapping_before)\
-        values (%s,%s,%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,\
+        values (%s,%s,%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,
         ani_image_local, ani_user_json, mapping_data, before_data))
     self.db_commit()
     return new_guid
@@ -43,7 +43,7 @@ def db_meta_anime_title_search(self, title_to_search):
     search for title
     """
     # TODO hit movie and tv db's as well?
-    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'\
+    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
         ' where mm_media_anime_name = %s', (title_to_search,))
     try:
         return self.db_cursor.fetchone()[0]
@@ -56,11 +56,11 @@ def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_befo
     Update the media id json from scudlee data
     """
     logging.info('ani_id_json %s', media_id_json)
-    self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s,'\
-                           ' mm_metadata_anime_mapping = %s,'\
-                           ' mm_metadata_anime_mapping_before = %s'\
-                           ' where mm_metadata_anime_media_id->\'anidb\' ? %s',\
-                           (media_id_json, mapping_json, mapping_before,\
+    self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s,'
+                           ' mm_metadata_anime_mapping = %s,'
+                           ' mm_metadata_anime_mapping_before = %s'
+                           ' where mm_metadata_anime_media_id->\'anidb\' ? %s',
+                           (media_id_json, mapping_json, mapping_before,
                            json.loads(media_id_json)['anidb']))
     self.db_commit()
 
@@ -70,7 +70,7 @@ def db_meta_anime_meta_by_id(self, anidb_id):
     Return count of records with id
     """
     logging.info('exist ani: %s', anidb_id)
-    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'\
+    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
         ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_anime_guid']

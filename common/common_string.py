@@ -81,7 +81,7 @@ def com_string_password_test(password_text):
         'Very strong',
     )
     strength, improvements = passwordmeter.test(password_text)
-    logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,\
+    logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,
             int(strength * len(ratings)))])))
     return (strength, improvements)
 
@@ -109,7 +109,7 @@ def com_string_unc_to_addr_path(unc_path):
     Break up unc to parts
     """
     try:
-        return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],\
+        return (unc_path.split('\\', 5)[2], unc_path.split('\\', 5)[3],
                 '\\'.join(unc_path.split('\\', 5)[4:]))
     except:
         return None, None, None

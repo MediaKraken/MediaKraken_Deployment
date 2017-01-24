@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server TMDB Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server TMDB Update Start', None,
     'System: Server TMDB Start', 'ServertheTMDBStart', None, None, 'System')
 
 
@@ -52,12 +52,12 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
         dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
         if dl_meta is None:
-            db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
-                'Path': None, 'ClassID': None, 'Status': 'Fetch',\
+            db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+                'Path': None, 'ClassID': None, 'Status': 'Fetch',
                 'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
     else:
-        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
-            'Path': None, 'ClassID': None, 'Status': 'Update',\
+        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+            'Path': None, 'ClassID': None, 'Status': 'Update',
             'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
 
 
@@ -69,13 +69,13 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
         if dl_meta is None:
             status_type = 'Fetch'
     else:
-        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,\
-            'Path': None, 'ClassID': None, 'Status': 'Update',\
+        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+            'Path': None, 'ClassID': None, 'Status': 'Update',
             'MetaNewID': None, 'ProviderMetaID': str(tv_change['id'])}))
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,
     'System: Server TMDB Stop', 'ServertheTMDBStop', None, None, 'System')
 
 

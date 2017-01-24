@@ -39,7 +39,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', None,
     'System: Server DB Backup Start', 'ServerBackupStart', None, None, 'System')
 
 
@@ -56,13 +56,13 @@ cloud_handle = common_cloud.CommonCloud(option_config_json)
 # grab settings and options
 option_json = db_connection.db_opt_status_read()['mm_options_json']
 if option_json['Backup']['BackupType'] != 'local':
-    cloud_handle.com_cloud_file_store(option_json['Backup']['BackupType'],\
-        os.path.join(option_config_json['MediaKrakenServer']['BackupLocal'],\
+    cloud_handle.com_cloud_file_store(option_json['Backup']['BackupType'],
+        os.path.join(option_config_json['MediaKrakenServer']['BackupLocal'],
         backup_file_name), backup_file_name, True)
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,
     'System: Server DB Backup Stop', 'ServerBackupStop', None, None, 'System')
 
 

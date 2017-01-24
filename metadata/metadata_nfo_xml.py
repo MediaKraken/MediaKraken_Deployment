@@ -50,10 +50,10 @@ def nfo_xml_file(media_file_path):
         if os.path.isfile(xml_file_name): # check for xml
             logging.info('xml file found: %s', xml_file_name)
             xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
-        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),\
+        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),
                 'movie.xml')):
             logging.info('movie xml file found: %s', xml_file_name)
-            xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(\
+            xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
                 os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
     return nfo_data, xml_data
 

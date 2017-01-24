@@ -64,7 +64,7 @@ logging.info("Open DB")
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',\
+db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',
                                  'ServerStart', None, None, 'System')
 
 
@@ -85,7 +85,7 @@ logging.info("Validate Paths")
 # keep the checks split so user can be told which one is wrong
 #if not os.path.isdir(option_config_json['MediaKrakenServer']['MetadataImageLocal']):
 #    logging.critical("MediaKrakenServer/MetadataImageLocal is not a valid directory!  Exiting...")
-#    logging.critical("Invalid Path: %s" %\
+#    logging.critical("Invalid Path: %s" %
 #        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
 #    sys.exit()
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
@@ -141,7 +141,7 @@ logging.info("Trigger PID: %s", proc_trigger.pid)
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
-    proc_link = subprocess.Popen(['python', './main_server_link.py', link_data[2]['IP'],\
+    proc_link = subprocess.Popen(['python', './main_server_link.py', link_data[2]['IP'],
         str(link_data[2]['Port'])], shell=False)
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
@@ -157,7 +157,7 @@ proc.wait()
 
 
 # log stop
-db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',\
+db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',
                                  'ServerStop', None, None, 'System')
 
 
@@ -176,7 +176,7 @@ os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
 #os.kill(proc_ffserver.pid, signal.SIGTERM)
 #os.kill(proc_web_app.pid, signal.SIGTERM)
-os.kill(proc_trigger, signal.SIGTERM)
+os.kill(proc_trigger.pid, signal.SIGTERM)
 #os.kill(proc_api, signal.SIGTERM)
 for link_data in link_pid.keys():
     os.kill(link_pid[link_data], signal.SIGTERM)

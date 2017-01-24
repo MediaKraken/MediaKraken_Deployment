@@ -42,42 +42,42 @@ if TMDB_API_CONNECTION is not None:
     # start up the range fetches for movie
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_id_max()):
         if JUST_DO_IT:
-            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch", \
+            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch",
                 "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
         else:
             # check to see if we already have it
             if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
-                    and db_connection.db_download_que_exists(None, 1, 'themoviedb', \
+                    and db_connection.db_download_que_exists(None, 1, 'themoviedb',
                     str(tmdb_to_fetch)) is None:
-                db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch", \
+                db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch",
                     "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
     # start up the range fetchs for tv
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_tv_id_max()):
         if JUST_DO_IT:
-            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch", \
+            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch",
                 "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
         else:
             # check to see if we already have it
             if db_connection.db_meta_tmdb_bio_count(tmdb_to_fetch) == 0 \
-                    and db_connection.db_download_que_exists(None, 2, 'themoviedb', \
+                    and db_connection.db_download_que_exists(None, 2, 'themoviedb',
                     str(tmdb_to_fetch)) is None:
-                db_connection.db_download_insert('themoviedb', \
-                                                 json.dumps({"Status": "Fetch", \
-                                                 "ProviderMetaID": str(tmdb_to_fetch), \
+                db_connection.db_download_insert('themoviedb',
+                                                 json.dumps({"Status": "Fetch",
+                                                 "ProviderMetaID": str(tmdb_to_fetch),
                                                  "MetaNewID": str(uuid.uuid4())}))
     # start up the range fetchs for person
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_bio_id_max()):
         if JUST_DO_IT:
-            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch", \
+            db_connection.db_download_insert('themoviedb', json.dumps({"Status": "Fetch",
                 "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
         else:
             # check to see if we already have it
             if db_connection.db_meta_tmdb_bio_count(tmdb_to_fetch) == 0 \
-                    and db_connection.db_download_que_exists(None, 3, 'themoviedb', \
+                    and db_connection.db_download_que_exists(None, 3, 'themoviedb',
                     str(tmdb_to_fetch)) is None:
-                db_connection.db_download_insert('themoviedb', \
-                                                 json.dumps({"Status": "Fetch", \
-                                                 "ProviderMetaID": str(tmdb_to_fetch), \
+                db_connection.db_download_insert('themoviedb',
+                                                 json.dumps({"Status": "Fetch",
+                                                 "ProviderMetaID": str(tmdb_to_fetch),
                                                  "MetaNewID": str(uuid.uuid4())}))
 
 

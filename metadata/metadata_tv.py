@@ -59,10 +59,10 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     tvmaze_id = None
     if TVMAZE_CONNECTION is not None:
         if 'year' in file_name:
-            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],\
+            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],
                 file_name['year'], lang_code, True))
         else:
-            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],\
+            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],
                 None, lang_code, True))
         logging.info("response: %s", tvmaze_id)
         if tvmaze_id is not None:
@@ -86,10 +86,10 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     tvdb_id = None
     if THETVDB_CONNECTION is not None:
         if 'year' in file_name:
-            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
                 file_name['year'], lang_code, True))
         else:
-            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],\
+            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
                 None, lang_code, True))
         logging.info("response: %s", tvdb_id)
         if tvdb_id is not None:
@@ -117,17 +117,17 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         logging.info('insert')
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],\
+        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
             'thetvdb': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         logging.info('insert 2')
-        metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,\
+        metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb':\
-            {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
+            {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,
             'Banner': xml_banners_data}}}), json.dumps(image_json))
         logging.info('insert 3')
         # insert cast info
         if xml_actor_data is not None:
-            db_connection.db_meta_person_insert_cast_crew('thetvdb',\
+            db_connection.db_meta_person_insert_cast_crew('thetvdb',
                 xml_actor_data['Actor'])
         logging.info('insert 4')
         db_connection.db_commit()
@@ -143,8 +143,8 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
     show_full_json = None
     try:
-        show_full_json = ({'Meta': {'tvmaze':\
-            json.loads(common_metadata_tvmaze.com_meta_tvmaze_show_by_id(\
+        show_full_json = ({'Meta': {'tvmaze':
+            json.loads(common_metadata_tvmaze.com_meta_tvmaze_show_by_id(
             tvmaze_id, None, None, None, True))}})
     except:
         pass
@@ -166,23 +166,23 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
             imdb_id = str(show_detail['externals']['imdb'])
         except:
             imdb_id = None
-        series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,\
+        series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,
             'imdb': imdb_id, 'thetvdb': thetvdb_id})
         image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
+        metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
             json.dumps(show_full_json), json.dumps(image_json))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
-            db_connection.db_meta_person_insert_cast_crew('tvmaze',\
+            db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
         db_connection.db_commit()
     return metadata_uuid
 
 
-def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id,\
+def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id,
                        file_name):
     """
     Lookup tv metadata
@@ -246,12 +246,12 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         # id is known from nfo/xml but not in db yet so fetch data
         if tvdb_id is not None or imdb_id is not None:
             if tvdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,\
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
                                                                'thetvdb', str(tvdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
-                    db_connection.db_download_update(json.dumps(download_que_json),\
+                    db_connection.db_download_update(json.dumps(download_que_json),
                         download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('thetvdb', download_que_id)
@@ -259,12 +259,12 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,\
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
                     'thetvdb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                    db_connection.db_download_update(json.dumps(download_que_json),\
+                    db_connection.db_download_update(json.dumps(download_que_json),
                         download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('thetvdb', download_que_id)
@@ -277,7 +277,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         logging.info("tv db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],\
+            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
                 file_name['year'])
         else:
             metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'], None)
@@ -290,7 +290,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
             # search tvmaze since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
             # save the updated status
-            db_connection.db_download_update(json.dumps(download_que_json),\
+            db_connection.db_download_update(json.dumps(download_que_json),
                 download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('tvmaze', download_que_id)

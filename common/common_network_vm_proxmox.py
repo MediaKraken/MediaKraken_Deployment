@@ -26,10 +26,10 @@ class CommonNetworkProxMox(object):
     Class for interfacing via proxmox
     """
     def __init__(self, node_addr, node_user, node_password):
-        self.httpheaders = {'Accept': 'application/json',\
+        self.httpheaders = {'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'}
         self.full_url = ('https://%s:8006/api2/json/' % node_addr)
-        api_response = requests.post(self.full_url + 'access/ticket', verify=False,\
+        api_response = requests.post(self.full_url + 'access/ticket', verify=False,
             data={'username': node_user, 'password': node_password}).json()
         self.prox_ticket = {'PVEAuthCookie': api_response['data']['ticket']}
         self.httpheaders['CSRFPreventionToken'] = str(api_response['data']['CSRFPreventionToken'])
@@ -276,15 +276,15 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('get', 'nodes/%s/lxc' % node_name)
 
 
-    def com_net_prox_node_lxc_create(self, node_name, host_name, memory_size,\
+    def com_net_prox_node_lxc_create(self, node_name, host_name, memory_size,
                                      template_name, storage_id, os_type):
         """
         create lxc on code
         """
-        post_data = {'vmid': self.com_net_prox_cluster_nextid()['data'],\
-                     'ostemplate': template_name, 'storage': storage_id,\
-                     'cpulimit': 8, 'hostname': host_name,\
-                     'memory': memory_size, 'ostype': os_type,\
+        post_data = {'vmid': self.com_net_prox_cluster_nextid()['data'],
+                     'ostemplate': template_name, 'storage': storage_id,
+                     'cpulimit': 8, 'hostname': host_name,
+                     'memory': memory_size, 'ostype': os_type,
                      'password': 'metaman'}
                      #'net': 'name=eth0'}
                      #'rootfs': 'vm-118-disk-1a, size=32G'}
@@ -441,7 +441,7 @@ class CommonNetworkProxMox(object):
         """
         Scan remote GlusterFS server.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/scan/glusterfs' % node_name,\
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/glusterfs' % node_name,
             post_data_json)
 
 
@@ -449,7 +449,7 @@ class CommonNetworkProxMox(object):
         """
         Scan remote iSCSI server.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/scan/iscsi' % node_name,\
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/iscsi' % node_name,
             post_data_json)
 
 
@@ -464,7 +464,7 @@ class CommonNetworkProxMox(object):
         """
         List local LVM Thin Pools.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvmthin' % node_name,\
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvmthin' % node_name,
             post_data_json)
 
 
@@ -472,7 +472,7 @@ class CommonNetworkProxMox(object):
         """
         Scan remote NFS server.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/scan/nfs' % node_name,\
+        return self.com_net_prox_api_call('get', 'nodes/%s/scan/nfs' % node_name,
             post_data_json)
 
 

@@ -43,7 +43,7 @@ class CommonMetadataTMDB(object):
         search = tmdb.Search()
         response = search.movie(query=movie_title)
         for s in search.results:
-            logging.info("result: %s %s %s", s['title'], s['id'],\
+            logging.info("result: %s %s %s", s['title'], s['id'],
                 s['release_date'].split('-', 1)[0])
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                     or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
@@ -79,7 +79,7 @@ class CommonMetadataTMDB(object):
         """
         logging.info('tmdb bio build: %s', result_json)
         # create file path for poster
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],\
+        image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
             'person')
         logging.info('tmdb bio image path: %s', image_file_path)
         person_file_paths = []
@@ -87,9 +87,9 @@ class CommonMetadataTMDB(object):
             if profile_image['poster_path'] is not None:
                 if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
                                       + image_file_path + profile_image['poster_path']):
-                    thread_db.db_download_image_insert('themoviedb', \
+                    thread_db.db_download_image_insert('themoviedb',
                         json.dumps({'url': 'https://image.tmdb.org/t/p/original'\
-                        + profile_image['poster_path'], \
+                        + profile_image['poster_path'],
                         'local': '/mediakraken/web_app/MediaKraken/static/meta/images/' \
                         + image_file_path + profile_image['poster_path']}))
 #                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
@@ -105,7 +105,7 @@ class CommonMetadataTMDB(object):
         """
         Grab high metadata id
         """
-        return json.loads(common_network.mk_network_fetch_from_url(\
+        return json.loads(common_network.mk_network_fetch_from_url(
             'https://api.themoviedb.org/3/movie/latest'\
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -114,7 +114,7 @@ class CommonMetadataTMDB(object):
         """
         Grab high bios metadata id (person)
         """
-        return json.loads(common_network.mk_network_fetch_from_url(\
+        return json.loads(common_network.mk_network_fetch_from_url(
             'https://api.themoviedb.org/3/person/latest'\
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -123,7 +123,7 @@ class CommonMetadataTMDB(object):
         """
         Grab high tv metadata id
         """
-        return json.loads(common_network.mk_network_fetch_from_url(\
+        return json.loads(common_network.mk_network_fetch_from_url(
             'https://api.themoviedb.org/3/tv/latest'\
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -248,7 +248,7 @@ class CommonMetadataTMDB(object):
         """
         logging.info('tmdb info build: %s', result_json)
         # create file path for poster
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
+        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
             'poster')
         logging.info('tmdb image path: %s', image_file_path)
         poster_file_path = None
@@ -257,12 +257,12 @@ class CommonMetadataTMDB(object):
             if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
                                   + image_file_path):
                 common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
-                    + result_json['poster_path'], \
+                    + result_json['poster_path'],
                     '/mediakraken/web_app/MediaKraken/static/meta/images/' \
                     + image_file_path)
             poster_file_path = image_file_path
         # create file path for backdrop
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],\
+        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
             'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
@@ -270,15 +270,15 @@ class CommonMetadataTMDB(object):
             if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
                                   + image_file_path):
                 common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
-                    + result_json['backdrop_path'], \
+                    + result_json['backdrop_path'],
                     '/mediakraken/web_app/MediaKraken/static/meta/images/' \
                     + image_file_path)
             backdrop_file_path = image_file_path
         # its a number so make it a string just in case
-        series_id_json = json.dumps({'imdb': result_json['imdb_id'], \
+        series_id_json = json.dumps({'imdb': result_json['imdb_id'],
             'themoviedb': str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'themoviedb': {'Backdrop': backdrop_file_path,\
+        image_json = ({'Images': {'themoviedb': {'Backdrop': backdrop_file_path,
             'Poster': poster_file_path}}})
    #result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json

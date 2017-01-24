@@ -34,5 +34,5 @@ class CommonMetadataTheLogoDB(object):
         """
         Grab newest releases
         """
-        return json.loads(common_network.mk_network_fetch_from_url(\
+        return json.loads(common_network.mk_network_fetch_from_url(
             'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))

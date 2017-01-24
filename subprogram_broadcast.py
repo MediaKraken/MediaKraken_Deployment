@@ -24,5 +24,5 @@ while True:
     logging.info(str(addr) + ': %s', recv_data)
     if recv_data == "who is MediaKrakenServer?":
         # TODO   mk_network_ip_addr()
-        server_socket.sendto("http:localhost:"\
+        server_socket.sendto("http:localhost:"
             + option_config_json['MediaKrakenServer']['APIPort'], addr)

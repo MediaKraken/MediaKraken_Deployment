@@ -49,13 +49,13 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
             if 'error' in api_response.json():
                 logging.info('error skipp')
             else:
-                metadata_uuid = db_connection.db_meta_book_insert(\
+                metadata_uuid = db_connection.db_meta_book_insert(
                     api_response.json())
     logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
     return metadata_uuid, match_result
 
 
-def metadata_periodicals_lookup(db_connection, media_file_path,\
+def metadata_periodicals_lookup(db_connection, media_file_path,
                                 download_que_json, download_que_id):
     """
     Lookup via isbn and then name
@@ -64,12 +64,12 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
     # check if isbn in metaid
     if download_que_json['ProviderMetaID'] is not None:
         # check local database
-        metadata_uuid = db_connection.db_meta_book_guid_by_isbn(\
+        metadata_uuid = db_connection.db_meta_book_guid_by_isbn(
             download_que_json['ProviderMetaID'], download_que_json['ProviderMetaID'])
     else:
         # try to pull isbn out..might not be long enough, so try
         try:
-            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(media_file_path[-10:],\
+            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(media_file_path[-10:],
                 media_file_path[-13:])
         except:
             pass
@@ -80,7 +80,7 @@ def metadata_periodicals_lookup(db_connection, media_file_path,\
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})
             # save the updated status
-            db_connection.db_download_update(json.dumps(download_que_json),\
+            db_connection.db_download_update(json.dumps(download_que_json),
                 download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('isbndb', download_que_id)

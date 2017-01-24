@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,
     'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
 
 
@@ -55,7 +55,7 @@ for row_data in radio_cache:
 #radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,
     'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
 
 

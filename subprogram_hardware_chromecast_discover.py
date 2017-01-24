@@ -41,7 +41,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Chromecast Scan Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Chromecast Scan Start', None,
     'System: Server Chromecast Scan Start', 'ServerChromecastScanStart', None, None, 'System')
 
 
@@ -62,12 +62,12 @@ for row_data in chrome.com_chromecast_discover_dict():
 
 
 if devices_added > 0:
-    db_connection.db_notification_insert(locale.format('%d', devices_added, True)\
+    db_connection.db_notification_insert(locale.format('%d', devices_added, True)
         + " Chromecast added.", True)
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Chromecast Scan Stop', None,
     'System: Server Chromecast Scan Stop', 'ServerChromecastScanStop', None, None, 'System')
 
 

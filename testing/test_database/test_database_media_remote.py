@@ -63,7 +63,7 @@ class TestDatabaseMediaRemote(object):
 #        self.db_connection.db_rollback()
 
 
-    @pytest.mark.parametrize(("date_last_sync", "sync_movie", "sync_tv", "sync_sports",\
+    @pytest.mark.parametrize(("date_last_sync", "sync_movie", "sync_tv", "sync_sports",
             "sync_music", "sync_music_video", "sync_book"), [
                 ('2016-08-24', True, None, None, None, None, None),
                 ('2016-08-24', None, True, None, None, None, None),
@@ -72,11 +72,11 @@ class TestDatabaseMediaRemote(object):
                 ('2016-08-24', None, None, None, None, True, None),
                 ('2016-08-24', None, None, None, None, None, True),
                 ('2016-08-24', None, None, None, None, None, None)])
-    def test_db_media_remote_read_new(self, date_last_sync, sync_movie, sync_tv,\
+    def test_db_media_remote_read_new(self, date_last_sync, sync_movie, sync_tv,
             sync_sports, sync_music, sync_music_video, sync_book):
         """
         # new media for link
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_media_remote_read_new(date_last_sync, sync_movie, sync_tv,\
+        self.db_connection.db_media_remote_read_new(date_last_sync, sync_movie, sync_tv,
             sync_sports, sync_music, sync_music_video, sync_book)

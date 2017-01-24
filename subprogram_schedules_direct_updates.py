@@ -36,7 +36,7 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.info("array: %s", meta_program_fetch)
     meta_program_json = sd.com_schedules_direct_program_info(json.dumps(meta_program_fetch))
     logging.info("result: %s", meta_program_json)
-#   meta_program_json = sd.com_Schedules_Direct_Program_Desc(\
+#   meta_program_json = sd.com_Schedules_Direct_Program_Desc(
     #json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
         db_connection.db_tv_program_insert(program_json['programID'], json.dumps(program_data))
@@ -51,12 +51,12 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,
     'System: Server Schedules Direct Start', 'ServerSchedulesDirectStart', None, None, 'System')
 
 
 sd = common_schedules_direct.CommonSchedulesDirect()
-sd.com_schedules_direct_login(option_config_json['SD']['User'],\
+sd.com_schedules_direct_login(option_config_json['SD']['User'],
     option_config_json['SD']['Password'])
 status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
@@ -96,7 +96,7 @@ else:
 # json.dumps(channel_meta))
 
 
-# TODO downloading a generic description of a program\
+# TODO downloading a generic description of a program
 # - good for what the show is......not an episode itself
 
 station_fetch = []
@@ -125,7 +125,7 @@ elif len(station_fetch) > 0:
         # u'audioProperties': [u'DD 5.1', u'stereo'], u'duration': 9000,
         # u'programID': u'MV000135600000', u'airDateTime': u'2016-06-15T00:30:00Z',
         #  u'md5': u'18/KxBZUiJQu5sCix7WWwQ'},
-            db_connection.db_tv_schedule_insert(station_json['stationID'],\
+            db_connection.db_tv_schedule_insert(station_json['stationID'],
                 program_json['airDateTime'], json.dumps(program_json))
             logging.info("what: %s", program_json['programID'])
             #if program_json['programID'][0:2] != "MV":
@@ -142,7 +142,7 @@ if len(meta_program_fetch) > 0:
 # TODO, go grab images for blank logos
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,
     'System: Server Schedules Direct Stop', 'ServerSchedulesDirectStop', None, None, 'System')
 
 

@@ -41,9 +41,9 @@ class FileSenderThread(threading.Thread):
             clientsocket.connect((self.host, self.port))
             for fileindex in xrange(0, len(self.filenames)):
                 data = open(self.filelocations[fileindex], 'rb').read()
-                logging.info("fn: %s %s", self.filenames[fileindex],\
+                logging.info("fn: %s %s", self.filenames[fileindex],
                     type(self.filenames[fileindex]))
-                clientsocket.sendall("FILE"+struct.pack("<i256s", len(data),\
+                clientsocket.sendall("FILE"+struct.pack("<i256s", len(data),
                     str(self.filenames[fileindex])))
                 for ndx in xrange(0, (len(data)+1023)/1024):
                     clientsocket.sendall(data[ndx*1024:(ndx+1)*1024])

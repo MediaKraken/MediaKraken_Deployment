@@ -81,7 +81,7 @@ def chart_lyrics(thread_db, download_data):
     """
     Rate limiter for Chart Lyrics
     """
-    logging.info("here i am in chart_lyrics rate %s",\
+    logging.info("here i am in chart_lyrics rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'chart_lyrics', download_data)
 
@@ -92,7 +92,7 @@ def comicvine(thread_db, download_data):
     """
     Rate limiter for ComicVine
     """
-    logging.info("here i am in comicvine rate %s",\
+    logging.info("here i am in comicvine rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'comicvine', download_data)
 
@@ -103,7 +103,7 @@ def giantbomb(thread_db, download_data):
     """
     Rate limiter for GiantBomb
     """
-    logging.info("here i am in giantbomb rate %s",\
+    logging.info("here i am in giantbomb rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'giantbomb', download_data)
 
@@ -144,7 +144,7 @@ def musicbrainz(thread_db, download_data):
     """
     Rate limiter for MusicBrainz
     """
-    logging.info("here i am in musicbrainz rate %s",\
+    logging.info("here i am in musicbrainz rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
 
@@ -155,7 +155,7 @@ def netflixroulette(thread_db, download_data):
     """
     Rate limiter for NetflixRoulette
     """
-    logging.info("here i am in netflixroulette rate %s",\
+    logging.info("here i am in netflixroulette rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'netflixroulette', download_data)
 
@@ -186,7 +186,7 @@ def pitchfork(thread_db, download_data):
     """
     Rate limiter for Pitchfork
     """
-    logging.info("here i am in pitchfork rate %s",\
+    logging.info("here i am in pitchfork rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
 
@@ -197,7 +197,7 @@ def televisiontunes(thread_db, download_data):
     """
     Rate limiter for Television Tunes
     """
-    logging.info("here i am in televisiontunes rate %s",\
+    logging.info("here i am in televisiontunes rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'televisiontunes', download_data)
 
@@ -208,7 +208,7 @@ def theaudiodb(thread_db, download_data):
     """
     Rate limiter for TheAudioDB
     """
-    logging.info("here i am in theaudiodb rate %s",\
+    logging.info("here i am in theaudiodb rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'theaudiodb', download_data)
 
@@ -219,7 +219,7 @@ def thegamesdb(thread_db, download_data):
     """
     Rate limiter for thegamesdb
     """
-    logging.info("here i am in thegamesdb rate %s",\
+    logging.info("here i am in thegamesdb rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
 
@@ -230,7 +230,7 @@ def thelogodb(thread_db, download_data):
     """
     Rate limiter for thelogodb
     """
-    logging.info("here i am in thelogodb rate %s",\
+    logging.info("here i am in thelogodb rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thelogodb', download_data)
 
@@ -251,7 +251,7 @@ def thesportsdb(thread_db, download_data):
     """
     Rate limiter for TheSportsDB
     """
-    logging.info("here i am in thesportsdb rate %s",\
+    logging.info("here i am in thesportsdb rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
@@ -282,7 +282,7 @@ def tv_intros(thread_db, download_data):
     """
     Rate limiter for TV Intros
     """
-    logging.info("here i am in tv_intros rate %s",\
+    logging.info("here i am in tv_intros rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
 
@@ -293,7 +293,7 @@ def tvshowtime(thread_db, download_data):
     """
     Rate limiter for TVShowTime
     """
-    logging.info("here i am in tvshowtime rate %s",\
+    logging.info("here i am in tvshowtime rate %s",
         datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
@@ -358,15 +358,15 @@ while True:
         elif content_providers == 'tvshowtime':
             tvshowtime(thread_db, row_data)
         elif content_providers == 'Z':
-            logging.info('worker Z meta api: class: %s rowid: %s json: %s',\
-                class_text_dict[row_data['mdq_download_json']['ClassID']],\
+            logging.info('worker Z meta api: class: %s rowid: %s json: %s',
+                class_text_dict[row_data['mdq_download_json']['ClassID']],
                 row_data['mdq_id'], row_data['mdq_download_json'])
             metadata_uuid = None
             # check for book/etc
             if class_text_dict[row_data['mdq_download_json']['ClassID']] == 'Book':
                 # begin id process
-                metadata_uuid = metadata_identification.metadata_identification(thread_db,\
-                    class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                metadata_uuid = metadata_identification.metadata_identification(thread_db,
+                    class_text_dict[row_data['mdq_download_json']['ClassID']],
                     row_data['mdq_download_json'], row_data['mdq_id'], None)
             else:
                 # check for dupes by name/year
@@ -384,8 +384,8 @@ while True:
                     logging.info("worker Z meta api uuid: %s file: %s", metadata_uuid, file_name)
                     if metadata_uuid is None:
                         # begin id process
-                        metadata_uuid = metadata_identification.metadata_identification(thread_db,\
-                            class_text_dict[row_data['mdq_download_json']['ClassID']],\
+                        metadata_uuid = metadata_identification.metadata_identification(thread_db,
+                            class_text_dict[row_data['mdq_download_json']['ClassID']],
                             row_data['mdq_download_json'], row_data['mdq_id'], file_name)
                     # allow NONE to be set so, unmatched stuff can work for skipping
                     metadata_last_id = metadata_uuid
@@ -398,9 +398,9 @@ while True:
                     thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
-                logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",\
+                logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",
                     metadata_uuid, row_data['mdq_download_json']['MediaID'])
-                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],\
+                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
     thread_db.db_commit()
     time.sleep(1)

@@ -38,20 +38,20 @@ class TestDatabaseActivity(object):
         self.db_connection.db_close()
 
 
-    @pytest.mark.parametrize(("activity_name", "activity_overview", \
-        "activity_short_overview", "activity_type", "activity_itemid", "activity_userid",\
+    @pytest.mark.parametrize(("activity_name", "activity_overview",
+        "activity_short_overview", "activity_type", "activity_itemid", "activity_userid",
         "activity_log_severity"), [
-        ('TestMediaKraken_Trigger Start', None, 'System: Trigger Start',\
+        ('TestMediaKraken_Trigger Start', None, 'System: Trigger Start',
     'ServerTriggerStart', None, None, 'SystemTest')])
-    def test_db_activity_insert(self, activity_name, activity_overview, \
-            activity_short_overview, activity_type, activity_itemid, activity_userid,\
+    def test_db_activity_insert(self, activity_name, activity_overview,
+            activity_short_overview, activity_type, activity_itemid, activity_userid,
             activity_log_severity):
         """
         Test activity insert
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_activity_insert(activity_name, activity_overview, \
-            activity_short_overview, activity_type, activity_itemid, activity_userid,\
+        self.db_connection.db_activity_insert(activity_name, activity_overview,
+            activity_short_overview, activity_type, activity_itemid, activity_userid,
             activity_log_severity)
 
 

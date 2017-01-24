@@ -57,7 +57,7 @@ class CommonMetadataTheSportsDB(object):
             + player_name.replace(' ', '%20'), None)
 
 
-    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,\
+    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,
             player_name):
         """
         Search plays by team and player name

@@ -42,7 +42,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,
     'System: Server thetvdb Start', 'ServerthetvdbStart', None, None, 'System')
 
 
@@ -63,12 +63,12 @@ for row_data in update_item['Data']['Series']:
             = thetvdb_API_Connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
         # insert
         image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],\
-            'thetvdb': str(row_data['id']),\
+        series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],
+            'thetvdb': str(row_data['id']),
             'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-        db_connection.db_metatvdb_insert(series_id_json,\
+        db_connection.db_metatvdb_insert(series_id_json,
             xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta':\
-                {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,\
+                {'thetvdb': {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,
                 'Banner': xml_banners_data}}}), json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
@@ -92,7 +92,7 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 #db_connection.db_Option_Status_Update(row_data[0], status_json)
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,
     'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
 
 

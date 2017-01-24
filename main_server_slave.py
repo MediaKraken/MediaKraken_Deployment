@@ -139,7 +139,7 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL('mkserver', 8903,\
+        reactor.connectSSL('mkserver', 8903,
             TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 
@@ -164,13 +164,13 @@ class MediaKrakenApp():
             msg = "PONG"
         # user commands
         elif message_words[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]), \
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
                 shell=False)
         elif message_words[0] == "CASTMEDIA":
             cast_option = pickle.loads(message_words[1])
             self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "\
                 "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "\
-                "-movflags faststart+empty_moov' -transcode %s", (cast_option[0], \
+                "-movflags faststart+empty_moov' -transcode %s", (cast_option[0],
                 cast_option[1])), shell=False)
         # admin commands
         elif message_words[0] == "CPUUSAGE":
@@ -180,8 +180,8 @@ class MediaKrakenApp():
         elif message_words[0] == "MEMUSAGE":
             msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
         elif message_words[0] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),\
-                common_system.com_system_disk_usage_all(True),\
+            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),
+                common_system.com_system_disk_usage_all(True),
                 common_system.com_system_virtual_memory(False)))
         elif message_words[0] == "SHUTDOWN":
             os.kill(proc_ffserver.pid)
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     # mount all the shares first so paths exist for validation
     # TODO common_network_share.com_net_share_mount(db_connection.db_audit_shares())
     # fire up ffserver
-    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], \
+    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'],
         shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()

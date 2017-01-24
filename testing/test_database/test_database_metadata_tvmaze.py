@@ -53,7 +53,7 @@ class TestDatabaseMetadatatvmaze(object):
         # insert
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,\
+        self.new_guid = self.db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
             show_detail, image_json)
 
 
@@ -63,5 +63,5 @@ class TestDatabaseMetadatatvmaze(object):
         (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), 4)])
     def test_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
         self.db_connection.db_rollback()
-        self.db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,\
+        self.db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,
             show_detail, tvmaze_id)

@@ -99,7 +99,7 @@ class CommonMetadataTheTVDB(object):
         """
         Get epoc time from api server
         """
-        return common_network.mk_network_fetch_from_url(\
+        return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
 
@@ -107,7 +107,7 @@ class CommonMetadataTheTVDB(object):
         """
         Get updates by epoc
         """
-        return common_network.mk_network_fetch_from_url(\
+        return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
 

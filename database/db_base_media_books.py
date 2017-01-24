@@ -24,7 +24,7 @@ def db_media_book_list_count(self):
     """
     book list count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'\
+    self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
         ' where mm_media_metadata_guid = mm_metadata_book_guid')
     return self.db_cursor.fetchone()[0]
 
@@ -34,12 +34,12 @@ def db_media_book_list(self, offset=None, records=None):
     book list
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '\
-            'from mm_metadata_book, mm_media'\
+        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+            'from mm_metadata_book, mm_media'
             ' where mm_media_metadata_guid = mm_metadata_book_guid order by mm_metadata_book_name')
     else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '\
-            'from mm_metadata_book, mm_media'\
-            ' where mm_media_metadata_guid = mm_metadata_book_guid order by mm_metadata_book_name '\
+        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+            'from mm_metadata_book, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_book_guid order by mm_metadata_book_name '
             'offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()

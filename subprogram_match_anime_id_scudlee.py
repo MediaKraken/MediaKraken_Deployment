@@ -37,7 +37,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,
     'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart', None, None, 'System')
 
 
@@ -67,7 +67,7 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
             pass
         else:
             # should be valid data, do the update
-            db_connection.db_meta_update_media_id_from_scudlee(row_data[1],\
+            db_connection.db_meta_update_media_id_from_scudlee(row_data[1],
                 row_data[2], row_data[0])
 
 
@@ -81,7 +81,7 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,
     'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
 
 

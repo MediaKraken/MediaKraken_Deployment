@@ -48,7 +48,7 @@ class CommonMetadataIMVdb(object):
         Search for video by band name and song title
         """
         resp = requests.post(self.base_api_url + "/search/videos?q="\
-            + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),\
+            + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),
             headers=self.headers)
         logging.info("imvdb Video Status: %s-%s", resp.status_code, resp.json())
         return resp.json()

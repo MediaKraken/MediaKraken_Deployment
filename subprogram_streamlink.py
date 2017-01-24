@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,
     'System: Server Streamlink Start', 'ServerStreamlinkStart', None, None, 'System')
 
 
@@ -50,7 +50,7 @@ subprocess.call(["./bin/streamlink", "twitch.tv/" + user, quality, "-o", filenam
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Streamlink Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Streamlink Stop', None,
     'System: Server Streamlink Stop', 'ServerStreamlinkStop', None, None, 'System')
 
 

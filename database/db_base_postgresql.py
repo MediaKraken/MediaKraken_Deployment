@@ -27,10 +27,10 @@ def db_pgsql_table_sizes(self):
     """
     # return tables sizes (includex indexes, etc)
     """
-    self.db_cursor.execute('SELECT nspname || \'.\' || relname AS "relation",'\
-        ' pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C'\
-        ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname'\
-        ' NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\''\
+    self.db_cursor.execute('SELECT nspname || \'.\' || relname AS "relation",'
+        ' pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C'
+        ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname'
+        ' NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\''
         ' AND nspname !~ \'^pg_toast\' ORDER BY pg_total_relation_size(C.oid) DESC')
     return self.db_cursor.fetchall()
 
@@ -41,11 +41,11 @@ def db_pgsql_row_count(self):
     # return tables and row count
     """
     # this one doesn't show "old old" stuff in cache?
-#    self.db_cursor.execute('SELECT schemaname,relname,n_live_tup'\
+#    self.db_cursor.execute('SELECT schemaname,relname,n_live_tup'
 #        ' FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
-    self.db_cursor.execute('SELECT nspname AS schemaname,relname,reltuples FROM pg_class C'\
-                           ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)'\
-                           ' WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\')'\
+    self.db_cursor.execute('SELECT nspname AS schemaname,relname,reltuples FROM pg_class C'
+                           ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)'
+                           ' WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\')'
                            ' AND relkind=\'r\' ORDER BY reltuples DESC')
     return self.db_cursor.fetchall()
 
@@ -55,15 +55,15 @@ def db_pgsql_vacuum_stat_by_day(self, days=1):
     # vacuum stats by day list
     """
     if days == 0:
-        self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'\
+        self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'
             ' WHERE schemaname = \'public\'')
     else:
-        self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'\
-            ' WHERE schemaname = \'public\' AND ((last_analyze is NULL'\
-            ' AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze'\
-            ' OR last_analyze is null) AND last_autoanalyze < now() - interval %s)'\
-            ' OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null)'\
-            ' AND last_analyze < now() - interval %s));', [str(days) + ' day',\
+        self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'
+            ' WHERE schemaname = \'public\' AND ((last_analyze is NULL'
+            ' AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze'
+            ' OR last_analyze is null) AND last_autoanalyze < now() - interval %s)'
+            ' OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null)'
+            ' AND last_analyze < now() - interval %s));', [str(days) + ' day',
             str(days) + ' day'])
     return self.db_cursor.fetchall()
 

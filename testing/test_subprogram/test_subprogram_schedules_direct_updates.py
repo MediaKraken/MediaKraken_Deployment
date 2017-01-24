@@ -32,7 +32,7 @@ class TestSubprogramScheduleDirectUpdates(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_schedules_direct_updates.py'],\
+        proc_info = subprocess.Popen(['python', './subprogram_schedules_direct_updates.py'],
             shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

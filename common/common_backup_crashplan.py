@@ -26,7 +26,7 @@ class CommonBackupCrashplan(object):
     Class for interfacing with crashplan
     """
     def __init__(self, user_name, user_password):
-        crash_resp = requests.get('https://master-server.example.com:4285/api/Computer',\
+        crash_resp = requests.get('https://master-server.example.com:4285/api/Computer',
                 auth=(user_name, user_password))
         logging.info("resp: %s", crash_resp.status_code)
         logging.info("text: %s", crash_resp.text)

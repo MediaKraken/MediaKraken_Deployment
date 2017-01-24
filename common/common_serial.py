@@ -33,7 +33,7 @@ class CommonSerial(object):
         self.serial_device = None
 
 
-    def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,\
+    def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,
             dev_bytesize):
         """
         Open serial device for read/write

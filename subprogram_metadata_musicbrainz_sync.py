@@ -39,30 +39,30 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.db_Brainz()
-db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],\
-    option_config_json['MediaBrainz']['BrainzDBPort'],\
-    option_config_json['MediaBrainz']['BrainzDBName'],\
-    option_config_json['MediaBrainz']['BrainzDBUser'],\
+db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],
+    option_config_json['MediaBrainz']['BrainzDBPort'],
+    option_config_json['MediaBrainz']['BrainzDBName'],
+    option_config_json['MediaBrainz']['BrainzDBUser'],
     option_config_json['MediaBrainz']['BrainzDBPass'])
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,
     'System: Server musicbrainz Start', 'ServermusicbrainzStart', None, None, 'System')
 
 # fetch all the artists from brainz
 for row_data in db_brainz.db_brainz_all_artists():
-    db_connection.db_meta_musician_add(row_data['name'],\
-        json.dumps({'musicbrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],\
-        'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'\
-        + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),\
-        'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':'\
+    db_connection.db_meta_musician_add(row_data['name'],
+        json.dumps({'musicbrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],
+        'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'
+        + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),
+        'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':'
         + str(row_data['end_date_day']))}))
     logging.info(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
-        db_connection.db_meta_album_add(row_data_album['name'],\
-            json.dumps({'musicbrainz':row_data_album['gid']}),\
-            json.dumps({'Commment':row_data_album['comment'],\
+        db_connection.db_meta_album_add(row_data_album['name'],
+            json.dumps({'musicbrainz':row_data_album['gid']}),
+            json.dumps({'Commment':row_data_album['comment'],
             'Language': row_data_album['language'], 'Barcode': row_data_album['barcode']}))
         logging.info(row_data_album)
 '''
@@ -74,7 +74,7 @@ for row_data in db_brainz.db_brainz_all_artists():
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,
     'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None, None, 'System')
 
 

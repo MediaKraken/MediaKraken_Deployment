@@ -36,7 +36,7 @@ class CommonNetworkSSH(object):
         """
         Run specified command as sudo so it will send the password
         """
-        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,\
+        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,
             get_pty=True)
         ssh_stdin.write('metaman' + '\n')
         ssh_stdin.flush()
@@ -48,7 +48,7 @@ class CommonNetworkSSH(object):
         """
         Run specified command and write output
         """
-        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,\
+        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,
             get_pty=True)
         for line in ssh_stdout:
             print('... ' + line.strip('\n'))

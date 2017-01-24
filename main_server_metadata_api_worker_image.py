@@ -34,7 +34,7 @@ def main():
     option_config_json, thread_db = common_config_ini.com_config_read()
     while True:
         for row_data in thread_db.db_download_image_read():
-            common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'], \
+            common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'],
                                                      row_data['mdq_image_download_json']['local'])
             thread_db.db_download_image_delete(row_data['mdq_image_id'])
             thread_db.db_commit()

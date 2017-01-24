@@ -44,7 +44,7 @@ class CommonMetadataANIdb(object):
         # check to see if local titles file is older than 24 hours
         if common_file.com_file_modification_timestamp('./cache/anidb_titles.gz') \
                 < (time.time() - 86400):
-            common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',\
+            common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',
                                                      './cache/anidb_titles.gz')
             return True # new file
         return False
@@ -75,8 +75,8 @@ class CommonMetadataANIdb(object):
                 if self.db_connection.db_meta_anime_meta_by_id(anime_aid) is None:
                     if anime_title is None:
                         anime_title = anime_title_ja
-                    self.db_connection.db_meta_anime_title_insert(\
-                        json.dumps({'anidb': anime_aid}), anime_title,\
+                    self.db_connection.db_meta_anime_title_insert(
+                        json.dumps({'anidb': anime_aid}), anime_title,
                         None, None, None , None, None)
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None

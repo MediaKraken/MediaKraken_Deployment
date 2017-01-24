@@ -24,7 +24,7 @@ from celery import Celery
 app = Celery('mkque',
              broker='amqp://guest@mkrabbitmq',
              backend='amqp://guest@mkrabbitmq',
-             include=['common.common_celery_tasks', \
-                      'common.common_celery_tasks_chromecast',\
+             include=['common.common_celery_tasks',
+                      'common.common_celery_tasks_chromecast',
                       'common.common_celery_tasks_hdhomerun'])
 app.conf.update(CELERY_DEFAULT_QUEUE='mkque')

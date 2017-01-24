@@ -43,9 +43,9 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 root = Resource()
 root.putChild('prox-1', File(option_config_json['MediaKrakenServer']['MetadataImageLocal']))
 for row_data in db_connection.db_audit_paths():
-    root.putChild('prox-' + row_data['mm_media_dir_guid'],\
+    root.putChild('prox-' + row_data['mm_media_dir_guid'],
         File(row_data['mm_media_dir_path']))
 # create and launch reactor
-reactor.listenSSL(5001 , Site(root),\
+reactor.listenSSL(5001 , Site(root),
     ssl.DefaultOpenSSLContextFactory('key/privkey.pem', 'key/cacert.pem'))
 reactor.run()
