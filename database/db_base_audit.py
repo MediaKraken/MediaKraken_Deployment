@@ -163,7 +163,7 @@ def db_audit_share_update_by_uuid(self, share_type, share_user, share_password, 
     self.db_cursor.execute('update mm_media_share set mm_media_share_type = %s,'
         ' mm_media_share_user = %s, mm_media_share_password = %s',
         ' mm_media_share_server = %s where mm_media_share_path = %s',
-        ' where mm_media_share_guid = %s'
+        ' where mm_media_share_guid = %s',
         (share_type, share_user, share_password, share_server, share_path, share_id))
 
 
