@@ -118,9 +118,9 @@ logging.info("Reactor PID: %s", proc.pid)
 #logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
-# fire up broadcast server
-proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
-logging.info("Broadcast PID: %s", proc_broadcast.pid)
+## fire up broadcast server
+#proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
+#logging.info("Broadcast PID: %s", proc_broadcast.pid)
 
 
 # fire up cron service
@@ -172,7 +172,7 @@ db_connection.db_close()
 # stop children
 os.kill(proc.pid, signal.SIGTERM)
 #os.kill(proc_image.pid, signal.SIGTERM)
-os.kill(proc_broadcast.pid, signal.SIGTERM)
+#os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
 #os.kill(proc_ffserver.pid, signal.SIGTERM)
 #os.kill(proc_web_app.pid, signal.SIGTERM)
