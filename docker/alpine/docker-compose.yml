@@ -61,6 +61,18 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # start broadcast server
+  broadcast:
+    build:
+      context: ./ComposeMediaKrakenBroadcast
+      dockerfile: dockerfile-broadcast
+    container_name: mkbroadcast
+    entrypoint: python subprogram_broadcast.py
+    ports:
+      - "9101:9101"
+    network_mode: host
+    restart: unless-stopped
+
   # theater app for testing
   theater:
     build:

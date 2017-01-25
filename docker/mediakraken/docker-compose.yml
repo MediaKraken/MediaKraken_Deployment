@@ -57,6 +57,16 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # start broadcast server
+  broadcast:
+    image: mediakraken/mkbroadcast:latest
+    container_name: mkbroadcast
+    entrypoint: python subprogram_broadcast.py
+    ports:
+      - "9101:9101"
+    network_mode: host
+    restart: unless-stopped
+
   # Postgresql server
   database:
     image: mediakraken/mkdatabase:latest
