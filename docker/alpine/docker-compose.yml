@@ -182,16 +182,16 @@ services:
 #    restart: unless-stopped
 
   # runs the nginx proxy service
-  nginx:
-    build:
-      context: ./ComposeMediaKrakenNginx
-      dockerfile: dockerfile-nginx
-    container_name: mknginx
-    ports:
-      - "443:443"
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
+#  nginx:
+#    build:
+#      context: ./ComposeMediaKrakenNginx
+#      dockerfile: dockerfile-nginx
+#    container_name: mknginx
+#    ports:
+#      - "443:443"
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the openldap
 #  openldap:

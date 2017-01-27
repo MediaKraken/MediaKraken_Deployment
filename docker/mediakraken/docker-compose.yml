@@ -146,14 +146,14 @@ services:
 #    restart: unless-stopped
 
   # runs the nginx proxy service
-  nginx:
-    image: mediakraken/mknginx:latest
-    container_name: mknginx
-    ports:
-      - "443:443"
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
+#  nginx:
+#    image: mediakraken/mknginx:latest
+#    container_name: mknginx
+#    ports:
+#      - "443:443"
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the openldap
 #  openldap:
