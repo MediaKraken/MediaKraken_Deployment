@@ -196,6 +196,7 @@ class MediaKrakenApp(App):
         metaapp = self
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        self.config = self.load_config()
         logging.info('Before connect')
         self.connect_to_server()
         logging.info('After connect')
@@ -298,7 +299,7 @@ class MediaKrakenApp(App):
         Build base config
         """
         config.setdefaults('MediaKrakenServer', {
-            'Host': '127.0.0.1',
+            'Host': '10.0.0.169',
             'Port': 8903})
         config.setdefaults('Audio', {
             'Default_Device': 'Default',
@@ -344,7 +345,10 @@ class MediaKrakenApp(App):
 
 
     def connect_to_server(self):
+        logging.info('conn server')
+        logging.info(self.config.get('MediaKrakenServer', 'Host').strip())
         if self.config is not None:
+            logging.info('here')
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
                 int(self.config.get('MediaKrakenServer', 'Port').strip()),
                 TheaterFactory(self), ssl.ClientContextFactory())
@@ -686,3 +690,4 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
     logging.info('Before build')
     MediaKrakenApp().build()
+    logging.info('after build')
