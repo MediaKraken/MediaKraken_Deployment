@@ -197,7 +197,6 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.config = self.load_config()
-        logging.info('Before connect')
         self.connect_to_server()
         logging.info('After connect')
         return root
@@ -346,7 +345,6 @@ class MediaKrakenApp(App):
 
     def connect_to_server(self):
         logging.info('conn server')
-        logging.info(self.config.get('MediaKrakenServer', 'Host').strip())
         if self.config is not None:
             logging.info('here')
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
