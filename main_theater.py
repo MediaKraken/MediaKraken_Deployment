@@ -188,6 +188,7 @@ class MediaKrakenApp(App):
 
     def build(self):
         global metaapp
+        logging.info('Before root')
         root = MediaKrakenApp()
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
@@ -195,8 +196,9 @@ class MediaKrakenApp(App):
         metaapp = self
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        logging.info('Before connect')
         self.connect_to_server()
-        common_logging.com_logging_start('./log/MediaKraken_Theater')
+        logging.info('After connect')
         return root
 
 
@@ -297,7 +299,7 @@ class MediaKrakenApp(App):
         """
         config.setdefaults('MediaKrakenServer', {
             'Host': '127.0.0.1',
-            'Port': 8098})
+            'Port': 8903})
         config.setdefaults('Audio', {
             'Default_Device': 'Default',
             'Channels': '7.1'})
@@ -415,7 +417,7 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif message_words[0] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index,
+            args_converter = lambda row_index,\
                 rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
             list_adapter = ListAdapter(data=data, args_converter=args_converter,
                 cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
@@ -673,6 +675,7 @@ class MediaKrakenApp(App):
 
 
 if __name__ == '__main__':
+    common_logging.com_logging_start('./log/MediaKraken_Theater')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
@@ -681,4 +684,5 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
+    logging.info('Before build')
     MediaKrakenApp().build()
