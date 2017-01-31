@@ -141,7 +141,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
     network_mode: host
-    restart: never
+    restart: no
 
   # runs the server to fetch/process all metadata
   metadata:
