@@ -19,6 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from . import common_celery
+import sys
+sys.path.append('..')
 from network import network_base_string as network_base
 
 
