@@ -29,6 +29,7 @@ try:
 except:
     import pickle
 from twisted.protocols.basic import Int32StringReceiver
+from twisted.internet import reactor
 import ip2country
 from common import common_network
 
@@ -254,3 +255,9 @@ class NetworkEvents(Int32StringReceiver):
             if self.users[user_host_name].user_link:
                 logging.info('send all link: %s', message)
                 protocol.sendString(message.encode("utf8"))
+
+    @classmethod
+    def broadcast_message(cls, data):
+        payload = json.dumps(data, ensure_ascii = False).encode('utf8')
+        for c in set(cls.connections):
+            reactor.callFromThread(cls.sendMessage, c, payload)

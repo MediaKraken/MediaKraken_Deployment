@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from . import common_celery
+from network import network_base_string as network_base
 
 
 @common_celery.app.task(queue='mkque')
@@ -27,7 +28,7 @@ def com_celery_chrome_play(media_json):
     play media file to chromecast
     """
     logging.info('task: play')
-    pass
+    network_base.NetworkEvents.broadcast_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
