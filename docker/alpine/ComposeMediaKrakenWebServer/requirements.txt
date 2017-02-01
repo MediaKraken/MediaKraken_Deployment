@@ -35,3 +35,4 @@ dropbox
 onedrivesdk
 cssmin
 celery
+twisted
