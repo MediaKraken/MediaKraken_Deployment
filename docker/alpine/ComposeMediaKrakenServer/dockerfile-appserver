@@ -48,6 +48,7 @@ RUN apk add --update \
   && apk add \
   py-setuptools \
   && rm -rf /var/cache/apk/* \
+  && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
 
@@ -58,8 +59,7 @@ ADD ip2country /mediakraken/ip2country
 RUN cd ip2country \
   && python setup.py install \
   && cd .. \
-  && rm -R ./ip2country \
-  && rm requirements.txt
+  && rm -R ./ip2country
 
 EXPOSE 8903
 
