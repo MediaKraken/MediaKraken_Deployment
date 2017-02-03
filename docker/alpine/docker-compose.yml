@@ -241,7 +241,6 @@ services:
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken-mq
-      - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
