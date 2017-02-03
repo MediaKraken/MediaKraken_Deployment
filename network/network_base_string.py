@@ -256,8 +256,14 @@ class NetworkEvents(Int32StringReceiver):
                 logging.info('send all link: %s', message)
                 protocol.sendString(message.encode("utf8"))
 
+#    @classmethod
+#    def broadcast_message(cls, data):
+#        payload = json.dumps(data, ensure_ascii = False).encode('utf8')
+#        for c in set(cls.connections):
+#            reactor.callFromThread(cls.sendMessage, c, payload)
+
     @classmethod
     def broadcast_message(cls, data):
-        payload = json.dumps(data, ensure_ascii = False).encode('utf8')
+        payload = json.dumps(data)
         for c in set(cls.connections):
             reactor.callFromThread(cls.sendMessage, c, payload)
