@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --update \
   postgresql-client \
+  openssl \
   ack \
   gcc \
   libxml2-dev \
