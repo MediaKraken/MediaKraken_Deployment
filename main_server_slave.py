@@ -27,6 +27,7 @@ try:
 except:
     import pickle
 import sys
+import uuid
 from common import common_celery
 from common import common_config_ini
 from common import common_logging
@@ -159,7 +160,7 @@ class MediaKrakenApp():
         except:
             pickle_data = None
         if message_words[0] == "IDENT":
-            msg = "VALIDATE " + "slave" + " " + " " + " " + platform.node()
+            msg = "VALIDATE " + "slave-" + str(uuid.uuid4()) + " " + " " + " " + platform.node()
         elif message_words[0] == "PING":  # Client_Network
             msg = "PONG"
         # user commands

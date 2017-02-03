@@ -52,6 +52,9 @@ class NetworkEvents(Int32StringReceiver):
         self.user_verified = 0
         self.user_country_code = None
         self.user_country_name = None
+        self.user_chromecast_ip = None # IP of chromecast used
+        self.user_chromecast_status = None # played/stopped/etc
+        self.user_chromecast_slave = None # which slave server ffmpeg is running on
         self.server_ip = common_network.mk_network_get_default_ip()
         self.server_port = option_config_json['MediaKrakenServer']['ListenPort']
         self.server_port_image = option_config_json['MediaKrakenServer']['ImageWeb']
