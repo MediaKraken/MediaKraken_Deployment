@@ -34,7 +34,6 @@ boto
 dropbox
 onedrivesdk
 cssmin
-service_identity
-requests>=2.11.1
 celery
+incremental>=16.10.1
 twisted
