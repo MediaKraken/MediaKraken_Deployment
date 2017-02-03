@@ -266,7 +266,13 @@ class NetworkEvents(Int32StringReceiver):
 #            reactor.callFromThread(cls.sendMessage, c, payload)
 
     @classmethod
-    def broadcast_message(cls, data):
-        payload = json.dumps(data)
-        for c in set(cls.connections):
-            reactor.callFromThread(cls.sendMessage, c, payload)
+    def broadcast_message(self, message):
+        payload = json.dumps(message)
+
+        for user_host_name, protocol in self.users.iteritems():
+            if self.users[user_host_name].user_link:
+                logging.info('send celery: %s', message)
+                protocol.sendString(message.encode("utf8"))
+
+        for c in set(self.connections):
+            reactor.callFromThread(self.sendMessage, c, payload)
