@@ -31,7 +31,7 @@ def com_celery_chrome_play(media_json):
     play media file to chromecast
     """
     logging.info('task: play')
-    network_base.NetworkEvents.broadcast_message(media_json)
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -40,7 +40,7 @@ def com_celery_chrome_stop(media_json):
     stop media file to chromecast
     """
     logging.info('task: stop')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -49,7 +49,7 @@ def com_celery_chrome_pause(media_json):
     pause media file to chromecast
     """
     logging.info('task: pause')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -58,7 +58,7 @@ def com_celery_chrome_mute(media_json):
     mute audio chromecast
     """
     logging.info('task: mute')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -67,7 +67,7 @@ def com_celery_chrome_vol_up(media_json):
     chromecast volume up
     """
     logging.info('task: vol up')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -76,7 +76,7 @@ def com_celery_chrome_vol_down(media_json):
     chromecast volume down
     """
     logging.info('task: vol down')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -85,7 +85,7 @@ def com_celery_chrome_vol_set(media_json):
     chromecast volume set
     """
     logging.info('task: vol set')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(media_json)
 
 
 @common_celery.app.task(queue='mkque')
@@ -94,4 +94,4 @@ def com_celery_chrome_status(chrome_json):
     chromecast status
     """
     logging.info('task: status')
-    pass
+    network_base.NetworkEvents.broadcast_chrome_message(chrome_json)

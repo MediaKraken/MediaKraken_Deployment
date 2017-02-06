@@ -52,9 +52,8 @@ class NetworkEvents(Int32StringReceiver):
         self.user_verified = 0
         self.user_country_code = None
         self.user_country_name = None
-        self.user_chromecast_ip = None # IP of chromecast used
-        self.user_chromecast_status = None # played/stopped/etc
-        self.user_chromecast_slave = None # which slave server ffmpeg is running on
+        self.user_cpu_usage = None
+        self.user_ffmpeg_data = [] # hold the info of running jobs on slave along with chromecast
         self.server_ip = common_network.mk_network_get_default_ip()
         self.server_port = option_config_json['MediaKrakenServer']['ListenPort']
         self.server_port_image = option_config_json['MediaKrakenServer']['ImageWeb']
@@ -207,7 +206,7 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "SubtitleMediaStop":
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CPUUSAGE":
-            self.cpu_use_table[self.user_ip_addy] = message_words[1]
+            self.user_cpu_usage[self.user_ip_addy] = message_words[1]
         elif message_words[0] == "SHUTDOWN":
             self.db_connection.db_close()
             sys.exit(0)
@@ -266,13 +265,16 @@ class NetworkEvents(Int32StringReceiver):
 #            reactor.callFromThread(cls.sendMessage, c, payload)
 
     @classmethod
-    def broadcast_message(self, message):
-        payload = json.dumps(message)
-
+    def broadcast_chrome_message(self, message):
+        """
+        This is used only from the webapp and chromecast celery
+        """
+        global chromecast_slave
+        if message['slave_server'] in chromecast_slave:
+            user_host_name = message['slave_server']
+        else:
+            user_host_name = chromecast_slave['']
         for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_link:
+            if self.users[user_host_name].user_user_name == 'k':
                 logging.info('send celery: %s', message)
                 protocol.sendString(message.encode("utf8"))
-
-        for c in set(self.connections):
-            reactor.callFromThread(self.sendMessage, c, payload)
