@@ -118,19 +118,9 @@ logging.info("Reactor PID: %s", proc.pid)
 #logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
-## fire up broadcast server
-#proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'], shell=False)
-#logging.info("Broadcast PID: %s", proc_broadcast.pid)
-
-
 # fire up cron service
 proc_cron = subprocess.Popen(['python', './subprogram_cron_checker.py'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
-
-
-# fire up ffserver
-#proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], shell=False)
-#logging.info("FFServer PID: %s", proc_ffserver.pid)
 
 
 # fire up trigger procress
@@ -172,11 +162,7 @@ db_connection.db_close()
 # stop children
 os.kill(proc.pid, signal.SIGTERM)
 #os.kill(proc_image.pid, signal.SIGTERM)
-#os.kill(proc_broadcast.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
-#os.kill(proc_ffserver.pid, signal.SIGTERM)
-#os.kill(proc_web_app.pid, signal.SIGTERM)
 os.kill(proc_trigger.pid, signal.SIGTERM)
-#os.kill(proc_api, signal.SIGTERM)
 for link_data in link_pid.keys():
     os.kill(link_pid[link_data], signal.SIGTERM)

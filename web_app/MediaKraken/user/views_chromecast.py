@@ -47,7 +47,7 @@ def user_cast(action, guid):
             json.dumps({'user': current_user.get_id(),
             'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
         #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
-        #'-devicename', '10.0.0.56', g.db_connection.db_read_media(guid)['mm_media_path']])
+        #'-devicename', '10.0.0.202', g.db_connection.db_read_media(guid)['mm_media_path']])
     elif action == 'pause':
         common_celery_tasks_chromecast.com_celery_chrome_pause.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
@@ -62,7 +62,7 @@ def user_cast(action, guid):
         common_celery_tasks_chromecast.com_celery_chrome_vol_up.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
     elif action == 'vol down':
-        common_celery_tasks_chromecast.com_celery_chrome_vol_down.apply_async(args=[\
+        common_celery_tasks_chromecast.com_celery_chrome_vol_down.apply_async(args=[
             json.dumps({'user': current_user.get_id()})], queue='mkque')
     return render_template("users/user_playback_cast.html", data_uuid=guid)
 

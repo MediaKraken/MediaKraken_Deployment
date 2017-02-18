@@ -52,11 +52,10 @@ class NetworkEvents(Int32StringReceiver):
         self.user_verified = 0
         self.user_country_code = None
         self.user_country_name = None
-        self.user_cpu_usage = None
+        self.user_cpu_usage_percentage = None
         self.user_ffmpeg_data = [] # hold the info of running jobs on slave along with chromecast
         self.server_ip = common_network.mk_network_get_default_ip()
         self.server_port = option_config_json['MediaKrakenServer']['ListenPort']
-        self.server_port_image = option_config_json['MediaKrakenServer']['ImageWeb']
         self.server_port_ffmpeg = option_config_json['MediaKrakenServer']['FFMPEG']
         self.proc_file_scan = None
         self.proc_media_match = None
