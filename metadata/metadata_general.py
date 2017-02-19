@@ -62,7 +62,7 @@ def metadata_search(thread_db, provider_name, download_data):
     """
     metadata_uuid = None
     match_result = None
-    set_fetch = False-
+    set_fetch = False
     lookup_halt = False
     update_provider = None
     if provider_name == 'imvdb':
