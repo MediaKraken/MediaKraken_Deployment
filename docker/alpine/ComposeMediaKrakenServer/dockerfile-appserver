@@ -33,6 +33,7 @@ RUN apk add --update \
   py-pip \
   python-dev \
   openrc \
+  c-ares-dev \
   && pip install --upgrade pip \
   && pip install -r requirements.txt \
   && apk del \
