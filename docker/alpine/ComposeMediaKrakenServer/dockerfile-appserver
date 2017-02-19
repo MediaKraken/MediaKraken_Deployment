@@ -16,7 +16,7 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   postgresql-client \
-  openssl \
+  libressl \
   alpine-sdk \
   libffi-dev \
   openldap-dev \
