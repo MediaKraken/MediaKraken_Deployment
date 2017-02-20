@@ -28,6 +28,7 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   ca-certificates \
+  c-ares-dev \
   && pip install --upgrade pip \
   && pip install -r requirements.txt \
   && apk del \
@@ -37,7 +38,6 @@ RUN apk add --update \
   py-pip \
   python-dev \
   postgresql-dev \
-  c-ares-dev \
   && rm requirements.txt \
   && apk add \
   uwsgi-python \
