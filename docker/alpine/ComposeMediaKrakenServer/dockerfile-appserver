@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:edge
+FROM alpine:3.4
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL www.mediakraken.org.version="dev-0.2.0"
