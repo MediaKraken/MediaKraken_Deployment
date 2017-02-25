@@ -28,7 +28,6 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   ca-certificates \
-  c-ares-dev \
   && pip install --upgrade pip \
   && pip install -r requirements.txt \
   && apk del \
