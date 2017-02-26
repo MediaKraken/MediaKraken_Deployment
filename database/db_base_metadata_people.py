@@ -114,8 +114,13 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     logging.info('db person insert cast crew: %s %s', meta_type, person_json)
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
-    logging.info('count: %s', len(json.loads(person_json)['person']))
+    multiple_person = False
     try:
+        for person_data in person_json:
+            multiple_person = True
+    except:
+        pass
+    if multiple_person:
         for person_data in person_json:
             logging.info("person data: %s", person_data)
             if meta_type == "tvmaze":
@@ -140,7 +145,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     # insert person record
                     self.db_meta_person_insert(person_name,
                         json.dumps({meta_type: str(person_id)}), None, None)
-    except:
+    else:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
             person_name = person_json['person']['name']
