@@ -56,10 +56,10 @@
                             <li><a href="{{ url_for('admins.admin_chart_browser') }}">Browser</a></li>
                             <li><a href="{{ url_for('admins.admin_chart_client_usage') }}">Client</a></li>
 
-                            <li><a href="{{ url_for('user.report_top10', mtype=1) }}">Top 10 All Time</a></li>
-                            <li><a href="{{ url_for('user.report_top10', mtype=2) }}">Top 10 Movie</a></li>
-                            <li><a href="{{ url_for('user.report_top10', mtype=3) }}">Top 10 TV Show</a></li>
-                            <li><a href="{{ url_for('user.report_top10', mtype=4) }}">Top 10 TV Episodes</a></li>
+                            <li><a href="{{ url_for('user_reports.report_top10', mtype=1) }}">Top 10 All Time</a></li>
+                            <li><a href="{{ url_for('user_reports.report_top10', mtype=2) }}">Top 10 Movie</a></li>
+                            <li><a href="{{ url_for('user_reports.report_top10', mtype=3) }}">Top 10 TV Show</a></li>
+                            <li><a href="{{ url_for('user_reports.report_top10', mtype=4) }}">Top 10 TV Episodes</a></li>
 
                         </ul>
 
@@ -73,9 +73,9 @@
 
                         <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-right"></i></a></li>
                         <ul class="nav nav-stacked collapse" id="menu2">
-                            <li><a href="{{ url_for('user.report_display_all_duplicates') }}">Duplicates</a></li>
-                            <li><a href="{{ url_for('user.report_display_all_media') }}">Known Media</a></li>
-                            <li><a href="{{ url_for('user.report_display_all_media_known_video') }}">Matched Media</a></li>
+                            <li><a href="{{ url_for('user_reports.report_display_all_duplicates') }}">Duplicates</a></li>
+                            <li><a href="{{ url_for('user_reports.report_display_all_media') }}">Known Media</a></li>
+                            <li><a href="{{ url_for('user_reports.report_display_all_media_known_video') }}">Matched Media</a></li>
                         </ul>
                     </ul>
                 </div>
