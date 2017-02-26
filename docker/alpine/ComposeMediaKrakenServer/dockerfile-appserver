@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.5
+FROM alpine:3.4
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL www.mediakraken.org.version="dev-0.2.0"
@@ -16,7 +16,7 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   postgresql-client \
-  libressl \
+  openssl \
   alpine-sdk \
   libffi-dev \
   openldap-dev \
