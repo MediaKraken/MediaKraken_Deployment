@@ -38,9 +38,9 @@ def metadata_person_detail(guid):
         if json_imagedata['Images']['Poster'] is not None:
             data_person_image = "../../static/meta/images/" + json_imagedata['Images']['Poster']
         else:
-            data_person_image = None
+            data_person_image = "../../static/images/person_missing.png"
     except:
-        data_person_image = None
+        data_person_image = "../../static/images/person_missing.png"
     # also appears in
     meta_also_media = g.db_connection.db_meta_person_as_seen_in(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
