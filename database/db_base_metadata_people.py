@@ -114,6 +114,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     logging.info('db person insert cast crew: %s %s', meta_type, person_json)
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
+    logging.info('count: %s', len(json.loads(person_json)['person']))
     try:
         for person_data in person_json:
             logging.info("person data: %s", person_data)
