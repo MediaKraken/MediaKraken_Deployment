@@ -55,7 +55,10 @@ class CommonMetadatatvmaze(object):
         """
         # lookup show
         """
-        url_opts = show_name,
+        if show_year is None:
+            url_opts = show_name,
+        else:
+            url_opts = (show_name + ' ' + show_year),
         return common_network.mk_network_fetch_from_url((self.API_BASE_URL + 'search/shows?q=%s'
             % url_opts), None)
 
@@ -64,7 +67,10 @@ class CommonMetadatatvmaze(object):
         """
         # lookup specific show
         """
-        url_opts = show_name,
+        if show_year is None:
+            url_opts = show_name,
+        else:
+            url_opts = (show_name + ' ' + show_year),
         return common_network.mk_network_fetch_from_url((
             self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
 
