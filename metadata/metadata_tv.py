@@ -59,10 +59,10 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     tvmaze_id = None
     if TVMAZE_CONNECTION is not None:
         if 'year' in file_name:
-            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],
+            tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
                 file_name['year'], lang_code, True))
         else:
-            tvmaze_id = str(TVMAZE_CONNECTION.com_thetvdb_search(file_name['title'],
+            tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
                 None, lang_code, True))
         logging.info("response: %s", tvmaze_id)
         if tvmaze_id is not None:
