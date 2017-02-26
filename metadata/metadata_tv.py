@@ -144,7 +144,7 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     show_full_json = None
     try:
         show_full_json = ({'Meta': {'tvmaze':
-            json.loads(common_metadata_tvmaze.com_meta_tvmaze_show_by_id(
+            json.loads(TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
             tvmaze_id, None, None, None, True))}})
     except:
         pass
