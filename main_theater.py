@@ -29,15 +29,15 @@ except:
     import pickle
 import logging # pylint: disable=W0611
 #install_twisted_rector must be called before importing the reactor
-from kivy.support import install_twisted_reactor
+#from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
-install_twisted_reactor()
+#install_twisted_reactor()
 from twisted.protocols.basic import Int32StringReceiver
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import ssl
 import kivy
-kivy.require('1.9.1')
+kivy.require('1.9.2')
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -412,7 +412,7 @@ class MediaKrakenApp(App):
         elif message_words[0] == "USERLIST":
             pass
         elif message_words[0] == 'VIDPLAY':
-            # AttributeError: 'NoneType' object has no attribute 
+            # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids.theater_media_video_videoplayer.source = message_words[1]
             self.root.ids.theater_media_video_videoplayer.volume = 1
