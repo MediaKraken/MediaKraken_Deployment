@@ -1,0 +1,3 @@
+sudo add-apt-repository ppa:kivy-team/kivy-daily
+sudo apt-get install python-kivy libssl-dev
+sudo pip install twisted pyopenssl service_identity
