@@ -39,7 +39,7 @@ def user_music_video_list():
                                                   format_number=True,
                                                  )
     return render_template('users/user_music_video_list.html',
-                           media_person=g.db_connection.db_music_video_list(offset, per_page),
+                           media_person=g.db_connection.db_meta_music_video_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
