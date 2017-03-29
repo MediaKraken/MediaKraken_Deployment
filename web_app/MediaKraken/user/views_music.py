@@ -22,12 +22,12 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_music_list')
-@blueprint.route('/meta_music_list/')
+@blueprint.route('/meta_music_song_list')
+@blueprint.route('/meta_music_song_list/')
 @login_required
-def metadata_music_list():
+def metadata_music_song_list():
     """
-    Display metdata music list
+    Display metdata music song list
     """
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
@@ -39,7 +39,7 @@ def metadata_music_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_music_list.html',
-                           media_person=g.db_connection.db_meta_music_list(offset, per_page),
+                           media_person=g.db_connection.db_meta_song_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
