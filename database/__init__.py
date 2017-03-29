@@ -166,6 +166,7 @@ class MKServerDatabase(object):
         db_meta_song_by_guid,\
         db_meta_song_add,\
         db_meta_songs_by_album_guid,\
+        db_meta_song_list,\
         db_meta_album_list,\
         db_meta_muscian_list
     from database.db_base_metadata_music_video import db_meta_music_video_lookup,\

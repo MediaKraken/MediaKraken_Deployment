@@ -21,6 +21,15 @@ import logging # pylint: disable=W0611
 import uuid
 
 
+def db_meta_song_list(self, offset=None, records=None):
+    """
+    # return songs metadatalist
+    """
+    # TODO, only grab the poster local from json
+
+    return self.db_cursor.fetchall()
+
+
 def db_music_lookup(self, artist_name, album_name, song_title):
     """
     # query to see if song is in local DB
