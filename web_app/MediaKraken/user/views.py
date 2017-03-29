@@ -201,16 +201,6 @@ def user_album_player(guid):
 #                           )
 
 
-@blueprint.route("/audio")
-@blueprint.route("/audio/")
-@login_required
-def user_audio_page():
-    """
-    Obsolete?
-    """
-    return render_template("users/user_audio_page.html")
-
-
 @blueprint.route("/album_list")
 @blueprint.route("/album_list/")
 @login_required
