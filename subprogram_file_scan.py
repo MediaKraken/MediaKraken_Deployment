@@ -179,7 +179,7 @@ def worker(audit_directory):
             'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doens't show up
+    thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doesn't show up
     if total_files > 0:
         thread_db.db_notification_insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + dir_path, True)
