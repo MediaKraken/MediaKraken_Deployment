@@ -71,5 +71,5 @@ def com_roku_network_touch(roku_addr, roku_port, x_pos, y_pos):
     """
     'Click' screen
     """
-    return urllib2.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x_pos)\
-        + '.0&touch.0.y=' + str(y_pos) + '.0&touch.0.op=down')
+    return urllib2.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x_pos)
+                           + '.0&touch.0.y=' + str(y_pos) + '.0&touch.0.op=down')

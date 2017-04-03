@@ -25,8 +25,8 @@ def db_kodi_user_sync_added(self, synctime):
     """
     List of new items by date
     """
-    self.db_cursor.execute('select mm_media_guid from mm_media'\
-        ' where mm_media_json->>\'DateAdded\' >= %s', (synctime,))
+    self.db_cursor.execute('select mm_media_guid from mm_media'
+                           ' where mm_media_json->>\'DateAdded\' >= %s', (synctime,))
     return self.db_cursor.fetchall()
 
 

@@ -49,4 +49,4 @@ class CommonSynology(object):
         Get share list
         """
         return self.synology_nas.filestation.file_share.request('list_share',
-            additional='real_path')
+                                                                additional='real_path')

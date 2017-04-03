@@ -43,7 +43,7 @@ class CommonMetadataTheTVDB(object):
         # frequency = all, day, month, week
         """
         updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network\
-            .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
+            .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection
             + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
@@ -60,7 +60,7 @@ class CommonMetadataTheTVDB(object):
         xml_banners_data = None
         logging.info("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
         
-        show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection\
+        show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
                 + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
         if show_data.status_code == 200:
             show_zip = zipfile.ZipFile(StringIO.StringIO(show_data.content))
@@ -90,7 +90,7 @@ class CommonMetadataTheTVDB(object):
 
 #    # depreciated....they round-robin at their end
 #    def com_meta_TheTVDB_Get_Mirrors():
-#        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
+#        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
 # + self.thetvdb_connection + '/mirrors.xml', None)
 #        return mirror_list_xml
 
@@ -115,7 +115,7 @@ class CommonMetadataTheTVDB(object):
         """
         Update series
         """
-        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
+        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
             + self.thetvdb_connection + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
 
 
@@ -123,7 +123,7 @@ class CommonMetadataTheTVDB(object):
         """
         Update episode
         """
-        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'\
+        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
             + self.thetvdb_connection + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
 
 '''

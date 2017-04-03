@@ -82,7 +82,7 @@ def com_string_password_test(password_text):
     )
     strength, improvements = passwordmeter.test(password_text)
     logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,
-            int(strength * len(ratings)))])))
+                 int(strength * len(ratings)))])))
     return (strength, improvements)
 
 

@@ -30,5 +30,5 @@ class CommonMetadataOpenLibrary(object):
 
 
     def com_meta_openlibrary_fetch_cover(self, isbn_id):
-        common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/' \
+        common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'
                                                  + isbn_id + '-L.jpg', image_path)

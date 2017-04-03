@@ -48,7 +48,7 @@ class CommonMetadataMusicbrainz(object):
         # If you are connecting to a development server
         if option_config_json['MediaBrainz']['Host'] != 'None':
             #musicbrainzngs.set_hostname(option_config_json.get('MediaBrainz','Host').strip())
-            musicbrainzngs.set_hostname(option_config_json['MediaBrainz']['Host']) + ':'\
+            musicbrainzngs.set_hostname(option_config_json['MediaBrainz']['Host']) + ':'
                 + option_config_json['MediaBrainz']['Port']
 
 

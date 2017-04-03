@@ -115,7 +115,7 @@ class CommonMetadatatvmaze(object):
         """
         # people search (doesnt' appear to have episode data here)
         """
-        return common_network.mk_network_fetch_from_url(self.API_BASE_URL + 'search/people?q=%s'\
+        return common_network.mk_network_fetch_from_url(self.API_BASE_URL + 'search/people?q=%s'
             % (person_name,))
 
 

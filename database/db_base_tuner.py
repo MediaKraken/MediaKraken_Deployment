@@ -37,7 +37,7 @@ def db_tuner_list(self, offset=None, records=None):
         self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
     else:
         self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'
-            ' offset %s limit %s', (offset, records))
+                               ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 

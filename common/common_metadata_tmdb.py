@@ -60,7 +60,7 @@ class CommonMetadataTMDB(object):
         Fetch all metadata by id to reduce calls
         """
         return requests.get('https://api.themoviedb.org/3/movie/%s'\
-            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' % \
+            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
             (tmdb_id, self.API_KEY))
 
 
@@ -69,7 +69,7 @@ class CommonMetadataTMDB(object):
         Fetch all metadata bio by id to reduce calls
         """
         return requests.get('https://api.themoviedb.org/3/person/%s'\
-            '?api_key=%s&append_to_response=combined_credits,external_ids,images' % \
+            '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
             (tmdb_id, self.API_KEY))
 
 
@@ -85,16 +85,16 @@ class CommonMetadataTMDB(object):
         person_file_paths = []
         for profile_image in result_json['combined_credits']['cast']:
             if profile_image['poster_path'] is not None:
-                if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/'
                                       + image_file_path + profile_image['poster_path']):
                     thread_db.db_download_image_insert('themoviedb',
-                        json.dumps({'url': 'https://image.tmdb.org/t/p/original'\
+                        json.dumps({'url': 'https://image.tmdb.org/t/p/original'
                         + profile_image['poster_path'],
-                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
                         + image_file_path + profile_image['poster_path']}))
-#                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
-#                        + profile_image['poster_path'], \
-#                        '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+#                    common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
+#                        + profile_image['poster_path'],
+#                        '/mediakraken/web_app/MediaKraken/static/meta/images/'
 #                        + image_file_path + profile_image['poster_path'])
             person_file_paths.append(image_file_path)
         # set local image json
@@ -106,7 +106,7 @@ class CommonMetadataTMDB(object):
         Grab high metadata id
         """
         return json.loads(common_network.mk_network_fetch_from_url(
-            'https://api.themoviedb.org/3/movie/latest'\
+            'https://api.themoviedb.org/3/movie/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
 
@@ -115,7 +115,7 @@ class CommonMetadataTMDB(object):
         Grab high bios metadata id (person)
         """
         return json.loads(common_network.mk_network_fetch_from_url(
-            'https://api.themoviedb.org/3/person/latest'\
+            'https://api.themoviedb.org/3/person/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
 
@@ -124,7 +124,7 @@ class CommonMetadataTMDB(object):
         Grab high tv metadata id
         """
         return json.loads(common_network.mk_network_fetch_from_url(
-            'https://api.themoviedb.org/3/tv/latest'\
+            'https://api.themoviedb.org/3/tv/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
 
@@ -254,11 +254,11 @@ class CommonMetadataTMDB(object):
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']
-            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
+            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/'
                                   + image_file_path):
-                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
                     + result_json['poster_path'],
-                    '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                    '/mediakraken/web_app/MediaKraken/static/meta/images/'
                     + image_file_path)
             poster_file_path = image_file_path
         # create file path for backdrop
@@ -267,11 +267,11 @@ class CommonMetadataTMDB(object):
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
-            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/' \
+            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/'
                                   + image_file_path):
-                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'\
+                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
                     + result_json['backdrop_path'],
-                    '/mediakraken/web_app/MediaKraken/static/meta/images/' \
+                    '/mediakraken/web_app/MediaKraken/static/meta/images/'
                     + image_file_path)
             backdrop_file_path = image_file_path
         # its a number so make it a string just in case

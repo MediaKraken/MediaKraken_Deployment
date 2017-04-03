@@ -51,6 +51,6 @@ def com_irdb_function_list(brand_text, protocol_type, device_type, device_num, s
     """
     # get the code with the protocol, device, and subdevice information we just derived from above:
     """
-    return json.loads(common_network.mk_network_fetch_from_url('http://irdb.tk/api/code/?brand='\
-        + brand_text + '&devicetype=' + device_type + '&protocol=' + protocol_type\
-        + '&device=' + device_num + '&subdevice=' + subdevice, None))
+    return json.loads(common_network.mk_network_fetch_from_url('http://irdb.tk/api/code/?brand='
+                      + brand_text + '&devicetype=' + device_type + '&protocol=' + protocol_type
+                      + '&device=' + device_num + '&subdevice=' + subdevice, None))

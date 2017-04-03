@@ -154,7 +154,7 @@ def mk_network_ip_addr():
 
 def mk_network_stats():
     """
-    Show netowrk stats
+    Show network stats
     """
     import psutil
     return psutil.net_if_stats()

@@ -82,7 +82,7 @@ class CommonSchedulesDirect(object):
         Get headends list
         """
         resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code
-                + "&postalcode=" + postal_code, headers=self.headers)
+                            + "&postalcode=" + postal_code, headers=self.headers)
         logging.info("SD Headends: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -142,7 +142,7 @@ class CommonSchedulesDirect(object):
         Get program info
         """
         resp = requests.post(self.BASE_API_URL + "/programs", headers=self.headers,
-            data=program_ids)
+                             data=program_ids)
         logging.info("Header: %s", resp.headers)
         logging.info("Text: %s", resp.text)
         logging.info("SD Program Info: %s", resp.status_code)
@@ -154,7 +154,7 @@ class CommonSchedulesDirect(object):
         # this one is only for EP types, not MV
         """
         resp = requests.post(self.BASE_API_URL + "/metadata/description",
-                headers=self.headers, data=program_ids)
+                             headers=self.headers, data=program_ids)
         logging.info("Header: %s", resp.headers)
         logging.info("Text: %s", resp.text)
         logging.info("SD Program Desc: %s-%s", resp.status_code, resp.json())
@@ -166,7 +166,7 @@ class CommonSchedulesDirect(object):
         Get info by station
         """
         resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers,
-                data=station_ids)
+                             data=station_ids)
         logging.info("SD Station: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -176,7 +176,7 @@ class CommonSchedulesDirect(object):
         Get md5 list for updates
         """
         resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers,
-                data=station_ids)
+                             data=station_ids)
         logging.info("SD MD5: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -186,7 +186,7 @@ class CommonSchedulesDirect(object):
         Check if program is still running (overtimes)
         """
         resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id),
-                headers=self.headers)
+                             headers=self.headers)
         logging.info("SD Running: %s-%s", resp.status_code, resp.json())
         return resp.json()
 

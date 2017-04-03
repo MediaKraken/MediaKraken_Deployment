@@ -36,7 +36,7 @@ class CommonMetadataISBNdb(object):
         """
         Grab the author
         """
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
             + self.api_key + '/author/' + author_name, None)
 
 
@@ -49,7 +49,7 @@ class CommonMetadataISBNdb(object):
         """
         Grab the publisher
         """
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
             + self.api_key + '/publisher/' + publisher_name, None)
 
 
@@ -69,7 +69,7 @@ class CommonMetadataISBNdb(object):
         """
         Grab prices
         """
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'\
+        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
             + self.api_key + '/prices/' + book_info, None)
 
 
@@ -81,5 +81,5 @@ class CommonMetadataISBNdb(object):
         """
         Search
         """
-        return requests.get('http://isbndb.com/api/v2/json/'\
+        return requests.get('http://isbndb.com/api/v2/json/'
             + self.api_key + '/book/' + book_info)

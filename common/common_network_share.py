@@ -41,19 +41,19 @@ def com_net_share_mount(share_list):
             if share['mm_media_share_user'] != 'guest':
                 mount_command.append('-o')
                 mount_command.append('uid=1000') # gid=1000
-            mount_command.append(share['mm_media_share_server'] + \
-                                 ':/' + share['mm_media_share_path'])
+            mount_command.append(share['mm_media_share_server']
+                                 + ':/' + share['mm_media_share_path'])
             mount_command.append('./mnt/%s' % share['mm_media_share_guid'])
         else:
             # unc/smb
 #            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
             mount_command.append('cifs')
-            mount_command.append('//' + share['mm_media_share_server'] + '/' \
+            mount_command.append('//' + share['mm_media_share_server'] + '/'
                                  + share['mm_media_share_path'])
             mount_command.append('./mnt/' + share['mm_media_share_guid'])
             if share['mm_media_share_user'] != 'guest':
                 mount_command.append('-o')
-                mount_command.append('user=' + share['mm_media_share_user'] \
+                mount_command.append('user=' + share['mm_media_share_user']
                                      + ',password=' + share['mm_media_share_password'])
         logging.debug('mount: %s' % mount_command)
         proc_mnt = subprocess.Popen(mount_command, shell=False)

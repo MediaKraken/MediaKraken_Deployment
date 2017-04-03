@@ -172,7 +172,7 @@ def db_audit_share_check(self, dir_path):
     # share path check (dupes)
     """
     self.db_cursor.execute('select count(*) from mm_media_share where mm_media_share_path = %s',
-        (dir_path,))
+                           (dir_path,))
     return self.db_cursor.fetchone()[0]
 
 
