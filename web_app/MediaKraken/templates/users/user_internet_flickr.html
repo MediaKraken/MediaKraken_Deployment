@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <script src="../../static/js/jquery.min.js"></script>
+        <link rel="stylesheet"  href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+    </head>
+    {% if media %}
+    <div>
+        {% for row_data in media %}
+        <div class="main_photo">
+            <a href= {{ "../internet_flickr_detail/" + row_data[0] }} >
+            <img src= {{ row_data[1] }} height="180" width="320">
+            </a>
+            <div class="description">
+                <p class="description_content_left">{{row_data[0] + ": " + row_data[2]}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p id="general_text">No Twitch TV media found.</p>
+    {% endif %}
+</body>
+{% endblock %}
