@@ -51,7 +51,7 @@ class NonBlockingNetBIOS(base.NBNS):
     def queryResult(self, ip, results):
         results = filter(lambda s: s and s[0] in string.printable, results)
         if results:
-            print ip.rjust(16), '-->', ' '.join(results)
+            print(ip.rjust(16), '-->', ' '.join(results))
 
     def poll(self, timeout = 0):
         end_time = time.time() + timeout
@@ -103,14 +103,12 @@ def main():
         start_ip = DottedIPToInt(sys.argv[1])
         end_ip = start_ip
     else:
-        print 'ScanNetworkForSMB - Script for scanning network for open SMB/CIFS services'
-        print 'Error: missing IP arguments'
-        print 'Usage:', sys.argv[0], 'start-IP-address [end-IP-address]'
-        print
+        print('ScanNetworkForSMB - Script for scanning network for open SMB/CIFS services')
+        print('Error: missing IP arguments')
+        print('Usage:', sys.argv[0], 'start-IP-address [end-IP-address]')
         return
 
-    print 'Beginning scanning %d IP addresses...' % ( end_ip-start_ip+1, )
-    print
+    print('Beginning scanning %d IP addresses...' % ( end_ip-start_ip+1, ))
 
     ns = NonBlockingNetBIOS()
     for ip in range(start_ip, end_ip + 1):
@@ -119,8 +117,7 @@ def main():
 
     if ns.pending_count > 0:
         ns.poll(10)
-        print
-        print 'Query timeout. No replies from %d IP addresses' % ns.pending_count
+        print('Query timeout. No replies from %d IP addresses' % ns.pending_count)
 
 
 if __name__ == '__main__':
