@@ -38,12 +38,12 @@ def movie_detail(guid):
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), False)
-            return redirect(url_for('user.movie_detail', guid=guid))
+            return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
-            return redirect(url_for('user.movie_detail', guid=guid))
+            return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
-            return redirect(url_for('user.sync_edit', guid=guid))
+            return redirect(url_for('user_sync.sync_edit', guid=guid))
         elif request.form['status'] == 'Cast':
             # grab the guid from the comboindex
             media_guid_index = request.form["Video_Track"]
@@ -55,7 +55,7 @@ def movie_detail(guid):
                 g.db_connection.db_media_path_by_uuid(media_guid_index)[0],
                 'http://localhost:8900/stream.ffm'], shell=False)
             logging.info("FFServer PID: %s", proc_ffserver.pid)
-            return redirect(url_for('user.movie_detail', guid=guid))
+            return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)
         json_ffmpeg = data['mm_media_ffprobe_json']
