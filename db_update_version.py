@@ -30,6 +30,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 if common_version.DB_VERSION == "2":
     if db_connection.db_version_check() == "1":
         proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+        proc.wait()
         db_connection.db_version_update("2")
 
 
