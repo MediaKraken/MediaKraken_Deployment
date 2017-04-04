@@ -23,22 +23,22 @@ import smtplib
 # http://stackoverflow.com/users/547050/david-okwii
 # code from stackoverflow
 def com_net_send_email(user, pwd, recipient, subject, body):
-    gmail_user = user
-    gmail_pwd = pwd
-    FROM = user
+    """
+    Send email via gmail account
+    """
     TO = recipient if type(recipient) is list else [recipient]
-    SUBJECT = subject
-    TEXT = body
 
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
-    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    """ % (user, ", ".join(TO), subject, body)
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
-        server.login(gmail_user, gmail_pwd)
-        server.sendmail(FROM, TO, message)
+        server.login(user, pwd)
+        server.sendmail(user, TO, message)
         server.close()
         logging.info('successfully sent the mail')
+        return True
     except:
         logging.info("failed to send mail")
+        return False
