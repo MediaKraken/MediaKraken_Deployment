@@ -33,6 +33,6 @@ class TestSubprogramReactorWeblog(object):
         Test function
         """
         proc_info = subprocess.Popen(['python', './subprogram_reactor_string_weblog.py'],
-            shell=False)
+                                     shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

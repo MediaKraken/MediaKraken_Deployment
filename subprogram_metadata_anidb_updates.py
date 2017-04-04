@@ -77,8 +77,8 @@ db_connection.db_activity_insert('MediaKraken_Server AniDB Update Stop', None,
 
 # send notications
 if anime_added > 0:
-    db_connection.db_notification_insert(locale.format('%d', anime_added, True)\
-        + " Anime metadata updated.", True)
+    db_connection.db_notification_insert(locale.format('%d', anime_added, True)
+                                         + " Anime metadata updated.", True)
     create_collection_trigger = True
 
 

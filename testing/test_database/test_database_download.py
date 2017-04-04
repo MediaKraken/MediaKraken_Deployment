@@ -45,8 +45,8 @@ class TestDatabaseDownload(object):
         # create/insert a download
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_download_insert('themovedb',\
-            json.dumps({'test': 234}))
+        self.new_guid = self.db_connection.db_download_insert('themovedb',
+                                                              json.dumps({'test': 234}))
 
 
     @pytest.mark.parametrize(("provider_name"), [
