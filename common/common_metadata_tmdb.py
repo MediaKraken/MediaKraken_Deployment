@@ -44,7 +44,7 @@ class CommonMetadataTMDB(object):
         response = search.movie(query=movie_title)
         for s in search.results:
             logging.info("result: %s %s %s", s['title'], s['id'],
-                s['release_date'].split('-', 1)[0])
+                         s['release_date'].split('-', 1)[0])
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                     or str(int(movie_year) - 1) == s['release_date'].split('-', 1)[0]
                     or str(int(movie_year) + 1) == s['release_date'].split('-', 1)[0]):
