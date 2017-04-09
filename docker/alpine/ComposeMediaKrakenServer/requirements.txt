@@ -45,3 +45,4 @@ twisted
 setuptools
 ipgetter
 apache-libcloud
+titlecase
