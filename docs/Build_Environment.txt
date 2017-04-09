@@ -1,0 +1,22 @@
+Docker
+	setup musicbrainz - https://metabrainz.org/profile to locate key
+
+
+PHPBugtracker
+	Bug tracker for MediaKraken
+
+postgresql for docker
+	Stand alone database for MediaKraken testing - as then PGAdmin can be used
+
+MediaKraken Docker DEV
+	Dev docker station, do actual docker-compose builds here
+
+MediaKraken Docker Prod
+	Prod docker station for MediaKraken
+
+MK Elec Build
+	For building the https://libreelec.tv/ client
+
+mk virt db prep
+
+MM Testing - Jenkins
