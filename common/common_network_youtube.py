@@ -83,4 +83,4 @@ def com_net_yt_search(search_term, max_results=25):
                                           search_result["id"]["playlistId"]))
     print("Videos:\n", "\n".join(videos), "\n")
     print("Channels:\n", "\n".join(channels), "\n")
-    print("Playlists:\n", "\n".join(playlists), "\n"_
+    print("Playlists:\n", "\n".join(playlists), "\n")
