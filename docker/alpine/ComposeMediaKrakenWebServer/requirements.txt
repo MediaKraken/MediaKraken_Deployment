@@ -36,7 +36,6 @@ cssmin
 celery
 incremental>=16.10.1
 twisted
-titlecase
 beautifulsoup4
 appdirs==1.4.3
 appnope==0.1.0
