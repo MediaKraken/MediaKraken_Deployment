@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import re
 from socket import inet_ntoa
-from titlecase import titlecase
 
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
@@ -46,6 +45,7 @@ def com_string_title(title_string):
     """
     capitalize first letter of each word and handling quotes
     """
+    from titlecase import titlecase
     return titlecase(title_string)
 
 
