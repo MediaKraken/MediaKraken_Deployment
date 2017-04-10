@@ -9,7 +9,7 @@
         <link href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        {% if data_mtype == "yt" %}  
+        {% if data_mtype == "yt" %}
         <video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{"fluid":"true","techOrder":["youtube"]}'>
             <source src={{"http://www.youtube.com/watch?v=" + data_guid}} type="video/youtube">
         </video>
