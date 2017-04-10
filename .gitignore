@@ -3,3 +3,4 @@
 *.spec
 *.txt~
 *.swo
+/mediakraken.ini
