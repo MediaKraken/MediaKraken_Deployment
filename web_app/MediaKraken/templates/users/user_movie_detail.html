@@ -171,7 +171,7 @@
                 <div class="grid">
                     {% for chapter_info in data_json_media_chapters %}
                     <div class="col-1-4">
-                        <a href= {{ "../playvideo_videojs/hls/" + data_guid + "/" + chapter_info[0].replace(' ','%20') }} >
+                        <a href= {{ "../playback/hls/" + data_guid + "/" + chapter_info[0].replace(' ','%20') }} >
                         <img src= {{ "../../static/meta/images/" + chapter_info[1] }} alt= {{ "../../static/meta/images/" + chapter_info[1] }} height="150" width="150">
                         </a>
                         <p>{{chapter_info[0]}}</p>

@@ -25,49 +25,18 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/cast/<action>/<guid>/')
-@blueprint.route('/cast/<action>/<guid>')
+@blueprint.route('/playback/<vid_type>/<guid>/')
+@blueprint.route('/playback/<vid_type>/<guid>')
 @login_required
-def user_cast(action, guid):
+def user_playback(vid_type, guid):
     """
-    Display chromecast actions page
+    Display playback actions page
     """
-    logging.info('cast action: %s', action)
-    logging.info('case user: %s', current_user.get_id())
-    if action == 'base':
-        pass
-    elif action == 'back':
-        pass
-#    elif action == 'rewind':
-#        pass
-    elif action == 'stop':
-        common_celery_tasks_chromecast.com_celery_chrome_stop.apply_async(args=[
-            json.dumps({'user': current_user.get_id()})], queue='mkque')
-    elif action == 'play':
-        common_celery_tasks_chromecast.com_celery_chrome_play.apply_async(args=[
-            json.dumps({'user': current_user.get_id(),
-            'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
-        #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
-        #'-devicename', '10.0.0.202', g.db_connection.db_read_media(guid)['mm_media_path']])
-    elif action == 'pause':
-        common_celery_tasks_chromecast.com_celery_chrome_pause.apply_async(args=[
-            json.dumps({'user': current_user.get_id()})], queue='mkque')
-#    elif action == 'ff':
-#        pass
-    elif action == 'forward':
-        pass
-    elif action == 'mute':
-        common_celery_tasks_chromecast.com_celery_chrome_mute.apply_async(args=[
-            json.dumps({'user': current_user.get_id()})], queue='mkque')
-    elif action == 'vol_up':
-        common_celery_tasks_chromecast.com_celery_chrome_vol_up.apply_async(args=[
-            json.dumps({'user': current_user.get_id()})], queue='mkque')
-    elif action == 'vol down':
-        common_celery_tasks_chromecast.com_celery_chrome_vol_down.apply_async(args=[
-            json.dumps({'user': current_user.get_id()})], queue='mkque')
-    return render_template("users/user_playback_cast.html", data_uuid=guid)
-
-
+    logging.info('playback action: %s', vid_type)
+    logging.info('playback user: %s', current_user.get_id())
+    return render_template("users/user_playback_videojs.html",
+                           data_mtype=vid_type,
+                           data_uuid=guid)
 
 
 @blueprint.before_request
