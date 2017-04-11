@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -18,14 +18,17 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from celery import Celery
+from . import common_celery
+import sys
+#sys.path.append("/mediakraken")
+sys.path.append('.')
+from network import network_base_string as network_base
 
 
-app = Celery('mkque',
-             broker='amqp://guest@mkrabbitmq',
-             backend='amqp://guest@mkrabbitmq',
-             include=['common.common_celery_tasks',
-                      'common.common_celery_tasks_chromecast',
-                      'common.common_celery_tasks_hdhomerun',
-                      'common.common_celery_tasks_playback'])
-app.conf.update(CELERY_DEFAULT_QUEUE='mkque')
+@common_celery.app.task(queue='mkque')
+def com_celery_playback_play(media_json):
+    """
+    play media file
+    """
+    logging.info('task: play')
+    network_base.NetworkEvents.broadcast_playback_message(media_json)
