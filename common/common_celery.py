@@ -29,3 +29,4 @@ app = Celery('mkque',
                       'common.common_celery_tasks_hdhomerun',
                       'common.common_celery_tasks_playback'])
 app.conf.update(CELERY_DEFAULT_QUEUE='mkque')
+# CELERY_CREATE_MISSING_QUEUES
