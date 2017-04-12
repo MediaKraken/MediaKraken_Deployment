@@ -21,7 +21,9 @@ import logging # pylint: disable=W0611
 from docker import Client
 
 # notes on how to use the cli for the apps
-# https://docker-py.readthedocs.io/en/latest/api/
+# https://docker-py.readthedocs.io/en/latest
+
+# c = Client(base_url='unix://var/run/docker.sock')
 
 
 class CommonDocker(object):
