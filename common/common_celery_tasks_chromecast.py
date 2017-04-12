@@ -26,72 +26,9 @@ from network import network_base_string as network_base
 
 
 @common_celery.app.task(queue='mkque')
-def com_celery_chrome_play(media_json):
+def com_celery_chrome_task(media_json):
     """
-    play media file to chromecast
+    celery task for chromecast
     """
-    logging.info('task: play')
+    logging.info('chrome task: %s', media_json['task'])
     network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_stop(media_json):
-    """
-    stop media file to chromecast
-    """
-    logging.info('task: stop')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_pause(media_json):
-    """
-    pause media file to chromecast
-    """
-    logging.info('task: pause')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_mute(media_json):
-    """
-    mute audio chromecast
-    """
-    logging.info('task: mute')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_vol_up(media_json):
-    """
-    chromecast volume up
-    """
-    logging.info('task: vol up')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_vol_down(media_json):
-    """
-    chromecast volume down
-    """
-    logging.info('task: vol down')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_vol_set(media_json):
-    """
-    chromecast volume set
-    """
-    logging.info('task: vol set')
-    network_base.NetworkEvents.broadcast_chrome_message(media_json)
-
-
-@common_celery.app.task(queue='mkque')
-def com_celery_chrome_status(chrome_json):
-    """
-    chromecast status
-    """
-    logging.info('task: status')
-    network_base.NetworkEvents.broadcast_chrome_message(chrome_json)

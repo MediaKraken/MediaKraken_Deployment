@@ -26,7 +26,7 @@ from network import network_base_string as network_base
 
 
 @common_celery.app.task(queue='mkque')
-def com_celery_playback_play(media_json):
+def com_celery_chrome_task(media_json):
     """
     play media file
     """
