@@ -9,5 +9,6 @@ workers.
 
 Perhaps have each docker slave create a new que when it connects
 to celery. This que could be a simple uuid or hostname of docker
-server?
+server?  But where would this be needed.....if we still use 
+twisted from server/slave.
 
