@@ -267,6 +267,7 @@ class NetworkEvents(Int32StringReceiver):
                 if self.users[user_host_name].user_cpu_usage < low_cpu_host_percent:
                     low_cpu_host = user_host_name
                     low_cpu_protocol = protocol
+                    low_cpu_host_percent = self.users[user_host_name].user_cpu_usage
         if low_cpu_host is not None:
             logging.info('send celery: %s', message)
             low_cpu_protocol.sendString(message.encode("utf8"))
