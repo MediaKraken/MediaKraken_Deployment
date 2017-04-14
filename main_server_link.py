@@ -131,10 +131,6 @@ class MediaKrakenApp(object):
             pickle_data = None
         if messageWords[0] == "IDENT":
             msg = "VALIDATE " + "link" + " " + "password" + " " + platform.node()
-        elif messageWords[0] == "PING":  # Client_Network
-            msg = "PONG"
-        elif messageWords[0] == "SHUTDOWN":
-            sys.exit(0)
         elif messageWords[0] == "RECEIVENEWMEDIA":
             for new_media in pickle.loads(messageWords[1]):
                 logging.info("new media: %s", new_media)
