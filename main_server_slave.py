@@ -196,15 +196,10 @@ if __name__ == '__main__':
     common_logging.com_logging_start('./log/MediaKraken_Slave')
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    logging.info("Open DB")
-    # open the database
-    option_config_json, db_connection = common_config_ini.com_config_read()
-    # mount all the shares first so paths exist for validation
-    # TODO common_network_share.com_net_share_mount(db_connection.db_audit_shares())
     # fire up ffserver
     proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'],
         shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()
-    # stop ffserver and timer
+    # stop ffserver and timer (timer is for sending cpu usage)
     os.kill(proc_ffserver.pid)
