@@ -166,11 +166,10 @@ class MediaKrakenApp():
             self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
                 shell=False)
         elif message_words[0] == "CASTMEDIA":
-            cast_option = pickle.loads(message_words[1])
             self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "\
                 "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "\
-                "-movflags faststart+empty_moov' -transcode %s", (cast_option[0],
-                cast_option[1])), shell=False)
+                "-movflags faststart+empty_moov' -transcode %s", (pickle_data[0],
+                                                                  pickle_data[1])), shell=False)
         # admin commands
         elif message_words[0] == "CPUUSAGE":
             msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
