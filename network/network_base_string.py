@@ -51,7 +51,7 @@ class NetworkEvents(Int32StringReceiver):
         self.user_verified = 0
         self.user_country_code = None
         self.user_country_name = None
-        self.user_cpu_usage = None
+        self.user_cpu_usage = 0
         self.user_ffmpeg_data = [] # hold the info of running jobs on slave(s) along with chromecast
         self.proc_file_scan = None
         self.proc_media_match = None
@@ -259,12 +259,16 @@ class NetworkEvents(Int32StringReceiver):
         """
         This is used only from the webapp and chromecast celery
         """
-        global chromecast_slave
-        if message['slave_server'] in chromecast_slave:
-            user_host_name = message['slave_server']
-        else:
-            user_host_name = chromecast_slave['']
+        low_cpu_host = None
+        low_cpu_host_percent = 100
+        low_cpu_protocol = None
         for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_user_name == 'k':
-                logging.info('send celery: %s', message)
-                protocol.sendString(message.encode("utf8"))
+            if self.users[user_host_name].user_slave:
+                if self.users[user_host_name].user_cpu_usage < low_cpu_host_percent:
+                    low_cpu_host = user_host_name
+                    low_cpu_protocol = protocol
+        if low_cpu_host is not None:
+            logging.info('send celery: %s', message)
+            low_cpu_protocol.sendString(message.encode("utf8"))
+        else:
+            logging.error('no slave found for playback')
