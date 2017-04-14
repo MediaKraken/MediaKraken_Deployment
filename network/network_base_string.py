@@ -98,8 +98,6 @@ class NetworkEvents(Int32StringReceiver):
             logging.info("user: %s %s", self.user_host_name, self.user_ip_addy)
             if self.user_user_name == 'link':
                 pass
-        elif message_words[0] == "PING":  # Client_Network
-            msg = "PONG"
         # user commands
         elif message_words[0] == "LOGIN":
             pass

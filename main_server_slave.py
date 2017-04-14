@@ -161,8 +161,6 @@ class MediaKrakenApp():
             pickle_data = None
         if message_words[0] == "IDENT":
             msg = "VALIDATE " + "slave-" + str(uuid.uuid4()) + " " + " " + " " + platform.node()
-        elif message_words[0] == "PING":  # Client_Network
-            msg = "PONG"
         # user commands
         elif message_words[0] == "PLAYMEDIA":
             self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
