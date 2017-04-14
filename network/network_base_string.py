@@ -41,7 +41,6 @@ class NetworkEvents(Int32StringReceiver):
     # init is called on every connection
     def __init__(self, users, db_connection, genre_list, option_config_json):
         self.MAX_LENGTH = 32000000 # pylint: disable=C0103
-        self.cpu_use_table = {}
         # server info
         self.db_connection = db_connection
         self.users = users
@@ -52,11 +51,8 @@ class NetworkEvents(Int32StringReceiver):
         self.user_verified = 0
         self.user_country_code = None
         self.user_country_name = None
-        self.user_cpu_usage_percentage = None
-        self.user_ffmpeg_data = [] # hold the info of running jobs on slave along with chromecast
-        self.server_ip = common_network.mk_network_get_default_ip()
-        self.server_port = option_config_json['MediaKrakenServer']['ListenPort']
-        self.server_port_ffmpeg = option_config_json['MediaKrakenServer']['FFMPEG']
+        self.user_cpu_usage = None
+        self.user_ffmpeg_data = [] # hold the info of running jobs on slave(s) along with chromecast
         self.proc_file_scan = None
         self.proc_media_match = None
         self.proc_chapter_create = None
@@ -206,9 +202,6 @@ class NetworkEvents(Int32StringReceiver):
             os.killpg(self.proc_subtitle_media_match.pid, signal.SIGUSR1)
         elif message_words[0] == "CPUUSAGE":
             self.user_cpu_usage[self.user_ip_addy] = message_words[1]
-        elif message_words[0] == "SHUTDOWN":
-            self.db_connection.db_close()
-            sys.exit(0)
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
@@ -264,7 +257,7 @@ class NetworkEvents(Int32StringReceiver):
 #            reactor.callFromThread(cls.sendMessage, c, payload)
 
     @classmethod
-    def broadcast_chrome_message(self, message):
+    def broadcast_playback_message(self, message):
         """
         This is used only from the webapp and chromecast celery
         """

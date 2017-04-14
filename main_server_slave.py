@@ -184,9 +184,6 @@ class MediaKrakenApp():
             msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),
                 common_system.com_system_disk_usage_all(True),
                 common_system.com_system_virtual_memory(False)))
-        elif message_words[0] == "SHUTDOWN":
-            os.kill(proc_ffserver.pid)
-            sys.exit(0)
         else:
             logging.info("unknown message type")
         if msg is not None:
