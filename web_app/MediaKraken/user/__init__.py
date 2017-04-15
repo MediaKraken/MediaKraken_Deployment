@@ -2,6 +2,7 @@
 """The user module."""
 from . import views
 from . import views_3d
+from . import views_cctv
 from . import views_chromecast
 from . import views_class
 from . import views_games
