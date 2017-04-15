@@ -41,6 +41,7 @@ class MediaKrakenServerApp(Factory):
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
+        '''
         # setup celery instance for consumer
         self.celery = common_celery.app
         # concurrency arg is threads but defaults to number of CPUs available
@@ -50,7 +51,7 @@ class MediaKrakenServerApp(Factory):
 #        celery -A tasks worker -Q high --concurrency=2
 #        celery -A tasks worker -Q normal --concurrency=1
 #        celery -A tasks worker -Q low,normal --concurrency=1
-
+        '''
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection,
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # setup for the ssl keys
-    reactor.listenTCP(8903, MediaKrakenServerApp())
-#    reactor.listenSSL(8903, MediaKrakenServerApp(),
-#                      ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
+    #reactor.listenTCP(8903, MediaKrakenServerApp())
+    reactor.listenSSL(8903, MediaKrakenServerApp(),
+                      ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()
