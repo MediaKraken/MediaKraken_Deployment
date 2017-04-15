@@ -39,10 +39,6 @@ services:
     build:
       context: ./ComposeMediaKrakenSlave
       dockerfile: dockerfile-appslave
-    environment:
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
       - appserver
