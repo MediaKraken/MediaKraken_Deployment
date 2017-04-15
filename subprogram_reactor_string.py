@@ -40,6 +40,8 @@ class MediaKrakenServerApp(Factory):
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
+
+        '''
         # setup celery instance for consumer
         self.celery = common_celery.app
         # concurrency arg is threads but defaults to number of CPUs available
@@ -49,7 +51,7 @@ class MediaKrakenServerApp(Factory):
 #        celery -A tasks worker -Q high --concurrency=2
 #        celery -A tasks worker -Q normal --concurrency=1
 #        celery -A tasks worker -Q low,normal --concurrency=1
-
+        '''
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection,
