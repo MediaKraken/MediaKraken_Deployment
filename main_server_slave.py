@@ -29,7 +29,6 @@ except:
 import sys
 import uuid
 from common import common_celery
-from common import common_config_ini
 from common import common_logging
 from common import common_network_share
 from common import common_signal
