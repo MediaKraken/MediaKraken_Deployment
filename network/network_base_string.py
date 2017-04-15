@@ -255,7 +255,7 @@ class NetworkEvents(Int32StringReceiver):
 #            reactor.callFromThread(cls.sendMessage, c, payload)
 
     @classmethod
-    def broadcast_playback_message(self, message):
+    def broadcast_celery_message(self, message):
         """
         This is used only from the webapp and chromecast celery
         """

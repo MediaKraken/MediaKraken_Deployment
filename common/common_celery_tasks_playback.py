@@ -31,4 +31,4 @@ def com_celery_chrome_task(media_json):
     play media file
     """
     logging.info('chrome task: %s', media_json)
-    network_base.NetworkEvents.broadcast_playback_message(media_json)
+    network_base.NetworkEvents.broadcast_celery_message(media_json)
