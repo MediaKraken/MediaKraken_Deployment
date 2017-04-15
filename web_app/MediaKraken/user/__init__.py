@@ -15,6 +15,7 @@ from . import views_music
 from . import views_music_video
 from . import views_periodicals
 from . import views_person
+from . import views_playback
 from . import views_reports
 from . import views_sports
 from . import views_sync
