@@ -259,6 +259,7 @@ class NetworkEvents(Int32StringReceiver):
         """
         This is used only from the webapp and chromecast celery
         """
+        logging.info('celery message received: %s', message)
         low_cpu_host = None
         low_cpu_host_percent = 100
         low_cpu_protocol = None
