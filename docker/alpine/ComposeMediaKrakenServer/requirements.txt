@@ -40,10 +40,9 @@ pillow
 pyaudio
 onkyo-eiscp
 psutil
-celery
 twisted
-zope.interface
 setuptools
 ipgetter
 apache-libcloud
 titlecase
+pika
