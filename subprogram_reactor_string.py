@@ -40,7 +40,7 @@ def run(connection):
     #yield channel.queue_bind(exchange='topic_link', queue='mkque', routing_key='mkque.world')
 
     queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False,
-                                        durable=False)
+                                        durable=True)
     yield channel.queue_bind(queue='mkque')
 
     yield channel.basic_qos(prefetch_count=1)

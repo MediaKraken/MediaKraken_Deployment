@@ -24,7 +24,7 @@ from celery import Celery
 app = Celery('mkque',
              broker='amqp://guest@mkrabbitmq',
              backend='amqp://guest@mkrabbitmq',
-             durable=False,
+             durable=True,
              include=['common.common_celery_tasks',
                       'common.common_celery_tasks_chromecast',
                       'common.common_celery_tasks_hdhomerun',
