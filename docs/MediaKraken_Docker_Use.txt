@@ -23,6 +23,10 @@ docker-compose logs
 10.0.0.113 - pip mirror (not done)
 
 
+show ips
+docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+
+
 testing
 
 docker exec -it [container-id] /bin/ash
