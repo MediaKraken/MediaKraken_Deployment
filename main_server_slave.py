@@ -123,7 +123,7 @@ class ClientProtocol(Int32StringReceiver):
             logging.info("unknown message type")
         if msg is not None:
             logging.info("should be sending data")
-            networkProtocol.sendString(msg.encode("utf8"))
+            self.sendString(msg.encode("utf8"))
 
 
     def cancel(self):
