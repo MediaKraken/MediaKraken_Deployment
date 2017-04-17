@@ -184,7 +184,7 @@ class MediaKrakenApp():
             logging.info("unknown message type")
         if msg is not None:
             logging.info("should be sending data")
-            networkProtocol.sendString(msg)
+            networkProtocol.sendString(msg.encode("utf8"))
 
 
 if __name__ == '__main__':

@@ -65,7 +65,7 @@ class NetworkEvents(Int32StringReceiver):
         Network connection made from client so ask for ident
         """
         logging.info('Got Connection')
-        self.sendString('IDENT')
+        self.sendString('IDENT'.encode("utf8"))
 
 
     def connectionLost(self, reason):
