@@ -196,6 +196,6 @@ if __name__ == '__main__':
     proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'],
         shell=False)
     logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
-    MediaKrakenApp().build()
+    app = MediaKrakenApp().build()
     # stop ffserver and timer (timer is for sending cpu usage)
     os.kill(proc_ffserver.pid)
