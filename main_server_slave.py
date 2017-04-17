@@ -40,7 +40,7 @@ from twisted.protocols.basic import Int32StringReceiver
 
 
 networkProtocol = None
-metaapp = None
+app = None
 proc_ffserver = None
 
 
@@ -85,7 +85,7 @@ class TheaterClient(Int32StringReceiver):
 
 
     def stringReceived(self, data):
-        MediaKrakenApp.process_message(metaapp, data)
+        MediaKrakenApp.process_message(app, data)
 
 
     def cancel(self):
