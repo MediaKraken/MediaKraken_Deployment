@@ -1,6 +1,9 @@
 mkserver	twisted to mktheater
+	send media metadata for display
 		twisted to mkslave
+	send playback command and events
 		celery				if celery, twisted breaks
+	accept commands from mkwebserver
 		database			connects to bouncer just fine
 
 
@@ -19,3 +22,7 @@ mkwebserver	celery				connects and sends messages into ques just fine
 	will need to send playback commands and events
 		database			connects to bouncer just fine
 	will need to send file scan, etc	sends to trigger database table
+
+
+try pika and twisted
+	https://pika.readthedocs.io/en/0.10.0/examples/twisted_example.html
