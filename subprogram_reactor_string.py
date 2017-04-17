@@ -21,12 +21,35 @@ import logging # pylint: disable=W0611
 from twisted.internet import ssl
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory
+import pika
+from pika import exceptions
+from pika.adapters import twisted_connection
+from twisted.internet import defer, reactor, protocol,task
 from network import network_base_string as network_base
-from common import common_celery
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import time
+
+
+@defer.inlineCallbacks
+def run(connection):
+    channel = yield connection.channel()
+    exchange = yield channel.exchange_declare(exchange='topic_link', type='topic')
+    queue = yield channel.queue_declare(queue='hello', auto_delete=False, exclusive=False)
+    yield channel.queue_bind(exchange='topic_link', queue='hello', routing_key='hello.world')
+    yield channel.basic_qos(prefetch_count=1)
+    queue_object, consumer_tag = yield channel.basic_consume(queue='hello', no_ack=False)
+    l = task.LoopingCall(read, queue_object)
+    l.start(0.01)
+
+
+@defer.inlineCallbacks
+def read(queue_object):
+    ch,method,properties,body = yield queue_object.get()
+    if body:
+        print(body)
+    yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 class MediaKrakenServerApp(Factory):
@@ -41,17 +64,6 @@ class MediaKrakenServerApp(Factory):
         self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
-        '''
-        # setup celery instance for consumer
-        self.celery = common_celery.app
-        # concurrency arg is threads but defaults to number of CPUs available
-        self.celery.start(argv=['celery', 'worker', '-Q', 'mkque', '-E'])
-#        self.celery.start(argv=['celery', '-A', 'mkque', 'worker'])
-
-#        celery -A tasks worker -Q high --concurrency=2
-#        celery -A tasks worker -Q normal --concurrency=1
-#        celery -A tasks worker -Q low,normal --concurrency=1
-        '''
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection,
@@ -61,8 +73,13 @@ class MediaKrakenServerApp(Factory):
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
+    # pika rabbitmq connection
+    parameters = pika.ConnectionParameters()
+    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
+    d = cc.connectTCP('mkrabbitmq', 5672)
+    d.addCallback(lambda protocol: protocol.ready)
+    d.addCallback(run)
     # setup for the ssl keys
-    #reactor.listenTCP(8903, MediaKrakenServerApp())
     reactor.listenSSL(8903, MediaKrakenServerApp(),
                       ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()
