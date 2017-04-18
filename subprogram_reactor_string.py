@@ -78,9 +78,9 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # pika rabbitmq connection
-    parameters = pika.ConnectionParameters()
+    parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
-    d = cc.connectTCP('mkrabbitmq', 5672, credentials=pika.PlainCredentials('guest', 'guest'))
+    d = cc.connectTCP('mkrabbitmq', 5672)
     d.addCallback(lambda protocol: protocol.ready)
     d.addCallback(run)
     # setup for the ssl keys
