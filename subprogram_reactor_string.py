@@ -42,7 +42,6 @@ def run(connection):
     queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False,
                                         durable=True)
     yield channel.queue_bind(queue='mkque')
-
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
@@ -51,7 +50,7 @@ def run(connection):
 
 @defer.inlineCallbacks
 def read(queue_object):
-    ch,method,properties,body = yield queue_object.get()
+    ch, method, properties, body = yield queue_object.get()
     if body:
         print(body)
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -81,7 +80,7 @@ if __name__ == '__main__':
     # pika rabbitmq connection
     parameters = pika.ConnectionParameters()
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
-    d = cc.connectTCP('mkrabbitmq', 5672)
+    d = cc.connectTCP('mkrabbitmq', 5672, credentials=pika.PlainCredentials('guest', 'guest'))
     d.addCallback(lambda protocol: protocol.ready)
     d.addCallback(run)
     # setup for the ssl keys
