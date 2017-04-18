@@ -39,7 +39,7 @@ def run(connection):
     #queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False)
     #yield channel.queue_bind(exchange='topic_link', queue='mkque', routing_key='mkque.world')
 
-    exchange = yield channel.exchange_declare(exchange='mkque', type='topic')
+    exchange = yield channel.exchange_declare(exchange='mkque', type='direct')
     queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False,
                                         durable=True)
     yield channel.queue_bind(exchange='mkque', queue='mkque')
