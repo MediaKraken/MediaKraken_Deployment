@@ -40,11 +40,10 @@ def run(connection):
     #queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False)
     #yield channel.queue_bind(exchange='topic_link', queue='mkque', routing_key='mkque.world')
 
-    exchange = yield channel.exchange_declare(exchange='mkque', type='direct')
+    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct')
     queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False,
                                         durable=True)
-    yield channel.queue_bind(exchange='mkque', queue='mkque')
-
+    yield channel.queue_bind(exchange='mkque_ex', queue='mkque', routing_key='mkque.world')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
