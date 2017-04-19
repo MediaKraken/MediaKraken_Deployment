@@ -48,7 +48,6 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
     networks:
-      - mediakraken-mq
       - mediakraken-network
     restart: unless-stopped
     # to allow mount nfs/cifs
