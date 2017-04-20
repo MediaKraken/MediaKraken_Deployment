@@ -35,11 +35,6 @@ import time
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
-
-    #exchange = yield channel.exchange_declare(exchange='topic_link', type='topic')
-    #queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False)
-    #yield channel.queue_bind(exchange='topic_link', queue='mkque', routing_key='mkque.world')
-
     exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct')
     queue = yield channel.queue_declare(queue='mkque', auto_delete=False, exclusive=False,
                                         durable=True)
