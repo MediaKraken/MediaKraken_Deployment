@@ -29,5 +29,15 @@ app = Celery('mkque',
                       'common.common_celery_tasks_chromecast',
                       'common.common_celery_tasks_hdhomerun',
                       'common.common_celery_tasks_playback'])
+app.conf.update(CELERY_DEFAULT_EXCHANGE='mkque_ex')
+app.conf.update(CELERY_DEFAULT_EXCHANGE_TYPE = 'direct')
 app.conf.update(CELERY_DEFAULT_QUEUE='mkque')
+
+# list of configuration settings
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html
+
 # CELERY_CREATE_MISSING_QUEUES
+# CELERY_DEFAULT_QUEUE = "default"
+# CELERY_DEFAULT_EXCHANGE
+# CELERY_DEFAULT_EXCHANGE_TYPE = "direct"
+# CELERY_DEFAULT_ROUTING_KEY = "default"
