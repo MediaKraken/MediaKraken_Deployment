@@ -6,7 +6,6 @@ from wtforms import TextField, PasswordField, TextAreaField, BooleanField, Selec
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
-# for editing the shares
 class ShareAddEditForm(Form):
     """
     for editing the shares
