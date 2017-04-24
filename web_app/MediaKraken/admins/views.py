@@ -311,7 +311,7 @@ def admin_books_add():
                     'Path': None, 'ClassID': class_uuid, 'Status': None,
                     'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
-        return redirect(url_for('user.user_books_add'))
+        return redirect(url_for('admin.admin_books_add'))
     form = BookAddForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
