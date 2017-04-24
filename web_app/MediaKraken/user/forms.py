@@ -8,22 +8,6 @@ from decimal import ROUND_UP
 from .models import User
 
 
-class BookAddForm(Form):
-    """
-    # for adding books
-    """
-    book_list = TextAreaField('Book ISBN(s)', validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(BookAddForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(BookAddForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
 # for editing sync jobs
 class SyncEditForm(Form):
     # fields

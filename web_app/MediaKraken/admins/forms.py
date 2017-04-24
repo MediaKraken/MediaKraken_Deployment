@@ -31,6 +31,22 @@ class ShareAddEditForm(Form):
         return True
 
 
+class BookAddForm(Form):
+    """
+    # for adding books
+    """
+    book_list = TextAreaField('Book ISBN(s)', validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(BookAddForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(BookAddForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
 class LibraryAddEditForm(Form):
     """
     for editing the library

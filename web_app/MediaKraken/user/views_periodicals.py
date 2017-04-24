@@ -36,31 +36,6 @@ def user_books_list():
     return render_template("users/user_books_list.html")
 
 
-@blueprint.route('/books_add', methods=['GET', 'POST'])
-@blueprint.route('/books_add/', methods=['GET', 'POST'])
-@login_required
-def user_books_add():
-    """
-    Display books add page
-    """
-    if request.method == 'POST':
-        class_uuid = g.db_connection.db_media_uuid_by_class('Book')
-        for book_item in request.form['book_list'].split('\r'):
-            if len(book_item) > 2:
-                media_id = str(uuid.uuid4())
-                g.db_connection.db_insert_media(media_id, None, class_uuid,
-                    None, None, None)
-                g.db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                    'Path': None, 'ClassID': class_uuid, 'Status': None,
-                    'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': book_item.strip()}))
-        g.db_connection.db_commit()
-        return redirect(url_for('user.user_books_add'))
-    form = BookAddForm(request.form, csrf_enabled=False)
-    if form.validate_on_submit():
-        pass
-    return render_template("users/user_books_add.html", form=form)
-
-
 @blueprint.route('/meta_periodical_list')
 @blueprint.route('/meta_periodical_list/')
 @login_required
