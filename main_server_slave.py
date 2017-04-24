@@ -39,9 +39,6 @@ from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
 
 
-#networkProtocol = None
-
-
 class RepeatTimer(Thread):
     def __init__(self, interval, function, iterations=0, args=[], kwargs={}):
         Thread.__init__(self)
@@ -187,10 +184,4 @@ if __name__ == '__main__':
     common_logging.com_logging_start('./log/MediaKraken_Slave')
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    # fire up ffserver
-    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'],
-        shell=False)
-    logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()
-    # stop ffserver and timer (timer is for sending cpu usage)
-    os.kill(proc_ffserver.pid)
