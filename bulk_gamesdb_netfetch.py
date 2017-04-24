@@ -67,12 +67,12 @@ db_connection.db_activity_insert('theGamesDB Batch Stop', None,
 
 # send notications
 if total_games > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_games, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_games, True)
         + " games(s) metadata added.", True)
 
 
 if total_game_systems > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)
         + " game system(s) metadata added.", True)
 
 
