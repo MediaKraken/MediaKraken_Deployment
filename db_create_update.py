@@ -67,10 +67,10 @@ db_connection = common_config_ini.com_config_read(True)
 
 
 # create table for version
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no text)')
+db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (\'2\')')
+    db_connection.db_query('insert into mm_version (mm_version_no) values (2)')
 
 
 # create tables for media shares to mount
@@ -390,7 +390,8 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_media_id_i
 # create table for metadata for book
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_book (mm_metadata_book_guid uuid'
     ' CONSTRAINT mm_metadata_book_pk PRIMARY KEY, mm_metadata_book_isbn text,'
-    ' mm_metadata_book_isbn13 text, mm_metadata_book_name text, mm_metadata_book_json jsonb)')
+    ' mm_metadata_book_isbn13 text, mm_metadata_book_name text, mm_metadata_book_json jsonb,'
+    ' mm_metadata_book_image_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_idx_book_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idx_book_name'
         ' ON mm_metadata_book(mm_metadata_book_name)')

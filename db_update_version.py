@@ -25,13 +25,17 @@ from common import common_version
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
+# not really needed if common_version.DB_VERSION == 2:
 
-# add download image que
-if common_version.DB_VERSION == "2":
-    if db_connection.db_version_check() == "1":
-        proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
-        proc.wait()
-        db_connection.db_version_update("2")
+if db_connection.db_version_check() == 1:
+    # add download image que
+    proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+    proc.wait()
+    db_connection.db_version_update(2)
+if db_connection.db_version_check() == 2:
+    # add image for periodical
+    db_connection.db_query('ALTER TABLE mm_metadata_book ADD COLUMN mm_metadata_book_image_json jsonb')
+    db_connection.db_version_update(3)
 
 
 # drop trigger table since moving to celery?

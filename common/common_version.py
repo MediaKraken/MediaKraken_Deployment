@@ -20,6 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-APP_VERSION = '0.3.4'
+APP_VERSION = '0.3.5'
 
-DB_VERSION = '2'
+DB_VERSION = 3
