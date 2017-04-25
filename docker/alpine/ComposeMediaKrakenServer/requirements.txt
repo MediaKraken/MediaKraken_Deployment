@@ -46,3 +46,4 @@ ipgetter
 apache-libcloud
 titlecase
 pika
+beekeeper==0.9.2
