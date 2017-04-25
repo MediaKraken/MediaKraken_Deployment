@@ -41,7 +41,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Start', None,
     'System: Server Tuner Scan Start', 'ServerTunerScanStart', None, None, 'System')
 
 
@@ -50,10 +50,10 @@ tuners_added = 0
 tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
-    json_data = {'Model': row_tuner.get_var(item='/sys/model'),\
-        'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),\
-        'ID': str(hex(row_tuner.get_device_id())),\
-        'IP': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip()),\
+    json_data = {'Model': row_tuner.get_var(item='/sys/model'),
+        'HWModel': row_tuner.get_var(item='/sys/hwmodel'), 'Name': row_tuner.get_name(),
+        'ID': str(hex(row_tuner.get_device_id())),
+        'IP': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip()),
         'Firmware': row_tuner.get_version(), 'Active': True, 'Channels': {}}
     # check for exienence
     current_data = db_connection.db_tuner_by_serial(str(hex(row_tuner.get_device_id())))
@@ -65,12 +65,12 @@ for row_tuner in tuner_api.com_hdhomerun_list():
 
 
 if tuners_added > 0:
-    db_connection.db_notification_insert(locale.format('%d', tuners_added, True)\
+    db_connection.db_notification_insert(locale.format('%d', tuners_added, True)
         + " tuners added.", True)
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Tuner Scan Stop', None,
     'System: Server Tuner Scan Stop', 'ServerTunerScanStop', None, None, 'System')
 
 # commit

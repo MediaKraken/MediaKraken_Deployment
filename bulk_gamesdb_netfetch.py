@@ -34,7 +34,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('theGamesDB Batch Start', None,\
+db_connection.db_activity_insert('theGamesDB Batch Start', None,
     'System: Server theGamesDB Start', 'ServerthegamesDBStart', None, None, 'System')
 
 
@@ -53,26 +53,26 @@ for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Pla
                 system_alias = game_systems['alias']
             except KeyError:
                 system_alias = None
-            db_connection.db_meta_games_system_insert(game_systems['id'],\
-                                                      game_systems['name'],\
-                                                      system_alias,\
+            db_connection.db_meta_games_system_insert(game_systems['id'],
+                                                      game_systems['name'],
+                                                      system_alias,
                                                       json.dumps(platform_json))
             db_connection.db_commit()
 
 
 # log end
-db_connection.db_activity_insert('theGamesDB Batch Stop', None,\
+db_connection.db_activity_insert('theGamesDB Batch Stop', None,
     'System: Server theGamesDB Stop', 'ServerthegamesDBStop', None, None, 'System')
 
 
 # send notications
 if total_games > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_games, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_games, True)
         + " games(s) metadata added.", True)
 
 
 if total_game_systems > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)\
+    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)
         + " game system(s) metadata added.", True)
 
 

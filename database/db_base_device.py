@@ -35,18 +35,18 @@ def db_device_list(self, device_type=None, offset=None, records=None):
     """
     if device_type is None:
         if offset is None:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
                 ' from mm_device')
         else:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
                 ' from mm_device offset %s limit %s', (offset, records))
     else:
         if offset is None:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
                 ' from mm_device where mm_device_type = %s', (device_type,))
         else:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'\
-                ' from mm_device where mm_device_type = %s offset %s limit %s',\
+            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
+                ' from mm_device where mm_device_type = %s offset %s limit %s',
                 (device_type, offset, records))
     return self.db_cursor.fetchall()
 
@@ -56,7 +56,7 @@ def db_device_insert(self, device_type, device_json):
     Insert a device into the database
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_device (mm_device_id, mm_device_type,'\
+    self.db_cursor.execute('insert into mm_device (mm_device_id, mm_device_type,'
         ' mm_device_json) values (%s,%s,%s)', (new_guid, device_type, device_json))
     return new_guid
 
@@ -65,7 +65,7 @@ def db_device_update(self, guid, device_type, device_json):
     """
     Update the device in the database
     """
-    self.db_cursor.execute('update mm_device set mm_device_type = %s, mm_device_json = %s'\
+    self.db_cursor.execute('update mm_device set mm_device_type = %s, mm_device_json = %s'
         ' where mm_device_id = %s', (device_type, device_json, guid))
 
 
@@ -80,7 +80,7 @@ def db_device_read(self, guid):
     """
     Return details from database via uuid
     """
-    self.db_cursor.execute('select mm_device_type, mm_device_json from mm_device'\
+    self.db_cursor.execute('select mm_device_type, mm_device_json from mm_device'
         ' where mm_device_id = %s', (guid,))
     try:
         return self.db_cursor.fetchone()

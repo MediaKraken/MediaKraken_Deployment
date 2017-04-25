@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
     'System: Server tvmaze Start', 'ServerthetvmazeStart', None, None, 'System')
 
 
@@ -59,12 +59,12 @@ for tvmaze_id, tvmaze_time in result.items():
     else:
         if db_connection.db_download_que_exists(None, 'tvmaze', tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', json.dumps({'Status': 'Fetch',\
+            db_connection.db_download_insert('tvmaze', json.dumps({'Status': 'Fetch',
                 'ProviderMetaID': tvmaze_id}))
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,
     'System: Server tvmaze Stop', 'ServerthetvmazeStop', None, None, 'System')
 
 

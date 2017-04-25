@@ -35,13 +35,13 @@ def db_meta_person_list(self, offset=None, records=None):
     # return list of people
     """
     if offset is None:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
-            'mmp_person_meta_json->\'images\' as mmp_meta'\
+        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+            'mmp_person_meta_json->\'images\' as mmp_meta'
             ' from mm_metadata_person order by mmp_person_name')
     else:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'\
-            'mmp_person_meta_json->\'images\' as mmp_meta'\
-            ' from mm_metadata_person order by mmp_person_name offset %s limit %s',\
+        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+            'mmp_person_meta_json->\'images\' as mmp_meta'
+            ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
             (offset, records))
     return self.db_cursor.fetchall()
 
@@ -50,7 +50,7 @@ def db_meta_person_by_guid(self, guid):
     """
     # return person data
     """
-    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'\
+    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
         ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_id = %s', (guid,))
     try:
         return self.db_cursor.fetchone()
@@ -62,8 +62,8 @@ def db_meta_person_by_name(self, person_name):
     """
     # return person data by name
     """
-    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'\
-        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s',\
+    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
+        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s',
         (person_name,))
     try:
         return self.db_cursor.fetchone()
@@ -76,7 +76,7 @@ def db_meta_person_id_count(self, host_type, guid):
     # does person exist already by host/id
     """
     self.db_cursor.execute('select count(*) from mm_metadata_person'\
-        ' where mmp_person_media_id @> \'{"' + host_type + '":"' + guid + '"}\'')
+        ' where mmp_person_media_id @> \'{"' + host_type + '":"' + str(guid) + '"}\'')
     return self.db_cursor.fetchone()[0]
 # works after the refactor
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"themoviedb": "22358"}'
@@ -85,15 +85,15 @@ def db_meta_person_id_count(self, host_type, guid):
     #and mmp_person_meta_json @> '{"id":169}'
 
 
-def db_meta_person_insert(self, person_name, media_id_json, person_json,\
+def db_meta_person_insert(self, person_name, media_id_json, person_json,
         image_json=None):
     """
     # insert person
     """
     logging.info('db pers insert %s %s %s %s', person_name, media_id_json, person_json, image_json)
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'\
-        ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',\
+    self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
+        ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',
         (new_guid, person_name, media_id_json, person_json, image_json))
     return new_guid
 
@@ -104,7 +104,7 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '\
                            'mmp_person_image = %s where mmp_person_media_id->\'' \
-                           + provider_name + '\' ? %s', \
+                           + provider_name + '\' ? %s',
                            (json.dumps(person_bio), json.dumps(person_image), str(provider_uuid)))
 
 
@@ -114,7 +114,13 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     logging.info('db person insert cast crew: %s %s', meta_type, person_json)
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
+    multiple_person = False
     try:
+        for person_data in person_json:
+            multiple_person = True
+    except:
+        pass
+    if multiple_person:
         for person_data in person_json:
             logging.info("person data: %s", person_data)
             if meta_type == "tvmaze":
@@ -134,12 +140,12 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     logging.info("skippy")
                 else:
                     # insert download record for bio/info
-                    self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
+                    self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                         "ProviderMetaID": str(person_id)}))
                     # insert person record
-                    self.db_meta_person_insert(person_name,\
+                    self.db_meta_person_insert(person_name,
                         json.dumps({meta_type: str(person_id)}), None, None)
-    except:
+    else:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
             person_name = person_json['person']['name']
@@ -157,10 +163,10 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 logging.info("skippy")
             else:
                 # insert download record for bio/info
-                self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch", \
+                self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                     "ProviderMetaID": str(person_id)}))
                 # insert person record
-                self.db_meta_person_insert(person_name,\
+                self.db_meta_person_insert(person_name,
                     json.dumps({meta_type: str(person_id)}), None, None)
 
 
@@ -174,15 +180,15 @@ def db_meta_person_as_seen_in(self, person_guid):
     logging.info("row_data: %s", row_data[1])
     if row_data['mmp_person_media_id']['Host'] == 'themoviedb':
         sql_params = row_data['mmp_person_media_id']['id'],
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'\
-            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''\
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''\
+        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''
             ' @> \'[{"id":%s}]\'', sql_params)
     elif row_data['mmp_person_media_id']['Host'] == 'tvmaze':
         sql_params = row_data['mmp_person_media_id']['id'],
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
-            'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''\
-            ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
+        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+            'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
+            ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
             '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\'', sql_params)
             # TODO won't this need to be like below?
     elif row_data['mmp_person_media_id']['Host'] == 'thetvdb':

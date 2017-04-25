@@ -14,14 +14,16 @@ services:
     container_name: mkserver
     depends_on:
       - pgbounce
+      - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
     ports:
-      - "8903:5000"
+      - "8903:8903"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
       - /home/mediakraken:/mediakraken/mnt
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -33,25 +35,31 @@ services:
   # slave app server which transcodes
   appslave:
     image: mediakraken/mkslave:latest
-    environment:
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkslave
     depends_on:
+      - appserver
       - pgbounce
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_slave.py
+    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken-network
-      - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
       - SYS_ADMIN
       - DAC_READ_SEARCH
+
+  # start broadcast server
+  broadcast:
+    image: mediakraken/mkbroadcast:latest
+    container_name: mkbroadcast
+    entrypoint: python subprogram_broadcast.py
+    ports:
+      - "9101:9101"
+    network_mode: host
+    restart: unless-stopped
 
   # Postgresql server
   database:
@@ -95,7 +103,6 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
     network_mode: host
-    restart: never
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -113,6 +120,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
@@ -131,15 +139,14 @@ services:
 #    restart: unless-stopped
 
   # runs the nginx proxy service
-  nginx:
-    image: mediakraken/mknginx:latest
-    container_name: mknginx
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
+#  nginx:
+#    image: mediakraken/mknginx:latest
+#    container_name: mknginx
+#    ports:
+#      - "443:443"
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
 
   # runs the openldap
 #  openldap:
@@ -172,8 +179,9 @@ services:
     container_name: mkwebapp
     depends_on:
       - pgbounce
+      - rabbit
       - redis
-      - nginx
+#      - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     ports:
       - "8900:8080"
@@ -182,6 +190,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
+      - mediakraken-mq
       - mediakraken-network
       - mediakraken-dbnetwork
     restart: unless-stopped
@@ -190,8 +199,25 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
+  # rabbit
+  # https://github.com/maryvilledev/alpine-rmq
+  rabbit:
+    image: mediakraken/mkrabbitmq:latest
+    container_name: mkrabbitmq
+    ports:
+#      - "5671:5671"
+      - "5672:5672"
+#      - "15671:15671"
+#      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - mediakraken-mq
+
 # Docker private networks
 networks:
+  # mq network
+  mediakraken-mq:
+    driver: bridge
   # Twisted communications network
   mediakraken-network:
     driver: bridge

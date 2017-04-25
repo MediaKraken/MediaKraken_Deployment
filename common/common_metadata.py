@@ -70,13 +70,13 @@ def com_meta_image_file_path(media_name, media_type):
     pattern = r'[^\.a-zA-Z]'
     try:
         if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename
-            file_path = os.path.join(base_image_path, media_type,\
+            file_path = os.path.join(base_image_path, media_type,
                 random.choice(string.ascii_lowercase))
         else:
-            file_path = os.path.join(base_image_path, media_type,\
+            file_path = os.path.join(base_image_path, media_type,
                 os.path.basename(media_name)[0].lower())
     except:
-        file_path = os.path.join(base_image_path, media_type,\
+        file_path = os.path.join(base_image_path, media_type,
             random.choice(string.ascii_lowercase))
     logging.info('file image path: %s', file_path)
     return file_path

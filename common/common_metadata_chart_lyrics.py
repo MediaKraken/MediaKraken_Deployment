@@ -25,7 +25,7 @@ def com_meta_chart_lyrics(artist_name, song_name):
     """
     Generate url link and fetch lyrics
     """
-    lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'\
+    lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'
         % urllib.urlencode({'artist' : artist_name, 'song' : song_name})).read()
     logging.info(lyric_text)
     return lyric_text

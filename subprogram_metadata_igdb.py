@@ -41,9 +41,9 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 if __name__ == "__main__":
     print('IGDB game info download attempts: %s' % total_download_attempts)
-    # send notications
+    # send notifications
     if total_download_attempts > 0:
-        db_connection.db_notification_insert(locale.format('%d',\
+        db_connection.db_notification_insert(locale.format('%d',
             total_download_attempts, True) + " IGDB game info downloaded.", True)
     # commit all changes
     db_connection.db_commit()

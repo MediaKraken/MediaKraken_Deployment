@@ -116,10 +116,10 @@ class MediaKrakenApp(object):
         Connect to debug server
         """
         if use_ssl:
-            reactor.connectSSL(host_addr, host_port,\
+            reactor.connectSSL(host_addr, host_port,
                 TheaterFactory(self), ssl.ClientContextFactory())
         else:
-            reactor.connectTCP(host_addr, host_port,\
+            reactor.connectTCP(host_addr, host_port,
                 TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
 

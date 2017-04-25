@@ -69,11 +69,11 @@ def com_emby_library_list(dir_name=None):
         for dir_path in common_file.com_file_dir_list(dir_name, None, False, False):
             logging.info("main dir: %s", dir_path)
             lib_file_path = []
-            for file_list in common_file.com_file_dir_list(os.path.join(dir_name, dir_path,\
+            for file_list in common_file.com_file_dir_list(os.path.join(dir_name, dir_path,
                     None, False, False)):
                 logging.info("file: %s", file_list)
                 if file_list.endswith('.mblink'): # only grab "link" files for path
-                    lib_file_path.append(common_file.com_file_load_data(os.path.join(dir_name,\
+                    lib_file_path.append(common_file.com_file_load_data(os.path.join(dir_name,
                         dir_path, file_list), False))
             library_list[dir_path] = lib_file_path
     return library_list

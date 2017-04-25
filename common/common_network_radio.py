@@ -27,27 +27,27 @@ def com_net_radio():
     """
     # create the cache file for import
     """
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/crawler_google.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/crawler_google.py'],
                             shell=False)
     logging.info("Crawler Google PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/clean_uris.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/clean_uris.py'],
                             shell=False)
     logging.info("Clean Uris PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/init_cache.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/init_cache.py'],
                             shell=False)
     logging.info("Init Cache PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_xiph.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_xiph.py'],
                             shell=False)
     logging.info("Fetch Xiph PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],
                             shell=False)
     logging.info("Fetch Tags PID: %s", proc.pid)
     proc.wait()
@@ -57,12 +57,12 @@ def com_net_radio():
     logging.info("Fetch Cast PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],
                             shell=False)
     logging.info("Fetch Tags PID: %s", proc.pid)
     proc.wait()
 
-    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/dump_taglist.py'],\
+    proc = subprocess.Popen(['python', '../MediaKraken_Common/radio_crawler/dump_taglist.py'],
                             shell=False)
     logging.info("Dump Taglist PID: %s", proc.pid)
     proc.wait()

@@ -153,7 +153,7 @@ class OctMoteApp(App):
 
 
     def connect_to_server(self):
-        reactor.connectSSL(self.octmote_server_connection_data[0],\
+        reactor.connectSSL(self.octmote_server_connection_data[0],
             self.octmote_server_connection_data[1], EchoFactory(self), ssl.ClientContextFactory())
 
 
@@ -174,9 +174,9 @@ class OctMoteApp(App):
         self.server_list = common_mediakraken.com_network_mediakraken_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
-                btn1 = ToggleButton(text=self.server_list[found_server][1],\
+                btn1 = ToggleButton(text=self.server_list[found_server][1],
                     group='mediakraken_server',)
-                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,\
+                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,
                     found_server))
                 self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
         else:
@@ -212,14 +212,14 @@ class OctMoteApp(App):
         self.global_selected_user_id = server_user
         self.login_password = ''
         content = OctMoteLoginScreen(login_password=self.login_password, cancel=self.dismiss_popup)
-        self._popup = Popup(title="Emby Login", content=content,\
+        self._popup = Popup(title="Emby Login", content=content,
             size_hint=(None, None), size=(425, 250))
         self._popup.open()
 
 
     def emby_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        self.emby_user_connection_json = common_emby_network.com_network_emby_user_login(\
+        self.emby_user_connection_json = common_emby_network.com_network_emby_user_login(
             self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
         # build header parameters to url
         user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
@@ -241,24 +241,24 @@ class OctMoteApp(App):
         # clear the children and reload to pick up new records
         if self.base_device_guid_dict:
             self.root.ids.setup_base_device_gridlayout.clear_widgets()
-        self.root.ids.setup_base_device_gridlayout.bind(\
+        self.root.ids.setup_base_device_gridlayout.bind(
             minimum_height=self.root.ids.setup_base_device_gridlayout.setter('height'))
         # fetch base items for setup
         for base_device in common_database_octmote.com_db_device_list():
-            btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,\
+            btn1 = ToggleButton(text=base_device[1], size_hint_y=None, height=40,
                 group='setup_base_device_button',)
-            btn1.bind(on_press=partial(self.main_setup_base_device_selected,\
+            btn1.bind(on_press=partial(self.main_setup_base_device_selected,
                 base_device[0]))
             self.root.ids.setup_base_device_gridlayout.add_widget(btn1)
             self.base_device_guid_dict[base_device[0]] = base_device[1]
         # clear the children and reload to pick up new records
         if self.base_item_guid_dict:
             self.root.ids.setup_base_item_gridlayout.clear_widgets()
-        self.root.ids.setup_base_item_gridlayout.bind(\
+        self.root.ids.setup_base_item_gridlayout.bind(
             minimum_height=self.root.ids.setup_base_item_gridlayout.setter('height'))
         # fetch items that users have added
         for item_device in common_database_octmote.com_db_item_list():
-            btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,\
+            btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,
                 group='setup_item_device_button',)
             btn1.bind(on_press=partial(self.main_setup_base_item_selected, item_device[0]))
             self.root.ids.setup_base_item_gridlayout.add_widget(btn1)
@@ -320,7 +320,7 @@ class OctMoteApp(App):
         """
         try:
             json_data = json.loads(self.root.ids.setup_item_json.text)
-            item_guid = common_database_octmote.OctMote_Database_Sqlite3_Item_Insert(\
+            item_guid = common_database_octmote.OctMote_Database_Sqlite3_Item_Insert(
                 self.root.ids.setup_item_name.text, json_data)
             # add guid to items in memory
             self.base_item_guid_dict[item_guid] = self.root.ids.setup_item_name.text
@@ -339,12 +339,12 @@ class OctMoteApp(App):
             if json_data["Protocol"]["Method"].lower() == "rs232":
                 if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
                     self.rs232_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_network_telnet.OctMote_Telnet_Open_Device(\
-                        json_data["Protocol"]["Host IP"],\
-                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
+                        = common_network_telnet.OctMote_Telnet_Open_Device(
+                        json_data["Protocol"]["Host IP"],
+                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                         json_data["Protocol"]["Password"])
                 common__network_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
-                    json_data["Protocol"]["Host IP"]],\
+                    json_data["Protocol"]["Host IP"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
                 pass
             # check to see if IR device is already open
@@ -360,25 +360,25 @@ class OctMoteApp(App):
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_network_telnet.MK_Telnet_Open_Device(\
-                        json_data["Protocol"]["Host IP"],\
-                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],\
+                        = common_network_telnet.MK_Telnet_Open_Device(
+                        json_data["Protocol"]["Host IP"],
+                        json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                         json_data["Protocol"]["Password"])
-                common_network_telnet.MK_Telnet_Write_Device(\
-                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],\
+                common_network_telnet.MK_Telnet_Write_Device(
+                    self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
                 # check to see if serial device already opened
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
                         in self.serial_devices_dict:
-                    self.serial_devices_dict[(json_data["Protocol"]["Host IP"],\
+                    self.serial_devices_dict[(json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Hardware Port"])]\
-                        = common_serial.MK_Serial_Open_Device(\
-                        json_data["Protocol"]["Hardware Port"],\
-                        json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],\
+                        = common_serial.MK_Serial_Open_Device(
+                        json_data["Protocol"]["Hardware Port"],
+                        json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],
                         json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
-                common_serial.MK_Serial_Write_Device(\
-                    self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],\
+                common_serial.MK_Serial_Write_Device(
+                    self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "eiscp":
                 # check to see if eiscp device already open
@@ -387,12 +387,12 @@ class OctMoteApp(App):
             elif json_data["Protocol"]["Method"].lower() == "kivy":
                 if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"])\
                         in self.kivy_lan_devices_dict:
-                    self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"],\
+                    self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Hardware Port"])]\
-                        = (json_data["Protocol"]["Host IP"],\
+                        = (json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Hardware Port"])
-                common_kodi.com_network_kodi_command(json_data["Protocol"]["Host IP"],\
-                    json_data["Protocol"]["Hardware Port"],\
+                common_kodi.com_network_kodi_command(json_data["Protocol"]["Host IP"],
+                    json_data["Protocol"]["Hardware Port"],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
                 pass
@@ -695,7 +695,7 @@ class OctMoteApp(App):
         """
         Process button event
         """
-        self.main_remote_control_event_process(("Calibration", "Convergance",\
+        self.main_remote_control_event_process(("Calibration", "Convergance",
             "Quandrant Top Right"))
 
 
@@ -717,7 +717,7 @@ class OctMoteApp(App):
         """
         Process button event
         """
-        self.main_remote_control_event_process(("Calibration", "Convergance",\
+        self.main_remote_control_event_process(("Calibration", "Convergance",
             "Quandrant Bottom Left"))
 
 
@@ -725,7 +725,7 @@ class OctMoteApp(App):
         """
         Process button event
         """
-        self.main_remote_control_event_process(("Calibration", "Convergance",\
+        self.main_remote_control_event_process(("Calibration", "Convergance",
             "Quandrant Bottom Right"))
 
 

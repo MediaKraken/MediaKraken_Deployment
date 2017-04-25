@@ -71,8 +71,8 @@ def imvdb_lookup(db_connection, file_name):
             for video_data in imvdb_json['results']:
                 logging.info("vid data: %s", video_data)
                 if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
-                    db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],\
-                        video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),\
+                    db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
+                        video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),
                         json.dumps(video_data), json.dumps({'Images': {'imvdb': None}}))
             # try after inserting new records
             metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)

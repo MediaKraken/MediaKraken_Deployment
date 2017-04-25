@@ -37,14 +37,16 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     """
     fetch person bio
     """
-    logging.info("meta person tmdb save fetch: %s", download_data)
-    # fetch and save json data via tmdb id
-    result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(\
-        download_data['mdq_download_json']['ProviderMetaID'])
-    logging.info("meta person code: %s", result_json.status_code)
-    logging.info("meta person save fetch result: %s", result_json.json())
-    if result_json.status_code == 200:
-        thread_db.db_meta_person_update(provider_name, \
-            download_data['mdq_download_json']['ProviderMetaID'], result_json.json(), \
-            TMDB_CONNECTION.com_tmdb_meta_bio_image_build(thread_db, result_json.json()))
-        thread_db.db_download_delete(download_data['mdq_id'])
+    if TMDB_CONNECTION is not None:
+        logging.info("meta person tmdb save fetch: %s", download_data)
+        # fetch and save json data via tmdb id
+        result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(
+            download_data['mdq_download_json']['ProviderMetaID'])
+        logging.info("meta person code: %s", result_json.status_code)
+        logging.info("meta person save fetch result: %s", result_json.json())
+        if result_json.status_code == 200:
+            thread_db.db_meta_person_update(provider_name,
+                download_data['mdq_download_json']['ProviderMetaID'], result_json.json(),
+                TMDB_CONNECTION.com_tmdb_meta_bio_image_build(thread_db, result_json.json()))
+            # commit happens in download delete
+            thread_db.db_download_delete(download_data['mdq_id'])

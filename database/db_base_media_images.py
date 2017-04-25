@@ -24,8 +24,8 @@ def db_media_images_list_count(self):
     """
     Images list count
     """
-    self.db_cursor.execute('select count(*) from mm_media,mm_media_class'\
-            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
+    self.db_cursor.execute('select count(*) from mm_media,mm_media_class'
+            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
             ' and mm_media_class_type = \'Picture\'')
 
 
@@ -34,12 +34,12 @@ def db_media_images_list(self, offset=None, records=None):
     Images list
     """
     if offset is None:
-        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'\
-            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
+        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
+            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
             ' and mm_media_class_type = \'Picture\'')
     else:
-        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'\
-            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'\
-            ' and mm_media_class_type = \'Picture\' offset %s limit %s',\
+        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
+            ' where mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
+            ' and mm_media_class_type = \'Picture\' offset %s limit %s',
             (offset, records))
     return self.db_cursor.fetchall()

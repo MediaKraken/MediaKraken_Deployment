@@ -27,7 +27,7 @@ class CommonTransmission(object):
     Class for interfacing with transmission bitorrent server
     """
     def __init__(self, option_config_json):
-        self.trans_connection = transmissionrpc.Client(option_config_json['Transmission']['Host'],\
+        self.trans_connection = transmissionrpc.Client(option_config_json['Transmission']['Host'],
             int(option_config_json['Transmission']['Port']))
 
 

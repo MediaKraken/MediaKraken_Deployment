@@ -29,7 +29,7 @@ class CommonTheTVDB(object):
     Class for interfacing with thetvdb
     """
     def __init__(self, option_config_json):
-        self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,\
+        self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,
             ignore_case=True)
 
 
@@ -37,7 +37,7 @@ class CommonTheTVDB(object):
         """
         # get show information
         """
-        return self.com_thetvdb_show_details(self.com_thetvdb_search(self.tvdb_connection,\
+        return self.com_thetvdb_show_details(self.com_thetvdb_search(self.tvdb_connection,
             show_title, show_language))
 
 
@@ -71,13 +71,13 @@ class CommonTheTVDB(object):
         banner_path = None
         fanart_path = None
         poster_path = None
-        json_media_json = json.dumps({'Overview':show_data.Overview,\
-            'AliasNames':show_data.AliasNames, 'Language':show_data.language,\
-            'FirstAired':show_data.FirstAired, 'Status':show_data.Status,\
-            'ContentRating':show_data.ContentRating, 'Rating':show_data.Rating,\
-            'RatingCount':show_data.RatingCount, 'Airs_DayOfWeek':show_data.Airs_DayOfWeek,\
-            'Airs_Time':show_data.Airs_Time, 'Runtime':show_data.Runtime,\
-            'LastUpdate':show_data.lastupdated, 'Network':show_data.Network,\
+        json_media_json = json.dumps({'Overview':show_data.Overview,
+            'AliasNames':show_data.AliasNames, 'Language':show_data.language,
+            'FirstAired':show_data.FirstAired, 'Status':show_data.Status,
+            'ContentRating':show_data.ContentRating, 'Rating':show_data.Rating,
+            'RatingCount':show_data.RatingCount, 'Airs_DayOfWeek':show_data.Airs_DayOfWeek,
+            'Airs_Time':show_data.Airs_Time, 'Runtime':show_data.Runtime,
+            'LastUpdate':show_data.lastupdated, 'Network':show_data.Network,
             'Network_ID_thetvdb':show_data.NetworkID})
 
     #    print "show:",show.seriesid,show.id
@@ -90,19 +90,19 @@ class CommonTheTVDB(object):
         update_json = False
         banner_path, fanart_path, poster_path = None
         if len(show_data.banner) > 0:
-            banner_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
+            banner_path = common_metadata.com_meta_image_path(show_data.SeriesName,
                 'banner', 'thetvdb', show_data.banner)
             update_json = True
         if len(show_data.fanart) > 0:
-            fanart_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
+            fanart_path = common_metadata.com_meta_image_path(show_data.SeriesName,
                 'fanart', 'thetvdb', show_data.fanart)
             update_json = True
         if len(show_data.poster) > 0:
-            poster_path = common_metadata.com_meta_image_path(show_data.SeriesName,\
+            poster_path = common_metadata.com_meta_image_path(show_data.SeriesName,
                 'poster', 'thetvdb', show_data.poster)
             update_json = True
         if update_json:
-            json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,\
+            json_media_json.update({'LocalImages':{'Banner':banner_path, 'Fanart':fanart_path,
                 'Poster':poster_path}})
         # save the show data
         com_database.db_meta_save_show(show_data.SeriesName,
@@ -118,7 +118,7 @@ class CommonTheTVDB(object):
 # mm_media_season_json) values (%s,%s)',sql_params)
 
         # store the episode data
-        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'', 'rt':'',\
+        json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'', 'rt':'',
             'omdb':'', 'fanart':'', 'screengrabber':'', 'zap2it':''})
     #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json

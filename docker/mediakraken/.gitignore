@@ -1,2 +1,3 @@
 *.yml~
-*.env~
+/.docker-compose.yml.un~
+/.env~

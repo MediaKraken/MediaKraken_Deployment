@@ -16,6 +16,7 @@ API_LIMIT = {
     # every four seconds over an extended amount of time. (4-16-2016)
     'chart_lyrics': (9999, 1), # no mention of limits 7/29/2016 just says don't abuse
     'comicvine': (1, 1), # (4-16-2016)
+    'discogs': (240, 60), # (1-16-2017)
     'giantbomb': (1, 1), # (4-16-2016)
     'imdb': (9999, 1), # no mention of limits 7/29/2016
     'imvdb': (1000, 60), # 1000 per minute (6/30/2016)
@@ -24,6 +25,7 @@ API_LIMIT = {
     'musicbrainz': (9999, 1),
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections
+    'openlibrary': (100, 300), # 1/14/2017 100 every 5 minutes
     'pitchfork': (9999, 1), # no mention of limits 7/29/2016
     'televisiontunes': (1, 1), # since I'm scraping
     'theaudiodb': (9999, 1), # no mention of limits 7/29/2016

@@ -114,7 +114,7 @@ def com_hash_sha1_c(file_name):
             # calculate sha1 hash
 #            SHA1.update(zip_handle.read(zippedfile))
             zip_file_data = zip_handle.read(zippedfile)
-            R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],\
+            R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],
                 support_code=common_hash_c_code.COM_SHA1_CODE)
         num += 1
         if num > 5:

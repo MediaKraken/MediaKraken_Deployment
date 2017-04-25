@@ -36,8 +36,8 @@ def db_tuner_list(self, offset=None, records=None):
     if offset is None:
         self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner')
     else:
-        self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
-            ' offset %s limit %s', (offset, records))
+        self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'
+                               ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -46,7 +46,7 @@ def db_tuner_insert(self, tuner_json):
     Insert tuner into the database
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',\
+    self.db_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',
         (new_guid, tuner_json))
     return new_guid
 
@@ -55,7 +55,7 @@ def db_tuner_update(self, guid, tuner_json):
     """
     Update tuner record in the database
     """
-    self.db_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s',\
+    self.db_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s',
         (tuner_json, guid))
 
 
@@ -70,7 +70,7 @@ def db_tuner_by_serial(self, serial_no):
     """
     Find detials by hardware id (serial)
     """
-    self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'\
+    self.db_cursor.execute('select mm_tuner_id, mm_tuner_json from mm_tuner'
         ' where mm_tuner_json->\'ID\' ? %s', (serial_no,))
     try:
         return self.db_cursor.fetchone()

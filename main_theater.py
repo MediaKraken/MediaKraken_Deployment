@@ -29,15 +29,15 @@ except:
     import pickle
 import logging # pylint: disable=W0611
 #install_twisted_rector must be called before importing the reactor
-from kivy.support import install_twisted_reactor
+#from kivy.support import install_twisted_reactor
 from kivy.lang import Builder
-install_twisted_reactor()
+#install_twisted_reactor()
 from twisted.protocols.basic import Int32StringReceiver
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import ssl
 import kivy
-kivy.require('1.9.1')
+kivy.require('1.9.2')
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -128,13 +128,13 @@ class TheaterFactory(ClientFactory):
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
-        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',
             'Lost connection to MediaKraken server.')
 
 
     def clientConnectionFailed(self, conn, reason):
         logging.error("Connection Failed")
-        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',\
+        MediaKrakenApp.mediakraken_notification_popup(metaapp, 'Connection Error',
             'Could not connect to MediaKraken server.')
 
 
@@ -188,6 +188,7 @@ class MediaKrakenApp(App):
 
     def build(self):
         global metaapp
+        logging.info('Before root')
         root = MediaKrakenApp()
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
@@ -195,8 +196,9 @@ class MediaKrakenApp(App):
         metaapp = self
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        self.config = self.load_config()
         self.connect_to_server()
-        common_logging.com_logging_start('./log/MediaKraken_Theater')
+        logging.info('After connect')
         return root
 
 
@@ -249,7 +251,7 @@ class MediaKrakenApp(App):
                 or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
                 or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
                 or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
-                self.root.ids._screen_manager.current = 'Main_Theater_Home'
+                    self.root.ids._screen_manager.current = 'Main_Theater_Home'
             pass
         elif keycode[1] == 'enter':
             pass
@@ -296,8 +298,8 @@ class MediaKrakenApp(App):
         Build base config
         """
         config.setdefaults('MediaKrakenServer', {
-            'Host': '127.0.0.1',
-            'Port': 8098})
+            'Host': '10.0.0.169',
+            'Port': 8903})
         config.setdefaults('Audio', {
             'Default_Device': 'Default',
             'Channels': '7.1'})
@@ -342,9 +344,11 @@ class MediaKrakenApp(App):
 
 
     def connect_to_server(self):
+        logging.info('conn server')
         if self.config is not None:
-            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),\
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),\
+            logging.info('here')
+            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
+                int(self.config.get('MediaKrakenServer', 'Port').strip()),
                 TheaterFactory(self), ssl.ClientContextFactory())
             reactor.run()
 
@@ -408,7 +412,7 @@ class MediaKrakenApp(App):
         elif message_words[0] == "USERLIST":
             pass
         elif message_words[0] == 'VIDPLAY':
-            # AttributeError: 'NoneType' object has no attribute 
+            # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids.theater_media_video_videoplayer.source = message_words[1]
             self.root.ids.theater_media_video_videoplayer.volume = 1
@@ -417,13 +421,13 @@ class MediaKrakenApp(App):
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
             args_converter = lambda row_index,\
                 rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter,\
+            list_adapter = ListAdapter(data=data, args_converter=args_converter,
                 cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
             list_view = ListView(adapter=list_adapter)
             for video_list in pickle_data:
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',\
-                    size_hint_y=None,\
-                    width=self.root.ids.theater_media_video_list_scrollview.width,\
+                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
+                    size_hint_y=None,
+                    width=self.root.ids.theater_media_video_list_scrollview.width,
                     height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
@@ -505,9 +509,9 @@ class MediaKrakenApp(App):
             logging.info("gen")
             for genre_list in pickle_data:
                 logging.info("genlist: %s", genre_list)
-                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',\
-                    size_hint_y=None,\
-                    width=self.root.ids.theater_media_genre_list_scrollview.width,\
+                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
+                    size_hint_y=None,
+                    width=self.root.ids.theater_media_genre_list_scrollview.width,
                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
@@ -673,6 +677,7 @@ class MediaKrakenApp(App):
 
 
 if __name__ == '__main__':
+    common_logging.com_logging_start('./log/MediaKraken_Theater')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
@@ -681,4 +686,6 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
+    logging.info('Before build')
     MediaKrakenApp().build()
+    logging.info('after build')

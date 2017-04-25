@@ -26,7 +26,7 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     Update the cast/crew for selected media
     """
     logging.info('upt castcrew: %s', metadata_id)
-    self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'\
+    self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'
         ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json_row = self.db_cursor.fetchone()[0]
     logging.info('castrow: %s', cast_crew_json_row)
@@ -35,6 +35,6 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     if 'crew' in cast_crew_json:
         cast_crew_json_row['Meta']['themoviedb'].update({'Crew': cast_crew_json['crew']})
     logging.info('upt: %s', cast_crew_json_row)
-    self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'\
+    self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
         ' where mm_metadata_guid = %s', (json.dumps(cast_crew_json_row), metadata_id))
     self.db_commit()

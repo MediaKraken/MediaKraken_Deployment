@@ -18,68 +18,17 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from mediakraken.common.common_celery import app
+from . import common_celery
+import sys
+#sys.path.append("/mediakraken")
+sys.path.append('.')
+from network import network_base_string as network_base
 
 
-@app.task
-def com_celery_chrome_play(media_json):
+@common_celery.app.task(queue='mkque')
+def com_celery_chrome_task(media_json):
     """
-    play media file to chromecast
+    celery task for chromecast
     """
-    pass
-
-
-@app.task
-def com_celery_chrome_stop(media_json):
-    """
-    stop media file to chromecast
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_pause(media_json):
-    """
-    pause media file to chromecast
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_mute(media_json):
-    """
-    mute audio chromecast
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_vol_up(media_json):
-    """
-    chromecast volume up
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_vol_down(media_json):
-    """
-    chromecast volume down
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_vol_set(media_json):
-    """
-    chromecast volume set
-    """
-    pass
-
-
-@app.task
-def com_celery_chrome_status(chrome_json):
-    """
-    chromecast status
-    """
-    pass
+    logging.info('chrome task: %s', media_json)
+    network_base.NetworkEvents.broadcast_celery_message(media_json)

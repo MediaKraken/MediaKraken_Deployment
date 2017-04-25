@@ -25,9 +25,9 @@ import os
 
 
 # generate key
-PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',\
-    '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',\
-    '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.com'], shell=False)
+PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',
+    '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',
+    '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.org'], shell=False)
 PROC.wait() # have to do here so the move has sumthing to move
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     shutil.move('privkey.pem', './key/.')

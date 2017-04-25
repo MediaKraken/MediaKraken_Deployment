@@ -1,0 +1,15 @@
+mkque - general que that server picks up to distribute work
+
+In app.py in web_app is the make_celery instance which allows population of
+the mkque from the flask application.
+
+The worker is kicked off from main_server.py which starts up
+subprogram_reactor_string.py which in turn starts up the default mkque
+workers.
+
+Perhaps have each docker slave create a new que when it connects
+to celery. This que could be a simple uuid or hostname of docker
+server?  But where would this be needed.....if we still use 
+twisted from server/slave.
+	don't do celery in slaves
+

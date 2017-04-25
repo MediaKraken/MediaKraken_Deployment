@@ -46,6 +46,7 @@ def mk_network_fetch_from_url(url, directory=None):
         return None
     if directory is None:
         return datafile.read()
+    return True
 
 
 def mk_network_wol(mac_address):
@@ -154,7 +155,7 @@ def mk_network_ip_addr():
 
 def mk_network_stats():
     """
-    Show netowrk stats
+    Show network stats
     """
     import psutil
     return psutil.net_if_stats()

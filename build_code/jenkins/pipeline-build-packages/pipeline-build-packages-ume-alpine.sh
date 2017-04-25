@@ -1,11 +1,9 @@
 #!/bin/bash
 apk add sdl-dev fontconfig-dev alsa-lib-dev qt5-qtbase-dev
-cd /var/lib/jenkins/workspace/MediaKraken-PyLint/MediaKraken_Build/lib/
-unzip mame0176s.zip
+wget https://github.com/mamedev/mame/releases/download/mame0181/mame0181s.zip
+unzip mame0181s.zip
 mkdir tmp
 mv mame.zip tmp/.
 cd tmp
 unzip mame.zip
-make -j4 TARGET=ume
-make -j4 SUBTARGET=mess
-make -j4
+make -j12

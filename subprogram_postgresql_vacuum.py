@@ -24,7 +24,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', None,
     'System: Server DB Vacuum Start', 'ServerVacuumStart', None, None, 'System')
 
 
@@ -35,7 +35,7 @@ for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Stop', None,
     'System: Server DB Vacuum Stop', 'ServerVacuumStop', None, None, 'System')
 
 

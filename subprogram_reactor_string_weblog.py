@@ -39,7 +39,7 @@ class MediaKrakenServerApp(Factory):
 
 
     def buildProtocol(self, addr):
-        return network_base.mediakraken_network_events(self.users, self.db_connection,\
+        return network_base.mediakraken_network_events(self.users, self.db_connection,
             self.genre_list)
 
 
@@ -47,6 +47,6 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # setup for the ssl keys
-    reactor.listenSSL(5002, MediaKrakenServerApp(),\
+    reactor.listenSSL(5002, MediaKrakenServerApp(),
         ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()

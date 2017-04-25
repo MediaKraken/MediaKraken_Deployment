@@ -55,10 +55,10 @@ def movie_search_tmdb(db_connection, file_name):
     if TMDB_CONNECTION is not None:
         # try to match ID ONLY
         if 'year' in file_name:
-            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(\
+            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
                 file_name['title'], file_name['year'], True)
         else:
-            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(\
+            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
                 file_name['title'], None, True)
         logging.info("meta movie response: %s %s", match_response, match_result)
         if match_response == 'idonly':
@@ -91,14 +91,14 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         meta_json = ({'Meta': {'themoviedb': {'Meta': result_json}}})
         logging.info("series: %s", series_id_json)
         # set and insert the record
-        db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,\
+        db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
             result_json['title'], json.dumps(meta_json), json.dumps(image_json))
         if 'credits' in result_json: # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb', \
+                db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['cast'])
             if 'crew' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb', \
+                db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
     else: # is this is None......404, no record by this id TODO handle 404's better
         metadata_uuid = None
@@ -144,7 +144,7 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     if review_json is not None and review_json['total_results'] > 0:
         review_json_id = ({'themoviedb': str(review_json['id'])})
         logging.info("review: %s", review_json_id)
-        db_connection.db_review_insert(json.dumps(review_json_id),\
+        db_connection.db_review_insert(json.dumps(review_json_id),
             json.dumps({'themoviedb': review_json}))
 
 
@@ -162,18 +162,18 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         logging.info("col: %s", collection_meta)
         # poster path
         if download_data['Poster'] is not None:
-            image_poster_path = common_metadata.com_meta_image_path(download_data['Name'],\
+            image_poster_path = common_metadata.com_meta_image_path(download_data['Name'],
                 'poster', 'themoviedb', download_data['Poster'])
         else:
             image_poster_path = None
         # backdrop path
         if download_data['Backdrop'] is not None:
-            image_backdrop_path = common_metadata.com_meta_image_path(download_data['Name'],\
+            image_backdrop_path = common_metadata.com_meta_image_path(download_data['Name'],
                 'backdrop', 'themoviedb', download_data['Backdrop'])
         else:
             image_backdrop_path = None
         localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
-        db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],\
+        db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],
             collection_meta, localimage_json)
         # commit all changes to db
         db_connection.db_commit()
@@ -184,7 +184,7 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         return 0 # to add totals later
 
 
-def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id,\
+def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id,
                           file_name):
     """
     Movie lookup
@@ -215,8 +215,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
-    logging.info("meta movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,\
-        metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,\
+    logging.info("meta movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,
+        metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,
         metadata_movie_lookup.metadata_last_rt)
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
@@ -247,12 +247,12 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,\
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
-                    db_connection.db_download_update(json.dumps(download_que_json),\
+                    db_connection.db_download_update(json.dumps(download_que_json),
                         download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('themoviedb', download_que_id)
@@ -260,12 +260,12 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,\
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
                     'themoviedb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                    db_connection.db_download_update(json.dumps(download_que_json),\
+                    db_connection.db_download_update(json.dumps(download_que_json),
                         download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('themoviedb', download_que_id)
@@ -278,7 +278,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         logging.info("meta movie db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],\
+            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
                 file_name['year'])
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
@@ -291,7 +291,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
             # save the updated status
-            db_connection.db_download_update(json.dumps(download_que_json),\
+            db_connection.db_download_update(json.dumps(download_que_json),
                 download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('themoviedb', download_que_id)

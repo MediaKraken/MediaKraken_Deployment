@@ -32,7 +32,7 @@ class TestSubprogramGameMetaGiant(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_game_metadata_giantbomb.py'],\
-            shell=False)
+        proc_info = subprocess.Popen(['python', './subprogram_game_metadata_giantbomb.py'],
+                                     shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

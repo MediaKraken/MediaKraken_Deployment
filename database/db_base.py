@@ -36,10 +36,10 @@ def db_open(self, db_build=False):
     #psycopg2.extras.register_default_json(loads=lambda x: x)
     if db_build == False:
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
-            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432, \
+            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432,
             os.environ['POSTGRES_PASSWORD']))
     else:
-        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='postgres'"\
+        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='postgres'"
                                           " host='localhost' port=5432 password=''")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     #self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)

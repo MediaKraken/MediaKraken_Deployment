@@ -75,10 +75,10 @@ class NetworkEvents(Int32StringReceiver):
         elif message_words[0] == "LOGIN":
             pass
         elif message_words[0] == "KODI_LOG":
-            common_file.com_file_save_data(\
+            common_file.com_file_save_data(
                 './log_debug/Kodi', bz2.decompress(message_words[1]), False, True, '.log')
         elif message_words[0] == "DEBUG_LOG":
-            common_file.com_file_save_data(\
+            common_file.com_file_save_data(
                 './log_debug/Debug', bz2.decompress(message_words[1]), False, True, '.log')
         else:
             logging.error("UNKNOWN TYPE: %s", message_words[0])

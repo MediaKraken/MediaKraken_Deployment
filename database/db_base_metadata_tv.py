@@ -26,16 +26,16 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     metadata_guid = None
     if tvshow_year is None:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+        self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
             ' where LOWER(mm_metadata_tvshow_name) = %s', (tvshow_name.lower(),))
     else:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
-            ' where (LOWER(mm_metadata_tvshow_name) = %s)'\
-            ' and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\''\
-            '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s)'\
-            ' or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\''\
-            ' from 0 for 5) in (%s,%s,%s))', (tvshow_name.lower(), str(tvshow_year),\
-            str(int(tvshow_year) + 1), str(int(tvshow_year) - 1), str(tvshow_year),\
+        self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
+            ' where (LOWER(mm_metadata_tvshow_name) = %s)'
+            ' and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\''
+            '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s)'
+            ' or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\''
+            ' from 0 for 5) in (%s,%s,%s))', (tvshow_name.lower(), str(tvshow_year),
+            str(int(tvshow_year) + 1), str(int(tvshow_year) - 1), str(tvshow_year),
             str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
@@ -49,7 +49,7 @@ def db_metatv_guid_by_imdb(self, imdb_uuid):
     """
     # metadata guid by imdb id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'imdb\' ? %s', (imdb_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -61,7 +61,7 @@ def db_metatv_guid_by_tvdb(self, thetvdb_uuid):
     """
     # metadata guid by tv id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s', (thetvdb_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -73,7 +73,7 @@ def db_metatv_guid_by_tvmaze(self, tvmaze_uuid):
     """
     # metadata guid by tvmaze id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'tvmaze\' ? %s', (tvmaze_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -85,7 +85,7 @@ def db_metatv_guid_by_tvrage(self, tvrage_uuid):
     """
     # metadata guid by tvrage id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'tvrage\' ? %s', (tvrage_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -97,7 +97,7 @@ def db_metatv_guid_by_tmdb(self, tmdb_uuid):
     """
     # metadata guid by tmdb id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'themoviedb\' ? %s', (tmdb_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -109,7 +109,7 @@ def db_metatv_guid_by_rt(self, rt_uuid):
     """
     # metadata guid by tvrage id
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
         ' where mm_metadata_media_tvshow_id->\'rottentomatoes\' ? %s', (rt_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
@@ -131,22 +131,22 @@ def db_meta_tvshow_list(self, offset=None, records=None):
     """
     # COALESCE - priority over one column
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
-            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','\
-            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''\
-            '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''\
-            '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''\
-            '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'\
+        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
+            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
+            '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+            '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
+            '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
             ' order by LOWER(mm_metadata_tvshow_name)')
     else:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
-            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','\
-            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''\
-            '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''\
-            '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''\
-            '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'\
-            ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'\
-            ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'\
+        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+            ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
+            ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
+            '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+            '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
+            '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+            ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
+            ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
             ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)', (offset, records))
     return self.db_cursor.fetchall()
 
@@ -155,8 +155,8 @@ def db_meta_tvshow_update_image(self, image_json, metadata_uuid):
     """
     # update image json
     """
-    self.db_cursor.execute('update mm_metadata_tvshow'\
-        ' set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s',\
+    self.db_cursor.execute('update mm_metadata_tvshow'
+        ' set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s',
         (image_json, metadata_uuid))
 
 
@@ -179,10 +179,10 @@ def db_meta_tvshow_detail(self, guid):
     """
     # return metadata for tvshow
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'\
-        ' mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json'\
-        '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'\
-        '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'\
+    self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
+        ' mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json'
+        '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+        '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
         ' where mm_metadata_tvshow_guid = %s', (guid,))
     try:
         return self.db_cursor.fetchone()
@@ -203,15 +203,15 @@ def db_read_tvmeta_eps_season(self, show_guid):
     """
     # todo union will be bad later when both data sources are populated
     season_data = {}
-    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'\
-        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow'\
-        ' where mm_metadata_tvshow_guid = %s)'\
-        ' union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\''\
-        '->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''\
-        '->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow'\
+    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'
+        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'number\' from mm_metadata_tvshow'
+        ' where mm_metadata_tvshow_guid = %s)'
+        ' union (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\''
+        '->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
+        '->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\' from mm_metadata_tvshow'
         ' where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] in season_data:
@@ -227,15 +227,15 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
     # grab episodes within the season
     """
     episode_data = {}
-    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'\
-        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json'\
-        '->\'Images\'->\'tvmaze\'->\'Episodes\' from mm_metadata_tvshow'\
+    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'
+        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json'
+        '->\'Images\'->\'tvmaze\'->\'Episodes\' from mm_metadata_tvshow'
         ' where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] == season_number:
@@ -251,18 +251,18 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     # grab episode detail
     """
     logging.info("huh: %s %s %s", show_guid, season_number, episode_number)
-    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'\
-        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','\
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''\
-        '->\'_embedded\'->\'episodes\')::jsonb->\'summary\''\
+    self.db_cursor.execute('(select jsonb_array_elements_text(mm_metadata_tvshow_json'
+        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+        '->\'_embedded\'->\'episodes\')::jsonb->\'summary\''
         ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if str(row_data[0]) == season_number and str(row_data[1]) == episode_number:

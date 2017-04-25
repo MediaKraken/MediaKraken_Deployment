@@ -5,7 +5,6 @@ from flask import Flask, render_template
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
-from celery import Celery
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
 from MediaKraken.settings import ProdConfig
@@ -18,12 +17,12 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
+from common import common_celery
 
 
 def make_celery(app):
-    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
-                    broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
+    celery = common_celery.app
+    celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
     TaskBase = celery.Task
     class ContextTask(TaskBase):
         abstract = True
@@ -49,16 +48,11 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg']
-
 #    app.config['UPLOADED_PHOTOS_DEST'] = '/tmp/testuploadext'
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    app.config.update(
-        CELERY_BROKER_URL='redis://localhost:6379',
-        CELERY_RESULT_BACKEND='redis://localhost:6379'
-    )
-    celery = make_celery(app)
+    mk_celery = make_celery(app)
     moment = Moment(app)
     return app
 
@@ -76,6 +70,26 @@ def register_extensions(app):
 def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(user.views_3d.blueprint)
+    app.register_blueprint(user.views_cctv.blueprint)
+    app.register_blueprint(user.views_chromecast.blueprint)
+    app.register_blueprint(user.views_class.blueprint)
+    app.register_blueprint(user.views_games.blueprint)
+    app.register_blueprint(user.views_images.blueprint)
+    app.register_blueprint(user.views_internet.blueprint)
+    app.register_blueprint(user.views_movie.blueprint)
+    app.register_blueprint(user.views_movie_collection.blueprint)
+    app.register_blueprint(user.views_movie_genre.blueprint)
+    app.register_blueprint(user.views_music.blueprint)
+    app.register_blueprint(user.views_music_video.blueprint)
+    app.register_blueprint(user.views_periodicals.blueprint)
+    app.register_blueprint(user.views_person.blueprint)
+    app.register_blueprint(user.views_playback.blueprint)
+    app.register_blueprint(user.views_reports.blueprint)
+    app.register_blueprint(user.views_sports.blueprint)
+    app.register_blueprint(user.views_sync.blueprint)
+    app.register_blueprint(user.views_tv.blueprint)
+    app.register_blueprint(user.views_tv_live.blueprint)
     app.register_blueprint(admins.views.blueprint)
     return None
 

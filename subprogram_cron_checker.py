@@ -52,23 +52,23 @@ while 1:
         if row_data['mm_cron_schedule'] == "Weekly":  # chedule
             time_frame = datetime.timedelta(weeks=1)
         elif row_data['mm_cron_schedule'].split(' ', 1)[0] == "Days":
-            time_frame = datetime.timedelta(\
+            time_frame = datetime.timedelta(
                 days=int(row_data['mm_cron_schedule'].split(' ', 1)[1]))
         elif row_data['mm_cron_schedule'].split(' ', 1)[0] == "Hours":
-            time_frame = datetime.timedelta(\
+            time_frame = datetime.timedelta(
                 hours=int(row_data['mm_cron_schedule'].split(' ', 1)[1]))
         elif row_data['mm_cron_schedule'].split(' ', 1)[0] == "Minutes":
-            time_frame = datetime.timedelta(\
+            time_frame = datetime.timedelta(
                 minutes=int(row_data['mm_cron_schedule'].split(' ', 1)[1]))
         date_check = datetime.datetime.now() - time_frame
         # check to see if cron need to process
         if row_data['mm_cron_last_run'] < date_check:
             if not psutil.pid_exists(pid_dict[row_data['mm_cron_name']]):
                 if row_data['mm_cron_file_path'][-3:] == '.py':
-                    proc = subprocess.Popen(['python', row_data['mm_cron_file_path']],\
+                    proc = subprocess.Popen(['python', row_data['mm_cron_file_path']],
                         shell=False)
                 else:
-                    proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],\
+                    proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                         shell=False)
                 logging.info("Cron %s PID %s:", row_data['mm_cron_name'], proc.pid)
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])

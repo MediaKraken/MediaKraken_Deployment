@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if json_metadata %}
+{% if data_name %}
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
@@ -17,11 +17,11 @@
             <table class="table table-hover">
                 <tbody>
                     <tr>
-                        <p>Name: {{json_metadata['mm_metadata_book_json']['title']}}</p>
-                        <p>Overview: {{json_metadata['mm_metadata_book_json']['summary']}}
-                        <p>Author: {{json_metadata['mm_metadata_book_json']['author_data'][0]['name']}}</p>
-                        <p>Publisher: {{json_metadata['mm_metadata_book_json']['publisher_name']}}
-                        <p>Pages: {{json_metadata['mm_metadata_book_json']['physical_description_text']}}
+                        <p>Name: {{data_name}}</p>
+                        <p>Overview: {{data_overview}}</p>
+                        <p>Author: {{data_author}}</p>
+                        <p>Publisher: {{data_publisher}}</p>
+                        <p>Pages: {{data_pages}}</p>
                     </tr>
                 </tbody>
             </table>

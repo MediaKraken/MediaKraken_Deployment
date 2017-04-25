@@ -119,6 +119,7 @@ class MKServerDatabase(object):
         db_media_random
     from database.db_base_media_music import db_media_album_count,\
         db_media_album_list
+    from database.db_base_media_music_video import db_music_video_list
     from database.db_base_media_remote import db_insert_remote_media,\
         db_read_remote_media,\
         db_known_remote_media_count,\
@@ -165,6 +166,7 @@ class MKServerDatabase(object):
         db_meta_song_by_guid,\
         db_meta_song_add,\
         db_meta_songs_by_album_guid,\
+        db_meta_song_list,\
         db_meta_album_list,\
         db_meta_muscian_list
     from database.db_base_metadata_music_video import db_meta_music_video_lookup,\

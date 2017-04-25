@@ -20,13 +20,37 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from twisted.internet import ssl
 from twisted.internet import reactor
-#from twisted.internet import protocol
 from twisted.internet.protocol import Factory
+import pika
+from pika import exceptions
+from pika.adapters import twisted_connection
+from twisted.internet import defer, reactor, protocol,task
 from network import network_base_string as network_base
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import time
+
+
+@defer.inlineCallbacks
+def run(connection):
+    channel = yield connection.channel()
+    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct')
+    queue = yield channel.queue_declare(queue='mkque', durable=True)
+    yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
+    yield channel.basic_qos(prefetch_count=1)
+    queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
+    l = task.LoopingCall(read, queue_object)
+    l.start(0.01)
+
+
+@defer.inlineCallbacks
+def read(queue_object):
+    ch, method, properties, body = yield queue_object.get()
+    if body:
+        logging.info("body %s", body)
+        #network_base.NetworkEvents.broadcast_celery_message(body)
+    yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 class MediaKrakenServerApp(Factory):
@@ -37,22 +61,26 @@ class MediaKrakenServerApp(Factory):
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
         # preload some data from database
-        self.genre_list = db_connection.db_meta_genre_list()
+        self.option_config_json, self.db_connection = common_config_ini.com_config_read()
+        self.genre_list = self.db_connection.db_meta_genre_list()
         logging.info("Ready for connections!")
 
 
     def buildProtocol(self, addr):
-        # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read()
-        return network_base.NetworkEvents(self.users, db_connection,\
-            self.genre_list, option_config_json)
+        return network_base.NetworkEvents(self.users, self.db_connection,
+            self.genre_list, self.option_config_json)
 
 
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    option_config_json, db_connection = common_config_ini.com_config_read()
+    # pika rabbitmq connection
+    parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
+    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
+    d = cc.connectTCP('mkrabbitmq', 5672)
+    d.addCallback(lambda protocol: protocol.ready)
+    d.addCallback(run)
     # setup for the ssl keys
-    reactor.listenSSL(5000, MediaKrakenServerApp(),\
-        ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
+    reactor.listenSSL(8903, MediaKrakenServerApp(),
+                      ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()

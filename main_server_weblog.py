@@ -50,8 +50,8 @@ logging.info("Reactor PID: %s", proc.pid)
 
 
 # fire up uwsgi server
-proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8081', '--protocol', 'http',\
-        '--chdir=./server/web_log', '--ini', './server/web_log/weblog_uwsgi.ini'],\
+proc_web_app = subprocess.Popen(['uwsgi', '--socket', '0.0.0.0:8081', '--protocol', 'http',
+        '--chdir=./server/web_log', '--ini', './server/web_log/weblog_uwsgi.ini'],
         shell=False)
 
 

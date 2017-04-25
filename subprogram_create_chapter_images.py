@@ -51,10 +51,10 @@ def worker(worker_file_list):
         # file path, time, output name
         # check image save option whether to save this in media folder or metadata folder
         if option_config_json['MetadataImageLocal'] == False:
-            image_file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,\
+            image_file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,
                 'chapter'), (str(uuid.uuid4()) + '.png'))
         else:
-            image_file_path = os.path.join(os.path.dirname(media_path),\
+            image_file_path = os.path.join(os.path.dirname(media_path),
                 'chapters')
             # have this bool so I don't hit the os looking for path each time
             if first_image == True and not os.path.isdir(image_file_path):
@@ -106,7 +106,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,
     'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
 
 
@@ -134,7 +134,7 @@ if total_images_created > 0:
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,
     'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
 
 

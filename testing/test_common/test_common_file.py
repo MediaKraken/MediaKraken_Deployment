@@ -33,7 +33,7 @@ def test_com_file_modification_timestamp(file_name, expected_result):
     """
     Test function
     """
-    assert isinstance(common_file.com_file_modification_timestamp(file_name, expected_result),\
+    assert isinstance(common_file.com_file_modification_timestamp(file_name, expected_result),
         datetime.datetime) == expected_result
 
 
@@ -68,7 +68,7 @@ def test_com_file_load_data(file_name, as_pickle):
 
 
 # find all filters files in directory
-@pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size",\
+@pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size",
         "directory_only"), [
             ('./cachenotfound', None, False, False, False, False),
             ('./cache', None, False, False, False, False),
@@ -94,12 +94,12 @@ def test_com_file_load_data(file_name, as_pickle):
             ('./cache', "waffle", False, True, True, True),
             ('./cache', "waffle", True, True, False, True),
             ('./cache', "waffle", True, True, True, True)])
-def test_com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,\
+def test_com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,
         directory_only):
     """
     Test function
     """
-    common_file.com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk,\
+    common_file.com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk,
         file_size, directory_only)
 
 

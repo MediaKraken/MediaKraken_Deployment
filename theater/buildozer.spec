@@ -1,16 +1,16 @@
 [app]
 
 # (str) Title of your application
-title = MetaManTheater
+title = MediaKraken
 
 # (str) Package name
-package.name = mymetamantheater
+package.name = mymediakrakentheater
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = beaverbay.local
+package.domain = www.mediakraken.org
 
 # (str) Source code where the main.py live
-source.dir = ../Meta-Man.Theater/
+source.dir = ../MediaKraken_Deployment/
 
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
@@ -29,7 +29,7 @@ source.include_exts = py,png,jpg,kv,atlas
 #version.filename = %(source.dir)s/main.py
 
 # (str) Application versioning (method 2)
-version = 0.0.1
+version = 0.3.2
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy

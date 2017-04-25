@@ -48,7 +48,7 @@ class TestDatabaseNotification(object):
         Test notice insert
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_notification_insert(notification_data,\
+        self.new_guid = self.db_connection.db_notification_insert(notification_data,
             notification_dismissable)
 
 

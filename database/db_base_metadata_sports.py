@@ -25,7 +25,7 @@ def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """
-    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
+    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
         ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s', (thesports_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_sports_guid']
@@ -46,13 +46,13 @@ def db_meta_sports_list(self, offset=None, records=None):
     # return list of game systems
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
+        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
             ' from mm_metadata_sports order by mm_metadata_sports_name')
     else:
-        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'\
-            ' from mm_metadata_sports where mm_metadata_sports_guid'\
-            ' in (select mm_metadata_sports_guid from mm_metadata_sports'\
-            ' order by mm_metadata_sports_name offset %s limit %s)'\
+        self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
+            ' from mm_metadata_sports where mm_metadata_sports_guid'
+            ' in (select mm_metadata_sports_guid from mm_metadata_sports'
+            ' order by mm_metadata_sports_name offset %s limit %s)'
             ' order by mm_metadata_sports_name', (offset, records))
     return self.db_cursor.fetchall()
 
@@ -61,7 +61,7 @@ def db_meta_sports_guid_by_event_name(self, event_name):
     """
     # fetch guid by event name
     """
-    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'\
+    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
         ' where mm_metadata_sports_name = %s', (event_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_sports_guid']

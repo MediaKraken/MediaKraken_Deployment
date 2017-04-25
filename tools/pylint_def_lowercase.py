@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_file
 
 
-for file_name in common_file.com_file_dir_list(\
-        '/home/spoot/github/MediaKraken/MediaKraken_Deployment', filter_text='py', walk_dir=True,\
+for file_name in common_file.com_file_dir_list(
+        '/home/spoot/github/MediaKraken/MediaKraken_Deployment', filter_text='py', walk_dir=True,
         skip_junk=False, file_size=False, directory_only=False):
     #print('File: %s' % file_name)
     with open(file_name) as f_pointer:

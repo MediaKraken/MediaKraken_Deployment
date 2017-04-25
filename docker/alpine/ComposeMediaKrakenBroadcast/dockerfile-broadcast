@@ -1,0 +1,22 @@
+# Download base image
+FROM alpine:3.5
+
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL www.mediakraken.org.version="dev-0.2.0"
+LABEL Description="This image holds the broadcast server"
+
+# create work dir
+RUN mkdir /mediakraken
+
+WORKDIR /mediakraken
+
+RUN apk add --update \
+  python \
+  && rm -rf /var/cache/apk/*
+
+# Copy the source files for the app
+ADD src /mediakraken
+
+EXPOSE 9101
+
+CMD ["/bin/ash"]

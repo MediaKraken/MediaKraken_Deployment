@@ -39,7 +39,7 @@ class CommonGoogle(object):
         self.DEVELOPER_KEY = option_config_json['API']['Google']
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
-        self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,\
+        self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
             developerKey=DEVELOPER_KEY)
 
 
@@ -47,20 +47,20 @@ class CommonGoogle(object):
         """
         # query youtube via search
         """
-        search_response = self.youtube.search().list(q=search_term, part="id,snippet",\
+        search_response = self.youtube.search().list(q=search_term, part="id,snippet",
             maxResults=max_results).execute()
         videos = []
         channels = []
         playlists = []
         for search_result in search_response.get("items", []):
             if search_result["id"]["kind"] == "youtube#video":
-              videos.append("%s (%s)" % (search_result["snippet"]["title"],\
+              videos.append("%s (%s)" % (search_result["snippet"]["title"],
                   search_result["id"]["videoId"]))
             elif search_result["id"]["kind"] == "youtube#channel":
-              channels.append("%s (%s)" % (search_result["snippet"]["title"],\
+              channels.append("%s (%s)" % (search_result["snippet"]["title"],
                   search_result["id"]["channelId"]))
             elif search_result["id"]["kind"] == "youtube#playlist":
-              playlists.append("%s (%s)" % (search_result["snippet"]["title"],\
+              playlists.append("%s (%s)" % (search_result["snippet"]["title"],
                   search_result["id"]["playlistId"]))
         return (videos, channels, playlists)
 

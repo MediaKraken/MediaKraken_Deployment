@@ -135,14 +135,14 @@ def com_net_emby_sessions_list_open(host_server, user_id):
     if user_id is not None:
         req = urllib2.Request(host_server + '/Sessions?format=json', headers)
     else:
-        req = urllib2.Request(host_server + '/Sessions?format=json',\
+        req = urllib2.Request(host_server + '/Sessions?format=json',
             json.dumps({'ControllableByUserId' : user_id}), headers=headers)
     response = urllib2.urlopen(req)
     return response.read()
 
 
 # https://github.com/MediaBrowser/Emby/wiki/Remote-control
-def com_net_emby_session_command(host_server, session_id, playstate_command,\
+def com_net_emby_session_command(host_server, session_id, playstate_command,
         session_command):
     """
     Send command to specified session
@@ -160,7 +160,7 @@ def com_net_emby_user_view_list(host_server, user_id, headers):
     """
     Get user views
     """
-    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views",\
+    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Views",
         headers=headers)).read()
 
 
@@ -169,7 +169,7 @@ def com_net_emby_user_channel_list(host_server, user_id, headers):
     """
     Get list of channels for user
     """
-    return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id,\
+    return urllib2.urlopen(urllib2.Request(host_server + '/Channels?userId=' + user_id,
         headers=headers)).read()
 
 
@@ -178,7 +178,7 @@ def com_net_emby_channel_features(host_server, channel_id, headers):
     """
     Get list of features for channel
     """
-    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features',\
+    return urllib2.urlopen(urllib2.Request(host_server + '/Channels/' + channel_id + '/Features',
         headers=headers)).read()
 ''' REQUEST TYPE
         StartIndex
@@ -202,12 +202,12 @@ def com_net_emby_user_channel_items(host_server, channel_id, user_id, headers):
 # https://github.com/MediaBrowser/Emby/wiki/Latest-Items
 # TODO grouping and such
 # TODO episodes
-def com_net_emby_user_latest_items(host_server, request_type, request_subtype,\
+def com_net_emby_user_latest_items(host_server, request_type, request_subtype,
         request_limit, request_grouping, user_id, headers):
     """
     Get new media list from server
     """
-    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest",\
+    return urllib2.urlopen(urllib2.Request(host_server + '/Users/' + user_id + "/Items/Latest",
         headers=headers)).read()
 
 

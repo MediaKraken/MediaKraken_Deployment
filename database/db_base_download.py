@@ -26,7 +26,7 @@ def db_download_insert(self, provider, que_type, down_json):
     Create/insert a download into the que
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_download_que (mdq_id,mdq_provider,mqd_que_type,'\
+    self.db_cursor.execute('insert into mm_download_que (mdq_id,mdq_provider,mqd_que_type,'
         'mdq_download_json) values (%s,%s,%s,%s)', (new_guid, provider, que_type, down_json))
     self.db_commit()
     return new_guid
@@ -36,7 +36,7 @@ def db_download_read_provider(self, provider_name):
     """
     Read the downloads by provider
     """
-    self.db_cursor.execute('select mdq_id,mqd_que_type,mdq_download_json from mm_download_que'\
+    self.db_cursor.execute('select mdq_id,mqd_que_type,mdq_download_json from mm_download_que'
         ' where mdq_provider = %s', (provider_name,))
     return self.db_cursor.fetchall()
 
@@ -54,7 +54,7 @@ def db_download_update_provider(self, provider_name, guid):
     Update provider
     """
     logging.info('download update provider: %s %s', provider_name, guid)
-    self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',\
+    self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',
         (provider_name, guid))
     self.db_commit()
 
@@ -65,10 +65,10 @@ def db_download_update(self, update_json, guid, update_que_id=None):
     """
     logging.info('download update: %s %s %s', update_json, update_que_id, guid)
     if update_que_id is not None:
-        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s, mqd_que_type = %s'\
+        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s, mqd_que_type = %s'
                                ' where mdq_id = %s', (update_json, update_que_id, guid))
     else:
-        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s'\
+        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s'
                                ' where mdq_id = %s', (update_json, guid))
     self.db_commit()
 
@@ -83,15 +83,15 @@ def db_download_que_exists(self, download_que_uuid, download_que_type, provider_
     # only ever be one Fetch+, rest should be search or null
     logging.info('db que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     if download_que_uuid is not None:
-        self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
-            ' where mdq_provider = %s and mqd_que_type = %s'\
-            ' and mdq_download_json->\'ProviderMetaID\' ? %s'\
-            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',\
+        self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
+            ' where mdq_provider = %s and mqd_que_type = %s'
+            ' and mdq_download_json->\'ProviderMetaID\' ? %s'
+            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
             (provider_name, download_que_type, provider_id, download_que_uuid))
     else:
-        self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'\
-            ' where mdq_provider = %s and mqd_que_type = %s'\
-            ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',\
+        self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
+            ' where mdq_provider = %s and mqd_que_type = %s'
+            ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',
             (provider_name, download_que_type, provider_id))
     # if no data, send none back
     try:

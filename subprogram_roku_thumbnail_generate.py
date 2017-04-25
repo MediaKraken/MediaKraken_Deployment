@@ -39,7 +39,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Start', None,
     'System: Server Roku Thumbnail Generate Start', 'ServerRokuThumbStart', None, None, 'System')
 
 # go through ALL known media files
@@ -59,7 +59,7 @@ if thumbnails_generated > 0:
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Roku Thumbnail Generate Stop', None,
     'System: Server Roku Thumbnail Generate Stop', 'ServerRokuThumbStop', None, None, 'System')
 
 

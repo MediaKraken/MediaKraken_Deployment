@@ -34,8 +34,8 @@ class CommonMetadataTheSportsDB(object):
         """
         Team and player looksup
         """
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_api_key + '/searchteams.php?t='\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key + '/searchteams.php?t='
             + team_name.replace(' ', '%20'), None)
 
 
@@ -43,8 +43,8 @@ class CommonMetadataTheSportsDB(object):
         """
         Get players list by team
         """
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_api_key + '/searchplayers.php?t='\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key + '/searchplayers.php?t='
             + team_name.replace(' ', '%20'), None)
 
 
@@ -52,18 +52,18 @@ class CommonMetadataTheSportsDB(object):
         """
         Get players by name
         """
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_api_key + '/searchplayers.php?p='\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key + '/searchplayers.php?p='
             + player_name.replace(' ', '%20'), None)
 
 
-    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,\
+    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,
             player_name):
         """
         Search plays by team and player name
         """
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_api_key + '/searchplayers.php?t=' + team_name.replace(' ', '%20')\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key + '/searchplayers.php?t=' + team_name.replace(' ', '%20')
             + '&p=' + player_name.replace(' ', '%20'), None)
 
     # event lookups
@@ -72,8 +72,8 @@ class CommonMetadataTheSportsDB(object):
         """
         Search for events by name
         """
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'\
-            + self.thesportsdb_api_key + '/searchevents.php?e='\
+        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key + '/searchevents.php?e='
             + event_name.replace(' ', '%20'), None)
 
 

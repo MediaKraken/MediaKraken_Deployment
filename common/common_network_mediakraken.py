@@ -53,12 +53,12 @@ def com_net_mediakraken_find_server(server_seconds=1):
             if data_block["Address"] in server_hosts_found.keys():
                 pass
             else:
-                logging.info("addr: %s %s %s", data_block["Address"], data_block["Id"],\
+                logging.info("addr: %s %s %s", data_block["Address"], data_block["Id"],
                     data_block["Name"])
                 server_hosts_found[data_block["Address"]] = (data_block["Id"], data_block["Name"])
         except socket.error, msg:
-            logging.critical('Network_Find_Server Error Code : ' + str(msg[0])\
-                + ' Message ' + msg[1])
+            logging.critical('Network_Find_Server Error Code : ' + str(msg[0])
+                             + ' Message ' + msg[1])
             sys.exit()
     logging.info("hosts found %s", server_hosts_found)
     return server_hosts_found

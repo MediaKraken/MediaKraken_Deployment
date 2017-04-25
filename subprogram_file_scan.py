@@ -54,7 +54,7 @@ def worker(audit_directory):
     logging.info('value=%s', dir_path)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
-    thread_db.db_audit_path_update_status(dir_guid,\
+    thread_db.db_audit_path_update_status(dir_guid,
         json.dumps({'Status': 'File search scan', 'Pct': 0}))
     thread_db.db_commit()
     # check for UNC before grabbing dir list
@@ -143,7 +143,7 @@ def worker(audit_directory):
                         if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Extras']
                         elif thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Show' \
-                                or thread_db.db_media_class_by_uuid(\
+                                or thread_db.db_media_class_by_uuid(
                                 media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Extras']
@@ -162,24 +162,24 @@ def worker(audit_directory):
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                     media_ffprobe_json = None # common_ffmpeg.com_ffmpeg_media_attr(file_name)
                 # create media_json data
-                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),\
+                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),
                     'ChapterScan': True})
                 media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name,\
+                thread_db.db_insert_media(media_id, file_name,
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
                 if save_dl_record:
                     # media id begin and download que insert
-                    thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,\
-                        'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,\
+                    thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
+                        'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,
                         'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
-        thread_db.db_audit_path_update_status(dir_guid,\
+        thread_db.db_audit_path_update_status(dir_guid,
             json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
-            + ' / ' + locale.format('%d', total_file_in_dir, True),\
+            + ' / ' + locale.format('%d', total_file_in_dir, True),
             'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doens't show up
+    thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doesn't show up
     if total_files > 0:
         thread_db.db_notification_insert(locale.format('%d', total_files, True)\
             + " file(s) added from " + dir_path, True)
@@ -193,7 +193,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server File Scan Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server File Scan Start', None,
     'System: Server File Scan Start', 'ServerFileScanStart', None, None, 'System')
 
 
@@ -203,7 +203,8 @@ known_media = db_connection.db_known_media()
 # verify rows were returned
 if known_media is not None:
     for media_row in known_media:
-        global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
+        if media_row['mm_media_path'] is not None:
+            global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
 known_media = None
 
 
@@ -225,12 +226,12 @@ for row_data in db_connection.db_audit_paths():
             = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
         smb_stuff.com_cifs_connect(addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
-            if datetime.strptime(time.ctime(\
-                    smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),\
+            if datetime.strptime(time.ctime(
+                    smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
                     "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],\
+                audit_directories.append((row_data['mm_media_dir_path'],
                     str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],\
+                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
         else:
             db_connection.db_notification_insert('UNC Library path not found: %s'\
@@ -242,11 +243,11 @@ for row_data in db_connection.db_audit_paths():
                 % row_data['mm_media_dir_path'], True)
         else:
             # verify the directory inodes has changed
-            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),\
+            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),
                     "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],\
+                audit_directories.append((row_data['mm_media_dir_path'],
                     str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
-                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],\
+                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
                     json.dumps({'Status': 'Added to scan', 'Pct': 100}))
 
 
@@ -264,7 +265,7 @@ if len(audit_directories) > 0:
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server File Scan Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server File Scan Stop', None,
     'System: Server File Scan Stop', 'ServerFileScanStop', None, None, 'System')
 
 

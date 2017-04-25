@@ -41,7 +41,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server AniDB Update Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server AniDB Update Start', None,
     'System: Server AniDB Start', 'ServertheAniDBStart', None, None, 'System')
 
 
@@ -59,10 +59,10 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data\
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    logging.info('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,\
+    logging.info('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
                   tvdbid, imdbid, default_tvseason, mapping_data, before_data)
-    db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,\
-        'thetvdb': tvdbid, 'imdb': imdbid}),\
+    db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,
+        'thetvdb': tvdbid, 'imdb': imdbid}),
         json.dumps({'Default': default_tvseason, 'Map': mapping_data}), before_data)
 
 # store the xref collection data
@@ -71,14 +71,14 @@ for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server AniDB Update Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server AniDB Update Stop', None,
     'System: Server AniDB Stop', 'ServertheAniDBStop', None, None, 'System')
 
 
 # send notications
 if anime_added > 0:
-    db_connection.db_notification_insert(locale.format('%d', anime_added, True)\
-        + " Anime metadata updated.", True)
+    db_connection.db_notification_insert(locale.format('%d', anime_added, True)
+                                         + " Anime metadata updated.", True)
     create_collection_trigger = True
 
 

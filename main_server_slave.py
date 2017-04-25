@@ -27,8 +27,8 @@ try:
 except:
     import pickle
 import sys
+import uuid
 from common import common_celery
-from common import common_config_ini
 from common import common_logging
 from common import common_network_share
 from common import common_signal
@@ -37,11 +37,6 @@ from common import common_version
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
-
-
-networkProtocol = None
-metaapp = None
-proc_ffserver = None
 
 
 class RepeatTimer(Thread):
@@ -64,7 +59,7 @@ class RepeatTimer(Thread):
                 count += 1
 
 
-class TheaterClient(Int32StringReceiver):
+class ClientProtocol(Int32StringReceiver):
     STARTED = 0
     CHECKING_PORT = 1
     CONNECTED = 2
@@ -75,24 +70,64 @@ class TheaterClient(Int32StringReceiver):
 
     def __init__(self):
         self.MAX_LENGTH = 32000000
-        self.connStatus = TheaterClient.STARTED
+        self.connStatus = ClientProtocol.STARTED
 
 
     def connectionMade(self):
         global networkProtocol
-        self.connStatus = TheaterClient.CONNECTED
-        networkProtocol = self
+        self.connStatus = ClientProtocol.CONNECTED
+        #networkProtocol = self
 
 
-    def stringReceived(self, data):
-        MediaKrakenApp.process_message(metaapp, data)
+    def stringReceived(self, server_msg):
+        """
+        Process network message from server
+        """
+        # otherwise the pickle can end up in thousands of chunks
+        message_words = server_msg.split(' ', 1)
+        logging.info('message: %s', message_words[0])
+        logging.info("len: %s", len(server_msg))
+        logging.info("chunks: %s", len(message_words))
+        msg = None
+        try:
+            pickle_data = pickle.loads(message_words[1])
+        except:
+            pickle_data = None
+        if message_words[0] == "IDENT":
+            msg = "VALIDATE " + "slave-" + str(uuid.uuid4()) + " " + " " + " " + platform.node()
+        # user commands
+        elif message_words[0] == "PLAYMEDIA":
+            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
+                                                       shell=False)
+        elif message_words[0] == "CASTMEDIA":
+            self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py " \
+                                                      "-devicename %s -transcodeopts '-c:v copy -c:a ac3 " \
+                                                      "-movflags faststart+empty_moov' -transcode %s",
+                                                      (pickle_data[0],
+                                                       pickle_data[1])), shell=False)
+        # admin commands
+        elif message_words[0] == "CPUUSAGE":
+            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
+        elif message_words[0] == "DISKUSAGE":
+            msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
+        elif message_words[0] == "MEMUSAGE":
+            msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
+        elif message_words[0] == "SYSSTATS":
+            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),
+                                              common_system.com_system_disk_usage_all(True),
+                                              common_system.com_system_virtual_memory(False)))
+        else:
+            logging.info("unknown message type")
+        if msg is not None:
+            logging.info("should be sending data")
+            self.sendString(msg.encode("utf8"))
 
 
     def cancel(self):
         self.finished.set()
 
 
-class TheaterFactory(ClientFactory):
+class MyClientFactory(ClientFactory):
 
 
     def __init__(self, app):
@@ -114,7 +149,7 @@ class TheaterFactory(ClientFactory):
 
     def buildProtocol(self, addr):
         logging.info('Connected to %s', str(addr))
-        self.protocol = TheaterClient()
+        self.protocol = ClientProtocol()
         return self.protocol
 
 
@@ -139,58 +174,9 @@ class MediaKrakenApp():
         """
         Connect to media server
         """
-        reactor.connectSSL('mkserver', 5000,\
-            TheaterFactory(self), ssl.ClientContextFactory())
+        reactor.connectSSL('mkserver', 8903,
+                           MyClientFactory(self), ssl.ClientContextFactory())
         reactor.run()
-
-
-    def process_message(self, server_msg):
-        """
-        Process network message from server
-        """
-        # otherwise the pickle can end up in thousands of chunks
-        message_words = server_msg.split(' ', 1)
-        logging.info('message: %s', message_words[0])
-        logging.info("len: %s", len(server_msg))
-        logging.info("chunks: %s", len(message_words))
-        msg = None
-        try:
-            pickle_data = pickle.loads(message_words[1])
-        except:
-            pickle_data = None
-        if message_words[0] == "IDENT":
-            msg = "VALIDATE " + "slave" + " " + " " + " " + platform.node()
-        elif message_words[0] == "PING":  # Client_Network
-            msg = "PONG"
-        # user commands
-        elif message_words[0] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]), \
-                shell=False)
-        elif message_words[0] == "CASTMEDIA":
-            cast_option = pickle.loads(message_words[1])
-            self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "\
-                "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "\
-                "-movflags faststart+empty_moov' -transcode %s", (cast_option[0], \
-                cast_option[1])), shell=False)
-        # admin commands
-        elif message_words[0] == "CPUUSAGE":
-            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
-        elif message_words[0] == "DISKUSAGE":
-            msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
-        elif message_words[0] == "MEMUSAGE":
-            msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
-        elif message_words[0] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),\
-                common_system.com_system_disk_usage_all(True),\
-                common_system.com_system_virtual_memory(False)))
-        elif message_words[0] == "SHUTDOWN":
-            os.kill(proc_ffserver.pid)
-            sys.exit(0)
-        else:
-            logging.info("unknown message type")
-        if msg is not None:
-            logging.info("should be sending data")
-            networkProtocol.sendString(msg)
 
 
 if __name__ == '__main__':
@@ -198,15 +184,4 @@ if __name__ == '__main__':
     common_logging.com_logging_start('./log/MediaKraken_Slave')
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    logging.info("Open DB")
-    # open the database
-    option_config_json, db_connection = common_config_ini.com_config_read()
-    # mount all the shares first so paths exist for validation
-    # TODO common_network_share.com_net_share_mount(db_connection.db_audit_shares())
-    # fire up ffserver
-    proc_ffserver = subprocess.Popen(['./bin/ffserver', '-f', './conf/ffserver.conf'], \
-        shell=False)
-    logging.info("FFServer Slave PID: %s", proc_ffserver.pid)
     MediaKrakenApp().build()
-    # stop ffserver and timer
-    os.kill(proc_ffserver.pid)

@@ -1,3 +1,6 @@
+# broadcast
+cp /home/spoot/MediaKraken_Deployment/subprogram_broadcast.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
+
 # devicescanner
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
 cp /home/spoot/MediaKraken_Deployment/main_hardware_discover.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
@@ -33,6 +36,11 @@ cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployme
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_slave.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 
+# theater 
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+cp -R /home/spoot/MediaKraken_Deployment/network /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+cp /home/spoot/MediaKraken_Deployment/main_theater.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenTheater/src/.
+
 # webapi
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebAPI/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebAPI/src/.
@@ -41,5 +49,6 @@ cp -R /home/spoot/MediaKraken_Deployment/web_app /home/spoot/MediaKraken_Deploym
 # webserver
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
+cp -R /home/spoot/MediaKraken_Deployment/network /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/web_app /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 

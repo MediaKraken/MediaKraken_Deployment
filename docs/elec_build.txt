@@ -1,0 +1,20 @@
+https://wiki.libreelec.tv/index.php?title=Compile
+
+Installed mini ubuntu 16.04
+sudo apt update && sudo apt upgrade
+
+sudo apt install gcc make git xz-utils
+
+sudo dpkg-reconfigure dash
+select no, to install bash as the default
+
+git clone https://github.com/LibreELEC/LibreELEC.tv.git
+
+cd ~/LibreELEC.tv
+
+git checkout 7.0.2
+
+PROJECT=Generic ARCH=x86_64 tools/download-tool
+
+PROJECT=Generic ARCH=x86_64 make -j24 image
+

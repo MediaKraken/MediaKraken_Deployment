@@ -42,11 +42,11 @@ class TestDatabaseMetadataGamesdb(object):
     @pytest.mark.parametrize(("platform_id", "platform_name", "platform_alias", "platform_json"), [
         (34, 'Test', 'Test', json.dumps({'Tt': 'M'})),
         (3, 'Tst', 'Tst', None)])
-    def test_db_meta_gamesdb_system_insert(self, platform_id, platform_name,\
+    def test_db_meta_gamesdb_system_insert(self, platform_id, platform_name,
             platform_alias, platform_json):
         """
         # insert gamesdb game system
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_meta_gamesdb_system_insert(platform_id, platform_name,\
+        self.db_connection.db_meta_gamesdb_system_insert(platform_id, platform_name,
             platform_alias, platform_json)

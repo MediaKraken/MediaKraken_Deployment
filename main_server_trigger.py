@@ -41,7 +41,7 @@ common_logging.com_logging_start('./log/MediaKraken_Trigger')
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',\
+db_connection.db_activity_insert('MediaKraken_Trigger Start', None, 'System: Trigger Start',
     'ServerTriggerStart', None, None, 'System')
 
 
@@ -62,7 +62,7 @@ while True:
 
 
 # log stop
-db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Trigger Stop', None,
     'System: Trigger Stop', 'ServerTriggerStop', None, None, 'System')
 
 

@@ -54,7 +54,7 @@ def com_file_modification_timestamp(file_name):
         return None
 
 
-def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=False,\
+def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=False,
         file_ext=None):
     """
     Save data as file
@@ -85,7 +85,7 @@ def com_file_load_data(file_name, as_pickle=False):
     return data_block
 
 
-def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,\
+def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,
         directory_only=False):
     """
     Find all filtered files in directory
@@ -122,7 +122,7 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
         if file_size:
             match_list_size = []
             for row_data in match_list:
-                match_list_size.append((row_data,\
+                match_list_size.append((row_data,
                     common_string.com_string_bytes2human(os.path.getsize(row_data))))
             return match_list_size
         return match_list

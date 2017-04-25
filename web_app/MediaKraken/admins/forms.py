@@ -6,13 +6,12 @@ from wtforms import TextField, PasswordField, TextAreaField, BooleanField, Selec
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
-# for editing the shares
 class ShareAddEditForm(Form):
     """
     for editing the shares
     """
     #description = TextAreaField('Description', validators=[DataRequired()])
-    storage_mount_type = SelectField('Share type',\
+    storage_mount_type = SelectField('Share type',
         choices=[('unc', 'UNC'), ('smb', 'SMB/CIFS'), ('nfs', 'NFS')])
     storage_mount_user = TextField('Share User')
     storage_mount_password = TextField('Share Password')
@@ -26,6 +25,22 @@ class ShareAddEditForm(Form):
 
     def validate(self):
         initial_validation = super(ShareAddEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+class BookAddForm(Form):
+    """
+    # for adding books
+    """
+    book_list = TextAreaField('Book ISBN(s)', validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(BookAddForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(BookAddForm, self).validate()
         if not initial_validation:
             return False
         return True
@@ -124,16 +139,16 @@ class AdminSettingsForm(Form):
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
     server_bind_addr = TextField('Bind Addr', validators=[Length(min=7, max=15)])
     server_bind_port = TextField('Bind Port', validators=[Length(min=4, max=5)])
-    activity_purge_interval = SelectField('Purge Activity Data Older Than',\
-        choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'),\
+    activity_purge_interval = SelectField('Purge Activity Data Older Than',
+        choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'),
         ('Quarter', 'Quarter'), ('6 Months', '6 Months'), ('Year', 'Year')])
-    user_password_lock = SelectField('Lock account after failed attempts',\
+    user_password_lock = SelectField('Lock account after failed attempts',
         choices=[('Never', 'Never'), ('3', '3'), ('5', '5'), ('10', '10')])
     metadata_download_metadata = BooleanField('Download Metadata')
     metadata_artwork_metadata = BooleanField('Download Artwork')
-    #language = SelectField('Interval', choices=[('Hours', 'Hours'),\
+    #language = SelectField('Interval', choices=[('Hours', 'Hours'),
     #('Days', 'Days'), ('Weekly', 'Weekly')])
-    #country = SelectField('Interval', choices=[('Hours', 'Hours'),\
+    #country = SelectField('Interval', choices=[('Hours', 'Hours'),
     #('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
     metadata_path = TextField('Metadata Path', validators=[DataRequired(), Length(min=1, max=250)])
@@ -155,7 +170,7 @@ class AdminSettingsForm(Form):
     metadata_source_down_imvdb = BooleanField('imvdb')
     metadata_source_down_omdb = BooleanField('omdb')
     metadata_source_down_netflixroulette = BooleanField('netflixroulette')
-    metadata_sync_path = TextField('Metadata Sync Path',\
+    metadata_sync_path = TextField('Metadata Sync Path',
         validators=[DataRequired(), Length(min=1, max=250)])
 
 
@@ -177,7 +192,7 @@ class CronEditForm(Form):
     name = TextField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
-    interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),\
+    interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
         ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places = 2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])

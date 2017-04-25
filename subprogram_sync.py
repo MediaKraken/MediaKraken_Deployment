@@ -38,18 +38,18 @@ def worker(row_data):
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['./bin/ffmpeg', '-i', thread_db.db_media_path_by_uuid(\
+    ffmpeg_params = ['./bin/ffmpeg', '-i', thread_db.db_media_path_by_uuid(
         row_data['mm_sync_options_json']['Media GUID'])[0]]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
-        ffmpeg_params.extend(('-fs',\
+        ffmpeg_params.extend(('-fs',
             row_data['mm_sync_options_json']['Options']['Size']))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
         ffmpeg_params.extend(('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
     if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
-        ffmpeg_params.extend(('-ac',\
+        ffmpeg_params.extend(('-ac',
             row_data['mm_sync_options_json']['Options']['AudioChannels']))
     if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
-        ffmpeg_params.extend(('-acodec',\
+        ffmpeg_params.extend(('-acodec',
             row_data['mm_sync_options_json']['Options']['ACodec']))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
@@ -71,7 +71,7 @@ def worker(row_data):
             elif line[0:5] == "frame":
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
-                thread_db.db_sync_progress_update(row_data['mm_sync_guid'],\
+                thread_db.db_sync_progress_update(row_data['mm_sync_guid'],
                     time_percent)
                 thread_db.db_commit()
         else:
@@ -82,17 +82,17 @@ def worker(row_data):
         # just go along merry way as ffmpeg shoulda output to mm_sync_path_to
         pass
     elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
-        XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],\
-            row_data['mm_sync_options_json']['TargetPort'],\
+        XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],
+            row_data['mm_sync_options_json']['TargetPort'],
             row_data['mm_sync_path_to'] + "."\
-            + row_data['mm_sync_options_json']['Options']['VContainer'],\
+            + row_data['mm_sync_options_json']['Options']['VContainer'],
             row_data['mm_sync_path_to'])
     else: # cloud item
         CLOUD_HANDLE = common_cloud.CommonCloud()
-        CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],\
+        CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],
             row_data['mm_sync_path_to'], row_data['mm_sync_path_to'] + "."\
             + row_data['mm_sync_options_json']['Options']['VContainer'].split('/', 1)[1], False)
-    thread_db.db_activity_insert('MediaKraken_Server Sync', None,\
+    thread_db.db_activity_insert('MediaKraken_Server Sync', None,
         'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.db_sync_delete(row_data[0]) # guid of sync record
     #thread_db.store record in activity table
@@ -114,7 +114,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # log start
-db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,\
+db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,
     'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
 
 
@@ -127,7 +127,7 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 
 # log end
-db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,\
+db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,
     'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 

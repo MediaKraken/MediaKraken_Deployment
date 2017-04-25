@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.4 
+FROM alpine:3.4
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL www.mediakraken.org.version="dev-0.2.0"
@@ -27,6 +27,8 @@ RUN apk add --update \
   postgresql-dev \
   cifs-utils \
   nfs-utils \
+  ca-certificates \
+  && pip install --upgrade pip \
   && pip install -r requirements.txt \
   && apk del \
   gcc \
@@ -48,6 +50,11 @@ RUN apk add --update \
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
+ADD ip2country /mediakraken/ip2country
+RUN cd ip2country \
+  && python setup.py install \
+  && cd .. \
+  && rm -R ./ip2country
 
 EXPOSE 8080
 CMD ["/bin/ash"]

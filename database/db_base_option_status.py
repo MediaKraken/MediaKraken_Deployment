@@ -35,7 +35,7 @@ def db_opt_status_update(self, option_json, status_json):
     Update option and status json
     """
     # no need for where clause as it's only the one record
-    self.db_cursor.execute('update mm_options_and_status set mm_options_json = %s,'\
+    self.db_cursor.execute('update mm_options_and_status set mm_options_json = %s,'
         ' mm_status_json = %s', (option_json, status_json))
 
 
@@ -63,7 +63,7 @@ def db_opt_status_update_scan_rec(self, dir_path, scan_status, scan_percent):
 #    json_data = json.dumps(json_data)
 
     # no need for where clause as it's only the one record
-    self.db_cursor.execute('update mm_options_and_status set mm_status_json = %s',\
+    self.db_cursor.execute('update mm_options_and_status set mm_status_json = %s',
         (json.dumps(status_json),))
     # 'update objects set mm_options_and_status=jsonb_set(mm_options_and_status,
         #'{name}', '"Mary"', true)'
@@ -73,6 +73,6 @@ def db_opt_status_insert(self, option_json, status_json):
     """
     insert status
     """
-    self.db_cursor.execute('insert into mm_options_and_status (mm_options_and_status_guid,'\
-        'mm_options_json,mm_status_json) values (%s,%s,%s)', \
+    self.db_cursor.execute('insert into mm_options_and_status (mm_options_and_status_guid,'
+        'mm_options_json,mm_status_json) values (%s,%s,%s)',
         (str(uuid.uuid4()), option_json, status_json))
