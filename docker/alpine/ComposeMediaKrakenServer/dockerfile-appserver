@@ -60,6 +60,11 @@ RUN cd ip2country \
   && python setup.py install \
   && cd .. \
   && rm -R ./ip2country
+ADD kodipydent /mediakraken/kodipydent
+RUN cd kodipydent \
+  && python setup.py install \
+  && cd .. \
+  && rm -R ./kodipydent
 
 EXPOSE 8903
 
