@@ -46,6 +46,7 @@ def mk_network_fetch_from_url(url, directory=None):
         return None
     if directory is None:
         return datafile.read()
+    return True
 
 
 def mk_network_wol(mac_address):
