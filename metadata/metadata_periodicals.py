@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 import os
 import json
 from common import common_config_ini
+from common import common_network
 from common import common_metadata_isbndb
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -88,3 +89,15 @@ def metadata_periodicals_lookup(db_connection, media_file_path,
         # meta uuid is found so delete
         db_connection.db_download_delete(download_que_id)
     return metadata_uuid
+
+
+def metadata_periodicals_cover(db_connection, isbn):
+    """
+    pull and save the cover image for periodical
+    """
+    url = ('http://covers.openlibrary.org/b/ISBN/%s-L.jpg?default=false', isbn)
+
+    common_metadata.com_meta_image_path(download_data['Name'],
+                                        'poster', 'themoviedb', download_data['Poster'])
+
+    return False
