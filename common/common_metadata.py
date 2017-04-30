@@ -78,6 +78,7 @@ def com_meta_image_file_path(media_name, media_type):
     except:
         file_path = os.path.join(base_image_path, media_type,
             random.choice(string.ascii_lowercase))
+    # os.path.join should be adding the terminating slash
     logging.info('file image path: %s', file_path)
     return file_path
 

@@ -85,11 +85,11 @@ class CommonMetadataTMDB(object):
         person_file_paths = []
         for profile_image in result_json['combined_credits']['cast']:
             if profile_image['poster_path'] is not None:
-                if not os.path.isfile(image_file_path + '/' + profile_image['poster_path']):
+                if not os.path.isfile(image_file_path + profile_image['poster_path']):
                     thread_db.db_download_image_insert('themoviedb',
                         json.dumps({'url': 'https://image.tmdb.org/t/p/original'
                         + profile_image['poster_path'],
-                        'local': image_file_path + '/' + profile_image['poster_path']}))
+                        'local': image_file_path + profile_image['poster_path']}))
             person_file_paths.append(image_file_path)
         # set local image json
         return ({'Images': {'themoviedb':{'Profiles': person_file_paths}}})
