@@ -256,21 +256,6 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
-  # celery
-  # https://github.com/docker-library/celery/blob/master/4.0/Dockerfile
-  # https://github.com/it-herz/docker-celery
-#  celery:
-#    build:
-#      context: ./ComposeMediaKrakenCelery
-##      dockerfile: Dockerfile
-#      dockerfile: dockerfile-celery
-#    container_name: mkcelery
-#    depends_on:
-#      - rabbit
-#    restart: unless-stopped
-#    networks:
-#      - mediakraken-mq
-
   # rabbit
   # https://github.com/maryvilledev/alpine-rmq
   rabbit:
@@ -286,25 +271,6 @@ services:
     restart: unless-stopped
     networks:
       - mediakraken-mq
-
-  # flower monitor for celery
-  # https://github.com/RobbieClarken/docker-flower
-#  flower:
-#    build:
-#      context: ./ComposeMediaKrakenFlower
-#      dockerfile: Dockerfile
-#    environment:
-#      - broker=amqp://guest@mkrabbitmq
-#    container_name: mkflower
-#    depends_on:
-#      - rabbit
-#    ports:
-#      - "5555:5555"
-#    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#    restart: unless-stopped
-#    networks:
-#      - mediakraken-mq
 
 # Docker private networks
 networks:
