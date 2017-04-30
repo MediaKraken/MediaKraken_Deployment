@@ -37,6 +37,7 @@ celery
 incremental>=16.10.1
 twisted
 python-stdnum
+Babel
 beautifulsoup4
 appdirs==1.4.3
 appnope==0.1.0
