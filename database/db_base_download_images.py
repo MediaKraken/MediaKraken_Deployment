@@ -25,6 +25,7 @@ def db_download_image_insert(self, provider, down_json):
     """
     Create/insert a download into the que
     """
+    logging.info('dl image insert: %s', down_json)
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_download_image_que (mdq_image_id,mdq_image_provider,'
                            'mdq_image_download_json) values (%s,%s,%s)',
