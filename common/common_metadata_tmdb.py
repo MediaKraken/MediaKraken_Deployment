@@ -248,12 +248,9 @@ class CommonMetadataTMDB(object):
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']
-            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                  + image_file_path):
+            if not os.path.isfile(image_file_path):
                 common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
-                    + result_json['poster_path'],
-                    '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                    + image_file_path)
+                    + result_json['poster_path'], image_file_path)
             poster_file_path = image_file_path
         # create file path for backdrop
         image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
@@ -261,12 +258,9 @@ class CommonMetadataTMDB(object):
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
-            if not os.path.isfile('/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                  + image_file_path):
+            if not os.path.isfile(image_file_path):
                 common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
-                    + result_json['backdrop_path'],
-                    '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                    + image_file_path)
+                    + result_json['backdrop_path'], image_file_path)
             backdrop_file_path = image_file_path
         # its a number so make it a string just in case
         series_id_json = json.dumps({'imdb': result_json['imdb_id'],
