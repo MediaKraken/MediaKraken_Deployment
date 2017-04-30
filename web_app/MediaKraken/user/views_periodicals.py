@@ -14,7 +14,7 @@ import logging # pylint: disable=W0611
 import json
 import sys
 import uuid
-import isbn_hyphenate
+from stdnum import isbn
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -79,7 +79,7 @@ def metadata_periodical_detail(guid):
     except:
         data_name = 'NA'
     try:
-        data_isbn = isbn_hyphenate.hyphenate(json_metadata['mm_metadata_book_json']['isbn10'])
+        data_isbn = isbn.format(json_metadata['mm_metadata_book_json']['isbn10'])
     except:
         data_isbn = 'NA'
     try:
