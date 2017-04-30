@@ -55,7 +55,7 @@ RUN cd ip2country \
   && python setup.py install \
   && cd .. \
   && rm -R ./ip2country
-ADD isbn_hyphenate /mediakraken
+ADD isbn_hyphenate /mediakraken/isbn_hyphenate
 RUN cd isbn_hyphenate \
   && ./bin/update_ranges.sh \
   && python setup.py install \
