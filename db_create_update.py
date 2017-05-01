@@ -706,16 +706,16 @@ if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is 
 
 # queue
 db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
-    ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mqd_que_type smallint, '
+    ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mdq_que_type smallint, '
     'mdq_download_json jsonb)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_download_que_idxgin_meta_json'
-        ' ON mm_download_que USING gin (mdq_download_json)')
-if db_connection.db_table_index_check('mqd_que_type_idx_name') is None:
-    db_connection.db_query('CREATE INDEX mqd_que_type_idx_name'
-        ' ON mm_download_que(mqd_que_type)')
+        ' ON mm_download_que USING gin (mqd_download_json)')
+if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
+    db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
+        ' ON mm_download_que(mdq_que_type)')
 # type
 # 0 - initial insert and/or defualt for the provider
 # 1 - movie
