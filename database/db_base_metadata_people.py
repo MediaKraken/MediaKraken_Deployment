@@ -150,8 +150,12 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_id = person_json['person']['id']
             person_name = person_json['person']['name']
         elif meta_type == "themoviedb":
-            person_id = person_json['id']
-            person_name = person_json['name']
+            # cast can exist but be blank
+            try:
+                person_id = person_json['id']
+                person_name = person_json['name']
+            except:
+                person_id = None
         elif meta_type == "thetvdb":
             person_id = person_json['id']
             person_name = person_json['Name']
