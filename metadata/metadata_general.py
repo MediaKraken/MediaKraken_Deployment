@@ -165,10 +165,10 @@ def metadata_fetch(thread_db, provider_name, download_data):
     """
     logging.info('metadata_fetch: %s %s', provider_name, download_data)
     if provider_name == 'themoviedb':
-        if download_data['mqd_que_type'] == 3: # person info
+        if download_data['mdq_que_type'] == 3: # person info
             logging.info('%s fetch person bio', provider_name)
             metadata_person.metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
-        elif download_data['mqd_que_type'] == 0 or download_data['mqd_que_type'] == 1: # movie
+        elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1: # movie
             if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt': # imdb id check
                 tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(
                     download_data['mdq_download_json']['ProviderMetaID'])
