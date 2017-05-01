@@ -13,13 +13,13 @@
 {% if data %}
   <div id="movie_detail">
       {% if data_background_image is not none %}
-          <img alt="fs_bg_image" src= {{ "../../../static/meta/images/" + data_background_image }} id="fs_bg_image" >
+          <img alt="fs_bg_image" src= {{ "../../../static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" >
       {% endif %}
       <div id="movie_image_div" class="table-responsive">
           {% if data_poster_image is none %}
               <img class="center" src= {{ "../../../static/images/Missing_Icon.png" }} >
           {% else %}
-              <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image }} >
+              <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
           {% endif %}
         <table class="table table-hover">
         <tbody>
@@ -64,15 +64,15 @@
         <div class="grid">
             {% for episode_info in data_episode_count %}
                 <div class="col-1-4">
-                    <div class="wrapper">  
+                    <div class="wrapper">
                       <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_season + "/" + episode_info|string }} >
                       {% if data_episode_count[episode_info][1] == "Missing_Icon.png" %}
                           <img src= {{ "../../../static/images/Missing_Icon.png" }} alt= {{ "../../../static/meta/images/Missing_Icon.png" }} height="200" width="300">
                       {% else %}
-                          <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] }} height="210" width="350">
+                          <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="210" width="350">
                       {% endif %}
                       </a>
-                        <div class="description">  
+                        <div class="description">
                           <p>{{"S" + data_season + ", E" + episode_info|string + " - " + data_episode_count[episode_info][0]}}</p>
                        </div>
                   </div>

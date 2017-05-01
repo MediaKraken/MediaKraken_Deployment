@@ -15,13 +15,13 @@
         {% if data_background_image is none %}
         <img alt="fs_bg_image" src= {{ "../../static/images/movie_ticket.png" }} id="fs_bg_image" >
         {% else %}
-        <img alt="fs_bg_image" src= {{ "../../static/meta/images/" + data_background_image }} id="fs_bg_image" >
+        <img alt="fs_bg_image" src= {{ "../../static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" >
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
             <img class="center" src= {{ "../../static/images/Movie-icon.png" }} >
             {% else %}
-            <img class="center" src= {{ "../../static/meta/images/" + data_poster_image }} >
+            <img class="center" src= {{ "../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
             {% endif %}
             <table class="table table-hover">
                 <tbody>
