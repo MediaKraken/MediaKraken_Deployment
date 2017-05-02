@@ -182,25 +182,26 @@ def db_meta_person_as_seen_in(self, person_guid):
     if row_data is None: # exit on not found person
         return None
     logging.info("row_data: %s", row_data)
-    if row_data['mmp_person_media_id'] == 'themoviedb':
-        sql_params = row_data['mmp_person_media_id']['id'],
+    if 'themoviedb' in row_data['mmp_person_media_id']:
+        sql_params = row_data['mmp_person_media_id']['themoviedb'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
             ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''
             ' @> \'[{"id":%s}]\'', sql_params)
-    elif row_data['mmp_person_media_id'] == 'tvmaze':
-        sql_params = row_data['mmp_person_media_id']['id'],
+    elif 'tvmaze' in row_data['mmp_person_media_id']:
+        sql_params = row_data['mmp_person_media_id']['tvmaze'],
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
             'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
             ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
             '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\'', sql_params)
             # TODO won't this need to be like below?
-    elif row_data['mmp_person_media_id'] == 'thetvdb':
-        #sql_params = str(row_data[1]['id']),
+    elif 'thetvdb' in row_data['mmp_person_media_id']:
+        #sql_params = str(row_data[1]['thetvdb']),
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
             'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''\
             ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''\
-            '->\'Cast\'->\'Actor\' @> \'[{"id": \"' + str(row_data['mmp_person_media_id']['id'])\
+            '->\'Cast\'->\'Actor\' @> \'[{"id": \"'\
+            + str(row_data['mmp_person_media_id']['thetvdb'])\
             + '\"}]\'')  #, sql_params)  #TODO
     return self.db_cursor.fetchall()
 
