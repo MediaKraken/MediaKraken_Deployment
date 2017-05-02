@@ -17,10 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 import json
 from common import common_config_ini
+from common import common_internationalization
 from common import common_metadata_thegamesdb
 
 
@@ -67,12 +68,12 @@ db_connection.db_activity_insert('theGamesDB Batch Stop', None,
 
 # send notications
 if total_games > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_games, True)
+    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_games)
         + " games(s) metadata added.", True)
 
 
 if total_game_systems > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_game_systems, True)
+    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_game_systems)
         + " game system(s) metadata added.", True)
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 import uuid
 import pygal
 import json
@@ -29,6 +29,7 @@ from MediaKraken.admins.forms import UserEditForm
 from MediaKraken.admins.forms import AdminSettingsForm
 
 from common import common_config_ini
+from common import common_internationalization
 from common import common_network_cifs
 from common import common_cloud
 from common import common_file
@@ -111,8 +112,9 @@ def admins():
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count=locale.format('%d',
-                               g.db_connection.db_user_list_name_count(), True),
+                           data_user_count=\
+                               common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
@@ -120,19 +122,27 @@ def admins():
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version=common_version.APP_VERSION,
                            data_server_uptime=common_system.com_system_uptime(),
-                           data_active_streams=locale.format('%d', 0, True),
+                           data_active_streams=\
+                               common_internationalization.com_inter_number_format(\
+                               0),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
-                           data_count_media_files=locale.format('%d',
-                               g.db_connection.db_known_media_count(), True),
-                           data_count_matched_media=locale.format('%d',
-                               g.db_connection.db_matched_media_count(), True),
-                           data_count_streamed_media=locale.format('%d', 0, True),
+                           data_count_media_files=\
+                               common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_known_media_count()),
+                           data_count_matched_media=\
+                               common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_matched_media_count()),
+                           data_count_streamed_media=\
+                               common_internationalization.com_inter_number_format(\
+                                0),
                            data_zfs_active=common_zfs.com_zfs_available(),
-                           data_library=locale.format('%d',
-                               g.db_connection.db_table_count('mm_media_dir'), True),
-                           data_share=locale.format('%d',
-                               g.db_connection.db_table_count('mm_media_share'), True),
+                           data_library=\
+                               common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_table_count('mm_media_dir')),
+                           data_share=\
+                               common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_table_count('mm_media_share')),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages
@@ -262,8 +272,8 @@ def admin_transmission():
     if trans_connection is not None:
         torrent_no = 1
         for torrent in trans_connection.com_trans_get_torrent_list():
-            transmission_data.append((locale.format('%d', torrent_no, True), torrent.name,
-                torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
+            transmission_data.append((common_internationalization.com_inter_number_format(torrent_no),
+                torrent.name, torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
             torrent_no += 1
     return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
 
@@ -839,7 +849,7 @@ def admin_database_statistics():
     """
     db_stats_count = []
     for row_data in g.db_connection.db_pgsql_row_count():
-        db_stats_count.append((row_data[1], locale.format('%d', row_data[2], True)))
+        db_stats_count.append((row_data[1], common_internationalization.com_inter_number_format(row_data[2])))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count)
