@@ -1,0 +1,5 @@
+https://sdkdocs.roku.com/display/sdkdoc/Roku+SDK+Documentation
+
+
+# shows all the models and their specifications
+https://sdkdocs.roku.com/display/sdkdoc/The+Roku+Channel+Developer+Program
