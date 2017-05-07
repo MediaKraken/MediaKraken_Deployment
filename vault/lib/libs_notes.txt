@@ -1,12 +1,6 @@
-* is in use
-*OctMote		Duh
-*MediaBrowser	server for mediabrowser
-*MediaBrowser.Channels	dev supported channels....forked trailers
 
 --hardware control
 *onkyo-eiscp	Control Onkyo A/V receivers over the network; usuable as a script, or as a Python library. 
-*python-nest	nest thermo
-*pychromecast	Library for Python 2 and 3 to communicate with the Google Chromecast. 
 *PyIRCC		IRCC (Sony) network remote control library 
 
 --trailer
