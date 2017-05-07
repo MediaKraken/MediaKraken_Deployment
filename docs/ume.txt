@@ -1,0 +1,13 @@
+Compile in Alpine
+
+Grab mame0185s.zip from http://mamedev.org/release.html
+
+unzip to */MediaKraken/MediaKraken_Deployment/vault/lib/mame
+
+
+
+make -j8
+
+
+
+
