@@ -14,6 +14,10 @@ MediaKraken Docker DEV
 MediaKraken Docker Prod
 	Prod docker station for MediaKraken
 
+
+mk ht build
+	ubuntu kivy and buildozder/alpine
+
 MK Elec Build
 	For building the https://libreelec.tv/ client
 

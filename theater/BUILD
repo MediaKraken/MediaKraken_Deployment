@@ -9,14 +9,7 @@ git clone git://git.videolan.org/vlc/bindings/python.git
 cd vlc/src/python
 python setup.py install
 
-
 ************ dev
-sudo apt-get install spyder pgadmin3
-
-# grab smartgit
-http://www.syntevo.com/smartgit/download
-unzip
-run add-menuitem.sh to add to gui menu
 
 # setup the newest stable build
 sudo add-apt-repository ppa:kivy-team/kivy
@@ -24,7 +17,6 @@ sudo apt-get update && sudo apt-get dist-upgrade
 
 sudo apt-get install python-kivy mpv dosbox
 # wmctrl python-simplejson   - not sure if needed
-
 
 # setup adb tools for android
 sudo apt-get install android-tools-adb cython javacc openjdk-7-jdk
