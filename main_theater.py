@@ -43,6 +43,7 @@ class EchoClient(protocol.Protocol):
 
     def dataReceived(self, data):
         #self.factory.app.print_message(data)
+        self.factory.app.process_message(data)
         logging.info(data)
 
 
