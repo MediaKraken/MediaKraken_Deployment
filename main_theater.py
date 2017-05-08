@@ -218,19 +218,20 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif message_words[0] == "VIDEOLIST":
-            data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index, \
-                                    rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                       cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
-            list_view = ListView(adapter=list_adapter)
-            for video_list in pickle_data:
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
-                                    size_hint_y=None,
-                                    width=self.root.ids.theater_media_video_list_scrollview.width,
-                                    height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
-                self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
+            if pickle_data is not None:
+                data = [{'text': str(i), 'is_selected': False} for i in range(100)]
+                args_converter = lambda row_index, \
+                                        rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
+                list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                                           cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+                list_view = ListView(adapter=list_adapter)
+                for video_list in pickle_data:
+                    btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
+                                        size_hint_y=None,
+                                        width=self.root.ids.theater_media_video_list_scrollview.width,
+                                        height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                    btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
+                    self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif message_words[0] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
             # load vid detail
