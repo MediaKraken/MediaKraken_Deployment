@@ -26,6 +26,7 @@ from pika import exceptions
 from pika.adapters import twisted_connection
 from twisted.internet import defer, reactor, protocol,task
 from network import network_base as network_base
+from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import time
@@ -59,6 +60,7 @@ class MediaKrakenServerApp(Factory):
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
+        self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         logging.info("Ready for connections!")
 
 
