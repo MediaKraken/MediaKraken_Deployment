@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 
 # base mediakraken settings
-metaman_settings_base_json = json.dumps([
+mediakraken_settings_base_json = json.dumps([
     {'type': 'title',
      'title': 'MediaKraken Server Settings'},
     {'type': 'string',
@@ -35,7 +35,7 @@ metaman_settings_base_json = json.dumps([
      'key': 'port'}])
 
 # audio settings
-metaman_settings_audio_json = json.dumps([
+mediakraken_settings_audio_json = json.dumps([
     {'type': 'title',
      'title': 'Audio Device/Channel'},
     {'type': 'options',
@@ -94,7 +94,7 @@ metaman_settings_audio_json = json.dumps([
      'key': 'Atmos'}])
 
 # video settings
-metaman_settings_video_json = json.dumps([
+mediakraken_settings_video_json = json.dumps([
     {'type': 'title',
      'title': 'Video Settings'},
     {'type': 'bool',
@@ -133,7 +133,7 @@ metaman_settings_video_json = json.dumps([
      'options': ['Never', '3 min', '10 min', '15 min', '30 min', '1 hour', '3 hour']}])
 
 # library settings
-metaman_settings_library_json = json.dumps([
+mediakraken_settings_library_json = json.dumps([
     {'type': 'title',
      'title': 'Library Settings'},
     {'type': 'bool',
@@ -154,7 +154,7 @@ metaman_settings_library_json = json.dumps([
      'key': 'Group_Movies_in_Sets'}])
 
 # playback settings
-metaman_settings_playback_json = json.dumps([
+mediakraken_settings_playback_json = json.dumps([
     {'type': 'title',
      'title': 'Media Playback Settings'},
     {'type': 'options',

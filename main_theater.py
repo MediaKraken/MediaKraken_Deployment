@@ -332,11 +332,16 @@ class MediaKrakenApp(App):
 
 
     def build_settings(self, settings):
-        settings.add_json_panel('MediaKraken', self.config, data=mediakraken_settings_base_json)
-        settings.add_json_panel('Audio', self.config, data=mediakraken_settings_audio_json)
-        settings.add_json_panel('Video', self.config, data=mediakraken_settings_video_json)
-        settings.add_json_panel('Library', self.config, data=mediakraken_settings_library_json)
-        settings.add_json_panel('Playback', self.config, data=mediakraken_settings_playback_json)
+        settings.add_json_panel('MediaKraken', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_base_json)
+        settings.add_json_panel('Audio', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_audio_json)
+        settings.add_json_panel('Video', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_video_json)
+        settings.add_json_panel('Library', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_library_json)
+        settings.add_json_panel('Playback', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_playback_json)
 
 
     def on_config_change(self, config, section, key, value):
@@ -404,7 +409,7 @@ class MediaKrakenApp(App):
         except:
             pickle_data = None
         if message_words[0] == "IDENT":
-            network_protocol.sendString(("VALIDATE " + "admin" + " " + "password" + " "\
+            network_protocol.sendString(("VALIDATE " + "admin" + " " + "password" + " "
                 + platform.node()).encode("utf8"))
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
