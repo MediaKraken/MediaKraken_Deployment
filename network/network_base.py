@@ -206,7 +206,7 @@ class NetworkEvents(Protocol):
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             logging.info("should be sending data")
-            self.send_single_user(msg.encode("utf8"))
+            self.transport.write(msg.encode("utf8"))
 
 
     def send_single_user(self, message):
