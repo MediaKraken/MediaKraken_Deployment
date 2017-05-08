@@ -216,7 +216,7 @@ class NetworkEvents(Protocol):
         for user_host_name, protocol in self.users.iteritems(): # pylint: disable=W0612
             if protocol == self:
                 logging.info('send single: %s', message)
-                protocol.sendString(message.encode("utf8"))
+                protocol.transport.write(message.encode("utf8"))
                 break
 
 
@@ -227,7 +227,7 @@ class NetworkEvents(Protocol):
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_verified == 1:
                 logging.info('send all: %s', message)
-                protocol.sendString(message.encode("utf8"))
+                protocol.transport.write(message.encode("utf8"))
 
 
     def send_all_slaves(self, message):
@@ -237,7 +237,7 @@ class NetworkEvents(Protocol):
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_slave:
                 logging.info('send all slave: %s', message)
-                protocol.sendString(message.encode("utf8"))
+                protocol.transport.write(message.encode("utf8"))
 
 
     def send_all_links(self, message):
@@ -247,7 +247,7 @@ class NetworkEvents(Protocol):
         for user_host_name, protocol in self.users.iteritems():
             if self.users[user_host_name].user_link:
                 logging.info('send all link: %s', message)
-                protocol.sendString(message.encode("utf8"))
+                protocol.transport.write(message.encode("utf8"))
 
 
     @classmethod
@@ -267,6 +267,6 @@ class NetworkEvents(Protocol):
                     low_cpu_host_percent = self.users[user_host_name].user_cpu_usage
         if low_cpu_host is not None:
             logging.info('send celery: %s', message)
-            low_cpu_protocol.sendString(message.encode("utf8"))
+            low_cpu_protocol.transport.write(message.encode("utf8"))
         else:
             logging.error('no slave found for playback')
