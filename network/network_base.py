@@ -150,8 +150,8 @@ class NetworkEvents(Protocol):
                 except:
                     pass
             if lookup_id is not None:
-                msg = "IMAGE " + pickle.dumps((message_words[1], 'https://'\
-                    + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/'\
+                msg = "IMAGE " + pickle.dumps((message_words[1], 'https://'
+                    + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/'
                     + lookup_id.replace('../images/', ''), media_id))
         # general data
         elif message_words[0] == "GENRELIST":
@@ -166,7 +166,7 @@ class NetworkEvents(Protocol):
                     message_words[0], message_words[1]))
         elif message_words[0] == "movie" or message_words[0] == "recent_addition"\
                 or message_words[0] == 'in_progress' or message_words[0] == 'video':
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
+            msg = "VIDEOLIST " + json.dumps(self.db_connection.db_web_media_list(
                 self.db_connection.db_media_uuid_by_class("Movie"), message_words[0]))
         # admin commands
         elif message_words[0] == "ScanMedia":
