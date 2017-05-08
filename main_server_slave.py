@@ -40,7 +40,8 @@ from twisted.internet import ssl
 
 class EchoClient(protocol.Protocol):
     def connectionMade(self):
-        self.factory.app.on_connection(self.transport)
+        #self.factory.app.on_connection(self.transport)
+        pass
 
     def dataReceived(self, data):
         #self.factory.app.print_message(data)
