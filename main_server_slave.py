@@ -35,58 +35,25 @@ from common import common_signal
 from common import common_system
 from common import common_version
 from twisted.internet.protocol import ClientFactory
-from twisted.internet import reactor, ssl
-from twisted.protocols.basic import Int32StringReceiver
+from twisted.internet import reactor, protocol
+from twisted.internet import ssl
 
-
-class RepeatTimer(Thread):
-    def __init__(self, interval, function, iterations=0, args=[], kwargs={}):
-        Thread.__init__(self)
-        self.interval = interval
-        self.function = function
-        self.iterations = iterations
-        self.args = args
-        self.kwargs = kwargs
-        self.finished = Event()
-
-
-    def run(self):
-        count = 0
-        while not self.finished.is_set() and (self.iterations <= 0 or count < self.iterations):
-            self.finished.wait(self.interval)
-            if not self.finished.is_set():
-                self.function(*self.args, **self.kwargs)
-                count += 1
-
-
-class ClientProtocol(Int32StringReceiver):
-    STARTED = 0
-    CHECKING_PORT = 1
-    CONNECTED = 2
-    NOTSTARTED = 3
-    PORTCLOSED = 4
-    CLOSED = 5
-
-
-    def __init__(self):
-        self.MAX_LENGTH = 32000000
-        self.connStatus = ClientProtocol.STARTED
-
-
+class EchoClient(protocol.Protocol):
     def connectionMade(self):
-        global networkProtocol
-        self.connStatus = ClientProtocol.CONNECTED
-        #networkProtocol = self
+        self.factory.app.on_connection(self.transport)
 
+    def dataReceived(self, data):
+        #self.factory.app.print_message(data)
+        self.factory.app.process_message(data)
+        logging.info(data)
 
-    def stringReceived(self, server_msg):
         """
         Process network message from server
         """
         # otherwise the pickle can end up in thousands of chunks
-        message_words = server_msg.split(' ', 1)
+        message_words = data.split(' ', 1)
         logging.info('message: %s', message_words[0])
-        logging.info("len: %s", len(server_msg))
+        logging.info("len: %s", len(data))
         logging.info("chunks: %s", len(message_words))
         msg = None
         try:
@@ -120,64 +87,41 @@ class ClientProtocol(Int32StringReceiver):
             logging.info("unknown message type")
         if msg is not None:
             logging.info("should be sending data")
-            self.sendString(msg.encode("utf8"))
+            self.transport.write(msg.encode("utf8"))
 
 
-    def cancel(self):
-        self.finished.set()
-
-
-class MyClientFactory(ClientFactory):
-
+class EchoFactory(protocol.ClientFactory):
+    protocol = EchoClient
 
     def __init__(self, app):
         self.app = app
-        self.protocol = None
-
-
-    def startedConnecting(self, connector):
-        logging.info('Started to connect to %s', connector.getDestination())
-
 
     def clientConnectionLost(self, conn, reason):
-        logging.info("Connection Lost")
-
+        #self.app.print_message("connection lost")
+        logging.info('connection lost')
 
     def clientConnectionFailed(self, conn, reason):
-        logging.info("Connection Failed")
-
-
-    def buildProtocol(self, addr):
-        logging.info('Connected to %s', str(addr))
-        self.protocol = ClientProtocol()
-        return self.protocol
+        #self.app.print_message("connection failed")
+        logging.info('connection failed')
 
 
 class MediaKrakenApp():
 
-
     def exit_program(self):
         pass
-
 
     def build(self):
         root = MediaKrakenApp()
         self.connect_to_server()
-        # start up the cpu timer
-        status_timer = RepeatTimer(30.0, networkProtocol.sendString('CPUUSAGE '\
-            + pickle.dumps(common_system.com_system_cpu_usage(False))))
-        status_timer.start()
         return root
-
 
     def connect_to_server(self):
         """
         Connect to media server
         """
         reactor.connectSSL('mkserver', 8903,
-                           MyClientFactory(self), ssl.ClientContextFactory())
+                           EchoFactory(self), ssl.ClientContextFactory())
         reactor.run()
-
 
 if __name__ == '__main__':
     # start logging
