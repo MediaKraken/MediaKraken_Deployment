@@ -159,7 +159,7 @@ class NetworkEvents(Protocol):
         # theater data
         elif message_words[0] == "VIDEODETAIL":
             msg = "VIDEODETAIL " + pickle.dumps(
-                self.db_connection.db_read_media_Metadata_Both(message_words[1]))
+                self.db_connection.db_read_media_metadata_both(message_words[1]))
         elif message_words[0] == "VIDEOGENRELIST":
             msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
                 self.db_connection.db_media_uuid_by_class("Movie"),
