@@ -205,7 +205,7 @@ class NetworkEvents(Protocol):
             logging.error("UNKNOWN TYPE: %s", message_words[0])
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            logging.info("should be sending data")
+            logging.info("should be sending data len: %s", len(msg))
             self.transport.write(msg.encode("utf8"))
 
 
