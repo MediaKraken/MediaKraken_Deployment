@@ -298,7 +298,7 @@ class MediaKrakenApp(App):
         Build base config
         """
         config.setdefaults('MediaKrakenServer', {
-            'Host': '10.0.0.169',
+            'Host': '10.1.0.187',
             'Port': 8903})
         config.setdefaults('Audio', {
             'Default_Device': 'Default',
@@ -360,32 +360,32 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE MAIN MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE MAIN MOVIE None Backdrop".encode("utf8"))
             # request main screen background refresh
-            network_protocol.sendString("IMAGE MOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE MOVIE MOVIE None Backdrop".encode("utf8"))
             # request main screen background refresh
-            network_protocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE NEWMOVIE MOVIE None Backdrop".encode("utf8"))
             # request main screen background refresh
-            network_protocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop")
+            network_protocol.sendString("IMAGE PROGMOVIE MOVIE None Backdrop".encode("utf8"))
             # refreshs for tv stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE TV TVSHOW None Backdrop")
+            network_protocol.sendString("IMAGE TV TVSHOW None Backdrop".encode("utf8"))
             # request main screen background refresh
-            network_protocol.sendString("IMAGE LIVETV TVLIVE None Backdrop")
+            network_protocol.sendString("IMAGE LIVETV TVLIVE None Backdrop".encode("utf8"))
             # refreshs for game stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE GAME VIDEOGAME None Backdrop")
+            network_protocol.sendString("IMAGE GAME VIDEOGAME None Backdrop".encode("utf8"))
             # refreshs for books stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE BOOK BOOK None Backdrop")
+            network_protocol.sendString("IMAGE BOOK BOOK None Backdrop".encode("utf8"))
             # refresh music stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop")
+            network_protocol.sendString("IMAGE MUSICALBUM MUSIC None Backdrop".encode("utf8"))
             # request main screen background refresh
-            network_protocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop")
+            network_protocol.sendString("IMAGE MUSICVIDEO MUSIC None Backdrop".encode("utf8"))
             # refresh image stuff
             # request main screen background refresh
-            network_protocol.sendString("IMAGE IMAGE IMAGE None Backdrop")
+            network_protocol.sendString("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
 
 
     def process_message(self, server_msg):
@@ -404,8 +404,8 @@ class MediaKrakenApp(App):
         except:
             pickle_data = None
         if message_words[0] == "IDENT":
-            network_protocol.sendString("VALIDATE " + "admin" + " " + "password" + " "\
-                + platform.node())
+            network_protocol.sendString(("VALIDATE " + "admin" + " " + "password" + " "\
+                + platform.node()).encode("utf8"))
             #start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         # after login receive the list of users to possibly login with
@@ -587,17 +587,17 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
-        network_protocol.sendString("VIDEODETAIL " + args[0])
+        network_protocol.sendString(("VIDEODETAIL " + args[0]).encode("utf8"))
         # grab poster
         # request main screen background refresh
-        network_protocol.sendString("IMAGE MOVIEDETAIL MOVIE " + args[0])
+        network_protocol.sendString(("IMAGE MOVIEDETAIL MOVIE " + args[0]).encode("utf8"))
 
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
         self.media_genre = args[0]
-        network_protocol.sendString("VIDEOGENRELIST " + args[0])
+        network_protocol.sendString(("VIDEOGENRELIST " + args[0]).encode("utf8"))
 
 
     # notification dialog
@@ -627,7 +627,7 @@ class MediaKrakenApp(App):
         logging.info("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        network_protocol.sendString(msg)
+        network_protocol.sendString(msg.encode("utf8"))
 
 
     def main_mediakraken_event_button_home(self, *args):
@@ -663,7 +663,7 @@ class MediaKrakenApp(App):
         else:
             logging.error("unknown button event")
         if msg is not None:
-            network_protocol.sendString(msg)
+            network_protocol.sendString(msg.encode("utf8"))
 
 
     def theater_event_button_option_select(self, option_text, *args):
