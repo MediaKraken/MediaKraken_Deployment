@@ -196,7 +196,8 @@ class MediaKrakenApp(App):
         if message_words[0] != "IMAGE":
             logging.info("Got Message: %s", server_msg)
         logging.info('message: %s', message_words[0])
-        logging.info("len: %s", len(server_msg))
+        logging.info('len header: %s', len(message_words[0]))
+        logging.info("len total: %s", len(server_msg))
         logging.info("chunks: %s", len(message_words))
         try:
             pickle_data = pickle.loads(message_words[1])

@@ -109,7 +109,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=False)
+proc = subprocess.Popen(['python', './subprogram_reactor.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
@@ -138,7 +138,7 @@ for link_data in db_connection.db_link_list():
 
 
 ## hold here
-# this will key off the string reactor...only reason is so watchdog doesn't shut down
+# this will key off the twisted reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
 
