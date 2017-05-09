@@ -20,10 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_logging
 from common import common_signal
 import platform
-try:
-    import cPickle as pickle
-except:
-    import pickle
+import json
 import logging # pylint: disable=W0611
 from functools import partial
 
@@ -191,7 +188,7 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        # otherwise the pickle can end up in thousands of chunks
+        # otherwise the json can end up in thousands of chunks
         message_words = server_msg.split(' ', 1)
         if message_words[0] != "IMAGE":
             logging.info("Got Message: %s", server_msg)
@@ -199,10 +196,6 @@ class MediaKrakenApp(App):
         logging.info('len header: %s', len(message_words[0]))
         logging.info("len total: %s", len(server_msg))
         logging.info("chunks: %s", len(message_words))
-        try:
-            pickle_data = pickle.loads(message_words[1])
-        except:
-            pickle_data = None
         if message_words[0] == "IDENT":
             self.connection.write(("VALIDATE " + "admin" + " " + "password" + " "
                                  + platform.node()).encode("utf8"))
@@ -218,20 +211,20 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         elif message_words[0] == "VIDEOLIST":
-            if pickle_data is not None:
-                data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-                args_converter = lambda row_index, \
-                                        rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-                list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                           cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
-                list_view = ListView(adapter=list_adapter)
-                for video_list in pickle_data:
-                    btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
-                                        size_hint_y=None,
-                                        width=self.root.ids.theater_media_video_list_scrollview.width,
-                                        height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                    btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
-                    self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
+            data = [{'text': str(i), 'is_selected': False} for i in range(100)]
+            args_converter = lambda row_index, \
+                                    rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
+            list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                                       cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+            list_view = ListView(adapter=list_adapter)
+            for video_list in json.loads(message_words[1]):
+                logging.info('vid list item %s', video_list)
+                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
+                                    size_hint_y=None,
+                                    width=self.root.ids.theater_media_video_list_scrollview.width,
+                                    height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
+                self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif message_words[0] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
             # load vid detail
