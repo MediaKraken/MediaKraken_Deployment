@@ -52,8 +52,8 @@ def user_movie_page(genre):
             g.db_connection.db_media_uuid_by_class('Movie'),
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
             offset=offset, include_remote=True):
-        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
-        # 4 - mm_metadata_localimage_json
+        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json,
+        # 3 - mm_metadata_localimage_json
         logging.info("row2: %s", row_data['mm_media_json'])
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
