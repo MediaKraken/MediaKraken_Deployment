@@ -22,10 +22,6 @@ import os
 import platform
 import subprocess
 from threading import Event, Thread
-try:
-    import cPickle as pickle
-except:
-    import pickle
 import sys
 import uuid
 from common import common_celery
@@ -44,41 +40,35 @@ class EchoClient(protocol.Protocol):
         pass
 
     def dataReceived(self, data):
-        #self.factory.app.print_message(data)
-        #self.factory.app.process_message(data)
         """
         Process network message from server
         """
-        # otherwise the pickle can end up in thousands of chunks
-        message_words = data.split(' ', 1)
-        logging.info('message: %s', message_words[0])
-        logging.info("len: %s", len(data))
-        logging.info("chunks: %s", len(message_words))
+        json_message = json.loads(data)
+        if json_message['Type'] != "IMAGE":
+            logging.info("Got Message: %s", data)
+        logging.info("len total: %s", len(data))
+
         msg = None
-        try:
-            pickle_data = pickle.loads(message_words[1])
-        except:
-            pickle_data = None
-        if message_words[0] == "IDENT":
+        if json_message['Type'] == "IDENT":
             msg = "VALIDATE " + "slave-" + str(uuid.uuid4()) + " " + " " + " " + platform.node()
         # user commands
-        elif message_words[0] == "PLAYMEDIA":
+        elif json_message['Type'] == "PLAYMEDIA":
             self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
                                                        shell=False)
-        elif message_words[0] == "CASTMEDIA":
+        elif json_message['Type'] == "CASTMEDIA":
             self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py " \
                                                       "-devicename %s -transcodeopts '-c:v copy -c:a ac3 " \
                                                       "-movflags faststart+empty_moov' -transcode %s",
                                                       (pickle_data[0],
                                                        pickle_data[1])), shell=False)
         # admin commands
-        elif message_words[0] == "CPUUSAGE":
+        elif json_message['Type'] == "CPUUSAGE":
             msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
-        elif message_words[0] == "DISKUSAGE":
+        elif json_message['Type'] == "DISKUSAGE":
             msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
-        elif message_words[0] == "MEMUSAGE":
+        elif json_message['Type'] == "MEMUSAGE":
             msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
-        elif message_words[0] == "SYSSTATS":
+        elif json_message['Type'] == "SYSSTATS":
             msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),
                                               common_system.com_system_disk_usage_all(True),
                                               common_system.com_system_virtual_memory(False)))

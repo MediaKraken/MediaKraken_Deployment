@@ -39,7 +39,6 @@ class EchoClient(protocol.Protocol):
         self.factory.app.on_connection(self.transport)
 
     def dataReceived(self, data):
-        #self.factory.app.print_message(data)
         self.factory.app.process_message(data)
         logging.info(data)
 
@@ -51,11 +50,9 @@ class EchoFactory(protocol.ClientFactory):
         self.app = app
 
     def clientConnectionLost(self, conn, reason):
-        #self.app.print_message("connection lost")
         logging.info('connection lost')
 
     def clientConnectionFailed(self, conn, reason):
-        #self.app.print_message("connection failed")
         logging.info('connection failed')
 
 
@@ -188,36 +185,33 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        # otherwise the json can end up in thousands of chunks
-        message_words = server_msg.split(' ', 1)
-        if message_words[0] != "IMAGE":
+        json_message = json.loads(server_msg)
+        if json_message['Type'] != "IMAGE":
             logging.info("Got Message: %s", server_msg)
-        logging.info('message: %s', message_words[0])
-        logging.info('len header: %s', len(message_words[0]))
         logging.info("len total: %s", len(server_msg))
-        logging.info("chunks: %s", len(message_words))
-        if message_words[0] == "IDENT":
+        # determine message type and work to be done
+        if json_message['Type'] == "IDENT":
             self.connection.write(("VALIDATE " + "admin" + " " + "password" + " "
                                  + platform.node()).encode("utf8"))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         # after login receive the list of users to possibly login with
-        elif message_words[0] == "USERLIST":
+        elif json_message['Type'] == "USERLIST":
             pass
-        elif message_words[0] == 'VIDPLAY':
+        elif json_message['Type'] == 'VIDPLAY':
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids.theater_media_video_videoplayer.source = message_words[1]
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
-        elif message_words[0] == "VIDEOLIST":
+        elif json_message['Type'] == "VIDEOLIST":
             data = [{'text': str(i), 'is_selected': False} for i in range(100)]
             args_converter = lambda row_index, \
                                     rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
             list_adapter = ListAdapter(data=data, args_converter=args_converter,
                                        cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
             list_view = ListView(adapter=list_adapter)
-            for video_list in json.loads(message_words[1]):
+            for video_list in json_message:
                 logging.info('vid list item %s', video_list)
                 btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
                                     size_hint_y=None,
@@ -225,7 +219,7 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                 self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
-        elif message_words[0] == "VIDEODETAIL":
+        elif json_message['Type'] == "VIDEODETAIL":
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
             # load vid detail
             # mm_media_name,mm_media_ffprobe_json,mm_media_json,mm_metadata_json
@@ -291,17 +285,17 @@ class MediaKrakenApp(App):
             #                chapter_box.add_widget(chapter_label)
             #                chapter_box.add_widget(chapter_image)
             #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
-        elif message_words[0] == "ALBUMLIST":
+        elif json_message['Type'] == "ALBUMLIST":
             pass
-        elif message_words[0] == "ALBUMDETAIL":
+        elif json_message['Type'] == "ALBUMDETAIL":
             pass
-        elif message_words[0] == "MUSICLIST":
+        elif json_message['Type'] == "MUSICLIST":
             pass
-        elif message_words[0] == "AUDIODETAIL":
+        elif json_message['Type'] == "AUDIODETAIL":
             pass
-        elif message_words[0] == "GENRELIST":
+        elif json_message['Type'] == "GENRELIST":
             logging.info("gen")
-            for genre_list in pickle_data:
+            for genre_list in json_message:
                 logging.info("genlist: %s", genre_list)
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
                                     size_hint_y=None,
@@ -309,12 +303,12 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-        elif message_words[0] == "PERSONLIST":
+        elif json_message['Type'] == "PERSONLIST":
             pass
-        elif message_words[0] == "PERSONDETAIL":
+        elif json_message['Type'] == "PERSONDETAIL":
             pass
         # metadata images
-        elif message_words[0] == "IMAGE":
+        elif json_message['Type'] == "IMAGE":
             if pickle_data[0] == "MAIN":
                 logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
                 self.demo_media_id = pickle_data[2]
