@@ -40,9 +40,10 @@ class NetworkEvents(Protocol):
         # server info
         self.db_connection = db_connection
         self.users = users
-        self.user_host_name = None
+        self.user_device_uuid = None
         self.user_ip_addy = None
         self.user_user_name = None
+        self.user_platform = None
         self.user_slave = False
         self.user_verified = 0
         self.user_country_code = None
@@ -83,91 +84,105 @@ class NetworkEvents(Protocol):
         logging.info('GOT Data: %s', data)
         logging.info('Message: %s', json_message)
 
-        if json_message['Type'] == "VALIDATE":
+        if json_message['Type'] == "CPU Usage":
+            self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
+
+        elif json_message['Type'] == "Genre List":
+            msg = json.dumps({"Genre List": self.db_connection.db_meta_genre_list()})
+
+        elif json_message['Type'] == "Flag Mismatch UUID":
+            pass
+
+        elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
-            self.user_host_name = message_words[1]
+            self.user_device_uuid = json_message['Device UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
-            self.user_user_name = message_words[1]
+            self.user_user_name = None
+            self.user_platform = json_message['Platform']
             # lookup the country
             country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
-            self.users[message_words[1]] = self
-            logging.info("user: %s %s", self.user_host_name, self.user_ip_addy)
-            if self.user_user_name == 'link':
+            self.users[self.user_device_uuid] = self
+            logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
+            if self.user_user_name == 'Link':
                 pass
-        # user commands
-        elif json_message['Type'] == "LOGIN":
-            pass
-# actually processed in "main_link" program!!!!
-#        elif message_words[0] == "RECEIVENEWMEDIA":
-#            self.db_connection.db_Media_Link_New_Data(pickle.loads(message_words[1])
-        elif json_message['Type'] == "NEWMEDIA":
-            msg = "NEWMEDIA " + pickle.dumps(
-                self.db_connection.db_Media_Link_Read_New(pickle.loads(message_words[1]),
-                message_words[2], message_words[3], message_words[4], message_words[5],
-                message_words[6], message_words[7]))
-        elif json_message['Type'] == "PlayUUID" or json_message['Type'] == "demo":
-            media_path = self.db_connection.db_media_path_by_uuid(message_words[1])[0]
-            if media_path is not None:
-                if True:
-                    # launch and attach to local running ffserver
-                    http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                        media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
-                        + self.server_port_ffmpeg + '/stream.ffm'
-                else:
-                    # tell slave to fire up the media
-                    http_link = None
-            msg = 'VIDPLAY ' + http_link
-        elif json_message['Type'] == "FlagMismatchUUID":
-            pass
-        elif json_message['Type'] == "MediaIDUpdateUUID":
-            # media id, metadata id
-            self.db_connection.db_update_media_id(message_words[1], message_words[2])
-        # metadata commands
-        elif json_message['Type'] == "IMAGE":
+
+        elif json_message['Type'] == "Image":
             lookup_id = None
-            # message_words[1] is returned to show client which one is being refreshed
             media_id = None
-            if json_message['Type'] == 'None': # random movie selection
-                if message_words[2] == "MOVIE":
-                    try:
-                        lookup_id, media_id\
-                            = self.db_connection.db_media_random(message_words[5])
-                    except:
-                        pass
+            if json_message['Sub'] == 'Album':
+                pass
+            elif json_message['Sub'] == 'Book':
+                pass
+            elif json_message['Sub'] == 'Game':
+                pass
+            elif json_message['Sub'] == 'Movie':
+                lookup_id, media_id = self.db_connection.db_media_random(json_message['Subtype'])
+            elif json_message['Sub'] == 'TV Show':
+                pass
             else:
                 # fetch specific id
                 try:
-                    lookup_id\
-                        = json.loads(self.db_connection.db_media_image_path(message_words[3])\
-                        [0])[message_words[4]] # use this to grab file path
+                    lookup_id = self.db_connection.db_media_image_path(json_message['Data'])
                 except:
                     pass
             if lookup_id is not None:
-                msg = "IMAGE " + pickle.dumps((message_words[1], 'https://'
-                    + self.server_ip.strip() + ':' + self.server_port_image.strip() + '/'
-                    + lookup_id.replace('../images/', ''), media_id))
-        # general data
-        elif json_message['Type'] == "GENRELIST":
-            msg = "GENRELIST " + pickle.dumps(self.genre_list)
-        # theater data
-        elif json_message['Type'] == "VIDEODETAIL":
-            msg = "VIDEODETAIL " + pickle.dumps(
-                self.db_connection.db_read_media_metadata_both(message_words[1]))
-        elif json_message['Type'] == "VIDEOGENRELIST":
-            msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
-                self.db_connection.db_media_uuid_by_class("Movie"),
-                json_message['Type'], message_words[1]))
-        elif json_message['Type']== "movie" or json_message['Type'] == "recent_addition"\
-                or json_message['Type'] == 'in_progress' or json_message['Type'] == 'video':
-            msg = "VIDEOLIST " + json.dumps(self.db_connection.db_web_media_list(
-                self.db_connection.db_media_uuid_by_class("Movie"), json_message['Type']))
-        # admin data
-        elif json_message['Type'] == "CPUUSAGE":
-            self.user_cpu_usage[self.user_ip_addy] = message_words[1]
+                msg = json.dumps({"Type": "Image", "Data": 'https://' + self.server_ip.strip()
+                                + ':' + self.server_port_image.strip() + '/'
+                                + lookup_id, "UUID": media_id})
+
+        elif json_message['Type'] == "Login":
+            pass
+
+        elif json_message['Type'] == "Media":
+            if json_message['Sub'] == 'Detail':
+                msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                    'Data': self.db_connection.db_read_media_metadata_both(json_message['UUID'])})
+            elif json_message['Sub'] == 'List':
+                # (Offset, Limit)
+                pass
+            elif json_message['Sub'] == 'In Progress':
+                # (Offset, Limit)
+                pass
+            elif json_message['Sub'] == 'New':
+                msg = json.dumps({'Type': 'Media', 'Sub': 'New',
+                    'Data': self.db_connection.db_read_media_new(json_message['Offset'], json_message['Limit'])})
+            elif json_message['Sub'] == 'Update':
+                # (playback, love, hate, etc)
+                pass
+
+        elif json_message['Type'] == "Metadata":
+            pass
+
+        elif json_message['Type'] == "Play":
+            media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
+            if media_path is not None:
+                # launch and attach to local running ffserver
+                http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
+                self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
+                    media_path, http_link], shell=False)
+                http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
+                    + self.server_port_ffmpeg + '/stream.ffm'
+            msg = json.dumps({"Type": 'Play', 'Data': http_link})
+
+        elif json_message['Type'] == "User":
+            pass
+
+        #  elif json_message['Type'] == "MediaIDUpdateUUID":
+        #     # media id, metadata id
+        #     self.db_connection.db_update_media_id(message_words[1], message_words[2])
+        #
+        # elif json_message['Type'] == "VIDEOGENRELIST":
+        #     msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
+        #         self.db_connection.db_media_uuid_by_class("Movie"),
+        #         json_message['Type'], message_words[1]))
+        #
+        # elif json_message['Type']== "movie" or json_message['Type'] == "recent_addition"\
+        #         or json_message['Type'] == 'in_progress' or json_message['Type'] == 'video':
+        #     msg = "VIDEOLIST " + json.dumps(self.db_connection.db_web_media_list(
+        #         self.db_connection.db_media_uuid_by_class("Movie"), json_message['Type']))
+
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"
@@ -180,7 +195,7 @@ class NetworkEvents(Protocol):
         """
         Send message to single user
         """
-        for user_host_name, protocol in self.users.iteritems(): # pylint: disable=W0612
+        for user_device_uuid, protocol in self.users.iteritems(): # pylint: disable=W0612
             if protocol == self:
                 logging.info('send single: %s', message)
                 protocol.transport.write(message.encode("utf8"))
@@ -191,8 +206,8 @@ class NetworkEvents(Protocol):
         """
         Send message to all users
         """
-        for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_verified == 1:
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_verified == 1:
                 logging.info('send all: %s', message)
                 protocol.transport.write(message.encode("utf8"))
 
@@ -201,8 +216,8 @@ class NetworkEvents(Protocol):
         """
         Send to all slave servers
         """
-        for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_slave:
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_slave:
                 logging.info('send all slave: %s', message)
                 protocol.transport.write(message.encode("utf8"))
 
@@ -211,8 +226,8 @@ class NetworkEvents(Protocol):
         """
         Send to all linked servers
         """
-        for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_link:
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_link:
                 logging.info('send all link: %s', message)
                 protocol.transport.write(message.encode("utf8"))
 
@@ -226,12 +241,12 @@ class NetworkEvents(Protocol):
         low_cpu_host = None
         low_cpu_host_percent = 100
         low_cpu_protocol = None
-        for user_host_name, protocol in self.users.iteritems():
-            if self.users[user_host_name].user_slave:
-                if self.users[user_host_name].user_cpu_usage < low_cpu_host_percent:
-                    low_cpu_host = user_host_name
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_slave:
+                if self.users[user_device_uuid].user_cpu_usage < low_cpu_host_percent:
+                    low_cpu_host = user_device_uuid
                     low_cpu_protocol = protocol
-                    low_cpu_host_percent = self.users[user_host_name].user_cpu_usage
+                    low_cpu_host_percent = self.users[user_device_uuid].user_cpu_usage
         if low_cpu_host is not None:
             logging.info('send celery: %s', message)
             low_cpu_protocol.transport.write(message.encode("utf8"))

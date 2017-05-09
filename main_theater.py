@@ -21,6 +21,7 @@ from common import common_logging
 from common import common_signal
 import platform
 import json
+import uuid
 import logging # pylint: disable=W0611
 from functools import partial
 
@@ -186,113 +187,110 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        if json_message['Type'] != "IMAGE":
+        if json_message['Type'] != "Image":
             logging.info("Got Message: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
-        if json_message['Type'] == "IDENT":
-            self.connection.write(("VALIDATE " + "admin" + " " + "password" + " "
-                                 + platform.node()).encode("utf8"))
+        if json_message['Type'] == "Ident":
+            self.connection.write(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
+                                              'Platform': platform.node()}).encode("utf8"))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-        # after login receive the list of users to possibly login with
-        elif json_message['Type'] == "USERLIST":
+
+        elif json_message['Type'] == "Media":
+            if json_message['Sub'] == "Detail":
+                self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
+                self.root.ids.theater_media_video_title.text = json_message['Metadata']['title']
+                self.root.ids.theater_media_video_subtitle.text = json_message['Metadata']['tagline']
+                # self.root.ids.theater_media_video_rating = row_data[3]['']
+                self.root.ids.theater_media_video_runtime.text = str(json_message['Metadata']['runtime'])
+                self.root.ids.theater_media_video_overview.text = json_message['Metadata']['overview']
+                genres_list = ''
+                for ndx in range(0, len(json_message['Metadata']['genres'])):
+                    genres_list += (json_message['Metadata']['genres'][ndx]['name'] + ', ')
+                self.root.ids.theater_media_video_genres.text = genres_list[:-2]
+                # "LocalImages": {"Banner": "", "Fanart": "",
+                # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
+                production_list = ''
+                for ndx in range(0, len(json_message['Metadata']['production_companies'])):
+                    production_list += (json_message['Metadata']['production_companies'][ndx]['name'] + ', ')
+                self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
+                # go through streams
+                audio_streams = []
+                subtitle_streams = ['None']
+                for stream_info in json_message['FFprobe']['streams']:
+                    logging.info("info: %s", stream_info)
+                    stream_language = ''
+                    stream_title = ''
+                    stream_codec = ''
+                    try:
+                        stream_language = stream_info['tags']['language'] + ' - '
+                    except:
+                        pass
+                    try:
+                        stream_title = stream_info['tags']['title'] + ' - '
+                    except:
+                        pass
+                    try:
+                        stream_codec \
+                            = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                    except:
+                        pass
+                    if stream_info['codec_type'] == 'audio':
+                        logging.info('audio')
+                        audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
+                    elif stream_info['codec_type'] == 'subtitle':
+                        subtitle_streams.append(stream_language)
+                        logging.info('sub')
+                # populate the audio streams to select
+                self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
+                self.root.ids.theater_media_video_audio_spinner.text = 'None'
+                # populate the subtitle options
+                self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
+                self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
+                #            # populate the chapter grid
+                #            for chapter_info in json_message['FFprobe']['chapters']:
+                #                # media_json['ChapterImages']
+                #                chapter_box = BoxLayout(size_hint_y=None)
+                #                chapter_label = Label(text='Test Chapter')
+                #                chapter_label_start = Label(text='Start Time')
+                #                chapter_image = Image(source='./images/3D.png')
+                #                chapter_box.add_widget(chapter_label)
+                #                chapter_box.add_widget(chapter_label)
+                #                chapter_box.add_widget(chapter_image)
+                #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
+            elif json_message['Sub'] == "List":
+                data = [{'text': str(i), 'is_selected': False} for i in range(100)]
+                args_converter = lambda row_index, \
+                                        rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
+                list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                                           cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+                list_view = ListView(adapter=list_adapter)
+                for video_list in json_message['Data']:
+                    logging.info('vid list item %s', video_list)
+                    btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
+                                        size_hint_y=None,
+                                        width=self.root.ids.theater_media_video_list_scrollview.width,
+                                        height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
+                    btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
+                    self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
+
+        # after connection receive the list of users to possibly login with
+        elif json_message['Type'] == "User":
             pass
+
+
+
+
+
+
         elif json_message['Type'] == 'VIDPLAY':
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids.theater_media_video_videoplayer.source = message_words[1]
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
-        elif json_message['Type'] == "VIDEOLIST":
-            data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-            args_converter = lambda row_index, \
-                                    rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-            list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                       cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
-            list_view = ListView(adapter=list_adapter)
-            for video_list in json_message:
-                logging.info('vid list item %s', video_list)
-                btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
-                                    size_hint_y=None,
-                                    width=self.root.ids.theater_media_video_list_scrollview.width,
-                                    height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
-                self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
-        elif json_message['Type'] == "VIDEODETAIL":
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            # load vid detail
-            # mm_media_name,mm_media_ffprobe_json,mm_media_json,mm_metadata_json
-            ffprobe_json = pickle_data[1]
-            media_json = pickle_data[2]
-            metadata_json = pickle_data[3]
-            self.root.ids.theater_media_video_title.text = pickle_data[0]
-            self.root.ids.theater_media_video_subtitle.text = metadata_json['tagline']
-            # self.root.ids.theater_media_video_rating = row_data[3]['']
-            self.root.ids.theater_media_video_runtime.text = str(metadata_json['runtime'])
-            self.root.ids.theater_media_video_overview.text = metadata_json['overview']
-            genres_list = ''
-            for ndx in range(0, len(metadata_json['genres'])):
-                genres_list += (metadata_json['genres'][ndx]['name'] + ', ')
-            self.root.ids.theater_media_video_genres.text = genres_list[:-2]
-            # "LocalImages": {"Banner": "", "Fanart": "",
-            # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
-            production_list = ''
-            for ndx in range(0, len(metadata_json['production_companies'])):
-                production_list += (metadata_json['production_companies'][ndx]['name'] + ', ')
-            self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
-            # go through streams
-            audio_streams = []
-            subtitle_streams = ['None']
-            for stream_info in ffprobe_json['streams']:
-                logging.info("info: %s", stream_info)
-                stream_language = ''
-                stream_title = ''
-                stream_codec = ''
-                try:
-                    stream_language = stream_info['tags']['language'] + ' - '
-                except:
-                    pass
-                try:
-                    stream_title = stream_info['tags']['title'] + ' - '
-                except:
-                    pass
-                try:
-                    stream_codec \
-                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
-                except:
-                    pass
-                if stream_info['codec_type'] == 'audio':
-                    logging.info('audio')
-                    audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
-                elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append(stream_language)
-                    logging.info('sub')
-            # populate the audio streams to select
-            self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
-            self.root.ids.theater_media_video_audio_spinner.text = 'None'
-            # populate the subtitle options
-            self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
-            self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
-            #            # populate the chapter grid
-            #            for chapter_info in ffprobe_json['chapters']:
-            #                # media_json['ChapterImages']
-            #                chapter_box = BoxLayout(size_hint_y=None)
-            #                chapter_label = Label(text='Test Chapter')
-            #                chapter_label_start = Label(text='Start Time')
-            #                chapter_image = Image(source='./images/3D.png')
-            #                chapter_box.add_widget(chapter_label)
-            #                chapter_box.add_widget(chapter_label)
-            #                chapter_box.add_widget(chapter_image)
-            #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
-        elif json_message['Type'] == "ALBUMLIST":
-            pass
-        elif json_message['Type'] == "ALBUMDETAIL":
-            pass
-        elif json_message['Type'] == "MUSICLIST":
-            pass
-        elif json_message['Type'] == "AUDIODETAIL":
-            pass
+
         elif json_message['Type'] == "GENRELIST":
             logging.info("gen")
             for genre_list in json_message:
@@ -303,12 +301,8 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-        elif json_message['Type'] == "PERSONLIST":
-            pass
-        elif json_message['Type'] == "PERSONDETAIL":
-            pass
-        # metadata images
-        elif json_message['Type'] == "IMAGE":
+
+        elif json_message['Type'] == "Image":
             if pickle_data[0] == "MAIN":
                 logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
                 self.demo_media_id = pickle_data[2]
