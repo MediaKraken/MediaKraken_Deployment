@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 import os
 import platform
 import subprocess
+import json
 from threading import Event, Thread
 import sys
 import uuid
@@ -49,31 +50,38 @@ class EchoClient(protocol.Protocol):
         logging.info("len total: %s", len(data))
 
         msg = None
-        if json_message['Type'] == "IDENT":
-            msg = "VALIDATE " + "slave-" + str(uuid.uuid4()) + " " + " " + " " + platform.node()
-        # user commands
-        elif json_message['Type'] == "PLAYMEDIA":
-            self.proc_ffmpeg_stream = subprocess.Popen(pickle.loads(message_words[1]),
-                                                       shell=False)
-        elif json_message['Type'] == "CASTMEDIA":
-            self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py " \
-                                                      "-devicename %s -transcodeopts '-c:v copy -c:a ac3 " \
-                                                      "-movflags faststart+empty_moov' -transcode %s",
-                                                      (pickle_data[0],
-                                                       pickle_data[1])), shell=False)
-        # admin commands
-        elif json_message['Type'] == "CPUUSAGE":
-            msg = 'CPUUSAGE ' + pickle.dumps(common_system.com_system_cpu_usage(False))
-        elif json_message['Type'] == "DISKUSAGE":
-            msg = 'DISKUSAGE ' + pickle.dumps(common_system.com_system_disk_usage_all(True))
-        elif json_message['Type'] == "MEMUSAGE":
-            msg = 'MEMUSAGE ' + pickle.dumps(common_system.com_system_virtual_memory(False))
-        elif json_message['Type'] == "SYSSTATS":
-            msg = 'SYSSTATS ' + pickle.dumps((common_system.com_system_cpu_usage(True),
-                                              common_system.com_system_disk_usage_all(True),
-                                              common_system.com_system_virtual_memory(False)))
+        if json_message['Type'] == "Ident":
+            msg = json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
+                'Platform': platform.node()}).encode("utf8")
+        elif json_message['Type'] == "Play":
+            if json_message['Sub'] == 'Cast':
+                if json_message['Command'] == 'Play':
+                    self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "
+                                                              "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "
+                                                              "-movflags faststart+empty_moov' -transcode %s",
+                                                              (pickle_data[0],
+                                                               pickle_data[1])), shell=False)
+                elif json_message['Command'] == 'Stop':
+                    os.killpg(self.proc_ffmpeg_cast)
+            elif json_message['Sub'] == 'Slave':
+                if json_message['Command'] == 'Play':
+                    self.proc_ffmpeg_stream = subprocess.Popen((message_words[1]),
+                                                               shell=False)
+                elif json_message['Command'] == 'Stop':
+                    os.killpg(self.proc_ffmpeg_cast)
+        elif json_message['Type'] == "System":
+            if json_message['Sub'] == 'CPU':
+                msg = json.dumps({'Type': 'System', 'Sub': 'CPU', 'Data': common_system.com_system_cpu_usage(False)})
+            elif json_message['Sub'] == "Disk":
+                msg = json.dumps({'Type': 'System', 'Sub': 'Disk', 'Data': common_system.com_system_disk_usage_all(True)})
+            elif json_message['Sub'] == "MEM":
+                msg = json.dumps({'Type': 'System', 'Sub': 'MEM', 'Data': common_system.com_system_virtual_memory(False)})
+            elif json_message['Sub'] == "SYS":
+                msg = json.dumps({'Type': 'System', 'Sub': 'SYS', 'Data': common_system.com_system_cpu_usage(True),
+                    'Data2': common_system.com_system_disk_usage_all(True),
+                    'Data3': common_system.com_system_virtual_memory(False)})
         else:
-            logging.info("unknown message type")
+            logging.error("Unknown message type")
         if msg is not None:
             logging.info("should be sending data")
             self.transport.write(msg.encode("utf8"))
