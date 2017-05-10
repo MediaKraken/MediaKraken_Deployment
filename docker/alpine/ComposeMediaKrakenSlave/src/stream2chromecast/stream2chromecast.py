@@ -489,6 +489,16 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         if os.path.isfile(subtitles):
             sub_port = 0
 
+            #convert srt to vtt, case needed
+            if subtitles[-3:].lower() == 'srt':
+                print "Converting subtitle to WebVTT"
+                with open(subtitles, 'r') as srtfile:
+                   content = srtfile.read()
+                   content = re.sub(r'([\d]+)\,([\d]+)', r'\1.\2', content)
+                   subtitles = subtitles + '.vtt')
+                   with open(subtitles, 'w') as vttfile:
+                       vttfile.write("WEBVTT\n\n" + content)
+
             if subtitles_port is not None:
                 sub_port = int(subtitles_port)
 
