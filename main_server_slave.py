@@ -74,8 +74,7 @@ class EchoClient(protocol.Protocol):
                                             '-subtitles_language', json_message['Language'])
                     else:
                         subtitle_command = ()
-                    self.proc_ffmpeg_cast = subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                         '-devicename', json_message['Device'],
                         subtitle_command, '-transcodeopts', '-c:v', 'copy', '-c:a', 'ac3',
                         '-movflags', 'faststart+empty_moov',
@@ -85,7 +84,6 @@ class EchoClient(protocol.Protocol):
                 elif json_message['Command'] == 'Stop':
                     subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                                       '-devicename', json_message['Device'], '-stop'), shell=False)
-                    #os.killpg(self.proc_ffmpeg_cast)
                 elif json_message['Command'] == "Volume Down":
                     subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                                       '-devicename', json_message['Device'], '-voldown'), shell=False)
