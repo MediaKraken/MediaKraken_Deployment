@@ -68,10 +68,16 @@ class EchoClient(protocol.Protocol):
                     subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                                       '-devicename', json_message['Device'], '-pause'), shell=False)
                 elif json_message['Command'] == 'Play':
+                    # should only need to check for subs on initial play command
+                    if 'Subtitle' in json_message:
+                        subtitle_command = ('-subtitles', json_message['Subtitle'],
+                                            '-subtitles_language', json_message['Language'])
+                    else:
+                        subtitle_command = ()
                     self.proc_ffmpeg_cast = subprocess.Popen(
                         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                         '-devicename', json_message['Device'],
-                        '-transcodeopts', '-c:v', 'copy', '-c:a', 'ac3',
+                        subtitle_command, '-transcodeopts', '-c:v', 'copy', '-c:a', 'ac3',
                         '-movflags', 'faststart+empty_moov',
                         '-transcode', json_message['Data']), shell=False)
                 elif json_message['Command'] == "Rewind":
