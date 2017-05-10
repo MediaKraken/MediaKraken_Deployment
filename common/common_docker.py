@@ -40,7 +40,7 @@ class CommonDocker(object):
         """
         Connect to specified machine
         """
-        self.cli = Client(base_url='tcp://%s:%s', self.host_name, self.host_ip)
+        self.cli = Client(base_url=('tcp://%s:%s', (self.host_name, self.host_ip)))
 
 
     def com_docker_container_list(self):
