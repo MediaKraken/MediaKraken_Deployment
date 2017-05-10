@@ -57,6 +57,9 @@ Device - ip or name of device to countr
 
 UUID - media or metadata UUID
 
+Subtitle - used to specify subtitle file
+
+Language - used to specify subtitle language and any other lang setting
 
 Offset - media/metadata offset for query
 
