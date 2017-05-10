@@ -32,6 +32,7 @@ from common import common_config_ini
 from common import common_internationalization
 from common import common_network_cifs
 from common import common_cloud
+from common import common_docker
 from common import common_file
 from common import common_network
 from common import common_pagination
@@ -671,6 +672,21 @@ def ffmpeg_stat():
     Redirect to ffmeg stats
     """
     return redirect("http://www.example.com/status.html", code=302)  # status.html is ffmpeg page
+
+
+@blueprint.route("/docker_stat")
+@blueprint.route("/docker_stat/")
+@login_required
+@admin_required
+def docker_stat():
+    """
+    Docker statistics including swarm
+    """
+    docker_inst = common_docker.CommonDocker('localhost', 'localhost')
+    return render_template("admin/admin_docker.html",
+                           data_host=docker_inst.com_docker_info(),
+                           data_swam=docker_inst.com_docker_swarm_inspect()
+                          )
 
 
 @blueprint.route("/server_stat")
