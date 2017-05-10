@@ -2,7 +2,6 @@
 
 Type - type of request......list, detail, etc
 		Sub - subrequest type
-	CPU Usage - receive cpu usage from slave and table it for load balance use
 	Genre List - grab genre list of media
 	Flag Mismatch UUID
 	Ident - send client info to server (build user)
@@ -30,10 +29,31 @@ Type - type of request......list, detail, etc
 		Detail (UUID)
 		List (Offset, Limit)
 	Play - send play request to server
+		Command
+			Chapter Back
+			Chapter Forward
+			Fast Forward
+			Mute
+			Pause
+			Play
+			Rewind
+			Stop
+			Volume Down
+			Volume Set
+			Volume Up
+	System
+		CPU - receive cpu usage from slave and table it for load balance use
+		Disk - disk usage
+		MEM - memory usage
+		SYS - all above
 	User - list of users (for login)
 
 
 Data - general data on send/receive
+Data2
+Data3
+
+Device - ip or name of device to countr
 
 UUID - media or metadata UUID
 
