@@ -55,31 +55,73 @@ class EchoClient(protocol.Protocol):
                 'Platform': platform.node()}).encode("utf8")
         elif json_message['Type'] == "Play":
             if json_message['Sub'] == 'Cast':
-                if json_message['Command'] == 'Play':
-                    self.proc_ffmpeg_cast = subprocess.Popen(("python stream2chromecast.py "
-                                                              "-devicename %s -transcodeopts '-c:v copy -c:a ac3 "
-                                                              "-movflags faststart+empty_moov' -transcode %s",
-                                                              (pickle_data[0],
-                                                               pickle_data[1])), shell=False)
+                if json_message['Command'] == "Chapter Back":
+                    pass
+                elif json_message['Command'] == "Chapter Forward":
+                    pass
+                elif json_message['Command'] == "Fast Forward":
+                    pass
+                elif json_message['Command'] == "Mute":
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-mute'), shell=False)
+                elif json_message['Command'] == "Pause":
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-pause'), shell=False)
+                elif json_message['Command'] == 'Play':
+                    self.proc_ffmpeg_cast = subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                        '-devicename', json_message['Device'],
+                        '-transcodeopts', '-c:v', 'copy', '-c:a', 'ac3',
+                        '-movflags', 'faststart+empty_moov',
+                        '-transcode', json_message['Data']), shell=False)
+                elif json_message['Command'] == "Rewind":
+                    pass
                 elif json_message['Command'] == 'Stop':
-                    os.killpg(self.proc_ffmpeg_cast)
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-stop'), shell=False)
+                    #os.killpg(self.proc_ffmpeg_cast)
+                elif json_message['Command'] == "Volume Down":
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-voldown'), shell=False)
+                elif json_message['Command'] == "Volume Set":
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-setvol', json_message['Data']),
+                                      shell=False)
+                elif json_message['Command'] == "Volume Up":
+                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                                      '-devicename', json_message['Device'], '-volup'), shell=False)
+            elif json_message['Sub'] == 'HDHomeRun':
+                pass
             elif json_message['Sub'] == 'Slave':
-                if json_message['Command'] == 'Play':
-                    self.proc_ffmpeg_stream = subprocess.Popen((message_words[1]),
-                                                               shell=False)
+                if json_message['Command'] == "Chapter Back":
+                    pass
+                elif json_message['Command'] == "Chapter Forward":
+                    pass
+                elif json_message['Command'] == "Fast Forward":
+                    pass
+                elif json_message['Command'] == "Pause":
+                    pass
+                elif json_message['Command'] == 'Play':
+                    self.proc_ffmpeg_stream = subprocess.Popen((''), shell=False)
+                elif json_message['Command'] == "Rewind":
+                    pass
                 elif json_message['Command'] == 'Stop':
                     os.killpg(self.proc_ffmpeg_cast)
         elif json_message['Type'] == "System":
             if json_message['Sub'] == 'CPU':
-                msg = json.dumps({'Type': 'System', 'Sub': 'CPU', 'Data': common_system.com_system_cpu_usage(False)})
+                msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
+                                  'Data': common_system.com_system_cpu_usage(False)})
             elif json_message['Sub'] == "Disk":
-                msg = json.dumps({'Type': 'System', 'Sub': 'Disk', 'Data': common_system.com_system_disk_usage_all(True)})
+                msg = json.dumps({'Type': 'System', 'Sub': 'Disk',
+                                  'Data': common_system.com_system_disk_usage_all(True)})
             elif json_message['Sub'] == "MEM":
-                msg = json.dumps({'Type': 'System', 'Sub': 'MEM', 'Data': common_system.com_system_virtual_memory(False)})
+                msg = json.dumps({'Type': 'System', 'Sub': 'MEM',
+                                  'Data': common_system.com_system_virtual_memory(False)})
             elif json_message['Sub'] == "SYS":
-                msg = json.dumps({'Type': 'System', 'Sub': 'SYS', 'Data': common_system.com_system_cpu_usage(True),
-                    'Data2': common_system.com_system_disk_usage_all(True),
-                    'Data3': common_system.com_system_virtual_memory(False)})
+                msg = json.dumps({'Type': 'System', 'Sub': 'SYS',
+                                  'Data': common_system.com_system_cpu_usage(True),
+                                  'Data2': common_system.com_system_disk_usage_all(True),
+                                  'Data3': common_system.com_system_virtual_memory(False)})
         else:
             logging.error("Unknown message type")
         if msg is not None:
