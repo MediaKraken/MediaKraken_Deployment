@@ -683,9 +683,14 @@ def docker_stat():
     Docker statistics including swarm
     """
     docker_inst = common_docker.CommonDocker()
+    docker_info = json.loads(docker_inst.com_docker_info())
+    if docker_info['Swarm']['Managers'] == 0:
+        docker_swarm = None
+    else:
+        docker_swarm = json.loads(docker_inst.com_docker_swarm_inspect())
     return render_template("admin/admin_docker.html",
-                           data_host=docker_inst.com_docker_info(),
-                           data_swam=None #docker_inst.com_docker_swarm_inspect()
+                           data_host=docker_info,
+                           data_swam=docker_swarm
                           )
 
 
