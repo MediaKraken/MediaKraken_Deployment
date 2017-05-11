@@ -32,10 +32,17 @@ if db_connection.db_version_check() == 1:
     proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
     proc.wait()
     db_connection.db_version_update(2)
+
 if db_connection.db_version_check() == 2:
     # add image for periodical
     db_connection.db_query('ALTER TABLE mm_metadata_book ADD COLUMN mm_metadata_book_image_json jsonb')
     db_connection.db_version_update(3)
+
+if db_connection.db_version_check() == 3:
+    # add docker info to options
+    option_config_json.update({'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0}})
+    db_connection.db_opt_update(option_config_json)
+    db_connection.db_version_update(4)
 
 
 # drop trigger table since moving to celery?
