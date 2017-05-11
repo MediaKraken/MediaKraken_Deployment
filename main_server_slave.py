@@ -110,7 +110,7 @@ class EchoClient(protocol.Protocol):
                 elif json_message['Command'] == "Rewind":
                     pass
                 elif json_message['Command'] == 'Stop':
-                    os.killpg(self.proc_ffmpeg_cast)
+                    os.killpg(self.proc_ffmpeg_stream)
         elif json_message['Type'] == "System":
             if json_message['Sub'] == 'CPU':
                 msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
