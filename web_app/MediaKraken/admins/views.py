@@ -685,7 +685,7 @@ def docker_stat():
     docker_inst = common_docker.CommonDocker()
     return render_template("admin/admin_docker.html",
                            data_host=docker_inst.com_docker_info(),
-                           data_swam=docker_inst.com_docker_swarm_inspect()
+                           data_swam=None #docker_inst.com_docker_swarm_inspect()
                           )
 
 
