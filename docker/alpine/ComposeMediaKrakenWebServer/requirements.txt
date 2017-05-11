@@ -38,6 +38,7 @@ incremental>=16.10.1
 twisted
 python-stdnum
 Babel
+docker
 beautifulsoup4
 appdirs==1.4.3
 appnope==0.1.0

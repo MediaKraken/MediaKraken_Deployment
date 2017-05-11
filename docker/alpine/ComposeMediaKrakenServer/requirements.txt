@@ -47,3 +47,4 @@ apache-libcloud
 titlecase
 pika
 kodipydent
+docker
