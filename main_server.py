@@ -23,6 +23,7 @@ import subprocess
 import signal
 import os
 from common import common_config_ini
+from common import common_docker
 from common import common_logging
 from common import common_network_share
 from common import common_signal
@@ -74,6 +75,16 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     db_create_pid = subprocess.Popen(['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
     logging.info('Database upgrade complete.')
+
+
+# setup the docker environment
+docker_inst = common_docker.CommonDocker()
+# check for swarm id (should already be master then)
+if option_config_json['Docker']['SwarmID'] is None:
+    pass
+elif option_config_json['Docker']['SwarmID'] == 'Init':
+    # init host to swarm mode
+    docker_inst.com_docker_swarm_init()
 
 
 # mount all the shares first so paths exist for validation
