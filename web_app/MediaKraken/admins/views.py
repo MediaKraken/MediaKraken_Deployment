@@ -682,7 +682,7 @@ def docker_stat():
     """
     Docker statistics including swarm
     """
-    docker_inst = common_docker.CommonDocker('localhost', 'localhost')
+    docker_inst = common_docker.CommonDocker()
     return render_template("admin/admin_docker.html",
                            data_host=docker_inst.com_docker_info(),
                            data_swam=docker_inst.com_docker_swarm_inspect()
