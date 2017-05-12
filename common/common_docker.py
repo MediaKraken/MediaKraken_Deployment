@@ -31,12 +31,9 @@ class CommonDocker(object):
     """
     Class for interfacing with docker
     """
-    #def __init__(self, host_name, host_ip):
     def __init__(self):
-        #self.host_name = host_name
-        #self.host_ip = host_ip
         self.cli = docker.from_env()
-
+        self.cli_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 
     # def com_docker_connect(self):
     #     """
@@ -63,28 +60,28 @@ class CommonDocker(object):
         """
         initialize swarm on host
         """
-        return self.cli.init_swarm()
+        return self.cli_api.init_swarm()
 
 
     def com_docker_swarm_inspect(self):
         """
         swarm info on host
         """
-        return self.cli.inspect_swarm()
+        return self.cli_api.inspect_swarm()
 
 
     def com_docker_swarm_leave(self):
         """
         leave current swarm
         """
-        return self.cli.leave_swarm()
+        return self.cli_api.leave_swarm()
 
 
     def com_docker_node_list(self):
         """
         List nodes in swarm
         """
-        return self.cli.nodes()
+        return self.cli_api.nodes()
 
 
     def com_docker_version(self):
