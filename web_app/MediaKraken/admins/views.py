@@ -686,9 +686,9 @@ def docker_stat():
     # it returns a dict, not a json
     docker_info = docker_inst.com_docker_info()
     if docker_info['Swarm']['Managers'] == 0:
-        docker_swarm = None
+        docker_swarm = "Cluster not active"
     else:
-        docker_swarm = json.loads(docker_inst.com_docker_swarm_inspect())
+        docker_swarm = docker_inst.com_docker_swarm_inspect()
     return render_template("admin/admin_docker.html",
                            data_host=docker_info,
                            data_swam=docker_swarm

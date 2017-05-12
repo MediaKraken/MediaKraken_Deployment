@@ -10,9 +10,11 @@
     </head>
     <div>
         <p>{{data_host}}</p>
+        <p>Kernel: {{data_host['KernelVersion']}}</p>
+        <p>Docker Engine: {{data_host['ServerVersion']}}</p>
     </div>
     <div>
-        <p>{{data_swam}}</p>
+        <p>Cluster Status: {{data_swam}}</p>
     </div>
 </body>
 {% endblock %}
