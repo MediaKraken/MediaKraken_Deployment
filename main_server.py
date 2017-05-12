@@ -83,6 +83,7 @@ docker_inst = common_docker.CommonDocker()
 if option_config_json['Docker']['SwarmID'] is None:
     pass
 elif option_config_json['Docker']['SwarmID'] == 'Init':
+    logging.info('attempting to init swarm')
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
 
