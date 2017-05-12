@@ -683,8 +683,8 @@ def docker_stat():
     Docker statistics including swarm
     """
     docker_inst = common_docker.CommonDocker()
-    logging.info(docker_inst.com_docker_info())
-    docker_info = json.loads(docker_inst.com_docker_info())
+    # it returns a dict, not a json
+    docker_info = docker_inst.com_docker_info()
     if docker_info['Swarm']['Managers'] == 0:
         docker_swarm = None
     else:
