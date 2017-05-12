@@ -21,6 +21,7 @@ import uuid
 import psycopg2
 import json
 from common import common_config_ini
+from common import common_version
 
 
 # media classes
@@ -70,7 +71,7 @@ db_connection = common_config_ini.com_config_read(True)
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (4)')
+    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)', common_version.DB_VERSION)
 
 
 # create tables for media shares to mount
