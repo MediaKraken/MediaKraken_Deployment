@@ -274,6 +274,17 @@ services:
     networks:
       - mediakraken-mq
 
+  # runs portainer
+  dockmanage:
+    image: portainer/portainer:latest
+    container_name: mkportainer
+    ports: 
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/opt/mediakraken/data:/data
+    restart: unless-stopped
+
 # Docker private networks
 networks:
   # mq network
