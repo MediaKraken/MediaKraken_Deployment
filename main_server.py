@@ -81,16 +81,11 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
 # setup the docker environment
 docker_inst = common_docker.CommonDocker()
 # check for swarm id (should already be master then)
-if option_config_json['Docker']['SwarmID'] is None:
-    pass
-elif option_config_json['Docker']['SwarmID'] == 'Init':
-    logging.info('attempting to init swarm')
+docker_info = docker_inst.com_docker_info()
+if docker_info['Swarm']['Managers'] == 0:
+    logging.info('attempting to init swarm as manager')
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
-    # grab id to store to options
-    options_json = db_connection.db_opt_status_read()['mm_options_json']
-    db_connection.db_opt_update(options_json.update(json.dumps({'Docker': {'SwarmID': docker_inst.com_docker_swarm_inspect()['JoinTokens']['Worker']}})))
-    db_connection.db_commit()
 
 
 # mount all the shares first so paths exist for validation
