@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 import subprocess
+import json
 import signal
 import os
 from common import common_config_ini
@@ -86,6 +87,10 @@ elif option_config_json['Docker']['SwarmID'] == 'Init':
     logging.info('attempting to init swarm')
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
+    # grab id to store to options
+    options_json = db_connection.db_opt_status_read()['mm_options_json']
+    db_connection.db_opt_update(options_json.update(json.dumps({'Docker': {'SwarmID': docker_inst.com_docker_swarm_inspect()['JoinTokens']['Worker']}})))
+    db_connection.db_commit()
 
 
 # mount all the shares first so paths exist for validation
