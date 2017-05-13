@@ -9,12 +9,13 @@
         <script src="../../static/js/jquery.min.js" type="text/javascript"></script>
     </head>
     <div>
-        <p>{{data_host}}</p>
+        <p>Operating System: {{data_host['OperatingSystem']}}</p>
         <p>Kernel: {{data_host['KernelVersion']}}</p>
+        <p>Host IP: {{data_host['NodeAddr']}}</p>
         <p>Docker Engine: {{data_host['ServerVersion']}}</p>
     </div>
     <div>
-        <p>Cluster Status: {{data_swam}}</p>
+        <p>Cluster Join Token: {{data_swam}}</p>
     </div>
 </body>
 {% endblock %}
