@@ -36,25 +36,25 @@ services:
       - DAC_READ_SEARCH
 
   # slave app server which transcodes
-  appslave:
-    build:
-      context: ./ComposeMediaKrakenSlave
-      dockerfile: dockerfile-appslave
-    container_name: mkslave
-    depends_on:
-      - appserver
-      - pgbounce
-    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /home/mediakraken:/mediakraken/mnt
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
-    # to allow mount nfs/cifs
-    cap_add:
-      - SYS_ADMIN
-      - DAC_READ_SEARCH
+#  appslave:
+#    build:
+#      context: ./ComposeMediaKrakenSlave
+#      dockerfile: dockerfile-appslave
+#    container_name: mkslave
+#    depends_on:
+#      - appserver
+#      - pgbounce
+#    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#      - /home/mediakraken:/mediakraken/mnt
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
+#    # to allow mount nfs/cifs
+#    cap_add:
+#      - SYS_ADMIN
+#      - DAC_READ_SEARCH
 
   # start broadcast server
   broadcast:
