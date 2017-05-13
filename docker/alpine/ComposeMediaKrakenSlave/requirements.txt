@@ -5,3 +5,4 @@ celery
 twisted
 zope.interface
 setuptools
+streamlink
