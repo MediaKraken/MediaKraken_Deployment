@@ -49,7 +49,6 @@ class NetworkEvents(Protocol):
         self.user_country_code = None
         self.user_country_name = None
         self.user_cpu_usage = 0
-        self.user_ffmpeg_data = [] # hold the info of running jobs on slave(s) along with chromecast
         self.proc_file_scan = None
         self.proc_media_match = None
         self.proc_chapter_create = None
@@ -238,17 +237,7 @@ class NetworkEvents(Protocol):
         This is used only from the webapp and chromecast celery
         """
         logging.info('celery message received: %s', message)
-        low_cpu_host = None
-        low_cpu_host_percent = 100
-        low_cpu_protocol = None
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_slave:
-                if self.users[user_device_uuid].user_cpu_usage < low_cpu_host_percent:
-                    low_cpu_host = user_device_uuid
-                    low_cpu_protocol = protocol
-                    low_cpu_host_percent = self.users[user_device_uuid].user_cpu_usage
-        if low_cpu_host is not None:
-            logging.info('send celery: %s', message)
-            low_cpu_protocol.transport.write(message.encode("utf8"))
-        else:
-            logging.error('no slave found for playback')
+                logging.info('send celery: %s', message)
+                protocol.transport.write(message.encode("utf8"))
