@@ -59,7 +59,7 @@ def read(queue_object):
     logging.info('here I am in consume - read')
     if body:
         logging.info("body %s", body)
-        network_base.NetworkEvents.broadcast_celery_message(body)
+        #network_base.NetworkEvents.broadcast_celery_message(body)
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
