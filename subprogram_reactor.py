@@ -35,6 +35,10 @@ import time
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
+    # last of branch 0.4.0 works
+
+    # current joins!!!!!!!!
+
     # see if it creates - doesn't creae the exchange it appears but client puts stuff in que
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct') #, durable=True) # won't join if durable even though it should work
 
