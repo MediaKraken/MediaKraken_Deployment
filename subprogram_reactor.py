@@ -35,7 +35,7 @@ import time
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
-    # see if it creates
+    # see if it creates - doesn't creae the exchange it appears but client puts stuff in que
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct') #, durable=True) # won't join if durable even though it should work
     queue = yield channel.queue_declare(queue='mkque', durable=True)
     yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
