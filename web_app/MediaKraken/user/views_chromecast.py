@@ -64,7 +64,7 @@ def user_cast(action, guid):
     elif action == 'vol down':
         common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
             json.dumps({'task': 'vol_down', 'user': current_user.get_id()})], queue='mkque')
-    return render_template("users/user_playback_cast.html", data_uuid=guid)
+    return render_template("users/user_playback_cast.html", data_uuid=guid, data_chromecast=None)
 
 
 @blueprint.before_request

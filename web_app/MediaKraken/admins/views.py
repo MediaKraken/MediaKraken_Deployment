@@ -232,6 +232,22 @@ def admin_cron_edit(guid):
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
+@blueprint.route("/chromecasts", methods=["GET", "POST"])
+@blueprint.route("/chromecasts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_chromecasts():
+    """
+    List chromecasts
+    """
+    device_list = []
+    for row_data in g.db_connection.db_device_list('cast'):
+        device_list.append((row_data['mm_device_id'], row_data['mm_device_json']['Name'],
+                            row_data['mm_device_json']['Model'],
+                            row_data['mm_device_json']['IP'], True))
+    return render_template("admin/admin_chromecasts.html", data_chromecast=device_list)
+
+
 @blueprint.route("/tvtuners", methods=["GET", "POST"])
 @blueprint.route("/tvtuners/", methods=["GET", "POST"])
 @login_required
