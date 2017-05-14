@@ -35,17 +35,14 @@ import time
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
-    # last of branch 0.4.0 works
+    # last of branch 0.4.0 works with 3.6.6 at least
 
     # current joins!!!!!!!!
-
-    # see if it creates - doesn't creae the exchange it appears but client puts stuff in que
+    # see if it creates - doesn't create the exchange it appears but client puts stuff in que
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct') #, durable=True) # won't join if durable even though it should work
-
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True) # with 3.6.9 instead - won't join either
-
     queue = yield channel.queue_declare(queue='mkque', durable=True)
-    # works normally iwth 3.6.6 yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
+    # works normally with 3.6.6 yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
     yield channel.queue_bind(queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
@@ -81,6 +78,10 @@ class MediaKrakenServerApp(Factory):
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
+
+    # sleep to see if rabbit is joining too soon
+    time.sleep(30)
+
     # pika rabbitmq connection
     parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
