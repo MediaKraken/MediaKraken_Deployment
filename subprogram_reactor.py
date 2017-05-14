@@ -38,12 +38,9 @@ def run(connection):
     channel = yield connection.channel()
     exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
     queue = yield channel.queue_declare(queue='mkque', durable=True)
-    # works normally with 3.6.6 yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
-    #yield channel.queue_bind(queue='mkque')
     yield channel.queue_bind(exchange='mkque_ex', queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
-    #channel.start_consuming() # eh, didnt' seem to do anything
     l = task.LoopingCall(read, queue_object)
     l.start(0.01)
 
