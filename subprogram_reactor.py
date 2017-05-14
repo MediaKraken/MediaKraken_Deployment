@@ -79,6 +79,8 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
 
+
+    # fire off wait for it script?
     # sleep to see if rabbit is joining too soon
     time.sleep(30)
 
