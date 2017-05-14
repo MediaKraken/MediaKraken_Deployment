@@ -30,6 +30,7 @@ from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import time
+import subprocess
 
 
 @defer.inlineCallbacks
@@ -79,10 +80,8 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
 
-
-    # fire off wait for it script?
-    # sleep to see if rabbit is joining too soon
-    time.sleep(30)
+    # fire off wait for it script to allow rabbitmq connection
+    subprocess.Popen(['./mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'], shell=False)
 
     # pika rabbitmq connection
     parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
