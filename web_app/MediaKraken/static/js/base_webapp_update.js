@@ -8,7 +8,7 @@ function EditLibrary(elm) {
 			var data = JSON.parse(res);
 			$('#editPath').val(data['Path']);
 			$('#editClass').val(data['Media Class']);
-			$('#editLibraryModal').modal();			
+			$('#editLibraryModal').modal();
 		},
 		error: function(error){
 			console.log(error);
@@ -50,7 +50,7 @@ function EditShare(elm) {
 			$('#editSharePassword').val(data['Password']);
 			$('#editShareServer').val(data['Server']);
 			$('#editSharePath').val(data['Path']);
-			$('#editShareModal').modal();			
+			$('#editShareModal').modal();
 		},
 		error: function(error){
 			console.log(error);
@@ -100,3 +100,41 @@ function EditTransmission(elm) {
 	});
 }
 
+function EditChromecast(elm) {
+	localStorage.setItem('editChromecastId',$(elm).attr('data-id'));
+	$.ajax({
+		url : '../getChromecastById',
+		data : {id:$(elm).attr('data-id')},
+		type : 'POST',
+		success: function(res){
+			var data = JSON.parse(res);
+			$('#editName').val(data['Name']);
+			$('#editIP').val(data['IP']);
+			$('#editChromecastModal').modal();
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+$(function() {
+	$('#btnChromecastUpdate').click(function() {
+	    $.ajax({
+		url: '../updateChromecast',
+		data: {
+		    new_name: $('#editName').val(),
+		    new_ip: $('#editIP').val(),
+		    id: localStorage.getItem('editChromecastId')
+		},
+		type: 'POST',
+		success: function(res) {
+		    $('#editChromecastModal').modal('hide');
+		    // Re populate the grid
+		},
+		error: function(error) {
+		    console.log(error);
+		}
+	    });
+	});
+});
