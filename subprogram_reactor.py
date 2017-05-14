@@ -81,7 +81,8 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
-    subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'], shell=False)
+    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'], shell=False)
+    wait_pid.wait()
 
     # pika rabbitmq connection
     parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
