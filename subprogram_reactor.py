@@ -49,8 +49,8 @@ def run(connection):
 
 @defer.inlineCallbacks
 def read(queue_object):
-    ch, method, properties, body = yield queue_object.get()
     logging.info('here I am in consume - read')
+    ch, method, properties, body = yield queue_object.get()
     if body:
         logging.info("body %s", body)
         #network_base.NetworkEvents.broadcast_celery_message(body)
