@@ -38,10 +38,11 @@ def run(connection):
     # see if it creates - doesn't creae the exchange it appears but client puts stuff in que
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct') #, durable=True) # won't join if durable even though it should work
 
-    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True) # with 3.6.9 instead
+    #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True) # with 3.6.9 instead - won't join either
 
     queue = yield channel.queue_declare(queue='mkque', durable=True)
-    yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
+    # works normally iwth 3.6.6 yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
+    yield channel.queue_bind(queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
