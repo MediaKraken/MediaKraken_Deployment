@@ -36,15 +36,11 @@ import subprocess
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
-    # last of branch 0.4.0 works with 3.6.6 at least
-
-    # current joins!!!!!!!!
-    # see if it creates - doesn't create the exchange it appears but client puts stuff in que
     #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct') #, durable=True) # won't join if durable even though it should work
-    #exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True) # with 3.6.9 instead - won't join either
     queue = yield channel.queue_declare(queue='mkque', durable=True)
     # works normally with 3.6.6 yield channel.queue_bind(exchange='mkque_ex', queue='mkque')  # , routing_key='mkque.world')
-    yield channel.queue_bind(queue='mkque')
+    #yield channel.queue_bind(queue='mkque')
+    yield channel.queue_bind(exchange='default', queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
