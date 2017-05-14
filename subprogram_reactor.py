@@ -43,6 +43,7 @@ def run(connection):
     #yield channel.queue_bind(exchange='default', queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
+    channel.start_consuming()
     l = task.LoopingCall(read, queue_object)
     l.start(0.01)
 
