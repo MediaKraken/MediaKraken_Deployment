@@ -68,6 +68,7 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
+    # load up user bps
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(user.views_3d.blueprint)
@@ -91,6 +92,18 @@ def register_blueprints(app):
     app.register_blueprint(user.views_tv.blueprint)
     app.register_blueprint(user.views_tv_live.blueprint)
     app.register_blueprint(admins.views.blueprint)
+    # load up admin bps
+    app.register_blueprint(admins.views.blueprint)
+    app.register_blueprint(admins.views_backup.blueprint)
+    app.register_blueprint(admins.views_chromecasts.blueprint)
+    app.register_blueprint(admins.views_cron.blueprint)
+    app.register_blueprint(admins.views_docker.blueprint)
+    app.register_blueprint(admins.views_library.blueprint)
+    app.register_blueprint(admins.views_link.blueprint)
+    app.register_blueprint(admins.views_share.blueprint)
+    app.register_blueprint(admins.views_transmission.blueprint)
+    app.register_blueprint(admins.views_tvtuners.blueprint)
+    app.register_blueprint(admins.views_users.blueprint)
     return None
 
 
