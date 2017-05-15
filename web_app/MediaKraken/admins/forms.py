@@ -207,3 +207,23 @@ class CronEditForm(Form):
         if not initial_validation:
             return False
         return True
+
+
+class ChromecastEditForm(Form):
+    """
+    for editing the chromecast devices
+    """
+    name = TextField('Name', validators=[DataRequired()])
+    description = TextField('IP Address', validators=[DataRequired()])
+    enabled = BooleanField('Enabled')
+
+
+    def __init__(self, *args, **kwargs):
+        super(ChromecastEditForm, self).__init__(*args, **kwargs)
+
+
+    def validate(self):
+        initial_validation = super(ChromecastEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

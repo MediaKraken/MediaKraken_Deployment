@@ -19,7 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
+from MediaKraken.admins.forms import ChromecastAddEditForm
 
 from common import common_config_ini
 from common import common_internationalization
@@ -60,7 +60,7 @@ def admin_required(fn):
 @blueprint.route("/chromecasts/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_chromecasts():
+def admin_chromecast():
     """
     List chromecasts
     """
@@ -70,6 +70,67 @@ def admin_chromecasts():
                             row_data['mm_device_json']['Model'],
                             row_data['mm_device_json']['IP'], True))
     return render_template("admin/admin_chromecasts.html", data_chromecast=device_list)
+
+
+@blueprint.route("/chromecast_edit", methods=["GET", "POST"])
+@blueprint.route("/chromecast_edit/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_chromecast_edit_page():
+    """
+    allow user to edit chromecast
+    """
+    form = ChromecastAddEditForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if request.form['action_type'] == 'Add':
+                # verify it doesn't exit and add
+                if g.db_connection.db_device_check(request.form['library_path']) == 0:
+                    g.db_connection.db_device_insert(request.form['library_path'],
+                        request.form['Lib_Class'], request.form['Lib_Share'])
+                    g.db_connection.db_commit()
+                    return redirect(url_for('admins.admin_chromecast'))
+                else:
+                    flash("Path already in library.", 'error')
+                    return redirect(url_for('admins.admin_chromecast_edit_page'))
+        else:
+            flash_errors(form)
+    share_list = []
+    for row_data in g.db_connection.db_audit_shares():
+        share_name = row_data['mm_media_share_server'] + ":" + row_data['mm_media_share_path']
+        share_list.append((share_name, row_data['mm_media_share_guid']))
+    return render_template("admin/admin_chromecast_edit.html", form=form,
+                           data_share=share_list)
+
+
+@blueprint.route('/chromecast_delete', methods=["POST"])
+@login_required
+@admin_required
+def admin_chromecast_delete_page():
+    """
+    Delete action 'page'
+    """
+    g.db_connection.db_device_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint.route('/getChromecastById', methods=['POST'])
+@login_required
+@admin_required
+def getChromecastById():
+    result = g.db_connection.db_device_by_uuid(request.form['id'])
+    return json.dumps({'Id': result['mm_media_dir_guid'],
+        'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
+
+
+@blueprint.route('/updateChromecast', methods=['POST'])
+@login_required
+@admin_required
+def updateChromecast():
+    g.db_connection.db_device_update_by_uuid(request.form['new_path'],
+        request.form['new_class'], request.form['id'])
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.before_request
