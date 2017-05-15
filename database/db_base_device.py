@@ -92,6 +92,6 @@ def db_device_check(self, device_name, device_ip):
     """
     Check to see if device exists already on db
     """
-    self.db_cursor.execute('select count(*) from mm_device where mm_device_json->>\'Name\' ? %s'
-                           ' and mm_device_json->>\'IP\' ? %s', (device_name, device_ip))
+    self.db_cursor.execute('select count(*) from mm_device where mm_device_json->\'Name\' ? %s'
+                           ' and mm_device_json->\'IP\' ? %s', (device_name, device_ip))
     return self.db_cursor.fetchone()[0]
