@@ -85,9 +85,10 @@ def admin_chromecast_edit_page():
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
                 # verify it doesn't exit and add
-                if g.db_connection.db_device_check(request.form['library_path']) == 0:
-                    g.db_connection.db_device_insert(request.form['library_path'],
-                        request.form['Lib_Class'], request.form['Lib_Share'])
+                if g.db_connection.db_device_check(request.form['name'], request.form['ipaddr']) == 0:
+                    g.db_connection.db_device_insert('cast', json.dumps({'Name': request.form['name'],
+                                                                         'Model': "NA",
+                                                                          'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_chromecast'))
                 else:
@@ -128,8 +129,8 @@ def getChromecastById():
 @login_required
 @admin_required
 def updateChromecast():
-    g.db_connection.db_device_update_by_uuid(request.form['new_name'],
-        request.form['new_ip'], request.form['id'])
+    g.db_connection.db_device_update_by_uuid(request.form['name'],
+        request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
