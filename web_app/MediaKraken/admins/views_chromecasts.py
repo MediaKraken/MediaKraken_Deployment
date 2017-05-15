@@ -88,20 +88,15 @@ def admin_chromecast_edit_page():
                 if g.db_connection.db_device_check(request.form['name'], request.form['ipaddr']) == 0:
                     g.db_connection.db_device_insert('cast', json.dumps({'Name': request.form['name'],
                                                                          'Model': "NA",
-                                                                          'IP': request.form['ipaddr']}))
+                                                                         'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins.admin_chromecast'))
+                    return redirect(url_for('admin.admin_chromecast'))
                 else:
                     flash("Chromecast already in database.", 'error')
-                    return redirect(url_for('admins.admin_chromecast_edit_page'))
+                    return redirect(url_for('admin.admin_chromecast_edit_page'))
         else:
             flash_errors(form)
-    share_list = []
-    for row_data in g.db_connection.db_audit_shares():
-        share_name = row_data['mm_media_share_server'] + ":" + row_data['mm_media_share_path']
-        share_list.append((share_name, row_data['mm_media_share_guid']))
-    return render_template("admin/admin_chromecast_edit.html", form=form,
-                           data_share=share_list)
+    return render_template("admin/admin_chromecast_edit.html", form=form)
 
 
 @blueprint.route('/chromecast_delete', methods=["POST"])
