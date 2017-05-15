@@ -90,10 +90,10 @@ def admin_chromecast_edit_page():
                                                                          'Model': "NA",
                                                                          'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
-                    return redirect(url_for('admin.admin_chromecast'))
+                    return redirect(url_for('admins_chromecasts.admin_chromecast'))
                 else:
                     flash("Chromecast already in database.", 'error')
-                    return redirect(url_for('admin.admin_chromecast_edit_page'))
+                    return redirect(url_for('admins_chromecasts.admin_chromecast_edit_page'))
         else:
             flash_errors(form)
     return render_template("admin/admin_chromecast_edit.html", form=form)
