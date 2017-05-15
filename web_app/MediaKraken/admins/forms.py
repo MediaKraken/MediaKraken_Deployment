@@ -214,7 +214,7 @@ class ChromecastEditForm(Form):
     for editing the chromecast devices
     """
     name = TextField('Name', validators=[DataRequired()])
-    description = TextField('IP Address', validators=[DataRequired()])
+    ipaddr = TextField('IP Address', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
 
 
