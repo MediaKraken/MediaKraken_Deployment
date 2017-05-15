@@ -91,7 +91,7 @@ def admin_chromecast_edit_page():
                     g.db_connection.db_commit()
                     return redirect(url_for('admins.admin_chromecast'))
                 else:
-                    flash("Path already in library.", 'error')
+                    flash("Chromecast already in database.", 'error')
                     return redirect(url_for('admins.admin_chromecast_edit_page'))
         else:
             flash_errors(form)
@@ -120,16 +120,16 @@ def admin_chromecast_delete_page():
 @admin_required
 def getChromecastById():
     result = g.db_connection.db_device_by_uuid(request.form['id'])
-    return json.dumps({'Id': result['mm_media_dir_guid'],
-        'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
+    return json.dumps({'Id': result['mm_device_id'],
+        'Name': result['mm_device_json']['Name'], 'IP': result['mm_device_json']['IP']})
 
 
 @blueprint.route('/updateChromecast', methods=['POST'])
 @login_required
 @admin_required
 def updateChromecast():
-    g.db_connection.db_device_update_by_uuid(request.form['new_path'],
-        request.form['new_class'], request.form['id'])
+    g.db_connection.db_device_update_by_uuid(request.form['new_name'],
+        request.form['new_ip'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
