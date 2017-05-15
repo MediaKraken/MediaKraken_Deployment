@@ -13,7 +13,7 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify, 
      url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
-blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_chromecasts", __name__, url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
