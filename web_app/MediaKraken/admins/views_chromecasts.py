@@ -19,7 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import ChromecastAddEditForm
+from MediaKraken.admins.forms import ChromecastEditForm
 
 from common import common_config_ini
 from common import common_internationalization
@@ -80,7 +80,7 @@ def admin_chromecast_edit_page():
     """
     allow user to edit chromecast
     """
-    form = ChromecastAddEditForm(request.form)
+    form = ChromecastEditForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
