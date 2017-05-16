@@ -30,19 +30,6 @@ FLASK_PIKA_PARAMS = {
 }
 
 
-# def make_celery(app):
-#     celery = common_celery.app
-#     #celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
-#     TaskBase = celery.Task
-#     class ContextTask(TaskBase):
-#         abstract = True
-#         def __call__(self, *args, **kwargs):
-#             with app.app_context():
-#                 return TaskBase.__call__(self, *args, **kwargs)
-#     celery.Task = ContextTask
-#     return celery
-
-
 def create_app(config_object=ProdConfig):
     """An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
@@ -62,7 +49,6 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-#    mk_celery = make_celery(app)
     g.fpika = FPika(app)
     moment = Moment(app)
     return app
