@@ -15,6 +15,7 @@ Flask-Migrate
 Flask-KVSession
 Flask-DebugToolbar
 Flask-Migrate
+flask-pika
 ipgetter
 uwsgi
 pygal
@@ -33,7 +34,6 @@ boto
 dropbox
 onedrivesdk
 cssmin
-celery
 incremental>=16.10.1
 twisted
 python-stdnum

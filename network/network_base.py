@@ -231,17 +231,17 @@ class NetworkEvents(Protocol):
                 protocol.transport.write(message.encode("utf8"))
 
 
-    @classmethod
-    def broadcast_celery_message(self, message):
-        """
-        This is used only from the webapp and chromecast celery
-        """
-        logging.info('celery message received: %s', message)
-        logging.info('Task %s', message['task'])
-        if message['task'] == 'play':
-            common_docker.com_docker_run_container('python main_server_slave.py')
-
-        # for user_device_uuid, protocol in self.users.iteritems():
-        #     if self.users[user_device_uuid].user_slave:
-        #         logging.info('send celery: %s', message)
-        #         protocol.transport.write(message.encode("utf8"))
+    # @classmethod
+    # def broadcast_celery_message(self, message):
+    #     """
+    #     This is used only from the webapp and chromecast celery
+    #     """
+    #     logging.info('celery message received: %s', message)
+    #     logging.info('Task %s', message['task'])
+    #     if message['task'] == 'play':
+    #         common_docker.com_docker_run_container('python main_server_slave.py')
+    #
+    #     # for user_device_uuid, protocol in self.users.iteritems():
+    #     #     if self.users[user_device_uuid].user_slave:
+    #     #         logging.info('send celery: %s', message)
+    #     #         protocol.transport.write(message.encode("utf8"))

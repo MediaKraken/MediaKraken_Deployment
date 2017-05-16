@@ -40,12 +40,21 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'stop', 'user': current_user.get_id()})], queue='mkque')
+        ch = g.fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'stop', 'user': current_user.get_id()}))
+        g.fpika.return_channel(ch)
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'stop', 'user': current_user.get_id()})], queue='mkque')
     elif action == 'play':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'play', 'user': current_user.get_id(),
-            'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
+        ch = g.fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'play', 'user': current_user.get_id(),
+                         'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
+        g.fpika.return_channel(ch)
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'play', 'user': current_user.get_id(),
+        #     'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
     elif action == 'pause':
         common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
             json.dumps({'task': 'pause', 'user': current_user.get_id()})], queue='mkque')

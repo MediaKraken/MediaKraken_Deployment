@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
@@ -17,20 +17,30 @@ from MediaKraken.extensions import (
     migrate,
 )
 from MediaKraken import public, user, admins
-from common import common_celery
+#from common import common_celery
+from flask.ext.pika import Pika as FPika
 
 
-def make_celery(app):
-    celery = common_celery.app
-    #celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
-    TaskBase = celery.Task
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    celery.Task = ContextTask
-    return celery
+FLASK_PIKA_PARAMS = {
+    'host': 'mkrabbitmq',      #amqp.server.com
+    'username': 'guest',  #convenience param for username
+    'password': 'guest',  #convenience param for password
+    'port': 5672,            #amqp server port
+    'virtual_host': 'vhost'   #amqp vhost
+}
+
+
+# def make_celery(app):
+#     celery = common_celery.app
+#     #celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
+#     TaskBase = celery.Task
+#     class ContextTask(TaskBase):
+#         abstract = True
+#         def __call__(self, *args, **kwargs):
+#             with app.app_context():
+#                 return TaskBase.__call__(self, *args, **kwargs)
+#     celery.Task = ContextTask
+#     return celery
 
 
 def create_app(config_object=ProdConfig):
@@ -52,7 +62,8 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    mk_celery = make_celery(app)
+#    mk_celery = make_celery(app)
+    g.fpika = FPika(app)
     moment = Moment(app)
     return app
 
