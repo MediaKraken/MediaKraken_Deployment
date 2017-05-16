@@ -237,6 +237,7 @@ class NetworkEvents(Protocol):
         This is used only from the webapp and chromecast celery
         """
         logging.info('celery message received: %s', message)
+        logging.info('Task %s', message['task'])
         if message['task'] == 'play':
             common_docker.com_docker_run_container('python main_server_slave.py')
 
