@@ -15,7 +15,7 @@ import json
 import sys
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_celery_tasks_chromecast
+#from common import common_celery_tasks_chromecast
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
@@ -56,21 +56,25 @@ def user_cast(action, guid):
         #     json.dumps({'task': 'play', 'user': current_user.get_id(),
         #     'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
     elif action == 'pause':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'pause', 'user': current_user.get_id()})], queue='mkque')
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'pause', 'user': current_user.get_id()})], queue='mkque')
+        pass
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'mute', 'user': current_user.get_id()})], queue='mkque')
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'mute', 'user': current_user.get_id()})], queue='mkque')
+        pass
     elif action == 'vol_up':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'vol_up', 'user': current_user.get_id()})], queue='mkque')
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'vol_up', 'user': current_user.get_id()})], queue='mkque')
+        pass
     elif action == 'vol down':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'vol_down', 'user': current_user.get_id()})], queue='mkque')
+        # common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
+        #     json.dumps({'task': 'vol_down', 'user': current_user.get_id()})], queue='mkque')
+        pass
     return render_template("users/user_playback_cast.html", data_uuid=guid,
                            data_chromecast=db_connection.db_device_list('cast'))
 
