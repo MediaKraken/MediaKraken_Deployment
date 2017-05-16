@@ -28,6 +28,7 @@ from twisted.internet.protocol import Protocol, Factory
 from twisted.internet import reactor
 from twisted.internet import ssl
 import ip2country
+from common import common_docker
 from common import common_network
 
 
@@ -236,7 +237,10 @@ class NetworkEvents(Protocol):
         This is used only from the webapp and chromecast celery
         """
         logging.info('celery message received: %s', message)
-        for user_device_uuid, protocol in self.users.iteritems():
-            if self.users[user_device_uuid].user_slave:
-                logging.info('send celery: %s', message)
-                protocol.transport.write(message.encode("utf8"))
+        if message['task'] == 'play':
+            common_docker.com_docker_run_container('python main_server_slave.py')
+
+        # for user_device_uuid, protocol in self.users.iteritems():
+        #     if self.users[user_device_uuid].user_slave:
+        #         logging.info('send celery: %s', message)
+        #         protocol.transport.write(message.encode("utf8"))

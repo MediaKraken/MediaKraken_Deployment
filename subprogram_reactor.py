@@ -51,7 +51,7 @@ def read(queue_object):
     ch, method, properties, body = yield queue_object.get()
     if body:
         logging.info("body %s", body)
-        #network_base.NetworkEvents.broadcast_celery_message(body)
+        network_base.NetworkEvents.broadcast_celery_message(body)
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
@@ -84,6 +84,7 @@ if __name__ == '__main__':
     d = cc.connectTCP('mkrabbitmq', 5672)
     d.addCallback(lambda protocol: protocol.ready)
     d.addCallback(run)
+
     # setup for the ssl keys
     reactor.listenSSL(8903, MediaKrakenServerApp(),
                       ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
