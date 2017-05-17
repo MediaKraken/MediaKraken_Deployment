@@ -7,6 +7,11 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
+
+from MediaKraken.extensions import (
+    fpika,
+)
+
 blueprint = Blueprint("user_chromecast", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -39,40 +44,40 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'stop', 'user': current_user.get_id()}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
     elif action == 'play':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'play', 'user': current_user.get_id(),
                          'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
     elif action == 'pause':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'pause', 'user': current_user.get_id()}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'mute', 'user': current_user.get_id()}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
     elif action == 'vol_up':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'vol_up', 'user': current_user.get_id()}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
     elif action == 'vol down':
-        ch = g.fpika.channel()
+        ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'task': 'vol_down', 'user': current_user.get_id()}))
-        g.fpika.return_channel(ch)
+        fpika.return_channel(ch)
     return render_template("users/user_playback_cast.html", data_uuid=guid,
                            data_chromecast=db_connection.db_device_list('cast'))
 

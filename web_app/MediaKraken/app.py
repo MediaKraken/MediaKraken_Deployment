@@ -15,9 +15,9 @@ from MediaKraken.extensions import (
     db,
     login_manager,
     migrate,
+    fpika,
 )
 from MediaKraken import public, user, admins
-from flask_pika import Pika as FPika
 
 
 def create_app(config_object=ProdConfig):
@@ -42,7 +42,6 @@ def create_app(config_object=ProdConfig):
 
 
 def register_extensions(app):
-    fpika = FPika()
     assets.init_app(app)
     bcrypt.init_app(app)
     cache.init_app(app)
