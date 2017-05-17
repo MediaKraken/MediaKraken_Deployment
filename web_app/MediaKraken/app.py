@@ -29,6 +29,8 @@ def create_app(config_object=ProdConfig):
     app.config.from_object(config_object)
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # need to init fpika before the register ext since that's the init
+    g.fpika = FPika()
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -37,7 +39,6 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    g.fpika = FPika()
     moment = Moment(app)
     return app
 
