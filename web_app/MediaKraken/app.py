@@ -37,7 +37,7 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    g.fpika = FPika(app)
+    g.fpika = FPika()
     moment = Moment(app)
     return app
 
@@ -49,6 +49,7 @@ def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    g.fpika.init_app(app)
     return None
 
 
