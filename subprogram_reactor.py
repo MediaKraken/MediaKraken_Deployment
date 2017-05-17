@@ -52,11 +52,6 @@ def read(queue_object):
     ch, method, properties, body = yield queue_object.get()
     if body:
         logging.info("body %s", body)
-        try:
-            logging.info(json.loads(body))
-            logging.info(json.loads(body)['task'])
-        except:
-            pass
         #network_base.NetworkEvents.broadcast_celery_message(body)
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
