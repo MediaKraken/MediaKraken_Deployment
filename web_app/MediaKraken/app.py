@@ -21,15 +21,6 @@ from MediaKraken import public, user, admins
 from flask.ext.pika import Pika as FPika
 
 
-FLASK_PIKA_PARAMS = {
-    'host': 'mkrabbitmq',      #amqp.server.com
-    'username': 'guest',  #convenience param for username
-    'password': 'guest',  #convenience param for password
-    'port': 5672,            #amqp server port
-    'virtual_host': 'vhost'   #amqp vhost
-}
-
-
 def create_app(config_object=ProdConfig):
     """An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
