@@ -39,3 +39,7 @@ class ProdConfig(Config):
         'port': 5672,            #amqp server port
         'virtual_host': 'vhost'   #amqp vhost
     }
+    FLASK_PIKA_POOL_PARAMS = {
+        'pool_size': 8,
+        'pool_recycle': 600
+    }
