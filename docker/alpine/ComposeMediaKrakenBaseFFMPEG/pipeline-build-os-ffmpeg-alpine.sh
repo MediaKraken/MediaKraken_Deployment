@@ -186,6 +186,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --disable-d3d11va \
     --disable-dxva2 \
     --disable-debug \
+    --disable-doc \
     --enable-libass \
     --enable-libcelt \
     --enable-libfdk-aac \

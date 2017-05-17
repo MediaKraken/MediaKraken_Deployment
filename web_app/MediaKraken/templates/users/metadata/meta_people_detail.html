@@ -37,7 +37,7 @@
                         <a href= {{ "../meta_movie_detail/" + media_info[0] }} > {{media_info[1]}}</a>
                         {% else %}
                         <a href= {{ "../meta_movie_detail/" + media_info[0] }} >
-                        <img src= {{ "../../static/meta/images/" + media_info[2] }} height="300" width="200">
+                        <img src= {{ "../../static/meta/images/" + media_info[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                         </a>
                         {% endif %}
                     </div>

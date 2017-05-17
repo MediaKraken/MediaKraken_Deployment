@@ -36,7 +36,7 @@ def db_device_list(self, device_type=None, offset=None, records=None):
     if device_type is None:
         if offset is None:
             self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                ' from mm_device')
+                                   ' from mm_device')
         else:
             self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
                 ' from mm_device offset %s limit %s', (offset, records))
@@ -86,3 +86,12 @@ def db_device_read(self, guid):
         return self.db_cursor.fetchone()
     except:
         return None
+
+
+def db_device_check(self, device_name, device_ip):
+    """
+    Check to see if device exists already on db
+    """
+    self.db_cursor.execute('select count(*) from mm_device where mm_device_json->\'Name\' ? %s'
+                           ' and mm_device_json->\'IP\' ? %s', (device_name, device_ip))
+    return self.db_cursor.fetchone()[0]

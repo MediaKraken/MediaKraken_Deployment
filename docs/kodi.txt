@@ -1,0 +1,17 @@
+debian 8.7
+
+nano /etc/apt/sources.list
+
+Add this line at the end of the file.
+
+deb http://http.debian.net/debian jessie-backports main
+
+apt-get update
+
+apt-get install kodi
+
+
+
+*******
+
+turned on remote control and web thingie

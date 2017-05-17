@@ -21,6 +21,7 @@ import uuid
 import psycopg2
 import json
 from common import common_config_ini
+from common import common_version
 
 
 # media classes
@@ -70,7 +71,7 @@ db_connection = common_config_ini.com_config_read(True)
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (2)')
+    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)', common_version.DB_VERSION)
 
 
 # create tables for media shares to mount
@@ -637,7 +638,6 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
 db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'awss3', 'Interval': 0},
     'MaxResumePct': 5,
     'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,
-        'MetadataImageLocal': '',
         'BackupLocal': '/mediakraken/backups/'},
     'Maintenance': None,
     'API': {'mediabrainz': None,
@@ -657,6 +657,7 @@ db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'awss3', 
         'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,
         'BrainzDBUser': None, 'BrainzDBPass': None},
     'Transmission': {'Host': None, 'Port': 9091},
+    'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0},
     'Dropbox': {'APIKey': None, 'APISecret': None},
     'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',
         'BackupBucket': 'mkbackup'},
@@ -707,16 +708,16 @@ if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is 
 
 # queue
 db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
-    ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mqd_que_type smallint, '
+    ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mdq_que_type smallint, '
     'mdq_download_json jsonb)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_download_que_idxgin_meta_json'
-        ' ON mm_download_que USING gin (mdq_download_json)')
-if db_connection.db_table_index_check('mqd_que_type_idx_name') is None:
-    db_connection.db_query('CREATE INDEX mqd_que_type_idx_name'
-        ' ON mm_download_que(mqd_que_type)')
+        ' ON mm_download_que USING gin (mqd_download_json)')
+if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
+    db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
+        ' ON mm_download_que(mdq_que_type)')
 # type
 # 0 - initial insert and/or defualt for the provider
 # 1 - movie

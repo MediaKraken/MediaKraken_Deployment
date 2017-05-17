@@ -14,6 +14,7 @@ import logging # pylint: disable=W0611
 import json
 import sys
 import uuid
+from stdnum import isbn
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -77,28 +78,29 @@ def metadata_periodical_detail(guid):
         data_name = json_metadata['mm_metadata_book_json']['title']
     except:
         data_name = 'NA'
-
+    try:
+        data_isbn = isbn.format(json_metadata['mm_metadata_book_json']['isbn10'])
+    except:
+        data_isbn = 'NA'
     try:
         data_overview = json_metadata['mm_metadata_book_json']['summary']
     except:
         data_overview = 'NA'
-
     try:
         data_author = json_metadata['mm_metadata_book_json']['author_data'][0]['name']
     except:
         data_author = 'NA'
-
     try:
         data_publisher = json_metadata['mm_metadata_book_json']['publisher_name']
     except:
         data_publisher = 'NA'
-
     try:
         data_pages = json_metadata['mm_metadata_book_json']['physical_description_text']
     except:
         data_pages = 'NA'
     return render_template('users/metadata/meta_periodical_detail.html',
                            data_name=data_name,
+                           data_isbn=data_isbn,
                            data_overview=data_overview,
                            data_author=data_author,
                            data_publisher=data_publisher,

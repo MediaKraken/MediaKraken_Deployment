@@ -8,13 +8,14 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 blueprint = Blueprint("user_tv", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_internationalization
 from common import common_pagination
 import database as database_base
 
@@ -39,10 +40,10 @@ def user_tv_page():
         try:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
                 row_data['mm_metadata_tvshow_localimage_json'],
-                locale.format('%d', row_data['mm_count'], True)))
+                common_internationalization.com_inter_number_format(row_data['mm_count'])))
         except:
             media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
-                None, locale.format('%d', row_data['mm_count'], True)))
+                None, common_internationalization.com_inter_number_format(row_data['mm_count'])))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
@@ -129,7 +130,7 @@ def user_tv_show_detail_page(guid):
                 data_genres_list = data_genres_list[2:-2]
 
         # vote count format
-        data_vote_count = 0 # locale.format('%d', json_metadata['vote_count'], True)
+        data_vote_count = 0 # common_internationlzia.('%d', json_metadata['vote_count'], True)
 
         # build production list
         production_list = ''

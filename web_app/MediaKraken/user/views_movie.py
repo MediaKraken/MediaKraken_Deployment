@@ -9,8 +9,8 @@ from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
 blueprint = Blueprint("user_movie", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
@@ -18,6 +18,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_internationalization
 from common import common_pagination
 from common import common_string
 import database as database_base
@@ -64,8 +65,8 @@ def movie_detail(guid):
         json_imagedata = data['mm_metadata_localimage_json']
         json_metaid = data['mm_metadata_media_id']
         # vote count format
-        data_vote_count = locale.format('%d',
-            json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
+        data_vote_count = common_internationalization.com_inter_number_format(\
+            json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
         # build gen list
         genres_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
@@ -78,9 +79,9 @@ def movie_detail(guid):
                 += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
                 + ', ')
         # budget format
-        budget = locale.format('%d', json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
+        budget = common_internationalization.com_inter_number_format(json_metadata['Meta']['themoviedb']['Meta']['budget'])
         # revenue format
-        revenue = locale.format('%d', json_metadata['Meta']['themoviedb']['Meta']['revenue'], True)
+        revenue = common_internationalization.com_inter_number_format(json_metadata['Meta']['themoviedb']['Meta']['revenue'])
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
             aspect_ratio = "NA"
@@ -233,8 +234,8 @@ def metadata_movie_detail(guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = locale.format('%d',
-        json_metadata['Meta']['themoviedb']['Meta']['vote_count'], True)
+    data_vote_count = common_internationalization.com_inter_number_format(\
+        json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
     # build gen list
     genres_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
@@ -274,8 +275,8 @@ def metadata_movie_detail(guid):
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
-                           data_budget=locale.format('%d',
-                               json_metadata['Meta']['themoviedb']['Meta']['budget'], True)
+                           data_budget=common_internationalization.com_inter_number_format(\
+                               json_metadata['Meta']['themoviedb']['Meta']['budget'])
                           )
 
 

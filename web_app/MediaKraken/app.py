@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from flask_moment import Moment
 #from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
@@ -15,29 +15,14 @@ from MediaKraken.extensions import (
     db,
     login_manager,
     migrate,
+    fpika,
 )
 from MediaKraken import public, user, admins
-from common import common_celery
-
-
-def make_celery(app):
-    celery = common_celery.app
-    celery.conf.update(CELERY_DEFAULT_QUEUE='mkque')
-    TaskBase = celery.Task
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    celery.Task = ContextTask
-    return celery
 
 
 def create_app(config_object=ProdConfig):
     """An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
-
-    :param config_object: The configuration object to use.
     """
     app = Flask(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
@@ -52,7 +37,6 @@ def create_app(config_object=ProdConfig):
 #    upload_user_image = UploadSet('user_image', IMAGES)
 #    upload_poster_image = UploadSet('user_poster', IMAGES)
 #    configure_uploads(app, photos)
-    mk_celery = make_celery(app)
     moment = Moment(app)
     return app
 
@@ -64,10 +48,12 @@ def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    fpika.init_app(app)
     return None
 
 
 def register_blueprints(app):
+    # load up user bps
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(user.views_3d.blueprint)
@@ -91,6 +77,18 @@ def register_blueprints(app):
     app.register_blueprint(user.views_tv.blueprint)
     app.register_blueprint(user.views_tv_live.blueprint)
     app.register_blueprint(admins.views.blueprint)
+    # load up admin bps
+    app.register_blueprint(admins.views.blueprint)
+    app.register_blueprint(admins.views_backup.blueprint)
+    app.register_blueprint(admins.views_chromecasts.blueprint)
+    app.register_blueprint(admins.views_cron.blueprint)
+    app.register_blueprint(admins.views_docker.blueprint)
+    app.register_blueprint(admins.views_library.blueprint)
+    app.register_blueprint(admins.views_link.blueprint)
+    app.register_blueprint(admins.views_share.blueprint)
+    app.register_blueprint(admins.views_transmission.blueprint)
+    app.register_blueprint(admins.views_tvtuners.blueprint)
+    app.register_blueprint(admins.views_users.blueprint)
     return None
 
 

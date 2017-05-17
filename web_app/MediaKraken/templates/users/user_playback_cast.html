@@ -8,6 +8,15 @@
         <link href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
+        {% if data_chromecast %}
+            <select name="Video_Play_Chromecast", id="video_play_chromecast">
+                {% for chrome_data in data_chromecast %}
+                <option value={{chrome_data[0]}}>{{chrome_data[2]['Name']}}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+        <p>No known current chromecast.</p>
+        {% endif %}
         <div>
             <a href= {{"../../cast/back/" + data_uuid}} >
             <img src="../../static/images/navigation/arrow_left.png" height="50" width="50">

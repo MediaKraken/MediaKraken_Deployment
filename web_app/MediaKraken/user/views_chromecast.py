@@ -7,6 +7,11 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
+
+from MediaKraken.extensions import (
+    fpika,
+)
+
 blueprint = Blueprint("user_chromecast", __name__, url_prefix='/users', static_folder="../static")
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -15,7 +20,6 @@ import json
 import sys
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_celery_tasks_chromecast
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
@@ -40,31 +44,42 @@ def user_cast(action, guid):
 #    elif action == 'rewind':
 #        pass
     elif action == 'stop':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'stop', 'user': current_user.get_id()})], queue='mkque')
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'stop', 'user': current_user.get_id()}))
+        fpika.return_channel(ch)
     elif action == 'play':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'play', 'user': current_user.get_id(),
-            'path': g.db_connection.db_read_media(guid)['mm_media_path']})], queue='mkque')
-        #cast_proc = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py', \
-        #'-devicename', '10.0.0.202', g.db_connection.db_read_media(guid)['mm_media_path']])
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'play', 'user': current_user.get_id(),
+                         'path': g.db_connection.db_read_media(guid)['mm_media_path']}))
+        fpika.return_channel(ch)
     elif action == 'pause':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'pause', 'user': current_user.get_id()})], queue='mkque')
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'pause', 'user': current_user.get_id()}))
+        fpika.return_channel(ch)
 #    elif action == 'ff':
 #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'mute', 'user': current_user.get_id()})], queue='mkque')
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'mute', 'user': current_user.get_id()}))
+        fpika.return_channel(ch)
     elif action == 'vol_up':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'vol_up', 'user': current_user.get_id()})], queue='mkque')
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'vol_up', 'user': current_user.get_id()}))
+        fpika.return_channel(ch)
     elif action == 'vol down':
-        common_celery_tasks_chromecast.com_celery_chrome_task.apply_async(args=[
-            json.dumps({'task': 'vol_down', 'user': current_user.get_id()})], queue='mkque')
-    return render_template("users/user_playback_cast.html", data_uuid=guid)
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'task': 'vol_down', 'user': current_user.get_id()}))
+        fpika.return_channel(ch)
+    return render_template("users/user_playback_cast.html", data_uuid=guid,
+                           data_chromecast=db_connection.db_device_list('cast'))
 
 
 @blueprint.before_request

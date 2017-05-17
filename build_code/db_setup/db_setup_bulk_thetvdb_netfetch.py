@@ -27,11 +27,12 @@ import zipfile
 import xmltodict
 sys.path.append("../../")
 sys.path.append("../../common")
+from common import common_internationalization
 from common import common_metadata_thetvdb
 import database as database_base
 # import localization
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 
 # verify thetvdb key exists
 if Config.get('API', 'thetvdb').strip() != 'None':
@@ -99,10 +100,10 @@ db.db_activity_insert('MediaKraken_Server thetvdb Batch Stop', None,\
 
 # send notications
 if tvshow_updated > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_updated, True)\
+    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_updated)\
         + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.db_notification_insert(locale.format('%d', tvshow_inserted, True)\
+    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_inserted)\
         + " TV show(s) metadata added.", True)
 
 

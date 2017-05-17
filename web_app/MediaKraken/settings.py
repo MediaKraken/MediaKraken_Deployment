@@ -28,7 +28,17 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":"\
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":" \
         + os.environ['POSTGRES_PASSWORD'] + "@mkpgbounce:6432/" \
         + os.environ['POSTGRES_DB']
     DEBUG_TB_ENABLED = False # Disable Debug toolbar
+    FLASK_PIKA_PARAMS = {
+        'host': 'mkrabbitmq',      #amqp.server.com
+        'username': 'guest',  #convenience param for username
+        'password': 'guest',  #convenience param for password
+        'port': 5672            #amqp server port
+    }
+    FLASK_PIKA_POOL_PARAMS = {
+        'pool_size': 8,
+        'pool_recycle': 600
+    }

@@ -24,6 +24,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
       - /home/mediakraken:/mediakraken/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken-mq
       - mediakraken-network
@@ -35,25 +36,25 @@ services:
       - DAC_READ_SEARCH
 
   # slave app server which transcodes
-  appslave:
-    build:
-      context: ./ComposeMediaKrakenSlave
-      dockerfile: dockerfile-appslave
-    container_name: mkslave
-    depends_on:
-      - appserver
-      - pgbounce
-    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /home/mediakraken:/mediakraken/mnt
-    networks:
-      - mediakraken-network
-    restart: unless-stopped
-    # to allow mount nfs/cifs
-    cap_add:
-      - SYS_ADMIN
-      - DAC_READ_SEARCH
+#  appslave:
+#    build:
+#      context: ./ComposeMediaKrakenSlave
+#      dockerfile: dockerfile-appslave
+#    container_name: mkslave
+#    depends_on:
+#      - appserver
+#      - pgbounce
+#    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#      - /home/mediakraken:/mediakraken/mnt
+#    networks:
+#      - mediakraken-network
+#    restart: unless-stopped
+#    # to allow mount nfs/cifs
+#    cap_add:
+#      - SYS_ADMIN
+#      - DAC_READ_SEARCH
 
   # start broadcast server
   broadcast:
@@ -233,6 +234,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken-mq
       - mediakraken-network
@@ -256,21 +258,6 @@ services:
 #      - mediakraken-dbnetwork
 #    restart: unless-stopped
 
-  # celery
-  # https://github.com/docker-library/celery/blob/master/4.0/Dockerfile
-  # https://github.com/it-herz/docker-celery
-#  celery:
-#    build:
-#      context: ./ComposeMediaKrakenCelery
-##      dockerfile: Dockerfile
-#      dockerfile: dockerfile-celery
-#    container_name: mkcelery
-#    depends_on:
-#      - rabbit
-#    restart: unless-stopped
-#    networks:
-#      - mediakraken-mq
-
   # rabbit
   # https://github.com/maryvilledev/alpine-rmq
   rabbit:
@@ -287,24 +274,16 @@ services:
     networks:
       - mediakraken-mq
 
-  # flower monitor for celery
-  # https://github.com/RobbieClarken/docker-flower
-#  flower:
-#    build:
-#      context: ./ComposeMediaKrakenFlower
-#      dockerfile: Dockerfile
-#    environment:
-#      - broker=amqp://guest@mkrabbitmq
-#    container_name: mkflower
-#    depends_on:
-#      - rabbit
-#    ports:
-#      - "5555:5555"
-#    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#    restart: unless-stopped
-#    networks:
-#      - mediakraken-mq
+  # runs portainer
+  dockmanage:
+    image: portainer/portainer:latest
+    container_name: mkportainer
+    ports: 
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/opt/mediakraken/data:/data
+    restart: unless-stopped
 
 # Docker private networks
 networks:

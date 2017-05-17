@@ -18,7 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-from docker import Client
+#from docker import Client
+import docker
 
 # notes on how to use the cli for the apps
 # https://docker-py.readthedocs.io/en/latest
@@ -30,17 +31,15 @@ class CommonDocker(object):
     """
     Class for interfacing with docker
     """
-    def __init__(self, host_name, host_ip):
-        self.host_name = host_name
-        self.host_ip = host_ip
-        self.cli = None
+    def __init__(self):
+        self.cli = docker.from_env()
+        self.cli_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 
-
-    def com_docker_connect(self):
-        """
-        Connect to specified machine
-        """
-        self.cli = Client(base_url='tcp://%s:%s', self.host_name, self.host_ip)
+    # def com_docker_connect(self):
+    #     """
+    #     Connect to specified machine
+    #     """
+    #     self.cli = Client(base_url=('tcp://%s:%s', (self.host_name, self.host_ip)))
 
 
     def com_docker_container_list(self):
@@ -61,28 +60,28 @@ class CommonDocker(object):
         """
         initialize swarm on host
         """
-        return self.cli.init_swarm()
+        return self.cli_api.init_swarm()
 
 
     def com_docker_swarm_inspect(self):
         """
         swarm info on host
         """
-        return self.cli.inspect_swarm()
+        return self.cli_api.inspect_swarm()
 
 
     def com_docker_swarm_leave(self):
         """
         leave current swarm
         """
-        return self.cli.leave_swarm()
+        return self.cli_api.leave_swarm()
 
 
     def com_docker_node_list(self):
         """
         List nodes in swarm
         """
-        return self.cli.nodes()
+        return self.cli_api.nodes()
 
 
     def com_docker_version(self):
@@ -111,3 +110,14 @@ class CommonDocker(object):
         list docker volumes
         """
         return self.cli.volumes()
+
+
+    def com_docker_run_container(self, container_command, container_name='mediakraken/mkslave', container_detach=True,
+                                 container_networks=('mediakraken-network'),
+                                 container_volumes=('/var/log/mediakraken:/mediakraken/log',
+                                                    '/home/mediakraken:/mediakraken/mnt')):
+        """
+        Launch container (usually for slave play)
+        """
+        return self.cli.containers.run(container_name, networks=container_networks, detach=container_detach,
+                                       command=container_command, volumes=container_volumes)

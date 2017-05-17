@@ -30,6 +30,14 @@ def db_opt_status_read(self):
     return self.db_cursor.fetchone() # no [0] as two fields
 
 
+def db_opt_update(self, option_json):
+    """
+    Update option json
+    """
+    # no need for where clause as it's only the one record
+    self.db_cursor.execute('update mm_options_and_status set mm_options_json = %s,', (option_json))
+
+
 def db_opt_status_update(self, option_json, status_json):
     """
     Update option and status json

@@ -24,7 +24,7 @@
                 </div>
                 {% else %}
                 <a href= {{ "../meta_movie_collection_detail/" + row_data[0] }} >
-                <img src= {{ "../../static/meta/images/" + row_data[2] }} height="300" width="200">
+                <img src= {{ "../../static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                 </a>
                 {% endif %}
             </div>

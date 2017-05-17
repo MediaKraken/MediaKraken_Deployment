@@ -28,12 +28,6 @@ from . import common_network
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-base_image_path = option_config_json['MediaKrakenServer']['MetadataImageLocal']
-#if base_image_path.endswith('/'):
-#    pass
-#else:
-#    base_image_path += '/'
-
 
 def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
     """
@@ -70,14 +64,15 @@ def com_meta_image_file_path(media_name, media_type):
     pattern = r'[^\.a-zA-Z]'
     try:
         if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename
-            file_path = os.path.join(base_image_path, media_type,
+            file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images', media_type,
                 random.choice(string.ascii_lowercase))
         else:
-            file_path = os.path.join(base_image_path, media_type,
+            file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images', media_type,
                 os.path.basename(media_name)[0].lower())
     except:
-        file_path = os.path.join(base_image_path, media_type,
+        file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images', media_type,
             random.choice(string.ascii_lowercase))
+    # os.path.join should be adding the terminating slash
     logging.info('file image path: %s', file_path)
     return file_path
 

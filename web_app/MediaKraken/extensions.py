@@ -21,3 +21,6 @@ cache = Cache()
 
 from flask_debugtoolbar import DebugToolbarExtension
 debug_toolbar = DebugToolbarExtension()
+
+from flask_pika import Pika as FPika
+fpika = FPika()

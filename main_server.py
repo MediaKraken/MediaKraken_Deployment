@@ -20,9 +20,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 import subprocess
+import json
 import signal
 import os
 from common import common_config_ini
+from common import common_docker
 from common import common_logging
 from common import common_network_share
 from common import common_signal
@@ -76,6 +78,16 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     logging.info('Database upgrade complete.')
 
 
+# setup the docker environment
+docker_inst = common_docker.CommonDocker()
+# check for swarm id (should already be master then)
+docker_info = docker_inst.com_docker_info()
+if docker_info['Swarm']['Managers'] == 0:
+    logging.info('attempting to init swarm as manager')
+    # init host to swarm mode
+    docker_inst.com_docker_swarm_init()
+
+
 # mount all the shares first so paths exist for validation
 common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
@@ -109,7 +121,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor_string.py'], shell=False)
+proc = subprocess.Popen(['python', './subprogram_reactor.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
@@ -138,7 +150,7 @@ for link_data in db_connection.db_link_list():
 
 
 ## hold here
-# this will key off the string reactor...only reason is so watchdog doesn't shut down
+# this will key off the twisted reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
 

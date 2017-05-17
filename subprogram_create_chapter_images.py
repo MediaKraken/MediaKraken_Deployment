@@ -23,13 +23,14 @@ import uuid
 import subprocess
 import os
 from common import common_config_ini
+from common import common_internationalization
 from common import common_logging
 from common import common_metadata
 from common import common_signal
 #from common import common_system
 from concurrent import futures
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 
 
 # set before everything else
@@ -129,7 +130,7 @@ if len(file_list) > 0:
 
 # send notications
 if total_images_created > 0:
-    db_connection.db_notification_insert(locale.format('%d', total_images_created, True)\
+    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_images_created)\
         + " chapter image(s) generated.", True)
 
 

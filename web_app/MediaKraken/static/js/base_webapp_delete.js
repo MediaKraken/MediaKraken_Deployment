@@ -186,3 +186,30 @@ function Transmission_Delete() {
         }
     });
 }
+
+function ConfirmChromecastDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#delete_chromecast').modal();
+}
+
+function Chromecast_Delete() {
+    $.ajax({
+        url: '../chromecast_delete',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#delete_chromecast').modal('hide');
+                window.location = '../chromecasts';
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}

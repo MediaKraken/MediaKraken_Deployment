@@ -8,13 +8,14 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 blueprint = Blueprint("user_movie_genre", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
+#import locale
+#locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_internationalization
 from common import common_pagination
 import database as database_base
 
@@ -32,8 +33,9 @@ def user_movie_genre_page():
     media = []
     for row_data in g.db_connection.db_media_movie_count_by_genre(
             g.db_connection.db_media_uuid_by_class('Movie')):
-        media.append((row_data['gen']['name'], locale.format('%d', row_data[1], True),
-            row_data[0]['name'] + ".png"))
+        media.append((row_data['gen']['name'],
+                      common_internationalization.com_inter_number_format(row_data[1]),
+                      row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
 
@@ -50,8 +52,8 @@ def user_movie_page(genre):
             g.db_connection.db_media_uuid_by_class('Movie'),
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
             offset=offset, include_remote=True):
-        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json, 3- mm_metadata_json,
-        # 4 - mm_metadata_localimage_json
+        # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json,
+        # 3 - mm_metadata_localimage_json
         logging.info("row2: %s", row_data['mm_media_json'])
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
