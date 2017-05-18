@@ -124,5 +124,5 @@ class CommonDocker(object):
         """
         return self.cli.containers.run(image=container_image_name, network=container_network,
                                        detach=container_detach,
-                                       command=container_command, volumes=container_volumes,
-                                       auto_remove=container_remove)
+                                       command=container_command, volumes=container_volumes)
+                                       #auto_remove=container_remove)
