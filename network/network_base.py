@@ -219,22 +219,3 @@ class NetworkEvents(Protocol):
             if self.users[user_device_uuid].user_link:
                 logging.info('send all link: %s', message)
                 protocol.transport.write(message.encode("utf8"))
-
-
-    def ampq_message_received(self, message):
-        logging.info('ampq received')
-        json_message = json.loads(message)
-        logging.info('after json')
-        if json_message['Command'] == 'Play':
-            if json_message['Sub'] == 'Cast':
-                # should only need to check for subs on initial play command
-                if 'Subtitle' in json_message:
-                    subtitle_command = ' -subtitles ' + json_message['Subtitle']\
-                                       + ' -subtitles_language ' + json_message['Language']
-                else:
-                    subtitle_command = ''
-                docker_inst = common_docker.CommonDocker()
-                docker_inst.com_docker_run_container('python /mediakraken/stream2chromecast/stream2chromecast.py'\
-                    + ' -devicename' + json_message['Device']\
-                    + subtitle_command + ' -transcodeopts -c:v copy -c:a ac3'\
-                    + ' -movflags faststart+empty_moov -transcode \'' + json_message['Data'] + '\'')
