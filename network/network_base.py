@@ -211,16 +211,6 @@ class NetworkEvents(Protocol):
                 protocol.transport.write(message.encode("utf8"))
 
 
-    def send_all_slaves(self, message):
-        """
-        Send to all slave servers
-        """
-        for user_device_uuid, protocol in self.users.iteritems():
-            if self.users[user_device_uuid].user_slave:
-                logging.info('send all slave: %s', message)
-                protocol.transport.write(message.encode("utf8"))
-
-
     def send_all_links(self, message):
         """
         Send to all linked servers
@@ -231,17 +221,17 @@ class NetworkEvents(Protocol):
                 protocol.transport.write(message.encode("utf8"))
 
 
-    # @classmethod
-    # def broadcast_celery_message(self, message):
-    #     """
-    #     This is used only from the webapp and chromecast celery
-    #     """
-    #     logging.info('celery message received: %s', message)
-    #     logging.info('Task %s', message['task'])
-    #     if message['task'] == 'play':
-    #         common_docker.com_docker_run_container('python main_server_slave.py')
-    #
-    #     # for user_device_uuid, protocol in self.users.iteritems():
-    #     #     if self.users[user_device_uuid].user_slave:
-    #     #         logging.info('send celery: %s', message)
-    #     #         protocol.transport.write(message.encode("utf8"))
+    def ampq_message_received(self, message):
+        json_message = json.loads(message)
+        if json_message['Command'] == 'Play':
+            if json_message['Sub'] == 'Cast':
+                # should only need to check for subs on initial play command
+                if 'Subtitle' in json_message:
+                    subtitle_command = ' -subtitles ' + json_message['Subtitle']\
+                                       + ' -subtitles_language ' + json_message['Language']
+                else:
+                    subtitle_command = ''
+                common_docker.com_docker_run_container('python /mediakraken/stream2chromecast/stream2chromecast.py'\
+                    + ' -devicename' + json_message['Device']\
+                    + subtitle_command + ' -transcodeopts -c:v copy -c:a ac3'\
+                    + ' -movflags faststart+empty_moov -transcode \'' + json_message['Data'] + '\'')
