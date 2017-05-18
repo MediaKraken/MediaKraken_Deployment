@@ -32,8 +32,9 @@ from common import common_logging
 from common import common_signal
 import time
 import subprocess
-
 import json
+
+docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
 def run(connection):
@@ -55,7 +56,6 @@ def read(queue_object):
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
-        logging.info('after json')
         if json_message['Type'] == 'Play':
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
@@ -64,14 +64,12 @@ def read(queue_object):
                                        + ' -subtitles_language ' + json_message['Language']
                 else:
                     subtitle_command = ''
-                logging.info('here before dock')
-                docker_inst = common_docker.CommonDocker()
-                logging.info('after dock')
+                logging.info('b4 run')
                 docker_inst.com_docker_run_container('python /mediakraken/stream2chromecast/stream2chromecast.py'
                     + ' -devicename' + json_message['Device']
                     + subtitle_command + ' -transcodeopts -c:v copy -c:a ac3'
                     + ' -movflags faststart+empty_moov -transcode \'' + json_message['Data'] + '\'')
-                logging.info(('after run'))
+                logging.info('after run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
