@@ -222,7 +222,9 @@ class NetworkEvents(Protocol):
 
 
     def ampq_message_received(self, message):
+        logging.info('ampq received')
         json_message = json.loads(message)
+        logging.info('after json')
         if json_message['Command'] == 'Play':
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
