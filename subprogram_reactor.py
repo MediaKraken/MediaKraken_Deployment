@@ -56,7 +56,7 @@ def read(queue_object):
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
         logging.info('after json')
-        if json_message['Command'] == 'Play':
+        if json_message['Type'] == 'Play':
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
