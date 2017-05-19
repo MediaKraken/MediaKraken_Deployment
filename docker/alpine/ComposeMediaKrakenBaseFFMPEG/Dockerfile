@@ -52,7 +52,7 @@ RUN apk add --update \
   wget \
   zlib-dev \
   && /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
-  && mv ~/bin/ff* /mediakraken/bin/. \
+  && mv ~/bin/ff* /bin/. \
   && rm /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \
