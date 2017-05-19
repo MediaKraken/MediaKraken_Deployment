@@ -52,7 +52,7 @@ import socket
 
 import tempfile
 
-
+from common import common_docker
 
 script_name = (sys.argv[0].split(os.sep))[-1]
 
@@ -407,7 +407,7 @@ def get_mimetype(filename, ffprobe_cmd=None):
 
 def play(filename, transcode=False, transcoder=None, transcode_options=None, transcode_input_options=None,
          transcode_bufsize=0, device_name=None, server_port=None,
-         subtitles=None, subtitles_port=None, subtitles_language=None):
+         subtitles=None, subtitles_port=None, subtitles_language=None, server_ip=None):
     """ play a local file or transcode from a file or URL and stream to the chromecast """
 
     print_ident()
@@ -429,12 +429,19 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
             sys.exit("media file %s not found" % filename)
 
 
-
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
 
 
-    status = cast.get_status()
-    webserver_ip = status['client'][0]
+    if server_ip is None:
+        status = cast.get_status()
+        webserver_ip = status['client'][0]
+    else:
+        if server_ip == "Docker":
+            docker_inst = common_docker.CommonDocker()
+            # it returns a dict, not a json
+            webserver_ip = docker_inst.com_docker_info()['NodeAddr']
+        else:
+            webserver_ip = server_ip
 
     print "local ip address:", webserver_ip
 
@@ -738,6 +745,9 @@ def run():
     # optional transcoder parm. if not specified, ffmpeg will be used, if installed, otherwise avconv.
     transcoder = get_named_arg_value("-transcoder", args)
 
+    # optional server ip parm. if not specified, a system ip will be used (generally set for Docker only)
+    server_ip = get_named_arg_value("-serverip", args)
+
     # optional server port parm. if not specified, a random available port will be used
     server_port = get_named_arg_value("-port", args)
 
@@ -791,7 +801,7 @@ def run():
         arg2 = args[1]
         play(arg2, transcode=True, transcoder=transcoder, transcode_options=transcode_options, transcode_input_options=transcode_input_options, transcode_bufsize=transcode_bufsize,
              device_name=device_name, server_port=server_port, subtitles=subtitles, subtitles_port=subtitles_port,
-             subtitles_language=subtitles_language)
+             subtitles_language=subtitles_language,server_ip=server_ip)
 
     elif args[0] == "-playurl":
         arg2 = args[1]
@@ -802,7 +812,7 @@ def run():
 
     else:
         play(args[0], device_name=device_name, server_port=server_port, subtitles=subtitles,
-             subtitles_port=subtitles_port, subtitles_language=subtitles_language)
+             subtitles_port=subtitles_port, subtitles_language=subtitles_language,server_ip=server_ip)
 
 
 if __name__ == "__main__":
