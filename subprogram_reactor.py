@@ -67,9 +67,9 @@ def read(queue_object):
                 logging.info('b4 run')
                 docker_inst.com_docker_run_container(
                     container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
-                    + ' -devicename' + json_message['Device']
-                    + subtitle_command + ' -transcodeopts -c:v copy -c:a ac3'
-                    + ' -movflags faststart+empty_moov -transcode \'' + json_message['Data'] + '\''))
+                    + ' -devicename ' + json_message['Device']
+                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
+                    + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
                 logging.info('after run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
