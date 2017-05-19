@@ -115,7 +115,7 @@ class CommonDocker(object):
     # name = container name   TODO
     def com_docker_run_container(self, container_command, container_image_name='mediakraken/mkslave',
                                  container_detach=True,
-                                 container_network='mediakraken-network', # 'mediakraken-mq'],
+                                 container_network='mk_mediakraken-network', # 'mediakraken-mq'],
                                  container_volumes=['/var/log/mediakraken:/mediakraken/log',
                                                     '/home/mediakraken:/mediakraken/mnt'],
                                  container_remove=True):
