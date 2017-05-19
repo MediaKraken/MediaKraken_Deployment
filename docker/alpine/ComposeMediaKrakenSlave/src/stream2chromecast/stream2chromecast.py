@@ -114,6 +114,11 @@ Additional option to specify the preferred transcoder tool when both ffmpeg & av
     %s -transcoder avconv -transcode <file>
 
 
+Additional option to specify host ip.  Can set specific IP or 'Docker' which will look up the host IP.
+    e.g. to play from Docker container
+    %s - serverip 10.10.10.1 <file>
+
+
 Additional option to specify the port from which the media is streamed. This can be useful in a firewalled environment.
     e.g. to serve the media on port 8765
     %s -port 8765 <file>
@@ -497,7 +502,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         if os.path.isfile(subtitles):
             sub_port = 0
 
-            #convert srt to vtt, case needed
+            #convert srt to vtt
             if subtitles[-3:].lower() == 'srt':
                 print "Converting subtitle to WebVTT"
                 with open(subtitles, 'r') as srtfile:
