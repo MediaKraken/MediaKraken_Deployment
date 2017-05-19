@@ -26,8 +26,8 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - mediakraken-network
-      - mediakraken-dbnetwork
+      - mediakraken_network
+      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -48,7 +48,7 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #      - /home/mediakraken:/mediakraken/mnt
 #    networks:
-#      - mediakraken-network
+#      - mediakraken_network
 #    restart: unless-stopped
 #    # to allow mount nfs/cifs
 #    cap_add:
@@ -80,7 +80,7 @@ services:
 #      - /var/log/mediakraken:/mediakraken/log
 #      - /home/mediakraken:/mediakraken/mnt
 #    networks:
-#      - mediakraken-network
+#      - mediakraken_network
 #    restart: unless-stopped
 #    # to allow mount nfs/cifs
 #    cap_add:
@@ -100,7 +100,7 @@ services:
     volumes:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
-      - mediakraken-dbnetwork
+      - mediakraken_dbnetwork
     restart: unless-stopped
 
   # pgbouncer
@@ -121,7 +121,7 @@ services:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
-      - mediakraken-dbnetwork
+      - mediakraken_dbnetwork
     restart: unless-stopped
 
   # scan for new hardware devices
@@ -154,8 +154,8 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
-      - mediakraken-network
-      - mediakraken-dbnetwork
+      - mediakraken_network
+      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -171,7 +171,7 @@ services:
 #      - BRAINZCODE=${BRAINZCODE}
 #    container_name: mkbrainz
 #    networks:
-#      - mediakraken-network
+#      - mediakraken_network
 #    restart: unless-stopped
 
   # runs the nginx proxy service
@@ -183,7 +183,7 @@ services:
 #    ports:
 #      - "443:443"
 #    networks:
-#      - mediakraken-network
+#      - mediakraken_network
 #    restart: unless-stopped
 
   # runs the openldap
@@ -196,7 +196,7 @@ services:
 #      - "389:389"
 #      - "636:636"
 #    networks:
-#      - mediakraken-network
+#      - mediakraken_network
 #    restart: unless-stopped
 
   # runs the redis service for flask
@@ -208,7 +208,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - mediakraken-network
+      - mediakraken_network
     restart: unless-stopped
 
   # Runs the web service for the main server application
@@ -235,8 +235,8 @@ services:
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - mediakraken-network
-      - mediakraken-dbnetwork
+      - mediakraken_network
+      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -253,7 +253,7 @@ services:
 #    ports:
 #      - "12345:80"
 #    networks:
-#      - mediakraken-dbnetwork
+#      - mediakraken_dbnetwork
 #    restart: unless-stopped
 
   # rabbit
@@ -270,7 +270,7 @@ services:
       - "15672:15672"
     restart: unless-stopped
     networks:
-      - mediakraken-network
+      - mediakraken_network
 
   # runs portainer
   dockmanage:
@@ -286,9 +286,9 @@ services:
 # Docker private networks
 networks:
   # Twisted and AMQP communications network
-  mediakraken-network:
+  mediakraken_network:
     driver: bridge
   # Database communications network
-  mediakraken-dbnetwork:
+  mediakraken_dbnetwork:
     driver: bridge
 
