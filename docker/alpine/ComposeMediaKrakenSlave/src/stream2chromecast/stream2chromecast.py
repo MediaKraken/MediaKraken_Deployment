@@ -114,7 +114,7 @@ Additional option to specify the preferred transcoder tool when both ffmpeg & av
     %s -transcoder avconv -transcode <file>
 
 
-Additional option to specify host ip.  Can set specific IP or 'Docker' which will look up the host IP.
+Additional option to specify host ip.  Can set specific IP or 'docker' which will look up the host IP.
     e.g. to play from Docker container
     %s - serverip 10.10.10.1 <file>
 
@@ -441,7 +441,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         status = cast.get_status()
         webserver_ip = status['client'][0]
     else:
-        if server_ip == "Docker":
+        if server_ip.lower() == "docker":
             docker_inst = common_docker.CommonDocker()
             # it returns a dict, not a json
             webserver_ip = docker_inst.com_docker_info()['NodeAddr']
