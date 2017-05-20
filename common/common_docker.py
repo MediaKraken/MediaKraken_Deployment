@@ -102,15 +102,16 @@ class CommonDocker(object):
 
     # name = container name   TODO
     def com_docker_run_container(self, container_command, container_image_name='mediakraken/mkslave',
-                                 container_detach=True,
+                                 container_detach=True, container_port={'5050/tcp': None},
                                  container_network='mk_mediakraken_network', # 'mediakraken-mq'],
                                  container_volumes=['/var/log/mediakraken:/mediakraken/log',
-                                                    '/home/mediakraken:/mediakraken/mnt'],
+                                                    '/home/mediakraken:/mediakraken/mnt',
+                                                    '/var/run/docker.sock:/var/run/docker.sock'],
                                  container_remove=True):
         """
         Launch container (usually for slave play)
         """
         return self.cli.containers.run(image=container_image_name, network=container_network,
-                                       detach=container_detach,
+                                       detach=container_detach, port=container_port,
                                        command=container_command, volumes=container_volumes)
                                        #auto_remove=container_remove)
