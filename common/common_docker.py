@@ -18,13 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-#from docker import Client
 import docker
-
-# notes on how to use the cli for the apps
-# https://docker-py.readthedocs.io/en/latest
-
-# c = Client(base_url='unix://var/run/docker.sock')
 
 
 class CommonDocker(object):
@@ -34,12 +28,6 @@ class CommonDocker(object):
     def __init__(self):
         self.cli = docker.from_env()
         self.cli_api = docker.APIClient(base_url='unix://var/run/docker.sock')
-
-    # def com_docker_connect(self):
-    #     """
-    #     Connect to specified machine
-    #     """
-    #     self.cli = Client(base_url=('tcp://%s:%s', (self.host_name, self.host_ip)))
 
 
     def com_docker_container_list(self):
