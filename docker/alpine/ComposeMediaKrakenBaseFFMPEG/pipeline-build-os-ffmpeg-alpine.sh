@@ -180,7 +180,7 @@ cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.4.5/source3/include" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.5.9/source3/include" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib -L/usr/local/lib" \
     --bindir="$HOME/bin" \
     --enable-gpl \
