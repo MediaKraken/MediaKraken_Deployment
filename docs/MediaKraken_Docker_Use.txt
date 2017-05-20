@@ -35,7 +35,7 @@ docker exec -it [container-id] /bin/ash
 
 docker build -t mediakraken/mkslave .
 
-docker run --network=mk_mediakraken_network  -v /var/log/mediakraken:/mediakraken/log -v /home/mediakraken:/mediakraken/mnt -itd --name=alpine33fsdfs7 mediakraken/mkslave
+docker run --network=mk_mediakraken_network -p 5050 -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/mediakraken:/mediakraken/log -v /home/mediakraken:/mediakraken/mnt -itd --name=alpifs7 mediakraken/mkslave
 
 
 docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
