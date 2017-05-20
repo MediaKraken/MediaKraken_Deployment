@@ -155,8 +155,8 @@ make -j16
 make install
 
 cd ~/ffmpeg_sources
-curl -L -O https://github.com/samba-team/samba/archive/samba-4.4.5.tar.gz
-tar xzvf samba-4.4.5.tar.gz
+curl -L -O https://github.com/samba-team/samba/archive/samba-4.5.9.tar.gz
+tar xzvf samba-4.5.9.tar.gz
 
 # skipping for now
 #    --enable-decklink \
