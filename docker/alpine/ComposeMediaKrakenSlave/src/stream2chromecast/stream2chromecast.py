@@ -153,7 +153,7 @@ Additional option to specify the buffer size of the data returned from the trans
     e.g. to specify a buffer size of 5 megabytes
     %s -transcode -transcodebufsize 5242880 <file>
 
-""" % ((script_name,) * 21)
+""" % ((script_name,) * 22)
 
 
 
