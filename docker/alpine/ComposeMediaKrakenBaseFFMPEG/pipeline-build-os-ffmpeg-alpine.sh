@@ -90,9 +90,11 @@ make clean
 
 # alpine has 0.13.2
 cd ~/ffmpeg_sources
-curl -L -O https://github.com/libass/libass/archive/0.13.6.tar.gz
-tar xzvf 0.13.6.tar.gz
-cd libass-0.13.6
+git clone https://github.com/libass/libass.git
+#curl -L -O https://github.com/libass/libass/archive/0.13.6.tar.gz
+#tar xzvf 0.13.6.tar.gz
+#cd libass-0.13.6
+cd libass
 ./autogen.sh
 ./configure
 make -j16
