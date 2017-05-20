@@ -116,7 +116,7 @@ Additional option to specify the preferred transcoder tool when both ffmpeg & av
 
 Additional option to specify host ip.  Can set specific IP or 'docker' which will look up the host IP.
     e.g. to play from Docker container
-    %s - serverip 10.10.10.1 <file>
+    %s -serverip 10.10.10.1 <file>
 
 
 Additional option to specify the port from which the media is streamed. This can be useful in a firewalled environment.
@@ -437,16 +437,9 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
 
 
-    if server_ip is None:
-        status = cast.get_status()
-        webserver_ip = status['client'][0]
-    else:
-        if server_ip.lower() == "docker":
-            docker_inst = common_docker.CommonDocker()
-            # it returns a dict, not a json
-            webserver_ip = docker_inst.com_docker_info()['NodeAddr']
-        else:
-            webserver_ip = server_ip
+    status = cast.get_status()
+    webserver_ip = status['client'][0]
+
 
     print "local ip address:", webserver_ip
 
@@ -489,6 +482,16 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
     thread = Thread(target=server.handle_request)
     thread.start()
 
+
+    if server_ip is None:
+        pass # should already be set from above
+    else:
+        if server_ip.lower() == "docker":
+            docker_inst = common_docker.CommonDocker()
+            # it returns a dict, not a json
+            webserver_ip = docker_inst.com_docker_info()['NodeAddr']
+        else:
+            webserver_ip = server_ip
 
     url = "http://%s:%s?%s" % (webserver_ip, str(server.server_port), urllib.quote_plus(filename, "/"))
 
