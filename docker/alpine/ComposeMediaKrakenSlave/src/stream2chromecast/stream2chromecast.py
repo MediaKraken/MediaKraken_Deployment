@@ -489,7 +489,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         if server_ip.lower() == "docker":
             docker_inst = common_docker.CommonDocker()
             # it returns a dict, not a json
-            webserver_ip = docker_inst.com_docker_info()['NodeAddr']
+            webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
         else:
             webserver_ip = server_ip
 
