@@ -157,6 +157,17 @@ make install
 cd ~/ffmpeg_sources
 curl -L -O https://github.com/samba-team/samba/archive/samba-4.5.9.tar.gz
 tar xzvf samba-4.5.9.tar.gz
+cd samba-samba-4.5.9
+./configure --without-acl-support --without-ldap --without-ads
+make -j16
+make install
+
+cd ~/ffmpeg_sources
+curl -L -O http://bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+tar xzvf bzip2-1.0.6.tar.gz
+cd bzip2-1.0.6
+make
+make install
 
 # skipping for now
 #    --enable-decklink \
@@ -180,7 +191,7 @@ cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.5.9/source3/include" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I/usr/local/include/ass -I$HOME/ffmpeg_sources/samba-samba-4.5.9/source3/include" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib -L/usr/local/lib" \
     --bindir="$HOME/bin" \
     --enable-gpl \
