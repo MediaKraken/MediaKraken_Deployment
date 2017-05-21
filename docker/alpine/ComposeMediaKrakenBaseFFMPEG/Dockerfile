@@ -51,8 +51,13 @@ RUN apk add --update \
   texinfo \
   wget \
   zlib-dev \
+  python-dev \
+  gnutls-dev \
+  samba-dev \
+  libressl-dev \
   && /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
-  && mv ~/bin/ff* /mediakraken/bin/. \
+  && mv ~/bin/ff* /bin/. \
+  && rm /bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
   && apk del \

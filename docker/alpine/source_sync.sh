@@ -33,6 +33,7 @@ cp /home/spoot/MediaKraken_Deployment/subprogram*.py  /home/spoot/MediaKraken_De
 
 # slave
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/stream2chromecast/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_slave.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 

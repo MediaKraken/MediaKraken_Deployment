@@ -10,9 +10,9 @@ make install
 make distclean
 
 cd ~/ffmpeg_sources
-curl -L -O https://get.videolan.org/x265/x265_2.2.tar.gz
-tar xzvf x265_2.2.tar.gz
-cd ~/ffmpeg_sources/x265_2.2/build/linux
+curl -L -O https://get.videolan.org/x265/x265_2.4.tar.gz
+tar xzvf x265_2.4.tar.gz
+cd ~/ffmpeg_sources/x265_2.4/build/linux
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
 make -j16
 make install
@@ -90,9 +90,11 @@ make clean
 
 # alpine has 0.13.2
 cd ~/ffmpeg_sources
-curl -L -O https://github.com/libass/libass/archive/0.13.4.tar.gz
-tar xzvf 0.13.4.tar.gz
-cd libass-0.13.4
+git clone https://github.com/libass/libass.git
+#curl -L -O https://github.com/libass/libass/archive/0.13.6.tar.gz
+#tar xzvf 0.13.6.tar.gz
+#cd libass-0.13.6
+cd libass
 ./autogen.sh
 ./configure
 make -j16
@@ -152,9 +154,20 @@ cd libilbc-webrtc
 make -j16
 make install
 
+#cd ~/ffmpeg_sources
+#curl -L -O https://github.com/samba-team/samba/archive/samba-4.5.9.tar.gz
+#tar xzvf samba-4.5.9.tar.gz
+#cd samba-samba-4.5.9
+#./configure --without-acl-support --without-ldap --without-ads
+#make -j16
+#make install
+
 cd ~/ffmpeg_sources
-curl -L -O https://github.com/samba-team/samba/archive/samba-4.4.5.tar.gz
-tar xzvf samba-4.4.5.tar.gz
+curl -L -O http://bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+tar xzvf bzip2-1.0.6.tar.gz
+cd bzip2-1.0.6
+make
+make install
 
 # skipping for now
 #    --enable-decklink \
@@ -170,6 +183,7 @@ tar xzvf samba-4.4.5.tar.gz
 #    --enable-libxavs \
 #    --enable-netcdf \
 #    --enable-libdc1394 \
+#    --enable-openssl \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -178,7 +192,7 @@ cd ffmpeg
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
     --pkg-config-flags="--static" \
-    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.4.5/source3/include" \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -I/usr/local/include -I$HOME/ffmpeg_sources/samba-samba-4.5.9/source3/include" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib -L/usr/local/lib" \
     --bindir="$HOME/bin" \
     --enable-gpl \
@@ -212,7 +226,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libx264 \
     --enable-libx265 \
     --enable-libxvid \
-    --enable-openssl \
     --enable-version3
 make -j16
 make install

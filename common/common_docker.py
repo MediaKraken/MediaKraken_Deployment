@@ -18,13 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-#from docker import Client
 import docker
-
-# notes on how to use the cli for the apps
-# https://docker-py.readthedocs.io/en/latest
-
-# c = Client(base_url='unix://var/run/docker.sock')
+import socket
 
 
 class CommonDocker(object):
@@ -34,12 +29,6 @@ class CommonDocker(object):
     def __init__(self):
         self.cli = docker.from_env()
         self.cli_api = docker.APIClient(base_url='unix://var/run/docker.sock')
-
-    # def com_docker_connect(self):
-    #     """
-    #     Connect to specified machine
-    #     """
-    #     self.cli = Client(base_url=('tcp://%s:%s', (self.host_name, self.host_ip)))
 
 
     def com_docker_container_list(self):
@@ -54,6 +43,16 @@ class CommonDocker(object):
         docker info on host
         """
         return self.cli.info()
+
+
+    def com_docker_port(self, container_id=None, mapped_port=5050):
+        """
+        pull mapped ports for container
+        """
+        if container_id is None:
+            # docker containers spun up have container id as hostname
+            container_id = socket.gethostname()
+        return self.cli_api.port(container_id, mapped_port)
 
 
     def com_docker_swarm_init(self):
@@ -112,12 +111,18 @@ class CommonDocker(object):
         return self.cli.volumes()
 
 
-    def com_docker_run_container(self, container_command, container_name='mediakraken/mkslave', container_detach=True,
-                                 container_networks=('mediakraken-network'),
-                                 container_volumes=('/var/log/mediakraken:/mediakraken/log',
-                                                    '/home/mediakraken:/mediakraken/mnt')):
+    # name = container name   TODO
+    def com_docker_run_container(self, container_command, container_image_name='mediakraken/mkslave',
+                                 container_detach=True, container_port={'5050/tcp': None, '5060/tcp': None},
+                                 container_network='mk_mediakraken_network', # 'mediakraken-mq'],
+                                 container_volumes=['/var/log/mediakraken:/mediakraken/log',
+                                                    '/home/mediakraken:/mediakraken/mnt',
+                                                    '/var/run/docker.sock:/var/run/docker.sock'],
+                                 container_remove=True):
         """
         Launch container (usually for slave play)
         """
-        return self.cli.containers.run(container_name, networks=container_networks, detach=container_detach,
+        return self.cli.containers.run(image=container_image_name, network=container_network,
+                                       detach=container_detach, port=container_port,
                                        command=container_command, volumes=container_volumes)
+                                       #auto_remove=container_remove)

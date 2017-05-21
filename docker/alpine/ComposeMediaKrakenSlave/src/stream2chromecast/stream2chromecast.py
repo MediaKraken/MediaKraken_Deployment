@@ -52,7 +52,7 @@ import socket
 
 import tempfile
 
-
+from common import common_docker
 
 script_name = (sys.argv[0].split(os.sep))[-1]
 
@@ -114,19 +114,9 @@ Additional option to specify the preferred transcoder tool when both ffmpeg & av
     %s -transcoder avconv -transcode <file>
 
 
-Additional option to specify the port from which the media is streamed. This can be useful in a firewalled environment.
-    e.g. to serve the media on port 8765
-    %s -port 8765 <file>
-
-
 Additional option to specify subtitles. Only WebVTT format is supported.
     e.g. to cast the subtitles on /path/to/subtitles.vtt
     %s -subtitles /path/to/subtitles.vtt <file>
-
-
-Additional option to specify the port from which the subtitles is streamed. This can be useful in a firewalled environment.
-    e.g. to serve the subtitles on port 8765
-    %s -subtitles_port 8765 <file>
 
 
 Additional option to specify the subtitles language. The language format is defined by RFC 5646.
@@ -148,7 +138,7 @@ Additional option to specify the buffer size of the data returned from the trans
     e.g. to specify a buffer size of 5 megabytes
     %s -transcode -transcodebufsize 5242880 <file>
 
-""" % ((script_name,) * 21)
+""" % ((script_name,) * 19)
 
 
 
@@ -406,8 +396,7 @@ def get_mimetype(filename, ffprobe_cmd=None):
 
 
 def play(filename, transcode=False, transcoder=None, transcode_options=None, transcode_input_options=None,
-         transcode_bufsize=0, device_name=None, server_port=None,
-         subtitles=None, subtitles_port=None, subtitles_language=None):
+         transcode_bufsize=0, device_name=None, subtitles=None, subtitles_language=None):
     """ play a local file or transcode from a file or URL and stream to the chromecast """
 
     print_ident()
@@ -423,11 +412,12 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         filename = os.path.abspath(filename)
         print "source is file: %s" % filename
     else:
-        if transcode and (filename.lower().startswith("http://") or filename.lower().startswith("https://") or filename.lower().startswith("rtsp://")):
+        if transcode and (filename.lower().startswith("http://")
+                          or filename.lower().startswith("https://")
+                          or filename.lower().startswith("rtsp://")):
             print "source is URL: %s" % filename
         else:
             sys.exit("media file %s not found" % filename)
-
 
 
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
@@ -435,6 +425,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
 
     status = cast.get_status()
     webserver_ip = status['client'][0]
+
 
     print "local ip address:", webserver_ip
 
@@ -466,19 +457,18 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         req_handler.content_type = get_mimetype(filename, probe_cmd)
 
 
-    # create a webserver to handle a single request for the media file on either a free port or on a specific port if passed in the port parameter
-    port = 0
-
-    if server_port is not None:
-        port = int(server_port)
-
-    server = BaseHTTPServer.HTTPServer((webserver_ip, port), req_handler)
+    # create a webserver to handle a single request for the media file
+    server = BaseHTTPServer.HTTPServer((webserver_ip, 5050), req_handler)
 
     thread = Thread(target=server.handle_request)
     thread.start()
 
+    docker_inst = common_docker.CommonDocker()
+    # it returns a dict, not a json
+    webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
-    url = "http://%s:%s?%s" % (webserver_ip, str(server.server_port), urllib.quote_plus(filename, "/"))
+    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5050')[0]['HostPort'],
+                               urllib.quote_plus(filename, "/"))
 
     print "URL & content-type: ", url, req_handler.content_type
 
@@ -490,7 +480,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         if os.path.isfile(subtitles):
             sub_port = 0
 
-            #convert srt to vtt, case needed
+            #convert srt to vtt
             if subtitles[-3:].lower() == 'srt':
                 print "Converting subtitle to WebVTT"
                 with open(subtitles, 'r') as srtfile:
@@ -500,14 +490,12 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
                    with open(subtitles, 'w') as vttfile:
                        vttfile.write("WEBVTT\n\n" + content)
 
-            if subtitles_port is not None:
-                sub_port = int(subtitles_port)
-
-            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, sub_port), SubRequestHandler)
+            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, 5060), SubRequestHandler)
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
-            sub = "http://%s:%s?%s" % (webserver_ip, str(sub_server.server_port), urllib.quote_plus(subtitles, "/"))
+            sub = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0]['HostPort'],
+                                       urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
             print "Subtitles file %s not found" % subtitles
@@ -731,15 +719,11 @@ def run():
     """ main execution """
     args = sys.argv[1:]
 
-
     # optional device name parm. if not specified, device_name = None (the first device found will be used).
     device_name = get_named_arg_value("-devicename", args)
 
     # optional transcoder parm. if not specified, ffmpeg will be used, if installed, otherwise avconv.
     transcoder = get_named_arg_value("-transcoder", args)
-
-    # optional server port parm. if not specified, a random available port will be used
-    server_port = get_named_arg_value("-port", args)
 
     # optional transcode options parm. if specified, these options will be passed to the transcoder to be applied to the output
     transcode_options = get_named_arg_value("-transcodeopts", args)
@@ -753,12 +737,8 @@ def run():
     # optional subtitle parm. if specified, the specified subtitles will be played.
     subtitles = get_named_arg_value("-subtitles", args)
 
-    # optional subtitle_port parm. if not specified, a random available port will be used.
-    subtitles_port = get_named_arg_value("-subtitles_port", args)
-
     # optional subtitle_language parm. if not specified en-US will be used.
     subtitles_language = get_named_arg_value("-subtitles_language", args)
-
 
 
     validate_args(args)
@@ -789,9 +769,9 @@ def run():
 
     elif args[0] == "-transcode":
         arg2 = args[1]
-        play(arg2, transcode=True, transcoder=transcoder, transcode_options=transcode_options, transcode_input_options=transcode_input_options, transcode_bufsize=transcode_bufsize,
-             device_name=device_name, server_port=server_port, subtitles=subtitles, subtitles_port=subtitles_port,
-             subtitles_language=subtitles_language)
+        play(arg2, transcode=True, transcoder=transcoder, transcode_options=transcode_options,
+             transcode_input_options=transcode_input_options, transcode_bufsize=transcode_bufsize,
+             device_name=device_name, subtitles=subtitles, subtitles_language=subtitles_language)
 
     elif args[0] == "-playurl":
         arg2 = args[1]
@@ -801,8 +781,8 @@ def run():
         list_devices()
 
     else:
-        play(args[0], device_name=device_name, server_port=server_port, subtitles=subtitles,
-             subtitles_port=subtitles_port, subtitles_language=subtitles_language)
+        play(args[0], device_name=device_name, subtitles=subtitles,
+             subtitles_language=subtitles_language)
 
 
 if __name__ == "__main__":

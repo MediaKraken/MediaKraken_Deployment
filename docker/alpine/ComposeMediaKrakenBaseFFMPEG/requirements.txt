@@ -1,6 +1,0 @@
-psutil
-pysmb
-dropbox
-boto
-synolopy
-onedrivesdk

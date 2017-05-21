@@ -27,12 +27,14 @@ from pika.adapters import twisted_connection
 from twisted.internet import defer, reactor, protocol,task
 from network import network_base as network_base
 from common import common_config_ini
+from common import common_docker
 from common import common_logging
 from common import common_signal
 import time
 import subprocess
-
 import json
+
+docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
 def run(connection):
@@ -52,7 +54,23 @@ def read(queue_object):
     ch, method, properties, body = yield queue_object.get()
     if body:
         logging.info("body %s", body)
-        #network_base.NetworkEvents.broadcast_celery_message(body)
+        #network_base.NetworkEvents.ampq_message_received(body)
+        json_message = json.loads(body)
+        if json_message['Type'] == 'Play':
+            if json_message['Sub'] == 'Cast':
+                # should only need to check for subs on initial play command
+                if 'Subtitle' in json_message:
+                    subtitle_command = ' -subtitles ' + json_message['Subtitle']\
+                                       + ' -subtitles_language ' + json_message['Language']
+                else:
+                    subtitle_command = ''
+                logging.info('b4 run')
+                docker_inst.com_docker_run_container(
+                    container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
+                    + ' -devicename ' + json_message['Device']
+                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
+                    + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
+                logging.info('after run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

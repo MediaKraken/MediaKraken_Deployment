@@ -1,8 +1,7 @@
 service_identity
 pyopenssl
 psutil
-celery
-twisted
-zope.interface
 setuptools
 streamlink
+docker
+pika
