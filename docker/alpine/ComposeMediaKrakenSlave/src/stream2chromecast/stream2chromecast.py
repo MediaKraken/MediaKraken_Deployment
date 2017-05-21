@@ -467,7 +467,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
     # it returns a dict, not a json
     webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
-    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5050')[0],
+    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5050')[0]['HostPort'],
                                urllib.quote_plus(filename, "/"))
 
     print "URL & content-type: ", url, req_handler.content_type
@@ -494,7 +494,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
-            sub = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0],
+            sub = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0]['HostPort'],
                                        urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
