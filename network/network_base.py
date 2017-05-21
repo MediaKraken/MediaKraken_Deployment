@@ -142,14 +142,15 @@ class NetworkEvents(Protocol):
                 # (Offset, Limit)
                 if json_message['Data'] == 'Movie':
                     if 'Offset' in json_message:
-                        msg = json.dumps(self.db_connection.db_web_media_list(
+                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
+                            self.db_connection.db_web_media_list(
                             self.db_connection.db_media_uuid_by_class(json_message['Data']),
                             json_message['Type'], offset=json_message['Offset'],
-                            list_limit=json_message['Limit']))
+                            list_limit=json_message['Limit'])})
                     else:
-                        msg = json.dumps(self.db_connection.db_web_media_list(
+                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': self.db_connection.db_web_media_list(
                                          self.db_connection.db_media_uuid_by_class(json_message['Data']),
-                                         json_message['Type']))
+                                         json_message['Type'])})
             elif json_message['Sub'] == 'In Progress':
                 # (Offset, Limit)
                 pass
