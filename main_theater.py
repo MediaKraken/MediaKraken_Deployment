@@ -497,11 +497,11 @@ class MediaKrakenApp(App):
         self.connection.write(msg.encode("utf8"))
 
     def main_mediakraken_event_button_home(self, *args):
-        global network_protocol
-        msg = args[0]
+        #global network_protocol
+        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
-                or args[0] == 'movie' or args[0] == 'video':
+                or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
