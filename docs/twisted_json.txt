@@ -12,10 +12,11 @@ Type - type of request......list, detail, etc
 		Book
 		Game
 		Movie
+		Random
 		TV Show
 	  Subtype - poster, backdrop, etc
 	Login - duh
-		* User - User sending the request
+		* User - User sending the request - by ID
 		* Password - user password
 	Media
 		Detail (UUID)
