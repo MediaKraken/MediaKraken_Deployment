@@ -117,7 +117,7 @@ class NetworkEvents(Protocol):
             elif json_message['Sub'] == 'Game':
                 pass
             elif json_message['Sub'] == 'Movie':
-                lookup_id, media_id = self.db_connection.db_media_random(json_message['Sub'])
+                lookup_id, media_id = self.db_connection.db_media_random('Poster')
             elif json_message['Sub'] == 'TV Show':
                 pass
             else:
