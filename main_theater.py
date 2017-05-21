@@ -481,7 +481,8 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.connection.write("LOGIN " + self.global_selected_user_id + " " + self.login_password)
+        self.connection.write(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
+                                          'Password': self.login_password}).encode("utf8"))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
