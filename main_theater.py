@@ -470,9 +470,6 @@ class MediaKrakenApp(App):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
         self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
-        # grab poster
-        # request main screen background refresh
-        self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'UUID': args[0]}).encode("utf8"))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
