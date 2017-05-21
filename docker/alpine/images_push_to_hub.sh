@@ -2,6 +2,7 @@ docker push mediakraken/mkbrainz:latest
 docker push mediakraken/mkbroadcast:latest
 docker push mediakraken/mkdatabase:latest
 docker push mediakraken/mkdevicescan:latest
+docker push mediakraken/mkbaseffmpeg
 docker push mediakraken/mkslave:latest
 docker push mediakraken/mkserver:latest
 docker push mediakraken/mkmetadata:latest
