@@ -26,6 +26,7 @@ from pika import exceptions
 from pika.adapters import twisted_connection
 from twisted.internet import defer, reactor, protocol,task
 from network import network_base as network_base
+from network import network_base_amqp as network_amqp
 from common import common_config_ini
 from common import common_docker
 from common import common_logging
