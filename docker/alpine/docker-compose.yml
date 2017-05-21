@@ -4,7 +4,7 @@ version: '2'
 # Volumes are HOST directory and then CONTAINER directory
 
 services:
-  # Main app server which controls the show and transcodes
+  # Main app server which controls the show
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
@@ -34,28 +34,7 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
-  # slave app server which transcodes
-#  appslave:
-#    build:
-#      context: ./ComposeMediaKrakenSlave
-#      dockerfile: dockerfile-appslave
-#    container_name: mkslave
-#    depends_on:
-#      - appserver
-#      - pgbounce
-#    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_server_slave.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /home/mediakraken:/mediakraken/mnt
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-#    # to allow mount nfs/cifs
-#    cap_add:
-#      - SYS_ADMIN
-#      - DAC_READ_SEARCH
-
-  # start broadcast server
+  # start broadcast server (so clients can find server)
   broadcast:
     build:
       context: ./ComposeMediaKrakenBroadcast
@@ -238,10 +217,6 @@ services:
       - mediakraken_network
       - mediakraken_dbnetwork
     restart: unless-stopped
-    # to allow mount nfs/cifs
-    cap_add:
-      - SYS_ADMIN
-      - DAC_READ_SEARCH
 
   # runs the phppgadmin
 #  phppgadmin:
