@@ -1,4 +1,3 @@
-docker tag alpine_appslave:latest mediakraken/mkslave:latest
 docker tag alpine_appserver:latest mediakraken/mkserver:latest
 docker tag alpine_brainz:latest mediakraken/mkbrainz:latest
 docker tag alpine_broadcast:latest mediakraken/mkbroadcast:latest
