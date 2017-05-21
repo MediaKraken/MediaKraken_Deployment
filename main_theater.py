@@ -281,9 +281,6 @@ class MediaKrakenApp(App):
 
 
 
-
-
-
         elif json_message['Type'] == 'VIDPLAY':
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -472,10 +469,10 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
-        self.connection.write(("VIDEODETAIL " + args[0]).encode("utf8"))
+        self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
         # grab poster
         # request main screen background refresh
-        self.connection.write(("IMAGE MOVIEDETAIL MOVIE " + args[0]).encode("utf8"))
+        self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'UUID': args[0]}).encode("utf8"))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
