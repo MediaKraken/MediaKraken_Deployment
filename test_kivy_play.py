@@ -24,7 +24,7 @@ class CoverVideo(CoverBehavior, Video):
 class MainApp(App):
 
     def build(self):
-        return CoverVideo(source='/home/spoot/nfsmount/HTPC_MediaBrowser/Laserdisc/A Low Down Dirty Shame (1994)/A Low Down Dirty Shame (1994).mkv', play=True)
+        return CoverVideo(source='big_buck_bunny_1080p_h264.mov', play=True)
 
 
 if __name__ == '__main__':
