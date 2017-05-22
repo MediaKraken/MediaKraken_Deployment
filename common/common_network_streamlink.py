@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import sys
 import streamlink
+#from streamlink import Streamlink, StreamError, PluginError, NoPluginError
 
 
 def com_net_streamlink_streams(stream_url):
@@ -27,3 +28,12 @@ def com_net_streamlink_streams(stream_url):
     List possible streams
     """
     return streamlink.streams(stream_url)
+
+
+class CommonNetworkStreamlink(object):
+    """
+    Class for interfacing via streamlink
+    """
+    def __init__(self):
+        # Create the Streamlink session
+        self.streamlink_inst = streamlink.Streamlink()
