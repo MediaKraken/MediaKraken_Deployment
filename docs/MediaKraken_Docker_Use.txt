@@ -32,6 +32,7 @@ testing
 docker exec -it [container-id] /bin/ash
 
 
+docker build -t mediakraken/mknvidia .
 
 docker build -t mediakraken/mkslave .
 
