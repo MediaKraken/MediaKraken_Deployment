@@ -29,6 +29,10 @@ RUN apt-get update \
   pkg-config \
   texinfo \
   zlib1g-dev \
+  libmp3lame-dev \
+  libopus-dev \
+  libvorbis-dev \
+  libvpx-dev \
   && /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
