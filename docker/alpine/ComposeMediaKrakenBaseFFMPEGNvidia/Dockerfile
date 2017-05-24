@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mknvidia
+FROM mediakraken/mkbasenvidia
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL www.mediakraken.org.version="dev-0.2.0"
@@ -11,7 +11,7 @@ ADD pipeline-build-os-ffmpeg-ubuntu.sh /mediakraken
 WORKDIR /mediakraken
 
 RUN apt-get update \
-  && sudo apt-get -y install \
+  && apt-get -y install \
   autoconf \
   automake \
   build-essential \
