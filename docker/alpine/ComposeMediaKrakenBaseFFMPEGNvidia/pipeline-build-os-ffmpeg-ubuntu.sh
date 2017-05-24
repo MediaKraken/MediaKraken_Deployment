@@ -104,6 +104,7 @@ make install
 #    --enable-libdc1394 \
 #    --enable-openssl \
 #    --enable-libopenmpt \
+#    --enable-libssh \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -139,7 +140,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libsnappy \
     --enable-libsoxr \
     --enable-libspeex \
-    --enable-libssh \
     --enable-libtheora \
     --enable-libvorbis \
     --enable-libvpx \

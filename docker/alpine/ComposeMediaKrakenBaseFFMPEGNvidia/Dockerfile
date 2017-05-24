@@ -50,6 +50,12 @@ RUN apt-get update \
   libgsm1-dev \
   libmodplug-dev \
   librtmp-dev \
+  libsmbclient-dev \
+  libsnappy-dev \
+  libsoxr-dev \
+  libspeex-dev \
+  libwavpack-dev \
+  libxvidcore-dev \
   && /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
