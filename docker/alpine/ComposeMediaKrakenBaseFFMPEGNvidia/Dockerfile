@@ -34,6 +34,22 @@ RUN apt-get update \
   libvorbis-dev \
   libvpx-dev \
   git \
+  curl \
+  yasm \
+  cmake \
+  checkinstall \
+  libjack-jackd2-dev \
+  libopencore-amrnb-dev \
+  libopencore-amrwb-dev \
+  libsdl1.2-dev \
+  libavfilter-dev \
+  libx11-dev \
+  libxfixes-dev \
+  texi2html \
+  flite1-dev \
+  libgsm1-dev \
+  libmodplug-dev \
+  librtmp-dev \
   && /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \

@@ -1,6 +1,16 @@
 #!/bin/bash
 
 mkdir ~/ffmpeg_sources
+
+# need newer version to compile x264
+cd ~/ffmpeg_sources
+curl -L -O http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.gz
+tar xzvf nasm-2.13.01.tar.gz
+cd nasm-2.13.01
+./configure
+make -j16
+make install
+
 cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
@@ -72,13 +82,18 @@ make distclean
 #make install
 #make clean
 
+cd ~/ffmpeg_sources
+wget downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz
+tar xzvf celt-0.11.1.tar.gz
+cd celt-0.11.1
+./configure
+make -j16
+make install
 
 # skipping for now
 #    --enable-decklink \
 #    --enable-libgme \
 #    --enable-libilbc \
-#    --enable-libopencore-amrnb \
-#    --enable-libopencore-amrwb \
 #    --enable-libpulse \
 #    --enable-libschroedinger \
 #    --enable-libtwolame \
@@ -88,6 +103,7 @@ make distclean
 #    --enable-netcdf \
 #    --enable-libdc1394 \
 #    --enable-openssl \
+#    --enable-libopenmpt \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -107,6 +123,8 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --disable-doc \
     --enable-libass \
     --enable-libcelt \
+    --enable-libopencore-amrnb \
+    --enable-libopencore-amrwb \
     --enable-libfdk-aac \
     --enable-libflite \
     --enable-libfontconfig \
@@ -115,7 +133,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libgsm \
     --enable-libmodplug \
     --enable-libmp3lame \
-    --enable-libopenmpt \
     --enable-libopus \
     --enable-librtmp \
     --enable-libsmbclient \
