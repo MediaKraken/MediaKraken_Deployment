@@ -33,6 +33,7 @@ RUN apt-get update \
   libopus-dev \
   libvorbis-dev \
   libvpx-dev \
+  git \
   && /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
