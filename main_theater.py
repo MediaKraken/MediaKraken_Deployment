@@ -99,6 +99,9 @@ from kivy.animation import Animation
 from kivy.metrics import sp
 from kivy.graphics import *
 from kivy.graphics.texture import Texture
+from kivy.graphics.transformation import Matrix
+from kivy.graphics.opengl import *
+from kivy.graphics import *
 from theater import MediaKrakenSettings
 
 
