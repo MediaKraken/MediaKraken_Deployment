@@ -29,7 +29,7 @@ Type - type of request......list, detail, etc
 	Metadata
 		Detail (UUID)
 		List (Offset, Limit)
-	Play - send play request to server
+	Play - send play request to server - or receive for direct play
 		Command
 			Chapter Back
 			Chapter Forward
