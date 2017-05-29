@@ -202,25 +202,25 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-                self.root.ids.theater_media_video_title.text = json_message['Data']['Meta']['title']
-                self.root.ids.theater_media_video_subtitle.text = json_message['Data']['Meta']['tagline']
+                self.root.ids.theater_media_video_title.text = json_message['Data']['Meta']['themoviedb']['Meta']['title']
+                self.root.ids.theater_media_video_subtitle.text = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
                 # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text = str(json_message['Data']['Meta']['runtime'])
-                self.root.ids.theater_media_video_overview.text = json_message['Data']['Meta']['overview']
+                self.root.ids.theater_media_video_runtime.text = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
+                self.root.ids.theater_media_video_overview.text = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['genres'])):
-                    genres_list += (json_message['Data']['Meta']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
+                    genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 # "LocalImages": {"Banner": "", "Fanart": "",
                 # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['production_companies'])):
-                    production_list += (json_message['Data']['Meta']['production_companies'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
+                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
-                for stream_info in json_message['FFprobe']['streams']:
+                for stream_info in json_message['Data2']['FFprobe']['streams']:
                     logging.info("info: %s", stream_info)
                     stream_language = ''
                     stream_title = ''
