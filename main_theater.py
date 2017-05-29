@@ -61,7 +61,7 @@ class EchoFactory(protocol.ClientFactory):
 
 import kivy
 from kivy.app import App
-kivy.require('1.9.2')
+kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
