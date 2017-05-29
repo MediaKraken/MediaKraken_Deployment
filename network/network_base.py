@@ -137,7 +137,7 @@ class NetworkEvents(Protocol):
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == 'Detail':
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
-                    'Data': self.db_connection.db_read_media_metadata_both(json_message['UUID'])})
+                    'Data': self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])})
             elif json_message['Sub'] == 'List':
                 # (Offset, Limit)
                 if json_message['Data'] == 'Movie':

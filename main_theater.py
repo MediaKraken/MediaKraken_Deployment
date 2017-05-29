@@ -202,20 +202,20 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-                self.root.ids.theater_media_video_title.text = json_message['Metadata']['title']
-                self.root.ids.theater_media_video_subtitle.text = json_message['Metadata']['tagline']
+                self.root.ids.theater_media_video_title.text = json_message['Data']['Meta']['title']
+                self.root.ids.theater_media_video_subtitle.text = json_message['Data']['Meta']['tagline']
                 # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text = str(json_message['Metadata']['runtime'])
-                self.root.ids.theater_media_video_overview.text = json_message['Metadata']['overview']
+                self.root.ids.theater_media_video_runtime.text = str(json_message['Data']['Meta']['runtime'])
+                self.root.ids.theater_media_video_overview.text = json_message['Data']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Metadata']['genres'])):
-                    genres_list += (json_message['Metadata']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['genres'])):
+                    genres_list += (json_message['Data']['Meta']['genres'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 # "LocalImages": {"Banner": "", "Fanart": "",
                 # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
-                for ndx in range(0, len(json_message['Metadata']['production_companies'])):
-                    production_list += (json_message['Metadata']['production_companies'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['production_companies'])):
+                    production_list += (json_message['Data']['Meta']['production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
                 # go through streams
                 audio_streams = []
@@ -280,7 +280,12 @@ class MediaKrakenApp(App):
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-            self.root.ids.theater_media_video_videoplayer.source = json_message['Data']
+            video_source_dir = json_message['Data']
+            share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+            if share_mapping is not None:
+                for mapping in share_mapping.iteritems():
+                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+            self.root.ids.theater_media_video_videoplayer.source = video_source_dir
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
         # after connection receive the list of users to possibly login with
@@ -606,6 +611,10 @@ class MediaKrakenApp(App):
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
 
 if __name__ == '__main__':
+    # for windows exe support
+    from multiprocessing import freeze_support
+    freeze_support()
+    # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Theater')
     # set signal exit breaks
     common_signal.com_signal_set_break()
