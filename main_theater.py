@@ -17,8 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import pyximport; pyximport.install()
-#from theater import video_mpv
 from common import common_logging
 from common import common_signal
 import platform
@@ -201,7 +199,6 @@ class MediaKrakenApp(App):
                                               'Platform': platform.node()}).encode("utf8"))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
@@ -266,7 +263,7 @@ class MediaKrakenApp(App):
                 #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
             elif json_message['Sub'] == "List":
                 data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-                args_converter = lambda row_index, \
+                args_converter = lambda row_index,\
                                         rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
                 list_adapter = ListAdapter(data=data, args_converter=args_converter,
                                            cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
@@ -279,19 +276,21 @@ class MediaKrakenApp(App):
                                         height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                     btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                     self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
-
+        elif json_message['Type'] == 'Play': # direct file play
+            # AttributeError: 'NoneType' object has no attribute
+            # 'set_volume'  <- means can't find file
+            self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
+            self.root.ids.theater_media_video_videoplayer.source = json_message['Data']
+            self.root.ids.theater_media_video_videoplayer.volume = 1
+            self.root.ids.theater_media_video_videoplayer.state = 'play'
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
 
 
 
-        elif json_message['Type'] == 'VIDPLAY':
-            # AttributeError: 'NoneType' object has no attribute
-            # 'set_volume'  <- means can't find file
-            self.root.ids.theater_media_video_videoplayer.source = message_words[1]
-            self.root.ids.theater_media_video_videoplayer.volume = 1
-            self.root.ids.theater_media_video_videoplayer.state = 'play'
+
+
 
         elif json_message['Type'] == "GENRELIST":
             logging.info("gen")
