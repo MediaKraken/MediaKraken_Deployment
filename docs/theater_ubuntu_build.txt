@@ -21,3 +21,10 @@ adb devices
 Client on ubuntu atm for cython and mpv
 
 sudo apt-get install libgles2-mesa-dev
+
+
+sudo apt-get install libsdl2-dev libavcodec-dev libavdevice-dev libavfilter-dev
+
+cd vault/lib/ffpyplayer
+sudo python setup.py install
+# can play bbb now
