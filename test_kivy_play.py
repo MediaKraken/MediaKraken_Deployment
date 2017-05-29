@@ -4,29 +4,14 @@ from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.video import Video
 
 
-class CoverVideo(CoverBehavior, Video):
-    """Video using cover behavior.
-    """
-
-    def _on_video_frame(self, *largs):
-        video = self._video
-        if not video:
-            return
-        texture = video.texture
-        self.reference_size = texture.size
-        self.calculate_cover()
-        self.duration = video.duration
-        self.position = video.position
-        self.texture = texture
-        self.canvas.ask_update()
-
-
-class MainApp(App):
-
+class MyApp(App):
     def build(self):
-        return CoverVideo(source='A Low Down Dirty Shame (1994).mkv', play=True)
-        #return CoverVideo(source='big_buck_bunny_1080p_h264.mov', play=True) # blank screen
-
+        #video = Video(source='/home/spoot/github/MediaKraken_Deployment/A.mkv')
+        video = Video(source='/home/spoot/github/MediaKraken_Deployment/big_buck_bunny_1080p_h264.mov')
+        video.state='play'
+        video.options = {'eos': 'loop'}
+        video.allow_stretch=True
+        return video
 
 if __name__ == '__main__':
-    MainApp().run()
+    MyApp().run()

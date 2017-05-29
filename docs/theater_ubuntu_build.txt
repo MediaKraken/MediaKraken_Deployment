@@ -2,6 +2,7 @@ on tablet WiFI ADB
 sudo pip install --upgrade buildozer
 
 sudo add-apt-repository ppa:kivy-team/kivy-daily
+sudo apt-get update
 sudo apt-get install python-kivy libssl-dev
 sudo pip install twisted pyopenssl service_identity
 
@@ -14,3 +15,9 @@ sudo apt-get install build-essential ccache git libncurses5:i386 libstdc++6:i386
 
 # list connected devices
 adb devices
+
+*******************************************************
+
+Client on ubuntu atm for cython and mpv
+
+sudo apt-get install libgles2-mesa-dev
