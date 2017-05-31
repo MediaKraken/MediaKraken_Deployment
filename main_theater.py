@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_logging
 from common import common_signal
 import platform
+import os
 import json
 import uuid
 import logging # pylint: disable=W0611
@@ -155,6 +156,17 @@ class MediaKrakenApp(App):
         content.ids.message_text.text = message
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
+
+    def show_load(self):
+        content = MediaKrakenLoadDialog(load=self.load, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Load media file", content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
+    def load(self, path, filename):
+        with open(os.path.join(path, filename[0])) as stream:
+            self.text_input.text = stream.read()
+        self.dismiss_popup()
 
     def build(self):
         root = MediaKraken()
