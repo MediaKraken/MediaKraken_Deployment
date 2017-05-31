@@ -79,8 +79,8 @@ class NetworkEvents(Protocol):
         Message received from client
         """
         msg = None
-        json_message = json.loads(data)
         logging.info('GOT Data: %s', data)
+        json_message = json.loads(data)
         logging.info('Message: %s', json_message)
 
         if json_message['Type'] == "CPU Usage":
