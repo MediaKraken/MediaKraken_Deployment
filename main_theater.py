@@ -563,32 +563,33 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.connection.write("IMAGE MAIN MOVIE None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}).encode("utf8")
             # request main screen background refresh
-            self.connection.write("IMAGE MOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}).encode("utf8")
             # request main screen background refresh
-            self.connection.write("IMAGE NEWMOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}).encode("utf8")
             # request main screen background refresh
-            self.connection.write("IMAGE PROGMOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}).encode("utf8")
             # refreshs for tv stuff
             # request main screen background refresh
-            self.connection.write("IMAGE TV TVSHOW None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}).encode("utf8")
             # request main screen background refresh
-            self.connection.write("IMAGE LIVETV TVLIVE None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}).encode("utf8")
             # refreshs for game stuff
             # request main screen background refresh
-            self.connection.write("IMAGE GAME VIDEOGAME None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8")
             # refreshs for books stuff
             # request main screen background refresh
-            self.connection.write("IMAGE BOOK BOOK None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}).encode("utf8")
             # refresh music stuff
             # request main screen background refresh
-            self.connection.write("IMAGE MUSICALBUM MUSIC None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}).encode("utf8")
             # request main screen background refresh
-            self.connection.write("IMAGE MUSICVIDEO MUSIC None Backdrop".encode("utf8"))
+            self.connection.write({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}).encode("utf8")
             # refresh image stuff
             # request main screen background refresh
-            self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
+            #self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
+            #self.connection.write({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8")
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
