@@ -1,12 +1,12 @@
 $(function() {
     var function_media_status = function(media_type, media_status) {
         $.ajax({
-                url: '../media_status/' + $('.media_context_right').data("id") + '/' + media_type + '/' + media_status,
+                url: '../media_status/' + $(this).attr('id') + '/' + media_type + '/' + media_status,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
                     if (result.status == 'OK') {
-                        window.location = '../media_status/' + $('.media_context_right').data("id") + '/' + media_type + '/' + media_status;
+                        window.location = '../media_status/' + $(this).attr('id') + '/' + media_type + '/' + media_status;
                     } else {
                         alert(result.status);
                     }
