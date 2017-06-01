@@ -13,6 +13,11 @@ docker
 mount -t nfs4 10.1.0.10:/ /home/mediakraken/zfsspoo
 
 
+# ubuntu
+apt-get install nfs-common 
+mount -t nfs4 10.0.0.67:/ /home/spoot/zfsspoo
+
+
 
 still fails asking if root
 docker exec -it --privileged=true 62e /bin/ash

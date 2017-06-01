@@ -1,4 +1,4 @@
-#:kivy 1.9.0
+#:kivy 1.10.0
 <MediaKraken>:
     AnchorLayout:
         anchor_x: 'center'
@@ -208,7 +208,7 @@
                 Button:
                     id: button_main_home_music
                     pos: (0,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('music')
+                    on_press: app.main_mediakraken_event_button_home('Music')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -230,7 +230,7 @@
                 Button:
                     id: button_main_home_movie
                     pos: ((self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('movie')
+                    on_press: app.main_mediakraken_event_button_home('Movie')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -252,7 +252,7 @@
                 Button:
                     id: button_main_home_tv
                     pos: (((self.parent.width * 0.2) * 2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('tv')
+                    on_press: app.main_mediakraken_event_button_home('TV')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -323,7 +323,7 @@
                     Button:
                         id: theater_media_video_play
                         pos: 0,0
-                        on_press: app.main_mediakraken_event_button_video_play('play')
+                        on_press: app.main_mediakraken_event_button_video_play('Play')
                         size_hint: None, None
                         size: self.parent.width * 0.2, self.parent.height * 0.2
                         Image:

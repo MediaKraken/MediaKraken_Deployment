@@ -1,3 +1,7 @@
+Install Visual Studio Code
+install brightscript plugin
+
+
 https://sdkdocs.roku.com/display/sdkdoc/Roku+SDK+Documentation
 
 

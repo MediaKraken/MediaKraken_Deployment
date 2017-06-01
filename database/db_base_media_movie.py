@@ -31,11 +31,11 @@ def db_media_random(self, return_image_type=None): # poster, backdrop, etc
             'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
             ' and random() < 0.01 limit 1')
     else:
-        self.db_cursor.execute('select mm_metadata_localimage_json->\'LocalImages\'->>\''
+        self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
             + return_image_type + '\',mm_media_guid from mm_media,mm_metadata_movie'\
             ' where mm_media_metadata_guid = mm_metadata_guid'\
-            ' and mm_metadata_localimage_json->\'LocalImages\'->>\'' + return_image_type + '\''
-            + ' > \'\' and random() < 0.01 limit 1')
+            ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\'' + return_image_type + '\''
+            + ')::text != \'null\' order by random() limit 1')
     try:
         return self.db_cursor.fetchone()
     except:
@@ -519,3 +519,16 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                 else:
                     self.db_cursor.execute('select 1')
     return self.db_cursor.fetchall()
+
+
+def db_read_media_metadata_movie_both(self, media_guid):
+    """
+    # read in metadata and ffprobe by id
+    """
+    self.db_cursor.execute('select mm_media_ffprobe_json,mm_metadata_json,mm_metadata_localimage_json'
+        ' from mm_media, mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
+        ' and mm_media_guid = %s', (media_guid,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None

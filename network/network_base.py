@@ -79,8 +79,8 @@ class NetworkEvents(Protocol):
         Message received from client
         """
         msg = None
-        json_message = json.loads(data)
         logging.info('GOT Data: %s', data)
+        json_message = json.loads(data)
         logging.info('Message: %s', json_message)
 
         if json_message['Type'] == "CPU Usage":
@@ -94,7 +94,7 @@ class NetworkEvents(Protocol):
 
         elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
-            self.user_device_uuid = json_message['Device UUID']
+            self.user_device_uuid = json_message['UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
             self.user_user_name = None
             self.user_platform = json_message['Platform']
@@ -117,7 +117,7 @@ class NetworkEvents(Protocol):
             elif json_message['Sub'] == 'Game':
                 pass
             elif json_message['Sub'] == 'Movie':
-                lookup_id, media_id = self.db_connection.db_media_random(json_message['Subtype'])
+                lookup_id, media_id = self.db_connection.db_media_random('Poster')
             elif json_message['Sub'] == 'TV Show':
                 pass
             else:
@@ -136,11 +136,23 @@ class NetworkEvents(Protocol):
 
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == 'Detail':
+                mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
+                    = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
-                    'Data': self.db_connection.db_read_media_metadata_both(json_message['UUID'])})
+                    'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json, 'Data3': mm_metadata_localimage_json})
             elif json_message['Sub'] == 'List':
                 # (Offset, Limit)
-                pass
+                if json_message['Data'] == 'Movie':
+                    if 'Offset' in json_message:
+                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
+                            self.db_connection.db_web_media_list(
+                            self.db_connection.db_media_uuid_by_class(json_message['Data']),
+                            json_message['Type'], offset=json_message['Offset'],
+                            list_limit=json_message['Limit'])})
+                    else:
+                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': self.db_connection.db_web_media_list(
+                                         self.db_connection.db_media_uuid_by_class(json_message['Data']),
+                                         json_message['Type'])})
             elif json_message['Sub'] == 'In Progress':
                 # (Offset, Limit)
                 pass

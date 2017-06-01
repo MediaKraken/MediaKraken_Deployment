@@ -117,7 +117,8 @@ class MKServerDatabase(object):
     from database.db_base_media_movie import db_web_media_list_count,\
         db_media_movie_count_by_genre,\
         db_web_media_list,\
-        db_media_random
+        db_media_random, \
+        db_read_media_metadata_movie_both
     from database.db_base_media_music import db_media_album_count,\
         db_media_album_list
     from database.db_base_media_music_video import db_music_video_list

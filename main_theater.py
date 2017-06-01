@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_logging
 from common import common_signal
 import platform
+import os
 import json
 import uuid
 import logging # pylint: disable=W0611
@@ -59,7 +60,7 @@ class EchoFactory(protocol.ClientFactory):
 
 import kivy
 from kivy.app import App
-kivy.require('1.9.2')
+kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
@@ -97,6 +98,9 @@ from kivy.animation import Animation
 from kivy.metrics import sp
 from kivy.graphics import *
 from kivy.graphics.texture import Texture
+from kivy.graphics.transformation import Matrix
+from kivy.graphics.opengl import *
+from kivy.graphics import *
 from theater import MediaKrakenSettings
 
 
@@ -153,6 +157,17 @@ class MediaKrakenApp(App):
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
 
+    def show_load(self):
+        content = MediaKrakenLoadDialog(load=self.load, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Load media file", content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
+    def load(self, path, filename):
+        with open(os.path.join(path, filename[0])) as stream:
+            self.text_input.text = stream.read()
+        self.dismiss_popup()
+
     def build(self):
         root = MediaKraken()
         self.config = self.load_config()
@@ -187,8 +202,8 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        if json_message['Type'] != "Image":
-            logging.info("Got Message: %s", server_msg)
+        #if json_message['Type'] != "Image":
+        logging.info("Got Message: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
@@ -196,29 +211,28 @@ class MediaKrakenApp(App):
                                               'Platform': platform.node()}).encode("utf8"))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-                self.root.ids.theater_media_video_title.text = json_message['Metadata']['title']
-                self.root.ids.theater_media_video_subtitle.text = json_message['Metadata']['tagline']
+                self.root.ids.theater_media_video_title.text = json_message['Data']['Meta']['themoviedb']['Meta']['title']
+                self.root.ids.theater_media_video_subtitle.text = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
                 # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text = str(json_message['Metadata']['runtime'])
-                self.root.ids.theater_media_video_overview.text = json_message['Metadata']['overview']
+                self.root.ids.theater_media_video_runtime.text = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
+                self.root.ids.theater_media_video_overview.text = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Metadata']['genres'])):
-                    genres_list += (json_message['Metadata']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
+                    genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 # "LocalImages": {"Banner": "", "Fanart": "",
                 # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
-                for ndx in range(0, len(json_message['Metadata']['production_companies'])):
-                    production_list += (json_message['Metadata']['production_companies'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
+                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
-                for stream_info in json_message['FFprobe']['streams']:
+                for stream_info in json_message['Data2']['FFprobe']['streams']:
                     logging.info("info: %s", stream_info)
                     stream_language = ''
                     stream_title = ''
@@ -261,7 +275,7 @@ class MediaKrakenApp(App):
                 #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
             elif json_message['Sub'] == "List":
                 data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-                args_converter = lambda row_index, \
+                args_converter = lambda row_index,\
                                         rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
                 list_adapter = ListAdapter(data=data, args_converter=args_converter,
                                            cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
@@ -274,7 +288,18 @@ class MediaKrakenApp(App):
                                         height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
                     btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
                     self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
-
+        elif json_message['Type'] == 'Play': # direct file play
+            # AttributeError: 'NoneType' object has no attribute
+            # 'set_volume'  <- means can't find file
+            self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
+            video_source_dir = json_message['Data']
+            share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+            if share_mapping is not None:
+                for mapping in share_mapping.iteritems():
+                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+            self.root.ids.theater_media_video_videoplayer.source = video_source_dir
+            self.root.ids.theater_media_video_videoplayer.volume = 1
+            self.root.ids.theater_media_video_videoplayer.state = 'play'
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
@@ -283,13 +308,6 @@ class MediaKrakenApp(App):
 
 
 
-
-        elif json_message['Type'] == 'VIDPLAY':
-            # AttributeError: 'NoneType' object has no attribute
-            # 'set_volume'  <- means can't find file
-            self.root.ids.theater_media_video_videoplayer.source = message_words[1]
-            self.root.ids.theater_media_video_videoplayer.volume = 1
-            self.root.ids.theater_media_video_videoplayer.state = 'play'
 
         elif json_message['Type'] == "GENRELIST":
             logging.info("gen")
@@ -472,10 +490,7 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
-        self.connection.write(("VIDEODETAIL " + args[0]).encode("utf8"))
-        # grab poster
-        # request main screen background refresh
-        self.connection.write(("IMAGE MOVIEDETAIL MOVIE " + args[0]).encode("utf8"))
+        self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
@@ -487,7 +502,8 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.connection.write("LOGIN " + self.global_selected_user_id + " " + self.login_password)
+        self.connection.write(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
+                                          'Password': self.login_password}).encode("utf8"))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
@@ -497,11 +513,11 @@ class MediaKrakenApp(App):
         self.connection.write(msg.encode("utf8"))
 
     def main_mediakraken_event_button_home(self, *args):
-        global network_protocol
-        msg = args[0]
+        #global network_protocol
+        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
-                or args[0] == 'movie' or args[0] == 'video':
+                or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
@@ -547,32 +563,33 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.connection.write("IMAGE MAIN MOVIE None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}).encode("utf8"))
             # request main screen background refresh
-            self.connection.write("IMAGE MOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}).encode("utf8"))
             # request main screen background refresh
-            self.connection.write("IMAGE NEWMOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}).encode("utf8"))
             # request main screen background refresh
-            self.connection.write("IMAGE PROGMOVIE MOVIE None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}).encode("utf8"))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.connection.write("IMAGE TV TVSHOW None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}).encode("utf8"))
             # request main screen background refresh
-            self.connection.write("IMAGE LIVETV TVLIVE None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}).encode("utf8"))
             # refreshs for game stuff
             # request main screen background refresh
-            self.connection.write("IMAGE GAME VIDEOGAME None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8"))
             # refreshs for books stuff
             # request main screen background refresh
-            self.connection.write("IMAGE BOOK BOOK None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}).encode("utf8"))
             # refresh music stuff
             # request main screen background refresh
-            self.connection.write("IMAGE MUSICALBUM MUSIC None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}).encode("utf8"))
             # request main screen background refresh
-            self.connection.write("IMAGE MUSICVIDEO MUSIC None Backdrop".encode("utf8"))
+            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}).encode("utf8"))
             # refresh image stuff
             # request main screen background refresh
-            self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
+            #self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
+            #self.connection.write({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8")
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
@@ -607,6 +624,10 @@ class MediaKrakenApp(App):
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
 
 if __name__ == '__main__':
+    # for windows exe support
+    from multiprocessing import freeze_support
+    freeze_support()
+    # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Theater')
     # set signal exit breaks
     common_signal.com_signal_set_break()

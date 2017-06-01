@@ -26,6 +26,7 @@ from pika import exceptions
 from pika.adapters import twisted_connection
 from twisted.internet import defer, reactor, protocol,task
 from network import network_base as network_base
+from network import network_base_amqp as network_amqp
 from common import common_config_ini
 from common import common_docker
 from common import common_logging
@@ -33,7 +34,9 @@ from common import common_signal
 import time
 import subprocess
 import json
+import uuid
 
+mk_containers = ()
 docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
@@ -50,6 +53,7 @@ def run(connection):
 
 @defer.inlineCallbacks
 def read(queue_object):
+    global mk_containers
     logging.info('here I am in consume - read')
     ch, method, properties, body = yield queue_object.get()
     if body:
@@ -57,6 +61,8 @@ def read(queue_object):
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
         if json_message['Type'] == 'Play':
+            name_container = str(uuid.uuid4())
+            mk_containers[name_container] = (json_message['User'], json_message['Data'])
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
@@ -64,12 +70,18 @@ def read(queue_object):
                                        + ' -subtitles_language ' + json_message['Language']
                 else:
                     subtitle_command = ''
-                logging.info('b4 run')
-                docker_inst.com_docker_run_container(
+                logging.info('b4 cast run')
+                docker_inst.com_docker_run_container(container_name=name_container,
                     container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
                     + ' -devicename ' + json_message['Device']
                     + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
                     + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
+                logging.info('after cast run')
+            else:
+                logging.info('b4 run')
+                docker_inst.com_docker_run_container(container_name=name_container,
+                     container_command=(
+                        'ffmpeg -i \'' + json_message['Data'] + '\''))
                 logging.info('after run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
