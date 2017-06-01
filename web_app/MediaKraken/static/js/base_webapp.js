@@ -51,7 +51,7 @@ $(function(){
     $('#the-node').contextMenu({
         selector: 'div', 
         callback: function(key, options) {
-            var m = "clicked: " + key + " on " + $(this);
+            var m = "clicked: " + key + " on " + $(this).attr('data-id');
             window.console && console.log(m) || alert(m); 
         },
         items: {
