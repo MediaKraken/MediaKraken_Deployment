@@ -1,12 +1,12 @@
 $(function() {
     var function_media_status = function(media_type, media_status) {
         $.ajax({
-                url: '../media_status/' + $(this).attr('id') + '/' + media_type + '/' + media_status,
+                url: '../media_status/' + $(this).attr('data-id') + '/' + media_type + '/' + media_status,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
                     if (result.status == 'OK') {
-                        window.location = '../media_status/' + $(this).attr('id') + '/' + media_type + '/' + media_status;
+                        window.location = '../media_status/' + $(this).attr('data-id') + '/' + media_type + '/' + media_status;
                     } else {
                         alert(result.status);
                     }
@@ -55,13 +55,12 @@ $(function(){
             window.console && console.log(m) || alert(m); 
         },
         items: {
-            "edit": {name: "Edit", icon: "../../static/images/microscope.png"},
-            "cut": {name: "Cut", icon: "../../static/images/synced.jpg"},
-            "copy": {name: "Copy", icon: "../../static/images/piggy.png"},
-            "paste": {name: "Paste", icon: "../../static/images/poo-icon.png"},
-            "delete": {name: "Delete", icon: "../../static/images/exclamation-circle-frame.png"},
+            "watched": {name: "Set Watched", icon: "../../static/images/microscope.png"},
+            "sync": {name: "Sync Media", icon: "../../static/images/synced.jpg"},
+            "favorite": {name: "Set Favorite", icon: "../../static/images/piggy.png"},
+            "downvote": {name: "Set Downvote", icon: "../../static/images/poo-icon.png"},
             "sep1": "---------",
-            "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+            "mismatch": {name: "Set Mismatch", icon: "../../static/images/exclamation-circle-frame.png"},
         }
     });
 });
