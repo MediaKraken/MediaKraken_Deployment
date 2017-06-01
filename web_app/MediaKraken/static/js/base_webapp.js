@@ -51,15 +51,15 @@ $(function(){
     $('#the-node').contextMenu({
         selector: 'div', 
         callback: function(key, options) {
-            var m = "clicked: " + key + " on " + $(this).attr('data-id');
+            var m = "clicked: " + key + " on " + $(this);
             window.console && console.log(m) || alert(m); 
         },
         items: {
-            "edit": {name: "Edit", icon: "edit"},
-            "cut": {name: "Cut", icon: "cut"},
-            "copy": {name: "Copy", icon: "copy"},
-            "paste": {name: "Paste", icon: "paste"},
-            "delete": {name: "Delete", icon: "delete"},
+            "edit": {name: "Edit", icon: "../../static/images/microscope.png"},
+            "cut": {name: "Cut", icon: "../../static/images/synced.jpg"},
+            "copy": {name: "Copy", icon: "../../static/images/piggy.png"},
+            "paste": {name: "Paste", icon: "../../static/images/poo-icon.png"},
+            "delete": {name: "Delete", icon: "../../static/images/exclamation-circle-frame.png"},
             "sep1": "---------",
             "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
         }
