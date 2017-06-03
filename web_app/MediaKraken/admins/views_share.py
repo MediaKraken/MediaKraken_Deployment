@@ -105,7 +105,7 @@ def admin_share_edit_page():
 #                        request.form['storage_mount_path'])
 #                    if addr is None: # total junk path for UNC
 #                        flash("Invalid UNC path.", 'error')
-#                        return redirect(url_for('admins.admin_share_edit_page'))
+#                        return redirect(url_for('admins_share.admin_share_edit_page'))
 #                    logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
@@ -116,7 +116,7 @@ def admin_share_edit_page():
 #                            request.form['storage_mount_path']):
 #                        smb_stuff.com_cifs_close()
 #                        flash("Invalid UNC path.", 'error')
-#                        return redirect(url_for('admins.admin_share_edit_page'))
+#                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
                 elif request.form['storage_mount_type'] == "smb":
@@ -134,7 +134,7 @@ def admin_share_edit_page():
                     pass
                 elif not os.path.isdir(request.form['storage_mount_path']):
                     flash("Invalid share path.", 'error')
-                    return redirect(url_for('admins.admin_share_edit_page'))
+                    return redirect(url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
                     g.db_connection.db_audit_share_add(request.form['storage_mount_type'],
@@ -143,10 +143,10 @@ def admin_share_edit_page():
                                                        request.form['storage_mount_server'],
                                                        request.form['storage_mount_path'])
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins.admin_share'))
+                    return redirect(url_for('admins_share.admin_share'))
                 else:
                     flash("Share already mapped.", 'error')
-                    return redirect(url_for('admins.admin_share_edit_page'))
+                    return redirect(url_for('admins_share.admin_share_edit_page'))
             elif request.form['action_type'] == 'Browse':
                 # browse for smb shares on the host network
                 pass
