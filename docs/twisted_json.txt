@@ -54,7 +54,9 @@ Data - general data on send/receive
 Data2
 Data3
 
-Device - ip or name of device to countr
+Device - ip/name/uuid of device sending the request (to track user and activity/playback)
+
+Target - ip or name of device to send playback too
 
 UUID - media or metadata UUID
 
