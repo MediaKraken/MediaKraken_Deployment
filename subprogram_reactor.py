@@ -63,7 +63,7 @@ def read(queue_object):
         logging.info('json body %s', json_message)
         if json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
-            name_container = (json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[30:]
+            name_container = ((json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[30:])
             logging.info('cont %s', name_container)
             define_new_container = (name_container, json_message['Device'],
                                     json_message['Target'], json_message['Data'])
