@@ -36,7 +36,7 @@ import subprocess
 import json
 import uuid
 
-mk_containers = ()
+mk_containers = {}
 docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
