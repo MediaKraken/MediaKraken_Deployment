@@ -62,9 +62,18 @@ def read(queue_object):
         json_message = json.loads(body)
         logging.info('json body %s', json_message)
         if json_message['Type'] == 'Play':
-            name_container = str(uuid.uuid4())[30:].replace('-','') # to address the 30 char name limit for container
+            # to address the 30 char name limit for container
+            name_container = (json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[30:]
             logging.info('cont %s', name_container)
-            mk_containers[name_container] = (json_message['User'], json_message['Data'])
+            define_new_container = (name_container, json_message['Device'],
+                                    json_message['Target'], json_message['Data'])
+            if json_message['User'] in mk_containers:
+                user_activity_list = mk_containers[json_message['User']]
+                user_activity_list.append(define_new_container)
+                mk_containers[json_message['User']] = user_activity_list
+            else:
+                # "double list" so each one is it's own instance
+                mk_containers[json_message['User']] = (define_new_container)
             logging.info('dict %s', mk_containers)
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
@@ -77,7 +86,7 @@ def read(queue_object):
                 try:
                     docker_inst.com_docker_run_container(container_name=name_container,
                         container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
-                        + ' -devicename ' + json_message['Device']
+                        + ' -devicename ' + json_message['Target']
                         + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
                         + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
                 except Exception as e:
