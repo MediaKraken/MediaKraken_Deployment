@@ -106,13 +106,13 @@ def admin_library_edit_page():
                     logging.info('smb info: %s %s %s', (addr, share, path))
                     if addr is None: # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins.admin_library_edit_page'))
+                        return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_close()
                         flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins.admin_library_edit_page'))
+                        return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
                 elif request.form['library_path'][0:3] == "smb":
@@ -127,16 +127,16 @@ def admin_library_edit_page():
                     pass
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
-                    return redirect(url_for('admins.admin_library_edit_page'))
+                    return redirect(url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
                     g.db_connection.db_audit_path_add(request.form['library_path'],
                         request.form['Lib_Class'], request.form['Lib_Share'])
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins.admin_library'))
+                    return redirect(url_for('admins_library.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
-                    return redirect(url_for('admins.admin_library_edit_page'))
+                    return redirect(url_for('admins_library.admin_library_edit_page'))
             elif request.form['action_type'] == 'Browse...': # popup browse form
                 pass
             elif request.form['action_type'] == 'Synology': # popup browse form for synology
