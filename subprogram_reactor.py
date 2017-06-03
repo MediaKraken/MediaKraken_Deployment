@@ -62,7 +62,7 @@ def read(queue_object):
         json_message = json.loads(body)
         logging.info('json body %s', json_message)
         if json_message['Type'] == 'Play':
-            name_container = str(uuid.uuid4())
+            name_container = str(uuid.uuid4())[30:] # to address the 30 char name limit for container
             logging.info('cont %s', name_container)
             mk_containers[name_container] = (json_message['User'], json_message['Data'])
             logging.info('dict %s', mk_containers)
