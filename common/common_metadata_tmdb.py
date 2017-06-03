@@ -82,12 +82,13 @@ class CommonMetadataTMDB(object):
         image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
             'person')
         logging.info('tmdb bio image path: %s', image_file_path)
-        if 'poster_path' in result_json:
-            if not os.path.isfile(image_file_path + result_json['poster_path']):
+        if 'profile_path' in result_json and result_json['profile_path'] is not None:
+            if not os.path.isfile(image_file_path + result_json['profile_path']):
                 thread_db.db_download_image_insert('themoviedb',
                     json.dumps({'url': 'https://image.tmdb.org/t/p/original'
-                    + result_json['poster_path'],
-                    'local': image_file_path + result_json['poster_path']}))
+                    + result_json['profile_path'],
+                    'local': image_file_path + result_json['profile_path']}))
+        # TODO loop through cast to store new movies to fetch
         # set local image json
         return ({'Images': {'themoviedb': image_file_path}})
 
