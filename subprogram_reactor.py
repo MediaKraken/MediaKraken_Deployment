@@ -67,6 +67,7 @@ def read(queue_object):
             logging.info('cont %s', name_container)
             define_new_container = (name_container, json_message['Device'],
                                     json_message['Target'], json_message['Data'])
+            logging.info('def %s', define_new_container)
             if json_message['User'] in mk_containers:
                 user_activity_list = mk_containers[json_message['User']]
                 user_activity_list.append(define_new_container)
