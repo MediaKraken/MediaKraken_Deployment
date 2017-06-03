@@ -60,9 +60,12 @@ def read(queue_object):
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
+        logging.info('json body %s', json_message)
         if json_message['Type'] == 'Play':
             name_container = str(uuid.uuid4())
+            logging.info('cont %s', name_container)
             mk_containers[name_container] = (json_message['User'], json_message['Data'])
+            logging.info('dict %s', mk_containers)
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
