@@ -29,7 +29,7 @@ def com_ffmpeg_media_attr(file_path):
     logging.info("ffmpeg attr: %s", file_path)
     try:
         media_json = subprocess.check_output(['./bin/ffprobe', '-show_format', '-show_streams',
-            '-show_chapters', '-loglevel', 'quiet', '-print_format', 'json', file_path])
+            '-show_chapters', '-loglevel', 'quiet', '-print_format', 'json', '\'' + file_path + '\''])
     except:
         media_json = None
     return media_json
