@@ -20,4 +20,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_network_mediakraken
 
 # print how the server output works
-print(common_network_mediakraken.com_net_mediakraken_find_server())
+#print(common_network_mediakraken.com_net_mediakraken_find_server())
+
+stuff = {}
+
+stuff['a'] = ('bah', 'bah2')
+
+
+print(stuff)
+
+
+stuff2 = 'jo32ljf02fj2ofjofjfofjfo'
+
+print(stuff2[-3:])
