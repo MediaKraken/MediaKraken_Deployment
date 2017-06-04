@@ -32,9 +32,13 @@ testing
 docker exec -it [container-id] /bin/ash
 
 
-docker build -t mediakraken/mknvidia .
+docker build -t mediakraken/mkbasenvidia .
 
 docker build -t mediakraken/mkslave .
+
+
+docker build -t mediakraken/mkbaseffmpeg .
+
 
 docker run --network=mk_mediakraken_network -p 5050 -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/mediakraken:/mediakraken/log -v /home/mediakraken:/mediakraken/mnt -itd --name=alpifs7 mediakraken/mkslave
 

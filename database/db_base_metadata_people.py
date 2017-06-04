@@ -36,11 +36,11 @@ def db_meta_person_list(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'images\' as mmp_meta'
+            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
             ' from mm_metadata_person order by mmp_person_name')
     else:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'images\' as mmp_meta'
+            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
             ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
             (offset, records))
     return self.db_cursor.fetchall()
@@ -130,8 +130,13 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_id = person_data['id']
                 person_name = person_data['name']
             elif meta_type == "thetvdb":
-                person_id = person_data['id']
-                person_name = person_data['Name']
+                # handle "array" with only one person
+                try:
+                    person_id = person_data['id']
+                    person_name = person_data['Name']
+                except:
+                    person_id = person_json['id']
+                    person_name = person_json['Name']
             else:
                 person_id = None
                 #person_name = None # not used later so don't set
@@ -183,11 +188,11 @@ def db_meta_person_as_seen_in(self, person_guid):
         return None
     logging.info("row_data: %s", row_data)
     if 'themoviedb' in row_data['mmp_person_media_id']:
-        sql_params = row_data['mmp_person_media_id']['themoviedb'],
+        sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''
-            ' @> \'[{"id":%s}]\'', sql_params)
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
+            ' @> \'[{"id": %s}]\'', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = row_data['mmp_person_media_id']['tvmaze'],
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'

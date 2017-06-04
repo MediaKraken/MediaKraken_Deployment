@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_logging
+from common import common_network_mediakraken
 from common import common_signal
 import platform
 import os
@@ -174,7 +175,7 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         return root
@@ -183,6 +184,12 @@ class MediaKrakenApp(App):
         logging.info('conn server')
         if self.config is not None:
             logging.info('here in connect to server')
+            if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
+                # TODO if more than one server, popup list selection
+                server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+                host_ip = server_list[0]
+            else:
+                pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
                 int(self.config.get('MediaKrakenServer', 'Port').strip()),
                 EchoFactory(self), ssl.ClientContextFactory())
@@ -350,7 +357,7 @@ class MediaKrakenApp(App):
         Build base config
         """
         config.setdefaults('MediaKrakenServer', {
-            'Host': '10.1.0.187',
+            'Host': 'None',
             'Port': 8903})
         config.setdefaults('Audio', {
             'Default_Device': 'Default',

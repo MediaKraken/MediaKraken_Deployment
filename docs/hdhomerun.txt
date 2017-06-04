@@ -1,0 +1,30 @@
+# web based discovery
+http://ipv4-my.hdhomerun.com/discover
+
+
+# posible interesting method for recording
+response = requests.get(url, stream=True, timeout=3.00)
+response.raise_for_status()
+with open(options.output_file, 'wb') as fd:
+	for chunk in response.iter_content(1 * 1024 * 1024):
+	    if done:
+		break
+	    fd.write(chunk)
+response.close()
+
+
+# set the tuner channel
+hdhomerun_config $DEVICE set /tuner$TUNER/channel auto:$CHANNEL
+
+# set the program id
+hdhomerun_config $DEVICE set /tuner$TUNER/program $PROGRAM
+
+# tell it to send the video stream our way
+hdhomerun_config $DEVICE set /tuner$TUNER/target rtp://$MY_IP:$RTP_PORT
+
+
+
+
+# to web
+p=subprocess.Popen(["ffmpeg","-i","http://"+host+":5004/auto/v"+channelComp,"-vcodec","libx264","-preset","veryfast","-acodec"]+acodecs+["-vf","yadif=0:0:0","out.m3u8"],stdout=logfile,stderr=logfile)
+

@@ -36,7 +36,7 @@ import subprocess
 import json
 import uuid
 
-mk_containers = ()
+mk_containers = {}
 docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
@@ -60,9 +60,27 @@ def read(queue_object):
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
+        logging.info('json body %s', json_message)
         if json_message['Type'] == 'Play':
-            name_container = str(uuid.uuid4())
-            mk_containers[name_container] = (json_message['User'], json_message['Data'])
+            # to address the 30 char name limit for container
+            name_container = ((json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[-30:])
+            logging.info('cont %s', name_container)
+            # TODO only for now until I get the device for websessions (cookie perhaps?)
+            if 'Device' in json_message:
+                define_new_container = (name_container, json_message['Device'],
+                                        json_message['Target'], json_message['Data'])
+            else:
+                define_new_container = (name_container, None,
+                                        json_message['Target'], json_message['Data'])
+            logging.info('def %s', define_new_container)
+            if json_message['User'] in mk_containers:
+                user_activity_list = mk_containers[json_message['User']]
+                user_activity_list.append(define_new_container)
+                mk_containers[json_message['User']] = user_activity_list
+            else:
+                # "double list" so each one is it's own instance
+                mk_containers[json_message['User']] = (define_new_container)
+            logging.info('dict %s', mk_containers)
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
@@ -71,11 +89,14 @@ def read(queue_object):
                 else:
                     subtitle_command = ''
                 logging.info('b4 cast run')
-                docker_inst.com_docker_run_container(container_name=name_container,
-                    container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
-                    + ' -devicename ' + json_message['Device']
-                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
-                    + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
+                try:
+                    docker_inst.com_docker_run_container(container_name=name_container,
+                        container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
+                        + ' -devicename ' + json_message['Target']
+                        + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
+                        + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
+                except Exception as e:
+                    logging.error('cast ex %s', str(e))
                 logging.info('after cast run')
             else:
                 logging.info('b4 run')

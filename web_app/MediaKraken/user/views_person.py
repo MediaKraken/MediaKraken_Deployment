@@ -66,9 +66,7 @@ def metadata_person_list():
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:
-                    person_image = "../../static/meta/images/" + \
-                        person_data['mmp_person_image']['Images']['themoviedb']['Profiles'][0] \
-                        + person_data['mmp_meta']['profiles'][0]['file_path']
+                    person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace('/mediakraken/web_app/MediaKraken','') + person_data['mmp_meta']
                 except:
                     person_image = "../../static/images/person_missing.png"
             else:

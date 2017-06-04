@@ -122,7 +122,7 @@ class CommonDocker(object):
         Launch container (usually for slave play)
         """
         return self.cli.containers.run(image=container_image_name, network=container_network,
-                                       detach=container_detach, port=container_port,
+                                       detach=container_detach, ports=container_port,
                                        command=container_command, volumes=container_volumes,
                                        name=container_name)
                                        #auto_remove=container_remove)
