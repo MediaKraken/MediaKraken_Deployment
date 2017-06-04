@@ -186,8 +186,8 @@ def db_meta_person_as_seen_in(self, person_guid):
         sql_params = row_data['mmp_person_media_id']['themoviedb'],
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\''
-            ' @> \'[{"id":%s}]\'', sql_params)
+            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
+            ' @> \'[{"id": %s}]\'', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = row_data['mmp_person_media_id']['tvmaze'],
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
