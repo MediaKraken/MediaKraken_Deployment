@@ -2,7 +2,7 @@
 ./build_update.sh
 
 # tag for latest
-tag_rename_images.sh
+./tag_rename_images.sh
 
 # push to docker hub
 ./images_push_to_hub.sh
