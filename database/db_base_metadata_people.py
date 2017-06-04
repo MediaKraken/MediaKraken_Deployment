@@ -130,8 +130,13 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_id = person_data['id']
                 person_name = person_data['name']
             elif meta_type == "thetvdb":
-                person_id = person_data['id']
-                person_name = person_data['Name']
+                # handle "array" with only one person
+                try:
+                    person_id = person_data['id']
+                    person_name = person_data['Name']
+                except:
+                    person_id = person_json['id']
+                    person_name = person_json['Name']
             else:
                 person_id = None
                 #person_name = None # not used later so don't set
