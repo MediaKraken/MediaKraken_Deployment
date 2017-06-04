@@ -183,7 +183,7 @@ def db_meta_person_as_seen_in(self, person_guid):
         return None
     logging.info("row_data: %s", row_data)
     if 'themoviedb' in row_data['mmp_person_media_id']:
-        sql_params = row_data['mmp_person_media_id']['themoviedb'],
+        sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
             ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
