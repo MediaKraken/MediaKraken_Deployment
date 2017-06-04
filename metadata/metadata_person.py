@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import time
 from common import common_config_ini
 from common import common_metadata_tmdb
 
@@ -50,3 +51,5 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
                 TMDB_CONNECTION.com_tmdb_meta_bio_image_build(thread_db, result_json.json()))
             # commit happens in download delete
             thread_db.db_download_delete(download_data['mdq_id'])
+        elif result_json.status_code == 502:
+            time.sleep(60)
