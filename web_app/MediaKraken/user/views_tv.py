@@ -35,14 +35,14 @@ def user_tv_page():
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     for row_data in g.db_connection.db_web_tvmedia_list(None, per_page, False, offset):
-        # 0 - mm_media_series_name, 1 - mm_media_series_guid, 2 - count(*),
+        # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
         try:
-            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
+            media.append((row_data['mm_metadata_tvshow_name'], row_data['mm_metadata_tvshow_guid'],
                 row_data['mm_metadata_tvshow_localimage_json'],
                 common_internationalization.com_inter_number_format(row_data['mm_count'])))
         except:
-            media.append((row_data['mm_media_series_name'], row_data['mm_media_series_guid'],
+            media.append((row_data['mm_metadata_tvshow_name'], row_data['mm_metadata_tvshow_guid'],
                 None, common_internationalization.com_inter_number_format(row_data['mm_count'])))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
