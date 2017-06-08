@@ -242,7 +242,7 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
             try:
                 episode_data[row_data[1]] = (row_data[2], row_data[4][str(row_data[3])])
             except:
-                episode_data[row_data[1]] = (row_data[2], 'Missing_Icon.png')
+                episode_data[row_data[1]] = (row_data[2], 'missing_icon.jpg')
     return episode_data
 
 

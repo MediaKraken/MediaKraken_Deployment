@@ -17,7 +17,7 @@
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
-            <img class="center" src= {{ "../../static/images/Missing_Icon.png" }} >
+            <img class="center" src= {{ "../../static/images/missing_icon.jpg" }} >
             {% else %}
             <img class="center" src= {{ "../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
             {% endif %}
@@ -86,7 +86,7 @@
             {% for season_info in data_season_count %}
             <div class="main_photo">
                 <a href= {{ "../../tv_season_detail/" + data_guid + "/" + season_info|string }} >
-                <img src= {{ "../../static/images/Missing_Icon.png" }} alt= {{ "../../static/images/Missing_Icon.png" }} height="300" width="200">
+                <img src= {{ "../../static/images/missing_icon.jpg" }} alt= {{ "../../static/images/missing_icon.jpg" }} height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content">{{data_season_data[season_info]}}</p>

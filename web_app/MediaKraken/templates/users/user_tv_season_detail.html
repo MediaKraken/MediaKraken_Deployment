@@ -17,7 +17,7 @@
       {% endif %}
       <div id="movie_image_div" class="table-responsive">
           {% if data_poster_image is none %}
-              <img class="center" src= {{ "../../../static/images/Missing_Icon.png" }} >
+              <img class="center" src= {{ "../../../static/images/missing_icon.jpg" }} >
           {% else %}
               <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
           {% endif %}
@@ -66,8 +66,8 @@
                 <div class="col-1-4">
                     <div class="wrapper">
                       <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_season + "/" + episode_info|string }} >
-                      {% if data_episode_count[episode_info][1] == "Missing_Icon.png" %}
-                          <img src= {{ "../../../static/images/Missing_Icon.png" }} alt= {{ "../../../static/meta/images/Missing_Icon.png" }} height="200" width="300">
+                      {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
+                          <img src= {{ "../../../static/images/missing_icon.jpg" }} alt= {{ "../../../static/meta/images/missing_icon.jpg" }} height="200" width="300">
                       {% else %}
                           <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="210" width="350">
                       {% endif %}

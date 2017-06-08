@@ -15,7 +15,7 @@
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
-            <img class="center" src= {{ "../../static/images/Missing_Icon.png" }} >
+            <img class="center" src= {{ "../../static/images/missing_icon.jpg" }} >
             {% else %}
             <img class="center" src= {{ "../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
             {% endif %}
