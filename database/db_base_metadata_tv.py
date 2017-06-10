@@ -210,7 +210,7 @@ def db_read_tvmeta_eps_season(self, show_guid):
         '->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\','
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Meta\'->\'Episode\')::jsonb->\'EpisodeNumber\') from mm_metadata_tvshow'
-        ' where mm_metadata_tvshow_guid = %s)', (show_guid, show_guid))
+        ' where mm_metadata_tvshow_guid = %s)', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if row_data[0] in season_data:
             if season_data[row_data[0]] < row_data[1]:
