@@ -263,15 +263,7 @@ def db_read_tvmeta_epsisode_by_id(self, show_guid, show_episode_id):
     """
     # grab episode detail by eps id
     """
-    # self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-    #                        '->\'Episode\')::jsonb->\'EpisodeName\' as eps_name,'
-    #                        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-    #                        '->\'Episode\')::jsonb->\'FirstAired\' as eps_first_air,'
-    #                        ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Runtime\' as eps_runtime,'
-    #                        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-    #                        '->\'Episode\')::jsonb->\'Overview\' as eps_overview'
-    #                        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s',
-    #                        (str(show_episode_id),))
+    # TODO tvmaze
     # TODO injection fix
     self.db_cursor.execute('select eps_data->\'EpisodeName\' as eps_name,'
                            ' eps_data->\'FirstAired\' as eps_first_air,'
