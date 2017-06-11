@@ -241,14 +241,15 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json'
     #     '->\'Images\'->\'tvmaze\'->\'Episodes\','
 
+    # TODO security check the seasonumber since from webpage addy - injection
     self.db_cursor.execute('select eps_data->\'id\' as eps_id, eps_data->\'EpisodeNumber\' as eps_num,'
                            ' eps_data->\'EpisodeName\' as eps_name,'
                            ' eps_data->\'filename\' as eps_filename'
                            ' from (select jsonb_array_elements_text('
                            'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
                            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
-                           ' as select_eps_data where eps_data @ > \'{ "SeasonNumber": "%s" }\'',
-                           (show_guid, str(season_number)))
+                           ' as select_eps_data where eps_data @ > \'{ "SeasonNumber": "' + season_number + '" }\'',
+                           (show_guid,))
     # id, episode_number, episode_name, filename
     for row_data in self.db_cursor.fetchall():
         if row_data['eps_filename'] is None:
