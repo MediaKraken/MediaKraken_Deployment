@@ -264,21 +264,20 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     # grab episode detail
     """
     logging.info("huh: %s %s %s", show_guid, season_number, episode_number)
-    self.db_cursor.execute('(select COALESCE(jsonb_array_elements_text(mm_metadata_tvshow_json'
-        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-        '->\'_embedded\'->\'episodes\')::jsonb->\'number\','
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-        '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-        '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-        '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
-        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-        '->\'_embedded\'->\'episodes\')::jsonb->\'summary\','
+    # self.db_cursor.execute('(select COALESCE(jsonb_array_elements_text(mm_metadata_tvshow_json'
+    #     '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'number\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'summary\','
 
-
-        'jsonb_array_elements_text(mm_metadata_tvshow_json'
+    self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_tvshow_json'
         '->\'Meta\'->\'thetvdb\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Episode\')::jsonb->\'EpisodeNumber\','
@@ -288,7 +287,7 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
         '->\'Episode\')::jsonb->\'FirstAired\','
         ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Runtime\','
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-        '->\'Episode\')::jsonb->\'Overview\')'
+        '->\'Episode\')::jsonb->\'Overview\''
         ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (show_guid,))
     for row_data in self.db_cursor.fetchall():
         if str(row_data[0]) == season_number and str(row_data[1]) == episode_number:
