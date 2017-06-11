@@ -248,7 +248,7 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
                            ' from (select jsonb_array_elements_text('
                            'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
                            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
-                           ' as select_eps_data where eps_data @ > \'{ "SeasonNumber": "'
+                           ' as select_eps_data where eps_data @> \'{ "SeasonNumber": "'
                            + str(season_number) + '" }\'', (show_guid,))
     # id, episode_number, episode_name, filename
     for row_data in self.db_cursor.fetchall():
