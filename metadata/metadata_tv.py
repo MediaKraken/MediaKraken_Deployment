@@ -183,11 +183,12 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
-        # TODO store image download que
-        # for episode_info in show_detail['Data']['Episdodes']:
-        #     db_connection.db_download_image_insert('tvmaze',
-        #         json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
-        #         'local': '/mediakraken/web_app/MediaKraken/static/meta/images/' + episode_info['filename']}))
+        # save rows for episode image fetch
+        for episode_info in show_detail['_embedded']['episodes']:
+            db_connection.db_download_image_insert('tvmaze',
+                json.dumps({'url': episode_info['image']['original'],
+                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                + str(episode_info['id']) + '.jpg'}))
         db_connection.db_commit()
     return metadata_uuid
 
