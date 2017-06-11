@@ -33,6 +33,7 @@ image_dir = [
              'box_vhs',
              'chapter',
              'character',
+             'episodes',
              'fanart',
              'game',
              'game_box',
