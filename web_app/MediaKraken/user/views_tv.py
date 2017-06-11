@@ -471,14 +471,14 @@ def metadata_tvshow_season_detail_page(guid, season):
 
 
 # tv show season detail - show guid then season #
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>", methods=['GET', 'POST'])
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
+@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
+@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>/", methods=['GET', 'POST'])
 @login_required
-def metadata_tvshow_episode_detail_page(guid, season, episode):
+def metadata_tvshow_episode_detail_page(guid, episode_id):
     """
     Display tvshow episode metadata detail
     """
-    data_metadata = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
+    data_metadata = g.db_connection.db_read_tvmeta_epsisode_by_id(guid, episode_id)
     # poster image
     try:
         data_poster_image = data_metadata[3]
