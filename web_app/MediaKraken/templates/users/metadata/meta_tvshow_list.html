@@ -17,9 +17,9 @@
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = {{"../meta_tvshow_detail/" + row_data[0]}}>
                 {% if row_data[3] == None %}
-                <img src= "../../static/images/missing_icon.jpg" height="300" width="200">
+                <img src= "/static/images/missing_icon.jpg" height="300" width="200">
                 {% else %}
-                <img src= {{ "../../static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                <img src= {{ "/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                 {% endif %}
                 </a>
                 {% if row_data[2] != None %}
