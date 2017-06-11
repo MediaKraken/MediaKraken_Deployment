@@ -50,7 +50,7 @@
             {% for season_info in data_season_count %}
             <div class="main_photo">
                 <a href= {{ "../meta_tvshow_season_detail/" + data_guid + "/" + season_info|string }} >
-                <img src= {{ "../../static/images/missing_icon.jpg" }} alt= {{ "../../static/images/missing_icon.jpg" }} height="300" width="200">
+                <img src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/images/missing_icon.jpg" }} height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content">{{data_season_data[season_info]}}</p>

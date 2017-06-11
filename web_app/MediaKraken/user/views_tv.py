@@ -496,8 +496,6 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
                            data_guid=guid,
                            data_title=data_metadata[2],
                            data_runtime=data_metadata[4],
-                           data_season=season,
-                           data_episode=episode,
                            data_overview=data_metadata[5],
                            data_first_aired=data_metadata[3],
                            data_poster_image=data_poster_image,
