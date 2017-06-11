@@ -37,7 +37,7 @@ def main():
             common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'],
                                                      row_data['mdq_image_download_json']['local'])
             thread_db.db_download_image_delete(row_data['mdq_image_id'])
-            thread_db.db_commit()
+            #thread_db.db_commit() - commit done in delete function above
         time.sleep(1)
 #        break # TODO for now testing.......
     thread_db.db_close()
