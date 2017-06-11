@@ -273,7 +273,7 @@ def db_read_tvmeta_epsisode_by_id(self, show_guid, show_episode_id):
                            ' from (select jsonb_array_elements_text('
                            'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
                            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
-                           ' as select_eps_data where eps_data @> \'{ "EpisodeNumber": "'
+                           ' as select_eps_data where eps_data @> \'{ "id": "'
                            + str(show_episode_id) + '" }\'', (show_guid,))
     return self.db_cursor.fetchone()
 
