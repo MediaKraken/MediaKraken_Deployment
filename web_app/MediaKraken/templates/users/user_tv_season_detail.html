@@ -65,7 +65,7 @@
             {% for episode_info in data_episode_count %}
                 <div class="col-1-4">
                     <div class="wrapper">
-                      <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + episode_id|string }} >
+                      <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_episode_count[episode_info][2] }} >
                       {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
                           <img src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/meta/images/missing_icon.jpg" }} height="200" width="300">
                       {% else %}
