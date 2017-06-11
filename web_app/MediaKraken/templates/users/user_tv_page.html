@@ -17,13 +17,13 @@
         <div class="wrapper">
             <a href= {{ "../tv_show_detail/" + row_data[1] }} >
             {% if row_data[2] == None %}
-            <img src= "../../static/images/missing_icon.jpg" height="300" width="200">
+            <img src= "/static/images/missing_icon.jpg" height="300" width="200">
             </a>
             <div class="description">
                 <p class="description_content">{{row_data[0] + " - " + row_data[3]}}</p>
             </div>
             {% else %}
-            <img src= {{ "../../static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+            <img src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
             </a>
             <div class="description">
                 <p class="description_content">{{row_data[3]}}</p>

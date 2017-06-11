@@ -12,9 +12,9 @@
     </head>
     {% if data %}
     <div id="movie_detail">
-        <img alt="fs_bg_image" src= {{ "../static/meta/images/" + data_background_image }} id="fs_bg_image" />
+        <img alt="fs_bg_image" src= {{ "/static/meta/images/" + data_background_image }} id="fs_bg_image" />
         <div id="movie_image_div" class="table-responsive">
-            <img class="center" src= {{ "../static/meta/images/" + data_poster_image }} >
+            <img class="center" src= {{ "/static/meta/images/" + data_poster_image }} >
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -138,7 +138,7 @@
                     {% for chapter_info in data_json_media_chapters %}
                     <div class="col-1-4">
                         <a href= {{ "./movie_play_chapter/" + data_guid + "/" + chapter_info[0].replace(' ','%20') }} >
-                        <img src= {{ "../static/meta/images/" + chapter_info[1] }} alt= {{ "../static/meta/images/" + chapter_info[1] }} height="150" width="150">
+                        <img src= {{ "/static/meta/images/" + chapter_info[1] }} alt= {{ "../static/meta/images/" + chapter_info[1] }} height="150" width="150">
                         </a>
                         <p>{{chapter_info[0]}}</p>
                     </div>

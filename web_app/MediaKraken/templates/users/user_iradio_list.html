@@ -15,7 +15,7 @@
         <a href= {{ "../iradio_detail/" + row_data[0] }} > {{row_data[1]}}</a>
         {% else %}
         <a href= {{ "../iradio_detail/" + row_data[0] }} >
-        <img src= {{ "../static/meta/images/" + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="200" width="132">
+        <img src= {{ "/static/meta/images/" + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="200" width="132">
         </a>
         {% endif %}
         {% endfor %}
