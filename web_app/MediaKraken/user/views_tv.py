@@ -436,7 +436,8 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series'] and json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'] is not None:
+        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series'] \
+                and json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'] is not None:
             for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
