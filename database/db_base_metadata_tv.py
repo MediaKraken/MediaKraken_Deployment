@@ -253,9 +253,9 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
     # id, episode_number, episode_name, filename
     for row_data in self.db_cursor.fetchall():
         if row_data['eps_filename'] is None:
-            episode_data[row_data['eps_num']] = (row_data['eps_name'], 'missing_icon.jpg')
+            episode_data[row_data['eps_num']] = (row_data['eps_name'], 'missing_icon.jpg', row_data['eps_id'])
         else:
-            episode_data[row_data['eps_num']] = (row_data['eps_name'], row_data['eps_filename'])
+            episode_data[row_data['eps_num']] = (row_data['eps_name'], row_data['eps_filename'], row_data['eps_id'])
     return episode_data
 
 
