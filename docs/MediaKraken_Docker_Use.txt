@@ -43,13 +43,13 @@ docker build -t mediakraken/mkbaseffmpeg .
 docker run --network=mk_mediakraken_network -p 5050 -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/mediakraken:/mediakraken/log -v /home/mediakraken:/mediakraken/mnt -itd --name=alpifs7 mediakraken/mkslave
 
 
-docker run --network=alpine_mediakraken-dbnetwork -itd --name=alpine_appserver7 alpine_appserver
-docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserver544450 alpine_appserver
+docker run --network=mk_mediakraken_dbnetwork -itd --name=alpine_appserver7 alpine_appserver
+docker run --network=mk_mediakraken_dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserv453er544450 mkserver
 
-docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_metadata3323 alpine_metadata
+docker run --network=mk_mediakraken_dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_metadata3323 alpine_metadata
 
 
-docker run --network=alpine_mediakraken-dbnetwork -p 8900:8080 --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j --env POSTGRES_DB=metamandb --env POSTGRES_USER=metamanpg -itd --name=alpine_web5550 alpine_webserver
+docker run --network=mk_mediakraken-dbnetwork -p 8900:8080 --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j --env POSTGRES_DB=metamandb --env POSTGRES_USER=metamanpg -itd --name=alpine_web5550 alpine_webserver
 # after attach
 uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
 
