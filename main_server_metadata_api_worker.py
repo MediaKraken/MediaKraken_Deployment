@@ -402,7 +402,6 @@ while True:
                     metadata_uuid, row_data['mdq_download_json']['MediaID'])
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
-    thread_db.db_commit()
     time.sleep(1)
 #        break # TODO for now testing.......
 thread_db.db_close()
