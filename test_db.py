@@ -27,6 +27,9 @@ db_connection.db_open(True)
 data_episode_count = db_connection.db_read_tvmeta_season_eps_list('a7ad882b-372a-4e46-bb77-26c09681ea01', 2)
 print('dataeps: %s', data_episode_count)
 
-print('key: %s', natsort.natsorted(data_episode_count))
+key_list = natsort.natsorted(data_episode_count)
+
+for key_data in key_list:
+    print('key: %s', data_episode_count[key_data])
 
 db_connection.db_close()
