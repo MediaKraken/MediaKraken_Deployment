@@ -33,7 +33,6 @@ image_dir = [
              'box_vhs',
              'chapter',
              'character',
-             'episodes',
              'fanart',
              'game',
              'game_box',
@@ -57,3 +56,4 @@ def build_image_dirs():
         os.mkdir('/mediakraken/web_app/MediaKraken/static/meta/images/' + image_info)
         for i in ascii_lowercase:
             os.mkdir('/mediakraken/web_app/MediaKraken/static/meta/images/' + image_info + '/' + i)
+    os.mkdir('/mediakraken/web_app/MediaKraken/static/meta/images/episodes') # since a-z won't be used
