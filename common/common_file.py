@@ -156,3 +156,16 @@ def com_file_is_junk(file_name):
         except:
             pass
     return False
+
+
+def com_mkdir_p(filename):
+    """
+    create directory path if not exists
+    """
+    try:
+        folder = os.path.dirname(filename)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        return True
+    except:
+        return False
