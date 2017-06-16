@@ -33,3 +33,29 @@ print(stuff)
 stuff2 = 'jo32ljf02fj2ofjofjfofjfo'
 
 print(stuff2[-3:])
+
+
+
+import json
+
+json_data = json.dumps({
+  "result":[
+    {
+      "run":[
+        {
+          "action":"stop"
+        },
+          {
+              "action": "start"
+          },
+          {
+              "action": "start"
+          }
+      ],
+      "find": "true"
+    }
+  ]
+})
+
+item_dict = json.loads(json_data)
+print(len(item_dict['result'][0]['run']))
