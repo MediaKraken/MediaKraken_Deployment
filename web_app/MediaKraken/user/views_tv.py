@@ -19,6 +19,7 @@ from common import common_internationalization
 from common import common_pagination
 import database as database_base
 import natsort
+import collections
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -239,7 +240,7 @@ def user_tv_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
 
-    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
+    data_episode_count = collections.OrderedDict(g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season)))
 #    data_episode_keys = natsort.natsorted(data_episode_count.keys())
     # poster image
     try:
