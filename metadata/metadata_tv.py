@@ -132,9 +132,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         logging.info('insert 4')
         # save rows for episode image fetch
         if 'Episode' in xml_show_data['Data']:
-            item_dict = json.loads(xml_show_data['Data'])
-            print(len(item_dict['Episode'][0]['filename']))
-            if len(item_dict['Episode'][0]['filename']) > 1:
+            print('len %s', len(xml_show_data['Data']['Episode'][0]['filename']))
+            if len(xml_show_data['Data']['Episode'][0]['filename']) > 1:
                 for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
                     logging.info('eps info: %s', episode_info)
                     if episode_info['filename'] is not None:
