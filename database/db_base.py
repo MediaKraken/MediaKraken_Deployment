@@ -27,7 +27,7 @@ from psycopg2.extras import DictCursor # pylint: disable=W0611
 
 def db_open(self, db_build=False):
     """
-    # open database and pull in config from sqlite and create db if not exist
+    # open database and pull in config and create db if not exist
     """
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -39,12 +39,14 @@ def db_open(self, db_build=False):
             % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432,
             os.environ['POSTGRES_PASSWORD']))
     else:
-        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='postgres'"
-                                          " host='localhost' port=5432 password=''")
+        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
+                                          " host='10.1.0.186' port=5432 password='metamanpg'")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     #self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
+    # shoulda need the rest as the DB in "populated" via docker container
+    # TODO what about those who connect to own db
 #    self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class'\
 #        ' WHERE relname = \'mm_media\'')
 #    if self.db_cursor.fetchone()['a'] == 0:
