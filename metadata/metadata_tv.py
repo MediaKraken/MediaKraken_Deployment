@@ -132,6 +132,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         logging.info('insert 4')
         # save rowss for episode image fetch
         for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
+            logging.info('eps info: %s', episode_info)
             db_connection.db_download_image_insert('thetvdb',
                 json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
                 'local': '/mediakraken/web_app/MediaKraken/static/meta/images/' + episode_info['filename']}))
