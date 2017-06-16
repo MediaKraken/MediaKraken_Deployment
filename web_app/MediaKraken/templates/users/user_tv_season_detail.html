@@ -62,7 +62,7 @@
     <p>Episodes:</p>
     <div id="container">
         <div class="grid">
-            {% for episode_info in data_episode_count %}
+            {% for episode_info in data_episode_keys %}
                 <div class="col-1-4">
                     <div class="wrapper">
                       <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_episode_count[episode_info][2] }} >
