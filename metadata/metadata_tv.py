@@ -130,15 +130,25 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             db_connection.db_meta_person_insert_cast_crew('thetvdb',
                 xml_actor_data['Actor'])
         logging.info('insert 4')
-        # save rowss for episode image fetch
+        # save rows for episode image fetch
         if 'Episode' in xml_show_data['Data']:
-            for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
-                logging.info('eps info: %s', episode_info)
-                if episode_info['filename'] is not None:
+            item_dict = json.loads(xml_show_data['Data'])
+            print(len(item_dict['Episode'][0]['filename']))
+            if len(item_dict['Episode'][0]['filename']) > 1:
+                for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
+                    logging.info('eps info: %s', episode_info)
+                    if episode_info['filename'] is not None:
+                        db_connection.db_download_image_insert('thetvdb',
+                            json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
+                            'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                            + episode_info['filename']}))
+            else:
+                if xml_show_data['Data']['Episode']['filename'] is not None:
                     db_connection.db_download_image_insert('thetvdb',
-                        json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
+                        json.dumps({'url': 'https://thetvdb.com/banners/' +
+                        xml_show_data['Data']['Episode']['filename']['filename'],
                         'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                        + episode_info['filename']}))
+                        + xml_show_data['Data']['Episode']['filename'] ['filename']}))
         db_connection.db_commit()
     return metadata_uuid
 
