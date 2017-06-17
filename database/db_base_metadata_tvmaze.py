@@ -44,6 +44,7 @@ def db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,
         ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
         ' mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)',
         (new_uuid, series_id_json, tvmaze_name, show_detail, image_json))
+    self.db_commit()
     return new_uuid
 
 
@@ -56,3 +57,4 @@ def db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail,
         'mm_metadata_tvshow_name = %s, mm_metadata_tvshow_json = %s '
         'where mm_metadata_media_tvshow_id->\'tvmaze\'::text = %s',
         (series_id_json, tvmaze_name, show_detail, str(tvmaze_id)))
+    self.db_commit()

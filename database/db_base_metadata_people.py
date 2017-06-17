@@ -95,6 +95,7 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
         ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',
         (new_guid, person_name, media_id_json, person_json, image_json))
+    self.db_commit()
     return new_guid
 
 
@@ -106,6 +107,7 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
                            'mmp_person_image = %s where mmp_person_media_id->\'' \
                            + provider_name + '\' ? %s',
                            (json.dumps(person_bio), json.dumps(person_image), str(provider_uuid)))
+    self.db_commit()
 
 
 def db_meta_person_insert_cast_crew(self, meta_type, person_json):

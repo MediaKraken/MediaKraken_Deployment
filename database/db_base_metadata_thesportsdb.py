@@ -43,6 +43,7 @@ def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,
         ' mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json,'
         ' mm_metadata_sports_image_json) values (%s,%s,%s,%s,%s)',
         (new_guid, series_id_json, event_name, show_detail, image_json))
+    self.db_commit()
     return new_guid
 
 
@@ -55,3 +56,4 @@ def db_metathesports_update(self, series_id_json, event_name, show_detail,
         ' mm_metadata_sports_name = %s, mm_metadata_sports_json = %s'
         ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s',
         (series_id_json, event_name, show_detail, sportsdb_id))
+    self.db_commit()

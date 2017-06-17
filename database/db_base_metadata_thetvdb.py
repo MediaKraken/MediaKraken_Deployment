@@ -30,6 +30,7 @@ def db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
         ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
         ' mm_metadata_tvshow_localimage_json) values (%s,%s,%s,%s,%s)',
         (media_uuid, series_id_json, tv_name, show_detail, image_json))
+    self.db_commit()
     return media_uuid
 
 
@@ -41,3 +42,4 @@ def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
         ' set mm_metadata_media_tvshow_id = %s, mm_metadata_tvshow_name = %s,'
         ' mm_metadata_tvshow_json = %s where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s',
         (series_id_json, tv_name, show_detail, tvdb_id))
+    self.db_commit()

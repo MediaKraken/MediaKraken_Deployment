@@ -28,6 +28,7 @@ def db_media_class_insert(self, class_name, class_type, display_class):
     self.db_cursor.execute('insert into mm_media_class (mm_media_class_guid,'
         'mm_media_class_type,mm_media_class_parent_type,mm_media_class_display)'
         ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), class_name, class_type, display_class))
+    self.db_commit()
 
 
 def db_media_class_list_count(self):

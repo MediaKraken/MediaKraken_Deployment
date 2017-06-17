@@ -42,6 +42,7 @@ def db_meta_update(self, series_id_json, result_json, image_json):
         ' mm_media_name = %s, mm_metadata_json = %s, mm_metadata_localimage_json = %s'
         ' where mm_metadata_media_id->\'themoviedb\' ? %s', (series_id_json, result_json['title'],
         json.dumps(result_json), json.dumps(image_json), str(result_json['id'])))
+    self.db_commit()
 
 
 def db_meta_genre_list_count(self):

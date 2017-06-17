@@ -31,6 +31,7 @@ def db_insert_media(self, media_uuid, media_path, media_class_uuid,
         ' mm_media_path, mm_media_metadata_guid, mm_media_ffprobe_json, mm_media_json)'
         ' values (%s,%s,%s,%s,%s,%s)', (media_uuid, media_class_uuid, media_path,
         media_metadata_uuid, media_ffprobe_json, media_json))
+    self.db_commit()
 
 
 def db_read_media(self, media_guid=None):

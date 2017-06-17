@@ -32,6 +32,7 @@ def db_iradio_insert(self, radio_channel):
             self.db_cursor.execute('insert into mm_radio (mm_radio_guid,mm_radio_adress,'
                                    'mm_radio_active) values (%s,%s,true)',
                                    (new_guid, radio_channel))
+            self.db_commit()
             return new_guid
 
 

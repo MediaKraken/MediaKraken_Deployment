@@ -30,6 +30,7 @@ def db_notification_insert(self, notification_data, notification_dismissable):
         'mm_notification_text,mm_notification_time,mm_notification_dismissable)'
         ' values (%s,%s,CURRENT_TIMESTAMP,%s)', (new_guid, notification_data,
         notification_dismissable))
+    self.db_commit()
     return new_guid
 
 
@@ -54,3 +55,4 @@ def db_notification_delete(self, notification_uuid):
     """
     self.db_cursor.execute('delete from mm_notification where mm_notification_guid = %s',
         (notification_uuid,))
+    self.db_commit()

@@ -48,6 +48,7 @@ def db_tuner_insert(self, tuner_json):
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_tuner (mm_tuner_id, mm_tuner_json) values (%s,%s)',
         (new_guid, tuner_json))
+    self.db_commit()
     return new_guid
 
 
@@ -57,6 +58,7 @@ def db_tuner_update(self, guid, tuner_json):
     """
     self.db_cursor.execute('update mm_tuner set mm_tuner_json = %s where mm_tuner_id = %s',
         (tuner_json, guid))
+    self.db_commit()
 
 
 def db_tuner_delete(self, guid):
@@ -64,6 +66,7 @@ def db_tuner_delete(self, guid):
     Remove tuner from the database
     """
     self.db_cursor.execute('delete from mm_tuner where mm_tuner_id = %s', (guid,))
+    self.db_commit()
 
 
 def db_tuner_by_serial(self, serial_no):

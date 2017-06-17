@@ -31,6 +31,7 @@ def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,
         ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json)'
         ' values (%s,%s,%s,%s,%s,%s)', (new_guid, media_link_uuid, media_uuid,
         media_class_uuid, media_metadata_uuid, media_ffprobe_json))
+    self.db_commit()
     return new_guid
 
 

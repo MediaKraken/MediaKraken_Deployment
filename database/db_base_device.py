@@ -74,6 +74,7 @@ def db_device_delete(self, guid):
     Remove a device from the database via uuid
     """
     self.db_cursor.execute('delete from mm_device where mm_device_id = %s', (guid,))
+    self.db_commit()
 
 
 def db_device_read(self, guid):

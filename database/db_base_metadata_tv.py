@@ -159,6 +159,7 @@ def db_meta_tvshow_update_image(self, image_json, metadata_uuid):
     self.db_cursor.execute('update mm_metadata_tvshow'
         ' set mm_metadata_tvshow_localimage_json = %s where mm_metadata_tvshow_guid = %s',
         (image_json, metadata_uuid))
+    self.db_commit()
 
 
 def db_meta_tvshow_images_to_update(self, image_type):

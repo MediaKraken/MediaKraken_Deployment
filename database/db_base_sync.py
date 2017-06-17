@@ -70,6 +70,7 @@ def db_sync_insert(self, sync_path, sync_path_to, sync_json):
     self.db_cursor.execute('insert into mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to,'
         ' mm_sync_options_json) values (%s, %s, %s, %s)', (new_guid, sync_path,
         sync_path_to, sync_json))
+    self.db_commit()
     return new_guid
 
 
@@ -78,6 +79,7 @@ def db_sync_delete(self, sync_guid):
     # delete sync job
     """
     self.db_cursor.execute('delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
+    self.db_commit()
 
 
 def db_sync_progress_update(self, sync_guid, sync_percent):
@@ -86,3 +88,4 @@ def db_sync_progress_update(self, sync_guid, sync_percent):
     """
     self.db_cursor.execute('update mm_sync set mm_sync_options_json->\'Progress\' = %s'
         ' where mm_sync_guid = %', (sync_percent, sync_guid))
+    self.db_commit()
