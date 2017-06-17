@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_network_mediakraken
-
+from guessit import guessit
 # print how the server output works
 #print(common_network_mediakraken.com_net_mediakraken_find_server())
 
@@ -34,6 +34,8 @@ stuff2 = 'jo32ljf02fj2ofjofjfofjfo'
 
 print(stuff2[-3:])
 
+
+print(guessit('/mediakraken/mnt/zfsspoo/iscsi_share/HTPC_MediaBrowser/TV_Shows_BluRay/Justified (2010)/theme.mp3'))
 
 
 import json
