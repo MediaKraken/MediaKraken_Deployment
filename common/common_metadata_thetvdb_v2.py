@@ -30,4 +30,23 @@ class CommonMetadataTheTVDBv2(object):
     Class for interfacing with TheTVDB with swagger
     """
     def __init__(self, option_config_json):
-        self.thetvdb_connection = option_config_json['API']['thetvdb']
+        self.headers = {'apikey': option_config_json['API']['thetvdb'],
+#                        'username': None, 'userkey': None,
+                        'Accept': 'application/json'}
+        self.base_api_url = 'https://api.thetvdb.com/'
+
+
+    def com_meta_thetvdbv2_login(self):
+        print('header %s', self.headers)
+        resp = requests.post(self.base_api_url + "login", headers=self.headers)
+        logging.info("thetvdbv2_login Info Status: %s-%s", resp.status_code, resp.json())
+        return resp.json()
+
+
+    def com_meta_thetvdbv2_language(self):
+        resp = requests.post(self.base_api_url + "languages", headers=self.headers)
+        logging.info("thetvdbv2_lang Info Status: %s-%s", resp.status_code, resp.json())
+        return resp.json()
+
+
+
