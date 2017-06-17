@@ -19,8 +19,6 @@ import psycopg2
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 
-
-
 db_connection = database_base.MKServerDatabase()
 db_connection.db_open(True)
 
