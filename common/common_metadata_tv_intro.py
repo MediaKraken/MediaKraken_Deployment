@@ -18,9 +18,26 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
-#from bs4 import BeautifulSoup
-#from . import common_network
-#from . import common_string
+from bs4 import BeautifulSoup
+from . import common_network
+from . import common_string
 
 
 # http://www.tv-intros.com
+
+
+def com_tvintro_download(media_name):
+    """
+    Try to grab intro from tvintro
+    """
+    # TODO doesn't match the tvintro........base from theme
+    data = BeautifulSoup(common_network.mk_network_fetch_from_url(
+        'http://www.tv-intros.com/' + media_name[0].upper() + '/'
+        + common_string.com_string_title(media_name).replace(' ', '_')
+        + ".html", None)).find(id="download_song")
+    if data is not None:
+        logging.info('href: %s', data['href'])
+        common_network.mk_network_fetch_from_url('http://www.tv-intros.com'
+                                                 + data['href'], 'theme.mp3')
+        return True #success
+    return False # no match
