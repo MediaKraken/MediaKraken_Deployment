@@ -31,38 +31,38 @@ class CommonHardwareChromecast(object):
     Class for interfacing with chromecast
     """
     def __init__(self):
-        self.chromecast_dict = None
+        self.chromecast_dev = None
         self.cast = None
         self.chromecast_device = None
 
 
-    def com_chromecast_discover_dict(self):
+    def com_chromecast_discover(self):
         """
         # find chromecast as dict
         """
-        self.chromecast_dict = pychromecast.get_chromecasts_as_dict().keys()
-        return self.chromecast_dict
+        self.chromecast_dev = pychromecast.get_chromecasts()
+        return self.chromecast_dev
 
 
-    def com_chromecast_info(self):
-        """
-        # get detail by name
-        """
-        return self.cast.device
+    # def com_chromecast_info(self):
+    #     """
+    #     # get detail by name
+    #     """
+    #     return self.cast.device
 
 
-    def com_chromecast_status(self):
-        """
-        # get status by name
-        """
-        return self.cast.status
+    # def com_chromecast_status(self):
+    #     """
+    #     # get status by name
+    #     """
+    #     return self.cast.status
 
 
     def com_chromecast_connect_by_name(self, key_name):
         """
         # connect to device
         """
-        self.cast = pychromecast.get_chromecast(friendly_name=key_name)
+        self.cast = next(cc for cc in self.chromecast_dev if cc.device.friendly_name == key_name)
         # Wait for cast device to be ready
         self.cast.wait()
         self.chromecast_device = self.cast.media_controller
