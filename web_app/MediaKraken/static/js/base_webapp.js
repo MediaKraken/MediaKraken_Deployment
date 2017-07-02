@@ -4,12 +4,12 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
 		$.ajax({
-		        url: '/movie_status/' + $(this).attr('data-id') + '/' + key,
+		        url: '/users/movie_status/' + $(this).attr('data-id') + '/' + key,
 		        type: 'POST',
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/movie_status/' + $(this).attr('data-id') + '/' + key;
+		                window.location = '/users/movie_status/' + $(this).attr('data-id') + '/' + key;
 		            } else {
 		                alert(result.status);
 		            }
@@ -39,12 +39,12 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
 		$.ajax({
-		        url: '/tv_status/' + $(this).attr('data-id') + '/' + key,
+		        url: '/users/tv_status/' + $(this).attr('data-id') + '/' + key,
 		        type: 'POST',
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/tv_status/' + $(this).attr('data-id') + '/' + key;
+		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
 		            } else {
 		                alert(result.status);
 		            }
