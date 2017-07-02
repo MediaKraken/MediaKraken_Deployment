@@ -334,7 +334,7 @@ def db_read_media_new_count(self, days_old=7):
     self.db_cursor.execute('select count(*) from mm_media, mm_metadata_movie, mm_media_class'
         ' where mm_media_metadata_guid = mm_metadata_guid'
         ' and mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
-        ' and mm_media_json->>\'DateAdded\' >= %s group by mm_media_name, mm_media_class_type',
+        ' and mm_media_json->>\'DateAdded\' >= %s group by mm_media_name, mm_metadata_movie, mm_media_class_type',
         ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     return self.db_cursor.fetchone()[0]
 
@@ -350,7 +350,7 @@ def db_read_media_new(self, days_old=7, offset=None, records=None):
             ' where mm_media_metadata_guid = mm_metadata_guid'
             ' and mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
             ' and mm_media_json->>\'DateAdded\' >= %s'
-            ' group by mm_media_name, mm_media_class_type order by LOWER(mm_media_name),'
+            ' group by mm_media_name, mm_media_guid, mm_media_class_type order by LOWER(mm_media_name),'
             ' mm_media_class_type',
             ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     else:
@@ -359,7 +359,7 @@ def db_read_media_new(self, days_old=7, offset=None, records=None):
             ' where mm_media_metadata_guid = mm_metadata_guid'
             ' and mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
             ' and mm_media_json->>\'DateAdded\' >= %s'
-            ' group by mm_media_name, mm_media_class_type order by LOWER(mm_media_name),'
+            ' group by mm_media_name, mm_media_guid, mm_media_class_type order by LOWER(mm_media_name),'
             ' mm_media_class_type offset %s limit %s',
             ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),
             offset, records))
