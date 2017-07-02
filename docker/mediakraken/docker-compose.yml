@@ -52,7 +52,7 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     volumes:
-      - /var/lib/postgresql:/mediakraken/database
+      - /var/lib/postgresql:/var/lib/postgresql
     networks:
       - mediakraken_dbnetwork
     restart: unless-stopped
