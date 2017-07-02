@@ -9,7 +9,7 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/users/movie_status/' + $(this).attr('data-id') + '/' + key;
+		                window.location = '/users/movie/All';
 		            } else {
 		                alert(result.status);
 		            }
