@@ -82,7 +82,8 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
 docker_inst = common_docker.CommonDocker()
 # check for swarm id (should already be master then)
 docker_info = docker_inst.com_docker_info()
-if docker_info['Swarm']['Managers'] == 0:
+if 'Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0\
+        or 'Managers' not in docker_info['Swarm']:
     logging.info('attempting to init swarm as manager')
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
