@@ -13,6 +13,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SWARMIP=${SWARMIP}
     container_name: mkserver
     depends_on:
       - pgbounce
