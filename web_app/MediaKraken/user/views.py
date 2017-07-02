@@ -296,7 +296,7 @@ def movie_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    logging.info('movie status: %s %s %s', guid, event_type)
+    logging.info('movie status: %s %s', guid, event_type)
     if event_type == "watched":
         g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
         return json.dumps({'status':'OK'})
@@ -320,7 +320,7 @@ def tv_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    logging.info('tv status: %s %s %s', guid, event_type)
+    logging.info('tv status: %s %s', guid, event_type)
     if event_type == "watched":
         pass
     elif event_type == "sync":
