@@ -50,8 +50,8 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
-    volumes:
-      - /var/lib/postgresql:/var/lib/postgresql
+#    volumes:
+#      - /var/lib/postgresql:/var/lib/postgresql
     networks:
       - mediakraken_dbnetwork
     restart: unless-stopped
