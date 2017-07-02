@@ -158,11 +158,12 @@ def db_media_path_by_uuid(self, media_uuid):
     """
     # find path for media by uuid
     """
-    self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_media_path']
     except:
+        self.db_rollback()
         return None
 
 
@@ -170,9 +171,7 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
     """
     # set watched/unwatched status for media
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
@@ -180,6 +179,7 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
@@ -187,9 +187,7 @@ def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
@@ -197,6 +195,7 @@ def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
@@ -204,9 +203,7 @@ def db_media_poo_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
                            (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
@@ -214,6 +211,7 @@ def db_media_poo_status_update(self, media_guid, user_id, status_bool):
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
@@ -221,9 +219,7 @@ def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     """
     # set mismatch status for media
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
@@ -231,6 +227,7 @@ def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
@@ -238,9 +235,7 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     """
     # set checkpoint for media (so can pick up where left off per user)
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
@@ -248,6 +243,7 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
