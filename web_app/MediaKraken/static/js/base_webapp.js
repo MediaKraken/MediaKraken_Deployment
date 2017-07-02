@@ -1,5 +1,5 @@
 $(function(){
-    $('#the-node').contextMenu({
+    $('#the-movie-node').contextMenu({
         selector: 'div',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
