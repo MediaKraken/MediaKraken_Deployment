@@ -4,12 +4,12 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
 		$.ajax({
-		        url: '../movie_detail/' + $(this).attr('data-id') + '/movie/' + key,
+		        url: '/movie_status/' + $(this).attr('data-id') + '/movie/' + key,
 		        type: 'POST',
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '../movie_detail/' + $(this).attr('data-id') + '/movie/' + key;
+		                window.location = '/movie_status/' + $(this).attr('data-id') + '/movie/' + key;
 		            } else {
 		                alert(result.status);
 		            }
