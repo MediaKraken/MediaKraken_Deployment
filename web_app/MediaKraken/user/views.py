@@ -310,7 +310,7 @@ def movie_status(guid, event_type):
         return json.dumps({'status':'OK'})
     elif event_type == "mismatch":
         pass
-    return redirect(url_for('user_movie_genre.user_movie_page', guid=guid))
+    return redirect(url_for('user_movie_genre.user_movie_page', genre='All'))
 
 
 @blueprint.route('/tv_status/<guid>/<event_type>/', methods=['GET', 'POST'])
@@ -331,7 +331,7 @@ def tv_status(guid, event_type):
         pass
     elif event_type == "mismatch":
         pass
-    return redirect(url_for('user_tv.user_tv_page', guid=guid))
+    return redirect(url_for('user_tv.user_tv_page'))
 
 
 def allowed_file(filename):
