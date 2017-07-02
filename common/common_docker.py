@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import os
 import docker
 import socket
 
@@ -59,7 +60,13 @@ class CommonDocker(object):
         """
         initialize swarm on host
         """
-        return self.cli_api.init_swarm()
+        if os.environ['SWARMIP'] == 'None':
+            try:
+                return self.cli_api.init_swarm()
+            except:
+                logging.critical('Must define Docker Swarm IP in ENV file since multiple IP')
+        else:
+            return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
 
     def com_docker_swarm_inspect(self):
