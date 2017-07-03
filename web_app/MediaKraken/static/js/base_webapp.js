@@ -33,6 +33,37 @@ $(function(){
 
 
 $(function(){
+    $('#the-movie-metadata-node').contextMenu({
+        selector: 'div',
+        callback: function(key, options) {
+            var m = "clicked: " + key + " on " + $(this).attr('data-id');
+		$.ajax({
+		        url: '/users/movie_metadata_status/' + $(this).attr('data-id') + '/' + key,
+		        type: 'POST',
+		        success: function(res) {
+		            var result = JSON.parse(res);
+		            if (result.status == 'OK') {
+		                window.location = '/meta_movie_list';
+		            } else {
+		                alert(result.status);
+		            }
+		        },
+		        error: function(error) {
+		            console.log(error);
+		        }
+		    });
+        },
+        items: {
+            "watched": {name: "Set Watched", icon: "/static/images/microscope.png"},
+            "sep1": "---------",
+            "favorite": {name: "Set Favorite", icon: "/static/images/piggy.png"},
+            "poo": {name: "Set Downvote", icon: "/static/images/poo-icon.png"},
+        }
+    });
+});
+
+
+$(function(){
     $('#the-tv-node').contextMenu({
         selector: 'div',
         callback: function(key, options) {
