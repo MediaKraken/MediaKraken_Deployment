@@ -48,7 +48,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
                            ' where mm_metadata_guid = %s FOR UPDATE', (metadata_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id][status_text] = status_bool
