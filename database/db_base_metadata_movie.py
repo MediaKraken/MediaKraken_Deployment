@@ -60,6 +60,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
         self.db_rollback()
         return None
 
+
 def db_meta_movie_json_update(self, media_guid, metadatajson):
     """
     # update the metadata json
