@@ -290,7 +290,6 @@ def metadata_movie_list():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db_connection.db_meta_movie_list(offset, per_page):
-        json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
             watched_status\
