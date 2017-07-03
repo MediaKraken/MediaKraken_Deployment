@@ -174,6 +174,7 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
+        logging.info('jsonwatched: %s', json_data)
         if json_data is None:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
