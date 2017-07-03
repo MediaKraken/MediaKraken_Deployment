@@ -21,25 +21,25 @@ $(function() {
         title: 'Media Option',
         items: [{
                 label: 'Set Watched',
-                icon: '../../static/images/microscope.png',
+                icon: '/static/images/microscope.png',
                 action: function() function_media_status('movie', 'watched')
             }, {
                 label: 'Sync Media',
-                icon: '../../static/images/synced.jpg',
+                icon: '/static/images/synced.jpg',
                 action: function() function_media_status('movie', 'sync')
             },
             null, {
                 label: 'Set Favorite',
-                icon: '../../static/images/piggy.png',
+                icon: '/static/images/piggy.png',
                 action: function() function_media_status('movie', 'favorite')
             }, {
                 label: 'Set Downvote',
-                icon: '../../static/images/poo-icon.png',
+                icon: '/static/images/poo-icon.png',
                 action: function() function_media_status('movie', 'poo')
             },
             null, {
                 label: 'Set Mismatch',
-                icon: '../../static/images/exclamation-circle-frame.png',
+                icon: '/static/images/exclamation-circle-frame.png',
                 action: function() function_media_status('movie', 'mismatch')
             }
         ]
