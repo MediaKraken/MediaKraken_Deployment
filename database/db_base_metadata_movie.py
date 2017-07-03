@@ -52,6 +52,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
         json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         logging.info('stat4: %s', json_data)
         if json_data is None or 'UserStats' not in json_data:
+            logging.info('stat7')
             json_data['UserStats'] = {}
         logging.info('stat: %s', json_data)
         if user_id in json_data['UserStats']:
