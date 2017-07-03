@@ -175,9 +175,9 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['Watched'] = status_bool
+            json_data['UserStats'][user_id]['watched'] = status_bool
         else:
-            json_data['UserStats'][user_id] = {'Watched': status_bool}
+            json_data['UserStats'][user_id] = {'watched': status_bool}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
@@ -194,9 +194,9 @@ def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['Favorite'] = status_bool
+            json_data['UserStats'][user_id]['favorite'] = status_bool
         else:
-            json_data['UserStats'][user_id] = {'Favorite': status_bool}
+            json_data['UserStats'][user_id] = {'favorite': status_bool}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
@@ -213,9 +213,9 @@ def db_media_poo_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['Poo'] = status_bool
+            json_data['UserStats'][user_id]['poo'] = status_bool
         else:
-            json_data['UserStats'][user_id] = {'Poo': status_bool}
+            json_data['UserStats'][user_id] = {'poo': status_bool}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
@@ -232,9 +232,9 @@ def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['MisMatch'] = status_bool
+            json_data['UserStats'][user_id]['mismatch'] = status_bool
         else:
-            json_data['UserStats'][user_id] = {'MisMatch': status_bool}
+            json_data['UserStats'][user_id] = {'mismatch': status_bool}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
@@ -251,9 +251,9 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['Checkpoint'] = ffmpeg_time
+            json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
         else:
-            json_data['UserStats'][user_id] = {'Checkpoint': ffmpeg_time}
+            json_data['UserStats'][user_id] = {'ffmpeg_checkpoint': ffmpeg_time}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
