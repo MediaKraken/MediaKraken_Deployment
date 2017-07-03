@@ -50,11 +50,14 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
         json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
+        logging.info('stat: %s', json_data)
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id][status_text] = status_bool
         else:
             json_data['UserStats'][user_id] = {status_text: status_bool}
+        logging.info('stat2: %s', json_data)
         self.db_meta_movie_json_update(metadata_guid, json.dumps(json_data))
+        logging.info('stat3: %s', json_data)
         #self.db_commit() - since done in update below
     except:
         self.db_rollback()
