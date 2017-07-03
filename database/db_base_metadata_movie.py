@@ -46,8 +46,11 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
     """
     self.db_cursor.execute('SELECT mm_metadata_user_json from mm_metadata_movie'
                            ' where mm_metadata_guid = %s FOR UPDATE', (metadata_guid,))
+    logging.info('stat6')
     try:
+        logging.info('stat5')
         json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
+        logging.info('stat4: %s', json_data)
         if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         logging.info('stat: %s', json_data)
