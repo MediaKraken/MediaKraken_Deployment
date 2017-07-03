@@ -18,7 +18,6 @@ $(function(){
 		            console.log(error);
 		        }
 		    });
-            window.console && console.log(m) || alert(m);
         },
         items: {
             "watched": {name: "Set Watched", icon: "/static/images/microscope.png"},
