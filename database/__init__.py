@@ -160,7 +160,8 @@ class MKServerDatabase(object):
         db_meta_game_by_guid,\
         db_meta_games_system_insert
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew,\
-        db_meta_movie_status_update
+        db_meta_movie_status_update, \
+        db_meta_movie_json_update
     from database.db_base_metadata_music import db_music_lookup,\
         db_meta_musician_by_guid,\
         db_meta_musician_add,\

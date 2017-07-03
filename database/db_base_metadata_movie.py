@@ -52,8 +52,16 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, statu
             json_data['UserStats'][user_id][status_text] = status_bool
         else:
             json_data['UserStats'][user_id] = {status_text: status_bool}
-        self.db_update_media_json(metadata_guid, json.dumps(json_data))
-        self.db_commit()
+        self.db_meta_movie_json_update(metadata_guid, json.dumps(json_data))
+        #self.db_commit() - since done in update below
     except:
         self.db_rollback()
         return None
+
+def db_meta_movie_json_update(self, media_guid, metadatajson):
+    """
+    # update the metadatajson
+    """
+    self.db_cursor.execute('update mm_metadata_movie set mm_metadata_user_json = %s'
+                           ' where mm_metadata_media_id = %s', (metadatajson, media_guid))
+    self.db_commit()
