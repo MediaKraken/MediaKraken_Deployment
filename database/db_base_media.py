@@ -175,7 +175,7 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         logging.info('jsonwatched: %s', json_data)
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['watched'] = status_bool
@@ -196,7 +196,7 @@ def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['favorite'] = status_bool
@@ -217,7 +217,7 @@ def db_media_poo_status_update(self, media_guid, user_id, status_bool):
                            (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['poo'] = status_bool
@@ -238,7 +238,7 @@ def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['mismatch'] = status_bool
@@ -259,7 +259,7 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        if json_data is None:
+        if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
