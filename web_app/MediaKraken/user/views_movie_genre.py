@@ -59,28 +59,28 @@ def user_movie_page(genre):
         # set watched
         try:
             watched_status\
-                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Watched']
+                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['watched']
         except:
             watched_status = False
         # set synced
         try:
-            sync_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Synced']
+            sync_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['sync']
         except:
             sync_status = False
         # set hated
         try:
-            poo_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Poo']
+            poo_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['poo']
         except:
             poo_status = False
         # set fav
         try:
             favorite_status\
-                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Favorite']
+                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['favorite']
         except:
             favorite_status = False
         # set mismatch
         try:
-            match_status = row_data['MatchFlag']
+            match_status = row_data['mismatch']
         except:
             match_status = False
         logging.info("status: %s %s %s %s %s", watched_status, sync_status, poo_status,

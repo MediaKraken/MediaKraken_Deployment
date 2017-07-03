@@ -158,12 +158,13 @@ def db_meta_movie_list(self, offset=None, records=None):
     if offset is None:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\','
-            ' mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-            ' from mm_metadata_movie order by LOWER(mm_media_name)')
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\','
+            'mm_metadata_user_json from mm_metadata_movie order by LOWER(mm_media_name)')
     else:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
             'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\','
-            ' mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\','
+            'mm_metadata_user_json'
             ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
             ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
             ' order by mm_media_name', (offset, records))

@@ -43,46 +43,46 @@
         <div class="main_photo">
             <div data-id={{row_data[1]}}>
                 {% if row_data[2] == None %}
-                <a href= {{ "../../movie_detail/" + row_data[1] }}>
-                <img src= "/static/images/Movie-icon.png" height="300" width="200">
-                {% if row_data[3] == True %}
-                <img class="watched_icon" src="/static/images/microscope.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[4] == True %}
-                <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
-                {% endif %}
-                {% if row_data[6] == True %}
-                <img class="favorite_icon" src="/static/images/piggy.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[5] == True %}
-                <img class="poo_icon" src="/static/images/poo-icon.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[7] == True %}
-                <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
-                {% endif %}
-                </a>
-                <div class="description">
-                    <p class="description_content_left">{{row_data[0]}}</p>
-                </div>
+                    <a href= {{ "../../movie_detail/" + row_data[1] }}>
+                    <img src= "/static/images/Movie-icon.png" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="/static/images/microscope.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="favorite_icon" src="/static/images/piggy.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] == True %}
+                    <img class="poo_icon" src="/static/images/poo-icon.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[7] == True %}
+                    <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
+                    {% endif %}
+                    </a>
+                    <div class="description">
+                        <p class="description_content_left">{{row_data[0]}}</p>
+                    </div>
                 {% else %}
-                <a href= {{ "../../movie_detail/" + row_data[1] }} >
-                <img src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
-                {% if row_data[3] == True %}
-                <img class="watched_icon" src="/static/images/microscope.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[4] == True %}
-                <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
-                {% endif %}
-                {% if row_data[6] == True %}
-                <img class="favorite_icon" src="/static/images/piggy.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[5] == True %}
-                <img class="poo_icon" src="/static/images/poo-icon.png" height="20" width="20">
-                {% endif %}
-                {% if row_data[7] == True %}
-                <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
-                {% endif %}
-                </a>
+                    <a href= {{ "../../movie_detail/" + row_data[1] }} >
+                    <img src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="/static/images/microscope.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="favorite_icon" src="/static/images/piggy.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] == True %}
+                    <img class="poo_icon" src="/static/images/poo-icon.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[7] == True %}
+                    <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
+                    {% endif %}
+                    </a>
                 {% endif %}
             </div>
         </div>

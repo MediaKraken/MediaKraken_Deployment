@@ -288,6 +288,30 @@ def metadata_movie_list():
     Display list of movie metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    for row_data in g.db_connection.db_meta_movie_list(offset, per_page):
+        json_image = row_data['mm_metadata_localimage_json']
+        # set watched
+        try:
+            watched_status\
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
+        except:
+            watched_status = False
+        # set hated
+        try:
+            poo_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['poo']
+        except:
+            poo_status = False
+        # set fav
+        try:
+            favorite_status\
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['favorite']
+        except:
+            favorite_status = False
+        logging.info("status: %s %s %s %s %s", watched_status, poo_status, favorite_status)
+        media.append((row_data['mm_media_name'], row_data['mm_metadata_guid'], row_data['mm_metadata_json'],
+                      row_data['mm_metadata_localimage_json'], watched_status, poo_status, favorite_status))
+
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -297,7 +321,7 @@ def metadata_movie_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_movie_list.html',
-                           media_movie=g.db_connection.db_meta_movie_list(offset, per_page),
+                           media_movie=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
