@@ -309,8 +309,8 @@ def metadata_movie_list():
         except:
             favorite_status = False
         logging.info("status: %s %s %s %s %s", watched_status, poo_status, favorite_status)
-        media.append((row_data['mm_media_name'], row_data['mm_metadata_guid'], row_data['mm_metadata_json'],
-                      row_data['mm_metadata_localimage_json'], watched_status, poo_status, favorite_status))
+        media.append((row_data['mm_media_name'], row_data['mm_metadata_guid'], row_data['mm_date'],
+                      row_data['mm_poster'], watched_status, poo_status, favorite_status))
 
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
