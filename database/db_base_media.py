@@ -158,12 +158,11 @@ def db_media_path_by_uuid(self, media_uuid):
     """
     # find path for media by uuid
     """
-    self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s FOR UPDATE',
+    self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid = %s',
         (media_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_media_path']
     except:
-        self.db_rollback()
         return None
 
 
