@@ -170,10 +170,11 @@ def db_media_watched_status_update(self, media_guid, user_id, status_bool):
     """
     # set watched/unwatched status for media
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
-        (media_guid,))
+    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_media,mm_metadata_movie'
+                           ' where mm_metadata_guid = mm_media_guid and mm_media_guid = %s FOR UPDATE',
+                           (media_guid,))
     try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['Watched'] = status_bool
         else:
@@ -189,10 +190,10 @@ def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
+    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['Favorite'] = status_bool
         else:
@@ -208,10 +209,10 @@ def db_media_poo_status_update(self, media_guid, user_id, status_bool):
     """
     # set favorite status for media
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
+    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_media where mm_media_guid = %s FOR UPDATE',
                            (media_guid,))
     try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['Poo'] = status_bool
         else:
@@ -227,10 +228,10 @@ def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
     """
     # set mismatch status for media
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
+    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
+        json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['MisMatch'] = status_bool
         else:
