@@ -43,7 +43,7 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/meta_movie_list';
+		                window.location = '/users/meta_movie_list';
 		            } else {
 		                alert(result.status);
 		            }
