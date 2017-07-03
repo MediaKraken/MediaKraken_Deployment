@@ -38,3 +38,22 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
         ' where mm_metadata_guid = %s', (json.dumps(cast_crew_json_row), metadata_id))
     self.db_commit()
+
+
+def db_meta_movie_status_update(self, metadata_guid, user_id, status_text, status_bool):
+    """
+    # set status's for metadata
+    """
+    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s FOR UPDATE', (metadata_guid,))
+    try:
+        json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
+        if user_id in json_data['UserStats']:
+            json_data['UserStats'][user_id][status_text] = status_bool
+        else:
+            json_data['UserStats'][user_id] = {status_text: status_bool}
+        self.db_update_media_json(metadata_guid, json.dumps(json_data))
+        self.db_commit()
+    except:
+        self.db_rollback()
+        return None
