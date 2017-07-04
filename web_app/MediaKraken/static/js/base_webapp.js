@@ -44,7 +44,8 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/users/meta_movie_list';
+//		                window.location = '/users/meta_movie_list';
+                        window.location = window.location.href
 		            } else {
 		                alert(result.status);
 		            }
@@ -75,7 +76,8 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
+                        window.location = window.location.href
+//		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
 		            } else {
 		                alert(result.status);
 		            }
