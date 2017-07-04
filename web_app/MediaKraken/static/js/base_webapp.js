@@ -9,7 +9,8 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-                        window.location = '/users/movie/All';
+//                        window.location = '/users/movie/All';
+                          window.location = window.location.href
 		            } else {
 		                alert(result.status);
 		            }
