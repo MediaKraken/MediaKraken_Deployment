@@ -302,15 +302,12 @@ def movie_status(guid, event_type):
         return json.dumps({'status':'OK'})
     elif event_type == "sync":
         return redirect(url_for('user.sync_edit', guid=guid))
-    elif event_type == "favorite":
-        g.db_connection.db_media_favorite_status_update(guid, current_user.get_id(), True)
-        return json.dumps({'status':'OK'})
-    elif event_type == "poo":
-        g.db_connection.db_media_poo_status_update(guid, current_user.get_id(), True)
-        return json.dumps({'status':'OK'})
     elif event_type == "mismatch":
-        pass
-    return redirect(url_for('user_movie_genre.user_movie_page', genre='All'))
+        g.db_connection.db_media_mismatch_status_update(guid, current_user.get_id(), event_type)
+        return json.dumps({'status':'OK'})
+    else:
+        g.db_connection.db_media_rating_update(guid, current_user.get_id(), event_type)
+        return json.dumps({'status':'OK'})
 
 
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>/', methods=['GET', 'POST'])
