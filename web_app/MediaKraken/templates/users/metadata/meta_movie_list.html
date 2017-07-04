@@ -22,8 +22,8 @@
                     {% if row_data[4] == True %}
                     <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
                     {% endif %}
-                    {% if row_data[5] == True %}
-                    <img class="rating_icon" src={{row_data[6]}} height="20" width="20">
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
                     {% endif %}
                     </a>
                     {% if row_data[2] == "" %}
@@ -41,8 +41,8 @@
                     {% if row_data[4] == True %}
                     <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
                     {% endif %}
-                    {% if row_data[5] == True %}
-                    <img class="rating_icon" src={{row_data[6]}} height="20" width="20">
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
                     {% endif %}
                     </a>
                     <div class="description">

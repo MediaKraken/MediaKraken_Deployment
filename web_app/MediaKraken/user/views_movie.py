@@ -296,21 +296,24 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
         except:
             watched_status = False
-        # set fav
-        try:
-            favorite_status\
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['favorite']
-        except:
-            favorite_status = False
-        # set hated
-        try:
-            poo_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['poo']
-        except:
-            poo_status = False
-        logging.info("status: %s %s %s", watched_status, poo_status, favorite_status)
+        # set rating
+        if 'UserStats' in row_data['mm_metadata_user_json']\
+            and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats']\
+            and ['Rating'] in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
+                rating_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+                if rating_status == 'favorite':
+                    rating_status = '/static/images/favorite-mark.png'
+                elif rating_status == 'like':
+                    rating_status = '/static/images/thumbs-up.png'
+                elif rating_status == 'dislike':
+                    rating_status = '/static/images/dislike-thumb.png'
+                elif rating_status == 'poo':
+                    rating_status = '/static/images/pile-of-dung.png'
+        else:
+            rating_status = None
+        logging.info("status: %s %s", watched_status, rating_status)
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'], row_data['mm_date'],
-                      row_data['mm_poster'], watched_status, favorite_status, poo_status))
-
+                      row_data['mm_poster'], watched_status, rating_status))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

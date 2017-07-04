@@ -25,8 +25,8 @@ $(function(){
             "sync": {name: "Sync Media", icon: "/static/images/synced.jpg"},
             "sep1": "---------",
             "favorite": {name: "Set Favorite", icon: "/static/images/favorite-mark.png"},
-            "upvote": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
-            "downvote": {name: "Set Downvote", icon: "/static/images/dislike-thumb.png"},
+            "like": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
+            "dislike": {name: "Set Downvote", icon: "/static/images/dislike-thumb.png"},
             "poo": {name: "Set Avoid", icon: "/static/images/pile-of-dung.png"},
             "sep2": "---------",
             "mismatch": {name: "Set Mismatch", icon: "/static/images/exclamation-circle-frame.png"},
@@ -61,8 +61,8 @@ $(function(){
             "watched": {name: "Set Watched", icon: "/static/images/eye.png"},
             "sep1": "---------",
             "favorite": {name: "Set Favorite", icon: "/static/images/favorite-mark.png"},
-            "upvote": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
-            "downvote": {name: "Set Downvote", icon: "/static/images/dislike-thumb.png"},
+            "like": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
+            "dislike": {name: "Set Downvote", icon: "/static/images/dislike-thumb.png"},
             "poo": {name: "Set Avoid", icon: "/static/images/pile-of-dung.png"},
         }
     });
