@@ -53,13 +53,13 @@ p.description_content_left{
 
 .watched_icon { position:absolute; top: 10px; left: 10px; }
 
-.synced_icon { position:absolute; top: 10px; left: 40px; }
+.rating_icon { position:absolute; top: 10px; left: 40px; }
 
-.favorite_icon { position:absolute; top: 10px; left: 70px; }
-
-.poo_icon { position:absolute; top: 10px; left: 100px; }
+.synced_icon { position:absolute; top: 10px; left: 110px; }
 
 .exclamation_icon { position:absolute; top: 10px; left: 130px; }
+
+.user_icon { position:absolute; top: 10px; left: 160px; }
 
 .tab { margin-left: 40px; }
 
