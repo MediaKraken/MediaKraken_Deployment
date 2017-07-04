@@ -297,7 +297,7 @@ def metadata_movie_list():
         except:
             watched_status = False
         # set rating
-        if 'UserStats' in row_data['mm_metadata_user_json']\
+        if row_data['mm_metadata_user_json'] is not None and 'UserStats' in row_data['mm_metadata_user_json']\
             and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats']\
             and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
                 rating_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
