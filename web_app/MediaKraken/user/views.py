@@ -297,14 +297,8 @@ def movie_status(guid, event_type):
     Set media status for specified media, user
     """
     logging.info('movie status: %s %s', guid, event_type)
-    if event_type == "watched":
-        g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
-        return json.dumps({'status':'OK'})
-    elif event_type == "sync":
+    if event_type == "sync":
         return redirect(url_for('user.sync_edit', guid=guid))
-    elif event_type == "mismatch":
-        g.db_connection.db_media_mismatch_status_update(guid, current_user.get_id(), event_type)
-        return json.dumps({'status':'OK'})
     else:
         g.db_connection.db_media_rating_update(guid, current_user.get_id(), event_type)
         return json.dumps({'status':'OK'})

@@ -110,7 +110,6 @@ class MKServerDatabase(object):
         db_read_media_new_count,\
         db_media_watched_checkpoint_update, \
         db_media_rating_update,\
-        db_media_mismatch_status_update,\
         db_read_media_ffprobe,\
         db_media_ffmeg_update
     from database.db_base_media_movie import db_web_media_list_count,\

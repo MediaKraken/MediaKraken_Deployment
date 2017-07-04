@@ -166,35 +166,13 @@ def db_media_path_by_uuid(self, media_uuid):
         return None
 
 
-def db_media_watched_status_update(self, media_guid, user_id, status_bool):
-    """
-    # set watched/unwatched status for media
-    """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
-        (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        logging.info('jsonwatched: %s', json_data)
-        if 'UserStats' not in json_data:
-            json_data['UserStats'] = {}
-        if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['watched'] = status_bool
-        else:
-            json_data['UserStats'][user_id] = {'watched': status_bool}
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
-        self.db_rollback()
-        return None
-
-
 def db_media_rating_update(self, media_guid, user_id, status_text):
     """
     # set favorite status for media
     """
     self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
-    if status_text == 'watched':
+    if status_text == 'watched' or status_text == 'mismatch':
         status_setting = True
     else:
         status_setting = status_text
@@ -207,27 +185,6 @@ def db_media_rating_update(self, media_guid, user_id, status_text):
             json_data['UserStats'][user_id][status_text] = status_setting
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
-        self.db_rollback()
-        return None
-
-
-def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
-    """
-    # set mismatch status for media
-    """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
-        (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        if 'UserStats' not in json_data:
-            json_data['UserStats'] = {}
-        if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['mismatch'] = status_bool
-        else:
-            json_data['UserStats'][user_id] = {'mismatch': status_bool}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
