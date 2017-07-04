@@ -10,6 +10,7 @@ $(function(){
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
 		                continue;
+//                        window.location = '/users/movie/All';
 		            } else {
 		                alert(result.status);
 		            }
@@ -43,7 +44,8 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/users/meta_movie_list';
+		                continue;
+//		                window.location = '/users/meta_movie_list';
 		            } else {
 		                alert(result.status);
 		            }
@@ -74,7 +76,8 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
+		                continue;
+//		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
 		            } else {
 		                alert(result.status);
 		            }
