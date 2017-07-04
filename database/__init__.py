@@ -98,7 +98,6 @@ class MKServerDatabase(object):
         db_media_duplicate_detail_count,\
         db_media_duplicate_detail,\
         db_media_path_by_uuid,\
-        db_media_watched_status_update,\
         db_update_media_id,\
         db_update_media_json,\
         db_known_media_chapter_scan,\
