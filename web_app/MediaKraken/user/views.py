@@ -321,12 +321,8 @@ def movie_metadata_status(guid, event_type):
     Set media status for specified media, user
     """
     logging.info('movie metadata status: %s %s', guid, event_type)
-    if event_type == "sync":
-        return redirect(url_for('user.sync_edit', guid=guid))
-    else:
-        g.db_connection.db_meta_movie_status_update(guid, current_user.get_id(), event_type, True)
-        return json.dumps({'status':'OK'})
-    return redirect(url_for('user_movie_genre.user_movie_page', genre='All'))
+    g.db_connection.db_meta_movie_status_update(guid, current_user.get_id(), event_type)
+    return json.dumps({'status':'OK'})
 
 
 @blueprint.route('/tv_status/<guid>/<event_type>/', methods=['GET', 'POST'])

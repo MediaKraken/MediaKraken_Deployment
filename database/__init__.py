@@ -108,9 +108,8 @@ class MKServerDatabase(object):
         db_read_media_path_like,\
         db_read_media_new,\
         db_read_media_new_count,\
-        db_media_watched_checkpoint_update,\
-        db_media_favorite_status_update,\
-        db_media_poo_status_update,\
+        db_media_watched_checkpoint_update, \
+        db_media_rating_update,\
         db_media_mismatch_status_update,\
         db_read_media_ffprobe,\
         db_media_ffmeg_update
