@@ -46,7 +46,8 @@ def com_net_mediakraken_find_server(server_seconds=1):
             search_socket.sendto("who is MediaKrakenServer?", ('<broadcast>', 9101))
             server_reply = search_socket.recvfrom(1024)[0]
             logging.info('Server reply: ' + server_reply)
-            server_hosts_found.append(server_reply)
+            if server_reply not in server_hosts_found:
+                server_hosts_found.append(server_reply)
         except socket.error, msg:
             logging.critical('Network_Find_Server Error Code : ' + str(msg[0])
                              + ' Message ' + msg[1])
