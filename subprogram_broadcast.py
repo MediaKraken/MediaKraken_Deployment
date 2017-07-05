@@ -17,4 +17,4 @@ while True:
     recv_data, addr = server_socket.recvfrom(2048)
     logging.info(str(addr) + ': %s', recv_data)
     if recv_data == "who is MediaKrakenServer?":
-        server_socket.sendto("http:" + webserver_ip + ":" + '8903', addr)
+        server_socket.sendto(webserver_ip + ":" + '8903', addr)
