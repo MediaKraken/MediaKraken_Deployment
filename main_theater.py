@@ -193,7 +193,7 @@ class MediaKrakenApp(App):
                 self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
                 self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
                 with open(r'mediakraken.ini', 'wb') as configfile:
-                    self.config.write(configfile)
+                    self.config.write()
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
