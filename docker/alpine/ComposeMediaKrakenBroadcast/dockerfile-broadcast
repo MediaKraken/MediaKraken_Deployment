@@ -8,10 +8,14 @@ LABEL Description="This image holds the broadcast server"
 # create work dir
 RUN mkdir /mediakraken
 
+# copy PIP requirements
+ADD requirements.txt /mediakraken
+
 WORKDIR /mediakraken
 
 RUN apk add --update \
   python \
+  && pip install -r requirements.txt \
   && rm -rf /var/cache/apk/*
 
 # Copy the source files for the app
