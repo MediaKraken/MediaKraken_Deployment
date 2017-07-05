@@ -187,6 +187,7 @@ class MediaKrakenApp(App):
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+                print('server list: %s', server_list)
                 host_ip = server_list[0]
             else:
                 pass
