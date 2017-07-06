@@ -122,7 +122,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor.py'], shell=False)
+proc = subprocess.Popen(['python', './subprogram_reactor_line.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
 
