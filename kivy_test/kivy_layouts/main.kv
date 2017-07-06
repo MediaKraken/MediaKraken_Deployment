@@ -1,0 +1,701 @@
+#:kivy 1.10.0
+<MediaKraken>:
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        # coordinates are from bottom left corner!
+        ScreenManager:
+            id: _screen_manager
+            Screen:
+                name: 'Main_Theater_Home'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    canvas.before:
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                # 1
+                Button:
+                    id: button_main_home_in_progress
+                    pos: (0,self.parent.height - (self.parent.height * 0.2))
+                    on_press: app.main_mediakraken_event_button_home('in_progress')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/progress.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_progress_movie_image
+                        source: './theater/images/progress.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 2
+                Button:
+                    id: button_main_home_recent_addition
+                    pos: (0,self.parent.height - ((self.parent.height * 0.2) * 2))
+                    on_press: app.main_mediakraken_event_button_home('recent_addition')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/new.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_new_movie_image
+                        source: './theater/images/new.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 3
+                Button:
+                    id: button_main_home_games
+                    pos: (0,self.parent.height - ((self.parent.height * 0.2) * 3))
+                    on_press: app.main_mediakraken_event_button_home('games')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/vid_game.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_vid_game_image
+                        source: './theater/images/vid_game.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 4
+                Button:
+                    id: button_main_home_music_vid
+                    pos: (0,self.parent.height - ((self.parent.height * 0.2) * 4))
+                    on_press: app.main_mediakraken_event_button_home('music_vid')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/music_vid.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_music_vid_image
+                        source: './theater/images/music_vid.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 5
+                Button:
+                    id: button_main_home_demo
+                    pos: ((self.parent.width * 0.2) + 1,(self.parent.height * 0.2) + 1)
+                    on_press: app.main_mediakraken_event_button_home('demo')
+                    size_hint: None, None
+                    size: self.parent.width * 0.6, self.parent.height * 0.8
+                    Image:
+                        source: './theater/images/theater.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_demo_image
+                        source: './theater/images/theater.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 6
+                Button:
+                    id: button_main_home_pictures
+                    pos: (self.parent.width - (self.parent.width * 0.2) + 1,self.parent.height - (self.parent.height * 0.2))
+                    on_press: app.main_mediakraken_event_button_home('pictures')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/photo.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_photo_image
+                        source: './theater/images/photo.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 7
+                Button:
+                    id: button_main_home_radio
+                    pos: (self.parent.width - (self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 2))
+                    on_press: app.main_mediakraken_event_button_home('radio')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/radio.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_radio_image
+                        source: './theater/images/radio.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 8
+                Button:
+                    id: button_main_home_peridocials
+                    pos: (self.parent.width - (self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 3))
+                    on_press: app.main_mediakraken_event_button_home('periodicals')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/books.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_books_image
+                        source: './theater/images/books.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 9
+                Button:
+                    id: button_main_home_settings
+                    pos: (self.parent.width - (self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 4))
+                    on_release: app.open_settings()
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/settings.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 10
+                Button:
+                    id: button_main_home_music
+                    pos: (0,self.parent.height - ((self.parent.height * 0.2) * 5))
+                    on_press: app.main_mediakraken_event_button_home('Music')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/headphone.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_headphone_image
+                        source: './theater/images/headphone.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 11
+                Button:
+                    id: button_main_home_movie
+                    pos: ((self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
+                    on_press: app.main_mediakraken_event_button_home('Movie')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/movie_ticket.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_movie_image
+                        source: './theater/images/movie_ticket.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 12
+                Button:
+                    id: button_main_home_tv
+                    pos: (((self.parent.width * 0.2) * 2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
+                    on_press: app.main_mediakraken_event_button_home('TV')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/television.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_television_image
+                        source: './theater/images/television.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 13
+                Button:
+                    id: button_main_home_live
+                    pos: (((self.parent.width * 0.2) * 3) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
+                    on_press: app.main_mediakraken_event_button_home('live')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/television_live.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_television_live_image
+                        source: './theater/images/television_live.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+                # 14
+                Button:
+                    id: button_main_home_video
+                    pos: (((self.parent.width * 0.2) * 4) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
+                    on_press: app.main_mediakraken_event_button_home('video')
+                    size_hint: None, None
+                    size: self.parent.width * 0.2, self.parent.height * 0.2
+                    Image:
+                        source: './theater/images/vid_camera.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.25
+                    Image:
+                        id: main_home_video_image
+                        source: './theater/images/vid_camera.png'
+                        y: self.parent.y
+                        x: self.parent.x
+                        size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        opacity: 0.5
+            Screen:
+                name: 'Main_Theater_Media_Video_Detail'
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: None, None
+                    size: self.parent.width * 0.5, self.parent.height
+                    Button:
+                        id: theater_media_video_play
+                        pos: 0,0
+                        on_press: app.main_mediakraken_event_button_video_play('Play')
+                        size_hint: None, None
+                        size: self.parent.width * 0.2, self.parent.height * 0.2
+                        Image:
+                            source: './theater/images/movie_ticket.png'
+                            y: self.parent.y
+                            x: self.parent.x
+                            size: self.parent.width, self.parent.height
+                            allow_stretch: True
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_title_header
+                            text: 'Media Title:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_title
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_subtitle
+                            text: ''
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_director_header
+                            text: 'Director:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_director
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_writer_header
+                            text: 'Writer:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_writer
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_rating_header
+                            text: 'Rating:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_rating
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_runtime_header
+                            text: 'Run Time:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_runtime
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_genres_header
+                            text: 'Genres:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_genres
+                            text: '(NA)'
+                            size: self.texture_size
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.075
+                        Label:
+                            id: theater_media_video_production_companies_header
+                            text: 'Production:'
+                            size: self.texture_size
+                        Label:
+                            id: theater_media_video_production_companies
+                            text: '(NA)'
+                            size: self.texture_size
+                    ScrollView:
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.2
+                        Label:
+                            id: theater_media_video_overview
+                            text: '(NA)'
+                            text_size: self.width, None
+                            halign: 'left'
+                            valign: 'middle'
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                    ScrollView:
+                        size_hint: None, None
+                        GridLayout:
+                            id: theater_media_video_chapter_grid
+                            cols: 4
+                            orientation: 'vertical'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    size: self.parent.width * 0.5, self.parent.height
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.6
+                        Image:
+                            id: theater_media_video_poster
+                            y: 0
+                            x: self.parent.height
+                            size: self.parent.width, self.parent.height
+                            allow_stretch: True
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.4
+                        Spinner:
+                            id: theater_media_video_audio_spinner
+                            text: "Audio First thing"
+                            values: ["Audio First thing", "Second thing", "Third thing"]
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.5
+                        Spinner:
+                            id: theater_media_video_subtitle_spinner
+                            text: "Sub First thing"
+                            values: ["Sub First thing", "Second thing", "Third thing"]
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.5
+            Screen: 
+                name: 'Main_Theater_Media_Video_List'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    size: self.parent.width, self.parent.height
+                    ScrollView:
+                        size_hint: None, None
+                        size: self.parent.width * 0.5, self.parent.height
+                        BoxLayout:
+                            orientation: 'vertical'
+                            id: theater_media_genre_list_scrollview
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height
+                    ScrollView:
+                        size_hint: None, None
+                        size: self.parent.width * 0.5, self.parent.height
+                        BoxLayout:
+                            orientation: 'vertical'
+                            id: theater_media_video_list_scrollview
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height   
+            Screen:
+                name: 'Main_Theater_Media_Playback'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    size: self.parent.width, self.parent.height
+                    VideoPlayer:
+                        id: theater_media_video_videoplayer
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height
+            Screen:
+                name: 'Main_Theater_Media_Music_List'
+            Screen: 
+                name: 'Main_Theater_Media_TV_Detail'
+            Screen:
+                name: 'Main_Theater_Media_TV_List'
+            Screen: 
+                name: 'Main_Theater_Media_Game_Detail'
+            Screen:
+                name: 'Main_Theater_Media_Game_List'
+            Screen:
+                name: 'Main_Theater_Media_Music_Detail'
+            Screen:
+                name: 'Main_Theater_Media_Video_Playback'
+            Screen:
+                name: 'Main_Theater_Media_Music_Playback'
+            Screen:
+                name: 'Main_Theater_Media_Settings_Video'
+                BoxLayout:
+                    id: theater_media_options_video_scrollview
+                    orientation: 'vertical'
+                    size_hint: None, None
+                    size: self.parent.width, self.parent.height
+                    GridLayout:
+                        cols: 2
+                        orientation: 'vertical'
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height * 0.5
+                        Button:
+                            id: button_main_options_video_calibration
+                            text: 'Video Calibration'
+                            pos: (self.parent.width * 0.2), (self.parent.height * 0.2)
+                            on_press: app.main_mediakraken_event_options_video_calibration
+                            size_hint: None, None
+                            size: self.parent.width * 0.2, self.parent.height * 0.2
+                        Button:
+                            id: button_main_options_video_test_patterns
+                            text: 'Video Test Patterns'
+                            pos: (self.parent.width * 0.2), (self.parent.height * 0.2)
+                            on_press: app.main_mediakraken_event_options_video_test_patterns
+                            size_hint: None, None
+                            size: self.parent.width * 0.2, self.parent.height * 0.2
+            Screen: 
+                name: 'Main_Theater_Media_LIVE_TV_Detail'
+            Screen:
+                name: 'Main_Theater_Media_LIVE_TV_List'
+            Screen: 
+                name: 'Main_Theater_Media_Radio_Detail'
+            Screen:
+                name: 'Main_Theater_Media_Radio_List'
+            Screen: 
+                name: 'Main_Theater_Media_Books_Detail'
+            Screen:
+                name: 'Main_Theater_Media_Books_List'
+            Screen:
+                name: 'Main_Theater_Media_Images_List'
+            Screen:
+                name: 'Main_Theater_Media_Music_Video_List'
+            Screen:
+                name: 'Main_Theater_Cron_List'
+                BoxLayout:
+                    size_hint: None, None
+                    size: self.parent.width, self.parent.height
+                    ScrollView:
+                        size_hint: None, None
+                        size: self.parent.width, self.parent.height
+                        BoxLayout:
+                            orientation: 'vertical'
+                            id: theater_cron_list_scrollview
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height
+            Screen:
+                name: 'Main_Theater_Remote'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    FloatLayout:
+                        id: main_theater_float
+                        orientation: 'horizontal'
+                        Button:
+                            id: button_main_remote_left
+                            pos: (((self.parent.width - self.width)/2) - 50), (self.parent.height - 125)
+                            on_press: app.main_mediakraken_event_button_commands_left()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater/images/button_left.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_right
+                            pos: (((self.parent.width - self.width)/2) + 50), (self.parent.height - 125)
+                            on_press: app.main_mediakraken_event_button_commands_right()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater/images/button_right.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                    BoxLayout:
+                        id: main_right_box
+                        orientation: 'vertical'
+                        FloatLayout:
+                            id: main_right_float
+                        Button:
+                            id: button_device_mediakraken
+                            text: 'MediaKraken'
+                            on_press: _screen_manager.current = 'MediaKraken_Screen_Login'
+                            on_release: app.MediaKraken_Find_Server_List()
+                        Button:
+                            id: button_theater_setup
+                            text: "MediaKraken Theater Setup"
+                            on_press: _screen_manager.current = 'Setup_Screen'
+                            on_release: app.main_MediaKraken_Theater_Setup_Screen()
+            Screen:
+                name: 'MediaKraken_Screen_Login'
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: 10
+                    spacing: 10
+                    BoxLayout:
+                        size_hint: 1, 1
+                        orientation: 'horizontal'
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                id: server_list_layout
+                                Label:
+                                    text: 'MediaKraken Server(s)'
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                id: user_list_layout
+                                Label:
+                                    text: 'MediaKraken User(s)'
+            Screen:
+                name: 'Setup_Item_Import_Verify'
+                BoxLayout:
+                    orientation: 'vertical'
+                    TextInput:
+                        id: setup_item_json
+                        multiline: True
+                        readonly: True
+                    BoxLayout:
+                        size_hint: 1, 0.0755
+                        orientation: 'vertical'
+                        BoxLayout:
+                            Label:
+                                size_hint: 0.25, 1
+                                text: 'Device Item Name'
+                            TextInput:
+                                id: setup_item_name
+                        Button:
+                            text: 'Verify and Import'
+                            on_press: app.Setup_Import_Item_Json()
+            Screen:
+                name: 'Setup_Screen'
+                BoxLayout:
+                    id: set_base_boxlayout
+                    padding: 10
+                    spacing: 10
+                    orientation: 'horizontal'
+                    size_hint: None, None
+                    ScrollView:
+                        id: set_base_device_scrollview
+                        size_hint: None, None
+                        size: 300, root.height
+                        GridLayout:
+                            cols: 2
+                            id: setup_base_device_gridlayout
+                            orientation: 'vertical'
+                            size_hint_y: None
+                    BoxLayout:
+                        ScrollView:
+                            id: set_base_item_scollview
+                            size_hint: None, None
+                            size: 300, root.height
+                            GridLayout:
+                                id: setup_base_item_gridlayout
+                                cols: 2
+                                size_hint_y: None
+                        BoxLayout:
+                            size_hint: None, None
+                            Button:
+                                id: setup_browse_import_item
+                                text: 'Import Device Item'
+                                on_release: app.show_load()
+                            Button:
+                                id: setup_cancel
+                                text: 'Cancel'
+                                on_press: _screen_manager.current = 'Main_Theater'
