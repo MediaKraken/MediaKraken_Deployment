@@ -178,8 +178,8 @@ def openlibrary(thread_db, download_data):
     """
     logging.info("here i am in openlib rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'openlibrary', download_data)
-    
-    
+
+
 @ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]\
      / common_metadata_limiter.API_LIMIT['pitchfork'][1])
 def pitchfork(thread_db, download_data):
@@ -313,7 +313,7 @@ metadata_last_id = None
 metadata_last_title = None
 metadata_last_year = None
 while True:
-    logging.info('worker thread before read provider %s', content_providers)
+    #logging.info('worker thread before read provider %s', content_providers)
     for row_data in thread_db.db_download_read_provider(content_providers):
         logging.info("worker meta api row: %s", row_data)
         # mdq_id,mdq_download_json
@@ -402,7 +402,6 @@ while True:
                     metadata_uuid, row_data['mdq_download_json']['MediaID'])
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
-    thread_db.db_commit()
     time.sleep(1)
 #        break # TODO for now testing.......
 thread_db.db_close()

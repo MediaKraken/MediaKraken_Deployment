@@ -58,6 +58,7 @@ def db_user_delete(self, user_guid):
     # remove user
     """
     self.db_cursor.execute('delete from mm_user where id = %s', (user_guid,))
+    self.db_commit()
 
 
 def db_user_login_kodi(self, user_data):
@@ -86,6 +87,7 @@ def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     self.db_cursor.execute('insert into mm_user_group (mm_user_group_guid,'
         ' mm_user_group_name, mm_user_group_description, mm_user_group_rights_json)'
         ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), group_name, group_desc, group_rights_json))
+    self.db_commit()
 
 
 def db_user_profile_insert(self, profile_name, profile_json):
@@ -95,3 +97,4 @@ def db_user_profile_insert(self, profile_name, profile_json):
     self.db_cursor.execute('insert into mm_user_profile (mm_user_profile_guid,'
         ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)',
         (str(uuid.uuid4()), profile_name, profile_json))
+    self.db_commit()

@@ -55,6 +55,7 @@ while True:
             command_list.append(command_data)
         proc_trigger = subprocess.Popen(command_list, shell=False)
         logging.info("Trigger PID: %s", proc_trigger.pid)
+        logging.info("Trigger Command %s", command_list)
         # remove trigger from DB
         db_connection.db_triggers_delete(row_data['mm_trigger_guid'])
         trigger_pid_list.append(proc_trigger.pid)

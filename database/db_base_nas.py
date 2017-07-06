@@ -44,6 +44,7 @@ def db_nas_insert(self, nas_json):
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)',
         (new_guid, nas_json))
+    self.db_commit()
     return new_guid
 
 
@@ -53,6 +54,7 @@ def db_nas_update(self, guid, nas_json):
     """
     self.db_cursor.execute('update mm_nas set mm_nas_json = %s where mm_nas_id = %s',
         (nas_json, guid))
+    self.db_commit()
 
 
 def db_nas_delete(self, guid):
@@ -60,6 +62,7 @@ def db_nas_delete(self, guid):
     # delete record
     """
     self.db_cursor.execute('delete from mm_nas where mm_nas_id = %s', (guid,))
+    self.db_commit()
 
 
 def db_nas_read(self, guid):

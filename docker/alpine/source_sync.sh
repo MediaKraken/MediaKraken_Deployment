@@ -1,5 +1,6 @@
 # broadcast
 cp /home/spoot/MediaKraken_Deployment/subprogram_broadcast.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
 
 # devicescanner
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.

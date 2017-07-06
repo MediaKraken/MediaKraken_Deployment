@@ -18,6 +18,7 @@ from common import common_config_ini
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
+import natsort
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -239,6 +240,9 @@ def user_tv_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
 
     data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
+    logging.info('dataeps: %s', data_episode_count)
+    data_episode_keys = natsort.natsorted(data_episode_count)
+    logging.info('dataepskeys: %s', data_episode_keys)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -261,7 +265,8 @@ def user_tv_season_detail_page(guid, season):
                            data_runtime=data_runtime,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
-                           data_episode_count=data_episode_count
+                           data_episode_count=data_episode_count,
+                           data_episode_keys=data_episode_keys
                           )
 
 
@@ -436,12 +441,17 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
+        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series'] \
+                and json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'] is not None:
             for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
+    logging.info('dataeps: %s', data_episode_count)
+    data_episode_keys = natsort.natsorted(data_episode_count)
+    logging.info('dataepskeys: %s', data_episode_keys)
+
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -465,19 +475,20 @@ def metadata_tvshow_season_detail_page(guid, season):
                            data_runtime=data_runtime,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
-                           data_episode_count=data_episode_count
+                           data_episode_count=data_episode_count,
+                           data_episode_keys=data_episode_keys
                           )
 
 
 # tv show season detail - show guid then season #
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>", methods=['GET', 'POST'])
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
+@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
+@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>/", methods=['GET', 'POST'])
 @login_required
-def metadata_tvshow_episode_detail_page(guid, season, episode):
+def metadata_tvshow_episode_detail_page(guid, eps_id):
     """
     Display tvshow episode metadata detail
     """
-    data_metadata = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
+    data_metadata = g.db_connection.db_read_tvmeta_epsisode_by_id(guid, eps_id)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -493,12 +504,10 @@ def metadata_tvshow_episode_detail_page(guid, season, episode):
         data_background_image = None
     return render_template("users/metadata/meta_tvshow_episode_detail.html", data=data_metadata[0],
                            data_guid=guid,
-                           data_title=data_metadata[2],
-                           data_runtime=data_metadata[4],
-                           data_season=season,
-                           data_episode=episode,
-                           data_overview=data_metadata[5],
-                           data_first_aired=data_metadata[3],
+                           data_title=data_metadata['eps_name'],
+                           data_runtime=data_metadata['eps_runtime'],
+                           data_overview=data_metadata['eps_overview'],
+                           data_first_aired=data_metadata['eps_first_air'],
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                           )

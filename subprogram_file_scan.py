@@ -27,10 +27,11 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 from concurrent import futures
 from common import common_config_ini
-from common import common_network_cifs
+from common import common_internationalization
 from common import common_file
 from common import common_file_extentions
 from common import common_logging
+from common import common_network_cifs
 from common import common_signal
 from common import common_string
 #lock = threading.Lock()
@@ -174,8 +175,9 @@ def worker(audit_directory):
                         'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
         total_scanned += 1
         thread_db.db_audit_path_update_status(dir_guid,
-            json.dumps({'Status': 'File scan: ' + locale.format('%d', total_scanned, True)\
-            + ' / ' + locale.format('%d', total_file_in_dir, True),
+            json.dumps({'Status': 'File scan: ' \
+            + common_internationalization.com_inter_number_format(total_scanned)\
+            + ' / ' + common_internationalization.com_inter_number_format(total_file_in_dir),
             'Pct': (total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)

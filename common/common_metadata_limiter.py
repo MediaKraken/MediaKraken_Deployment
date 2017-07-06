@@ -36,7 +36,7 @@ API_LIMIT = {
     'thesportsdb': (9999, 1), # no mention of limits 7/29/2016
     'thetvdb': (9999, 1), # no mention of limits besides play nice (4-16-2016)
     'tv_intros': (1, 1), # since I'm scraping
-    'tvmaze': (9999, 1), # no mention of limits (4-16-2016)
+    'tvmaze': (20, 10), # 20 every 10 (6-11-2017)
     'tvshowtime': (10, 60), # 10 requests per minute (4-16-2016)
     'Z': (None, None), # catch all for limiter api program
 }

@@ -11,6 +11,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SWARMIP=${SWARMIP}
     container_name: mkserver
     depends_on:
       - pgbounce
@@ -39,6 +40,8 @@ services:
     entrypoint: python subprogram_broadcast.py
     ports:
       - "9101:9101"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     network_mode: host
     restart: unless-stopped
 

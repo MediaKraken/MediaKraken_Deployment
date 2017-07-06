@@ -3,23 +3,23 @@
 <body id="data_background">
   <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../static/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../../static/css/star-rating.min.css" media="all" type="text/css"/>
-    <link rel="stylesheet" href="../../../static/css/base_webapp_layout.css" media="all" type="text/css"/>
-    <script src="../../../static/js/jquery.min.js" type="text/javascript"></script>
-    <script src="../../../static/js/star-rating.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="..//static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="..//static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="..//static/css/star-rating.min.css" media="all" type="text/css"/>
+    <link rel="stylesheet" href="..//static/css/base_webapp_layout.css" media="all" type="text/css"/>
+    <script src="..//static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="..//static/js/star-rating.min.js" type="text/javascript"></script>
   </head>
 {% if data %}
   <div id="movie_detail">
       {% if data_background_image is not none %}
-          <img alt="fs_bg_image" src= {{ "../../../static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" >
+          <img alt="fs_bg_image" src= {{ "/static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" >
       {% endif %}
       <div id="movie_image_div" class="table-responsive">
           {% if data_poster_image is none %}
-              <img class="center" src= {{ "../../../static/images/Missing_Icon.png" }} >
+              <img class="center" src= {{ "/static/images/missing_icon.jpg" }} >
           {% else %}
-              <img class="center" src= {{ "../../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
+              <img class="center" src= {{ "/static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
           {% endif %}
         <table class="table table-hover">
         <tbody>
@@ -62,14 +62,14 @@
     <p>Episodes:</p>
     <div id="container">
         <div class="grid">
-            {% for episode_info in data_episode_count %}
+            {% for episode_info in data_episode_keys %}
                 <div class="col-1-4">
                     <div class="wrapper">
-                      <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_season + "/" + episode_info|string }} >
-                      {% if data_episode_count[episode_info][1] == "Missing_Icon.png" %}
-                          <img src= {{ "../../../static/images/Missing_Icon.png" }} alt= {{ "../../../static/meta/images/Missing_Icon.png" }} height="200" width="300">
+                      <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_episode_count[episode_info][2] }} >
+                      {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
+                          <img src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/meta/images/missing_icon.jpg" }} height="200" width="300">
                       {% else %}
-                          <img src= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ "../../../static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="210" width="350">
+                          <img src= {{ "/static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ "/static/meta/images/" + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="210" width="350">
                       {% endif %}
                       </a>
                         <div class="description">

@@ -18,6 +18,46 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_network_mediakraken
-
+from guessit import guessit
 # print how the server output works
-print(common_network_mediakraken.com_net_mediakraken_find_server())
+#print(common_network_mediakraken.com_net_mediakraken_find_server())
+
+stuff = {}
+
+stuff['a'] = ('bah', 'bah2')
+
+
+print(stuff)
+
+
+stuff2 = 'jo32ljf02fj2ofjofjfofjfo'
+
+print(stuff2[-3:])
+
+
+print(guessit('/mediakraken/mnt/zfsspoo/iscsi_share/HTPC_MediaBrowser/TV_Shows_BluRay/Justified (2010)/theme.mp3'))
+
+
+import json
+
+json_data = json.dumps({
+  "result":[
+    {
+      "run":[
+        {
+          "action":"stop"
+        },
+          {
+              "action": "start"
+          },
+          {
+              "action": "start"
+          }
+      ],
+      "find": "true"
+    }
+  ]
+})
+
+item_dict = json.loads(json_data)
+print(len(item_dict['result'][0]['run']))

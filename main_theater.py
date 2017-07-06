@@ -187,7 +187,13 @@ class MediaKrakenApp(App):
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+                print('server list: %s', server_list)
                 host_ip = server_list[0]
+                # TODO allow pick from list and save it below
+                self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
+                self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
+                with open(r'mediakraken.ini', 'wb') as configfile:
+                    self.config.write()
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),

@@ -50,6 +50,7 @@ def db_link_insert(self, link_json):
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_link (mm_link_guid, mm_link_json)'
         ' values (%s, %s)', (new_guid, link_json))
+    self.db_commit()
     return new_guid
 
 
@@ -58,3 +59,4 @@ def db_link_delete(self, sync_guid):
     Delete server link
     """
     self.db_cursor.execute('delete from mm_link where mm_link_guid = %s', (sync_guid,))
+    self.db_commit()

@@ -289,43 +289,52 @@ def upload():
             return jsonify({"success": True})
 
 
-@blueprint.route('/media_status/<guid>/<media_type>/<event_type>/', methods=['GET', 'POST'])
-@blueprint.route('/media_status/<guid>/<media_type>/<event_type>', methods=['GET', 'POST'])
+@blueprint.route('/movie_status/<guid>/<event_type>/', methods=['GET', 'POST'])
+@blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-def media_status(guid, media_type, event_type):
+def movie_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    logging.info('media status: %s %s %s', guid, media_type, event_type)
-    if media_type == "movie":
-        if event_type == "watched":
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
-            return json.dumps({'status':'OK'})
-        elif event_type == "sync":
-            return redirect(url_for('user.sync_edit', guid=guid))
-        elif event_type == "favorite":
-            g.db_connection.db_media_favorite_status_update(guid, current_user.get_id(), True)
-            return json.dumps({'status':'OK'})
-        elif event_type == "poo":
-            g.db_connection.db_media_poo_status_update(guid, current_user.get_id(), True)
-            return json.dumps({'status':'OK'})
-        elif event_type == "mismatch":
-            pass
-        return redirect(url_for('user.user_movie_page', guid=guid))
-    elif media_type == "tv":
-        if event_type == "watched":
-            pass
-        elif event_type == "sync":
-            pass
-        elif event_type == "favorite":
-            pass
-        elif event_type == "poo":
-            pass
-        elif event_type == "mismatch":
-            pass
-        return redirect(url_for('user.user_tv_page', guid=guid))
+    logging.info('movie status: %s %s', guid, event_type)
+    if event_type == "sync":
+        return redirect(url_for('user.sync_edit', guid=guid))
     else:
-        logging.error("Invalid media type: %s", media_type)
+        g.db_connection.db_media_rating_update(guid, current_user.get_id(), event_type)
+        return json.dumps({'status':'OK'})
+
+
+@blueprint.route('/movie_metadata_status/<guid>/<event_type>/', methods=['GET', 'POST'])
+@blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
+@login_required
+def movie_metadata_status(guid, event_type):
+    """
+    Set media status for specified media, user
+    """
+    logging.info('movie metadata status: %s %s', guid, event_type)
+    g.db_connection.db_meta_movie_status_update(guid, current_user.get_id(), event_type)
+    return json.dumps({'status':'OK'})
+
+
+@blueprint.route('/tv_status/<guid>/<event_type>/', methods=['GET', 'POST'])
+@blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
+@login_required
+def tv_status(guid, event_type):
+    """
+    Set media status for specified media, user
+    """
+    logging.info('tv status: %s %s', guid, event_type)
+    if event_type == "watched":
+        pass
+    elif event_type == "sync":
+        pass
+    elif event_type == "favorite":
+        pass
+    elif event_type == "poo":
+        pass
+    elif event_type == "mismatch":
+        pass
+    return redirect(url_for('user_tv.user_tv_page'))
 
 
 def allowed_file(filename):

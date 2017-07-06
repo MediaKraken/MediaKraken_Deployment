@@ -288,6 +288,32 @@ def metadata_movie_list():
     Display list of movie metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    for row_data in g.db_connection.db_meta_movie_list(offset, per_page):
+        # set watched
+        try:
+            watched_status\
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
+        except:
+            watched_status = False
+        # set rating
+        if row_data['mm_metadata_user_json'] is not None and 'UserStats' in row_data['mm_metadata_user_json']\
+            and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats']\
+            and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
+                rating_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+                if rating_status == 'favorite':
+                    rating_status = '/static/images/favorite-mark.png'
+                elif rating_status == 'like':
+                    rating_status = '/static/images/thumbs-up.png'
+                elif rating_status == 'dislike':
+                    rating_status = '/static/images/dislike-thumb.png'
+                elif rating_status == 'poo':
+                    rating_status = '/static/images/pile-of-dung.png'
+        else:
+            rating_status = None
+        logging.info("status: %s %s", watched_status, rating_status)
+        media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'], row_data['mm_date'],
+                      row_data['mm_poster'], watched_status, rating_status))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -297,7 +323,7 @@ def metadata_movie_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_movie_list.html',
-                           media_movie=g.db_connection.db_meta_movie_list(offset, per_page),
+                           media_movie=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

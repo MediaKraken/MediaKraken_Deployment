@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MediaKraken_Deployment.iml" filepath="$PROJECT_DIR$/.idea/MediaKraken_Deployment.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Pycharm_Win/.idea/Pycharm_Win.iml" filepath="$PROJECT_DIR$/Pycharm_Win/.idea/Pycharm_Win.iml" />
     </modules>
   </component>
 </project>

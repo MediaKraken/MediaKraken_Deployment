@@ -42,6 +42,7 @@ def db_meta_music_video_add(self, artist_name, artist_song, id_json,
         ' mm_metadata_music_video_json, mm_metadata_music_video_localimage_json)'
         ' values (%s,%s,%s,%s,%s,%s)',
         (new_guid, id_json, artist_name, artist_song, data_json, image_json))
+    self.db_commit()
     return new_guid
 
 

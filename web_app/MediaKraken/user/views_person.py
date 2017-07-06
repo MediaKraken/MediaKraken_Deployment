@@ -36,11 +36,11 @@ def metadata_person_detail(guid):
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
-            data_person_image = "../../static/meta/images/" + json_imagedata['Images']['Poster']
+            data_person_image = "/static/meta/images/" + json_imagedata['Images']['Poster']
         else:
-            data_person_image = "../../static/images/person_missing.png"
+            data_person_image = "/static/images/person_missing.png"
     except:
-        data_person_image = "../../static/images/person_missing.png"
+        data_person_image = "/static/images/person_missing.png"
     # also appears in
     meta_also_media = g.db_connection.db_meta_person_as_seen_in(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
@@ -68,11 +68,11 @@ def metadata_person_list():
                 try:
                     person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace('/mediakraken/web_app/MediaKraken','') + person_data['mmp_meta']
                 except:
-                    person_image = "../../static/images/person_missing.png"
+                    person_image = "/static/images/person_missing.png"
             else:
-                person_image = "../../static/images/person_missing.png"
+                person_image = "/static/images/person_missing.png"
         else:
-            person_image = "../../static/images/person_missing.png"
+            person_image = "/static/images/person_missing.png"
         person_list.append((person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

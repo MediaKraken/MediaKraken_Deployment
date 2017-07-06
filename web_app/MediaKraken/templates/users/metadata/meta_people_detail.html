@@ -4,10 +4,10 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" type="text/css"/>
-        <script src="../../static/js/jquery.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <script src="/static/js/jquery.min.js" type="text/javascript"></script>
     </head>
     <div id="meta_detail">
         <div id="meta_image_div" class="table-responsive">
@@ -37,7 +37,7 @@
                         <a href= {{ "../meta_movie_detail/" + media_info[0] }} > {{media_info[1]}}</a>
                         {% else %}
                         <a href= {{ "../meta_movie_detail/" + media_info[0] }} >
-                        <img src= {{ "../../static/meta/images/" + media_info[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                        <img src= {{ "/static/meta/images/" + media_info[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                         </a>
                         {% endif %}
                     </div>

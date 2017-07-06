@@ -27,6 +27,7 @@ import ssl
 import socket
 import sys
 from . import wol
+from . import common_file
 
 
 def mk_network_fetch_from_url(url, directory=None):
@@ -37,7 +38,12 @@ def mk_network_fetch_from_url(url, directory=None):
     try:
         datafile = urllib2.urlopen(url, context=ssl._create_unverified_context())
         if directory is not None:
-            localfile = open(directory, 'wb')
+            try:
+                localfile = open(directory, 'wb')
+            except:
+                # create missing directory structure
+                common_file.com_mkdir_p(directory)
+                localfile = open(directory, 'wb')
             localfile.write(datafile.read())
             datafile.close()
             localfile.close()

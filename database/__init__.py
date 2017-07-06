@@ -98,7 +98,6 @@ class MKServerDatabase(object):
         db_media_duplicate_detail_count,\
         db_media_duplicate_detail,\
         db_media_path_by_uuid,\
-        db_media_watched_status_update,\
         db_update_media_id,\
         db_update_media_json,\
         db_known_media_chapter_scan,\
@@ -108,10 +107,8 @@ class MKServerDatabase(object):
         db_read_media_path_like,\
         db_read_media_new,\
         db_read_media_new_count,\
-        db_media_watched_checkpoint_update,\
-        db_media_favorite_status_update,\
-        db_media_poo_status_update,\
-        db_media_mismatch_status_update,\
+        db_media_watched_checkpoint_update, \
+        db_media_rating_update,\
         db_read_media_ffprobe,\
         db_media_ffmeg_update
     from database.db_base_media_movie import db_web_media_list_count,\
@@ -159,7 +156,9 @@ class MKServerDatabase(object):
         db_meta_game_list,\
         db_meta_game_by_guid,\
         db_meta_games_system_insert
-    from database.db_base_metadata_movie import db_meta_movie_update_castcrew
+    from database.db_base_metadata_movie import db_meta_movie_update_castcrew,\
+        db_meta_movie_status_update,\
+        db_meta_movie_json_update
     from database.db_base_metadata_music import db_music_lookup,\
         db_meta_musician_by_guid,\
         db_meta_musician_add,\
@@ -213,7 +212,8 @@ class MKServerDatabase(object):
         db_meta_tvshow_update_image,\
         db_meta_tvshow_images_to_update,\
         db_read_tvmeta_eps_season,\
-        db_read_tvmeta_season_eps_list,\
+        db_read_tvmeta_season_eps_list, \
+        db_read_tvmeta_epsisode_by_id,\
         db_read_tvmeta_episode
     from database.db_base_metadata_tvmaze import db_meta_tvmaze_changed_uuid,\
         db_meta_tvmaze_insert,\

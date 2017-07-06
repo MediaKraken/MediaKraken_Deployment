@@ -74,6 +74,7 @@ def db_meta_book_insert(self, json_data):
         ' mm_metadata_book_json) values (%s,%s,%s,%s,%s)',
         (insert_uuid, json_data['data'][0]['isbn10'], json_data['data'][0]['isbn13'],
          json_data['data'][0]['title'], json.dumps(json_data['data'][0])))
+    self.db_commit()
     return insert_uuid
 
 

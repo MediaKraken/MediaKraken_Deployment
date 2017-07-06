@@ -3,11 +3,11 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <script src="../../static/js/jquery.min.js"></script>
-        <script src="../../static/context/jquery.contextmenu.js"></script>
-        <script src="../../static/js/base_webapp.js"></script>
-        <link rel="stylesheet" href="../../static/context/jquery.contextmenu.css">
-        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/context/jquery.contextmenu.js"></script>
+        <script src="/static/js/base_webapp.js"></script>
+        <link rel="stylesheet" href="/static/context/jquery.contextmenu.css">
+        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     {% if media %}
     <!-- this div is needed to show up between pagination correctly -->
@@ -15,7 +15,7 @@
         {% for row_data in media %}
         <div class="main_photo">
             <a href= {{ "../movie/" + row_data[0].replace(' ', '%20') }} >
-            <img src= {{ "../../static/images/genre/" + row_data[2].replace(' ', '%20') }} height="300" width="200">
+            <img src= {{ "/static/images/genre/" + row_data[2].replace(' ', '%20') }} height="300" width="200">
             </a>
             <div class="description">
                 <p class="description_content_left">{{row_data[0] + ' - ' + row_data[1]}}</p>

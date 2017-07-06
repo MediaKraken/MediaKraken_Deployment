@@ -47,7 +47,7 @@ def metadata_periodical_list():
     item_list = []
     for item_data in g.db_connection.db_meta_book_list(offset, per_page):
         logging.info('person data: %s', item_data)
-        item_image = "../../static/images/Missing_Icon.png"
+        item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     pagination = common_pagination.get_pagination(page=page,
@@ -105,7 +105,7 @@ def metadata_periodical_detail(guid):
                            data_author=data_author,
                            data_publisher=data_publisher,
                            data_pages=data_pages,
-                           data_item_image="../../static/images/Missing_Icon.png",
+                           data_item_image="/static/images/missing_icon.jpg",
                           )
 
 

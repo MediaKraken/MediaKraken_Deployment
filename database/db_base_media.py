@@ -31,6 +31,7 @@ def db_insert_media(self, media_uuid, media_path, media_class_uuid,
         ' mm_media_path, mm_media_metadata_guid, mm_media_ffprobe_json, mm_media_json)'
         ' values (%s,%s,%s,%s,%s,%s)', (media_uuid, media_class_uuid, media_path,
         media_metadata_uuid, media_ffprobe_json, media_json))
+    self.db_commit()
 
 
 def db_read_media(self, media_guid=None):
@@ -165,71 +166,29 @@ def db_media_path_by_uuid(self, media_uuid):
         return None
 
 
-def db_media_watched_status_update(self, media_guid, user_id, status_bool):
-    """
-    # set watched/unwatched status for media
-    """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
-        (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        json_data.update({'UserStats': {user_id: {'Watched': status_bool}}})
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
-        return None
-
-
-def db_media_favorite_status_update(self, media_guid, user_id, status_bool):
+def db_media_rating_update(self, media_guid, user_id, status_text):
     """
     # set favorite status for media
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
+    if status_text == 'watched' or status_text == 'mismatch':
+        status_setting = True
+    else:
+        status_setting = status_text
+        status_text = 'Rating'
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        json_data.update({'UserStats': {user_id: {'Favorite': status_bool}}})
+        if 'UserStats' not in json_data:
+            json_data['UserStats'] = {}
+        if user_id in json_data['UserStats']:
+            json_data['UserStats'][user_id][status_text] = status_setting
+        else:
+            json_data['UserStats'][user_id] = {status_text: status_setting}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
-        return None
-
-
-def db_media_poo_status_update(self, media_guid, user_id, status_bool):
-    """
-    # set favorite status for media
-    """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
-                           (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        json_data.update({'UserStats': {user_id: {'Poo': status_bool}}})
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
-        return None
-
-
-def db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
-    """
-    # set mismatch status for media
-    """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
-        (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        json_data.update({'UserStats': {user_id: {'MisMatch': status_bool}}})
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
+        self.db_rollback()
         return None
 
 
@@ -237,16 +196,20 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     """
     # set checkpoint for media (so can pick up where left off per user)
     """
-    # TODO   begin trans...as could update between these two commands
-    # do this as a subselect instead....then don't have to worry about it
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s',
+    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
         (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
-        json_data.update({'UserStats': {user_id: {'Checkpoint': ffmpeg_time}}})
+        if 'UserStats' not in json_data:
+            json_data['UserStats'] = {}
+        if user_id in json_data['UserStats']:
+            json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
+        else:
+            json_data['UserStats'][user_id] = {'ffmpeg_checkpoint': ffmpeg_time}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:
+        self.db_rollback()
         return None
 
 
@@ -352,7 +315,8 @@ def db_read_media_new(self, days_old=7, offset=None, records=None):
             ' from mm_media, mm_metadata_movie, mm_media_class'
             ' where mm_media_metadata_guid = mm_metadata_guid'
             ' and mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
-            ' and mm_media_json->>\'DateAdded\' >= %s order by LOWER(mm_media_name),'
+            ' and mm_media_json->>\'DateAdded\' >= %s'
+            ' order by LOWER(mm_media_name),'
             ' mm_media_class_type',
             ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     else:
@@ -360,7 +324,8 @@ def db_read_media_new(self, days_old=7, offset=None, records=None):
             ' from mm_media, mm_metadata_movie, mm_media_class'
             ' where mm_media_metadata_guid = mm_metadata_guid'
             ' and mm_media.mm_media_class_guid = mm_media_class.mm_media_class_guid'
-            ' and mm_media_json->>\'DateAdded\' >= %s order by LOWER(mm_media_name),'
+            ' and mm_media_json->>\'DateAdded\' >= %s'
+            ' order by LOWER(mm_media_name),'
             ' mm_media_class_type offset %s limit %s',
             ((datetime.datetime.now() - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),
             offset, records))

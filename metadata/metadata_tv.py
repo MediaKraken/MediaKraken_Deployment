@@ -130,6 +130,33 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             db_connection.db_meta_person_insert_cast_crew('thetvdb',
                 xml_actor_data['Actor'])
         logging.info('insert 4')
+        # save rows for episode image fetch
+        if 'Episode' in xml_show_data['Data']:
+            # checking id instead of filename as id should always exist
+            try:
+                print('len %s', len(xml_show_data['Data']['Episode'][0]['id']))
+                if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
+                    for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
+                        logging.info('eps info: %s', episode_info)
+                        if episode_info['filename'] is not None:
+                            db_connection.db_download_image_insert('thetvdb',
+                                json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
+                                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                + episode_info['filename']}))
+                else:
+                    if xml_show_data['Data']['Episode']['filename'] is not None:
+                        db_connection.db_download_image_insert('thetvdb',
+                            json.dumps({'url': 'https://thetvdb.com/banners/' +
+                            xml_show_data['Data']['Episode']['filename'],
+                            'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                            + xml_show_data['Data']['Episode']['filename']}))
+            except:
+                if xml_show_data['Data']['Episode']['filename'] is not None:
+                    db_connection.db_download_image_insert('thetvdb',
+                        json.dumps({'url': 'https://thetvdb.com/banners/'
+                        + xml_show_data['Data']['Episode']['filename'],
+                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                        + xml_show_data['Data']['Episode']['filename']}))
         db_connection.db_commit()
     return metadata_uuid
 
@@ -178,6 +205,12 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
+        # save rows for episode image fetch
+        for episode_info in show_detail['_embedded']['episodes']:
+            db_connection.db_download_image_insert('tvmaze',
+                json.dumps({'url': episode_info['image']['original'],
+                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                + str(episode_info['id']) + '.jpg'}))
         db_connection.db_commit()
     return metadata_uuid
 

@@ -3,25 +3,25 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../static/css/star-rating.min.css" media="all" type="text/css"/>
-        <link rel="stylesheet" href="../../static/css/base_webapp_layout.css" media="all" type="text/css"/>
-        <script src="../../static/js/jquery.min.js" type="text/javascript"></script>
-        <script src="../../static/js/star-rating.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+        <script src="/static/js/star-rating.min.js" type="text/javascript"></script>
     </head>
     {% if data_name %}
     <div id="movie_detail">
         {% if data_background_image is none %}
-        <img alt="fs_bg_image" src= {{ "../../static/images/movie_ticket.png" }} id="fs_bg_image" />
+        <img alt="fs_bg_image" src= {{ "/static/images/movie_ticket.png" }} id="fs_bg_image" />
         {% else %}
-        <img alt="fs_bg_image" src= {{ "../../static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" />
+        <img alt="fs_bg_image" src= {{ "/static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" />
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
-            <img class="center" src= {{ "../../static/images/Movie-icon.png" }} >
+            <img class="center" src= {{ "/static/images/Movie-icon.png" }} >
             {% else %}
-            <img class="center" src= {{ "../../static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
+            <img class="center" src= {{ "/static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
             {% endif %}
             <table class="table table-hover">
                 <tbody>

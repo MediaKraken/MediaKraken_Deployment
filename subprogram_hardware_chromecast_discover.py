@@ -51,7 +51,7 @@ devices_added = 0
 # look for devices
 chrome = common_hardware_chromecast.CommonHardwareChromecast()
 logging.info("Chrome: %s", chrome)
-for row_data in chrome.com_chromecast_discover_dict():
+for row_data in chrome.com_chromecast_discover():
     logging.info("Dict: %s", row_data)
     chrome.com_chromecast_connect_by_name(row_data)
     logging.info("Connected!")

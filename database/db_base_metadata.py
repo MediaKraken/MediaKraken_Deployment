@@ -42,6 +42,7 @@ def db_meta_update(self, series_id_json, result_json, image_json):
         ' mm_media_name = %s, mm_metadata_json = %s, mm_metadata_localimage_json = %s'
         ' where mm_metadata_media_id->\'themoviedb\' ? %s', (series_id_json, result_json['title'],
         json.dumps(result_json), json.dumps(image_json), str(result_json['id'])))
+    self.db_commit()
 
 
 def db_meta_genre_list_count(self):
@@ -156,13 +157,14 @@ def db_meta_movie_list(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-            'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\','
-            ' mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-            ' from mm_metadata_movie order by LOWER(mm_media_name)')
+            'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+            'mm_metadata_user_json from mm_metadata_movie order by LOWER(mm_media_name)')
     else:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-            'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\','
-            ' mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
+            'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+            'mm_metadata_user_json'
             ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
             ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
             ' order by mm_media_name', (offset, records))

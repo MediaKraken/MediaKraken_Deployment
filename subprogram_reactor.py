@@ -61,7 +61,10 @@ def read(queue_object):
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
         logging.info('json body %s', json_message)
-        if json_message['Type'] == 'Play':
+        if json_message['Type'] == 'Pause':
+            if json_message['Sub'] == 'Cast':
+                pass
+        elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
             name_container = ((json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[-30:])
             logging.info('cont %s', name_container)
@@ -104,6 +107,8 @@ def read(queue_object):
                      container_command=(
                         'ffmpeg -i \'' + json_message['Data'] + '\''))
                 logging.info('after run')
+        elif json_message['Type'] == 'Stop':
+            pass
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
