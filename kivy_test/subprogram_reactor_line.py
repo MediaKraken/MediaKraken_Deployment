@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import base64
+import json
 from twisted.internet import reactor, protocol, stdio
 from twisted.protocols import basic
 from twisted.internet import ssl
@@ -19,7 +20,7 @@ class Echo(basic.LineReceiver):
         print('server received:', line)
         if lines_received == 2:
             f = open("test.png", "w")  # opens file with name of "test.txt"
-            f.write(base64.b64decode(line))
+            f.write(base64.b64decode(json.loads(line)['Image']))
             f.close()
         print('server sent:', line, '\n')
         self.sendLine(line.encode("utf8"))

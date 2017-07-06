@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import base64
+import json
 from twisted.internet import reactor, stdio, protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
@@ -21,7 +22,7 @@ class Echo(basic.LineReceiver):
         icondata = iconfile.read()
         icondata = base64.b64encode(icondata)
 
-        self.sendLine(icondata.encode("utf8"))
+        self.sendLine(json.dumps({'Image': icondata.encode("utf8")}))
 
         if len(line) > 10:
             self.sendLine('exit'.encode("utf8"))
