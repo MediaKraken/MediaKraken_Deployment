@@ -20,7 +20,7 @@ class Echo(basic.LineReceiver):
         iconfile = open("theater/images/diskette.png", "rb")
         icondata = iconfile.read()
         icondata = base64.b64encode(icondata)
-        #print(icondata)
+
         self.sendLine(icondata.encode("utf8"))
 
         if len(line) > 10:
