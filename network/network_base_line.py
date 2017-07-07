@@ -121,7 +121,8 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Sub'] == 'Game':
                 pass
             elif json_message['Sub'] == 'Movie':
-                lookup_id, media_id = self.db_connection.db_media_random('Poster')
+                # metadata_id is needed so client can id the media when clicked
+                image_json, metadata_id = self.db_connection.db_meta_movie_image_random('Poster')
             elif json_message['Sub'] == 'TV Show':
                 pass
             else:
@@ -131,9 +132,13 @@ class NetworkEvents(basic.LineReceiver):
                 except:
                     pass
             if lookup_id is not None:
-                msg = json.dumps({"Type": "Image", "Data": 'https://' + self.server_ip.strip()
-                                + ':' + self.server_port_image.strip() + '/'
-                                + lookup_id, "UUID": media_id})
+                if image_json is not None:
+                    image_handle = open(image_json['Poster'], "rb")
+                    image_data = image_handle.read()
+                    image_data = base64.b64encode(image_data)
+                    image_handle.close()
+                msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
+                                "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
             pass

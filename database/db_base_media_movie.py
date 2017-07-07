@@ -22,20 +22,13 @@ import datetime
 
 # TODO subselect speed
 
-def db_media_random(self, return_image_type=None): # poster, backdrop, etc
+def db_media_random(self):
     """
     Find random movie
     """
-    if not return_image_type:
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,'
-            'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
-            ' and random() < 0.01 limit 1')
-    else:
-        self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-            + return_image_type + '\',mm_media_guid from mm_media,mm_metadata_movie'\
-            ' where mm_media_metadata_guid = mm_metadata_guid'\
-            ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\'' + return_image_type + '\''
-            + ')::text != \'null\' order by random() limit 1')
+    self.db_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,'
+        'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
+        ' and random() < 0.01 limit 1')
     try:
         return self.db_cursor.fetchone()
     except:
