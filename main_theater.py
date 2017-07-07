@@ -201,7 +201,7 @@ class MediaKrakenApp(App):
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
                 int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                EchoClientFactory(self), ssl.ClientContextFactory())
+                EchoClientFactory(), ssl.ClientContextFactory())
 
     # @wait_for(timeout=5.0)
     # def on_connection(self, connection):
