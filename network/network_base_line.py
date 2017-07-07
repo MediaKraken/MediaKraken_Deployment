@@ -114,22 +114,20 @@ class NetworkEvents(basic.LineReceiver):
         elif json_message['Type'] == "Image":
             metadata_id = None
             if json_message['Sub'] == 'Album':
-                pass
+                # metadata_id is needed so client can id the media when clicked
+                image_json, metadata_id = self.db_connection.db_meta_album_image_random()
             elif json_message['Sub'] == 'Book':
-                pass
+                # metadata_id is needed so client can id the media when clicked
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Cover')
             elif json_message['Sub'] == 'Game':
-                pass
+                # metadata_id is needed so client can id the media when clicked
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Cover')
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id = self.db_connection.db_meta_movie_image_random('Poster')
             elif json_message['Sub'] == 'TV Show':
-                pass
-            else:
-                # fetch specific id
-                try:
-                    lookup_id = self.db_connection.db_media_image_path(json_message['Data'])
-                except:
-                    pass
+                # metadata_id is needed so client can id the media when clicked
+                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random('Poster')
             if metadata_id is not None:
                 if image_json is not None:
                     image_handle = open(image_json['Poster'], "rb")

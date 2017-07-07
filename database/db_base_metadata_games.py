@@ -156,3 +156,18 @@ def db_meta_games_system_insert(self, platform_id, platform_name,
         (new_guid, platform_id, platform_name, platform_alias, platform_json))
     self.db_commit()
     return new_guid
+
+
+def db_meta_game_image_random(self, return_image_type='Poster'): # poster, backdrop, etc
+    """
+    Find random game image
+    """
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_game_software_info'\
+        ' where mm_media_metadata_guid = mm_metadata_guid'\
+        ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None, None

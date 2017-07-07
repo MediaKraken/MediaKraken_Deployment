@@ -88,3 +88,18 @@ def db_meta_book_by_uuid(self, book_uuid):
         return self.db_cursor.fetchone()
     except:
         return None
+
+
+def db_meta_book_image_random(self, return_image_type='Cover'):
+    """
+    Find random book image
+    """
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                           + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_book' \
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid' \
+                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                           + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None, None

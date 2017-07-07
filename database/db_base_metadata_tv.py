@@ -308,7 +308,6 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
         (show_guid, str(season_number), str(episode_number)))
     return self.db_cursor.fetchone()
 
-
 # total episdoes in metadata from tvmaze
 # jsonb_array_length(mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 
@@ -316,3 +315,17 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
 # mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes'->(jsonb_array_length(
 #mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 # - 1)->'season'
+
+def db_meta_tvshow_image_random(self, return_image_type='Poster'): # poster, backdrop, etc
+    """
+    Find random movie image
+    """
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_tvshow'\
+        ' where mm_media_metadata_guid = mm_metadata_guid'\
+        ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None, None
