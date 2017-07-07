@@ -18,11 +18,12 @@ class Echo(basic.LineReceiver):
         global lines_received
         lines_received += 1
         print('server received:', line)
-        # if lines_received == 2:
-        #     f = open("test.png", "w")  # opens file with name of "test.txt"
-        #     f.write(base64.b64decode(json.loads(line)['Image']))
-        #     f.close()
-        print('server sent:', line, '\n')
+        print('server received bytes:', len(line))
+        if lines_received == 2:
+            f = open("test.jpg", "w")  # opens file with name of "test.txt"
+            f.write(base64.b64decode(json.loads(line)['Image']))
+            f.close()
+        #print('server sent:', line, '\n')
         self.sendLine(line.encode("utf8"))
         if line=="exit":
              self.transport.loseConnection()
