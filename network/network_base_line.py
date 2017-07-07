@@ -112,8 +112,7 @@ class NetworkEvents(basic.LineReceiver):
                 pass
 
         elif json_message['Type'] == "Image":
-            lookup_id = None
-            media_id = None
+            metadata_id = None
             if json_message['Sub'] == 'Album':
                 pass
             elif json_message['Sub'] == 'Book':
@@ -131,7 +130,7 @@ class NetworkEvents(basic.LineReceiver):
                     lookup_id = self.db_connection.db_media_image_path(json_message['Data'])
                 except:
                     pass
-            if lookup_id is not None:
+            if metadata_id is not None:
                 if image_json is not None:
                     image_handle = open(image_json['Poster'], "rb")
                     image_data = image_handle.read()

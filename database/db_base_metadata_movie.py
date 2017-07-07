@@ -33,7 +33,7 @@ def db_meta_movie_image_random(self, return_image_type='Poster'): # poster, back
     try:
         return self.db_cursor.fetchone()
     except:
-        return None
+        return None, None
 
 
 def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
