@@ -6,7 +6,7 @@ install_twisted_reactor()
 
 from twisted.internet import reactor
 from twisted.internet import protocol
-
+from twisted.internet import ssl
 
 class EchoServer(protocol.Protocol):
     def dataReceived(self, data):
@@ -31,7 +31,7 @@ class TwistedServerApp(App):
 
     def build(self):
         self.label = Label(text="server started\n")
-        reactor.listenTCP(8000, EchoServerFactory(self))
+        reactor.listenSSL(8000, EchoServerFactory(self), ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
         return self.label
 
     def handle_message(self, msg):

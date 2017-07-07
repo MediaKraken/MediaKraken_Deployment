@@ -7,7 +7,7 @@ install_twisted_reactor()
 
 # A Simple Client that send messages to the Echo Server
 from twisted.internet import reactor, protocol
-
+from twisted.internet import ssl
 
 class EchoClient(protocol.Protocol):
     def connectionMade(self):
@@ -62,7 +62,7 @@ class TwistedClientApp(App):
         return layout
 
     def connect_to_server(self):
-        reactor.connectTCP('localhost', 8000, EchoClientFactory(self))
+        reactor.connectSSL('localhost', 8000, EchoClientFactory(self), ssl.ClientContextFactory())
 
     def on_connection(self, connection):
         self.print_message("Connected successfully!")
