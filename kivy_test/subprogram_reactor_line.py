@@ -33,7 +33,6 @@ class EchoServerFactory(protocol.ServerFactory):
    protocol = Echo
 
 
-factory = EchoServerFactory()
-reactor.listenSSL(7500, factory, ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
+reactor.listenSSL(7500, EchoServerFactory(), ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
 reactor.run()
 

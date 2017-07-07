@@ -18,13 +18,12 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from twisted.internet import reactor, protocol, stdio, defer, task
+from twisted.protocols import basic
 from twisted.internet import ssl
-from twisted.internet import reactor
-from twisted.internet.protocol import Factory
 import pika
 from pika import exceptions
 from pika.adapters import twisted_connection
-from twisted.internet import defer, reactor, protocol,task
 from network import network_base_line as network_base
 from common import common_config_ini
 from common import common_docker
@@ -34,6 +33,7 @@ import time
 import subprocess
 import json
 import uuid
+import base64
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
@@ -111,7 +111,25 @@ def read(queue_object):
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-class MediaKrakenServerApp(Factory):
+# class Echo(basic.LineReceiver):
+#     MAX_LENGTH = 32000000  # pylint: disable=C0103
+#
+#     def connectionMade(self):
+#         print("A new client has connected")
+#
+#     def lineReceived(self, line):
+#         print('server received:', line)
+#         print('server received bytes:', len(line))
+#         self.sendLine(line.encode("utf8"))
+#         if line=="exit":
+#              self.transport.loseConnection()
+#
+#
+# class EchoServerFactory(protocol.ServerFactory):
+#    protocol = Echo
+
+
+class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
         common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')

@@ -18,24 +18,27 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import base64
 import json
 import sys
 import os
 import signal
 sys.path.append("./vault/lib")
 import subprocess
-from twisted.internet.protocol import Protocol, Factory
-from twisted.internet import reactor
+from twisted.internet import reactor, protocol
+from twisted.protocols import basic
 from twisted.internet import ssl
 import ip2country
 from common import common_docker
 from common import common_network
 
 
-class NetworkEvents(Protocol):
+class NetworkEvents(basic.LineReceiver):
     """
     Process the network events for the server
     """
+    MAX_LENGTH = 32000000  # pylint: disable=C0103
+
     # init is called on every connection
     def __init__(self, users, db_connection):
         # server info
@@ -62,7 +65,8 @@ class NetworkEvents(Protocol):
         Network connection made from client so ask for ident
         """
         logging.info('Got Connection')
-        self.transport.write(json.dumps({'Type': 'Ident'}).encode("utf8"))
+        #self.transport.write(json.dumps({'Type': 'Ident'}).encode("utf8"))
+        self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
 
     def connectionLost(self, reason):
@@ -74,7 +78,7 @@ class NetworkEvents(Protocol):
             del self.users[self.user_user_name]
 
 
-    def dataReceived(self, data):
+    def lineReceived(self, data):
         """
         Message received from client
         """
@@ -199,8 +203,8 @@ class NetworkEvents(Protocol):
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             logging.info("should be sending data len: %s", len(msg))
-            self.transport.write(msg.encode("utf8"))
-
+            #self.transport.write(msg.encode("utf8"))
+            self.sendLine(json.dumps(msg.encode("utf8")))
 
     def send_single_user(self, message):
         """

@@ -27,37 +27,13 @@ import uuid
 import logging # pylint: disable=W0611
 from functools import partial
 
-# install_twisted_rector must be called before importing the reactor
-from kivy.support import install_twisted_reactor
-install_twisted_reactor()
+from crochet import wait_for, run_in_reactor, setup
+setup()
+
 from kivy.lang import Builder
-
-# A simple Client that send messages to the echo server
 from twisted.internet import reactor, protocol
+from twisted.protocols import basic
 from twisted.internet import ssl
-
-
-class EchoClient(protocol.Protocol):
-    def connectionMade(self):
-        self.factory.app.on_connection(self.transport)
-
-    def dataReceived(self, data):
-        self.factory.app.process_message(data)
-        logging.info(data)
-
-
-class EchoFactory(protocol.ClientFactory):
-    protocol = EchoClient
-
-    def __init__(self, app):
-        self.app = app
-
-    def clientConnectionLost(self, conn, reason):
-        logging.info('connection lost')
-
-    def clientConnectionFailed(self, conn, reason):
-        logging.info('connection failed')
-
 
 import kivy
 from kivy.app import App
@@ -103,6 +79,32 @@ from kivy.graphics.transformation import Matrix
 from kivy.graphics.opengl import *
 from kivy.graphics import *
 from theater import MediaKrakenSettings
+
+
+class Echo(basic.LineReceiver):
+    MAX_LENGTH = 32000000  # pylint: disable=C0103
+
+    def connectionMade(self):
+        logging.info("connected successfully!")
+
+    def lineReceived(self, line):
+        pass
+        # if len(line) > 10:
+        #     self.sendLine('exit'.encode("utf8"))
+        # else:
+        #     # send a response in 2 seconds
+        #     reactor.callLater(2, self.sendLine, ('>' + line).encode("utf8"))
+
+    def connectionLost(self, reason):
+        logging.error("connection lost!")
+        reactor.stop()
+
+    def sendline(self, line):
+        self.sendLine(line.encode("utf8"))
+
+
+class EchoClientFactory(protocol.ClientFactory):
+    protocol = Echo
 
 
 class MediaKraken(FloatLayout):
@@ -180,6 +182,7 @@ class MediaKrakenApp(App):
         self.connect_to_server()
         return root
 
+    @wait_for(timeout=5.0)
     def connect_to_server(self):
         logging.info('conn server')
         if self.config is not None:
@@ -198,17 +201,19 @@ class MediaKrakenApp(App):
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
                 int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                EchoFactory(self), ssl.ClientContextFactory())
+                EchoClientFactory(self), ssl.ClientContextFactory())
 
-    def on_connection(self, connection):
-        logging.info("connected successfully!")
-        self.connection = connection
+    # @wait_for(timeout=5.0)
+    # def on_connection(self, connection):
+    #     logging.info("connected successfully!")
+    #     self.connection = connection
 
-    def send_message(self, *args):
-        msg = self.textbox.text
-        if msg and self.connection:
-            self.connection.write(str(self.textbox.text))
-            self.textbox.text = ""
+    # @wait_for(timeout=5.0)
+    # def send_message(self, *args):
+    #     msg = self.textbox.text
+    #     if msg and self.connection:
+    #         self.connection.write(str(self.textbox.text))
+    #         self.textbox.text = ""
 
     def process_message(self, server_msg):
         """
