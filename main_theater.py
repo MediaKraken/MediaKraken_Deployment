@@ -81,6 +81,7 @@ from kivy.graphics import *
 from theater import MediaKrakenSettings
 
 twisted_connection = None
+mk_app = None
 
 class Echo(basic.LineReceiver):
     MAX_LENGTH = 32000000  # pylint: disable=C0103
@@ -88,9 +89,12 @@ class Echo(basic.LineReceiver):
     def connectionMade(self):
         global twisted_connection
         twisted_connection = self
-        print("connected successfully (echo)!")
+        logging.info("connected successfully (echo)!")
 
     def lineReceived(self, line):
+        logging.info('linereceived: %s', line)
+        global mk_app
+        MediaKrakenApp.process_message(mk_app, line)
         pass
         # if len(line) > 10:
         #     self.sendLine('exit'.encode("utf8"))
@@ -142,8 +146,8 @@ class MediaKrakenNotificationScreen(BoxLayout):
 
 
 class MediaKrakenApp(App):
+    global mk_app
     global twisted_connection
-    connection = None
 
     def exit_program(self):
         pass
@@ -176,6 +180,7 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
 
     def build(self):
+        mk_app = self
         root = MediaKraken()
         self.config = self.load_config()
         self.settings_cls = SettingsWithSidebar
@@ -188,13 +193,13 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def connect_to_server(self):
-        print('conn server')
+        logging.info('conn server')
         if self.config is not None:
-            print('here in connect to server')
+            logging.info('here in connect to server')
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
-                print('server list: %s', server_list)
+                logging.info('server list: %s', server_list)
                 host_ip = server_list[0]
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
@@ -209,6 +214,9 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
+        """
+        Send message via twisted reactor
+        """
         MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
@@ -217,8 +225,8 @@ class MediaKrakenApp(App):
         """
         json_message = json.loads(server_msg)
         #if json_message['Type'] != "Image":
-        print("Got Message: %s", server_msg)
-        print("len total: %s", len(server_msg))
+        logging.info("Got Message: %s", server_msg)
+        logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             self.connection.write(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
@@ -247,7 +255,7 @@ class MediaKrakenApp(App):
                 audio_streams = []
                 subtitle_streams = ['None']
                 for stream_info in json_message['Data2']['FFprobe']['streams']:
-                    print("info: %s", stream_info)
+                    logging.info("info: %s", stream_info)
                     stream_language = ''
                     stream_title = ''
                     stream_codec = ''
@@ -265,11 +273,11 @@ class MediaKrakenApp(App):
                     except:
                         pass
                     if stream_info['codec_type'] == 'audio':
-                        print('audio')
+                        logging.info('audio')
                         audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
                     elif stream_info['codec_type'] == 'subtitle':
                         subtitle_streams.append(stream_language)
-                        print('sub')
+                        logging.info('sub')
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
@@ -295,7 +303,7 @@ class MediaKrakenApp(App):
                                            cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
                 list_view = ListView(adapter=list_adapter)
                 for video_list in json_message['Data']:
-                    print('vid list item %s', video_list)
+                    logging.info('vid list item %s', video_list)
                     btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
                                         size_hint_y=None,
                                         width=self.root.ids.theater_media_video_list_scrollview.width,
@@ -324,9 +332,9 @@ class MediaKrakenApp(App):
 
 
         elif json_message['Type'] == "GENRELIST":
-            print("gen")
+            logging.info("gen")
             for genre_list in json_message:
-                print("genlist: %s", genre_list)
+                logging.info("genlist: %s", genre_list)
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
                                     size_hint_y=None,
                                     width=self.root.ids.theater_media_genre_list_scrollview.width,
@@ -336,24 +344,24 @@ class MediaKrakenApp(App):
 
         elif json_message['Type'] == "Image":
             if pickle_data[0] == "MAIN":
-                print("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
+                logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
                 self.demo_media_id = pickle_data[2]
                 proxy_image_demo = Loader.image(pickle_data[1])
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             elif pickle_data[0] == "MOVIE":
-                print("here for movie refresh: %s", pickle_data[1])
+                logging.info("here for movie refresh: %s", pickle_data[1])
                 proxy_image_movie = Loader.image(pickle_data[1])
                 proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
             elif pickle_data[0] == "NEWMOVIE":
-                print("here for newmovie refresh: %s", pickle_data[1])
+                logging.info("here for newmovie refresh: %s", pickle_data[1])
                 proxy_image_new_movie = Loader.image(pickle_data[1])
                 proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
             elif pickle_data[0] == "PROGMOVIE":
-                print("here for progress movie refresh: %s", pickle_data[1])
+                logging.info("here for progress movie refresh: %s", pickle_data[1])
                 proxy_image_prog_movie = Loader.image(pickle_data[1])
                 proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
             elif pickle_data[0] == "MOVIEDETAIL":
-                print("here for movie detail refresh: %s", pickle_data[1])
+                logging.info("here for movie detail refresh: %s", pickle_data[1])
                 proxy_image_detail_movie = Loader.image(pickle_data[1])
                 proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
         else:
@@ -409,14 +417,14 @@ class MediaKrakenApp(App):
                                 data=MediaKrakenSettings.mediakraken_settings_playback_json)
 
     def on_config_change(self, config, section, key, value):
-        print("%s %s %s %s", config, section, key, value)
+        logging.info("%s %s %s %s", config, section, key, value)
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        print("keycode received: %s", keycode)
+        logging.info("keycode received: %s", keycode)
         if keycode[1] == 'i' or keycode[1] == 'I':
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 # show media information overlay
@@ -502,33 +510,33 @@ class MediaKrakenApp(App):
 
     # video select
     def theater_event_button_video_select(self, *args):
-        print("vid select: %s", args)
+        logging.info("vid select: %s", args)
         self.media_guid = args[0]
         self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
-        print("genre select: %s", args)
+        logging.info("genre select: %s", args)
         self.media_genre = args[0]
         self.connection.write(("VIDEOGENRELIST " + args[0]).encode("utf8"))
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        print("button server user login %s", self.global_selected_user_id)
-        print("login: %s", self.login_password)
+        logging.info("button server user login %s", self.global_selected_user_id)
+        logging.info("login: %s", self.login_password)
         self.connection.write(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
                                           'Password': self.login_password}).encode("utf8"))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
-        print("play: %s", args)
+        logging.info("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
         self.connection.write(msg.encode("utf8"))
 
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
-        print("home press: %s", args)
+        logging.info("home press: %s", args)
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
                 or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
@@ -561,7 +569,7 @@ class MediaKrakenApp(App):
             self.send_twisted_message(msg)
 
     def theater_event_button_option_select(self, option_text, *args):
-        print("button server options %s", option_text)
+        logging.info("button server options %s", option_text)
         if option_text == 'Audio Settings':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Settings_Audio'
         elif option_text == 'Playback Settings':
@@ -571,7 +579,7 @@ class MediaKrakenApp(App):
 
     # send refresh for images
     def main_image_refresh(self, *largs):
-        print("image refresh")
+        logging.info("image refresh")
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff

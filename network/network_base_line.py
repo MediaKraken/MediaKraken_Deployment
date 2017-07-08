@@ -207,6 +207,7 @@ class NetworkEvents(basic.LineReceiver):
             #self.transport.write(msg.encode("utf8"))
             self.sendLine(json.dumps(msg.encode("utf8")))
 
+
     def send_single_user(self, message):
         """
         Send message to single user

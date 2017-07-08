@@ -111,24 +111,6 @@ def read(queue_object):
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-# class Echo(basic.LineReceiver):
-#     MAX_LENGTH = 32000000  # pylint: disable=C0103
-#
-#     def connectionMade(self):
-#         print("A new client has connected")
-#
-#     def lineReceived(self, line):
-#         print('server received:', line)
-#         print('server received bytes:', len(line))
-#         self.sendLine(line.encode("utf8"))
-#         if line=="exit":
-#              self.transport.loseConnection()
-#
-#
-# class EchoServerFactory(protocol.ServerFactory):
-#    protocol = Echo
-
-
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
