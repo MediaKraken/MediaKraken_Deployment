@@ -353,27 +353,28 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
 
         elif json_message['Type'] == "Image":
-            if pickle_data[0] == "MAIN":
-                logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
-                self.demo_media_id = pickle_data[2]
-                proxy_image_demo = Loader.image(pickle_data[1])
-                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
-            elif pickle_data[0] == "MOVIE":
-                logging.info("here for movie refresh: %s", pickle_data[1])
+            # if pickle_data[0] == "MAIN":
+            #     logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
+            #     self.demo_media_id = pickle_data[2]
+            #     proxy_image_demo = Loader.image(pickle_data[1])
+            #     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+            if json_message['Sub'] == "Movie":
+                logging.info("here for movie refresh")
                 proxy_image_movie = Loader.image(pickle_data[1])
                 proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
-            elif pickle_data[0] == "NEWMOVIE":
-                logging.info("here for newmovie refresh: %s", pickle_data[1])
-                proxy_image_new_movie = Loader.image(pickle_data[1])
-                proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
-            elif pickle_data[0] == "PROGMOVIE":
-                logging.info("here for progress movie refresh: %s", pickle_data[1])
-                proxy_image_prog_movie = Loader.image(pickle_data[1])
-                proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
-            elif pickle_data[0] == "MOVIEDETAIL":
-                logging.info("here for movie detail refresh: %s", pickle_data[1])
-                proxy_image_detail_movie = Loader.image(pickle_data[1])
-                proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
+
+            # elif pickle_data[0] == "NEWMOVIE":
+            #     logging.info("here for newmovie refresh: %s", pickle_data[1])
+            #     proxy_image_new_movie = Loader.image(pickle_data[1])
+            #     proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
+            # elif pickle_data[0] == "PROGMOVIE":
+            #     logging.info("here for progress movie refresh: %s", pickle_data[1])
+            #     proxy_image_prog_movie = Loader.image(pickle_data[1])
+            #     proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
+            # elif pickle_data[0] == "MOVIEDETAIL":
+            #     logging.info("here for movie detail refresh: %s", pickle_data[1])
+            #     proxy_image_detail_movie = Loader.image(pickle_data[1])
+            #     proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
         else:
             logging.error("unknown message type")
 
