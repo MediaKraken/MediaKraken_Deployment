@@ -65,7 +65,6 @@ class NetworkEvents(basic.LineReceiver):
         Network connection made from client so ask for ident
         """
         logging.info('Got Connection')
-        #self.transport.write(json.dumps({'Type': 'Ident'}).encode("utf8"))
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
 
