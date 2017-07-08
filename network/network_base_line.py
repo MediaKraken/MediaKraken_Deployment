@@ -204,8 +204,7 @@ class NetworkEvents(basic.LineReceiver):
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             logging.info("should be sending data len: %s", len(msg))
-            #self.transport.write(msg.encode("utf8"))
-            self.sendLine(json.dumps(msg).encode("utf8"))
+            self.sendLine(msg.encode("utf8"))
 
 
     def send_single_user(self, message):
