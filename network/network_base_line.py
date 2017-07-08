@@ -129,7 +129,7 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random('Poster')
             if metadata_id is not None:
                 if image_json is not None:
-                    image_handle = open(image_json['Poster'], "rb")
+                    image_handle = open(image_json, "rb")
                     image_data = image_handle.read()
                     image_data = base64.b64encode(image_data)
                     image_handle.close()
