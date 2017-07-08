@@ -123,7 +123,8 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
-                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie':
+                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie'\
+                        or json_message['Sub2'] == 'Demo':
                     image_json, metadata_id = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
                 elif json_message['Sub2'] == 'New Movie':
                     pass

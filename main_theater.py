@@ -357,14 +357,18 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
 
         elif json_message['Type'] == "Image":
-            # if pickle_data[0] == "MAIN":
-            #     logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
-            #     self.demo_media_id = pickle_data[2]
-            #     proxy_image_demo = Loader.image(pickle_data[1])
-            #     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
-                if json_message['Sub2'] == "Movie":
+                if json_message['Sub2'] == "Demo":
+                    self.home_demo_file_name = str(uuid.uuid4())
+                    f = open(self.home_demo_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    self.demo_media_id = json_message['UUID']
+                    proxy_image_demo = Loader.image(self.home_demo_file_name)
+                    proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                    pass
+                elif json_message['Sub2'] == "Movie":
                     # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
                     # texture.blit_buffer(base64.b64decode(json_message['Data']))
                     # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
@@ -613,7 +617,7 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Main', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
@@ -654,6 +658,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_demo_file_name)
 
     def _image_loaded_home_movie(self, proxyImage):
         """
