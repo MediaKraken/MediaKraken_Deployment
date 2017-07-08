@@ -117,21 +117,21 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
             elif json_message['Sub'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Sub3')
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Sub3')
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
                 if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie':
-                    image_json, metadata_id = self.db_connection.db_meta_movie_image_random('Sub3')
+                    image_json, metadata_id = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
                 elif json_message['Sub2'] == 'New Movie':
                     pass
                 elif json_message['Sub2'] == 'In Progress':
                     pass
             elif json_message['Sub'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random('Sub3')
+                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
             if metadata_id is not None:
                 if image_json is not None:
                     image_handle = open(image_json, "rb")

@@ -622,10 +622,10 @@ class MediaKrakenApp(App):
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Cover'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
