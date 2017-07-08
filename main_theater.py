@@ -98,8 +98,9 @@ class MKEcho(basic.LineReceiver):
 
     def lineReceived(self, line):
         global mk_app
-        logging.info('linereceived: %s', line)
-        logging.info('app: %s', mk_app)
+        logging.info('linereceived len: %s', len(line))
+        #logging.info('linereceived: %s', line)
+        #logging.info('app: %s', mk_app)
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
@@ -264,30 +265,31 @@ class MediaKrakenApp(App):
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
-                for stream_info in json_message['Data2']['FFprobe']['streams']:
-                    logging.info("info: %s", stream_info)
-                    stream_language = ''
-                    stream_title = ''
-                    stream_codec = ''
-                    try:
-                        stream_language = stream_info['tags']['language'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_title = stream_info['tags']['title'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_codec \
-                            = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
-                    except:
-                        pass
-                    if stream_info['codec_type'] == 'audio':
-                        logging.info('audio')
-                        audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
-                    elif stream_info['codec_type'] == 'subtitle':
-                        subtitle_streams.append(stream_language)
-                        logging.info('sub')
+                if 'FFprobe' in json_message['Data2'] and 'streams' in json_message['Data2']['FFprobe']:
+                    for stream_info in json_message['Data2']['FFprobe']['streams']:
+                        logging.info("info: %s", stream_info)
+                        stream_language = ''
+                        stream_title = ''
+                        stream_codec = ''
+                        try:
+                            stream_language = stream_info['tags']['language'] + ' - '
+                        except:
+                            pass
+                        try:
+                            stream_title = stream_info['tags']['title'] + ' - '
+                        except:
+                            pass
+                        try:
+                            stream_codec \
+                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                        except:
+                            pass
+                        if stream_info['codec_type'] == 'audio':
+                            logging.info('audio')
+                            audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
+                        elif stream_info['codec_type'] == 'subtitle':
+                            subtitle_streams.append(stream_language)
+                            logging.info('sub')
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
