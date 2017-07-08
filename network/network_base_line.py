@@ -109,7 +109,12 @@ class NetworkEvents(basic.LineReceiver):
             logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
             if self.user_user_name == 'Link':
                 pass
-
+            else:
+                user_data = []
+                for user in self.db_connection.db_user_list_name():
+                    if user['active'] == True:
+                        user_data.append(user['id'], user['username'])
+                msg = json.dumps({"User": user_data})
         elif json_message['Type'] == "Image":
             metadata_id = None
             if json_message['Sub'] == 'Album':
