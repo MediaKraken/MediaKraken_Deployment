@@ -99,6 +99,7 @@ class MKEcho(basic.LineReceiver):
         global mk_app
         logging.info('linereceived: %s', line)
         logging.info('app: %s', mk_app)
+        # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
@@ -219,6 +220,12 @@ class MediaKrakenApp(App):
         """
         MKFactory.protocol.sendline_data(twisted_connection, message)
 
+    def send_twisted_message_thread(self, message):
+        """
+        Send message via twisted reactor from the crochet thread
+        """
+        MKFactory.protocol.sendline_data(twisted_connection, message)
+
     def process_message(self, server_msg):
         """
         Process network message from server
@@ -230,7 +237,7 @@ class MediaKrakenApp(App):
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             logging.info('id')
-            self.send_twisted_message(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
+            self.send_twisted_message_thread(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
                 'Platform': platform.node()}))
             logging.info('id2')
             # start up the image refresh since we have a connection
