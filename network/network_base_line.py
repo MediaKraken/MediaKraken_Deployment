@@ -139,11 +139,9 @@ class NetworkEvents(basic.LineReceiver):
                     image_data = image_handle.read()
                     image_data = base64.b64encode(image_data)
                     image_handle.close()
-
                     # im = Image.open(image_json)
                     # im.convert("RGB", im)
                     # image_data = base64.b64encode(im)
-
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
                                   "Sub2": json_message['Sub2'],
                                   "Data": image_data, "UUID": metadata_id})
@@ -195,7 +193,11 @@ class NetworkEvents(basic.LineReceiver):
             msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         elif json_message['Type'] == "User":
-            pass
+            user_data = []
+            for user in self.db_connection.db_user_list_name():
+                if user['active'] == True:
+                    user_data.append(user['id'], user['username'])
+            msg = json.dumps({"User": user_data})
 
         #  elif json_message['Type'] == "MediaIDUpdateUUID":
         #     # media id, metadata id
