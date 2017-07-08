@@ -183,9 +183,6 @@ class NetworkEvents(basic.LineReceiver):
                 # (playback, love, hate, etc)
                 pass
 
-        elif json_message['Type'] == "Metadata":
-            pass
-
         elif json_message['Type'] == "Play":
             media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
             if media_path is not None:
@@ -196,27 +193,6 @@ class NetworkEvents(basic.LineReceiver):
                 http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
                     + self.server_port_ffmpeg + '/stream.ffm'
             msg = json.dumps({"Type": 'Play', 'Data': http_link})
-
-        elif json_message['Type'] == "User":
-            user_data = []
-            for user in self.db_connection.db_user_list_name():
-                if user['active'] == True:
-                    user_data.append((user['id'], user['username']))
-            msg = json.dumps({"User": user_data})
-
-        #  elif json_message['Type'] == "MediaIDUpdateUUID":
-        #     # media id, metadata id
-        #     self.db_connection.db_update_media_id(message_words[1], message_words[2])
-        #
-        # elif json_message['Type'] == "VIDEOGENRELIST":
-        #     msg = "VIDEOLIST " + pickle.dumps(self.db_connection.db_web_media_list(
-        #         self.db_connection.db_media_uuid_by_class("Movie"),
-        #         json_message['Type'], message_words[1]))
-        #
-        # elif json_message['Type']== "movie" or json_message['Type'] == "recent_addition"\
-        #         or json_message['Type'] == 'in_progress' or json_message['Type'] == 'video':
-        #     msg = "VIDEOLIST " + json.dumps(self.db_connection.db_web_media_list(
-        #         self.db_connection.db_media_uuid_by_class("Movie"), json_message['Type']))
 
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
