@@ -167,6 +167,8 @@ def db_meta_album_image_random(self):
     #     ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
     #     + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
     try:
-        return self.db_cursor.fetchone()
+        # then if no results.....a None will except which will then pass None, None
+        image_json, metadata_id = self.db_cursor.fetchone()
+        return image_json, metadata_id
     except:
         return None, None
