@@ -271,7 +271,7 @@ class MKServerDatabase(object):
         db_user_list_name,\
         db_user_detail,\
         db_user_delete,\
-        db_user_login_kodi,\
+        db_user_login,\
         db_user_group_insert,\
         db_user_profile_insert
     from database.db_base_version import db_version_check,\

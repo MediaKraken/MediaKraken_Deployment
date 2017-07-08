@@ -61,23 +61,23 @@ def db_user_delete(self, user_guid):
     self.db_commit()
 
 
-def db_user_login_kodi(self, user_data):
+def db_user_login(self, user_data):
     """
     # verify user logon
     """
     user_data = json.loads(user_data)
     self.db_cursor.execute('select id,password from mm_user where username = %s',
-        (user_data['username'],))
+        (user_data['id'],))
     result = self.db_cursor.fetchone()
     logging.info("what: %s", result)
     if result is not None:
-        if user_data['password'] == result['password'] or True: # pass matches
+        if user_data['Password'] == result['password'] or True: # pass matches
             # TODO passowrd validation
-            return (result[0], str(uuid.uuid4()))
+            return (str(uuid.uuid4()))
         else:
-            return (result[0], None)
+            return None
     else:
-        return (None, None)
+        return None
 
 
 def db_user_group_insert(self, group_name, group_desc, group_rights_json):
