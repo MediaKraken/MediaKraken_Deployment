@@ -360,27 +360,31 @@ class MediaKrakenApp(App):
             #     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
-
-                # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
-                # texture.blit_buffer(base64.b64decode(json_message['Data']))
-                # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
-                #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
-
-                self.home_movie_file_name = str(uuid.uuid4())
-                f = open(self.home_movie_file_name, "w")  # opens file with name of "test.txt"
-                f.write(base64.b64decode(json_message['Data']))
-                f.close()
-                proxy_image_movie = Loader.image(self.home_movie_file_name)
-                proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
-
-            # elif pickle_data[0] == "NEWMOVIE":
-            #     logging.info("here for newmovie refresh: %s", pickle_data[1])
-            #     proxy_image_new_movie = Loader.image(pickle_data[1])
-            #     proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
-            # elif pickle_data[0] == "PROGMOVIE":
-            #     logging.info("here for progress movie refresh: %s", pickle_data[1])
-            #     proxy_image_prog_movie = Loader.image(pickle_data[1])
-            #     proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
+                if json_message['Sub2'] == "Movie":
+                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
+                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
+                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
+                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
+                    self.home_movie_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_movie = Loader.image(self.home_movie_file_name)
+                    proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
+                elif json_message['Sub2'] == "New Movie":
+                    self.home_movie_new_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_new_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_new_movie = Loader.image(self.home_movie_new_file_name)
+                    proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
+                elif json_message['Sub2'] == "In Progress":
+                    self.home_movie_inprogress_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_inprogress_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_prog_movie = Loader.image(self.home_movie_inprogress_file_name)
+                    proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
             # elif pickle_data[0] == "MOVIEDETAIL":
             #     logging.info("here for movie detail refresh: %s", pickle_data[1])
             #     proxy_image_detail_movie = Loader.image(pickle_data[1])
@@ -662,10 +666,19 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_new_file_name)
+
 
     def _image_loaded_home_prog_movie(self, proxyImage):
+        """
+        Load in progress movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_inprogress_file_name)
+
 
 if __name__ == '__main__':
     # for windows exe support
