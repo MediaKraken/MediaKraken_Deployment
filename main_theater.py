@@ -265,7 +265,9 @@ class MediaKrakenApp(App):
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
-                if 'FFprobe' in json_message['Data2'] and 'streams' in json_message['Data2']['FFprobe']:
+                if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
+                        and 'streams' in json_message['Data2']['FFprobe']\
+                        and json_message['Data2']['FFprobe']['streams'] is not None:
                     for stream_info in json_message['Data2']['FFprobe']['streams']:
                         logging.info("info: %s", stream_info)
                         stream_language = ''
