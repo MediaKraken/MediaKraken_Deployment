@@ -25,6 +25,7 @@ import os
 import sys
 import json
 import uuid
+import base64
 import logging # pylint: disable=W0611
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -231,18 +232,17 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        #if json_message['Type'] != "Image":
-        logging.info("Got Message: %s", server_msg)
+        if json_message['Type'] != "Image":
+            logging.info("Got Message: %s", server_msg)
+        else:
+            logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
-            logging.info('id')
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
                 'Platform': platform.node()}))
-            logging.info('id2')
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-            logging.info('id3')
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
@@ -360,7 +360,17 @@ class MediaKrakenApp(App):
             #     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
-                proxy_image_movie = Loader.image(pickle_data[1])
+
+                # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
+                # texture.blit_buffer(base64.b64decode(json_message['Data']))
+                # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
+                #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
+
+                self.home_movie_file_name = str(uuid.uuid4())
+                f = open(self.home_movie_file_name, "w")  # opens file with name of "test.txt"
+                f.write(base64.b64decode(json_message['Data']))
+                f.close()
+                proxy_image_movie = Loader.image(self.home_movie_file_name)
                 proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
 
             # elif pickle_data[0] == "NEWMOVIE":
@@ -595,29 +605,29 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Main', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'TV', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Backdrop'}))
             # refresh music stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
@@ -643,6 +653,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_file_name)
 
     def _image_loaded_home_new_movie(self, proxyImage):
         """

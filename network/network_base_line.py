@@ -117,24 +117,35 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
             elif json_message['Sub'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Cover')
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Sub3')
             elif json_message['Sub'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Cover')
+                image_json, metadata_id = self.db_connection.db_meta_book_image_random('Sub3')
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_movie_image_random('Poster')
+                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie':
+                    image_json, metadata_id = self.db_connection.db_meta_movie_image_random('Sub3')
+                elif json_message['Sub2'] == 'New Movie':
+                    pass
+                elif json_message['Sub2'] == 'In Progress':
+                    pass
             elif json_message['Sub'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random('Poster')
+                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random('Sub3')
             if metadata_id is not None:
                 if image_json is not None:
                     image_handle = open(image_json, "rb")
                     image_data = image_handle.read()
                     image_data = base64.b64encode(image_data)
                     image_handle.close()
+
+                    # im = Image.open(image_json)
+                    # im.convert("RGB", im)
+                    # image_data = base64.b64encode(im)
+
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
-                                "Data": image_data, "UUID": metadata_id})
+                                  "Sub2": json_message['Sub2'],
+                                  "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
             pass
