@@ -113,7 +113,7 @@ class NetworkEvents(basic.LineReceiver):
                 user_data = []
                 for user in self.db_connection.db_user_list_name():
                     if user['active'] == True:
-                        user_data.append(user['id'], user['username'])
+                        user_data.append((user['id'], user['username']))
                 msg = json.dumps({"User": user_data})
         elif json_message['Type'] == "Image":
             metadata_id = None
@@ -201,7 +201,7 @@ class NetworkEvents(basic.LineReceiver):
             user_data = []
             for user in self.db_connection.db_user_list_name():
                 if user['active'] == True:
-                    user_data.append(user['id'], user['username'])
+                    user_data.append((user['id'], user['username']))
             msg = json.dumps({"User": user_data})
 
         #  elif json_message['Type'] == "MediaIDUpdateUUID":
