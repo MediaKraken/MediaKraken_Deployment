@@ -22,9 +22,11 @@ from common import common_network_mediakraken
 from common import common_signal
 import platform
 import os
+import sys
 import json
 import uuid
 import logging # pylint: disable=W0611
+logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
 from crochet import wait_for, run_in_reactor, setup
@@ -34,6 +36,7 @@ from kivy.lang import Builder
 from twisted.internet import reactor, protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
+from twisted.python import log
 
 import kivy
 from kivy.app import App
@@ -83,7 +86,8 @@ from theater import MediaKrakenSettings
 twisted_connection = None
 mk_app = None
 
-class Echo(basic.LineReceiver):
+
+class MKEcho(basic.LineReceiver):
     MAX_LENGTH = 32000000  # pylint: disable=C0103
 
     def connectionMade(self):
@@ -92,26 +96,22 @@ class Echo(basic.LineReceiver):
         logging.info("connected successfully (echo)!")
 
     def lineReceived(self, line):
-        logging.info('linereceived: %s', line)
         global mk_app
+        logging.info('linereceived: %s', line)
+        logging.info('app: %s', mk_app)
         MediaKrakenApp.process_message(mk_app, line)
-        pass
-        # if len(line) > 10:
-        #     self.sendLine('exit'.encode("utf8"))
-        # else:
-        #     # send a response in 2 seconds
-        #     reactor.callLater(2, self.sendLine, ('>' + line).encode("utf8"))
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
         reactor.stop()
 
     def sendline_data(self, line):
+        logging.info('sending: %s', line)
         self.sendLine(line.encode("utf8"))
 
 
 class MKFactory(protocol.ClientFactory):
-    protocol = Echo
+    protocol = MKEcho
 
 
 class MediaKraken(FloatLayout):
@@ -146,7 +146,6 @@ class MediaKrakenNotificationScreen(BoxLayout):
 
 
 class MediaKrakenApp(App):
-    global mk_app
     global twisted_connection
 
     def exit_program(self):
@@ -180,6 +179,7 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
 
     def build(self):
+        global mk_app
         mk_app = self
         root = MediaKraken()
         self.config = self.load_config()
@@ -229,10 +229,13 @@ class MediaKrakenApp(App):
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
-            self.connection.write(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
-                                              'Platform': platform.node()}).encode("utf8"))
+            logging.info('id')
+            self.send_twisted_message(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
+                'Platform': platform.node()}))
+            logging.info('id2')
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
+            logging.info('id3')
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
@@ -512,27 +515,27 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
-        self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
+        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
         self.media_genre = args[0]
-        self.connection.write(("VIDEOGENRELIST " + args[0]).encode("utf8"))
+        self.send_twisted_message(("VIDEOGENRELIST " + args[0]))
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.connection.write(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
-                                          'Password': self.login_password}).encode("utf8"))
+        self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
+                                          'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
         logging.info("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        self.connection.write(msg.encode("utf8"))
+        self.send_twisted_message(msg)
 
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
@@ -584,33 +587,33 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}))
             # refresh music stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
-            #self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
-            #self.connection.write({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8")
+            #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
+            #self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
@@ -650,6 +653,7 @@ if __name__ == '__main__':
     freeze_support()
     # begin logging
     common_logging.com_logging_start('MediaKraken_Theater')
+    log.startLogging(sys.stdout) # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
