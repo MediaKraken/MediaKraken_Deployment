@@ -26,6 +26,7 @@ services:
       - /var/opt/mediakraken/devices:/mediakraken/devices
       - /home/mediakraken:/mediakraken/mnt
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
