@@ -233,10 +233,13 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        if json_message['Type'] != "Image":
-            logging.info("Got Message: %s", server_msg)
-        else:
-            logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
+        try:
+            if json_message['Type'] != "Image":
+                logging.info("Got Message: %s", server_msg)
+            else:
+                logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
+        except:
+            logging.info("full record: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
