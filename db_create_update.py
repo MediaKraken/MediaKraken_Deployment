@@ -503,7 +503,6 @@ base_cron = [
     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_tvmaze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_update_create_collections.py'),
     # normal subprograms
-#    ('Chromecast', 'Scan for chromecast device(s)', './subprogram_chromecast_discover.py'),
     ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
