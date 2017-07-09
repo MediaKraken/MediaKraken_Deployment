@@ -72,9 +72,5 @@ db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,
 db_connection.db_commit()
 
 
-# vaccum tables that had records added
-db_connection.db_pgsql_vacuum_table('mm_metadata_tvshow')
-
-
 # close DB
 db_connection.db_close()
