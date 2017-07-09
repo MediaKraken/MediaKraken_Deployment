@@ -152,7 +152,7 @@ class NetworkEvents(basic.LineReceiver):
                                   "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
-            pass
+            self.db_connection.db_user_login(json_message['User'], json_message['Password'])
 
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == 'Detail':

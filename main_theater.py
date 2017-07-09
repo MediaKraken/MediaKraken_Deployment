@@ -340,12 +340,7 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "User":
             pass
 
-
-
-
-
-
-        elif json_message['Type'] == "GENRELIST":
+        elif json_message['Type'] == "Genre List":
             logging.info("gen")
             for genre_list in json_message:
                 logging.info("genlist: %s", genre_list)
