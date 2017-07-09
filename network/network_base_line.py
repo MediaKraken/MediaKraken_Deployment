@@ -90,7 +90,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
 
         elif json_message['Type'] == "Genre List":
-            msg = json.dumps({"Genre List": self.db_connection.db_meta_genre_list()})
+            msg = json.dumps({'Type': 'Genre List', 'Data': self.db_connection.db_meta_genre_list()})
 
         elif json_message['Type'] == "Flag Mismatch UUID":
             pass
@@ -114,7 +114,7 @@ class NetworkEvents(basic.LineReceiver):
                 for user in self.db_connection.db_user_list_name():
                     if user['active'] == True:
                         user_data.append((user['id'], user['username']))
-                msg = json.dumps({"User": user_data})
+                msg = json.dumps({'Type': 'User', 'Data': user_data})
         elif json_message['Type'] == "Image":
             metadata_id = None
             if json_message['Sub'] == 'Album':
