@@ -213,3 +213,30 @@ function Chromecast_Delete() {
         }
     });
 }
+
+function ConfirmCronDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#delete_cron').modal();
+}
+
+function Cron_Delete() {
+    $.ajax({
+        url: '../cron_delete',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#delete_cron').modal('hide');
+                window.location = '../cron';
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}

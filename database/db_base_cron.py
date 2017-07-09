@@ -79,3 +79,11 @@ def db_cron_time_update(self, cron_type):
     """
     self.db_cursor.execute('update mm_cron set mm_cron_last_run = %s where mm_cron_name = %s',
         (datetime.datetime.now(), cron_type))
+
+
+def db_cron_delete(self, cron_uuid):
+    """
+    Delete cron job
+    """
+    self.db_cursor.execute('delete from mm_cron where mm_cron_guid = %s',
+        (cron_uuid,))
