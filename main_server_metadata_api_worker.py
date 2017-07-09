@@ -18,9 +18,15 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import subprocess
 import time
+import json
 import sys
 import datetime
+from twisted.internet import reactor, protocol, stdio, defer, task
+import pika
+from pika import exceptions
+from pika.adapters import twisted_connection
 from build_image_directory import build_image_dirs
 from guessit import guessit
 from metadata import metadata_anime
@@ -63,6 +69,41 @@ locale.setlocale(locale.LC_ALL, '')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
+
+
+@defer.inlineCallbacks
+def run(connection):
+    channel = yield connection.channel()
+    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
+    queue = yield channel.queue_declare(queue='mkque_metadata', durable=True)
+    yield channel.queue_bind(exchange='mkque_ex', queue='mkque_metadata')
+    yield channel.basic_qos(prefetch_count=1)
+    queue_object, consumer_tag = yield channel.basic_consume(queue='mkque_metadata', no_ack=False)
+    l = task.LoopingCall(read, queue_object)
+    l.start(0.01)
+
+
+@defer.inlineCallbacks
+def read(queue_object):
+    logging.info('here I am in metadata consume - read')
+    ch, method, properties, body = yield queue_object.get()
+    if body:
+        logging.info("body %s", body)
+        json_message = json.loads(body)
+        subprocess_command = []
+        if json_message['Type'] == 'Update':
+            if json_message['Sub'] == 'themoviedb':
+                subprocess_command.append('python', './mediakraken/subprogram_metadata_tmdb_updates.py')
+            elif json_message['Sub'] == 'thetvdb':
+                subprocess_command.append('python', './mediakraken/subprogram_metadata_thetvdb_updates.py')
+            elif json_message['Sub'] == 'tvmaze':
+                subprocess_command.append('python', './mediakraken/subprogram_metadata_tvmaze_updates.py')
+            elif json_message['Sub'] == 'collections':
+                subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
+        # if command list populated, run job
+        if len(subprocess_command) != 0:
+            subprocess.Popen(subprocess_command)
+    yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]\
