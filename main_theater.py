@@ -106,7 +106,7 @@ class MKEcho(basic.LineReceiver):
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
-        reactor.stop()
+        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
         logging.info('sending: %s', line)
