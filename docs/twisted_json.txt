@@ -7,14 +7,14 @@ Type - type of request......list, detail, etc
 	Ident - send client info to server (build user)
 		* UUID - unique id of the client device
 		* Platform - platform user is running on
-	Image - grab random image or (Data for specific media)
-		Album
+	Image - grab random image
+	  Sub   Album
 		Book
 		Game
 		Movie
-		Random
 		TV Show
-	  Subtype - poster, backdrop, etc
+	  Sub2 - new, in progress, etc
+	  Sub3 - poster, backdrop, etc
 	Login - duh
 		* User - User sending the request - by ID
 		* Password - user password

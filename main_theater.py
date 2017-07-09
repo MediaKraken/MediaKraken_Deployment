@@ -22,42 +22,22 @@ from common import common_network_mediakraken
 from common import common_signal
 import platform
 import os
+import sys
 import json
 import uuid
+import base64
 import logging # pylint: disable=W0611
+logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
-# install_twisted_rector must be called before importing the reactor
-from kivy.support import install_twisted_reactor
-install_twisted_reactor()
+from crochet import wait_for, run_in_reactor, setup
+setup()
+
 from kivy.lang import Builder
-
-# A simple Client that send messages to the echo server
 from twisted.internet import reactor, protocol
+from twisted.protocols import basic
 from twisted.internet import ssl
-
-
-class EchoClient(protocol.Protocol):
-    def connectionMade(self):
-        self.factory.app.on_connection(self.transport)
-
-    def dataReceived(self, data):
-        self.factory.app.process_message(data)
-        logging.info(data)
-
-
-class EchoFactory(protocol.ClientFactory):
-    protocol = EchoClient
-
-    def __init__(self, app):
-        self.app = app
-
-    def clientConnectionLost(self, conn, reason):
-        logging.info('connection lost')
-
-    def clientConnectionFailed(self, conn, reason):
-        logging.info('connection failed')
-
+from twisted.python import log
 
 import kivy
 from kivy.app import App
@@ -104,6 +84,38 @@ from kivy.graphics.opengl import *
 from kivy.graphics import *
 from theater import MediaKrakenSettings
 
+twisted_connection = None
+mk_app = None
+
+
+class MKEcho(basic.LineReceiver):
+    MAX_LENGTH = 32000000  # pylint: disable=C0103
+
+    def connectionMade(self):
+        global twisted_connection
+        twisted_connection = self
+        logging.info("connected successfully (echo)!")
+
+    def lineReceived(self, line):
+        global mk_app
+        logging.info('linereceived len: %s', len(line))
+        #logging.info('linereceived: %s', line)
+        #logging.info('app: %s', mk_app)
+        # TODO get the following line to run from the application thread
+        MediaKrakenApp.process_message(mk_app, line)
+
+    def connectionLost(self, reason):
+        logging.error("connection lost!")
+        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+
+    def sendline_data(self, line):
+        logging.info('sending: %s', line)
+        self.sendLine(line.encode("utf8"))
+
+
+class MKFactory(protocol.ClientFactory):
+    protocol = MKEcho
+
 
 class MediaKraken(FloatLayout):
     """
@@ -137,7 +149,7 @@ class MediaKrakenNotificationScreen(BoxLayout):
 
 
 class MediaKrakenApp(App):
-    connection = None
+    global twisted_connection
 
     def exit_program(self):
         pass
@@ -170,6 +182,8 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
 
     def build(self):
+        global mk_app
+        mk_app = self
         root = MediaKraken()
         self.config = self.load_config()
         self.settings_cls = SettingsWithSidebar
@@ -180,6 +194,7 @@ class MediaKrakenApp(App):
         self.connect_to_server()
         return root
 
+    @wait_for(timeout=5.0)
     def connect_to_server(self):
         logging.info('conn server')
         if self.config is not None:
@@ -187,7 +202,7 @@ class MediaKrakenApp(App):
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
-                print('server list: %s', server_list)
+                logging.info('server list: %s', server_list)
                 host_ip = server_list[0]
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
@@ -198,30 +213,38 @@ class MediaKrakenApp(App):
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
                 int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                EchoFactory(self), ssl.ClientContextFactory())
+                MKFactory(), ssl.ClientContextFactory())
 
-    def on_connection(self, connection):
-        logging.info("connected successfully!")
-        self.connection = connection
+    @wait_for(timeout=5.0)
+    def send_twisted_message(self, message):
+        """
+        Send message via twisted reactor
+        """
+        MKFactory.protocol.sendline_data(twisted_connection, message)
 
-    def send_message(self, *args):
-        msg = self.textbox.text
-        if msg and self.connection:
-            self.connection.write(str(self.textbox.text))
-            self.textbox.text = ""
+    def send_twisted_message_thread(self, message):
+        """
+        Send message via twisted reactor from the crochet thread
+        """
+        MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        #if json_message['Type'] != "Image":
-        logging.info("Got Message: %s", server_msg)
+        try:
+            if json_message['Type'] != "Image":
+                logging.info("Got Message: %s", server_msg)
+            else:
+                logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
+        except:
+            logging.info("full record: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
-            self.connection.write(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
-                                              'Platform': platform.node()}).encode("utf8"))
+            self.send_twisted_message_thread(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
+                'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         elif json_message['Type'] == "Media":
@@ -245,30 +268,33 @@ class MediaKrakenApp(App):
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
-                for stream_info in json_message['Data2']['FFprobe']['streams']:
-                    logging.info("info: %s", stream_info)
-                    stream_language = ''
-                    stream_title = ''
-                    stream_codec = ''
-                    try:
-                        stream_language = stream_info['tags']['language'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_title = stream_info['tags']['title'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_codec \
-                            = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
-                    except:
-                        pass
-                    if stream_info['codec_type'] == 'audio':
-                        logging.info('audio')
-                        audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
-                    elif stream_info['codec_type'] == 'subtitle':
-                        subtitle_streams.append(stream_language)
-                        logging.info('sub')
+                if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
+                        and 'streams' in json_message['Data2']['FFprobe']\
+                        and json_message['Data2']['FFprobe']['streams'] is not None:
+                    for stream_info in json_message['Data2']['FFprobe']['streams']:
+                        logging.info("info: %s", stream_info)
+                        stream_language = ''
+                        stream_title = ''
+                        stream_codec = ''
+                        try:
+                            stream_language = stream_info['tags']['language'] + ' - '
+                        except:
+                            pass
+                        try:
+                            stream_title = stream_info['tags']['title'] + ' - '
+                        except:
+                            pass
+                        try:
+                            stream_codec \
+                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                        except:
+                            pass
+                        if stream_info['codec_type'] == 'audio':
+                            logging.info('audio')
+                            audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
+                        elif stream_info['codec_type'] == 'subtitle':
+                            subtitle_streams.append(stream_language)
+                            logging.info('sub')
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
@@ -317,12 +343,7 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "User":
             pass
 
-
-
-
-
-
-        elif json_message['Type'] == "GENRELIST":
+        elif json_message['Type'] == "Genre List":
             logging.info("gen")
             for genre_list in json_message:
                 logging.info("genlist: %s", genre_list)
@@ -334,27 +355,46 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
 
         elif json_message['Type'] == "Image":
-            if pickle_data[0] == "MAIN":
-                logging.info("here for main refresh: %s %s", pickle_data[1], pickle_data[2])
-                self.demo_media_id = pickle_data[2]
-                proxy_image_demo = Loader.image(pickle_data[1])
-                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
-            elif pickle_data[0] == "MOVIE":
-                logging.info("here for movie refresh: %s", pickle_data[1])
-                proxy_image_movie = Loader.image(pickle_data[1])
-                proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
-            elif pickle_data[0] == "NEWMOVIE":
-                logging.info("here for newmovie refresh: %s", pickle_data[1])
-                proxy_image_new_movie = Loader.image(pickle_data[1])
-                proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
-            elif pickle_data[0] == "PROGMOVIE":
-                logging.info("here for progress movie refresh: %s", pickle_data[1])
-                proxy_image_prog_movie = Loader.image(pickle_data[1])
-                proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
-            elif pickle_data[0] == "MOVIEDETAIL":
-                logging.info("here for movie detail refresh: %s", pickle_data[1])
-                proxy_image_detail_movie = Loader.image(pickle_data[1])
-                proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
+            if json_message['Sub'] == "Movie":
+                logging.info("here for movie refresh")
+                if json_message['Sub2'] == "Demo":
+                    self.home_demo_file_name = str(uuid.uuid4())
+                    f = open(self.home_demo_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    self.demo_media_id = json_message['UUID']
+                    proxy_image_demo = Loader.image(self.home_demo_file_name)
+                    proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                    pass
+                elif json_message['Sub2'] == "Movie":
+                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
+                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
+                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
+                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
+                    self.home_movie_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_movie = Loader.image(self.home_movie_file_name)
+                    proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
+                elif json_message['Sub2'] == "New Movie":
+                    self.home_movie_new_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_new_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_new_movie = Loader.image(self.home_movie_new_file_name)
+                    proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
+                elif json_message['Sub2'] == "In Progress":
+                    self.home_movie_inprogress_file_name = str(uuid.uuid4())
+                    f = open(self.home_movie_inprogress_file_name, "w")
+                    f.write(base64.b64decode(json_message['Data']))
+                    f.close()
+                    proxy_image_prog_movie = Loader.image(self.home_movie_inprogress_file_name)
+                    proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
+            # elif pickle_data[0] == "MOVIEDETAIL":
+            #     logging.info("here for movie detail refresh: %s", pickle_data[1])
+            #     proxy_image_detail_movie = Loader.image(pickle_data[1])
+            #     proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
         else:
             logging.error("unknown message type")
 
@@ -503,30 +543,29 @@ class MediaKrakenApp(App):
     def theater_event_button_video_select(self, *args):
         logging.info("vid select: %s", args)
         self.media_guid = args[0]
-        self.connection.write(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}).encode("utf8"))
+        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
         self.media_genre = args[0]
-        self.connection.write(("VIDEOGENRELIST " + args[0]).encode("utf8"))
+        self.send_twisted_message(("VIDEOGENRELIST " + args[0]))
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.connection.write(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
-                                          'Password': self.login_password}).encode("utf8"))
+        self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
+                                          'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
         logging.info("play: %s", args)
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        self.connection.write(msg.encode("utf8"))
+        self.send_twisted_message(msg)
 
     def main_mediakraken_event_button_home(self, *args):
-        #global network_protocol
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
@@ -558,7 +597,7 @@ class MediaKrakenApp(App):
         else:
             logging.error("unknown button event")
         if msg is not None:
-            self.connection.write(msg.encode("utf8"))
+            self.send_twisted_message(msg)
 
     def theater_event_button_option_select(self, option_text, *args):
         logging.info("button server options %s", option_text)
@@ -576,33 +615,33 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Main', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'Movie', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'New Movie', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Data': 'In Progress', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'TV', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'TV', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Data': 'Live TV', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Data': 'Book', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Album', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Cover'}))
             # request main screen background refresh
-            self.connection.write(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Data': 'Video', 'Data2': 'Backdrop'}).encode("utf8"))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
-            #self.connection.write("IMAGE IMAGE IMAGE None Backdrop".encode("utf8"))
-            #self.connection.write({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'}).encode("utf8")
+            #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
+            #self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
@@ -617,6 +656,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_demo_file_name)
 
     def _image_loaded_home_movie(self, proxyImage):
         """
@@ -624,6 +665,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_file_name)
 
     def _image_loaded_home_new_movie(self, proxyImage):
         """
@@ -631,17 +674,27 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_new_file_name)
+
 
     def _image_loaded_home_prog_movie(self, proxyImage):
+        """
+        Load in progress movie image
+        """
         if proxyImage.image.texture:
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove(self.home_movie_inprogress_file_name)
+
 
 if __name__ == '__main__':
     # for windows exe support
     from multiprocessing import freeze_support
     freeze_support()
     # begin logging
-    common_logging.com_logging_start('./log/MediaKraken_Theater')
+    common_logging.com_logging_start('MediaKraken_Theater')
+    log.startLogging(sys.stdout) # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

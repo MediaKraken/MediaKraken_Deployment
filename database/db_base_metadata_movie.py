@@ -21,6 +21,23 @@ import logging # pylint: disable=W0611
 import json
 
 
+def db_meta_movie_image_random(self, return_image_type='Poster'): # poster, backdrop, etc
+    """
+    Find random movie image
+    """
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_movie'\
+        ' where mm_media_metadata_guid = mm_metadata_guid'\
+        ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+    try:
+        # then if no results.....a None will except which will then pass None, None
+        image_json, metadata_id = self.db_cursor.fetchone()
+        return image_json, metadata_id
+    except:
+        return None, None
+
+
 def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     """
     Update the cast/crew for selected media

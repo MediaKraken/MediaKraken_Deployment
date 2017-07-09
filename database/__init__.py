@@ -148,17 +148,20 @@ class MKServerDatabase(object):
         db_meta_book_guid_by_isbn,\
         db_meta_book_guid_by_name,\
         db_meta_book_insert,\
-        db_meta_book_by_uuid
+        db_meta_book_by_uuid, \
+        db_meta_book_image_random
     from database.db_base_metadata_games import db_meta_game_system_by_guid,\
         db_meta_game_system_list_count,\
         db_meta_game_system_list,\
         db_meta_game_list_count,\
         db_meta_game_list,\
         db_meta_game_by_guid,\
-        db_meta_games_system_insert
+        db_meta_games_system_insert, \
+        db_meta_game_image_random
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew,\
         db_meta_movie_status_update,\
-        db_meta_movie_json_update
+        db_meta_movie_json_update,\
+        db_meta_movie_image_random
     from database.db_base_metadata_music import db_music_lookup,\
         db_meta_musician_by_guid,\
         db_meta_musician_add,\
@@ -169,7 +172,8 @@ class MKServerDatabase(object):
         db_meta_songs_by_album_guid,\
         db_meta_song_list,\
         db_meta_album_list,\
-        db_meta_muscian_list
+        db_meta_muscian_list, \
+        db_meta_album_image_random
     from database.db_base_metadata_music_video import db_meta_music_video_lookup,\
         db_meta_music_video_add,\
         db_meta_music_video_detail_uuid,\
@@ -214,7 +218,8 @@ class MKServerDatabase(object):
         db_read_tvmeta_eps_season,\
         db_read_tvmeta_season_eps_list, \
         db_read_tvmeta_epsisode_by_id,\
-        db_read_tvmeta_episode
+        db_read_tvmeta_episode,\
+        db_meta_tvshow_image_random
     from database.db_base_metadata_tvmaze import db_meta_tvmaze_changed_uuid,\
         db_meta_tvmaze_insert,\
         db_meta_tvmaze_update
@@ -266,7 +271,7 @@ class MKServerDatabase(object):
         db_user_list_name,\
         db_user_detail,\
         db_user_delete,\
-        db_user_login_kodi,\
+        db_user_login,\
         db_user_group_insert,\
         db_user_profile_insert
     from database.db_base_version import db_version_check,\

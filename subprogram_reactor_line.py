@@ -18,15 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from twisted.internet import reactor, protocol, stdio, defer, task
+from twisted.protocols import basic
 from twisted.internet import ssl
-from twisted.internet import reactor
-from twisted.internet.protocol import Factory
 import pika
 from pika import exceptions
 from pika.adapters import twisted_connection
-from twisted.internet import defer, reactor, protocol,task
-from network import network_base as network_base
-from network import network_base_amqp as network_amqp
+from network import network_base_line as network_base
 from common import common_config_ini
 from common import common_docker
 from common import common_logging
@@ -35,6 +33,7 @@ import time
 import subprocess
 import json
 import uuid
+import base64
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
@@ -112,10 +111,10 @@ def read(queue_object):
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-class MediaKrakenServerApp(Factory):
+class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor')
+        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
@@ -132,7 +131,8 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'], shell=False)
+    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                                 'mkrabbitmq', '-p', ' 5672'], shell=False)
     wait_pid.wait()
 
     # pika rabbitmq connection

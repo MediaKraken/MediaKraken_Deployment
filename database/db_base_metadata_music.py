@@ -155,3 +155,20 @@ def db_meta_muscian_list(self, offset=None, records=None):
             ' mm_metadata_musician_json from mm_metadata_musician'
             ' order by mm_metadata_musician_name offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
+
+
+def db_meta_album_image_random(self):
+    """
+    Find random album cover image
+    """
+    # self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+    #     + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_movie'\
+    #     ' where mm_media_metadata_guid = mm_metadata_guid'\
+    #     ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+    #     + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+    try:
+        # then if no results.....a None will except which will then pass None, None
+        image_json, metadata_id = self.db_cursor.fetchone()
+        return image_json, metadata_id
+    except:
+        return None, None
