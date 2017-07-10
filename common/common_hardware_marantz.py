@@ -220,7 +220,7 @@ class CommonHardwareMarantz(object):
         # SINET < CR >
         # SIBT < CR >
         # SIMXPORT < CR >
-        # SIUSB / IPOD < CR >
+        # SIUSB/IPOD < CR >
         # SIUSB < CR >
         # SIIPD < CR >
         # SIIRP < CR >
@@ -433,16 +433,138 @@ class CommonHardwareMarantz(object):
 # PSNEURAL ON<CR>
 # PSNEURAL OFF<CR>
 # PSNEURAL ?<CR>
-
-
-
+    # Cinema EQ
+# PSCINEMA
+# EQ.ON < CR >
+# PSCINEMA
+# EQ.OFF < CR >
+# PSCINEMA
+# EQ. ? < CR >
+    # MultEQ
+# PSMULTEQ:AUDYSSEY < CR >
+# PSMULTEQ:BYP.LR < CR >
+# PSMULTEQ:FLAT < CR >
+# PSMULTEQ:OFF < CR >
+# PSMULTEQ: ? < CR >
+    # Dynamic EQ
+# PSDYNEQ
+# ON < CR >
+# PSDYNEQ
+# OFF < CR >
+# PSDYNEQ ? < CR >
+# PSREFLEV
+# 0 < CR >
+# PSREFLEV
+# 5 < CR >
+# PSREFLEV
+# 10 < CR >
+# PSREFLEV
+# 15 < CR >
+# PSREFLEV ? < CR >
+    # Dynamic Vol.
+# PSDYNVOL
+# HEV < CR >
+# PSDYNVOL
+# MED < CR >
+# PSDYNVOL
+# LIT < CR >
+# PSDYNVOL
+# OFF < CR >
+# PSDYNVOL ? < CR >
+    # Audyssey LFC
+# PSLFC
+# ON < CR >
+# PSLFC
+# OFF < CR >
+# PSLFC ? < CR >
+# PSCNTAMT
+# UP < CR >
+# PSCNTAMT
+# DOWN < CR >
+# PSCNTAMT
+# 07 < CR >
+# PSCNTAMT ? < CR >
+    # Graphic EQ
+# PSGEQ
+# ON < CR >
+# PSGEQ
+# OFF < CR >
+# PSGEQ ? < CR >
+    # Headphone EQ
+# PSHEQ
+# ON < CR >
+# PSHEQ
+# OFF < CR >
+# PSHEQ ? < CR >
+    # DRC
+# PSDRC
+# AUTO < CR >
+# PSDRC
+# LOW < CR >
+# PSDRC
+# MID < CR >
+# PSDRC
+# HI < CR >
+# PSDRC
+# OFF < CR >
+# PSDRC ? < CR >
+    # M-DAX
+# PSMDAX
+# OFF < CR >
+# PSMDAX
+# LOW < CR >
+# PSMDAX
+# MID < CR >
+# PSMDAX
+# HI < CR >
+# PSMDAX ? < CR >
+    # Audio Delay
+# PSDELAY
+# UP < CR >
+# PSDELAY
+# DOWN < CR >
+# PSDELAY
+# 200 < CR >
+# PSDELAY ? < CR >
+    # Auro-Matic 3D Preset
+# PSAUROPR
+# SMA < CR >
+# PSAUROPR
+# MED < CR >
+# PSAUROPR
+# LAR < CR >
+# PSAUROPR
+# SPE < CR >
+# PSAUROPR ? < CR >
+    """
+    Video Settings
+    """
+    # Auro-Matic 3D Strength
+# PSAUROST
+# UP < CR >
+# PSAUROST
+# DOWN < CR >
+# PSAUROST
+# 10 < CR >
+# PSAUROST ? < CR >
+    # picture mode
+# PVOFF < CR >
+# PVSTD < CR >
+# PVMOV < CR >
+# PVVVD < CR >
+# PVSTM < CR >
+# PVCTM < CR >
+# PVDAY < CR >
+# PVNGT < CR >
+    def com_hardware_marantz_picture_mode_status(self):
+        return self.com_hardware_marantz_command(('PV?'), 1)
 
 # testing against AV7703
 
 # connect test
 teststuff = CommonHardwareMarantz('10.0.0.209')
 
-print(teststuff.com_hardware_marantz_vertical_stretch_status())
+print(teststuff.com_hardware_marantz_picture_mode_status())
 
 # connect close
 teststuff.com_hardware_marantz_close()
