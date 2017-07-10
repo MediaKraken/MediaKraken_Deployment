@@ -72,18 +72,13 @@ class CommonHardwareMarantz(object):
 # connect test
 teststuff = CommonHardwareMarantz('10.0.0.209')
 
-# # Check power status
-# print(teststuff.com_hardware_marantz_check_power())
-#
-# # get volume and convert to the db
-# print(teststuff.com_hardware_marantz_volume_get())
-#
 # # get front speakers?
 # print(teststuff.com_hardware_marantz_command('PSFRONT?\r', 2))
 #
 # # get current input status
 # print(teststuff.com_hardware_marantz_command('SI?\r', 2))
 
+# get surround mode
 print(teststuff.com_hardware_marantz_command('MS?\r', 6))  # others say 9
 
 # connect close
