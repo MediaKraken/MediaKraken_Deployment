@@ -230,16 +230,35 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('SI?'), 1)
 
     # Smart Select
-# MSSMART1<CR>
-# MSSMART2<CR>
-# MSSMART3<CR>
-# MSSMART4<CR>
-# MSSMART5<CR>
-# MSSMART1 MEMORY<CR>
-# MSSMART2 MEMORY<CR>
-# MSSMART3 MEMORY<CR>
-# MSSMART4 MEMORY<CR>
-# MSSMART5 MEMORY<CR>
+    def com_hardware_marantz_smart_select_smart1(self):
+        return self.com_hardware_marantz_command(('MSSMART1'), 1)
+
+    def com_hardware_marantz_smart_select_smart2(self):
+        return self.com_hardware_marantz_command(('MSSMART2'), 1)
+
+    def com_hardware_marantz_smart_select_smart3(self):
+        return self.com_hardware_marantz_command(('MSSMART3'), 1)
+
+    def com_hardware_marantz_smart_select_smart4(self):
+        return self.com_hardware_marantz_command(('MSSMART4'), 1)
+
+    def com_hardware_marantz_smart_select_smart5(self):
+        return self.com_hardware_marantz_command(('MSSMART5'), 1)
+
+    def com_hardware_marantz_smart_select_smart1_memory(self):
+        return self.com_hardware_marantz_command(('MSSMART1 MEMORY'), 1)
+
+    def com_hardware_marantz_smart_select_smart2_memory(self):
+        return self.com_hardware_marantz_command(('MSSMART2 MEMORY'), 1)
+
+    def com_hardware_marantz_smart_select_smart3_memory(self):
+        return self.com_hardware_marantz_command(('MSSMART3 MEMORY'), 1)
+
+    def com_hardware_marantz_smart_select_smart4_memory(self):
+        return self.com_hardware_marantz_command(('MSSMART4 MEMORY'), 1)
+
+    def com_hardware_marantz_smart_select_smart5_memory(self):
+        return self.com_hardware_marantz_command(('MSSMART5 MEMORY'), 1)
 
     def com_hardware_marantz_smart_select_status(self):
         return self.com_hardware_marantz_command(('MSSMART ?'), 1)
@@ -335,33 +354,70 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('VSASP ?'), 1)
 
     # HDMI Out (auto detect)
-# VSMONIAUTO<CR>
-# VSMONI1<CR>
-# VSMONI2<CR>
-    def com_hardware_marantz_hdmi_auto_status(self):
+    def com_hardware_marantz_hdmi_out_auto(self):
+        return self.com_hardware_marantz_command(('VSMONIAUTO'), 1)
+
+    def com_hardware_marantz_hdmi_out_monitor1(self):
+        return self.com_hardware_marantz_command(('VSMONI1'), 1)
+
+    def com_hardware_marantz_hdmi_out_monitor2(self):
+        return self.com_hardware_marantz_command(('VSMONI2'), 1)
+
+    def com_hardware_marantz_hdmi_out_status(self):
         return self.com_hardware_marantz_command(('VSMONI ?'), 1)
 
-        # HDMI Output
-# VSSC48P<CR>
-# VSSC10I<CR>
-# VSSC72P<CR>
-# VSSC10P<CR>
-# VSSC10P24<CR>
-# VSSC4K<CR>
-# VSSC4KF<CR>
-# VSSCAUTO<CR>
+    # HDMI Output
+    def com_hardware_marantz_hdmi_output_480p(self):
+        return self.com_hardware_marantz_command(('VSSC48P'), 1)
+
+    def com_hardware_marantz_hdmi_output_720p(self):
+        return self.com_hardware_marantz_command(('VSSC72P'), 1)
+
+    def com_hardware_marantz_hdmi_output_1080i(self):
+        return self.com_hardware_marantz_command(('VSSC10I'), 1)
+
+    def com_hardware_marantz_hdmi_output_1080p(self):
+        return self.com_hardware_marantz_command(('VSSC10P'), 1)
+
+    def com_hardware_marantz_hdmi_output_1080p24(self):
+        return self.com_hardware_marantz_command(('VSSC10P24'), 1)
+
+    def com_hardware_marantz_hdmi_output_4k(self):
+        return self.com_hardware_marantz_command(('VSSC4K'), 1)
+
+    def com_hardware_marantz_hdmi_output_4kf(self):
+        return self.com_hardware_marantz_command(('VSSC4KF'), 1)
+
+    def com_hardware_marantz_hdmi_output_auto(self):
+        return self.com_hardware_marantz_command(('VSSCAUTO'), 1)
+
     def com_hardware_marantz_hdmi_output_status(self):
         return self.com_hardware_marantz_command(('VSSC ?'), 1)
 
-        # HDMI Resolution
-# VSSCH48P<CR>
-# VSSCH10I<CR>
-# VSSCH72P<CR>
-# VSSCH10P<CR>
-# VSSCH10P24<CR>
-# VSSCH4K<CR>
-# VSSCH4KF<CR>
-# VSSCHAUTO<CR>
+    # HDMI Resolution
+    def com_hardware_marantz_hdmi_resolution_480p(self):
+        return self.com_hardware_marantz_command(('VSSCH48P'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_720p(self):
+        return self.com_hardware_marantz_command(('VSSCH72P'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_1080i(self):
+        return self.com_hardware_marantz_command(('VSSCH10I'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_1080p(self):
+        return self.com_hardware_marantz_command(('VSSCH10P'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_1080p24(self):
+        return self.com_hardware_marantz_command(('VSSCH10P24'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_4k(self):
+        return self.com_hardware_marantz_command(('VSSCH4K'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_4kf(self):
+        return self.com_hardware_marantz_command(('VSSCH4KF'), 1)
+
+    def com_hardware_marantz_hdmi_resolution_auto(self):
+        return self.com_hardware_marantz_command(('VSSCHAUTO'), 1)
 
     def com_hardware_marantz_hdmi_resolution_status(self):
         return self.com_hardware_marantz_command(('VSSCH ?'), 1)
@@ -376,17 +432,25 @@ class CommonHardwareMarantz(object):
     def com_hardware_marantz_vertical_stretch_status(self):
         return self.com_hardware_marantz_command(('VSVST ?'), 1)
 
-        # HDMI Audio Decode
-# VSAUDIO AMP<CR>
-# VSAUDIO TV<CR>
+    # HDMI Audio Decode
+    def com_hardware_marantz_hdmi_audio_decode_amp(self):
+        return self.com_hardware_marantz_command(('VSAUDIO AMP'), 1)
+
+    def com_hardware_marantz_hdmi_audio_decode_tv(self):
+        return self.com_hardware_marantz_command(('VSAUDIO TV'), 1)
 
     def com_hardware_marantz_hdmi_audio_decode_status(self):
         return self.com_hardware_marantz_command(('VSAUDIO ?'), 1)
 
-        # Video Process
-# VSVPMAUTO<CR>
-# VSVPMGAME<CR>
-# VSVPMMOVI<CR>
+    # Video Process
+    def com_hardware_marantz_video_process_auto(self):
+        return self.com_hardware_marantz_command(('VSVPMAUTO'), 1)
+
+    def com_hardware_marantz_video_process_game(self):
+        return self.com_hardware_marantz_command(('VSVPMGAME'), 1)
+
+    def com_hardware_marantz_video_process_movie(self):
+        return self.com_hardware_marantz_command(('VSVPMMOVI'), 1)
 
     def com_hardware_marantz_video_process_status(self):
         return self.com_hardware_marantz_command(('VSVPM ?'), 1)
@@ -416,13 +480,25 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('PSFH ?'), 1)
 
     # Subwoofer
-# PSSWR ON<CR>
-# PSSWR OFF<CR>
-# PSSWR ?<CR>
+    def com_hardware_marantz_spk_effect_sub_on(self):
+        return self.com_hardware_marantz_command(('PSSWR ON'), 1)
+
+    def com_hardware_marantz_spk_effect_sub_off(self):
+        return self.com_hardware_marantz_command(('PSSWR OFF'), 1)
+
+    def com_hardware_marantz_spk_effect_sub_status(self):
+        return self.com_hardware_marantz_command(('PSSWR ?'), 1)
+
     # Tone
-# PSTONE CTRL ON<CR>
-# PSTONE CTRL OFF<CR>
-# PSTONE CTRL ?<CR>
+    def com_hardware_marantz_spk_effect_tone_on(self):
+        return self.com_hardware_marantz_command(('PSTONE CTRL ON'), 1)
+
+    def com_hardware_marantz_spk_effect_tone_off(self):
+        return self.com_hardware_marantz_command(('PSTONE CTRL OFF'), 1)
+
+    def com_hardware_marantz_spk_effect_tone_status(self):
+        return self.com_hardware_marantz_command(('PSTONE CTRL ?'), 1)
+
     # Bass
 # PSBAS UP<CR>
 # PSBAS DOWN<CR>
@@ -433,10 +509,17 @@ class CommonHardwareMarantz(object):
 # PSTRE DOWN<CR>
 # PSTRE 50<CR>
 # PSTRE ?<CR>
+
     # Loudness management
-# PSLOM ON<CR>
-# PSLOM OFF<CR>
-# PSLOM ?<CR>
+    def com_hardware_marantz_spk_effect_loudness_on(self):
+        return self.com_hardware_marantz_command(('PSLOM ON'), 1)
+
+    def com_hardware_marantz_spk_effect_loudness_off(self):
+        return self.com_hardware_marantz_command(('PSLOM OFF'), 1)
+
+    def com_hardware_marantz_spk_effect_loudness_status(self):
+        return self.com_hardware_marantz_command(('PSLOM ?'), 1)
+
     # Subwoofer level
 # PSSWL ON<CR
 # PSSWL OFF<CR
@@ -492,105 +575,67 @@ class CommonHardwareMarantz(object):
 # PSMULTEQ:OFF < CR >
 # PSMULTEQ: ? < CR >
     # Dynamic EQ
-# PSDYNEQ
-# ON < CR >
-# PSDYNEQ
-# OFF < CR >
+# PSDYNEQ ON < CR >
+# PSDYNEQ OFF < CR >
 # PSDYNEQ ? < CR >
-# PSREFLEV
-# 0 < CR >
-# PSREFLEV
-# 5 < CR >
-# PSREFLEV
-# 10 < CR >
-# PSREFLEV
-# 15 < CR >
+# PSREFLEV 0 < CR >
+# PSREFLEV 5 < CR >
+# PSREFLEV 10 < CR >
+# PSREFLEV 15 < CR >
 # PSREFLEV ? < CR >
     # Dynamic Vol.
-# PSDYNVOL
-# HEV < CR >
-# PSDYNVOL
-# MED < CR >
-# PSDYNVOL
-# LIT < CR >
-# PSDYNVOL
-# OFF < CR >
+# PSDYNVOL HEV < CR >
+# PSDYNVOL MED < CR >
+# PSDYNVOL LIT < CR >
+# PSDYNVOL OFF < CR >
 # PSDYNVOL ? < CR >
     # Audyssey LFC
-# PSLFC
-# ON < CR >
-# PSLFC
-# OFF < CR >
+# PSLFC ON < CR >
+# PSLFC OFF < CR >
 # PSLFC ? < CR >
-# PSCNTAMT
-# UP < CR >
-# PSCNTAMT
-# DOWN < CR >
-# PSCNTAMT
-# 07 < CR >
+# PSCNTAMT UP < CR >
+# PSCNTAMT DOWN < CR >
+# PSCNTAMT 07 < CR >
 # PSCNTAMT ? < CR >
     # Graphic EQ
-# PSGEQ
-# ON < CR >
-# PSGEQ
-# OFF < CR >
+# PSGEQ ON < CR >
+# PSGEQ OFF < CR >
 # PSGEQ ? < CR >
     # Headphone EQ
-# PSHEQ
-# ON < CR >
-# PSHEQ
-# OFF < CR >
+# PSHEQ ON < CR >
+# PSHEQ OFF < CR >
 # PSHEQ ? < CR >
     # DRC
-# PSDRC
-# AUTO < CR >
-# PSDRC
-# LOW < CR >
-# PSDRC
-# MID < CR >
-# PSDRC
-# HI < CR >
-# PSDRC
-# OFF < CR >
+# PSDRC AUTO < CR >
+# PSDRC LOW < CR >
+# PSDRC MID < CR >
+# PSDRC HI < CR >
+# PSDRC OFF < CR >
 # PSDRC ? < CR >
     # M-DAX
-# PSMDAX
-# OFF < CR >
-# PSMDAX
-# LOW < CR >
-# PSMDAX
-# MID < CR >
-# PSMDAX
-# HI < CR >
+# PSMDAX OFF < CR >
+# PSMDAX LOW < CR >
+# PSMDAX MID < CR >
+# PSMDAX HI < CR >
 # PSMDAX ? < CR >
     # Audio Delay
-# PSDELAY
-# UP < CR >
-# PSDELAY
-# DOWN < CR >
-# PSDELAY
-# 200 < CR >
+# PSDELAY UP < CR >
+# PSDELAY DOWN < CR >
+# PSDELAY 200 < CR >
 # PSDELAY ? < CR >
     # Auro-Matic 3D Preset
-# PSAUROPR
-# SMA < CR >
-# PSAUROPR
-# MED < CR >
-# PSAUROPR
-# LAR < CR >
-# PSAUROPR
-# SPE < CR >
+# PSAUROPR SMA < CR >
+# PSAUROPR MED < CR >
+# PSAUROPR LAR < CR >
+# PSAUROPR SPE < CR >
 # PSAUROPR ? < CR >
     """
     Video Settings
     """
     # Auro-Matic 3D Strength
-# PSAUROST
-# UP < CR >
-# PSAUROST
-# DOWN < CR >
-# PSAUROST
-# 10 < CR >
+# PSAUROST UP < CR >
+# PSAUROST DOWN < CR >
+# PSAUROST 10 < CR >
 # PSAUROST ? < CR >
     # picture mode
 # PVOFF < CR >
