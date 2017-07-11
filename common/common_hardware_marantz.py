@@ -23,7 +23,7 @@ import telnetlib
 
 class CommonHardwareMarantz(object):
     """
-    Class for interfacing with Marantz equipment
+    Class for interfacing with Marantz equipment over network connection
     """
     def __init__(self, device_ip):
         self.device = telnetlib.Telnet(device_ip)
@@ -240,8 +240,11 @@ class CommonHardwareMarantz(object):
 # MSSMART3 MEMORY<CR>
 # MSSMART4 MEMORY<CR>
 # MSSMART5 MEMORY<CR>
-# MSSMART ?<CR>
-    # Audio input signal
+
+    def com_hardware_marantz_smart_select_status(self):
+        return self.com_hardware_marantz_command(('MSSMART ?'), 1)
+
+        # Audio input signal
 # SDAUTO<CR>
 # SDHDMI<CR>
 # SDDIGITAL<CR>
@@ -271,21 +274,42 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('SV?'), 1)
 
     # Auto standby
-# STBY15M<CR>
-# STBY30M<CR>
-# STBY60M<CR>
-# STBYOFF<CR>
-# STBY?<CR>
+    def com_hardware_marantz_video_standby_15m(self):
+        return self.com_hardware_marantz_command(('STBY15M'), 1)
+
+    def com_hardware_marantz_video_standby_30m(self):
+        return self.com_hardware_marantz_command(('STBY30M'), 1)
+
+    def com_hardware_marantz_video_standby_60m(self):
+        return self.com_hardware_marantz_command(('STBY60M'), 1)
+
+    def com_hardware_marantz_video_standby_off(self):
+        return self.com_hardware_marantz_command(('STBYOFF'), 1)
+
+    def com_hardware_marantz_video_standy_status(self):
+        return self.com_hardware_marantz_command(('STBY?'), 1)
+
     # ECO
-# ECOON<CR>
-# ECOAUTO<CR>
-# ECOOFF<CR>
-# ECO?<CR>
+    def com_hardware_marantz_video_eco_on(self):
+        return self.com_hardware_marantz_command(('ECOON'), 1)
+
+    def com_hardware_marantz_video_eco_auto(self):
+        return self.com_hardware_marantz_command(('ECOAUTO'), 1)
+
+    def com_hardware_marantz_video_eco_off(self):
+        return self.com_hardware_marantz_command(('ECOOFF'), 1)
+
+    def com_hardware_marantz_video_eco_status(self):
+        return self.com_hardware_marantz_command(('ECO?'), 1)
+
     # Sleep
 # SLPOFF<CR>
 # SLP***<CR>
-# SLP?<CR>
-    # Surround mode
+
+    def com_hardware_marantz_video_sleep_status(self):
+        return self.com_hardware_marantz_command(('SLP?'), 1)
+
+        # Surround mode
 # MSMOVIE<CR>
 # MSMUSIC<CR>
 # MSGAME<CR>
@@ -338,38 +362,59 @@ class CommonHardwareMarantz(object):
 # VSSCH4K<CR>
 # VSSCH4KF<CR>
 # VSSCHAUTO<CR>
+
     def com_hardware_marantz_hdmi_resolution_status(self):
         return self.com_hardware_marantz_command(('VSSCH ?'), 1)
 
     # Vertical Stretch
-# VSVST ON<CR>
-# VSVST OFF<CR>
+    def com_hardware_marantz_vertical_stretch_status(self):
+        return self.com_hardware_marantz_command(('VSVST ON'), 1)
+
+    def com_hardware_marantz_vertical_stretch_status(self):
+        return self.com_hardware_marantz_command(('VSVST OFF'), 1)
+
     def com_hardware_marantz_vertical_stretch_status(self):
         return self.com_hardware_marantz_command(('VSVST ?'), 1)
 
         # HDMI Audio Decode
 # VSAUDIO AMP<CR>
 # VSAUDIO TV<CR>
-# VSAUDIO ?<CR>
-    # Video Process
+
+    def com_hardware_marantz_hdmi_audio_decode_status(self):
+        return self.com_hardware_marantz_command(('VSAUDIO ?'), 1)
+
+        # Video Process
 # VSVPMAUTO<CR>
 # VSVPMGAME<CR>
 # VSVPMMOVI<CR>
-# VSVPM ?<CR>
+
+    def com_hardware_marantz_video_process_status(self):
+        return self.com_hardware_marantz_command(('VSVPM ?'), 1)
 
     # Speaker a/b
-# PSFRONT SPA<CR>
-# PSFRONT SPB<CR>
-# PSFRONT A+B<CR>
-# PSFRONT?<CR>
-    # Effect speaker selection
+    def com_hardware_marantz_spk_a(self):
+        return self.com_hardware_marantz_command(('PSFRONT SPA'), 1)
+
+    def com_hardware_marantz_spk_b(self):
+        return self.com_hardware_marantz_command(('PSFRONT SPB'), 1)
+
+    def com_hardware_marantz_spk_ab(self):
+        return self.com_hardware_marantz_command(('PSFRONT A+B'), 1)
+
+    def com_hardware_marantz_spk_ab_status(self):
+        return self.com_hardware_marantz_command(('PSFRONT?'), 1)
+
+        # Effect speaker selection
 # PSSP:FL<CR>
 # PSSP:HF<CR>
 # PSSP:FR<CR>
 # PSSP: ?<CR>
 # PSFH:ON<CR>
 # PSFH:OFF<CR>
-# PSFH: ?<CR>
+
+    def com_hardware_marantz_spk_effect_fh_status(self):
+        return self.com_hardware_marantz_command(('PSFH ?'), 1)
+
     # Subwoofer
 # PSSWR ON<CR>
 # PSSWR OFF<CR>
