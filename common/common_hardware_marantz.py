@@ -500,15 +500,29 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('PSTONE CTRL ?'), 1)
 
     # Bass
-# PSBAS UP<CR>
-# PSBAS DOWN<CR>
+    def com_hardware_marantz_spk_effect_bass_up(self):
+        return self.com_hardware_marantz_command(('PSBAS UP'), 1)
+
+    def com_hardware_marantz_spk_effect_bass_down(self):
+        return self.com_hardware_marantz_command(('PSBAS DOWN'), 1)
+
 # PSBAS 50<CR>
-# PSBAS ?<CR>
+
+    def com_hardware_marantz_spk_effect_bass_status(self):
+        return self.com_hardware_marantz_command(('PSBAS ?'), 1)
+
     # Treble
-# PSTRE UP<CR>
-# PSTRE DOWN<CR>
+    def com_hardware_marantz_spk_effect_treble_up(self):
+        return self.com_hardware_marantz_command(('PSTRE UP'), 1)
+
+
+    def com_hardware_marantz_spk_effect_treble_down(self):
+        return self.com_hardware_marantz_command(('PSTRE DOWN'), 1)
+
 # PSTRE 50<CR>
-# PSTRE ?<CR>
+
+    def com_hardware_marantz_spk_effect_treble_status(self):
+        return self.com_hardware_marantz_command(('PSTRE ?'), 1)
 
     # Loudness management
     def com_hardware_marantz_spk_effect_loudness_on(self):
@@ -521,8 +535,12 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('PSLOM ?'), 1)
 
     # Subwoofer level
-# PSSWL ON<CR
-# PSSWL OFF<CR
+    def com_hardware_marantz_spk_effect_sub_level_on(self):
+        return self.com_hardware_marantz_command(('PSSWL ON'), 1)
+
+    def com_hardware_marantz_spk_effect_sub_level_off(self):
+        return self.com_hardware_marantz_command(('PSSWL OFF'), 1)
+
 # PSSWL UP<CR>
 # PSSWL DOWN<CR>
 # PSSWL 50<CR>
@@ -530,9 +548,14 @@ class CommonHardwareMarantz(object):
 # PSSWL2 DOWN<CR>
 # PSSWL2 50<CR>
 # PSSWL ?<CR>
+
     # Dialog Level
-# PSDIL ON<CR>
-# PSDIL OFF<CR>
+    def com_hardware_marantz_spk_effect_dialog_level_on(self):
+        return self.com_hardware_marantz_command(('PSDIL ON'), 1)
+
+    def com_hardware_marantz_spk_effect_dialog_level_off(self):
+        return self.com_hardware_marantz_command(('PSDIL OFF'), 1)
+
 # PSDIL UP<CR>
 # PSDIL DOWN<CR>
 # PSDIL 50<CR>
@@ -562,12 +585,9 @@ class CommonHardwareMarantz(object):
 # PSNEURAL OFF<CR>
 # PSNEURAL ?<CR>
     # Cinema EQ
-# PSCINEMA
-# EQ.ON < CR >
-# PSCINEMA
-# EQ.OFF < CR >
-# PSCINEMA
-# EQ. ? < CR >
+# PSCINEMA EQ.ON < CR >
+# PSCINEMA EQ.OFF < CR >
+# PSCINEMA EQ. ? < CR >
     # MultEQ
 # PSMULTEQ:AUDYSSEY < CR >
 # PSMULTEQ:BYP.LR < CR >
@@ -646,6 +666,7 @@ class CommonHardwareMarantz(object):
 # PVCTM < CR >
 # PVDAY < CR >
 # PVNGT < CR >
+
     def com_hardware_marantz_picture_mode_status(self):
         return self.com_hardware_marantz_command(('PV?'), 1)
 
