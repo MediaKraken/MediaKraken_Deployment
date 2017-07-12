@@ -125,7 +125,7 @@ services:
     image: mediakraken/mknginx:latest
     container_name: mknginx
     ports:
-      - "443:443"
+      - "8900:443"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -165,8 +165,8 @@ services:
       - redis
 #      - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
-    ports:
-      - "8900:8080"
+#    ports:
+#      - "8900:8080"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
