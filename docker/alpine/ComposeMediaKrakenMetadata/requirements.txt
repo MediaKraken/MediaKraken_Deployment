@@ -15,4 +15,5 @@ xmltodict
 subliminal
 steam
 celery
+incremental
 twisted
