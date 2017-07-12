@@ -124,6 +124,8 @@ services:
   nginx:
     image: mediakraken/mknginx:latest
     container_name: mknginx
+    volumes:
+      - /var/log/mediakraken:/var/log/mediakraken
     ports:
       - "8900:443"
     networks:
