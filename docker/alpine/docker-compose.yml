@@ -164,7 +164,7 @@ services:
       dockerfile: dockerfile-nginx
     container_name: mknginx
     volumes:
-      - /var/log/mediakraken:/var/log/mediakraken
+      - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
     ports:
       - "8900:443"
     networks:
