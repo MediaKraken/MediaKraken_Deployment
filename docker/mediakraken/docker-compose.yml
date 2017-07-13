@@ -127,8 +127,9 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
+      - /var/opt/mediakraken/certs:/etc/nginx/certs
     ports:
-      - "8900:443"
+      - "8900:8900"
     networks:
       - mediakraken_network
     restart: unless-stopped
