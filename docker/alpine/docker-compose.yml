@@ -24,6 +24,7 @@ services:
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/devices:/mediakraken/devices
+      - /var/opt/mediakraken/certs:/mediakraken/key
       - /home/mediakraken:/mediakraken/mnt
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
@@ -166,6 +167,7 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
+      - /var/opt/mediakraken/certs:/etc/nginx/certs
     ports:
       - "8900:443"
     networks:
