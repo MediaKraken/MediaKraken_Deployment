@@ -61,20 +61,18 @@
         <a href="{{ url_for('user_cctv.cctv') }}">
         <img src="/static/images/surveillance-cctv-symbol-in-rounded-triangle.png" alt="CCTV" height="200" width="200">
         </a>
-        </p>
         {% if data_resume_media %}
         <p>
         <h2 class="neon" data-neon-text="Resume">Resume</h2>
-        </p>
         {% for row_data in data_resume_media %}
         {% endfor %}
+        </p>
         {% endif %}
         {% if data_new_media %}
+        <p>
         {{ pagination.info }}
         {{ pagination.links }}
-        <p>
         <h2 class="burning">New and Hot</h2>
-        </p>
         {% for row_data in data_new_media %}
             {% if row_data[2] == "Movie" %}
                 <a href= {{ "./movie_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</a>
@@ -87,10 +85,11 @@
             {% endif %}
         {% endfor %}
         {{ pagination.links }}
+        </p>
     {% endif %}
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/jquery.burn.min.js"></script>
     <script src="/static/js/scripts_burn.js"></script>
-    </body>
+    </>
 </html>
 {% endblock %}
