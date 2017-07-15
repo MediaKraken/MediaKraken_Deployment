@@ -2,7 +2,6 @@
 FROM mediakraken/mkbasenvidia
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the base ffmpeg for slave with nvidia"
 
 RUN mkdir /mediakraken && mkdir /mediakraken/bin

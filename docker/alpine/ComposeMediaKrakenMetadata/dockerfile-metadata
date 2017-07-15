@@ -2,7 +2,6 @@
 FROM alpine:3.5
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image downloads and maintains all metadata"
 
 # copy PIP requirements
@@ -12,6 +11,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
+  ca-certificates \
   cifs-utils \
   nfs-utils \
   postgresql-client \
@@ -24,6 +24,7 @@ RUN apk add --update \
   libffi-dev \
   python \
   openrc \
+  && pip install --upgrade pip \
   && pip install pytest-runner \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \

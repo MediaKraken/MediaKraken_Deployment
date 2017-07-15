@@ -1,0 +1,49 @@
+https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+# compiling ffmpeg on ubuntu
+
+
+http://www.bogotobogo.com/VideoStreaming/ffmpeg_http_live_streaming_hls.php
+# bunch of stuff
+
+
+http://ubuntuforums.org/showthread.php?t=2103085
+ffmpeg -i input.mkv -c copy -f segment -segment_list playlist.m3u8 -segment_time 10 output%03d.ts
+
+
+http://ffmpeg.gusari.org/viewtopic.php?f=12&t=914
+ffmpeg -v verbose -f video4linux2 -vcodec mjpeg -s 640x480 -r 5 -i /dev/video0 -c:v libx264 -crf 18 -profile:v baseline -maxrate 400k -bufsize 1835k -pix_fmt yuv420p -flags -global_header -hls_time 10 -hls_list_size 6 -hls_wrap 10 -start_number 1 /var/www/live/mystream.m3u8
+
+
+http://www.programering.com/a/MDO1cDNwATc.html
+# Build HLS server using nginx+ffmpeg
+
+
+https://www.vultr.com/docs/setup-nginx-on-ubuntu-to-stream-live-hls-video
+
+
+https://bitbucket.org/walterebert/ffmpeg-hls/src
+ffmpeg -y -framerate 24 -i 720/sintel_trailer_2k_%4d.png -i sintel_trailer-audio.flac -c:a aac -strict experimental -ac 2 -b:a 96k -ar 44100 -c:v libx264 -pix_fmt yuv420p -profile:v main -level 3.2 -maxrate 2M -bufsize 6M -crf 18 -r 24 -g 72 -f hls -hls_time 9 -hls_list_size 0 -s 1280x720 ts/1280x720.m3u8
+
+
+http://hlsbook.net/segmenting-video-with-ffmpeg/
+ffmpeg -y -i sample.mov -codec copy -bsf h264_mp4toannexb -map 0 -f segment -segment_time 10 -segment_format mpegts -segment_list "/Library/WebServer/Documents/vod/prog_index.m3u8" -segment_list_type m3u8 "/Library/WebServer/Documents/vod/fileSequence%d.ts"
+
+
+https://www.keycdn.com/support/how-to-convert-mp4-to-hls/
+ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
+
+
+To stream video with HLS, you need to divide your video into segments of a fixed duration and add them to a playlist. 
+
+
+
+
+ffmpeg -i source.mp4 -map 0 
+-codec:v libx264 -codec:a libfaac 
+-f ssegment -segment_list playlist.m3u8 
+-segment_list_flags +live -segment_time 10 
+out%03d.ts
+
+from vlc
+http://localhost/hls/playlist.m3u8
+

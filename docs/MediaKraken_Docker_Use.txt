@@ -1,7 +1,6 @@
 Prerequisites:
 docker 1.12.3
 docker-compose
-docker swarm
 
 
 # Start up the MediaKraken application suite:

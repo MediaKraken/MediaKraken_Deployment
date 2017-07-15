@@ -95,6 +95,18 @@ def admin_cron_edit(guid):
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
+@blueprint.route('/cron_delete', methods=["POST"])
+@login_required
+@admin_required
+def admin_cron_delete_page():
+    """
+    Delete action 'page'
+    """
+    g.db_connection.db_cron_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
 @blueprint.before_request
 def before_request():
     """

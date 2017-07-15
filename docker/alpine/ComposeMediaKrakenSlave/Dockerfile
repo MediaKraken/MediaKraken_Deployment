@@ -2,7 +2,6 @@
 FROM mediakraken/mkbaseffmpeg
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL www.mediakraken.org.version="dev-0.2.0"
 LABEL Description="This image holds the main slave app"
 
 # don't create /mediakraken as it's in the base image
