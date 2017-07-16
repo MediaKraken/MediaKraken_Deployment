@@ -19,6 +19,9 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
+from MediaKraken.extensions import (
+    fpika,
+)
 from MediaKraken.admins.forms import CronEditForm
 
 from common import common_config_ini
@@ -81,6 +84,23 @@ def admin_cron_display_all():
                           )
 
 
+@blueprint.route('/cron_run')
+@blueprint.route('/cron_run/')
+@login_required
+@admin_required
+def admin_cron_run():
+    """
+    Run cron jobs
+    """
+    # TODO must determine where the actual cron should fire from
+    ch = fpika.channel()
+    ch.basic_publish(exchange='mkque_ex', routing_key='mkque_metadata',
+                     body=json.dumps(
+                         {'Type': 'Cron Run', 'Data': request.form['id'],
+                          'User': current_user.get_id()}))
+    fpika.return_channel(ch)
+
+
 @blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
 @login_required
@@ -90,8 +110,16 @@ def admin_cron_edit(guid):
     Edit cron job page
     """
     form = CronEditForm(request.form, csrf_enabled=False)
-    if form.validate_on_submit():
-        pass
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            # request.form['name']
+            # request.form['description']
+            # request.form['enabled']
+            # request.form['interval']
+            # request.form['time']
+            # request.form['script_path']
+            # logging.info('cron edit info: %s %s %s', (addr, share, path))
+            pass
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
