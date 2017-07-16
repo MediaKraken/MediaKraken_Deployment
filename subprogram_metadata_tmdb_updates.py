@@ -62,16 +62,16 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
 
 
 # process tv changes
-for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
-    logging.info("tv: %s", tv_change['id'])
-    if db_connection.db_metatv_guid_by_tmdb(str(tv_change['id'])) is None:
-        dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(tv_change['id']))
-        if dl_meta is None:
-            status_type = 'Fetch'
-    else:
-        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
-            'Path': None, 'ClassID': None, 'Status': 'Update',
-            'MetaNewID': None, 'ProviderMetaID': str(tv_change['id'])}))
+# for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
+#     logging.info("tv: %s", tv_change['id'])
+#     if db_connection.db_metatv_guid_by_tmdb(str(tv_change['id'])) is None:
+#         dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(tv_change['id']))
+#         if dl_meta is None:
+#             status_type = 'Fetch'
+#     else:
+#         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+#             'Path': None, 'ClassID': None, 'Status': 'Update',
+#             'MetaNewID': None, 'ProviderMetaID': str(tv_change['id'])}))
 
 
 # log end
