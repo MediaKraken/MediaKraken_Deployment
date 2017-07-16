@@ -100,6 +100,9 @@ def read(queue_object):
                 subprocess_command.append('python', './mediakraken/subprogram_metadata_tvmaze_updates.py')
             elif json_message['Sub'] == 'collections':
                 subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
+        elif json_message['Type'] == 'Cron Run':
+            # run whatever is passed in data
+            subprocess_command.append('python', json_message['Data'])
         # if command list populated, run job
         if len(subprocess_command) != 0:
             subprocess.Popen(subprocess_command)
