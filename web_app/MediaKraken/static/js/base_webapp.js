@@ -64,6 +64,8 @@ $(function(){
             "like": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
             "dislike": {name: "Set Downvote", icon: "/static/images/dislike-thumb.png"},
             "poo": {name: "Set Avoid", icon: "/static/images/pile-of-dung.png"},
+            "sep1": "---------",
+            "request": {name: "Request Media", icon: "/static/images/add-button.png"},
         }
     });
 });

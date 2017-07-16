@@ -63,7 +63,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
     """
     self.db_cursor.execute('SELECT mm_metadata_user_json from mm_metadata_movie'
                            ' where mm_metadata_guid = %s FOR UPDATE', (metadata_guid,))
-    if status_text == 'watched':
+    if status_text == 'watched' or status_text == 'requested':
         status_setting = True
     else:
         status_setting = status_text

@@ -25,6 +25,9 @@
                     {% if row_data[5] != None %}
                     <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
                     {% endif %}
+                    {% if row_data[6] != None %}
+                    <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
+                    {% endif %}
                     </a>
                     {% if row_data[2] == "" %}
                         <div class="description">
