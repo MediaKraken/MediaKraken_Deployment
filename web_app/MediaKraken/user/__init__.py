@@ -11,6 +11,7 @@ from . import views_internet
 from . import views_movie
 from . import views_movie_collection
 from . import views_movie_genre
+from . import views_metadata_movie
 from . import views_music
 from . import views_music_video
 from . import views_periodicals

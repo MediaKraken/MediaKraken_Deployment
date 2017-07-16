@@ -55,6 +55,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views_games.blueprint)
     app.register_blueprint(user.views_images.blueprint)
     app.register_blueprint(user.views_internet.blueprint)
+    app.register_blueprint(user.views_metadata_movie.blueprint)
     app.register_blueprint(user.views_movie.blueprint)
     app.register_blueprint(user.views_movie_collection.blueprint)
     app.register_blueprint(user.views_movie_genre.blueprint)
