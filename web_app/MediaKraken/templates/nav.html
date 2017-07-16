@@ -45,7 +45,7 @@
                     </ul>
                 </li>
                 {% if current_user.is_admin %}
-                <li><a href="{{ url_for('admins.admins') }}" id="menu_server">Server</a></li>
+                <li><a href="{{ url_for('admins.admins') }}" id="menu_server">Admin</a></li>
                 {% endif %}
                 {% endif %}
                 <li><a href="{{ url_for('public.about') }}" id="menu_about">About</a></li>
