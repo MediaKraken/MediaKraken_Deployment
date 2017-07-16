@@ -65,7 +65,6 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     else:
         file_handle = open(file_name, 'w+')
     if as_pickle:
-        #file_handle.write(pickle.dump(data_block))
         pickle.dump(data_block, file_handle)
     else:
         file_handle.write(data_block)

@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Blueprint, render_template, g, request, current_app, jsonify,\
-    redirect, url_for, abort
+    redirect, url_for, abort, flash
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
@@ -12,18 +12,14 @@ blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../s
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
-import datetime
 import uuid
 import json
 import subprocess
-import os
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_google
 from common import common_pagination
-from common import common_string
 import database as database_base
 
 
@@ -215,10 +211,6 @@ def tv_status(guid, event_type):
     elif event_type == "mismatch":
         pass
     return redirect(url_for('user_tv.user_tv_page'))
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @blueprint.before_request

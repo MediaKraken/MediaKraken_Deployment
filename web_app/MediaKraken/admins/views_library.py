@@ -26,7 +26,6 @@ from common import common_internationalization
 from common import common_network_cifs
 from common import common_pagination
 from common import common_string
-from common import common_version
 import database as database_base
 
 

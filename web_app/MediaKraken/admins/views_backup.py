@@ -19,11 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import BackupEditForm
-from MediaKraken.admins.forms import BookAddForm
-from MediaKraken.admins.forms import DLNAEditForm
-
 from common import common_config_ini
 from common import common_internationalization
 from common import common_network_cifs
@@ -34,8 +30,6 @@ from common import common_network
 from common import common_pagination
 from common import common_string
 from common import common_system
-from common import common_version
-from common import common_zfs
 import database as database_base
 
 
