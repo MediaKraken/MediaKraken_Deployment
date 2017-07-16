@@ -29,7 +29,7 @@ def create_app(config_object=ProdConfig):
     app.config.from_object(config_object)
     # did not fix the flask port dropping issue
     # app.config['SERVER_NAME'] = "127.0.0.1:8900"
-    app.config['UPLOAD_FOLDER'] = 'uploads'
+    # app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     register_extensions(app)
     register_blueprints(app)
