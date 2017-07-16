@@ -96,9 +96,11 @@ def admin_cron_run():
     ch = fpika.channel()
     ch.basic_publish(exchange='mkque_ex', routing_key='mkque_metadata',
                      body=json.dumps(
-                         {'Type': 'Cron Run', 'Data': request.form['id'],
+                         {'Type': 'Cron Run',
+                          'Data': g.db_connection.db_cron_info(request.form['id'])['mm_cron_file_path'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])

@@ -37,8 +37,9 @@ class MKServerDatabase(object):
     from database.db_base_cron import db_cron_list_count,\
         db_cron_list,\
         db_cron_time_update,\
-        db_cron_insert, \
-        db_cron_delete
+        db_cron_insert,\
+        db_cron_delete,\
+        db_cron_info
     from database.db_base_device import db_device_count,\
         db_device_list,\
         db_device_insert,\
