@@ -191,17 +191,6 @@ def admin_books_add():
     return render_template("admin/admin_books_add.html", form=form)
 
 
-@blueprint.route("/ffmpeg_stat")
-@blueprint.route("/ffmpeg_stat/")
-@login_required
-@admin_required
-def ffmpeg_stat():
-    """
-    Redirect to ffmeg stats
-    """
-    return redirect("http://www.example.com/status.html", code=302)  # status.html is ffmpeg page
-
-
 @blueprint.route("/server_stat")
 @blueprint.route("/server_stat/")
 @login_required
@@ -215,20 +204,6 @@ def admin_server_stat():
                            data_cpu_usage=common_system.com_system_cpu_usage(True),
                            data_mem_usage=common_system.com_system_virtual_memory(None),
                            data_network_io=common_network.mk_network_io_counter())
-
-
-@blueprint.route("/server_stat_slave")
-@blueprint.route("/server_stat_slave/")
-@login_required
-@admin_required
-def admin_server_stat_slave():
-    """
-    Display stats on connected slaves via psutils
-    """
-    return render_template("admin/admin_server_stats_slave.html",
-                           data_disk=common_system.com_system_disk_usage_all(True),
-                           data_cpu_usage=common_system.com_system_cpu_usage(True),
-                           data_mem_usage=common_system.com_system_virtual_memory(None))
 
 
 @blueprint.route("/settings")
