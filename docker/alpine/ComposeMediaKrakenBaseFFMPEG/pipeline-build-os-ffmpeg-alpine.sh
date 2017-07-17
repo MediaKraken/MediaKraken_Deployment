@@ -184,6 +184,7 @@ make install
 #    --enable-netcdf \
 #    --enable-libdc1394 \
 #    --enable-openssl \
+#    --enable-libcelt \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -202,7 +203,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --disable-debug \
     --disable-doc \
     --enable-libass \
-    --enable-libcelt \
     --enable-libfdk-aac \
     --enable-libflite \
     --enable-libfontconfig \
