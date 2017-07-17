@@ -51,7 +51,6 @@ os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD'] + ' pg_dump -U '
           + os.environ['POSTGRES_DB'] + ' -F c -f '
           + os.path.join('/mediakraken/backup', backup_file_name))
 
-
 cloud_handle = common_cloud.CommonCloud(option_config_json)
 # grab settings and options
 option_json = db_connection.db_opt_status_read()['mm_options_json']
