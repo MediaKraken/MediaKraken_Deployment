@@ -10,6 +10,7 @@ services:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
     environment:
+      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}

@@ -8,6 +8,7 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
+      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
