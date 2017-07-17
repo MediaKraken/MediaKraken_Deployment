@@ -10,6 +10,7 @@ ADD pipeline-build-os-ffmpeg-alpine.sh /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  nasm \
   libsmbclient \
   gettext \
   lame-dev \
