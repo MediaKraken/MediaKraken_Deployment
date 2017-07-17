@@ -100,8 +100,8 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_dir_list(
-            option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
+    for backup_local in common_file.com_file_dir_list('/ mediakraken/backup',
+                                                      'dump', False, False, True):
         backup_files.append((backup_local[0], 'Local',
             common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
