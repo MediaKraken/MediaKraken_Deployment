@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.5
+FROM alpine:3.6
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base ffmpeg for slave"
