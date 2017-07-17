@@ -4,7 +4,7 @@ mkdir ~/ffmpeg_sources
 cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
-./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic --disable-opencl
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic --disable-opencl --disable-asm
 make -j16
 make install
 make distclean
@@ -13,7 +13,7 @@ cd ~/ffmpeg_sources
 curl -L -O https://get.videolan.org/x265/x265_2.4.tar.gz
 tar xzvf x265_2.4.tar.gz
 cd ~/ffmpeg_sources/x265_2.4/build/linux
-cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source --disable-asm
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
 make -j16
 make install
 
