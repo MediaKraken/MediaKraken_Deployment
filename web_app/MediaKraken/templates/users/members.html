@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        <a href="./movie/All">
+        <a href="{{ url_for('user_movie_genre.user_movie_page', genre='All') }}">
         <img src="/static/images/movie_ticket.png" alt="Movie Ticket" height="200" width="200">
         </a>
         <a href="{{ url_for('user_music.user_album_list_page') }}">
@@ -31,7 +31,7 @@
         <a href="{{ url_for('user_sports.user_sports_page') }}">
         <img src="/static/images/stadium.png" alt="Sports" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_tv_live.user_livetv_page') }}">
+        <a href="{{ url_for('user_tv_live.user_livetv_page', schedule_date='20170716', schedule_time='213500')) }}">
         <img src="/static/images/television_live.png" alt="Live TV" height="200" width="200">
         </a>
         <a href="{{ url_for('user_images.user_image_gallery') }}">
