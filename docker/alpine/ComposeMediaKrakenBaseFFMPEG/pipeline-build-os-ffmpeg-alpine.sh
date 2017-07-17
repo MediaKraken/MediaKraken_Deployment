@@ -13,7 +13,7 @@ cd ~/ffmpeg_sources
 curl -L -O https://get.videolan.org/x265/x265_2.4.tar.gz
 tar xzvf x265_2.4.tar.gz
 cd ~/ffmpeg_sources/x265_2.4/build/linux
-cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source --disable-asm
 make -j16
 make install
 
