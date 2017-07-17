@@ -1,5 +1,6 @@
 git pull
 ./source_sync.sh
+docker-compose down
 docker-compose build
 
 cd ComposeMediaKrakenNvidia
