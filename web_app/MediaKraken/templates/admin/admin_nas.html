@@ -48,7 +48,7 @@
     {% else %}
     <p>No known nas devices.</p>
     {% endif %}
-    <p><a href="../nas_edit" class="btn btn-primary btn-large">Add New NAS Manually</a>
+    <p><a href="{{ url_for('admins_devices.admin_nas_edit_page') }}" class="btn btn-primary btn-large">Add New NAS Manually</a>
     <form name="form_nas_scan" action="." method="post">
         <input class="btn btn-default btn-submit" type="submit" name="nas_scan" value="NAS Scan">
     </form>

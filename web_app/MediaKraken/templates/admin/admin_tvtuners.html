@@ -51,7 +51,7 @@
     {% else %}
     <p>No known current tuners.</p>
     {% endif %}
-    <p><a href="../tuner_edit" class="btn btn-primary btn-large">Add new tuner manually</a>
+    <p><a href="{{ url_for('admins_tvtuners.admin_tvtuners_edit_page') }}" class="btn btn-primary btn-large">Add new tuner manually</a>
     <form name="form_tuner_scan" action="." method="post">
         <input class="btn btn-default btn-submit" type="submit" name="tuner_scan" value="Tuner Scan">
     </form>
