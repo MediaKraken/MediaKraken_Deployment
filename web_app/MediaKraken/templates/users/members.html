@@ -15,7 +15,6 @@
         <link href="/static/css/style.min.css" rel="stylesheet">
         <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
@@ -75,10 +74,10 @@
         <h2 class="burning">New and Hot</h2>
         {% for row_data in data_new_media %}
             {% if row_data[2] == "Movie" %}
-                <a href= {{ "./movie_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
+                <a href="{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}" ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
             {% else %}
                 {% if row_data[2] == "TV Show" %}
-                    <a href= {{ "./tv_show_detail/" + row_data[1] }} ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
+                    <a href="{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}" ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
                 {% else %}
                     <p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p>
                 {% endif %}
