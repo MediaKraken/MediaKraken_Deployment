@@ -55,20 +55,25 @@ data = xmltodict.parse(common_network.mk_network_fetch_from_url(
 if data is not None:
     for item in data['item']:
         logging.info('item: %s', item)
-        if '(Trailer' in data['item']['title']:
-            pass
-        elif '(Behind' in data['item']['title']:
-            pass
-        elif '(Cli' in data['item']['title']:
-            pass
-        elif '(Featurette' in data['item']['title']:
-            pass
-        elif '(Carpool'in data['item']['title']:
-            pass
-
-        for trailer_url in data['item']['enclosure url']:
-            if '1080p' in trailer_url:
-                pass
+        download_link = None
+        if ('(Trailer' in data['item']['title']
+                and option_config_json['Trailer']['Trailer'] is True)\
+                or ('(Behind' in data['item']['title'] \
+                    and option_config_json['Trailer']['Behind'] is True)\
+                or ('(Clip' in data['item']['title'] \
+                    and option_config_json['Trailer']['Clip'] is True)\
+                or ('(Featurette' in data['item']['title'] \
+                    and option_config_json['Trailer']['Featurette'] is True)\
+                or ('(Carpool' in data['item']['title'] \
+                    and option_config_json['Trailer']['Carpool'] is True):
+            for trailer_url in data['item']['enclosure url']:
+                if '1080p' in trailer_url:
+                    download_link = data['item']['enclosure url']
+                    break
+        if download_link is not None:
+            # TODO let the metadata fetch program grab these
+            # TODO so only insert db dl records
+            common_network.mk_network_fetch_from_url(download_link, '/static/meta/trailer')
 
 
 if total_trailers_downloaded > 0:
