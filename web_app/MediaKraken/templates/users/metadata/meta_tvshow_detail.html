@@ -47,7 +47,7 @@
         <div id="the-node">
             {% for season_info in data_season_count %}
             <div class="main_photo">
-                <a href= {{ "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=row_data[0]) }}""../meta_tvshow_season_detail/" + data_guid + "/" + season_info|string }} >
+                <a href= {{ "{{ url_for('user_metadata_tv.metadata_tvshow_season_detail_page', guid=row_data[0], season=season_info|string) }}" >
                 <img src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/images/missing_icon.jpg" }} height="300" width="200">
                 </a>
                 <div class="description">
