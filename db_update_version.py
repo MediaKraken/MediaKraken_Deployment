@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import subprocess
+import psycopg2
 from common import common_config_ini
 from common import common_version
 
@@ -45,6 +46,13 @@ if db_connection.db_version_check() == 3:
     option_config_json.update({'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0}})
     db_connection.db_opt_update(option_config_json)
     db_connection.db_version_update(4)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() == 4:
+    # add cron job
+    db_connection.db_cron_insert('Trailer', 'Download new trailers', False, 'Days 1',
+        psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), './subprogram_metadata_trailer_download.py')
+    db_connection.db_version_update(5)
     db_connection.db_commit()
 
 # drop trigger table since moving to celery?

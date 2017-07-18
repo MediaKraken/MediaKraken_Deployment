@@ -500,6 +500,7 @@ base_cron = [
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_metadata_tmdb_updates.py'),
     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_metadata_tvmaze_updates.py'),
     ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
+    ('Trailer', 'Download new trailers', './subprogram_metadata_trailer_download.py'),
     # normal subprograms
     ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
