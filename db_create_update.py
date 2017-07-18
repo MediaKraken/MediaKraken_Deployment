@@ -728,6 +728,7 @@ if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
 # 1 - movie
 # 2 - tv
 # 3 - person
+# 4 - trailer
 
 
 # download image que
