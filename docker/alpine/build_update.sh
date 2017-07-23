@@ -6,6 +6,9 @@ docker-compose build
 cd ComposeMediaKrakenNvidia
 docker build -t mediakraken/mkbasenvidia .
 
+cd ComposeMediaKrakenNvidiaDebian
+docker build -t mediakraken/mkbasenvidiadebain .
+
 cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
