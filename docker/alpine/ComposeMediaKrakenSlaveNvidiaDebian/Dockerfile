@@ -10,32 +10,27 @@ LABEL Description="This image holds the main slave app"
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN apt-get update \
+  && apt-get install \
   python \
   cifs-utils \
   nfs-utils \
   bash \
   postgresql-client \
-  alpine-sdk \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
-  musl-dev \
   net-snmp \
   net-snmp-dev \
-  postgresql-dev \
   py-pip \
   python-dev \
   openrc \
   && pip install -r requirements.txt \
   && apk del \
-  alpine-sdk \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
-  musl-dev \
   net-snmp-dev \
-  postgresql-dev \
   py-pip \
   python-dev \
   && apk add \
@@ -45,7 +40,6 @@ RUN apk add --update \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-ADD wait-for-it-bash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 

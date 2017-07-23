@@ -45,7 +45,6 @@ RUN apk add --update \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-ADD wait-for-it-bash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
