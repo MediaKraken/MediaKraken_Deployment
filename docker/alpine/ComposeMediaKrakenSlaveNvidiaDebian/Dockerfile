@@ -11,7 +11,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apt-get update \
-  && apt-get install \
+  && apt-get -y install \
   python \
   python-pip \
   && pip install -r requirements.txt \
