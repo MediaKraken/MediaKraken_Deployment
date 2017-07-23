@@ -55,6 +55,12 @@ def read(queue_object):
     global mk_containers
     logging.info('here I am in consume - read')
     ch, method, properties, body = yield queue_object.get()
+
+    """
+    # this is for the debian one
+    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkbasenvidiadebain
+    """
+
     if body:
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
