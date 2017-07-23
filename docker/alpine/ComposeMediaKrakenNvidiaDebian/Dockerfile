@@ -6,7 +6,7 @@ MAINTAINER gw0 [http://gw.tnode.com/] <gw.2017@ena.one>
 # install from debian repositories
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/99AcquireRetries \
- && sed -i 's/main$/main contrib non-free/' /etc/apt/sources.list
+ && sed -i 's/main$/main contrib non-free/' /etc/apt/sources.list \
  && apt-get update -qq \
  && apt-get install --no-install-recommends -y \
     # install essentials
@@ -22,7 +22,7 @@ RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/99AcquireRetries \
 # install from old debian repositories for old gcc/g++ 4.9
 RUN echo 'deb http://deb.debian.org/debian jessie main contrib non-free' > /etc/apt/sources.list.d/debian-jessie.list \
  && echo 'deb http://deb.debian.org/debian jessie-updates main contrib non-free' >> /etc/apt/sources.list.d/debian-jessie.list \
- && echo 'deb http://security.debian.org jessie/updates main contrib non-free' >> /etc/apt/sources.list.d/debian-jessie.list
+ && echo 'deb http://security.debian.org jessie/updates main contrib non-free' >> /etc/apt/sources.list.d/debian-jessie.list \
  && apt-get update -qq \
  && apt-get install --no-install-recommends -y \
     # install old gcc/g++ 4.9
@@ -34,7 +34,7 @@ RUN wget -nv -P /root/manual http://developer.download.nvidia.com/compute/cuda/r
  && echo "47217c49dcb9e47a8728b354450f694c9898cd4a126173044a69b1e9ac0fba96  /root/manual/7fa2af80.pub" | sha256sum -c --strict - \
  && apt-key add /root/manual/7fa2af80.pub \
  && echo 'deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /' > /etc/apt/sources.list.d/nvidia-ml.list \
- && rm -rf /root/manual
+ && rm -rf /root/manual \
  && apt-get update -qq \
  && apt-get install --no-install-recommends -y \
     # install cudnn
