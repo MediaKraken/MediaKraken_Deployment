@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbaseffmpegnvidia
+FROM mediakraken/mkbaseffmpegnvidiadebian
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"

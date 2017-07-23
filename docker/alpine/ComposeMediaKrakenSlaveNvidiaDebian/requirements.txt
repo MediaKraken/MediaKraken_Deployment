@@ -1,0 +1,7 @@
+service_identity
+pyopenssl
+psutil
+setuptools
+streamlink
+docker
+pika
