@@ -7,7 +7,8 @@ MAINTAINER gw0 [http://gw.tnode.com/] <gw.2017@ena.one>
 # install from old debian repositories for old gcc/g++ 4.9
 # install from nvidia repositories
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/99AcquireRetries \
+RUN apt-get install --no-install-recommends -yw get \
+ && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/99AcquireRetries \
  && echo 'deb http://deb.debian.org/debian jessie main contrib non-free' > /etc/apt/sources.list.d/debian-jessie.list \
  && echo 'deb http://deb.debian.org/debian jessie-updates main contrib non-free' >> /etc/apt/sources.list.d/debian-jessie.list \
  && echo 'deb http://security.debian.org jessie/updates main contrib non-free' >> /etc/apt/sources.list.d/debian-jessie.list \
@@ -21,7 +22,6 @@ RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/99AcquireRetries \
  && apt-get install --no-install-recommends -y \
     # install essentials
     gnupg2 \
-    wget \
     # install cuda toolkit
     nvidia-cuda-toolkit \
     nvidia-smi \
