@@ -54,8 +54,8 @@ RUN apk add --update \
   python-dev \
   gnutls-dev \
   samba-dev \
-  libressl-dev \
-  && /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
+  libressl-dev
+RUN /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
