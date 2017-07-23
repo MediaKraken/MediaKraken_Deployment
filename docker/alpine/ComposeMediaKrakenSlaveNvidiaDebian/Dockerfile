@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 RUN apt-get update \
   && apt-get install \
   python \
+  python-pip \
   && pip install -r requirements.txt \
   && rm requirements.txt \
 
