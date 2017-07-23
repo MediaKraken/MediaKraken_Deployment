@@ -105,6 +105,7 @@ make install
 #    --enable-openssl \
 #    --enable-libopenmpt \
 #    --enable-libssh \
+#    --enable-librtmp \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -135,7 +136,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libopus \
-    --enable-librtmp \
     --enable-libsmbclient \
     --enable-libsnappy \
     --enable-libsoxr \
