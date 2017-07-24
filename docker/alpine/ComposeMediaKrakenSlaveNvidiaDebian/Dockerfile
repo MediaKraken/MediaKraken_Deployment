@@ -15,7 +15,9 @@ RUN apt-get update \
   python \
   python-pip \
   && pip install -r requirements.txt \
-  && rm requirements.txt
+  && rm requirements.txt \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Copy the source files for the app
 ADD src /mediakraken
