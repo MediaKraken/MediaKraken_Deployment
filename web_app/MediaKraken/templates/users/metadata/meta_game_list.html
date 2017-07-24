@@ -6,7 +6,6 @@
         <link rel="stylesheet"  href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <script src="/static/js/jquery.min.js"></script>
     </head>
     {% if media_game %}
     {{ pagination.info }}
@@ -25,7 +24,7 @@
                 {% for row_data in media_game %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href = {{"../meta_game_detail/" + row_data[0]}}>{{ row_data[1] }}</a></td>
+                    <td><a href ="{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     <td>{{ row_data[2] }}</td>
                     <td>{{ row_data[3] }}</td>
                 </tr>
@@ -37,5 +36,6 @@
     {% else %}
     <p id="general_text">No game metadata found.</p>
     {% endif %}
+    <script src="/static/js/jquery.min.js"></script>
 </body>
 {% endblock %}

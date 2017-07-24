@@ -3,9 +3,6 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/jquery.contextMenu.min.js"></script>
-        <script src="/static/js/base_webapp.js"></script>
         <link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
@@ -25,6 +22,9 @@
                     {% if row_data[5] != None %}
                     <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
                     {% endif %}
+                    {% if row_data[6] != None %}
+                    <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
+                    {% endif %}
                     </a>
                     {% if row_data[2] == "" %}
                         <div class="description">
@@ -36,7 +36,7 @@
                         </div>
                     {% endif %}
                 {% else %}
-                    <a href= {{ "../meta_movie_detail/" + row_data[0] }} >
+                    <a href= "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=row_data[0]) }}" >
                     <img src= {{ "/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                     {% if row_data[4] == True %}
                     <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
@@ -57,5 +57,8 @@
     {% else %}
     <p id="general_text">No movie metadata found.</p>
     {% endif %}
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.contextMenu.min.js"></script>
+    <script src="/static/js/base_webapp.js"></script>
 </body>
 {% endblock %}

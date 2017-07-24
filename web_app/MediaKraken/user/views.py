@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Blueprint, render_template, g, request, current_app, jsonify,\
-    redirect, url_for, abort
+    redirect, url_for, abort, flash
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
@@ -12,18 +12,14 @@ blueprint = Blueprint("user", __name__, url_prefix='/users', static_folder="../s
 import locale
 locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
-import datetime
 import uuid
 import json
 import subprocess
-import os
 import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_google
 from common import common_pagination
-from common import common_string
 import database as database_base
 
 
@@ -40,21 +36,6 @@ def flash_errors(form):
                 getattr(form, field).label.text,
                 error
             ))
-
-
-@blueprint.route('/upload_image', methods=['GET', 'POST'])
-@login_required
-def upload_image():
-    """
-    Allow user to upload image
-    """
-    if request.method == 'POST' and 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        rec = Photo(filename=filename, user=g.user.id)
-        rec.store()
-        flash("Photo saved.")
-        return redirect(url_for('show', id=rec.id))
-    return render_template('upload.html')
 
 
 @blueprint.route("/")
@@ -174,33 +155,6 @@ def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-#@blueprint.route("/video")
-#@blueprint.route("/video/")
-#@login_required
-#def user_video_page():
-#    page, per_page, offset = common_pagination.get_page_items()
-#    media = []
-#    # class_guid, list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
-#    media.append((g.db_connection.db_web_media_list(xxxx, 'in_progress', None, per_page, False, offset))) # extra parans so adds list
-#    total = g.db_connection.db_web_media_list_count(xxxx, 'in_progress', None, False)
-#    media.append((g.db_connection.db_web_media_list(xxxx, 'recent_addition', None, per_page, False, offset)))
-#    total += g.db_connection.db_web_media_list_count(xxxx, 'recent_addition', None, False)
-#    media.append((g.db_connection.db_web_media_list(xxxx, 'video', None, per_page, False, offset)))
-#    total += g.db_connection.db_web_media_list_count(xxxx, 'video', None, False)
-#    pagination = common_pagination.get_pagination(page=page,
-#                                per_page=per_page,
-#                                total=total,
-#                                record_name='Media',
-#                                format_total=True,
-#                                format_number=True,
-#                                )
-#    return render_template('users/user_video_page.html', media=media,
-#                           page=page,
-#                           per_page=per_page,
-#                           pagination=pagination,
-#                           )
-
-
 @blueprint.route('/media')
 @blueprint.route('/media/')
 @login_required
@@ -209,54 +163,6 @@ def user_media_list():
     Display main media page
     """
     return render_template("users/user_media_list.html")
-
-
-@blueprint.route('/search/<name>/')
-@blueprint.route('/search/<name>')
-@login_required
-def search(name):
-    """
-    Search media
-    """
-    sql = 'select count(*) from users where name like ?'
-    args = ('%{}%'.format(name), )
-    g.cur.execute(sql, args)
-    try:
-        total = g.cur.fetchone()[0]
-    except:
-        total = 0
-    page, per_page, offset = common_pagination.get_page_items()
-    sql = 'select * from users where name like %s limit {}, {}'
-    g.cur.execute(sql.format(offset, per_page), args)
-    users = g.cur.fetchall()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=total,
-                                                  record_name='Users',
-                                                 )
-    return render_template('users/user_report_all_known_media_video.html', users=users,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                          )
-
-
-# https://github.com/Bouni/HTML5-jQuery-Flask-file-upload
-@blueprint.route('/upload', methods=['POST'])
-@blueprint.route('/upload/', methods=['POST'])
-@login_required
-def upload():
-    """
-    Handle file upload from user
-    """
-    if request.method == 'POST':
-        file_handle = request.files['file']
-        if file_handle and allowed_file(file_handle.filename):
-            now = datetime.now()
-            filename = os.path.join(app.config_handle['UPLOAD_FOLDER'], "%s.%s"\
-                % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file_handle.filename.rsplit('.', 1)[1]))
-            file_handle.save(filename)
-            return jsonify({"success": True})
 
 
 @blueprint.route('/movie_status/<guid>/<event_type>/', methods=['GET', 'POST'])
@@ -305,10 +211,6 @@ def tv_status(guid, event_type):
     elif event_type == "mismatch":
         pass
     return redirect(url_for('user_tv.user_tv_page'))
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @blueprint.before_request

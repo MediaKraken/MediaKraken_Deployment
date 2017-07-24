@@ -20,7 +20,7 @@
 
 div.wrapper{
 	float:left; /* important */
-	position:relative; /* important(so we can absolutely position the description div */ 
+	position:relative; /* important(so we can absolutely position the description div */
 }
 div.description{
 	position:absolute; /* absolute position (so we can position it where we want)*/
@@ -55,7 +55,9 @@ p.description_content_left{
 
 .rating_icon { position:absolute; top: 10px; left: 40px; }
 
-.synced_icon { position:absolute; top: 10px; left: 110px; }
+.synced_icon { position:absolute; top: 10px; left: 70px; }
+
+.request_icon { position:absolute; top: 10px; left: 100px; }
 
 .exclamation_icon { position:absolute; top: 10px; left: 130px; }
 

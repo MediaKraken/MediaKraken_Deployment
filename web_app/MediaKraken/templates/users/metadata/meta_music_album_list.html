@@ -6,7 +6,6 @@
         <link rel="stylesheet"  href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <script src="/static/js/jquery.min.js"></script>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -16,7 +15,7 @@
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[0]}}>
                 {% if row_data[3] == None %}
-                <a href= {{"../meta_music_album_detail/" + row_data[0] }}>
+                <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
                 <img src= "/static/images/headphone.png" height="300" width="200">
                 </a>
                 {% if row_data[2] == "" %}
@@ -29,7 +28,7 @@
                     </div>
                 {% endif %}
                 {% else %}
-                <a href= {{"../meta_music_album_detail/" + row_data[0] }} >
+                <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
                 <img src= {{"/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                 </a>
                 <div class="description">
@@ -44,5 +43,6 @@
     {% else %}
     <p id="general_text">No music album metadata found.</p>
     {% endif %}
+    <script src="/static/js/jquery.min.js"></script>
 </body>
 {% endblock %}

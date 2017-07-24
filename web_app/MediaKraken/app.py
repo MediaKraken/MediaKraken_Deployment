@@ -3,7 +3,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask, render_template, g
 from flask_moment import Moment
-#from flaskext.uploads import (UploadSet, configure_uploads, IMAGES, UploadNotAllowed)
 import redis
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
@@ -21,24 +20,15 @@ from MediaKraken import public, user, admins
 
 
 def create_app(config_object=ProdConfig):
-    """An application factory, as explained here:
-        http://flask.pocoo.org/docs/patterns/appfactories/
-    """
     app = Flask(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
     # did not fix the flask port dropping issue
     # app.config['SERVER_NAME'] = "127.0.0.1:8900"
-    app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
-    ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg']
-#    app.config['UPLOADED_PHOTOS_DEST'] = '/tmp/testuploadext'
-#    upload_user_image = UploadSet('user_image', IMAGES)
-#    upload_poster_image = UploadSet('user_poster', IMAGES)
-#    configure_uploads(app, photos)
     moment = Moment(app)
     return app
 
@@ -65,6 +55,13 @@ def register_blueprints(app):
     app.register_blueprint(user.views_games.blueprint)
     app.register_blueprint(user.views_images.blueprint)
     app.register_blueprint(user.views_internet.blueprint)
+    app.register_blueprint(user.views_metadata_album.blueprint)
+    app.register_blueprint(user.views_metadata_movie.blueprint)
+    app.register_blueprint(user.views_metadata_music_video.blueprint)
+    app.register_blueprint(user.views_metadata_people.blueprint)
+    app.register_blueprint(user.views_metadata_periodical.blueprint)
+    app.register_blueprint(user.views_metadata_sports.blueprint)
+    app.register_blueprint(user.views_metadata_tv.blueprint)
     app.register_blueprint(user.views_movie.blueprint)
     app.register_blueprint(user.views_movie_collection.blueprint)
     app.register_blueprint(user.views_movie_genre.blueprint)

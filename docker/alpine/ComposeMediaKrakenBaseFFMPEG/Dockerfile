@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.5
+FROM alpine:3.6
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base ffmpeg for slave"
@@ -10,6 +10,7 @@ ADD pipeline-build-os-ffmpeg-alpine.sh /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  nasm \
   libsmbclient \
   gettext \
   lame-dev \
@@ -53,8 +54,8 @@ RUN apk add --update \
   python-dev \
   gnutls-dev \
   samba-dev \
-  libressl-dev \
-  && /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
+  libressl-dev
+RUN /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \

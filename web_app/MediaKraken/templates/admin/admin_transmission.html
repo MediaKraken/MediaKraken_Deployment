@@ -13,11 +13,6 @@
         <link href="/static/css/style.min.css" rel="stylesheet">
         <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/static/js/base_webapp_delete.js"></script>
-        <script src="/static/js/base_webapp_update.js"></script>
     </head>
     {% if data_transmission %}
     <div class="table-responsive">
@@ -108,5 +103,10 @@
     {% else %}
     <p>No transmission data found.</p>
     {% endif %}
+    <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/base_webapp_delete.js"></script>
+    <script src="/static/js/base_webapp_update.js"></script>
 </body>
 {% endblock %}

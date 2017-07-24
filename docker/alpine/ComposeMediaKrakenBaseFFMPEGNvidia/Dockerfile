@@ -55,8 +55,8 @@ RUN apt-get update \
   libspeex-dev \
   libwavpack-dev \
   libxvidcore-dev \
-  wget \
-  && /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
+  wget
+RUN /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && mv ~/bin/ff* /bin/. \
   && rm /bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \

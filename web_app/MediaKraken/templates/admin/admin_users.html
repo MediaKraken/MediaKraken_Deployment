@@ -13,10 +13,6 @@
         <link href="/static/css/style.min.css" rel="stylesheet">
         <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/static/js/base_webapp_delete.js"></script>
     </head>
     {% if users %}
     {{ pagination.info }}
@@ -40,7 +36,7 @@
                 {% for row_data in users %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href = '../user_detail/{{row_data[0]}}/'>{{ row_data[1] }}</a></td>
+                    <td><a href = "{{ url_for('admins_users.admin_user_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     <td>{{ row_data[2] }}</td>
                     <td>{{ row_data[3] }}</td>
                     <td>{{ row_data[4] }}</td>
@@ -80,5 +76,9 @@
     {% else %}
     <p>No users found. Contact administrator.</p>
     {% endif %}
+    <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/base_webapp_delete.js"></script>
 </body>
 {% endblock %}

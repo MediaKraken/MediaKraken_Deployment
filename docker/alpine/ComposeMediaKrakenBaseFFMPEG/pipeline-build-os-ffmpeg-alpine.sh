@@ -4,7 +4,7 @@ mkdir ~/ffmpeg_sources
 cd ~/ffmpeg_sources
 git clone --depth 1 git://git.videolan.org/x264
 cd x264
-./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic --disable-opencl
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic --disable-opencl --disable-asm
 make -j16
 make install
 make distclean
@@ -184,6 +184,7 @@ make install
 #    --enable-netcdf \
 #    --enable-libdc1394 \
 #    --enable-openssl \
+#    --enable-libcelt \
 
 cd ~/ffmpeg_sources
 # grab the newest only
@@ -202,7 +203,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --disable-debug \
     --disable-doc \
     --enable-libass \
-    --enable-libcelt \
     --enable-libfdk-aac \
     --enable-libflite \
     --enable-libfontconfig \

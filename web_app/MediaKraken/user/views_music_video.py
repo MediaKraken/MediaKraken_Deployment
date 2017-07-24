@@ -46,30 +46,6 @@ def user_music_video_list():
                           )
 
 
-@blueprint.route('/meta_music_video_list')
-@blueprint.route('/meta_music_video_list/')
-@login_required
-def metadata_music_video_list():
-    """
-    Display metadata music video
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music_video'),
-                                                  record_name='music video',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                 )
-    return render_template('users/metadata/meta_music_video_list.html',
-                           media_person=g.db_connection.db_meta_music_video_list(offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                          )
-
-
 @blueprint.before_request
 def before_request():
     """

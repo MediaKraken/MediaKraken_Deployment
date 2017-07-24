@@ -28,29 +28,27 @@
                         <li class="nav-header">
                             <a href="#" data-toggle="collapse" data-target="#userMenu">Settings <i class="glyphicon glyphicon-chevron-down"></i></a>
                             <ul class="nav nav-stacked collapse in" id="userMenu">
-                                <li><a href="./messages"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a></li>
-                                <li><a href="./settings"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
-                                <li><a href="./cron"><i class="glyphicon glyphicon-tasks"></i> Cron</a></li>
-                                <li><a href="./share"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a></li>
-                                <li><a href="./library"><i class="glyphicon glyphicon-film"></i> Library <span class="badge badge-info"> {{ data_library }}</span></a></li>
-                                <li><a href="./books_add"><i class="glyphicon glyphicon-book"></i> Book (add) <span class="badge badge-info"></span></a></li>
-                                <li><a href="./nas"><i class="glyphicon glyphicon-modal-window"></i> NAS</a></li>
-                                <li><a href="./backup"><i class="glyphicon glyphicon-hdd"></i> Backup</a></li>
-                                <li><a href="./users"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a></li>
-                                <li><a href="./chromecasts"><i class="fa fa-sun-o"></i> Chromecasts</a></li>
-                                <li><a href="./tvtuners"><i class="glyphicon glyphicon-facetime-video"></i> TV Tuners</a></li>
-                                <li><a href="./server_stat"><i class="glyphicon glyphicon-signal"></i> Statistics</a></li>
-                                <li><a href="./server_stat_slave"><i class="glyphicon glyphicon-transfer"></i> Slave Statistics</a></li>
-                                <li><a href="./database"><i class="fa fa-database"></i> DB Statistics</a></li>
-                                <li><a href="./ffmpeg_stat"><i class="glyphicon glyphicon-road"></i> FFMPEG Statistics</a></li>
-                                <li><a href="./docker_stat"><i class="fa fa-anchor"></i> Docker Statistics</a></li>
+                                <li><a href="{{ url_for('admins.admin_messages') }}"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a></li>
+                                <li><a href="{{ url_for('admins.admin_server_settings') }}"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+                                <li><a href="{{ url_for('admins_cron.admin_cron_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Cron</a></li>
+                                <li><a href="{{ url_for('admins_share.admin_share') }}"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a></li>
+                                <li><a href="{{ url_for('admins_library.admin_library') }}"><i class="glyphicon glyphicon-film"></i> Library <span class="badge badge-info"> {{ data_library }}</span></a></li>
+                                <li><a href="{{ url_for('admins.admin_books_add') }}"><i class="glyphicon glyphicon-book"></i> Book (add) <span class="badge badge-info"></span></a></li>
+                                <li><a href="{{ url_for('admins.admin_nas') }}"><i class="glyphicon glyphicon-modal-window"></i> NAS</a></li>
+                                <li><a href="{{ url_for('admins_backup.admin_backup') }}"><i class="glyphicon glyphicon-hdd"></i> Backup</a></li>
+                                <li><a href="{{ url_for('admins_users.admin_users') }}"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a></li>
+                                <li><a href="{{ url_for('admins_chromecasts.admin_chromecast') }}"><i class="fa fa-sun-o"></i> Chromecasts</a></li>
+                                <li><a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}"><i class="glyphicon glyphicon-facetime-video"></i> TV Tuners</a></li>
+                                <li><a href="{{ url_for('admins.admin_server_stat') }}"><i class="glyphicon glyphicon-signal"></i> Statistics</a></li>
+                                <li><a href="{{ url_for('admins.admin_database_statistics') }}"><i class="fa fa-database"></i> DB Statistics</a></li>
+                                <li><a href="{{ url_for('admins_docker.docker_stat') }}"><i class="fa fa-anchor"></i> Docker Statistics</a></li>
                                 {% if data_transmission_active %}
-                                <li><a href="./transmission"><i class="glyphicon glyphicon-globe"></i> Transmission</a></li>
+                                <li><a href="{{ url_for('admins_transmission.admin_transmission') }}"><i class="glyphicon glyphicon-globe"></i> Transmission</a></li>
                                 {% endif %}
                                 {% if data_zfs_active %}
-                                <li><a href="./zfs"><i class="fa fa-database"></i> ZFS</a></li>
+                                <li><a href="{{ url_for('admins.admin_server_zfs') }}"><i class="fa fa-database"></i> ZFS</a></li>
                                 {% endif %}
-                                <li><a href="./link_server"><i class="glyphicon glyphicon-link"></i> Server Links</a></li>
+                                <li><a href="{{ url_for('admins_link.admin_server_link_server') }}"><i class="glyphicon glyphicon-link"></i> Server Links</a></li>
                             </ul>
                         </li>
 

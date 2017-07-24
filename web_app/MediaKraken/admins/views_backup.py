@@ -19,11 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import BackupEditForm
-from MediaKraken.admins.forms import BookAddForm
-from MediaKraken.admins.forms import DLNAEditForm
-
 from common import common_config_ini
 from common import common_internationalization
 from common import common_network_cifs
@@ -34,8 +30,6 @@ from common import common_network
 from common import common_pagination
 from common import common_string
 from common import common_system
-from common import common_version
-from common import common_zfs
 import database as database_base
 
 
@@ -106,10 +100,12 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    for backup_local in common_file.com_file_dir_list(
-            option_config_json['MediaKrakenServer']['BackupLocal'], 'dump', False, False, True):
-        backup_files.append((backup_local[0], 'Local',
-            common_string.com_string_bytes2human(backup_local[1])))
+    local_file_backups = common_file.com_file_dir_list('/ mediakraken/backup',
+                                                      'dump', False, False, True)
+    if local_file_backups is not None:
+        for backup_local in local_file_backups:
+            backup_files.append((backup_local[0], 'Local',
+                common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
     for backup_cloud in CLOUD_HANDLE.com_cloud_backup_list():
         backup_files.append((backup_cloud.name, backup_cloud.type,

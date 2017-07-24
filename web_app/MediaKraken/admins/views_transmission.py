@@ -19,7 +19,6 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import UserEditForm
 
 from common import common_config_ini

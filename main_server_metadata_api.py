@@ -21,16 +21,26 @@ import os
 import logging
 import subprocess
 from build_image_directory import build_image_dirs
+from build_trailer_directory import build_trailer_dirs
 from common import common_logging
 from common import common_metadata_limiter
 from common import common_signal
 
 
+# TODO should be using env variables
 # build image directories if needed
 if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
     pass
 else:
     build_image_dirs()
+
+
+# TODO should be using env variables
+# build trailer directories if needed
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailer/trailer/a'):
+    pass
+else:
+    build_trailer_dirs()
 
 
 # set signal exit breaks

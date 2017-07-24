@@ -87,3 +87,12 @@ def db_cron_delete(self, cron_uuid):
     """
     self.db_cursor.execute('delete from mm_cron where mm_cron_guid = %s',
         (cron_uuid,))
+
+
+def db_cron_info(self, cron_uuid):
+    """
+    Cron job info
+    """
+    self.db_cursor.execute('select * from mm_cron where mm_cron_guid = %s',
+        (cron_uuid,))
+    return self.db_cursor.fetchone()[0]
