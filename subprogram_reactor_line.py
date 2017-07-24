@@ -57,8 +57,14 @@ def read(queue_object):
     ch, method, properties, body = yield queue_object.get()
 
     """
+    Do I actually launch a docker swarm container that checks for cuda
+    and then that launches the slave container with ffmpeg
+
     # this is for the debian one
-    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkbasenvidiadebain
+    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkslavenvidiadebian
+
+    --device /dev/nvidia0:/dev/nvidia0 \
+	--device /dev/nvidiactl:/dev/nvidiactl \
     """
 
     if body:
