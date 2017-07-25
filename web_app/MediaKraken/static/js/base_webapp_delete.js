@@ -267,3 +267,30 @@ function Cron_Delete() {
         }
     });
 }
+
+function ConfirmTVTunerDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#delete_tvtuner').modal();
+}
+
+function TVTuner_Delete() {
+    $.ajax({
+        url: '../tvtuner_delete',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#delete_tvtuner').modal('hide');
+                window.location = '../tvtuners';
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
