@@ -268,6 +268,24 @@ services:
       - /var/opt/mediakraken/data:/data
     restart: unless-stopped
 
+  # runs transmissions
+  transmission:
+    build:
+      context: ./ComposeMediaKrakenTransmission
+      dockerfile: Dockerfile
+    container_name: mktransmission
+    ports:
+      - "9091:9091"
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
+    volumes:
+      -v /var/opt/mediakraken/transmission/downloads:/transmission/downloads
+      -v /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
+    environment:
+      - USERNAME=${TRANSUSER}
+      - PASSWORD=${TRANSPASSWORD}
+
+
 # Docker private networks
 networks:
   # Twisted and AMQP communications network
