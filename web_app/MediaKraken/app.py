@@ -83,6 +83,7 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_cron.blueprint)
     app.register_blueprint(admins.views_docker.blueprint)
     app.register_blueprint(admins.views_library.blueprint)
+    app.register_blueprint(admins.views_messages)
     app.register_blueprint(admins.views_link.blueprint)
     app.register_blueprint(admins.views_share.blueprint)
     app.register_blueprint(admins.views_transmission.blueprint)

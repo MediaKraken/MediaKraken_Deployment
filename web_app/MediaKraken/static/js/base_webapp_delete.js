@@ -1,3 +1,30 @@
+function ConfirmMessageDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#delete_message').modal();
+}
+
+function Message_Delete() {
+    $.ajax({
+        url: '../message_delete',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#delete_message').modal('hide');
+                window.location = '../messages';
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
 function ConfirmLinkDelete(elem) {
     localStorage.setItem('deleteId', $(elem).attr('data-id'));
     $('#delete_link').modal();
