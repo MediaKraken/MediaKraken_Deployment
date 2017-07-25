@@ -19,7 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import LinkEditForm
+from MediaKraken.admins.forms import LinkAddEditForm
 
 from common import common_config_ini
 from common import common_internationalization
@@ -88,7 +88,7 @@ def admin_link_edit_page():
     """
     allow user to edit link
     """
-    form = LinkEditForm(request.form)
+    form = LinkAddEditForm(request.form)
     return render_template("admin/admin_link_edit.html", form=form,
                            data_class=None,
                            data_share=None)
