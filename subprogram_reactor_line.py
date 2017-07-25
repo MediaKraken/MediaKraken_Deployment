@@ -65,6 +65,9 @@ def read(queue_object):
 
     --device /dev/nvidia0:/dev/nvidia0 \
 	--device /dev/nvidiactl:/dev/nvidiactl \
+
+	wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
+	The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
     """
 
     if body:
