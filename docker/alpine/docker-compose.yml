@@ -279,8 +279,8 @@ services:
       - "51413:51413/tcp"
       - "51413:51413/udp"
     volumes:
-      -v /var/opt/mediakraken/transmission/downloads:/transmission/downloads
-      -v /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
+      - /var/opt/mediakraken/transmission/downloads:/transmission/downloads
+      - /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
     environment:
       - USERNAME=${TRANSUSER}
       - PASSWORD=${TRANSPASSWORD}
