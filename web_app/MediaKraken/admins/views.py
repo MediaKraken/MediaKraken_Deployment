@@ -153,6 +153,18 @@ def admins():
 #    return render_template("admin/admin_dlna.html")
 
 
+@blueprint.route("/messages", methods=["GET", "POST"])
+@blueprint.route("/messages/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_messages():
+    """
+    List all NAS devices
+    """
+    messages = []
+    return render_template("admin/admin_messages.html", data_messages=messages)
+
+
 @blueprint.route("/nas", methods=["GET", "POST"])
 @blueprint.route("/nas/", methods=["GET", "POST"])
 @login_required
