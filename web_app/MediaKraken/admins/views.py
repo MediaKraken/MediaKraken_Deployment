@@ -82,6 +82,9 @@ def admins():
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
+    # grab docker info for host ip
+    docker_inst = common_docker.CommonDocker()
+    docker_info = docker_inst.com_docker_info()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
@@ -112,7 +115,7 @@ def admins():
                                common_internationalization.com_inter_number_format(\
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
-                           data_host_ip='fakeip',
+                           data_host_ip=docker_info['Swarm']['NodeAddr'],
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
                                =option_config_json['MediaKrakenServer']['ListenPort'],
