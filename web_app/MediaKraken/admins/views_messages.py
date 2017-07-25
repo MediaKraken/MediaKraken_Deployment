@@ -82,7 +82,7 @@ def admin_messages():
                           )
 
 
-@blueprint.route('/messages_delete', methods=["POST"])
+@blueprint.route('/message_delete', methods=["POST"])
 @login_required
 @admin_required
 def admin_messages_delete_page():
