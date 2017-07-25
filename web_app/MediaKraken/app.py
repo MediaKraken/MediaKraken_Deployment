@@ -75,7 +75,6 @@ def register_blueprints(app):
     app.register_blueprint(user.views_sync.blueprint)
     app.register_blueprint(user.views_tv.blueprint)
     app.register_blueprint(user.views_tv_live.blueprint)
-    app.register_blueprint(admins.views.blueprint)
     # load up admin bps
     app.register_blueprint(admins.views.blueprint)
     app.register_blueprint(admins.views_backup.blueprint)
