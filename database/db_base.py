@@ -104,6 +104,13 @@ def db_table_count(self, table_name):
         return None
 
 
+def db_drop_table(self, table_name):
+    """
+    drop a table
+    """
+    self.db_cursor.execute('DROP TABLE IF EXISTS ' + table_name) # can't %s due to ' inserted
+
+
 def db_query(self, query_string):
     """
     # general run anything

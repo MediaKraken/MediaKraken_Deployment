@@ -8,7 +8,8 @@ class MKServerDatabase(object):
         db_rollback,\
         db_table_index_check,\
         db_table_count,\
-        db_query
+        db_query, \
+        db_drop_table
     from database.db_base_activity import db_activity_insert,\
         db_activity_purge
     from database.db_base_audit import db_audit_path_status,\
