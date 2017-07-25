@@ -9,3 +9,4 @@ docker tag mk_rabbit:latest mediakraken/mkrabbitmq:latest
 docker tag mk_redis:latest mediakraken/mkredis:latest
 docker tag mk_webserver:latest mediakraken/mkwebapp:latest
 docker tag mk_transmission:latest mediakraken/mktransmission:latest
+docker tag mk_musicbrainz mediakraken/mkmusicbrainz:latest

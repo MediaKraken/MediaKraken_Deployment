@@ -149,16 +149,16 @@ services:
       - DAC_READ_SEARCH
 
   # musicbrainz replicator
-#  brainz:
-#    build:
-#      context: ./ComposeMediaKrakenMusicBrainz
-#      dockerfile: Dockerfile
-#    environment:
-#      - BRAINZCODE=${BRAINZCODE}
-#    container_name: mkbrainz
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
+  musicbrainz:
+    build:
+      context: ./ComposeMediaKrakenMusicBrainz
+      dockerfile: Dockerfile
+    environment:
+      - BRAINZCODE=${BRAINZCODE}
+    container_name: mkmusicbrainz
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
 
   # runs the nginx proxy service
   nginx:
