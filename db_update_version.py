@@ -54,6 +54,14 @@ if db_connection.db_version_check() == 4:
     db_connection.db_version_update(5)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 5:
+    # drop tvtuners and nas tables
+    db_connection.db_drop_table('mm_nas')
+    db_connection.db_drop_table('mm_tuner')
+    db_connection.db_version_update(6)
+    db_connection.db_commit()
+
+
 # drop trigger table since moving to celery?
 
 # close the database

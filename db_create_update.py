@@ -740,16 +740,6 @@ if db_connection.db_table_index_check('mm_image_download_idx_provider') is None:
                         ' ON mm_download_image_que(mdq_image_provider)')
 
 
-# tuners
-db_connection.db_query('create table IF NOT EXISTS mm_tuner (mm_tuner_id uuid'
-    ' CONSTRAINT mm_tuner_id_pk primary key, mm_tuner_json jsonb)')
-
-
-# nas
-db_connection.db_query('create table IF NOT EXISTS mm_nas (mm_nas_id uuid'
-    ' CONSTRAINT mm_nas_id_pk primary key, mm_nas_json jsonb)')
-
-
 # hardware device
 db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
     ' CONSTRAINT mm_device_id_pk primary key, mm_device_type text, mm_device_json jsonb)')
