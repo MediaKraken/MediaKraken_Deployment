@@ -112,6 +112,7 @@ def admins():
                                common_internationalization.com_inter_number_format(\
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
+                           data_host_ip='fakeip',
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
                                =option_config_json['MediaKrakenServer']['ListenPort'],
