@@ -24,9 +24,9 @@ py3 = version_info[0] > 2 #creates boolean value for test that Python major vers
 
 compose_text = "version: '2'\n"\
     "# MediaKraken\n"\
-    "# Volumes are HOST directory and then CONTAINER directory\n"\
+    "# Volumes are HOST directory and then CONTAINER directory\n\n"\
     "services:\n"
-env_text = ''
+env_text = ""
 
 if py3:
   response = input("Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
