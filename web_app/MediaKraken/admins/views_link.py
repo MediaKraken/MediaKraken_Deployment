@@ -19,7 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import UserEditForm
+from MediaKraken.admins.forms import LinkEditForm
 
 from common import common_config_ini
 from common import common_internationalization
@@ -78,6 +78,20 @@ def admin_server_link_server():
                            page=page,
                            per_page=per_page,
                            pagination=pagination)
+
+
+@blueprint.route("/link_edit", methods=["GET", "POST"])
+@blueprint.route("/link_edit/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_link_edit_page():
+    """
+    allow user to edit link
+    """
+    form = LinkEditForm(request.form)
+    return render_template("admin/admin_link_edit.html", form=form,
+                           data_class=None,
+                           data_share=None)
 
 
 @blueprint.route('/link_delete', methods=["POST"])
