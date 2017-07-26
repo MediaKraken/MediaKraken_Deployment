@@ -12,7 +12,7 @@ blueprint = Blueprint("user_search", __name__, url_prefix='/users', static_folde
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
-from MediaKraken.admins.forms import SearchForm
+from MediaKraken.user.forms import SearchForm
 import sys
 sys.path.append('..')
 sys.path.append('../..')
