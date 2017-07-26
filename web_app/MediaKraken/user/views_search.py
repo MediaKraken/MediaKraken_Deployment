@@ -26,8 +26,8 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route("/search")
-@blueprint.route("/search/")
+@blueprint.route("/search", methods=["GET", "POST"])
+@blueprint.route("/search/", methods=["GET", "POST"])
 @login_required
 def search_media():
     """
@@ -35,6 +35,9 @@ def search_media():
     """
     form = SearchForm(request.form)
     media = []
+
+    if request.method == 'POST':
+        g.db_connection.db_trigger_insert(('python', './subprogram_file_scan.py'))
 
     return render_template('users/user_search.html', media=media, form=form)
 

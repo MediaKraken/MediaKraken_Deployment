@@ -244,6 +244,7 @@ class MKServerDatabase(object):
     from database.db_base_review import db_review_count,\
         db_review_list_by_tmdb_guid,\
         db_review_insert
+    from database.db_base_search import db_search
     from database.db_base_sync import db_sync_list_count,\
         db_sync_list,\
         db_sync_insert,\
