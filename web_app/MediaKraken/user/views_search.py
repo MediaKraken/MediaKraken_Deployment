@@ -30,7 +30,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route("/search")
 @blueprint.route("/search/")
 @login_required
-def user_search(genre):
+def search_media(genre):
     """
     Display search page
     """
