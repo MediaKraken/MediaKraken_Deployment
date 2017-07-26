@@ -71,6 +71,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views_person.blueprint)
     app.register_blueprint(user.views_playback.blueprint)
     app.register_blueprint(user.views_reports.blueprint)
+    app.register_blueprint(user.views_search.blueprint)
     app.register_blueprint(user.views_sports.blueprint)
     app.register_blueprint(user.views_sync.blueprint)
     app.register_blueprint(user.views_tv.blueprint)
