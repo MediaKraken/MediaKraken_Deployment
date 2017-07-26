@@ -34,7 +34,7 @@ def search_media():
     """
     media = []
 
-    return render_template('users/user_search.html', media=media )
+    return render_template('users/user_search.html', media=media)
 
 
 @blueprint.before_request
