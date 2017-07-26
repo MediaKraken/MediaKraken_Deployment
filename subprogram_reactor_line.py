@@ -105,24 +105,26 @@ def read(queue_object):
                                        + ' -subtitles_language ' + json_message['Language']
                 else:
                     subtitle_command = ''
-                logging.info('b4 cast run')
-                try:
-                    docker_inst.com_docker_run_container(container_name=name_container,
-                        container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
-                        + ' -devicename ' + json_message['Target']
-                        + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
-                        + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
-                except Exception as e:
-                    logging.error('cast ex %s', str(e))
-                logging.info('after cast run')
+                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py'\
+                    + ' -devicename ' + json_message['Target']\
+                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'\
+                    + ' -movflags faststart+empty_moov\' -transcode \''\
+                    + json_message['Data'] + '\''
             else:
-                logging.info('b4 run')
-                docker_inst.com_docker_run_container(container_name=name_container,
-                     container_command=(
-                        'ffmpeg -i \'' + json_message['Data'] + '\''))
-                logging.info('after run')
+                pass
+            logging.info('b4 docker run')
+            hwaccel = True
+            if hwaccel == True:
+                image_name = 'mediakraken/mkslavenvidiadebian'
+            else:
+                image_name = 'mediakraken/mkslave'
+            docker_inst.com_docker_run_container(container_image_name=image_name,
+                 container_name=name_container, container_command=(container_command))
+            logging.info('after docker run')
         elif json_message['Type'] == 'Stop':
-            pass
+            # this will force stop the container and then delete it
+            docker_inst.com_docker_delete_container(
+                container_image_name=mk_containers[json_message['User']])
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
