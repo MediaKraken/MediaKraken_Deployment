@@ -12,6 +12,7 @@ blueprint = Blueprint("user_search", __name__, url_prefix='/users', static_folde
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
+from MediaKraken.admins.forms import SearchForm
 import sys
 sys.path.append('..')
 sys.path.append('../..')
@@ -32,9 +33,10 @@ def search_media():
     """
     Display search page
     """
+    form = SearchForm(request.form)
     media = []
 
-    return render_template('users/user_search.html', media=media)
+    return render_template('users/user_search.html', media=media, form=form)
 
 
 @blueprint.before_request
