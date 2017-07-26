@@ -66,6 +66,8 @@ base_media_classes = (
 # open the database
 db_connection = common_config_ini.com_config_read(True)
 
+# activate extention pg_trgm
+db_connection.db_query('create extension pg_trgm;')
 
 # create table for version
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
@@ -637,7 +639,7 @@ db_connection.db_query('select count(*) from mm_options_and_status')
 if db_connection.fetchone()[0] == 0:
     db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
         'MaxResumePct': 5,
-        'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,
+        'MediaKrakenServer': {'ListenPort': 8098, 'FFMPEG': 8900, 'APIPort': 8097,
             'BackupLocal': '/mediakraken/backups/'},
         'Maintenance': None,
         'API': {'mediabrainz': None,

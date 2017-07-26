@@ -55,6 +55,8 @@ if db_connection.db_version_check() == 4:
     db_connection.db_commit()
 
 if db_connection.db_version_check() == 5:
+    # enable pg_trmg
+    db_connection.db_query('create extension pg_trgm;')
     # drop tvtuners and nas tables
     db_connection.db_drop_table('mm_nas')
     db_connection.db_drop_table('mm_tuner')
