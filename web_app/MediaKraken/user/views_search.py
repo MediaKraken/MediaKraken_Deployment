@@ -32,24 +32,9 @@ def search_media():
     """
     Display search page
     """
-    page, per_page, offset = common_pagination.get_page_items()
     media = []
 
-    total = g.db_connection.db_web_media_list_count(
-        g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,
-        group_collection=False, include_remote=True)
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=total,
-                                                  record_name='results',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                 )
-    return render_template('users/user_search.html', media=media,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                          )
+    return render_template('users/user_search.html', media=media )
 
 
 @blueprint.before_request
