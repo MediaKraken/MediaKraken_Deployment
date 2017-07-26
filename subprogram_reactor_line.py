@@ -123,6 +123,7 @@ def read(queue_object):
             logging.info('after docker run')
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
+            logging.info('user stop: %s', mk_containers[json_message['User']])
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
