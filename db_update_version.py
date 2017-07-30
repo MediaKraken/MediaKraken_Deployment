@@ -63,11 +63,19 @@ if db_connection.db_version_check() == 5:
 
 if db_connection.db_version_check() == 6:
     # create indexes for pg_trgm
-
-    # sudo -u postgres psql -d database -c "create extension pg_trgm;"
-
-    db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_user_json'
-                           ' ON mm_metadata_tvshow USING gin (mm_metadata_tvshow_user_json)')
+    # su -u postgres psql -d metamandb -c "create extension pg_trgm;"
+    db_connection.db_query('CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow USING gist(mm_metadata_tvshow_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports USING gist(mm_metadata_sports_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician USING gist(mm_metadata_musician_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_album_name_trigram_idx ON mm_metadata_album USING gist(mm_metadata_album_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_music_name_trigram_idx ON mm_metadata_music USING gist(mm_metadata_music_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_media_anime_name_trigram_idx ON mm_metadata_anime USING gist(mm_media_anime_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_movie USING gist(mm_media_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_band gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_song gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book USING gist(mm_metadata_book_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person USING gist(mmp_person_name gist_trgm_ops);')
     db_connection.db_version_update(7)
     db_connection.db_commit()
 
