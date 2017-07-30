@@ -292,8 +292,8 @@ services:
       dockerfile: Dockerfile
     container_name: mkmumble
     ports:
-      - "64738:64738/tcp
-      - "64738:64738/udp
+      - "64738:64738/tcp"
+      - "64738:64738/udp"
 
 # Docker private networks
 networks:
