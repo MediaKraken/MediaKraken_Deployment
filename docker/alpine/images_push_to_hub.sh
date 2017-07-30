@@ -18,3 +18,4 @@ docker push mediakraken/mkrabbitmq:latest
 docker push mediakraken/mkredis:latest
 docker push mediakraken/mkwebapp:latest
 docker push mediakraken/mktransmission:latest
+docker push mediakraken/mkmumble:latest
