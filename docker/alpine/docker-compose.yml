@@ -285,6 +285,15 @@ services:
       - USERNAME=${TRANSUSER}
       - PASSWORD=${TRANSPASSWORD}
 
+  # runs mumble
+  mumble:
+    build:
+      context: ./ComposeMediaKrakenMumble
+      dockerfile: Dockerfile
+    container_name: mkmumble
+    ports:
+      - "64738:64738/tcp
+      - "64738:64738/udp
 
 # Docker private networks
 networks:
