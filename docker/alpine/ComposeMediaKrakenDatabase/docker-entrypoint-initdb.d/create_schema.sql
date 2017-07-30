@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.6
--- Dumped by pg_dump version 9.5.6
+-- Dumped from database version 9.5.7
+-- Dumped by pg_dump version 9.5.7
 
--- Started on 2017-07-01 22:30:30 CDT
+-- Started on 2017-07-29 21:08:50 CDT
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -24,12 +24,29 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2546 (class 0 OID 0)
+-- TOC entry 2570 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 2 (class 3079 OID 80382)
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- TOC entry 2571 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 SET search_path = public, pg_catalog;
@@ -39,7 +56,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 209 (class 1259 OID 22800)
+-- TOC entry 210 (class 1259 OID 22800)
 -- Name: mm_channel; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -55,7 +72,7 @@ CREATE TABLE mm_channel (
 ALTER TABLE mm_channel OWNER TO metamanpg;
 
 --
--- TOC entry 203 (class 1259 OID 22753)
+-- TOC entry 204 (class 1259 OID 22753)
 -- Name: mm_cron; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -73,7 +90,7 @@ CREATE TABLE mm_cron (
 ALTER TABLE mm_cron OWNER TO metamanpg;
 
 --
--- TOC entry 219 (class 1259 OID 22896)
+-- TOC entry 218 (class 1259 OID 22896)
 -- Name: mm_device; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -87,7 +104,7 @@ CREATE TABLE mm_device (
 ALTER TABLE mm_device OWNER TO metamanpg;
 
 --
--- TOC entry 223 (class 1259 OID 23013)
+-- TOC entry 222 (class 1259 OID 23013)
 -- Name: mm_download_image_que; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -101,7 +118,7 @@ CREATE TABLE mm_download_image_que (
 ALTER TABLE mm_download_image_que OWNER TO metamanpg;
 
 --
--- TOC entry 216 (class 1259 OID 22869)
+-- TOC entry 217 (class 1259 OID 22869)
 -- Name: mm_download_que; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -116,7 +133,7 @@ CREATE TABLE mm_download_que (
 ALTER TABLE mm_download_que OWNER TO metamanpg;
 
 --
--- TOC entry 186 (class 1259 OID 22546)
+-- TOC entry 187 (class 1259 OID 22546)
 -- Name: mm_link; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -130,7 +147,7 @@ CREATE TABLE mm_link (
 ALTER TABLE mm_link OWNER TO metamanpg;
 
 --
--- TOC entry 206 (class 1259 OID 22778)
+-- TOC entry 207 (class 1259 OID 22778)
 -- Name: mm_loan; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -147,7 +164,7 @@ CREATE TABLE mm_loan (
 ALTER TABLE mm_loan OWNER TO metamanpg;
 
 --
--- TOC entry 184 (class 1259 OID 22524)
+-- TOC entry 185 (class 1259 OID 22524)
 -- Name: mm_media; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -164,7 +181,7 @@ CREATE TABLE mm_media (
 ALTER TABLE mm_media OWNER TO metamanpg;
 
 --
--- TOC entry 192 (class 1259 OID 22631)
+-- TOC entry 193 (class 1259 OID 22631)
 -- Name: mm_media_class; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -179,7 +196,7 @@ CREATE TABLE mm_media_class (
 ALTER TABLE mm_media_class OWNER TO metamanpg;
 
 --
--- TOC entry 183 (class 1259 OID 22515)
+-- TOC entry 184 (class 1259 OID 22515)
 -- Name: mm_media_dir; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -196,7 +213,7 @@ CREATE TABLE mm_media_dir (
 ALTER TABLE mm_media_dir OWNER TO metamanpg;
 
 --
--- TOC entry 185 (class 1259 OID 22535)
+-- TOC entry 186 (class 1259 OID 22535)
 -- Name: mm_media_remote; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -214,7 +231,7 @@ CREATE TABLE mm_media_remote (
 ALTER TABLE mm_media_remote OWNER TO metamanpg;
 
 --
--- TOC entry 182 (class 1259 OID 22507)
+-- TOC entry 183 (class 1259 OID 22507)
 -- Name: mm_media_share; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -231,7 +248,7 @@ CREATE TABLE mm_media_share (
 ALTER TABLE mm_media_share OWNER TO metamanpg;
 
 --
--- TOC entry 190 (class 1259 OID 22605)
+-- TOC entry 191 (class 1259 OID 22605)
 -- Name: mm_metadata_album; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -247,7 +264,7 @@ CREATE TABLE mm_metadata_album (
 ALTER TABLE mm_metadata_album OWNER TO metamanpg;
 
 --
--- TOC entry 193 (class 1259 OID 22640)
+-- TOC entry 194 (class 1259 OID 22640)
 -- Name: mm_metadata_anime; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -266,7 +283,7 @@ CREATE TABLE mm_metadata_anime (
 ALTER TABLE mm_metadata_anime OWNER TO metamanpg;
 
 --
--- TOC entry 196 (class 1259 OID 22688)
+-- TOC entry 197 (class 1259 OID 22688)
 -- Name: mm_metadata_book; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -283,7 +300,7 @@ CREATE TABLE mm_metadata_book (
 ALTER TABLE mm_metadata_book OWNER TO metamanpg;
 
 --
--- TOC entry 202 (class 1259 OID 22742)
+-- TOC entry 203 (class 1259 OID 22742)
 -- Name: mm_metadata_collection; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -299,7 +316,7 @@ CREATE TABLE mm_metadata_collection (
 ALTER TABLE mm_metadata_collection OWNER TO metamanpg;
 
 --
--- TOC entry 213 (class 1259 OID 22838)
+-- TOC entry 214 (class 1259 OID 22838)
 -- Name: mm_metadata_game_software_info; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -313,7 +330,7 @@ CREATE TABLE mm_metadata_game_software_info (
 ALTER TABLE mm_metadata_game_software_info OWNER TO metamanpg;
 
 --
--- TOC entry 214 (class 1259 OID 22849)
+-- TOC entry 215 (class 1259 OID 22849)
 -- Name: mm_metadata_game_systems_info; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -329,7 +346,7 @@ CREATE TABLE mm_metadata_game_systems_info (
 ALTER TABLE mm_metadata_game_systems_info OWNER TO metamanpg;
 
 --
--- TOC entry 208 (class 1259 OID 22791)
+-- TOC entry 209 (class 1259 OID 22791)
 -- Name: mm_metadata_logo; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -343,7 +360,7 @@ CREATE TABLE mm_metadata_logo (
 ALTER TABLE mm_metadata_logo OWNER TO metamanpg;
 
 --
--- TOC entry 194 (class 1259 OID 22657)
+-- TOC entry 195 (class 1259 OID 22657)
 -- Name: mm_metadata_movie; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -360,7 +377,7 @@ CREATE TABLE mm_metadata_movie (
 ALTER TABLE mm_metadata_movie OWNER TO metamanpg;
 
 --
--- TOC entry 191 (class 1259 OID 22618)
+-- TOC entry 192 (class 1259 OID 22618)
 -- Name: mm_metadata_music; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -376,7 +393,7 @@ CREATE TABLE mm_metadata_music (
 ALTER TABLE mm_metadata_music OWNER TO metamanpg;
 
 --
--- TOC entry 195 (class 1259 OID 22673)
+-- TOC entry 196 (class 1259 OID 22673)
 -- Name: mm_metadata_music_video; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -393,7 +410,7 @@ CREATE TABLE mm_metadata_music_video (
 ALTER TABLE mm_metadata_music_video OWNER TO metamanpg;
 
 --
--- TOC entry 189 (class 1259 OID 22593)
+-- TOC entry 190 (class 1259 OID 22593)
 -- Name: mm_metadata_musician; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -408,7 +425,7 @@ CREATE TABLE mm_metadata_musician (
 ALTER TABLE mm_metadata_musician OWNER TO metamanpg;
 
 --
--- TOC entry 215 (class 1259 OID 22858)
+-- TOC entry 216 (class 1259 OID 22858)
 -- Name: mm_metadata_person; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -424,7 +441,7 @@ CREATE TABLE mm_metadata_person (
 ALTER TABLE mm_metadata_person OWNER TO metamanpg;
 
 --
--- TOC entry 188 (class 1259 OID 22575)
+-- TOC entry 189 (class 1259 OID 22575)
 -- Name: mm_metadata_sports; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -440,7 +457,7 @@ CREATE TABLE mm_metadata_sports (
 ALTER TABLE mm_metadata_sports OWNER TO metamanpg;
 
 --
--- TOC entry 187 (class 1259 OID 22556)
+-- TOC entry 188 (class 1259 OID 22556)
 -- Name: mm_metadata_tvshow; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -457,20 +474,7 @@ CREATE TABLE mm_metadata_tvshow (
 ALTER TABLE mm_metadata_tvshow OWNER TO metamanpg;
 
 --
--- TOC entry 218 (class 1259 OID 22888)
--- Name: mm_nas; Type: TABLE; Schema: public; Owner: metamanpg
---
-
-CREATE TABLE mm_nas (
-    mm_nas_id uuid NOT NULL,
-    mm_nas_json jsonb
-);
-
-
-ALTER TABLE mm_nas OWNER TO metamanpg;
-
---
--- TOC entry 198 (class 1259 OID 22710)
+-- TOC entry 199 (class 1259 OID 22710)
 -- Name: mm_notification; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -485,7 +489,7 @@ CREATE TABLE mm_notification (
 ALTER TABLE mm_notification OWNER TO metamanpg;
 
 --
--- TOC entry 212 (class 1259 OID 22830)
+-- TOC entry 213 (class 1259 OID 22830)
 -- Name: mm_options_and_status; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -499,7 +503,7 @@ CREATE TABLE mm_options_and_status (
 ALTER TABLE mm_options_and_status OWNER TO metamanpg;
 
 --
--- TOC entry 204 (class 1259 OID 22761)
+-- TOC entry 205 (class 1259 OID 22761)
 -- Name: mm_radio; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -514,7 +518,7 @@ CREATE TABLE mm_radio (
 ALTER TABLE mm_radio OWNER TO metamanpg;
 
 --
--- TOC entry 201 (class 1259 OID 22732)
+-- TOC entry 202 (class 1259 OID 22732)
 -- Name: mm_review; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -529,7 +533,7 @@ CREATE TABLE mm_review (
 ALTER TABLE mm_review OWNER TO metamanpg;
 
 --
--- TOC entry 205 (class 1259 OID 22769)
+-- TOC entry 206 (class 1259 OID 22769)
 -- Name: mm_sync; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -544,7 +548,7 @@ CREATE TABLE mm_sync (
 ALTER TABLE mm_sync OWNER TO metamanpg;
 
 --
--- TOC entry 207 (class 1259 OID 22783)
+-- TOC entry 208 (class 1259 OID 22783)
 -- Name: mm_trigger; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -558,20 +562,7 @@ CREATE TABLE mm_trigger (
 ALTER TABLE mm_trigger OWNER TO metamanpg;
 
 --
--- TOC entry 217 (class 1259 OID 22880)
--- Name: mm_tuner; Type: TABLE; Schema: public; Owner: metamanpg
---
-
-CREATE TABLE mm_tuner (
-    mm_tuner_id uuid NOT NULL,
-    mm_tuner_json jsonb
-);
-
-
-ALTER TABLE mm_tuner OWNER TO metamanpg;
-
---
--- TOC entry 221 (class 1259 OID 22916)
+-- TOC entry 220 (class 1259 OID 22916)
 -- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -586,7 +577,7 @@ CREATE TABLE mm_tv_schedule (
 ALTER TABLE mm_tv_schedule OWNER TO metamanpg;
 
 --
--- TOC entry 222 (class 1259 OID 22926)
+-- TOC entry 221 (class 1259 OID 22926)
 -- Name: mm_tv_schedule_program; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -600,7 +591,7 @@ CREATE TABLE mm_tv_schedule_program (
 ALTER TABLE mm_tv_schedule_program OWNER TO metamanpg;
 
 --
--- TOC entry 220 (class 1259 OID 22906)
+-- TOC entry 219 (class 1259 OID 22906)
 -- Name: mm_tv_stations; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -617,7 +608,7 @@ CREATE TABLE mm_tv_stations (
 ALTER TABLE mm_tv_stations OWNER TO metamanpg;
 
 --
--- TOC entry 200 (class 1259 OID 22722)
+-- TOC entry 201 (class 1259 OID 22722)
 -- Name: mm_user; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -637,7 +628,7 @@ CREATE TABLE mm_user (
 ALTER TABLE mm_user OWNER TO metamanpg;
 
 --
--- TOC entry 197 (class 1259 OID 22700)
+-- TOC entry 198 (class 1259 OID 22700)
 -- Name: mm_user_activity; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -657,7 +648,7 @@ CREATE TABLE mm_user_activity (
 ALTER TABLE mm_user_activity OWNER TO metamanpg;
 
 --
--- TOC entry 210 (class 1259 OID 22812)
+-- TOC entry 211 (class 1259 OID 22812)
 -- Name: mm_user_group; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -672,7 +663,7 @@ CREATE TABLE mm_user_group (
 ALTER TABLE mm_user_group OWNER TO metamanpg;
 
 --
--- TOC entry 199 (class 1259 OID 22720)
+-- TOC entry 200 (class 1259 OID 22720)
 -- Name: mm_user_id_seq; Type: SEQUENCE; Schema: public; Owner: metamanpg
 --
 
@@ -687,8 +678,8 @@ CREATE SEQUENCE mm_user_id_seq
 ALTER TABLE mm_user_id_seq OWNER TO metamanpg;
 
 --
--- TOC entry 2547 (class 0 OID 0)
--- Dependencies: 199
+-- TOC entry 2572 (class 0 OID 0)
+-- Dependencies: 200
 -- Name: mm_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: metamanpg
 --
 
@@ -696,7 +687,7 @@ ALTER SEQUENCE mm_user_id_seq OWNED BY mm_user.id;
 
 
 --
--- TOC entry 211 (class 1259 OID 22821)
+-- TOC entry 212 (class 1259 OID 22821)
 -- Name: mm_user_profile; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -710,7 +701,7 @@ CREATE TABLE mm_user_profile (
 ALTER TABLE mm_user_profile OWNER TO metamanpg;
 
 --
--- TOC entry 181 (class 1259 OID 22501)
+-- TOC entry 182 (class 1259 OID 22501)
 -- Name: mm_version; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -722,7 +713,7 @@ CREATE TABLE mm_version (
 ALTER TABLE mm_version OWNER TO metamanpg;
 
 --
--- TOC entry 2187 (class 2604 OID 22725)
+-- TOC entry 2206 (class 2604 OID 22725)
 -- Name: id; Type: DEFAULT; Schema: public; Owner: metamanpg
 --
 
@@ -730,8 +721,8 @@ ALTER TABLE ONLY mm_user ALTER COLUMN id SET DEFAULT nextval('mm_user_id_seq'::r
 
 
 --
--- TOC entry 2524 (class 0 OID 22800)
--- Dependencies: 209
+-- TOC entry 2550 (class 0 OID 22800)
+-- Dependencies: 210
 -- Data for Name: mm_channel; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -740,15 +731,14 @@ COPY mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, mm_chann
 
 
 --
--- TOC entry 2518 (class 0 OID 22753)
--- Dependencies: 203
+-- TOC entry 2544 (class 0 OID 22753)
+-- Dependencies: 204
 -- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
 COPY mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path) FROM stdin;
 dc767e06-210b-43de-86ae-652d290aa3b2	Game Audit	Scan for new game media	f	Days 1	1970-01-01 00:00:01	./subprogram_game_audit.py
 044dede1-4136-4cbc-9b13-6ca452f006a7	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	./subprogram_create_chapter_images.py
-3173d3c4-8a2d-49c2-9f92-805a0344b71e	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	./subprogram_match_anime_id_scudlee.py
 d00db78f-a55a-4faf-8eb5-e866d574d216	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	./subprogram_roku_thumbnail_generate.py
 22aa27e4-9783-4625-b477-c2809691acac	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	./subprogram_schedules_direct_updates.py
 1b7e4151-569d-4c16-a26c-65094360e4ab	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	./subprogram_subtitle_downloader.py
@@ -761,12 +751,13 @@ fdeb4df4-a909-4479-845e-f61087b004c5	Media Scan	Scan for new media	f	Days 1	1970
 630ddfb8-01e7-4e56-93be-bc8124f568b6	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	./subprogram_postgresql_backup.py
 7fa07ec9-c0f6-4d4c-9221-f11dc86808e1	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	./subprogram_postgresql_vacuum.py
 775b2282-1d18-46f7-ab78-f8b45b5687ad	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	./subprogram_sync.py
+0dc38e7b-eba4-4642-9517-ec2ba32f2cf9	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	./subprogram_metadata_trailer_download.py
 \.
 
 
 --
--- TOC entry 2534 (class 0 OID 22896)
--- Dependencies: 219
+-- TOC entry 2558 (class 0 OID 22896)
+-- Dependencies: 218
 -- Data for Name: mm_device; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -775,8 +766,8 @@ COPY mm_device (mm_device_id, mm_device_type, mm_device_json) FROM stdin;
 
 
 --
--- TOC entry 2538 (class 0 OID 23013)
--- Dependencies: 223
+-- TOC entry 2562 (class 0 OID 23013)
+-- Dependencies: 222
 -- Data for Name: mm_download_image_que; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -785,8 +776,8 @@ COPY mm_download_image_que (mdq_image_id, mdq_image_provider, mdq_image_download
 
 
 --
--- TOC entry 2531 (class 0 OID 22869)
--- Dependencies: 216
+-- TOC entry 2557 (class 0 OID 22869)
+-- Dependencies: 217
 -- Data for Name: mm_download_que; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -795,8 +786,8 @@ COPY mm_download_que (mdq_id, mdq_provider, mdq_que_type, mdq_download_json) FRO
 
 
 --
--- TOC entry 2501 (class 0 OID 22546)
--- Dependencies: 186
+-- TOC entry 2527 (class 0 OID 22546)
+-- Dependencies: 187
 -- Data for Name: mm_link; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -805,8 +796,8 @@ COPY mm_link (mm_link_guid, mm_link_name, mm_link_json) FROM stdin;
 
 
 --
--- TOC entry 2521 (class 0 OID 22778)
--- Dependencies: 206
+-- TOC entry 2547 (class 0 OID 22778)
+-- Dependencies: 207
 -- Data for Name: mm_loan; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -815,8 +806,8 @@ COPY mm_loan (mm_loan_guid, mm_loan_media_id, mm_loan_user_id, mm_load_user_loan
 
 
 --
--- TOC entry 2499 (class 0 OID 22524)
--- Dependencies: 184
+-- TOC entry 2525 (class 0 OID 22524)
+-- Dependencies: 185
 -- Data for Name: mm_media; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -825,8 +816,8 @@ COPY mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid, mm_me
 
 
 --
--- TOC entry 2507 (class 0 OID 22631)
--- Dependencies: 192
+-- TOC entry 2533 (class 0 OID 22631)
+-- Dependencies: 193
 -- Data for Name: mm_media_class; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -869,8 +860,8 @@ a18a5377-d43c-4956-bbed-6af03ff2eaf8	TV Theme	Audio	f
 
 
 --
--- TOC entry 2498 (class 0 OID 22515)
--- Dependencies: 183
+-- TOC entry 2524 (class 0 OID 22515)
+-- Dependencies: 184
 -- Data for Name: mm_media_dir; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -879,8 +870,8 @@ COPY mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_class_type
 
 
 --
--- TOC entry 2500 (class 0 OID 22535)
--- Dependencies: 185
+-- TOC entry 2526 (class 0 OID 22535)
+-- Dependencies: 186
 -- Data for Name: mm_media_remote; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -889,8 +880,8 @@ COPY mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_med
 
 
 --
--- TOC entry 2497 (class 0 OID 22507)
--- Dependencies: 182
+-- TOC entry 2523 (class 0 OID 22507)
+-- Dependencies: 183
 -- Data for Name: mm_media_share; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -899,8 +890,8 @@ COPY mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_share_us
 
 
 --
--- TOC entry 2505 (class 0 OID 22605)
--- Dependencies: 190
+-- TOC entry 2531 (class 0 OID 22605)
+-- Dependencies: 191
 -- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -909,8 +900,8 @@ COPY mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metad
 
 
 --
--- TOC entry 2508 (class 0 OID 22640)
--- Dependencies: 193
+-- TOC entry 2534 (class 0 OID 22640)
+-- Dependencies: 194
 -- Data for Name: mm_metadata_anime; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -919,8 +910,8 @@ COPY mm_metadata_anime (mm_metadata_anime_guid, mm_metadata_anime_media_id, mm_m
 
 
 --
--- TOC entry 2511 (class 0 OID 22688)
--- Dependencies: 196
+-- TOC entry 2537 (class 0 OID 22688)
+-- Dependencies: 197
 -- Data for Name: mm_metadata_book; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -929,8 +920,8 @@ COPY mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_metadata
 
 
 --
--- TOC entry 2517 (class 0 OID 22742)
--- Dependencies: 202
+-- TOC entry 2543 (class 0 OID 22742)
+-- Dependencies: 203
 -- Data for Name: mm_metadata_collection; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -939,8 +930,8 @@ COPY mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_collection
 
 
 --
--- TOC entry 2528 (class 0 OID 22838)
--- Dependencies: 213
+-- TOC entry 2554 (class 0 OID 22838)
+-- Dependencies: 214
 -- Data for Name: mm_metadata_game_software_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -949,8 +940,8 @@ COPY mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_json) FRO
 
 
 --
--- TOC entry 2529 (class 0 OID 22849)
--- Dependencies: 214
+-- TOC entry 2555 (class 0 OID 22849)
+-- Dependencies: 215
 -- Data for Name: mm_metadata_game_systems_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -959,8 +950,8 @@ COPY mm_metadata_game_systems_info (gs_id, gs_game_system_id, gs_game_system_nam
 
 
 --
--- TOC entry 2523 (class 0 OID 22791)
--- Dependencies: 208
+-- TOC entry 2549 (class 0 OID 22791)
+-- Dependencies: 209
 -- Data for Name: mm_metadata_logo; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -969,8 +960,8 @@ COPY mm_metadata_logo (mm_metadata_logo_guid, mm_metadata_logo_media_guid, mm_me
 
 
 --
--- TOC entry 2509 (class 0 OID 22657)
--- Dependencies: 194
+-- TOC entry 2535 (class 0 OID 22657)
+-- Dependencies: 195
 -- Data for Name: mm_metadata_movie; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -979,8 +970,8 @@ COPY mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_name, m
 
 
 --
--- TOC entry 2506 (class 0 OID 22618)
--- Dependencies: 191
+-- TOC entry 2532 (class 0 OID 22618)
+-- Dependencies: 192
 -- Data for Name: mm_metadata_music; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -989,8 +980,8 @@ COPY mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_id, mm_m
 
 
 --
--- TOC entry 2510 (class 0 OID 22673)
--- Dependencies: 195
+-- TOC entry 2536 (class 0 OID 22673)
+-- Dependencies: 196
 -- Data for Name: mm_metadata_music_video; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -999,8 +990,8 @@ COPY mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_music_vi
 
 
 --
--- TOC entry 2504 (class 0 OID 22593)
--- Dependencies: 189
+-- TOC entry 2530 (class 0 OID 22593)
+-- Dependencies: 190
 -- Data for Name: mm_metadata_musician; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1009,8 +1000,8 @@ COPY mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musician_name,
 
 
 --
--- TOC entry 2530 (class 0 OID 22858)
--- Dependencies: 215
+-- TOC entry 2556 (class 0 OID 22858)
+-- Dependencies: 216
 -- Data for Name: mm_metadata_person; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1019,8 +1010,8 @@ COPY mm_metadata_person (mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_
 
 
 --
--- TOC entry 2503 (class 0 OID 22575)
--- Dependencies: 188
+-- TOC entry 2529 (class 0 OID 22575)
+-- Dependencies: 189
 -- Data for Name: mm_metadata_sports; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1029,8 +1020,8 @@ COPY mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sports_id, m
 
 
 --
--- TOC entry 2502 (class 0 OID 22556)
--- Dependencies: 187
+-- TOC entry 2528 (class 0 OID 22556)
+-- Dependencies: 188
 -- Data for Name: mm_metadata_tvshow; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1039,18 +1030,8 @@ COPY mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id, m
 
 
 --
--- TOC entry 2533 (class 0 OID 22888)
--- Dependencies: 218
--- Data for Name: mm_nas; Type: TABLE DATA; Schema: public; Owner: metamanpg
---
-
-COPY mm_nas (mm_nas_id, mm_nas_json) FROM stdin;
-\.
-
-
---
--- TOC entry 2513 (class 0 OID 22710)
--- Dependencies: 198
+-- TOC entry 2539 (class 0 OID 22710)
+-- Dependencies: 199
 -- Data for Name: mm_notification; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1059,19 +1040,19 @@ COPY mm_notification (mm_notification_guid, mm_notification_text, mm_notificatio
 
 
 --
--- TOC entry 2527 (class 0 OID 22830)
--- Dependencies: 212
+-- TOC entry 2553 (class 0 OID 22830)
+-- Dependencies: 213
 -- Data for Name: mm_options_and_status; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
 COPY mm_options_and_status (mm_options_and_status_guid, mm_options_json, mm_status_json) FROM stdin;
-e26857c1-8742-4947-93b8-2929ba7848b1	{"SD": {"User": null, "Password": null}, "API": {"anidb": null, "imvdb": null, "google": null, "isbndb": "25C8IT4I", "tvmaze": null, "thetvdb": "147CB43DCA8B61B7", "thelogodb": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "mediabrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "AWSS3": {"Bucket": "mediakraken", "AccessKey": null, "BackupBucket": "mkbackup", "SecretAccessKey": null}, "Trakt": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "awss3"}, "Docker": {"Nodes": 0, "SwarmID": "Manager", "Instances": 0}, "Dropbox": {"APIKey": null, "APISecret": null}, "OneDrive": {"ClientID": null, "SecretKey": null}, "GoogleDrive": {"SecretFile": null}, "Maintenance": null, "MediaBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null, "BrainzDBHost": null, "BrainzDBName": null, "BrainzDBPass": null, "BrainzDBPort": 5432, "BrainzDBUser": null}, "MaxResumePct": 5, "Transmission": {"Host": null, "Port": 9091}, "MediaKrakenServer": {"FFMPEG": 8900, "APIPort": 8097, "ImageWeb": 8099, "ListenPort": 8098, "BackupLocal": "/mediakraken/backups/"}}	{"thetvdb_Updated_Epoc": 0}
+e26857c1-8742-4947-93b8-2929ba7848b1	{"SD": {"User": null, "Password": null}, "API": {"anidb": null, "imvdb": null, "google": null, "isbndb": "25C8IT4I", "tvmaze": null, "thetvdb": "147CB43DCA8B61B7", "thelogodb": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "mediabrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "AWSS3": {"Bucket": "mediakraken", "AccessKey": null, "BackupBucket": "mkbackup", "SecretAccessKey": null}, "Trakt": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "local"}, "Docker": {"Nodes": 0, "SwarmID": "Manager", "Instances": 0}, "Dropbox": {"APIKey": null, "APISecret": null}, "OneDrive": {"ClientID": null, "SecretKey": null}, "GoogleDrive": {"SecretFile": null}, "Maintenance": null, "MediaBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null, "BrainzDBHost": null, "BrainzDBName": null, "BrainzDBPass": null, "BrainzDBPort": 5432, "BrainzDBUser": null}, "MaxResumePct": 5, "Transmission": {"Host": null, "Port": 9091}, "MediaKrakenServer": {"FFMPEG": 8900, "APIPort": 8097, "ImageWeb": 8099, "ListenPort": 8098, "BackupLocal": "/mediakraken/backup/"}}	{"thetvdb_Updated_Epoc": 0}
 \.
 
 
 --
--- TOC entry 2519 (class 0 OID 22761)
--- Dependencies: 204
+-- TOC entry 2545 (class 0 OID 22761)
+-- Dependencies: 205
 -- Data for Name: mm_radio; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1080,8 +1061,8 @@ COPY mm_radio (mm_radio_guid, mm_radio_name, mm_radio_adress, mm_radio_active) F
 
 
 --
--- TOC entry 2516 (class 0 OID 22732)
--- Dependencies: 201
+-- TOC entry 2542 (class 0 OID 22732)
+-- Dependencies: 202
 -- Data for Name: mm_review; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1090,8 +1071,8 @@ COPY mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata_guid, 
 
 
 --
--- TOC entry 2520 (class 0 OID 22769)
--- Dependencies: 205
+-- TOC entry 2546 (class 0 OID 22769)
+-- Dependencies: 206
 -- Data for Name: mm_sync; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1100,8 +1081,8 @@ COPY mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_options_json)
 
 
 --
--- TOC entry 2522 (class 0 OID 22783)
--- Dependencies: 207
+-- TOC entry 2548 (class 0 OID 22783)
+-- Dependencies: 208
 -- Data for Name: mm_trigger; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1110,18 +1091,8 @@ COPY mm_trigger (mm_trigger_guid, mm_trigger_command, mm_trigger_background) FRO
 
 
 --
--- TOC entry 2532 (class 0 OID 22880)
--- Dependencies: 217
--- Data for Name: mm_tuner; Type: TABLE DATA; Schema: public; Owner: metamanpg
---
-
-COPY mm_tuner (mm_tuner_id, mm_tuner_json) FROM stdin;
-\.
-
-
---
--- TOC entry 2536 (class 0 OID 22916)
--- Dependencies: 221
+-- TOC entry 2560 (class 0 OID 22916)
+-- Dependencies: 220
 -- Data for Name: mm_tv_schedule; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1130,8 +1101,8 @@ COPY mm_tv_schedule (mm_tv_schedule_id, mm_tv_schedule_station_id, mm_tv_schedul
 
 
 --
--- TOC entry 2537 (class 0 OID 22926)
--- Dependencies: 222
+-- TOC entry 2561 (class 0 OID 22926)
+-- Dependencies: 221
 -- Data for Name: mm_tv_schedule_program; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1140,8 +1111,8 @@ COPY mm_tv_schedule_program (mm_tv_schedule_program_guid, mm_tv_schedule_program
 
 
 --
--- TOC entry 2535 (class 0 OID 22906)
--- Dependencies: 220
+-- TOC entry 2559 (class 0 OID 22906)
+-- Dependencies: 219
 -- Data for Name: mm_tv_stations; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1150,8 +1121,8 @@ COPY mm_tv_stations (mm_tv_stations_id, mm_tv_station_name, mm_tv_station_id, mm
 
 
 --
--- TOC entry 2515 (class 0 OID 22722)
--- Dependencies: 200
+-- TOC entry 2541 (class 0 OID 22722)
+-- Dependencies: 201
 -- Data for Name: mm_user; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1160,8 +1131,8 @@ COPY mm_user (id, username, email, password, created_at, active, is_admin, user_
 
 
 --
--- TOC entry 2512 (class 0 OID 22700)
--- Dependencies: 197
+-- TOC entry 2538 (class 0 OID 22700)
+-- Dependencies: 198
 -- Data for Name: mm_user_activity; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1170,8 +1141,8 @@ COPY mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_overview,
 
 
 --
--- TOC entry 2525 (class 0 OID 22812)
--- Dependencies: 210
+-- TOC entry 2551 (class 0 OID 22812)
+-- Dependencies: 211
 -- Data for Name: mm_user_group; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1183,17 +1154,17 @@ d0eaba7f-ac88-4db5-87dc-20e2a41ce15c	User	General user	{"Admin": false, "Preview
 
 
 --
--- TOC entry 2548 (class 0 OID 0)
--- Dependencies: 199
+-- TOC entry 2573 (class 0 OID 0)
+-- Dependencies: 200
 -- Name: mm_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: metamanpg
 --
 
-SELECT pg_catalog.setval('mm_user_id_seq', 1, true);
+SELECT pg_catalog.setval('mm_user_id_seq', 3, true);
 
 
 --
--- TOC entry 2526 (class 0 OID 22821)
--- Dependencies: 211
+-- TOC entry 2552 (class 0 OID 22821)
+-- Dependencies: 212
 -- Data for Name: mm_user_profile; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -1205,18 +1176,18 @@ COPY mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user_profil
 
 
 --
--- TOC entry 2496 (class 0 OID 22501)
--- Dependencies: 181
+-- TOC entry 2522 (class 0 OID 22501)
+-- Dependencies: 182
 -- Data for Name: mm_version; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
 COPY mm_version (mm_version_no) FROM stdin;
-4
+7
 \.
 
 
 --
--- TOC entry 2343 (class 2606 OID 22845)
+-- TOC entry 2372 (class 2606 OID 22845)
 -- Name: gi_id_mpk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1225,7 +1196,7 @@ ALTER TABLE ONLY mm_metadata_game_software_info
 
 
 --
--- TOC entry 2348 (class 2606 OID 22856)
+-- TOC entry 2377 (class 2606 OID 22856)
 -- Name: gs_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1234,7 +1205,7 @@ ALTER TABLE ONLY mm_metadata_game_systems_info
 
 
 --
--- TOC entry 2356 (class 2606 OID 22876)
+-- TOC entry 2386 (class 2606 OID 22876)
 -- Name: mdq_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1243,7 +1214,7 @@ ALTER TABLE ONLY mm_download_que
 
 
 --
--- TOC entry 2380 (class 2606 OID 23020)
+-- TOC entry 2406 (class 2606 OID 23020)
 -- Name: mdq_image_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1252,7 +1223,7 @@ ALTER TABLE ONLY mm_download_image_que
 
 
 --
--- TOC entry 2295 (class 2606 OID 22707)
+-- TOC entry 2324 (class 2606 OID 22707)
 -- Name: mm_activity_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1261,7 +1232,7 @@ ALTER TABLE ONLY mm_user_activity
 
 
 --
--- TOC entry 2329 (class 2606 OID 22807)
+-- TOC entry 2358 (class 2606 OID 22807)
 -- Name: mm_channel_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1270,7 +1241,7 @@ ALTER TABLE ONLY mm_channel
 
 
 --
--- TOC entry 2315 (class 2606 OID 22760)
+-- TOC entry 2344 (class 2606 OID 22760)
 -- Name: mm_cron_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1279,7 +1250,7 @@ ALTER TABLE ONLY mm_cron
 
 
 --
--- TOC entry 2365 (class 2606 OID 22903)
+-- TOC entry 2391 (class 2606 OID 22903)
 -- Name: mm_device_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1288,7 +1259,7 @@ ALTER TABLE ONLY mm_device
 
 
 --
--- TOC entry 2204 (class 2606 OID 22553)
+-- TOC entry 2223 (class 2606 OID 22553)
 -- Name: mm_link_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1297,7 +1268,7 @@ ALTER TABLE ONLY mm_link
 
 
 --
--- TOC entry 2322 (class 2606 OID 22782)
+-- TOC entry 2351 (class 2606 OID 22782)
 -- Name: mm_loan_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1306,7 +1277,7 @@ ALTER TABLE ONLY mm_loan
 
 
 --
--- TOC entry 2257 (class 2606 OID 22638)
+-- TOC entry 2281 (class 2606 OID 22638)
 -- Name: mm_media_class_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1315,7 +1286,7 @@ ALTER TABLE ONLY mm_media_class
 
 
 --
--- TOC entry 2192 (class 2606 OID 22522)
+-- TOC entry 2211 (class 2606 OID 22522)
 -- Name: mm_media_dir_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1324,7 +1295,7 @@ ALTER TABLE ONLY mm_media_dir
 
 
 --
--- TOC entry 2197 (class 2606 OID 22531)
+-- TOC entry 2216 (class 2606 OID 22531)
 -- Name: mm_media_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1333,7 +1304,7 @@ ALTER TABLE ONLY mm_media
 
 
 --
--- TOC entry 2189 (class 2606 OID 22514)
+-- TOC entry 2208 (class 2606 OID 22514)
 -- Name: mm_media_share_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1342,7 +1313,7 @@ ALTER TABLE ONLY mm_media_share
 
 
 --
--- TOC entry 2247 (class 2606 OID 22612)
+-- TOC entry 2270 (class 2606 OID 22612)
 -- Name: mm_metadata_album_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1351,7 +1322,7 @@ ALTER TABLE ONLY mm_metadata_album
 
 
 --
--- TOC entry 2268 (class 2606 OID 22647)
+-- TOC entry 2293 (class 2606 OID 22647)
 -- Name: mm_metadata_anime_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1360,7 +1331,7 @@ ALTER TABLE ONLY mm_metadata_anime
 
 
 --
--- TOC entry 2289 (class 2606 OID 22695)
+-- TOC entry 2318 (class 2606 OID 22695)
 -- Name: mm_metadata_book_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1369,7 +1340,7 @@ ALTER TABLE ONLY mm_metadata_book
 
 
 --
--- TOC entry 2310 (class 2606 OID 22749)
+-- TOC entry 2339 (class 2606 OID 22749)
 -- Name: mm_metadata_collection_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1378,7 +1349,7 @@ ALTER TABLE ONLY mm_metadata_collection
 
 
 --
--- TOC entry 2326 (class 2606 OID 22798)
+-- TOC entry 2355 (class 2606 OID 22798)
 -- Name: mm_metadata_logo_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1387,7 +1358,7 @@ ALTER TABLE ONLY mm_metadata_logo
 
 
 --
--- TOC entry 2254 (class 2606 OID 22625)
+-- TOC entry 2278 (class 2606 OID 22625)
 -- Name: mm_metadata_music_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1396,7 +1367,7 @@ ALTER TABLE ONLY mm_metadata_music
 
 
 --
--- TOC entry 2287 (class 2606 OID 22680)
+-- TOC entry 2315 (class 2606 OID 22680)
 -- Name: mm_metadata_music_video_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1405,7 +1376,7 @@ ALTER TABLE ONLY mm_metadata_music_video
 
 
 --
--- TOC entry 2240 (class 2606 OID 22600)
+-- TOC entry 2262 (class 2606 OID 22600)
 -- Name: mm_metadata_musician_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1414,7 +1385,7 @@ ALTER TABLE ONLY mm_metadata_musician
 
 
 --
--- TOC entry 2278 (class 2606 OID 22664)
+-- TOC entry 2304 (class 2606 OID 22664)
 -- Name: mm_metadata_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1423,7 +1394,7 @@ ALTER TABLE ONLY mm_metadata_movie
 
 
 --
--- TOC entry 2234 (class 2606 OID 22582)
+-- TOC entry 2255 (class 2606 OID 22582)
 -- Name: mm_metadata_sports_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1432,7 +1403,7 @@ ALTER TABLE ONLY mm_metadata_sports
 
 
 --
--- TOC entry 2222 (class 2606 OID 22563)
+-- TOC entry 2242 (class 2606 OID 22563)
 -- Name: mm_metadata_tvshow_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1441,16 +1412,7 @@ ALTER TABLE ONLY mm_metadata_tvshow
 
 
 --
--- TOC entry 2363 (class 2606 OID 22895)
--- Name: mm_nas_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
---
-
-ALTER TABLE ONLY mm_nas
-    ADD CONSTRAINT mm_nas_id_pk PRIMARY KEY (mm_nas_id);
-
-
---
--- TOC entry 2301 (class 2606 OID 22717)
+-- TOC entry 2330 (class 2606 OID 22717)
 -- Name: mm_notification_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1459,7 +1421,7 @@ ALTER TABLE ONLY mm_notification
 
 
 --
--- TOC entry 2341 (class 2606 OID 22837)
+-- TOC entry 2370 (class 2606 OID 22837)
 -- Name: mm_options_and_status_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1468,7 +1430,7 @@ ALTER TABLE ONLY mm_options_and_status
 
 
 --
--- TOC entry 2317 (class 2606 OID 22768)
+-- TOC entry 2346 (class 2606 OID 22768)
 -- Name: mm_radio_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1477,7 +1439,7 @@ ALTER TABLE ONLY mm_radio
 
 
 --
--- TOC entry 2308 (class 2606 OID 22739)
+-- TOC entry 2337 (class 2606 OID 22739)
 -- Name: mm_review_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1486,7 +1448,7 @@ ALTER TABLE ONLY mm_review
 
 
 --
--- TOC entry 2319 (class 2606 OID 22776)
+-- TOC entry 2348 (class 2606 OID 22776)
 -- Name: mm_sync_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1495,7 +1457,7 @@ ALTER TABLE ONLY mm_sync
 
 
 --
--- TOC entry 2324 (class 2606 OID 22790)
+-- TOC entry 2353 (class 2606 OID 22790)
 -- Name: mm_trigger_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1504,16 +1466,7 @@ ALTER TABLE ONLY mm_trigger
 
 
 --
--- TOC entry 2361 (class 2606 OID 22887)
--- Name: mm_tuner_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
---
-
-ALTER TABLE ONLY mm_tuner
-    ADD CONSTRAINT mm_tuner_id_pk PRIMARY KEY (mm_tuner_id);
-
-
---
--- TOC entry 2373 (class 2606 OID 22923)
+-- TOC entry 2399 (class 2606 OID 22923)
 -- Name: mm_tv_schedule_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1522,7 +1475,7 @@ ALTER TABLE ONLY mm_tv_schedule
 
 
 --
--- TOC entry 2378 (class 2606 OID 22933)
+-- TOC entry 2404 (class 2606 OID 22933)
 -- Name: mm_tv_schedule_program_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1531,7 +1484,7 @@ ALTER TABLE ONLY mm_tv_schedule_program
 
 
 --
--- TOC entry 2369 (class 2606 OID 22913)
+-- TOC entry 2395 (class 2606 OID 22913)
 -- Name: mm_tv_stations_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1540,7 +1493,7 @@ ALTER TABLE ONLY mm_tv_stations
 
 
 --
--- TOC entry 2335 (class 2606 OID 22819)
+-- TOC entry 2364 (class 2606 OID 22819)
 -- Name: mm_user_group_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1549,7 +1502,7 @@ ALTER TABLE ONLY mm_user_group
 
 
 --
--- TOC entry 2304 (class 2606 OID 22730)
+-- TOC entry 2333 (class 2606 OID 22730)
 -- Name: mm_user_pkey; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1558,7 +1511,7 @@ ALTER TABLE ONLY mm_user
 
 
 --
--- TOC entry 2338 (class 2606 OID 22828)
+-- TOC entry 2367 (class 2606 OID 22828)
 -- Name: mm_user_profile_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1567,7 +1520,7 @@ ALTER TABLE ONLY mm_user_profile
 
 
 --
--- TOC entry 2354 (class 2606 OID 22865)
+-- TOC entry 2383 (class 2606 OID 22865)
 -- Name: mmp_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1576,7 +1529,7 @@ ALTER TABLE ONLY mm_metadata_person
 
 
 --
--- TOC entry 2202 (class 2606 OID 22542)
+-- TOC entry 2221 (class 2606 OID 22542)
 -- Name: mmr_media_remote_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
 --
 
@@ -1585,7 +1538,7 @@ ALTER TABLE ONLY mm_media_remote
 
 
 --
--- TOC entry 2344 (class 1259 OID 22846)
+-- TOC entry 2373 (class 1259 OID 22846)
 -- Name: gi_system_id_ndx; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1593,7 +1546,7 @@ CREATE INDEX gi_system_id_ndx ON mm_metadata_game_software_info USING btree (gi_
 
 
 --
--- TOC entry 2330 (class 1259 OID 22810)
+-- TOC entry 2359 (class 1259 OID 22810)
 -- Name: mm_channel_idx_country; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1601,7 +1554,7 @@ CREATE INDEX mm_channel_idx_country ON mm_channel USING btree (mm_channel_countr
 
 
 --
--- TOC entry 2331 (class 1259 OID 22811)
+-- TOC entry 2360 (class 1259 OID 22811)
 -- Name: mm_channel_idx_logo; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1609,7 +1562,7 @@ CREATE INDEX mm_channel_idx_logo ON mm_channel USING btree (mm_channel_logo_guid
 
 
 --
--- TOC entry 2332 (class 1259 OID 22808)
+-- TOC entry 2361 (class 1259 OID 22808)
 -- Name: mm_channel_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1617,7 +1570,7 @@ CREATE INDEX mm_channel_idx_name ON mm_channel USING btree (mm_channel_name);
 
 
 --
--- TOC entry 2333 (class 1259 OID 22809)
+-- TOC entry 2362 (class 1259 OID 22809)
 -- Name: mm_channel_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1625,7 +1578,7 @@ CREATE INDEX mm_channel_idxgin_json ON mm_channel USING gin (mm_channel_media_id
 
 
 --
--- TOC entry 2366 (class 1259 OID 22904)
+-- TOC entry 2392 (class 1259 OID 22904)
 -- Name: mm_device_idx_type; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1633,7 +1586,7 @@ CREATE INDEX mm_device_idx_type ON mm_device USING btree (mm_device_type);
 
 
 --
--- TOC entry 2367 (class 1259 OID 22905)
+-- TOC entry 2393 (class 1259 OID 22905)
 -- Name: mm_device_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1641,7 +1594,7 @@ CREATE INDEX mm_device_idxgin_json ON mm_device USING gin (mm_device_json);
 
 
 --
--- TOC entry 2357 (class 1259 OID 22877)
+-- TOC entry 2387 (class 1259 OID 22877)
 -- Name: mm_download_idx_provider; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1649,7 +1602,7 @@ CREATE INDEX mm_download_idx_provider ON mm_download_que USING btree (mdq_provid
 
 
 --
--- TOC entry 2358 (class 1259 OID 22878)
+-- TOC entry 2388 (class 1259 OID 22878)
 -- Name: mm_download_que_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1657,7 +1610,7 @@ CREATE INDEX mm_download_que_idxgin_meta_json ON mm_download_que USING gin (mdq_
 
 
 --
--- TOC entry 2345 (class 1259 OID 22847)
+-- TOC entry 2374 (class 1259 OID 22847)
 -- Name: mm_game_info_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1665,7 +1618,7 @@ CREATE INDEX mm_game_info_idxgin_json ON mm_metadata_game_software_info USING gi
 
 
 --
--- TOC entry 2346 (class 1259 OID 22848)
+-- TOC entry 2375 (class 1259 OID 22848)
 -- Name: mm_game_info_idxgin_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1673,7 +1626,7 @@ CREATE INDEX mm_game_info_idxgin_name ON mm_metadata_game_software_info USING gi
 
 
 --
--- TOC entry 2349 (class 1259 OID 22857)
+-- TOC entry 2378 (class 1259 OID 22857)
 -- Name: mm_game_systems_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1681,7 +1634,7 @@ CREATE INDEX mm_game_systems_idxgin_json ON mm_metadata_game_systems_info USING 
 
 
 --
--- TOC entry 2381 (class 1259 OID 23021)
+-- TOC entry 2407 (class 1259 OID 23021)
 -- Name: mm_image_download_idx_provider; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1689,7 +1642,7 @@ CREATE INDEX mm_image_download_idx_provider ON mm_download_image_que USING btree
 
 
 --
--- TOC entry 2205 (class 1259 OID 22555)
+-- TOC entry 2224 (class 1259 OID 22555)
 -- Name: mm_link_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1697,7 +1650,7 @@ CREATE INDEX mm_link_idx_name ON mm_link USING btree (mm_link_name);
 
 
 --
--- TOC entry 2206 (class 1259 OID 22554)
+-- TOC entry 2225 (class 1259 OID 22554)
 -- Name: mm_link_json_idxgin; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1705,7 +1658,15 @@ CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json);
 
 
 --
--- TOC entry 2255 (class 1259 OID 22639)
+-- TOC entry 2282 (class 1259 OID 80438)
+-- Name: mm_media_anime_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_media_anime_name_trigram_idx ON mm_metadata_anime USING gist (mm_media_anime_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2279 (class 1259 OID 22639)
 -- Name: mm_media_class_idx_type; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1713,7 +1674,7 @@ CREATE INDEX mm_media_class_idx_type ON mm_media_class USING btree (mm_media_cla
 
 
 --
--- TOC entry 2190 (class 1259 OID 22523)
+-- TOC entry 2209 (class 1259 OID 22523)
 -- Name: mm_media_dir_idx_share; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1721,7 +1682,7 @@ CREATE INDEX mm_media_dir_idx_share ON mm_media_dir USING btree (mm_media_dir_sh
 
 
 --
--- TOC entry 2193 (class 1259 OID 22533)
+-- TOC entry 2212 (class 1259 OID 22533)
 -- Name: mm_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1729,7 +1690,7 @@ CREATE INDEX mm_media_idx_metadata_uuid ON mm_media USING btree (mm_media_metada
 
 
 --
--- TOC entry 2194 (class 1259 OID 22534)
+-- TOC entry 2213 (class 1259 OID 22534)
 -- Name: mm_media_idx_path; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1737,7 +1698,7 @@ CREATE INDEX mm_media_idx_path ON mm_media USING btree (mm_media_path);
 
 
 --
--- TOC entry 2195 (class 1259 OID 22532)
+-- TOC entry 2214 (class 1259 OID 22532)
 -- Name: mm_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1745,7 +1706,31 @@ CREATE INDEX mm_media_idxgin_ffprobe ON mm_media USING gin (mm_media_ffprobe_jso
 
 
 --
--- TOC entry 2241 (class 1259 OID 22617)
+-- TOC entry 2305 (class 1259 OID 80440)
+-- Name: mm_media_music_video_band_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video USING gist (mm_media_music_video_band gist_trgm_ops);
+
+
+--
+-- TOC entry 2306 (class 1259 OID 80441)
+-- Name: mm_media_music_video_song_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video USING gist (mm_media_music_video_song gist_trgm_ops);
+
+
+--
+-- TOC entry 2294 (class 1259 OID 80439)
+-- Name: mm_media_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_movie USING gist (mm_media_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2263 (class 1259 OID 22617)
 -- Name: mm_metadata_album_idx_musician; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1753,7 +1738,7 @@ CREATE INDEX mm_metadata_album_idx_musician ON mm_metadata_album USING btree (mm
 
 
 --
--- TOC entry 2242 (class 1259 OID 22613)
+-- TOC entry 2264 (class 1259 OID 22613)
 -- Name: mm_metadata_album_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1761,7 +1746,7 @@ CREATE INDEX mm_metadata_album_idx_name ON mm_metadata_album USING btree (mm_met
 
 
 --
--- TOC entry 2243 (class 1259 OID 22614)
+-- TOC entry 2265 (class 1259 OID 22614)
 -- Name: mm_metadata_album_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1769,7 +1754,7 @@ CREATE INDEX mm_metadata_album_idx_name_lower ON mm_metadata_album USING btree (
 
 
 --
--- TOC entry 2244 (class 1259 OID 22615)
+-- TOC entry 2266 (class 1259 OID 22615)
 -- Name: mm_metadata_album_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1777,7 +1762,7 @@ CREATE INDEX mm_metadata_album_idxgin_id_json ON mm_metadata_album USING gin (mm
 
 
 --
--- TOC entry 2245 (class 1259 OID 22616)
+-- TOC entry 2267 (class 1259 OID 22616)
 -- Name: mm_metadata_album_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1785,7 +1770,15 @@ CREATE INDEX mm_metadata_album_idxgin_json ON mm_metadata_album USING gin (mm_me
 
 
 --
--- TOC entry 2258 (class 1259 OID 22651)
+-- TOC entry 2268 (class 1259 OID 80436)
+-- Name: mm_metadata_album_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_album_name_trigram_idx ON mm_metadata_album USING gist (mm_metadata_album_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2283 (class 1259 OID 22651)
 -- Name: mm_metadata_aniem_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1793,7 +1786,7 @@ CREATE INDEX mm_metadata_aniem_idxgin_media_id ON mm_metadata_anime USING gin (m
 
 
 --
--- TOC entry 2259 (class 1259 OID 22648)
+-- TOC entry 2284 (class 1259 OID 22648)
 -- Name: mm_metadata_anime_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1801,7 +1794,7 @@ CREATE INDEX mm_metadata_anime_idx_name ON mm_metadata_anime USING btree (mm_med
 
 
 --
--- TOC entry 2260 (class 1259 OID 22649)
+-- TOC entry 2285 (class 1259 OID 22649)
 -- Name: mm_metadata_anime_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1809,7 +1802,7 @@ CREATE INDEX mm_metadata_anime_idx_name_lower ON mm_metadata_anime USING btree (
 
 
 --
--- TOC entry 2261 (class 1259 OID 22650)
+-- TOC entry 2286 (class 1259 OID 22650)
 -- Name: mm_metadata_anime_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1817,7 +1810,7 @@ CREATE INDEX mm_metadata_anime_idxgin_json ON mm_metadata_anime USING gin (mm_me
 
 
 --
--- TOC entry 2262 (class 1259 OID 22652)
+-- TOC entry 2287 (class 1259 OID 22652)
 -- Name: mm_metadata_anime_idxgin_media_id_anidb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1825,7 +1818,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_anidb ON mm_metadata_anime USING 
 
 
 --
--- TOC entry 2263 (class 1259 OID 22655)
+-- TOC entry 2288 (class 1259 OID 22655)
 -- Name: mm_metadata_anime_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1833,7 +1826,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb ON mm_metadata_anime USING g
 
 
 --
--- TOC entry 2264 (class 1259 OID 22653)
+-- TOC entry 2289 (class 1259 OID 22653)
 -- Name: mm_metadata_anime_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1841,7 +1834,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_thetvdb ON mm_metadata_anime USIN
 
 
 --
--- TOC entry 2265 (class 1259 OID 22654)
+-- TOC entry 2290 (class 1259 OID 22654)
 -- Name: mm_metadata_anime_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1849,7 +1842,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb ON mm_metadata_anime USING g
 
 
 --
--- TOC entry 2266 (class 1259 OID 22656)
+-- TOC entry 2291 (class 1259 OID 22656)
 -- Name: mm_metadata_anime_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1857,7 +1850,15 @@ CREATE INDEX mm_metadata_anime_idxgin_user_json ON mm_metadata_anime USING gin (
 
 
 --
--- TOC entry 2311 (class 1259 OID 22750)
+-- TOC entry 2316 (class 1259 OID 80442)
+-- Name: mm_metadata_book_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book USING gist (mm_metadata_book_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2340 (class 1259 OID 22750)
 -- Name: mm_metadata_collection_idxgin_media_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1865,7 +1866,7 @@ CREATE INDEX mm_metadata_collection_idxgin_media_json ON mm_metadata_collection 
 
 
 --
--- TOC entry 2312 (class 1259 OID 22752)
+-- TOC entry 2341 (class 1259 OID 22752)
 -- Name: mm_metadata_collection_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1873,7 +1874,7 @@ CREATE INDEX mm_metadata_collection_idxgin_meta_json ON mm_metadata_collection U
 
 
 --
--- TOC entry 2313 (class 1259 OID 22751)
+-- TOC entry 2342 (class 1259 OID 22751)
 -- Name: mm_metadata_collection_idxgin_name_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1881,7 +1882,7 @@ CREATE INDEX mm_metadata_collection_idxgin_name_json ON mm_metadata_collection U
 
 
 --
--- TOC entry 2279 (class 1259 OID 22681)
+-- TOC entry 2307 (class 1259 OID 22681)
 -- Name: mm_metadata_idx_band_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1889,7 +1890,7 @@ CREATE INDEX mm_metadata_idx_band_name ON mm_metadata_music_video USING btree (m
 
 
 --
--- TOC entry 2280 (class 1259 OID 22682)
+-- TOC entry 2308 (class 1259 OID 22682)
 -- Name: mm_metadata_idx_band_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1897,7 +1898,7 @@ CREATE INDEX mm_metadata_idx_band_name_lower ON mm_metadata_music_video USING bt
 
 
 --
--- TOC entry 2290 (class 1259 OID 22696)
+-- TOC entry 2319 (class 1259 OID 22696)
 -- Name: mm_metadata_idx_book_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1905,7 +1906,7 @@ CREATE INDEX mm_metadata_idx_book_name ON mm_metadata_book USING btree (mm_metad
 
 
 --
--- TOC entry 2291 (class 1259 OID 22697)
+-- TOC entry 2320 (class 1259 OID 22697)
 -- Name: mm_metadata_idx_book_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1913,7 +1914,7 @@ CREATE INDEX mm_metadata_idx_book_name_lower ON mm_metadata_book USING btree (lo
 
 
 --
--- TOC entry 2269 (class 1259 OID 22665)
+-- TOC entry 2295 (class 1259 OID 22665)
 -- Name: mm_metadata_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1921,7 +1922,7 @@ CREATE INDEX mm_metadata_idx_name ON mm_metadata_movie USING btree (mm_media_nam
 
 
 --
--- TOC entry 2270 (class 1259 OID 22666)
+-- TOC entry 2296 (class 1259 OID 22666)
 -- Name: mm_metadata_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1929,7 +1930,7 @@ CREATE INDEX mm_metadata_idx_name_lower ON mm_metadata_movie USING btree (lower(
 
 
 --
--- TOC entry 2281 (class 1259 OID 22683)
+-- TOC entry 2309 (class 1259 OID 22683)
 -- Name: mm_metadata_idx_song_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1937,7 +1938,7 @@ CREATE INDEX mm_metadata_idx_song_name ON mm_metadata_music_video USING btree (m
 
 
 --
--- TOC entry 2282 (class 1259 OID 22684)
+-- TOC entry 2310 (class 1259 OID 22684)
 -- Name: mm_metadata_idx_song_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1945,7 +1946,7 @@ CREATE INDEX mm_metadata_idx_song_name_lower ON mm_metadata_music_video USING bt
 
 
 --
--- TOC entry 2292 (class 1259 OID 22698)
+-- TOC entry 2321 (class 1259 OID 22698)
 -- Name: mm_metadata_idxgin_isbn; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1953,7 +1954,7 @@ CREATE INDEX mm_metadata_idxgin_isbn ON mm_metadata_book USING btree (mm_metadat
 
 
 --
--- TOC entry 2293 (class 1259 OID 22699)
+-- TOC entry 2322 (class 1259 OID 22699)
 -- Name: mm_metadata_idxgin_isbn13; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1961,7 +1962,7 @@ CREATE INDEX mm_metadata_idxgin_isbn13 ON mm_metadata_book USING btree (mm_metad
 
 
 --
--- TOC entry 2271 (class 1259 OID 22667)
+-- TOC entry 2297 (class 1259 OID 22667)
 -- Name: mm_metadata_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1969,7 +1970,7 @@ CREATE INDEX mm_metadata_idxgin_json ON mm_metadata_movie USING gin (mm_metadata
 
 
 --
--- TOC entry 2272 (class 1259 OID 22668)
+-- TOC entry 2298 (class 1259 OID 22668)
 -- Name: mm_metadata_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1977,7 +1978,7 @@ CREATE INDEX mm_metadata_idxgin_media_id ON mm_metadata_movie USING gin (mm_meta
 
 
 --
--- TOC entry 2273 (class 1259 OID 22671)
+-- TOC entry 2299 (class 1259 OID 22671)
 -- Name: mm_metadata_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1985,7 +1986,7 @@ CREATE INDEX mm_metadata_idxgin_media_id_imdb ON mm_metadata_movie USING gin (((
 
 
 --
--- TOC entry 2274 (class 1259 OID 22669)
+-- TOC entry 2300 (class 1259 OID 22669)
 -- Name: mm_metadata_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1993,7 +1994,7 @@ CREATE INDEX mm_metadata_idxgin_media_id_thetvdb ON mm_metadata_movie USING gin 
 
 
 --
--- TOC entry 2275 (class 1259 OID 22670)
+-- TOC entry 2301 (class 1259 OID 22670)
 -- Name: mm_metadata_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2001,7 +2002,7 @@ CREATE INDEX mm_metadata_idxgin_media_id_tmdb ON mm_metadata_movie USING gin (((
 
 
 --
--- TOC entry 2283 (class 1259 OID 22685)
+-- TOC entry 2311 (class 1259 OID 22685)
 -- Name: mm_metadata_idxgin_music_video_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2009,7 +2010,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_json ON mm_metadata_music_video USIN
 
 
 --
--- TOC entry 2284 (class 1259 OID 22686)
+-- TOC entry 2312 (class 1259 OID 22686)
 -- Name: mm_metadata_idxgin_music_video_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2017,7 +2018,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_media_id ON mm_metadata_music_video 
 
 
 --
--- TOC entry 2285 (class 1259 OID 22687)
+-- TOC entry 2313 (class 1259 OID 22687)
 -- Name: mm_metadata_idxgin_music_video_media_id_imvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2025,7 +2026,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_media_id_imvdb ON mm_metadata_music_
 
 
 --
--- TOC entry 2276 (class 1259 OID 22672)
+-- TOC entry 2302 (class 1259 OID 22672)
 -- Name: mm_metadata_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2033,7 +2034,7 @@ CREATE INDEX mm_metadata_idxgin_user_json ON mm_metadata_movie USING gin (mm_met
 
 
 --
--- TOC entry 2327 (class 1259 OID 22799)
+-- TOC entry 2356 (class 1259 OID 22799)
 -- Name: mm_metadata_logo_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2041,7 +2042,7 @@ CREATE INDEX mm_metadata_logo_idxgin_json ON mm_metadata_logo USING gin (mm_meta
 
 
 --
--- TOC entry 2248 (class 1259 OID 22630)
+-- TOC entry 2271 (class 1259 OID 22630)
 -- Name: mm_metadata_music_idx_album; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2049,7 +2050,7 @@ CREATE INDEX mm_metadata_music_idx_album ON mm_metadata_music USING btree (mm_me
 
 
 --
--- TOC entry 2249 (class 1259 OID 22626)
+-- TOC entry 2272 (class 1259 OID 22626)
 -- Name: mm_metadata_music_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2057,7 +2058,7 @@ CREATE INDEX mm_metadata_music_idx_name ON mm_metadata_music USING btree (mm_met
 
 
 --
--- TOC entry 2250 (class 1259 OID 22627)
+-- TOC entry 2273 (class 1259 OID 22627)
 -- Name: mm_metadata_music_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2065,7 +2066,7 @@ CREATE INDEX mm_metadata_music_idx_name_lower ON mm_metadata_music USING btree (
 
 
 --
--- TOC entry 2251 (class 1259 OID 22628)
+-- TOC entry 2274 (class 1259 OID 22628)
 -- Name: mm_metadata_music_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2073,7 +2074,7 @@ CREATE INDEX mm_metadata_music_idxgin_json ON mm_metadata_music USING gin (mm_me
 
 
 --
--- TOC entry 2252 (class 1259 OID 22629)
+-- TOC entry 2275 (class 1259 OID 22629)
 -- Name: mm_metadata_music_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2081,7 +2082,15 @@ CREATE INDEX mm_metadata_music_idxgin_media_id ON mm_metadata_music USING gin (m
 
 
 --
--- TOC entry 2235 (class 1259 OID 22601)
+-- TOC entry 2276 (class 1259 OID 80437)
+-- Name: mm_metadata_music_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_music_name_trigram_idx ON mm_metadata_music USING gist (mm_metadata_music_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2256 (class 1259 OID 22601)
 -- Name: mm_metadata_musician_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2089,7 +2098,7 @@ CREATE INDEX mm_metadata_musician_idx_name ON mm_metadata_musician USING btree (
 
 
 --
--- TOC entry 2236 (class 1259 OID 22602)
+-- TOC entry 2257 (class 1259 OID 22602)
 -- Name: mm_metadata_musician_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2097,7 +2106,7 @@ CREATE INDEX mm_metadata_musician_idx_name_lower ON mm_metadata_musician USING b
 
 
 --
--- TOC entry 2237 (class 1259 OID 22603)
+-- TOC entry 2258 (class 1259 OID 22603)
 -- Name: mm_metadata_musician_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2105,7 +2114,7 @@ CREATE INDEX mm_metadata_musician_idxgin_id_json ON mm_metadata_musician USING g
 
 
 --
--- TOC entry 2238 (class 1259 OID 22604)
+-- TOC entry 2259 (class 1259 OID 22604)
 -- Name: mm_metadata_musician_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2113,7 +2122,15 @@ CREATE INDEX mm_metadata_musician_idxgin_json ON mm_metadata_musician USING gin 
 
 
 --
--- TOC entry 2350 (class 1259 OID 22866)
+-- TOC entry 2260 (class 1259 OID 80435)
+-- Name: mm_metadata_musician_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician USING gist (mm_metadata_musician_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2379 (class 1259 OID 22866)
 -- Name: mm_metadata_person_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2121,7 +2138,7 @@ CREATE INDEX mm_metadata_person_idx_name ON mm_metadata_person USING btree (mmp_
 
 
 --
--- TOC entry 2351 (class 1259 OID 22867)
+-- TOC entry 2380 (class 1259 OID 22867)
 -- Name: mm_metadata_person_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2129,7 +2146,7 @@ CREATE INDEX mm_metadata_person_idxgin_id_json ON mm_metadata_person USING gin (
 
 
 --
--- TOC entry 2352 (class 1259 OID 22868)
+-- TOC entry 2381 (class 1259 OID 22868)
 -- Name: mm_metadata_person_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2137,7 +2154,7 @@ CREATE INDEX mm_metadata_person_idxgin_meta_json ON mm_metadata_person USING gin
 
 
 --
--- TOC entry 2305 (class 1259 OID 22741)
+-- TOC entry 2334 (class 1259 OID 22741)
 -- Name: mm_metadata_review_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2145,7 +2162,7 @@ CREATE INDEX mm_metadata_review_idx_metadata_uuid ON mm_review USING btree (mm_r
 
 
 --
--- TOC entry 2306 (class 1259 OID 22740)
+-- TOC entry 2335 (class 1259 OID 22740)
 -- Name: mm_metadata_review_idxgin_media_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2153,7 +2170,7 @@ CREATE INDEX mm_metadata_review_idxgin_media_json ON mm_review USING gin (mm_rev
 
 
 --
--- TOC entry 2223 (class 1259 OID 22583)
+-- TOC entry 2243 (class 1259 OID 22583)
 -- Name: mm_metadata_sports_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2161,7 +2178,7 @@ CREATE INDEX mm_metadata_sports_idx_name ON mm_metadata_sports USING btree (mm_m
 
 
 --
--- TOC entry 2224 (class 1259 OID 22584)
+-- TOC entry 2244 (class 1259 OID 22584)
 -- Name: mm_metadata_sports_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2169,7 +2186,7 @@ CREATE INDEX mm_metadata_sports_idx_name_lower ON mm_metadata_sports USING btree
 
 
 --
--- TOC entry 2225 (class 1259 OID 22585)
+-- TOC entry 2245 (class 1259 OID 22585)
 -- Name: mm_metadata_sports_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2177,7 +2194,7 @@ CREATE INDEX mm_metadata_sports_idxgin_json ON mm_metadata_sports USING gin (mm_
 
 
 --
--- TOC entry 2226 (class 1259 OID 22586)
+-- TOC entry 2246 (class 1259 OID 22586)
 -- Name: mm_metadata_sports_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2185,7 +2202,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id ON mm_metadata_sports USING gin 
 
 
 --
--- TOC entry 2227 (class 1259 OID 22587)
+-- TOC entry 2247 (class 1259 OID 22587)
 -- Name: mm_metadata_sports_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2193,7 +2210,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_imdb ON mm_metadata_sports USING
 
 
 --
--- TOC entry 2228 (class 1259 OID 22592)
+-- TOC entry 2248 (class 1259 OID 22592)
 -- Name: mm_metadata_sports_idxgin_media_id_thesportsdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2201,7 +2218,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thesportsdb ON mm_metadata_sport
 
 
 --
--- TOC entry 2229 (class 1259 OID 22588)
+-- TOC entry 2249 (class 1259 OID 22588)
 -- Name: mm_metadata_sports_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2209,7 +2226,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdb ON mm_metadata_sports US
 
 
 --
--- TOC entry 2230 (class 1259 OID 22590)
+-- TOC entry 2250 (class 1259 OID 22590)
 -- Name: mm_metadata_sports_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2217,7 +2234,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdbseries ON mm_metadata_spo
 
 
 --
--- TOC entry 2231 (class 1259 OID 22589)
+-- TOC entry 2251 (class 1259 OID 22589)
 -- Name: mm_metadata_sports_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2225,7 +2242,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_tmdb ON mm_metadata_sports USING
 
 
 --
--- TOC entry 2232 (class 1259 OID 22591)
+-- TOC entry 2252 (class 1259 OID 22591)
 -- Name: mm_metadata_sports_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2233,7 +2250,15 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_tvmaze ON mm_metadata_sports USI
 
 
 --
--- TOC entry 2207 (class 1259 OID 22564)
+-- TOC entry 2253 (class 1259 OID 80434)
+-- Name: mm_metadata_sports_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports USING gist (mm_metadata_sports_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2226 (class 1259 OID 22564)
 -- Name: mm_metadata_tvshow_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2241,7 +2266,7 @@ CREATE INDEX mm_metadata_tvshow_idx_name ON mm_metadata_tvshow USING btree (mm_m
 
 
 --
--- TOC entry 2208 (class 1259 OID 22565)
+-- TOC entry 2227 (class 1259 OID 22565)
 -- Name: mm_metadata_tvshow_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2249,7 +2274,7 @@ CREATE INDEX mm_metadata_tvshow_idx_name_lower ON mm_metadata_tvshow USING btree
 
 
 --
--- TOC entry 2209 (class 1259 OID 22567)
+-- TOC entry 2228 (class 1259 OID 22567)
 -- Name: mm_metadata_tvshow_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2257,7 +2282,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_json ON mm_metadata_tvshow USING gin (mm_
 
 
 --
--- TOC entry 2210 (class 1259 OID 22568)
+-- TOC entry 2229 (class 1259 OID 22568)
 -- Name: mm_metadata_tvshow_idxgin_localimage_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2265,7 +2290,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_localimage_json ON mm_metadata_tvshow USI
 
 
 --
--- TOC entry 2211 (class 1259 OID 22566)
+-- TOC entry 2230 (class 1259 OID 22566)
 -- Name: mm_metadata_tvshow_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2273,7 +2298,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id ON mm_metadata_tvshow USING gin 
 
 
 --
--- TOC entry 2212 (class 1259 OID 22569)
+-- TOC entry 2231 (class 1259 OID 22569)
 -- Name: mm_metadata_tvshow_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2281,7 +2306,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_imdb ON mm_metadata_tvshow USING
 
 
 --
--- TOC entry 2213 (class 1259 OID 22570)
+-- TOC entry 2232 (class 1259 OID 22570)
 -- Name: mm_metadata_tvshow_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2289,7 +2314,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdb ON mm_metadata_tvshow US
 
 
 --
--- TOC entry 2214 (class 1259 OID 22572)
+-- TOC entry 2233 (class 1259 OID 22572)
 -- Name: mm_metadata_tvshow_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2297,7 +2322,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdbseries ON mm_metadata_tvs
 
 
 --
--- TOC entry 2215 (class 1259 OID 22571)
+-- TOC entry 2234 (class 1259 OID 22571)
 -- Name: mm_metadata_tvshow_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2305,7 +2330,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tmdb ON mm_metadata_tvshow USING
 
 
 --
--- TOC entry 2216 (class 1259 OID 22573)
+-- TOC entry 2235 (class 1259 OID 22573)
 -- Name: mm_metadata_tvshow_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2313,7 +2338,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tvmaze ON mm_metadata_tvshow USI
 
 
 --
--- TOC entry 2217 (class 1259 OID 67497)
+-- TOC entry 2236 (class 1259 OID 67497)
 -- Name: mm_metadata_tvshow_idxgin_season_number_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2321,7 +2346,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_season_number_thetvdb ON mm_metadata_tvsh
 
 
 --
--- TOC entry 2218 (class 1259 OID 67498)
+-- TOC entry 2237 (class 1259 OID 67498)
 -- Name: mm_metadata_tvshow_idxgin_season_number_thetvdb2; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2329,7 +2354,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_season_number_thetvdb2 ON mm_metadata_tvs
 
 
 --
--- TOC entry 2219 (class 1259 OID 67499)
+-- TOC entry 2238 (class 1259 OID 67499)
 -- Name: mm_metadata_tvshow_idxgin_season_number_thetvdb23; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2337,7 +2362,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_season_number_thetvdb23 ON mm_metadata_tv
 
 
 --
--- TOC entry 2220 (class 1259 OID 22574)
+-- TOC entry 2239 (class 1259 OID 22574)
 -- Name: mm_metadata_tvshow_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2345,7 +2370,15 @@ CREATE INDEX mm_metadata_tvshow_idxgin_user_json ON mm_metadata_tvshow USING gin
 
 
 --
--- TOC entry 2298 (class 1259 OID 22719)
+-- TOC entry 2240 (class 1259 OID 80433)
+-- Name: mm_metadata_tvshow_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow USING gist (mm_metadata_tvshow_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2327 (class 1259 OID 22719)
 -- Name: mm_notification_idx_dismissable; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2353,7 +2386,7 @@ CREATE INDEX mm_notification_idx_dismissable ON mm_notification USING btree (mm_
 
 
 --
--- TOC entry 2299 (class 1259 OID 22718)
+-- TOC entry 2328 (class 1259 OID 22718)
 -- Name: mm_notification_idx_time; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2361,7 +2394,7 @@ CREATE INDEX mm_notification_idx_time ON mm_notification USING btree (mm_notific
 
 
 --
--- TOC entry 2320 (class 1259 OID 22777)
+-- TOC entry 2349 (class 1259 OID 22777)
 -- Name: mm_sync_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2369,7 +2402,7 @@ CREATE INDEX mm_sync_idxgin_json ON mm_sync USING gin (mm_sync_options_json);
 
 
 --
--- TOC entry 2374 (class 1259 OID 22924)
+-- TOC entry 2400 (class 1259 OID 22924)
 -- Name: mm_tv_schedule_idx_date; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2377,7 +2410,7 @@ CREATE INDEX mm_tv_schedule_idx_date ON mm_tv_schedule USING btree (mm_tv_schedu
 
 
 --
--- TOC entry 2376 (class 1259 OID 22934)
+-- TOC entry 2402 (class 1259 OID 22934)
 -- Name: mm_tv_schedule_idx_program; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2385,7 +2418,7 @@ CREATE INDEX mm_tv_schedule_idx_program ON mm_tv_schedule_program USING btree (m
 
 
 --
--- TOC entry 2375 (class 1259 OID 22925)
+-- TOC entry 2401 (class 1259 OID 22925)
 -- Name: mm_tv_schedule_idx_station; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2393,7 +2426,7 @@ CREATE INDEX mm_tv_schedule_idx_station ON mm_tv_schedule USING btree (mm_tv_sch
 
 
 --
--- TOC entry 2370 (class 1259 OID 22915)
+-- TOC entry 2396 (class 1259 OID 22915)
 -- Name: mm_tv_stations_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2401,7 +2434,7 @@ CREATE INDEX mm_tv_stations_idx_name ON mm_tv_stations USING btree (mm_tv_statio
 
 
 --
--- TOC entry 2371 (class 1259 OID 22914)
+-- TOC entry 2397 (class 1259 OID 22914)
 -- Name: mm_tv_stations_idx_station; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2409,7 +2442,7 @@ CREATE INDEX mm_tv_stations_idx_station ON mm_tv_stations USING btree (mm_tv_sta
 
 
 --
--- TOC entry 2296 (class 1259 OID 22709)
+-- TOC entry 2325 (class 1259 OID 22709)
 -- Name: mm_user_activity_idx_date; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2417,7 +2450,7 @@ CREATE INDEX mm_user_activity_idx_date ON mm_user_activity USING btree (mm_activ
 
 
 --
--- TOC entry 2297 (class 1259 OID 22708)
+-- TOC entry 2326 (class 1259 OID 22708)
 -- Name: mm_user_activity_idx_user_guid; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2425,7 +2458,7 @@ CREATE INDEX mm_user_activity_idx_user_guid ON mm_user_activity USING btree (mm_
 
 
 --
--- TOC entry 2336 (class 1259 OID 22820)
+-- TOC entry 2365 (class 1259 OID 22820)
 -- Name: mm_user_group_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2433,7 +2466,7 @@ CREATE INDEX mm_user_group_idx_name ON mm_user_group USING btree (mm_user_group_
 
 
 --
--- TOC entry 2302 (class 1259 OID 22731)
+-- TOC entry 2331 (class 1259 OID 22731)
 -- Name: mm_user_idx_username; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2441,7 +2474,7 @@ CREATE INDEX mm_user_idx_username ON mm_user USING btree (username);
 
 
 --
--- TOC entry 2339 (class 1259 OID 22829)
+-- TOC entry 2368 (class 1259 OID 22829)
 -- Name: mm_user_profile_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2449,7 +2482,15 @@ CREATE INDEX mm_user_profile_idx_name ON mm_user_profile USING btree (mm_user_pr
 
 
 --
--- TOC entry 2198 (class 1259 OID 22545)
+-- TOC entry 2384 (class 1259 OID 80465)
+-- Name: mmp_person_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person USING gist (mmp_person_name gist_trgm_ops);
+
+
+--
+-- TOC entry 2217 (class 1259 OID 22545)
 -- Name: mmr_media_idx_link_uuid; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2457,7 +2498,7 @@ CREATE INDEX mmr_media_idx_link_uuid ON mm_media_remote USING btree (mmr_media_l
 
 
 --
--- TOC entry 2199 (class 1259 OID 22544)
+-- TOC entry 2218 (class 1259 OID 22544)
 -- Name: mmr_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2465,7 +2506,7 @@ CREATE INDEX mmr_media_idx_metadata_uuid ON mm_media_remote USING btree (mmr_med
 
 
 --
--- TOC entry 2200 (class 1259 OID 22543)
+-- TOC entry 2219 (class 1259 OID 22543)
 -- Name: mmr_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2473,7 +2514,7 @@ CREATE INDEX mmr_media_idxgin_ffprobe ON mm_media_remote USING gin (mmr_media_ff
 
 
 --
--- TOC entry 2359 (class 1259 OID 22879)
+-- TOC entry 2389 (class 1259 OID 22879)
 -- Name: mqd_que_type_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -2481,8 +2522,8 @@ CREATE INDEX mqd_que_type_idx_name ON mm_download_que USING btree (mdq_que_type)
 
 
 --
--- TOC entry 2545 (class 0 OID 0)
--- Dependencies: 6
+-- TOC entry 2569 (class 0 OID 0)
+-- Dependencies: 7
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
@@ -2492,7 +2533,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2017-07-01 22:30:31 CDT
+-- Completed on 2017-07-29 21:08:50 CDT
 
 --
 -- PostgreSQL database dump complete
