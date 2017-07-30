@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
 import psycopg2
 import json
 from common import common_config_ini
@@ -67,7 +66,7 @@ base_media_classes = (
 db_connection = common_config_ini.com_config_read(True)
 
 # activate extention pg_trgm
-db_connection.db_query('create extension pg_trgm;')
+db_connection.db_query('create extension pg_trgm')
 
 # create table for version
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
@@ -494,25 +493,22 @@ base_cron = [
     # game subprograms
     ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
     # media/metadata subprograms
-    ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
-#    ('Station Logo Fetch', 'Grab new logos from TheLogoDB', './subprogram_logo_download.py'),
     ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
+    ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
+    ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
     ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
     ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
-    ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_metadata_thetvdb_updates.py'),
     ('The Movie Database', 'Grab updated movie metadata', './subprogram_metadata_tmdb_updates.py'),
+    ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_metadata_thetvdb_updates.py'),
     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_metadata_tvmaze_updates.py'),
-    ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
     ('Trailer', 'Download new trailers', './subprogram_metadata_trailer_download.py'),
     # normal subprograms
-    ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
-    ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
     ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
+    ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
+    ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
     ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
-#    ('Tuner', 'Scan for tuner device(s)', './subprogram_tuner_discover.py'),
-#    ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
     ]
 # create base cron entries
 db_connection.db_query('select count(*) from mm_cron')
@@ -639,7 +635,7 @@ db_connection.db_query('select count(*) from mm_options_and_status')
 if db_connection.fetchone()[0] == 0:
     db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
         'MaxResumePct': 5,
-        'MediaKrakenServer': {'ListenPort': 8098, 'FFMPEG': 8900, 'APIPort': 8097,
+        'MediaKrakenServer': {'ListenPort': 8098, 'APIPort': 8097,
             'BackupLocal': '/mediakraken/backups/'},
         'Maintenance': None,
         'API': {'mediabrainz': None,
