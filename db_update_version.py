@@ -61,6 +61,16 @@ if db_connection.db_version_check() == 5:
     db_connection.db_version_update(6)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 6:
+    # create indexes for pg_trgm
+
+    # sudo -u postgres psql -d database -c "create extension pg_trgm;"
+
+    db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_user_json'
+                           ' ON mm_metadata_tvshow USING gin (mm_metadata_tvshow_user_json)')
+    db_connection.db_version_update(7)
+    db_connection.db_commit()
+
 # drop trigger table since moving to celery?
 
 # close the database
