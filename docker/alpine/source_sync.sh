@@ -24,7 +24,7 @@ cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deploy
 cp -R /home/spoot/MediaKraken_Deployment/network /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/spoot/MediaKraken_Deployment/db_create_update.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/spoot/MediaKraken_Deployment/db_update_version.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
-cp /home/spoot/MediaKraken_Deployment/main_server.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
+cp /home/spoot/MediaKraken_Deployment/main_server.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_link.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/spoot/MediaKraken_Deployment/main_server_trigger.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/spoot/MediaKraken_Deployment/subprogram*.py  /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
