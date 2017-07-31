@@ -63,7 +63,6 @@ if db_connection.db_version_check() == 5:
 
 if db_connection.db_version_check() == 6:
     # create indexes for pg_trgm
-    # su -u postgres psql -d metamandb -c "create extension pg_trgm;"
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow USING gist(mm_metadata_tvshow_name gist_trgm_ops);')
     db_connection.db_query('CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports USING gist(mm_metadata_sports_name gist_trgm_ops);')
     db_connection.db_query('CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician USING gist(mm_metadata_musician_name gist_trgm_ops);')
