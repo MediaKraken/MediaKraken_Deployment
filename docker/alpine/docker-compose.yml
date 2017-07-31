@@ -53,26 +53,6 @@ services:
     network_mode: host
     restart: unless-stopped
 
-  # theater app for testing
-#  theater:
-#    build:
-#      context: ./ComposeMediaKrakenTheater
-#      dockerfile: dockerfile-theater
-#    container_name: mktheater
-#    depends_on:
-#      - appserver
-#    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_theater.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /home/mediakraken:/mediakraken/mnt
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-#    # to allow mount nfs/cifs
-#    cap_add:
-#      - SYS_ADMIN
-#      - DAC_READ_SEARCH
-
   # Postgresql server
   database:
     build:
