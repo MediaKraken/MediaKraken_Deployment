@@ -294,6 +294,8 @@ services:
     ports:
       - "64738:64738/tcp"
       - "64738:64738/udp"
+    volumes:
+      - /var/opt/mediakraken/mumble:/etc/mumble
 
 # Docker private networks
 networks:
