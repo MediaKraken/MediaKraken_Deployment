@@ -1,4 +1,0 @@
-service_identity
-psycopg2
-tmdbsimple
-
