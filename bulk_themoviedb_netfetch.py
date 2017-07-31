@@ -52,20 +52,20 @@ if TMDB_API_CONNECTION is not None:
                 db_connection.db_download_insert('themoviedb', 1, json.dumps({"Status": "Fetch",
                     "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
 
-    # start up the range fetchs for tv
-    for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_tv_id_max()):
-        if JUST_DO_IT:
-            db_connection.db_download_insert('themoviedb', 2, json.dumps({"Status": "Fetch",
-                "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
-        else:
-            # check to see if we already have it
-            if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
-                    and db_connection.db_download_que_exists(None, 2, 'themoviedb',
-                    str(tmdb_to_fetch)) is None:
-                db_connection.db_download_insert('themoviedb', 2,
-                                                 json.dumps({"Status": "Fetch",
-                                                 "ProviderMetaID": str(tmdb_to_fetch),
-                                                 "MetaNewID": str(uuid.uuid4())}))
+    # # start up the range fetchs for tv
+    # for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_tv_id_max()):
+    #     if JUST_DO_IT:
+    #         db_connection.db_download_insert('themoviedb', 2, json.dumps({"Status": "Fetch",
+    #             "ProviderMetaID": str(tmdb_to_fetch), "MetaNewID": str(uuid.uuid4())}))
+    #     else:
+    #         # check to see if we already have it
+    #         if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
+    #                 and db_connection.db_download_que_exists(None, 2, 'themoviedb',
+    #                 str(tmdb_to_fetch)) is None:
+    #             db_connection.db_download_insert('themoviedb', 2,
+    #                                              json.dumps({"Status": "Fetch",
+    #                                              "ProviderMetaID": str(tmdb_to_fetch),
+    #                                              "MetaNewID": str(uuid.uuid4())}))
 
     # no reason to do the person....and the above meta will fetch them from cast/crew
     # # start up the range fetchs for person
