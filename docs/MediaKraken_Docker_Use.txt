@@ -28,6 +28,24 @@ docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}
 
 testing
 
+
+
+
+docker run --env POSTGRES_PASSWORD=jf22j --env POSTGRES_DB=metamandb --env POSTGRES_USER=metamanpg -itd --name=alpine_fdsfs5550 mediakraken/mkdatabase /bin/ash
+
+# after attach
+su postgres
+psql -d metamandb -c "create extension pg_trgm;"
+
+
+
+
+
+
+
+
+
+
 docker exec -it [container-id] /bin/ash
 
 
