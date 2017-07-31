@@ -16,7 +16,7 @@ cp /home/spoot/MediaKraken_Deployment/main_server_metadata_api_worker_image.py /
 cp /home/spoot/MediaKraken_Deployment/build_image_directory.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/build_trailer_directory.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/subprogram*.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp /home/spoot/MediaKraken_Deployment/bulk_themoviedb_netfetch.py /home/spoot/MediaKraken_Deployment/docker/alpine_preload/ComposeMediaKrakenMetadata/src/.
+cp /home/spoot/MediaKraken_Deployment/bulk_themoviedb_netfetch.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 
 # server
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
