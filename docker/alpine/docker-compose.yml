@@ -209,17 +209,17 @@ services:
     restart: unless-stopped
 
   # runs the phppgadmin
-#  phppgadmin:
-#    build:
-#      context: ./ComposeMediaKrakenPHPPGAdmin
-#      dockerfile: dockerfile-phppgadmin
-#    container_name: mkphppgadmin
-#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
-#    ports:
-#      - "12345:80"
-#    networks:
-#      - mediakraken_dbnetwork
-#    restart: unless-stopped
+  phppgadmin:
+    build:
+      context: ./ComposeMediaKrakenPHPPGAdmin
+      dockerfile: dockerfile-phppgadmin
+    container_name: mkphppgadmin
+    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    ports:
+      - "12345:80"
+    networks:
+      - mediakraken_dbnetwork
+    restart: unless-stopped
 
   # rabbit
   # https://github.com/maryvilledev/alpine-rmq
