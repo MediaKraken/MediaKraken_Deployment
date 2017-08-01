@@ -37,7 +37,9 @@ def search_media():
     media = []
 
     if request.method == 'POST':
-        g.db_connection.db_trigger_insert(('python', './subprogram_file_scan.py'))
+        if request.form['action_type'] == 'Search Local':
+            for search_item in db_connection.db_search(request.form['search_item']):
+                media.append(search_item)
 
     return render_template('users/user_search.html', media=media, form=form)
 
