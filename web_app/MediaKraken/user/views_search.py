@@ -35,17 +35,20 @@ def search_media():
     Display search page
     """
     form = SearchForm(request.form)
-    media = []
+    movie = []
+    tvshow = []
+    album = []
     if request.method == 'POST':
         if request.form['action_type'] == 'Search Local':
             json_data = json.loads(db_connection.db_search(request.form['search_item']))
             for search_item in json_data['Movie']:
-                media.append(search_item)
+                movie.append(search_item)
             for search_item in json_data['TVShow']:
-                media.append(search_item)
+                tvshow.append(search_item)
             for search_item in json_data['Album']:
-                media.append(search_item)
-    return render_template('users/user_search.html', media=media, form=form)
+                album.append(search_item)
+    return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
+                           media_album=album, form=form)
 
 
 @blueprint.before_request
