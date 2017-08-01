@@ -12,6 +12,7 @@ blueprint = Blueprint("user_search", __name__, url_prefix='/users', static_folde
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
+import json
 from MediaKraken.user.forms import SearchForm
 import sys
 sys.path.append('..')
@@ -35,12 +36,15 @@ def search_media():
     """
     form = SearchForm(request.form)
     media = []
-
     if request.method == 'POST':
         if request.form['action_type'] == 'Search Local':
-            for search_item in db_connection.db_search(request.form['search_item']):
+            json_data = json.loads(db_connection.db_search(request.form['search_item']))
+            for search_item in json_data['Movie']:
                 media.append(search_item)
-
+            for search_item in json_data['TVShow']:
+                media.append(search_item)
+            for search_item in json_data['Album']:
+                media.append(search_item)
     return render_template('users/user_search.html', media=media, form=form)
 
 
