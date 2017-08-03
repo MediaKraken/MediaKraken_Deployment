@@ -197,6 +197,17 @@ services:
     networks:
       - mediakraken_network
 
+  # runs the phppgadmin
+  phppgadmin:
+    image: mediakraken/mkphppgadmin:latest
+    container_name: mkphppgadmin
+    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    ports:
+      - "12345:80"
+    networks:
+      - mediakraken_dbnetwork
+    restart: unless-stopped
+
   # runs portainer
   dockmanage:
     image: portainer/portainer:latest

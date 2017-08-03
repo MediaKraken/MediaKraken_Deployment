@@ -19,3 +19,4 @@ docker push mediakraken/mkredis:latest
 docker push mediakraken/mkwebapp:latest
 docker push mediakraken/mktransmission:latest
 docker push mediakraken/mkmumble:latest
+docker push mediakraken/mkphppgadmin:latest

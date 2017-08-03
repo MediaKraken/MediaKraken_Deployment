@@ -11,3 +11,4 @@ docker tag mk_webserver:latest mediakraken/mkwebapp:latest
 docker tag mk_transmission:latest mediakraken/mktransmission:latest
 docker tag mk_musicbrainz mediakraken/mkmusicbrainz:latest
 docker tag mk_mumble mediakraken/mkmumble:latest
+docker tag mk_phppgadmin mediakraken/mkphppgadmin:latest
