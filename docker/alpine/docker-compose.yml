@@ -289,7 +289,7 @@ services:
       - "30033:30033"
     volumes:
       - /var/opt/mediakraken/teamspeak:/teamspeak/data
-      - var/opt/mediakraken/teamspeak:/teamspeak/logs
+      - /var/opt/mediakraken/teamspeak:/teamspeak/logs
 
   mail:
     build:
