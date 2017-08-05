@@ -277,6 +277,20 @@ services:
     volumes:
       - /var/opt/mediakraken/mumble:/etc/mumble
 
+  # runs teamspeak
+  teamspeak:
+    build:
+      context: ./ComposeMediaKrakenTeamspeak
+      dockerfile: Dockerfile
+    container_name: mkteamspeak
+    ports:
+      - "9987/9987/udp"
+      - "10011/10011"
+      - "30033/30033"
+    volumes:
+      - /var/opt/mediakraken/teamspeak:/teamspeak/data
+      - var/opt/mediakraken/teamspeak:/teamspeak/logs
+
   mail:
     build:
       context: ./ComposeMediaKrakenMail
