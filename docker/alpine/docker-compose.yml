@@ -277,6 +277,35 @@ services:
     volumes:
       - /var/opt/mediakraken/mumble:/etc/mumble
 
+  mail:
+    build:
+      context: ./ComposeMediaKrakenMail
+      dockerfile: Dockerfile
+    hostname: mkmail
+    domainname: domain.com
+    container_name: mkmail
+    ports:
+    - "25:25"
+#    - "143:143"
+#    - "587:587"
+#    - "993:993"
+    volumes:
+    - /var/opt/mediakraken/maildata:/var/mail
+    - /var/opt/mediakraken/mailstate:/var/mail-state
+    - /var/opt/mediakraken/mail/config/:/tmp/docker-mailserver/
+    environment:
+    - ENABLE_SPAMASSASSIN=0
+    - ENABLE_CLAMAV=0
+    - ENABLE_FAIL2BAN=0
+    - ONE_DIR=1
+    - DMS_DEBUG=0
+    cap_add:
+    - NET_ADMIN
+    networks:
+      - mediakraken_network
+    restart: always
+
+
 # Docker private networks
 networks:
   # Twisted and AMQP communications network

@@ -1,0 +1,24 @@
+#! /bin/bash
+
+DATABASE=${DATABASE:-/tmp/docker-mailserver/postfix-accounts.cf}
+
+USER="$1"
+
+usage() {
+	echo "Usage: delmailuser <user@domain>"
+}
+
+errex() {
+	echo "$@" 1>&2
+	exit 1
+}
+
+escape() {
+	echo "${1//./\\.}"
+}
+
+[ -z "$USER" ] && { usage; errex "No user specifed"; }
+[ -s "$DATABASE" ] || exit 0
+
+# XXX $USER must not contain /s and other syntactic characters
+sed -i "/^$(escape "$USER")|/d" $DATABASE

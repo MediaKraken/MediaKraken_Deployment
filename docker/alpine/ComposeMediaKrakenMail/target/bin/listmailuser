@@ -1,0 +1,13 @@
+#! /bin/bash
+
+DATABASE=${DATABASE:-/tmp/docker-mailserver/postfix-accounts.cf}
+
+errex() {
+	echo "$@" 1>&2
+	exit 1
+}
+
+[ -f $DATABASE ] || errex "No postfix-accounts.cf file"
+[ -s $DATABASE ] || errex "Empty postfix-accounts.cf - no users have been added"
+
+awk -F '|' '{ print $1; }' $DATABASE
