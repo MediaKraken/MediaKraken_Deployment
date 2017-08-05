@@ -1267,7 +1267,7 @@ void render_target::compute_minimum_size(s32 &minwidth, s32 &minheight)
 	int screens_considered = 0;
 
 	// early exit in case we are called between device teardown and render teardown
-	if (m_manager.machine().phase() == MACHINE_PHASE_EXIT)
+	if (m_manager.machine().phase() == machine_phase::EXIT)
 	{
 		minwidth = 640;
 		minheight = 480;
@@ -1360,7 +1360,7 @@ render_primitive_list &render_target::get_primitives()
 	root_xform.no_center = false;
 
 	// iterate over layers back-to-front, but only if we're running
-	if (m_manager.machine().phase() >= MACHINE_PHASE_RESET)
+	if (m_manager.machine().phase() >= machine_phase::RESET)
 		for (item_layer layernum = ITEM_LAYER_FIRST; layernum < ITEM_LAYER_MAX; ++layernum)
 		{
 			int blendmode;
@@ -1700,14 +1700,16 @@ bool render_target::load_layout_file(const char *dirname, const internal_layout 
 
 bool render_target::load_layout_file(const char *dirname, const char *filename)
 {
-	// if the first character of the "file" is an open brace, assume it is an XML string
-	util::xml::data_node *rootnode;
+	util::xml::file::ptr rootnode;
 	if (filename[0] == '<')
-		rootnode = util::xml::data_node::string_read(filename, nullptr);
-
-	// otherwise, assume it is a file
+	{
+		// if the first character of the "file" is an open brace, assume it is an XML string
+		rootnode = util::xml::file::string_read(filename, nullptr);
+	}
 	else
 	{
+		// otherwise, assume it is a file
+
 		// build the path and optionally prepend the directory
 		std::string fname = std::string(filename).append(".lay");
 		if (dirname != nullptr)
@@ -1720,7 +1722,7 @@ bool render_target::load_layout_file(const char *dirname, const char *filename)
 			return false;
 
 		// read the file
-		rootnode = util::xml::data_node::file_read(layoutfile, nullptr);
+		rootnode = util::xml::file::read(layoutfile, nullptr);
 	}
 
 	// if we didn't get a properly-formatted XML file, record a warning and exit
@@ -1751,7 +1753,6 @@ bool render_target::load_layout_file(const char *dirname, const char *filename)
 	emulator_info::layout_file_cb(*rootnode);
 
 	// free the root node
-	rootnode->file_free();
 	return result;
 }
 

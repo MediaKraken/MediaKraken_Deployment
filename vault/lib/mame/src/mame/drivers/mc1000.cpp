@@ -237,7 +237,7 @@ static ADDRESS_MAP_START( mc1000_mem, AS_PROGRAM, 8, mc1000_state )
 	AM_RANGE(0xc000, 0xffff) AM_ROM AM_REGION(Z80_TAG, 0)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( mc1000_banking_mem, AS_DECRYPTED_OPCODES, 8, mc1000_state )
+static ADDRESS_MAP_START( mc1000_banking_mem, AS_OPCODES, 8, mc1000_state )
 	AM_RANGE(0x0000, 0x1fff) AM_RAMBANK("bank1")
 	AM_RANGE(0x2000, 0x27ff) AM_RAMBANK("bank2") AM_SHARE("mc6845_vram")
 	AM_RANGE(0x2800, 0x3fff) AM_RAM AM_SHARE("ram2800")
@@ -531,7 +531,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(mc1000_state::ne555_tick)
 	m_maincpu->set_input_line(INPUT_LINE_IRQ0, param);
 }
 
-static MACHINE_CONFIG_START( mc1000, mc1000_state )
+static MACHINE_CONFIG_START( mc1000 )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD(Z80_TAG, Z80, 3579545)
@@ -593,5 +593,5 @@ ROM_END
 
 /* System Drivers */
 
-/*    YEAR  NAME        PARENT      COMPAT  MACHINE     INPUT       INIT        COMPANY             FULLNAME        FLAGS */
-COMP( 1985, mc1000,     0,          0,      mc1000,     mc1000, driver_device, 0, "CCE",            "MC-1000",      MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+/*    YEAR  NAME        PARENT      COMPAT  MACHINE     INPUT   STATE         INIT  COMPANY   FULLNAME        FLAGS */
+COMP( 1985, mc1000,     0,          0,      mc1000,     mc1000, mc1000_state, 0,    "CCE",    "MC-1000",      MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )

@@ -171,6 +171,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, bionicc_state )
 	AM_RANGE(0xfe4000, 0xfe4001) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xfe4002, 0xfe4003) AM_READ_PORT("DSW")
 	AM_RANGE(0xfe8010, 0xfe8017) AM_WRITE(scroll_w)
+	AM_RANGE(0xfe8018, 0xfe8019) AM_WRITENOP // vblank irq ack?
 	AM_RANGE(0xfe801a, 0xfe801b) AM_WRITE(mpu_trigger_w)    /* ??? not sure, but looks like it */
 	AM_RANGE(0xfec000, 0xfecfff) AM_RAM_WRITE(txvideoram_w) AM_SHARE("txvideoram")
 	AM_RANGE(0xff0000, 0xff3fff) AM_RAM_WRITE(fgvideoram_w) AM_SHARE("fgvideoram")
@@ -368,7 +369,7 @@ void bionicc_state::machine_reset()
 	m_soundcommand = 0;
 }
 
-static MACHINE_CONFIG_START( bionicc, bionicc_state )
+static MACHINE_CONFIG_START( bionicc )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz / 2) /* 12 MHz - verified in schematics */
@@ -389,7 +390,7 @@ static MACHINE_CONFIG_START( bionicc, bionicc_state )
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	/* FIXME: should be 257 visible horizontal pixels, first visible pixel should be repeated, back porch/front porch should be separated */
-	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz / 4, 386, 0, 256, 260, 0, 224)
+	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz / 4, 386, 0, 256, 260, 16, 240)
 	MCFG_SCREEN_UPDATE_DRIVER(bionicc_state, screen_update)
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
 	MCFG_SCREEN_PALETTE("palette")
@@ -688,11 +689,11 @@ ROM_END
  *
  *************************************/
 
-GAME( 1987, bionicc,   0,       bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (Euro)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bionicc1,  bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (US set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bionicc2,  bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (US set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, topsecrt,  bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Top Secret (Japan, old revision)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bioniccbl, bionicc, bionicc, bionicc, driver_device, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bioniccbl2,bionicc, bionicc, bionicc, driver_device, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, bionicc,   0,       bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (Euro)",            MACHINE_SUPPORTS_SAVE )
+GAME( 1987, bionicc1,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (US set 1)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1987, bionicc2,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (US set 2)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1987, topsecrt,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Top Secret (Japan, old revision)",  MACHINE_SUPPORTS_SAVE )
+GAME( 1987, bioniccbl, bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, bioniccbl2,bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
 
 // there's also an undumped JP new revision on which there are no extra lives after 1 million points, plus other bug-fixes / changes

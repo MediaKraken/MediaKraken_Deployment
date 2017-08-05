@@ -596,7 +596,7 @@ static ADDRESS_MAP_START(vt240_char_io, AS_IO, 8, vt240_state)
 	AM_RANGE(0xf0, 0xf0) AM_WRITE(lbscrl_w)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( upd7220_map, AS_0, 16, vt240_state)
+static ADDRESS_MAP_START( upd7220_map, 0, 16, vt240_state)
 	AM_RANGE(0x00000, 0x3ffff) AM_READWRITE(vram_r, vram_w) AM_SHARE("vram")
 ADDRESS_MAP_END
 
@@ -638,7 +638,7 @@ static INPUT_PORTS_START( vt240 )
 	PORT_CONFSETTING(0x01, "Color")
 INPUT_PORTS_END
 
-static MACHINE_CONFIG_START( vt240, vt240_state )
+static MACHINE_CONFIG_START( vt240 )
 	MCFG_CPU_ADD("maincpu", T11, XTAL_7_3728MHz) // confirm
 	MCFG_CPU_PROGRAM_MAP(vt240_mem)
 	MCFG_T11_INITIAL_MODE(5 << 13)
@@ -666,7 +666,7 @@ static MACHINE_CONFIG_START( vt240, vt240_state )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", vt240)
 
 	MCFG_DEVICE_ADD("upd7220", UPD7220, XTAL_4MHz / 4)
-	MCFG_DEVICE_ADDRESS_MAP(AS_0, upd7220_map)
+	MCFG_DEVICE_ADDRESS_MAP(0, upd7220_map)
 	MCFG_UPD7220_DISPLAY_PIXELS_CALLBACK_OWNER(vt240_state, hgdc_draw)
 	MCFG_UPD7220_VSYNC_CALLBACK(INPUTLINE("charcpu", I8085_RST75_LINE))
 	MCFG_UPD7220_BLANK_CALLBACK(INPUTLINE("charcpu", I8085_RST55_LINE))
@@ -774,7 +774,7 @@ ROM_START( vt240 )
 ROM_END
 
 /*    YEAR  NAME    PARENT  COMPAT   MACHINE    INPUT          CLASS   INIT    COMPANY                      FULLNAME       FLAGS */
-COMP( 1983, vt240,  0,      0,       vt240,    vt240, driver_device,   0,  "Digital Equipment Corporation", "VT240", MACHINE_IMPERFECT_GRAPHICS )
-//COMP( 1983, vt241,  0,      0,       vt220,     vt220, driver_device,   0,  "Digital Equipment Corporation", "VT241", MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
+COMP( 1983, vt240,  0,      0,       vt240,    vt240, vt240_state,   0,  "Digital Equipment Corporation", "VT240", MACHINE_IMPERFECT_GRAPHICS )
+//COMP( 1983, vt241,  0,      0,       vt220,     vt220, vt240_state,   0,  "Digital Equipment Corporation", "VT241", MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
 // NOTE: the only difference between VT240 and VT241 is the latter comes with a VR241 Color monitor, while the former comes with a mono display; the ROMs and operation are identical.
-COMP( 1983, mc7105, 0,      0,       mc7105,    vt240, driver_device,   0,  "Elektronika",                  "MC7105", MACHINE_IMPERFECT_GRAPHICS )
+COMP( 1983, mc7105, 0,      0,       mc7105,    vt240, vt240_state,   0,  "Elektronika",                  "MC7105", MACHINE_IMPERFECT_GRAPHICS )

@@ -169,7 +169,6 @@
 #define PALETTE_FORMAT_GRBX raw_to_rgb_converter(4, &raw_to_rgb_converter::standard_rgb_decoder<8,8,8, 16,24,8>)
 #define PALETTE_FORMAT_BGRX raw_to_rgb_converter(4, &raw_to_rgb_converter::standard_rgb_decoder<8,8,8, 8,16,24>)
 
-
 //**************************************************************************
 //  DEVICE CONFIGURATION MACROS
 //**************************************************************************
@@ -268,8 +267,9 @@
 
 
 // other standard palettes
-#define MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS(_tag, _entries) \
+#define MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS(_tag, _region, _entries) \
 	MCFG_PALETTE_ADD(_tag, _entries) \
+	palette_device::static_set_prom_region(*device, "^" _region); \
 	palette_device::static_set_init(*device, palette_init_delegate(FUNC(palette_device::palette_init_RRRRGGGGBBBB_proms), downcast<palette_device *>(device)));
 
 // not implemented yet
@@ -285,7 +285,6 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-class palette_device; // forward declaration
 typedef device_delegate<void (palette_device &)> palette_init_delegate;
 
 
@@ -344,6 +343,7 @@ public:
 	static rgb_t xRGBRRRRGGGGBBBB_bit0_decoder(u32 raw);  // bits 14/13/12 are LSb
 	static rgb_t xRGBRRRRGGGGBBBB_bit4_decoder(u32 raw);  // bits 14/13/12 are MSb
 
+
 private:
 	// internal data
 	int                 m_bytes_per_entry;
@@ -354,7 +354,7 @@ private:
 // ======================> palette_device
 
 // device type definition
-extern const device_type PALETTE;
+DECLARE_DEVICE_TYPE(PALETTE, palette_device)
 
 class palette_device : public device_t, public device_palette_interface
 {
@@ -371,6 +371,7 @@ public:
 	static void static_set_indirect_entries(device_t &device, u32 entries);
 	static void static_enable_shadows(device_t &device);
 	static void static_enable_hilights(device_t &device);
+	static void static_set_prom_region(device_t &device, const char *region);
 
 	// palette RAM accessors
 	memory_array &basemem() { return m_paletteram; }
@@ -438,6 +439,7 @@ private:
 	bool                m_membits_supplied;     // true if membits forced in static config
 	endianness_t        m_endianness;           // endianness of palette RAM, if different from native
 	bool                m_endianness_supplied;  // true if endianness forced in static config
+	optional_memory_region m_prom_region;       // region where the color PROMs are
 	palette_init_delegate m_init;
 
 	// palette RAM

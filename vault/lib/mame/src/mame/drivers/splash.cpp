@@ -224,20 +224,27 @@ WRITE16_MEMBER(splash_state::funystrp_sh_irqtrigger_w)
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
+WRITE8_MEMBER(splash_state::funystrp_eeprom_w)
+{
+	m_eeprom->cs_write(BIT(data, 4));
+	m_eeprom->di_write(BIT(data, 6));
+	m_eeprom->clk_write(BIT(data, 5));
+}
+
 static ADDRESS_MAP_START( funystrp_map, AS_PROGRAM, 16, splash_state )
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM                                                 /* ROM */
 	AM_RANGE(0x100000, 0x1fffff) AM_RAM                                                 /* protection? RAM */
 	AM_RANGE(0x800000, 0x83ffff) AM_RAM AM_SHARE("pixelram")                        /* Pixel Layer */
-	AM_RANGE(0x84000a, 0x84000b) AM_WRITE(coin_w)                                /* Coin Counters + Coin Lockout */
-	AM_RANGE(0x84000e, 0x84000f) AM_WRITE(funystrp_sh_irqtrigger_w)                       /* Sound command */
 	AM_RANGE(0x840000, 0x840001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x840002, 0x840003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x840004, 0x840005) AM_READ_PORT("P1")
 	AM_RANGE(0x840006, 0x840007) AM_READ_PORT("P2")
 	AM_RANGE(0x840008, 0x840009) AM_READ_PORT("SYSTEM")
+	AM_RANGE(0x84000a, 0x84000b) AM_WRITE8(funystrp_eeprom_w, 0xff00) AM_READNOP
+	AM_RANGE(0x84000e, 0x84000f) AM_WRITE(funystrp_sh_irqtrigger_w)                       /* Sound command */
 	AM_RANGE(0x880000, 0x8817ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")   /* Video RAM */
 	AM_RANGE(0x881800, 0x881803) AM_RAM AM_SHARE("vregs")                           /* Scroll registers */
-	AM_RANGE(0x881804, 0x881fff) AM_WRITENOP
+	AM_RANGE(0x881804, 0x881fff) AM_RAM
 	AM_RANGE(0x8c0000, 0x8c0fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")/* Palette is xRRRRxGGGGxBBBBx */
 	AM_RANGE(0xd00000, 0xd01fff) AM_READWRITE(spr_read, spr_write) AM_SHARE("spriteram")        /* Sprite RAM */
 	AM_RANGE(0xfe0000, 0xfeffff) AM_RAM AM_MIRROR(0x10000) /* there's fe0000 <-> ff0000 compare */                /* Work RAM */
@@ -442,9 +449,11 @@ static INPUT_PORTS_START( funystrp )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START2 )
 
 	PORT_START("SYSTEM")
-	PORT_DIPNAME( 0xffff, 0x0000, "Clear EEPROM" )
-	PORT_DIPSETTING(    0x0000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0xffff, DEF_STR( On ) )
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
+	PORT_DIPNAME( 0x02, 0x02, "Clear EEPROM" )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_BIT( 0xfc, IP_ACTIVE_LOW, IPT_UNUSED )
 
 INPUT_PORTS_END
 
@@ -487,7 +496,7 @@ MACHINE_RESET_MEMBER(splash_state,splash)
 	m_ret = 0x100;
 }
 
-static MACHINE_CONFIG_START( splash, splash_state )
+static MACHINE_CONFIG_START( splash )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12MHz (24/2) */
@@ -524,7 +533,7 @@ static MACHINE_CONFIG_START( splash, splash_state )
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(splash_state, splash_msm5205_int)) /* IRQ handler */
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz */     /* Sample rate = 384kHz/48 */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8KHz */     /* Sample rate = 384kHz/48 */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -542,7 +551,7 @@ INTERRUPT_GEN_MEMBER(splash_state::roldfrog_interrupt)
 	roldfrog_update_irq();
 }
 
-static MACHINE_CONFIG_START( roldfrog, splash_state )
+static MACHINE_CONFIG_START( roldfrog )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12 MHz - verified */
@@ -628,7 +637,7 @@ MACHINE_START_MEMBER(splash_state, funystrp)
 	save_item(NAME(m_snd_interrupt_enable2));
 }
 
-static MACHINE_CONFIG_START( funystrp, splash_state )
+static MACHINE_CONFIG_START( funystrp )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12 MHz (24/2) */
@@ -638,6 +647,8 @@ static MACHINE_CONFIG_START( funystrp, splash_state )
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_24MHz/4)     /* 6MHz (24/4) */
 	MCFG_CPU_PROGRAM_MAP(funystrp_sound_map)
 	MCFG_CPU_IO_MAP(funystrp_sound_io_map)
+
+	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -662,12 +673,12 @@ static MACHINE_CONFIG_START( funystrp, splash_state )
 
 	MCFG_SOUND_ADD("msm1", MSM5205, XTAL_400kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(splash_state, adpcm_int1))         /* interrupt function */
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 1 / 48 */       /* Sample rate = 400kHz/64 */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 1 / 48 */       /* Sample rate = 400kHz/64 */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_SOUND_ADD("msm2", MSM5205, XTAL_400kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(splash_state, adpcm_int2))         /* interrupt function */
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S96_4B)  /* 1 / 96 */       /* Sample rate = 400kHz/96 */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)  /* 1 / 96 */       /* Sample rate = 400kHz/96 */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -1408,13 +1419,13 @@ DRIVER_INIT_MEMBER(splash_state,funystrp)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x100000, 0x1fffff, read16_delegate(FUNC(splash_state::funystrp_protection_r),this));
 }
 
-GAME( 1992, splash,   0,        splash,   splash, splash_state,   splash,   ROT0, "Gaelco / OMK Software", "Splash! (Ver. 1.2 World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, splash10, splash,   splash,   splash, splash_state,   splash10, ROT0, "Gaelco / OMK Software", "Splash! (Ver. 1.0 World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, paintlad, splash,   splash,   splash, splash_state,   splash,   ROT0, "Gaelco / OMK Software", "Painted Lady (Splash) (Ver. 1.3 US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, splash,   0,        splash,   splash,   splash_state, splash,   ROT0, "Gaelco / OMK Software",  "Splash! (Ver. 1.2 World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, splash10, splash,   splash,   splash,   splash_state, splash10, ROT0, "Gaelco / OMK Software",  "Splash! (Ver. 1.0 World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, paintlad, splash,   splash,   splash,   splash_state, splash,   ROT0, "Gaelco / OMK Software",  "Painted Lady (Splash) (Ver. 1.3 US)", MACHINE_SUPPORTS_SAVE )
 
-GAME( 1993, roldfrog, 0,        roldfrog, splash, splash_state,   roldfrog, ROT0, "Microhard", "The Return of Lady Frog (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, roldfroga,roldfrog, roldfrog, splash, splash_state,   roldfrog, ROT0, "Microhard", "The Return of Lady Frog (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, rebus,    0,        roldfrog, splash, splash_state,   rebus,    ROT0, "Microhard", "Rebus", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1993, roldfrog, 0,        roldfrog, splash,   splash_state, roldfrog, ROT0, "Microhard",              "The Return of Lady Frog (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1993, roldfroga,roldfrog, roldfrog, splash,   splash_state, roldfrog, ROT0, "Microhard",              "The Return of Lady Frog (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, rebus,    0,        roldfrog, splash,   splash_state, rebus,    ROT0, "Microhard",              "Rebus", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 199?, funystrp, 0,        funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard / MagicGames", "Funny Strip", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 199?, puckpepl, funystrp, funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard", "Puck People", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 199?, ringball, funystrp, funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard", "Ring & Ball (unknown title)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE ) // Wouldn't surprise me if in-game is actually called King & Bell ...
+GAME( 199?, puckpepl, funystrp, funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard",              "Puck People", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+GAME( 199?, ringball, funystrp, funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard",              "Ring & Ball (unknown title)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE ) // Wouldn't surprise me if in-game is actually called King & Bell ...

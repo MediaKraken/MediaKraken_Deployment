@@ -119,18 +119,18 @@ Notes:
 
 P's Attack (c) 2004 Uniana Co., Ltd
 
-+----------1||||---1|||||--1|||||---------------------------+
++----------54321---654321--654321---------------------------+
 |VOL       TICKET  GUN_1P  GUN_2P                 +---------|
 |                                                 |         |
 +-+                                               |  256MB  |
   |       CC-DAC                                  | Compact |
 +-+                                  EMUL*        |  Flash  |
 |                                                 |         |
-|J          +---+                                 +---------|
-|A          |   |                                           |
-|M          | R |   25.1750MHz              +--------------+|
-|M          | A |                           |     42Pin*   ||
-|A          | M |                           +--------------+|
+|5          +---+                                 +---------|
+|6          |   |                                           |
+|P          | R |   25.1750MHz              +--------------+|
+|I          | A |                           |     42Pin*   ||
+|N          | M |                           +--------------+|
 |           |   |                           +--------------+|
 |C          +---+       +------------+      |     SYS      ||
 |O                      |            |      +--------------+|
@@ -161,24 +161,69 @@ EMUL is an unpopulated 8 pin connector
 EEPROM is a 93C86 16K 5.0v Serial EEPROM (2048x8-bit or 1024x16-bit)
 CC-DAC is a TDA1311A Stereo Continuous Calibration DAC
 
+
+ P's Attack non JAMMA standard 56pin Edge Connector Pinout:
+
+                          56pin Edge Connector
+          Solder Side            |             Parts Side
+------------------------------------------------------------------
+             GND             | A | 1 |             GND
+             GND             | B | 2 |             GND
+             +5              | C | 3 |             +5
+             +5              | D | 4 |             +5
+       Player 1 Start Lamp   | E | 5 |         Coin Lamp
+             +12             | F | 6 |             +12
+------------ KEY ------------| G | 7 |------------ KEY -----------
+       Player 2 Start Lamp   | H | 8 |        Coin Counter
+        L Speaker (-)        | J | 9 |        L Speaker (+)
+        R Speaker (-)        | K | 10|        R Speaker (+)
+     Video Vertical Sync     | L | 11|
+        Video Green          | M | 12|        Video Red
+        Video Sync           | N | 13|        Video Blue
+        Service Switch       | P | 14|        Video GND
+    Video Horizontal Sync    | R | 15|        Test Switch
+                             | S | 16|        Coin Switch
+       Start Player 2        | T | 17|        Start Player 1
+                             | U | 18|
+                             | V | 19|
+                             | W | 20|
+                             | X | 21|
+                             | Y | 22|
+                             | a | 23|
+                             | b | 24|
+                             | d | 25|
+                             | e | 26|
+             GND             | f | 27|             GND
+             GND             | g | 28|             GND
+
+
 TICKET is a 5 pin connector:
 
-  1| +12v
-  2| IN
+  1| LED
+  2| GND
   3| OUT
-  4| GND
-  5| LED
+  4| IN
+  5| +12v
 
-GUN_xP are 6 pin gun connectors (pins 1-4 match the UNICO sytle guns):
+GUN_xP are 6 pin gun connectors (pins 3-6 match the UNICO sytle guns):
+
+ GUN-1P: Left (Blue) Gun Connector Pinout
 
   1| GND
-  2| SW
-  3| +5v
-  4| SENS
-  5| SOL
+  2| Solenoid
+  3| Sensor
+  4| +5V
+  5| Switch (Trigger)
   6| GND
 
+ GUN-2P: Right (Pink) Gun Connector Pinout
 
+  1| GND
+  2| Solenoid
+  3| Sensor
+  4| +5V
+  5| Switch (Trigger)
+  6| GND
 
 */
 
@@ -1426,7 +1471,7 @@ static INPUT_PORTS_START(crzyddz2)
 INPUT_PORTS_END
 
 
-static MACHINE_CONFIG_START( crystal, crystal_state )
+static MACHINE_CONFIG_START( crystal )
 
 	MCFG_CPU_ADD("maincpu", SE3208, 43000000)
 	MCFG_CPU_PROGRAM_MAP(crystal_mem)
@@ -1810,17 +1855,17 @@ DRIVER_INIT_MEMBER(crystal_state,psattack)
 }
 
 
-GAME( 2001, crysbios, 0,        crystal,  crystal,  driver_device, 0,        ROT0, "BrezzaSoft",          "Crystal System BIOS",                  MACHINE_IS_BIOS_ROOT )
+GAME( 2001, crysbios, 0,        crystal,  crystal,  crystal_state, 0,        ROT0, "BrezzaSoft",          "Crystal System BIOS",                  MACHINE_IS_BIOS_ROOT )
 GAME( 2001, crysking, crysbios, crystal,  crystal,  crystal_state, crysking, ROT0, "BrezzaSoft",          "The Crystal of Kings",                 0 )
 GAME( 2001, evosocc,  crysbios, crystal,  crystal,  crystal_state, evosocc,  ROT0, "Evoga",               "Evolution Soccer",                     0 )
 GAME( 2003, topbladv, crysbios, crystal,  crystal,  crystal_state, topbladv, ROT0, "SonoKong / Expotato", "Top Blade V",                          0 )
 GAME( 2001, officeye, 0,        crystal,  officeye, crystal_state, officeye, ROT0, "Danbi",               "Office Yeo In Cheon Ha (version 1.2)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION ) // still has some instability issues
 GAME( 2001, donghaer, 0,        crystal,  crystal,  crystal_state, donghaer, ROT0, "Danbi",               "Donggul Donggul Haerong",              MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-GAME( 2004?,menghong, 0,        crzyddz2, crzyddz2, driver_device, 0,        ROT0, "Sealy",               "Meng Hong Lou",                        MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-GAME( 2006, crzyddz2, 0,        crzyddz2, crzyddz2, driver_device, 0,        ROT0, "Sealy",               "Crazy Dou Di Zhu II",                  MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-GAME( 2009, trivrus,  0,        trivrus,  trivrus,  driver_device, 0,        ROT0, "AGT",                 "Trivia R Us (v1.07)",                  0 ) // has a CF card instead of flash roms
-GAME( 200?, crospuzl, 0,        crospuzl, crospuzl, driver_device, 0,        ROT0, "<unknown>",           "Cross Puzzle",                  MACHINE_NOT_WORKING )
+GAME( 2004?,menghong, 0,        crzyddz2, crzyddz2, crystal_state, 0,        ROT0, "Sealy",               "Meng Hong Lou",                        MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
+GAME( 2006, crzyddz2, 0,        crzyddz2, crzyddz2, crystal_state, 0,        ROT0, "Sealy",               "Crazy Dou Di Zhu II",                  MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
+GAME( 2009, trivrus,  0,        trivrus,  trivrus,  crystal_state, 0,        ROT0, "AGT",                 "Trivia R Us (v1.07)",                  0 ) // has a CF card instead of flash roms
+GAME( 200?, crospuzl, 0,        crospuzl, crospuzl, crystal_state, 0,        ROT0, "<unknown>",           "Cross Puzzle",                         MACHINE_NOT_WORKING )
 
 GAME( 2004, psattack, 0,        crystal,  crystal,  crystal_state, psattack, ROT0, "Uniana",              "P's Attack",                           MACHINE_IS_SKELETON )
 // looks like the same kind of hw from strings in the ROM, but scrambled / encrypted?
-GAME( 200?, ddz,      0,        crystal,  crystal,  driver_device, 0,        ROT0, "IGS?",                "Dou Di Zhu",                           MACHINE_IS_SKELETON )
+GAME( 200?, ddz,      0,        crystal,  crystal,  crystal_state, 0,        ROT0, "IGS?",                "Dou Di Zhu",                           MACHINE_IS_SKELETON )

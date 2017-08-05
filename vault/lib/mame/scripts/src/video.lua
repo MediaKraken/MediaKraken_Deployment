@@ -708,6 +708,17 @@ end
 
 --------------------------------------------------
 --
+--@src/devices/video/sda5708.h,VIDEOS["SDA5708"] = true
+--------------------------------------------------
+if (VIDEOS["SDA5708"]~=null) then
+	files {
+		MAME_DIR .. "src/devices/video/sda5708.cpp",
+		MAME_DIR .. "src/devices/video/sda5708.h",
+	}
+end
+
+--------------------------------------------------
+--
 --@src/devices/video/snes_ppu.h,VIDEOS["SNES_PPU"] = true
 --------------------------------------------------
 if (VIDEOS["SNES_PPU"]~=null) then
@@ -982,6 +993,8 @@ if (VIDEOS["PPU2C0X"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/video/ppu2c0x.cpp",
 		MAME_DIR .. "src/devices/video/ppu2c0x.h",
+		MAME_DIR .. "src/devices/video/ppu2c0x_vt.cpp",
+		MAME_DIR .. "src/devices/video/ppu2c0x_vt.h",
 	}
 end
 

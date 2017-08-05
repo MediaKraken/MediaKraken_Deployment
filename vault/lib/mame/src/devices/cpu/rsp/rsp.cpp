@@ -7,14 +7,18 @@
 */
 
 #include "emu.h"
-#include "debugger.h"
 #include "rsp.h"
+
 #include "rspfe.h"
 #include "rspcp2.h"
 #include "rspcp2d.h"
 
+#include "debugger.h"
 
-const device_type RSP = device_creator<rsp_device>;
+#include "rspdefs.h"
+
+
+DEFINE_DEVICE_TYPE(RSP, rsp_device, "rsp", "RSP")
 
 
 #define LOG_INSTRUCTION_EXECUTION       0
@@ -97,7 +101,7 @@ const device_type RSP = device_creator<rsp_device>;
 
 
 rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: cpu_device(mconfig, RSP, "RSP", tag, owner, clock, "rsp", __FILE__)
+	: cpu_device(mconfig, RSP, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_BIG, 32, 32)
 	, m_cache(CACHE_SIZE + sizeof(internal_rsp_state))
 	, m_drcuml(nullptr)
@@ -137,6 +141,13 @@ rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t 
 	, m_sp_reg_w_func(*this)
 	, m_sp_set_status_func(*this)
 {
+}
+
+device_memory_interface::space_config_vector rsp_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
 }
 
 offs_t rsp_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)

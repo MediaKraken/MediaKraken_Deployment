@@ -132,9 +132,7 @@ void configuration_manager::save_settings()
 int configuration_manager::load_xml(emu_file &file, config_type which_type)
 {
 	/* read the file */
-	std::unique_ptr<util::xml::data_node, void (*)(util::xml::data_node *)> const root(
-			util::xml::data_node::file_read(file, nullptr),
-			[] (util::xml::data_node *node) { node->file_free(); });
+	util::xml::file::ptr const root(util::xml::file::read(file, nullptr));
 	if (!root)
 		return 0;
 
@@ -149,13 +147,13 @@ int configuration_manager::load_xml(emu_file &file, config_type which_type)
 		return 0;
 
 	/* strip off all the path crap from the source filename */
-	const char *srcfile = strrchr(machine().system().source_file, '/');
+	const char *srcfile = strrchr(machine().system().type.source(), '/');
 	if (!srcfile)
-		srcfile = strrchr(machine().system().source_file, '\\');
+		srcfile = strrchr(machine().system().type.source(), '\\');
 	if (!srcfile)
-		srcfile = strrchr(machine().system().source_file, ':');
+		srcfile = strrchr(machine().system().type.source(), ':');
 	if (!srcfile)
-		srcfile = machine().system().source_file;
+		srcfile = machine().system().type.source();
 	else
 		srcfile++;
 
@@ -225,9 +223,7 @@ int configuration_manager::load_xml(emu_file &file, config_type which_type)
 
 int configuration_manager::save_xml(emu_file &file, config_type which_type)
 {
-	std::unique_ptr<util::xml::data_node, void (*)(util::xml::data_node *)> const root(
-			util::xml::data_node::file_create(),
-			[] (util::xml::data_node *node) { node->file_free(); });
+	util::xml::file::ptr root(util::xml::file::create());
 
 	/* if we don't have a root, bail */
 	if (!root)
@@ -260,7 +256,7 @@ int configuration_manager::save_xml(emu_file &file, config_type which_type)
 	}
 
 	/* flush the file */
-	root->file_write(file);
+	root->write(file);
 
 	/* free and get out of here */
 	return 1;

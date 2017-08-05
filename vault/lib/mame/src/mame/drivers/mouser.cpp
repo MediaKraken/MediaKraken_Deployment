@@ -79,7 +79,7 @@ static ADDRESS_MAP_START( mouser_map, AS_PROGRAM, 8, mouser_state )
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("P2") AM_WRITE(mouser_sound_interrupt_w) /* byte to sound cpu */
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, mouser_state )
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, mouser_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -201,7 +201,7 @@ void mouser_state::machine_reset()
 	m_nmi_enable = 0;
 }
 
-static MACHINE_CONFIG_START( mouser, mouser_state )
+static MACHINE_CONFIG_START( mouser )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)   /* 4 MHz ? */
@@ -302,5 +302,5 @@ DRIVER_INIT_MEMBER(mouser_state,mouser)
 }
 
 
-GAME( 1983, mouser,   0,      mouser, mouser, mouser_state, mouser, ROT90, "UPL", "Mouser", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, mouser,   0,      mouser, mouser, mouser_state, mouser, ROT90, "UPL",                  "Mouser",          MACHINE_SUPPORTS_SAVE )
 GAME( 1983, mouserc,  mouser, mouser, mouser, mouser_state, mouser, ROT90, "UPL (Cosmos license)", "Mouser (Cosmos)", MACHINE_SUPPORTS_SAVE )

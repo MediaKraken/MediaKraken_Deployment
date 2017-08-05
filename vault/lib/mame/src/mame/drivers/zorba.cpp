@@ -93,7 +93,7 @@ ADDRESS_MAP_START( zorba_io, AS_IO, 8, zorba_state )
 	AM_RANGE(0x25, 0x25) AM_DEVREADWRITE("uart2", i8251_device, status_r, control_w)
 	AM_RANGE(0x26, 0x26) AM_WRITE(intmask_w)
 	AM_RANGE(0x30, 0x30) AM_DEVREADWRITE("dma", z80dma_device, read, write)
-	AM_RANGE(0x40, 0x43) AM_DEVREADWRITE("fdc", fd1793_t, read, write)
+	AM_RANGE(0x40, 0x43) AM_DEVREADWRITE("fdc", fd1793_device, read, write)
 	AM_RANGE(0x50, 0x53) AM_DEVREADWRITE("pia0", pia6821_device, read, write)
 	AM_RANGE(0x60, 0x63) AM_DEVREADWRITE("pia1", pia6821_device, read, write)
 ADDRESS_MAP_END
@@ -131,7 +131,7 @@ GFXDECODE_START( zorba )
 GFXDECODE_END
 
 
-MACHINE_CONFIG_START( zorba, zorba_state )
+MACHINE_CONFIG_START( zorba )
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz / 6)
 	MCFG_CPU_PROGRAM_MAP(zorba_mem)
@@ -221,6 +221,7 @@ MACHINE_CONFIG_START( zorba, zorba_state )
 	MCFG_I8275_DRAW_CHARACTER_CALLBACK_OWNER(zorba_state, zorba_update_chr)
 	MCFG_I8275_DRQ_CALLBACK(DEVWRITELINE("dma", z80dma_device, rdy_w))
 	MCFG_I8275_IRQ_CALLBACK(DEVWRITELINE("irq0", input_merger_active_high_device, in1_w))
+	MCFG_VIDEO_SET_SCREEN("screen")
 
 	// Floppies
 	MCFG_FD1793_ADD("fdc", XTAL_24MHz / 24)
@@ -564,5 +565,5 @@ ROM_END
 COMP( 1984?, zorba, 0, 0, zorba, zorba, zorba_state, zorba, "Modular Micros", "Zorba (Modular Micros)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 
 // Undumped versions (see startup screen notes at top of file)
-// COMP( 1983, zorbat, zorba, 0, zorba, zorba, zorba_state, zorba, "Telcon Industries", "Zorba (Telcon Industries)", MACHINE_NOT_WORKING )
+// COMP( 1983, zorbat, zorba, 0, zorba, zorba, zorba_state, zorba, "Telcon Industries",  "Zorba (Telcon Industries)",  MACHINE_NOT_WORKING )
 // COMP( 1984, zorbag, zorba, 0, zorba, zorba, zorba_state, zorba, "Gemini Electronics", "Zorba (Gemini Electronics)", MACHINE_NOT_WORKING )

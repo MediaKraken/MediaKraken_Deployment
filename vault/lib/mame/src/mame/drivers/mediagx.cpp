@@ -866,11 +866,11 @@ void mediagx_state::machine_reset()
 	dmadac_enable(&m_dmadac[0], 2, 1);
 }
 
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, mediagx_state )
+static ADDRESS_MAP_START( ramdac_map, 0, 8, mediagx_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
-static MACHINE_CONFIG_START( mediagx, mediagx_state )
+static MACHINE_CONFIG_START( mediagx )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", MEDIAGX, 166000000)

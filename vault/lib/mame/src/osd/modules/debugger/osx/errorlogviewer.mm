@@ -11,6 +11,8 @@
 
 #import "errorlogview.h"
 
+#include "util/xmlfile.h"
+
 
 @implementation MAMEErrorLogViewer
 
@@ -19,7 +21,7 @@
 	NSString        *title;
 
 	title = [NSString stringWithFormat:@"Error Log: %@ [%@]",
-									   [NSString stringWithUTF8String:m.system().description],
+									   [NSString stringWithUTF8String:m.system().type.fullname()],
 									   [NSString stringWithUTF8String:m.system().name]];
 	if (!(self = [super initWithMachine:m title:title console:c]))
 		return nil;
@@ -57,6 +59,12 @@
 
 - (void)dealloc {
 	[super dealloc];
+}
+
+
+- (void)saveConfigurationToNode:(util::xml::data_node *)node {
+	[super saveConfigurationToNode:node];
+	node->set_attribute_int("type", MAME_DEBUGGER_WINDOW_TYPE_ERROR_LOG_VIEWER);
 }
 
 @end

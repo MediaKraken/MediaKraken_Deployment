@@ -17,6 +17,10 @@
 #ifndef __LUA_ENGINE_H__
 #define __LUA_ENGINE_H__
 
+#if defined(__GNUC__) && (__GNUC__ > 6)
+#pragma GCC diagnostic ignored "-Wnoexcept-type"
+#endif
+
 #include <map>
 #include <condition_variable>
 #define SOL_SAFE_USERTYPE
@@ -106,7 +110,7 @@ public:
 private:
 	// internal state
 	lua_State *m_lua_state;
-	sol::state_view *m_sol_state;
+	std::unique_ptr<sol::state_view> m_sol_state;
 	running_machine *m_machine;
 
 	std::vector<std::string> m_menu;

@@ -96,7 +96,8 @@ device_image_interface::device_image_interface(const machine_config &mconfig, de
 		m_create_format(0),
 		m_create_args(nullptr),
 		m_user_loadable(true),
-		m_is_loading(false)
+		m_is_loading(false),
+		m_is_reset_and_loading(false)
 {
 }
 
@@ -173,23 +174,6 @@ iodevice_t device_image_interface::device_typeid(const char *name)
 			return m_device_info_array[i].m_type;
 	}
 	return (iodevice_t)-1;
-}
-
-/*-------------------------------------------------
-    device_compute_hash - compute a hash,
-    using this device's partial hash if appropriate
--------------------------------------------------*/
-
-void device_image_interface::device_compute_hash(util::hash_collection &hashes, const void *data, size_t length, const char *types) const
-{
-	/* retrieve the partial hash func */
-	device_image_partialhash_func partialhash = get_partial_hash();
-
-	/* compute the hash */
-	if (partialhash)
-		partialhash(hashes, (const unsigned char*)data, length, types);
-	else
-		hashes.compute(reinterpret_cast<const u8 *>(data), length, types);
 }
 
 //-------------------------------------------------
@@ -513,37 +497,46 @@ bool device_image_interface::load_software_region(const char *tag, optional_shar
 // to be loaded
 // ****************************************************************************
 
-void device_image_interface::run_hash(util::core_file &file, void (*partialhash)(util::hash_collection &, const unsigned char *, unsigned long, const char *),
-	util::hash_collection &hashes, const char *types)
+bool device_image_interface::run_hash(util::core_file &file, u32 skip_bytes, util::hash_collection &hashes, const char *types)
 {
-	u32 size;
-	std::vector<u8> buf;
-
+	// reset the hash; we want to override existing data
 	hashes.reset();
-	size = (u32) file.size();
 
-	buf.resize(size);
-	memset(&buf[0], 0, size);
+	// figure out the size, and "cap" the skip bytes
+	u64 size = file.size();
+	skip_bytes = (u32) std::min((u64) skip_bytes, size);
 
-	// read the file
-	file.seek(0, SEEK_SET);
-	file.read(&buf[0], size);
+	// seek to the beginning
+	file.seek(skip_bytes, SEEK_SET);
+	u64 position = skip_bytes;
 
-	if (partialhash)
-		partialhash(hashes, &buf[0], size, types);
-	else
-		hashes.compute(&buf[0], size, types);
+	// keep on reading hashes
+	hashes.begin(types);
+	while (position < size)
+	{
+		uint8_t buffer[8192];
+
+		// read bytes
+		const u32 count = (u32) std::min(size - position, (u64) sizeof(buffer));
+		const u32 actual_count = file.read(buffer, count);
+		if (actual_count == 0)
+			return false;
+		position += actual_count;
+
+		// and compute the hashes
+		hashes.buffer(buffer, actual_count);
+	}
+	hashes.end();
 
 	// cleanup
 	file.seek(0, SEEK_SET);
+	return true;
 }
 
 
 
-void device_image_interface::image_checkhash()
+bool device_image_interface::image_checkhash()
 {
-	device_image_partialhash_func partialhash;
-
 	// only calculate CRC if it hasn't been calculated, and the open_mode is read only
 	u32 crcval;
 	if (!m_hash.crc(crcval) && is_readonly() && !m_created)
@@ -551,29 +544,26 @@ void device_image_interface::image_checkhash()
 		// do not cause a linear read of 600 megs please
 		// TODO: use SHA1 in the CHD header as the hash
 		if (image_type() == IO_CDROM)
-			return;
+			return true;
 
 		// Skip calculating the hash when we have an image mounted through a software list
 		if (loaded_through_softlist())
-			return;
+			return true;
 
-		// retrieve the partial hash func
-		partialhash = get_partial_hash();
-
-		run_hash(*m_file, partialhash, m_hash, util::hash_collection::HASH_TYPES_ALL);
+		// run the hash
+		if (!run_hash(*m_file, unhashed_header_length(), m_hash, util::hash_collection::HASH_TYPES_ALL))
+			return false;
 	}
-	return;
+	return true;
 }
 
 
 util::hash_collection device_image_interface::calculate_hash_on_file(util::core_file &file) const
 {
-	// retrieve the partial hash func
-	device_image_partialhash_func partialhash = get_partial_hash();
-
-	// and calculate the hash
+	// calculate the hash
 	util::hash_collection hash;
-	run_hash(file, partialhash, hash, util::hash_collection::HASH_TYPES_ALL);
+	if (!run_hash(file, unhashed_header_length(), hash, util::hash_collection::HASH_TYPES_ALL))
+		hash.reset();
 	return hash;
 }
 
@@ -1048,7 +1038,7 @@ done:
 	if (m_err!=0) {
 		if (!init_phase())
 		{
-			if (device().machine().phase() == MACHINE_PHASE_RUNNING)
+			if (device().machine().phase() == machine_phase::RUNNING)
 				device().popmessage("Error: Unable to %s image '%s': %s", is_create ? "create" : "load", path, error());
 			else
 				osd_printf_error("Error: Unable to %s image '%s': %s\n", is_create ? "create" : "load", path.c_str(), error());
@@ -1082,6 +1072,13 @@ image_init_result device_image_interface::load(const std::string &path)
 
 image_init_result device_image_interface::load_software(const std::string &software_identifier)
 {
+	// Is this a software part that forces a reset and we're at runtime?  If so, get this loaded through reset_and_load
+	if (is_reset_on_load() && !init_phase())
+	{
+		reset_and_load(software_identifier);
+		return image_init_result::PASS;
+	}
+
 	// Prepare to load
 	unload();
 	clear_error();
@@ -1106,28 +1103,23 @@ image_init_result device_image_interface::load_software(const std::string &softw
 		? core_filename_extract_extension(m_mame_file->filename(), true)
 		: "";
 
-	// check if image should be read-only
-	const char *read_only = get_feature("read_only");
-	if (read_only && !strcmp(read_only, "true"))
-	{
-		// Copy some image information when we have been loaded through a software list
-		software_info &swinfo = m_software_part_ptr->info();
+	// Copy some image information when we have been loaded through a software list
+	software_info &swinfo = m_software_part_ptr->info();
 
-		// sanitize
-		if (swinfo.longname().empty() || swinfo.publisher().empty() || swinfo.year().empty())
-			fatalerror("Each entry in an XML list must have all of the following fields: description, publisher, year!\n");
+	// sanitize
+	if (swinfo.longname().empty() || swinfo.publisher().empty() || swinfo.year().empty())
+		fatalerror("Each entry in an XML list must have all of the following fields: description, publisher, year!\n");
 
-		// store
-		m_longname = swinfo.longname();
-		m_manufacturer = swinfo.publisher();
-		m_year = swinfo.year();
+	// store
+	m_longname = swinfo.longname();
+	m_manufacturer = swinfo.publisher();
+	m_year = swinfo.year();
 
-		// set file type
-		std::string filename = (m_mame_file != nullptr) && (m_mame_file->filename() != nullptr)
-				? m_mame_file->filename()
-				: "";
-		m_filetype = core_filename_extract_extension(filename, true);
-	}
+	// set file type
+	std::string filename = (m_mame_file != nullptr) && (m_mame_file->filename() != nullptr)
+			? m_mame_file->filename()
+			: "";
+	m_filetype = core_filename_extract_extension(filename, true);
 
 	// call finish_load if necessary
 	if (init_phase() == false && (finish_load() != image_init_result::PASS))
@@ -1148,25 +1140,32 @@ image_init_result device_image_interface::finish_load()
 
 	if (m_is_loading)
 	{
-		image_checkhash();
-
-		if (m_created)
+		if (!image_checkhash())
 		{
-			err = call_create(m_create_format, m_create_args);
-			if (err != image_init_result::PASS)
-			{
-				if (!m_err)
-					m_err = IMAGE_ERROR_UNSPECIFIED;
-			}
+			m_err = IMAGE_ERROR_INVALIDIMAGE;
+			err = image_init_result::FAIL;
 		}
-		else
+
+		if (err == image_init_result::PASS)
 		{
-			// using device load
-			err = call_load();
-			if (err != image_init_result::PASS)
+			if (m_created)
 			{
-				if (!m_err)
-					m_err = IMAGE_ERROR_UNSPECIFIED;
+				err = call_create(m_create_format, m_create_args);
+				if (err != image_init_result::PASS)
+				{
+					if (!m_err)
+						m_err = IMAGE_ERROR_UNSPECIFIED;
+				}
+			}
+			else
+			{
+				// using device load
+				err = call_load();
+				if (err != image_init_result::PASS)
+				{
+					if (!m_err)
+						m_err = IMAGE_ERROR_UNSPECIFIED;
+				}
 			}
 		}
 	}
@@ -1219,7 +1218,10 @@ void device_image_interface::reset_and_load(const std::string &path)
 	device().machine().schedule_hard_reset();
 
 	// and record the new load
-	device().machine().options().image_options()[instance_name()] = path;
+	device().machine().options().image_option(instance_name()).specify(path);
+
+	// record that we're reset and loading
+	m_is_reset_and_loading = true;
 }
 
 
@@ -1285,17 +1287,6 @@ const util::option_guide &device_image_interface::create_option_guide() const
 
 void device_image_interface::update_names()
 {
-	// count instances of the general image type, or device type if custom
-	int count = 0;
-	int index = -1;
-	for (const device_image_interface &image : image_interface_iterator(device().mconfig().root_device()))
-	{
-		if (this == &image)
-			index = count;
-		if ((image.image_type() == image_type() && custom_instance_name() == nullptr) || (device().type() == image.device().type()))
-			count++;
-	}
-
 	const char *inst_name = custom_instance_name();
 	const char *brief_name = custom_brief_instance_name();
 	if (inst_name == nullptr)
@@ -1303,9 +1294,25 @@ void device_image_interface::update_names()
 	if (brief_name == nullptr)
 		brief_name = device_brieftypename(image_type());
 
+	// count instances of the general image type, or device type if custom
+	int count = 0;
+	int index = -1;
+	for (const device_image_interface &image : image_interface_iterator(device().mconfig().root_device()))
+	{
+		if (this == &image)
+			index = count;
+		const char *other_name = image.custom_instance_name();
+		if (!other_name)
+			other_name = device_typename(image.image_type());
+
+		if (other_name == inst_name || !strcmp(other_name, inst_name))
+			count++;
+	}
+
+	m_canonical_instance_name = string_format("%s%d", inst_name, index + 1);
 	if (count > 1)
 	{
-		m_instance_name = string_format("%s%d", inst_name, index + 1);
+		m_instance_name = m_canonical_instance_name;
 		m_brief_instance_name = string_format("%s%d", brief_name, index + 1);
 	}
 	else
@@ -1410,13 +1417,6 @@ bool device_image_interface::load_software_part(const std::string &identifier)
 		return false;
 	}
 
-	// Is this a software part that forces a reset and we're at runtime?  If so, get this loaded through reset_and_load
-	if (is_reset_on_load() && !init_phase())
-	{
-		reset_and_load(identifier);
-		return true;
-	}
-
 	// Load the software part
 	const char *swname = m_software_part_ptr->info().shortname().c_str();
 	const rom_entry *start_entry = m_software_part_ptr->romdata().data();
@@ -1463,11 +1463,11 @@ std::string device_image_interface::software_get_default_slot(const char *defaul
 {
 	std::string result;
 
-	auto iter = device().mconfig().options().image_options().find(instance_name());
-	if (iter != device().mconfig().options().image_options().end() && !iter->second.empty())
+	const std::string &image_name(device().mconfig().options().image_option(instance_name()).value());
+	if (!image_name.empty())
 	{
 		result.assign(default_card_slot);
-		const software_part *swpart = find_software_item(iter->second, true);
+		const software_part *swpart = find_software_item(image_name, true);
 		if (swpart != nullptr)
 		{
 			const char *slot = swpart->feature("slot");
@@ -1489,7 +1489,7 @@ bool device_image_interface::init_phase() const
 	// differently at startup; this is an enc[r]apsulation of the "logic"
 	// that switches these behaviors
 	return !device().has_running_machine()
-		|| device().machine().phase() == MACHINE_PHASE_INIT;
+		|| device().machine().phase() == machine_phase::INIT;
 }
 
 

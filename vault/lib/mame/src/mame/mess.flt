@@ -13,6 +13,7 @@ abc1600.cpp
 abc80.cpp
 abc80x.cpp
 ac1.cpp
+accomm.cpp
 aceex.cpp
 acrnsys1.cpp
 adam.cpp
@@ -85,6 +86,7 @@ bk.cpp
 bmjr.cpp
 bml3.cpp
 bob85.cpp
+bpmmicro.cpp
 br8641.cpp
 bullet.cpp
 busicom.cpp
@@ -121,6 +123,7 @@ coco12.cpp
 coco3.cpp
 codata.cpp
 coleco.cpp
+compc.cpp
 compis.cpp
 compucolor.cpp
 comquest.cpp
@@ -142,6 +145,7 @@ d6809.cpp
 dai.cpp
 daruma.cpp
 datum.cpp
+dbox.cpp
 dccons.cpp
 dct11em.cpp
 dectalk.cpp
@@ -182,6 +186,7 @@ et3400.cpp
 eti660.cpp
 eurocom2.cpp
 europc.cpp
+eva.cpp
 evmbug.cpp
 excali64.cpp
 exelv.cpp
@@ -194,10 +199,12 @@ fccpu20.cpp
 fccpu30.cpp
 fidel6502.cpp
 fidel68k.cpp
+fidelmcs48.cpp
 fidelz80.cpp
 fk1.cpp
 fm7.cpp
 fmtowns.cpp
+fontwriter.cpp
 force68k.cpp
 fp1100.cpp
 fp200.cpp
@@ -222,6 +229,7 @@ goupil.cpp
 gp2x.cpp
 gp32.cpp
 grfd2301.cpp
+gridcomp.cpp
 h19.cpp
 h8.cpp
 h89.cpp
@@ -250,6 +258,7 @@ hp9k.cpp
 hp9k_3xx.cpp
 hprot1.cpp
 hpz80unk.cpp
+hp80.cpp
 ht68k.cpp
 huebler.cpp
 hunter2.cpp
@@ -270,6 +279,7 @@ indiana.cpp
 indigo.cpp
 indy_indigo2.cpp
 instruct.cpp
+intellec4.cpp
 interact.cpp
 interpro.cpp
 intv.cpp
@@ -352,6 +362,7 @@ mikrosha.cpp
 mini2440.cpp
 minicom.cpp
 miniforce.cpp
+minitel_2_rpic.cpp
 mits680b.cpp
 mk1.cpp
 mk14.cpp
@@ -396,6 +407,7 @@ nascom1.cpp
 nc.cpp
 neogeocd.cpp
 nes.cpp
+nes_vt.cpp
 newbrain.cpp
 next.cpp
 ngen.cpp
@@ -608,6 +620,7 @@ tekxp33x.cpp
 terak.cpp
 test_t400.cpp
 testconsole.cpp
+tg100.cpp
 thomson.cpp
 ti630.cpp
 ti74.cpp

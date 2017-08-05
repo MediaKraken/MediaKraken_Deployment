@@ -343,18 +343,12 @@ void konamigx_state::sexyparo_esc(address_space &space, uint32_t p1, uint32_t p2
 {
 	// The d20000 should probably be p3
 	// TODO: debugging bootcamp, remove once finished
-	if(p1 != 0)
+#ifdef UNUSED_FUNCTION
+	if (p1 != 0)
 	{
-		static bool shorter_debug_msg;
-
-		if(machine().input().code_pressed_once(KEYCODE_L))
-			shorter_debug_msg = true;
-
-		if(shorter_debug_msg == true)
-			popmessage("%02x",p1);
-		else
-			popmessage("%02x P1 param detected, please drop a note at MAMETesters #06035, press L if you understood and make this message shorter",p1);
+		logerror("sexyparo_esc P1 param: %02x\n", p1);
 	}
+#endif
 	generate_sprites(space, 0xc00604, 0xd20000, 0xfc);
 }
 
@@ -1609,7 +1603,7 @@ WRITE_LINE_MEMBER(konamigx_state::hblank_irq_ack_w)
 	m_gx_syncen |= 0x40;
 }
 
-static MACHINE_CONFIG_START( konamigx, konamigx_state )
+static MACHINE_CONFIG_START( konamigx )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, MASTER_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(gx_type2_map)

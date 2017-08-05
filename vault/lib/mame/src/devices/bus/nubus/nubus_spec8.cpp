@@ -22,13 +22,6 @@
 
 #define VRAM_SIZE   (0xc0000)   // 768k of VRAM for 1024x768 @ 8 bit
 
-MACHINE_CONFIG_FRAGMENT( spec8s3 )
-	MCFG_SCREEN_ADD( SPEC8S3_SCREEN_NAME, RASTER)
-	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_spec8s3_device, screen_update)
-	MCFG_SCREEN_RAW_PARAMS(25175000, 800, 0, 640, 525, 0, 480)
-	MCFG_SCREEN_SIZE(1024,768)
-	MCFG_SCREEN_VISIBLE_AREA(0, 1024-1, 0, 768-1)
-MACHINE_CONFIG_END
 
 ROM_START( spec8s3 )
 	ROM_REGION(0x8000, SPEC8S3_ROM_REGION, 0)
@@ -40,18 +33,20 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-const device_type NUBUS_SPEC8S3 = device_creator<nubus_spec8s3_device>;
+DEFINE_DEVICE_TYPE(NUBUS_SPEC8S3, nubus_spec8s3_device, "nb_sp8s3", "SuperMac Spectrum/8 Series III video card")
 
 
 //-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
+//  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
-machine_config_constructor nubus_spec8s3_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( spec8s3 );
-}
+MACHINE_CONFIG_MEMBER( nubus_spec8s3_device::device_add_mconfig )
+	MCFG_SCREEN_ADD( SPEC8S3_SCREEN_NAME, RASTER)
+	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_spec8s3_device, screen_update)
+	MCFG_SCREEN_RAW_PARAMS(25175000, 800, 0, 640, 525, 0, 480)
+	MCFG_SCREEN_SIZE(1024,768)
+	MCFG_SCREEN_VISIBLE_AREA(0, 1024-1, 0, 768-1)
+MACHINE_CONFIG_END
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
@@ -71,20 +66,18 @@ const tiny_rom_entry *nubus_spec8s3_device::device_rom_region() const
 //-------------------------------------------------
 
 nubus_spec8s3_device::nubus_spec8s3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-		device_t(mconfig, NUBUS_SPEC8S3, "SuperMac Spectrum/8 Series III video card", tag, owner, clock, "nb_sp8s3", __FILE__),
-		device_video_interface(mconfig, *this),
-		device_nubus_card_interface(mconfig, *this), m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_count(0), m_clutoffs(0), m_timer(nullptr), m_vbl_pending(false), m_parameter(0)
+	nubus_spec8s3_device(mconfig, NUBUS_SPEC8S3, tag, owner, clock)
 {
-	m_assembled_tag = std::string(tag).append(":").append(SPEC8S3_SCREEN_NAME);
-	m_screen_tag = m_assembled_tag.c_str();
 }
 
-nubus_spec8s3_device::nubus_spec8s3_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_video_interface(mconfig, *this),
-		device_nubus_card_interface(mconfig, *this), m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_count(0), m_clutoffs(0), m_timer(nullptr), m_vbl_pending(false), m_parameter(0)
+nubus_spec8s3_device::nubus_spec8s3_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_video_interface(mconfig, *this),
+	device_nubus_card_interface(mconfig, *this),
+	m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_count(0), m_clutoffs(0), m_timer(nullptr),
+	m_assembled_tag(util::string_format("%s:%s", tag, SPEC8S3_SCREEN_NAME)),
+	m_vbl_pending(false), m_parameter(0)
 {
-	m_assembled_tag = std::string(tag).append(":").append(SPEC8S3_SCREEN_NAME);
 	m_screen_tag = m_assembled_tag.c_str();
 }
 

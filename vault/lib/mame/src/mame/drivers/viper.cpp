@@ -77,15 +77,16 @@
     - needs a proper way to dump security dongles, anything but p9112 has placeholder ROM for ds2430.
 
     Game status:
-        ppp2nd              POST: "DIP SWITCH ERROR", "NO SECURITY ERROR"
+        ppp2nd              POST: "NO SECURITY ERROR"
         boxingm             Goes to attract mode when ran with memory card check. Coins up.
         code1d,b            RTC self check bad
         gticlub2            Attract mode works. Coins up. Hangs in car selection.
         gticlub2ea          Doesn't boot: bad CHD?
-        jpark3              POST?: Shows "Now loading..." then black screen (sets global timer 1 on EPIC...)
+        jpark3              POST?: Shows "Now loading..." then black screen (sets global timer 1 on EPIC) - with IRQ3 crashes at first 3d frame
         mocapglf            Security code error
         mocapb,j            Crash after self checks
-        p911,e,j,uc,kc      "Distribution error"
+        p911                "Distribution error"
+        p911e,j,uc,kc       Hangs at POST, with IRQ3 it crashes at first 3d frame
         p9112               RTC self check bad
         popn9               Doesn't boot: bad CHD?
         sscopex/sogeki      Security code error
@@ -433,6 +434,7 @@ public:
 	virtual void machine_reset() override;
 	uint32_t screen_update_viper(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(viper_vblank);
+	WRITE_LINE_MEMBER(voodoo_pciint);
 	TIMER_CALLBACK_MEMBER(epic_global_timer_callback);
 	TIMER_CALLBACK_MEMBER(ds2430_timer_callback);
 #if VIPER_DEBUG_EPIC_REGS
@@ -1373,7 +1375,7 @@ READ64_MEMBER(viper_state::cf_card_data_r)
 
 			default:
 			{
-				fatalerror("%s:cf_card_data_r: IDE reg %02X\n", machine().describe_context(), offset & 0xf);
+				fatalerror("%s:cf_card_data_r: IDE reg %02X\n", machine().describe_context().c_str(), offset & 0xf);
 			}
 		}
 	}
@@ -1394,7 +1396,7 @@ WRITE64_MEMBER(viper_state::cf_card_data_w)
 
 			default:
 			{
-				fatalerror("%s:cf_card_data_w: IDE reg %02X, %04X\n", machine().describe_context(), offset & 0xf, (uint16_t)(data >> 16));
+				fatalerror("%s:cf_card_data_w: IDE reg %02X, %04X\n", machine().describe_context().c_str(), offset & 0xf, (uint16_t)(data >> 16));
 			}
 		}
 	}
@@ -1440,7 +1442,7 @@ READ64_MEMBER(viper_state::cf_card_r)
 
 				default:
 				{
-					printf("%s:compact_flash_r: IDE reg %02X\n", machine().describe_context(), offset & 0xf);
+					printf("%s:compact_flash_r: IDE reg %02X\n", machine().describe_context().c_str(), offset & 0xf);
 				}
 			}
 		}
@@ -1456,7 +1458,7 @@ READ64_MEMBER(viper_state::cf_card_r)
 			}
 			else
 			{
-				fatalerror("%s:compact_flash_r: reg %02X\n", machine().describe_context(), reg);
+				fatalerror("%s:compact_flash_r: reg %02X\n", machine().describe_context().c_str(), reg);
 			}
 		}
 	}
@@ -1466,7 +1468,7 @@ READ64_MEMBER(viper_state::cf_card_r)
 WRITE64_MEMBER(viper_state::cf_card_w)
 {
 	#ifdef VIPER_DEBUG_LOG
-	//printf("%s:compact_flash_w: %08X%08X, %08X, %08X%08X\n", machine().describe_context(), (uint32_t)(data>>32), (uint32_t)(data), offset, (uint32_t)(mem_mask >> 32), (uint32_t)(mem_mask));
+	//logerror("%s:compact_flash_w: %08X%08X, %08X, %08X%08X\n", machine().describe_context(), (uint32_t)(data>>32), (uint32_t)(data), offset, (uint32_t)(mem_mask >> 32), (uint32_t)(mem_mask));
 	#endif
 
 	if (ACCESSING_BITS_16_31)
@@ -1505,7 +1507,7 @@ WRITE64_MEMBER(viper_state::cf_card_w)
 
 				default:
 				{
-					fatalerror("%s:compact_flash_w: IDE reg %02X, data %04X\n", machine().describe_context(), offset & 0xf, (uint16_t)((data >> 16) & 0xffff));
+					fatalerror("%s:compact_flash_w: IDE reg %02X, data %04X\n", machine().describe_context().c_str(), offset & 0xf, (uint16_t)((data >> 16) & 0xffff));
 				}
 			}
 		}
@@ -1525,7 +1527,7 @@ WRITE64_MEMBER(viper_state::cf_card_w)
 				}
 				default:
 				{
-					fatalerror("%s:compact_flash_w: reg %02X, data %04X\n", machine().describe_context(), offset, (uint16_t)((data >> 16) & 0xffff));
+					fatalerror("%s:compact_flash_w: reg %02X, data %04X\n", machine().describe_context().c_str(), offset, (uint16_t)((data >> 16) & 0xffff));
 				}
 			}
 		}
@@ -2238,8 +2240,24 @@ INPUT_PORTS_START( boxingm )
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // memory card check for boxingm (actually comms enable?)
 INPUT_PORTS_END
 
+// TODO: left/right escape, 2nd service switch?
+INPUT_PORTS_START( jpark3 )
+	PORT_INCLUDE( viper )
+
+	PORT_MODIFY("IN3")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
+
+	PORT_MODIFY("IN4")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("P1 Gun Trigger") PORT_PLAYER(1)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("P2 Gun Trigger") PORT_PLAYER(2)
+
+INPUT_PORTS_END
+
 INPUT_PORTS_START( p911 )
 	PORT_INCLUDE( viper )
+
+	PORT_MODIFY("IN4")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Gun Trigger")
 
 	PORT_MODIFY("IN5")
 	// one of these is P2 SHT2 (checks and fails serial if pressed)
@@ -2261,7 +2279,6 @@ INPUT_PORTS_END
 
 /*****************************************************************************/
 
-
 INTERRUPT_GEN_MEMBER(viper_state::viper_vblank)
 {
 	mpc8240_interrupt(MPC8240_IRQ0);
@@ -2270,7 +2287,16 @@ INTERRUPT_GEN_MEMBER(viper_state::viper_vblank)
 
 WRITE_LINE_MEMBER(viper_state::voodoo_vblank)
 {
-	mpc8240_interrupt(MPC8240_IRQ4);
+	// FIXME: The driver seems to hang using the voodoo vblank signa
+	//if (state)
+	//  mpc8240_interrupt(MPC8240_IRQ0);
+	//mpc8240_interrupt(MPC8240_IRQ3);
+}
+
+WRITE_LINE_MEMBER(viper_state::voodoo_pciint)
+{
+	if (state)
+		mpc8240_interrupt(MPC8240_IRQ4);
 }
 
 void viper_state::machine_start()
@@ -2302,13 +2328,13 @@ void viper_state::machine_reset()
 	m_ds2430_unk_status = 1;
 }
 
-static MACHINE_CONFIG_START( viper, viper_state )
+static MACHINE_CONFIG_START( viper )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", MPC8240, 200000000)
 	MCFG_PPC_BUS_FREQUENCY(100000000)
 	MCFG_CPU_PROGRAM_MAP(viper_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", viper_state,  viper_vblank)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", viper_state, viper_vblank)
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
 	MCFG_PCI_BUS_LEGACY_DEVICE(0, "mpc8240", mpc8240_pci_r, mpc8240_pci_w)
@@ -2321,6 +2347,7 @@ static MACHINE_CONFIG_START( viper, viper_state )
 	MCFG_VOODOO_SCREEN_TAG("screen")
 	MCFG_VOODOO_CPU_TAG("maincpu")
 	MCFG_VOODOO_VBLANK_CB(WRITELINE(viper_state,voodoo_vblank))
+	MCFG_VOODOO_PCIINT_CB(WRITELINE(viper_state, voodoo_pciint))
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2393,6 +2420,8 @@ ROM_START(ppp2nd)
 
 	ROM_REGION(0x28, "ds2430", ROMREGION_ERASE00)       /* DS2430 */
 	ROM_LOAD("ds2430.u3", 0x00, 0x28, BAD_DUMP CRC(f1511505) SHA1(ed7cd9b2763b3e377df9663943160f9871f65105))
+	// byte 0x1e (0) JAA (1) AAA
+	// byte 0x1f (1) rental
 
 	ROM_REGION(0x2000, "m48t58", ROMREGION_ERASE00)     /* M48T58 Timekeeper NVRAM */
 
@@ -2695,6 +2724,19 @@ ROM_START(thrild2) //*
 	DISK_IMAGE( "a41b02", 0, SHA1(0426f4bb9001cf457f44e2c22e3d7575b8049aa3) )
 ROM_END
 
+ROM_START(thrild2j) //*
+	VIPER_BIOS
+
+	ROM_REGION(0x28, "ds2430", ROMREGION_ERASE00)       /* DS2430 */
+	ROM_LOAD("ds2430.u3", 0x00, 0x28, BAD_DUMP CRC(f1511505) SHA1(ed7cd9b2763b3e377df9663943160f9871f65105))
+
+	ROM_REGION(0x2000, "m48t58", ROMREGION_ERASE00)     /* M48T58 Timekeeper NVRAM */
+	ROM_LOAD("a41jaa_nvram.u39", 0x00000, 0x2000, CRC(d56226d5) SHA1(085f40816befde993069f56fdd5f8bd6ccfcf301))
+
+	DISK_REGION( "ata:0:hdd:image" )
+	DISK_IMAGE( "a41a02", 0, SHA1(bbb71e23bddfa07dfa30b6565a35befd82b055b8) ) // same as Asian version
+ROM_END
+
 ROM_START(thrild2a) //*
 	VIPER_BIOS
 
@@ -2957,8 +2999,8 @@ GAME(2000, code1d,    kviper,    viper, viper, viper_state, vipercf,  ROT0,  "Ko
 GAME(2000, code1db,   code1d,    viper, viper, viper_state, vipercf,  ROT0,  "Konami", "Code One Dispatch (ver B)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, gticlub2,  kviper,    viper, gticlub2, viper_state, vipercf,  ROT0,  "Konami", "GTI Club: Corso Italiano (ver JAB)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, gticlub2ea,gticlub2,  viper, gticlub2, viper_state, vipercf,  ROT0,  "Konami", "GTI Club: Corso Italiano (ver EAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
-GAME(2001, jpark3,    kviper,    viper, viper, viper_state, vipercf,  ROT0,  "Konami", "Jurassic Park 3 (ver EBC)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
-GAME(2001, jpark3u,   jpark3,    viper, viper, viper_state, vipercf,  ROT0,  "Konami", "Jurassic Park 3 (ver UA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+GAME(2001, jpark3,    kviper,    viper, jpark3, viper_state, vipercf,  ROT0,  "Konami", "Jurassic Park 3 (ver EBC)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+GAME(2001, jpark3u,   jpark3,    viper, jpark3, viper_state, vipercf,  ROT0,  "Konami", "Jurassic Park 3 (ver UA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, mocapglf,  kviper,    viper, viper, viper_state, vipercf,  ROT90,  "Konami", "Mocap Golf (ver UAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, mocapb,    kviper,    viper, viper, viper_state, vipercf,  ROT90,  "Konami", "Mocap Boxing (ver AAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, mocapbj,   mocapb,    viper, viper, viper_state, vipercf,  ROT90,  "Konami", "Mocap Boxing (ver JAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
@@ -2974,6 +3016,7 @@ GAME(2001, sscopex,   kviper,    viper, viper, viper_state, vipercf,  ROT0,  "Ko
 GAME(2001, sogeki,    sscopex,   viper, viper, viper_state, vipercf,  ROT0,  "Konami", "Sogeki (ver JAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2002, sscopefh,  kviper,    viper, viper, viper_state, vipercf,  ROT0,  "Konami", "Silent Scope Fortune Hunter", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, thrild2,   kviper,    viper, thrild2, viper_state, vipercf,  ROT0,  "Konami", "Thrill Drive 2 (ver EBB)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+GAME(2001, thrild2j,  thrild2,   viper, thrild2, viper_state, vipercf,  ROT0,  "Konami", "Thrill Drive 2 (ver JAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, thrild2a,  thrild2,   viper, thrild2, viper_state, vipercf,  ROT0,  "Konami", "Thrill Drive 2 (ver AAA)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, thrild2ab, thrild2,   viper, thrild2, viper_state, vipercf,  ROT0,  "Konami", "Thrill Drive 2 (ver AAA, alt)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME(2001, thrild2ac, thrild2,   viper, thrild2, viper_state, vipercf,  ROT0,  "Konami", "Thrill Drive 2 (ver AAA, alt 2)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND)

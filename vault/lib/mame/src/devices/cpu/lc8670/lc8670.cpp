@@ -31,7 +31,7 @@
 //  CONSTANTS
 //**************************************************************************
 
-const device_type LC8670 = device_creator<lc8670_cpu_device>;
+DEFINE_DEVICE_TYPE(LC8670, lc8670_cpu_device, "lc8670", "Sanyo LC8670")
 
 
 //**************************************************************************
@@ -171,13 +171,13 @@ ADDRESS_MAP_END
 //-------------------------------------------------
 
 lc8670_cpu_device::lc8670_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: cpu_device(mconfig, LC8670, "Sanyo LC8670", tag, owner, clock, "lc8670", __FILE__),
-		m_program_config("program", ENDIANNESS_BIG, 8, 16, 0),
-		m_data_config("data", ENDIANNESS_BIG, 8, 9, 0, ADDRESS_MAP_NAME(lc8670_internal_map)),
-		m_io_config("io", ENDIANNESS_BIG, 8, 8, 0),
-		m_pc(0),
-		m_ppc(0),
-		m_bankswitch_func(*this)
+	: cpu_device(mconfig, LC8670, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_BIG, 8, 16, 0)
+	, m_data_config("data", ENDIANNESS_BIG, 8, 9, 0, ADDRESS_MAP_NAME(lc8670_internal_map))
+	, m_io_config("io", ENDIANNESS_BIG, 8, 8, 0)
+	, m_pc(0)
+	, m_ppc(0)
+	, m_bankswitch_func(*this)
 {
 	memset(m_sfr, 0x00, sizeof(m_sfr));
 	memset(m_timer0, 0x00, sizeof(m_timer0));
@@ -204,7 +204,7 @@ void lc8670_cpu_device::device_start()
 
 	// setup timers
 	m_basetimer = timer_alloc(BASE_TIMER);
-	m_basetimer->adjust(attotime::from_hz(m_clocks[LC8670_SUB_CLOCK]), 0, attotime::from_hz(m_clocks[LC8670_SUB_CLOCK]));
+	m_basetimer->adjust(attotime::from_hz(m_clocks[unsigned(clock_source::SUB)]), 0, attotime::from_hz(m_clocks[unsigned(clock_source::SUB)]));
 	m_clocktimer = timer_alloc(CLOCK_TIMER);
 
 	// register state for debugger
@@ -392,12 +392,13 @@ void lc8670_cpu_device::state_string_export(const device_state_entry &entry, std
 //  the space doesn't exist
 //-------------------------------------------------
 
-const address_space_config * lc8670_cpu_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector lc8670_cpu_device::memory_space_config() const
 {
-	return  (spacenum == AS_PROGRAM) ? &m_program_config :
-			(spacenum == AS_DATA) ? &m_data_config :
-			(spacenum == AS_IO) ? &m_io_config :
-			nullptr;
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
 }
 
 //-------------------------------------------------
@@ -1005,7 +1006,7 @@ WRITE8_MEMBER(lc8670_cpu_device::regs_w)
 			break;
 		case 0x07:
 			if (data & HOLD_MODE)
-				fatalerror("%s: unemulated HOLD mode\n", machine().describe_context());
+				fatalerror("%s: unemulated HOLD mode\n", machine().describe_context().c_str());
 			break;
 		case 0x10:
 			if (!(data & 0x80))
@@ -1143,7 +1144,7 @@ inline uint16_t lc8670_cpu_device::get_addr()
 	else if (mode > 0x03 && mode <= 0x07)
 		addr = read_data(GET_RI | ((REG_PSW>>1) & 0x0c)) | ((GET_RI & 0x02) ? 0x100 : 0x00);
 	else
-		fatalerror("%s: invalid get_addr in mode %x\n", machine().describe_context(), mode);
+		fatalerror("%s: invalid get_addr in mode %x\n", machine().describe_context().c_str(), mode);
 
 	return addr;
 }
@@ -1168,14 +1169,14 @@ inline void lc8670_cpu_device::change_clock_source()
 	switch(REG_OCR & 0x30)
 	{
 		case 0x00:
-			new_clock = m_clocks[LC8670_RC_CLOCK];
+			new_clock = m_clocks[unsigned(clock_source::RC)];
 			break;
 		case 0x20:
-			new_clock = m_clocks[LC8670_SUB_CLOCK];
+			new_clock = m_clocks[unsigned(clock_source::SUB)];
 			break;
 		case 0x10:
 		case 0x30:
-			new_clock = m_clocks[LC8670_CF_CLOCK];
+			new_clock = m_clocks[unsigned(clock_source::CF)];
 			break;
 	}
 

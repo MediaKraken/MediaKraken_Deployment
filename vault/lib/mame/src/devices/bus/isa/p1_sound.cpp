@@ -22,14 +22,14 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-const device_type P1_SOUND = device_creator<p1_sound_device>;
+DEFINE_DEVICE_TYPE(P1_SOUND, p1_sound_device, "p1_sound", "Poisk-1 sound card (B623)")
 
 
 //-------------------------------------------------
-//  Machine config
+//  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
-static MACHINE_CONFIG_FRAGMENT( p1_sound )
+MACHINE_CONFIG_MEMBER( p1_sound_device::device_add_mconfig )
 	MCFG_DEVICE_ADD("midi", I8251, 0)
 	MCFG_I8251_TXD_HANDLER(DEVWRITELINE("mdout", midi_port_device, write_txd))
 	MCFG_I8251_RXRDY_HANDLER(DEVWRITELINE(":isa", isa8_device, irq3_w))
@@ -73,17 +73,6 @@ static MACHINE_CONFIG_FRAGMENT( p1_sound )
 MACHINE_CONFIG_END
 
 
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor p1_sound_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME(p1_sound);
-}
-
-
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -93,7 +82,7 @@ machine_config_constructor p1_sound_device::device_mconfig_additions() const
 //-------------------------------------------------
 
 p1_sound_device::p1_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: device_t(mconfig, P1_SOUND, "Poisk-1 sound card (B623)", tag, owner, clock, "p1_sound", __FILE__)
+	: device_t(mconfig, P1_SOUND, tag, owner, clock)
 	, device_isa8_card_interface(mconfig, *this)
 	, m_dac(*this, "dac")
 	, m_filter(*this, "filter")
@@ -207,5 +196,5 @@ void p1_sound_device::device_reset()
 	m_dac_ptr = 0;
 
 	// 5 kHz lowpass filter.  XXX check schematics
-	m_filter->filter_rc_set_RC(FLT_RC_LOWPASS, 330, 0, 0, CAP_N(100));
+	m_filter->filter_rc_set_RC(filter_rc_device::LOWPASS, 330, 0, 0, CAP_N(100));
 }
