@@ -18,7 +18,31 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import sys
+import uuid
+import platform
+import subprocess
 from sys import version_info
+
+if sys.platform.startswith('linux'):
+    # Linux-specific code here...
+    pass
+elif sys.platform.startswith('win32'):
+    # Windows server
+    win_version = sys.getwindowsversion()
+    if win_version == sys.VER_PLATFORM_WIN32_WINDOWS: # Windows 95/98/ME
+        pass
+    elif win_version == sys.VER_PLATFORM_WIN32_NT: # Windows NT/2000/XP/x64
+        pass
+    else:
+        print('Unsupported windows version!  Exiting.')
+        sys.exit()
+elif sys.platform.startswith('cygwin'):
+    # Cygwin
+    pass
+elif sys.platform.startswith('darwin'):
+    # MAC OSQ
+    pass
 
 py3 = version_info[0] > 2 #creates boolean value for test that Python major version > 2
 
@@ -34,6 +58,8 @@ else:
   response = raw_input("Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
 if response == 'None' or len(response) == 0:
     # builtin
+    db_pass = str(uuid.uuid4()).replace('-','')
+    env_text = ("DBHOST=mkdatabase\nDBDATABASE=metamandb\nDBUSER=metamanpg\nDBPASS=%s", (db_pass,))
     compose_text += "\n\n  # Postgresql server\n"\
         "  database:\n"\
         "    image: mediakraken/mkdatabase:latest\n"\
@@ -47,19 +73,20 @@ if response == 'None' or len(response) == 0:
         "    networks:\n"\
         "      - mediakraken_dbnetwork\n"\
         "    restart: unless - stopped\n"
-
-if py3:
-  response = input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 else:
-  response = raw_input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
-
-if py3:
-  response = input("Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
-else:
-  response = raw_input("Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
-if response == 'None' or len(response) == 0:
-    # builtin
-    pass
+    if py3:
+        db_database = input("Please enter database name: ")
+    else:
+        db_database = raw_input("Please enter database name: ")
+    if py3:
+        db_user = input("Please enter database user: ")
+    else:
+        db_user = raw_input("Please enter database user: ")
+    if py3:
+        db_pass = input("Please enter database password: ")
+    else:
+        db_pass = raw_input("Please enter database password: ")
+    env_text = ("DBHOST=%s\nDBDATABASE=%s\nDBUSER=%s\nDBPASS=%s", (response, db_database, db_user,  db_pass))
 
 # setup the server
 compose_text += "\n\n  # Main app server which controls the show\n"\
@@ -152,11 +179,14 @@ compose_text += "\n\n  # pgbouncer\n"\
     "      - MAX_CLIENT_CONN=500\n"\
     "      - DEFAULT_POOL_SIZE=85\n"\
     "      - SERVER_RESET_QUERY=DISCARD ALL\n"\
-    "    container_name: mkpgbounce\n"\
-    "    depends_on:\n"\
-    "      - database\n"\
-    "    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh\n"\
-    "    networks:\n"\
+    "    container_name: mkpgbounce\n"
+if response is None or len(response) == 0:
+    compose_text += "    depends_on:\n"\
+        "      - database\n"\
+        "    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh\n"
+else:
+    compose_text += ("    entrypoint: ./wait-for-it-ash.sh -h %s -p 5432 -t 30 -- ./entrypoint.sh\n", (response,))
+compose_text += "    networks:\n"\
     "      - mediakraken_dbnetwork\n"\
     "    restart: unless-stopped\n"
 
@@ -222,16 +252,38 @@ compose_text += "\n\n  # rabbit\n"\
     "    networks:\n"\
     "      - mediakraken_network\n"
 
-# runs portainer
-compose_text += "\n\n  dockmanage:\n" \
-    "    image: portainer / portainer:latest\n"\
-    "      container_name: mkportainer\n"\
-    "      ports:\n"\
-    "        - \"9000:9000\"\n"\
-    "      volumes:\n"\
-    "        - /var/run/docker.sock:/var/run/docker.sock\n"\
-    "        - /var/opt/mediakraken/data:/data\n"\
-    "      restart: unless - stopped\n"
+# after this point is optional stuff
+
+if py3:
+  response = input("Run Portainer? (See Docker container usage - default no): ")
+else:
+  response = raw_input("Run Portainer? (See Docker container usage - default no): ")
+if response.lower() == 'y':
+    # runs portainer
+    compose_text += "\n\n  dockmanage:\n" \
+        "    image: portainer / portainer:latest\n"\
+        "      container_name: mkportainer\n"\
+        "      ports:\n"\
+        "        - \"9000:9000\"\n"\
+        "      volumes:\n"\
+        "        - /var/run/docker.sock:/var/run/docker.sock\n"\
+        "        - /var/opt/mediakraken/data:/data\n"\
+        "      restart: unless - stopped\n"
+
+if py3:
+  response = input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+else:
+  response = raw_input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+
+if py3:
+  response = input("Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
+else:
+  response = raw_input("Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
+if response == 'None' or len(response) == 0:
+    # builtin
+    pass
+
+# rest is required
 
 # add networking info
 compose_text += "\n\nnetworks:\n"\
@@ -252,4 +304,8 @@ file_handle = open('.env', 'w+')
 file_handle.write(env_text)
 file_handle.close()
 
-print("MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux or 'docker-compose up -d' to start the application.")
+print("Pulling newest images from Docker Hub for MediaKraken....this may take awhile.")
+docker_pid = subprocess.Popen(['docker-compose', 'pull'])
+docker_pid.wait()
+
+print("MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux/MacOS or 'docker-compose up -d' to start the application.")
