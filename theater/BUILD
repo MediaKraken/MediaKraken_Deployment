@@ -71,10 +71,14 @@ git clone https://github.com/MediaKraken/MediaKraken_Deployment
 git checkout dev-0.7.2
 pip install the requirements file
 
-sudo add-apt-repository ppa:kivy-team/kivy
-sudo apt-get update
-sudo apt-get install python-kivy
+#sudo add-apt-repository ppa:kivy-team/kivy
+#sudo apt-get update
+#sudo apt-get install python-kivy
+
 sudo apt-get install mpv libmpv1
+
+
+sudo apt-get install python-pyqt5 pyqt5-dev-tools
 
 # for mpv kivy thingie
 libmpv-dev
