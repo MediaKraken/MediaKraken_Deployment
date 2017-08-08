@@ -44,7 +44,7 @@ class MainWindow(QDialog, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.main_button_settings.clicked.connect(self.main_button_settings_clicked)
         self.main_button_tv.clicked.connect(self.main_button_tv_clicked)
         self.main_button_tv_live.clicked.connect(self.main_button_tv_live_clicked)
-        self.setWindowTitle('MediaKraken %s', common_version.APP_VERSION)
+        self.setWindowTitle('MediaKraken ' + common_version.APP_VERSION)
 
     def main_button_books_clicked(self):
         pass
