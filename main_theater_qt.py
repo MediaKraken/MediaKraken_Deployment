@@ -54,7 +54,7 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         pass
 
     def main_button_movie_clicked(self):
-        self.browse_movie = mk_browse_movie.MK_Browse_Movie()
+        self.browse_movie = mk_browse_movie_ui.MK_Browse_Movie()
         self.browse_movie.show()
 
     def main_button_music_clicked(self):
