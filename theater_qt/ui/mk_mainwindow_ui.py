@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'mk_mainwindow.ui'
 #
-# Created: Mon Aug  7 22:17:22 2017
+# Created: Tue Aug  8 13:59:21 2017
 #      by: PyQt5 UI code generator 5.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(765, 612)
-        self.centralWidget = QtWidgets.QWidget(MainWindow)
+class Ui_MK_MainWindow(object):
+    def setupUi(self, MK_MainWindow):
+        MK_MainWindow.setObjectName("MK_MainWindow")
+        MK_MainWindow.resize(765, 612)
+        self.centralWidget = QtWidgets.QWidget(MK_MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralWidget)
         self.gridLayout.setObjectName("gridLayout")
