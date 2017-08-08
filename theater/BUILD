@@ -84,6 +84,10 @@ sudo apt-get install python-pyqt5 pyqt5-dev-tools
 libmpv-dev
 
 
+# maybe not needed after mpv
+python-pyqt5.qtmultimedia
+
+
 
 
 
