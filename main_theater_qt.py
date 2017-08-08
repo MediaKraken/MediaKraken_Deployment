@@ -24,6 +24,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
+from ui import mk_browse_movie
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
@@ -53,7 +54,8 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         pass
 
     def main_button_movie_clicked(self):
-        pass
+        self.browse_movie = mk_browse_movie.MK_Browse_Movie()
+        self.browse_movie.show()
 
     def main_button_music_clicked(self):
         pass
