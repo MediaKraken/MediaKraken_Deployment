@@ -22,16 +22,18 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
-from PyQt5.QtWidgets import QTextEdit, QWidget, QDialog, QApplication
+from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
 
-class MainWindow(QDialog, mk_mainwindow_ui.Ui_MK_MainWindow):
+
+class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
