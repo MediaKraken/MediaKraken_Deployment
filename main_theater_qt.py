@@ -24,6 +24,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
+from common import common_version
 from ui import mk_browse_movie_ui
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
@@ -76,5 +77,6 @@ class MainWindow(QDialog, mk_mainwindow_ui.Ui_MK_MainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     form = MainWindow()
+    form.setWindowTitle('MediaKraken %s', common_version.APP_VERSION)
     form.show()
     sys.exit(app.exec_())
