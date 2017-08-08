@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mk_player.ui'
 #
-# Created: Tue Aug  8 13:59:36 2017
+# Created: Tue Aug  8 14:40:11 2017
 #      by: PyQt5 UI code generator 5.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -111,22 +111,12 @@ class Ui_MK_Player(object):
         self.player_btn_next.setText("")
         self.player_btn_next.setObjectName("player_btn_next")
         self.horizontalLayout_3.addWidget(self.player_btn_next)
-        self.player_audio_tracks = TrackSelector(self.control_bar)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        self.player_audio_tracks.setFont(font)
-        self.player_audio_tracks.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.player_audio_tracks.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.player_audio_tracks.setObjectName("player_audio_tracks")
-        self.horizontalLayout_3.addWidget(self.player_audio_tracks)
-        self.player_sub_tracks = TrackSelector(self.control_bar)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        self.player_sub_tracks.setFont(font)
-        self.player_sub_tracks.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.player_sub_tracks.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.player_sub_tracks.setObjectName("player_sub_tracks")
-        self.horizontalLayout_3.addWidget(self.player_sub_tracks)
+        self.player_audio_select = QtWidgets.QComboBox(self.control_bar)
+        self.player_audio_select.setObjectName("player_audio_select")
+        self.horizontalLayout_3.addWidget(self.player_audio_select)
+        self.player_sub_select = QtWidgets.QComboBox(self.control_bar)
+        self.player_sub_select.setObjectName("player_sub_select")
+        self.horizontalLayout_3.addWidget(self.player_sub_select)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.player_slider_volume = QtWidgets.QSlider(self.control_bar)
@@ -154,4 +144,3 @@ class Ui_MK_Player(object):
         MK_Player.setWindowTitle(_translate("MK_Player", "Form"))
         self.player_lbl_divider.setText(_translate("MK_Player", "/"))
 
-from plexdesktop.extra_widgets import TrackSelector

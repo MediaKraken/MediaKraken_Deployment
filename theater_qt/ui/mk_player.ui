@@ -241,34 +241,10 @@
            </widget>
           </item>
           <item>
-           <widget class="TrackSelector" name="player_audio_tracks">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToContents</enum>
-            </property>
-           </widget>
+           <widget class="QComboBox" name="player_audio_select"/>
           </item>
           <item>
-           <widget class="TrackSelector" name="player_sub_tracks">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToContents</enum>
-            </property>
-           </widget>
+           <widget class="QComboBox" name="player_sub_select"/>
           </item>
           <item>
            <spacer name="player_horizontalSpacer">
@@ -324,13 +300,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>TrackSelector</class>
-   <extends>QComboBox</extends>
-   <header>plexdesktop.extra_widgets.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
