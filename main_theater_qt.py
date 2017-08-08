@@ -24,7 +24,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
-from ui import mk_browse_movie
+from ui import mk_browse_movie_ui
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
