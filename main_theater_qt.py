@@ -30,7 +30,7 @@ from ui import mk_mainwindow_ui
 from ui import mk_player_ui
 
 
-class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
+class MainWindow(QDialog, mk_mainwindow_ui.Ui_MK_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
