@@ -33,6 +33,42 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+        self.main_button_books.clicked.connect(self.main_button_books_clicked)
+        self.main_button_home_movie.clicked.connect(self.main_button_home_movie_clicked)
+        self.main_button_images.clicked.connect(self.main_button_images_clicked)
+        self.main_button_movie.clicked.connect(self.main_button_movie_clicked)
+        self.main_button_music.clicked.connect(self.main_button_music_clicked)
+        self.main_button_radio.clicked.connect(self.main_button_radio_clicked)
+        self.main_button_settings.clicked.connect(self.main_button_settings_clicked)
+        self.main_button_tv.clicked.connect(self.main_button_tv_clicked)
+        self.main_button_tv_live.clicked.connect(self.main_button_tv_live_clicked)
+
+    def main_button_books_clicked(self):
+        pass
+
+    def main_button_home_movie_clicked(self):
+        pass
+
+    def main_button_images_clicked(self):
+        pass
+
+    def main_button_movie_clicked(self):
+        pass
+
+    def main_button_music_clicked(self):
+        pass
+
+    def main_button_radio_clicked(self):
+        pass
+
+    def main_button_settings_clicked(self):
+        pass
+
+    def main_button_tv_clicked(self):
+        pass
+
+    def main_button_tv_live_clicked(self):
+        pass
 
 
 if __name__ == '__main__':
