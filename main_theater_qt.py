@@ -30,7 +30,7 @@ from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
 
-from twisted.internet import reactor, protocol
+from twisted.internet import protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
 from twisted.python import log
