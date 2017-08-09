@@ -33,7 +33,7 @@ from ui import mk_player_ui
 
 class PlayerWindow(QMainWindow, mk_player_ui.Ui_MK_Player):
     def __init__(self, parent=None):
-        super(LoginDialog, self).__init__(parent)
+        super(PlayerWindow, self).__init__(parent)
         self.setupUi(self)
 
 
