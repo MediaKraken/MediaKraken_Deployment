@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -17,91 +17,27 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import json
 
 # base mediakraken settings
-mediakraken_settings_base_json = json.dumps({
-     'MediaKrakenServer': {'Host': None, 'Port': None}
-})
+mediakraken_settings_base_json =\
+    {'MediaKrakenServer': {'Host': None, 'Port': None},
+    'Audio': {'Channels': ['7.1', '6.1', '5.1', '2.1'],
+    'Default_Device': ["Default Device", "Passthrough"],
+    'Enable audio passthrough for receiver': False,
+    'Receiver supports DTS passthrough': False,
+    'Receiver supports DTS-HD passthrough': False,
+    'Receiver supports DTS-X passthrough': False,
+    'Receiver supports AC-3 passthrough': False,
+    'Receiver supports EAC-3 passthrough': False,
+    'Receiver supports True-HD passthrough': False,
+    'Receiver supports Dolby Atmos passthrough': False},
+    'Video': {'Blank Displays': ['Blank other displays in multimonitor environment',\
+                                 'Run application fullscreen for GUI and playback',\
+                                 'Run application in windowed fullscreen mode']}}
 
-# audio settings
-mediakraken_settings_audio_json = json.dumps([
-    {'type': 'title',
-     'title': 'Audio Device/Channel'},
-    {'type': 'options',
-     'title': 'Channels',
-     'desc': 'Number of audio channels to output',
-     'section': 'Audio',
-     'key': 'Channels',
-     'options': ['7.1', '6.1', '5.1', '2.1']},
-    {'type': 'options',
-     'title': 'Output Device',
-     'desc': 'Device to output audio',
-     'section': 'Audio',
-     'key': 'Default_Device',
-     'options': ["Default Device", "Passthrough"]},
-    {'type': 'title',
-     'title': 'Audio Passthrough Settings'},
-    {'type': 'bool',
-     'title': 'Audio Passthrough',
-     'desc': 'Enable audio passthrough for receiver',
-     'section': 'Passthrough',
-     'key': 'Enable'},
-    {'type': 'bool',
-     'title': 'DTS Passthrough',
-     'desc': 'Receiver supports DTS passthrough',
-     'section': 'Passthrough',
-     'key': 'DTS'},
-    {'type': 'bool',
-     'title': 'DTS-HD Passthrough',
-     'desc': 'Receiver supports DTS-HD passthrough',
-     'section': 'Passthrough',
-     'key': 'DTSHD'},
-    {'type': 'bool',
-     'title': 'DTS-X',
-     'desc': 'Receiver supports DTS-X passthrough',
-     'section': 'Passthrough',
-     'key': 'DTSX'},
-    {'type': 'bool',
-     'title': 'AC-3 Dolby Digital Passthrough',
-     'desc': 'Receiver supports AC-3 passthrough',
-     'section': 'Passthrough',
-     'key': 'AC3'},
-    {'type': 'bool',
-     'title': 'EAC-3 Dolby Digital Passthrough',
-     'desc': 'Receiver supports EAC-3 passthrough',
-     'section': 'Passthrough',
-     'key': 'EAC3'},
-    {'type': 'bool',
-     'title': 'True-HD Passthrough',
-     'desc': 'Receiver supports True-HD passthrough',
-     'section': 'Passthrough',
-     'key': 'TRUEHD'},
-    {'type': 'bool',
-     'title': 'Dolby Atmos Passthrough',
-     'desc': 'Receiver supports Dolby Atmos passthrough',
-     'section': 'Passthrough',
-     'key': 'Atmos'}])
+'''
 
-# video settings
-mediakraken_settings_video_json = json.dumps([
-    {'type': 'title',
-     'title': 'Video Settings'},
-    {'type': 'bool',
-     'title': 'Blank Displays',
-     'desc': 'Blank other displays in multimonitor environment',
-     'section': 'Video',
-     'key': 'Blank_Displays'},
-    {'type': 'bool',
-     'title': 'Fullscreen',
-     'desc': 'Run application fullscreen for GUI and playback',
-     'section': 'Video',
-     'key': 'Fullscreen'},
-    {'type': 'bool',
-     'title': 'Fullscreen Window',
-     'desc': 'Run application is windowed fullscreen mode',
-     'section': 'Video',
-     'key': 'Fullscreen_Window'},
+
     {'type': 'options',
      'title': 'Resolution',
      'desc': 'Set resolution for GUI and playback',
@@ -158,3 +94,5 @@ mediakraken_settings_playback_json = json.dumps([
      'desc': 'Automatically start next media file after end of media',
      'section': 'Playback',
      'key': 'Play_Next_Media_Automatically'}])
+
+'''

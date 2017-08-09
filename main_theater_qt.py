@@ -113,11 +113,7 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         if os.path.isfile('./conf/mk_theater.cfg'):
             pass
         else:
-            config_json = {'Base': MediaKrakenSettings.mediakraken_settings_base_json,
-                            'Audio': MediaKrakenSettings.mediakraken_settings_audio_json,
-                            'Video': MediaKrakenSettings.mediakraken_settings_video_json,
-                            'Library': MediaKrakenSettings.mediakraken_settings_library_json,
-                            'Playback': MediaKrakenSettings.mediakraken_settings_playback_json}
+            config_json = MediaKrakenSettings.mediakraken_settings_base_json
             common_file.com_file_save_data('./conf/mk_theater.cfg', json.dumps(config_json), True)
         self.mk_config = json.loads(common_file.com_file_load_data('./conf/mk_theater.cfg', True))
         # attempt server connect
@@ -127,19 +123,19 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
     def connect_to_server(self):
         logging.info('conn server')
         print(self.mk_config)
-        if self.mk_config['Base']['MediaKrakenServer']['Host'] is None:
+        if self.mk_config['MediaKrakenServer']['Host'] is None:
             # TODO if more than one server, popup list selection
             server_list = common_network_mediakraken.com_net_mediakraken_find_server()
             logging.info('server list: %s', server_list)
             host_ip = server_list[0]
             # TODO allow pick from list and save it below
-            self.mk_config['Base']['MediaKrakenServer']['Host'] = host_ip.split(':')[0]
-            self.mk_config['Base']['MediaKrakenServer']['Port'] = host_ip.split(':')[1]
+            self.mk_config['MediaKrakenServer']['Host'] = host_ip.split(':')[0]
+            self.mk_config['MediaKrakenServer']['Port'] = host_ip.split(':')[1]
             common_file.com_file_save_data('./conf/mk_theater.cfg', json.dumps(self.mk_config), True)
         else:
             pass
-        reactor.connectSSL(self.mk_config['Base']['MediaKrakenServer']['Host'],
-            int(self.mk_config['Base']['MediaKrakenServer']['Port']),
+        reactor.connectSSL(self.mk_config['MediaKrakenServer']['Host'],
+            int(self.mk_config['MediaKrakenServer']['Port']),
             MKFactory(), ssl.ClientContextFactory())
 
 
