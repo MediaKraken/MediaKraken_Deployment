@@ -46,7 +46,7 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.main_button_tv_live.clicked.connect(self.main_button_tv_live_clicked)
         self.setWindowTitle('MediaKraken ' + common_version.APP_VERSION)
         # setup the other windows
-        self.window_browse_movie = mk_browse_movie_ui.Ui_MK_Browse_Movie()
+        self.window_browse_movie = mk_browse_movie_ui.Ui_MK_Browse_Movie(QMainWindow)
         self.window_browse_movie.setupUi(self)
 
     def main_button_books_clicked(self):
