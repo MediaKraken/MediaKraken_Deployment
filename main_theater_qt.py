@@ -29,6 +29,19 @@ from ui import mk_browse_movie_ui
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
+import qt5reactor
+
+
+class PlayerWindow(QMainWindow, mk_player_ui.Ui_MK_Player):
+    def __init__(self, parent=None):
+        super(LoginDialog, self).__init__(parent)
+        self.setupUi(self)
+
+
+class LoginDialog(QDialog, mk_login_ui.Ui_MK_Login):
+    def __init__(self, parent=None):
+        super(LoginDialog, self).__init__(parent)
+        self.setupUi(self)
 
 
 class BrowseMovieWindow(QMainWindow, mk_browse_movie_ui.Ui_MK_Browse_Movie):
@@ -51,8 +64,11 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.main_button_tv.clicked.connect(self.main_button_tv_clicked)
         self.main_button_tv_live.clicked.connect(self.main_button_tv_live_clicked)
         self.setWindowTitle('MediaKraken ' + common_version.APP_VERSION)
-        # setup the other windows (this way only done once to negate memory leak
+        # setup the other windows (this way only done once to negate memory leak)
         self.window_browse_movie = BrowseMovieWindow(self)
+        self.window_login = LoginDialog(self)
+        self.window_player = PlayerWindow(self)
+
 
     def main_button_books_clicked(self):
         pass
@@ -84,6 +100,8 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    from twisted.application import reactors
+    reactors.installReactor('qt5')
     form = MainWindow()
     form.show()
     sys.exit(app.exec_())
