@@ -126,7 +126,7 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
 
     def connect_to_server(self):
         logging.info('conn server')
-        if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
+        if self.mk_config['Base']['MediaKrakenServer']['Host'] == 'None':
             # TODO if more than one server, popup list selection
             server_list = common_network_mediakraken.com_net_mediakraken_find_server()
             logging.info('server list: %s', server_list)
