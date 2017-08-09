@@ -24,6 +24,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
+from common import common_network_mediakraken
 from common import common_version
 from ui import mk_browse_movie_ui
 from ui import mk_login_ui
@@ -87,6 +88,7 @@ class BrowseMovieWindow(QMainWindow, mk_browse_movie_ui.Ui_MK_Browse_Movie):
 
 
 class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
+    global twisted_connection
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -104,6 +106,27 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.window_browse_movie = BrowseMovieWindow(self)
         self.window_login = LoginDialog(self)
         self.window_player = PlayerWindow(self)
+
+
+    def connect_to_server(self):
+        logging.info('conn server')
+        if self.config is not None:
+            logging.info('here in connect to server')
+            if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
+                # TODO if more than one server, popup list selection
+                server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+                logging.info('server list: %s', server_list)
+                host_ip = server_list[0]
+                # TODO allow pick from list and save it below
+                self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
+                self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
+                with open(r'mediakraken.ini', 'wb') as configfile:
+                    self.config.write()
+            else:
+                pass
+            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
+                int(self.config.get('MediaKrakenServer', 'Port').strip()),
+                MKFactory(), ssl.ClientContextFactory())
 
 
     def main_button_books_clicked(self):
@@ -142,6 +165,8 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     import qt5reactor
     qt5reactor.install()
+    # has to be after the install of qt5reactor
+    from twisted.internet import reactor
     form = MainWindow()
     form.show()
     sys.exit(app.exec_())
