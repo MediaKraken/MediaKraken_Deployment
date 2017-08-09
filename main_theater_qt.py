@@ -113,11 +113,11 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         if os.path.isfile('./conf/mk_theater.cfg'):
             pass
         else:
-            config_json = {'MKServer': {'Base': MediaKrakenSettings.mediakraken_settings_base_json,
-                                        'Audio': MediaKrakenSettings.mediakraken_settings_audio_json,
-                                        'Video': MediaKrakenSettings.mediakraken_settings_video_json,
-                                        'Library': MediaKrakenSettings.mediakraken_settings_library_json,
-                                        'Playback': MediaKrakenSettings.mediakraken_settings_playback_json}}
+            config_json = {'Base': MediaKrakenSettings.mediakraken_settings_base_json,
+                            'Audio': MediaKrakenSettings.mediakraken_settings_audio_json,
+                            'Video': MediaKrakenSettings.mediakraken_settings_video_json,
+                            'Library': MediaKrakenSettings.mediakraken_settings_library_json,
+                            'Playback': MediaKrakenSettings.mediakraken_settings_playback_json}
             common_file.com_file_save_data('./conf/mk_theater.cfg', json.dumps(config_json), True)
         self.mk_config = json.loads(common_file.com_file_load_data('./conf/mk_theater.cfg', True))
 
