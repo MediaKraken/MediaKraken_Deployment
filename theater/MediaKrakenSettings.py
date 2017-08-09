@@ -109,7 +109,7 @@ mediakraken_settings_video_json = json.dumps([
      'key': 'Fullscreen'},
     {'type': 'bool',
      'title': 'Fullscreen Window',
-     'desc': 'Run application is windowed fullscreen mode',
+     'desc': 'Run application in windowed fullscreen mode',
      'section': 'Video',
      'key': 'Fullscreen_Window'},
     {'type': 'options',
