@@ -29,7 +29,6 @@ from ui import mk_browse_movie_ui
 from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
-import qt5reactor
 
 
 class PlayerWindow(QMainWindow, mk_player_ui.Ui_MK_Player):
@@ -100,8 +99,8 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    from twisted.application import reactors
-    reactors.installReactor('qt5')
+    import qt5reactor
+    qt5reactor.install()
     form = MainWindow()
     form.show()
     sys.exit(app.exec_())
