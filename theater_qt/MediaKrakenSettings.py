@@ -20,19 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 
 # base mediakraken settings
-mediakraken_settings_base_json = json.dumps([
-    {'type': 'title',
-     'title': 'MediaKraken Server Settings'},
-    {'type': 'string',
-     'title': 'MediaKraken Server Host/IP',
-     'desc': 'Hostname or IP of MediaKraken server to connect to',
-     'section': 'MediaKrakenServer',
-     'key': 'host'},
-    {'type': 'numeric',
-     'title': 'MediaKraken Server Port',
-     'desc': 'Port number for MediaKraken server',
-     'section': 'MediaKrakenServer',
-     'key': 'port'}])
+mediakraken_settings_base_json = json.dumps({
+     'MediaKrakenServer': {'Host': None, 'Port': None}
+})
 
 # audio settings
 mediakraken_settings_audio_json = json.dumps([

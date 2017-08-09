@@ -126,23 +126,20 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
 
     def connect_to_server(self):
         logging.info('conn server')
-        if self.config is not None:
-            logging.info('here in connect to server')
-            if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
-                # TODO if more than one server, popup list selection
-                server_list = common_network_mediakraken.com_net_mediakraken_find_server()
-                logging.info('server list: %s', server_list)
-                host_ip = server_list[0]
-                # TODO allow pick from list and save it below
-                self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
-                self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
-                with open(r'mediakraken.ini', 'wb') as configfile:
-                    self.config.write()
-            else:
-                pass
-            reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                MKFactory(), ssl.ClientContextFactory())
+        if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
+            # TODO if more than one server, popup list selection
+            server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+            logging.info('server list: %s', server_list)
+            host_ip = server_list[0]
+            # TODO allow pick from list and save it below
+            self.mk_config['Base']['MediaKrakenServer']['Host'] = host_ip.split(':')[0]
+            self.mk_config['Base']['MediaKrakenServer']['Port'] = host_ip.split(':')[1]
+            common_file.com_file_save_data('./conf/mk_theater.cfg', json.dumps(self.mk_config), True)
+        else:
+            pass
+        reactor.connectSSL(self.mk_config['Base']['MediaKrakenServer']['Host'],
+            int(self.mk_config['Base']['MediaKrakenServer']['Port']),
+            MKFactory(), ssl.ClientContextFactory())
 
 
     def main_button_books_clicked(self):
