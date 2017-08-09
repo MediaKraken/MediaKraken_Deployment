@@ -30,6 +30,43 @@ from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
 
+from twisted.internet import reactor, protocol
+from twisted.protocols import basic
+from twisted.internet import ssl
+from twisted.python import log
+
+twisted_connection = None
+mk_app = None
+
+
+class MKEcho(basic.LineReceiver):
+    MAX_LENGTH = 32000000  # pylint: disable=C0103
+
+    def connectionMade(self):
+        global twisted_connection
+        twisted_connection = self
+        logging.info("connected successfully (echo)!")
+
+    def lineReceived(self, line):
+        global mk_app
+        logging.info('linereceived len: %s', len(line))
+        #logging.info('linereceived: %s', line)
+        #logging.info('app: %s', mk_app)
+        # TODO get the following line to run from the application thread
+        #MediaKrakenApp.process_message(mk_app, line)
+
+    def connectionLost(self, reason):
+        logging.error("connection lost!")
+        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+
+    def sendline_data(self, line):
+        logging.info('sending: %s', line)
+        self.sendLine(line.encode("utf8"))
+
+
+class MKFactory(protocol.ClientFactory):
+    protocol = MKEcho
+
 
 class PlayerWindow(QMainWindow, mk_player_ui.Ui_MK_Player):
     def __init__(self, parent=None):
@@ -98,6 +135,10 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
 
 
 if __name__ == '__main__':
+    # for windows exe support
+    from multiprocessing import freeze_support
+    freeze_support()
+    # finish app setup
     app = QApplication(sys.argv)
     import qt5reactor
     qt5reactor.install()
