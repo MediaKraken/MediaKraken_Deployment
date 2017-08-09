@@ -30,6 +30,10 @@ from ui import mk_login_ui
 from ui import mk_mainwindow_ui
 from ui import mk_player_ui
 
+class BrowseMovieWindow(QMainWindow, mk_browse_movie_ui.Ui_MK_Browse_Movie):
+    def __init__(self, parent=None):
+        super(BrowseMovieWindow, self).__init__(parent)
+        self.setupUi(self)
 
 class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
     def __init__(self, parent=None):
@@ -45,9 +49,8 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.main_button_tv.clicked.connect(self.main_button_tv_clicked)
         self.main_button_tv_live.clicked.connect(self.main_button_tv_live_clicked)
         self.setWindowTitle('MediaKraken ' + common_version.APP_VERSION)
-        # setup the other windows
-        self.window_browse_movie = mk_browse_movie_ui.Ui_MK_Browse_Movie(QMainWindow)
-        self.window_browse_movie.setupUi(self)
+        # setup the other windows (this way only done once to negate memory leak
+        self.window_browse_movie = BrowseMovieWindow()
 
     def main_button_books_clicked(self):
         pass
