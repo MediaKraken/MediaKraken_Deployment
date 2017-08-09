@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from config import Config
 import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
@@ -106,6 +107,8 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
         self.window_browse_movie = BrowseMovieWindow(self)
         self.window_login = LoginDialog(self)
         self.window_player = PlayerWindow(self)
+        # load config
+        self.mk_config = Config(file('mk_theater.cfg'))
 
 
     def connect_to_server(self):
