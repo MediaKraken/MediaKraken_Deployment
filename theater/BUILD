@@ -84,6 +84,9 @@ sudo apt-get install python-pyqt5 pyqt5-dev-tools
 libmpv-dev
 
 
+pip install qt5reactor
+
+
 # maybe not needed after mpv
 python-pyqt5.qtmultimedia
 
