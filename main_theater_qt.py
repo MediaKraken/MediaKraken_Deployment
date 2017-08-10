@@ -27,6 +27,7 @@ from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
 sys.path.append('theater_qt')
 from common import common_file
+from common import common_logging
 from common import common_network_mediakraken
 from common import common_version
 from ui import mk_browse_movie_ui
@@ -171,6 +172,8 @@ if __name__ == '__main__':
     # for windows exe support
     from multiprocessing import freeze_support
     freeze_support()
+    # begin logging
+    common_logging.com_logging_start('MediaKraken_Theater_QT')
     # finish app setup
     app = QApplication(sys.argv)
     import qt5reactor
