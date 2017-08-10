@@ -173,7 +173,7 @@ if __name__ == '__main__':
     from multiprocessing import freeze_support
     freeze_support()
     # begin logging
-    common_logging.com_logging_start('MediaKraken_Theater_QT')
+    common_logging.com_logging_start('./log/MediaKraken_Theater_QT')
     # finish app setup
     app = QApplication(sys.argv)
     import qt5reactor

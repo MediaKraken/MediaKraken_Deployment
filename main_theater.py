@@ -693,7 +693,7 @@ if __name__ == '__main__':
     from multiprocessing import freeze_support
     freeze_support()
     # begin logging
-    common_logging.com_logging_start('MediaKraken_Theater')
+    common_logging.com_logging_start('./log/MediaKraken_Theater')
     log.startLogging(sys.stdout) # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
