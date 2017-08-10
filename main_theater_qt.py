@@ -143,6 +143,9 @@ class MainWindow(QMainWindow, mk_mainwindow_ui.Ui_MK_MainWindow):
             int(self.mk_config['MediaKrakenServer']['Port']),
             MKFactory(), ssl.ClientContextFactory())
 
+    def send_twisted_message_thread(self, message):
+        MKFactory.protocol.sendline_data(twisted_connection, message)
+
     def process_message(self, server_msg):
         """
         Process network message from server
