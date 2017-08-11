@@ -352,6 +352,12 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
+# pika rabbitmq connection
+parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
+cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
+d = cc.connectTCP('mkrabbitmq', 5672)
+d.addCallback(lambda protocol: protocol.ready)
+d.addCallback(run)
 # setup last used id's per thread
 metadata_last_id = None
 metadata_last_title = None
