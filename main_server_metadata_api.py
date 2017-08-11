@@ -50,6 +50,10 @@ common_signal.com_signal_set_break()
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
 
 # fire up the workers for each provider
 for meta_provider in common_metadata_limiter.API_LIMIT.keys():
