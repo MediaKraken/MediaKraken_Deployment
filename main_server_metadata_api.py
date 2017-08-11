@@ -37,7 +37,7 @@ else:
 
 # TODO should be using env variables
 # build trailer directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailer/trailer/a'):
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
     pass
 else:
     build_trailer_dirs()
