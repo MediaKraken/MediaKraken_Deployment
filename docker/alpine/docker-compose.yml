@@ -119,6 +119,7 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
