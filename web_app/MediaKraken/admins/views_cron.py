@@ -92,7 +92,9 @@ def admin_cron_run():
     """
     Run cron jobs
     """
+    logging.info('admin cron run')
     # TODO must determine where the actual cron should fire from
+    # IE.......which cron is run.....might need to specify in the cron array
     ch = fpika.channel()
     ch.basic_publish(exchange='mkque_ex', routing_key='mkque_metadata',
                      body=json.dumps(
