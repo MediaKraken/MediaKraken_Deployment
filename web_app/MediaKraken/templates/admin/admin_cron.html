@@ -58,30 +58,47 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div class="modal fade" id="editCronModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                        </button>
-                        <h4 class="modal-title" id="editModalLabel">Update Cron</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="recipient-name" class="control-label">Path:</label>
-                                <input type="text" class="form-control" id="editPath">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="control-label">Media Class:</label>
-                                <textarea class="form-control" id="editClass"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnCronUpdate">Update</button>
-                    </div>
+    </div>
+    <div class="modal fade" id="confirm_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Heading">Run this Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to run this cron?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCronModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Update Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Path:</label>
+                            <input type="text" class="form-control" id="editPath">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Media Class:</label>
+                            <textarea class="form-control" id="editClass"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCronUpdate">Update</button>
                 </div>
             </div>
         </div>
