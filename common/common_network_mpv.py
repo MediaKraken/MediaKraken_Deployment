@@ -33,7 +33,7 @@ class CommonNetMPV(object):
             time.sleep(0.1)
             try:
                 self.socket_stream = socket.socket(socket.AF_UNIX)
-                self.socket_stream.connect(self.sockfile)
+                self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
                     print("Connection was refused")
