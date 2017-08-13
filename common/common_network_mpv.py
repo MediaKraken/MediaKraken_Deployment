@@ -22,6 +22,17 @@ import socket
 import json
 #import os
 import time
+import subprocess
+from subprocess import check_output
+
+
+class CommonNetMPVSocat(object):
+    def __init__(self, sockfile='./mk_mpv.sock'):
+        self.sockfile = sockfile
+
+    def execute(self, command):
+        self.sub_output = check_output(['echo', command, '|', 'socat', '-', self.sockfile])
+        print('subout: ', self.sub_output)
 
 
 class CommonNetMPV(object):
@@ -47,7 +58,8 @@ class CommonNetMPV(object):
         #self.sockfile = sockfile
 
     def execute(self, command):
-        self.socket_stream.sendall((json.dumps(command) + '\r\n').encode('utf-8'))
+        #self.socket_stream.sendall(json.dumps(command).encode('utf-8'))
+        self.socket_stream.sendall(str(command).encode('utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
         logging.info('mpv result: ', result)
         if result['error'] == 'success':
