@@ -31,8 +31,10 @@ class CommonNetMPVSocat(object):
         self.sockfile = sockfile
 
     def execute(self, command):
-        self.sub_output = check_output(['echo', command, '|', 'socat', '-', self.sockfile])
-        print('subout: ', self.sub_output)
+        self.sub_output = subprocess.Popen('echo ' + str(command).encode('utf-8') + ' | socat - ' + self.sockfile, stdout=subprocess.PIPE, stderr=None, shell=True)
+        output = self.sub_output.communicate()
+        #self.sub_output = check_output(['echo', str(command).encode('utf-8'), '|', 'socat', '-', self.sockfile])
+        print('subout: ', output)
 
 
 class CommonNetMPV(object):
