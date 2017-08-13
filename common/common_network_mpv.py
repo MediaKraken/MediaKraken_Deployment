@@ -27,6 +27,25 @@ import subprocess
 
 class CommonNetMPVSocat(object):
     def __init__(self, sockfile='./mk_mpv.sock'):
+        # allow time for mpv to setup the socket
+        while True:
+            time.sleep(0.1)
+            try:
+                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.socket_stream.connect(sockfile)
+            except socket.error as sock_err:
+                if (sock_err.errno == socket.errno.ECONNREFUSED):
+                    print("Connection was refused")
+                    continue
+            except OSError as e:
+                # if e.errno == e.ENOENT:
+                #     # do your FileNotFoundError code here
+                print("File not found")
+                continue
+            else:
+                break
+        # close connection since I'm using socat
+        self.socket_stream.close()
         self.sockfile = sockfile
 
     def execute(self, command):
