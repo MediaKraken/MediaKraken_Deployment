@@ -29,7 +29,8 @@ from PyQt5.QtCore import Qt
 import PyQt5.QtCore as QtCore
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
-from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
+import PyQt5.QtWidgets as QtWidgets
 sys.path.append('theater_qt')
 from common import common_file
 from common import common_logging
