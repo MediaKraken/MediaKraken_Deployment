@@ -85,6 +85,7 @@ class MPVPlayer(ComponentWindow):
         self.mpv_pid = subprocess.Popen(['mpv', '--wid', int(self.ui.player.winId()),
                                          '--hwdec', 'auto',
                                          '--input-ipc-server' './mk_mpv.sock'])
+        self.mpv_ipc = common_network_mpv.CommonNetMPV()
 
 
 class MKEcho(basic.LineReceiver):

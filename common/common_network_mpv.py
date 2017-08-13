@@ -22,7 +22,7 @@ import socket
 import json
 
 
-class com_net_mpv(object):
+class CommonNetMPV(object):
 
     def __init__(self, sockfile='./mk_mpv.sock'):
         self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
