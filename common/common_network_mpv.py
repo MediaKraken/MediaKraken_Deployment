@@ -20,10 +20,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import socket
 import json
-#import os
+import os
 import time
 import subprocess
-from subprocess import check_output
 
 
 class CommonNetMPVSocat(object):
@@ -35,6 +34,9 @@ class CommonNetMPVSocat(object):
                                            stdout=subprocess.PIPE, stderr=None, shell=True)
         output = self.sub_output.communicate()
         print('subout: ', output)
+
+    def close(self):
+        os.remove(self.sockfile)
 
 
 class CommonNetMPV(object):
