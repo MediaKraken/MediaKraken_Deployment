@@ -20,19 +20,40 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import socket
 import json
+#import os
+import time
 
 
 class CommonNetMPV(object):
 
     def __init__(self, sockfile='./mk_mpv.sock'):
-        self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.socket_stream.connect(sockfile)
+        #self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        # allow time for mpv to setup the socket
+        while self.is_running():
+            time.sleep(0.1)
+            try:
+                self.socket_stream = socket.socket(socket.AF_UNIX)
+                self.socket_stream.connect(self.sockfile)
+            except socket.error as sock_err:
+                if (sock_err.errno == socket.errno.ECONNREFUSED):
+                    print("Connection was refused")
+                    continue
+            except OSError as e:
+                # if e.errno == e.ENOENT:
+                #     # do your FileNotFoundError code here
+                print("File not found")
+                continue
+            else:
+                break
+        #self.sockfile = sockfile
 
     def execute(self, command):
         self.socket_stream.send(bytes(json.dumps(command) + '\r\n', encoding='utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
+        logging.info('mpv result: ', result)
         if result['error'] == 'success':
             return result
 
     def close(self):
         self.socket_stream.close()
+        #os.remove(self.sockfile)
