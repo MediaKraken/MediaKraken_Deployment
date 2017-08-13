@@ -25,9 +25,9 @@ import base64
 import uuid
 import platform
 import subprocess
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QtCore
 from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QtCore
+from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication, QtWidgets
 sys.path.append('theater_qt')
 from common import common_file
