@@ -20,37 +20,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 import socket
 import json
-from functools import partial
 
-class Mpv(object):
-    commands = ['']
-    def __init__(self, sockfile='/tmp/mpvsock'):
-        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        try:
-            s.connect(sockfile)
-        except OSError as e:
-            pass
-        self.fd = s
+
+class com_net_mpv(object):
+
+    def __init__(self, sockfile='./mk_mpv.sock'):
+        self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.socket_stream.connect(sockfile)
 
     def execute(self, command):
-        data = bytes(json.dumps(command) + '\r\n', encoding='utf-8')
-        try:
-            self.fd.send(data)
-            buf = self.fd.recv(1024)
-        except OSError as e:
-            pass
-        print('DEBUG', buf)
-        result = json.loads(buf.decode('utf-8'))
-        status = result['error']
-        if status == 'success':
+        self.socket_stream.send(bytes(json.dumps(command) + '\r\n', encoding='utf-8'))
+        result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
+        if result['error'] == 'success':
             return result
 
-    def command(self, command, *args):
-        return self.execute({'command': [command, args]})
-
     def close(self):
-        self.fd.close()
-
-    def __getattr__(self, name):
-        mpv_name = name.replace('_', '-')
-        return partial(self.command, mpv_name)
+        self.socket_stream.close()

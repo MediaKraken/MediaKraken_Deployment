@@ -34,6 +34,7 @@ import PyQt5.QtWidgets as QtWidgets
 sys.path.append('theater_qt')
 from common import common_file
 from common import common_logging
+from common import common_network_mpv
 from common import common_network_mediakraken
 from common import common_version
 from ui import mk_browse_movie_ui
@@ -45,7 +46,6 @@ from twisted.internet import protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
 from twisted.python import log
-from simplempv.simplempv import Mpv
 
 twisted_connection = None
 mk_app = None
