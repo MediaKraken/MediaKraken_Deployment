@@ -83,8 +83,7 @@ class MPVPlayer(ComponentWindow):
         self.ui = PlayerUI(self)
         self.setCentralWidget(self.ui)
         self.mpv_pid = subprocess.Popen(['mpv', '--wid', int(self.ui.player.winId()),
-                                         '--hwdec', 'auto',
-                                         '--input-ipc-server' './mk_mpv.sock'])
+                                         '--hwdec=auto', '--input-ipc-server' './mk_mpv.sock'])
         self.mpv_ipc = common_network_mpv.CommonNetMPV()
 
 
