@@ -29,7 +29,7 @@ class CommonNetMPV(object):
     def __init__(self, sockfile='./mk_mpv.sock'):
         #self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         # allow time for mpv to setup the socket
-        while self.is_running():
+        while True:
             time.sleep(0.1)
             try:
                 self.socket_stream = socket.socket(socket.AF_UNIX)
