@@ -27,12 +27,11 @@ import time
 class CommonNetMPV(object):
 
     def __init__(self, sockfile='./mk_mpv.sock'):
-        #self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         # allow time for mpv to setup the socket
         while True:
             time.sleep(0.1)
             try:
-                self.socket_stream = socket.socket(socket.AF_UNIX)
+                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
@@ -48,7 +47,7 @@ class CommonNetMPV(object):
         #self.sockfile = sockfile
 
     def execute(self, command):
-        self.socket_stream.send(bytes(json.dumps(command) + '\r\n', encoding='utf-8'))
+        self.socket_stream.sendall((json.dumps(command) + '\r\n'), encoding='utf-8')
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
         logging.info('mpv result: ', result)
         if result['error'] == 'success':
