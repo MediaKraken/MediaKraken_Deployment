@@ -22,7 +22,7 @@ import pytest # pylint: disable=W0611
 import sys
 sys.path.append('.')
 import time
-import subprocess
+#import subprocess
 from common import common_network_mpv
 
 # mpv_pid = subprocess.Popen(['mpv', '--hwdec=auto', '--input-ipc-server', './mk_mpv.sock',
