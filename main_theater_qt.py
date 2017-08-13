@@ -24,10 +24,11 @@ import sys
 import base64
 import uuid
 import platform
+import subprocess
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit
-from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication
+from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QtCore
+from PyQt5.QtWidgets import QMainWindow, QTextEdit, QWidget, QDialog, QApplication, QtWidgets
 sys.path.append('theater_qt')
 from common import common_file
 from common import common_logging
@@ -42,9 +43,46 @@ from twisted.internet import protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
 from twisted.python import log
+from simplempv import Mpv
 
 twisted_connection = None
 mk_app = None
+
+
+class PlayerUI(QtWidgets.QWidget):
+
+    def __init__(self, parent=None):
+        super(PlayerUI, self).__init__(parent)
+        self.ui = mk_player_ui.ui.player_ui.Ui_Player()
+        self.ui.setupUi(self)
+        self.ui.player_widget.setAttribute(QtCore.Qt.WA_DontCreateNativeAncestors)
+        self.ui.player_widget.setAttribute(QtCore.Qt.WA_NativeWindow)
+        self.ui.player_widget.setMouseTracking(True)
+        self.ui.slider_volume.setMaximum(100)
+        self.ui.audio_tracks.set_type('audio')
+        self.ui.sub_tracks.set_type('sub')
+
+
+class ComponentWindow(QtWidgets.QMainWindow):
+    closed = QtCore.pyqtSignal(str)
+
+    def __init__(self, name, parent=None):
+        super(ComponentWindow, self).__init__(parent)
+        self.name = name
+
+    def _shutdown(self):
+        self.closed.emit(self.name)
+
+
+class MPVPlayer(ComponentWindow):
+
+    def __init__(self, name, parent=None):
+        super(MPVPlayer, self).__init__(name, parent)
+        self.ui = PlayerUI(self)
+        self.setCentralWidget(self.ui)
+        self.mpv_pid = subprocess.Popen(['mpv', '--wid', int(self.ui.player.winId()),
+                                         '--hwdec', 'auto',
+                                         '--input-ipc-server' './mk_mpv.sock'])
 
 
 class MKEcho(basic.LineReceiver):
