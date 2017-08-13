@@ -38,3 +38,8 @@ do stuff
 pip install kivy
 sudo apt-get install python-pygame xclip
 install ip2country from build lib
+
+
+
+# stuff to install
+socat
