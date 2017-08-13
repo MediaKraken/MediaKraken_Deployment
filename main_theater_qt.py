@@ -45,7 +45,7 @@ from twisted.internet import protocol
 from twisted.protocols import basic
 from twisted.internet import ssl
 from twisted.python import log
-from simplempv import Mpv
+from simplempv.simplempv import Mpv
 
 twisted_connection = None
 mk_app = None
