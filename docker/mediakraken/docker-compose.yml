@@ -102,6 +102,7 @@ services:
     container_name: mkmetadata
     depends_on:
       - pgbounce
+      - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
