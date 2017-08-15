@@ -15,4 +15,3 @@ xmltodict
 subliminal
 steam
 pika
-twisted

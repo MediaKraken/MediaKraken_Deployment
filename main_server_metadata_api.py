@@ -26,10 +26,6 @@ from build_trailer_directory import build_trailer_dirs
 from common import common_logging
 from common import common_metadata_limiter
 from common import common_signal
-from twisted.internet import reactor, protocol, stdio, defer, task
-import pika
-from pika import exceptions
-from pika.adapters import twisted_connection
 
 
 @defer.inlineCallbacks
@@ -95,17 +91,10 @@ common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
 
 
 # fire off wait for it script to allow rabbitmq connection
+# doing here so I don't have to do it multiple times
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672'], shell=False)
 wait_pid.wait()
-
-
-# pika rabbitmq connection
-parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
-cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
-d = cc.connectTCP('mkrabbitmq', 5672)
-d.addCallback(lambda protocol: protocol.ready)
-d.addCallback(run)
 
 
 # fire up the workers for each provider

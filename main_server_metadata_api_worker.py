@@ -23,6 +23,7 @@ import time
 import json
 import sys
 import datetime
+import pika
 from build_image_directory import build_image_dirs
 from guessit import guessit
 from metadata import metadata_anime
@@ -300,6 +301,14 @@ def tvshowtime(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
 
+def on_message(channel, method_frame, header_frame, body):
+    """
+    Process pika message
+    """
+    print("Message body", body)
+    channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+
+
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
@@ -310,6 +319,19 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
+
+# pika rabbitmq connection
+parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
+# setup channels and queue
+channel = connection.channel()
+exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
+queue = channel.queue_declare(queue=content_providers, durable=True)
+channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
+channel.basic_qos(prefetch_count=1)
+channel.basic_consume(on_message, queue=content_providers, no_ack=False)
+channel.start_consuming()
+
 # setup last used id's per thread
 metadata_last_id = None
 metadata_last_title = None
