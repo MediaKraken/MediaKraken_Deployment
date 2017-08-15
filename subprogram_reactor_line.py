@@ -74,7 +74,7 @@ def read(queue_object):
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
-        logging.info('json body %s', json_message)
+        logging.info('cron json body %s', json_message)
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(['python', json_message['Data']])
         elif json_message['Type'] == 'Pause':
