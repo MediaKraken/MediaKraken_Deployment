@@ -35,9 +35,9 @@ from pika.adapters import twisted_connection
 @defer.inlineCallbacks
 def run(connection):
     channel = yield connection.channel()
-    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
+    exchange = yield channel.exchange_declare(exchange='mkque_metadata_ex', type='direct', durable=True)
     queue = yield channel.queue_declare(queue='mkque_metadata', durable=True)
-    yield channel.queue_bind(exchange='mkque_ex', queue='mkque_metadata')
+    yield channel.queue_bind(exchange='mkque_metadata_ex', queue='mkque_metadata')
     yield channel.basic_qos(prefetch_count=1)
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque_metadata', no_ack=False)
     l = task.LoopingCall(read, queue_object)

@@ -94,36 +94,28 @@ def admin_cron_run(guid):
     """
     logging.info('admin cron run %s', guid)
     cron_file_path = g.db_connection.db_cron_info(guid)['mm_cron_file_path']
-    route_key = 'mkque_metadata'
-    if cron_file_path == './subprogram_postgresql_backup.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_update_create_collections.py':
+    route_key = 'mkque'
+    exchange_key = 'mkque_ex'
+    # no need to do the check since default
+    # if cron_file_path == './subprogram_postgresql_backup.py'\
+    #     or cron_file_path == './subprogram_create_chapter_images.py':
+    #     elif cron_file_path == './subprogram_postgresql_vacuum.py':
+    #     elif cron_file_path == './subprogram_file_scan.py':
+    #     elif cron_file_path == './subprogram_roku_thumbnail_generate.py':
+    #     elif cron_file_path == './subprogram_sync.py':
+    #     pass
+    if cron_file_path == './subprogram_update_create_collections.py'\
+        or cron_file_path == './subprogram_schedules_direct_updates.py'\
+        or cron_file_path == './subprogram_subtitle_downloader.py'\
+        or cron_file_path == './subprogram_tvmaze_updates.py'\
+        or cron_file_path == './subprogram_tmdb_updates.py'\
+        or cron_file_path == './subprogram_thetvdb_updates.py'\
+        or cron_file_path == './subprogram_metadata_trailer_download.py':
         route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_create_chapter_images.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_postgresql_vacuum.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_file_scan.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_roku_thumbnail_generate.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_schedules_direct_updates.py':
-        route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_subtitle_downloader.py':
-        route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_sync.py':
-        route_key = 'mkque'
-    elif cron_file_path == './subprogram_tvmaze_updates.py':
-        route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_tmdb_updates.py':
-        route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_thetvdb_updates.py':
-        route_key = 'mkque_metadata'
-    elif cron_file_path == './subprogram_metadata_trailer_download.py':
-        route_key = 'mkque'
+        exchange_key = 'mkque_metadata_ex'
     # submit the message
     ch = fpika.channel()
-    ch.basic_publish(exchange='mkque_ex', routing_key=route_key,
+    ch.basic_publish(exchange=exchange_key, routing_key=route_key,
                      body=json.dumps(
                          {'Type': 'Cron Run',
                           'Data': cron_file_path,
