@@ -75,7 +75,9 @@ def read(queue_object):
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
         logging.info('json body %s', json_message)
-        if json_message['Type'] == 'Pause':
+        if json_message['Type'] == 'Cron Run':
+            cron_pid = subprocess.Popen(['python', json_message['Data']])
+        elif json_message['Type'] == 'Pause':
             if json_message['Sub'] == 'Cast':
                 pass
         elif json_message['Type'] == 'Play':
