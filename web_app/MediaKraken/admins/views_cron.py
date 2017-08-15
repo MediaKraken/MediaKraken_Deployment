@@ -127,7 +127,6 @@ def admin_cron_run(guid):
                      body=json.dumps(
                          {'Type': 'Cron Run',
                           'Data': cron_file_path,
-                          #'Data': g.db_connection.db_cron_info(request.form['id'])['mm_cron_file_path'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
     return render_template('admin/admin_cron.html')
