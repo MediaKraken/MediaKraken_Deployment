@@ -92,9 +92,7 @@ def admin_cron_run(guid):
     """
     Run cron jobs
     """
-    logging.info('admin cron run')
-    # TODO must determine where the actual cron should fire from
-    # IE.......which cron is run.....might need to specify in the cron array
+    logging.info('admin cron run %s', guid)
     cron_file_path = g.db_connection.db_cron_info(guid)['mm_cron_file_path']
     route_key = 'mkque_metadata'
     if cron_file_path == './subprogram_postgresql_backup.py':
@@ -132,7 +130,7 @@ def admin_cron_run(guid):
                           #'Data': g.db_connection.db_cron_info(request.form['id'])['mm_cron_file_path'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
-    return json.dumps({'status': 'OK'})
+    return render_template('admin/admin_cron.html')
 
 
 @blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])
