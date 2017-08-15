@@ -79,6 +79,12 @@ if db_connection.db_version_check() == 6:
     db_connection.db_version_update(7)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 7:
+    # drop the game audit cron
+    db_connection.db_query('delete from mm_cron where mm_cron_file_path = \'./subprogram_game_audit.py\'')
+    db_connection.db_version_update(8)
+    db_connection.db_commit()
+
 # drop trigger table since moving to celery?
 
 # close the database

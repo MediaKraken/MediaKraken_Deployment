@@ -737,14 +737,13 @@ COPY mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, mm_chann
 --
 
 COPY mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path) FROM stdin;
-dc767e06-210b-43de-86ae-652d290aa3b2	Game Audit	Scan for new game media	f	Days 1	1970-01-01 00:00:01	./subprogram_game_audit.py
 044dede1-4136-4cbc-9b13-6ca452f006a7	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	./subprogram_create_chapter_images.py
 d00db78f-a55a-4faf-8eb5-e866d574d216	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	./subprogram_roku_thumbnail_generate.py
 22aa27e4-9783-4625-b477-c2809691acac	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	./subprogram_schedules_direct_updates.py
 1b7e4151-569d-4c16-a26c-65094360e4ab	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	./subprogram_subtitle_downloader.py
 741cb966-d201-4b44-845b-0adfbc4fb32b	TheTVDB Update	Grab updated TheTVDB metadata	f	Days 1	1970-01-01 00:00:01	./subprogram_thetvdb_updates.py
 14fa324f-5937-491f-807b-2decbcdcb520	The Movie Database	Grab updated movie metadata	f	Days 1	1970-01-01 00:00:01	./subprogram_tmdb_updates.py
-ed4126d7-2156-4f0f-9a0c-8bad4e695f90	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	./subprogram_tvmze_updates.py
+ed4126d7-2156-4f0f-9a0c-8bad4e695f90	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	./subprogram_tvmaze_updates.py
 3842da28-436c-439d-881c-737063af325f	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	./subprogram_update_create_collections.py
 fdeb4df4-a909-4479-845e-f61087b004c5	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	./subprogram_file_scan.py
 610355b4-ff45-410a-ae91-c9e04793cd0d	iRadio Scan	Scan for iRadio stations	f	Days 1	1970-01-01 00:00:01	./subprogram_iradio_channels.py
