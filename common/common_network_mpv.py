@@ -81,8 +81,7 @@ class CommonNetMPV(object):
         #self.sockfile = sockfile
 
     def execute(self, command):
-        #self.socket_stream.sendall(json.dumps(command).encode('utf-8'))
-        self.socket_stream.sendall(str(command).encode('utf-8'))
+        self.socket_stream.sendall(command.encode('utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
         logging.info('mpv result: ', result)
         if result['error'] == 'success':
