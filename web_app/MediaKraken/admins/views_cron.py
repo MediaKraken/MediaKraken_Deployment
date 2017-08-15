@@ -84,22 +84,65 @@ def admin_cron_display_all():
                           )
 
 
-@blueprint.route('/cron_run')
-@blueprint.route('/cron_run/')
+@blueprint.route('/cron_run/<guid>', methods=['GET', 'POST'])
+@blueprint.route('/cron_run/<guid>/', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_cron_run():
+def admin_cron_run(guid):
     """
     Run cron jobs
     """
     logging.info('admin cron run')
     # TODO must determine where the actual cron should fire from
     # IE.......which cron is run.....might need to specify in the cron array
+    cron_file_path = g.db_connection.db_cron_info(guid)['mm_cron_file_path']
+    route_key = 'mkque_metadata'
+    if cron_file_path == './subprogram_postgresql_backup.py':
+        route_key = 'mkque'
+    elif cron_file_path == './subprogram_update_create_collections.py':
+        route_key = 'mkque_metadata'
+    elif cron_file_path == './subprogram_create_chapter_images.py':
+        route_key = 'mkque'
+    elif cron_file_path == './subprogram_postgresql_vacuum.py':
+        route_key = 'mkque'
+
+
+
+
+    elif cron_file_path == './subprogram_file_scan.py':
+        route_key = 'mkque'
+
+    elif cron_file_path == './subprogram_roku_thumbnail_generate.py':
+        route_key = 'mkque'
+
+    elif cron_file_path == './subprogram_schedules_direct_updates.py':
+        route_key = 'mkque'
+
+    elif cron_file_path == './subprogram_subtitle_downloader.py':
+        route_key = 'mkque'
+
+    elif cron_file_path == './subprogram_sync.py':
+        route_key = 'mkque'
+
+    elif cron_file_path == './subprogram_tvmaze_updates.py':
+        route_key = 'mkque_metadata'
+
+    elif cron_file_path == './subprogram_tmdb_updates.py':
+        route_key = 'mkque_metadata'
+
+    elif cron_file_path == './subprogram_thetvdb_updates.py':
+        route_key = 'mkque_metadata'
+
+    elif cron_file_path == './subprogram_metadata_trailer_download.py':
+        route_key = 'mkque'
+
+    # submit the message
     ch = fpika.channel()
-    ch.basic_publish(exchange='mkque_ex', routing_key='mkque_metadata',
+    ch.basic_publish(exchange='mkque_ex', routing_key=route_key,
                      body=json.dumps(
                          {'Type': 'Cron Run',
-                          'Data': g.db_connection.db_cron_info(request.form['id'])['mm_cron_file_path'],
+                          'Data': cron_file_path,
+                          #'Data': g.db_connection.db_cron_info(request.form['id'])['mm_cron_file_path'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
     return json.dumps({'status': 'OK'})
