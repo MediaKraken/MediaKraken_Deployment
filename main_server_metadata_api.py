@@ -28,44 +28,6 @@ from common import common_metadata_limiter
 from common import common_signal
 
 
-@defer.inlineCallbacks
-def run(connection):
-    channel = yield connection.channel()
-    exchange = yield channel.exchange_declare(exchange='mkque_metadata_ex', type='direct', durable=True)
-    queue = yield channel.queue_declare(queue='mkque_metadata', durable=True)
-    yield channel.queue_bind(exchange='mkque_metadata_ex', queue='mkque_metadata')
-    yield channel.basic_qos(prefetch_count=1)
-    queue_object, consumer_tag = yield channel.basic_consume(queue='mkque_metadata', no_ack=False)
-    l = task.LoopingCall(read, queue_object)
-    l.start(0.01)
-
-
-@defer.inlineCallbacks
-def read(queue_object):
-    logging.info('here I am in metadata consume - read')
-    ch, method, properties, body = yield queue_object.get()
-    if body:
-        logging.info("body %s", body)
-        json_message = json.loads(body)
-        subprocess_command = []
-        if json_message['Type'] == 'Update':
-            if json_message['Sub'] == 'themoviedb':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_tmdb_updates.py')
-            elif json_message['Sub'] == 'thetvdb':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_thetvdb_updates.py')
-            elif json_message['Sub'] == 'tvmaze':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_tvmaze_updates.py')
-            elif json_message['Sub'] == 'collections':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
-        elif json_message['Type'] == 'Cron Run':
-            # run whatever is passed in data
-            subprocess_command.append('python', json_message['Data'])
-        # if command list populated, run job
-        if len(subprocess_command) != 0:
-            subprocess.Popen(subprocess_command)
-    yield ch.basic_ack(delivery_tag=method.delivery_tag)
-
-
 # TODO should be using env variables
 # build image directories if needed
 if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):

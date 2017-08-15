@@ -306,6 +306,23 @@ def on_message(channel, method_frame, header_frame, body):
     Process pika message
     """
     print("Message body", body)
+    json_message = json.loads(body)
+    subprocess_command = []
+    if json_message['Type'] == 'Update':
+        if json_message['Sub'] == 'themoviedb':
+            subprocess_command.append('python', './mediakraken/subprogram_metadata_tmdb_updates.py')
+        elif json_message['Sub'] == 'thetvdb':
+            subprocess_command.append('python', './mediakraken/subprogram_metadata_thetvdb_updates.py')
+        elif json_message['Sub'] == 'tvmaze':
+            subprocess_command.append('python', './mediakraken/subprogram_metadata_tvmaze_updates.py')
+        elif json_message['Sub'] == 'collections':
+            subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
+    elif json_message['Type'] == 'Cron Run':
+        # run whatever is passed in data
+        subprocess_command.append('python', json_message['Data'])
+    # if command list populated, run job
+    if len(subprocess_command) != 0:
+        subprocess.Popen(subprocess_command)
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
