@@ -22,7 +22,7 @@ from functools import partial
 from MediaKraken.extensions import (
     fpika,
 )
-from MediaKraken.admins.forms import taskEditForm
+from MediaKraken.admins.forms import TaskEditForm
 
 from common import common_config_ini
 from common import common_internationalization
