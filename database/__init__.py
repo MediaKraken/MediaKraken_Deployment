@@ -250,6 +250,12 @@ class MKServerDatabase(object):
         db_sync_insert,\
         db_sync_delete,\
         db_sync_progress_update
+    from database.db_base_task import db_task_list_count,\
+        db_task_list,\
+        db_task_time_update,\
+        db_task_insert,\
+        db_task_delete,\
+        db_task_info
     from database.db_base_triggers import db_trigger_insert,\
         db_triggers_read,\
         db_triggers_delete
