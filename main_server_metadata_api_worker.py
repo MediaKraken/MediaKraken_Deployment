@@ -310,16 +310,16 @@ def on_message(channel, method_frame, header_frame, body):
     if json_message['Type'] == 'Update':
         if json_message['Sub'] == 'themoviedb':
             subprocess.Popen(['python',
-                              './mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
+                              '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
         elif json_message['Sub'] == 'thetvdb':
             subprocess.Popen(['python',
-                              './mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
+                              '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
         elif json_message['Sub'] == 'tvmaze':
             subprocess.Popen(['python',
-                              './mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
+                              '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
         elif json_message['Sub'] == 'collections':
             subprocess.Popen(['python',
-                              './mediakraken/subprogram_metadata_update_create_collections.py'],
+                              '/mediakraken/subprogram_metadata_update_create_collections.py'],
                              shell=False)
     elif json_message['Type'] == 'Cron Run':
         # run whatever is passed in data
