@@ -324,7 +324,7 @@ def on_message(channel, method_frame, header_frame, body):
     # elif json_message['Type'] == 'Cron Run':
     #     # run whatever is passed in data
     #     subprocess.Popen(['python', json_message['Data'].replace('./','./mediakraken/')], shell=False)
-    channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+    #channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
 # start logging
