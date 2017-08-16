@@ -66,13 +66,13 @@ base_media_classes = (
 db_connection = common_config_ini.com_config_read(True)
 
 # activate extention pg_trgm
-db_connection.db_query('create extension pg_trgm')
+db_connection.db_query('create extension if not exists pg_trgm')
 
 # create table for version
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)', common_version.DB_VERSION)
+    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
 
 
 # create tables for media shares to mount
@@ -290,9 +290,8 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
         ' ON mm_media_class(mm_media_class_type)')
 # add media classes
 db_connection.db_query('select count(*) from mm_media_class')
-if db_connection.fetchone()[0] == 0:
-    for media_class in base_media_classes:
-        db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
+for media_class in base_media_classes:
+    db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
 
 
 # create table for anime metadata
@@ -635,15 +634,13 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_group (mm_user_group_
     ' mm_user_group_description text, mm_user_group_rights_json jsonb)')
 if db_connection.db_table_index_check('mm_user_group_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_group_idx_name ON mm_user_group(mm_user_group_name)')
-db_connection.db_query('select count(*) from mm_user_group')
-if db_connection.fetchone()[0] == 0:
-    base_group = [('Administrator', 'Server administrator',
-        json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',
-        json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',
-        json.dumps({'Admin': False, 'PreviewOnly': True}))]
-    # create base group entries
-    for base_item in base_group:
-        db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
+base_group = [('Administrator', 'Server administrator',
+    json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',
+    json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',
+    json.dumps({'Admin': False, 'PreviewOnly': True}))]
+# create base group entries
+for base_item in base_group:
+    db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
 
 
 # create table for user profiles
@@ -654,24 +651,23 @@ if db_connection.db_table_index_check('mm_user_profile_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_profile_idx_name'
         ' ON mm_user_profile(mm_user_profile_name)')
 db_connection.db_query('select count(*) from mm_user_profile')
-if db_connection.fetchone()[0] == 0:
-    # NC17, R, PG-13, PG, G
-    base_user = (
-        ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,
-            '3D': False, 'Internet': False, 'Lang': 'en'}))
-        )
-    for base_item in base_user:
-        db_connection.db_user_profile_insert(base_item[0], base_item[1])
+# NC17, R, PG-13, PG, G
+base_user = (
+    ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,
+        '3D': False, 'Internet': False, 'Lang': 'en'}))
+    )
+for base_item in base_user:
+    db_connection.db_user_profile_insert(base_item[0], base_item[1])
 
 
 # create options and status table
@@ -679,43 +675,42 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
     ' (mm_options_and_status_guid uuid CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
     ' mm_options_json jsonb, mm_status_json jsonb)')
 db_connection.db_query('select count(*) from mm_options_and_status')
-if db_connection.fetchone()[0] == 0:
-    db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
-        'MaxResumePct': 5,
-        'MediaKrakenServer': {'ListenPort': 8098, 'APIPort': 8097,
-            'BackupLocal': '/mediakraken/backups/'},
-        'Maintenance': None,
-        'API': {'mediabrainz': None,
-            'anidb': None,
-            'thetvdb': '147CB43DCA8B61B7',
-            'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
-            'thesportsdb': '4352761817344',
-            'thelogodb': None,
-            'opensubtitles': None,
-            'google': None,
-            'globalcache': None,
-            'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
-            'isbndb': '25C8IT4I',
-            'imvdb': None,
-            'tvmaze': None},
-        'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,
-            'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,
-            'BrainzDBUser': None, 'BrainzDBPass': None},
-        'Trailer': {'Trailer': False,
-                'Behind': False,
-                'Clip': False,
-                'Featurette': False,
-                'Carpool': False},
-        'Transmission': {'Host': None, 'Port': 9091},
-        'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0},
-        'Dropbox': {'APIKey': None, 'APISecret': None},
-        'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',
-            'BackupBucket': 'mkbackup'},
-        'OneDrive': {'ClientID': None, 'SecretKey': None},
-        'GoogleDrive': {'SecretFile': None},
-        'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},
-        'SD': {'User': None, 'Password': None},
-        }), json.dumps({'thetvdb_Updated_Epoc': 0}))
+db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
+    'MaxResumePct': 5,
+    'MediaKrakenServer': {'ListenPort': 8098, 'APIPort': 8097,
+        'BackupLocal': '/mediakraken/backups/'},
+    'Maintenance': None,
+    'API': {'mediabrainz': None,
+        'anidb': None,
+        'thetvdb': '147CB43DCA8B61B7',
+        'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
+        'thesportsdb': '4352761817344',
+        'thelogodb': None,
+        'opensubtitles': None,
+        'google': None,
+        'globalcache': None,
+        'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
+        'isbndb': '25C8IT4I',
+        'imvdb': None,
+        'tvmaze': None},
+    'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,
+        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,
+        'BrainzDBUser': None, 'BrainzDBPass': None},
+    'Trailer': {'Trailer': False,
+            'Behind': False,
+            'Clip': False,
+            'Featurette': False,
+            'Carpool': False},
+    'Transmission': {'Host': None, 'Port': 9091},
+    'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0},
+    'Dropbox': {'APIKey': None, 'APISecret': None},
+    'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',
+        'BackupBucket': 'mkbackup'},
+    'OneDrive': {'ClientID': None, 'SecretKey': None},
+    'GoogleDrive': {'SecretFile': None},
+    'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},
+    'SD': {'User': None, 'Password': None},
+    }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 
 # create table game_info
@@ -764,7 +759,7 @@ if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_download_que_idxgin_meta_json'
-        ' ON mm_download_que USING gin (mqd_download_json)')
+        ' ON mm_download_que USING gin (mdq_download_json)')
 if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
     db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
         ' ON mm_download_que(mdq_que_type)')
