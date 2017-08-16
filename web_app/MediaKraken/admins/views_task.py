@@ -93,6 +93,7 @@ def admin_task_run(guid):
     Run task jobs
     """
     logging.info('admin task run %s', guid)
+    logging.info('info: %s' % g.db_connection.db_task_info(guid))
     task_info = json.loads(g.db_connection.db_task_info(guid)['mm_task_json'])
     # submit the message
     ch = fpika.channel()
