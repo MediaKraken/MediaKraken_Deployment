@@ -51,22 +51,22 @@ def db_task_list(self, enabled_only=False, offset=None, records=None):
     if offset is None:
         if not enabled_only:
             self.db_cursor.execute('select mm_task_guid, mm_task_name, mm_task_description,'
-                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path'
+                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json'
                 ' from mm_task order by mm_task_name')
         else:
             self.db_cursor.execute('select mm_task_guid, mm_task_name, mm_task_description,'
-                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path'
+                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json'
                 ' from mm_task where mm_task_enabled = true order by mm_task_name')
     else:
         if not enabled_only:
             self.db_cursor.execute('select mm_task_guid, mm_task_name, mm_task_description,'
-                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path'
+                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json'
                 ' from mm_task where mm_task_guid in (select mm_task_guid from mm_task'
                 ' order by mm_task_name offset %s limit %s) order by mm_task_name',
                 (offset, records))
         else:
             self.db_cursor.execute('select mm_task_guid, mm_task_name, mm_task_description,'
-                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path'
+                ' mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json'
                 ' from mm_task where mm_task_guid in (select mm_task_guid from mm_task'
                 ' where mm_task_enabled = true order by mm_task_name offset %s limit %s)'
                 ' order by mm_task_name', (offset, records))
