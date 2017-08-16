@@ -322,7 +322,7 @@ def on_message(channel, method_frame, header_frame, body):
         subprocess_command.append('python', json_message['Data'].replace('./','./mediakraken/'))
     # if command list populated, run job
     if len(subprocess_command) != 0:
-        subprocess.Popen(subprocess_command)
+        subprocess.Popen(subprocess_command, shell=False)
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
