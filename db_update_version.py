@@ -132,12 +132,10 @@ if db_connection.db_version_check() == 8:
         ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
          {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
     ]
-    db_connection.db_query('select count(*) from mm_task')
-    if db_connection.fetchone()[0] == 0:
-        for base_item in base_task:
-            db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
-                                         psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2],
-                                         json.dumps(base_item[3]))
+    for base_item in base_task:
+        db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
+                                     psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2],
+                                     json.dumps(base_item[3]))
     db_connection.db_version_update(9)
     db_connection.db_commit()
 
