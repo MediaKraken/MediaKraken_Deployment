@@ -346,7 +346,7 @@ exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type=
 queue = channel.queue_declare(queue=content_providers, durable=True)
 channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(on_message, content_providers)
+channel.basic_consume(on_message, queue=content_providers, no_ack=False)
 channel.start_consuming()
 
 # setup last used id's per thread
