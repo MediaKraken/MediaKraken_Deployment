@@ -93,51 +93,12 @@ def admin_task_run(guid):
     Run task jobs
     """
     logging.info('admin task run %s', guid)
-    task_file_path = g.db_connection.db_task_info(guid)['mm_task_file_path']
-    route_key = 'mkque'
-    exchange_key = 'mkque_ex'
-    # no need to do the check since default
-    # if task_file_path == './subprogram_postgresql_backup.py'\
-    #     or task_file_path == './subprogram_create_chapter_images.py':
-    #     elif task_file_path == './subprogram_postgresql_vacuum.py':
-    #     elif task_file_path == './subprogram_file_scan.py':
-    #     elif task_file_path == './subprogram_roku_thumbnail_generate.py':
-    #     elif task_file_path == './subprogram_sync.py':
-    #     pass
-
-    if task_file_path == './subprogram_update_create_collections.py'\
-        or task_file_path == './subprogram_tmdb_updates.py':
-        route_key = 'themoviedb'
-        exchange_key = 'mkque_metadata_ex'
-
-    if task_file_path == './subprogram_schedules_direct_updates.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
-
-    if task_file_path == './subprogram_subtitle_downloader.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
-
-    if task_file_path == './subprogram_tvmaze_updates.py':
-        route_key = 'tvmaze'
-        exchange_key = 'mkque_metadata_ex'
-
-    if task_file_path == './subprogram_thetvdb_updates.py':
-        route_key = 'thetvdb'
-        exchange_key = 'mkque_metadata_ex'
-
-    if task_file_path == './subprogram_metadata_trailer_download.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
+    task_info = g.db_connection.db_task_info(guid)
     # submit the message
     ch = fpika.channel()
-    ch.basic_publish(exchange=exchange_key, routing_key=route_key,
+    ch.basic_publish(exchange=task_info['exchange_key'], routing_key=task_info['route_key'],
                      body=json.dumps(
-                         {'Type': 'task Run',
-                          'Data': task_file_path,
+                         {'Type': task_info['task'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
     return render_template('admin/admin_task.html')
@@ -151,7 +112,7 @@ def admin_task_edit(guid):
     """
     Edit task job page
     """
-    form = taskEditForm(request.form, csrf_enabled=False)
+    form = TaskEditForm(request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
             # request.form['name']

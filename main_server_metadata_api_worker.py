@@ -307,24 +307,23 @@ def on_message(channel, method_frame, header_frame, body):
     """
     logging.info("Message body %s", body)
     json_message = json.loads(body)
-    if json_message['Type'] == 'Update':
-        if json_message['Sub'] == 'themoviedb':
+    if json_message['Type'] == 'update':
+        if content_providers == 'themoviedb':
             subprocess.Popen(['python',
                               '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
-        elif json_message['Sub'] == 'thetvdb':
+        elif content_providers == 'thetvdb':
             subprocess.Popen(['python',
                               '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
-        elif json_message['Sub'] == 'tvmaze':
+        elif content_providers == 'tvmaze':
             subprocess.Popen(['python',
                               '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
-        elif json_message['Sub'] == 'collections':
+    elif json_message['Type'] == 'collection':
+        # this check is just in case there is a tv/etc collection later
+        if content_providers == 'themoviedb':
             subprocess.Popen(['python',
                               '/mediakraken/subprogram_metadata_update_create_collections.py'],
                              shell=False)
-    elif json_message['Type'] == 'Cron Run':
-        # run whatever is passed in data
-        logging.info("exe prog: %s", json_message['Data'].replace('./','/mediakraken/'))
-        subprocess.Popen(['python', json_message['Data'].replace('./','/mediakraken/')], shell=False)
+    # TODO add record for activity/etc for the user who ran this
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
