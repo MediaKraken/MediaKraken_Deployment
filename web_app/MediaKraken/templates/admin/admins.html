@@ -30,6 +30,7 @@
                             <ul class="nav nav-stacked collapse in" id="userMenu">
                                 <li><a href="{{ url_for('admins.admin_messages') }}"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a></li>
                                 <li><a href="{{ url_for('admins.admin_server_settings') }}"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+                                <li><a href="{{ url_for('admins_task.admin_task_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Task</a></li>
                                 <li><a href="{{ url_for('admins_cron.admin_cron_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Cron</a></li>
                                 <li><a href="{{ url_for('admins_share.admin_share') }}"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a></li>
                                 <li><a href="{{ url_for('admins_library.admin_library') }}"><i class="glyphicon glyphicon-film"></i> Library <span class="badge badge-info"> {{ data_library }}</span></a></li>
