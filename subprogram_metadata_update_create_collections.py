@@ -46,16 +46,6 @@ db_connection.db_activity_insert('MediaKraken_Server Create Collection Start', N
     'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None, 'System')
 
 
-# verify themovietb key exists
-if option_config_json['API']['themoviedb'] is not None:
-    # setup the thmdb class
-    TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
-else:
-    TMDB_API_CONNECTION = None
-    logging.critical("themoviedb API not available. Exiting program...")
-    sys.exit(0)
-
-
 # pull in all metadata with part of collection in metadata
 old_collection_name = ''
 old_poster_path = None
