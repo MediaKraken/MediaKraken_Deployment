@@ -104,13 +104,32 @@ def admin_cron_run(guid):
     #     elif cron_file_path == './subprogram_roku_thumbnail_generate.py':
     #     elif cron_file_path == './subprogram_sync.py':
     #     pass
+
     if cron_file_path == './subprogram_update_create_collections.py'\
-        or cron_file_path == './subprogram_schedules_direct_updates.py'\
-        or cron_file_path == './subprogram_subtitle_downloader.py'\
-        or cron_file_path == './subprogram_tvmaze_updates.py'\
-        or cron_file_path == './subprogram_tmdb_updates.py'\
-        or cron_file_path == './subprogram_thetvdb_updates.py'\
-        or cron_file_path == './subprogram_metadata_trailer_download.py':
+        or cron_file_path == './subprogram_tmdb_updates.py':
+        route_key = 'themoviedb'
+        exchange_key = 'mkque_metadata_ex'
+
+    if cron_file_path == './subprogram_schedules_direct_updates.py':
+        # TODO
+        route_key = 'mkque_metadata'
+        exchange_key = 'mkque_metadata_ex'
+
+    if cron_file_path == './subprogram_subtitle_downloader.py':
+        # TODO
+        route_key = 'mkque_metadata'
+        exchange_key = 'mkque_metadata_ex'
+
+    if cron_file_path == './subprogram_tvmaze_updates.py':
+        route_key = 'tvmaze'
+        exchange_key = 'mkque_metadata_ex'
+
+    if cron_file_path == './subprogram_thetvdb_updates.py':
+        route_key = 'thetvdb'
+        exchange_key = 'mkque_metadata_ex'
+
+    if cron_file_path == './subprogram_metadata_trailer_download.py':
+        # TODO
         route_key = 'mkque_metadata'
         exchange_key = 'mkque_metadata_ex'
     # submit the message
