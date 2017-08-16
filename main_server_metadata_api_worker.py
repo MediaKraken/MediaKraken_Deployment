@@ -305,7 +305,7 @@ def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
-    print("Message body", body)
+    logging.info("Message body %s", body)
     json_message = json.loads(body)
     subprocess_command = []
     if json_message['Type'] == 'Update':
@@ -319,7 +319,7 @@ def on_message(channel, method_frame, header_frame, body):
             subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
     elif json_message['Type'] == 'Cron Run':
         # run whatever is passed in data
-        subprocess_command.append('python', json_message['Data'])
+        subprocess_command.append('python', json_message['Data'].replace('./','./mediakraken/'))
     # if command list populated, run job
     if len(subprocess_command) != 0:
         subprocess.Popen(subprocess_command)
