@@ -339,7 +339,6 @@ class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
-
 # pika rabbitmq connection
 parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
@@ -351,20 +350,6 @@ channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
 channel.basic_qos(prefetch_count=1)
 # channel.basic_consume(on_message, queue=content_providers, no_ack=False)
 # channel.start_consuming(inactivity_timeout=1)
-
-
-# # pika rabbitmq connection
-# parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
-# connection = pika.SelectConnection(parameters)
-# # setup channels and queue
-# channel = connection.channel()
-# exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
-# queue = channel.queue_declare(queue=content_providers, durable=True)
-# channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
-# channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
-
 
 # setup last used id's per thread
 metadata_last_id = None
@@ -461,8 +446,8 @@ while True:
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
     time.sleep(1)
+    # grab message from rabbitmq if available
     method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
     on_message(channel, method_frame, header_frame, body)
-#        break # TODO for now testing.......
 connection.cancel()
 thread_db.db_close()
