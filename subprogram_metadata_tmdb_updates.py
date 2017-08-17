@@ -50,7 +50,9 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     logging.info("mov: %s", movie_change['id'])
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
+        logging.info('here')
         dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
+        logging.info('dl_meta: %s', dl_meta)
         if dl_meta is None:
             db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
                 'Path': None, 'ClassID': None, 'Status': 'Fetch',
