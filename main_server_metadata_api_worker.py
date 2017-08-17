@@ -306,25 +306,26 @@ def on_message(channel, method_frame, header_frame, body):
     Process pika message
     """
     logging.info("Message body %s", body)
-    json_message = json.loads(body)
-    if json_message['Type'] == 'update':
-        if content_providers == 'themoviedb':
-            subprocess.Popen(['python',
-                              '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
-        elif content_providers == 'thetvdb':
-            subprocess.Popen(['python',
-                              '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
-        elif content_providers == 'tvmaze':
-            subprocess.Popen(['python',
-                              '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
-    elif json_message['Type'] == 'collection':
-        # this check is just in case there is a tv/etc collection later
-        if content_providers == 'themoviedb':
-            subprocess.Popen(['python',
-                              '/mediakraken/subprogram_metadata_update_create_collections.py'],
-                             shell=False)
-    # TODO add record for activity/etc for the user who ran this
-    channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+    if body is not None:
+        json_message = json.loads(body)
+        if json_message['Type'] == 'update':
+            if content_providers == 'themoviedb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
+            elif content_providers == 'thetvdb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
+            elif content_providers == 'tvmaze':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
+        elif json_message['Type'] == 'collection':
+            # this check is just in case there is a tv/etc collection later
+            if content_providers == 'themoviedb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_update_create_collections.py'],
+                                 shell=False)
+        # TODO add record for activity/etc for the user who ran this
+        channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
 # start logging
@@ -339,9 +340,22 @@ for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
 
+# pika rabbitmq connection
+parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
+# setup channels and queue
+channel = connection.channel()
+exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
+queue = channel.queue_declare(queue=content_providers, durable=True)
+channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
+channel.basic_qos(prefetch_count=1)
+# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
+# channel.start_consuming(inactivity_timeout=1)
+
+
 # # pika rabbitmq connection
 # parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
-# connection = pika.BlockingConnection(parameters)
+# connection = pika.SelectConnection(parameters)
 # # setup channels and queue
 # channel = connection.channel()
 # exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
@@ -350,19 +364,6 @@ for class_data in thread_db.db_media_class_list(None, None):
 # channel.basic_qos(prefetch_count=1)
 # channel.basic_consume(on_message, queue=content_providers, no_ack=False)
 # channel.start_consuming(inactivity_timeout=1)
-
-
-# pika rabbitmq connection
-parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
-connection = pika.SelectConnection(parameters)
-# setup channels and queue
-channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
-queue = channel.queue_declare(queue=content_providers, durable=True)
-channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
-channel.basic_qos(prefetch_count=1)
-channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-channel.start_consuming(inactivity_timeout=1)
 
 
 # setup last used id's per thread
@@ -460,6 +461,7 @@ while True:
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
     time.sleep(1)
+    on_message(channel, channel.basic_get(queue=content_providers, no_ack=False))
 #        break # TODO for now testing.......
 connection.cancel()
 thread_db.db_close()
