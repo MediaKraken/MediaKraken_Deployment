@@ -94,14 +94,14 @@ def admin_task_run(guid):
     """
     logging.info('admin task run %s', guid)
     logging.info('info: %s' % g.db_connection.db_task_info(guid))
-    task_info = json.loads(g.db_connection.db_task_info(guid)['mm_task_json'])
-    # submit the message
-    ch = fpika.channel()
-    ch.basic_publish(exchange=task_info['exchange_key'], routing_key=task_info['route_key'],
-                     body=json.dumps(
-                         {'Type': task_info['task'],
-                          'User': current_user.get_id()}))
-    fpika.return_channel(ch)
+    # task_info = json.loads(g.db_connection.db_task_info(guid)['mm_task_json'])
+    # # submit the message
+    # ch = fpika.channel()
+    # ch.basic_publish(exchange=task_info['exchange_key'], routing_key=task_info['route_key'],
+    #                  body=json.dumps(
+    #                      {'Type': task_info['task'],
+    #                       'User': current_user.get_id()}))
+    # fpika.return_channel(ch)
     return redirect(url_for('task'))
 
 
