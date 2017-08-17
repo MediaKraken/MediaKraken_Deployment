@@ -102,7 +102,7 @@ def admin_task_run(guid):
                          {'Type': task_info['task'],
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
-    return redirect(url_for('task'))
+    return redirect(url_for('admins_task.admin_task_display_all'))
 
 
 @blueprint.route('/task_edit/<guid>/', methods=['GET', 'POST'])
