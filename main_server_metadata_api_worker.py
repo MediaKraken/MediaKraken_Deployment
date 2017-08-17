@@ -461,7 +461,7 @@ while True:
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
     time.sleep(1)
-    on_message(channel, channel.basic_get(queue=content_providers, no_ack=False))
+    on_message(channel, channel.basic_get(queue=content_providers, no_ack=False).items())
 #        break # TODO for now testing.......
 connection.cancel()
 thread_db.db_close()
