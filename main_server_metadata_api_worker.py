@@ -446,4 +446,5 @@ while True:
                     metadata_uuid)
     time.sleep(1)
 #        break # TODO for now testing.......
+connection.cancel()
 thread_db.db_close()
