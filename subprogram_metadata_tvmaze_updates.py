@@ -59,7 +59,7 @@ for tvmaze_id, tvmaze_time in result.items():
     else:
         if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', json.dumps({'Status': 'Fetch',
+            db_connection.db_download_insert('tvmaze', 2, json.dumps({'Status': 'Fetch',
                 'ProviderMetaID': tvmaze_id}))
 
 
