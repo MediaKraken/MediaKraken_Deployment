@@ -27,6 +27,7 @@ RUN apk add --update \
   php5-ldap \
   php5-ctype \
   php5-dom \
+  postgresql \
   postgresql-client \
   && rm -rf /var/cache/apk/* \
   && adduser www-data -G www-data -H -s /bin/false -D \
