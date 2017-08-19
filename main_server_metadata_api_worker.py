@@ -447,7 +447,10 @@ while True:
                     metadata_uuid)
     time.sleep(1)
     # grab message from rabbitmq if available
-    method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
-    on_message(channel, method_frame, header_frame, body)
+    try: # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+        on_message(channel, method_frame, header_frame, body)
+    except:
+        pass
 connection.cancel()
 thread_db.db_close()
