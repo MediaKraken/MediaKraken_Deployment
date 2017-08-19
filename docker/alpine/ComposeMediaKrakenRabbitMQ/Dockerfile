@@ -1,4 +1,4 @@
-FROM        alpine:3.6
+FROM        alpine:3.4
 MAINTAINER  Maryville Technologies <github.com/maryvilledev>
 
 ENV         RABBITMQ_VERSION=3.6.11 \
