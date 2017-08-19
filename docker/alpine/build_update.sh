@@ -31,6 +31,6 @@ cd ../ComposeMediaKrakenSlaveNvidiaDebian
 docker build -t mediakraken/mkslavenvidiadebian .
 
 # nuke old images
-cd ../../purge_images_none.sh
+../../purge_images_none.sh
 
 
