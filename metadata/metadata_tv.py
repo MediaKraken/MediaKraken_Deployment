@@ -167,15 +167,10 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     logging.info("meta tv tvmaze save fetch: %s", tvmaze_id)
     metadata_uuid = None
-    #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
-    show_full_json = None
-    try:
-        show_full_json = ({'Meta': {'tvmaze':
-            json.loads(TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
-            tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
-            embed_info=True))}})
-    except:
-        pass
+    show_full_json = ({'Meta': {'tvmaze':
+        TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
+        tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
+        embed_info=True)}})
     logging.info("tvmaze full: %s", show_full_json)
     if show_full_json is not None:
         show_detail = show_full_json['Meta']['tvmaze']
