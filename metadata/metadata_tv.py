@@ -43,10 +43,10 @@ else:
 
 
 # setup the tvmaze class
-if option_config_json['API']['tvmaze'] is not None:
-    TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze(option_config_json)
-else:
-    TVMAZE_CONNECTION = None
+#if option_config_json['API']['tvmaze'] is not None:
+TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
+#else:
+#    TVMAZE_CONNECTION = None
 
 
 def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
