@@ -195,10 +195,12 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
             json.dumps(show_full_json), json.dumps(image_json))
         # store person info
-        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
+        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']\
+                and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['cast'])
-        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
+        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']\
+                and len(show_full_json['Meta']['tvmaze']['_embedded']['crew']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
         # save rows for episode image fetch
