@@ -50,7 +50,7 @@ logging.info('tvmaze update: ', result)
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
-    logging.info("id: %s %s", (tvmaze_id, tvmaze_time))
+    logging.info("id: %s %s", tvmaze_id, tvmaze_time)
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
