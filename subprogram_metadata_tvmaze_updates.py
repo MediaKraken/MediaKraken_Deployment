@@ -50,7 +50,7 @@ logging.info('tvmaze update: ', result)
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
-    logging.info("id: %s", tvmaze_id)
+    logging.info("id: %s %s", (tvmaze_id, tvmaze_time))
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
@@ -60,6 +60,7 @@ for tvmaze_id, tvmaze_time in result.items():
         logging.info("update")
     else:
         if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
+            logging.info("new")
             # insert new record as it's a new show
             db_connection.db_download_insert('tvmaze', 2, json.dumps({'MediaID': None,
                                       'Path': None, 'ClassID': None, 'Status': 'Fetch',
