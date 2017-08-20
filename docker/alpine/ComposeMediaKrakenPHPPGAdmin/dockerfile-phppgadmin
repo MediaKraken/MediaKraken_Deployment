@@ -1,32 +1,32 @@
 # Download base image
-FROM alpine:3.5
+FROM alpine:3.6
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the phppgadmin"
 
 RUN apk add --update \
   lighttpd \
-  php5-fpm \
-  php5-common \
-  php5-iconv \ 
-  php5-json \
-  php5-gd \
-  php5-curl \
-  php5-xml \
-  php5-pgsql \
-  php5-imap \
-  php5-cgi \
+  php7-fpm \
+  php7-common \
+  php7-iconv \ 
+  php7-json \
+  php7-gd \
+  php7-curl \
+  php7-xml \
+  php7-pgsql \
+  php7-imap \
+  php7-cgi \
   fcgi \
-  php5-pdo \
-  php5-pdo_pgsql \
-  php5-soap \
-  php5-xmlrpc \
-  php5-posix \
-  php5-mcrypt \
-  php5-gettext \
-  php5-ldap \
-  php5-ctype \
-  php5-dom \
+  php7-pdo \
+  php7-pdo_pgsql \
+  php7-soap \
+  php7-xmlrpc \
+  php7-posix \
+  php7-mcrypt \
+  php7-gettext \
+  php7-ldap \
+  php7-ctype \
+  php7-dom \
   postgresql \
   postgresql-client \
   && rm -rf /var/cache/apk/* \
@@ -38,9 +38,9 @@ ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
 
 ADD index.php /var/www/localhost/htdocs
 
-ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/
+ADD phppgadmin-master.zip /var/www/localhost/htdocs/
 
-RUN mv /var/www/localhost/htdocs/phpPgAdmin-5.1 /var/www/localhost/htdocs/phppgadmin
+RUN mv /var/www/localhost/htdocs/phppgadmin-master /var/www/localhost/htdocs/phppgadmin
 
 ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
 
