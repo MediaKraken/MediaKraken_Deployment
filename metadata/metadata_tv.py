@@ -203,10 +203,11 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
         # save rows for episode image fetch
         for episode_info in show_detail['_embedded']['episodes']:
-            db_connection.db_download_image_insert('tvmaze',
-                json.dumps({'url': episode_info['image']['original'],
-                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
-                + str(episode_info['id']) + '.jpg'}))
+            if episode_info['image'] is not None:
+                db_connection.db_download_image_insert('tvmaze',
+                    json.dumps({'url': episode_info['image']['original'],
+                    'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                    + str(episode_info['id']) + '.jpg'}))
         db_connection.db_commit()
     return metadata_uuid
 
