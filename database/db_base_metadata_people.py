@@ -197,6 +197,7 @@ def db_meta_person_as_seen_in(self, person_guid):
             ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = row_data['mmp_person_media_id']['tvmaze']
+        logging.info('sql paramts: %s' % sql_params)
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
             'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
             ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
