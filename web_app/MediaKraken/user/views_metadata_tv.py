@@ -51,8 +51,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview\
-                = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+            data_overview = json_metadata['Meta']['tvmaze']['summary']
         else:
             data_overview = None
         # build gen list
