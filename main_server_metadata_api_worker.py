@@ -305,8 +305,8 @@ def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
-    logging.info("Message body %s", body)
     if body is not None:
+        logging.info("Message body %s", body)
         json_message = json.loads(body)
         if json_message['Type'] == 'update':
             if content_providers == 'themoviedb':
