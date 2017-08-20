@@ -172,7 +172,7 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         embed_info=True))
     show_full_json = ({'Meta': {'tvmaze': result_json}})
     logging.info("tvmaze full: %s", result_json)
-    if result_json is not None:
+    if result_json is not None and result_json['status'] != 404:
         show_detail = show_full_json['Meta']['tvmaze']
         logging.info("detail: %s", show_detail)
         tvmaze_name = show_detail['name']
