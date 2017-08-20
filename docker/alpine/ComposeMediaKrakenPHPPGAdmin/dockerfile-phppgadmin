@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.6
+FROM alpine:3.
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the phppgadmin"
@@ -38,7 +38,7 @@ ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
 
 ADD index.php /var/www/localhost/htdocs
 
-ADD phppgadmin-master.zip /var/www/localhost/htdocs/
+ADD phppgadmin-master.tar.bz2 /var/www/localhost/htdocs/
 
 RUN mv /var/www/localhost/htdocs/phppgadmin-master /var/www/localhost/htdocs/phppgadmin
 
