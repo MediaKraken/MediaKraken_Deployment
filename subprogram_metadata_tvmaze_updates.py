@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
+import uuid
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tvmaze
@@ -45,11 +46,12 @@ db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
 # grab updated show list with epoc data
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
+logging.info('tvmaze update: ', result)
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     logging.info("id: %s", tvmaze_id)
-    # check to see if allready downloaded
+    # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
         # if show was updated since db record
@@ -59,8 +61,10 @@ for tvmaze_id, tvmaze_time in result.items():
     else:
         if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', 2, json.dumps({'Status': 'Fetch',
-                'ProviderMetaID': tvmaze_id}))
+            db_connection.db_download_insert('tvmaze', 2, json.dumps({'MediaID': None,
+                                      'Path': None, 'ClassID': None, 'Status': 'Fetch',
+                                      'MetaNewID': str(uuid.uuid4()),
+                                      'ProviderMetaID': tvmaze_id}))
 
 
 # log end
