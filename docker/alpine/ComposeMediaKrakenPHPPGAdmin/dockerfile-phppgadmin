@@ -6,27 +6,27 @@ LABEL Description="This image holds the image for the phppgadmin"
 
 RUN apk add --update \
   lighttpd \
-  php7-fpm \
-  php7-common \
-  php7-iconv \ 
-  php7-json \
-  php7-gd \
-  php7-curl \
-  php7-xml \
-  php7-pgsql \
-  php7-imap \
-  php7-cgi \
+  php5-fpm \
+  php5-common \
+  php5-iconv \ 
+  php5-json \
+  php5-gd \
+  php5-curl \
+  php5-xml \
+  php5-pgsql \
+  php5-imap \
+  php5-cgi \
   fcgi \
-  php7-pdo \
-  php7-pdo_pgsql \
-  php7-soap \
-  php7-xmlrpc \
-  php7-posix \
-  php7-mcrypt \
-  php7-gettext \
-  php7-ldap \
-  php7-ctype \
-  php7-dom \
+  php5-pdo \
+  php5-pdo_pgsql \
+  php5-soap \
+  php5-xmlrpc \
+  php5-posix \
+  php5-mcrypt \
+  php5-gettext \
+  php5-ldap \
+  php5-ctype \
+  php5-dom \
   postgresql \
   postgresql-client \
   && rm -rf /var/cache/apk/* \
