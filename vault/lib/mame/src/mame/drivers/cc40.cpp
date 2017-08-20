@@ -579,7 +579,7 @@ void cc40_state::machine_start()
 	machine().save().register_postload(save_prepost_delegate(FUNC(cc40_state::postload), this));
 }
 
-static MACHINE_CONFIG_START( cc40, cc40_state )
+static MACHINE_CONFIG_START( cc40 )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", TMS70C20, XTAL_5MHz / 2)
@@ -630,12 +630,13 @@ MACHINE_CONFIG_END
 ***************************************************************************/
 
 ROM_START( cc40 )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "tms70c20.bin", 0xf800, 0x0800, CRC(a21bf6ab) SHA1(3da8435ecbee143e7fa149ee8e1c92949bade1d8) ) // internal cpu rom
+	ROM_REGION( 0x800, "maincpu", 0 )
+	ROM_LOAD( "tms70c20.bin", 0x000, 0x800, CRC(a21bf6ab) SHA1(3da8435ecbee143e7fa149ee8e1c92949bade1d8) ) // internal cpu rom
 
 	ROM_REGION( 0x8000, "system", 0 )
 	ROM_LOAD( "hn61256pc09.bin", 0x0000, 0x8000, CRC(f5322fab) SHA1(1b5c4052a53654363c458f75eac7a27f0752def6) ) // system rom, banked
 ROM_END
 
 
-COMP( 1983, cc40, 0, 0, cc40, cc40, driver_device, 0, "Texas Instruments", "Compact Computer 40", MACHINE_SUPPORTS_SAVE )
+//    YEAR  NAME  PARENT CMP MACHINE INPUT STATE    INIT  COMPANY, FULLNAME, FLAGS
+COMP( 1983, cc40, 0,      0, cc40,   cc40, cc40_state, 0, "Texas Instruments", "Compact Computer 40", MACHINE_SUPPORTS_SAVE )

@@ -67,7 +67,7 @@ Games on this system include....
 | | 2004 | Virtua Striker 4 (Japan) (Rev C)                                | Sega                                | GDROM | GDT-0013C      | 317-0391-JPN |               |
 | | 2004 | Virtua Striker 4 (Japan) (Rev D)                                | Sega                                | GDROM | GDT-0013D      | 317-0391-JPN |               |
 |*| 2004 | Virtua Striker 4 (Japan) (Rev E)                                | Sega                                | GDROM | GDT-0013E      | 317-0391-JPN |               |
-| | 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0014       |              |               |
+|*| 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0014       | 317-0392-EXP | 253-5508-0392E|
 |*| 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0015       | 317-0393-EXP |               |
 | | 2004 | Virtua Striker 4 (Export)                                       | Sega                                | CF    | MDA-G0016      | 317-0393-EXP |               |
 | | 2004 | The Key Of Avalon 2: Eutaxy Commandment (server)                | Sega / Hitmaker                     | GDROM | GDT-0016       | 317-0403-JPN | 253-5508-0403J|
@@ -85,7 +85,7 @@ Games on this system include....
 |*| 2005 | The Key Of Avalon 2.5: War of the Key (client) (Rev B)          | Sega / Hitmaker                     | GDROM | GDT-0019B      | 317-0403-JPN | 253-5508-0403J|
 | | 2006 | Virtua Striker 4 Ver.2006 (Japan)                               | Sega                                | GDROM | GDT-0020       | 317-0432-JPN | 253-5508-0432J|
 | | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev A)                       | Sega                                | GDROM | GDT-0020A      | 317-0432-JPN | 253-5508-0432J|
-| | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev B)                       | Sega                                | GDROM | GDT-0020B      | 317-0432-JPN | 253-5508-0432J|
+|*| 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev B)                       | Sega                                | GDROM | GDT-0020B      | 317-0432-JPN | 253-5508-0432J|
 | | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev C)                       | Sega                                | GDROM | GDT-0020C      | 317-0432-JPN | 253-5508-0432J|
 |*| 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev D)                       | Sega                                | GDROM | GDT-0020D      | 317-0432-JPN | 253-5508-0432J|
 |*| 2006 | Virtua Striker 4 Ver.2006 (Export)                              | Sega                                | GDROM | GDT-0021       | 317-0433-EXP | 253-5508-0433E|
@@ -566,7 +566,7 @@ void triforce_state::machine_start()
 	descrambler(&rom[0x100], 0x1afe00);
 }
 
-static MACHINE_CONFIG_START( triforce_base, triforce_state )
+static MACHINE_CONFIG_START( triforce_base )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC603, 64000000) /* Correct CPU is a PowerPC 750 (what Apple called "G3") with paired-single vector instructions added */
@@ -863,6 +863,16 @@ ROM_START( vs4j )
 	ROM_LOAD("317-0391-jpn.data", 0x00, 0x50, CRC(0f2dbb73) SHA1(7b9d66abe85303b3e26b442a3a63feca1a0edbdb) )
 ROM_END
 
+ROM_START( vs4e )
+	TRIFORCE_BIOS
+
+	DISK_REGION( "gdrom" )
+	DISK_IMAGE_READONLY( "gdt-0014", 0, SHA1(e7f7304b1c9075f37b8fed4e8d3f22f7fc0ae5ab) )
+
+	ROM_REGION( 0x4000, "pic", ROMREGION_ERASEFF)
+	ROM_LOAD("317-0392-exp.pic", 0x00, 0x4000, CRC(c8931261) SHA1(063faea92a987a5b3dc96455494cf5fc13052428) )
+ROM_END
+
 /*
 Title             VIRTUA STRIKER 4
 Media ID          93B2
@@ -938,6 +948,16 @@ ROM_START( avalnc25 )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
 	ROM_LOAD("317-0403-jpn.data", 0x00, 0x50, CRC(c5071ada) SHA1(70018180b917beec1b2c272f9125fa43fd1a7b00) )
+ROM_END
+
+ROM_START( vs42006b )
+	TRIFORCE_BIOS
+
+	DISK_REGION( "gdrom" )
+	DISK_IMAGE_READONLY( "gdt-0020b", 0, SHA1(ac875c5d8da72e75186790acf839e775050d3591) )
+
+	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
+	ROM_LOAD("317-0432-jpn.data", 0x00, 0x50, CRC(e3d13191) SHA1(4255c09aad06eb38c16bdec881897404a3a68b37) )
 ROM_END
 
 ROM_START( vs42006 )
@@ -1061,77 +1081,77 @@ ROM_START( mkartag2a )
 ROM_END
 
 /* Main board */
-/*Triforce*/GAME( 2002, triforce, 0,        triforce_base,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Bios", MACHINE_IS_SKELETON|MACHINE_IS_BIOS_ROOT )
+/*Triforce*/GAME( 2002, triforce, 0,        triforce_base,    triforce, triforce_state, 0, ROT0, "Sega",                               "Triforce Bios", MACHINE_IS_SKELETON|MACHINE_IS_BIOS_ROOT )
 
 /* GDT-xxxx (Sega GD-ROM games) */
-/* 0001  */ GAME( 2002, vs2002j,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0001)", MACHINE_IS_SKELETON )
-/* 0002  */ GAME( 2002, vs2002ex, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0002)", MACHINE_IS_SKELETON )
+/* 0001  */ GAME( 2002, vs2002j,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0001)", MACHINE_IS_SKELETON )
+/* 0002  */ GAME( 2002, vs2002ex, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0002)", MACHINE_IS_SKELETON )
 // 0003
-// 0004     GAME( 2003, fzeroaxo, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (GDT-0004)", MACHINE_IS_SKELETON )
-// 0004A    GAME( 2003, fzeroaxa, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev A) (GDT-0004A)", MACHINE_IS_SKELETON )
-// 0004B    GAME( 2003, fzeroaxb, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev B) (GDT-0004B)", MACHINE_IS_SKELETON )
-/* 0004C */ GAME( 2003, fzeroaxc, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev C) (GDT-0004C)", MACHINE_IS_SKELETON )
-// 0004D    GAME( 2003, fzeroaxd, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev D) (GDT-0004D)", MACHINE_IS_SKELETON )
-/* 0004E */ GAME( 2003, fzeroax,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev E) (GDT-0004E)", MACHINE_IS_SKELETON )
-// 0005     GAME( 2003, avalonso, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (GDT-0005)", MACHINE_IS_SKELETON )
-// 0005A    GAME( 2003, avalonsa, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev A) (GDT-0005A)", MACHINE_IS_SKELETON )
-// 0005B    GAME( 2003, avalonsb, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev B) (GDT-0005B)", MACHINE_IS_SKELETON )
-/* 0005C */ GAME( 2003, avalonsc, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev C) (GDT-0005C)", MACHINE_IS_SKELETON )
-// 0005D    GAME( 2003, avalonsd, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev D) (GDT-0005D)", MACHINE_IS_SKELETON )
-/* 0005E */ GAME( 2003, avalonse, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev E) (GDT-0005E)", MACHINE_IS_SKELETON )
-/* 0005F */ GAME( 2003, avalonsf, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev F) (GDT-0005F)", MACHINE_IS_SKELETON )
-/* 0005G */ GAME( 2003, avalons,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev G) (GDT-0005G)", MACHINE_IS_SKELETON )
-// 0006     GAME( 2003, avalonco, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (GDT-0006)", MACHINE_IS_SKELETON )
-// 0006A    GAME( 2003, avalonca, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev A) (GDT-0006A)", MACHINE_IS_SKELETON )
-// 0006B    GAME( 2003, avaloncb, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev B) (GDT-0006B)", MACHINE_IS_SKELETON )
-// 0006C    GAME( 2003, avaloncc, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev C) (GDT-0006C)", MACHINE_IS_SKELETON )
-// 0006D    GAME( 2003, avaloncd, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev D) (GDT-0006D)", MACHINE_IS_SKELETON )
-/* 0006E */ GAME( 2003, avalonce, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev E) (GDT-0006E)", MACHINE_IS_SKELETON )
-/* 0006F */ GAME( 2003, avaloncf, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev F) (GDT-0006F)", MACHINE_IS_SKELETON )
-/* 0006G */ GAME( 2003, avalonc,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev G) (GDT-0006G)", MACHINE_IS_SKELETON )
+// 0004     GAME( 2003, fzeroaxo, fzeroax,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (GDT-0004)", MACHINE_IS_SKELETON )
+// 0004A    GAME( 2003, fzeroaxa, fzeroax,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev A) (GDT-0004A)", MACHINE_IS_SKELETON )
+// 0004B    GAME( 2003, fzeroaxb, fzeroax,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev B) (GDT-0004B)", MACHINE_IS_SKELETON )
+/* 0004C */ GAME( 2003, fzeroaxc, fzeroax,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev C) (GDT-0004C)", MACHINE_IS_SKELETON )
+// 0004D    GAME( 2003, fzeroaxd, fzeroax,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev D) (GDT-0004D)", MACHINE_IS_SKELETON )
+/* 0004E */ GAME( 2003, fzeroax,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev E) (GDT-0004E)", MACHINE_IS_SKELETON )
+// 0005     GAME( 2003, avalonso, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (GDT-0005)", MACHINE_IS_SKELETON )
+// 0005A    GAME( 2003, avalonsa, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev A) (GDT-0005A)", MACHINE_IS_SKELETON )
+// 0005B    GAME( 2003, avalonsb, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev B) (GDT-0005B)", MACHINE_IS_SKELETON )
+/* 0005C */ GAME( 2003, avalonsc, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev C) (GDT-0005C)", MACHINE_IS_SKELETON )
+// 0005D    GAME( 2003, avalonsd, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev D) (GDT-0005D)", MACHINE_IS_SKELETON )
+/* 0005E */ GAME( 2003, avalonse, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev E) (GDT-0005E)", MACHINE_IS_SKELETON )
+/* 0005F */ GAME( 2003, avalonsf, avalons,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev F) (GDT-0005F)", MACHINE_IS_SKELETON )
+/* 0005G */ GAME( 2003, avalons,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev G) (GDT-0005G)", MACHINE_IS_SKELETON )
+// 0006     GAME( 2003, avalonco, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (GDT-0006)", MACHINE_IS_SKELETON )
+// 0006A    GAME( 2003, avalonca, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev A) (GDT-0006A)", MACHINE_IS_SKELETON )
+// 0006B    GAME( 2003, avaloncb, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev B) (GDT-0006B)", MACHINE_IS_SKELETON )
+// 0006C    GAME( 2003, avaloncc, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev C) (GDT-0006C)", MACHINE_IS_SKELETON )
+// 0006D    GAME( 2003, avaloncd, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev D) (GDT-0006D)", MACHINE_IS_SKELETON )
+/* 0006E */ GAME( 2003, avalonce, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev E) (GDT-0006E)", MACHINE_IS_SKELETON )
+/* 0006F */ GAME( 2003, avaloncf, avalonc,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev F) (GDT-0006F)", MACHINE_IS_SKELETON )
+/* 0006G */ GAME( 2003, avalonc,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev G) (GDT-0006G)", MACHINE_IS_SKELETON )
 // 0007
-// 0008     GAME( 2003, gekpuryao,gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (GDT-0008)", MACHINE_IS_SKELETON )
-// 0008A    GAME( 2003, gekpuryaa,gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev A) (GDT-0008A)", MACHINE_IS_SKELETON )
-/* 0008B */ GAME( 2003, gekpuryb, gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev B) (GDT-0008B)", MACHINE_IS_SKELETON )
-/* 0008C */ GAME( 2003, gekpurya, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev C) (GDT-0008C)", MACHINE_IS_SKELETON )
-// 0009     GAME( 2004, avalns11, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (GDT-0009)", MACHINE_IS_SKELETON )
-/* 0009A */ GAME( 2004, avalns12, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (server) (Rev A) (GDT-0009A)", MACHINE_IS_SKELETON )
-// 0009B    GAME( 2004, avals13b, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (Rev B) (GDT-0009B)", MACHINE_IS_SKELETON )
-/* 0009C */ GAME( 2004, avalns13, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (server) (Rev C) (GDT-0009C)", MACHINE_IS_SKELETON )
-// 0010     GAME( 2004, avalnc11, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (GDT-0010)", MACHINE_IS_SKELETON )
-/* 0010A */ GAME( 2004, avalnc12, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (client) (Rev A) (GDT-0010A)", MACHINE_IS_SKELETON )
-// 0010B    GAME( 2004, avalc13b, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (Rev B) (GDT-0010B)", MACHINE_IS_SKELETON )
-/* 0010C */ GAME( 2004, avalnc13, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (client) (Rev C) (GDT-0010C)", MACHINE_IS_SKELETON )
-/* 0011  */ GAME( 2004, tfupdate, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce DIMM Updater (3.17) (GDT-0011)", MACHINE_IS_SKELETON )
+// 0008     GAME( 2003, gekpuryao,gekpurya, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (GDT-0008)", MACHINE_IS_SKELETON )
+// 0008A    GAME( 2003, gekpuryaa,gekpurya, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev A) (GDT-0008A)", MACHINE_IS_SKELETON )
+/* 0008B */ GAME( 2003, gekpuryb, gekpurya, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev B) (GDT-0008B)", MACHINE_IS_SKELETON )
+/* 0008C */ GAME( 2003, gekpurya, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev C) (GDT-0008C)", MACHINE_IS_SKELETON )
+// 0009     GAME( 2004, avalns11, avalns13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (GDT-0009)", MACHINE_IS_SKELETON )
+/* 0009A */ GAME( 2004, avalns12, avalns13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (server) (Rev A) (GDT-0009A)", MACHINE_IS_SKELETON )
+// 0009B    GAME( 2004, avals13b, avalns13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (Rev B) (GDT-0009B)", MACHINE_IS_SKELETON )
+/* 0009C */ GAME( 2004, avalns13, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (server) (Rev C) (GDT-0009C)", MACHINE_IS_SKELETON )
+// 0010     GAME( 2004, avalnc11, avalnc13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (GDT-0010)", MACHINE_IS_SKELETON )
+/* 0010A */ GAME( 2004, avalnc12, avalnc13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (client) (Rev A) (GDT-0010A)", MACHINE_IS_SKELETON )
+// 0010B    GAME( 2004, avalc13b, avalnc13, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (Rev B) (GDT-0010B)", MACHINE_IS_SKELETON )
+/* 0010C */ GAME( 2004, avalnc13, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (client) (Rev C) (GDT-0010C)", MACHINE_IS_SKELETON )
+/* 0011  */ GAME( 2004, tfupdate, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Triforce DIMM Updater (3.17) (GDT-0011)", MACHINE_IS_SKELETON )
 // 0012
-// 0013     GAME( 2005, vs4jo,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (GDT-0013)", MACHINE_IS_SKELETON )
-// 0013A    GAME( 2005, vs4ja,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev A) (GDT-0013A)", MACHINE_IS_SKELETON )
-// 0013B    GAME( 2005, vs4jb,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev B) (GDT-0013B)", MACHINE_IS_SKELETON )
-// 0013C    GAME( 2005, vs4jc,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev C) (GDT-0013C)", MACHINE_IS_SKELETON )
-// 0013D    GAME( 2005, vs4jd,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev D) (GDT-0013D)", MACHINE_IS_SKELETON )
-/* 0013E */ GAME( 2005, vs4j,     triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev E) (GDT-0013E)", MACHINE_IS_SKELETON )
-// 0014
-/* 0015  */ GAME( 2004, vs4,      triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Export) (GDT-0015)", MACHINE_IS_SKELETON )
-// 0016     GAME( 2004, avalons20,triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (server) (GDT-0016)", MACHINE_IS_SKELETON )
-// 0017     GAME( 2004, avalon20o,avalon20, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (GDT-0017)", MACHINE_IS_SKELETON )
-// 0017A    GAME( 2004, avalon20a,avalon20, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev A) (GDT-0017A)", MACHINE_IS_SKELETON )
-/* 0017B */ GAME( 2004, avalon20, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev B) (GDT-0017B)", MACHINE_IS_SKELETON )
-// 0018     GAME( 2005, avalns25o,avalns25, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (GDT-0018)", MACHINE_IS_SKELETON )
-// 0018A    GAME( 2005, avalns25a,avalns25, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (Rev A) (GDT-0018A)", MACHINE_IS_SKELETON )
-/* 0018B */ GAME( 2005, avalns25, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (Rev B) (GDT-0018B)", MACHINE_IS_SKELETON )
-// 0019     GAME( 2005, avalnc25o,avalnc25, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (GDT-0019)", MACHINE_IS_SKELETON )
-// 0019A    GAME( 2005, avalnc25a,avalnc25, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (Rev A) (GDT-0019A)", MACHINE_IS_SKELETON )
-/* 0019B */ GAME( 2005, avalnc25, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (Rev B) (GDT-0019B)", MACHINE_IS_SKELETON )
-// 0020     GAME( 2006, vs42006o, vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (GDT-0020)", MACHINE_IS_SKELETON )
-// 0020A    GAME( 2006, vs42006a, vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev A) (GDT-0020A)", MACHINE_IS_SKELETON )
-// 0020B    GAME( 2006, vs42006b, vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev B) (GDT-0020B)", MACHINE_IS_SKELETON )
-// 0020C    GAME( 2006, vs42006c, vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev C) (GDT-0020C)", MACHINE_IS_SKELETON )
-/* 0020D */ GAME( 2006, vs42006,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev D) (GDT-0020D)", MACHINE_IS_SKELETON )
-/* 0021  */ GAME( 2006, vs42k6ex, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Export) (GDT-0021)", MACHINE_IS_SKELETON )
-// 0022     GAME( 2006, tcfboxo,  tcfboxa,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (GDT-0022)", MACHINE_IS_SKELETON )
-/* 0022A */ GAME( 2006, tcfboxa,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (4.01) (GDT-0022A)", MACHINE_IS_SKELETON )
+// 0013     GAME( 2005, vs4jo,    vs4j,     triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (GDT-0013)", MACHINE_IS_SKELETON )
+// 0013A    GAME( 2005, vs4ja,    vs4j,     triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev A) (GDT-0013A)", MACHINE_IS_SKELETON )
+// 0013B    GAME( 2005, vs4jb,    vs4j,     triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev B) (GDT-0013B)", MACHINE_IS_SKELETON )
+// 0013C    GAME( 2005, vs4jc,    vs4j,     triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev C) (GDT-0013C)", MACHINE_IS_SKELETON )
+// 0013D    GAME( 2005, vs4jd,    vs4j,     triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev D) (GDT-0013D)", MACHINE_IS_SKELETON )
+/* 0013E */ GAME( 2005, vs4j,     triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev E) (GDT-0013E)", MACHINE_IS_SKELETON )
+/* 0014  */ GAME( 2004, vs4e,     vs4,      triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Export) (GDT-0014)", MACHINE_IS_SKELETON )
+/* 0015  */ GAME( 2004, vs4,      triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 (Export) (GDT-0015)", MACHINE_IS_SKELETON )
+// 0016     GAME( 2004, avalons20,triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (server) (GDT-0016)", MACHINE_IS_SKELETON )
+// 0017     GAME( 2004, avalon20o,avalon20, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (GDT-0017)", MACHINE_IS_SKELETON )
+// 0017A    GAME( 2004, avalon20a,avalon20, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev A) (GDT-0017A)", MACHINE_IS_SKELETON )
+/* 0017B */ GAME( 2004, avalon20, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev B) (GDT-0017B)", MACHINE_IS_SKELETON )
+// 0018     GAME( 2005, avalns25o,avalns25, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (GDT-0018)", MACHINE_IS_SKELETON )
+// 0018A    GAME( 2005, avalns25a,avalns25, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (Rev A) (GDT-0018A)", MACHINE_IS_SKELETON )
+/* 0018B */ GAME( 2005, avalns25, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (server) (Rev B) (GDT-0018B)", MACHINE_IS_SKELETON )
+// 0019     GAME( 2005, avalnc25o,avalnc25, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (GDT-0019)", MACHINE_IS_SKELETON )
+// 0019A    GAME( 2005, avalnc25a,avalnc25, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (Rev A) (GDT-0019A)", MACHINE_IS_SKELETON )
+/* 0019B */ GAME( 2005, avalnc25, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.5 - War of the Key (client) (Rev B) (GDT-0019B)", MACHINE_IS_SKELETON )
+// 0020     GAME( 2006, vs42006o, vs42006,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (GDT-0020)", MACHINE_IS_SKELETON )
+// 0020A    GAME( 2006, vs42006a, vs42006,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev A) (GDT-0020A)", MACHINE_IS_SKELETON )
+/* 0020B */ GAME( 2006, vs42006b, vs42006,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev B) (GDT-0020B)", MACHINE_IS_SKELETON )
+// 0020C    GAME( 2006, vs42006c, vs42006,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev C) (GDT-0020C)", MACHINE_IS_SKELETON )
+/* 0020D */ GAME( 2006, vs42006,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev D) (GDT-0020D)", MACHINE_IS_SKELETON )
+/* 0021  */ GAME( 2006, vs42k6ex, triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Export) (GDT-0021)", MACHINE_IS_SKELETON )
+// 0022     GAME( 2006, tcfboxo,  tcfboxa,  triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (GDT-0022)", MACHINE_IS_SKELETON )
+/* 0022A */ GAME( 2006, tcfboxa,  triforce, triforcegd,    triforce, triforce_state, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (4.01) (GDT-0022A)", MACHINE_IS_SKELETON )
 
 // 837-xxxxx (Sega cart games)
-/* 14343-4T1  */ GAME( 2005, mkartagp, triforce, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP (Japan, MKA1 Ver.A1)", MACHINE_IS_SKELETON )
-/* 14343-R4S0 */ GAME( 2007, mkartag2, triforce, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)", MACHINE_IS_SKELETON )
-/* 14343-R4S0 */ GAME( 2007, mkartag2a,mkartag2, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A, alt dump)", MACHINE_IS_SKELETON )
+/* 14343-4T1  */ GAME( 2005, mkartagp, triforce, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP (Japan, MKA1 Ver.A1)", MACHINE_IS_SKELETON )
+/* 14343-R4S0 */ GAME( 2007, mkartag2, triforce, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)", MACHINE_IS_SKELETON )
+/* 14343-R4S0 */ GAME( 2007, mkartag2a,mkartag2, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A, alt dump)", MACHINE_IS_SKELETON )

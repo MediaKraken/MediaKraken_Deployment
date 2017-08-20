@@ -236,11 +236,8 @@ m6805_base_device::m6805_base_device(
 		device_t *owner,
 		uint32_t clock,
 		device_type const type,
-		char const *name,
-		configuration_params const &params,
-		char const *shortname,
-		char const *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
+		configuration_params const &params)
+	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_params(params)
 	, m_program_config("program", ENDIANNESS_BIG, 8, params.m_addr_width)
 {
@@ -252,12 +249,9 @@ m6805_base_device::m6805_base_device(
 		device_t *owner,
 		uint32_t clock,
 		device_type const type,
-		char const *name,
 		configuration_params const &params,
-		address_map_delegate internal_map,
-		char const *shortname,
-		char const *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
+		address_map_delegate internal_map)
+	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_params(params)
 	, m_program_config("program", ENDIANNESS_BIG, 8, params.m_addr_width, 0, internal_map)
 {
@@ -325,12 +319,11 @@ void m6805_base_device::device_reset()
 //  the space doesn't exist
 //-------------------------------------------------
 
-const address_space_config *m6805_base_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector m6805_base_device::memory_space_config() const
 {
-	if (spacenum == AS_PROGRAM)
-		return &m_program_config;
-	else
-		return nullptr;
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
 }
 
 
@@ -555,10 +548,7 @@ m6805_device::m6805_device(const machine_config &mconfig, const char *tag, devic
 			owner,
 			clock,
 			M6805,
-			"M6805",
-			{ s_hmos_ops, s_hmos_cycles, 12, 0x007f, 0x0060, 0xfffc },
-			"m6805",
-			__FILE__)
+			{ s_hmos_ops, s_hmos_cycles, 12, 0x007f, 0x0060, 0xfffc })
 {
 }
 
@@ -572,10 +562,7 @@ m68hc05eg_device::m68hc05eg_device(const machine_config &mconfig, const char *ta
 			owner,
 			clock,
 			M68HC05EG,
-			"M68HC05EG",
-			{ s_hmos_ops, s_hmos_cycles, 13, 0x00ff, 0x00c0, 0xfffc }, // completely wrong, but it preserves existing behaviour
-			"m68hc05eg",
-			__FILE__)
+			{ s_hmos_ops, s_hmos_cycles, 13, 0x00ff, 0x00c0, 0xfffc }) // completely wrong, but it preserves existing behaviour
 {
 }
 
@@ -615,10 +602,7 @@ hd63705_device::hd63705_device(const machine_config &mconfig, const char *tag, d
 			owner,
 			clock,
 			HD63705,
-			"HD63705",
-			{ s_hmos_ops, s_hmos_cycles, 16, 0x017f, 0x0100, 0x1ffa },
-			"hd63705",
-			__FILE__)
+			{ s_hmos_ops, s_hmos_cycles, 16, 0x017f, 0x0100, 0x1ffa })
 {
 }
 
@@ -707,6 +691,6 @@ void hd63705_device::interrupt_vector()
 }
 
 
-const device_type M6805 = device_creator<m6805_device>;
-const device_type M68HC05EG = device_creator<m68hc05eg_device>;
-const device_type HD63705 = device_creator<hd63705_device>;
+DEFINE_DEVICE_TYPE(M6805,     m6805_device,     "m6805",     "M6805")
+DEFINE_DEVICE_TYPE(M68HC05EG, m68hc05eg_device, "m68hc05eg", "MC68HC05EG")
+DEFINE_DEVICE_TYPE(HD63705,   hd63705_device,   "hd63705",   "HD63705")

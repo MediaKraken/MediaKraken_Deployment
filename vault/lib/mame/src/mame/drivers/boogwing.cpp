@@ -149,7 +149,7 @@ static ADDRESS_MAP_START( boogwing_map, AS_PROGRAM, 16, boogwing_state )
 	AM_RANGE(0x3c0000, 0x3c004f) AM_RAM // ?
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, boogwing_state )
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, boogwing_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -321,7 +321,7 @@ DECO16IC_BANK_CB_MEMBER(boogwing_state::bank_callback2)
 	return offset;
 }
 
-static MACHINE_CONFIG_START( boogwing, boogwing_state )
+static MACHINE_CONFIG_START( boogwing )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)   /* DE102 */
@@ -403,11 +403,11 @@ static MACHINE_CONFIG_START( boogwing, boogwing_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
+	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.40)
 
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
+	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.30)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.30)
 MACHINE_CONFIG_END

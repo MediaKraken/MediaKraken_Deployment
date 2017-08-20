@@ -1,5 +1,5 @@
 // license:BSD-3-Clause
-// copyright-holders:R. Belmont, Wilbert Pol, Miodrag Milanovic
+// copyright-holders: Carl, R. Belmont, Wilbert Pol, Miodrag Milanovic
 /***************************************************************************
 
   mtouchxl.cpp: Merit Industries MegaTouch XL
@@ -17,14 +17,17 @@
 
   Megatouch XL (Software) (* indicated verified dumps of CD + Boot ROM,
                            - means we have it working but would like a redump)
-  Megatouch XL (1997) (CD versions: R0, R0A, R0B, R0C, R0D, R1, R2, R3, R3A, R3B, R3C)
+  Megatouch XL (1997) (CD versions: R0, R0A, R0B, R0C, R0D, *R1, R2, R3, R3A, R3B, R3C)
   Megatouch XL 5000 (1998) (CD versions: R5A, *R5B, R5D, *R5E, R5G, R5H, *R5I)
-  Megatouch XL 6000 (1999) (CD versions: *R02, R04, R05, *R07)
+  Megatouch XL 6000 (1999) (CD versions: *R02, *R04, R05, *R07)
   Megatouch XL Gold (2000) (CD versions: *R00, *R01.  HDD versions: R01)
   Megatouch XL Platinum / Double Platinum (2001)
   Megatouch XL Titanium / Titanium 2 (2002)
 
 ***************************************************************************/
+
+// use under construction modern PCI SiS 85c496/497 chipset
+//#define REAL_PCI_CHIPSET
 
 #include "emu.h"
 #include "bus/isa/isa_cards.h"
@@ -39,8 +42,10 @@
 #include "machine/bankdev.h"
 #include "machine/intelfsh.h"
 #include "machine/ds128x.h"
-#include "machine/ds2401.h"
 #include "machine/ds1205.h"
+#ifdef REAL_PCI_CHIPSET
+#include "machine/sis85c496.h"
+#endif
 #include "sound/ad1848.h"
 #include "speaker.h"
 
@@ -50,17 +55,19 @@ public:
 	mtxl_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+#ifndef REAL_PCI_CHIPSET
 		m_mb(*this, "mb"),
+#endif
 		m_ram(*this, RAM_TAG),
 		m_iocard(*this, "dbank"),
-		//m_ibutton(*this, "ibutton"),
 		m_multikey(*this, "multikey")
 		{ }
 	required_device<cpu_device> m_maincpu;
+#ifndef REAL_PCI_CHIPSET
 	required_device<at_mb_device> m_mb;
+#endif
 	required_device<ram_device> m_ram;
 	required_device<address_map_bank_device> m_iocard;
-	//optional_device<ds2401_device> m_ibutton;
 	optional_device<ds1205_device> m_multikey;
 	void machine_start() override;
 	void machine_reset() override;
@@ -82,7 +89,7 @@ READ8_MEMBER(mtxl_state::key_r)
 
 READ8_MEMBER(mtxl_state::coin_r)
 {
-	return 0xff;
+	return ioport("Coin")->read();
 }
 
 WRITE8_MEMBER(mtxl_state::key_w)
@@ -94,15 +101,18 @@ WRITE8_MEMBER(mtxl_state::key_w)
 
 static ADDRESS_MAP_START( at32_map, AS_PROGRAM, 32, mtxl_state )
 	ADDRESS_MAP_UNMAP_HIGH
+	#ifndef REAL_PCI_CHIPSET
 	AM_RANGE(0x00000000, 0x0009ffff) AM_RAMBANK("bank10")
 	AM_RANGE(0x000c8000, 0x000cffff) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0x000d0000, 0x000dffff) AM_DEVICE("dbank", address_map_bank_device, amap32)
 	AM_RANGE(0x000e0000, 0x000fffff) AM_ROM AM_REGION("bios", 0)
 	AM_RANGE(0xfffe0000, 0xffffffff) AM_ROM AM_REGION("bios", 0)
+	#endif
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( at32_io, AS_IO, 32, mtxl_state )
 	ADDRESS_MAP_UNMAP_HIGH
+	#ifndef REAL_PCI_CHIPSET
 	AM_RANGE(0x0000, 0x001f) AM_DEVREADWRITE8("mb:dma8237_1", am9517a_device, read, write, 0xffffffff)
 	AM_RANGE(0x0020, 0x003f) AM_DEVREADWRITE8("mb:pic8259_master", pic8259_device, read, write, 0xffffffff)
 	AM_RANGE(0x0040, 0x005f) AM_DEVREADWRITE8("mb:pit8254", pit8254_device, read, write, 0xffffffff)
@@ -113,17 +123,33 @@ static ADDRESS_MAP_START( at32_io, AS_IO, 32, mtxl_state )
 	AM_RANGE(0x00a0, 0x00bf) AM_DEVREADWRITE8("mb:pic8259_slave", pic8259_device, read, write, 0xffffffff)
 	AM_RANGE(0x00c0, 0x00df) AM_DEVREADWRITE8("mb:dma8237_2", am9517a_device, read, write, 0x00ff00ff)
 	AM_RANGE(0x0224, 0x0227) AM_DEVREADWRITE8("cs4231", ad1848_device, read, write, 0xffffffff)
-	AM_RANGE(0x0228, 0x022b) AM_READ8(coin_r, 0xffffffff)
+	#endif
+	AM_RANGE(0x0228, 0x022b) AM_READ_PORT("Unknown")
 	AM_RANGE(0x022c, 0x022f) AM_WRITE8(bank_w, 0xff000000)
 	AM_RANGE(0x022c, 0x022f) AM_READWRITE8(key_r, key_w, 0x0000ff00)
-	AM_RANGE(0x022c, 0x022f) AM_READ8(coin_r, 0x00ff00ff)
+	AM_RANGE(0x022c, 0x022f) AM_READ8(coin_r, 0x000000ff)
+	#ifndef REAL_PCI_CHIPSET
 	AM_RANGE(0x03f8, 0x03ff) AM_DEVREADWRITE8("ns16550", ns16550_device, ins8250_r, ins8250_w, 0xffffffff)
+	#endif
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dbank_map, AS_PROGRAM, 32, mtxl_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM AM_REGION("ioboard", 0)
 	AM_RANGE(0x100000, 0x17ffff) AM_DEVREADWRITE8("flash", intelfsh8_device, read, write, 0xffffffff)
 ADDRESS_MAP_END
+
+static INPUT_PORTS_START(mtouchxl)
+	PORT_START("Coin")
+	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_SERVICE1) PORT_NAME("Setup")
+	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_SERVICE2) PORT_NAME("Calibrate")
+	PORT_BIT(0x04, IP_ACTIVE_HIGH, IPT_COIN1)
+	PORT_BIT(0x08, IP_ACTIVE_HIGH, IPT_COIN2)
+	PORT_BIT(0x10, IP_ACTIVE_HIGH, IPT_COIN3)
+	PORT_BIT(0x20, IP_ACTIVE_HIGH, IPT_COIN4)
+	PORT_BIT(0xc0, IP_ACTIVE_LOW, IPT_UNKNOWN)
+	PORT_START("Unknown")
+	PORT_BIT(0xffffffff, IP_ACTIVE_LOW, IPT_UNKNOWN)
+INPUT_PORTS_END
 
 /**********************************************************
  *
@@ -133,6 +159,7 @@ ADDRESS_MAP_END
 
 void mtxl_state::machine_start()
 {
+#ifndef REAL_PCI_CHIPSET
 	address_space& space = m_maincpu->space(AS_PROGRAM);
 
 	/* MESS managed RAM */
@@ -145,6 +172,7 @@ void mtxl_state::machine_start()
 		space.install_write_bank(0x100000,  ram_limit - 1, "bank1");
 		membank("bank1")->set_base(m_ram->pointer() + 0xa0000);
 	}
+#endif
 }
 
 void mtxl_state::machine_reset()
@@ -152,22 +180,25 @@ void mtxl_state::machine_reset()
 	m_iocard->set_bank(0);
 }
 
+#ifndef REAL_PCI_CHIPSET
 static SLOT_INTERFACE_START(mt6k_ata_devices)
 	SLOT_INTERFACE("cdrom", ATAPI_FIXED_CDROM)
 SLOT_INTERFACE_END
 
-static MACHINE_CONFIG_FRAGMENT(cdrom)
+static MACHINE_CONFIG_START(cdrom)
 	MCFG_DEVICE_MODIFY("ide:0")
 	MCFG_DEVICE_SLOT_INTERFACE(mt6k_ata_devices, "cdrom", true)
 	MCFG_DEVICE_MODIFY("ide:1")
 	MCFG_SLOT_DEFAULT_OPTION("")
 	MCFG_SLOT_FIXED(true)
 MACHINE_CONFIG_END
+#endif
 
-static MACHINE_CONFIG_START( at486, mtxl_state )
+static MACHINE_CONFIG_START( at486 )
 	MCFG_CPU_ADD("maincpu", I486DX4, 33000000)
 	MCFG_CPU_PROGRAM_MAP(at32_map)
 	MCFG_CPU_IO_MAP(at32_io)
+#ifndef REAL_PCI_CHIPSET
 	MCFG_CPU_IRQ_ACKNOWLEDGE_DEVICE("mb:pic8259_master", pic8259_device, inta_cb)
 
 	MCFG_DEVICE_ADD("mb", AT_MB, 0)
@@ -202,7 +233,7 @@ static MACHINE_CONFIG_START( at486, mtxl_state )
 	MCFG_DS12885_ADD("mb:rtc")
 	MCFG_MC146818_IRQ_HANDLER(DEVWRITELINE("pic8259_slave", pic8259_device, ir0_w))
 	MCFG_MC146818_CENTURY_INDEX(0x32)
-
+#endif
 	/* internal ram */
 	MCFG_RAM_ADD(RAM_TAG)
 	MCFG_RAM_DEFAULT_SIZE("32M")    // Early XL games had 8 MB RAM, 6000 and later require 32MB
@@ -219,13 +250,25 @@ static MACHINE_CONFIG_START( at486, mtxl_state )
 
 	/* Security key */
 	MCFG_DS1205_ADD("multikey")
+
+#ifdef REAL_PCI_CHIPSET
+	/* PCI root */
+	MCFG_PCI_ROOT_ADD( ":pci")
+	MCFG_SIS85C496_ADD(":pci:05.0", ":maincpu", 32*1024*1024)
+#endif
 MACHINE_CONFIG_END
 
+#ifdef REAL_PCI_CHIPSET
+#define MOTHERBOARD_ROMS \
+	ROM_REGION(0x20000, ":pci:05.0", 0) \
+	ROM_LOAD( "094572516 bios - 486.bin", 0x000000, 0x020000, CRC(1c0b3ba0) SHA1(ff86dd6e476405e716ac7a4de4a216d2d2b49f15))
+#else
 #define MOTHERBOARD_ROMS \
 	ROM_REGION(0x20000, "bios", 0) \
 	ROM_LOAD("prom.mb", 0x10000, 0x10000, BAD_DUMP CRC(e44bfd3c) SHA1(c07ec94e11efa30e001f39560010112f73cc0016) ) \
 	ROM_REGION(0x80, "mb:rtc", 0) \
 	ROM_LOAD("mb_rtc", 0, 0x80, BAD_DUMP CRC(b724e5d3) SHA1(45a19ec4201d2933d033689b7a01a0260962fb0b))
+#endif
 
 ROM_START( mtouchxl )
 	MOTHERBOARD_ROMS
@@ -234,7 +277,7 @@ ROM_START( mtouchxl )
 	ROM_LOAD( "sa3014-03_u12-r3", 0x000000, 0x100000, CRC(5a14b68a) SHA1(351a3ae14c335ac0b52e6f4976f9819c11a668f9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(4ad37efa) SHA1(aa7d0347df61a9fdcc283f362e64e70300eb927f) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(2bdaf557) SHA1(be7f5cab5b6565f7bf8066282cfe3b42c7d7b7fd) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r1", 0, SHA1(874545bfc48eacba4c4887d1c45a40ebc7da456a))
@@ -247,7 +290,7 @@ ROM_START( mtchxl5k )
 	ROM_LOAD( "sa3014-03_u12-r3", 0x000000, 0x100000, CRC(5a14b68a) SHA1(351a3ae14c335ac0b52e6f4976f9819c11a668f9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(4ad37efa) SHA1(aa7d0347df61a9fdcc283f362e64e70300eb927f) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(32cd3bab) SHA1(b31f05c3819c74a29a46bbcf4de3722bae874df2) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r5i", 0, SHA1(e776a842b557f402e179862397b2ded5cf926702))
@@ -260,7 +303,7 @@ ROM_START( mtchxl5ko )
 	ROM_LOAD( "sa3014-03_u12-r3", 0x000000, 0x100000, CRC(5a14b68a) SHA1(351a3ae14c335ac0b52e6f4976f9819c11a668f9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(4ad37efa) SHA1(aa7d0347df61a9fdcc283f362e64e70300eb927f) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(32cd3bab) SHA1(b31f05c3819c74a29a46bbcf4de3722bae874df2) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r5b", 0, SHA1(37c2562053f0f4ed18c72a8ea04be371a6ac8413))
@@ -273,7 +316,7 @@ ROM_START( mtchxl5ko2 )
 	ROM_LOAD( "sa3014-03_u12-r3", 0x000000, 0x100000, CRC(5a14b68a) SHA1(351a3ae14c335ac0b52e6f4976f9819c11a668f9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(4ad37efa) SHA1(aa7d0347df61a9fdcc283f362e64e70300eb927f) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(32cd3bab) SHA1(b31f05c3819c74a29a46bbcf4de3722bae874df2) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r5e", 0, SHA1(a07dc6da346bee999f822a3517ea1d65a68dd4a2))
@@ -286,10 +329,23 @@ ROM_START( mtchxl6k )
 	ROM_LOAD( "sa3014-04_u12-r00.u12", 0x000000, 0x100000, CRC(2a6fbca4) SHA1(186eb052cb9b77ffe6ee4cb50c1b580532fd8f47) )
 
 	ROM_REGION(192, "multikey", 0)
-	ROM_LOAD( "multikey", 0, 192, BAD_DUMP CRC(a7d118c1) SHA1(c1a08315a2ddaee1fa626a22553b1560b255a59e) ) // hand made
+	ROM_LOAD( "multikey", 0, 192, BAD_DUMP CRC(d54ed86c) SHA1(83557dc604b2c7e8ab0787a3c3d73e1fb2556515) ) // hand made
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r07", 0, SHA1(95599e181d9249db09464420522180d753857f3b))
+ROM_END
+
+ROM_START( mtchxl6ko4 )
+	MOTHERBOARD_ROMS
+
+	ROM_REGION(0x100000, "ioboard", 0)
+	ROM_LOAD( "sa3014-04_u12-r00.u12", 0x000000, 0x100000, CRC(2a6fbca4) SHA1(186eb052cb9b77ffe6ee4cb50c1b580532fd8f47) )
+
+	ROM_REGION(192, "multikey", 0)
+	ROM_LOAD( "multikey", 0, 192, BAD_DUMP CRC(d54ed86c) SHA1(83557dc604b2c7e8ab0787a3c3d73e1fb2556515) ) // hand made
+
+	DISK_REGION("board1:ide:ide:0:cdrom")
+	DISK_IMAGE_READONLY("r04", 0, SHA1(c4a40bb84de4a54fd4ee6f5d2179a1cb9fac2b09))
 ROM_END
 
 ROM_START( mtchxl6ko )
@@ -299,7 +355,7 @@ ROM_START( mtchxl6ko )
 	ROM_LOAD( "sa3014-04_u12-r00.u12", 0x000000, 0x100000, CRC(2a6fbca4) SHA1(186eb052cb9b77ffe6ee4cb50c1b580532fd8f47) )
 
 	ROM_REGION(192, "multikey", 0)
-	ROM_LOAD( "multikey", 0, 192, BAD_DUMP CRC(a7d118c1) SHA1(c1a08315a2ddaee1fa626a22553b1560b255a59e) ) // hand made
+	ROM_LOAD( "multikey", 0, 192, BAD_DUMP CRC(d54ed86c) SHA1(83557dc604b2c7e8ab0787a3c3d73e1fb2556515) ) // hand made
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r02", 0, SHA1(eaaf26d2b700f16138090de7f372b40b93e8dba9))
@@ -315,7 +371,7 @@ ROM_START( mtchxlgld )
 	ROM_LOAD( "u12-nvram-ds1235", 0x000000, 0x008000, CRC(b3b5379d) SHA1(91b3d8b7eb2df127ba35700317aa1aac14e49bb9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(b9c6aa26) SHA1(23af5b85e19cde700ac045d4770a22bf5d380076) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(b7c85d00) SHA1(c91dcafd8138d504acdc6ce9621f6cc3119cdb67) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r01", 0, SHA1(9946bb14d3f77eadbbc606ca9c79f233e402189b))
@@ -331,7 +387,7 @@ ROM_START( mtchxlgldo )
 	ROM_LOAD( "u12-nvram-ds1235", 0x000000, 0x008000, CRC(b3b5379d) SHA1(91b3d8b7eb2df127ba35700317aa1aac14e49bb9) )
 
 	ROM_REGION(192, "multikey", ROMREGION_ERASE00)
-	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(b9c6aa26) SHA1(23af5b85e19cde700ac045d4770a22bf5d380076) )
+	ROM_LOAD( "multikey",     0x000000, 0x0000c0, BAD_DUMP CRC(b7c85d00) SHA1(c91dcafd8138d504acdc6ce9621f6cc3119cdb67) )
 
 	DISK_REGION("board1:ide:ide:0:cdrom")
 	DISK_IMAGE_READONLY("r00", 0, SHA1(635e267f1abea060ce813eb7e78b88d57ea3f951))
@@ -343,12 +399,14 @@ ROM_END
 
 ***************************************************************************/
 
-/*     YEAR  NAME      PARENT   COMPAT   MACHINE    INPUT       INIT    COMPANY     FULLNAME */
-COMP ( 1998, mtouchxl,      0,    0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL (Italy Version R1)", MACHINE_NOT_WORKING )
-COMP ( 1998, mtchxl5k,      0,    0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL Super 5000 (Version R5I)", MACHINE_NOT_WORKING )
-COMP ( 1998, mtchxl5ko,  mtchxl5k,0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL Super 5000 (Version R5B)", MACHINE_NOT_WORKING )
-COMP ( 1998, mtchxl5ko2, mtchxl5k,0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL Super 5000 (Version R5E)", MACHINE_NOT_WORKING )
-COMP ( 1999, mtchxl6k,      0,    0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL 6000 (Version r07)", MACHINE_NOT_WORKING )
-COMP ( 1999, mtchxl6ko,  mtchxl6k,0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL 6000 (Version r02)", MACHINE_NOT_WORKING )
-COMP ( 2000, mtchxlgld,     0,    0,       at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL Gold (Version r01)", MACHINE_NOT_WORKING )
-COMP ( 2000, mtchxlgldo, mtchxlgld, 0,     at486,     at_keyboard,    driver_device,      0,      "Merit Industries",  "MegaTouch XL Gold (Version r00)", MACHINE_NOT_WORKING )
+/*     YEAR  NAME      PARENT   COMPAT   MACHINE      INPUT           DEVICE              INIT    COMPANY              FULLNAME */
+// Any indicates this is from a CD-R at a trade show that was claimed to be a prototype, but R1 is several versions in?
+COMP ( 1997, mtouchxl,   0,         0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL (Version R1, prototype?)", 0 )
+COMP ( 1998, mtchxl5k,   0,         0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL Super 5000 (Version R5I)", MACHINE_NOT_WORKING )
+COMP ( 1998, mtchxl5ko,  mtchxl5k,  0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL Super 5000 (Version R5B)", MACHINE_NOT_WORKING )
+COMP ( 1998, mtchxl5ko2, mtchxl5k,  0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL Super 5000 (Version R5E)", MACHINE_NOT_WORKING )
+COMP ( 1999, mtchxl6k,   0,         0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL 6000 (Version r07)",       0 )
+COMP ( 1999, mtchxl6ko4, mtchxl6k,  0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL 6000 (Version r04)",       0 )
+COMP ( 1999, mtchxl6ko,  mtchxl6k,  0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL 6000 (Version r02)",       0 )
+COMP ( 2000, mtchxlgld,  0,         0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL Gold (Version r01)",       MACHINE_NOT_WORKING )
+COMP ( 2000, mtchxlgldo, mtchxlgld, 0,      at486,   mtouchxl,     mtxl_state,  0,    "Merit Industries",  "MegaTouch XL Gold (Version r00)",       MACHINE_NOT_WORKING )

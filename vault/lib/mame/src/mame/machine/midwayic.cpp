@@ -105,7 +105,7 @@ void midway_serial_pic_device::serial_register_state()
 	save_item(NAME(m_ormask));
 }
 
-const device_type MIDWAY_SERIAL_PIC = device_creator<midway_serial_pic_device>;
+DEFINE_DEVICE_TYPE(MIDWAY_SERIAL_PIC, midway_serial_pic_device, "midway_serial_pic_sim", "Midway Serial PIC Simulation")
 
 
 //-------------------------------------------------
@@ -113,12 +113,12 @@ const device_type MIDWAY_SERIAL_PIC = device_creator<midway_serial_pic_device>;
 //-------------------------------------------------
 
 midway_serial_pic_device::midway_serial_pic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-	midway_serial_pic_device(mconfig, MIDWAY_SERIAL_PIC, "Midway Serial Pic Simulation", tag, owner, clock, "midway_serial_pic_sim", __FILE__)
+	midway_serial_pic_device(mconfig, MIDWAY_SERIAL_PIC, tag, owner, clock)
 {
 }
 
-midway_serial_pic_device::midway_serial_pic_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+midway_serial_pic_device::midway_serial_pic_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
 	m_upper(0),
 	m_buff(0),
 	m_idx(0),
@@ -193,7 +193,7 @@ WRITE8_MEMBER(midway_serial_pic_device::write)
  *************************************/
 
 
-const device_type MIDWAY_SERIAL_PIC_EMU = device_creator<midway_serial_pic_emu_device>;
+DEFINE_DEVICE_TYPE(MIDWAY_SERIAL_PIC_EMU, midway_serial_pic_emu_device, "midway_serial_pic_emu", "Midway Serial PIC Emulation")
 
 
 //-------------------------------------------------
@@ -201,7 +201,7 @@ const device_type MIDWAY_SERIAL_PIC_EMU = device_creator<midway_serial_pic_emu_d
 //-------------------------------------------------
 
 midway_serial_pic_emu_device::midway_serial_pic_emu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-	device_t(mconfig, MIDWAY_SERIAL_PIC_EMU, "Midway Serial Pic Emulation", tag, owner, clock, "midway_serial_pic_emu", __FILE__)
+	device_t(mconfig, MIDWAY_SERIAL_PIC_EMU, tag, owner, clock)
 {
 }
 
@@ -249,7 +249,7 @@ WRITE8_MEMBER(midway_serial_pic_emu_device::write_c)
 //  printf("%s: write_c %02x\n", space.machine().describe_context(), data);
 }
 
-static MACHINE_CONFIG_FRAGMENT( midway_pic )
+MACHINE_CONFIG_MEMBER( midway_serial_pic_emu_device::device_add_mconfig )
 	MCFG_CPU_ADD("pic", PIC16C57, 12000000)    /* ? Mhz */
 	MCFG_PIC16C5x_WRITE_A_CB(WRITE8(midway_serial_pic_emu_device, write_a))
 	MCFG_PIC16C5x_READ_B_CB(READ8(midway_serial_pic_emu_device, read_b))
@@ -257,11 +257,6 @@ static MACHINE_CONFIG_FRAGMENT( midway_pic )
 	MCFG_PIC16C5x_READ_C_CB(READ8(midway_serial_pic_emu_device, read_c))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(midway_serial_pic_emu_device, write_c))
 MACHINE_CONFIG_END
-
-machine_config_constructor midway_serial_pic_emu_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( midway_pic );
-}
 
 
 /*************************************
@@ -278,7 +273,7 @@ static inline uint8_t make_bcd(uint8_t data)
 	return ((data / 10) << 4) | (data % 10);
 }
 
-const device_type MIDWAY_SERIAL_PIC2 = device_creator<midway_serial_pic2_device>;
+DEFINE_DEVICE_TYPE(MIDWAY_SERIAL_PIC2, midway_serial_pic2_device, "midway_serial_pic2", "Midway Serial PIC 2")
 
 
 //-------------------------------------------------
@@ -286,27 +281,12 @@ const device_type MIDWAY_SERIAL_PIC2 = device_creator<midway_serial_pic2_device>
 //-------------------------------------------------
 
 midway_serial_pic2_device::midway_serial_pic2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-	midway_serial_pic_device(mconfig, MIDWAY_SERIAL_PIC2, "Midway Serial Pic 2", tag, owner, clock, "midway_serial_pic2", __FILE__),
-	device_nvram_interface(mconfig, *this),
-	m_latch(0),
-	m_state(0),
-	m_index(0),
-	m_total(0),
-	m_nvram_addr(0),
-	m_time_index(0),
-	m_time_just_written(0),
-	m_yearoffs(0),
-	m_time_write_timer(nullptr)
+	midway_serial_pic2_device(mconfig, MIDWAY_SERIAL_PIC2, tag, owner, clock)
 {
-	memset(m_buffer,0,sizeof(m_buffer));
-	memset(m_time_buf,0,sizeof(m_time_buf));
-	memset(m_nvram,0,sizeof(m_nvram));
-	memset(m_default_nvram,0,sizeof(m_default_nvram));
-
 }
 
-midway_serial_pic2_device::midway_serial_pic2_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source) :
-	midway_serial_pic_device(mconfig, type, name, tag, owner, clock, shortname, source),
+midway_serial_pic2_device::midway_serial_pic2_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	midway_serial_pic_device(mconfig, type, tag, owner, clock),
 	device_nvram_interface(mconfig, *this),
 	m_latch(0),
 	m_state(0),
@@ -655,7 +635,7 @@ void midway_ioasic_device::ioasic_register_state()
 	save_item(NAME(m_fifo_force_buffer_empty_pc));
 }
 
-const device_type MIDWAY_IOASIC = device_creator<midway_ioasic_device>;
+DEFINE_DEVICE_TYPE(MIDWAY_IOASIC, midway_ioasic_device, "midway_ioasic", "Midway IOASIC")
 
 
 //-------------------------------------------------
@@ -663,8 +643,9 @@ const device_type MIDWAY_IOASIC = device_creator<midway_ioasic_device>;
 //-------------------------------------------------
 
 midway_ioasic_device::midway_ioasic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-	midway_serial_pic2_device(mconfig, MIDWAY_IOASIC, "Midway IOASIC", tag, owner, clock, "midway_ioasic", __FILE__),
+	midway_serial_pic2_device(mconfig, MIDWAY_IOASIC, tag, owner, clock),
 	m_serial_tx_cb(*this),
+	m_aux_output_cb(*this),
 	m_has_dcs(0),
 	m_has_cage(0),
 	m_dcs_cpu(nullptr),
@@ -730,6 +711,7 @@ void midway_ioasic_device::device_start()
 	// resolve callbacks
 	m_irq_callback.resolve_safe();
 	m_serial_tx_cb.resolve_safe();
+	m_aux_output_cb.resolve();
 
 	/* initialize the PIC */
 	midway_serial_pic2_device::device_start();
@@ -950,46 +932,6 @@ void midway_ioasic_device::fifo_full_w(uint16_t data)
 }
 
 
-/* need to check if device callback is required instead of hardcode here */
-void midway_ioasic_device::output_w(uint32_t data)
-{
-	/* two writes in pairs. flag off first, on second. arg remains the same. */
-	uint8_t flag = (data >> 8) & 0x8;
-	uint8_t op = (data >> 8) & 0x7;
-	uint8_t arg = data & 0xFF;
-
-	switch (op)
-	{
-		default:
-			logerror("Unknown output (%02X) = %02X\n", flag | op, arg);
-			break;
-
-		case 0x0:
-			if (flag)
-			{
-				machine().output().set_value("wheel", arg); // wheel motor delta. signed byte.
-			}
-			break;
-
-		case 0x4:
-			if (flag)
-			{
-				for (uint8_t bit = 0; bit < 8; bit++)
-					machine().output().set_lamp_value(bit, (arg >> bit) & 0x1);
-			}
-			break;
-
-		case 0x5:
-			if (flag)
-			{
-				for (uint8_t bit = 0; bit < 8; bit++)
-					machine().output().set_lamp_value(8 + bit, (arg >> bit) & 0x1);
-			}
-			break;
-	}
-}
-
-
 
 /*************************************
  *
@@ -1109,7 +1051,7 @@ WRITE32_MEMBER( midway_ioasic_device::packed_w )
 		write(space, offset*2+1, data >> 16, 0x0000ffff);
 }
 
-WRITE8_MEMBER(midway_ioasic_device::serial_rx_w)
+void midway_ioasic_device::serial_rx_w(u8 data)
 {
 	// Break Detect        0x0100
 	// Frame Error         0x0200
@@ -1185,6 +1127,8 @@ WRITE32_MEMBER( midway_ioasic_device::write )
 			break;
 
 		case IOASIC_SOUNDCTL:
+			if (LOG_IOASIC)
+				logerror("%08X write IOASIC_SOUNDCTL=%04x\n", machine().device("maincpu")->safe_pc(), data);
 			/* sound reset? */
 			if (m_has_dcs)
 			{
@@ -1226,7 +1170,9 @@ WRITE32_MEMBER( midway_ioasic_device::write )
 			break;
 
 		case IOASIC_PICIN:
-			output_w(data);
+			/* This is P15 on vegas boards */
+			if (!m_aux_output_cb.isnull())
+				m_aux_output_cb(data);
 			break;
 
 		case IOASIC_INTCTL:
@@ -1235,7 +1181,8 @@ WRITE32_MEMBER( midway_ioasic_device::write )
 			/* bit  3 = FIFO empty */
 			/* bit  6 = sound input buffer full */
 			/* bit  7 = sound output buffer empty */
-			/* bit 14 = LED? */
+			/* bit 14 = LED */
+			/* bit 15 = TI320Cx Mode Enable */
 			if (LOG_IOASIC && ((oldreg ^ newreg) & 0x3ff6))
 				logerror("IOASIC interrupt control = %04X\n", data);
 			update_ioasic_irq();

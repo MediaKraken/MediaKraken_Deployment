@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
 import psycopg2
 import json
 from common import common_config_ini
@@ -66,12 +65,14 @@ base_media_classes = (
 # open the database
 db_connection = common_config_ini.com_config_read(True)
 
+# activate extention pg_trgm
+db_connection.db_query('create extension if not exists pg_trgm')
 
 # create table for version
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)', common_version.DB_VERSION)
+    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
 
 
 # create tables for media shares to mount
@@ -289,9 +290,8 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
         ' ON mm_media_class(mm_media_class_type)')
 # add media classes
 db_connection.db_query('select count(*) from mm_media_class')
-if db_connection.fetchone()[0] == 0:
-    for media_class in base_media_classes:
-        db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
+for media_class in base_media_classes:
+    db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
 
 
 # create table for anime metadata
@@ -481,43 +481,87 @@ if db_connection.db_table_index_check('mm_metadata_collection_idxgin_meta_json')
         ' ON mm_metadata_collection USING gin (mm_metadata_collection_json)')
 
 
+# create task tables
+db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_task (mm_task_guid uuid'
+    ' CONSTRAINT mm_task_guid_pk PRIMARY KEY, mm_task_name text, mm_task_description text,'
+    ' mm_task_enabled bool, mm_task_schedule text, mm_task_last_run timestamp,'
+    ' mm_task_file_path text, mm_task_json jsonb)')
+# create base task entries
+base_task = [
+    # metadata
+    ('Anime', 'Match anime via Scudlee data', '/mediakraken/subprogram_match_anime_id_scudlee.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime'}),
+    ('Collections', 'Create and update collection(s)',
+     '/mediakraken/subprogram_metadata_update_create_collections.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection'}),
+    ('Create Chapter Image', 'Create chapter images for all media',
+     '/mediakraken/subprogram_create_chapter_images.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'chapter'}),
+    ('Roku Thumb', 'Generate Roku thumbnail images', '/mediakraken/subprogram_roku_thumbnail_generate.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'rokuthumbnail'}),
+    ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
+     '/mediakraken/subprogram_schedules_direct_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
+    ('Subtitle', 'Download missing subtitles for media', '/mediakraken/subprogram_subtitle_downloader.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
+    ('The Movie Database', 'Grab updated movie metadata', '/mediakraken/subprogram_metadata_tmdb_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
+    ('TheTVDB Update', 'Grab updated TheTVDB metadata', '/mediakraken/subprogram_metadata_thetvdb_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update'}),
+    ('TVmaze Update', 'Grab updated TVmaze metadata', '/mediakraken/subprogram_metadata_tvmaze_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
+    ('Trailer', 'Download new trailers', '/mediakraken/subprogram_metadata_trailer_download.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'trailer'}),
+    # normal subprograms
+    ('Backup', 'Backup Postgresql DB', '/mediakraken/subprogram_postgresql_backup.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),
+    ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', '/mediakraken/subprogram_postgresql_vacuum.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbvacuum'}),
+    ('iRadio Scan', 'Scan for iRadio stations', '/mediakraken/subprogram_iradio_channels.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio'}),
+    ('Media Scan', 'Scan for new media', '/mediakraken/subprogram_file_scan.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'scan'}),
+    ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
+]
+for base_item in base_task:
+    db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
+        psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2], json.dumps(base_item[3]))
+
+
 # create cron tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
     ' CONSTRAINT mm_cron_guid_pk PRIMARY KEY, mm_cron_name text, mm_cron_description text,'
     ' mm_cron_enabled bool, mm_cron_schedule text, mm_cron_last_run timestamp,'
     ' mm_cron_file_path text)')
 
-
-base_cron = [
-    # game subprograms
-    ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
-    # media/metadata subprograms
-    ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
-#    ('Station Logo Fetch', 'Grab new logos from TheLogoDB', './subprogram_logo_download.py'),
-    ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
-    ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
-    ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
-    ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
-    ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_metadata_thetvdb_updates.py'),
-    ('The Movie Database', 'Grab updated movie metadata', './subprogram_metadata_tmdb_updates.py'),
-    ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_metadata_tvmaze_updates.py'),
-    ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
-    ('Trailer', 'Download new trailers', './subprogram_metadata_trailer_download.py'),
-    # normal subprograms
-    ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
-    ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
-    ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
-    ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
-    ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
-#    ('Tuner', 'Scan for tuner device(s)', './subprogram_tuner_discover.py'),
-#    ('ZFS Check', 'Check local ZFS for failed drives', './subprogram_zfs_check.py'),
-    ]
-# create base cron entries
-db_connection.db_query('select count(*) from mm_cron')
-if db_connection.fetchone()[0] == 0:
-    for base_item in base_cron:
-        db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
-            psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2])
+# base_cron = [
+#     # game subprograms
+#     ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
+#     # media/metadata subprograms
+#     ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
+#     ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
+#     ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
+#     ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
+#     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
+#     ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
+#     ('The Movie Database', 'Grab updated movie metadata', './subprogram_metadata_tmdb_updates.py'),
+#     ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_metadata_thetvdb_updates.py'),
+#     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_metadata_tvmaze_updates.py'),
+#     ('Trailer', 'Download new trailers', './subprogram_metadata_trailer_download.py'),
+#     # normal subprograms
+#     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
+#     ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
+#     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
+#     ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
+#     ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
+#     ]
+# # create base cron entries
+# db_connection.db_query('select count(*) from mm_cron')
+# if db_connection.fetchone()[0] == 0:
+#     for base_item in base_cron:
+#         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
+#             psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2])
 
 
 # create iradio tables
@@ -590,15 +634,13 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_group (mm_user_group_
     ' mm_user_group_description text, mm_user_group_rights_json jsonb)')
 if db_connection.db_table_index_check('mm_user_group_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_group_idx_name ON mm_user_group(mm_user_group_name)')
-db_connection.db_query('select count(*) from mm_user_group')
-if db_connection.fetchone()[0] == 0:
-    base_group = [('Administrator', 'Server administrator',
-        json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',
-        json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',
-        json.dumps({'Admin': False, 'PreviewOnly': True}))]
-    # create base group entries
-    for base_item in base_group:
-        db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
+base_group = [('Administrator', 'Server administrator',
+    json.dumps({'Admin': True, 'PreviewOnly': False})), ('User', 'General user',
+    json.dumps({'Admin': False, 'PreviewOnly': False})), ('Guest', 'Guest (Preview only)',
+    json.dumps({'Admin': False, 'PreviewOnly': True}))]
+# create base group entries
+for base_item in base_group:
+    db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
 
 
 # create table for user profiles
@@ -609,24 +651,23 @@ if db_connection.db_table_index_check('mm_user_profile_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_profile_idx_name'
         ' ON mm_user_profile(mm_user_profile_name)')
 db_connection.db_query('select count(*) from mm_user_profile')
-if db_connection.fetchone()[0] == 0:
-    # NC17, R, PG-13, PG, G
-    base_user = (
-        ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-            '3D': True, 'Internet': True, 'Lang': 'en'})),
-        ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
-            'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
-            'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,
-            '3D': False, 'Internet': False, 'Lang': 'en'}))
-        )
-    for base_item in base_user:
-        db_connection.db_user_profile_insert(base_item[0], base_item[1])
+# NC17, R, PG-13, PG, G
+base_user = (
+    ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
+        '3D': True, 'Internet': True, 'Lang': 'en'})),
+    ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
+        'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
+        'Images': True, 'Games': True, 'Books': True, 'IRadio': False, 'Home': True,
+        '3D': False, 'Internet': False, 'Lang': 'en'}))
+    )
+for base_item in base_user:
+    db_connection.db_user_profile_insert(base_item[0], base_item[1])
 
 
 # create options and status table
@@ -634,43 +675,42 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
     ' (mm_options_and_status_guid uuid CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
     ' mm_options_json jsonb, mm_status_json jsonb)')
 db_connection.db_query('select count(*) from mm_options_and_status')
-if db_connection.fetchone()[0] == 0:
-    db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
-        'MaxResumePct': 5,
-        'MediaKrakenServer': {'ListenPort': 8098, 'ImageWeb': 8099, 'FFMPEG': 8900, 'APIPort': 8097,
-            'BackupLocal': '/mediakraken/backups/'},
-        'Maintenance': None,
-        'API': {'mediabrainz': None,
-            'anidb': None,
-            'thetvdb': '147CB43DCA8B61B7',
-            'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
-            'thesportsdb': '4352761817344',
-            'thelogodb': None,
-            'opensubtitles': None,
-            'google': None,
-            'globalcache': None,
-            'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
-            'isbndb': '25C8IT4I',
-            'imvdb': None,
-            'tvmaze': None},
-        'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,
-            'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,
-            'BrainzDBUser': None, 'BrainzDBPass': None},
-        'Trailer': {'Trailer': False,
-                'Behind': False,
-                'Clip': False,
-                'Featurette': False,
-                'Carpool': False},
-        'Transmission': {'Host': None, 'Port': 9091},
-        'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0},
-        'Dropbox': {'APIKey': None, 'APISecret': None},
-        'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',
-            'BackupBucket': 'mkbackup'},
-        'OneDrive': {'ClientID': None, 'SecretKey': None},
-        'GoogleDrive': {'SecretFile': None},
-        'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},
-        'SD': {'User': None, 'Password': None},
-        }), json.dumps({'thetvdb_Updated_Epoc': 0}))
+db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 'Interval': 0},
+    'MaxResumePct': 5,
+    'MediaKrakenServer': {'ListenPort': 8098, 'APIPort': 8097,
+        'BackupLocal': '/mediakraken/backups/'},
+    'Maintenance': None,
+    'API': {'mediabrainz': None,
+        'anidb': None,
+        'thetvdb': '147CB43DCA8B61B7',
+        'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
+        'thesportsdb': '4352761817344',
+        'thelogodb': None,
+        'opensubtitles': None,
+        'google': None,
+        'globalcache': None,
+        'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
+        'isbndb': '25C8IT4I',
+        'imvdb': None,
+        'tvmaze': None},
+    'MediaBrainz': {'Host': None, 'Port': 5000, 'User': None, 'Password': None,
+        'BrainzDBHost': None, 'BrainzDBPort': 5432, 'BrainzDBName': None,
+        'BrainzDBUser': None, 'BrainzDBPass': None},
+    'Trailer': {'Trailer': False,
+            'Behind': False,
+            'Clip': False,
+            'Featurette': False,
+            'Carpool': False},
+    'Transmission': {'Host': None, 'Port': 9091},
+    'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0},
+    'Dropbox': {'APIKey': None, 'APISecret': None},
+    'AWSS3': {'AccessKey': None, 'SecretAccessKey': None, 'Bucket': 'mediakraken',
+        'BackupBucket': 'mkbackup'},
+    'OneDrive': {'ClientID': None, 'SecretKey': None},
+    'GoogleDrive': {'SecretFile': None},
+    'Trakt': {'ApiKey': None, 'ClientID': None, 'SecretKey': None},
+    'SD': {'User': None, 'Password': None},
+    }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 
 # create table game_info
@@ -719,7 +759,7 @@ if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_download_que_idxgin_meta_json'
-        ' ON mm_download_que USING gin (mqd_download_json)')
+        ' ON mm_download_que USING gin (mdq_download_json)')
 if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
     db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
         ' ON mm_download_que(mdq_que_type)')
@@ -738,16 +778,6 @@ db_connection.db_query('create table IF NOT EXISTS mm_download_image_que (mdq_im
 if db_connection.db_table_index_check('mm_image_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_image_download_idx_provider'
                         ' ON mm_download_image_que(mdq_image_provider)')
-
-
-# tuners
-db_connection.db_query('create table IF NOT EXISTS mm_tuner (mm_tuner_id uuid'
-    ' CONSTRAINT mm_tuner_id_pk primary key, mm_tuner_json jsonb)')
-
-
-# nas
-db_connection.db_query('create table IF NOT EXISTS mm_nas (mm_nas_id uuid'
-    ' CONSTRAINT mm_nas_id_pk primary key, mm_nas_json jsonb)')
 
 
 # hardware device
@@ -792,6 +822,22 @@ db_connection.db_query('create table IF NOT EXISTS mm_tv_schedule_program'
 if db_connection.db_table_index_check('mm_tv_schedule_idx_program') is None:
     db_connection.db_query('CREATE INDEX mm_tv_schedule_idx_program'
         ' ON mm_tv_schedule_program(mm_tv_schedule_program_id)')
+
+
+# create indexes for pg_trgm
+db_connection.db_query('CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow USING gist(mm_metadata_tvshow_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports USING gist(mm_metadata_sports_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician USING gist(mm_metadata_musician_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_metadata_album_name_trigram_idx ON mm_metadata_album USING gist(mm_metadata_album_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_metadata_music_name_trigram_idx ON mm_metadata_music USING gist(mm_metadata_music_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_media_anime_name_trigram_idx ON mm_metadata_anime USING gist(mm_media_anime_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_movie USING gist(mm_media_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_band gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_song gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book USING gist(mm_metadata_book_name gist_trgm_ops);')
+# since it's json, gist trgm_ops won't work
+#db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person USING gist(mmp_person_name gist_trgm_ops);')
 
 
 db_connection.db_commit()

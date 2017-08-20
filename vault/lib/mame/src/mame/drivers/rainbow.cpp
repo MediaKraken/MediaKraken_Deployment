@@ -660,10 +660,10 @@ private:
 	required_device<cpu_device> m_i8088;
 	required_device<cpu_device> m_z80;
 
-	required_device<fd1793_t> m_fdc;
+	required_device<fd1793_device> m_fdc;
 	optional_device<wd2010_device> m_hdc;
 
-	required_device<corvus_hdc_t> m_corvus_hdc;
+	required_device<corvus_hdc_device> m_corvus_hdc;
 
 	required_device<upd7201_device> m_mpsc;
 	required_device<com8116_device> m_dbrg_A;
@@ -957,7 +957,7 @@ AM_RANGE(0x11, 0x11) AM_DEVREADWRITE("kbdser", i8251_device, status_r, control_w
 // See boot rom @1EA6: 0x27 (<- RESET EXTENDED COMM OPTION  )
 
 // Corvus B/H harddisk controller (incompatible with EXT.COMM OPTION):
-AM_RANGE(0x20, 0x20) AM_DEVREADWRITE("corvus", corvus_hdc_t, read, write)
+AM_RANGE(0x20, 0x20) AM_DEVREADWRITE("corvus", corvus_hdc_device, read, write)
 AM_RANGE(0x21, 0x21) AM_READ(corvus_status_r)
 
 // ===========================================================
@@ -1032,14 +1032,14 @@ AM_RANGE(0x00, 0x00) AM_READWRITE(z80_latch_r, z80_latch_w)
 AM_RANGE(0x20, 0x20) AM_READWRITE(z80_generalstat_r, z80_diskdiag_read_w) // read to port 0x20 used by MS-DOS 2.x diskette loader.
 AM_RANGE(0x21, 0x21) AM_READWRITE(z80_generalstat_r, z80_diskdiag_write_w)
 AM_RANGE(0x40, 0x40) AM_READWRITE(z80_diskstatus_r, z80_diskcontrol_w)
-AM_RANGE(0x60, 0x63) AM_DEVREADWRITE(FD1793_TAG, fd1793_t, read, write)
+AM_RANGE(0x60, 0x63) AM_DEVREADWRITE(FD1793_TAG, fd1793_device, read, write)
 
 // Z80 I/O shadow area > $80
 AM_RANGE(0x80, 0x80) AM_READWRITE(z80_latch_r, z80_latch_w)
 AM_RANGE(0xA0, 0xA0) AM_READWRITE(z80_generalstat_r, z80_diskdiag_read_w) // read to port 0x20 used by MS-DOS 2.x diskette loader.
 AM_RANGE(0xA1, 0xA1) AM_READWRITE(z80_generalstat_r, z80_diskdiag_write_w)
 AM_RANGE(0xC0, 0xC0) AM_READWRITE(z80_diskstatus_r, z80_diskcontrol_w)
-AM_RANGE(0xE0, 0xE3) AM_DEVREADWRITE(FD1793_TAG, fd1793_t, read, write)
+AM_RANGE(0xE0, 0xE3) AM_DEVREADWRITE(FD1793_TAG, fd1793_device, read, write)
 ADDRESS_MAP_END
 
 /* Input ports */
@@ -3206,11 +3206,11 @@ GFXDECODE_ENTRY("chargen", 0x0000, rainbow_charlayout, 0, 1)
 GFXDECODE_END
 
 // Allocate 512 K (4 x 64 K x 16 bit) of memory (GDC-NEW):
-static ADDRESS_MAP_START( upd7220_map, AS_0, 16, rainbow_state)
+static ADDRESS_MAP_START( upd7220_map, 0, 16, rainbow_state)
 	AM_RANGE(0x00000, 0x3ffff) AM_READWRITE(vram_r, vram_w) AM_SHARE("vram")
 ADDRESS_MAP_END
 
-static MACHINE_CONFIG_START(rainbow, rainbow_state)
+static MACHINE_CONFIG_START(rainbow)
 MCFG_DEFAULT_LAYOUT(layout_rainbow)
 
 /* basic machine hardware */
@@ -3243,7 +3243,7 @@ MCFG_VT_VIDEO_CLEAR_VIDEO_INTERRUPT_CALLBACK(WRITELINE(rainbow_state, clear_vide
 MCFG_DEVICE_ADD("upd7220", UPD7220, 31188000 / 32) // Duell schematics shows a 31.188 Mhz oscillator (confirmed by RFKA).
 MCFG_UPD7220_VSYNC_CALLBACK(WRITELINE(rainbow_state, GDC_vblank_irq)) // "The vsync callback line needs to be below the 7220 DEVICE_ADD line."
 
-MCFG_DEVICE_ADDRESS_MAP(AS_0, upd7220_map)
+MCFG_DEVICE_ADDRESS_MAP(0, upd7220_map)
 MCFG_UPD7220_DISPLAY_PIXELS_CALLBACK_OWNER(rainbow_state, hgdc_display_pixels)
 MCFG_VIDEO_SET_SCREEN("screen2") // SET_SCREEN needs to be added after 7720 device in the machine config, not after the screen.
 MCFG_PALETTE_ADD("palette2", 32)
@@ -3458,7 +3458,7 @@ ROM_END
 
 /* Driver */
 
-/*    YEAR  NAME          PARENT   COMPAT   MACHINE       INPUT      STATE          INIT COMPANY                         FULLNAME       FLAGS */
-COMP(1982, rainbow100a, rainbow, 0, rainbow, rainbow100b_in, driver_device, 0, "Digital Equipment Corporation", "Rainbow 100-A", MACHINE_IS_SKELETON)
-COMP(1983, rainbow, 0, 0, rainbow, rainbow100b_in, driver_device, 0, "Digital Equipment Corporation", "Rainbow 100-B", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS)
-COMP(1985, rainbow190, rainbow, 0, rainbow, rainbow100b_in, driver_device, 0, "Digital Equipment Corporation", "Rainbow 190-B", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_COLORS)
+/*   YEAR  NAME         PARENT   COMPAT  MACHINE  INPUT           STATE          INIT  COMPANY                          FULLNAME         FLAGS */
+COMP(1982, rainbow100a, rainbow, 0,      rainbow, rainbow100b_in, rainbow_state, 0,    "Digital Equipment Corporation", "Rainbow 100-A", MACHINE_IS_SKELETON)
+COMP(1983, rainbow,     0,       0,      rainbow, rainbow100b_in, rainbow_state, 0,    "Digital Equipment Corporation", "Rainbow 100-B", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS)
+COMP(1985, rainbow190,  rainbow, 0,      rainbow, rainbow100b_in, rainbow_state, 0,    "Digital Equipment Corporation", "Rainbow 190-B", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_COLORS)

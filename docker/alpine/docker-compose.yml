@@ -53,26 +53,6 @@ services:
     network_mode: host
     restart: unless-stopped
 
-  # theater app for testing
-#  theater:
-#    build:
-#      context: ./ComposeMediaKrakenTheater
-#      dockerfile: dockerfile-theater
-#    container_name: mktheater
-#    depends_on:
-#      - appserver
-#    entrypoint: ./wait-for-it-ash.sh -h appserver -p 8903 -t 30 -- python main_theater.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /home/mediakraken:/mediakraken/mnt
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-#    # to allow mount nfs/cifs
-#    cap_add:
-#      - SYS_ADMIN
-#      - DAC_READ_SEARCH
-
   # Postgresql server
   database:
     build:
@@ -134,11 +114,13 @@ services:
     container_name: mkmetadata
     depends_on:
       - pgbounce
+      - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
@@ -148,14 +130,14 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
-  # musicbrainz replicator
-#  brainz:
+#  # musicbrainz replicator
+#  musicbrainz:
 #    build:
 #      context: ./ComposeMediaKrakenMusicBrainz
 #      dockerfile: Dockerfile
 #    environment:
 #      - BRAINZCODE=${BRAINZCODE}
-#    container_name: mkbrainz
+#    container_name: mkmusicbrainz
 #    networks:
 #      - mediakraken_network
 #    restart: unless-stopped
@@ -229,17 +211,17 @@ services:
     restart: unless-stopped
 
   # runs the phppgadmin
-#  phppgadmin:
-#    build:
-#      context: ./ComposeMediaKrakenPHPPGAdmin
-#      dockerfile: dockerfile-phppgadmin
-#    container_name: mkphppgadmin
-#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
-#    ports:
-#      - "12345:80"
-#    networks:
-#      - mediakraken_dbnetwork
-#    restart: unless-stopped
+  phppgadmin:
+    build:
+      context: ./ComposeMediaKrakenPHPPGAdmin
+      dockerfile: dockerfile-phppgadmin
+    container_name: mkphppgadmin
+    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    ports:
+      - "12345:80"
+    networks:
+      - mediakraken_dbnetwork
+    restart: unless-stopped
 
   # rabbit
   # https://github.com/maryvilledev/alpine-rmq
@@ -267,6 +249,110 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/opt/mediakraken/data:/data
     restart: unless-stopped
+
+  # runs transmissions
+  transmission:
+    build:
+      context: ./ComposeMediaKrakenTransmission
+      dockerfile: Dockerfile
+    container_name: mktransmission
+    ports:
+      - "9091:9091"
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
+    volumes:
+      - /var/opt/mediakraken/transmission/downloads:/transmission/downloads
+      - /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
+    environment:
+      - USERNAME=${TRANSUSER}
+      - PASSWORD=${TRANSPASSWORD}
+
+  # runs mumble
+  mumble:
+    build:
+      context: ./ComposeMediaKrakenMumble
+      dockerfile: Dockerfile
+    container_name: mkmumble
+    ports:
+      - "64738:64738/tcp"
+      - "64738:64738/udp"
+    volumes:
+      - /var/opt/mediakraken/mumble:/etc/mumble
+
+  # runs teamspeak
+  teamspeak:
+    build:
+      context: ./ComposeMediaKrakenTeamspeak
+      dockerfile: Dockerfile
+    container_name: mkteamspeak
+    ports:
+      - "9987:9987/udp"
+      - "10011:10011"
+      - "30033:30033"
+    volumes:
+      - /var/opt/mediakraken/teamspeak:/teamspeak/data
+      - /var/opt/mediakraken/teamspeak:/teamspeak/logs
+
+  # runs mail server
+  smtp:
+    build:
+      context: ./ComposeMediaKrakenOpenSMTP
+      dockerfile: Dockerfile
+    container_name: mkopensmtp
+    ports:
+      - "25:25"
+    volumes:
+      - /var/opt/mediakraken/mail:/var/vmail
+    networks:
+      - mediakraken_network
+    restart: always
+
+  # runs calibre server
+  calibre:
+    build:
+      context: ./ComposeMediaKrakenCalibre
+      dockerfile: Dockerfile
+    container_name: mkcalibre
+    ports:
+      - "5299:5299"
+    volumes:
+      - /var/opt/mediakraken/calibre/config:/config
+      - /var/opt/mediakraken/calibre/books:/books
+      - /var/opt/mediakraken/calibre/audiobooks:/audiobooks
+      - /var/opt/mediakraken/calibre/magazines:/magazines
+      - /var/opt/mediakraken/calibre/downloads:/downloads
+    networks:
+      - mediakraken_network
+    restart: always
+
+#  mail:
+#    build:
+#      context: ./ComposeMediaKrakenMail
+#      dockerfile: Dockerfile
+#    hostname: mkmail
+#    domainname: domain.com
+#    container_name: mkmail
+#    ports:
+#    - "25:25"
+#    - "143:143"
+#    - "587:587"
+#    - "993:993"
+#    volumes:
+#    - /var/opt/mediakraken/maildata:/var/mail
+#    - /var/opt/mediakraken/mailstate:/var/mail-state
+#    - /var/opt/mediakraken/mail/config/:/tmp/docker-mailserver/
+#    environment:
+#    - ENABLE_SPAMASSASSIN=0
+#    - ENABLE_CLAMAV=0
+#    - ENABLE_FAIL2BAN=0
+#    - ONE_DIR=1
+#    - DMS_DEBUG=0
+#    cap_add:
+#    - NET_ADMIN
+#    networks:
+#      - mediakraken_network
+#    restart: always
+
 
 # Docker private networks
 networks:

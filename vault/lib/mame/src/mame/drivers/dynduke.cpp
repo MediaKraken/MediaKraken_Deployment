@@ -137,7 +137,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, dynduke_state )
 	AM_RANGE(0x0000, 0xffff) AM_DEVREAD("sei80bu", sei80bu_device, data_r)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, dynduke_state )
+static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_OPCODES, 8, dynduke_state )
 	AM_RANGE(0x0000, 0xffff) AM_DEVREAD("sei80bu", sei80bu_device, opcode_r)
 ADDRESS_MAP_END
 
@@ -304,7 +304,7 @@ INTERRUPT_GEN_MEMBER(dynduke_state::interrupt)
 
 /* Machine Driver */
 
-static MACHINE_CONFIG_START( dynduke, dynduke_state )
+static MACHINE_CONFIG_START( dynduke )
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", V30, 16000000/2) // NEC V30-8 CPU
 	MCFG_CPU_PROGRAM_MAP(master_map)
@@ -347,7 +347,7 @@ static MACHINE_CONFIG_START( dynduke, dynduke_state )
 	MCFG_YM3812_IRQ_HANDLER(DEVWRITELINE("seibu_sound", seibu_sound_device, fm_irqhandler))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-	MCFG_OKIM6295_ADD("oki", 1320000, OKIM6295_PIN7_LOW)
+	MCFG_OKIM6295_ADD("oki", 1320000, PIN7_LOW)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
 	MCFG_DEVICE_ADD("seibu_sound", SEIBU_SOUND, 0)
@@ -732,10 +732,10 @@ ROM_END
 
 /* Game Drivers */
 
-GAME( 1989, dynduke,   0,       dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Europe, 03SEP89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dyndukea,  dynduke, dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Europe, 25JUL89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dyndukej,  dynduke, dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Japan, 03SEP89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dyndukeja, dynduke, dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Japan, 25JUL89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dyndukeu,  dynduke, dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu (Fabtek license)", "Dynamite Duke (US, 25JUL89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dbldynj,   0,       dbldyn,  dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu",                  "The Double Dynamites (Japan, 13NOV89)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, dbldynu,   dbldynj, dynduke, dynduke, driver_device, 0, ROT0, "Seibu Kaihatsu (Fabtek license)", "The Double Dynamites (US, 13NOV89)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dynduke,   0,       dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Europe, 03SEP89)",       MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dyndukea,  dynduke, dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Europe, 25JUL89)",       MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dyndukej,  dynduke, dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Japan, 03SEP89)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dyndukeja, dynduke, dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu",                  "Dynamite Duke (Japan, 25JUL89)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dyndukeu,  dynduke, dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu (Fabtek license)", "Dynamite Duke (US, 25JUL89)",           MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dbldynj,   0,       dbldyn,  dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu",                  "The Double Dynamites (Japan, 13NOV89)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, dbldynu,   dbldynj, dynduke, dynduke, dynduke_state, 0, ROT0, "Seibu Kaihatsu (Fabtek license)", "The Double Dynamites (US, 13NOV89)",    MACHINE_SUPPORTS_SAVE )

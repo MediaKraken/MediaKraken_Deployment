@@ -209,7 +209,7 @@ void cchance_state::machine_reset()
 	m_bell_io = 0;
 }
 
-static MACHINE_CONFIG_START( cchance, cchance_state )
+static MACHINE_CONFIG_START( cchance )
 
 	MCFG_CPU_ADD("maincpu", Z80,4000000)         /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -235,7 +235,7 @@ static MACHINE_CONFIG_START( cchance, cchance_state )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-	MCFG_SOUND_ADD("aysnd", AY8910, 1500000/2)
+	MCFG_SOUND_ADD("aysnd", YM2149, 1500000/2)
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW1"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW2"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
@@ -256,4 +256,4 @@ ROM_START( cchance )
 	ROM_LOAD( "prom2", 0x0200, 0x0200, NO_DUMP )
 ROM_END
 
-GAME( 1987?, cchance,  0,    cchance, cchance, driver_device,  0, ROT0, "<unknown>", "Cherry Chance", MACHINE_NOT_WORKING | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
+GAME( 1987?, cchance,  0,    cchance, cchance, cchance_state,  0, ROT0, "<unknown>", "Cherry Chance", MACHINE_NOT_WORKING | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )

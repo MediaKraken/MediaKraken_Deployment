@@ -185,7 +185,7 @@ static ADDRESS_MAP_START( dblewing_map, AS_PROGRAM, 16, dblewing_state )
 	AM_RANGE(0xff0000, 0xff3fff) AM_MIRROR(0xc000) AM_RAM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, dblewing_state )
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, dblewing_state )
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -367,7 +367,7 @@ void dblewing_state::dblewing_sound_cb( address_space &space, uint16_t data, uin
 	m_audiocpu->set_input_line(0, (m_sound_irq != 0) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-static MACHINE_CONFIG_START( dblewing, dblewing_state )
+static MACHINE_CONFIG_START( dblewing )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_28MHz/2)   /* DE102 */
@@ -429,7 +429,7 @@ static MACHINE_CONFIG_START( dblewing, dblewing_state )
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(dblewing_state, sound_irq))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 
-	MCFG_OKIM6295_ADD("oki", XTAL_28MHz/28, OKIM6295_PIN7_HIGH)
+	MCFG_OKIM6295_ADD("oki", XTAL_28MHz/28, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 MACHINE_CONFIG_END
 

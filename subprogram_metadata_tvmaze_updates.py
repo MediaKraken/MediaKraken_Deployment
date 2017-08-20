@@ -57,9 +57,9 @@ for tvmaze_id, tvmaze_time in result.items():
         #update_insert_show(tvmaze_id, results[0]) # update the guid
         logging.info("update")
     else:
-        if db_connection.db_download_que_exists(None, 'tvmaze', tvmaze_id) is None:
+        if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', json.dumps({'Status': 'Fetch',
+            db_connection.db_download_insert('tvmaze', 2, json.dumps({'Status': 'Fetch',
                 'ProviderMetaID': tvmaze_id}))
 
 

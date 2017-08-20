@@ -1,0 +1,8 @@
+branches:
+  except:
+  - donttestme
+language: bash
+script:
+- make prepare tests
+after_script:
+- make clean

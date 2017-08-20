@@ -12,8 +12,8 @@
 ****************************************************************************/
 
 #include "emu.h"
-#include "debugger.h"
 #include "i86.h"
+#include "debugger.h"
 #include "i86inline.h"
 
 #define I8086_NMI_INT_VECTOR 2
@@ -87,43 +87,44 @@ const uint8_t i8086_cpu_device::m_i8086_timing[] =
 
 /***************************************************************************/
 
-const device_type I8086 = device_creator<i8086_cpu_device>;
-const device_type I8088 = device_creator<i8088_cpu_device>;
+DEFINE_DEVICE_TYPE(I8086, i8086_cpu_device, "i8086", "I8086")
+DEFINE_DEVICE_TYPE(I8088, i8088_cpu_device, "i8088", "I8088")
 
 i8088_cpu_device::i8088_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: i8086_cpu_device(mconfig, I8088, "I8088", tag, owner, clock, "i8088", __FILE__, 8)
+	: i8086_cpu_device(mconfig, I8088, tag, owner, clock, 8)
 {
 	memcpy(m_timing, m_i8086_timing, sizeof(m_i8086_timing));
 	m_fetch_xor = 0;
 }
 
 i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: i8086_common_cpu_device(mconfig, I8086, "I8086", tag, owner, clock, "i8086", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 16, 20, 0)
-	, m_opcodes_config("opcodes", ENDIANNESS_LITTLE, 16, 20, 0)
-	, m_io_config("io", ENDIANNESS_LITTLE, 16, 16, 0)
+	: i8086_cpu_device(mconfig, I8086, tag, owner, clock, 16)
 {
 	memcpy(m_timing, m_i8086_timing, sizeof(m_i8086_timing));
 	m_fetch_xor = BYTE_XOR_LE(0);
 }
 
-i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source, int data_bus_size)
-	: i8086_common_cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
+i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int data_bus_size)
+	: i8086_common_cpu_device(mconfig, type, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, data_bus_size, 20, 0)
 	, m_opcodes_config("opcodes", ENDIANNESS_LITTLE, data_bus_size, 20, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, data_bus_size, 16, 0)
 {
 }
 
-const address_space_config *i8086_cpu_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector i8086_cpu_device::memory_space_config() const
 {
-	switch(spacenum)
-	{
-	case AS_PROGRAM:           return &m_program_config;
-	case AS_IO:                return &m_io_config;
-	case AS_DECRYPTED_OPCODES: return has_configured_map(AS_DECRYPTED_OPCODES) ? &m_opcodes_config : nullptr;
-	default:                   return nullptr;
-	}
+	if(has_configured_map(AS_OPCODES))
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_OPCODES, &m_opcodes_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+	else
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
 }
 
 uint8_t i8086_cpu_device::fetch_op()
@@ -291,8 +292,8 @@ void i8086_cpu_device::device_start()
 	state_add( I8086_HALT, "HALT", m_halt ).mask(1);
 }
 
-i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
+i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_ip(0)
 	, m_TF(0)
 	, m_int_vector(0)
@@ -395,7 +396,7 @@ void i8086_common_cpu_device::state_string_export(const device_state_entry &entr
 void i8086_common_cpu_device::device_start()
 {
 	m_program = &space(AS_PROGRAM);
-	m_opcodes = has_space(AS_DECRYPTED_OPCODES) ? &space(AS_DECRYPTED_OPCODES) : m_program;
+	m_opcodes = has_space(AS_OPCODES) ? &space(AS_OPCODES) : m_program;
 	m_direct = &m_program->direct();
 	m_direct_opcodes = &m_opcodes->direct();
 	m_io = &space(AS_IO);

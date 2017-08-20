@@ -896,7 +896,7 @@ static ADDRESS_MAP_START( outrun_map, AS_PROGRAM, 16, segaorun_state )
 	AM_RANGE(0x500000, 0x507fff) AM_RAM AM_SHARE("workram")
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segaorun_state )
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segaorun_state )
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -1183,7 +1183,7 @@ GFXDECODE_END
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
-static MACHINE_CONFIG_START( outrun_base, segaorun_state )
+static MACHINE_CONFIG_START( outrun_base )
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK/4)

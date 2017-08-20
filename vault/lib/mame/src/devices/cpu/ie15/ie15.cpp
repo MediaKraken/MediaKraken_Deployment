@@ -21,7 +21,7 @@
 //**************************************************************************
 
 // device type definition
-const device_type IE15_CPU = device_creator<ie15_cpu_device>;
+DEFINE_DEVICE_TYPE(IE15_CPU, ie15_cpu_device, "ie15_cpu", "ie15 CPU")
 
 //**************************************************************************
 //  DEVICE INTERFACE
@@ -31,11 +31,10 @@ const device_type IE15_CPU = device_creator<ie15_cpu_device>;
 //  ie15_cpu_device - constructor
 //-------------------------------------------------
 ie15_cpu_device::ie15_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: cpu_device(mconfig, IE15_CPU, "ie15 CPU", tag, owner, clock, "ie15_cpu", __FILE__),
-		m_program_config("program", ENDIANNESS_LITTLE, 8, 14),
-		m_io_config("io", ENDIANNESS_LITTLE, 8, 8), m_A(0), m_CF(0), m_ZF(0), m_RF(0), m_flags(0),
-		m_program(nullptr), m_io(nullptr),
-		m_direct(nullptr)
+	: cpu_device(mconfig, IE15_CPU, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 8, 14)
+	, m_io_config("io", ENDIANNESS_LITTLE, 8, 8), m_A(0), m_CF(0), m_ZF(0), m_RF(0), m_flags(0)
+	, m_program(nullptr), m_io(nullptr), m_direct(nullptr)
 {
 	// set our instruction counter
 	m_icountptr = &m_icount;
@@ -89,11 +88,12 @@ void ie15_cpu_device::device_reset()
 //  the space doesn't exist
 //-------------------------------------------------
 
-const address_space_config *ie15_cpu_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector ie15_cpu_device::memory_space_config() const
 {
-	return  (spacenum == AS_PROGRAM) ? &m_program_config :
-			(spacenum == AS_IO) ? &m_io_config :
-			nullptr;
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
 }
 
 //-------------------------------------------------

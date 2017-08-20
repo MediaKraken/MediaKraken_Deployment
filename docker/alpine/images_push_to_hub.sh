@@ -1,4 +1,4 @@
-docker push mediakraken/mkbrainz:latest
+docker push mediakraken/mkmusicbrainz:latest
 docker push mediakraken/mkbroadcast:latest
 docker push mediakraken/mkdatabase:latest
 docker push mediakraken/mkdevicescan:latest
@@ -17,3 +17,7 @@ docker push mediakraken/mkpgbounce:latest
 docker push mediakraken/mkrabbitmq:latest
 docker push mediakraken/mkredis:latest
 docker push mediakraken/mkwebapp:latest
+docker push mediakraken/mktransmission:latest
+docker push mediakraken/mkmumble:latest
+docker push mediakraken/mkphppgadmin:latest
+docker push mediakraken/mksmtp:latest

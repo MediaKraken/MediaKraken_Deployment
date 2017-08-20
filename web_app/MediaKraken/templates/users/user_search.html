@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+    <h1>Search Media</h1>
+    <br>
+    <form id="SearchForm" class="form form-searchedit" method="POST" action="" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.search_item.label}}
+            {{form.search_item(placeholder="Search String", class_="form-control")}}
+        </div>
+        <div>
+            {% for row_data in media_dir %}
+            <tr>
+                <td>{{ loop.index + (page - 1) * per_page }}</td>
+                <td>{{ row_data }}</td>
+            </tr>
+            {% endfor %}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" name="action_type" value="Search Local"></p>
+        <p><input class="btn btn-default btn-submit" type="submit" name="action_type" value="Search Metadata Providers"></p>
+    </form>
+</div>
+{% endblock %}

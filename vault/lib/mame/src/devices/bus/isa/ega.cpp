@@ -463,23 +463,6 @@ located at I/O port 0x3CE, and a data register located at I/O port 0x3CF.
     Prototypes
 */
 
-MACHINE_CONFIG_FRAGMENT( pcvideo_ega )
-	MCFG_SCREEN_ADD(EGA_SCREEN_NAME, RASTER)
-	MCFG_SCREEN_RAW_PARAMS(16257000,912,0,640,262,0,200)
-	MCFG_SCREEN_UPDATE_DEVICE(EGA_CRTC_NAME, crtc_ega_device, screen_update)
-	MCFG_SCREEN_PALETTE("palette")
-
-	MCFG_PALETTE_ADD( "palette", 64 )
-
-	MCFG_DEVICE_ADD(EGA_CRTC_NAME, CRTC_EGA, 16257000/8)
-	MCFG_CRTC_EGA_SET_SCREEN(EGA_SCREEN_NAME)
-	MCFG_CRTC_EGA_HPIXELS_PER_COLUMN(8)
-	MCFG_CRTC_EGA_ROW_UPDATE_CB(isa8_ega_device, ega_update_row)
-	MCFG_CRTC_EGA_RES_OUT_DE_CB(WRITELINE(isa8_ega_device, de_changed))
-	MCFG_CRTC_EGA_RES_OUT_HSYNC_CB(WRITELINE(isa8_ega_device, hsync_changed))
-	MCFG_CRTC_EGA_RES_OUT_VSYNC_CB(WRITELINE(isa8_ega_device, vsync_changed))
-	MCFG_CRTC_EGA_RES_OUT_VBLANK_CB(WRITELINE(isa8_ega_device, vblank_changed))
-MACHINE_CONFIG_END
 
 ROM_START( ega )
 	ROM_REGION(0x4000, "user1", 0)
@@ -538,18 +521,30 @@ INPUT_PORTS_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-const device_type ISA8_EGA = device_creator<isa8_ega_device>;
+DEFINE_DEVICE_TYPE(ISA8_EGA, isa8_ega_device, "ega", "IBM Enhanced Graphics Adapter")
 
 
 //-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
+//  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
-machine_config_constructor isa8_ega_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( pcvideo_ega );
-}
+MACHINE_CONFIG_MEMBER( isa8_ega_device::device_add_mconfig )
+	MCFG_SCREEN_ADD(EGA_SCREEN_NAME, RASTER)
+	MCFG_SCREEN_RAW_PARAMS(16257000,912,0,640,262,0,200)
+	MCFG_SCREEN_UPDATE_DEVICE(EGA_CRTC_NAME, crtc_ega_device, screen_update)
+	MCFG_SCREEN_PALETTE("palette")
+
+	MCFG_PALETTE_ADD( "palette", 64 )
+
+	MCFG_DEVICE_ADD(EGA_CRTC_NAME, CRTC_EGA, 16257000/8)
+	MCFG_CRTC_EGA_SET_SCREEN(EGA_SCREEN_NAME)
+	MCFG_CRTC_EGA_HPIXELS_PER_COLUMN(8)
+	MCFG_CRTC_EGA_ROW_UPDATE_CB(isa8_ega_device, ega_update_row)
+	MCFG_CRTC_EGA_RES_OUT_DE_CB(WRITELINE(isa8_ega_device, de_changed))
+	MCFG_CRTC_EGA_RES_OUT_HSYNC_CB(WRITELINE(isa8_ega_device, hsync_changed))
+	MCFG_CRTC_EGA_RES_OUT_VSYNC_CB(WRITELINE(isa8_ega_device, vsync_changed))
+	MCFG_CRTC_EGA_RES_OUT_VBLANK_CB(WRITELINE(isa8_ega_device, vblank_changed))
+MACHINE_CONFIG_END
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
@@ -574,18 +569,16 @@ ioport_constructor isa8_ega_device::device_input_ports() const
 //-------------------------------------------------
 
 isa8_ega_device::isa8_ega_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-		device_t(mconfig, ISA8_EGA, "IBM Enhanced Graphics Adapter", tag, owner, clock, "ega", __FILE__),
-		device_isa8_card_interface(mconfig, *this), m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
-		m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
-		m_palette(*this, "palette")
+	isa8_ega_device(mconfig, ISA8_EGA, tag, owner, clock)
 {
 }
 
-isa8_ega_device::isa8_ega_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_isa8_card_interface(mconfig, *this), m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
-		m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
-		m_palette(*this, "palette")
+isa8_ega_device::isa8_ega_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_isa8_card_interface(mconfig, *this),
+	m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
+	m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
+	m_palette(*this, "palette")
 {
 }
 

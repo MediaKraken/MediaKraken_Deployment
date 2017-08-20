@@ -1,4 +1,4 @@
-FROM lsiobase/alpine
+FROM lsiobase/alpine:3.6
 MAINTAINER sparklyballs
 
 # set version label
@@ -10,20 +10,19 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 COPY prebuilds/ /defaults/
 
 # package versions
-ARG BRAINZ_VER="v-2016-10-10"
+ARG BRAINZ_VER="v-2017-07-17"
 
-# global environment settings
+# global environment settings
 ENV BABEL_DISABLE_CACHE="1" \
 HOME="/root" \
 LANG="en_US.utf8" \
-MAX_WORKERS="1" \
 MBDATA="/data/import" \
 PGCONF="/config" \
 PGDATA="/data/dbase" \
 UPDATE_SLAVE_LOGDIR="/config/log/musicbrainz" \
 URL_ROOT="ftp://ftp.musicbrainz.org/pub/musicbrainz/data/fullexport"
 
-# install build packages
+# install build packages
 RUN \
  apk add --no-cache --virtual=build-dependencies \
 	db-dev \
@@ -35,7 +34,7 @@ RUN \
 	make \
 	perl-dev && \
 
-# install runtime packages
+# install runtime packages
  apk add --no-cache \
 	bzip2 \
 	curl \
@@ -43,7 +42,8 @@ RUN \
 	expat \
 	git \
 	icu-libs \
-	nodejs \
+	nginx \
+	nodejs-npm \
 	patch \
 	logrotate \
 	perl \
@@ -68,10 +68,6 @@ RUN \
  tar xf \
  /tmp/musicbrainz.tar.gz -C \
 	/app/musicbrainz --strip-components=1 && \
- if [ ! -e "/app/musicbrainz/cpanfile" ]; then \
-	cat /app/musicbrainz/Makefile.PL | grep ^requires > /app/musicbrainz/cpanfile; \
-	fi  && \
- sed -i '/![^#]/ s/\(^.*test_requires 'Coro';.*$\)/#\ \1/' /app/musicbrainz/cpanfile && \
  sed -i 's#$MB_SERVER_ROOT/#$UPDATE_SLAVE_LOGDIR/#g' /app/musicbrainz/admin/cron/slave.sh && \
  cp /defaults/DBDefs.pm /app/musicbrainz/lib/DBDefs.pm && \
  cd /app/musicbrainz && \
@@ -83,6 +79,8 @@ RUN \
 	Catalyst::Plugin::Cache::HTTP \
 	Catalyst::Plugin::StackTrace \
 	Digest::MD5::File \
+	FCGI \
+	FCGI::ProcManager \
 	Plack::Handler::Starlet \
 	Plack::Middleware::Debug::Base \
 	Server::Starter \
@@ -93,7 +91,7 @@ RUN \
  ./script/compile_resources.sh && \
 
 # compile musicbrainz postgresql addons
-	git clone git://github.com/metabrainz/postgresql-musicbrainz-unaccent \
+ git clone git://github.com/metabrainz/postgresql-musicbrainz-unaccent \
 	/tmp/postgresql-musicbrainz-unaccent && \
  cd /tmp/postgresql-musicbrainz-unaccent && \
 	make && \
@@ -104,6 +102,11 @@ RUN \
 	make && \
 	make install && \
 
+# configure nginx
+ echo 'fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;' >> \
+	/etc/nginx/fastcgi_params && \
+ rm -f /etc/nginx/conf.d/default.conf && \
+
 # cleanup
  apk del --purge \
 	build-dependencies && \
@@ -112,7 +115,7 @@ RUN \
 	/root/.npm \
 	/tmp/*
 
-# add local files
+# add local files
 COPY root/ /
 
 # volumes and ports

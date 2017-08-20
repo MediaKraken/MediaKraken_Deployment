@@ -1,5 +1,0 @@
-service_identity
-pyopenssl
-kivy
-twisted
-setuptools

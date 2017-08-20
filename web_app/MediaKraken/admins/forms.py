@@ -65,6 +65,23 @@ class LibraryAddEditForm(Form):
         return True
 
 
+class LinkAddEditForm(Form):
+    """
+    for editing the link
+    """
+    link_path = TextField('Link Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
+
+    def __init__(self, *args, **kwargs):
+        super(LinkAddEditForm, self).__init__(*args, **kwargs)
+
+
+    def validate(self):
+        initial_validation = super(LinkAddEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
 class BackupEditForm(Form):
     """
     for editing backups
@@ -224,6 +241,50 @@ class ChromecastEditForm(Form):
 
     def validate(self):
         initial_validation = super(ChromecastEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+class TVTunerEditForm(Form):
+    """
+    for editing the tvtuner devices
+    """
+    name = TextField('Name', validators=[DataRequired()])
+    ipaddr = TextField('IP Address', validators=[DataRequired()])
+    enabled = BooleanField('Enabled')
+
+
+    def __init__(self, *args, **kwargs):
+        super(TVTunerEditForm, self).__init__(*args, **kwargs)
+
+
+    def validate(self):
+        initial_validation = super(TVTunerEditForm, self).validate()
+        if not initial_validation:
+            return False
+        return True
+
+
+class TaskEditForm(Form):
+    """
+    for editing the task jobs
+    """
+    name = TextField('Name', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    enabled = BooleanField('Enabled')
+    interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
+        ('Days', 'Days'), ('Weekly', 'Weekly')])
+    time = DecimalField('Time', places = 2, rounding=ROUND_UP)
+    script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
+
+
+    def __init__(self, *args, **kwargs):
+        super(TaskEditForm, self).__init__(*args, **kwargs)
+
+
+    def validate(self):
+        initial_validation = super(TaskEditForm, self).validate()
         if not initial_validation:
             return False
         return True

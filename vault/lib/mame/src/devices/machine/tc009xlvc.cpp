@@ -17,7 +17,7 @@
 #include "screen.h"
 
 
-const device_type TC0091LVC = device_creator<tc0091lvc_device>;
+DEFINE_DEVICE_TYPE(TC0091LVC, tc0091lvc_device, "tc009xlvc", "Taito TC0091LVC")
 
 
 READ8_MEMBER(tc0091lvc_device::tc0091lvc_paletteram_r)
@@ -156,7 +156,7 @@ WRITE8_MEMBER(tc0091lvc_device::tc0091lvc_spr_w)
 	tx_tilemap->mark_all_dirty();
 }
 
-static ADDRESS_MAP_START( tc0091lvc_map8, AS_0, 8, tc0091lvc_device )
+static ADDRESS_MAP_START( tc0091lvc_map8, 0, 8, tc0091lvc_device )
 	AM_RANGE(0x014000, 0x017fff) AM_READWRITE(tc0091lvc_pcg1_r, tc0091lvc_pcg1_w)
 	AM_RANGE(0x018000, 0x018fff) AM_READWRITE(tc0091lvc_vram0_r, tc0091lvc_vram0_w)
 	AM_RANGE(0x019000, 0x019fff) AM_READWRITE(tc0091lvc_vram1_r, tc0091lvc_vram1_w)
@@ -168,7 +168,7 @@ static ADDRESS_MAP_START( tc0091lvc_map8, AS_0, 8, tc0091lvc_device )
 ADDRESS_MAP_END
 
 tc0091lvc_device::tc0091lvc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: device_t(mconfig, TC0091LVC, "Taito TC0091LVC", tag, owner, clock, "tc0091lvc", __FILE__)
+	: device_t(mconfig, TC0091LVC, tag, owner, clock)
 	, device_memory_interface(mconfig, *this)
 	, m_space_config("tc0091lvc", ENDIANNESS_LITTLE, 8,20, 0, nullptr, *ADDRESS_MAP_NAME(tc0091lvc_map8))
 	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
@@ -278,12 +278,14 @@ void tc0091lvc_device::device_start()
 	//printf("m_gfx_index %d\n", m_gfx_index);
 
 	device_palette_interface &palette = m_gfxdecode->palette();
-	m_gfxdecode->set_gfx(m_gfx_index, std::make_unique<gfx_element>(palette, char_layout, (uint8_t *)m_pcg_ram, 0, palette.entries() / 16, 0));
+	m_gfxdecode->set_gfx(m_gfx_index, std::make_unique<gfx_element>(&palette, char_layout, (uint8_t *)m_pcg_ram, 0, palette.entries() / 16, 0));
 }
 
-const address_space_config *tc0091lvc_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector tc0091lvc_device::memory_space_config() const
 {
-	return (spacenum == 0) ? &m_space_config : nullptr;
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
 }
 
 

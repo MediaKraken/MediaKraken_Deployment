@@ -165,11 +165,12 @@ const uint8_t i80286_cpu_device::m_i80286_timing[] =
 	13,             /* (80186) BOUND */
 };
 
-const device_type I80286 = device_creator<i80286_cpu_device>;
+DEFINE_DEVICE_TYPE(I80286, i80286_cpu_device, "i80286", "I80286")
 
 i80286_cpu_device::i80286_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: i8086_common_cpu_device(mconfig, I80286, "I80286", tag, owner, clock, "i80286", __FILE__)
+	: i8086_common_cpu_device(mconfig, I80286, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, 16, 24, 0)
+	, m_opcodes_config("opcodes", ENDIANNESS_LITTLE, 16, 24, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, 16, 16, 0)
 	, m_out_shutdown_func(*this)
 {
@@ -281,15 +282,19 @@ void i80286_cpu_device::device_start()
 	m_out_shutdown_func.resolve_safe();
 }
 
-const address_space_config *i80286_cpu_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector i80286_cpu_device::memory_space_config() const
 {
-	switch(spacenum)
-	{
-	case AS_PROGRAM:           return &m_program_config;
-	case AS_IO:                return &m_io_config;
-	case AS_DECRYPTED_OPCODES: return has_configured_map(AS_DECRYPTED_OPCODES) ? &m_opcodes_config : nullptr;
-	default:                   return nullptr;
-	}
+	if(has_configured_map(AS_OPCODES))
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_OPCODES, &m_opcodes_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+	else
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
 }
 
 
@@ -366,7 +371,7 @@ void i80286_cpu_device::state_string_export(const device_state_entry &entry, std
 	}
 }
 
-bool i80286_cpu_device::memory_translate(address_spacenum spacenum, int intention, offs_t &address)
+bool i80286_cpu_device::memory_translate(int spacenum, int intention, offs_t &address)
 {
 	if(spacenum == AS_PROGRAM)
 		address &= m_amask;

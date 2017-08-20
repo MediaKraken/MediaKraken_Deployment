@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import logging
 import subprocess
+import json
 from build_image_directory import build_image_dirs
 from build_trailer_directory import build_trailer_dirs
 from common import common_logging
@@ -37,7 +38,7 @@ else:
 
 # TODO should be using env variables
 # build trailer directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailer/trailer/a'):
+if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
     pass
 else:
     build_trailer_dirs()
@@ -49,6 +50,13 @@ common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
+
+
+# fire off wait for it script to allow rabbitmq connection
+# doing here so I don't have to do it multiple times
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
 
 
 # fire up the workers for each provider

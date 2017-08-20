@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
+import uuid
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tmdb
@@ -50,15 +51,17 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     logging.info("mov: %s", movie_change['id'])
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
-        dl_meta = db_connection.db_download_que_exists(None, 'themoviedb', str(movie_change['id']))
+        logging.info('here')
+        dl_meta = db_connection.db_download_que_exists(None, 1, 'themoviedb', str(movie_change['id']))
+        logging.info('dl_meta: %s', dl_meta)
         if dl_meta is None:
-            db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+            db_connection.db_download_insert('themoviedb', 1, json.dumps({'MediaID': None,
                 'Path': None, 'ClassID': None, 'Status': 'Fetch',
-                'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
+                'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': str(movie_change['id'])}))
     else:
-        db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
+        db_connection.db_download_insert('themoviedb', 1, json.dumps({'MediaID': None,
             'Path': None, 'ClassID': None, 'Status': 'Update',
-            'MetaNewID': None, 'ProviderMetaID': str(movie_change['id'])}))
+            'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': str(movie_change['id'])}))
 
 
 # process tv changes
@@ -71,7 +74,7 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
 #     else:
 #         db_connection.db_download_insert('themoviedb', json.dumps({'MediaID': None,
 #             'Path': None, 'ClassID': None, 'Status': 'Update',
-#             'MetaNewID': None, 'ProviderMetaID': str(tv_change['id'])}))
+#             'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': str(tv_change['id'])}))
 
 
 # log end

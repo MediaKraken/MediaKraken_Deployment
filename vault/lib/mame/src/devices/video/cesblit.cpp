@@ -60,7 +60,7 @@
 ***************************************************************************/
 
 // device type definition
-const device_type CESBLIT = device_creator<cesblit_device>;
+DEFINE_DEVICE_TYPE(CESBLIT, cesblit_device, "cesblit", "CES Blitter FPGA")
 
 /***************************************************************************
     LIVE DEVICE
@@ -71,12 +71,20 @@ const device_type CESBLIT = device_creator<cesblit_device>;
 //-------------------------------------------------
 
 cesblit_device::cesblit_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-	device_t(mconfig, CESBLIT, "CES Blitter FPGA", tag, owner, clock, "cesblit", __FILE__),
+	device_t(mconfig, CESBLIT, tag, owner, clock),
 	device_video_interface(mconfig, *this),
 	device_memory_interface(mconfig, *this),
-	m_space_config("blitter_space", ENDIANNESS_BIG, 16,23),
+	m_space_config("blitter_space", ENDIANNESS_BIG, 16, 23),
 	m_blit_irq_cb(*this)
-{ }
+{
+}
+
+device_memory_interface::space_config_vector cesblit_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_space_config)
+	};
+}
 
 //-------------------------------------------------
 //  device_start - device-specific startup

@@ -6,8 +6,8 @@
 
 **********************************************************************/
 
-#ifndef MAME_DEVICES_SOUND_DAVE_H
-#define MAME_DEVICES_SOUND_DAVE_H
+#ifndef MAME_SOUND_DAVE_H
+#define MAME_SOUND_DAVE_H
 
 #pragma once
 
@@ -55,9 +55,9 @@ class dave_device : public device_t,
 public:
 	dave_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<dave_device &>(device).m_write_irq.set_callback(object); }
-	template<class _Object> static devcb_base &set_lh_wr_callback(device_t &device, _Object object) { return downcast<dave_device &>(device).m_write_lh.set_callback(object); }
-	template<class _Object> static devcb_base &set_rh_wr_callback(device_t &device, _Object object) { return downcast<dave_device &>(device).m_write_rh.set_callback(object); }
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<dave_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_lh_wr_callback(device_t &device, Object &&cb) { return downcast<dave_device &>(device).m_write_lh.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_rh_wr_callback(device_t &device, Object &&cb) { return downcast<dave_device &>(device).m_write_rh.set_callback(std::forward<Object>(cb)); }
 
 	virtual DECLARE_ADDRESS_MAP(z80_program_map, 8);
 	virtual DECLARE_ADDRESS_MAP(z80_io_map, 8);
@@ -72,7 +72,7 @@ protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
 	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const override;
+	virtual space_config_vector memory_space_config() const override;
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
@@ -146,6 +146,6 @@ private:
 
 
 // device type definition
-extern const device_type DAVE;
+DECLARE_DEVICE_TYPE(DAVE, dave_device)
 
-#endif // MAME_DEVICES_SOUND_DAVE_H
+#endif // MAME_SOUND_DAVE_H

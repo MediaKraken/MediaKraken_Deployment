@@ -669,7 +669,7 @@ static ADDRESS_MAP_START( spcwarp, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x6000, 0x6fff) AM_ROM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( hunchbkg_io, AS_IO, 8, galaxold_state )
+static ADDRESS_MAP_START( hunchbkg_data, AS_DATA, 8, galaxold_state )
 	AM_RANGE(S2650_DATA_PORT,  S2650_DATA_PORT) AM_READNOP // not used
 ADDRESS_MAP_END
 
@@ -698,7 +698,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( drivfrcg_io, AS_IO, 8, galaxold_state )
 	AM_RANGE(0x00, 0x00) AM_READ(drivfrcg_port0_r)
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE") AM_WRITENOP
 ADDRESS_MAP_END
 
 
@@ -728,7 +727,6 @@ static ADDRESS_MAP_START( racknrol_io, AS_IO, 8, galaxold_state )
 //  AM_RANGE(0x1e, 0x1e) AM_WRITENOP
 //  AM_RANGE(0x1f, 0x1f) AM_WRITENOP
 	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
 ADDRESS_MAP_END
 
 READ8_MEMBER(galaxold_state::hexpoola_data_port_r)
@@ -748,8 +746,10 @@ READ8_MEMBER(galaxold_state::hexpoola_data_port_r)
 static ADDRESS_MAP_START( hexpoola_io, AS_IO, 8, galaxold_state )
 	AM_RANGE(0x00, 0x00) AM_READNOP
 	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( hexpoola_data, AS_DATA, 8, galaxold_state )
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(hexpoola_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
 ADDRESS_MAP_END
 
 READ8_MEMBER(galaxold_state::bullsdrtg_data_port_r)
@@ -773,11 +773,8 @@ READ8_MEMBER(galaxold_state::bullsdrtg_data_port_r)
 	return 0;
 }
 
-static ADDRESS_MAP_START( bullsdrtg_io_map, AS_IO, 8, galaxold_state )
-	AM_RANGE(0x00, 0x00) AM_READNOP
-	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
+static ADDRESS_MAP_START( bullsdrtg_data_map, AS_IO, 8, galaxold_state )
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(bullsdrtg_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
 ADDRESS_MAP_END
 
 /* Lives Dips are spread across two input ports */
@@ -1684,20 +1681,20 @@ static INPUT_PORTS_START( bongo )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNKNOWN )           /* see notes */
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT ) PORT_2WAY
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_2WAY
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON1 )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )  PORT_COCKTAIL
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_COCKTAIL
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT ) PORT_2WAY PORT_COCKTAIL
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_2WAY PORT_COCKTAIL
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )    PORT_COCKTAIL
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_COCKTAIL
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
@@ -1875,9 +1872,6 @@ static INPUT_PORTS_START( drivfrcg )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 INPUT_PORTS_END
 
 
@@ -1939,9 +1933,6 @@ static INPUT_PORTS_START( racknrol )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
 INPUT_PORTS_END
 
 
@@ -2003,9 +1994,6 @@ static INPUT_PORTS_START( trvchlng )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
 INPUT_PORTS_END
 
 
@@ -2167,7 +2155,7 @@ static GFXDECODE_START( _4in1 )
 GFXDECODE_END
 
 
-static MACHINE_CONFIG_START( galaxold_base, galaxold_state )
+static MACHINE_CONFIG_START( galaxold_base )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, PIXEL_CLOCK/2) /* 3.072 MHz */
@@ -2385,13 +2373,14 @@ static MACHINE_CONFIG_DERIVED( ozon1, galaxold_base )
 MACHINE_CONFIG_END
 
 
-static MACHINE_CONFIG_START( drivfrcg, galaxold_state )
+static MACHINE_CONFIG_START( drivfrcg )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, MASTER_CLOCK/6)
 	MCFG_CPU_PROGRAM_MAP(drivfrcg)
 	MCFG_CPU_IO_MAP(drivfrcg_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
+	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) // ???
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2441,7 +2430,7 @@ static MACHINE_CONFIG_DERIVED( hunchbkg, galaxold_base )
 	MCFG_CPU_REPLACE("maincpu", S2650, PIXEL_CLOCK / 4)
 
 	MCFG_CPU_PROGRAM_MAP(hunchbkg)
-	MCFG_CPU_IO_MAP(hunchbkg_io)
+	MCFG_CPU_DATA_MAP(hunchbkg_data)
 	MCFG_CPU_IRQ_ACKNOWLEDGE_DRIVER(galaxold_state,hunchbkg_irq_callback)
 
 	MCFG_DEVICE_MODIFY("7474_9m_1")
@@ -2470,13 +2459,14 @@ static MACHINE_CONFIG_DERIVED( tazzmang, galaxian )
 MACHINE_CONFIG_END
 
 
-static MACHINE_CONFIG_START( racknrol, galaxold_state )
+static MACHINE_CONFIG_START( racknrol )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, PIXEL_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(racknrol)
 	MCFG_CPU_IO_MAP(racknrol_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
+	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT // ???
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaxian)
@@ -2497,12 +2487,14 @@ static MACHINE_CONFIG_START( racknrol, galaxold_state )
 MACHINE_CONFIG_END
 
 
-static MACHINE_CONFIG_START( hexpoola, galaxold_state )
+static MACHINE_CONFIG_START( hexpoola )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, PIXEL_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(racknrol)
 	MCFG_CPU_IO_MAP(hexpoola_io)
+	MCFG_CPU_DATA_MAP(hexpoola_data)
+	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT // ???
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaxian)
@@ -2550,7 +2542,7 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( bullsdrtg, hexpoola )
 
 	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_IO_MAP(bullsdrtg_io_map)
+	MCFG_CPU_DATA_MAP(bullsdrtg_data_map)
 MACHINE_CONFIG_END
 
 
@@ -3434,41 +3426,41 @@ DRIVER_INIT_MEMBER(galaxold_state,guttangt)
 
 
 /* Z80 games */
-//    YEAR  NAME       PARENT    MACHINE    INPUT      INIT                       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
-GAME( 1981, vpool,     hustler,  mooncrst,  vpool,     driver_device,  0,         ROT90,  "bootleg", "Video Pool (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, rockclim,  0,        rockclim,  rockclim,  driver_device,  0,         ROT180, "Taito", "Rock Climber", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, ckongg,    ckong,    ckongg,    ckongg,    driver_device,  0,         ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, ckongmc,   ckong,    ckongmc,   ckongmc,   driver_device,  0,         ROT90,  "bootleg", "Crazy Kong (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // set was marked as 'King Kong on Galaxian'
-GAME( 1981, ckonggx,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, ckongcv,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 2)", MACHINE_NOT_WORKING )
-GAME( 1982, ckongis,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 3)", MACHINE_NOT_WORKING )
-GAME( 1981, scramblb,  scramble, scramblb,  scramblb,  driver_device,  0,         ROT90,  "bootleg", "Scramble (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, scramb2,   scramble, scramb2,   scramb2,   driver_device,  0,         ROT90,  "bootleg", "Scramble (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, scrambler, scramble, scrambler, scrambler, driver_device,  0,         ROT90,  "bootleg (Reben S.A.)", "Scramble (Reben S.A. Spanish bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, 4in1,      0,        4in1,      4in1,      galaxold_state, 4in1,      ROT90,  "Armenia / Food and Fun", "4 Fun in 1", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, bagmanmc,  bagman,   bagmanmc,  bagmanmc,  driver_device,  0,         ROT90,  "bootleg", "Bagman (bootleg on Moon Cresta hardware, set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, bagmanm2,  bagman,   bagmanmc,  bagmanmc,  driver_device,  0,         ROT90,  "bootleg (GIB)", "Bagman (bootleg on Moon Cresta hardware, set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjrm,  dkongjr,  dkongjrm,  dkongjrm,  driver_device,  0,         ROT90,  "bootleg", "Donkey Kong Jr. (bootleg on Moon Cresta hardware)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, porter,    dockman,  porter,    porter,    driver_device,  0,         ROT90,  "bootleg", "Port Man (bootleg on Moon Cresta hardware)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL )
-GAME( 1982, tazzmang,  tazmania, tazzmang,  tazzmang,  driver_device,  0,         ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, tazzmang2, tazmania, tazzmang,  tazzmang,  driver_device,  0,         ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware with Starfield)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1983, bongo,     0,        bongo,     bongo,     driver_device,  0,         ROT90,  "Jetsoft", "Bongo", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, ozon1,     0,        ozon1,     ozon1,     driver_device,  0,         ROT90,  "Proma", "Ozon I", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, guttangt,  locomotn, guttang,   guttangt,  galaxold_state, guttangt,  ROT270, "bootleg (Recreativos Franco?)", "Guttang Gottong (bootleg on Galaxian type hardware)", MACHINE_NOT_WORKING | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // or by 'Tren' ?
+//    YEAR  NAME       PARENT    MACHINE    INPUT      STATE          INIT       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
+GAME( 1981, vpool,     hustler,  mooncrst,  vpool,     galaxold_state, 0,        ROT90,  "bootleg", "Video Pool (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, rockclim,  0,        rockclim,  rockclim,  galaxold_state, 0,        ROT180, "Taito", "Rock Climber", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ckongg,    ckong,    ckongg,    ckongg,    galaxold_state, 0,        ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ckongmc,   ckong,    ckongmc,   ckongmc,   galaxold_state, 0,        ROT90,  "bootleg", "Crazy Kong (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // set was marked as 'King Kong on Galaxian'
+GAME( 1981, ckonggx,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,  ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, ckongcv,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,  ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 2)", MACHINE_NOT_WORKING )
+GAME( 1982, ckongis,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,  ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 3)", MACHINE_NOT_WORKING )
+GAME( 1981, scramblb,  scramble, scramblb,  scramblb,  galaxold_state, 0,        ROT90,  "bootleg", "Scramble (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, scramb2,   scramble, scramb2,   scramb2,   galaxold_state, 0,        ROT90,  "bootleg", "Scramble (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, scrambler, scramble, scrambler, scrambler, galaxold_state, 0,        ROT90,  "bootleg (Reben S.A.)", "Scramble (Reben S.A. Spanish bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, 4in1,      0,        4in1,      4in1,      galaxold_state, 4in1,     ROT90,  "Armenia / Food and Fun", "4 Fun in 1", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, bagmanmc,  bagman,   bagmanmc,  bagmanmc,  galaxold_state, 0,        ROT90,  "bootleg", "Bagman (bootleg on Moon Cresta hardware, set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1984, bagmanm2,  bagman,   bagmanmc,  bagmanmc,  galaxold_state, 0,        ROT90,  "bootleg (GIB)", "Bagman (bootleg on Moon Cresta hardware, set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, dkongjrm,  dkongjr,  dkongjrm,  dkongjrm,  galaxold_state, 0,        ROT90,  "bootleg", "Donkey Kong Jr. (bootleg on Moon Cresta hardware)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, porter,    dockman,  porter,    porter,    galaxold_state, 0,        ROT90,  "bootleg", "Port Man (bootleg on Moon Cresta hardware)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL )
+GAME( 1982, tazzmang,  tazmania, tazzmang,  tazzmang,  galaxold_state, 0,        ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, tazzmang2, tazmania, tazzmang,  tazzmang,  galaxold_state, 0,        ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware with Starfield)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, bongo,     0,        bongo,     bongo,     galaxold_state, 0,        ROT90,  "Jetsoft", "Bongo", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, ozon1,     0,        ozon1,     ozon1,     galaxold_state, 0,        ROT90,  "Proma", "Ozon I", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, guttangt,  locomotn, guttang,   guttangt,  galaxold_state, guttangt, ROT270, "bootleg (Recreativos Franco?)", "Guttang Gottong (bootleg on Galaxian type hardware)", MACHINE_NOT_WORKING | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // or by 'Tren' ?
 
 // Videotron cartridge system
-GAME( 1981, hustlerb3, hustler,  videotron, hustlerb3, driver_device,  0,         ROT90,  "bootleg (Videotron)", "Video Pool (Video Hustler bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, froggerv,  frogger,  videotron, froggerv,  driver_device,  0,         ROT90,  "bootleg (Videotron / Gamepack)", "Frogger (Videotron bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, hustlerb3, hustler,  videotron, hustlerb3, galaxold_state, 0,        ROT90,  "bootleg (Videotron)", "Video Pool (Video Hustler bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, froggerv,  frogger,  videotron, froggerv,  galaxold_state, 0,        ROT90,  "bootleg (Videotron / Gamepack)", "Frogger (Videotron bootleg)", MACHINE_SUPPORTS_SAVE )
 
 /* S2650 games */
-//    YEAR  NAME       PARENT    MACHINE    INPUT      INIT                       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
-GAME( 1983, hunchbkg,  hunchbak, hunchbkg,  hunchbkg,  driver_device,  0,         ROT90,  "Century Electronics", "Hunchback (Galaxian hardware)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, spcwarp,   0,        spcwarp,   hunchbkg,  driver_device,  0,         ROT90,  "Century Electronics", "Space Warp? (Cosmos conversion on Galaxian hardware)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE | MACHINE_WRONG_COLORS ) // bad dump
-GAME( 1984, drivfrcg,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "Shinkai Inc. (Magic Electronics USA license)", "Driving Force (Galaxian conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, drivfrct,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "bootleg (EMT Germany)", "Top Racer (bootleg of Driving Force)", MACHINE_SUPPORTS_SAVE ) // Video Klein PCB
-GAME( 1985, drivfrcb,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "bootleg (Elsys Software)", "Driving Force (Galaxian conversion bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, racknrol,  0,        racknrol,  racknrol,  driver_device,  0,         ROT0,   "Senko Industries (Status license from Shinkai Inc.)", "Rack + Roll", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, hexpool,   racknrol, racknrol,  racknrol,  driver_device,  0,         ROT90,  "Senko Industries (Shinkai Inc. license)", "Hex Pool (Shinkai)", MACHINE_SUPPORTS_SAVE ) // still has Senko logo in gfx rom
-GAME( 1985, hexpoola,  racknrol, hexpoola,  racknrol,  driver_device,  0,         ROT90,  "Senko Industries", "Hex Pool (Senko)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, trvchlng,  0,        racknrol,  trvchlng,  driver_device,  0,         ROT90,  "Joyland (Senko license)", "Trivia Challenge", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+//    YEAR  NAME       PARENT    MACHINE    INPUT      STATE           INIT       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
+GAME( 1983, hunchbkg,  hunchbak, hunchbkg,  hunchbkg,  galaxold_state, 0,         ROT90,  "Century Electronics", "Hunchback (Galaxian hardware)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, spcwarp,   0,        spcwarp,   hunchbkg,  galaxold_state, 0,         ROT90,  "Century Electronics", "Space Warp? (Cosmos conversion on Galaxian hardware)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE | MACHINE_WRONG_COLORS ) // bad dump
+GAME( 1984, drivfrcg,  drivfrcp, drivfrcg,  drivfrcg,  galaxold_state, 0,         ROT90,  "Shinkai Inc. (Magic Electronics USA license)", "Driving Force (Galaxian conversion)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, drivfrct,  drivfrcp, drivfrcg,  drivfrcg,  galaxold_state, 0,         ROT90,  "bootleg (EMT Germany)", "Top Racer (bootleg of Driving Force)", MACHINE_SUPPORTS_SAVE ) // Video Klein PCB
+GAME( 1985, drivfrcb,  drivfrcp, drivfrcg,  drivfrcg,  galaxold_state, 0,         ROT90,  "bootleg (Elsys Software)", "Driving Force (Galaxian conversion bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, racknrol,  0,        racknrol,  racknrol,  galaxold_state, 0,         ROT0,   "Senko Industries (Status license from Shinkai Inc.)", "Rack + Roll", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, hexpool,   racknrol, racknrol,  racknrol,  galaxold_state, 0,         ROT90,  "Senko Industries (Shinkai Inc. license)", "Hex Pool (Shinkai)", MACHINE_SUPPORTS_SAVE ) // still has Senko logo in gfx rom
+GAME( 1985, hexpoola,  racknrol, hexpoola,  racknrol,  galaxold_state, 0,         ROT90,  "Senko Industries", "Hex Pool (Senko)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, trvchlng,  0,        racknrol,  trvchlng,  galaxold_state, 0,         ROT90,  "Joyland (Senko license)", "Trivia Challenge", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1985, bullsdrtg, bullsdrt, bullsdrtg, racknrol,  galaxold_state, bullsdrtg, ROT90,  "Senko Industries", "Bulls Eye Darts (Galaxian conversion)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS )

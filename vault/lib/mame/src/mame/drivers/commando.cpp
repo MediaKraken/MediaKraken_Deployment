@@ -76,7 +76,7 @@ static ADDRESS_MAP_START( commando_map, AS_PROGRAM, 8, commando_state )
 	AM_RANGE(0xff80, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, commando_state )
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, commando_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -248,7 +248,7 @@ void commando_state::machine_reset()
 }
 
 
-static MACHINE_CONFIG_START( commando, commando_state )
+static MACHINE_CONFIG_START( commando )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, PHI_MAIN)  // ???
@@ -272,7 +272,7 @@ static MACHINE_CONFIG_START( commando, commando_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", commando)
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
 
 	MCFG_BUFFERED_SPRITERAM8_ADD("spriteram")
 

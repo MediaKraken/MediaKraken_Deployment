@@ -30,11 +30,11 @@
                             <ul class="nav nav-stacked collapse in" id="userMenu">
                                 <li><a href="{{ url_for('admins.admin_messages') }}"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a></li>
                                 <li><a href="{{ url_for('admins.admin_server_settings') }}"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+                                <li><a href="{{ url_for('admins_task.admin_task_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Task</a></li>
                                 <li><a href="{{ url_for('admins_cron.admin_cron_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Cron</a></li>
                                 <li><a href="{{ url_for('admins_share.admin_share') }}"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a></li>
                                 <li><a href="{{ url_for('admins_library.admin_library') }}"><i class="glyphicon glyphicon-film"></i> Library <span class="badge badge-info"> {{ data_library }}</span></a></li>
                                 <li><a href="{{ url_for('admins.admin_books_add') }}"><i class="glyphicon glyphicon-book"></i> Book (add) <span class="badge badge-info"></span></a></li>
-                                <li><a href="{{ url_for('admins.admin_nas') }}"><i class="glyphicon glyphicon-modal-window"></i> NAS</a></li>
                                 <li><a href="{{ url_for('admins_backup.admin_backup') }}"><i class="glyphicon glyphicon-hdd"></i> Backup</a></li>
                                 <li><a href="{{ url_for('admins_users.admin_users') }}"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a></li>
                                 <li><a href="{{ url_for('admins_chromecasts.admin_chromecast') }}"><i class="fa fa-sun-o"></i> Chromecasts</a></li>
@@ -93,9 +93,10 @@
                                 <div class="panel-body">
                                     <p><small><b>Server Name:</b> {{ data_server_info_server_name }}</small></p>
                                     <p><small><b>Uptime:</b> {{ data_server_uptime }}</small></p>
+                                    <p><small><b>Host IP:</b> {{ data_host_ip }}</small></p>
                                     <p>
                                         <small>
-                                            <b>IP Internal:</b>
+                                            <b>Docker IP Internal:</b>
                                             {% for nic_data in data_server_info_server_ip %}
                                     <p class="tab">{{ nic_data }}</p>
                                     {% endfor %}
@@ -190,12 +191,28 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Metadata to Fetch</th>
+                                    <th>Images to Fetch</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> {{ data_count_meta_fetch }} </td>
+                                    <td> {{ data_count_images_fetch }} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>Status</h4>
                         </div>
                         <div class="panel-body">
-                            <small>Media Match</small>
+                            <small>Metadata Match/Fetch</small>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
                                     <span class="sr-only">60% Complete (warning)</span>

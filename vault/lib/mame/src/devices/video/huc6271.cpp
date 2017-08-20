@@ -16,7 +16,7 @@
 //**************************************************************************
 
 // device type definition
-const device_type huc6271 = device_creator<huc6271_device>;
+DEFINE_DEVICE_TYPE(HUC6271, huc6271_device, "huc6271", "Hudson HuC6271 \"Rainbow\"")
 
 
 //**************************************************************************
@@ -32,9 +32,9 @@ static ADDRESS_MAP_START( data_map, AS_DATA, 32, huc6271_device )
 ADDRESS_MAP_END
 
 huc6271_device::huc6271_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: device_t(mconfig, huc6271, "HuC6271 \"Rainbow\"", tag, owner, clock, "huc6271", __FILE__),
-		device_memory_interface(mconfig, *this),
-		m_data_space_config("data", ENDIANNESS_LITTLE, 32, 32, 0, nullptr, *ADDRESS_MAP_NAME(data_map))
+	: device_t(mconfig, HUC6271, tag, owner, clock)
+	, device_memory_interface(mconfig, *this)
+	, m_data_space_config("data", ENDIANNESS_LITTLE, 32, 32, 0, nullptr, *ADDRESS_MAP_NAME(data_map))
 {
 }
 
@@ -66,14 +66,11 @@ void huc6271_device::device_reset()
 {
 }
 
-const address_space_config *huc6271_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector huc6271_device::memory_space_config() const
 {
-	switch(spacenum)
-	{
-//      case AS_PROGRAM:    return &m_program_space_config;
-		case AS_DATA:       return &m_data_space_config;
-		default:            return nullptr;
-	}
+	return space_config_vector {
+		std::make_pair(AS_DATA, &m_data_space_config)
+	};
 }
 
 //**************************************************************************

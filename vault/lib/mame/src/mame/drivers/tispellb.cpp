@@ -84,7 +84,7 @@ public:
 	u16 m_sub_r;
 
 	virtual DECLARE_INPUT_CHANGED_MEMBER(power_button) override;
-	void power_off();
+	virtual void power_off() override;
 	void prepare_display();
 	bool vfd_filament_on() { return m_display_decay[15][16] != 0; }
 
@@ -133,11 +133,10 @@ void tispellb_state::machine_start()
 
 void tispellb_state::power_off()
 {
-	m_maincpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+	hh_tms1k_state::power_off();
+
 	if (m_subcpu)
 		m_subcpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
-
-	m_power_on = false;
 }
 
 void tispellb_state::prepare_display()
@@ -342,7 +341,7 @@ INPUT_PORTS_END
 
 ***************************************************************************/
 
-static MACHINE_CONFIG_START( rev1, tispellb_state )
+static MACHINE_CONFIG_START( rev1 )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", TMS0270, 350000) // approximation
@@ -366,7 +365,7 @@ static MACHINE_CONFIG_START( rev1, tispellb_state )
 MACHINE_CONFIG_END
 
 
-static MACHINE_CONFIG_START( rev2, tispellb_state )
+static MACHINE_CONFIG_START( rev2 )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", TMS0270, 350000) // approximation
@@ -451,8 +450,8 @@ ROM_END
 
 
 
-/*    YEAR  NAME      PARENT COMPAT MACHINE INPUT     INIT              COMPANY, FULLNAME, FLAGS */
-COMP( 1978, spellb,   0,        0,  rev1,   spellb,   driver_device, 0, "Texas Instruments", "Spelling B (1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW )
-COMP( 1979, spellb79, spellb,   0,  rev2,   spellb,   driver_device, 0, "Texas Instruments", "Spelling B (1979 version)", MACHINE_SUPPORTS_SAVE )
+//    YEAR  NAME      PARENT CMP MACHINE  INPUT     STATE        INIT  COMPANY, FULLNAME, FLAGS
+COMP( 1978, spellb,   0,      0, rev1,    spellb,   tispellb_state, 0, "Texas Instruments", "Spelling B (1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW )
+COMP( 1979, spellb79, spellb, 0, rev2,    spellb,   tispellb_state, 0, "Texas Instruments", "Spelling B (1979 version)", MACHINE_SUPPORTS_SAVE )
 
-COMP( 1979, mrchalgr, 0,        0,  rev2,   mrchalgr, driver_device, 0, "Texas Instruments", "Mr. Challenger", MACHINE_SUPPORTS_SAVE )
+COMP( 1979, mrchalgr, 0,      0, rev2,    mrchalgr, tispellb_state, 0, "Texas Instruments", "Mr. Challenger", MACHINE_SUPPORTS_SAVE )

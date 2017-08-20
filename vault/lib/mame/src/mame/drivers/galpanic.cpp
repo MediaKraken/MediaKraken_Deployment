@@ -157,7 +157,7 @@ static ADDRESS_MAP_START( galpanica_map, AS_PROGRAM, 16, galpanic_state )
 	AM_RANGE(0xe00000, 0xe00015) AM_DEVREADWRITE("calc1_mcu", kaneko_hit_device, kaneko_hit_r,kaneko_hit_w)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( galpanic_oki_map, AS_0, 8, galpanic_state )
+static ADDRESS_MAP_START( galpanic_oki_map, 0, 8, galpanic_state )
 	AM_RANGE(0x00000, 0x2ffff) AM_ROM
 	AM_RANGE(0x30000, 0x3ffff) AM_ROMBANK("okibank")
 ADDRESS_MAP_END
@@ -230,7 +230,7 @@ static GFXDECODE_START( galpanic )
 GFXDECODE_END
 
 
-static MACHINE_CONFIG_START( galpanic, galpanic_state )
+static MACHINE_CONFIG_START( galpanic )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* verified on pcb */
@@ -261,8 +261,8 @@ static MACHINE_CONFIG_START( galpanic, galpanic_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/6, OKIM6295_PIN7_LOW) /* verified on pcb */
-	MCFG_DEVICE_ADDRESS_MAP(AS_0, galpanic_oki_map)
+	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/6, PIN7_LOW) /* verified on pcb */
+	MCFG_DEVICE_ADDRESS_MAP(0, galpanic_oki_map)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -349,6 +349,6 @@ ROM_START( galpanicb ) /* PAMERA-04 PCB with the CALC1 MCU used */
 	ROM_LOAD( "pm007e.u",     0x80000, 0x80000, CRC(c7ed7950) SHA1(133258b058d3c562208d0d00b9fac71202647c32) )
 ROM_END
 
-GAME( 1990, galpanic,  0,        galpanic,  galpanic,  driver_device, 0, ROT90, "Kaneko", "Gals Panic (Unprotected)",          MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, galpanica, galpanic, galpanica, galpanica, driver_device, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, galpanicb, galpanic, galpanica, galpanica, driver_device, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1990, galpanic,  0,        galpanic,  galpanic,  galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (Unprotected)",          MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1990, galpanica, galpanic, galpanica, galpanica, galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1990, galpanicb, galpanic, galpanica, galpanica, galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )

@@ -23,10 +23,7 @@ import time
 import json
 import sys
 import datetime
-from twisted.internet import reactor, protocol, stdio, defer, task
 import pika
-from pika import exceptions
-from pika.adapters import twisted_connection
 from build_image_directory import build_image_dirs
 from guessit import guessit
 from metadata import metadata_anime
@@ -69,44 +66,6 @@ locale.setlocale(locale.LC_ALL, '')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
-
-@defer.inlineCallbacks
-def run(connection):
-    channel = yield connection.channel()
-    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
-    queue = yield channel.queue_declare(queue='mkque_metadata', durable=True)
-    yield channel.queue_bind(exchange='mkque_ex', queue='mkque_metadata')
-    yield channel.basic_qos(prefetch_count=1)
-    queue_object, consumer_tag = yield channel.basic_consume(queue='mkque_metadata', no_ack=False)
-    l = task.LoopingCall(read, queue_object)
-    l.start(0.01)
-
-
-@defer.inlineCallbacks
-def read(queue_object):
-    logging.info('here I am in metadata consume - read')
-    ch, method, properties, body = yield queue_object.get()
-    if body:
-        logging.info("body %s", body)
-        json_message = json.loads(body)
-        subprocess_command = []
-        if json_message['Type'] == 'Update':
-            if json_message['Sub'] == 'themoviedb':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_tmdb_updates.py')
-            elif json_message['Sub'] == 'thetvdb':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_thetvdb_updates.py')
-            elif json_message['Sub'] == 'tvmaze':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_tvmaze_updates.py')
-            elif json_message['Sub'] == 'collections':
-                subprocess_command.append('python', './mediakraken/subprogram_metadata_update_create_collections.py')
-        elif json_message['Type'] == 'Cron Run':
-            # run whatever is passed in data
-            subprocess_command.append('python', json_message['Data'])
-        # if command list populated, run job
-        if len(subprocess_command) != 0:
-            subprocess.Popen(subprocess_command)
-    yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]\
@@ -342,6 +301,33 @@ def tvshowtime(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
 
 
+def on_message(channel, method_frame, header_frame, body):
+    """
+    Process pika message
+    """
+    logging.info("Message body %s", body)
+    if body is not None:
+        json_message = json.loads(body)
+        if json_message['Type'] == 'update':
+            if content_providers == 'themoviedb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
+            elif content_providers == 'thetvdb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
+            elif content_providers == 'tvmaze':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
+        elif json_message['Type'] == 'collection':
+            # this check is just in case there is a tv/etc collection later
+            if content_providers == 'themoviedb':
+                subprocess.Popen(['python',
+                                  '/mediakraken/subprogram_metadata_update_create_collections.py'],
+                                 shell=False)
+        # TODO add record for activity/etc for the user who ran this
+        channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+
+
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
@@ -352,6 +338,19 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
+
+# pika rabbitmq connection
+parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
+# setup channels and queue
+channel = connection.channel()
+exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct", durable=True)
+queue = channel.queue_declare(queue=content_providers, durable=True)
+channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
+channel.basic_qos(prefetch_count=1)
+# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
+# channel.start_consuming(inactivity_timeout=1)
+
 # setup last used id's per thread
 metadata_last_id = None
 metadata_last_title = None
@@ -447,5 +446,11 @@ while True:
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                     metadata_uuid)
     time.sleep(1)
-#        break # TODO for now testing.......
+    # grab message from rabbitmq if available
+    try: # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+        on_message(channel, method_frame, header_frame, body)
+    except:
+        pass
+connection.cancel()
 thread_db.db_close()

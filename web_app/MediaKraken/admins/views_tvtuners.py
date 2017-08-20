@@ -19,7 +19,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
+from MediaKraken.admins.forms import TVTunerEditForm
 
 from common import common_config_ini
 from common import common_internationalization
@@ -70,6 +70,63 @@ def admin_tvtuners():
             + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],
             row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
     return render_template("admin/admin_tvtuners.html", data_tuners=tv_tuners)
+
+
+@blueprint.route("/tvtuner_edit", methods=["GET", "POST"])
+@blueprint.route("/tvtuner_edit/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_tvtuner_edit_page():
+    """
+    allow user to edit tuner
+    """
+    form = TVTunerEditForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if request.form['action_type'] == 'Add':
+                # verify it doesn't exit and add
+                if g.db_connection.db_device_check(request.form['name'], request.form['ipaddr']) == 0:
+                    g.db_connection.db_device_insert('tvtuner', json.dumps({'Name': request.form['name'],
+                                                                         'Model': "NA",
+                                                                         'IP': request.form['ipaddr']}))
+                    g.db_connection.db_commit()
+                    return redirect(url_for('admins_tvtuners.admin_tvtuners'))
+                else:
+                    flash("TV Tuner already in database.", 'error')
+                    return redirect(url_for('admins_tvtuners.admin_tuner_edit_page'))
+        else:
+            flash_errors(form)
+    return render_template("admin/admin_tuner_edit.html", form=form)
+
+
+@blueprint.route('/tvtuner_delete', methods=["POST"])
+@login_required
+@admin_required
+def admin_tvtuner_delete_page():
+    """
+    Delete action 'page'
+    """
+    g.db_connection.db_device_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint.route('/getTVTunerById', methods=['POST'])
+@login_required
+@admin_required
+def getTVTunerById():
+    result = g.db_connection.db_device_by_uuid(request.form['id'])
+    return json.dumps({'Id': result['mm_device_id'],
+        'Name': result['mm_device_json']['Name'], 'IP': result['mm_device_json']['IP']})
+
+
+@blueprint.route('/updateTVTuner', methods=['POST'])
+@login_required
+@admin_required
+def updateTVTuner():
+    g.db_connection.db_device_update_by_uuid(request.form['name'],
+        request.form['ipaddr'], request.form['id'])
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.before_request

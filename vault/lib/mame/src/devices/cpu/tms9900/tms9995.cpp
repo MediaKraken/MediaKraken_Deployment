@@ -179,13 +179,13 @@ enum
 ****************************************************************************/
 
 tms9995_device::tms9995_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: tms9995_device(mconfig, TMS9995, "TMS9995", tag, owner, clock, "tms9995", __FILE__)
+	: tms9995_device(mconfig, TMS9995, tag, owner, clock)
 {
 	m_mp9537 = false;
 }
 
-tms9995_device::tms9995_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, uint32_t clock, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source),
+tms9995_device::tms9995_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, type, tag, owner, clock),
 		m_state_any(0),
 		PC(0),
 		PC_debug(0),
@@ -484,19 +484,12 @@ void tms9995_device::write_workspace_register_debug(int reg, uint16_t data)
 	m_icount = temp;
 }
 
-const address_space_config *tms9995_device::memory_space_config(address_spacenum spacenum) const
+device_memory_interface::space_config_vector tms9995_device::memory_space_config() const
 {
-	switch (spacenum)
-	{
-	case AS_PROGRAM:
-		return &m_program_config;
-
-	case AS_IO:
-		return &m_io_config;
-
-	default:
-		return nullptr;
-	}
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
 }
 
 /**************************************************************************
@@ -3538,5 +3531,5 @@ offs_t tms9995_device::disasm_disassemble(std::ostream &stream, offs_t pc, const
 }
 
 
-const device_type TMS9995 = device_creator<tms9995_device>;
-const device_type TMS9995_MP9537 = device_creator<tms9995_mp9537_device>;
+DEFINE_DEVICE_TYPE(TMS9995, tms9995_device, "tms9995", "TMS9995")
+DEFINE_DEVICE_TYPE(TMS9995_MP9537, tms9995_mp9537_device, "tms9995_mp9537", "TMS9995-MP9537")

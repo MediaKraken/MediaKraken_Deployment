@@ -82,6 +82,9 @@ def admins():
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
+    # grab docker info for host ip
+    docker_inst = common_docker.CommonDocker()
+    docker_info = docker_inst.com_docker_info()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
@@ -112,6 +115,7 @@ def admins():
                                common_internationalization.com_inter_number_format(\
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
+                           data_host_ip=docker_info['Swarm']['NodeAddr'],
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port\
                                =option_config_json['MediaKrakenServer']['ListenPort'],
@@ -141,7 +145,11 @@ def admins():
                                g.db_connection.db_table_count('mm_media_share')),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
-                           data_messages=data_messages
+                           data_messages=data_messages,
+                           data_count_meta_fetch=common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_table_count('mm_download_que')),
+                           data_count_images_fetch=common_internationalization.com_inter_number_format(\
+                               g.db_connection.db_table_count('mm_download_image_que'))
                           )
 
 
@@ -151,6 +159,18 @@ def admins():
 #@admin_required
 #def admin_dlna():
 #    return render_template("admin/admin_dlna.html")
+
+
+@blueprint.route("/messages", methods=["GET", "POST"])
+@blueprint.route("/messages/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_messages():
+    """
+    List all NAS devices
+    """
+    messages = []
+    return render_template("admin/admin_messages.html", data_messages=messages)
 
 
 @blueprint.route("/nas", methods=["GET", "POST"])

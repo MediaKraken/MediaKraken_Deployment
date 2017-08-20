@@ -8,7 +8,8 @@ class MKServerDatabase(object):
         db_rollback,\
         db_table_index_check,\
         db_table_count,\
-        db_query
+        db_query, \
+        db_drop_table
     from database.db_base_activity import db_activity_insert,\
         db_activity_purge
     from database.db_base_audit import db_audit_path_status,\
@@ -243,11 +244,18 @@ class MKServerDatabase(object):
     from database.db_base_review import db_review_count,\
         db_review_list_by_tmdb_guid,\
         db_review_insert
+    from database.db_base_search import db_search
     from database.db_base_sync import db_sync_list_count,\
         db_sync_list,\
         db_sync_insert,\
         db_sync_delete,\
         db_sync_progress_update
+    from database.db_base_task import db_task_list_count,\
+        db_task_list,\
+        db_task_time_update,\
+        db_task_insert,\
+        db_task_delete,\
+        db_task_info
     from database.db_base_triggers import db_trigger_insert,\
         db_triggers_read,\
         db_triggers_delete

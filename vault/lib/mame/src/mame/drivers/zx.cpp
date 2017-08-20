@@ -60,7 +60,7 @@ static ADDRESS_MAP_START( zx81_map, AS_PROGRAM, 8, zx_state )
 	AM_RANGE(0x4000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( ula_map, AS_DECRYPTED_OPCODES, 8, zx_state )
+static ADDRESS_MAP_START( ula_map, AS_OPCODES, 8, zx_state )
 	AM_RANGE(0x0000, 0x7fff) AM_READ(ula_low_r)
 	AM_RANGE(0x8000, 0xffff) AM_READ(ula_high_r)
 ADDRESS_MAP_END
@@ -320,7 +320,7 @@ PALETTE_INIT_MEMBER(zx_state,ts1000)
 	palette.set_pen_color(1, rgb_t::black());
 }
 
-static MACHINE_CONFIG_START( zx80, zx_state )
+static MACHINE_CONFIG_START( zx80 )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_6_5MHz/2)
 	MCFG_CPU_PROGRAM_MAP(zx80_map)
@@ -494,7 +494,7 @@ ROM_END
 
 /* Game Drivers */
 
-/*    YEAR  NAME        PARENT  COMPAT  MACHINE     INPUT    CLASS        INIT    COMPANY                     FULLNAME               FLAGS */
+//    YEAR  NAME        PARENT  COMPAT  MACHINE     INPUT    CLASS        INIT    COMPANY                     FULLNAME               FLAGS
 COMP( 1980, zx80,       0,      0,      zx80,       zx80,    zx_state,    zx,     "Sinclair Research Ltd",    "ZX-80",               MACHINE_NOT_WORKING | MACHINE_NO_SOUND_HW )
 COMP( 1981, zx81,       0,      0,      zx81,       zx81,    zx_state,    zx,     "Sinclair Research Ltd",    "ZX-81",               MACHINE_NO_SOUND_HW )
 COMP( 1982, ts1000,     zx81,   0,      ts1000,     zx81,    zx_state,    zx,     "Timex Sinclair",           "Timex Sinclair 1000", MACHINE_NO_SOUND_HW )

@@ -57,16 +57,27 @@ def read(queue_object):
     ch, method, properties, body = yield queue_object.get()
 
     """
+    Do I actually launch a docker swarm container that checks for cuda
+    and then that launches the slave container with ffmpeg
+
     # this is for the debian one
-    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkbasenvidiadebain
+    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkslavenvidiadebian
+
+    --device /dev/nvidia0:/dev/nvidia0 \
+	--device /dev/nvidiactl:/dev/nvidiactl \
+
+	wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
+	The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
     """
 
     if body:
         logging.info("body %s", body)
         #network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
-        logging.info('json body %s', json_message)
-        if json_message['Type'] == 'Pause':
+        logging.info('cron json body %s', json_message)
+        if json_message['Type'] == 'Cron Run':
+            cron_pid = subprocess.Popen(['python', json_message['Data']])
+        elif json_message['Type'] == 'Pause':
             if json_message['Sub'] == 'Cast':
                 pass
         elif json_message['Type'] == 'Play':
@@ -96,24 +107,27 @@ def read(queue_object):
                                        + ' -subtitles_language ' + json_message['Language']
                 else:
                     subtitle_command = ''
-                logging.info('b4 cast run')
-                try:
-                    docker_inst.com_docker_run_container(container_name=name_container,
-                        container_command=('python /mediakraken/stream2chromecast/stream2chromecast.py'
-                        + ' -devicename ' + json_message['Target']
-                        + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'
-                        + ' -movflags faststart+empty_moov\' -transcode \'' + json_message['Data'] + '\''))
-                except Exception as e:
-                    logging.error('cast ex %s', str(e))
-                logging.info('after cast run')
+                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py'\
+                    + ' -devicename ' + json_message['Target']\
+                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'\
+                    + ' -movflags faststart+empty_moov\' -transcode \''\
+                    + json_message['Data'] + '\''
             else:
-                logging.info('b4 run')
-                docker_inst.com_docker_run_container(container_name=name_container,
-                     container_command=(
-                        'ffmpeg -i \'' + json_message['Data'] + '\''))
-                logging.info('after run')
+                pass
+            logging.info('b4 docker run')
+            hwaccel = True
+            if hwaccel == True:
+                image_name = 'mediakraken/mkslavenvidiadebian'
+            else:
+                image_name = 'mediakraken/mkslave'
+            docker_inst.com_docker_run_container(container_image_name=image_name,
+                 container_name=name_container, container_command=(container_command))
+            logging.info('after docker run')
         elif json_message['Type'] == 'Stop':
-            pass
+            # this will force stop the container and then delete it
+            logging.info('user stop: %s', mk_containers[json_message['User']])
+            docker_inst.com_docker_delete_container(
+                container_image_name=mk_containers[json_message['User']])
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
