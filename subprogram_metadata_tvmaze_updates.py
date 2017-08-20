@@ -46,7 +46,7 @@ db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
 # grab updated show list with epoc data
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
-logging.info('tvmaze update: ', result)
+logging.info('tvmaze update: %s', result)
 #for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
