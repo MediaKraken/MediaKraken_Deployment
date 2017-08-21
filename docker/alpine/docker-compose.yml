@@ -235,6 +235,8 @@ services:
       - "5672:5672"
 #      - "15671:15671"
       - "15672:15672"
+    volumes:
+      - /var/opt/mediakraken/rabbit:/var/lib/rabbitmq
     restart: unless-stopped
     networks:
       - mediakraken_network
