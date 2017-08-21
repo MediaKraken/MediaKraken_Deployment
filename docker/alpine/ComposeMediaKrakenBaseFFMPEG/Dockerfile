@@ -56,7 +56,7 @@ RUN apk add --update \
   samba-dev \
   libressl-dev
 RUN /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
-  && mv ~/bin/ff* /bin/. \
+  && mv ~/bin/ff* /mediakraken/bin/. \
   && rm /bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-alpine.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
