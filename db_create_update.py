@@ -585,10 +585,10 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
     ' mm_load_user_loan_id uuid, mm_loan_time timestamp, mm_loan_return_time timestamp)')
 
 
-# create the table for "triggers"
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
-    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'
-    ' mm_trigger_background boolean)')
+## create the table for "triggers"
+# db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
+#     ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'
+#     ' mm_trigger_background boolean)')
 
 
 ## create table for country

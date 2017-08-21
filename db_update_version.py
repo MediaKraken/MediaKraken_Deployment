@@ -139,6 +139,13 @@ if db_connection.db_version_check() == 8:
     db_connection.db_version_update(9)
     db_connection.db_commit()
 
+
+if db_connection.db_version_check() == 9:
+    db_connection.db_query('drop table IF EXISTS mm_trigger')
+    db_connection.db_version_update(10)
+    db_connection.db_commit()
+
+
 # drop trigger table since moving to celery?
 
 # close the database
