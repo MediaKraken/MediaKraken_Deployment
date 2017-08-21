@@ -44,8 +44,8 @@ class MKConsumer(object):
     """
     EXCHANGE = 'mkque_ex'
     EXCHANGE_TYPE = 'direct'
-    QUEUE = 'text'
-    ROUTING_KEY = 'example.text'
+    QUEUE = 'mkque'
+    ROUTING_KEY = 'mkque'
 
     def __init__(self, amqp_url):
         """Create a new instance of the consumer class, passing in the AMQP
@@ -433,7 +433,8 @@ def main():
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'], shell=False)
+    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'],
+                                shell=False)
     wait_pid.wait()
 
     example = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
