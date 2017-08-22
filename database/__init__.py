@@ -256,9 +256,6 @@ class MKServerDatabase(object):
         db_task_insert,\
         db_task_delete,\
         db_task_info
-    from database.db_base_triggers import db_trigger_insert,\
-        db_triggers_read,\
-        db_triggers_delete
     from database.db_base_tuner import db_tuner_count,\
         db_tuner_insert,\
         db_tuner_delete,\
