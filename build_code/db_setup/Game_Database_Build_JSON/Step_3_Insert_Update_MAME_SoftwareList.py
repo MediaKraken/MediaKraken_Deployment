@@ -53,14 +53,12 @@ sys.exit()
 
 # create mame game list
 print("begin parse")
-found_game = 0
 update_game = 0
 insert_game = 0
 total_game = 0
 with open("softwarelist.json") as json_file:
     json_data = json.load(json_file)
     for child_of_root in json_data['softwarelists']['softwarelist']:
-        found_game += 1
         print("child: %s", child_of_root)
         system_name = child_of_root['@name']
         sql_params = system_name,
@@ -83,13 +81,11 @@ with open("softwarelist.json") as json_file:
                         ' and gi_system_id = %s', sql_args)
                     update_game += 1
                 else:
-                    row_id = str(uuid.uuid4())
-                    sql_args = row_id, row_data[0], json.dumps(software_data)
+                    sql_args = str(uuid.uuid4()), row_data[0], json.dumps(software_data)
                     curs.execute('insert into mm_metadata_game_software_info (gi_id,'\
                         ' gi_system_id, gi_game_info_json) values (%s,%s,%s)', sql_args)
                     insert_game += 1
 
-print("total system: %s", found_game)
 print("update: %s", update_game)
 print("insert: %s", insert_game)
 print("total game: %s", total_game)

@@ -78,8 +78,7 @@ for fname in dirList:
                 for json_game in json_file['hashfile']['hash']:
                     # TODO check to see if exists....if so, update
                     # build args and insert the record
-                    row_id = str(uuid.uuid4())
-                    sql_args = row_id, sys_id_to_store, json.dumps(json_game)
+                    sql_args = str(uuid.uuid4()), sys_id_to_store, json.dumps(json_game)
                     curs.execute("insert into mm_metadata_game_software_info (gi_id,'\
                         ' gi_system_id, gi_game_info_json) values (%s,%s,%s)", sql_args)
                     total_software += 1
