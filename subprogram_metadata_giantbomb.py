@@ -20,8 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks

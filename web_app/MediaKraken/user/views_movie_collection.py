@@ -8,8 +8,6 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import sys
 sys.path.append('..')

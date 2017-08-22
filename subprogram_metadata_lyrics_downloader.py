@@ -23,8 +23,6 @@ from common import common_file
 from common import common_logging
 from common import common_metadata_chart_lyrics
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks

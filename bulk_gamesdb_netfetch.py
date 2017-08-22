@@ -17,8 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import json
 from common import common_config_ini
 from common import common_internationalization

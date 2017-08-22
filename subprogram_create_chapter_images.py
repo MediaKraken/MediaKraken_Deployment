@@ -29,8 +29,6 @@ from common import common_metadata
 from common import common_signal
 #from common import common_system
 from concurrent import futures
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 
 
 # set before everything else

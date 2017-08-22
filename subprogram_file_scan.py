@@ -23,8 +23,6 @@ import os
 import uuid
 import time
 import json
-import locale
-locale.setlocale(locale.LC_ALL, '')
 from concurrent import futures
 from common import common_config_ini
 from common import common_internationalization

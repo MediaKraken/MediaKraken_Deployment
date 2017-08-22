@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import uuid
 import pygal
 import json

@@ -60,8 +60,6 @@ from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from common import common_signal
 from common import common_thetvdb
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
