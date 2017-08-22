@@ -30,6 +30,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
@@ -121,6 +122,7 @@ services:
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
       - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
+      - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
