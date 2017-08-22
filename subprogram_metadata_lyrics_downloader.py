@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from common import common_config_ini
 from common import common_file
+from common import common_internationalization
 from common import common_logging
 from common import common_metadata_chart_lyrics
 from common import common_signal
