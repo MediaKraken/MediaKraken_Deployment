@@ -37,7 +37,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 # create mame game list
 update_game = 0
 insert_game = 0
-with open("mame.xml", 'r') as xml_file:
+with open("/mediakraken/emulation/mame.xml", 'r') as xml_file:
     json_data = xmltodict.parse(xml_file.read())
     for child_of_root in json_data['mame']['machine']:
         print("child: %s", child_of_root)
