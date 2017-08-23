@@ -86,8 +86,7 @@ if len(guid_list) > 0:
 
 
 if total_collections_downloaded > 0:
-    db_connection.db_notification_insert(locale.format('%d',
-        total_collections_downloaded, True) + " collection(s) metadata downloaded.", True)
+    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_collections_downloaded) + " collection(s) metadata downloaded.", True)
 
 
 # log end

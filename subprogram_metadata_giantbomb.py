@@ -43,8 +43,7 @@ if __name__ == "__main__":
     print('bomb game info download attempts: %s' % total_download_attempts)
     # send notifications
     if total_download_attempts > 0:
-        db_connection.db_notification_insert(locale.format('%d',
-            total_download_attempts, True) + " Giant Bomb game info downloaded.", True)
+        db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_download_attempts) + " Giant Bomb game info downloaded.", True)
     # commit all changes
     db_connection.db_commit()
     # close DB
