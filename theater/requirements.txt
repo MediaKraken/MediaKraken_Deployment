@@ -1,4 +1,7 @@
 crochet
 pyopenssl
 service_identity
-
+setuptools
+musicbrainzngs
+mutagen
+pycdio

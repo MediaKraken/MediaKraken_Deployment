@@ -47,7 +47,9 @@ apk add mpv-libs mpv py-pip cython
 * this adds 0.26.r0 (which is the latest release)
 
 apk add sdl2 sdl2_ttf sdl2_image sdl2_mixer sdl2-dev sdl2_ttf-dev sdl2_image-dev sdl2_mixer-dev
-apk add gstreamer1 gstreamer1-dev
+apk add gstreamer1 gstreamer1-dev 
+# stuff for whipper
+apk add flac sox swig cdparanoia py-gobject libcddb libcdio-dev
 pip install kivy
 
 
