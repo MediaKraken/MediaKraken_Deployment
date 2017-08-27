@@ -49,7 +49,12 @@ apk add mpv-libs mpv py-pip cython
 apk add sdl2 sdl2_ttf sdl2_image sdl2_mixer sdl2-dev sdl2_ttf-dev sdl2_image-dev sdl2_mixer-dev
 apk add gstreamer1 gstreamer1-dev 
 # stuff for whipper
-apk add flac sox swig cdparanoia py-gobject libcddb libcdio-dev
+apk add flac sox swig cdparanoia py-gobject libcddb libcdio-dev libcdr-dev
+cd /home/spoot/MediaKraken_Deployment/vault/lib/cdrdao-1.2.3
+./configure --with-scglib --with-xdao=no
+make -j8
+
+
 pip install kivy
 
 
