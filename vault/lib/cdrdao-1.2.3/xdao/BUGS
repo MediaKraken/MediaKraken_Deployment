@@ -1,0 +1,26 @@
+Status	Who	Description
+======  ======  ==============================================================
+
+-	-	Infinite messages from cdrdao if you close xcdrdao while
+		extracting: xcdrdao should not exit!! and if xcdrdao crashes
+		cdrdao should get a SIGPIPE, continue recording and send
+		messages to stdout if appropiate, but don't try to send
+		messages to xcdrdao again.
+
+-	-	In the Extract process xcdrdao is getting: 31 32 33 32 33 34 !!
+		of trackProgress this makes the progressbar decrease and
+		increase. It looks ugly :)
+
+-	-	Using a big number with buffers when recording won't work!
+		'new' throwing an exception? (try ... else ... ???)
+
+-	-	I can press the eject button on my cdrom and the CD will
+		eject, the problem is that I'm extracting! xcdrdao/cdrdao
+		should block the CD! until the operation is done.
+
+-	-	When writing (simulated!) I was not able to eject the CD,
+		good :), but if I try (in gmc) right click->eject device,
+		this command will block, and make cdrdao "hang" without
+		any error messages until you abort the recording, then
+		the CD will eject ;). The device should not receive any
+		other command when writing!!!

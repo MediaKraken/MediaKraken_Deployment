@@ -1,0 +1,7 @@
+This is a snapshot of Joerg Schilling's SCSI library from cdrtools-2.01a31.
+
+The additional directory 'export' is used to hold some links to include
+files and built libraries for easy access by the remaining cdrdao package.
+
+It is also possible to use an installed SCSI library. See "INSTALL" in the
+main directory for more information.
