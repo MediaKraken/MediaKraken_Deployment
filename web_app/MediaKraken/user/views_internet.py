@@ -43,8 +43,11 @@ def user_internet_youtube():
     """
     Display youtube page
     """
+    # TODO pass country
+    temp_hold = common_network_youtube.com_net_yt_trending()
+    logging.info('temphold: %s', temp_hold)
     return render_template("users/user_internet_youtube.html",
-        media=common_google.com_google_youtube_feed_list('top_rated'))
+        media=temp_hold)
 
 
 # vimeo
