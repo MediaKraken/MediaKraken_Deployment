@@ -45,8 +45,8 @@ def com_net_yt_fetch_video_list(search_string, max_files):
 
 def com_net_yt_trending(country_code='US'):
     link_list=[]
-    url=("https://www.youtube.com/feed/trending?gl=%s", country_code)
-    source=bs.BeautifulSoup(urllib.urlopen(url).read(),'html.parser')
+    source=bs.BeautifulSoup(urllib.urlopen(
+        "https://www.youtube.com/feed/trending?gl=%s" % country_code).read(),'html.parser')
     links_set=source.find_all('a',href=True)
     for i in range(len(links_set)):
      if (links_set[i]['href'].strip('')[0:6]=='/watch'):
