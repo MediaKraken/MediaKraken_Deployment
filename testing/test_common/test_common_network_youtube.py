@@ -28,5 +28,24 @@ from common import common_network_youtube
 # def com_meta_youtube_fetch_video_by_url(url_location, file_name):
 
 
-# fetch youtube trailers for title
-# def com_meta_youtube_fetch_video_list(search_string, max_files):
+class TestCommonYoutube(object):
+
+
+    @classmethod
+    def setup_class(self):
+        pass
+
+
+    @classmethod
+    def teardown_class(self):
+        pass
+
+
+    @pytest.mark.parametrize(("search_string", "max_files"), [
+        ('die hard trailer', 5),
+        ('flask programming', 25)])
+    def test_com_meta_youtube_fetch_video_list(self, search_string, max_files):
+        """
+        Test function
+        """
+        common_network_youtube.com_net_yt_search(search_string, max_files)
