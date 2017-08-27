@@ -40,6 +40,9 @@ class TestCommonYoutube(object):
     def teardown_class(self):
         pass
 
+    def test_com_net_yt_trending(self):
+        common_network_youtube.com_net_yt_trending()
+
 
     @pytest.mark.parametrize(("search_string", "max_files"), [
         ('die hard trailer', 5),
