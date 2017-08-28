@@ -44,11 +44,11 @@ class TestCommonYoutube(object):
         common_network_youtube.com_net_yt_trending()
 
 
-    @pytest.mark.parametrize(("search_string", "max_files"), [
-        ('die hard trailer', 5),
-        ('flask programming', 25)])
-    def test_com_meta_youtube_fetch_video_list(self, search_string, max_files):
-        """
-        Test function
-        """
-        common_network_youtube.com_net_yt_search(search_string, max_files)
+    # @pytest.mark.parametrize(("search_string", "max_files"), [
+    #     ('die hard trailer', 5),
+    #     ('flask programming', 25)])
+    # def test_com_meta_youtube_fetch_video_list(self, search_string, max_files):
+    #     """
+    #     Test function
+    #     """
+    #     common_network_youtube.com_net_yt_search(search_string, max_files)
