@@ -6,7 +6,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from . import common_network
 
-
 # import google api modules
 from googleapiclient.discovery import build
 #from googleapiclient.errors import HttpError
