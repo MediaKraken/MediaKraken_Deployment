@@ -54,7 +54,7 @@ class CommonGoogle(object):
         """
         return common_network.mk_network_fetch_from_url(('https://www.googleapis.com/'\
             + self.YOUTUBE_API_SERVICE_NAME + '/' + self.YOUTUBE_API_VERSION
-            + '/videos?id=' + video_url + '&key='
+            + '/videos?id=' + video_url.replace('www.youtube.com/watch?v=', '') + '&key='
             + self.DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status'), None)
 
 
