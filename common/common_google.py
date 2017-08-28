@@ -52,10 +52,10 @@ class CommonGoogle(object):
         """
         # info of particular video
         """
-        return common_network.mk_network_fetch_from_url('https://www.googleapis.com/'\
+        return common_network.mk_network_fetch_from_url(('https://www.googleapis.com/'\
             + self.YOUTUBE_API_SERVICE_NAME + '/' + self.YOUTUBE_API_VERSION
             + '/videos?id=' + video_url + '&key='
-            + self.DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
+            + self.DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status'), None)
 
 
     def com_google_youtube_add_subscription(self, channel_id):
