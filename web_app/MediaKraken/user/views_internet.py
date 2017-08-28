@@ -23,6 +23,7 @@ import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
+google_instance = common_google.CommonGoogle()
 
 # internet sites
 @blueprint.route('/internet')
@@ -44,10 +45,13 @@ def user_internet_youtube():
     Display youtube page
     """
     # TODO pass country
-    temp_hold = common_network_youtube.com_net_yt_trending()
-    logging.info('temphold: %s', temp_hold)
+    youtube_videos = []
+    for url_link in common_network_youtube.com_net_yt_trending():
+        logging.info('urllink: %s', url_link)
+        youtube_videos.append(google_instance.com_google_youtube_info(url_link))
+    logging.info('temphold: %s', youtube_videos)
     return render_template("users/user_internet_youtube.html",
-        media=temp_hold)
+        media=youtube_videos)
 
 
 # vimeo

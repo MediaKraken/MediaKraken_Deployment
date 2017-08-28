@@ -21,3 +21,16 @@ import pytest # pylint: disable=W0611
 import sys
 sys.path.append('.')
 from common import common_google
+
+
+class TestCommonGoogle(object):
+
+
+    @classmethod
+    def setup_class(self):
+        pass
+
+
+    @classmethod
+    def teardown_class(self):
+        pass
