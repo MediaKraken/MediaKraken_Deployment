@@ -9,6 +9,7 @@ from flask_login import login_required
 from flask_login import current_user
 blueprint = Blueprint("user_internet", __name__, url_prefix='/users', static_folder="../static")
 import logging # pylint: disable=W0611
+import locale
 import sys
 sys.path.append('..')
 sys.path.append('../..')
@@ -44,9 +45,9 @@ def user_internet_youtube():
     """
     Display youtube page
     """
-    # TODO pass country
     youtube_videos = []
-    for url_link in common_network_youtube.com_net_yt_trending():
+    # get trending for specified country code
+    for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
         logging.info('urllink: %s', url_link)
         youtube_videos.append(google_instance.com_google_youtube_info(url_link))
     logging.info('temphold: %s', youtube_videos)
