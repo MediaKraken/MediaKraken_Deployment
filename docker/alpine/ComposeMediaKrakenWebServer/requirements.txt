@@ -67,3 +67,4 @@ six==1.10.0
 traitlets==4.3.2
 uritemplate==3.0.0
 wcwidth==0.1.7
+httplib2.ca_certs_locater
