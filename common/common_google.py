@@ -1,21 +1,3 @@
-'''
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  version 2, as published by the Free Software Foundation.
-
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  General Public License version 2 for more details.
-
-  You should have received a copy of the GNU General Public License
-  version 2 along with this program; if not, write to the Free
-  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  MA 02110-1301, USA.
-'''
-
 # code based on:
 # https://developers.google.com/youtube/v3/code_samples/python#upload_a_video
 # https://github.com/youtube/api-samples/tree/master/python
@@ -36,19 +18,19 @@ class CommonGoogle(object):
     Class for interfacing with google api
     """
     def __init__(self, option_config_json):
-        self.DEVELOPER_KEY = option_config_json['API']['Google']
+        self.DEVELOPER_KEY = option_config_json['API']['google']
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
-        self.youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-            developerKey=DEVELOPER_KEY)
+        self.youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
+            developerKey=self.DEVELOPER_KEY)
 
 
     def com_google_youtube_search(self, search_term, max_results):
         """
         # query youtube via search
         """
-        search_response = self.youtube.search().list(q=search_term, part="id,snippet",
-            maxResults=max_results).execute()
+        search_response = self.youtube.search().list(q=search_term,
+            part="id,snippet", maxResults=max_results).execute()
         videos = []
         channels = []
         playlists = []
@@ -70,8 +52,9 @@ class CommonGoogle(object):
         # info of particular video
         """
         return common_network.mk_network_fetch_from_url('https://www.googleapis.com/'\
-            + YOUTUBE_API_SERVICE_NAME + '/' + YOUTUBE_API_VERSION + '/videos?id=' + video_url\
-            + '&key=' + DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
+            + self.YOUTUBE_API_SERVICE_NAME + '/' + self.YOUTUBE_API_VERSION
+            + '/videos?id=' + video_url + '&key='
+            + self.DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status', None)
 
 
     def com_google_youtube_add_subscription(self, channel_id):
@@ -94,7 +77,8 @@ class CommonGoogle(object):
         """
         # rate a yt video
         """
-        youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+        youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
+                        developerKey=self.DEVELOPER_KEY)
         youtube.videos().rate(
           id=video_id,
           rating=like_dislike
@@ -105,7 +89,8 @@ class CommonGoogle(object):
         """
         Get yt comments for specified video
         """
-        youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+        youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
+                        developerKey=self.DEVELOPER_KEY)
         results = youtube.commentThreads().list(
           part="snippet",
           videoId=video_id,
@@ -165,21 +150,3 @@ class CommonGoogle(object):
             )
           )).execute()
         return add_subscription_response["snippet"]["title"]
-
-
-# v2 is retired
-## following ones don't need to be within class
-#''' feed types
-#most_recent
-#most_viewed
-#top_rated
-#most_discussed
-#top_favorites
-#most_linked
-#recently_featured
-#most_responded
-#'''
-#
-#def com_Google_Youtube_Feed_List(feed_type):
-#    return json.loads(requests.get("http://gdata.youtube.com/feeds/api/standardfeeds/top_rated?v=2&alt=jsonc").text)
-#    #for item in data['data']['items']:
