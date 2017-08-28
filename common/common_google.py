@@ -7,6 +7,7 @@ import logging # pylint: disable=W0611
 from . import common_network
 
 # import google api modules
+import httplib2
 from googleapiclient.discovery import build
 #from googleapiclient.errors import HttpError
 #from oauth2client.tools import argparser
@@ -21,7 +22,8 @@ class CommonGoogle(object):
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
         self.youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
-            developerKey=self.DEVELOPER_KEY)
+            developerKey=self.DEVELOPER_KEY,
+            http=httplib2.Http(".cache", disable_ssl_certificate_validation=True))
 
 
     def com_google_youtube_search(self, search_term, max_results):
