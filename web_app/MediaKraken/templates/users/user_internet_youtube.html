@@ -10,13 +10,9 @@
     {% if media %}
     <div>
         {% for row_data in media %}
-        {% if row_data[2] == None %}
-        <a href= {{ "../youtube_detail/" + row_data[1] }} > {{row_data[0]}}</a>
-        {% else %}
         <a href= {{ "../youtube_detail/" + row_data[1] }} >
-        <img src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+        <img src= {{ row_data['items']['thumbnails']['default'] }} height="300" width="200">
         </a>
-        {% endif %}
         {% endfor %}
     </div>
     {% else %}
