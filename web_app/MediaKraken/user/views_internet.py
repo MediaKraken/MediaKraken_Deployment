@@ -57,6 +57,18 @@ def user_internet_youtube():
         media=youtube_videos)
 
 
+# youtube detail
+@blueprint.route('/internet/youtube_detail/<uuid>')
+@blueprint.route('/internet/youtube_detail/<uuid>/')
+@login_required
+def user_internet_youtube_detail(uuid):
+    """
+    Display youtube details page
+    """
+    return render_template("users/user_internet_youtube_detail.html",
+        media=json.loads(google_instance.com_google_youtube_info(uuid)))
+
+
 # vimeo
 @blueprint.route('/internet/internet_vimeo')
 @blueprint.route('/internet/internet_vimeo/')
