@@ -40,8 +40,8 @@ def user_internet():
 
 
 # youtube
-@blueprint.route('/internet/internet_youtube')
-@blueprint.route('/internet/internet_youtube/')
+@blueprint.route('/internet/internet_youtube', methods=["GET", "POST"])
+@blueprint.route('/internet/internet_youtube/', methods=["GET", "POST"])
 @login_required
 def user_internet_youtube():
     """
@@ -66,8 +66,8 @@ def user_internet_youtube():
 
 
 # youtube detail
-@blueprint.route('/internet/youtube_detail/<uuid>', methods=["GET", "POST"])
-@blueprint.route('/internet/youtube_detail/<uuid>/', methods=["GET", "POST"])
+@blueprint.route('/internet/youtube_detail/<uuid>')
+@blueprint.route('/internet/youtube_detail/<uuid>/')
 @login_required
 def user_internet_youtube_detail(uuid):
     """
