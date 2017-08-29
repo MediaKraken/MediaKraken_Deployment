@@ -10,9 +10,14 @@
     {% if media %}
     <div>
         {% for row_data in media %}
-        <a href= {{ "../youtube_detail/" + row_data['items'][0]['id'] }} >
-        <img src= {{ row_data['items'][0]['snippet']['thumbnails']['default']['url'] }} height="300" width="200">
+        <div class="main_photo">
+            <a href= {{ "../youtube_detail/" + row_data['items'][0]['id'] }} >
+            <img src= {{ row_data['items'][0]['snippet']['thumbnails']['default']['url'] }} height="300" width="200">
         </a>
+        <div class="description">
+            <p class="description_content_left">{{row_data['items'][0]['snippet']['title']}}</p>
+        </div>
+        </div>
         {% endfor %}
     </div>
     {% else %}
