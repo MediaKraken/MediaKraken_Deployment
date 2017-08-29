@@ -48,7 +48,8 @@ class CommonGoogle(object):
         return (videos, channels, playlists)
 
 
-    def com_google_youtube_info(self, video_url, video_data='snippet,contentDetails,statistics,status'):
+    def com_google_youtube_info(self, video_url,
+                                video_data='snippet,contentDetails,statistics,status'):
         """
         # info of particular video
         """
