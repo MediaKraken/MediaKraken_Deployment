@@ -38,14 +38,11 @@ class CommonGoogle(object):
         for search_result in search_response.get("items", []):
             logging.info('ytsearch: %s', search_result)
             if search_result["id"]["kind"] == "youtube#video":
-              videos.append("%s (%s)" % (search_result["snippet"]["title"],
-                  search_result["id"]["videoId"]))
+              videos.append(search_result["id"]["videoId"])
             elif search_result["id"]["kind"] == "youtube#channel":
-              channels.append("%s (%s)" % (search_result["snippet"]["title"],
-                  search_result["id"]["channelId"]))
+              channels.append(search_result["id"]["channelId"])
             elif search_result["id"]["kind"] == "youtube#playlist":
-              playlists.append("%s (%s)" % (search_result["snippet"]["title"],
-                  search_result["id"]["playlistId"]))
+              playlists.append(search_result["id"]["playlistId"])
         return (videos, channels, playlists)
 
 
