@@ -50,7 +50,8 @@ def user_internet_youtube():
     # get trending for specified country code
     for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
         logging.info('urllink: %s', url_link)
-        youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link)))
+        youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
+                                                                                 'snippet')))
     logging.info('temphold: %s', youtube_videos)
     return render_template("users/user_internet_youtube.html",
         media=youtube_videos)
