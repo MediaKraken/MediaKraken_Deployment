@@ -54,6 +54,9 @@ def user_internet_youtube():
             pass
         videos, channels, playlists = google_instance.com_google_youtube_search(
             request.form['youtube_search'])
+        for url_link in videos:
+            youtube_videos.append(
+                json.loads(google_instance.com_google_youtube_info(url_link['snippet']['kind']['videoId'], 'snippet')))
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
