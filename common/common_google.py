@@ -48,14 +48,14 @@ class CommonGoogle(object):
         return (videos, channels, playlists)
 
 
-    def com_google_youtube_info(self, video_url):
+    def com_google_youtube_info(self, video_url, video_data='snippet,contentDetails,statistics,status'):
         """
         # info of particular video
         """
         return common_network.mk_network_fetch_from_url(('https://www.googleapis.com/'\
             + self.YOUTUBE_API_SERVICE_NAME + '/' + self.YOUTUBE_API_VERSION
             + '/videos?id=' + video_url.replace('www.youtube.com/watch?v=', '') + '&key='
-            + self.DEVELOPER_KEY + '&part=snippet,contentDetails,statistics,status'), None)
+            + self.DEVELOPER_KEY + '&part=' + video_data), None)
 
 
     def com_google_youtube_add_subscription(self, channel_id):
