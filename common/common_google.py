@@ -26,7 +26,7 @@ class CommonGoogle(object):
             http=httplib2.Http(".cache", disable_ssl_certificate_validation=True))
 
 
-    def com_google_youtube_search(self, search_term, max_results):
+    def com_google_youtube_search(self, search_term, max_results=25):
         """
         # query youtube via search
         """
