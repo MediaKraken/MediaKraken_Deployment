@@ -21,6 +21,7 @@ from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
+from MediaKraken.admins.forms import YoutubeForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -47,19 +48,26 @@ def user_internet_youtube():
     Display youtube page
     """
     youtube_videos = []
-    # get trending for specified country code
-    for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
-        logging.info('urllink: %s', url_link)
-        youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
-                                                                                 'snippet')))
+    form = YoutubeForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        videos, channels, playlists = google_instance.com_google_youtube_search(
+            request.form['youtube_search'])
+    else:
+        # get trending for specified country code
+        for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
+            logging.info('urllink: %s', url_link)
+            youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
+                                                                                     'snippet')))
     logging.info('temphold: %s', youtube_videos)
-    return render_template("users/user_internet_youtube.html",
+    return render_template("users/user_internet_youtube.html", form=form,
         media=youtube_videos)
 
 
 # youtube detail
-@blueprint.route('/internet/youtube_detail/<uuid>')
-@blueprint.route('/internet/youtube_detail/<uuid>/')
+@blueprint.route('/internet/youtube_detail/<uuid>', methods=["GET", "POST"])
+@blueprint.route('/internet/youtube_detail/<uuid>/', methods=["GET", "POST"])
 @login_required
 def user_internet_youtube_detail(uuid):
     """
