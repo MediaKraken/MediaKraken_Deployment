@@ -13,7 +13,7 @@ import logging # pylint: disable=W0611
 import subprocess
 import natsort
 import json
-from MediaKraken.user.forms import SearchForm
+from MediaKraken.public.forms import SearchForm
 import sys
 sys.path.append('..')
 sys.path.append('../..')

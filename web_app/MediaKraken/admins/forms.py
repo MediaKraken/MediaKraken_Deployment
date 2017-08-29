@@ -288,21 +288,3 @@ class TaskEditForm(Form):
         if not initial_validation:
             return False
         return True
-
-
-class YoutubeForm(Form):
-    """
-    for youtube search
-    """
-    youtube_search = TextField('Search string') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
-
-
-    def __init__(self, *args, **kwargs):
-        super(YoutubeForm, self).__init__(*args, **kwargs)
-
-
-    def validate(self):
-        initial_validation = super(YoutubeForm, self).validate()
-        if not initial_validation:
-            return False
-        return True

@@ -21,7 +21,7 @@ from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
-from MediaKraken.admins.forms import YoutubeForm
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -48,7 +48,7 @@ def user_internet_youtube():
     Display youtube page
     """
     youtube_videos = []
-    form = YoutubeForm(request.form)
+    form = SearchForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
@@ -76,7 +76,7 @@ def user_internet_youtube_detail(uuid):
     """
     Display youtube details page
     """
-    form = YoutubeForm(request.form)
+    form = SearchForm(request.form)
     return render_template("users/user_internet_youtube_detail.html", form=form,
         media=json.loads(google_instance.com_google_youtube_info(uuid)),
         data_guid=uuid)

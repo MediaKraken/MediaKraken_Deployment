@@ -79,20 +79,3 @@ class RegisterForm(Form):
             self.email.errors.append("Email already registered")
             return False
         return True
-
-
-class SearchForm(Form):
-    """
-    for searching media
-    """
-    search_item = TextField('Search For', validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        super(SearchForm, self).__init__(*args, **kwargs)
-
-
-    def validate(self):
-        initial_validation = super(SearchForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
