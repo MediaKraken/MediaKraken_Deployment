@@ -11,7 +11,7 @@
     <div>
         {% for row_data in media %}
         <a href= {{ "../youtube_detail/" + row_data['items'][0]['id'] }} >
-        <img src= {{ row_data['items'][0]['thumbnails']['default'] }} height="300" width="200">
+        <img src= {{ row_data['items'][0]['snippet']['thumbnails']['default']['url'] }} height="300" width="200">
         </a>
         {% endfor %}
     </div>
