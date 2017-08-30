@@ -150,8 +150,8 @@ def user_internet_flickr():
 
 
 # iradio
-@blueprint.route('/iradio')
-@blueprint.route('/iradio/')
+@blueprint.route('/iradio', methods=['GET', 'POST'])
+@blueprint.route('/iradio/', methods=['GET', 'POST'])
 @login_required
 def user_iradio_list():
     """
@@ -163,7 +163,8 @@ def user_iradio_list():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        mediadata = g.db_connection.db_iradio_list(offset, per_page, request.form['search_text'])
+        mediadata = g.db_connection.db_iradio_list(offset, per_page,
+                                                   search_value=request.form['search_text'])
     else:
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
 
