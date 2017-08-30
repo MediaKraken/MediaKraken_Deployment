@@ -20,6 +20,7 @@ from common import common_internationalization
 from common import common_pagination
 from common import common_string
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -82,8 +83,8 @@ def metadata_movie_detail(guid):
                           )
 
 
-@blueprint.route('/meta_movie_list')
-@blueprint.route('/meta_movie_list/')
+@blueprint.route('/meta_movie_list', methods=["GET", "POST"])
+@blueprint.route('/meta_movie_list/', methods=["GET", "POST"])
 @login_required
 def metadata_movie_list():
     """
@@ -91,7 +92,14 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_meta_movie_list(offset, per_page):
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        metadata = g.db_connection.  request.form['search_text']
+    else:
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
+    for row_data in metadata:
         # set watched
         try:
             watched_status\
