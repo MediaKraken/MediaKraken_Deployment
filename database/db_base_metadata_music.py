@@ -132,12 +132,23 @@ def db_meta_album_list(self, offset=None, records=None, search_value=None):
     """
     # TODO, only grab the poster local from json
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-            ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
+                ' mm_metadata_album_json from mm_metadata_album'
+                ' where mm_metadata_album_name %% %s order by mm_metadata_album_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
+                ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name')
     else:
-        self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-            ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name'
-            ' offset %s limit %s', (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
+                ' mm_metadata_album_json from mm_metadata_album'
+                ' where mm_metadata_album_name %% %s order by mm_metadata_album_name'
+                ' offset %s limit %s', (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
+                ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name'
+                ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -147,13 +158,26 @@ def db_meta_muscian_list(self, offset=None, records=None, search_value=None):
     """
     # TODO, only grab the poster local from json
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
-            ' mm_metadata_musician_json from mm_metadata_musician'
-            ' order by mm_metadata_musician_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
+                ' mm_metadata_musician_json from mm_metadata_musician'
+                ' where mm_metadata_musician_name %% %s'
+                ' order by mm_metadata_musician_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
+                ' mm_metadata_musician_json from mm_metadata_musician'
+                ' order by mm_metadata_musician_name')
     else:
-        self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
-            ' mm_metadata_musician_json from mm_metadata_musician'
-            ' order by mm_metadata_musician_name offset %s limit %s', (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
+                ' mm_metadata_musician_json from mm_metadata_musician'
+                ' where mm_metadata_musician_name %% %s'
+                ' order by mm_metadata_musician_name offset %s limit %s',
+                (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
+                ' mm_metadata_musician_json from mm_metadata_musician'
+                ' order by mm_metadata_musician_name offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 

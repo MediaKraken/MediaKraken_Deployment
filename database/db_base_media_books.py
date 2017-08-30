@@ -24,8 +24,13 @@ def db_media_book_list_count(self, search_value=None):
     """
     book list count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
-        ' where mm_media_metadata_guid = mm_metadata_book_guid')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_book_guid '
+            'and mm_metadata_book_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+                               ' where mm_media_metadata_guid = mm_metadata_book_guid')
     return self.db_cursor.fetchone()[0]
 
 

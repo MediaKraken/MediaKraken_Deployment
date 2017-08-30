@@ -24,8 +24,13 @@ def db_media_album_count(self, search_value=None):
     """
     Album count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
-        ' where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_album_guid group'
+            ' and mm_metadata_album_name %% %s by mm_metadata_album_guid', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_album_guid group by mm_metadata_album_guid')
     sql_data = self.db_cursor.fetchall()
     if sql_data is None:
         return 0

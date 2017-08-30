@@ -25,7 +25,11 @@ def db_link_list_count(self, search_value=None):
     """
     Return count of linked servers
     """
-    self.db_cursor.execute('select count(*) from mm_link')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_link where mm_link_name %% %s',
+                               (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_link')
     return self.db_cursor.fetchone()[0]
 
 

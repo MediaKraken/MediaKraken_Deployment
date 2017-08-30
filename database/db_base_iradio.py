@@ -40,8 +40,13 @@ def db_iradio_list_count(self, active_station=True, search_value=None):
     """
     Iradio count
     """
-    self.db_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',
-        (active_station,))
+    if search_value is not None:
+            self.db_cursor.execute('select count(*) from mm_radio '
+                                   'where mm_radio_active = %s and mm_radio_name %% %s',
+                                   (active_station,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',
+                               (active_station,))
     return self.db_cursor.fetchone()[0]
 
 

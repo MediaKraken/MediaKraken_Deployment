@@ -37,7 +37,11 @@ def db_meta_sports_list_count(self, search_value=None):
     """
     Count sport events
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_sports')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_sports'
+                               ' where mm_metadata_sports_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_sports')
     return self.db_cursor.fetchone()[0]
 
 

@@ -37,8 +37,13 @@ def db_meta_game_system_list_count(self, search_value=None):
     """
     Return game system count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
-        ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
+            ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
+            ' and gs_game_system_json->\'@name\' %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
+            ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
     return self.db_cursor.fetchone()[0]
 
 
@@ -81,7 +86,11 @@ def db_meta_game_list_count(self, search_value=None):
     """
     # return list of games count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_game_software_info')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_game_software_info'
+                               ' where gi_game_info_json->\'description\' %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_game_software_info')
     return self.db_cursor.fetchone()[0]
 
 

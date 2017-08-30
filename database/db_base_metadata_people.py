@@ -26,7 +26,11 @@ def db_meta_person_list_count(self, search_value=None):
     """
     # count person metadata
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_person')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_person'
+                               ' where mmp_person_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_person')
     return self.db_cursor.fetchone()[0]
 
 
