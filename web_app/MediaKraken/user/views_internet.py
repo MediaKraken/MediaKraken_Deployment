@@ -157,7 +157,17 @@ def user_iradio_list():
     """
     Display main page for internet radio
     """
-    return render_template("users/user_iradio_list.html")
+    page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_iradio_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_iradio_list(offset, per_page)
+
+    return render_template("users/user_iradio_list.html", form=form)
 
 
 @blueprint.before_request

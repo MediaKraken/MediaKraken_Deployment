@@ -6,8 +6,8 @@
     <form id="SearchForm" class="form form-searchedit" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{form.search_item.label}}
-            {{form.search_item(placeholder="Search String", class_="form-control")}}
+            {{form.search_text.label}}
+            {{form.search_text(placeholder="Search String", class_="form-control")}}
         </div>
         <div>
             {% for row_data in media_dir %}
