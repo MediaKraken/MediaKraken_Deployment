@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def db_collection_list(self, offset=None, records=None):
+def db_collection_list(self, offset=None, records=None, search_value=None):
     """
     Return collections list from the database
     """

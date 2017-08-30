@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def db_device_count(self):
+def db_device_count(self, search_value=None):
     """
     Return the number of devices in database
     """
@@ -29,7 +29,7 @@ def db_device_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_device_list(self, device_type=None, offset=None, records=None):
+def db_device_list(self, device_type=None, offset=None, records=None, search_value=None):
     """
     Return list of devices in database
     """

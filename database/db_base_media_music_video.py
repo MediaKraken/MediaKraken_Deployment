@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def db_music_video_list(self):
+def db_music_video_list(self, search_value=None):
     """
     music video list
     """

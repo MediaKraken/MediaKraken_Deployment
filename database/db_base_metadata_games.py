@@ -33,7 +33,7 @@ def db_meta_game_system_by_guid(self, guid):
         return None
 
 
-def db_meta_game_system_list_count(self):
+def db_meta_game_system_list_count(self, search_value=None):
     """
     Return game system count
     """
@@ -42,7 +42,7 @@ def db_meta_game_system_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_game_system_list(self, offset=None, records=None):
+def db_meta_game_system_list(self, offset=None, records=None, search_value=None):
     """
     # return list of game systems
     """
@@ -61,7 +61,7 @@ def db_meta_game_system_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def db_meta_game_list_count(self):
+def db_meta_game_list_count(self, search_value=None):
     """
     # return list of games count
     """
@@ -70,7 +70,7 @@ def db_meta_game_list_count(self):
 
 
 # TODO select subselect for speed
-def db_meta_game_list(self, offset=None, records=None):
+def db_meta_game_list(self, offset=None, records=None, search_value=None):
     """
     # return list of games
     """

@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def db_meta_person_list_count(self):
+def db_meta_person_list_count(self, search_value=None):
     """
     # count person metadata
     """
@@ -30,7 +30,7 @@ def db_meta_person_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_person_list(self, offset=None, records=None):
+def db_meta_person_list(self, offset=None, records=None, search_value=None):
     """
     # return list of people
     """

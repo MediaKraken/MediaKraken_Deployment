@@ -22,7 +22,7 @@ import uuid
 import json
 
 
-def db_meta_book_list(self, offset=None, records=None):
+def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
     book list
     """

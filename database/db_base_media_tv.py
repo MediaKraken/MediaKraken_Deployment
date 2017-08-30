@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 
 
 def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
-        group_collection=False, offset=None):
+        group_collection=False, offset=None, search_value=None):
     """
     # grab tv data
     """
@@ -43,7 +43,7 @@ def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
     return self.db_cursor.fetchall()
 
 
-def db_web_tvmedia_list_count(self, genre_type=None, group_collection=False):
+def db_web_tvmedia_list_count(self, genre_type=None, group_collection=False, search_value=None):
     """
     # grab tv data count
     """

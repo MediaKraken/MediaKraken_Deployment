@@ -29,7 +29,17 @@ def user_3d_list():
     """
     Display 3D media page
     """
-    return render_template("users/user_3d_list.html")
+    page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_meta_movie_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_movie_list(offset, per_page)
+
+    return render_template("users/user_3d_list.html", form=form)
 
 
 @blueprint.before_request

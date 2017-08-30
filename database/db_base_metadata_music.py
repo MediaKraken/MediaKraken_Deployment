@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def db_meta_song_list(self, offset=None, records=None):
+def db_meta_song_list(self, offset=None, records=None, search_value=None):
     """
     # return songs metadatalist
     """
@@ -126,7 +126,7 @@ def db_meta_songs_by_album_guid(self, guid):
     return self.db_cursor.fetchall()
 
 
-def db_meta_album_list(self, offset=None, records=None):
+def db_meta_album_list(self, offset=None, records=None, search_value=None):
     """
     # return albums metadatalist
     """
@@ -141,7 +141,7 @@ def db_meta_album_list(self, offset=None, records=None):
     return self.db_cursor.fetchall()
 
 
-def db_meta_muscian_list(self, offset=None, records=None):
+def db_meta_muscian_list(self, offset=None, records=None, search_value=None):
     """
     # return muscian metadatalist
     """

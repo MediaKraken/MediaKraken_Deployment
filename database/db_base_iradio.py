@@ -36,7 +36,7 @@ def db_iradio_insert(self, radio_channel):
             return new_guid
 
 
-def db_iradio_list_count(self, active_station=True):
+def db_iradio_list_count(self, active_station=True, search_value=None):
     """
     Iradio count
     """
@@ -45,7 +45,7 @@ def db_iradio_list_count(self, active_station=True):
     return self.db_cursor.fetchone()[0]
 
 
-def db_iradio_list(self, active_station=True, offset=None, records=None):
+def db_iradio_list(self, active_station=True, offset=None, records=None, search_value=None):
     """
     Iradio list
     """

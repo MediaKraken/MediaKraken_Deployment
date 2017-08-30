@@ -29,6 +29,14 @@ def user_music_video_list():
     Display music video page
     """
     page, per_page, offset = common_pagination.get_page_items()
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_music_video_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_music_video_list(offset, per_page)
+
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

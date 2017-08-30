@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def db_media_album_count(self):
+def db_media_album_count(self, search_value=None):
     """
     Album count
     """
@@ -32,7 +32,7 @@ def db_media_album_count(self):
     return len(sql_data)
 
 
-def db_media_album_list(self, offset=None, per_page=None):
+def db_media_album_list(self, offset=None, per_page=None, search_value=None):
     """
     Album list
     """

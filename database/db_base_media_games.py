@@ -20,42 +20,42 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def db_media_game_system_list_count(self):
+def db_media_game_system_list_count(self, search_value=None):
     """
     Audited system list count
     """
     pass
 
 
-def db_media_game_system_list(self, offset=None, records=None):
+def db_media_game_system_list(self, offset=None, records=None, search_value=None):
     """
     Audited system list
     """
     pass
 
 
-def db_media_game_list_by_system_count(self, system_id):
+def db_media_game_list_by_system_count(self, system_id, search_value=None):
     """
     Audited game list by system count
     """
     pass
 
 
-def db_media_game_list_by_system(self, system_id, offset=None, records=None):
+def db_media_game_list_by_system(self, system_id, offset=None, records=None, search_value=None):
     """
     Audited game list by system
     """
     pass
 
 
-def db_media_game_list_count(self):
+def db_media_game_list_count(self, search_value=None):
     """
     Audited games list count
     """
     pass
 
 
-def db_media_game_list(self, offset=None, records=None):
+def db_media_game_list(self, offset=None, records=None, search_value=None):
     """
     Audited games list
     """

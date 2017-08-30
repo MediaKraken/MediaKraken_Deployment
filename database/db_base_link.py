@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def db_link_list_count(self):
+def db_link_list_count(self, search_value=None):
     """
     Return count of linked servers
     """
@@ -29,7 +29,7 @@ def db_link_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_link_list(self, offset=None, records=None):
+def db_link_list(self, offset=None, records=None, search_value=None):
     """
     Return list of linked server
     Complete list for admins

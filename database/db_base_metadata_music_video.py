@@ -59,7 +59,7 @@ def db_meta_music_video_detail_uuid(self, item_guid):
         return None
 
 
-def db_meta_music_video_count(self, imvdb_id=None):
+def db_meta_music_video_count(self, imvdb_id=None, search_value=None):
     """
     Return count of music video metadata
     """
@@ -71,7 +71,7 @@ def db_meta_music_video_count(self, imvdb_id=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_music_video_list(self, offset=None, records=None):
+def db_meta_music_video_list(self, offset=None, records=None, search_value=None):
     """
     List music video metadata
     """
