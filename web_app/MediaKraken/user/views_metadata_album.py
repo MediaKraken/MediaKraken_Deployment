@@ -26,8 +26,8 @@ from MediaKraken.public.forms import SearchForm
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_music_song_list')
-@blueprint.route('/meta_music_song_list/')
+@blueprint.route('/meta_music_song_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_music_song_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_music_song_list():
     """
@@ -59,8 +59,8 @@ def metadata_music_song_list():
                           )
 
 
-@blueprint.route('/meta_music_album_list')
-@blueprint.route('/meta_music_album_list/')
+@blueprint.route('/meta_music_album_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_music_album_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_music_album_list():
     """

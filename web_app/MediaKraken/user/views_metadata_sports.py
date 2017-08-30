@@ -26,14 +26,24 @@ from MediaKraken.public.forms import SearchForm
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_sports_list')
-@blueprint.route('/meta_sports_list/')
+@blueprint.route('/meta_sports_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_sports_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_sports_list():
     """
     Display sports metadata list
     """
     page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
+
+
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
@@ -42,7 +52,7 @@ def metadata_sports_list():
                                                   format_number=True,
                                                  )
     return render_template('users/metadata/meta_sports_list.html',
-                           media_sports_list=g.db_connection.db_meta_sports_list(offset, per_page),
+                           media_sports_list=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

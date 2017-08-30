@@ -37,15 +37,37 @@ def metadata_game_system_detail(guid):
                           )
 
 
-@blueprint.route('/meta_game_system_list')
-@blueprint.route('/meta_game_system_list/')
+@blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_game_system_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_game_system_list():
     """
     Display list of game system metadata
     """
-    return render_template('users/metadata/meta_game_system_list.html',
-                          )
+    page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
+
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_table_count(
+                                                      'mm_metadata_music'),
+                                                  record_name='music',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                 )
+
+    return render_template('users/metadata/meta_game_system_list.html', form=form,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination,
+                           )
 
 
 @blueprint.before_request

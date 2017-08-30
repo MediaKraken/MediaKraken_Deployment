@@ -25,8 +25,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # books
-@blueprint.route('/books')
-@blueprint.route('/books/')
+@blueprint.route('/books', methods=['GET', 'POST'])
+@blueprint.route('/books/', methods=['GET', 'POST'])
 @login_required
 def user_books_list():
     """

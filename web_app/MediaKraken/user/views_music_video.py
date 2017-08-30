@@ -21,8 +21,8 @@ from MediaKraken.public.forms import SearchForm
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/music_video_list')
-@blueprint.route('/music_video_list/')
+@blueprint.route('/music_video_list', methods=['GET', 'POST'])
+@blueprint.route('/music_video_list/', methods=['GET', 'POST'])
 @login_required
 def user_music_video_list():
     """
@@ -46,7 +46,7 @@ def user_music_video_list():
                                                   format_number=True,
                                                  )
     return render_template('users/user_music_video_list.html',
-                           media_person=g.db_connection.db_meta_music_video_list(offset, per_page),
+                           media_person=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
