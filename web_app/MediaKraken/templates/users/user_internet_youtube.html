@@ -10,8 +10,8 @@
     <form id="SearchForm" class="form form-youtube" method="POST" action="{{ url_for('user_internet.user_internet_youtube') }}" role="form">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{form.youtube_search.label}}
-            {{form.youtube_search(placeholder="Search string", class_="form-control")}}
+            {{form.search_text.label}}
+            {{form.search_text(placeholder="Search string", class_="form-control")}}
         </div>
     </form>
     {% if media %}
