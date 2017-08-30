@@ -96,7 +96,7 @@ def metadata_movie_list():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        metadata = g.db_connection.  request.form['search_text']
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page, request.form['search_text'])
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
     for row_data in metadata:

@@ -8,6 +8,13 @@
         <link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
+    <form id="SearchForm" class="form form-metamovie" method="POST" action="{{ url_for('user_metadata_movie.metadata_movie_list') }}" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.youtube_search.label}}
+            {{form.youtube_search(placeholder="Search string", class_="form-control")}}
+        </div>
+    </form>
     {% if media_movie %}
     {{ pagination.info }}
     {{ pagination.links }}
