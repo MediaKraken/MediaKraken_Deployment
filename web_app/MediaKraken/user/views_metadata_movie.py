@@ -138,7 +138,7 @@ def metadata_movie_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_movie_list.html',
+    return render_template('users/metadata/meta_movie_list.html', form=form,
                            media_movie=media,
                            page=page,
                            per_page=per_page,
