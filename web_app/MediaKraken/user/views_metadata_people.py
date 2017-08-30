@@ -92,7 +92,7 @@ def metadata_person_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_people_list.html',
+    return render_template('users/metadata/meta_people_list.html', form=form,
                            media_person=person_list,
                            page=page,
                            per_page=per_page,

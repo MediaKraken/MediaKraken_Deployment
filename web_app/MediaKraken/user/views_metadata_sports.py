@@ -51,7 +51,7 @@ def metadata_sports_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_sports_list.html',
+    return render_template('users/metadata/meta_sports_list.html', form=form,
                            media_sports_list=mediadata,
                            page=page,
                            per_page=per_page,

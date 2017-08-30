@@ -30,7 +30,14 @@ def metadata_movie_collection_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_collection_list(offset, per_page):
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_collection_list(offset, per_page, request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_collection_list(offset, per_page)
+    for row_data in mediadata:
         try:
             media.append((row_data['mm_metadata_collection_guid'],
                 row_data['mm_metadata_collection_name'],
@@ -46,7 +53,8 @@ def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_movie_collection_list.html', media=media,
+    return render_template('users/metadata/meta_movie_collection_list.html', form=form,
+                           media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
