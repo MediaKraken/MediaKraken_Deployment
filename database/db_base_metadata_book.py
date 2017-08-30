@@ -27,12 +27,23 @@ def db_meta_book_list(self, offset=None, records=None, search_value=None):
     book list
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book order by mm_metadata_book_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book where mm_metadata_book_name %% %s'
+                ' order by mm_metadata_book_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book order by mm_metadata_book_name')
     else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book order by mm_metadata_book_name '
-            'offset %s limit %s', (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book where mm_metadata_book_name %% %s'
+                ' order by mm_metadata_book_name '
+                'offset %s limit %s', (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book order by mm_metadata_book_name '
+                'offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 

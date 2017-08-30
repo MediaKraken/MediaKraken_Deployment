@@ -35,14 +35,27 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     # return list of people
     """
     if offset is None:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-            ' from mm_metadata_person order by mmp_person_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person where mmp_person_name %% %s'
+                ' order by mmp_person_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person order by mmp_person_name')
     else:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-            ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
-            (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person where mmp_person_name %% %s'
+                ' order by mmp_person_name offset %s limit %s',
+                (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
+                (offset, records))
     return self.db_cursor.fetchall()
 
 
