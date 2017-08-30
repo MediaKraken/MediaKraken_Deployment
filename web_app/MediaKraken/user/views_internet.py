@@ -53,7 +53,7 @@ def user_internet_youtube():
         if form.validate_on_submit():
             pass
         videos, channels, playlists = google_instance.com_google_youtube_search(
-            request.form['youtube_search'])
+            request.form['search_text'])
         for url_link in videos:
             youtube_videos.append(
                 json.loads(google_instance.com_google_youtube_info(url_link, 'snippet')))
