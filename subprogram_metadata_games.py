@@ -122,6 +122,34 @@ for fname in os.listdir(hash_path):
             + " games(s) metadata updated from MAME hash", True)
 
 
+# update mame game descriptions from history dat
+game_titles = []
+game_desc = ""
+add_to_desc = False
+history_file = open("/mediakraken/emulation/history.dat", "rb")
+while 1:
+    line = history_file.readline()
+    if not line:
+        break
+    if line.find("$info=") == 0:
+        game_titles = line.split("=", 1)[1].split(",")
+    elif line.find("$end") == 0:
+        add_to_desc = False
+        for game in game_titles:
+            db_connection.execute('select gi_game_info_json from mm_game_info'
+                                  ' where gi_game_info_name ? %s', (game,))
+            json_data = json.loads(db_connection.fetchone()[0])
+            json_data['overview'] = game_desc
+            db_connection.execute("update mm_game_info set gi_game_info_json = %s"
+                                  " where gi_game_info_name ? %s", (json.dumps(json_data), game))
+            game_desc = ""
+    if add_to_desc:
+        game_desc += line
+    if line.find("$bio") == 0:
+        add_to_desc = True
+history_file.close()
+
+
 # commit all changes to db
 db_connection.db_commit()
 
