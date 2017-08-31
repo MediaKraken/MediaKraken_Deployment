@@ -178,7 +178,7 @@ def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
     # game by name and system short name
     """
     self.db_cursor.execute('select gi_id from mm_metadata_game_software_info'
-        ' where gi_game_info_json->\'@name\' = %s and gi_system_id = %s',
+        ' where gi_game_info_name = %s and gi_system_id = %s',
         (game_name, game_system_short_name))
     return self.db_cursor.fetchall()
 
