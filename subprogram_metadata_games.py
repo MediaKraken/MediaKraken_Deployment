@@ -72,6 +72,7 @@ if insert_game > 0:
 
 # load games from hash files
 total_software = 0
+total_software_update = 0
 hash_path = "/mediakraken/emulation/hash"
 for fname in os.listdir(hash_path):
     logging.info("fname: %s", fname)
@@ -91,7 +92,7 @@ for fname in os.listdir(hash_path):
                         (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game)))
                     total_software += 1
         else:
-            print("system not found: %s", sql_args[0])
+            logging.info("system not found: %s", file_name)
             # TODO add "new" system
     elif ext == ".hsi":
         db_connection.execute('select gs_id from mm_metadata_game_systems_info'\
@@ -107,8 +108,18 @@ for fname in os.listdir(hash_path):
                         (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game)))
                     total_software += 1
         else:
-            print("system not found: %s", sql_args[0])
+            logging.info("system not found: %s", file_name)
             # TODO add "new" system
+
+    if total_software > 0:
+        db_connection.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_software)
+            + " games(s) metadata added from MAME hash", True)
+
+    if total_software_update > 0:
+        db_connection.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_software_update)
+            + " games(s) metadata updated from MAME hash", True)
 
 
 # commit all changes to db
