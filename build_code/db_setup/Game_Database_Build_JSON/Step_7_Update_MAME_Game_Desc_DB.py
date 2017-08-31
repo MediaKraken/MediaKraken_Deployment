@@ -49,6 +49,7 @@ while 1:
         game_desc += line
     if line.find("$bio") == 0:
         add_to_desc = True
+history_file.close()
 # close db files
 conn.commit()
 conn.close()
