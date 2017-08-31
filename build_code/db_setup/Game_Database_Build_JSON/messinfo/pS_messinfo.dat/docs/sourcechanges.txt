@@ -1,11 +1,335 @@
-MESS Source Changes
+ï»¿MESS Source Changes
 ===================
 Edited by AntoPISA
 Info from Official MESS whatsnew.txt
 
-Right from 0.1 to 0.177
+Right from 0.1 to 0.188
 
-Latest editing: September 7, 2016
+Latest editing: August 1, 2017
+
+0.188:
+======
+- Bugfix #06588: [Interface] Regression loading softlist items from the command line with changed slot options [Nathan Woods].
+- Bugfix #06581: [Interface] Various problems with software loading/unloading: Various problems with software loading [Nathan Woods].
+- Added support for experimental overclocking of sound devices through UI sliders with -cheat enabled [AJR].
+- Fixed scheduler overflow when a device executes for more cycles than there are in a second [AJR].
+- listxml enhancements: Match arguments against device names as well as driver names. Allowed DTD output for -listxml, -listsoftware and -getsoftlist to be suppressed with -nodtd option [AJR].
+- MC6800: Fixed LSR/ROR/ASR overflow flag generation (N XOR C) [AJR].
+- plugins/cheat updates: Poll for setting hotkeys. Link simple cheats [Carl].
+- Added Motorola MC14411 Bit Rate Generator device [Joakim Larsson Edstrom].
+- Overhauled MAME options handling. The new options system is more dynamic and should detect errors earlier. The slot menu now shows updated options in response to selections made by the user [Nathan Woods].
+- Added a menu listing existing state files displayed when choosing a position to save/load. Any position may be selected with keyboard 0-9/A-Z or joystick buttons. Existing positions may be selected using UI navigation controls [Nathan Woods].
+- Made the length parameter for debugger 'load' command optional (defaults to length of file), converted code from stdio to iostream [Nathan Woods].
+- Fixed regression in ROM loading that resulted in not all actual hashes being printed on mismatch [Nathan Woods].
+- sdl: Added SDL_WINDOW_BORDERLESS for fullscreen, required by some Linux window managers [O. Galibert].
+- debugcpu: Eliminated direct() from read_opcode [O. Galibert].
+ -options: Set the value when setting the default as before [O. Galibert].
+- mameopts: Don't lose the system inipath when looking for hashpath [O. Galibert].
+- dimemory: Lifted cap on number of address spaces per device, renamed AS_DECRYPTED_OPCODES to AS_OPCODES [O. Galibert].
+- Fixed media option numbering with custom instance names (github issue 2468) [O. Galibert].
+- Improved -romident performance by dynamically allocating large arrays at device_start time [Phil Bennett].
+- output: Fleshed out network output provider to have the same capabilities as legacy Win32 provider: Messages are of form "verb = value\1"; "hello = 1" on successful connection, "mamerun = 0" on shutdown. Send "send_id = n" to query IDs where n=0 means machine shortname, and n=1-? are output node names [R. Belmont].
+- Layout system improvements: Made scripts do substantial validation of layouts at build time. Drop views that don't validate at runtime rather than entire layouts to help machines with terminals connected by default [Vas Crabb].
+- Made device_memory_interface own its address space objects [Vas Crabb].
+- Made parent/clone loops raise a fatal error rather than hanging in a loop appending to a string [Vas Crabb].
+- Made internal UI list missing/incorrect files when audit fails [Vas Crabb].
+- Cocoa debugger improvements: Save/restore window positions/sizes/splits/scrolling/expressions/focus (excluding device info viewer). Fixed scroll jump on clicking a memory/disassembly view that's been scrolled while unfocused [Vas Crabb].
+- Made XML file a specialisation of data node that can be easily managed with smart pointers and added a method for copying a data node/subtree into a different tree [Vas Crabb].
+- Fixed fatal error on selecting a software part with internal UI and made software parts menu sort by name [Vas Crabb].
+- Fixed QT 5.5.1 for Ubuntu 14.04 "Trusty Tahr" (allows Travis CI build to complete) [dankan1890].
+- Enhanced Emscripten support: Fixed save/load support and scheduled exit. Improved main loop, simplified integration points, and made JavaScript entry points static members of running_machine. Exposed soft_reset, hard_reset, exit load and save functions, allowing more control of emulation session from JavaScript [James Baicoianu].
+- Fixed #include path with USE_LIBSDL on macOS [Joshua Root].
+- Added skeleton driver for Yamaha TG100 MIDI module. H8/520 CPU is not implemented, sound chip is Yamaha YMW258-F (likely to be identical to Sega MultiPCM) [superctr].
+- Updated compiling instructions for Fedora Linux [inflatador].
+- Updated hiscore.dat [Leezer].
+- Added -output option to documentation with description of available choices [OzFalcon].
+- SDL sound: Fill buffer with silence on underrun [057a3dd61f99517a3afea0051a49cb27994f94d].
+
+0.187:
+======
+- plugins/cheat: Add hotkey support, and nes, snes and genesis Game Genie support [Carl].
+- Improved CD audio play track/index command handling [smf].
+- drawgfx: Made the palette optional, and fixed viewgfx for case where palette is absent [O. Galibert].
+- devcb: Added line hold capability [O. Galibert].
+- bgfx: Fixed xBR-lv2-multipass, xBR-lv2-fast, xBR-lv2-noblend, xBR-lv2, xBR-lv3-noblend and xBR-lv3 shaders [Ryan Holtz].
+- Added preliminary YM3802 MIDI/cassette controller with MIDI clock timer and click counter. Added X68000 expansion device using the YM3802, Mahou Daisakusen (x68k) plays MIDI music [Barry Rodewald].
+- Sort slot options by name in -listslots output [AJR].
+- Don't try to read past the end of a memory space in debug view [AJR].
+- Added validation for slot cards and fixed some errors exposed by this [Vas Crabb, AJR].
+- Migrated remaining device machine configuration additions to instance member functions [Ivan Vangelista].
+- Made RAM device look for [km](i?b)? rather than [km]. Suffix [Nathan Woods].
+- Fixed a crash when returning to the front-end after launching a system from favorites [Nathan Woods].
+- CoCo: Overhauled the cartridge slot subsystem [Nathan Woods].
+- Made read_or_write a scoped enum [Nathan Woods].
+- Changed the profiler to use std::ostringstream as the text sink (instead of std::string) [Nathan Woods].
+- Changed a few C strings to std::string references in the debugger [Nathan Woods].
+- Fixed JVC disk format to correctly recognize 2 sided disks [Tim Lindner].
+- Use more likely clocks for littlerb based on PCB crystals (main CPU is more likely 8MHz than 12MHz). Also added a hack to overclock the TMS to 120% so that the map screen renders properly [David Haywood].
+- Fixed trailing space in -listclones and -listbrothers output [Tafoid].
+
+0.186:
+======
+- Added a mechanism for devices to generate clocks for other devices: Made set_unscaled_clock and set_clock_scale not call notify_clock_changed unless the device has been started. Made owner-derived clocks update whenever the owner's clock changes, including at configuration time. Add clock_update_delegate type to represent device-generated clock outputs that may be dynamically modified [AJR].
+- Fixed bug that permanently disabled some UI search strings when they were cleared [AJR].
+- Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases [AJR].
+- Made -listroms display a user-friendly message when no ROMs are required [AJR].
+- Replace linenoise-ng with a simpler port that uses a different UTF-8 parser [Carl].
+- plugins/console: Improved suggested completions [Carl].
+- Replaced some custom palette initialisation functions with appropriate standard callbacks [Dirk Best].
+- ui: Added ability to select different tilemap categories in tilemap viewer with page up/down keys [Dirk Best].
+- Added hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods].
+- Fixed issue in image identification code accessing an empty vector when the hashed data length is zero [Nathan Woods].
+- Cleanups to ram_device: Expose specific options, removing the burden of parsing RAM strings from clients. Moved validation of command line arguments out of device_validity_check() [Nathan Woods].
+- imgtool updates: Cleaned up validity code and transitioned to std::wcerr as Windows doesn't like mixing std::wc(out|err) with printf. Fixed issue with 'listfilters' command. Extremely basic fix to the imgtool <-> CHD HD bridge (really nees much more work). Simplified CHD metadata load since C++11 allows writing to a std::string directly [Nathan Woods].
+- Windows options fixes: Removed redundant ";global_inputs". Disambiguated "yiqp" abbreviation - YIQ phase count is now "yiqpc" (YIQ pixel clock scaling is still "yiqp") 
+[Nathan Woods].
+- Auxiliary verb handling cleanup: Fixed a bug where resolved slot/image options would choke -romident. Fixed crash when -romident is not supplied any arguments. Converted verb handlers to take arguments as a vector of strings. Fixed regression preventing -listslots/-listmedia working when slot options are specified [Nathan Woods].
+- Don't strip spaces/quotes from command line arguments, only INI option values [Nathan Woods].
+- Fixed an issue that could cause problems when loading reset_on_load devices from software lists at runtime [Nathan Woods].
+- Miscellaneous cleanup and modernisation: Polished up traces of slot options menu's pre-C++ heritage and moved completely private code to an anonymous namespace. Created device_slot_interface::slot_name() to wrap pattern of taking the tag and removing the initial colon. Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'. Converted running_machine::saveload_schedule to scoped enum. Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to 'bool ignore_unknown_options'. Retired min/max in attotime.h in favor of std::[min|max]() [Nathan Woods].
+- Fixed two software loading bugs: Fatal error on reset if either a multipart softlist item was loaded, or a single-part item was loaded into a system with more than one slot of the same media type. Fatal error on non-existent images specified in INI files (bad image is ejected, restoring previous behaviour) [Robbbert].
+- Fixed 6800 invalid instruction length/program counter behavior and renamed invalid opcodes. This makes goupil g1 Basic work [Jean-Francois DEL NERO].
+- Fixed issue with the Emscripten port where the emulation would continue to run while paused [Steven Hugg].
+- Converted many devices to use machine configuration in member functions [Vas Crabb, Ivan Vangelista].
+- Cleaned up GENie Lua scripts and corrected some header file names [dankan1890].
+- Made software list menu appear if appropriate when starting a machine from the Favorites menu [dankan1890].
+- Updated lua engine documentation [Dan Amador].
+
+0.185:
+======
+- Bugfix #06402: [Interface] UI: Switch Item Ordering corrupts software list [Nathan Woods].
+- Netlist code refactoring: More use of C++ features. Some CRTP in pfmtlog. Demangled code for truthtables. Used more constexpr. Rewrote main loop. Used default constructors and assignment operators were applicable. Optimized 7448 and 9316. Startup time decreased by 25% to 30% (netlists like pong/kidniki are parsed, analyzed and constructed in around 15 ms). Run performance has improved by about 5% [Couriersud]. 
+- Renamed the write-only -printer image instance type to -printout (the former conflicts with printer port in several drivers) [AJR].
+-UI input map fixes: Fixed a longstanding bug that prevented binding several ORed buttons to any input belonging to a non-root device. Fixed a visual glitch when assigning inputs to analog sequences [AJR].
+- Created device_palette_interface mixin: Provides most of the functionality from palette_device besides initialization/decoding routines and RAM interface. Updated screen_device and device_gfx_interface to use device_palette_interface rather than palette_device. Modified v9938 and v9958 to use device_palette_interface rather than a subdevice [AJR].
+- Created 'util::arbitrary_clock' class template representing a clock with known epoch. Converted NTFS filetime code and Imgtool Mac datetime code to use new template [Nathan Woods].
+- Refactoring in response to MT6531: Exposed emu_options image and slot selections as maps, store data that persists across sessions here rather than subverting core_options. Overhauled various implementations of get_default_card_software() [Nathan Woods].
+- Miscellaneous cleanup: Fixed a pedantic MSVC warning in dipalette.h. Made a few random methods 'const'. Changed a lookup within the softlist code to use std::find_if() [Nathan Woods].
+- i86: Added decrypted opcodes space support [O. Galibert].
+- Removed support for direct updated handlers [O. Galibert].
+- Turned pstring iterator into a real forward iterator that works with standard algorithms [Vas Crabb].
+- Assume LLVM libc++ if __llvm__ is defined but __GLIBC__ is undefined (fixes bx build with MacPorts clang) [Vas Crabb].
+- Apply environment variable substitution to bgfx_path (github issue #2201) [Vas Crabb].
+- Fixed writes to decrypted opcode memory space. Separated EXPSPACE_RAMWRITE and EXPSPACE_OPCODE case statements to allow opcode writes to access the correct memory. Example: In flicky this will now disable cat collisions with the main sprite: maincpu.ob@3ac6=c3 [Pugsy].
+
+0.184:
+======
+- Bugfix #06361: [Cheat System] Cartrdige memory accessed directly with cheats will crash MAME [Pugsy].
+- Converted screen_device VBLANK callback to devcb_write_line. Renamed screen_eof_xxx to screen_vblank_xxx in many drivers [AJR].
+- Added skeleton device for Video System C7-01 GGA [AJR].
+- 8x300dasm: Corrected JMP target addresses [Barry Rodewald].
+- Work around bug in msys2 C runtime causing garbage on console with DInput controllers [Brad Hughes].
+- mips3 DRC: Ensure branch delay slot instruction is not virtual instruction before trying to generate code to add it to the block checksum, fixed FPU register aliasing [Happy].
+- netlist: Added a heap priority queue, fix netlist stats collection, fixed new clang warnings, reduced footprint of extended clock [couriersud].
+- Decoded popper color PROMs [Joe Magiera, couriersud].
+- Softlist/slot improvements: Fixed an issue where device options (e.g. -cart) were reported as unknown when they actually worked. Do more softlist evaluation upfront and use results to drive slot/image setup. Added device_slot_interface::has_selectable_options() to determine whether a particular slot has selectable options [Nathan Woods]. 
+- archimedes: Added JFD floppy format as used by JASPP (Archimedes Software Preservation Project) [Nigel Barnes].
+- Made side effect suppression a machine property [O. Galibert].
+- MIPS: Added initial support for VR5500 and TX4925 CPUs [R. Belmont].
+- debugger: Print octal addresses in the trace if CPU is octal [shattered].
+- Removed tag() argument from logerror() calls in cpu/i86 and floppy code [shattered].
+- legacy floppy: Fixed floppy_stp_w [shattered].
+- t11 cpu: Emulate MFPT instruction; MOV, CLR and SXT read memory before writing to it [shattered].
+- Updated GLM to tip of stable branch (0.9.8.5 pre-release) - fixes build with MacPorts clang [Vas Crabb].
+- Make device types self-register: MAME now walks all linked device types for -listxml, -romident and -verifyroms whether they're used or not. Made device_creator a variable template. Removed screen.h and speaker.h from emu.h and centralised instantiations of screen and speaker finder templates. Added basic device validation to -valid checks. Substantially sped up -listxml (at least 30% improvement), -verifyroms, and -romident on multiple files [Vas Crabb]. 
+- Fixed crash on excessive command-line arguments, removed long-dead option [Vas Crabb].
+- Fixed softwarelist cart memory cheats by moving cheat file loading to a later point in startup process [Pugsy].
+- Updated hiscore.dat [Leezer].
+
+0.183:
+======
+- dsk_dsk format: Propagate CRC error flags [shattered].
+- Fixed crash on loading invalid cheats, MAME now logs an error and continues [Vas Crabb].
+- Made debugger fall back from binary to default base on 0b prefix: This makes expressions like 0B12 parse as hex in hex memory spaces. Where there's ambiguity (e.g 0B01) binary takes precedence [Vas Crabb].
+- Natural keyboard fixes: Fixed Shift-Alt combinations. Fixed modifiers with LLE keyboards (shift/alt now work reliably with Sun, Amiga, RM Nimbus, etc.). ixed crash on keyboard inputs with four characters [Vas Crabb].
+- Made object finder arrays meet more Container/Sequence requirements (allows use of range-based for and many standard algorithms) [Vas Crabb].
+- imgtool: Fixed recently introduced bug that could cause hex numbers to be incorrectly emitted in usage text [Nathan Woods].
+- Fixed clipper CPU build [Felipe Sanches].
+- Netlist library improvements: Refactored netlist pmf code. Small optimization for diode calculations. Remove virtual from some destructors and make them protected. Various cleanups and performance improvements. Fixed some inconsistencies. Reduced overhead to load data (ROMs) in netlist significantly - Previous solution involved a significant amount of redundant replication of information and objects. Now, a ROM name specified as SOMEROM(x21, "romlabel") will be automatically be loaded from region "netlisttag:romlabel" (see hazl1500 and stuntcyc). Fix warning about non existing memory space when netlist is used. Logging enhancements. Fixed crashes on terminals without nets (i.e. connected to a rail). Reviewed "FIXMEs" and corrected some minor ones. Made m_cur_analog protected.
+ * Fixed pmf delegates to work with MSVC. More optimizations to the solver code. Started work on a better signal pipeline in nlwav. Only generate documentation for entities which are documented.
+ * Made it possible to have multiple update handlers per device - Makes device implementation more flexible and faster and improves performance slightly - Each input is now assigned a notification handler. Currently this is update, but going forward it may be a custom handler. Fixed MEMPOOL on OSX. Added delegate support for Emscripten, ARM processors and VS 2015 x64. Made sure netlist includes are not found directly on include path. Made Windows builds of nltool and nlwav understand Unicode. Added standalone VS2015 build file in src/lib/netlist/build. Added state saving and loading to nltool. Optimized 7493 device - gives some 5 to 10% improvement to pong. Reworked truthtables a bit: moved 9312 and 74279 to TTL macro library, renamed TTL_9312_* to more appropriate DM9312. Fixed a number of warnings from latest Ubuntu clang 5.0 [Couriersud].
+
+0.182:
+======
+- Bugfix #06464: [Interface] Every system with softlists using the "requirement" sharedfeat: Software list items with the "requirement" sharedfeat don't work [AJR].
+- Z80 daisy chain improvements: Use the standard vector for an external IRQ, rather than a bogus one from the last device in the chain. Enabled Z80 daisy chain on Cedar Magnet sound board (fake IRQ still necessary, but vectors are correct now). Source note regarding IM 2 behavior contrary to Zilog datasheet [AJR].
+- Corrected natural keyboard handling of toggle keys [AJR].
+- Correctly report size of ROMs over 2GB in XML output [AJR].
+- OS X Cocoa debugger: Autoscroll log window, improved view scoll behaviour [Curt Coder].
+- Makes sound IRQs easier to deliver and reduces the incidence of HOLD_LINE in drivers. Inverted logic (latch_read -> latch_written), fixed initial callback after start [Dirk Best].
+- chdman: Added support for hard disk templates and added some initial ones [Dirk Best].
+- Added HLCD0515/0569 LCD Driver device [hap].
+- MPCC improvements: Robustification, LOG messages and pinout added. Completed Tx, Rx and serial interface handshake support [Joakim Larsson Edstrom].
+- Added JuliaLang utf8proc as a third party library with wrappers [Nathan Woods].
+- imgtool improvements: Changed charconv from an enumeration to an interface: Added a table-based implementation for simple single-byte endocdings. Added support for ISO-8859-1 Latin 1 and Mac Roman. Use wcout/wcerr in order to support Unicode console output. Fixed recently introduce bug on attribute listings. CoCo/RS-DOS: Miscellaneous cleanups and C++ modernization [Nathan Woods].
+- Created a new debugger command 'tracesym': Shorthand for 'tracelog' that uses default format string [Nathan Woods].
+- Added a facility allowing logerror output to be captured in traces. The third parameter to the debugger 'trace' is now a list of '|' delimited options to support this [Nathan Woods].
+- Acorn Archimedes updates: Single FDD installed by default, other bay usually contains HDD. Removed tape control input port. Added apd_dsk: new floppy format 'Archimedes Protected Disk' [Nigel Barnes].
+- netlist improvements: ROMs now specify an identifier in the netlist to load data from a source_t implementation. Added "-r" option to nltool to pass path to a folder containing ROM files. setup_t is owned by netlist_t; stop being complicated. Removed gnd() method, simplified further. Fixed seldom-used conditional build options including OPENMP. Increased readability of timed queue code. Renamed connect_late to connect. Register nets where they are created. Preparatory work for automatically generated include files for devices [Couriersud].
+- nltool now is able to create all defines from the factory definitions. Added code to remove devices connected only to rail terminals. Refactored reverse polish notation evaluator into own its source files. Added function parameter to current and voltage sources VS and CS (e.g. to produce a sine wave). Changed code to allow devices to optionally be treated as dynamic or timestepping devices. Converted warnings and fatal log messages to constants. Assume string literals are UTF8 in netlist code.
+- netlist: Added LM747, LM747A and 2N2565 [Vas Crabb].
+- mouse.cpp: Simplification and cleanup: Used new MC68705P3 core and removed obsolete glue. Made comment styles consistent, eliminated device timers altogether, and de-duplicated code for updating X and Y axes. The card works before and after the change, but by default axes are only mapped to inc/dec keys, not host mouse [Vas Crabb].
+- debugger: Use 0o prefix for octal numbers, 0b for binary numbers, and allow uppercase radix characters [shattered, Vas Crabb].
+- Added support for earlier COS versions on the RM380Z. Earlier versions had only a 40 column display and the cassette tape interface [zx70].
+- Made the RTC chip react on the Aussie Byte [zx70].
+- Scrollup fix for the TMS9927 family. Avoid reconfiguring all the CRTC parameters on any cursor shape change, which was resetting the scroll counter. Fixes scrollup for the Otrona Attache [zx70].
+- (pc_dsk): Support 360K images with 512-byte header, found in some softlist entries. Also support 1.44MB images with 1024-byte footer [Justin Kerk].
+- ImageDisk loader: Don't crash on tracks with no data [shattered].
+- TeleDisk loader: Accept images produced from 8" SSSD disks [shattered].
+- imagedev/floppy: Added has_trk00 property, initially for IBM 6360 8-inch drives. Added 'dskchg_writable' property (for Sony Microfloppy drives) [shattered]. Inhibit reading until drive has spun up. This affects drives/controllers that do not use the READY line. Still an over-simplified solution; requires a proper implementation of a spin-up ramp. Stepping is allowed during spin-up until further evidence from real drives [Michael Zapf].
+- formats/wd177x_dsk: Allow override of build_sector_description, like nec765_dsk [shattered].
+- harddriv: Hooked up the first serial port as an RS232 device to enable linking. This allows one to link up two Race Drivin' using null-modem and bitbanger (38400 8E1) [SailorSat].
+- HP9895 dual-floppy drive WIP: Added draft of HP9895 floppy drive, PHI passes POST. 9895 now talks through ieee488! Cosmetic fixes to 9895-related source files [F. Ulivi].
+- Updated PortAudio library and added audio output module. Provides low-latency audio output on Windows 7 or later and Linux [inte alls].
+- Added more software list documentation based off new dumps. Carts for a2600, megadriv, n64 and snes got redumped recently by TeamEurope; added newfound information to the softlists. Removed syvalionp2 as it's simply a bad dump of syvalionp [Fake Shemp].
+
+0.181:
+======
+- Created DYNAMIC_API macros for cleaner definition of dynamically linked functions [Brad Hughes].
+- Double-check key state before UI autorepeat (fixes github issue #1169) [Brad Hughes].
+- (i960) Preliminary support for CALLS instruction and WIP on FAULTx instructions. Added scanbyte and IP-relative lda opcodes, masked low bits of branch targets. [R. Belmont]
+- (ppc) Set DSISR to the exception flags rather than the address on data access faults and correct flag values [R. Belmont, Vas Crabb, maximumspatium].
+- (DRC) Fixed XMM usage on SysV x64 ABI, restoring debugger functionality on Mac/Linux for DRC drivers [maximumspatium, R. Belmont, Ville Linde].
+- Added preliminary MB86235 recompiler [Ville Linde].
+- (delegates) Don't crash on late binding if no object is actually needed. [O. Galibert].
+- (pci9050) Fixed the mappings [O. Galibert].
+- (sharc) Use standard memory maps [O. Galibert].
+- (tms32025) Use the standard memory interfaces [O. Galibert].
+- (dimemory) Removed the magic bypass [O. Galibert].
+- (votrax SC01) Simulate. Complete simulation of digital section based on die imaging. Removed now-obsolete samples. Plosives are still imperfect [O. Galibert].
+- netlist: Added simple ROM hookup capability [Ryan Holtz].
+- netlist: Device additions: 74161 Synchronous 4-Bit Binary Counter with Clock. 7473 Dual Master-Slave J-K Flip-Flops with Clear and Complementary Outputs. Am2847 Quad 80-bit Static Shift Register. DM9334 8-bit Addressable Latch. 82S126 1K-bit bipolar PROM. 74174 Hex D-Type Flip-Flop with Clear. 2716 16 Kbit (2048x8) UV EPROM. 74166 Parallel-Load 8-Bit Shift Register. 74260 Dual 5-Input NOR Gate. Intel 2102A 1Kbit (1024x1) Static RAM. 74365 Hex Bus Driver with 3-State Outputs. Generic 2- and 3-terminal Tristate device. 74165, 74194, 7475, 7485, and DM9322
+ * 82S126 4kbit (512x8) TTL bipolar PROM. 82S123 256-bit (32x8) TTL bipolar PROM. Note: Tristate device and 74365 do not actually tristate, they are simply a way of combining multiple outputs/chip enables [Ryan Holtz].
+- netlist: Added shared RAM pointer, for use by netlist RAM devices which need updating by non-netlist driver code [Ryan Holtz].
+- netlist: Various fixes: 7473: Made device only transition on a falling clock. 74161: Inverted Clear and Clock inputs to match datasheet.  * 74260: Fixed number of inputs. Am2847: Fixed shift register size (was 160 bits, should have been 80 bits). DM9334: Inverted C and E inputs to match datasheet [Ryan Holtz].
+- XML refactoring: Moved stuff to namespace util::xml and scoped down some enums. Split config load/save delegate types, made config load take const node so it can't inadvertently mangle data [Vas Crabb].
+- (coretmpl) Added an associative LRU cache with map-like behaviour [Vas Crabb].
+- (selmenu) Use LRU cache so icons don't all need to be reloaded on scroll [Vas Crabb].
+- uismall.bdf: Set default character for absent glyphs [Vas Crabb].
+- rendfont.cpp: Fixes and Improvements: Encapsulated many BDF and BDC file format handling details. Made file I/O 64-bit clean. Added some checks for allocation errors. Wrote more solid BDF parser with error messages and trace logging. Fixed heap smash when building bitmaps for BDF fonts. Extended BDC format to support high planes and default character. Render default character if glyph not found for BDF/BDC [Vas Crabb].
+- Made bitmaps movable, allowing them to be used in vectors and emplaced easily [Vas Crabb].
+- Fixed uninitialised memory read as debugger command history (github #1802) [Vas Crabb].
+-netlist: Added new devices: uA741 in 8-, 10- and 14-pin DIP variants. 4316 bilateral switch pack [Vas Crabb].
+- Amiga/Buddha: Cleanups and fixes, partially working now [Dirk Best].
+- (6840ptm) Use standard device clock for internal clock [Dirk Best].
+- Archimedes: Made floppies work [Sandro Ronco].
+- WIP: Intergraph driver support: Enabled more Rx interrupts and fixed error FIFO [Joakim Larsson Edstrom].
+- (68230) Added initial support for timer interrupts and embryonic support for port interrupts. Fixed bug in port A-C write and added check of DDR registers for bit updates. Added bitwise update methods for all ports and moved register access methods to private section [Joakim Larsson Edstrom].
+- Fixed a regression FIFO bug and a bug in the handling of Special Interrupts [Joakim Larsson Edstrom].
+- Don't use mem_mask as ATA doesn't have an equivalent mechanism for byte accesses and it could mask out data that real hardware would keep, instead fix issue with 68000 byte writes to sector count by only taking the bottom 8 bits from the bus [smf].
+- Fixed ATA Write Multiple (command c5) ignoring the block count on the first block [smf].
+- Update disassembly if IP or CS are changed in the debugger; also update IP and CS when PC or CURPC changes [smf].
+- Added halt to debugger state, so you can break out of a hlt instruction. [smf]
+- Use correct Commodore LCD font [Mike Naberezny, smf].
+- Fixed -romident misattributing device ROMs to alphabetically first driver using them [AJR].
+- netlist: Aligned naming of 9334 and made nl_hazelvid.cpp parseable by nltool [couriersud].
+- imgtool refactoring: Changed a number of declarations to use std::string instead of 'const char *'. Removed dead strncatz() function. Fixed a recently introduced error in the 'dir' command line command. Cleaned up the output of the 'dir' command [Nathan Woods].
+- Added floppy drives to the PG675 and PG685 variants, changed floppy controller to FD1797 (not hooked up yet).
+- COP400 MCU fixes: L pins are tri-stated when EN2=0. Corrected internal RAM memorymap for COP410 [hap, Sean Riddle].
+- New softlist: HP Integral PC [shattered].
+- debugimgui: Sort directory entries in mount dialog, as zippath_readdir() does not guarantee entries are in any particular order [Barry Rodewald].
+- First stab at cleaning up the DOS boot and installation disk mess on the PC & AT softlists: Removed 100% duplicate sets. Moved sets from ibm5170 to ibm5150 if they work on PC-class hardware (later DOS versions are needed for some games). Removed the ibm5160 softlist, it only contained one duplicate set. Added clone relationships. More consistency in set naming and metadata [Justin Kerk].
+
+0.180:
+======
+-imgtool: Various refactoring: * Consolidated logic for default implementation of imgtool::image::list_partitions() * Changed imgtool::stream::open*() to return  imgtool::stream::ptr * Fixed a recently introduced bug that caused image types that do not support partitions to function incorrectly [Nathan Woods].
+- core: Disassembler modernisation: * Merged M6809, HD6309 and Konami disassemblers * Added arcompact and PDP8 disassemblers to unidasm * Fixed unidasm declaration for upd7725 * Eliminated static disassembly buffers in RSP, PowerPC and MIPS DRCs * Changed all disassemblers to use output stream rather than character buffer * Changed disassembler overrides to use 'std::ostream &' internally * Changed disassembler infrastructure to not use char buffers internally [Nathan Woods].
+- (sc499) Corrected regressions that prevented writing. [Hans Ostermeyer].
+- various: Miscellaneous typo fixes [Jordi Mallach, Tafoid].
+- (arm), (arm7) Various emulation improvements: * Implemented Transfers to User Bank in LDM/STM and fixed flags corruption in branch opcodes * Fixed register-base shift with a value >= 32, this fixes the RISC OS graphics issues * Fixed carry for ROR and preserve IRQ_MASK in LDR R15,*** [Sandro Ronco].
+- core: Added non-netlist devices for logic ICs: * 54/74160,161,162,163 * 54/7416x Hex/Quad D Flip-Flops with Clear * 9334/DM9334 8-Bit Addressable Latch * 7400 Quad 2-Input NAND Gate, 7404 Hex Inverter, 82S126/82S129 256x4-bit PROM [Ryan Holtz].
+- luaengine: Converted to sol2 [Carl].
+- plugins/console: Added Lua console as plugin [Carl].
+- core: Moved device_memory_interface from driver_device to dummy_space_device: * Exposed the dummy_space_device as machine().dummy_space() with a trampoline in driver_device for existing callers * Debugger no longer needs to special case root_device() to avoid showing the dummy address space [smf].
+- Implemented S1985 backup RAM: * Fixes TPC310 accessories cursor movement on the second time you launch it with left ctrl + left shift * Fixed Matsushita backup RAM saving * Implemented S1985 and Matsushita state saving * Implemented MSX switched interface without using an address map [smf].
+- Throw CHDERR_FILE_NOT_WRITEABLE rather than CHDERR_UNSUPPORTED_VERSION if you try to open an old version CHD or writing [smf].
+- (ncr5390) Implemented selection disable [O. Galibert]
+- addrmap refactoring: * Removed device parameter * De-hand-templatized address_map_entry, remove then unneeded entry parameter * Simplified constructor, thanks Micko * Changed setters into passthroughs * Stream it * Changed to use dot syntax rather than -> syntax for chaining [O. Galibert].
+- addrmem: Made obvious renames and added helpers [O. Galibert].
+- general: Eliminated attaching memory maps to driver_device [O. Galibert].
+- emucore: Removed generic_ptr [O. Galibert].
+- (scn2674) Various changes: * Corrected the row on which a split occurs, fixes Octopus display of the last row before the status line split * Added command 0xA6, fixes Octopus status line in Concurrent DOS, and BIOS character block write function [Barry Rodewald].
+- core: Fixed a bug parsing the software name option that prevented loading slot defaults for software selected from the internal UI [AJR].
+- (pit8253) Made MSB-only counter writes lower outputs in mode 0 [AJR].
+- (z80scc) Various changes: * Added support for RTxC as BRG clock source, allows the SGI Indy to have a console * Fixed a bug in rr15 support, allows macplus, etc. to boot now * Improved interrupt handling, allows mouse pointer to move in macplus driver for System 6.0.8 * Fixed init state of latched rr0 values, improves the success ratio of getting the mouse working in both X and Y on macplus, etc * Minimal sync/hunt support to enable System 7 to boot on macplus [Joakim Larsson Edstrom].
+- (z80dart) Refactored FIFOs using new template based FIFO class [Joakim Larsson Edstrom].
+- core: Added delegate support for lambdas and std::functions in general, also supporting const members now [Miodrag Milanovic].
+- core: Added more applicable Catch testing framework and converted all tests to be done properly by guidelines: * Still needs TESTS=1 to enable build of tests [Miodrag Milanovic].
+- osd: Moved UWP asset files to proper place [Miodrag Milanovic].
+- util: Added a simple FIFO template [Vas Crabb].
+- xmlfile: Turned API into something that looks like C++ and allowed use of const data node objects [Vas Crabb].
+- 3rdparty: Updated LZMA to 16.04 (security and portability fixes) [Vas Crabb].
+- core: Introduced u8/u16/u32/u64/s8/s16/s32/s64 alias types: * New abbreviated types are in osd and util namespaces, and also in global namespace for things that #include "emu.h" * Removed the cstdint types from everything in emu * Removed U64/S64 macros * Fixed a bug in dps16 caused by incorrect use of macro * Fixed debugcon not checking for "do " prefix case-insensitively * Fixed a lot of messed up tabulation * Changed many macros and constants to constexpr * Fixed up many __names [Vas Crabb].
+- complay.py: Rewrote to parse/minify layout XML - invalid XML in internal layouts now cause build failures [Vas Crabb].
+- uismall.bdf: Added some typographical characters to, including the hair space used by the internal UI [Vas Crabb].
+- frontend: Encapsulated more of the menu base class to control when layout changes can happen, encapsulated mouse translation [Vas Crabb].
+- osd: Fixed key names with -keyboardprovider win32 [Vas Crabb].
+- core: Drop invalid input tokens when parsing configuration, fixes uncaught exception error when writing configuration. [Vas Crabb].
+- hlsl: Fixed games with off-screen backdrop artworks (e.g. atarifb, bowler) [Jezze].
+- build: Fixed make VERBOSE=1 not showing archive commands for static libraries [Happy].
+- osd: Added new UWP icons/images [JacKc].
+- (upd7220) Fixed division by zero in update_graphics [Bavarese].
+- build: Fixed building on ppc64le and s390x [Julian Sikorski].
+- lua: Added ability to show custom menu [headkaze].
+- (isbc_208) Added device [Carl].
+
+0.179:
+======
+- core: Proposed for new system flags for 0.179 dev-cycle: MACHINE_NODEVICE_MICROPHONE For unemulated microphone * MACHINE_NODEVICE_CAMERA For unemulated camera * MACHINE_NODEVICE_PRINTER For unemulated printer * MACHINE_NODEVICE_LAN For unemulated linking multi-cabinet capabilities * MACHINE_NODEVICE_WAN For unemulated networking capabilities * Restructured MACHINE_FLAGS into FATAL/WARNING/BTANB main categories, in order to make them easier to expose [Angelo Salese]. Added swpath. Allows users to specify location of loose software [Robbbert]. Added new string conversion overloads [a|w|t|utf8]_from_[a|w|t|utf8_]string(xyz.c_str()) [Nathan Woods]. Use standard uint64_t, uint32_t, uint16_t or uint8_t instead of UINT64, UINT32, UINT16 or UINT8 * Also use standard int64_t, int32_t, int16_t or int8_t instead of INT64, INT32, INT16 or INT8 [Miodrag Milanovic]. Ensured all CPUs export STATE_GENPCBASE and use safe_pcbase() for everything in the debugger, which allows interruptible CPUs to work properly [smf]. Misc. keyboard input improvements: Add BS, Tab, 00, 000 keys common on add-on keypads as input items; SDL may recognize these, but DirectInput does not * Assign Keypad 00 and Keypad 000 in several drivers' input lists * Add SDL keycode for "cancel" key * Add keypad keys as alternates to natural keyboard * Soft resets no longer turn back clocks on devices * Give RTCs their own phase of machine initialization, right after NVRAM loading * Make RTC feature flag overrides const, including one new one * Make rtc_clock_updated a required override [AJR].
+- imgtool: Various changes and modernizations: Mac: Fixed an unsigned overflow error that would causes crashes on 64 bit systems * Fixed a bug that could cause module's close() callback to be invoked if an image failed to open or be created * C++-ified imgtool_partition, imgtool_image, imgtool_stream, others * Converted a number of pointers to references * Made use of std functionality where possible [Nathan Woods].
+- 6809: Fixed disassembly when core is interrupted mid-instruction [smf].
+- ide: Added "headphones" to ATAPI CD-ROM drives [smf].
+- ay8910: Implemented upper address check * Not configurable at present, but chips could be ordered from the factory with IDs other than 0 [smf].
+- chdman: Fixed addmeta --valuefile by calling the correct write_metadata [smf].
+- OSD: Fixed several small issues in HLSL/BGFX * Fixed target texture dimension when -intoverscan is used (this fixes the appereance of scanlines and shadow mask) * Added target_scale and screen_count uniforms * Rounded corners now remain aligned with screen bounds when -intoverscan is used (single screen only) [Jezze].
+- d3d9: Fixed null reference exception when toggling from fullscreen to window mode. Disabled clearing render targets in several passes to reduce draw time, all texels are written with opaque anyway [Jezze].
+- d3d9/bgfx: Reduced defocus effect to one pass and capped defocus strength to 2.0. [Jezze].
+- various: Fixed various spelling errors [Jordi Mallach].
+- ds1386: Added Dallas DS1386-8K and DS1386-32K timekeepers (largely untested) [Ryan Holtz].
+- UI: Parenthesize optional items in input menus [AJR].
+- Added row size as sixth parameter to debug dump command [AJR].
+- linenoise: Fixed build with Visual Studio ('and' isn't supported) [dankan1890].
+- OSD: Incorporated product/instance DirectInput device IDs. This should allow better disambiguation of devices [Tomer Verona].
+- z80scc: Various improvements * Added support for shift left/right modes in zbus_r and zbus_w * Improved variant handling including some incomplete read register maps * Added external CTS and DCD interrupts * Improved device reset values * Added SWI acknowledge command * Improved/fixed handling of WR9, RR2, RR3 * Added WR7' register * Improved Tx handling, added Tx FIFO including special case with 1 slot Tx FIFO for NMOS and CMOS. IACK and reset improvements * Added IACK by reading RR2 * Made z80daisy_iack return -1 when no vector found or disabled through the WR9 VIS * Removed z80daisy_reti code to match SCC documentation * Removed defacto reset values where possible and replaced them with documented SCC reset values [Joakim Larsson Edstrom].
+- 8530scc: Fixed typo (allows System 7 to boot on Mac drivers, and fixes X68000 mouse) [CharlesJS].
+- es5506: Various fixes * Fixed readback of global registers when the current page was in a certain range * Made voices run for a zero-length loop, as real hardware does it and synthesizers rely on it * These changes fix the playback of "Transwaves" on the VFX and SD-series synths [Christian Brunschen].
+- hiscore.dat: Updates [Leezer].
+- 8042kbdc: Fixed keyboard on SGI Indy/Indigo 2 driver [Carl].
+- Fixed alt-enter full screen toggling on SDL (Linux/Mac/BSD) builds [Hans Ostermeyer].
+
+0.178:
+======
+- Bugfix #06372: [Interface] Bitbanger device can no longer accept streams/sockets/pipes [npwoods].
+- Move UI dats to Lua plugin: Changes the selgame UI sidebar get the dat information from a plugin rather than the hardcoded C++ * Much easier to add other dat files and allow for scripted data * Example included that uses the hi2txt XML parser files to display high score info from hiscore file or NVRAM [Carl].
+- Fixed setting m_filetype for images loaded from softlists [Nathan Woods].
+- Changed the "extension as filetype" behavior for software list images to be opt in behavior [Nathan Woods].
+- Modernization/C++-ification: Modernized option_guide, touched up imgtool * Initial imgtool C++-ification * Added a template wrapper for a contiguous array of objects that mimics a subset of SequenceContainer behaviour * Modernized CoCo cartridge infrastructure (use 'enum class', scoping, etc.) * Changed win_get_window_text_utf8() to return std::string * Consolidated menu code for text input [Nathan Woods].
+- Fixed an issue in the i860 disassembler that could cause an undefined string to be used [Nathan Woods].
+- Allow devices to indicate whether image creation should be supported at the command line [Nathan Woods].
+- Fixed a potential buffer overrun in the code that reads headers for the CoCo JVC disk image format [Nathan Woods].
+- Fixed an off by one error when identifying best entries for typeahead on the file selection and software list dialogs [Nathan Woods].
+- Retired imgtool_basename(), in favor of core_filename_extract_base() [Nathan Woods].
+- More new features for UI graphics viewer: Mouse over GFX tiles to reveal pixel values * Mouse over tilemap to reveal tile codes and colors * UI tilemap scrolling controls are now orientation-relative * Made mouse visible everywhere in UI graphics viewer by treating it [AJR].
+- Added HxC HFE disk format [Michael Zapf].
+- Added save state support to tms99xx; replaced new/delete by unique_ptr [Michael Zapf].
+- hp_hybrid: Added hp_hybrid & hp_5061_3001 to unidasm [F. Ulivi].
+- Added interrupt support in DUSCC device, Force CPU30 board driver and  interrupt controller support in the FGA002 device. Improved LOG messages in the 68230 device * Now able to boot VMEPROM with interrupt driven serial I/O [Joakim Larsson Edstrom].
+- Added header checks to identify in uef_cas and csw_cas formats [Nigel Barnes].
+- dirom banking fixes: Reject out-of-bounds bank numbers * Add a mandatory callback on bank change [O. Galibert].
+- (okim6295) Directly use set_rom_bank [O. Galibert].
+- dimemory, dirom: Added some documentation [O. Galibert].
+- (intelfsh) Added 16-bit hookup for the Sharp LH28F016S flash memory [Luca Elia].
+- Added support for binding devices to controller IDs: This allows for stable controller ids even if USB devices are plugged or unplugged, system is rebooted, etc [Tomer Verona].
+- Added id() property to input_device: Adds an id() property representing unique device ID * This allows the OSD layer to supply display name along with unique identifier * Currently only used to map a physical controller device to controller ID, but can be used more generally in the future * For raw input devices, device ID is full raw input name * For all other devices, we fall back to device name as the device ID * Device ID uniqueness is not currently enforced programmatically [Tomer Verona].
+- Various OSD changes: Converted OSD monitor info to modules, added DXGI implementation * Converted the monitor information code from video.cpp in SDL and Windows to modules [Brad Hughes].
+- (ay8910) Implemented register readback masking for AY-3-8914 as used on Intellivision [Lord Nightmare, Joe Zbiciak].
+- (6840ptm) Load the counter when held in reset [O. Galibert].
+- (mcd) Added incomplete Mitsumi ISA CDROM emulation [Carl].
+- Fixed compile for DirectWrite font provider and made it compile with normal Windows build [Brad Hughes].
+- (dec_lk201) Various changes: Additional key matrix documentation * Documented the switch IDs for each key * Fixed Setup(F3)->F3 and PF1->NumLock mapping * Added 8051 version ROM, not used yet * Added note about D13 contact being omitted from original schematic [Lord Nightmare].
+- (debugcmd) Various changes: Fixed trace command accessing a parameter beyond the list supplied * Added an error message if an invalid boolean is provided * Added functionality to allow boolean to be case-insensitive * Added code to skip empty strings when parsing booleans [smf].
+- Allow STRIP_SYMBOLS=1 and DEBUG=1 to be applied simultaneously [Tafoid].
+- Partial fix for MT06383: exporting is now also possible for the favorites list, except if it has software in it [dankan1890].
 
 0.177:
 ======
@@ -149,8 +473,8 @@ Latest editing: September 7, 2016
 - Compressed internal layouts [David Haywood].
 - TMS5220/5110 merge Part 1 [Lord Nightmare].
 - Iterate over core classes C++11 style [AJR].
-- Borrow string processing code from ui.cpp so that £ works in layouts (using UTF-8 encoding at least) [David Haywood].
-- Updated sc4fd7tha.lay with UTF8 encoding of £ sign [Krick].
+- Borrow string processing code from ui.cpp so that Â£ works in layouts (using UTF-8 encoding at least) [David Haywood].
+- Updated sc4fd7tha.lay with UTF8 encoding of Â£ sign [Krick].
 - Recognize the full range of controller inputs [AJR].
 - Redump leapstertv [Team Europe]
 - Initial Catalan translation [jmallach].
@@ -562,7 +886,7 @@ Latest editing: September 7, 2016
 
 0.159:
 ======
-- Fixed missing file details [Oliver Stöneberg].
+- Fixed missing file details [Oliver StÃ¶neberg].
 - (wozfdc) Reduce the flux inversion pulse duration to the minimum [Peter Ferrie, O. Galibert].
 
 0.158:
@@ -892,7 +1216,7 @@ Latest editing: September 7, 2016
 
 0.147u1:
 ========
-- Fixed resource data of Windows executable [Oliver Stöneberg].
+- Fixed resource data of Windows executable [Oliver StÃ¶neberg].
 
 0.147:
 ======
@@ -952,7 +1276,7 @@ Latest editing: September 7, 2016
 ======
 - Initial work in preparation for some modernization on the whole megadriv.c file, starting with better splitting of actual drivers (megadriv.c, megacd.c, mega32x.c, megasvp.c and megavdp.c) [David Haywood].
 - 8530SCC: Read back tx/rx status bits correctly [R. Belmont].
-- Made Z8001 I/O 16 bits wide, proper 8259 PIC hookup on M20 (no EC tests fail now) [R. Belmont, Christian Grˆssler].
+- Made Z8001 I/O 16 bits wide, proper 8259 PIC hookup on M20 (no EC tests fail now) [R. Belmont, Christian GrË†ssler].
 - Fix *BSD compile [ElBarto].
 - Added Microsoft Natural Keybaord emulation [Wilbert Pol, kevtris].
 - ISA_EGA: Fixed several text mode issues identified by running AT diagnostics [Wilbert Pol].
@@ -1460,7 +1784,7 @@ oddness/differences observed [Tafoid].
 ======
 - The core is based on MAME 0.128. This incorporates all features of the update to this core [MAME team].
 - Refactored ZIP path code out of src/mess/image.c, made more testable [Nate Woods].
-- Removed MESS_DEBUG and the TESTDRIVER define and enabled a lot of non-working drivers [Oliver Stöneberg].
+- Removed MESS_DEBUG and the TESTDRIVER define and enabled a lot of non-working drivers [Oliver StÃ¶neberg].
 - Changed the cassette implementation into a regular mame device [Wilbert Pol].
 
 0.127:
@@ -2305,8 +2629,8 @@ from the standard MESS CRC files, the 'crc' command is replaced with 'info'. Thi
   bytes as well as the sectors per track being limited to 17, this is also due to the WD1004A's limitations [Randy Rains].
 - TOOLS: Generic image tool added (imgtool.exe) with the following features: *MAME/MESS style driver architecture; where the image formats are contained in drivers. Currently, the only driver is for CoCo .DSK disk images, but there could be more. Runs on the command line. Commands for listing image  contents, retrieving and storing files. Supports images in .ZIP files. "Engine" is separate from the "shell"; which gives the potential for front ends for
  those who don't like command lines [Nate Woods].
-- Disk write support for AMSTRAD CPC [Oscar Martín González].
-- Wave timer fix [Oscar Martín González].
+- Disk write support for AMSTRAD CPC [Oscar MartÃ­n GonzÃ¡lez].
+- Wave timer fix [Oscar MartÃ­n GonzÃ¡lez].
 - m6510t/m7501/m8502 CPU cores added [Peter Trauner].
 - Extensive CRC updates [Kurunir, Chris Henry].
 - SysInfo.dat documentation update Please send all CRC/sysinfo file contributions to Chris Henry (battlepriest@hotmail.com) [Chris Henry].
@@ -2390,4 +2714,4 @@ GUI ports could use this to store some file selection lists together with the ty
 - First version, based upon MAME 0.31 source
 
 
-© 2011/2016  AntoPISA
+Â© 2011/2017  AntoPISA
