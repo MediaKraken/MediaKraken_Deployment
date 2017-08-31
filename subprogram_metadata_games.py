@@ -77,9 +77,6 @@ for fname in os.listdir(hash_path):
     logging.info("fname: %s", fname)
     # find system id from mess
     file_name, ext = os.path.splitext(fname)
-    # file_name needs to _flop, _cart etc cut off
-    # can't do this as some systems have a _ in the name - file_name = file_name.rsplit("_",1)[0]
-    file_name = file_name.replace("_cd", "").replace("_cart", "").replace("_cass", "").replace("_flop", "").replace("_rom", "").replace("_disk", "").replace("_hdd", "")
     if ext == ".xml":
         db_connection.execute('select gs_id from mm_metadata_game_systems_info'\
             ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".xml", ""),))
