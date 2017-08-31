@@ -40,7 +40,7 @@ def db_meta_game_system_list_count(self, search_value=None):
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
             ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-            ' and gs_game_system_json->\'@name\' %% %s', (search_value,))
+            ' and gs_game_system_name %% %s', (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
             ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
@@ -53,10 +53,10 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
     """
     if offset is None:
         if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
+            self.db_cursor.execute('select gs_id,gs_game_system_name,'
                 'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
                 ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_json->\'@name\' %% %s '
+                ' ? \'yes\' and gs_game_system_name %% %s '
                 'order by gs_game_system_json->\'description\'', (search_value,))
         else:
             self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
@@ -65,15 +65,15 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
                 ' ? \'yes\' order by gs_game_system_json->\'description\'')
     else:
         if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
+            self.db_cursor.execute('select gs_id,gs_game_system_name,'
                 'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
                 ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
                 ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_json->\'@name\' %% %s '
+                ' ? \'yes\' and gs_game_system_name %% %s '
                 'order by gs_game_system_json->\'description\' offset %s limit %s)'
                 ' order by gs_game_system_json->\'description\'', (search_value, offset, records))
         else:
-            self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
+            self.db_cursor.execute('select gs_id,gs_game_system_name,'
                 'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
                 ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
                 ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
@@ -88,42 +88,41 @@ def db_meta_game_list_count(self, search_value=None):
     """
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_game_software_info'
-                               ' where gi_game_info_json->\'description\' %% %s', (search_value,))
+                               ' where gi_game_info_name %% %s', (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_game_software_info')
     return self.db_cursor.fetchone()[0]
 
 
-# TODO select subselect for speed
 def db_meta_game_list(self, offset=None, records=None, search_value=None):
     """
     # return list of games
     """
     if offset is None:
         if search_value is not None:
-            self.db_cursor.execute('select gi_id,gi_game_info_json->\'description\','
+            self.db_cursor.execute('select gi_id,gi_game_info_name,'
                 'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                 ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
-                ' where gi_system_id = gs_id and gi_game_info_json->\'description\' %% %s '
-                'order by gi_game_info_json->\'description\'', (search_value,))
+                ' where gi_system_id = gs_id and gi_game_info_name %% %s '
+                'order by gi_game_info_name', (search_value,))
         else:
-            self.db_cursor.execute('select gi_id,gi_game_info_json->\'description\','
+            self.db_cursor.execute('select gi_id,gi_game_info_name,'
                 'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                 ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
-                ' where gi_system_id = gs_id order by gi_game_info_json->\'description\'')
+                ' where gi_system_id = gs_id order by gi_game_info_name')
     else:
         if search_value is not None:
-            self.db_cursor.execute('select gi_id,gi_game_info_json->\'description\','
+            self.db_cursor.execute('select gi_id,gi_game_info_name,'
                 'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                 ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
-                ' where gi_system_id = gs_id and gi_game_info_json->\'description\' %% %s '
-                'order by gi_game_info_json->\'description\''
+                ' where gi_system_id = gs_id and gi_game_info_name %% %s '
+                'order by gi_game_info_name'
                 ' offset %s limit %s', (search_value, offset, records))
         else:
-            self.db_cursor.execute('select gi_id,gi_game_info_json->\'description\','
+            self.db_cursor.execute('select gi_id,gi_game_info_name,'
                 'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                 ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
-                ' where gi_system_id = gs_id order by gi_game_info_json->\'description\''
+                ' where gi_system_id = gs_id order by gi_game_info_name'
                 ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
