@@ -21,9 +21,11 @@ import logging # pylint: disable=W0611
 from common import common_config_ini
 from common import common_internationalization
 from common import common_logging
+import os
 import uuid
 import json
 import xmltodict
+import subprocess
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -35,12 +37,14 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 # they just don't have @isdevice = 'yes' like mess hardware does
 
 # create mame game list
+mame_pid = subprocess.Popen('mame', '-listxml', '>', '/mediakraken/emulation/mame.xml')
+mame_pid.wait()
 update_game = 0
 insert_game = 0
 with open("/mediakraken/emulation/mame.xml", 'r') as xml_file:
     json_data = xmltodict.parse(xml_file.read())
     for child_of_root in json_data['mame']['machine']:
-        print("child: %s", child_of_root)
+        logging.info("child: %s", child_of_root)
         # see if exists then need to update
         db_connection.execute('select count(*) from mm_metadata_game_systems_info'
                               ' where gs_game_system_json->\'@name\' ? %s',
@@ -65,6 +69,50 @@ if insert_game > 0:
     db_connection.db_notification_insert(
         common_internationalization.com_inter_number_format(insert_game)
         + " games(s) metadata added from MAME XML", True)
+
+# load games from hash files
+total_software = 0
+hash_path = "/mediakraken/emulation/hash"
+for fname in os.listdir(hash_path):
+    logging.info("fname: %s", fname)
+    # find system id from mess
+    file_name, ext = os.path.splitext(fname)
+    # file_name needs to _flop, _cart etc cut off
+    # can't do this as some systems have a _ in the name - file_name = file_name.rsplit("_",1)[0]
+    file_name = file_name.replace("_cd", "").replace("_cart", "").replace("_cass", "").replace("_flop", "").replace("_rom", "").replace("_disk", "").replace("_hdd", "")
+    if ext == ".xml":
+        db_connection.execute('select gs_id from mm_metadata_game_systems_info'\
+            ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".xml", ""),))
+        row_data = db_connection.fetchone()
+        if row_data is not None:
+            with open(os.path.join(hash_path, fname), 'r') as data_file:
+                for json_game in xmltodict.parse(data_file.read())['softwarelist']['software']:
+                    # TODO check to see if exists....if so, update
+                    # build args and insert the record
+                    db_connection.execute('insert into mm_metadata_game_software_info (gi_id,'\
+                        ' gi_system_id, gi_game_info_json) values (%s,%s,%s)',
+                        (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game)))
+                    total_software += 1
+        else:
+            print("system not found: %s", sql_args[0])
+            # TODO add "new" system
+    elif ext == ".hsi":
+        db_connection.execute('select gs_id from mm_metadata_game_systems_info'\
+            ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".hsi", ""),))
+        row_data = db_connection.fetchone()
+        if row_data is not None:
+            with open(os.path.join(hash_path, fname), 'r') as data_file:
+                for json_game in xmltodict.parse(data_file.read())['hashfile']['hash']:
+                    # TODO check to see if exists....if so, update
+                    # build args and insert the record
+                    db_connection.execute("insert into mm_metadata_game_software_info (gi_id,'\
+                        ' gi_system_id, gi_game_info_json) values (%s,%s,%s)",
+                        (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game)))
+                    total_software += 1
+        else:
+            print("system not found: %s", sql_args[0])
+            # TODO add "new" system
+
 
 # commit all changes to db
 db_connection.db_commit()
