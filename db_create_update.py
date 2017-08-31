@@ -715,7 +715,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 
 
 # create table game_info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
-    ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_json jsonb)')
+    ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_name text,'
+    ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
         ' on mm_metadata_game_software_info (gi_system_id);') # so can match systems quickly
@@ -725,6 +726,9 @@ if db_connection.db_table_index_check('mm_game_info_idxgin_json') is None:
 if db_connection.db_table_index_check('mm_game_info_idxgin_name') is None:
     db_connection.db_query('CREATE INDEX mm_game_info_idxgin_name'
         ' ON mm_metadata_game_software_info USING gin ((gi_game_info_json->\'@name\'))')
+if db_connection.db_table_index_check('gi_game_idx_name') is None:
+    db_connection.db_query('CREATE INDEX gi_game_idx_name'
+        ' on mm_metadata_game_software_info (gi_game_info_name);')
 
 
 # create table for games systems
