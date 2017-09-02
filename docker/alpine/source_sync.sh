@@ -39,4 +39,3 @@ cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployme
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/network /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/web_app /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenWebServer/src/.
-

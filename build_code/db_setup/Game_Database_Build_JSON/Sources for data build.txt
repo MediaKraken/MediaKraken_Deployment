@@ -1,5 +1,5 @@
 # ini files and such - categories
-http://www.mameworld.info/mameinfo/download/Mameinfo%20+%20MAMEUI-inifiles-0170%20(r44909).7z
+http://mameinfo.mameworld.info/
 # Mameinfo dir can go away
 copy the MAMEUI-inifiles
 
