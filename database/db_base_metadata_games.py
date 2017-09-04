@@ -21,67 +21,6 @@ import logging # pylint: disable=W0611
 import uuid
 
 
-def db_meta_game_system_by_guid(self, guid):
-    """
-    # return game system data
-    """
-    self.db_cursor.execute('select * from mm_metadata_game_systems_info where gs_id = %s',
-        (guid,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
-
-
-def db_meta_game_system_list_count(self, search_value=None):
-    """
-    Return game system count
-    """
-    if search_value is not None:
-        self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-            ' and gs_game_system_name %% %s', (search_value,))
-    else:
-        self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
-    return self.db_cursor.fetchone()[0]
-
-
-def db_meta_game_system_list(self, offset=None, records=None, search_value=None):
-    """
-    # return list of game systems
-    """
-    if offset is None:
-        if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_name %% %s '
-                'order by gs_game_system_json->\'description\'', (search_value,))
-        else:
-            self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' order by gs_game_system_json->\'description\'')
-    else:
-        if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_name %% %s '
-                'order by gs_game_system_json->\'description\' offset %s limit %s)'
-                ' order by gs_game_system_json->\'description\'', (search_value, offset, records))
-        else:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' order by gs_game_system_json->\'description\' offset %s limit %s)'
-                ' order by gs_game_system_json->\'description\'', (offset, records))
-    return self.db_cursor.fetchall()
-
-
 def db_meta_game_list_count(self, search_value=None):
     """
     # return list of games count
@@ -181,20 +120,6 @@ def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
         ' where gi_game_info_name = %s and gi_system_id = %s',
         (game_name, game_system_short_name))
     return self.db_cursor.fetchall()
-
-
-def db_meta_games_system_insert(self, platform_id, platform_name,
-        platform_alias, platform_json=None):
-    """
-    # insert game system
-    """
-    new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'
-        ' gs_game_system_id, gs_game_system_name, gs_game_system_alias,'
-        ' gs_game_system_json) values (%s, %s, %s, %s, %s)',
-        (new_guid, platform_id, platform_name, platform_alias, platform_json))
-    self.db_commit()
-    return new_guid
 
 
 def db_meta_game_image_random(self, return_image_type='Poster'): # poster, backdrop, etc
