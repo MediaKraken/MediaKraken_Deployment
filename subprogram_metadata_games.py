@@ -94,6 +94,8 @@ if True:
             # find system id from mess
             file_name, ext = os.path.splitext(zippedfile)
             logging.info('fil,etx %s %s', (file_name, ext))
+            game_short_name_guid \
+                = db_connection.db_meta_games_system_guid_by_short_name(file_name.split('/',1)[1])
             if ext == ".xml":
                 db_connection.db_query('select gs_id from mm_metadata_game_systems_info'\
                     ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".xml", ""),))

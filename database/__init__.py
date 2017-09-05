@@ -156,13 +156,15 @@ class MKServerDatabase(object):
     from database.db_base_metadata_game_systems import db_meta_game_system_by_guid,\
         db_meta_game_system_list_count,\
         db_meta_game_system_list,\
-        db_meta_games_system_insert
+        db_meta_games_system_insert, \
+        db_meta_games_system_guid_by_short_name
     from database.db_base_metadata_games import db_meta_game_list_count,\
         db_meta_game_list,\
         db_meta_game_by_guid,\
         db_meta_game_image_random,\
         db_meta_game_insert, \
-        db_meta_game_update
+        db_meta_game_update, \
+        db_meta_game_by_name
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew,\
         db_meta_movie_status_update,\
         db_meta_movie_json_update,\

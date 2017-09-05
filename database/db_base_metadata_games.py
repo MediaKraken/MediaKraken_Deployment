@@ -155,3 +155,12 @@ def db_meta_game_update(self, game_system_id, game_name, game_json):
     self.db_cursor.execute('update mm_metadata_game_software_info set gi_game_info_json = %s'
                            ' where gi_system_id = %s and gi_game_info_name = %s',
                            (json.dumps(game_json), game_system_id, game_name))
+
+
+def db_meta_game_by_name(self, game_name):
+    """
+    # return game info by name
+    """
+    self.db_cursor.execute('select gi_id, gi_system_id, gi_game_info_json'
+        ' from mm_metadata_game_software_info where gi_game_info_name = %s', (game_name,))
+    return self.db_cursor.fetchall()

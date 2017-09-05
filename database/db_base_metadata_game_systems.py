@@ -94,3 +94,12 @@ def db_meta_games_system_insert(self, platform_id, platform_name,
         (new_guid, platform_id, platform_name, platform_alias, platform_json))
     self.db_commit()
     return new_guid
+
+
+def db_meta_games_system_guid_by_short_name(self, short_name):
+    self.db_cursor.execute('select gs_id from mm_metadata_game_systems_info'
+                           ' where gs_game_system_name = %s', (short_name,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
