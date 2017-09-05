@@ -97,7 +97,7 @@ if True:
             game_short_name_guid \
                 = db_connection.db_meta_games_system_guid_by_short_name(file_name.split('/',1)[1])
             if game_short_name_guid is None:
-                game_short_name_guid = db_connection. db_meta_games_system_insert(
+                game_short_name_guid = db_connection.db_meta_games_system_insert(
                     None, file_name.split('/',1)[1], None, None)
             if ext == ".xml":
                 for json_game in json_data['softwarelist']['software']:
