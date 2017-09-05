@@ -83,7 +83,6 @@ if True:
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
-
     zip_handle = zipfile.ZipFile('/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
         logging.info('zip: %s', zippedfile)
@@ -126,31 +125,39 @@ if True:
 
 
 # update mame game descriptions from history dat
+file_name = '/mediakraken/emulation/history189.zip'
+if not os.path.exists(file_name):
+    common_network.mk_network_fetch_from_url(
+        'https://www.arcade-history.com/dats/history189.zip', file_name)
 if True:
     game_titles = []
     game_desc = ""
     add_to_desc = False
-    history_file = open("/mediakraken/emulation/history.dat", "rb")
-    while 1:
-        line = history_file.readline()
-        if not line:
-            break
-        if line.find("$info=") == 0:
-            game_titles = line.split("=", 1)[1].split(",")
-        elif line.find("$end") == 0:
-            add_to_desc = False
-            for game in game_titles:
-                game_data = json.loads(db_connection.db_meta_game_by_name_and_system(
-                    game, None)[0])
-                game_data['gi_game_info_json']['overview'] = game_desc
-                db_connection.db_meta_game_update_by_guid(
-                    json.dumps(game_data['gi_game_info_json']), game_data['gi_id'])
-                game_desc = ""
-        if add_to_desc:
-            game_desc += line
-        if line.find("$bio") == 0:
-            add_to_desc = True
-    history_file.close()
+    zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
+    for zippedfile in zip_handle.namelist():
+        logging.info('zip: %s', zippedfile)
+        history_file = zip_handle.read(zippedfile)
+        while 1:
+            line = history_file.readline()
+            if not line:
+                break
+            if line.find("$info=") == 0:
+                game_titles = line.split("=", 1)[1].split(",")
+            elif line.find("$end") == 0:
+                add_to_desc = False
+                for game in game_titles:
+                    game_data = json.loads(db_connection.db_meta_game_by_name_and_system(
+                        game, None)[0])
+                    # let it explode if not found....should always be found
+                    game_data['gi_game_info_json']['overview'] = game_desc
+                    db_connection.db_meta_game_update_by_guid(
+                        json.dumps(game_data['gi_game_info_json']), game_data['gi_id'])
+                    game_desc = ""
+            if add_to_desc:
+                game_desc += line
+            if line.find("$bio") == 0:
+                add_to_desc = True
+        history_file.close()
 
 
 # commit all changes to db
