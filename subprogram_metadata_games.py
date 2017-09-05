@@ -95,10 +95,10 @@ if True:
             file_name, ext = os.path.splitext(zippedfile)
             logging.info('fil,etx %s %s', (file_name, ext))
             game_short_name_guid \
-                = db_connection.db_meta_games_system_guid_by_short_name(file_name.split('/',1)[1])
+                = db_connection.db_meta_games_system_guid_by_short_name(file_name.split('/', 1)[1])
             if game_short_name_guid is None:
                 game_short_name_guid = db_connection.db_meta_games_system_insert(
-                    None, file_name.split('/',1)[1], None, None)
+                    None, file_name.split('/', 1)[1], None, None)
             if ext == ".xml":
                 for json_game in json_data['softwarelist']['software']:
                     logging.info('xml: %s', json_game)
@@ -140,12 +140,11 @@ if True:
         elif line.find("$end") == 0:
             add_to_desc = False
             for game in game_titles:
-                db_connection.db_query('select gi_game_info_json from mm_game_info'
-                                      ' where gi_game_info_name ? %s', (game,))
-                json_data = json.loads(db_connection.fetchone()[0])
-                json_data['overview'] = game_desc
-                db_connection.db_query("update mm_game_info set gi_game_info_json = %s"
-                                      " where gi_game_info_name ? %s", (json.dumps(json_data), game))
+                game_data = json.loads(db_connection.db_meta_game_by_name_and_system(
+                    game, None)[0])
+                game_data['gi_game_info_json']['overview'] = game_desc
+                db_connection.db_meta_game_update_by_guid(
+                    json.dumps(game_data['gi_game_info_json']), game_data['gi_id'])
                 game_desc = ""
         if add_to_desc:
             game_desc += line
