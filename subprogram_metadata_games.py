@@ -96,38 +96,23 @@ if True:
             logging.info('fil,etx %s %s', (file_name, ext))
             game_short_name_guid \
                 = db_connection.db_meta_games_system_guid_by_short_name(file_name.split('/',1)[1])
+            if game_short_name_guid is None:
+                game_short_name_guid = db_connection. db_meta_games_system_insert(
+                    None, file_name.split('/',1)[1], None, None)
             if ext == ".xml":
-                db_connection.db_query('select gs_id from mm_metadata_game_systems_info'\
-                    ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".xml", ""),))
-                row_data = db_connection.fetchone()
-                if row_data is not None:
-                    with open(os.path.join(hash_path, fname), 'r') as data_file:
-                        for json_game in xmltodict.parse(data_file.read())['softwarelist']['software']:
-                            # TODO check to see if exists....if so, update
-                            # build args and insert the record
-                            db_connection.db_query(('insert into mm_metadata_game_software_info (gi_id,'\
-                                ' gi_system_id, gi_game_info_json) values (%s,%s,%s)',
-                                (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game))))
-                            total_software += 1
-                else:
-                    logging.info("system not found: %s", file_name)
-                    # TODO add "new" system
+                for json_game in json_data['softwarelist']['software']:
+                    logging.info('xml: %s', json_game)
+                    # TODO check to see if exists....if so, update
+                    # build args and insert the record
+                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['@name'], json_game)
+                    total_software += 1
             elif ext == ".hsi":
-                db_connection.db_query('select gs_id from mm_metadata_game_systems_info'\
-                    ' where gs_game_system_json->\'@name\' ? %s', (file_name.replace(".hsi", ""),))
-                row_data = db_connection.fetchone()
-                if row_data is not None:
-                    with open(os.path.join(hash_path, fname), 'r') as data_file:
-                        for json_game in xmltodict.parse(data_file.read())['hashfile']['hash']:
-                            # TODO check to see if exists....if so, update
-                            # build args and insert the record
-                            db_connection.db_query("insert into mm_metadata_game_software_info (gi_id,'\
-                                ' gi_system_id, gi_game_info_json) values (%s,%s,%s)",
-                                (str(uuid.uuid4()), row_data['gs_id'], json.dumps(json_game)))
-                            total_software += 1
-                else:
-                    logging.info("system not found: %s", file_name)
-                    # TODO add "new" system
+                for json_game in json_data['hashfile']['hash']:
+                    logging.info('hsi: %s', json_game)
+                    # TODO check to see if exists....if so, update
+                    # build args and insert the record
+                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['name'], json_game)
+                    total_software += 1
 
     if total_software > 0:
         db_connection.db_notification_insert(
