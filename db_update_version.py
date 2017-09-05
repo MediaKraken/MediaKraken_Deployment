@@ -149,7 +149,7 @@ if db_connection.db_version_check() == 9:
 if db_connection.db_version_check() == 10:
     db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_name text')
     db_connection.db_query('CREATE INDEX gi_game_idx_name ON mm_metadata_game_software_info(gi_game_info_name)')
-    db_connection.db_query('CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_name gist_trgm_ops);')
+    db_connection.db_query('CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_name gist_trgm_ops)')
     db_connection.db_version_update(11)
     db_connection.db_commit()
 

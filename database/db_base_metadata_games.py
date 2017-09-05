@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import uuid
+import json
 
 
 def db_meta_game_list_count(self, search_value=None):
@@ -136,3 +137,21 @@ def db_meta_game_image_random(self, return_image_type='Poster'): # poster, backd
         return self.db_cursor.fetchone()
     except:
         return None, None
+
+
+def db_meta_game_insert(self, game_system_id, game_name, game_json):
+    """
+    Insert game
+    """
+    self.db_cursor.execute('insert into mm_metadata_game_software_info(gi_id, gi_system_id, '
+                           'gi_game_info_name, gi_game_info_json) values (%s, %s, %s, %s)',
+                           (str(uuid.uuid4()), game_system_id, game_name, json.dumps(game_json)))
+
+
+def db_meta_game_update(self, game_system_id, game_name, game_json):
+    """
+    Update game
+    """
+    self.db_cursor.execute('update mm_metadata_game_software_info set gi_game_info_json = %s'
+                           ' where gi_system_id = %s and gi_game_info_name = %s',
+                           (json.dumps(game_json), game_system_id, game_name))
