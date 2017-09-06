@@ -100,7 +100,7 @@ def db_meta_games_system_guid_by_short_name(self, short_name):
     self.db_cursor.execute('select gs_id from mm_metadata_game_systems_info'
                            ' where gs_game_system_name = %s', (short_name,))
     try:
-        return self.db_cursor.fetchone()
+        return self.db_cursor.fetchone()['gs_id']
     except:
         return None
 
@@ -109,6 +109,6 @@ def db_meta_games_system_game_count(self, short_name):
     self.db_cursor.execute('select gs_id from mm_metadata_game_systems_info'
                            ' where gs_game_system_name = %s', (short_name,))
     try:
-        return self.db_cursor.fetchone()
+        return self.db_cursor.fetchone()['gs_id']
     except:
         return None
