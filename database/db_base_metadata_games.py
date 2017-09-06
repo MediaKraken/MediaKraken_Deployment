@@ -144,6 +144,7 @@ def db_meta_game_image_random(self, return_image_type='Poster'): # poster, backd
         return None, None
 
 
+# TODO need to do "short name" and "real" name
 def db_meta_game_insert(self, game_system_id, game_name, game_json):
     """
     Insert game
@@ -162,6 +163,7 @@ def db_meta_game_update(self, game_system_id, game_name, game_json):
                            (json.dumps(game_json), game_system_id, game_name))
 
 
+# TODO need to do "short name" and "real" name
 def db_meta_game_by_name(self, game_name):
     """
     # return game info by name

@@ -138,6 +138,9 @@ if True:
     game_titles = []
     game_desc = ""
     add_to_desc = False
+    new_title = None
+    total_software = 0
+    total_software_update = 0
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('history.dat', '/mediakraken/emulation/')
@@ -147,35 +150,49 @@ if True:
         print('line: %s' % line)
         if not line:
             break
-
-
-
-
-
-
-
-
-        if line.find("$info=") == 0:
+        # if new title, start lookup
+        if line[0] == '$':
+            system_name = line[1:].split('=', 1)[0]
             game_titles = line.split("=", 1)[1].split(",")
-            print('title: %s' % game_titles)
-        elif line.find("$end") == 0:
+        if line.find("$info=") == 0: # goes by position if found
+            system_name = None
+            game_titles = line.split("=", 1)[1].split(",")
+        elif line.find("$end") == 0: # goes by position if found
             add_to_desc = False
             for game in game_titles:
                 print('game: %s' % game)
-                game_data = db_connection.db_meta_game_by_name_and_system(game, None)[0]
+                game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[0]
                 print('data: %s', game_data)
-                # let it explode if not found....should always be found
-                game_data['gi_game_info_json']['overview'] = game_desc
-                print(game_data['gi_id'])
-                db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
-                    json.dumps(game_data['gi_game_info_json']))
+                if game_data is None:
+                    db_connection.db_meta_game_insert(
+                        db_connection.db_meta_games_system_guid_by_short_name(system_name),
+                        new_title, game, json.dumps({'overview': game_desc}))
+                    total_software += 1
+                else:
+                    game_data['gi_game_info_json']['overview'] = game_desc
+                    print(game_data['gi_id'])
+                    db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
+                        json.dumps(game_data['gi_game_info_json']))
+                    total_software_update += 1
                 game_desc = ""
         if add_to_desc:
             game_desc += line
-        if line.find("$bio") == 0:
+        # this line can be skipped
+        if line.find("$bio") == 0: # goes by position if found
+            line = history_file.readline().decode("utf-8") # skip blank line
+            new_title = history_file.readline().decode("utf-8").strip() # grab the "real" game name
             add_to_desc = True
     history_file.close()
 
+    if total_software > 0:
+        db_connection.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_software)
+            + " games(s) metadata added from MAME hash", True)
+
+    if total_software_update > 0:
+        db_connection.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_software_update)
+            + " games(s) metadata updated from MAME hash", True)
 
 # commit all changes to db
 db_connection.db_commit()
