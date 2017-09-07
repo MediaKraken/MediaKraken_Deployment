@@ -151,9 +151,11 @@ if True:
         if not line:
             break
         if line[0] == '$': # this could be a new system/game item
+            # MAME "system"....generally a PCB game
             if line.find("$info=") == 0: # goes by position if found
                 system_name = None
                 game_titles = line.split("=", 1)[1].split(",")
+            # end of info block for game
             elif line.find("$end") == 0: # goes by position if found
                 add_to_desc = False
                 for game in game_titles:
@@ -172,13 +174,18 @@ if True:
                             json.dumps(game_data['gi_game_info_json']))
                         total_software_update += 1
                 game_desc = ''
-            # this line can be skipped
+            # this line can be skipped and is basically the "start" of game info
             elif line.find("$bio") == 0: # goes by position if found
                 line = history_file.readline().decode("utf-8") # skip blank line
                 new_title = history_file.readline().decode("utf-8").strip() # grab the "real" game name
                 add_to_desc = True
-        if add_to_desc:
-            game_desc += line
+            else:
+                # should be a system/game
+                system_name = line[1:].split('=', 1)[0]
+                game_titles = line.split("=", 1)[1].split(",")
+        else:
+            if add_to_desc:
+                game_desc += line
     history_file.close()
 
     if total_software > 0:
