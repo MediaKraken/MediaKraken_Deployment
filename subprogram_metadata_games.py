@@ -147,10 +147,10 @@ if True:
     history_file = open("/mediakraken/emulation/history.dat", "rb")
     while 1:
         line = history_file.readline().decode("utf-8")
-        print('line: %s' % line)
+        #print('line: %s' % line)
         if not line:
             break
-        if line[0] == '$': # this could be a new system/game item
+        if line[0] == '$' and line[-1:] == ',': # this could be a new system/game item
             # MAME "system"....generally a PCB game
             if line.find("$info=") == 0: # goes by position if found
                 system_name = None
