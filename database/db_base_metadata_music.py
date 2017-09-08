@@ -135,7 +135,8 @@ def db_meta_album_list(self, offset=None, records=None, search_value=None):
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
                 ' mm_metadata_album_json from mm_metadata_album'
-                ' where mm_metadata_album_name %% %s order by mm_metadata_album_name', (search_value,))
+                ' where mm_metadata_album_name %% %s order by mm_metadata_album_name',
+                (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
                 ' mm_metadata_album_json from mm_metadata_album order by mm_metadata_album_name')

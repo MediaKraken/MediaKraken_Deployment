@@ -170,8 +170,8 @@ def db_media_rating_update(self, media_guid, user_id, status_text):
     """
     # set favorite status for media
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
-        (media_guid,))
+    self.db_cursor.execute('SELECT mm_media_json from mm_media'
+                           ' where mm_media_guid = %s FOR UPDATE', (media_guid,))
     if status_text == 'watched' or status_text == 'mismatch':
         status_setting = True
     else:
@@ -196,8 +196,8 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     """
     # set checkpoint for media (so can pick up where left off per user)
     """
-    self.db_cursor.execute('SELECT mm_media_json from mm_media where mm_media_guid = %s FOR UPDATE',
-        (media_guid,))
+    self.db_cursor.execute('SELECT mm_media_json from mm_media'
+                           ' where mm_media_guid = %s FOR UPDATE', (media_guid,))
     try:
         json_data = self.db_cursor.fetchone()['mm_media_json']
         if 'UserStats' not in json_data:

@@ -142,9 +142,11 @@ def admins():
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages,
-                           data_count_meta_fetch=common_internationalization.com_inter_number_format(\
+                           data_count_meta_fetch
+                               =common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_download_que')),
-                           data_count_images_fetch=common_internationalization.com_inter_number_format(\
+                           data_count_images_fetch
+                               =common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_download_image_que'))
                           )
 
@@ -334,7 +336,8 @@ def admin_database_statistics():
     """
     db_stats_count = []
     for row_data in g.db_connection.db_pgsql_row_count():
-        db_stats_count.append((row_data[1], common_internationalization.com_inter_number_format(row_data[2])))
+        db_stats_count.append((row_data[1],
+                               common_internationalization.com_inter_number_format(row_data[2])))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count)

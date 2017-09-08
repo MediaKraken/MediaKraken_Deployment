@@ -7,7 +7,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-blueprint = Blueprint("user_periodicals", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_periodicals", __name__, url_prefix='/users',
+                      static_folder="../static")
 import logging # pylint: disable=W0611
 import json
 import sys
@@ -38,7 +39,8 @@ def user_books_list():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        mediadata = g.db_connection.db_media_book_list(offset, per_page, request.form['search_text'])
+        mediadata = g.db_connection.db_media_book_list(offset, per_page,
+                                                       request.form['search_text'])
     else:
         mediadata = g.db_connection.db_media_book_list(offset, per_page)
 

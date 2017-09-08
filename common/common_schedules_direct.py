@@ -115,7 +115,8 @@ class CommonSchedulesDirect(object):
         """
         Delete lineup from user list
         """
-        resp = requests.delete(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
+        resp = requests.delete(self.BASE_API_URL + "/lineups/" + lineup_id,
+                               headers=self.headers)
         if resp.json()['response'] != 'OK':
             logging.error("SD Invalid lineup delete: %s", lineup_id)
         elif resp.json()['code'] == 2103:

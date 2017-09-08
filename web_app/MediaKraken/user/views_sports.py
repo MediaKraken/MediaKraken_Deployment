@@ -35,7 +35,8 @@ def user_sports_page():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, request.form['search_text'])
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page,
+                                                        request.form['search_text'])
     else:
         mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
     for row_data in mediadata:

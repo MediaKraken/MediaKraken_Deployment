@@ -107,7 +107,8 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
     """
     # insert person
     """
-    logging.info('db pers insert %s %s %s %s', person_name, media_id_json, person_json, image_json)
+    logging.info('db pers insert %s %s %s %s', person_name, media_id_json,
+                 person_json, image_json)
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
         ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',

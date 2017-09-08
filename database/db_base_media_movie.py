@@ -41,7 +41,8 @@ def db_media_movie_count_by_genre(self, class_guid):
     """
     self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\''
         '->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''
-        '->\'themoviedb\'->\'Meta\'->\'genres\') from ((select distinct on (mm_media_metadata_guid)'
+        '->\'themoviedb\'->\'Meta\'->\'genres\')'
+        ' from ((select distinct on (mm_media_metadata_guid)'
         ' mm_metadata_json from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
         ' and mm_media_metadata_guid = mm_metadata_guid) union (select distinct'
         ' on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote,'
@@ -199,7 +200,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                             ' order by mm_media_metadata_guid, mm_media_name) as temp'
                             ' order by LOWER(mm_media_name) offset %s limit %s',
                             (class_guid, (datetime.datetime.now()
-                            - datetime.timedelta(days=7)).strftime("%Y-%m-%d"), offset, list_limit))
+                            - datetime.timedelta(days=7)).strftime("%Y-%m-%d"),
+                            offset, list_limit))
                 else:
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
@@ -238,7 +240,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                             (class_guid, (datetime.datetime.now()
                             - datetime.timedelta(days=7)).strftime("%Y-%m-%d"),
                             class_guid, (datetime.datetime.now()
-                            - datetime.timedelta(days=7)).strftime("%Y-%m-%d"), offset, list_limit))
+                            - datetime.timedelta(days=7)).strftime("%Y-%m-%d"),
+                            offset, list_limit))
             else:
                 if offset is None:
                     self.db_cursor.execute('select 1')

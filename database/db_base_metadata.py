@@ -174,7 +174,8 @@ def db_meta_movie_list(self, offset=None, records=None, search_value=None):
                'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
                'mm_metadata_user_json'
                ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
-               ' from mm_metadata_movie where mm_media_name %% %s order by mm_media_name offset %s limit %s)'
+               ' from mm_metadata_movie where mm_media_name %% %s'
+               ' order by mm_media_name offset %s limit %s)'
                ' order by mm_media_name', (search_value, offset, records))
         else:
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'

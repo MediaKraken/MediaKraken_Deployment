@@ -60,7 +60,8 @@ class CommonDatabaseOctmote(object):
             self.db_cursor.execute('CREATE TABLE octmote_macro (macro_guid text,'
                 ' macro_name text, macro_json text)')
             self.db_cursor.execute('CREATE TABLE octmote_item (item_guid text,'
-                ' item_type text, item_manufacturer text, item_model_number text, item_json text)')
+                ' item_type text, item_manufacturer text, item_model_number text,'
+                ' item_json text)')
             # grab brands and insert them into database
             self.db_cursor.execute('CREATE TABLE octmote_brand (brand_guid text,'
                 ' brand_name text)')

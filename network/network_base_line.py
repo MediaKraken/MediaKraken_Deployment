@@ -90,7 +90,8 @@ class NetworkEvents(basic.LineReceiver):
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
 
         elif json_message['Type'] == "Genre List":
-            msg = json.dumps({'Type': 'Genre List', 'Data': self.db_connection.db_meta_genre_list()})
+            msg = json.dumps({'Type': 'Genre List',
+                              'Data': self.db_connection.db_meta_genre_list()})
 
         elif json_message['Type'] == "Flag Mismatch UUID":
             pass
@@ -122,22 +123,26 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
             elif json_message['Sub'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
+                image_json, metadata_id \
+                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
+                image_json, metadata_id \
+                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
                 if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie'\
                         or json_message['Sub2'] == 'Demo':
-                    image_json, metadata_id = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
+                    image_json, metadata_id \
+                        = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
                 elif json_message['Sub2'] == 'New Movie':
                     pass
                 elif json_message['Sub2'] == 'In Progress':
                     pass
             elif json_message['Sub'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
-                image_json, metadata_id = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
+                image_json, metadata_id \
+                    = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
             if metadata_id is not None:
                 if image_json is not None:
                     image_handle = open(image_json, "rb")
@@ -159,7 +164,8 @@ class NetworkEvents(basic.LineReceiver):
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
-                    'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json, 'Data3': mm_metadata_localimage_json})
+                                  'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json,
+                                  'Data3': mm_metadata_localimage_json})
             elif json_message['Sub'] == 'List':
                 # (Offset, Limit)
                 if json_message['Data'] == 'Movie':
@@ -170,15 +176,18 @@ class NetworkEvents(basic.LineReceiver):
                             json_message['Type'], offset=json_message['Offset'],
                             list_limit=json_message['Limit'])})
                     else:
-                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': self.db_connection.db_web_media_list(
-                                         self.db_connection.db_media_uuid_by_class(json_message['Data']),
+                        msg = json.dumps({'Type': 'Media', 'Sub': 'List',
+                                          'Data': self.db_connection.db_web_media_list(
+                                         self.db_connection.db_media_uuid_by_class(
+                                             json_message['Data']),
                                          json_message['Type'])})
             elif json_message['Sub'] == 'In Progress':
                 # (Offset, Limit)
                 pass
             elif json_message['Sub'] == 'New':
                 msg = json.dumps({'Type': 'Media', 'Sub': 'New',
-                    'Data': self.db_connection.db_read_media_new(json_message['Offset'], json_message['Limit'])})
+                    'Data': self.db_connection.db_read_media_new(json_message['Offset'],
+                                                                 json_message['Limit'])})
             elif json_message['Sub'] == 'Update':
                 # (playback, love, hate, etc)
                 pass

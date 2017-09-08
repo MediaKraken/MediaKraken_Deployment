@@ -8,7 +8,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
-blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users',
+                      static_folder="../static")
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
@@ -96,7 +97,8 @@ def metadata_movie_list():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, request.form['search_text'])
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page,
+                                                      request.form['search_text'])
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
     for row_data in metadata:
@@ -107,10 +109,12 @@ def metadata_movie_list():
         except:
             watched_status = False
         # set rating
-        if row_data['mm_metadata_user_json'] is not None and 'UserStats' in row_data['mm_metadata_user_json']\
+        if row_data['mm_metadata_user_json'] is not None \
+            and 'UserStats' in row_data['mm_metadata_user_json']\
             and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats']\
             and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
-                rating_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+                rating_status \
+                    = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
                 if rating_status == 'favorite':
                     rating_status = '/static/images/favorite-mark.png'
                 elif rating_status == 'like':
@@ -128,8 +132,9 @@ def metadata_movie_list():
         except:
             request_status = None
         logging.info("status: %s %s %s", watched_status, rating_status, request_status)
-        media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'], row_data['mm_date'],
-                      row_data['mm_poster'], watched_status, rating_status, request_status))
+        media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
+                      row_data['mm_date'], row_data['mm_poster'], watched_status,
+                      rating_status, request_status))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

@@ -125,8 +125,10 @@ class CommonDocker(object):
         return self.cli.exec_run(cmd=docker_command)
 
 
-    def com_docker_run_container(self, container_command, container_name, container_image_name='mediakraken/mkslave',
-                                 container_detach=True, container_port={'5050/tcp': None, '5060/tcp': None},
+    def com_docker_run_container(self, container_command, container_name,
+                                 container_image_name='mediakraken/mkslave',
+                                 container_detach=True,
+                                 container_port={'5050/tcp': None, '5060/tcp': None},
                                  container_network='mk_mediakraken_network',
                                  container_volumes=['/var/log/mediakraken:/mediakraken/log',
                                                     '/home/mediakraken:/mediakraken/mnt',
@@ -146,7 +148,8 @@ class CommonDocker(object):
         """
         Remove container from disk and term it forcefully if asked
         """
-        return self.cli_api.remove_container(container=container_image_name, force=container_force)
+        return self.cli_api.remove_container(container=container_image_name,
+                                             force=container_force)
 
 
     def com_docker_pause_container(self, container_image_name):

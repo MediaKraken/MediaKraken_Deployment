@@ -53,7 +53,8 @@ for row_data in db_connection.db_known_media():
 
 # send notications
 if thumbnails_generated > 0:
-    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(thumbnails_generated)\
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(thumbnails_generated)\
         + " Roku thumbnail(s) generated.", True)
 
 

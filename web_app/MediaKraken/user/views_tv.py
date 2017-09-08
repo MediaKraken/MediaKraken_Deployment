@@ -38,18 +38,22 @@ def user_tv_page():
     if request.method == 'POST':
         if form.validate_on_submit():
             pass
-        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page, request.form['search_text'])
+        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page,
+                                                        request.form['search_text'])
     else:
         mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page)
     for row_data in mediadata:
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
         try:
-            media.append((row_data['mm_metadata_tvshow_name'], row_data['mm_metadata_tvshow_guid'],
-                row_data['mm_metadata_tvshow_localimage_json'],
-                common_internationalization.com_inter_number_format(row_data['mm_count'])))
+            media.append((row_data['mm_metadata_tvshow_name'],
+                          row_data['mm_metadata_tvshow_guid'],
+                          row_data['mm_metadata_tvshow_localimage_json'],
+                          common_internationalization.com_inter_number_format(
+                              row_data['mm_count'])))
         except:
-            media.append((row_data['mm_metadata_tvshow_name'], row_data['mm_metadata_tvshow_guid'],
+            media.append((row_data['mm_metadata_tvshow_name'],
+                          row_data['mm_metadata_tvshow_guid'],
                 None, common_internationalization.com_inter_number_format(row_data['mm_count'])))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

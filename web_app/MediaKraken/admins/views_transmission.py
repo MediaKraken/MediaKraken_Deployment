@@ -11,7 +11,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify, 
      url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
-blueprint = Blueprint("admins_transmission", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_transmission", __name__, url_prefix='/admin',
+                      static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
@@ -68,10 +69,13 @@ def admin_transmission():
     if trans_connection is not None:
         torrent_no = 1
         for torrent in trans_connection.com_trans_get_torrent_list():
-            transmission_data.append((common_internationalization.com_inter_number_format(torrent_no),
-                torrent.name, torrent.hashString, torrent.status, torrent.progress, torrent.ratio))
+            transmission_data.append(
+                (common_internationalization.com_inter_number_format(torrent_no),
+                torrent.name, torrent.hashString, torrent.status,
+                torrent.progress, torrent.ratio))
             torrent_no += 1
-    return render_template("admin/admin_transmission.html", data_transmission=transmission_data)
+    return render_template("admin/admin_transmission.html",
+                           data_transmission=transmission_data)
 
 
 @blueprint.route('/transmission_delete', methods=["POST"])

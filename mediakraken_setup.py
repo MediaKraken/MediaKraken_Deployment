@@ -86,7 +86,8 @@ else:
         db_pass = input("Please enter database password: ")
     else:
         db_pass = raw_input("Please enter database password: ")
-    env_text = ("DBHOST=%s\nDBDATABASE=%s\nDBUSER=%s\nDBPASS=%s", (response, db_database, db_user,  db_pass))
+    env_text = ("DBHOST=%s\nDBDATABASE=%s\nDBUSER=%s\nDBPASS=%s", (response, db_database,
+                                                                   db_user,  db_pass))
 
 # setup the server
 compose_text += "\n\n  # Main app server which controls the show\n"\

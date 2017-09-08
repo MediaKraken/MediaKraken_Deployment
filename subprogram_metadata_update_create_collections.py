@@ -42,7 +42,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Create Collection Start', None,
-    'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None, 'System')
+    'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None,
+    'System')
 
 
 # pull in all metadata with part of collection in metadata
@@ -86,7 +87,9 @@ if len(guid_list) > 0:
 
 
 if total_collections_downloaded > 0:
-    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_collections_downloaded) + " collection(s) metadata downloaded.", True)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_collections_downloaded)
+        + " collection(s) metadata downloaded.", True)
 
 
 # log end

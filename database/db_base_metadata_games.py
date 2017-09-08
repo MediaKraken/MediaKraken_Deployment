@@ -118,11 +118,13 @@ def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
     # game by name and system short name
     """
     if game_system_short_name is None:
-        self.db_cursor.execute('select gi_id, gi_game_info_json from mm_metadata_game_software_info'
+        self.db_cursor.execute('select gi_id, gi_game_info_json'
+                               ' from mm_metadata_game_software_info'
                                ' where gi_game_info_name = %s and gi_system_id IS NULL',
                                (game_name,))
     else:
-        self.db_cursor.execute('select gi_id, gi_game_info_json from mm_metadata_game_software_info'
+        self.db_cursor.execute('select gi_id, gi_game_info_json'
+                               ' from mm_metadata_game_software_info'
                                ' where gi_game_info_name = %s and gi_system_id = %s',
                                (game_name, game_system_short_name))
     return self.db_cursor.fetchall()
@@ -151,7 +153,8 @@ def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_j
     self.db_cursor.execute('insert into mm_metadata_game_software_info(gi_id, gi_system_id, '
                            'gi_game_info_short_name, gi_game_info_name, gi_game_info_json)'
                            ' values (%s, %s, %s, %s, %s)',
-                           (str(uuid.uuid4()), game_system_id, game_short_name, game_name, json.dumps(game_json)))
+                           (str(uuid.uuid4()), game_system_id, game_short_name, game_name,
+                           json.dumps(game_json)))
 
 
 def db_meta_game_update(self, game_system_id, game_name, game_json):

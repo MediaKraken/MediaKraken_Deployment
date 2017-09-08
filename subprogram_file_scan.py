@@ -181,7 +181,8 @@ def worker(audit_directory):
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
     thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doesn't show up
     if total_files > 0:
-        thread_db.db_notification_insert(common_internationalization.com_inter_number_format(total_files)\
+        thread_db.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_files)\
             + " file(s) added from " + dir_path, True)
     thread_db.db_commit()
     thread_db.db_close()

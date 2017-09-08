@@ -50,7 +50,9 @@ for media_row in common_file.com_file_dir_list():
 print('Total lyrics download attempts: %s' % total_download_attempts)
 # send notifications
 if total_download_attempts > 0:
-    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_download_attempts) + " lyric(s) downloaded.", True)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_download_attempts)
+        + " lyric(s) downloaded.", True)
 
 
 # commit all changes

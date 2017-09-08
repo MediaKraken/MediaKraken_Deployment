@@ -106,10 +106,12 @@ def db_meta_book_image_random(self, return_image_type='Cover'):
     Find random book image
     """
     self.db_cursor.execute('select mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_book_guid from mm_media,mm_metadata_book' \
+                           + return_image_type + '\' as image_json,mm_metadata_book_guid'
+                           ' from mm_media,mm_metadata_book' \
                            ' where mm_media_metadata_guid = mm_metadata_book_guid' \
                            ' and (mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+                           + return_image_type + '\'' + ')::text != \'null\''
+                           ' order by random() limit 1')
     try:
         # then if no results.....a None will except which will then pass None, None
         image_json, metadata_id = self.db_cursor.fetchone()
