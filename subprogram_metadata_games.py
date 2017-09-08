@@ -72,7 +72,7 @@ if False:
             + " games(s) metadata added from MAME XML", True)
 
 # load games from hash files
-if False:
+if True:
     file_name = '/mediakraken/emulation/mame0189s.zip'
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
