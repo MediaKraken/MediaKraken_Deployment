@@ -33,7 +33,6 @@ from common import common_pagination
 from common import common_string
 from common import common_system
 from common import common_version
-from common import common_zfs
 import database as database_base
 
 
@@ -134,7 +133,6 @@ def admins():
                            data_count_streamed_media=\
                                common_internationalization.com_inter_number_format(\
                                 0),
-                           data_zfs_active=common_zfs.com_zfs_available(),
                            data_library=\
                                common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_media_dir')),

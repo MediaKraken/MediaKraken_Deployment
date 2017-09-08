@@ -45,9 +45,7 @@
                                 {% if data_transmission_active %}
                                 <li><a href="{{ url_for('admins_transmission.admin_transmission') }}"><i class="glyphicon glyphicon-globe"></i> Transmission</a></li>
                                 {% endif %}
-                                {% if data_zfs_active %}
                                 <li><a href="{{ url_for('admins.admin_server_zfs') }}"><i class="fa fa-database"></i> ZFS</a></li>
-                                {% endif %}
                                 <li><a href="{{ url_for('admins_link.admin_server_link_server') }}"><i class="glyphicon glyphicon-link"></i> Server Links</a></li>
                             </ul>
                         </li>
