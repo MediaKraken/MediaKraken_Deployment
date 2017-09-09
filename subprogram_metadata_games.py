@@ -103,19 +103,21 @@ if True:
                     None, file_name.split('/', 1)[1], None, None)
             if ext == ".xml":
                 for json_game in json_data['softwarelist']['software']:
-                    logging.info('boom: %s', game_short_name_guid)
-                    logging.info('xml: %s', json_game)
-                    json_game = json.loads(json_game)
+                    print('boom: %s', game_short_name_guid)
+                    print('xml: %s', json_game)
+                    #json_game = json.loads(json_game)
                     # TODO check to see if exists....if so, update
                     # build args and insert the record
-                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['@name'], json_game)
+                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['@name'],
+                                                      json_game['@name'], json_game)
                     total_software += 1
             elif ext == ".hsi":
                 for json_game in json_data['hashfile']['hash']:
                     logging.info('hsi: %s', json_game)
                     # TODO check to see if exists....if so, update
                     # build args and insert the record
-                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['name'], json_game)
+                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['name'],
+                                                      json_game['name'], json_game)
                     total_software += 1
 
     if total_software > 0:
