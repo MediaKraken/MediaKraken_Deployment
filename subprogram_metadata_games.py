@@ -85,40 +85,62 @@ if True:
         zf.extract('mame.zip', '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile('/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
-        logging.info('zip: %s', zippedfile)
+        print('zip: %s', zippedfile)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
-            logging.info("fname: %s", zippedfile)
-            json_data = xmltodict.parse(zip_handle.read(zippedfile))
-            logging.info('after json')
+            print("fname: %s", zippedfile)
             # find system id from mess
             file_name, ext = os.path.splitext(zippedfile)
-            logging.info('fil,etx %s %s' % (file_name, ext))
-            logging.info('sys: %s', file_name.split('/', 1)[1])
-            game_short_name_guid \
-                = db_connection.db_meta_games_system_guid_by_short_name(
-                file_name.split('/', 1)[1])
-            logging.info('wh %s', game_short_name_guid)
-            if game_short_name_guid is None:
-                game_short_name_guid = db_connection.db_meta_games_system_insert(
-                    None, file_name.split('/', 1)[1], None, None)
-            if ext == ".xml":
-                for json_game in json_data['softwarelist']['software']:
-                    print('boom: %s', game_short_name_guid)
-                    print('xml: %s', json_game)
-                    #json_game = json.loads(json_game)
-                    # TODO check to see if exists....if so, update
-                    # build args and insert the record
-                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['@name'],
-                                                      json_game['@name'], json_game)
-                    total_software += 1
-            elif ext == ".hsi":
-                for json_game in json_data['hashfile']['hash']:
-                    logging.info('hsi: %s', json_game)
-                    # TODO check to see if exists....if so, update
-                    # build args and insert the record
-                    db_connection.db_meta_game_insert(game_short_name_guid, json_game['name'],
-                                                      json_game['name'], json_game)
-                    total_software += 1
+            print('fil,etx %s %s' % (file_name, ext))
+            if ext == ".xml" or ext == ".hsi":
+                json_data = xmltodict.parse(zip_handle.read(zippedfile))
+                print('sys: %s', file_name.split('/', 1)[1])
+                game_short_name_guid \
+                    = db_connection.db_meta_games_system_guid_by_short_name(
+                    file_name.split('/', 1)[1])
+                print('wh %s', game_short_name_guid)
+                if game_short_name_guid is None:
+                    game_short_name_guid = db_connection.db_meta_games_system_insert(
+                        None, file_name.split('/', 1)[1], None, None)
+                if ext == ".xml":
+                    # could be no games in list
+                    if 'software' in json_data['softwarelist']:
+                        print(json_data['softwarelist']['software'])
+                        # TODO this fails if only one game
+                        print(len(json_data['softwarelist']['software']))
+                        if '@name' in json_data['softwarelist']['software']:
+                            # TODO check to see if exists....if so, update
+                            db_connection.db_meta_game_insert(game_short_name_guid,
+                                json_data['softwarelist']['software']['@name'],
+                                json_data['softwarelist']['software']['@name'],
+                                json_data['softwarelist']['software'])
+                        else:
+                            for json_game in json_data['softwarelist']['software']:
+                                print('xml: %s', json_game)
+                                #json_game = json.loads(json_game)
+                                # TODO check to see if exists....if so, update
+                                # build args and insert the record
+                                db_connection.db_meta_game_insert(game_short_name_guid,
+                                                                  json_game['@name'],
+                                                                  json_game['@name'], json_game)
+                        total_software += 1
+                elif ext == ".hsi":
+                    # could be no games in list
+                    if 'hash' in json_data['hashfile']:
+                        if '@name' in json_data['hashfile']['hash']:
+                            # TODO check to see if exists....if so, update
+                            db_connection.db_meta_game_insert(game_short_name_guid,
+                                                              json_data['hashfile']['hash']['@name'],
+                                                              json_data['hashfile']['hash']['@name'],
+                                                              json_data['hashfile']['hash'])
+                        else:
+                            for json_game in json_data['hashfile']['hash']:
+                                print('hsi: %s', json_game)
+                                # TODO check to see if exists....if so, update
+                                # build args and insert the record
+                                db_connection.db_meta_game_insert(game_short_name_guid,
+                                                                  json_game['@name'],
+                                                                  json_game['@name'], json_game)
+                        total_software += 1
 
     if total_software > 0:
         db_connection.db_notification_insert(
