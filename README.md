@@ -2,7 +2,7 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>0.7.3 - Tasks instead of cron, Youtube playback, basic Youtube support, alot of search code, Current DEV branch on GitHub</b>
+        <li><b>0.7.3 - Tasks instead of cron, Youtube playback, basic Youtube support, alot of search code, base LCD code, Current DEV branch on GitHub</b>
         <li><i>0.7.2 - Mail server, Calibre, base search code, PostgreSQL 9.6.4</b>
         <li>0.7.1 - Better url link support, NVidia Cuda base code, basic control of Marantz equipment over network</b>
         <li>0.7.0 - NGINX SSL Proxy to webserver, code cleanup, pika to metadata programs, ssl key reuse for server and website</b>
