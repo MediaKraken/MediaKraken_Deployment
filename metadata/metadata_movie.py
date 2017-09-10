@@ -20,6 +20,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import json
+import time
 from guessit import guessit
 from common import common_config_ini
 from common import common_metadata
@@ -100,7 +101,14 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             if 'crew' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
-    else: # is this is None......404, no record by this id TODO handle 404's better
+    elif result_json.status_code == 502:
+        time.sleep(30)
+        # redo fetch due to 502
+        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+    elif result_json.status_code == 404:
+        # TODO handle 404's better
+        metadata_uuid = None
+    else: # is this is None....
         metadata_uuid = None
     logging.info('meta movie save fetch uuid %s', metadata_uuid)
     return metadata_uuid
