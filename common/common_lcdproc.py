@@ -47,6 +47,7 @@ class CommonLCDProc(object):
         scroller_widget = self.screens[screen_name].add_scroller_widget(name, text=text,
                                                                         speed=speed)
 
+
     def com_lcdproc_add_hbar(self, screen_name, name, x, y, length=60):
         hbar_widget = self.screens[screen_name].add_hbar_widget(name, x=x, y=y, length=length)
 
