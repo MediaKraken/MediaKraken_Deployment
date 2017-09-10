@@ -52,13 +52,13 @@ class CommonLCDProc(object):
         hbar_widget = self.screens[screen_name].add_hbar_widget(name, x=x, y=y, length=length)
 
 
+    def com_lcdproc_add_frame(self, screen_name, name):
+        frame_widget = self.screens[screen_name].add_frame_widget(name)
 
-# frame_widget = screen.add_frame_widget("MyFrameWidget")
 
-# num1_widget = screen1.add_number_widget("MyNumber1Widget", x=1, value=0)
-# num2_widget = screen1.add_number_widget("MyNumber2Widget", x=5, value=0)
-# num3_widget = screen1.add_number_widget("MyNumber3Widget", x=9, value=0)
-# num4_widget = screen1.add_number_widget("MyNumber4Widget", x=13, value=0)
+    def com_lcdproc_add_number(self, screen_name, name, x, value):
+        num1_widget = self.screens[screen_name].add_number_widget(name, x=x, value=value)
+
 #
 # progress = 0
 #
