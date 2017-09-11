@@ -4,7 +4,9 @@ Ubuntu 17.04
 *standard sys
 *openssh
 
-sudo apt-get install git build-essential
+sudo apt-get install git build-essential bc gawk gperf zip unzip lzop xsltproc patchutils gawk gperf zip unzip lzop xfonts-utils xfonts-utils xfonts-utils xsltproc default-jre libncurses5-dev libjson-perl
+
+
 
 10.0.0.234
 
