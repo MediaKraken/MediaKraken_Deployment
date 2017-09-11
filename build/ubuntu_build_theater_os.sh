@@ -1,6 +1,4 @@
-sudo apt-get --assume-yes install build-essential &&
-dpkg-reconfigure dash &&
-sudo apt-get --assume-yes install libxml-parser-perl open-vm-tools libncurses5-dev gperf makeinfo md5deep &&
+dpkg-reconfigure dash
 
 git clone https://github.com/LibreELEC/LibreELEC.tv.git
 
