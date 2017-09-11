@@ -10,6 +10,11 @@ sudo apt-get install git build-essential
 
 git clone https://github.com/MediaKraken/MediaKraken_Deployment
 
+cd MediaKraken_Deployment
+git checkout dev-0.7.3
+
+
+
 # compile libreelec under ubuntu
 ubuntu_build_theater_os.sh
 
