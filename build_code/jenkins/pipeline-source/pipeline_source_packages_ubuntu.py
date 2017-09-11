@@ -53,24 +53,9 @@ PACKAGES_BASE_UBUNTU_1604 = [
     ]
 
 
-PACKAGES_SERVER_UBUNTU_1604 = [
-    'nginx',
-    'postgresql-server-dev-9.5',
-    'redis-server',
-    ]
-
-
-PACKAGES_SLAVE_UBUNTU_1604 = [
-    ]
-
-
 PACKAGES_THEATER_UBUNTU_1604 = [
     'libdiscid-dev',
     'python-pip',
-    ]
-
-
-PACKAGES_METADATA_UBUNTU_1604 = [
     ]
 
 

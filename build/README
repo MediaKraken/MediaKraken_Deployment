@@ -19,7 +19,7 @@ git checkout dev-0.7.3
 
 
 # compile libreelec under ubuntu
-ubuntu_build_theater_os.sh
+ubuntu_theater_os_build.sh
 
 # deploy libreelec to SD card from ubuntu
-ubuntu_deploy_theater_os_pi_sd.sh
+ubuntu_theater_os_deploy_pi_sd.sh

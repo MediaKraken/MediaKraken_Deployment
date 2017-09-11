@@ -24,11 +24,10 @@ import subprocess
 import sys
 
 LINUX_VERSIONS = {
-                  'alpine': (3.3, 'apk add'),
+                  'alpine': (3.6, 'apk add'),
                   'debian': (8.4, 'apt_get -y install'),
-                  'linuxmint': (99.0, 'apt_get -y install'),
-                  'redhat': (99.0, 'yum install'),
-                  'ubuntu': (15.04, 'apt_get -y install')}
+                  'redhat': (7.1, 'yum install'),
+                  'ubuntu': (17.04, 'apt_get -y install')}
 
 print('1:', platform.platform())
 print('2:', platform.system())
