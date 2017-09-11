@@ -1,12 +1,17 @@
 sudo dpkg-reconfigure dash
 
-git clone https://github.com/LibreELEC/LibreELEC.tv.git
+CODEVERSION=7.0.3
+
+wget https://github.com/LibreELEC/LibreELEC.tv/archive/$CODEVERSION.zip
+unzip LibreELEC.tv-$CODEVERSION.zip
+cd LibreELEC.tv-$CODEVERSION
+
+#git clone https://github.com/LibreELEC/LibreELEC.tv.git
+#cd LibreELEC.tv
+#git checkout libreelec-8.2
 
 # copy over the mediakraken distro settings
-cp -R ./OpenMediaKraken/distributions/MediaKraken ./LibreELEC.tv/distributions/.
-
-cd LibreELEC.tv
-git checkout libreelec-8.2
+cp -R ./OpenMediaKraken/distributions/MediaKraken ./LibreELEC.tv-$CODEVERSION/distributions/.
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 release
@@ -19,4 +24,3 @@ PROJECT=RPi DISTRO=MediaKraken ARCH=arm make -j20 image
 # general rpi2 install
 PROJECT=RPi2 DISTRO=MediaKraken ARCH=arm make -j20 release
 PROJECT=RPi2 DISTRO=MediaKraken ARCH=arm make -j20 image
-
