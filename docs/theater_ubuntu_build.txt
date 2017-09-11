@@ -16,6 +16,11 @@ sudo apt-get install build-essential ccache git libncurses5:i386 libstdc++6:i386
 # list connected devices
 adb devices
 
+# build and "deploy"
+adb connect 10.0.0.203
+buildozer -v android debug deploy run logcat
+
+
 *******************************************************
 
 Client on ubuntu atm for cython and mpv
