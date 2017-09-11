@@ -3,7 +3,7 @@ sudo dpkg-reconfigure dash
 CODEVERSION=7.0.3
 
 wget https://github.com/LibreELEC/LibreELEC.tv/archive/$CODEVERSION.zip
-unzip LibreELEC.tv-$CODEVERSION.zip
+unzip $CODEVERSION.zip
 cd LibreELEC.tv-$CODEVERSION
 
 #git clone https://github.com/LibreELEC/LibreELEC.tv.git
@@ -11,7 +11,7 @@ cd LibreELEC.tv-$CODEVERSION
 #git checkout libreelec-8.2
 
 # copy over the mediakraken distro settings
-cp -R ./OpenMediaKraken/distributions/MediaKraken ./LibreELEC.tv-$CODEVERSION/distributions/.
+cp -R ../OpenMediaKraken/distributions/MediaKraken ./distributions/.
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 release
