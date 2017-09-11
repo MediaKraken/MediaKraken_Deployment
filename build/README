@@ -6,7 +6,7 @@ Ubuntu 17.04
 
 sudo apt-get --assume-yes install git build-essential bc gawk gperf zip unzip lzop xsltproc patchutils gawk gperf\
  zip unzip lzop xfonts-utils xfonts-utils xfonts-utils xsltproc default-jre libncurses5-dev libjson-perl\
- libxml-parser-perl open-vm-tools libncurses5-dev gperf md5deep
+ libxml-parser-perl open-vm-tools libncurses5-dev gperf md5deep texinfo
 
 
 10.0.0.234
