@@ -7,7 +7,7 @@ git clone https://github.com/OpenELEC/OpenELEC.tv.git
 cd OpenELEC.tv
 
 # copy over the metaman distro settings
-cp -R ./OpenMediaKraken/distributions/MediaKraken ./distributions/.
+cp -R ../OpenMediaKraken/distributions/MediaKraken ./distributions/.
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make release
