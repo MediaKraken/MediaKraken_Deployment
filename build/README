@@ -1,5 +1,7 @@
-# compile openelec under alpine
-alpine_build_theater_os.sh
+Ubuntu 17.04
 
-# deploy openelec to SD card from ubuntu
+# compile libreelec under ubuntu
+ubuntu_build_theater_os.sh
+
+# deploy libreelec to SD card from ubuntu
 ubuntu_deploy_theater_os_pi_sd.sh
