@@ -1,3 +1,0 @@
-adduser metaman
-adduser metaman sudo
-
