@@ -1,4 +1,14 @@
+MK Elec Build
+
 Ubuntu 17.04
+*standard sys
+*openssh
+
+sudo apt-get install git build-essential
+
+10.0.0.234
+
+git clone https://github.com/MediaKraken/MediaKraken_Deployment
 
 # compile libreelec under ubuntu
 ubuntu_build_theater_os.sh
