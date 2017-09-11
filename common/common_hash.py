@@ -103,6 +103,7 @@ def com_hash_sha1_by_filename(file_name):
 def com_hash_sha1_c(file_name):
     """
     c call for sha1 hash generation by file name
+    http://pages.cs.wisc.edu/~johnl/np_inline/pydoc-0.3.html
     """
     num = 0
     while 1:
