@@ -21,15 +21,3 @@ PROJECT=RPi DISTRO=MediaKraken ARCH=arm make -j20 image
 PROJECT=RPi2 DISTRO=MediaKraken ARCH=arm make -j20 release
 PROJECT=RPi2 DISTRO=MediaKraken ARCH=arm make -j20 image
 
-# general x64 install
-PROJECT=Generic ARCH=x86_64 make -j20 release
-PROJECT=Generic ARCH=x86_64 make -j20 image
-
-# general rpi install
-PROJECT=RPi ARCH=arm make -j20 release
-PROJECT=RPi ARCH=arm make -j20 image
-
-# general rpi2 install
-PROJECT=RPi2 ARCH=arm make -j20 release
-PROJECT=RPi2 ARCH=arm make -j20 image
-
