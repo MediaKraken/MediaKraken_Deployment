@@ -1,4 +1,4 @@
-dpkg-reconfigure dash
+sudo dpkg-reconfigure dash
 
 git clone https://github.com/LibreELEC/LibreELEC.tv.git
 
@@ -11,7 +11,7 @@ cd LibreELEC.tv
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 release
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 image
 
-# general rpi install
+# general rpi and pi zero install
 PROJECT=RPi DISTRO=MediaKraken ARCH=arm make -j20 release
 PROJECT=RPi DISTRO=MediaKraken ARCH=arm make -j20 image
 
