@@ -6,6 +6,7 @@ git clone https://github.com/LibreELEC/LibreELEC.tv.git
 cp -R ./OpenMediaKraken/distributions/MediaKraken ./LibreELEC.tv/distributions/.
 
 cd LibreELEC.tv
+git checkout libreelec-8.2
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 release
