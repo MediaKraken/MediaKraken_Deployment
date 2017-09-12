@@ -1,6 +1,6 @@
 sudo dpkg-reconfigure dash
 
-CODEVERSION=7.0.3
+CODEVERSION=8.1.1
 
 wget https://github.com/LibreELEC/LibreELEC.tv/archive/$CODEVERSION.zip
 unzip $CODEVERSION.zip
