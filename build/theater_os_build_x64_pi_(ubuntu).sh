@@ -12,6 +12,7 @@ cd LibreELEC.tv-$CODEVERSION
 
 # copy over the mediakraken distro settings
 cp -R ../OpenMediaKraken/distributions/MediaKraken ./distributions/.
+cp -R ../OpenMediaKraken/packages/* ./packages/.
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j20 release
