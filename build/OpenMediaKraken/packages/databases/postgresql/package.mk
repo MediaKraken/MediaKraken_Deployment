@@ -12,3 +12,15 @@ PKG_LONGDESC="PostgreSQL is a powerful, open source object-relational database s
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+
+configure_target() {
+  ./configure
+}
+
+makeinstall_target() {
+	# install client library only
+	make -C src/bin install
+	make -C src/include install
+	make -C src/interfaces install
+	make -C doc install
+}
