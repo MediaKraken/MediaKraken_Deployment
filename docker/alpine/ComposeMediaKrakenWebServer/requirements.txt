@@ -1,7 +1,7 @@
 cython
 Flask
 Flask-Login
-Flask-Cache
+Flask-Caching
 Flask-Bcrypt
 Flask-WTF
 Flask-Babel

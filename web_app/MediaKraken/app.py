@@ -36,7 +36,7 @@ def create_app(config_object=ProdConfig):
 def register_extensions(app):
     assets.init_app(app)
     bcrypt.init_app(app)
-    cache.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
