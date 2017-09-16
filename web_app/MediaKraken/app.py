@@ -10,13 +10,13 @@ from MediaKraken.settings import ProdConfig
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (
     bcrypt,
-    Cache,
     db,
     login_manager,
     migrate,
     fpika,
 )
 from MediaKraken import public, user, admins
+from flask_caching import Cache
 
 
 def create_app(config_object=ProdConfig):

@@ -16,9 +16,6 @@ db = SQLAlchemy()
 from flask_migrate import Migrate
 migrate = Migrate()
 
-from flask_caching import Cache
-Cache = Cache()
-
 from flask_debugtoolbar import DebugToolbarExtension
 debug_toolbar = DebugToolbarExtension()
 
