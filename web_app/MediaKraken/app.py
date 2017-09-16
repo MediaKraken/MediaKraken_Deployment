@@ -21,7 +21,6 @@ from flask_caching import Cache
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
-    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
     # did not fix the flask port dropping issue
@@ -31,6 +30,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     moment = Moment(app)
+    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
     return app
 
 
