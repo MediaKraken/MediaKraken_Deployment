@@ -47,8 +47,7 @@ def com_hash_sha1_by_filename(file_name):
                 sha1_hash_data = SHA1.hexdigest()
                 hash_dict[zippedfile] = sha1_hash_data
             except:
-                Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
-                                                       + "|Error on SHA1 of file")
+                pass
         zip_handle.close()
         if len(hash_dict) > 0:
             if len(hash_dict) == 1:
@@ -73,8 +72,7 @@ def com_hash_sha1_by_filename(file_name):
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict[filename] = sha1_hash_data
                 except:
-                    Client_GlobalData.skipped_files.append(os.path.normpath(file_name)\
-                                                           + "|Error on SHA1 of file")
+                    pass
             file_handle.close()
             if len(hash_dict) > 0:
                 if len(hash_dict) == 1:
@@ -85,8 +83,7 @@ def com_hash_sha1_by_filename(file_name):
                     fileHASHNameList.append(os.path.normpath(file_name))
                 return hash_dict
         except:
-            Client_GlobalData.skipped_files.append(os.path.normpath(file_name)
-                                                   + "|Error reading 7z")
+            pass
         return None
     else:
         sha1_hash_data = None
@@ -106,6 +103,7 @@ def com_hash_sha1_by_filename(file_name):
 def com_hash_sha1_c(file_name):
     """
     c call for sha1 hash generation by file name
+    http://pages.cs.wisc.edu/~johnl/np_inline/pydoc-0.3.html
     """
     num = 0
     while 1:

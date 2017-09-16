@@ -153,14 +153,20 @@ class MKServerDatabase(object):
         db_meta_book_insert,\
         db_meta_book_by_uuid, \
         db_meta_book_image_random
-    from database.db_base_metadata_games import db_meta_game_system_by_guid,\
+    from database.db_base_metadata_game_systems import db_meta_game_system_by_guid,\
         db_meta_game_system_list_count,\
         db_meta_game_system_list,\
-        db_meta_game_list_count,\
+        db_meta_games_system_insert, \
+        db_meta_games_system_guid_by_short_name
+    from database.db_base_metadata_games import db_meta_game_list_count,\
         db_meta_game_list,\
         db_meta_game_by_guid,\
-        db_meta_games_system_insert, \
-        db_meta_game_image_random
+        db_meta_game_image_random,\
+        db_meta_game_insert, \
+        db_meta_game_update, \
+        db_meta_game_by_name, \
+        db_meta_game_update_by_guid, \
+        db_meta_game_by_name_and_system
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew,\
         db_meta_movie_status_update,\
         db_meta_movie_json_update,\
@@ -256,9 +262,6 @@ class MKServerDatabase(object):
         db_task_insert,\
         db_task_delete,\
         db_task_info
-    from database.db_base_triggers import db_trigger_insert,\
-        db_triggers_read,\
-        db_triggers_delete
     from database.db_base_tuner import db_tuner_count,\
         db_tuner_insert,\
         db_tuner_delete,\

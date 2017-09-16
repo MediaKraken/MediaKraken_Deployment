@@ -9,8 +9,6 @@ from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
 blueprint = Blueprint("user_movie", __name__, url_prefix='/users', static_folder="../static")
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
@@ -22,6 +20,7 @@ from common import common_internationalization
 from common import common_pagination
 from common import common_string
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -74,14 +73,17 @@ def movie_detail(guid):
                 + ', ')
         # build production list
         production_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
+        for ndx in range(0,
+                len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
             production_list\
                 += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
                 + ', ')
         # budget format
-        budget = common_internationalization.com_inter_number_format(json_metadata['Meta']['themoviedb']['Meta']['budget'])
+        budget = common_internationalization.com_inter_number_format(
+            json_metadata['Meta']['themoviedb']['Meta']['budget'])
         # revenue format
-        revenue = common_internationalization.com_inter_number_format(json_metadata['Meta']['themoviedb']['Meta']['revenue'])
+        revenue = common_internationalization.com_inter_number_format(
+            json_metadata['Meta']['themoviedb']['Meta']['revenue'])
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
             aspect_ratio = "NA"
@@ -143,7 +145,8 @@ def movie_detail(guid):
                     pass
                 try:
                     stream_codec\
-                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
+                        + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':

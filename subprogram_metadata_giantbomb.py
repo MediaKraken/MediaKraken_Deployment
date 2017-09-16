@@ -19,9 +19,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging  # pylint: disable=W0611
 from common import common_config_ini
+from common import common_internationalization
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
@@ -44,8 +43,9 @@ if __name__ == "__main__":
     print('bomb game info download attempts: %s' % total_download_attempts)
     # send notifications
     if total_download_attempts > 0:
-        db_connection.db_notification_insert(locale.format('%d',
-            total_download_attempts, True) + " Giant Bomb game info downloaded.", True)
+        db_connection.db_notification_insert(
+            common_internationalization.com_inter_number_format(total_download_attempts)
+            + " Giant Bomb game info downloaded.", True)
     # commit all changes
     db_connection.db_commit()
     # close DB

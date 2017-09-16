@@ -118,7 +118,7 @@ def db_metatv_guid_by_rt(self, rt_uuid):
         return None
 
 
-def db_meta_tvshow_list_count(self):
+def db_meta_tvshow_list_count(self, search_value=None):
     """
     # tvshow count
     """
@@ -126,7 +126,7 @@ def db_meta_tvshow_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_tvshow_list(self, offset=None, records=None):
+def db_meta_tvshow_list(self, offset=None, records=None, search_value=None):
     """
     # return list of tvshows
     """

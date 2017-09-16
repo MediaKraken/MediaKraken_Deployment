@@ -60,8 +60,6 @@ from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
 from common import common_signal
 from common import common_thetvdb
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
@@ -305,8 +303,8 @@ def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
-    logging.info("Message body %s", body)
     if body is not None:
+        logging.info("Message body %s", body)
         json_message = json.loads(body)
         if json_message['Type'] == 'update':
             if content_providers == 'themoviedb':

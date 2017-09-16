@@ -60,8 +60,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
-  && mv ~/bin/ff* /bin/. \
-  && rm /bin/ffserver \
+  && mv ~/bin/ff* /mediakraken/bin/. \
+  && rm /mediakraken/bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin \
 

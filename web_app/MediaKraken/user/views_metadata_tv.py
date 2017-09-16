@@ -8,9 +8,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
-blueprint = Blueprint("user_metadata_tv", __name__, url_prefix='/users', static_folder="../static")
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
+blueprint = Blueprint("user_metadata_tv", __name__, url_prefix='/users',
+                      static_folder="../static")
 import logging # pylint: disable=W0611
 import subprocess
 import natsort
@@ -22,6 +21,7 @@ from common import common_internationalization
 from common import common_pagination
 from common import common_string
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -51,8 +51,7 @@ def metadata_tvshow_detail(guid):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview\
-                = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
+            data_overview = json_metadata['Meta']['tvmaze']['summary']
         else:
             data_overview = None
         # build gen list
@@ -242,8 +241,8 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
                           )
 
 
-@blueprint.route('/meta_tvshow_list')
-@blueprint.route('/meta_tvshow_list/')
+@blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_tvshow_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_list():
     """
@@ -251,7 +250,15 @@ def metadata_tvshow_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page):
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page,
+                                                        request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page)
+    for row_data in mediadata:
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
             row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3])) # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
@@ -261,7 +268,8 @@ def metadata_tvshow_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_tvshow_list.html', media_tvshow=media_tvshow,
+    return render_template('users/metadata/meta_tvshow_list.html', form=form,
+                           media_tvshow=media_tvshow,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

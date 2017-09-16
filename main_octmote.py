@@ -211,7 +211,8 @@ class OctMoteApp(App):
         print("button server user %s", server_user)
         self.global_selected_user_id = server_user
         self.login_password = ''
-        content = OctMoteLoginScreen(login_password=self.login_password, cancel=self.dismiss_popup)
+        content = OctMoteLoginScreen(login_password=self.login_password,
+                                     cancel=self.dismiss_popup)
         self._popup = Popup(title="Emby Login", content=content,
             size_hint=(None, None), size=(425, 250))
         self._popup.open()

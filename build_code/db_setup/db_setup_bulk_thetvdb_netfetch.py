@@ -30,9 +30,6 @@ sys.path.append("../../common")
 from common import common_internationalization
 from common import common_metadata_thetvdb
 import database as database_base
-# import localization
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 
 # verify thetvdb key exists
 if Config.get('API', 'thetvdb').strip() != 'None':

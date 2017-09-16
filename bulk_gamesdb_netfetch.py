@@ -17,8 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import json
 from common import common_config_ini
 from common import common_internationalization
@@ -43,7 +41,8 @@ GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 
 # grab and insert all platforms
-for platform in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items()[0]:
+for platform \
+        in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items()[0]:
     if platform != 'Platform':
         for game_systems in platform:
             print(game_systems)
@@ -68,12 +67,14 @@ db_connection.db_activity_insert('theGamesDB Batch Stop', None,
 
 # send notications
 if total_games > 0:
-    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_games)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_games)
         + " games(s) metadata added.", True)
 
 
 if total_game_systems > 0:
-    db_connection.db_notification_insert(common_internationalization.com_inter_number_format(total_game_systems)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_game_systems)
         + " game system(s) metadata added.", True)
 
 

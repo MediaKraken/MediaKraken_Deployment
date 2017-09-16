@@ -38,7 +38,8 @@ class CommonMetadataIMVdb(object):
         Video info
         """
         resp = requests.post(self.base_api_url + "/video/" + video_id\
-            + "?include=sources,credits,bts,featured,popularity,countries,", headers=self.headers)
+            + "?include=sources,credits,bts,featured,popularity,countries,",
+            headers=self.headers)
         logging.info("imvdb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 

@@ -7,10 +7,11 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-blueprint = Blueprint("user_internet", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
+blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
+                      static_folder="../static")
 import logging # pylint: disable=W0611
+import locale
+import json
 import sys
 sys.path.append('..')
 sys.path.append('../..')
@@ -21,10 +22,12 @@ from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
+google_instance = common_google.CommonGoogle(option_config_json)
 
 # internet sites
 @blueprint.route('/internet')
@@ -38,15 +41,46 @@ def user_internet():
 
 
 # youtube
-@blueprint.route('/internet/internet_youtube')
-@blueprint.route('/internet/internet_youtube/')
+@blueprint.route('/internet/internet_youtube', methods=["GET", "POST"])
+@blueprint.route('/internet/internet_youtube/', methods=["GET", "POST"])
 @login_required
 def user_internet_youtube():
     """
     Display youtube page
     """
-    return render_template("users/user_internet_youtube.html",
-        media=common_google.com_google_youtube_feed_list('top_rated'))
+    youtube_videos = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        videos, channels, playlists = google_instance.com_google_youtube_search(
+            request.form['search_text'])
+        for url_link in videos:
+            youtube_videos.append(
+                json.loads(google_instance.com_google_youtube_info(url_link, 'snippet')))
+    else:
+        # get trending for specified country code
+        for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
+            logging.info('urllink: %s', url_link)
+            youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
+                                                                                     'snippet')))
+    logging.info('temphold: %s', youtube_videos)
+    return render_template("users/user_internet_youtube.html", form=form,
+        media=youtube_videos)
+
+
+# youtube detail
+@blueprint.route('/internet/youtube_detail/<uuid>')
+@blueprint.route('/internet/youtube_detail/<uuid>/')
+@login_required
+def user_internet_youtube_detail(uuid):
+    """
+    Display youtube details page
+    """
+    form = SearchForm(request.form)
+    return render_template("users/user_internet_youtube_detail.html", form=form,
+        media=json.loads(google_instance.com_google_youtube_info(uuid)),
+        data_guid=uuid)
 
 
 # vimeo
@@ -117,14 +151,25 @@ def user_internet_flickr():
 
 
 # iradio
-@blueprint.route('/iradio')
-@blueprint.route('/iradio/')
+@blueprint.route('/iradio', methods=['GET', 'POST'])
+@blueprint.route('/iradio/', methods=['GET', 'POST'])
 @login_required
 def user_iradio_list():
     """
     Display main page for internet radio
     """
-    return render_template("users/user_iradio_list.html")
+    page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_iradio_list(offset, per_page,
+                                                   search_value=request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_iradio_list(offset, per_page)
+
+    return render_template("users/user_iradio_list.html", form=form)
 
 
 @blueprint.before_request

@@ -22,17 +22,28 @@ import uuid
 import json
 
 
-def db_meta_book_list(self, offset=None, records=None):
+def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
     book list
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book order by mm_metadata_book_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book where mm_metadata_book_name %% %s'
+                ' order by mm_metadata_book_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book order by mm_metadata_book_name')
     else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book order by mm_metadata_book_name '
-            'offset %s limit %s', (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book where mm_metadata_book_name %% %s'
+                ' order by mm_metadata_book_name '
+                'offset %s limit %s', (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book order by mm_metadata_book_name '
+                'offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -95,10 +106,12 @@ def db_meta_book_image_random(self, return_image_type='Cover'):
     Find random book image
     """
     self.db_cursor.execute('select mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_book_guid from mm_media,mm_metadata_book' \
+                           + return_image_type + '\' as image_json,mm_metadata_book_guid'
+                           ' from mm_media,mm_metadata_book' \
                            ' where mm_media_metadata_guid = mm_metadata_book_guid' \
                            ' and (mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+                           + return_image_type + '\'' + ')::text != \'null\''
+                           ' order by random() limit 1')
     try:
         # then if no results.....a None will except which will then pass None, None
         image_json, metadata_id = self.db_cursor.fetchone()

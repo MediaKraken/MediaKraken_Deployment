@@ -585,10 +585,10 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
     ' mm_load_user_loan_id uuid, mm_loan_time timestamp, mm_loan_return_time timestamp)')
 
 
-# create the table for "triggers"
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
-    ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'
-    ' mm_trigger_background boolean)')
+## create the table for "triggers"
+# db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
+#     ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'
+#     ' mm_trigger_background boolean)')
 
 
 ## create table for country
@@ -687,7 +687,7 @@ db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 
         'thesportsdb': '4352761817344',
         'thelogodb': None,
         'opensubtitles': None,
-        'google': None,
+        'google': 'AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY',
         'globalcache': None,
         'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
         'isbndb': '25C8IT4I',
@@ -715,7 +715,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup':{'BackupType': 'local', 
 
 # create table game_info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
-    ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_json jsonb)')
+    ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_name text,'
+    ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
         ' on mm_metadata_game_software_info (gi_system_id);') # so can match systems quickly
@@ -725,6 +726,9 @@ if db_connection.db_table_index_check('mm_game_info_idxgin_json') is None:
 if db_connection.db_table_index_check('mm_game_info_idxgin_name') is None:
     db_connection.db_query('CREATE INDEX mm_game_info_idxgin_name'
         ' ON mm_metadata_game_software_info USING gin ((gi_game_info_json->\'@name\'))')
+if db_connection.db_table_index_check('gi_game_idx_name') is None:
+    db_connection.db_query('CREATE INDEX gi_game_idx_name'
+        ' on mm_metadata_game_software_info (gi_game_info_name);')
 
 
 # create table for games systems
@@ -835,6 +839,7 @@ db_connection.db_query('CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_mo
 db_connection.db_query('CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_band gist_trgm_ops);')
 db_connection.db_query('CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_song gist_trgm_ops);')
 db_connection.db_query('CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book USING gist(mm_metadata_book_name gist_trgm_ops);')
+db_connection.db_query('CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_name gist_trgm_ops);')
 # since it's json, gist trgm_ops won't work
 #db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
 db_connection.db_query('CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person USING gist(mmp_person_name gist_trgm_ops);')

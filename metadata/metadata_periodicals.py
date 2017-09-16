@@ -76,7 +76,8 @@ def metadata_periodicals_lookup(db_connection, media_file_path,
             pass
     if metadata_uuid is None:
         if download_que_json['ProviderMetaID'] is None:
-            lookup_name = os.path.basename(os.path.splitext(media_file_path)[0]).replace('_', ' ')
+            lookup_name = os.path.basename(
+                os.path.splitext(media_file_path)[0]).replace('_', ' ')
             metadata_uuid = db_connection.db_meta_book_guid_by_name(lookup_name)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})

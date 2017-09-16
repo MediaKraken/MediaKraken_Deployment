@@ -23,11 +23,10 @@ import xmltodict
 import sys
 import json
 from common import common_config_ini
+from common import common_internationalization
 from common import common_logging
 from common import common_network
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
@@ -77,8 +76,9 @@ if data is not None:
 
 
 if total_trailers_downloaded > 0:
-    db_connection.db_notification_insert(locale.format('%d',
-        total_trailers_downloaded, True) + " trailers(s) flagged for download.", True)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_trailers_downloaded)
+        + " trailers(s) flagged for download.", True)
 
 
 # log end

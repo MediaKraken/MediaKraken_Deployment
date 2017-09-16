@@ -130,32 +130,32 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
-        if metadata_uuid is None and tvmaze_id is not None:
-            dl_meta = db_connection.db_download_que_exists(download_que_id,
-                                                           'tvmaze', str(anidb_id))
-            if dl_meta is None:
-                metadata_uuid = download_que_json['MetaNewID']
-                download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
-                db_connection.db_download_update(json.dumps(download_que_json),
-                    download_que_id)
-                # set provider last so it's not picked up by the wrong thread too early
-                db_connection.db_download_update_provider('tvmaze', download_que_id)
-            else:
-                db_connection.db_download_delete(download_que_id)
-                metadata_uuid = dl_meta
-        if metadata_uuid is None and thetvdb_id is not None:
-            dl_meta = db_connection.db_download_que_exists(download_que_id,
-                                                           'thetvdb', str(anidb_id))
-            if dl_meta is None:
-                metadata_uuid = download_que_json['MetaNewID']
-                download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
-                db_connection.db_download_update(json.dumps(download_que_json),
-                    download_que_id)
-                # set provider last so it's not picked up by the wrong thread too early
-                db_connection.db_download_update_provider('thetvdb', download_que_id)
-            else:
-                db_connection.db_download_delete(download_que_id)
-                metadata_uuid = dl_meta
+        # if metadata_uuid is None and tvmaze_id is not None:
+        #     dl_meta = db_connection.db_download_que_exists(download_que_id,
+        #                                                    'tvmaze', str(anidb_id))
+        #     if dl_meta is None:
+        #         metadata_uuid = download_que_json['MetaNewID']
+        #         download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
+        #         db_connection.db_download_update(json.dumps(download_que_json),
+        #             download_que_id)
+        #         # set provider last so it's not picked up by the wrong thread too early
+        #         db_connection.db_download_update_provider('tvmaze', download_que_id)
+        #     else:
+        #         db_connection.db_download_delete(download_que_id)
+        #         metadata_uuid = dl_meta
+        # if metadata_uuid is None and thetvdb_id is not None:
+        #     dl_meta = db_connection.db_download_que_exists(download_que_id,
+        #                                                    'thetvdb', str(anidb_id))
+        #     if dl_meta is None:
+        #         metadata_uuid = download_que_json['MetaNewID']
+        #         download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
+        #         db_connection.db_download_update(json.dumps(download_que_json),
+        #             download_que_id)
+        #         # set provider last so it's not picked up by the wrong thread too early
+        #         db_connection.db_download_update_provider('thetvdb', download_que_id)
+        #     else:
+        #         db_connection.db_download_delete(download_que_id)
+        #         metadata_uuid = dl_meta
         if metadata_uuid is None and anidb_id is not None:
             dl_meta = db_connection.db_download_que_exists(download_que_id,
                                                            'anidb', str(anidb_id))

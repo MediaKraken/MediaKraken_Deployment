@@ -7,9 +7,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
-blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
+blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users',
+                      static_folder="../static")
 import logging # pylint: disable=W0611
 import sys
 sys.path.append('..')
@@ -17,6 +16,7 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -31,7 +31,15 @@ def metadata_movie_collection_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_collection_list(offset, per_page):
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_collection_list(offset, per_page,
+                                                       request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_collection_list(offset, per_page)
+    for row_data in mediadata:
         try:
             media.append((row_data['mm_metadata_collection_guid'],
                 row_data['mm_metadata_collection_name'],
@@ -47,7 +55,8 @@ def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/metadata/meta_movie_collection_list.html', media=media,
+    return render_template('users/metadata/meta_movie_collection_list.html', form=form,
+                           media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

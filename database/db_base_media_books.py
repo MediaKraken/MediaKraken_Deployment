@@ -20,26 +20,48 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 
 
-def db_media_book_list_count(self):
+def db_media_book_list_count(self, search_value=None):
     """
     book list count
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
-        ' where mm_media_metadata_guid = mm_metadata_book_guid')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+            ' where mm_media_metadata_guid = mm_metadata_book_guid '
+            'and mm_metadata_book_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+                               ' where mm_media_metadata_guid = mm_metadata_book_guid')
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_book_list(self, offset=None, records=None):
+def db_media_book_list(self, offset=None, records=None, search_value=None):
     """
     book list
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book, mm_media'
-            ' where mm_media_metadata_guid = mm_metadata_book_guid order by mm_metadata_book_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+               'from mm_metadata_book, mm_media'
+               ' where mm_media_metadata_guid = mm_metadata_book_guid '
+               ' and mm_metadata_book_name %% %s'
+               ' order by mm_metadata_book_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book, mm_media'
+                ' where mm_media_metadata_guid = mm_metadata_book_guid'
+                ' order by mm_metadata_book_name')
     else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-            'from mm_metadata_book, mm_media'
-            ' where mm_media_metadata_guid = mm_metadata_book_guid order by mm_metadata_book_name '
-            'offset %s limit %s', (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+               'from mm_metadata_book, mm_media'
+               ' where mm_media_metadata_guid = mm_metadata_book_guid '
+               ' and mm_metadata_book_name %% %s'
+               'order by mm_metadata_book_name '
+               'offset %s limit %s', (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+                'from mm_metadata_book, mm_media'
+                ' where mm_media_metadata_guid = mm_metadata_book_guid'
+                ' order by mm_metadata_book_name '
+                'offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()

@@ -8,8 +8,6 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify,\
 from flask_login import login_required
 from flask_login import current_user
 blueprint = Blueprint("user_sports", __name__, url_prefix='/users', static_folder="../static")
-import locale
-locale.setlocale(locale.LC_ALL, '')
 import logging # pylint: disable=W0611
 import sys
 sys.path.append('..')
@@ -17,14 +15,15 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
+from MediaKraken.public.forms import SearchForm
 
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # list of spoting events
-@blueprint.route("/sports")
-@blueprint.route("/sports/")
+@blueprint.route("/sports", methods=['GET', 'POST'])
+@blueprint.route("/sports/", methods=['GET', 'POST'])
 @login_required
 def user_sports_page():
     """
@@ -32,7 +31,15 @@ def user_sports_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_meta_sports_list(offset, per_page):
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page,
+                                                        request.form['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
+    for row_data in mediadata:
         media.append((row_data['mm_metadata_sports_guid'], row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -41,7 +48,7 @@ def user_sports_page():
                                                   format_total=True,
                                                   format_number=True,
                                                  )
-    return render_template('users/user_sports_page.html', media=media,
+    return render_template('users/user_sports_page.html', media=media, form=form,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

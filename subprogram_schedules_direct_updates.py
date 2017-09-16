@@ -24,8 +24,6 @@ from common import common_config_ini
 from common import common_logging
 from common import common_schedules_direct
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks

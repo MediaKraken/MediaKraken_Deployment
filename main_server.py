@@ -137,8 +137,8 @@ logging.info("Cron PID: %s", proc_cron.pid)
 
 
 # fire up trigger procress
-proc_trigger = subprocess.Popen(['python', './main_server_trigger.py'], shell=False)
-logging.info("Trigger PID: %s", proc_trigger.pid)
+# proc_trigger = subprocess.Popen(['python', './main_server_trigger.py'], shell=False)
+# logging.info("Trigger PID: %s", proc_trigger.pid)
 
 
 # fire up link servers
@@ -176,6 +176,6 @@ db_connection.db_close()
 os.kill(proc.pid, signal.SIGTERM)
 #os.kill(proc_image.pid, signal.SIGTERM)
 os.kill(proc_cron.pid, signal.SIGTERM)
-os.kill(proc_trigger.pid, signal.SIGTERM)
+#os.kill(proc_trigger.pid, signal.SIGTERM)
 for link_data in link_pid.keys():
     os.kill(link_pid[link_data], signal.SIGTERM)

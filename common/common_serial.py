@@ -33,21 +33,17 @@ class CommonSerial(object):
         self.serial_device = None
 
 
-    def com_serial_open_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,
-            dev_bytesize):
+    def com_serial_open_device(self, dev_port='/dev/ttyUSB1', dev_baudrate=9600,
+                               dev_parity=serial.PARITY_ODD, dev_stopbits=serial.STOPBITS_TWO,
+                               dev_bytesize=serial.SEVENBITS):
         """
         Open serial device for read/write
         """
         self.serial_device = serial.Serial(
-            #port='/dev/ttyUSB1',
             port=dev_port,
-            #baudrate=9600,
             baudrate=dev_baudrate,
-            #parity=serial.PARITY_ODD,
             parity=dev_parity,
-            #stopbits=serial.STOPBITS_TWO,
             stopbits=dev_stopbits,
-            #bytesize=serial.SEVENBITS
             bytesize=dev_bytesize
         )
         self.serial_device.open()

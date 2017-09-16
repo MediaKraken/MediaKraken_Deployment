@@ -1,0 +1,47 @@
+Status  Who	Description
+======  ======  ==============================================================
+
+-	-	Test for enough free disk space before some operations
+-	-	Device Listing class needs "Load" and "Eject" buttons
+
+-	-	Detect CD Drive driver automagically.
+-	-	Use Gnome::Dialog for dialogs.
+
+-	Jonas?	What we need to pass to cdrecord in fs=# to get the same
+		buffer size that in cdrdao?
+
+-	-	Add a projects dir to cd in by default and a "Current dir"
+
+-	-	Create a Project Class that will contain AudioCDChild,
+		IsoCDChild, ... as needed.
+
+DONE?	Manuel  Make RecordGenericDialog.
+
+-	-	CD player class that will be able to play from a .toc or
+		from a CD, including diferent wav files and mixed mode tocs.
+		So we can use it in a toolbar, in the AudioCDChild, ...
+
+-	-	Functions in the trackdb to be able to change the .bin file
+		on a .toc, to allow reading an image and give it a name later,
+		or don't give it a name if the user don't wants to save it.
+
+-	Jonas?	We should be able to translate it: add gettext support.
+
+-	Andreas	Are the .toc files compatibles with CdrWin?
+
+-	-	Add extraction to wav and MP3 files directly. For MP3
+		encoding we can use LAME http://www.sulaco.org/mp3/
+
+-	-	Write extensive documentation: what's the right way
+		to do this? docbook? how?
+
+-	-	Put a message in the record progress dialog telling:
+		"Don't panic if the progressbar doesn't update,
+		the lead in data/track (?) is being written".
+
+-	-	"Generate log" option in the record dialog, so we can
+		dump lots of messages to a file like "log.txt" for later
+		reviewing.
+
+-	-	Don't wait to buffer (on the fly) - option: it should began
+		to write when you have already 10 audio seconds * speed.

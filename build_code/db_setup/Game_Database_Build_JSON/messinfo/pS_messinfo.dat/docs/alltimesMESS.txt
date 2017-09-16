@@ -1,8 +1,8 @@
-All Times MESS W.I.P.
+ï»¿All Times MESS W.I.P.
 =================================================
 Edited by AntoPISA
 Source: messinfo.dat
-Latest editing: September 7, 2016
+Latest editing: August 1, 2017
 
 
 0.1:
@@ -1338,7 +1338,7 @@ Bit, Mephisto Dallas and Mephisto Mephisto Amsterdam systems
 - ti99_4a: Fixed TI99 border regression [Michael Zapf].
 - x68000: Raster effects, DMA and vblank improvements [Barry Rodewald].
 - cps1.c: Vas Crabb updated the DIP locations for all games in the CPS-1 driver.
-- mephisto.c: Implemented artwork/code for real chess board usage [Ralf Schäfer, Cowering].
+- mephisto.c: Implemented artwork/code for real chess board usage [Ralf SchÃ¤fer, Cowering].
 - oric.c: Fixed floppy interface detection [Dirk Best].
 - pet.c: Fixed keyboard regression introduced in 0.116 (bug #1405). Updated to use MAME's CRTC6548 implementation [Wilbert Pol].
 - Renamed (ql_mgg) to (ql_de), (ql_mge) to (ql_es), (ql_mgf) to (ql_fr), (ql_mgi) to (ql_it), (ql_mgs) to (ql_se) and (ql_jsu) to (ql_us).
@@ -1426,7 +1426,7 @@ Bit, Mephisto Dallas and Mephisto Mephisto Amsterdam systems
 - abc80: Fixed so that it boots and keyboard works [Robbbert].
 - apple2: Changed slot system to be implemented as MAME devices [Nate Woods].
 - c16: Simplified keyboard and interrupt handling code [Fabio Priuli].
-- c64: Implentation of sprite wrapping at the top of the screen (bug #1599). Partial input fix, joystick 2 still not working (bug #1150). Fixed some timings in C64 PAL [Roberto Zandonà].
+- c64: Implentation of sprite wrapping at the top of the screen (bug #1599). Partial input fix, joystick 2 still not working (bug #1150). Fixed some timings in C64 PAL [Roberto ZandonÃ ].
 - coco, coco3: - 0.125: Transitioned Bitbanger and VHD support to use MAME's core device system [Nate Woods].
 - electron: Fixed corrupt text in Mode 3 [Robbbert].
 - ep128: Merged ex128 and ex128a drivers, to use alternate BIOSes [Fabio Priuli].
@@ -1532,7 +1532,7 @@ Bit, Mephisto Dallas and Mephisto Mephisto Amsterdam systems
 - arcadia: Cleanups, and fixed colors (bug #1399) [Manfred Schneider].
 - c128: Refactored cartridge code to rely on MESS core functions. Currently, .crt emulation uses unmodified C64 cart code and therefore support has not improved (yet). Added support for tape emulation using MESS core functions (loading and saving, both .wav and .tap formats) [Fabio Priuli]
 - c16: Fixed behavior of Joystick Ports Swapping: if you press F1 in partial keyboard emulation, Joy1 keys will go to Joy2 port (as if you had plugged your joystick in port 2). This helps with games which expect joystick inputs from port 2 of the C16. Added support for tape emulation using MESS core functions (only loading, both .wav and .tap formats). Refactored cartridge code to rely on MESS core functions. As a result carts are now working. Also removed -cart2 device, since C16 / C116 / Plus4 had only a single cartridge port [Fabio Priuli].
-- c64: Fixed floppy unmounting . Fixed memory leaks with floppies [Oliver Stöneberg]. Modified VIC II implementation: modified resolutions for NTSC and PAL modes. Modified VIC II implementation: for every raster interrupt the chip draws only one line. Fixed border color during tape loading [Roberto Zandona']. Partial cleanup of memory bankswitch, based on docs. Refactored cartridge code to rely on MESS core functions and generally cleaned up cart code. Support is still limited to Type 0 Carts (8k and 16k images). Fixed behavior of Joystick Ports Swapping: if you press F1 in partial keyboard emulation, Joy1 keys will go to Joy2 port (as if you had plugged your joystick in port 2). This helps with games which expect joystick inputs from port 2 of the C64 [Fabio Priuli]. Added support for tape emulation using MESS core functions (loading and saving, both .wav and .tap formats) [Fabio Priuli, Roberto Zandona'].
+- c64: Fixed floppy unmounting . Fixed memory leaks with floppies [Oliver StÃ¶neberg]. Modified VIC II implementation: modified resolutions for NTSC and PAL modes. Modified VIC II implementation: for every raster interrupt the chip draws only one line. Fixed border color during tape loading [Roberto Zandona']. Partial cleanup of memory bankswitch, based on docs. Refactored cartridge code to rely on MESS core functions and generally cleaned up cart code. Support is still limited to Type 0 Carts (8k and 16k images). Fixed behavior of Joystick Ports Swapping: if you press F1 in partial keyboard emulation, Joy1 keys will go to Joy2 port (as if you had plugged your joystick in port 2). This helps with games which expect joystick inputs from port 2 of the C64 [Fabio Priuli]. Added support for tape emulation using MESS core functions (loading and saving, both .wav and .tap formats) [Fabio Priuli, Roberto Zandona'].
 - c65: Added preliminary cartridge support through MESS core functions. Currently, .crt emulation uses unmodified C64 cart code and therefore is not working [Fabio Priuli].
 - ccmk1, ccmk2: Added clickable artwork [Hobie Troxell].
 - cgenie: Properly implemented the cassette loading [Wilbert Pol].
@@ -1545,7 +1545,7 @@ intv: Added partial support for images in .int/.itv/.bin format. Images in .rom 
 - max: Fixed cart loading (both bug #1618 and a problem with the loading address). Commodore Ultimax / Max Machine / VIC-10 is now working [Fabio Priuli].
 - megadriv: Fixed SRAM saving & loading in many games. Added possibility to choose between a 3 buttons and a 6 buttons Joypad [Fabio Priuli].
 - msx2: Updated several rom sets to match their original hardware configurations [Wilbert Pol].
-- nano: Implemented RUN/MONITOR keys properly, changed video to black and white, and fixed quickloading. System is now fully working, including the "Säkkijärven polkka" program [Curt Coder].
+- nano: Implemented RUN/MONITOR keys properly, changed video to black and white, and fixed quickloading. System is now fully working, including the "SÃ¤kkijÃ¤rven polkka" program [Curt Coder].
 - sg1000: Lightgun crosshair is now shown only if TV Draw cartridge is loaded [Curt Coder].
 - snes: Improved special chips detection (if you run MESS with -log you will be warned of the presence of unemulated chips in error.log), memory handling, cart and SRAM mirroring. Added support for the emulation of the DSP-2 and OBC-1 add-on chips. Code based on byuu's implementation in BSNES (thanks byuu). Fixed inputs in Super Street Fighter 2 (bug #437) [Fabio Priuli].
 - sorcererd: Added support for cassette images [Robbbert, Wilbert Pol]. Fixed Centronics printing [Robbbert].
@@ -1555,7 +1555,7 @@ intv: Added partial support for images in .int/.itv/.bin format. Images in .rom 
 - trs80: Added proper cassette emulation support (both .wav and .cas. formats) [Wilbert Pol].
 - vic20: Refactored cartridge code to rely on MESS core functions. As a result carts are now working (fixed remaining half of bug #1603). Also added proper banking for cart2, making defender, submarin and other multifile carts work. Added support for tape emulation using MESS core functions (loading and saving, both .wav and .tap formats) [Fabio Priuli].
 - vip: Added VP-590 color board, VP-595 Simple Sound Board, and a single VP-580 Auxiliary Keyboard emulation. The VIP Blockout game can now be played in color with sound using 2 keypads. Fixed memory banking, added discrete sound, added tape support and improved quickloading so that the CHIP-8(X) interpreter is automatically loaded alongside .c8 files [Curt Coder].
-- x68000: Fixed SASI harddisk device info [Oliver Stöneberg].
+- x68000: Fixed SASI harddisk device info [Oliver StÃ¶neberg].
 - cbmb.c: Refactored cartridge code to rely on MESS core functions. Disabled .crt support (.10, .20, .40 and .60 files working as before) since I doubt these CBM-II computers used the same format as C64. More work when/if more documents will be available [Fabio Priuli].
 - mephisto.c: Added clickable artwork [Dirk Verwiebe].
 - msx.c: Added some Brazilian clones. Updated some MSX machines ROMs (bug #1425, #1474) [Miodrag Milanovic]. Updated several rom sets to match their original hardware configurations [Wilbert Pol].
@@ -1602,7 +1602,7 @@ geneve: Adds dip switch to select boot eprom version (0.9 or 1.0). Default is 1.
 - atom: Rewrote printer interface [Dirk Best].
 - bbcb: Added centronics printer support [Dirk Best].
 - bw2: Updated to use the new centronics interface [Dirk Best].
-- channelf: Added support for "new" sound, fixed PAL clock  [Fredric QJ Blåholtz].
+- channelf: Added support for "new" sound, fixed PAL clock  [Fredric QJ BlÃ¥holtz].
 - coco: Cleanups. Fixed "Cartridge Auto-Start" setting (bug #1772). Added "unwired" (i.e. - can't connect to anything) support for the RS-232 PAK. This is merely a curiosity for now (bug #1772) [Nathan Woods].
 - coco3: Fixed Composite Monochrome bit (bug #1767) [Nathan Woods].
 - compis, einstein: Updated to use the new centronics interface [Dirk Best].
@@ -1626,9 +1626,9 @@ geneve: Adds dip switch to select boot eprom version (0.9 or 1.0). Default is 1.
 - ip22.c, oric.c: Updated to use the centronics interface [Dirk Best].
 - thomson.c, tmc600.c: Updated to use the new centronics support [Dirk Best].
 - zx.c: Fixed access violation when mounting a .O tape file; implemented cassette save (only .wav is supported); implemented sound; Fixed cassette loading; Added the NTSC/PAL diode; fixed keyboard labels and layouts; Improved video output; improved memory handling; Added notes. Bugs #159, #739, #1057, #1061 [Robbbert].
-- Antoine Miné added Hewlett Packard HP 48G plus system.
+- Antoine MinÃ© added Hewlett Packard HP 48G plus system.
 - Dirk Best added Intelligent Software Enterprise 64, Epson PX-4+, Epson PX-4 and  H&G Mephisto PHC 64 systems.
-- Fredric QJ Blåholtz added Channel F II system.
+- Fredric QJ BlÃ¥holtz added Channel F II system.
 - Incog and Robbbert added Komtek Radionic system.
 - Miodrag Milanovic added Amateurcomputer AC1, Amateurcomputer AC1 (32 lines) systems.
 - MooglyGuy and R. Belmont added Pilot 5000, Pilot 1000, Palm III, PalmPilot Personal and PalmPilot Pro systems.
@@ -2174,7 +2174,7 @@ tandy200: Limited video RAM to 8 KB as per hardware; added a software list for o
 - apple2: Enabled usage of softlist for Apple II series. apple2.xml: TOSEC mis-labeled a couple of DOS 3.3 versions, fixed that, also set display names properly [R. Belmont].
 - at: Added Award 3.03 bios [Darkstar].
 - coco: Fixed floppy index pulse [Curt Coder]. Added cart softlist [K1W1].
-- Barry Rodewald added Fujitsu FM-8 driver and FM-11 EX and FM-16ß skeleton drivers.
+- Barry Rodewald added Fujitsu FM-8 driver and FM-11 EX and FM-16ÃŸ skeleton drivers.
 - Angelo Salese added Hitachi B16, NEC PC-100 , Toshiba Pasopia, Toshiba Pasopia 1600, Sharp MZ-6500, My Brain 3000, Multi 16, if800 model 60, Casio 5550, Casio FP-1100 and Casio FP-6000 skeleton driver.
 - neocd: Added front loading neogeo cd dump [furrtek].
 - pc: Added zenith 2.9e bios [Darkstar].
@@ -2260,7 +2260,7 @@ tandy200: Limited video RAM to 8 KB as per hardware; added a software list for o
 - Added cycle remainder for FRC in SH-2, fixes a tight loop in Astal. Implemented IRQ pending and SCU IRQ enable register mechanism, allowing Choice Cuts to boot up to the title screen [Angelo Salese].
 - Robbbert added SLC1 skeleton driver.
 - Tuxie, JonasP, ElBarto added Tandberg TDV 2324 skeleton driver.
-- Frédéric Le Duigou added Vegas 6809 skeleton driver. Added preliminary video, colour, keyboard. Added notes [Robbbert].
+- FrÃ©dÃ©ric Le Duigou added Vegas 6809 skeleton driver. Added preliminary video, colour, keyboard. Added notes [Robbbert].
 - Completed the list with games P-W in vic1001_cart.xml [K1W1].
 - Minataku and Miodrag Milanovic added Zenith Z-100 skeleton driver.
 - iici and iisi can handle 128MB of RAM, added as an option. Preliminary NuBus interface, not being used yet. Rewrote RBV-and-descendants interrupt handling in fake VIA2; solves occasional interrupt storms. Implemented another PMU command so PowerBook 140/170 can boot 7.5.5. Upgraded maciihmu to working, lots of preliminary-ish PowerMac 6100 work. Boot chime + blank screen is all you get so far. LC now starts up, original Mac II switched to HMMU, preliminary IIfx support. LC2, LC3 now start up [R. Belmont].
@@ -2587,7 +2587,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 ========
 - Added generic PC/AT 586 (PIIX3) system.
 - robcfg added skeleton driver of Acorn Archimedes 3010 and Acorn Archimedes 3020 systems
-- Sören Gust added skeleton driver for Kosmos CP1 / Computer Praxis. Alternate rom for cp1 [Kaylee].
+- SÃ¶ren Gust added skeleton driver for Kosmos CP1 / Computer Praxis. Alternate rom for cp1 [Kaylee].
 - a800: Added new dumps and verified more carts [k1w1].
 - ibm5150: Added a softlist for PC Booter disk [k1w1]. Added new dumps [k1w1, Kaylee].
 - ibmpcjr: Fixed boot error [Carl].
@@ -2672,7 +2672,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Miodrag Milanovic added skeleton driver of Krista-2 system.
 - Miodrag Milanovic added Kristall-2 system.
 - lisa: Fixed polarity of COPS handshake signal, POST now passes. Hooked up SCC, serial POST tests now pass. Fixed MMU behavior in setup mode, system runs POST again [R. Belmont].
-- m20: More Z8001 work, M20 now passes memory test. Hooked up 8253 PIT and 179x FDC. Hook up CRTC readback, 6845 test passes [Christian Grˆssler]. Add i8255 and 2x i8251 skeleton hookups. BIOS still fails because they are not connected to anything. Hook up PIT timers 1 and 2 to clock the 8251s. Serial data written to the keyboard is weird - maybe wrong values for the PIT timers? [R. Belmont].
+- m20: More Z8001 work, M20 now passes memory test. Hooked up 8253 PIT and 179x FDC. Hook up CRTC readback, 6845 test passes [Christian GrË†ssler]. Add i8255 and 2x i8251 skeleton hookups. BIOS still fails because they are not connected to anything. Hook up PIT timers 1 and 2 to clock the 8251s. Serial data written to the keyboard is weird - maybe wrong values for the PIT timers? [R. Belmont].
 - David Haywood added Sega Mega Drive (Europe, PAL, for SVP cart) and Sega Mega Drive (Japan, NTSC, for SVP cart) system.
 - pico: Added new Japanese dumps in softlist [Team Europe].
 - pipbug: System promoted from GAME_NOT_WORKING [Robbbert].
@@ -2705,7 +2705,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Robbbert and Lord Nightmare added skeleton driver of Unknown HP Z80-based mainframe system.
 - ibm5150: Updated the IBM 5150 list with a few more dumps, and fixed a few errors [Kaylee].
 - rfka01 and Micko added skeleton driver ITT RFA ITT3030 system.
-- m20: Now passes POST, need to get FDC booting next. More floppy drive hookup. A trivial booter disk works; the OS does not [Christian Grössler].
+- m20: Now passes POST, need to get FDC booting next. More floppy drive hookup. A trivial booter disk works; the OS does not [Christian GrÃ¶ssler].
 - megadriv: Confirmed Asia MegaCD dump [Jakovasaur, ElBarto]. Documented more carts and dumps [ElBarto]. Added a few Russian pirate dumps [Kaylee].
 - nes: Fixed emulation of DAOU306 pcb needed by Janggun ui Adeul. Added support for a bootleg board by YOKO Soft used by a couple of fighting games. Added support for UNL-FS304 board used by A Link to the Past (Waixing). Added support for the MMC3 variant used by Fight Street VI. Fixed emulation of mapper 52 variant with switched CHR bank lines, used by several pirate multigame carts [Fabio Priuli].
 - pcw8256: Added software list for disk images and hooked up to the driver [Fabio Priuli].
@@ -2768,7 +2768,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - pico: New spanish and japanese dumps [TeamEurope].
 - ql: Added software list for Microdrive cassettes [Curt Coder].
 - sc3000: Moved the fake BIOS to cartridge software list. SC-3000 does not have an internal BIOS, instead a BASIC or other cartridge needs to be plugged in manually. E.g. 'mess sc3000 basic3'. Added support for the SC-3000 Survivors *.bit cassette file format [Curt Coder, SC-3000 Survivor] [Curt Coder].
-- snes: Added a dump of a prototype of the cancelled title, Spectrum HoloByte’s Falcon [Le GROS Pixel].
+- snes: Added a dump of a prototype of the cancelled title, Spectrum HoloByteâ€™s Falcon [Le GROS Pixel].
 - tandy2k: Added software list for floppies [Curt Coder].
 - tg16: Slowdown when playing CD based games (MTB #04926) [Angelo Salese].
 - vidbrain: Improved video timings and correct CPU clock [Kurt Woloch, Sean Riddle, Curt Coder].
@@ -2840,7 +2840,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - mz2000: Added and hooked up software lists for tapes and floppies. tapes do not work, and we need proper dumps of the cassette BASIC [Fabio Priuli].
 - mz700: Added a software list to document tape dumps [FatArnold].
 - pico: New US dumps added to softlist [TeamEurope].
-- snes: Various softlist update: * Huge prototype update, tons of invaluable documentation added [ReadOnly]. Many thanks to all the contributors, in no particular order: TheRedEye, Adam K, Van Halen, Mike, JackHead, badinsults, Yakushi~Kabuto. * New dumps deluge [JachHead, Mike, Yakushi~Kabuto, badinsults, RedScorpion]. * Many new carts profiles added, thanks to RedScorpion’s donation [ReadOnly]. * Rationalization of the undumped list [ReadOnly]. * Plethora of fixes and additions [ReadOnly].
+- snes: Various softlist update: * Huge prototype update, tons of invaluable documentation added [ReadOnly]. Many thanks to all the contributors, in no particular order: TheRedEye, Adam K, Van Halen, Mike, JackHead, badinsults, Yakushi~Kabuto. * New dumps deluge [JachHead, Mike, Yakushi~Kabuto, badinsults, RedScorpion]. * Many new carts profiles added, thanks to RedScorpionâ€™s donation [ReadOnly]. * Rationalization of the undumped list [ReadOnly]. * Plethora of fixes and additions [ReadOnly].
 - vboy: Correct timer handling, gives proper sound/music [R. Belmont]. Improved framebuffer busy / drawing flags for Virtual Boy, golf doesn't crash anymore and nesterfb does a bit more [Angelo Salese].
 - vic1001: Added a few more carts in softlist [K1W1].
 - vip: Fixed VP-700 Tiny BASIC ROM mapping and VP-620 ASCII keyboard [Curt Coder].
@@ -2904,11 +2904,11 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - bw2: Modernized floppy handling and cleaned up driver. Added expansion slot interface and RAMCARD expansion device [Curt Coder].
 - cd32: Improved the inputs in CD32 (by adding a mirror of the first button where the regular Amiga reads it) this allows the majority of the booting CD32 games to actually be started. Expanded cd32.xml softlist entries to highlight more future test cases [David Haywood].
 - crvision: Added earlier revision of Police Jump [Luca Antignano].
-- m20: Improve video rendering [Christian Grössler].
+- m20: Improve video rendering [Christian GrÃ¶ssler].
 - neocd: Giving it the right amount of RAM [David Haywood].
 - pico: Added new dump [TeamEurope].
 - snes: Added 99 US cartridges. Added all known NTT cartridges, they are not supported as they use a specific modem. Started the CIC lockout chips documentation [ReadOnly]. New prototype from Nintendo Player [Mike].
-- supercon: Fixed inputs, now playable [Ralf Schäfer].
+- supercon: Fixed inputs, now playable [Ralf SchÃ¤fer].
 - vic20: The main cpu is a 6502, not a 6510 [O. Galibert].
 - craft.c: Converted to use new AVR8 core. Added port D readback, fixes on-screen VU level: * Sync video with Vsync output, fixes rolling image. * Fixed visible area and promoted to working [MooglyGuy].
 - mmodular.c: ASSERT then immediate CLEAR does not work on level irqs [O. Galibert].
@@ -2931,7 +2931,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - dc: Added European DC bios 1.01c [BadAd84].
 - enmirage: Make it boot by whatever means necessary [O. Galibert]. Lots of documentation from the schematics, added preliminary LED hookup [R. Belmont].
 - ibm5150: Added some redumps and new dumps to softlist. Add another CP/M8-6 version to the ibm5150 software list [Kaylee].
-- m20: Improved keyboard and floppy handling. Implement memory map correctly. BASIC now shows its startup banner [Christian Grössler].
+- m20: Improved keyboard and floppy handling. Implement memory map correctly. BASIC now shows its startup banner [Christian GrÃ¶ssler].
 - mu100: Main screen turn on! [O. Galibert]. Added older BIOS ver 1.05 [Stefan Lindberg].
 - pc88va: Fixed upd765 SIS status when fid = 4, this makes NEC PC-88VA to attempt to DMA from floppy [Angelo Salese].
 - pico: Added a new Euro dump and better documented some of the older dumps. New Japanese dumps added [Team Europe].
@@ -2952,7 +2952,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - mac.c: Remove weird address swizzle that confused systems with extended PRAM. nubus_image: Revised firmware allows multiple cards to work. Add eject/insert support [Rob Braun]. Added "image" card which allows direct read/write access to any vMac/BasiliskII compatible image under 256 MB, including HD floppies. Disk is bootable if set in the control panel but only can eject from Finder [Rob Braun, R. Belmont].
 - pc9801.c: Add its specific almost raw fdi disk format [O. Galibert].
 - sms.c: Improved support for '3-D' games [Enik Land].
-- z80dev.c, z80ne.c: Fixed some incorrect opcodes and address register math in segment mode. Olivetti M20 now can boot PCOS to the prompt [Christian Grössler].
+- z80dev.c, z80ne.c: Fixed some incorrect opcodes and address register math in segment mode. Olivetti M20 now can boot PCOS to the prompt [Christian GrÃ¶ssler].
 - Al Kossow added skeleton driver of ADC Super Slave, TeleVideo TS-802H and TeleVideo TS-803H systems.
 - Any and The Dumping Union added skeleton driver of General Processor Modello T system.
 - Cowering added Kaypro 286i system.
@@ -2983,7 +2983,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - c64dx, c65: Bugfix #04874: [Crash/Freeze] (c65.c) c65, c64dx: memory_bank: set_base called NULL base [Fabio Priuli].
 - fm7: Identified F-BASIC versions and renamed drivers accordingly [anonymous].
 - lviv: Added support for multipart tapes (lv0, lv1, etc. extensions) [Fabio Priuli].
-- m20: Added -ramsize support [Christian Grössler].
+- m20: Added -ramsize support [Christian GrÃ¶ssler].
 - mc1502: 5.33 version bios [anasana].
 - pce: Convert to using new more accurate video chip device emulation [Wilbert Pol].
 - pico: Added two German prototypes. Added new European and Japanese dumps and better documentation for a few old dumps [Team Europe].
@@ -3106,7 +3106,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - profweis: Added another bios version [Team Europe].
 - snes: Softlist news: - Added 51 cartridges [ReadOnly] - Added a few pirate multigame carts. Most of these are incomplete dumps, so redumps are needed to promote them to working  state, but their existence is now at least documented [Fabio Priuli].
 - socrates: Added CAD Professor Maus dump; added Game Wizard/Magische Spiele dump in softlist [TeamEurope].
-- supercon: Fix regressions [Ralf Schäfer].
+- supercon: Fix regressions [Ralf SchÃ¤fer].
 - a6809.c: Bugfix #05156: [Crash/Freeze] (a6809.c) a6809: Access Violation with -debug [Firewave].
 - a7800.c: Fixed color clip in $1 & $F. Improved and corrected NTSC (a7800) and PAL (a7800p) palettes * Palette rebuild due to misaligned data references * Corrected PAL color sequence order [Robert Tuccitto].
 - amstrad.c: Bugfix #05109: [Crash/Freeze] (amstrad.c) cpc464p, cpc6128p, gx4000: Crash with "-cart barb2" [Firewave].
@@ -3129,7 +3129,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Curt Coder added CBM 8296 ExecuDesk and CBM 8296GD systems.
 - Kaylee added Samsung Samtron 88S system.
 - plgDavid added Casio PV-16 system.
-- René van den Enden added Magnavox Odyssey 3 system.
+- RenÃ© van den Enden added Magnavox Odyssey 3 system.
 - Shattered added Sapsan Besta-88 system.
 - TeamEurope added Yeno Mister X system and related softlist (misterx.xml).
 - Angelo Salese added fp200.c skeleton driver.
@@ -3538,8 +3538,8 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Cowering and O. Galibert added Saitek Kasparov Stratos Chess Computer system.
 - Curt Coder added Commodore CBM 4032 (Fat 40) and Commodore PET 4032 (Fat 40) systems.
 - Enik Land added Samsung Gam*Boy I (Korea) and Samsung Gam*Boy I (Korea) with FM Chip systems.
-- Felipe Corrêa da Silva Sanches added SONY PVE-500 system. Improving emulation of SONY PVE-500 video editing station [Felipe Sanches].
-- Felipe Corrêa da Silva Sanches added HENRY Henry Prot I v19 (REV.1) and Makerbot Replicator 1 desktop 3d printer systems.
+- Felipe CorrÃªa da Silva Sanches added SONY PVE-500 system. Improving emulation of SONY PVE-500 video editing station [Felipe Sanches].
+- Felipe CorrÃªa da Silva Sanches added HENRY Henry Prot I v19 (REV.1) and Makerbot Replicator 1 desktop 3d printer systems.
 - Guru and R. Belmont added skeleton driver of Fanuc System P Model G and Fanuc System 15 systems. Got the 80286 to boot correctly [Carl]. Added Guru Readme(tm) for Base 1 board [Guru].
 - Jim Battle and Curt Coder added skeleton driver of ISC Compucolor II system. Added preliminary software list for floppy images [Jim Battle, Curt Coder]. Added read-only support for Compucolor Virtual Floppy Disk Images [Curt Coder].
 - Jonathan Gevaryahu and Balrog added IPD AlphaSmart 2000 system.
@@ -3560,8 +3560,8 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Al Kossow and Robbbert added m6805evs.c skeleton and mx2178.c drivers.
 - Cowering and O. Galibert added stratos.c driver.
 - crazyc added asst128.c, europc.c, ibmpcjr.c and tandy1t.c drivers.
-- Felipe Corrêa da Silva Sanches added hprot1.c and replicator.c drivers.
-- Felipe Corrêa da Silva Sanches added pve500.c driver. New maincpu dump to replace bad dump [Felipe Sanches].
+- Felipe CorrÃªa da Silva Sanches added hprot1.c and replicator.c drivers.
+- Felipe CorrÃªa da Silva Sanches added pve500.c driver. New maincpu dump to replace bad dump [Felipe Sanches].
 - Guru and R. Belmont added fanucspmg.c skeleton driver. Corrected text mode font [O. Galibert].
 - Jim Battle and Curt Coder added compucolor.c skeleton driver.
 - R. Belmont added fanucs15.c skeleton driver.
@@ -3620,11 +3620,11 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - clcd.c: Fixed irq hookup [smf].
 - cybiko.c: Fixed major memory stomp in cybikov2. Fixed "insert battery" message in cybikoxt; the OS boots up now. Started general cleanup of I/O handling. More I/O re-hookup. Make serial loopback on cybikoxt, gets past first (of several) hangups [R. Belmont].
 - dmv.c: Various updates to allow CP/M to boot [Sandro Ronco].
-- exelv.c: Bugfix #05510: [Crash/Freeze] (exelv.c) All exelv.c sets: Crash with -aviwrite or -mngwrite [Firewave]. Improved emulation in driver to the point where exl100 will successfully load and execute cartridges. Still lacking any input at the moment [Gilles Fétis].
+- exelv.c: Bugfix #05510: [Crash/Freeze] (exelv.c) All exelv.c sets: Crash with -aviwrite or -mngwrite [Firewave]. Improved emulation in driver to the point where exl100 will successfully load and execute cartridges. Still lacking any input at the moment [Gilles FÃ©tis].
 - fmtowns.c: Added clone FM Towns II FreshTV [caius, Barry Rodewald].
 - gb.c: Added GameBoy Pocket Boot ROM [BennVenn].
 - gba.c: Bugfix #05583: [Crash/Freeze] (gba.c) GBA: Pokemon Sapphire crashes BIOS on fullpath, runs fine on softlist [Fabio Priuli].
-- hprot1.c: New derivative "CARD I PCB rev.08A". New derivative "CARD II PCB rev.6". Fixed LCD rendering (now both lines are displayed properly). Inverted logic of the inputs so that now we can navigate the menu [Felipe Corrêa da Silva Sanches].
+- hprot1.c: New derivative "CARD I PCB rev.08A". New derivative "CARD II PCB rev.6". Fixed LCD rendering (now both lines are displayed properly). Inverted logic of the inputs so that now we can navigate the menu [Felipe CorrÃªa da Silva Sanches].
 - hp48.c: Fix for memory cards and addition of imgtool support for it [Antonie Mine].
 - hp9845.c: Added software lists for option ROMs [Curt Coder].
 - hunter2.c: Allow all RS232 devices [smf].
@@ -3634,7 +3634,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - next.c: Fix the vblank disables. Setup the time. Add mouse. Mouse/nmi fixes [O. Galibert].
 - odyssey2.c: Bugfix #05551: [Crash/Freeze] (odyssey2.c) Pete Axe Pete!, Frogger (in NTSC system), others: odyssey2 SIGABRT with clang optimizations in OS X [Wilbert Pol].
 - pet.c: Added user port diagnostic connector [Curt Coder]. Replaced bad D80 for Z-RAM in pet_flop.xml [Mike Naberezny]. Added InfoPro at pet_rom.xml [Paul Rickards and Mike Naberezny].
-- pve500.c: Work on keyboard, 7-seg display and maincpu (z80) daisy chaining. Added declaration of DIP switches [Felipe Corrêa da Silva Sanches].
+- pve500.c: Work on keyboard, 7-seg display and maincpu (z80) daisy chaining. Added declaration of DIP switches [Felipe CorrÃªa da Silva Sanches].
 - ql.c: Added preliminary CST Q+4 emulation. Added slot interfaces for the expansion and ROM cartridge ports. Modernized the Sandy Super Disk, Sandy SuperQBoard, and Miracle Trump Card floppy interfaces. Added a device for the QIMI (not working yet). Created skeletons for several expansion cards[Curt Coder].
 - rainbow.c: New floppy code - uses more reliable 'wd_fdc'. Unmap unavailable RAM. Hard limits and 'floating bus' code removed. IRQ priorities updated. Board revisions and add-on cards documented [Bavarese].
 - sg1000.c: Bugfix #05512: [Misc.] (sg1000.c) All sg1000.c sets: AddressSanitizer: heap-use-after-free - with 8K carts [Fabio Priuli].
@@ -3650,7 +3650,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Renamed (a500pl) to (a500p), (a500pln) to (a500pn), (fs5500) to (fs5500f1), (rainbow100) to (rainbow100a), 
 - Removed (gblight) clone.
 - Curt Coder added hp9845.c driver.
-- Felipe Corrêa da Silva Sanches added minicom.c and tecnbras.c driver.
+- Felipe CorrÃªa da Silva Sanches added minicom.c and tecnbras.c driver.
 - hap added cc40.c and ti74.c drivers.
 - Juergen Buchmueller added alto2.c driver.
 - Robbbert and Anna Wu added fc100.c driver.
@@ -3661,7 +3661,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Chris Hardy and Barry Rodewald added Amstrad MegaPC Plus (WINBUS chipset) system.
 - Curt Coder added skeleton driver of Hewlett-Packard's 9835A, 9835B, 9845A, 9845B, 9845C, 9845S and 9845T systems.
 - Dirk Best added Commodore's Amiga CD32 (NTSC), CDTV (NTSC), Amiga 2000 (PAL), Amiga 2000 (NTSC), Amiga 4000/040 (PAL), Amiga 4000/030 (PAL), Amiga 4000/030 (NTSC), Amiga 4000/040 (NTSC), Amiga 4000T (PAL), Amiga 4000T (NTSC) and Video Technology VZ-200 (Germany & Netherlands) systems.
-- Felipe Corrêa da Silva Sanches added Intelbras TI630 telephone, Tecnbras Dot Matrix Display (70x7 pixels), HENRY Henry Prot CARD II (REV.6), HENRY Henry Prot CARD I (REV.08A) and Ultratec Minicom IV systems.
+- Felipe CorrÃªa da Silva Sanches added Intelbras TI630 telephone, Tecnbras Dot Matrix Display (70x7 pixels), HENRY Henry Prot CARD II (REV.6), HENRY Henry Prot CARD I (REV.08A) and Ultratec Minicom IV systems.
 - Guru and R. Belmont added Fanuc System P Model G (monochrome) system.
 - hap added Texas Instruments TI-74 BASICALC system.
 - hap and Jon Guidry added Texas Instruments system.
@@ -3688,7 +3688,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - gamegear: Added preliminary emulation of the Master Gear Adapter which allows to launch SMS games in the gamegear driver, with video chip in SMS mode. You can try this by launching mess.exe gamegear -cart mgear -cart2 your_sms_game the -cart2 switch becomes available when you mount "mgear" in the main gamegear cart slot) [Fabio Priuli].
 - gba: Added a configuration setting (off by default) to skip some BIOS checks at boot. This allows Tyrian 2000 Prototype to be played [Fabio Priuli]. Fixed Top Gun - Combat Zones cart type, making the game playable [Reznor007].
 - gbcolor: Added a configuration setting (off by default) to skip BIOS checks at boot. This allows the recently dumped Rockman World Prototype to be played, and the Rocket Games pirate GBC carts too [Fabio Priuli].
-- glcolor: Documented the 'Spiel-und Lernspaß' cartridge [TeamEurope].
+- glcolor: Documented the 'Spiel-und LernspaÃŸ' cartridge [TeamEurope].
 47814: Converted the driver to use slot devices for cartridges and implemented the IntelliVoice expansion and the Entertainment Computer System expansion as passthru devices. The official syntax to launch games requiring the speech expansion is now mess intv -cart voice -cart2 gamename which corresponds to mounting the IntelliVoice and plugging the game cart in its subslot. The official syntax to launch games requiring the ECS expansion is now instead mess intv -cart ecs -cart2 gamename and mess intv -cart ecs -cart2 voice -cart3 gamename if the game requires both expansions at once. For additional user friendliness, we also offer intvecs (which emulates an Intellivision unit with both expansions added) and intvoice (which emulates an Intellivision with Intellivoice expansion added) drivers, where games can simply be mounted with the -cart media switch [Fabio Priuli].
 - itt3030: Additional FDC hookup, now tries and fails to boot [R. Belmont].
 - las3000: Add first-pass keyboard, 80-column text, hi-res and double hi-res graphics support [R. Belmont].
@@ -3717,7 +3717,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - msx.c: Added release years for several systems [AntoPISA]. Added support for DMK floppy images [Wilbert Pol].
 - pce.c: Bugfix #05728: [Crash/Freeze] (pce.c) sgx: The "Axelay" Demo crashes the MESS while starting [Fabio Priuli]. Bugfix #05729: [Crash/Freeze] (pce.c) pce, tg16: The demo "Split-Resolution Demo by Chris Covell" does not work properly [Fabio Priuli].
 - psx.c: Added info to the games #-O [AntoPISA].
-- pve500.c: Hooked up MB8421 RAM [Felipe Corrêa da Silva Sanches].
+- pve500.c: Hooked up MB8421 RAM [Felipe CorrÃªa da Silva Sanches].
 - saturn.c: Made RAM/Backup RAM expansion internal slot options. You now mount these with the -cart media switch, i.e. for instance mess saturn -cdrm ddsom -cart ram32 or mess saturn -cdrm draculax -cart bram16 and not anymore using the -exp option [Fabio Priuli].
 - sms.c: Small improvements to the latching of some registers. Fixes flicker in Power Strike 2. Restore selected cartridge when loading a save state for the store display unit. Documented release years for some Brazilian SMS releases. Misc fixes: * Disable gamegear sio register when in ggsms mode * Fixed tilemap mirroring on sms1 vdp needed for Japanese version of Ys * Fixed BIOS support in the gamegear driver * Fixed collisions when column #0 is disabled [Enik Land]. [Enik Land]. Fixed graphics glitch in E-Swat atttact mode on the smsj driver and some small cleanups. Fixed lphaser regression [Enik Land]. Prevent vdp register 6 contents from being overwritten while a line is being drawn. Fixes title screen in backtof3 [Enik Land, Wilbert Pol].
 - softbox.c: Added BIOS revision 8/9/81 [Nils Eilers, Mike Naberezny].
@@ -3892,14 +3892,14 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - sun3.c: Bugfix #05758: [Crash/Freeze] (sun3.c) sun3_80: [debug] Assert shortly after start.
 - Al Kossow added skeleton driver of Hewlett-Packard HP9000/370 system.
 - Carl added Slicer Computers system [Carl].
-- Felipe Corrêa da Silva Sanches added DALE Electronics BancTec ESeries Panel system.
+- Felipe CorrÃªa da Silva Sanches added DALE Electronics BancTec ESeries Panel system.
 - hap added Texas Instruments Language Tutor (prototype) system.
 - hap and Sean Riddle added Ideal Electronic Detective and Parker Brothers Split Second system.
 - plgDavid added Texas Instruments Speak & Spell (Japan) system.
 - R. Belmont and Al Kossow added skeleton driver of Hewlett Packard HP9000/380, HP9000/382, HP 16500a, HP 1650b, HP 1651b, HP9000/310 and HP9000/340 systems.
 - TeamEurope added VTech Genius Junior Movie (Germany), Genius Junior Redstar 2 (Germany) and Genius Winner Notebook Fun (Germany) systems.
 - Carl added slicer.c driver.
-- Felipe Corrêa da Silva Sanches added banctec.c driver.
+- Felipe CorrÃªa da Silva Sanches added banctec.c driver.
 - hap and Sean Riddle added elecdet.c driver.
 - hap added splitsec.c driver.
 
@@ -4051,12 +4051,12 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - mac.c: Fix crashiness in NuBus "image" card host access. Image card now accepts paths starting with '$' for your $HOME needs. Also fixed a crash if the path is invalid [R. Belmont].
 - Dirk Best added skeleton driver of Regnecentralen RC759 system.
 - F. Ulivi added HP 64000 system.
-- Felipe Corrêa da Silva Sanches added a skeleton driver of Itautec I-7000 system.
+- Felipe CorrÃªa da Silva Sanches added a skeleton driver of Itautec I-7000 system.
 - Retroport added Tesa Etikett Etikettendrucker 6240 system.
 - Robbbert added Mr. Isizu Z80 TV Game System system.
 - Dirk Best added rc759.c skeleton driver.
 - F. Ulivi added hp64k.c driver.
-- Felipe Corrêa da Silva Sanches added i7000.c skeleton driver.
+- Felipe CorrÃªa da Silva Sanches added i7000.c skeleton driver.
 - Robbbert added tvgame.c driver.
 
 0.164:
@@ -4082,29 +4082,29 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - sdk80.c: Begun hooking up devices: * Hooked up i8251 USART and RS232 device. Can use standard RS232 slot devices, including the internal serial terminal, or a terminal program running on the host machine * Hooked up USART baud rate selection switch.
 - vk100.c: More work based on schematic. Self test doesn't get much farther yet. Correct prom locations based on schematics; mark one PROM as bad pending a redump. Fix diagrams for memory map decoding in comments, based on schematics [Lord Nightmare].
 - Angelo Salese added MicroSoft XBOX system.
-- Felipe Corrêa da Silva Sanches added Sigtron Daruma Print Plus DS348 (Dot matrix printer),  Victor do Brasil Elppa II+, Microdigital Onyx (Brazil/Prototype), Polymax Maxxi, Metamaquina Metamaquina 2 (Desktop 3D printer), Unitron Eletrônica Unitron AP II (in English), Unitron Eletrônica Unitron AP II (in Brazilian Portuguese) and Icatel TPCI (Brazilian public payphone) systems.
+- Felipe CorrÃªa da Silva Sanches added Sigtron Daruma Print Plus DS348 (Dot matrix printer),  Victor do Brasil Elppa II+, Microdigital Onyx (Brazil/Prototype), Polymax Maxxi, Metamaquina Metamaquina 2 (Desktop 3D printer), Unitron EletrÃ´nica Unitron AP II (in English), Unitron EletrÃ´nica Unitron AP II (in Brazilian Portuguese) and Icatel TPCI (Brazilian public payphone) systems.
 - hap, Kevin Horton and Rik added Bandai Ultra Man, Bandai Burger Time, Bandai Pengo, Bandai Zaxxon and Gakken/Konami Jungler systems.
 - hap, Sean Riddle, segher and O. Galibert added Nintendo Game & Watch: Mickey & Donald system.
 - hap and Sean Riddle added Konami Top Gun and Konami Teenage Mutant Ninja Turtles systems.
-- Joakim Larsson Edström added Force Computers Gmbh SYS68K/CPU-1 system.
+- Joakim Larsson EdstrÃ¶m added Force Computers Gmbh SYS68K/CPU-1 system.
 - Nigel Barnes added Intel SDK-80 system.
 - Angelo Salese added xbox.c driver.
 - Carl added peoplepc.c driver.
-- Felipe Corrêa da Silva Sanches added daruma.c and rambo.c drivers.
-- Joakim Larsson Edström added force68k.c driver.
+- Felipe CorrÃªa da Silva Sanches added daruma.c and rambo.c drivers.
+- Joakim Larsson EdstrÃ¶m added force68k.c driver.
 - hap added hh_sm510.c and icatel.c drivers.
 - Nigel Barnes added sdk80.c driver.
       
 0.165:
 ====== 
-- attache: Changed description in 'Otrona Attaché'.
+- attache: Changed description in 'Otrona AttachÃ©'.
 - geneve: Added Programmable Flash Memory boot feature (PFM512)	[Michael Zapf].
 - hp64k: Fix to allow multiple screens (for RS232 terminal) [F. Ulivi].
 - vidbrain: Added Information Manager prototype in vidbrain.xml. [Sean Riddle].
 - vinvader: Games promoted to working [Kevin Horton].
 - apple2.c: Fix Ivel Ultra's unique text drawing (MT#5814). Bugfix #05814: [Graphics] (apple2.c) ivelultr: Font is flipped [R. Belmont].
 - c128.c: Emulated the PARTNER 128 cartridge [Curt Coder].
-- pet.c: Added Edex (France, v4.4) in pet_rom.xml [Hervé Warin].
+- pet.c: Added Edex (France, v4.4) in pet_rom.xml [HervÃ© Warin].
 - ti99_2.c: Added new cartridge types paged378, paged377; HFDC has new switch "wait for HD" (available in later HFDC models); 32K internal memory mod is now off by default [Michael Zapf].
 - x68k.c: Added brightness controls, used for fade in/out effects [Barry Rodewald].
 - xbox.c: Xbox console driver now uses the base common machine setup with Chihiro [Samuele Zannoli].
@@ -4116,7 +4116,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - hap, Lord Nightmare, Kevin Horton and Sean Riddle added Texas Instruments Speak & Spell (US, patent) system.
 - hap and Sean Riddle added Texas Instruments Touch & Tell (US, 1981 version) and Vocaid systems.
 - hap, Sean Riddle and Kevin Horton added Castle Toy Tactix system.
-- Hervé Warin added Commodore CBM 8032 (France) system.
+- HervÃ© Warin added Commodore CBM 8032 (France) system.
 - Robbbert added SME Systems Aussie Byte II system.
 - Scott Stone added USSR DVK KSM-01 system.
 - Wilbert Pol added HP Integral Personal Computer system.
@@ -4234,7 +4234,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Brandon Munger added ROLM Systems, Inc. ROLM 9751 Model 10 system.
 - David Haywood added Philips CD-i 490, Philips CD-i 910-17P Mini-MMC (PAL), Nokia 3310, Sandisk Sansa Fuze 2 and Sega Genesis (USA, NTSC, with TMSS chip) systems.
 - Dirk Best added TRQ Video Computer H-21 system.
-- Felipe Correa da Silva Sanches added Escola Politécnica - Universidade de São Paulo Patinho Feio system.
+- Felipe Correa da Silva Sanches added Escola PolitÃ©cnica - Universidade de SÃ£o Paulo Patinho Feio system.
 - hap added Mattel Dungeons & Dragons - Computer Labyrinth Game and Tomy Power House Pinball systems.
 - hap and Sean Riddle added TI Mr. Challenger and TI Spelling B (1978 version) systems.
 - Justin Kerk added skeleton driver of Saturn ST-1700 (headphone version), Saturn ST-1702, Saturn ST-1703, Saturn ST-1704, Saturn ST-1705, Saturn ST-1706, Saturn ST-1707, Saturn ST-1708 and Saturn ST-1714 systems.
@@ -4317,12 +4317,12 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - hap and plgDavid added Fidelity Electronics Excellence (model 6080/6093) system.
 - hap and Sean Riddle added Coleco Zodiac - The Astrology Computer, Conic Electronic Football II (Conic), Parker Brothers Lost Treasure and Coleco Electronic Quarterback systems.
 - Lord Nightmare and bitsavers added Xerox Notetaker system. 
-- Jean François Del Nero added SMT Goupil G1 system.
+- Jean FranÃ§ois Del Nero added SMT Goupil G1 system.
 - Sean Riddle added Coleco Head to Head Basketball (COP420L) system.
 - Felipe Correa da Silva Sanches added argox.cpp driver.
 - hap added fidel68k.cpp driver.
 - hap and Kevin Horton added k28.cpp driver.
-- Jean François Del Nero added goupil.cpp driver.
+- Jean FranÃ§ois Del Nero added goupil.cpp driver.
 - Jonathan Gevaryahu added notetaker.cpp driver.
 
 0.172:
@@ -4369,7 +4369,7 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - sms.cpp: Bugfix #- 06172: [DIP/Input] (sms.c) Default input mapping for two paddle devices causes a conflict [AJR].
 - ti99_4x.cpp: Several code changes: GROMs with clock input line and improved timing behavior * TMS9928A delivers GROMCLK if configured * TI-99/8 mainboard: implemented custom chips (vaquerro, mofetta, amigo) for low-level emulation * Fixed HOLD feature of TMS9995 * Moved v9938 from console to EVPC where it belongs, dropped videowrp * Fixed issues with paged37x cartridges * Fixed issues with Horizon Ramdisk [Michael Zapf].
 - xbox.cpp: USB is now partially usable: Control,bulk,interrupt transfers work * Started hle simulation of usb devices on chihiro baseboard * There is a first implementation of xbox game controller * The Chihiro BIOS can now enter system configuration menu [Samuele Zannoli].
-- Felipe Corrêa da Silva Sanches added Scopus/Spectrum Spectrum ED and bootleg Unitron 1024 system.
+- Felipe CorrÃªa da Silva Sanches added Scopus/Spectrum Spectrum ED and bootleg Unitron 1024 system.
 - hap and Berger added Fidelity Electronics Sensory Chess Challenger 9 system.
 - hap and Igor added Elektronika Nu, pogodi! system.
 - hap and Kevin Horton added Epoch Galaxy II (VFD Rev. B) system.
@@ -4439,8 +4439,8 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - cdi.cpp: Added a few recently dumped prototypes; added info about original disks in cdi.xml [Fabio Priuli].
 - decwritr.cpp: Update the la120 driver documentation a bit, fixed memory mirror related issue [Lord Nightmare]. Documented the Caps Lock key being a physical toggle [NeXT].
 - fmtowns.cpp: Added more info, based on Breiztiger's research in fmtowns_cd.xml. Added a new software list for floppy-only FM Towns games (boot disks for CDs remain in the CD list, for easier launching). Many thanks to r09 and Breiztiger for help with info and images in fmtowns_flop.xml [Fabio Priuli]. Completed addition of known dumps in fmtowns_cd.xml [r09, Breiztiger].
-- gb.cpp: Added Rumble emulation to the MBC-5 Game Boy Color games which supported it. MAME will now output a "Rumble" output bit (0 for Rumble=OFF and 1 for Rumble=ON) whenever the games try to access the Rumble component… third party applications can now listen to the output and redirect it to some hardware that can "rumble" in sync with the gameplay. Added partial RTC emulation to the MBC-3 Game Boy Color games which supported it. Clock proceeds a bit too fast during gameplay, but at least it is not stuck anymore to the time of first configuration [Fabio Priuli].
-- gba.cpp: Documented some more Game Boy Advance PCBs in gba.xml. Several improvements: * Implemented emulation of the "General Purpose I/O" port (GPIO) of GBA * Hooked up S-3511 RTC emulation through the GPIO port. This allows to avoid the "Internal battery has run dry [...] clock-based events will no longer occur" messages in Pokémon Emerald / Ruby / Sapphire. This also promotes Sennen Kazoku to working state * Hooked up Boktai Light Sensor emulation through the GPIO port. This allows to avoid the "Solar Sensor is broken" message in Boktai / Bokura no Taiyou, which is now playable and to recharge your weapons in all three games of the series. Light level has to be chosen via the "Machine Configuration" menu, until we get some kind of camera input * Hooked up Warioware Twist Gyroscope emulation through the GPIO port. This allows to play the minigames, even if in some case the input sensibility might need a few tweaks * Hooked up Warioware Twist & Drill Dozer Rumble emulation through the GPIO port. MAME will now output a "Rumble" output bit (0 for Rumble=OFF and 1 for Rumble=ON)  whenever the games try to access the Rumble component… third party applications can now listen to the output and redirect it to some hardware that can "rumble" in sync with the gameplay. Implemented emulation of the Tilt sensor used by Yoshi’s Universal Gravitation / Yoshi Topsy-Turvy / Yoshi no Banyuuinryoku (and by Koro Koro Puzzle). Note that the calibration can seem a bit tricky at first, because the emulated screen does not turn as the GBA would. In order to properly calibrate the sensor, just keep pressed right for a few seconds when requested to calibrate right inclination (first calibration screen in Yoshi Universal Gravitation) so to get the full right range; then keep pressed for left for a few seconds when requested to calibrate left inclination (second calibration screen in Yoshi Universal Gravitation) so to get the full left range [Fabio Priuli].
+- gb.cpp: Added Rumble emulation to the MBC-5 Game Boy Color games which supported it. MAME will now output a "Rumble" output bit (0 for Rumble=OFF and 1 for Rumble=ON) whenever the games try to access the Rumble componentâ€¦ third party applications can now listen to the output and redirect it to some hardware that can "rumble" in sync with the gameplay. Added partial RTC emulation to the MBC-3 Game Boy Color games which supported it. Clock proceeds a bit too fast during gameplay, but at least it is not stuck anymore to the time of first configuration [Fabio Priuli].
+- gba.cpp: Documented some more Game Boy Advance PCBs in gba.xml. Several improvements: * Implemented emulation of the "General Purpose I/O" port (GPIO) of GBA * Hooked up S-3511 RTC emulation through the GPIO port. This allows to avoid the "Internal battery has run dry [...] clock-based events will no longer occur" messages in PokÃ©mon Emerald / Ruby / Sapphire. This also promotes Sennen Kazoku to working state * Hooked up Boktai Light Sensor emulation through the GPIO port. This allows to avoid the "Solar Sensor is broken" message in Boktai / Bokura no Taiyou, which is now playable and to recharge your weapons in all three games of the series. Light level has to be chosen via the "Machine Configuration" menu, until we get some kind of camera input * Hooked up Warioware Twist Gyroscope emulation through the GPIO port. This allows to play the minigames, even if in some case the input sensibility might need a few tweaks * Hooked up Warioware Twist & Drill Dozer Rumble emulation through the GPIO port. MAME will now output a "Rumble" output bit (0 for Rumble=OFF and 1 for Rumble=ON)  whenever the games try to access the Rumble componentâ€¦ third party applications can now listen to the output and redirect it to some hardware that can "rumble" in sync with the gameplay. Implemented emulation of the Tilt sensor used by Yoshiâ€™s Universal Gravitation / Yoshi Topsy-Turvy / Yoshi no Banyuuinryoku (and by Koro Koro Puzzle). Note that the calibration can seem a bit tricky at first, because the emulated screen does not turn as the GBA would. In order to properly calibrate the sensor, just keep pressed right for a few seconds when requested to calibrate right inclination (first calibration screen in Yoshi Universal Gravitation) so to get the full right range; then keep pressed for left for a few seconds when requested to calibrate left inclination (second calibration screen in Yoshi Universal Gravitation) so to get the full left range [Fabio Priuli].
 - imds2.cpp: Added monitor versions 1.1 and 1.2 [Nigel Barnes].
 - mac.cpp: Fix interactions between mirror and range [O. Galibert].
 - n64.cpp: Disabled fast RAM, as it prevents watchpoints from working and doesn't gain much on the interpreter core [Ryan Holtz].
@@ -4565,4 +4565,560 @@ ti99_2.c, ti99_4x.c, ti99_4p.c, ti99_8.c: The Grand TI-99 Family Rewrite, using 
 - Olivier Galibert added vgmplay.cpp driver.
 - Ryan Holtz added cmi.cpp driver.
 
-© 2011/2016  AntoPISA
+0.178:
+======
+- apple2e: Made write-only soft-switches write-only [Peter Ferrie].
+- bbcb: Moved FDC to slot device to support various controller boards * Acorn 8271 and 1770, supporting Acorn, Amcom, Watford DFS's * Cumana QFS (8877a) * Opus DDOS and EDOS (1770, 2793, 2791) * Watford DDFS (1770 and 1772) [Nigel Barnes].
+- bbcm: Replaced cassette LED with power LED in layout [Nigel Barnes].
+- bbcmc: Added joyport slot device to Master Compact, defaulting to joystick [Nigel Barnes].
+- chessmst: Fixed HALT button. Added layout with script [Sandro Ronco].
+- cmi2x: Various changes * Fixed FDC DMA behavior * Fixed channel card memory tests * Fixed inverted data writes to I8214 PICUs * Fixed 6809 interrupt vectoring [Ryan Holtz]
+- e100: Added rev2 layout and support for software RTC. Serial support: It still has some issues as it is a polled PIA based bitbangning serial support and there are timing issues [Joakim Larsson Edstrom].
+- fmtowns: Reduced logerror spam a bit [Barry Rodewald].
+- hp9845b: Imgtool now supports HP9845B tape image * The "hti" format is used to simulate tape cartridges in hp9845b [F. Ulivi].
+- octopus: Various changes * Corrected CPU speeds, added Z80, added basic video output * Added some more components, pass a few more tests * Added more components, hooked up DIP switches; all systems tests now pass * Fixed floppy use, now attempts to boot from floppy; CP/M 86-80 Plus and MS-DOS both now load to the command prompt * Added keyboard * Added PIT timer and speaker sound * Made a start at switching between the 8088 and Z80 CPUs * Fixed mapping of graphics PROM, now detected on boot * Hooked up RTC to the PPI (hopefully more or less correctly) [Barry Rodewald].
+- sms: Added more accurate FM Sound Unit behavior [Enik Land].
+- vt100: Added VT100-AC ROM set with intelligent STP board (not working, needs one ROM redumped and 8085 STP CPU hooked up) [Lord Nightmare].
+- apollo.cpp: Eliminate logerror spam on unmapped ISA access [Hans Ostermeyer].
+- atarist.cpp: Added correct ROM labels for the TOS 1.02 and 1.04 ROMs for the MegaST [Lord Nightmare, techfury90].
+- bbc.cpp: Added Opus Challenger (floppy and ramdisc) device on 1mhz bus * Moved joystick to analogue port slot device * Added Voltmace self-centering joysticks * Updated to use input merger device * Keyboard and joystick use ioport_array * Reset devices on BREAK [Nigel Barnes].
+- coco12.cpp: CoCo and Dragon FDC code overhaul * Split CoCo and Dragon FDC code * Added save state support * Fixed regression introduced on the Dragon FDC from 0.154 [Nathan Woods].
+- fidel6502.cpp: Hooked up EAS speech chip. Game still not playable [hap].
+- didact.cpp: New driver for Esselte 100, has built in BASIC, supports cassette save/load and capable of 256x256 monochrome semigraphics. Simplified internal layouts removing dependencies on external artwork Not fancy but it works. Cleaned up driver and added serial support (though it has issues still) [Joakim Larsson Edstrom].
+- electron.cpp: Added Acorn Plus 3 expansion as slot device (floppy support) * Now uses RAM device instead of ROM_REGION * Added CSW cassette format * Pressing BREAK will now hold until released * Reset expansion devices on BREAK * Minor progress on M2501 device [Nigel Barnes].
+- fmtowns.cpp: Switched off layer debug keys by default [Barry Rodewald].
+- gb.cpp: Fixed Mega Duck envelope and LFSR sound registers: Determined that envelope/LFSR register nybbles are reversed relative to Game Boy by comparing writes made by Mega Duck and Game Boy versions of Snake Roy and Pile Wonder [John Rieman].
+- gba.cpp: (gba_lcd) Added missing check for BG2 enable flag in draw_roz_bitmap_scanline(). Refactored code [Giuseppe Gorgoglione].
+- hp9845.cpp: Filter for HP9845 data files added to imgtool * Translates record-based DATA HP9845 to and from text files [F. Ulivi].
+- mac.cpp: Replaced bad dump in macplus v2 ROM set with redump, and use split ROMs for macplus, mac512ke, mac128k and mac512k, macclasc, macclas2 sets, with proper labels [Lord Nightmare].
+- pc1512.cpp: Fixed keyboard reset behavior. Various improvements: Added joystick port to the keyboard * Added mouse port slot interface * Added a software list for hard disks, and a preinstalled HD20 image to it [Curt Coder].
+- psx.cpp: Removed duplicates, fixed shortname consistency * Some images were identical but dumped with different offset [Aeternal].
+- saturn.cpp: Initial work towards debug command hookups [Angelo Salese].
+- svi318.cpp: Rewrote driver. Supported are the SVI-318 and SVI-328 systems, and a slot system which adds support for the following expander slot options: * SV-601 Super Expander * SV-602 Single Slot Expander
+- ti99_2.cpp: Improvements: Fixed debugger access in ti_fdc * State save capability - not yet fully stable, but basically working * Improve performance by stopping GROM clock in idle state  * Switch to ram_devices for RAM [Michael Zapf].
+- vector06.cpp: Add software list and TODOs [MetalliC].
+- vis.cpp: Added sound [Carl].
+- xbox.cpp: Added ability to select BIOSes 4134, 3944, 4034, and 4817 [Samuele Zannoli].
+- Renamed (stopthie) to (stopthief) and (stopthiep) to (stopthiefp)
+- Removed (bbcb1770).
+- Felipe Sanches added Alesis QS7 musical keyboard system.
+- hap and Sean Riddle added Tandy Radio Shack Championship Football (model 60-2150), Tandy Radio Shack Championship Football (model 60-2151), A-One LSI Match Number, Coleco Head to Head Boxing, MB Electronic Battleship (1977 version, model 4750B) and Tiger Electronics Ditto systems.
+- hap, Sean Riddle and Lord Nightmare added Telesensory Systems, Inc. Speech+ system.
+- hap and yovan added Fidelity Electronics Chesster Challenger system.
+- Joakim Larsson Edstrom added Didact AB Esselte 100 and Didact AB Esselte 100 systems.
+- Lord Nightmare added DEC VT100 w/VT1xx-AC STP system.
+- Nigel Barnes added Arbiter Leisure Arbiter Discmate A-02 system.
+- Olivier Galibert added Hack Inc. Sandbox PCI PC system.
+- rfka01 added Siemens Simatic PG685 OUA11, PG685 OUA12 and Regnecentralen RC702 Piccolo systems.
+- robcfg and R. Belmont added Apple Computer Apple //e (enhanced, France) system.
+- Sandro Ronco added VEB Mikroelektronik Erfurt Chess-Master Diamond system.
+- Ryan Holtz added Volkswagen Digijet system.
+- uncredited added VEB Mikroelektronik Erfurt Chess-Master (set 2) system.
+- Felipe Sanches added alesis_qs.cpp driver.
+- Olivier Galibert added pcipc.cpp driver.
+- rfka01 added pg685.cpp driver.
+- Robbbert added rc702.cpp driver.
+- Ryan Holtz added digijet.cpp driver.
+
+0.179:
+======
+- cmi2x: Fixed envelope terminal flag diagnostic. Fixed MAST/TIM diagnostic test [Ryan Holtz].
+- coco: Changed to use required_ioport_array and optional_ioport [Nathan Woods].
+- feasbu, feasgla: Promoted to working [hap].
+- mz2000: Various minor changes: Moved MZ-80B to mz2000.cpp driver (emulation remains non-working) * Overhauled character layouts, creating separate configurations for European and Japanese keyboards (MT #6338) * Added GRPH characters and kana to key names [AJR].
+- mz80b: Various minor changes: Moved MZ-80B to mz2000.cpp driver (emulation remains non-working) * Overhauled character layouts, creating separate configurations for European and Japanese keyboards (MT #6338) * Added GRPH characters and kana to key names [AJR].
+- octopus: Various changes: Added on-board serial comms controller * Added serial vector ports * Fix extended RAM, made 256k the default * Inverted IRQ signal from RTC * Added Centronics parallel port * Added software list [Barry Rodewald].
+- rc702: Fixed ctc interrupt [Robbbert].
+- sms: Fixed Out Run sound in FM mode [Enik Land].
+- tranz330: Added partially working driver for the VeriFone Tranz 330 point of sale terminal; modem is not currently emulated, but it can be interacted with in a meaningful way and configured  [Ryan Holtz].
+- v1050: Fixed 8214 PICU hookup and promoted back to working [Ryan Holtz].
+- zodiac: Changed input type to keyboard: Added PORT_CHARs * Added notes on physical button layout [AJR].
+- gb.cpp: Bugfix #05006: [Graphics] (gb.cpp) gameboy [f1race]: Corrupted graphics (racetrack not lined up) [Wilbert Pol].
+- hp9845.cpp: Various changes: Moved hp9845b_state class into a separate file * Refactored handling of irq/sts/flg bits to allow for adding I/O slots * Added I/O slots * Implemented HP98035 RTC card [F. Ulivi].
+- ie15.cpp: Improved performance by using a timer to determine hblank [Ryan Holtz].
+- mac.cpp: Rewrote audio output for original Macs to work like hardware [R. Belmont].
+- mz2000.cpp: Bugfix #06338: [DIP/Input] (mz2000.cpp) mz2000, mz2200: Mistakes in current keyboard matrix emulation and missing keys! [AJR].
+- pc.cpp: Fixed 16-bit audio in diagnose.exe for the Sound Blaster 16 * The fix replaces the lowest bit of the page with the upper bit of the address, in the case of a 128k DMA * This applies to the southbridge, cs4031, wd7600, ngen, and at devices [smf].
+- rainbow.cpp: Various changes: Fixed medium resolution mode * Added first incarnation of Color Graphics Option for Rainbow-100 B * Note: Highres and vector mode still have unfixed bugs [Bavarese].
+- x68k.cpp: Added IPL ROM dumped from an early X68000 CZ-600CE, made default for the X68000 [The Dumping Union, Barry Rodewald].
+- Renamed (wildfire.cpp) to (hh_amis2k.cpp) [hap].
+- anonymous added Fidelity Electronics The Excellence (model EP12),  The Par Excellence and Sensory 9 Playmatic S systems.
+- Arashikage and R. Belmont added Akai AX80 system.
+- hap added Fidelity Electronics Excel Display, Elite A/S Challenger (Budapest program, French), Elite A/S Challenger (Budapest program, German), Elite A/S Challenger (Budapest program, Spanish), Elite A/S Challenger (Glasgow program, French), Elite A/S Challenger (Glasgow program, German) and Elite A/S Challenger (Glasgow program, Spanish) systems.
+- hap and anonymous added Fidelity Electronics Elite Avant Garde 2100 (English), Elite Avant Garde 2100 (French) and Elite Avant Garde 2100 (Spanish) systems.
+- hap and Sean Riddle added Canon Multi 8 and Gakken Game Robot 9 systems.
+- hap and yovan added Fidelity Electronics The Excellence (model 6080) system.
+- Joakim Larsson Edstrom added Aceex 2814 system. Started skeleton driver for 1995 Accexx 28.8 modem [Joakim Larsson Edstrom].
+- Ryan Holtz added VeriFone Tranz 330 system. 
+- Vas Crabb added Burroughs EF315-I220 Teller Terminal (ANZ) system.
+- yovan added Fidelity Electronics Designer 2000 system.
+- Joakim Larsson Edstrom added aceex.cpp driver.
+- R. Belmont added akaiax80.cpp driver.
+- Vas Crabb added anzterm.cpp driver.
+- Ryan Holtz added tranz330.cpp driver.
+
+0.180:
+======
+- aa310: Reworked HLE keyboard and added mouse input [Sandro Ronco].
+- concept: Added optional MacsBug ROMs [Al Kossow, R. Belmont].
+- fds: Detached the other cart lists [Reagan Roush].
+- isbc2861: Machine promoted to working [Carl].
+- mzr8105: Added UPD7201 device type to and changed driver to use it [Joakim Larsson Edstrom].
+- octopus: Various changes: * Added cursor display * Added colour attributes * Added blink and underline attributes * Hooked up serial lines, Concurrent DOS can now use the first serial port as an extra terminal * Fixed Z80 RAM banking past 256kB [Barry Rodewald].
+- risc: Machine promoted to working [unknown].
+- saturn: Various changes: * Worked around VDP1 timings in Sega Saturn, fixes regression with Batman Forever gameplay speed * Added Rotation Parameter read control register, fixes at least Riddler stage ROZ positioning in Batman Forever [Angelo Salese].
+- sms: Added the missing ROM to the smssgame set [Astroblaster].
+- smskr: Added support for the seo-jin 11-in-1 multi-game bootleg cartridge [David Haywood].
+- vis: Machine promoted to working [Carl].
+- zorba: Added software list for floppy disks as well as some documentation to the driver file [Reagan Roush].
+- aa310.cpp: Rename (a310.cpp) to (aa310.cpp). Fixed horizontal display position and cursor position in VIDC [Sandro Ronco]. Added new NOT WORKING machines Archimedes 305, Archimedes 440, Archimedes 3000, Archimedes 410/1, Archimedes 420/1, Archimedes 440/1, Archimedes 540, Acorn A5000, Acorn A4, Acorn A4000, Acorn A5000 Alpha * Renamed a310->aa310 to avoid conflict with Amiga machines * Added all missing OS releases Arthur 0.30, RISC OS 2.01, RISC OS 3.00, RISC OS 3.10, RISC OS 3.19 (German) * Made all machines default to the OS (Arthur, RISC OS 2, RISC OS 3) they were shipped with * Corrected ROM labels/locations * Added default CMOS to boot to desktop * Mapped Acorn A4 Power Management extension [Nigel Barnes].
+- apollo.cpp: Enabled creation when non-existent image name is supplied for omti8621 and sc499 [Hans Ostermeyer].
+- apple2gs.cpp: Switched to use z80scc, added printer and modem ports [R. Belmont].
+- bbc.cpp: Added ACP 1770 DFS to acorn1770 FDC [Nigel Barnes].
+- fidel6502.cpp: Redumped Par Excellence [Berger].
+- didact.cpp: Various Candela changes: * Added can09, a non working driver for the Candela main computer, a 6809 based design with FDC and a 6850 CRTC * Added can09t, a somewhat working driver for the Candela terminal, a slimmer version without FDC and with a terminal interface [Joakim Larsson Edstrom].
+- electron.cpp: Added PRES ADFS versions to Plus3 expansion [Nigel Barnes].
+- fccpu30.cpp:  Various changes: * Added new board variants as WIP: cpu30x, cpu30xa, cpu30za, cpu30zbe, cpu30be8, cpu30be16, cpu30lite4, cpu30lite8, cpu30senr, cpu30senr501, cpu33 * Added support for -ramsize according to each board variant * Renamed roms to reflect on content and versions * Mapped the Epson 72423 RTC device to the msm6242_device driver as it is compatible * Added mock handlers with LOG info for devices that needs to be written * Exposed possibility to turn off FPU in case it is not installed * fccpu: Prepared to split out base fccpu class to support drivers for cpu2x and cpu4x boards etc * Various small fixes to PIT68230, FGA022, DUSCC [Joakim Larsson Edstrom].
+- fmtowns.cpp: Addded support for IC Memory Card images * Limited to 16MB in size until software that supports more can be found [Barry Rodewald].
+- hazeltin.cpp: Various initial changes: * Added keyboard hookup, but will need 8048 dumping or black-boxing * Added preliminary video, still broken due to timing issues * Added state-machine bipolar PROMs [Ryan Holtz].
+- hp9845.cpp: Re-implemented 98035 module with a nanoprocessor driver * Now possible to emulate the 98035 RTC module at a low level thanks to firmware ROM dump from Mr. Kueckes * Implemented "nanoprocessor" microcontroller CPU core and disassembler. Implemented HP98034 module (HPIB interface) [F. Ulivi].
+- isbc.cpp: Added new isbc 286 rom version v1.0 [Al Kossow].
+- mac.cpp: Corrected regression in IIvx/IIvi models. Split 128/512/Plus into a new separate, more modern driver [R. Belmont]
+- micro20.cpp: Added more device hookups, gets farther into POST [R. Belmont].
+- mmodular.cpp: Moved Saitek RISC 2500 into a separate driver and added internal layout and inputs [Sandro Ronco].
+- n64.cpp: Various changes: Only SP DMA skip for DRAM address, regardless of transfer direction * Give priority to current transfer when reading AI length register * Add delayed carry signal to AI (hardware bug allows carry signal from low to high to persist through a reload) [Happy].
+- pg685.cpp: Various changes: Preliminary working oua11 video * Fixed ROM and ROM shadow mapping for oua12 so it actually boots * Preliminary not-quite-working oua12 video (chargen decode is unknown) [R. Belmont]. Added hardware info [rfka01]. Added pg675 and hooked up MM58167 RTC [R. Belmont, rfka01].
+162468: - 0.180: Joakim Larsson Edstrom added prodigy.cpp driver. Added skeleton driver for ACI Destiny Prodigy chess computer [Joakim Larsson Edstrom].
+163283: - 0.180: Various Rainbow 100 changes: * Fixed colors in highres mode and video levels * Made a small fix to serial Rx * Added support for hard disks with up to 17 sectors/track, as MFM controllers allow this * Made port 50 readable (undocumented, yet used) [Bavarese].
+- risc2500.cpp: Moved Saitek RISC 2500 into a separate driver and added internal layout and inputs [Sandro Ronco].
+- sms.cpp: Various changes: Set initial audio mixing state on reset * Documented the Sports Pad modes (and changed the default) used by Sports Pad Soccer (Jpn) [Enik Land].
+- sun4.cpp: Simplified DMA implementation [Ryan Holtz].
+- ti99_4x.cpp: Fixed save states and declared MACHINE_SUPPORTS_SAVE [Michael Zapf].
+- x68k.cpp: Added keyboard LEDs to layout display * Among other things, this fixes the 'dancing keyboard' display when running Cotton [Barry Rodewald].
+- Rename (a3010) to (aa3010), (a3020) to (aa3020) and (a310) to (aa310).
+- Aaron Giles added Pioneer LDV-1000 and PR-8210 Simulator systems.
+- Al Kossow added Intel iSBC 86/05 and iSBC 86/30 systems.
+- Al Kossow and R. Belmont added GMX Micro 20 and TeleVideo TV910 systems.
+- Al Kossow and Ryan Holtz added Hazeltine Corporation Hazeltine 1500 system.
+- hap and Sean Riddle added Bandai System Control Car: Cheetah, Tandy Radio Shack Monkey See (1982 version) and Entex Space Battle systems.
+- hap and Berger added Fidelity Electronics Designer 2100 Display (rev. B) and  Excel 68000 systems.
+- Joakim Larsson Edstrom added  Applied Concepts Inc ACI Destiny Prodigy, Kron Ltd Kron K-180, Candela Data AB Candela CAN09 main unit and Candela Data AB Candela CAN09 terminal. Added also Force Computers Gmbh SYS68K/CPU-30BE/16, SYS68K/CPU-30BE/8, SYS68K/CPU-30Lite/4, SYS68K/CPU-30Lite/8, SYS68K/CPU-30SEN-R, SYS68K/CPU-30SEN-R-501, SYS68K/CPU-30X, SYS68K/CPU-30XA, SYS68K/CPU-30ZA and SYS68K/CPU-30ZBE systems.
+- Nigel Barnes added Acorn A4, A4000, Archimedes 305, Archimedes 410/1, Acorn Archimedes 420/1, Archimedes 440, Archimedes 440/1, A5000, A5000 Alpha, Archimedes 540 and Archimedes 3000 systems.
+- Olivier Galibert added Hack Inc. Sandbox PCI PC (440TX) system.
+- R. Belmont and rfka01 added Siemens Simatic PG675 system.
+- Robbbert added Gammatron Datum system.
+- Team Europe added Bandai Super Note Club mu (Japan) system.
+- unknown added Mephisto Montreux system.
+- Aaron Giles added ldplayer.cpp driver.
+- Joakim Larsson Edstrom added kron.cpp and prodigy.cpp drivers.
+- Nathan Woods, Raphael Nabet and R. Belmont added mac128.cpp driver.
+- R. Belmont added micro20.cpp and tv910.cpp drivers.
+- Robbbert added datum.cpp driver.
+- Ryan Holtz added hazeltin.cpp driver. 
+- Sandro Ronco added risc2500.cpp driver.
+
+0.181:
+======
+- amstrad.cpp: Caps Lock key does not have a physical toggle [AJR].
+- apple1.cpp: Redumped dis-assembler in apple1.xml [Dagarman].
+- apricot: Machine promoted to working [Dirk Best].
+- apricot.cpp: Improvements: Fixed CTS polarity and marked as working - with the SIO fix the system is now very stable. Fixed keyboard error 31, now displays 'System OK'. (z80dart) Only update serial line configuration if it actually changes. Allows the apricot serial port to work correctly. (pit8253) Reading back the count while in the middle of a 16-bit write returns a XOR'ed version of the value written. Fixes apricot error 29 [Dirk Best].
+- apricotxi: Machine promoted to working [Dirk Best].
+- einvaderc: Clone promoted to working.
+- funjacks: Machine promoted to working [hap, Sean Riddle].
+- funrlgl: Machine promoted to working [hap, Sean Riddle].
+- gb.cpp: Bugfix #05006: [Graphics] (gb.cpp) gameboy [f1race]: Corrupted graphics (racetrack not lined up) [Wilbert Pol].
+- hazeltin.cpp: Added netlist-based video board emulation [Ryan Holtz].
+- k28: Machine promoted to working [O. Galibert].
+- magnum: Added preliminary sound to Dulmont Magnum [smf]. 
+- mc1000: Removed direct update handler [O. Galibert].
+- micro20: Hack to start up at MacsBug/shell entry point, added terminal and devices. (m68k) Respect 68020 "freeze I-cache" bit; micro20 68020 cache test now passes [R. Belmont].
+- micro20.cpp: Added some features needed for the selftest, but couldn't hook up the missing parts so haven't verified that the self test actually can run through now: H4 is now cleared in reset and asserted by software down the line. By calling the update_tin method the device now support external clock for the timer. Clock can also be polled at port C bit #2. The test expects something to pulse at port B and then a clock at TIN (port C pin #2 alternate function) [Joakim Larsson Edstrom].
+- mz2000.cpp: Bugfix #06338: [DIP/Input] () mz2000, mz2200: Mistakes in current keyboard matrix emulation and missing keys! [AJR].
+- neogeo.cpp: Corrected burningfpa romlabels (thanks jackc) and added it to software list [hap].
+- pcvga: Rename (xtvga) to (pcvga).
+- rainbow.cpp: Fixes: Changed 7220 divider from 4 to 32 (closer to 1 Mhz from VT240). Stop flicker when color video is off. Changed the effect of GDC_MODE_ENABLE_VIDEO (see page 21 of PDF AA-AE36A). Addressed reentrance problems (reset procedure). Made scroll fully functional (deeper SCRAM levels and GDC diag test #9). Corrected cursor position in REGIS TSR. Implemented NMI for parity test. Fix aspect ratio in graphics modes. Fixed serial port A (printer port B needs more work. Added support all four ClikClok versions [Bavarese].
+- Al Kossow added Intel iSBC 286/12 system.
+- Carl and Dave Jones added Dulmont Magnum system.
+- hap and Sean Riddle added National Semiconductor QuizKid Racer (COP420 version) system.
+- Joakim Larsson Edstrom added Force Computers Gmbh SYS68K/CPU-20 and Terco AB Terco 4426 CNC Programming station system.
+- Lord Nightmare and Joakim Larsson Edstrom added Apple Laser Writer II NT system.
+- Miodrag Milanovic added VTech Laser Turbo XT and VTech Laser XT/3 system.
+- R. Belmont and Guru added Ensoniq SQ-2 system.
+- shattered added Toshiba T1000 system.
+- yovan added Fidelity Electronics Designer 2000 Display system.
+- Carl added magnum.cpp driver.
+- Joakim Larsson Edstrom added fccpu20.cpp and lwriter.cpp driver.
+- Sergey Svishchev added tosh1000.cpp driver
+
+0.182:
+======
+- a2bus: Simplification and cleanup: Used new MC68705P3 core and removed obsolete glue. Made comment styles consistent, eliminated device timers altogether, and de-duplicated code for updating X and Y axes. The card works before and after the change, but by default axes are only mapped to inc/dec keys, not host mouse [Vas Crabb].
+- aa3000: Changed description to 'BBC A3000' [Nigel Barnes].
+- aa310: Added Diagnostic Test ROMs [Nigel Barnes].
+- aa310.cpp: Over 30 games (some protected), and many apps in archimedes.xml [Nigel Barnes].
+- advision.cpp: Fixed CPU clock; turtles music is now melodic [Curt Coder].
+- apricot.cpp: Use 74153 for the serial clock selector [Dirk Best].
+- atom: Backgammon, Cylon Attack, Early Warning, Minefield and Tangled added in atom_cass.xml and Galaxians (Aardvark) added in atom_flop.xml [Nigel Barnes].
+- attache: Machine promoted to working [zx70].
+- cforteb: Changed description in 'Constellation Forte (version B)'.
+- coco: Fixed a recently introduced bug in DMK image creation [Nathan Woods].
+- cop444l: Fixed disassembly of jump instructions and used decimal for LDD/XAD. Fixed instruction timing and time-base counter. Fixed COP444 disassembly. Properly separated COP444L from COP444C [Curt Coder].
+- diablo68: Machine promoted to working [hap].
+- fccpu1: Added VME interface [Joakim Larsson Edstrom].
+- fccpu20: Set terminal as default rs232 device, changed crystal value after visual verification to get 9600 Baud. Terminal works but needs to be set to 7bit [Joakim Larsson Edstrom]. Removed deprecated direct update handlers [R. Belmont].
+- hd63450: Fixed device to find the owner CPU if the top node doesn't have a CPU, like in the case of a VME chassis [Joakim Larsson Edstrom].
+- hh_tms1k.cpp: Bugfix #06467: [Gameplay] (hh_tms1k.cpp) elecdet: Every suspect gives the same alibi [hap]. Fixed wrong button mapping for 'Codename Sector' [hap].
+- hk68v10: Added VME interface [Joakim Larsson Edstrom].
+- i8255: In read_pc(), also return data from output latch [shattered].
+- ibmpcjr: Fraction Fever added in ibmpcjr_cart.xml [Anna Wu, Justin Kerk].
+- m6805: Refactoring and improvements. Moved 68705 devices into their own file, Made P3, P5, R3 and U3 variants and made them load bootstrap ROMs. MC68705R3 bootstrap ROM is believed to be identical to U3, but a dump is required for confirmation. Implemented EPROM control (saves contents using NVRAM mechanism). Implemented differences for open drain I/O ports. Re-implemented timer/counter - supports MOR-controlled mode, correct count direction, and correct start/reset states. Fixed state of input lines being lost on reset. Use symbolic names for I/O registers in disassembly. Exposed more more internal registers through the state interface - shows contents of registers that can't be read as memory. Reduced massive amounts of redundancy by templating opcode handlers and replaced the epic switch statement with a dispatch table. Turned a lot of macros into inline methods so they can be scoped down. Fixed timings for a few instructions and added a table with CMOS instruction timings. Correc
+- mc68681: Added preliminary support for SC28C94 QUART, fixed channel C/D transmission [R. Belmont].
+- newbrain.cpp: Newbrain improvements: Added character ROM and more accurate video output. Fixed keyboard. Decoded VFD bitstream and added simultaneous video and VFD display. Fixed CPU clocks and interrupt logic, added layout for VFD-less model, enforced power on reset timer [Curt Coder].
+- pc.cpp: Added Atari PC1 and corrected name of Atari PC3. Gave standard pccga five slots, so machines with combo cards can have hard disks as well until combo cards are emulated. Reordered MCFG and ROM entries to match the machine list at the bottom of the file. Derived NCR PC4i configuration from VGA PC and corrected number of slots. Made 720K drives standard for laptops which have them. Added info on Zenith Supersport, Bondwell Pro28, and Atari PCs. Added info on several already emulated systems in the header. Added detailed information on Data General One, Commodore PC-1, Commodere PC10-III and PC20-III, Zenith SuperSport, Siemens Sicomp PC16-05, NCR PC4i, Olivetti M15, Sharp PC-7000, Sanyo MBC-16, Atari PC-3, Eagle 1600, VTech Laser Turbo XT and XT/3 [rfka01].
+- ptcsol.cpp: Bugfix #06216: [Sound] (ptcsol.cpp) sol20: Audio support [Robbbert].
+- rainbow.cpp: Enabled Corvus hard drives (Patched CP/M 1.x only, requires DRCDUTIL.TD0 driver disk from Maslin archive). See section CORVUS HARD DISK for patch instructions. DOS 2.x and CP/M 2.2 were once supported too, but drivers appear to be lost. Added info about 6 and 20 MB Corvus drives and how to format/use them under CP/M 1.x [Bavarese].
+- rm380z34d: Enabled (rm380z34d) [Robbbert].
+- rm380z34e: Enabled (rm380z34e) [Robbbert].
+- tandy1t.cpp: MS-DOS (Verson 3.20, Tandy version 03.20.21) (Tandy 1000 TX), DeskMate (Tandy 1000), DeskMate II (Tandy 3000), Personal DeskMate, Personal DeskMate 2 (Tandy 1000 HX), Personal DeskMate 2 (Tandy 1000 HX, Alt), Personal DeskMate 2 (Tandy 1000 TX),  King's Quest (Tandy) and Transylvania (Tandy) added in t1000.xml. Distinguish between models using 90-key Tandy and standard 101-key "Enhanced" AT keyboard layouts. Also unmapped Hold key on the 90-key layout by default to avoid freezing the emulated system when switching UI modes [Justin Kerk]. [Justin Kerk].
+- tms0970: Fixed a problem with DDIG line, causing MB Comp IV to be unplayable [hap].
+- ttl153: Rewrote emulation, only output state when the level changes [Dirk Best].
+- vcs80: Removed deprecated direct update handlers [R. Belmont].
+- vii.cpp: Updated software list: Split into three lists: regular V.Smile, V.Smile Motion, and V.Smile Baby (Motion and Baby lists not hooked up yet). Updated with a bunch of new-found carts and been restructured to indicate which carts are undumped. Documented cart internals more thoroughly - descriptions now list PCB types, chip placements/labels, etc. if available. Added previously missed dumps, fixed some typos [Fake Shemp].
+- x1: 198X-nen, 3D Golf Simulation, Fushigi no Kuni no Alice, Ankokujou, Danchizuma no Yuuwaku, Intelli Janshi - Yonin Mahjong, Ultra Story and Xanadu added in x1_cass.xml [r09].
+- z80ne: Killed direct update handler [Dirk Best].
+- Renamed (sforteba) to (cforteb).
+- Berger added Fidelity Electronics Elite Avant Garde (model 6114-2/3/4, set 2) system.
+- Carl and Al Kossow Compugraphic MCS PowerView 10 system.
+- Dirk Best added A1200 keyboard skeleton device (needs MC68HC05Cx support).
+- Joakim Larsson Edstrom added Force Computer SYS68K/CPU-20 CPU Board device.
+- Joakim Larsson Edstrom added Force Computers miniFORCE system.
+- hap and Berger added Novag Super Expert (version A), Novag Super Forte (version A, set 2) and Novag Super Expert (version C, V1.2) systems.
+- hap, Sean Riddle and Kevin Horton added Gakken Galaxy Invader 1000 system.
+- hap and Sean Riddle added Conic Electronic Basktetball, Conic Electronic Multisport, Mattel Thoroughbred Horse Race Analyzer, Mattel Dalla$ (J.R. handheld) and Tiger Electronics 7 in 1 Sports Stadium systems.
+- rfka01 added Atari PC1 system.
+- Robbbert added Research Machines LINK RM-480Z (set 1) system.
+- Vas Crabb added Motorola MC68705P3, MC68705P5, MC68705R3 and MC68705U3 Programmers.
+- zx70 added Research Machines RM-380Z.
+- Carl and Al Kossow added pwrview.cpp driver.
+- hap added novag68k.cpp driver.
+- Joakim Larsson Edstrom added miniforce.cpp driver.
+- Vas Crabb added m68705prg.cpp driver.
+
+0.183:
+======
+- 705r3prg: Confirmed MC68705R3 bootstrap program matches MC68705U3 (and U5 for that matter) [Brizzo].
+- apple2gs: Fixed apple2gs regressions [R. Belmont].
+- arm7: Added support for the second BLX form for ARMv5 and fixed behavior of second BLX form in THUMB [Alex Marshall].
+- h19: A few fixes and more documentation, cleaned up ROM definitions [Mark Garlanger].
+- huc6261: Fixed YUV colors, added palette offset and HuC6261-A mixing - fixes PC-FX boot screen graphics/colors [Angelo Salese].
+- intvkbd: Corrected screen alignment. Changed to use generic TMS9927. Aligned STIC and TMS9927 graphics properly. Added preliminary support for testing intvkbd printer. Added proper documented memory addresses for tape drive. TMS9927: added support for driver-specific overscan areas [Frank Palazzolo].
+- m6805: Added CMOS devices, miscellaneous fixes. Added m146805 and m68hc05 to unidasm. Fixed disassembly of BIT opcodes. Fixed burning cycles on disabled interrupts. Cleaned up BIH/BIL handling. Made opcode tables configurable in m6805_base_device, provided tables for HMOS, CMOS and HC families. Implemented MUL instruction, made unimplemented STOP and WAIT raise fatal error. Implemented 'HC05 edge-sensitive external interrupts. Added partially implemented MC68HC05C4, MC68HC05C8 and MC68HC705C8A devices. Fixed problem with edge case in 68705 timer overflow interrupt when TDR=0 [Vas Crabb].
+- m68153bim: Fixed release irq line bug and updated LOGs [Joakim Larsson Edstrom].
+- maniac: Machine promoted to working [hap, Sean Riddle, Kevin Horton].
+- mc6845: The device should not scan out more lines than programmed into the 'visible' register [Mark Garlanger].
+- mpcc68561: Improved interrupt support and LOGs messages [Joakim Larsson Edstrom].
+- ms7004: Handle incoming serial data via INT pin [shattered].
+- osborne1: Added Osborne-1 with Nuevo Video board as a clone. Made Alpha Lock a toggling key rather than a fake DIP switch [Vas Crabb].
+- osborne1nv: (m6845) Fixed starting address in row/column mode (used by osborne1nv) [Robbbert].
+- pic1655: Added basic support for the old GI PIC1650 and PIC1655. Made RTCC (aka T0CKI) pin an input line handler [hap].
+- plus1: Machine promoted to working [hap, Sean Riddle].
+- saa1099: Use correct LFSR polynomial for SAA1099 noise generation, added some notes about an unemulated undocumented feature of the noise clock [Jepael, Lord Nightmare].
+- sdk85: Added mastermind BIOS [Paolo Forlani, Stefano Bodrato].
+- upd7810: Replaced fake I/O space with callbacks [AJR].
+- via6522: Improved logging. Fixed 50/50 duty cycle for T2 and O2 driven CB1 shift IN & OUT on CB2. Added stop of device_timer when going from internaly to externaly clocked shift modes. Fixed so shift out and in flank is not controlled by pcr in accordance with datasheet. Added missing final and leading flanks when shifting out and in respectivelly [Joakim Larsson Edstrom].
+- z88: Fixed expanded video addressing in RAM carts [Nigel Barnes].
+- zx81: Added tzx cassette format, changed default ramsize to 16K [Nigel Barnes].
+- abc80x.cpp: Fixed sector interleave [Curt Coder].
+- aim65.cpp: Added 16K PROM/ROM module, 4 extra sockets required for Instant Pascal [Nigel Barnes].
+- amiga.cpp: - 0.183: Converted the Amiga keyboards to a bus interface with slot devices. Addes a German A500 keyboard variant, keyboard fixes. Moved and renamed Amiga sound device, added pinout and description. Moved audio related registers into Paula device, now independent from Amiga state class. Made Akiko independent from driver state [Dirk Best]. Keyboard updates: Corrected polarity of KB_DATA from Amiga to keyboard. Completely rewrote 68HC05CxA-based A1200 keyboard device, now working. Fixed KB_DATA mixing in A500 keyboard. Made A500 keyboard caps lock LED output name consistent with A1200. Added Alt- and Alt-Shift- characters to A500 US keyboard. Factored out matrix keys to a common module shared by A500/A1200. Made new German matrix based on US matrix with Alt-chars hooked up. Added layouts for France/Belgium, Italy and Sweden/Finland, Spain, Denmark, Switzerland, Norway and UK. Switzerland has French/German config option, natural mode only works for French. Added borderline usable dead ke
+- c64.cpp: Emulated the PPP Speakeasy 64 (Votrax SC-01-A) cartridge [Curt Coder].
+- fccpu20.cpp: Force CPU-20: Added board variant handling and a few variants. cpu-21, cpu-21a, cpu-21ya, cpu-21b, cpu-21yb and cpu-21s, differs in CPU speed and memory mainly. Added logging. Added default bus address space and prepared for bus-specific features [Joakim Larsson Edstrom].
+- fccpu30.cpp: Updated to new LOG system [Joakim Larsson Edstrom].
+- hp9845.cpp: Fixed parallel poll logic in PHI. Working support for HP9895 dual floppy drive with MFI image format. Corrected aspect ratio of alpha and graphic video modes using a layout file [F. Ulivi].
+- mac.cpp: Fixed NuBus memory stomp [R. Belmont].
+- ms0515.cpp: Hooked up keyboard and floppy, improved video emulation etc. [shattered].
+- prodigy.cpp: Added netlist for BCD display, got correct boot up display but no interaction yet as keypad is missing, added layout [Joakim Larsson Edstrom].
+- sitcom.cpp: Implemented Boot and Reset buttons and remapping of low 32kB. Hooked up PIA, I/O space mirrors, and RS232 interface for downloading programs. PIA ports connected to LED outputs and keypad inputs. Added camera shutter speed measurement rig as a clone. Added a software list with example programs from web site. Software list is not connected yet, need to load software by full path [Vas Crabb].
+- vic20.cpp: Emulated the PPP SpeakEasy (Votrax SC-01-A) cartridge. Emulated the Data 20 Display Manager 40/80 column video cartridge [Curt Coder].
+- hap and Kevin Horton added Lakeside Le Boom and GAF Melody Madness systems.
+- hap and Sean Riddle added Atari Touch Me (handheld, Rev 2), Fonas 2 Player Baseball, LJN I Took a Lickin' From a Chicken, Tandy Radio Shack Electronic Basketball, Tiger Electronics Half Court Computer Basketball, Tiger Electronics Rocket Pinball, Toytronic Football (set 1) and Toytronic Football (set 2) systems.
+- Joakim Larsson Edstrom added Force Computers Gmbh SYS68K/CPU-20, SYS68K/CPU-21A, SYS68K/CPU-21B, SYS68K/CPU-21, SYS68K/CPU-21S, SYS68K/CPU-21YA and SYS68K/CPU-21YB systems.
+- Mark Garlanger added Heath Inc Heathkit H-19 w/ Super-19 ROM and Heathkit H-19 w/ Watzman ROM systems.
+- Patrick Mackinlay added Intergraph InterPro 2800 system.
+- Vas Crabb added San Bergmans & Izabella Malcolm Sitcom Timer system.
+- Vas Crabb and NekoEd added Osborne/Nuevo Osborne-1 (Nuevo Video) and Westinghouse Test Console Serial #5 systems.
+- Removed (a2lang), (amigakbd) and (netlist_rom_region).
+- Renamed (patinho_feio_cpu) to (pato_feio_cpu) and (amiga_paula) to (paula_8364).
+116682: - 0.183: Renamed .
+- Added Amiga 1200 Keyboard Rev B, Amiga 500 Keyboard (Switzerland), Amiga 500 Keyboard (Denmark), Amiga 500 Keyboard (Spain), Amiga 500 Keyboard (France/Belgium), Amiga 500 Keyboard (UK), Amiga 500 Keyboard (Italy), Amiga 500 Keyboard (Norway) and Amiga 500 Keyboard (Sweden/Finland), Data 20 Video Pak, C400 CLIPPER, C4E/C4T CAMMU, DL1414T, HuC6271 "Rainbow", InterPro IOGA, InterPro MCGA, InterPro SGA, MC68HC705C8A,  Netlist Logic Output, PIC1650, PIC1655, Speakeasy 64, Speakeasy VIC20, Force Computer SYS68K/CPU-21B CPU Board, SYS68K/CPU-21S CPU Board, SYS68K/CPU-21 CPU Board, SYS68K/CPU-20 CPU Board, SYS68K/CPU-21A CPU Board, SYS68K/CPU-21YA CPU Board and SYS68K/CPU-21YB CPU Board devices.
+- Bryan McPhail added dec0.cpp driver.
+- Patrick Mackinlay added interpro.cpp driver.
+
+0.184:
+=====
+- a2600, atm,  mpf1, mpz80: Removed direct update handlers: a2600, atm (still not working, but less badly), mpf1 (makes step work), mpz80, pentagon, sage2, scorpion, tms32031 [O. Galibert].
+- ay8910: Added a write handler for the case of bc1=a0 and bc2=a1 [Dirk Best]. Added support for clock frequency changes [Tim Lindner].
+- cforteb: Machine promoted to working [hap].
+- clcd: Halved size of character rom region and fixed switching between upper and lower case character sets [smf].
+- coco: Implemented support for enabling and disabling cartridge-specific sound, made third and fourth floppy drives present by default [Nathan Woods].
+- coco3: Fixed an issue clearing GIME interrupts (disabling interrupts by writing to $FF92/3 also acknowledges interrupt) [Nathan Woods, tim lindner, Glen Hewlett].
+- cs4031: Save state fixes for i386/pc_vga/cs4031: Save cs4031 emulated A20 state, additional i386 attribute registers/flags, and VGA palette configuration. Fixed broken VGA port reads on state load. Fixed enum range check in i386 [moralrecordings].
+- electron: Added First Byte joystick interface [Nigel Barnes].
+- fcisio1: Added layout and and RS232 configured for terminals on all 8 serial ports [Joakim Larsson Edstrom].
+- h19: Machine promoted to working. Fixed keyboard, fixed handling of enable/disable of 25th line, use internal MM5740 ROM, fixed H-19 with Watzman ROM, fixed Super19 [Mark Garlanger].
+- hp9845b: Use standard instance names (and type) for optional ROMs. [AJR].
+- hp9845c: Machine promoted to working. Improvements: Expanded from 1 to 4 I/O slots. Allowed RAM size to be configured with -ram option. Implemented HP-9845C driver (color version of the 9845 range of machines). Improved 9845C lightpen emulation. nanoprocessor: Fixed a subtle bug in interrupt handling [F Ulivi, Angus Kueckes].
+- i386: Save state fixes for i386/pc_vga/cs4031: Save cs4031 emulated A20 state, additional i386 attribute registers/flags, and VGA palette configuration. Fixed broken VGA port reads on state load. Fixed enum range check in i386 [moralrecordings].
+- ibm6580: Made memory size configurable and fixed a Coverity finding [shattered].
+- ie15: Converted to a device with frontends (standalone driver and rs232 slot device) [shattered].
+- pcvga: Save state fixes for i386/pc_vga/cs4031: Save cs4031 emulated A20 state, additional i386 attribute registers/flags, and VGA palette configuration. Fixed broken VGA port reads on state load. Fixed enum range check in i386 [moralrecordings].
+- pentagon: Removed direct update handlers: a2600, atm (still not working, but less badly), mpf1 (makes step work), mpz80, pentagon, sage2, scorpion, tms32031 [O. Galibert].
+- poisk1: Added more ROMs [shattered].
+- sage2: Removed direct update handlers: a2600, atm (still not working, but less badly), mpf1 (makes step work), mpz80, pentagon, sage2, scorpion, tms32031 [O. Galibert].
+- sm7238: Machine promoted to working [shattered].
+- super19: Clone promoted to working. Fixed keyboard, fixed handling of enable/disable of 25th line, use internal MM5740 ROM, fixed H-19 with Watzman ROM, fixed Super19 [Mark Garlanger].
+- ti99_4: Various fixes for TI-99/4 (not A). Added initializations fixing crash on startup, fixed GROM issues (clock turned off too early) [Michael Zapf].
+- tosh1000: Hooked up ROM-DOS [shattered].
+- upd7725: Added preliminary IRQ support, corrected SI/SO bit order, added SIACK/SOACK registers, fixed save state registration, fixed reset state [Lord Nightmare]. Fixed UPD7725 disassembly [smf].
+- upd96050: Fixed an off-by-one error when loading upd96050 roms for SNES games [Lord Nightmare].
+- watz19: Clone promoted to working [Mark Garlanger].
+- z180: DMA fixes: Count of 0 means 0x10000, as with other DMA controllers. Fixed scheduling so burst mode DMA is always serviced immediately with no CPU ops interleaved [R. Belmont].
+- z80sio: Added i8274/upd7201 variants, refactored interrupts, improved logging [Joakim Larsson Edstrom].
+- zorba: keyboard: Mapped remaining keys, documented remaining DIP switches, and added notes on MCU program [Vas Crabb].
+- a7150.cpp: De-skeletonized [shattered].
+- abc80.cpp: Converted to scanline based rendering, fixed graphics characters, and fixed sound. Genesis Project demos (abcdemo, hiresinv) are now fully working [Curt Coder].
+- agat.cpp: Split from apple2, implemented basic agat7 hardware [shattered].
+- apple2.cpp: Rewrote language card handling [Peter Ferrie]. Fixed IIe/IIc self-test regression. Fixed IIe $C800 arbitration, Zellyn/kqumba tests pass now [R. Belmont].
+- bitgraph.cpp: Switched from layouts to rotation flags, fixed keyboard [shattered].
+- coleco.cpp: Bugfix #06504: [Misc.] (coleco.cpp) coleco and clones, adam: Wrong device interface name. Removed colon from image_interface preventing front-ends from launching ColecoVision software [gordon-fish].
+- gba.cpp: Bugfix #06513: [Crash/Freeze] (gba.cpp) gba: Many previously working gba sl_roms now freeze. Fixed revised copy protection handler to get the right PC (MT6513) [R. Belmont].
+- geneve.cpp: Fixed issue with sector read on HFDC without implied seek (did not check CRC and failed to switch density). Fixed jerky mouse movement. Made bus mouse now separate device, may also be used with evpc [Michael Zapf].
+- hp_ipc.cpp: De-skeletonized [shattered].
+- isbc.cpp: Changed to use z80sio.cpp i8274 device instead of z80dart.cpp's, removed m1_r() workaournd [Joakim Larsson Edstrom].
+- mz2500.cpp: Bugfix #06337: [DIP/Input] (mz2500.cpp) mz2500: The HELP key is missing [einstein95].
+- n64.cpp: Updates: Added short delay between RDP full sync and DP interrupt, allowing RSP IRQ to arrive first. Let debugger disassembly windows track RSP PC. Flush RSP DRC cache when SP DMA changes IMEM. Make element selection in vector load/store RSP DRC C functions consistent with other implementations. Fix a minor issue with RDP disassembly listing for Load Block [Happy].
+- nes.cpp: Added Magic Kid Googoo board (iNES mapper 190) [kazblox].
+- pes.cpp: Use combined /RS and /WS function since the MCU/CPU can in theory change both lines at once, and since it uses a TMS5220C it does matter in this case [Lord Nightmare] .
+- scorpion.cpp: Removed direct update handlers: a2600, atm (still not working, but less badly), mpf1 (makes step work), mpz80, pentagon, sage2, scorpion, tms32031 [O. Galibert].
+- sdk86.cpp: Fixed ROM loading [Lord Nightmare].
+- sm7238.cpp: Implemented double-sized characters and smooth scroll [shattered].
+- sun3x.cpp: Hooked up keyboard port [Vas Crabb].
+- ti85.cpp: Convert TI-8x link port to a bus with emulated peripherals, working for TI-82 and TI-85. Tee connector, HLE TI-Graph Link, stereo/mono speakers, and raw signal forwarding socket supported [Vas Crabb].
+- ti99_8.cpp: Fixed debugging for TI-99/8 [Michael Zapf].
+- Renamed (315-5641_pcm) to (315_5641_pcm), (5061-3001) to (5061_3001), (5061-3011) to (5061_3011), (esq1-filters) to (esq1_filters), (fexcela) to (fexcel12), (fexcelb) to (fexcela), (taco) to (hp_taco), (kb1013vk1-2) to (kb1013vk1_2), (neosprite) to (neosprite_reg), (omti8621) to (omti8621isa), (scc85C30) to (scc85c30) and (sed1200) to (sed1200da).
+- Carl and Al Kossow added Ampro Computers Little Board/186 system.
+- kazblox added Subor SB-486, Nintendo M82 Display Unit (PAL), Micro Genius IQ-501, Micro Genius IQ-502 and Steepler Dendy Classic 2 systems.
+- hap added hack (RCS) Granit 'S', Fidelity Electronics The Par Excellence (rev. B) and Fidelity Electronics Designer 2100 systems.
+- hap and Berger added CXG Chess 2001 system.
+- hap and Sean Riddle added U.S. Games Programmable Baseballm, U.S. Games Electronic 2-Player Football, Caprice/Calfax Pro-Action Baseball and Conic Electronic I.Q. systems.
+- hap, Sean Riddle and Rik added Coleco Quiz Wiz Challenger system.
+- Sean Riddle added MB Simon (Rev F) system.
+- shattered added Eltec Eurocom II V7 and PPG Waveterm A systems.
+- R. Belmont and Sergey Svishchev added agat.cpp driver.
+- yovan added Fidelity Electronics Kishon Chesster, Fidelity Electronics The Excellence (model EP12, set 2) and Fidelity Electronics Chesster Challenger systems.
+- Carl added lb186.cpp driver.
+- hap added cxgz80.cpp driver.
+- Sergey Svishchev added eurocom2.cpp driver.
+
+0.185:
+======
+- apple1: Fixed bug introduced when the cassette was slotified [Colin Douglas Howell, R. Belmont].
+- atom: Added csw cassette format [Nigel Barnes].
+- d64plus: Added CRTC with chargen ROM and second screen output, not yet hooked up. Demoted to MACHINE_NOT_WORKING [Nigel Barnes].
+- dgnalpha: Added older Boot v0.4 ROM. Replaced 5.25" floppy drives with 3.5" and added sounds [Nigel Barnes].
+- dgnbeta: Added software list with OS-9 system and apps. Replaced 5.25" floppies with 3.5", and added sounds. Enabled floppy motor. Removed tag lookups [Nigel Barnes].
+- dragon200e: Added chargen ROM, not working (possibly MC6847 issue). Demoted to MACHINE_NOT_WORKING [Nigel Barnes].
+- dragon32 Corrected release year and company of Spanish clones. Added joysticks to all machines, Added floppy sounds [Nigel Barnes].
+- electron: Added Power Software joystick interface [Nigel Barnes].
+- fm77av: Bugfix #06534: [Crash/Freeze] (fm7.cpp) fm77av: BASIC doesn't boot [Barry Rodewald].
+- hp9845t: Machine promoted to working. Implemented HP 9845T driver (9845 with HP987080A hardware-accelerated monochrome graphics). Fixed a race condition in 45T, added second tape drive (T14), 98035 module default SC is 9 now. (hphybrid) Hopefully fixed a super-subtle race condition in 9845T video hardware [F. Ulivi, A.Kueckes].
+- osbexec: Added experimental support for RS232C serial ports [AJR].
+- phc25: Added character generator ROM, not yet used [Nigel Barnes].
+- wirels60: RebeccaRGB added Jungle Soft/Kids Station Toys Inc Wireless 60 system. Made P2 IO port optional [RebeccaRGB].
+- ymf262: Added save state support and slot pointer checks [moralrecordings].
+- abc80x.cpp: Removed the direct update handler [O. Galibert].
+- amstrad.cpp: (Multiface II) Disabled the direct update handler. Device should be overhauled using the by now-reversed PAL information [O. Galibert].
+- apollo.cpp: Fixed SIO regression [Hans Ostermeyer].
+- bbc.cpp: Removed the direct update handler (not supposed not to be useful any more) [Nigel Barnes, O. Galibert].
+- coco12.cpp: Further cleanups in cartridge slot signal handling: Attempts to make signals on the CoCo cartridge slot (CART, NMI, HALT) more standardized, particularly the practice of Program Paks tying the CART line to Q. Should fix some outstanding bugs in how these signals were passed around when using the CoCo Multi-Pak interface [Nathan Woods].
+- dragon.cpp: Moved all Dragon cartridges from coco_cart to dragon_cart [Nigel Barnes].
+- mac.cpp: Fixed major 0.183 regression in Mac II series [R. Belmont].
+- mac128.cpp: Bugfix #06481: [DIP/Input] (mac128.cpp) All classic Macs: Keyboard input is not working anymore in the emulated macs since version 0.181 [R. Belmont].
+- neogeo.cpp: Fixed out of bounds issues in NeoGeo memory access [Nathan Woods].
+- nes.cpp: Fixed issue that could cause bogus arguments to be reported incorrectly. Example: 'mame -whatever nes' would previously be reported as "Unrecognized argument: nes" [Nathan Woods]. Improvements: Marked edu2k48 as working, added notes about mouse titles. Made koko not use battery-backed WRAM as shown in PCB picture. (waixing.cpp) Slight modernizations - waixing_sgzlz_device now implemented the way CaH4e3 does it, gets some titles working [kazblox].
+- sun4.cpp: Added SPARCstation IPX V2.3 and SPARCstation 1 V2.2 boot ROMs [NekoEd].
+- thomson.cpp: Fixed regressions to (legacy) floppy support [Antoine Mine].
+- ti85.cpp, ti89.cpp: Removed the gross boot hack - breaks the Flash-based models [O. Galibert].
+- Renamed (gnwmndon) to (gnw_dm53).
+- hap and Berger added Novag Octo and Novag Presto systems.
+- hap and Sean Riddle added Texas Instruments TI-2550 III, Nintendo Game & Watch: Donkey Kong II and Nintendo Game & Watch: Boxing systems.
+- hap and yovan added Fidelity Sensory Chess Challenger 8, Fidelity Dame Sensory Challenger systems.
+- Added AD7523, Atmel AT49F4096 Flash, Power Software Joystick Interface, I486DX4, MC141000, MC141200, AC`97 Modem Controller, MCP APU, AC`97 Audio Codec Interface, MCP Networking Adapter, MCPX IDE Controller, HUB Interface - ISA Bridge, MCPX OHCI USB Controller, SMBus Controller, AGP Host to PCI Bridge, Nvidia NV2A GPU, PCI Bridge Device - Host Bridge, Memory Controller - SDRAM, TMP90PH44 and uPD546 devices.
+- RebeccaRGB added Jungle Soft/Kids Station Toys Inc Wireless 60 system.
+- hap added novagmcs48.cpp driver.
+
+0.186:
+======-
+agat7: Bugfix #06558: [Interface] agat7 and others: mame -verifyroms not working for agat7 and 129 other sets [Nathan Woods].
+- bp1200: Mostly traced out the SM48D socket module [Lord Nightmare].
+- cgenie: Fixed loading ROMs from softlist in floppy interface [Nigel Barnes].
+- fmcc: Added InterPro FMCC device. Improvements - ip2800 boots to FDM prompt with many memdiag test failures: Fixed CPU/MMU ssw bug. Added preliminary nscsi support. Added preliminary MMU address translation. Expanded memory maps for several devices. Improved IRQ and DMA handling (still not working properly). Stubbed out more SGA registers, added SRARB. Added NCR53C94 support to ncr5390.cpp. Added start/stop unit command to t10spc.cpp [Patrick Mackinlay].
+- fscc9: Change description to "Sensory Chess Challenger 9 (rev. C01)".
+- fscc9b: Change description to "Sensory Chess Challenger 9 (rev. D01)".
+- gnw_bx301: Machine promoted to working [hap, Sean Riddle].
+- gnw_dm53: Machine promoted to working [hap, Sean Riddle, O. Galibert].
+- gnw_jr55: Machine promoted to working [hap, Sean Riddle, Reinier].
+- h8: Improvements: Fixed nstruction eepmov.b (used r4h instead of r4l). Added support for non-autorequest DMA (DREQ edge, DREQ level). Added support for H8/300H to h8_dma (previously only H8/300S supported). Added DMA channels and RTMCSR register to H8/3002 [BartmanAbyss].
+- hcd62121_cpu_device: Improved rotate and shift instructions; identified COM and PORT registers; fixed unidasm configuration [Wilbert Pol].
+- hd6345: Added (partial) correct register mappings to hd6345 [BartmanAbyss].
+- hp9895: Fixed a segfault when emulating the HP9845 drive (caused by rounding errors) [F. Ulivi].
+- minitel2: Added support for TS9347 display processor variant. Fixed visible area. Fixed random crash in EF9345/TS9347 when drawing characters at right or bottom border [Jean-Francois DEL NERO].
+- via6522: Updates, adds support for external clock: Refactored shifter, adding support for more features and fixing a few bugs. Tuned shifter IRQ timing to be more cycle accurate. Fixed the flank timer value, which improves but doesn't completely fix the vectrex regression [Joakim Larsson Edstrom].
+- wicat: Added floppy drive and attached software list (not working) [Nigel Barnes].
+- ym2203: Fixed crash on fatal errors [Dirk Best].
+- z180: Fixed obvious typo detected by Coverity, thanks Coverity [O. Galibert]. Added support for DREQ and TEND signals, and fixed dma0 count and DREQ handling [BartmanAbyss].
+- z80scc: Implemented Reset Tx Interrupt Pending Command (fixes virtpool) [Joakim Larsson Edstrom].
+- amiga.cpp: Use correctly sized boot ROMs for the A1000 (mask ROMs are much larger than the content) [Guru].
+- apple2.cpp: Bugfix #06555: [Crash/Freeze] (apple2.cpp) All sets in apple2.cpp, apple2e.cpp: Mounting ezcgi9938 or ezgui9958 into any slot causes Fatal Error [AJR].
+- coco12.cpp: Made 6883 SAM control the root device clock, and changed CoCo devices to use derived clocks [Nathan Woods]. Added support for Games Master Cartridge developed by John Linville as slot device [Tim Lindner].
+- coco3.cpp: Bugfix #06560: [Crash/Freeze] (coco3.cpp) All sets in coco12.cpp, coco3.cpp: Loading cartridges from softlists locks up emulator [Nathan Woods].
+- dccons.cpp: Added Japan Dreamcast flash dump [rtw].
+- didact.cpp: Bugfix #06544: [Crash/Freeze] (didact.cpp) can09: [debug] Assert when starting emulation [Robbbert].
+- hh_tms1k.cpp: Bugfix #06540: [Crash/Freeze] (hh_tms1k.cpp) bshipb: [debug] Assert when starting emulation [Robbbert]. Fix spelling error in cnbaskb description [Dagarman].
+- hp9845.cpp: Added Support for HPI floppy format used for HP-formatted 8" floppy disks [F. Ulivi, A.Kueckes]. Fixed a system freeze when loading memory tester from tape. Display improvements and softkey support: Improved text video of 45C, improved graphic cursors of 45C and 45T, and implemented softkeys for 45C and 45T [F.Ulivi].
+- n64.cpp: N64 RSP DRC: Wrap PC to 12 bits in a few more places [Happy].
+- r9751.cpp: Added terminal keyboard callback [Brandon Munger].
+- ti99_2.cpp: Improvements to peripheral handling: Rearranged bus/ti99 subtree, moved classes into namespaces, moved ti99 stuff from ti99x to ti99/internal. Split big, all-in-one gromport.cpp into separate device files, introducing "gromport" as a bus of its own. Added console connector "ioport" with PEB as slot option - PEB now needs to be plugged into TI-99/4/4A/8 [Michael Zapf].
+- tv990.cpp: Bugfix #06547: [Crash/Freeze] (tv990.cpp) All sets in tv990.cpp: [debug] Assert when starting emulation [Robbbert].
+214689: Updates: Migrated PCI devices to new PCI bus framework. Made USB peripherals slot devices [Samuele Zannoli]. Replaced bad dump of MCPX 1.0 ROM with checksums with correct checksums [Mark Riley].
+- Rename (a2600_dcp) to (a2600_dpc), (a78_highscore) to (a78_hiscore), (arca5) to (arc_a5), (arm) to (arm_le), (arm7) to (arm7_le), (astrocde_exp) to (astrocade_exp), (atari_dcp) to (atari_dpc), (basic_joy) to (pc_basic_joy), (bus_master_ide_controller) to (idectrl32bm), (busmouse) to (ti99_busmouse), (c100) to (clipper_c100), (c2040fdc) to (c2040_fdc), (c300) to (clipper_c300), (c400) to (clipper_c400), (c64_ieee488) to (c64_ieee488_device), (cartridge) to (ti99cart), (cf_cart_slot) to (chanf_cart_slot), (cirrus) to (pci_cirrus_svga), (cmc_prot) to (ng_cmc_prot), (coco_multipak) to (coco_multipack), (colorbus) to (ti99_colorbus), (cpc_mf2) to (cpc_mface2), (cthd_prot) to (ng_cthd_prot), (dj2db) to (s100_sj2db), (djdma) to (s100_djdma), (dmac) to (amiga_dmac), (dmv_keyb) to (dmv_keyboard), (dsp1bleg) to (sns_dsp1bleg), (dsp1leg) to (sns_dsp1leg), (dsp1leg_hi) to (sns_dsp1leg_hi), (dsp2leg) to (sns_dsp2leg), (dsp3leg) to (sns_dsp3leg), (dsp4leg) to (sns_dsp4leg), (duscc) to (dussc), (e01) to (econet_e01), (e01s) to (econet_e01s), (einstein_adc_daisy) to (einstein_adc), (einstein_fire_daisy) to (einstein_fire), (ep7x8) to (c64_dela_ep7x8), (expansion_slot) to (cg_exp_slot), (f3853) to (f3853_device), (fatfury2_prot) to (ng_fatfury_prot), (fd800) to (ti99x_fd800), (finalchs) to (isa_finalchs), (gb_rom_sm3sp) to (gb_sm3sp), (gba_3dmatrix) to (gba_rom_3dmatrix), (gba_boktai) to (gba_rom_boktai), (gba_drilldoz) to (gba_rom_drilldoz), (gba_eeprom) to (gba_rom_eeprom), (gba_eeprom64) to (gba_rom_eeprom64), (gba_flash) to (gba_rom_flash), (gba_flash_rtc) to (gba_rom_flash_rtc), (gba_flash1m) to (gba_rom_flash1m), (gba_flash1m_rtc) to (gba_rom_flash1m_rtc), (gba_sram) to (gba_rom_sram), (gba_wariotws) to (gba_rom_wariotws), (gba_yoshiug) to (gba_rom_yoshiug), (gfxultra) to (gfxulra), (gfxultrp) to (gfxxultrp), (glinkhle) to (tii8x_glinkhle), (grip) to (ecb_grip21), (h8h_16bits_timer_channel) to (h8h_timer16_channel), (h8h_8bits_timer_channel) to (h8h_timer8_channel), (h8s_16bits_timer_channel) to (h8s_timer16_channel), (handset) to (ti99_handset), (hcd62121) to (hcd62121_cpu_device), (hdc) to (isa_hdc), (hdc_990) to (ti990_tap), (hdc_ec1841) to (isa_hdc_ec1841), (hdd) to (idehd), (hp_hil) to (hp_hil_mlc), (hpc101) to (pofo_hpc101), (hpc102) to (pofo_hpc102), (i8x9x) to (c8095), (ide_controller) to (idectrl), (ide_controller32) to (idectrl32), (ie15_keyboard) to (ie15kbd), (input_merger_hi) to (ipt_merger_hi), (intv_hand) to (intv_handctrl), (ioexp_slot) to (vtech_ioexp_slot), (iq151_ms151a) to (iq151_ms15a), (joystick) to (vtech_joystick), (k7659kb) to (k7659_keyboard), (kc_d004gide) to (kc_d004_gide), (kof2002_prot) to (ng_kof2002_prot), (kof2k3bl_prot) to (ng_kof2k3bl_prot), (kof98_prot) to (ng_kof98_prot), (laser_64k) to (vtech_laser_64k), (laser110_16k) to (vtech_laser110_16k), (laser210_16k) to (vtech_laser210_16k), (laser310_16k) to (vtech_laser310_16k), (laserfdc) to (vtech_fdc), (m20_keyboard) to (m20_kbd), (m48t08) to (mk48t08), (m48t12) to (mk48t12), (mc65c02) to (m65c02), (mc6843) to (mc5843), (mc6847y) to (mc6847y_ntsc), (mecmouse) to (ti99_mecmouse), (megacart) to (vic20_megacart), (memexp_slot) to (vtech_memexp_slot), (mm65k16s) to (s100_mm65k16s), (mos6530n) to (mos6530_new), (mos6532n) to (mos6532_new), (ms_natural) to (kb_ms_natural), (mslugx_prot) to (ng_mslugx_prot), (msmseng) to (mcmseng), (multi) to (ti99_mcartconn), (nb_cb264) to (nb_c264), (neogeo_mjctrl) to (neogeo_mj), (nes_bmc_11160) to (nes_bmc_1160), (nes_bmc_sbit7) to (nes_bmc_sbig7), (nes_dumarc) to (nes_txc_dumarc), (nes_fk23c) to (nes_kf23c), (nes_fk23ca) to (nes_kf23ca), (nes_gs2004) to (nes_g2004), (nes_gs2013) to (nes_g2013), (nes_gs2015) to (nes_g2015), (nes_h3001) to (ns_h3001), (nes_mjblock) to (nes_txc_mjblock), (nes_ntdec_fh) to (nes_fh_asder), (nes_s74x34) to (nes_s74x374), (nes_s74x34a) to (nes_s74x374a), (netlist_ram_pointer) to (nl_ram_ptr), (ngen_keyboard) to (ngen_kb), (nsmdsa) to (s100_nsmdsa), (nsmdsad) to (s100_nsmdsad), (oso) to (ti998_oso), (parallel_slot) to (cg_parallel_slot), (pc9801_kbd_) to (pc9801_kbd), (pcd8544) to (pcd8544_device), (pcjr_graphics_adapter) to (pcjr_graphics), (pcm2_prot) to (ng_pcm2_prot), (pdc) to (rolm_pdc), (pdp1_punchtape_image) to (pdp1_punchtape_image_device), (phi) to (hp_phi), (pit8259) to (pic8259), (printer) to (vtech_printer), (pvc_prot) to (ng_pvc_prot), (ql_qdisc) to (ql_qldisc), (rexep256) to (rexexp256), (rom_image) to (cpc_rom_image), (s100) to (s100_bus), (scn2674_device) to (scn2674), (sega_segacd_europe) to (segacd_europe), (sega_segacd_japan) to (segacd_japan), (sega_segacd_us) to (segacd_us), (seta10leg) to (sns_seta10leg), (seta11leg) to (sns_seta11leg), (sfd1001) to (sfd10001), (sh2a) to (sh21), (sh4) to (sh4le), (single) to (ti99_scartconn), (sma_prot) to (ng_sma_prot), (snapshot_image) to (snapsot_image), (sns_rom21_srtc) to (sns_rom21_rtc), (speakeasy64) to (c64_speakeasy), (speakeasyvic20) to (vic20_speakeasy), (speaker_sound) to (speaker_sound_device), (spu) to (psxspu), (tandy_1000_graphics_adapter) to (tandy_1000_graphics), (tap_990) to (ti990_hdc), (tgui9680) to (igui9680), (ti_pio_attached) to (ti99_pio_attached), (ti_rs232_attached) to (ti99_rs232_atttached), (ti8xbitsock) to (ti8x_bitsock), (ti8xlink) to (ti8x_link_port), (ti8xmspkr) to (ti8x_mspkr), (ti8xstspkr) to (ti8x_stspkr), (ti8xtconn) to (it8x_tconn), (ti99_32k) to (ti99_32kmem), (twinjoy) to (ti99_twinjoy), (tx0_8w_cpu) to (tx0_8kw_cpu), (type3_hle_kbd) to (kbd_type3_hle), (type4_hle_kbd) to (kbd_type4_hle), (type5_gb_hle_kbd) to (kbd_type5_hle_gb), (type5_hle_kbd) to (kbd_type5_hle_us), (victor9kb) to (victor9k_kb), (videopak) to (vic20_videopak), (virgedx_r1) to (virgedx_vga_r1), (vt82c505) to (vt82c505_device), (vz_rs232) to (vtech_rs232), (vz_rtty) to (vtech_rtty) and (wordpro) to (vtech_wordpro).
+- Added CoCo Games Master Cartridge, InterPro SRARB, NCR 53C94 SCSI, P8098, SNES Cart (LoROM) + NEC DSP4 Legacy, TI-99 I/O Port, TS9347 and VT03 PPU devices.
+- Aaron Giles added ldplayer.cpp driver.
+- David Haywood added nes_vt.cpp driver.
+- David Viens and Sean Riddle added eva.cpp driver.
+- hap added fidelmcs48.cpp and hh_sm500.cpp drivers.
+- Jean-Francois DEL NERO added minitel_2_rpic.cpp driver.
+- Jonathan Gevaryahu added bpmmicro.cpp driver.
+- R. Belmont and Wilbert Pol added accomm.cpp driver.
+- Berger added Novag Constellation Forte (version A) machine.
+- Datassette and R. Belmont added Craft II+ machine.
+- David Haywood added Cyber Arcade 120-in-1, dreamGEAR Wireless Motion Control with 130 games (DGUN-2500), dreamGEAR My Arcade Portable Gaming System (DGUN-2561), Intec InterAct 32-in-1, Intec InterAct 8-in-1, Lexibook Compact Cyber Arcade, dreamGEAR 75-in-1 and VRT V-Dog (prototype) machines.
+- hap and Sean Riddle, JonasP added Nintendo Game & Watch: Mario's Cement Factory system.
+- hap and yoyo_chessboard added Fidelity Sensory Chess Challenger 6 system.
+- hap, Sean Riddle and David Viens added Chrysler Electronic Voice Alert (11-function) and Texas Instruments Speak & Spell (Spanish, prototype) systems.
+- Jean-Francois DEL NERO added Philips Minitel 2 system.
+- Lord Nightmare added BP Microsystems BP-1200 machine.
+- Mark Garlanger added Heath Inc Heathkit H-19 w/ ULTRA ROM system.
+- R. Belmont added Acorn Communicator machine.
+- RebeccaRGB added Jungle Soft / Ultimate Products (HK) Ltd Zone 60 machine.
+
+0.187:
+======
+- accomm: Fully implemented keyboard, added sound (same as Electron), and added layout with Caps/Shift Lock LEDs [Nigel Barnes].
+- aes: Corrected Neo Geo sprite tile code mask to 20 bits (was previously 19 bits) [TheHpman].
+- ay8910: Made device_clock_changed respect YM2149 pin 26, added pinout, and remove outdated comments [Lord Nightmare].
+- cbm_iec: Made CBM IEC device names more descriptive [AJR].
+- coco: Fixed Tandy CoCo keyboard mapping (github issue #2386) [Vas Crabb]. Added Speech/Sound Cartridge support [Tim Lindner].
+- coco3: Cleaned up CoCo 3 GIME implementation [Nathan Woods].
+- cocossc_sac: Implemented busy delay in CoCo SSC [Tim Lindner].
+- d64plus: Implemented banking of extra 64K, and 6845 with chargen - promoted to working [Nigel Barnes].
+- dbox: Separated skeleton driver from unfinished display device [Joakim Larsson Edstrom].
+- dragon200e: Added correct keyboard [Nigel Barnes].
+- dragon32: Added JCB Sound Extension cartridge [Nigel Barnes].
+- ef9365: Fixed the hardware vector engine (fixes ARC Squale Basic) [Jean-Francois DEL NERO].
+- gameboy: Cleaned up Gowin information in gameboy.xml, added information from archived web site and catalogue. Replaced GoodGBX MBC1 Collection check code with direct comparison of internal ROM name. Removed buffer over-read in get_cart_type. Updated MBC1-MBC5 mapper documentation [Tauwasser].
+- hp9895: Improved keyboard mapping and added German layout. Implemented SHIFT LOCK key, added pop-ups and outputs showing state of toggle keys. Lowered volume of beeper (was too loud according to A.Kueckes) [F.Ulivi, A.Kueckes].
+- isa_ibm_mda: Bugfix #06594: [Misc.] isa_ibm_mda: Typo on the "isa_ibm_mda" set description [Robbbert].
+- mcompgin: Machine promoted to working [hap, Sean Riddle].
+- r9751: Added more SMIOC registers [Brandon Munger].
+- z80scc: Added support for resetting RX interrupts/status by reading Rx FIFO through RR3. Gets virtpool driver terminal a bit further, but not all the way (no visible difference) [Joakim Larsson Edstrom].
+- a7800.cpp: Bugfix #06612: [Interface] (a7800.cpp) a7800.ccp: Machine inputs broken [Ivan Vangelista].
+- apricot.cpp: Switched to preferred Z80SIO device [Dirk Best].
+- hh_sm510.cpp: Improved Mickey & Donald SVG artwork [Sean Riddle, Roger Coltrane].
+- hp9k_3xx.cpp: Preliminary working DIO/DIO-II bus implementation and 98544 video card. Hooked up i8042 I/O microcontroller comms to main CPU. Support medium-res built-in video on 9000/332 [R. Belmont].
+- interpro.cpp: Added skeleton for srarb. Improved mcga/fmcc skeleton and fixed mcga/fmcc detection. Expanded cammu skeletons. Added support for "new" SCSI. Added clock-based ioga interrupts. Added forced NMI handling. Improved SCSI DMA. Removed broken caching. Added Clipper CPU ID support. Added enum masks and unknown registers, disabled bus errors. Made RAM configurable and improved system registers. Added initial implementation of unmapped memory handler. DMA/IRQ changes, serial DMA registers. Added 7-segment diagnostic LED. NMI and DMA improvements - NMI boot diagnostics pass. Made floppy DMA read and write work. Improved logging [Patrick Mackinlay].
+- nes.cpp: Moved Famiclone stuff from nes.xml to driver and added new sets [David Haywood].
+208049 Bugfix #06603: [Documentation] (odyssey2.cpp) jopac: In the description there are two useless spaces at the beginning [Tafoid].
+213473 Converted socrates and iqunlimz to bankdev, hooked up socrates hblank input, and made profweis machine configuration derive from socrates [Lord Nightmare].
+- ti99_2.cpp: Implemented Hexbus and HX5102 floppy early WIP. Cleaned up slot devices architecture and renamed constants. Added new cartridge type paged7 for TI-CALC [Michael Zapf].
+- Renamed (coco_232) to (coco_rs232).
+- Added CoCo Direct Connect Modem PAK, CoCo S/SC PAK, CXD1095 I/O Expander, CoCo SSC Sound Activity Circuit, 16-bit DIO bus, 16-bit DIO slot, 32-bit DIO-II bus, 32-bit DIO-II slot, HP98544 high-res monochrome DIO video card, Dragon Sound Extension Module, GRiD Compass Keyboard, H8 16-bit timer channel, H8 8-bit timer channel, HD6304R, Hughes HLCD 0530 LCD Driver, Intel 7220 BMC, Intel 8274 MPSC (new), Input Merger (active low), Sun Type 5 Keyboard (Japan - HLE), Sun Type 5 Keyboard (Sweden - HLE), MCPX AC'97 Audio Codec Interface, SNK Neo Geo Arcade Mahjong panel, Netlist Analog Input, Netlist Analog Output, Netlist Integer Output, Netlist Logic Input, Netlist Logic Output, Netlist Stream Input, Netlist Stream Output, Atari Portfolio HPC-104, Atari Portfolio HPC-104 (Unit 2), Serial EEPROM S29190 (64x16), Serial EEPROM S29290 (128x16), Serial EEPROM S29390 (256x16), SH-3 (little), SM5A, SM5L, TC8521 RTC, Hexbus, Hexbus chain, Hexbus position, uPD4701A Incremental Encoder, NEC uPD7201 MPSC (new), USB Connector Abstraction, NEC V53 SCU, VR5500 (little), Yamaha YM3802 MCS MIDI Communication and Service Controller, X68000 MIDI Interface and YM3439 SSGC devices.
+- Joakim Larsson Edstrom added dbox.cpp driver.
+- Sergey Svishchev added gridcomp.cpp driver.
+- BeckieRGB added Game Prince RS-1 and Game Prince RS-16 systems.
+- F. Ulivi and A.Kueckes added Hewlett-Packard 9845B (Germany), Hewlett-Packard 9845C (Germany), Hewlett-Packard HP9000/332 and Hewlett-Packard 9845T (Germany) systems.
+- David Haywood added 2011 Super HiK 105 in 1 Turbo Edition, 110 in 1 CoolBaby (CoolBoy RS-1S), 138 in 1 CoolBaby (CoolBoy RS-5, PCB060-10009011V1.3), 777777 in 1 (8 bit Slim Station, NEWPXP-DVT22-A PCB), 888888 in 1 (Coolboy AEF-390), 888888 in 1 (8 bit Slim Station, NEWPXP-DVT22-A PCB), 999999 in 1 (8 bit Slim Station, NEWPXP-DVT22-A PCB), 999999 in 1 (PXP2 Slim Station), 100 in 1 Arcade Action II (AT-103), 100 in 1 (D-CAT8 8bit Console, set 1) (v5.01.11-frd, BL 20041217), 100 in 1 (D-CAT8 8bit Console, set 2), dreamGEAR 101 in 1, Hummer Technology Co., Ltd. Samuri (60 in 1), Super Arcade 110 (set 1), Super Arcade 110 (set 2), PowerJoy Navigator 50 in 1, PowerJoy Supermax 30 in 1, PowerJoy Supermax 60 in 1, VRT V-Dog (prototype, earlier), VG Pocket Tablet and Sports Game 69 in 1 machines.
+- Jean-Francois DEL NERO added SMT Goupil G2 system.
+- Joakim Larsson Edstrom added Nokia Multimedia D-box 1 Kirsch gruppe system.
+- hap added Bambino Classic Football system.
+- hap and Igor added Nintendo Game & Watch: Mickey Mouse system.
+- hap, Sean Riddle and David Viens added Chrysler Electronic Voice Alert (24-function) system.
+- hap, Sean Riddle and incog added Nintendo Game & Watch: Mario Bros. system.
+- hap, Sean Riddle and Roger Coltrane added Nintendo Game & Watch: Donkey Kong Jr. (new wide screen) system.
+- Maddog added Treamcast system.
+- Sean Riddle added V-Tech V-Smile Baby (US) and V-Tech V-Smile (Germany) systems.
+- shattered added GRiD Computers Compass 1101, GRiD Computers Compass 1109, GRiD Computers Compass II 1121, GRiD Computers Compass II 1129, GRiD Computers Compass II 1131 and GRiD Computers Compass II 1139 systems.
+- Team Europe added Firecore D-CAT16 (Mega Drive handheld) system.
+- yoyo_chessboard added Fidelity Electronics Sensory Chess Challenger 9 (rev. C) system.
+
+0.188:
+======
+- alphatro: Machine promoted to working [R. Belmont, Carl, rfka01]. Added correct banking and partial floppy support. Corrected motor on and FDC reset. Corrected number of driver (real machine only has two) and fixed B: drive [R. Belmont].
+- d9060: Added Commodore D9060 82S137 PROM dumps [Bo Zimmerman, Andrew Welburn].
+- dbox: Added sda5708 matrix display layout (displays version number on start but hangs shortly thereafter) [Joakim Larsson Edstrom].
+- fccpu1: Updated LOG system and replaced CLOCK_SIGNAL_HANDLER with real MC14411 BRG device. Added machine configuration for baud rates for all three serial ports using MC14411 device. Added newer version of firmware Force Debugger v1.1 [Joakim Larsson Edstrom].
+- gameboy: Added Super Chinese Land 1.2.3' to MBC1 Collection check code. Fixed MMM01 zero-adjust logic for ROM bank. Fixed Super Game Boy VRAM transfers and removed border hack. Fixed various code style and comment issues [Tauwasser].
+- gnw_mc25: Machine promoted to working [hap].
+- ibm5150: Hooked up ibm5150 softlist to compc and europc drivers; changed europc to use single built-in 3.5" drive [Justin Kerk].
+- itt3030: Corrected 70-track drive type, and added 35-track drive type and format definition [helwie44, rfka01].
+- mc10: Cleaned up the MC-10 driver [Nathan Woods].
+- mc6847_ntsc, mc6847_pal: Fixed "Semigraphics 6" mode on CoCo/MC-10 (issue reported by Jim Gerrie). Displays "stripes" for video bytes $00-$7F because INT/EXT is asserted but A/S is not, and there is no external ROM [Nathan Woods].
+- ncr5390: Improved initiator transfer information logic. Split transfer count/counter. Added rudimentary 53C90A/53C94 support. Reworked initiator transfer information state machine, should now support all SCSI phases. Improved handling of DMA/non-DMA commands. Added an undocumented hack to make InterPro work. Implemented interrupt status flag in status register for 53C90A (critical for InterPro). Improved tcounter and DMA/DRQ handling. Corrected tcounter and transfer count zero handling (based on transfers to/from SCSI bus, not DMA). Prevent fifo over/underrun, requires restarting state machine from dma_r()/dma_w(). Corrected bus/function complete with FIFO (interrupt only when it empties, but state detected based on SCSI bus). Clear status, istatus and sequence when reading istatus (not status) with active interrupt. Tweaked DRQ behaviour - only assert if there is insufficient data in FIFO [Patrick Mackinlay].
+- pc10iii: Added Commodore PC10-III ROM dumps collected by German vintage computer forum users [rfka01].
+- r9751: Added preliminary SMIOC device with 8237 DMA controllers and RS-232 ports [Brandon Munger].
+- sda5708: Added layout support and state saving. Added layout with generated bezels and program snippet to redo it as a comment [Joakim Larsson Edstrom].
+- sms: sms.xml updates: Fix The Terminator by adding their on-cart RAM. Added notes for games with SK-1100 keyboard support. Corrected Great Baseball (Euro, USA, Bra) release year. Corrected Teddy Boy Blues (Jpn, Ep-MyCard, Prototype) and Ghost House (Sega Card, Prototype) interface types [Enik Land].
+- socrates: Reimplemented keyboard MCU simulation as a separate timer-driven function. Fixes issues with super painter and a few other games not recognizing keyboard input. Also eliminated anonymous timers and keyboard tagmap lookups, and added savestate support [Lord Nightmare].
+- upd7810: Added internal address maps [David Haywood].
+- vgmplay: Added support for YMZ280B and YMF271. Fixed clock speed for dual POKEY. Produce error message when nonexistent file is specified [AJR].
+- wd2010: Improved WD2010 emulation: Better feedback on cylinder positions, almost all checks pass except low level tests expecting manufacturer or diagnostic tracks [Bavarese].
+- ym2151,  ymf271: Added support for dynamic changes to clock frequency [AJR].
+- z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match datasheet [Patrick Mackinlay].
+- compc.cpp: Added original Commodore PC 10/PC 20/ PC 30 in two BIOS variants [rfka01].
+- esq5505.cpp: Added an external panel for the Ensoniq VFX family of keyboards, with a websocket interface and an HTML/Javascript implementation that can be served over HTTP [Christian Brunschen].
+- hh_sm510.cpp: Artwork updates: Added background vector graphics to gnw_ml102 [ChoccyHobNob]. Improved gnw_mw56 SVG screen and added background graphics [hap, ChoccyHobNob, Tanukichi]. Improved gnw_jr55 LCD segments. [hap, JonasP]. Added background graphics to nupogodi.svg. [Igor, hap]. Added background graphics to gnw_dm53.svg [O. Galibert, hap].
+- hp80.cpp: Initial HP series 80 emulation: Working HP-85A with 16kB RAM, including Capricorn CPU, keyboard, CRT text/graphics modes, timers, and beeper. DC100 cassette, extension ROMs, I/O modules and integrated printer are not supported [F. Ulivi].
+- intellec4.cpp: Added INTELLEC 4 driver with support for MOD 4 and MOD 40 variants: Supports TTY, PROM programmer, and all front-panel debugging features using clickable artwork. Supports PROM, program/data storage and high-speed paper tape reader cards [Vas Crabb].
+- interpro.cpp: Got SCSI working and other improvements: Reworked DMA, added eth registers. Improved 5390 device, removed legacy 539x SCSI stuff. Passes all iogadiag tests if bus error hack is enabled. Implemented basic serial DMA. Switched to ncr53c94. Initial preparation for Ethernet implementation. Implemented timer-based DMA [Patrick Mackinlay].
+- macpci.cpp: Added more Pippin ROM sets [unknown].
+- mc10.cpp: Bugfix #06624: [Misc.] (mc10.cpp) Emulation of the right-shift and rotate instructions (ASR, LSR, ROR) do not modify correctly the overflow flag (V) [AJR].
+- octopus.cpp, zorba.cpp: Bugfix #06562: [Crash/Freeze] All sets in octopus.cpp, zorba.cpp: Fatal Error when using various terminal/printers in slots [Osso].
+- pc9801.cpp: Moved cbus to bus and added WIP mpu401 support [Carl].
+- sun1.cpp: Replaced console hack with upd7201 device [shattered].
+- ti85.cpp: Cleaned up serial, matrix keyboard and TI-8x link protocol interfaces: Switched to delegate timers and moved state registration to post-start, making implementations a bit less error-prone [Vas Crabb].
+- ti99_2.cpp: Changed Hexbus chaining; moved Hexbus up one level (from bus/ti99 to bus) [Michael Zapf].
+- ti99_4x.cpp: Bugfix #06564: [Crash/Freeze] (ti99_4x.cpp) All sets in ti99_4x.cpp, ti99_4p.cpp: SuperAMS memory expansion card (samsmem) Fatal Errorvwhen mounted [Ivan Vangelista].
+- Renamed (fexcel68k) to (fex68k) and (ti_hexbus) to (hexbus).
+- Removed (ti_hexbus_chain) and (ti_hexbus_slot) devices.
+ - Added 8-bit latch, Namco C352, HP-Capricorn, Ensoniq front panel with 2x40 VFD for VFX family, Faraday FE2010 PIT, Intel 4040, TI Hexbus Floppy, Intel imm6-76 PROM programmer, Intel imm4-22 Instruction/Data Storage Module, SDA5708, Intel imm4-90 High-Speed Paper Tape Reader, Intel imm6-26 PROM Memory Module, INTELLEC 4/MOD 40 Universal Bus, INTELLEC 4/MOD 40 Universal Slot, Yamaha YMF271 OPX, K053260 KDSC, M37702M2, M37702S1, M37710S4, M37720S1, MC14411 Bit Rate Generator, Roland MPU-401 MIDI Interface (CBUS), NCR 53C90A SCSI, ROLM SMIOC, Sega PCM, Yamaha YMZ280B PCMD8 and Z8681 devices.
+- Carl added compc.cpp driver.
+- F. Ulivi added hp80.cpp driver.
+- Michael Zapf added ti99_4p.cpp driver.
+- R. Belmont added fontwriter.cpp driver.
+- superctr added tg100.cpp driver.
+- Vas Crabb added intellec4.cpp driver. 
+- BeckieRGB added VG Pocket Mini (VG-1500) and VG Pocket (VG-2000) systems.
+- CB-Emu added Fidelity Electronics Excel 68000 Mach II (rev. C+) and Fidelity Electronics Excel 68000 Mach III systems.
+- F. Ulivi added Hewlett-Packard HP 85 system.
+- hap added Nintendo Game & Watch: Egg system.
+- hap, Sean Riddle and Kaede added Tiger Electronics (licensed from Tradewest/Technos) Double Dragon (handheld) system.
+- hap and Igor added Elektronika Explorers of Space system.
+- hap and Sean Riddle added Tiger Electronics (licensed from Tengen) Gauntlet, Tiger Electronics Space Jam, Tiger Electronics Sonic The Hedgehog, A-One LSI Arrange Ball, Konami Blades of Steel (handheld), Konami Bucky O'Hare (handheld) and Milton Bradley Electronic Arcade Mania systems.
+- R. Belmont and rfka01 added Sharp FontWriter FW-700 (German) system.
+- rfka01 added Commodore PC 10 system.
+- Toshi added DEC VT330 system.
+- vampirefrog, superctr, bmos and Valley Bell added Yamaha TG100 system.
+- Vas Crabb added Intel INTELLEC 4/MOD 4 and Intel INTELLEC 4/MOD 40 systems.
+
+Â© 2011/2017 AntoPISA

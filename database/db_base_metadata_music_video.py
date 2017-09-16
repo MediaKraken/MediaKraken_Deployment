@@ -59,31 +59,49 @@ def db_meta_music_video_detail_uuid(self, item_guid):
         return None
 
 
-def db_meta_music_video_count(self, imvdb_id=None):
+def db_meta_music_video_count(self, imvdb_id=None, search_value=None):
     """
     Return count of music video metadata
     """
     if imvdb_id is None:
-        self.db_cursor.execute('select count(*) from mm_metadata_music_video')
+        if search_value is not None:
+            self.db_cursor.execute('select count(*) from mm_metadata_music_video'
+                                   ' where mm_media_music_video_song %% %s', (search_value,))
+        else:
+            self.db_cursor.execute('select count(*) from mm_metadata_music_video')
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_music_video'
             ' where mm_metadata_music_video_media_id->\'imvdb\' ? %s', (imvdb_id,))
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_music_video_list(self, offset=None, records=None):
+def db_meta_music_video_list(self, offset=None, records=None, search_value=None):
     """
     List music video metadata
     """
     if offset is None:
-        self.db_cursor.execute('select mm_metadata_music_video_guid, mm_media_music_video_band,'
-            ' mm_media_music_video_song, mm_metadata_music_video_localimage_json'
-            ' from mm_metadata_music_video'
-            ' order by mm_media_music_video_band, mm_media_music_video_song')
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_music_video_guid, mm_media_music_video_band,'
+                ' mm_media_music_video_song, mm_metadata_music_video_localimage_json'
+                ' from mm_metadata_music_video where mm_media_music_video_song %% %s'
+                ' order by mm_media_music_video_band, mm_media_music_video_song', (search_value,))
+        else:
+            self.db_cursor.execute('select mm_metadata_music_video_guid, mm_media_music_video_band,'
+                ' mm_media_music_video_song, mm_metadata_music_video_localimage_json'
+                ' from mm_metadata_music_video'
+                ' order by mm_media_music_video_band, mm_media_music_video_song')
     else:
-        self.db_cursor.execute('select mm_metadata_music_video_guid,'
-            ' mm_media_music_video_band, mm_media_music_video_song,'
-            ' mm_metadata_music_video_localimage_json from mm_metadata_music_video'
-            ' order by mm_media_music_video_band, mm_media_music_video_song offset %s limit %s ',
-            (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mm_metadata_music_video_guid,'
+                ' mm_media_music_video_band, mm_media_music_video_song,'
+                ' mm_metadata_music_video_localimage_json from mm_metadata_music_video'
+                ' where mm_media_music_video_song %% %s '
+                'order by mm_media_music_video_band, mm_media_music_video_song offset %s limit %s ',
+                (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mm_metadata_music_video_guid,'
+                ' mm_media_music_video_band, mm_media_music_video_song,'
+                ' mm_metadata_music_video_localimage_json from mm_metadata_music_video'
+                ' order by mm_media_music_video_band, mm_media_music_video_song offset %s limit %s ',
+                (offset, records))
     return self.db_cursor.fetchall()

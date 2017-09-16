@@ -19,11 +19,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from common import common_config_ini
-from common import common_logging
+from common import common_internationalization
 from common import common_hardware_roku
+from common import common_logging
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
@@ -54,7 +53,8 @@ for row_data in db_connection.db_known_media():
 
 # send notications
 if thumbnails_generated > 0:
-    db_connection.db_notification_insert(locale.format('%d', thumbnails_generated, True)\
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(thumbnails_generated)\
         + " Roku thumbnail(s) generated.", True)
 
 

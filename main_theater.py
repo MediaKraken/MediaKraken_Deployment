@@ -243,18 +243,23 @@ class MediaKrakenApp(App):
         logging.info("len total: %s", len(server_msg))
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
-            self.send_twisted_message_thread(json.dumps({'Type': 'Ident', 'UUID': str(uuid.uuid4()),
-                'Platform': platform.node()}))
+            self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
+                                                         'UUID': str(uuid.uuid4()),
+                                                         'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-                self.root.ids.theater_media_video_title.text = json_message['Data']['Meta']['themoviedb']['Meta']['title']
-                self.root.ids.theater_media_video_subtitle.text = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
+                self.root.ids.theater_media_video_title.text \
+                    = json_message['Data']['Meta']['themoviedb']['Meta']['title']
+                self.root.ids.theater_media_video_subtitle.text \
+                    = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
                 # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
-                self.root.ids.theater_media_video_overview.text = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
+                self.root.ids.theater_media_video_runtime.text \
+                    = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
+                self.root.ids.theater_media_video_overview.text \
+                    = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
                 for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
                     genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
@@ -286,7 +291,8 @@ class MediaKrakenApp(App):
                             pass
                         try:
                             stream_codec \
-                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') + ' - '
+                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
+                                + ' - '
                         except:
                             pass
                         if stream_info['codec_type'] == 'audio':
@@ -317,7 +323,8 @@ class MediaKrakenApp(App):
                 args_converter = lambda row_index,\
                                         rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
                 list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                           cls=ListItemButton, selection_mode='single', allow_empty_selection=False)
+                                           cls=ListItemButton, selection_mode='single',
+                                           allow_empty_selection=False)
                 list_view = ListView(adapter=list_adapter)
                 for video_list in json_message['Data']:
                     logging.info('vid list item %s', video_list)

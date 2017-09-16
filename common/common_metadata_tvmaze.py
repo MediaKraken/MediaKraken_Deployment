@@ -29,7 +29,7 @@ class CommonMetadatatvmaze(object):
     """
     Class for interfacing with tvmaze
     """
-    def __init__(self, option_config_json):
+    def __init__(self):
         self.API_BASE_URL = 'http://api.tvmaze.com/'
 
 

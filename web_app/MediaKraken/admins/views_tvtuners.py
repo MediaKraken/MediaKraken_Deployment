@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import uuid
 import pygal
 import json
@@ -13,7 +11,8 @@ from flask import Blueprint, render_template, g, request, current_app, jsonify, 
      url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
-blueprint = Blueprint("admins_tvtuners", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_tvtuners", __name__, url_prefix='/admin',
+                      static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
@@ -85,10 +84,12 @@ def admin_tvtuner_edit_page():
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
                 # verify it doesn't exit and add
-                if g.db_connection.db_device_check(request.form['name'], request.form['ipaddr']) == 0:
-                    g.db_connection.db_device_insert('tvtuner', json.dumps({'Name': request.form['name'],
-                                                                         'Model': "NA",
-                                                                         'IP': request.form['ipaddr']}))
+                if g.db_connection.db_device_check(request.form['name'],
+                                                   request.form['ipaddr']) == 0:
+                    g.db_connection.db_device_insert('tvtuner',
+                                                     json.dumps({'Name': request.form['name'],
+                                                                'Model': "NA",
+                                                                'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_tvtuners.admin_tvtuners'))
                 else:

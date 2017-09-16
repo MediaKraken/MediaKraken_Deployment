@@ -139,7 +139,28 @@ if db_connection.db_version_check() == 8:
     db_connection.db_version_update(9)
     db_connection.db_commit()
 
-# drop trigger table since moving to celery?
+
+if db_connection.db_version_check() == 9:
+    db_connection.db_query('drop table IF EXISTS mm_trigger')
+    db_connection.db_version_update(10)
+    db_connection.db_commit()
+
+
+if db_connection.db_version_check() == 10:
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_name text')
+    db_connection.db_query('CREATE INDEX gi_game_idx_name ON mm_metadata_game_software_info(gi_game_info_name)')
+    db_connection.db_query('CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_name gist_trgm_ops)')
+    db_connection.db_version_update(11)
+    db_connection.db_commit()
+
+
+if db_connection.db_version_check() == 11:
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_short_name text')
+    db_connection.db_query('CREATE INDEX gi_game_idx_short_name ON mm_metadata_game_software_info(gi_game_info_short_name)')
+    db_connection.db_query('CREATE INDEX gi_game_idx_short_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_short_name gist_trgm_ops)')
+    db_connection.db_version_update(12)
+    db_connection.db_commit()
+
 
 # close the database
 db_connection.db_close()

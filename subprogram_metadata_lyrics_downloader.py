@@ -20,11 +20,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging # pylint: disable=W0611
 from common import common_config_ini
 from common import common_file
+from common import common_internationalization
 from common import common_logging
 from common import common_metadata_chart_lyrics
 from common import common_signal
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 
 # set signal exit breaks
@@ -51,8 +50,9 @@ for media_row in common_file.com_file_dir_list():
 print('Total lyrics download attempts: %s' % total_download_attempts)
 # send notifications
 if total_download_attempts > 0:
-    db_connection.db_notification_insert(locale.format('%d',
-        total_download_attempts, True) + " lyric(s) downloaded.", True)
+    db_connection.db_notification_insert(
+        common_internationalization.com_inter_number_format(total_download_attempts)
+        + " lyric(s) downloaded.", True)
 
 
 # commit all changes

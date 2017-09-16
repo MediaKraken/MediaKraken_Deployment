@@ -38,9 +38,9 @@ ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
 
 ADD index.php /var/www/localhost/htdocs
 
-ADD phpPgAdmin-5.1.tar.bz2 /var/www/localhost/htdocs/
+ADD phppgadmin-master.tar.bz2 /var/www/localhost/htdocs/
 
-RUN mv /var/www/localhost/htdocs/phpPgAdmin-5.1 /var/www/localhost/htdocs/phppgadmin
+RUN mv /var/www/localhost/htdocs/phppgadmin-master /var/www/localhost/htdocs/phppgadmin
 
 ADD config.inc.php /var/www/localhost/htdocs/phppgadmin/conf/config.inc.php
 

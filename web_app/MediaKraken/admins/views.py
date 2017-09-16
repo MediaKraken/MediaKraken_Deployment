@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-#import locale
-#locale.setlocale(locale.LC_ALL, '')
 import uuid
 import pygal
 import json
@@ -35,7 +33,6 @@ from common import common_pagination
 from common import common_string
 from common import common_system
 from common import common_version
-from common import common_zfs
 import database as database_base
 
 
@@ -136,7 +133,6 @@ def admins():
                            data_count_streamed_media=\
                                common_internationalization.com_inter_number_format(\
                                 0),
-                           data_zfs_active=common_zfs.com_zfs_available(),
                            data_library=\
                                common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_media_dir')),
@@ -146,9 +142,11 @@ def admins():
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages,
-                           data_count_meta_fetch=common_internationalization.com_inter_number_format(\
+                           data_count_meta_fetch
+                               =common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_download_que')),
-                           data_count_images_fetch=common_internationalization.com_inter_number_format(\
+                           data_count_images_fetch
+                               =common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_download_image_que'))
                           )
 
@@ -338,7 +336,8 @@ def admin_database_statistics():
     """
     db_stats_count = []
     for row_data in g.db_connection.db_pgsql_row_count():
-        db_stats_count.append((row_data[1], common_internationalization.com_inter_number_format(row_data[2])))
+        db_stats_count.append((row_data[1],
+                               common_internationalization.com_inter_number_format(row_data[2])))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count)

@@ -57,7 +57,7 @@ RUN apt-get update \
   libxvidcore-dev \
   wget
 RUN /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
-  && mv ~/bin/ff* /bin/. \
-  && rm /bin/ffserver \
+  && mv ~/bin/ff* /mediakraken/bin/. \
+  && rm /mediakraken/bin/ffserver \
   && rm /mediakraken/pipeline-build-os-ffmpeg-ubuntu.sh \
   && rm -Rf ~/ffmpeg_sources && rm -Rf ~/ffmpeg_build && rm -Rf ~/bin

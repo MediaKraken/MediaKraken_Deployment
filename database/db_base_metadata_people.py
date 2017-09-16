@@ -22,27 +22,44 @@ import uuid
 import json
 
 
-def db_meta_person_list_count(self):
+def db_meta_person_list_count(self, search_value=None):
     """
     # count person metadata
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_person')
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_person'
+                               ' where mmp_person_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_person')
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_person_list(self, offset=None, records=None):
+def db_meta_person_list(self, offset=None, records=None, search_value=None):
     """
     # return list of people
     """
     if offset is None:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-            ' from mm_metadata_person order by mmp_person_name')
+        if search_value is not None:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person where mmp_person_name %% %s'
+                ' order by mmp_person_name', (search_value,))
+        else:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person order by mmp_person_name')
     else:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-            'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-            ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
-            (offset, records))
+        if search_value is not None:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person where mmp_person_name %% %s'
+                ' order by mmp_person_name offset %s limit %s',
+                (search_value, offset, records))
+        else:
+            self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
+                (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -90,7 +107,8 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
     """
     # insert person
     """
-    logging.info('db pers insert %s %s %s %s', person_name, media_id_json, person_json, image_json)
+    logging.info('db pers insert %s %s %s %s', person_name, media_id_json,
+                 person_json, image_json)
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
         ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',
@@ -196,11 +214,13 @@ def db_meta_person_as_seen_in(self, person_guid):
             ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
             ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
-        sql_params = row_data['mmp_person_media_id']['tvmaze'],
+        sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
+        logging.info('sql paramts: %s' % sql_params)
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
             'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
             ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-            '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by mm_metadata_tvshow_name', sql_params)
+            '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by mm_metadata_tvshow_name',
+            sql_params)
             # TODO won't this need to be like below?
     elif 'thetvdb' in row_data['mmp_person_media_id']:
         #sql_params = str(row_data[1]['thetvdb']),

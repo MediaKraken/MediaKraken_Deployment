@@ -22,6 +22,7 @@ from twisted.internet import reactor, protocol, stdio, defer, task
 from twisted.protocols import basic
 from twisted.internet import ssl
 import pika
+import shlex
 from pika import exceptions
 from pika.adapters import twisted_connection
 from network import network_base_line as network_base
@@ -82,7 +83,8 @@ def read(queue_object):
                 pass
         elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
-            name_container = ((json_message['User'] + '_' + str(uuid.uuid4()).replace('-',''))[-30:])
+            name_container = ((json_message['User'] + '_'
+                               + str(uuid.uuid4()).replace('-',''))[-30:])
             logging.info('cont %s', name_container)
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
@@ -112,6 +114,24 @@ def read(queue_object):
                     + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'\
                     + ' -movflags faststart+empty_moov\' -transcode \''\
                     + json_message['Data'] + '\''
+            elif json_message['Sub'] == 'Web':
+                # stream to web
+                container_command = shlex.split("ffmpeg -v fatal {ss_string}"\
+                    " -i ".format(**locals())) \
+                    + json_message['Data']\
+                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
+                                " -c:v libx264 -pix_fmt yuv420p -profile:v high -level 4.0 "
+                                "-preset ultrafast -trellis 0"
+                                " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
+                                " -shortest -f mpegts"
+                                " -output_ts_offset {output_ts_offset:.6f}"
+                                " -t {t:.6f} pipe:%d.ts".format(**locals()))
+            elif json_message['Sub'] == 'HDHomerun':
+                # stream from homerun
+                # container_command = ["ffmpeg", "-i", "http://"+ip+":5004/auto/v"+channel\
+                #                      +"?transcode="+quality, "-vcodec", "copy",
+                #                      "./static/streams/"+channel+".m3u8"]).pid"]
+                pass
             else:
                 pass
             logging.info('b4 docker run')

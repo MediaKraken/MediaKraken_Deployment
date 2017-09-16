@@ -28,7 +28,4 @@ def com_config_read(db_build=False):
     # open the database
     db_connection = database_base.MKServerDatabase()
     db_connection.db_open(db_build)
-    if db_build == False:
-        return db_connection.db_opt_status_read()['mm_options_json'], db_connection
-    else:
-        return db_connection
+    return db_connection.db_opt_status_read()['mm_options_json'], db_connection

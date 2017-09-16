@@ -38,7 +38,8 @@ def db_download_image_read(self):
     """
     Read the downloads
     """
-    self.db_cursor.execute('select mdq_image_id,mdq_image_download_json from mm_download_image_que')
+    self.db_cursor.execute('select mdq_image_id,mdq_image_download_json'
+                           ' from mm_download_image_que')
     return self.db_cursor.fetchall()
 
 
@@ -46,5 +47,6 @@ def db_download_image_delete(self, guid):
     """
     Remove download
     """
-    self.db_cursor.execute('delete from mm_download_image_que where mdq_image_id = %s', (guid,))
+    self.db_cursor.execute('delete from mm_download_image_que where mdq_image_id = %s',
+                           (guid,))
     self.db_commit()

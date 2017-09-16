@@ -1,4 +1,6 @@
 crochet
 pyopenssl
 service_identity
-
+setuptools
+pycdio
+lcdproc

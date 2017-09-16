@@ -43,10 +43,10 @@ else:
 
 
 # setup the tvmaze class
-if option_config_json['API']['tvmaze'] is not None:
-    TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze(option_config_json)
-else:
-    TVMAZE_CONNECTION = None
+#if option_config_json['API']['tvmaze'] is not None:
+TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
+#else:
+#    TVMAZE_CONNECTION = None
 
 
 def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
@@ -140,7 +140,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         logging.info('eps info: %s', episode_info)
                         if episode_info['filename'] is not None:
                             db_connection.db_download_image_insert('thetvdb',
-                                json.dumps({'url': 'https://thetvdb.com/banners/' + episode_info['filename'],
+                                json.dumps({'url': 'https://thetvdb.com/banners/'
+                                + episode_info['filename'],
                                 'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
                                 + episode_info['filename']}))
                 else:
@@ -167,16 +168,16 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     logging.info("meta tv tvmaze save fetch: %s", tvmaze_id)
     metadata_uuid = None
-    #show_full_json = tvmaze.com_meta_TheMaze_Show_by_ID(tvmaze_id, None, None, None, True)
-    show_full_json = None
+    result_data = TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
+            tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
+            embed_info=True)
     try:
-        show_full_json = ({'Meta': {'tvmaze':
-            json.loads(TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
-            tvmaze_id, None, None, None, True))}})
+        result_json = json.loads(result_data)
     except:
-        pass
-    logging.info("tvmaze full: %s", show_full_json)
-    if show_full_json is not None:
+        result_json = None
+    logging.info("tvmaze full: %s", result_json)
+    if result_json is not None and result_json['status'] != 404:
+        show_full_json = ({'Meta': {'tvmaze': result_json}})
         show_detail = show_full_json['Meta']['tvmaze']
         logging.info("detail: %s", show_detail)
         tvmaze_name = show_detail['name']
@@ -199,18 +200,21 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
             json.dumps(show_full_json), json.dumps(image_json))
         # store person info
-        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']:
+        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']\
+                and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['cast'])
-        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']:
+        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']\
+                and len(show_full_json['Meta']['tvmaze']['_embedded']['crew']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
                 show_full_json['Meta']['tvmaze']['_embedded']['crew'])
         # save rows for episode image fetch
         for episode_info in show_detail['_embedded']['episodes']:
-            db_connection.db_download_image_insert('tvmaze',
-                json.dumps({'url': episode_info['image']['original'],
-                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
-                + str(episode_info['id']) + '.jpg'}))
+            if episode_info['image'] is not None:
+                db_connection.db_download_image_insert('tvmaze',
+                    json.dumps({'url': episode_info['image']['original'],
+                    'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                    + str(episode_info['id']) + '.jpg'}))
         db_connection.db_commit()
     return metadata_uuid
 

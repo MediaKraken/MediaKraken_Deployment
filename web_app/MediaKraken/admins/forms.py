@@ -168,7 +168,8 @@ class AdminSettingsForm(Form):
     #country = SelectField('Interval', choices=[('Hours', 'Hours'),
     #('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
-    metadata_path = TextField('Metadata Path', validators=[DataRequired(), Length(min=1, max=250)])
+    metadata_path = TextField('Metadata Path', validators=[DataRequired(),
+                                                           Length(min=1, max=250)])
     metadata_with_media = BooleanField('Metadata with Media')
     metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
     metadata_sub_episode_down = BooleanField('Download TV Subtitle')
