@@ -10,7 +10,7 @@ from MediaKraken.settings import ProdConfig
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (
     bcrypt,
-    cache,
+    Cache,
     db,
     login_manager,
     migrate,
@@ -21,6 +21,7 @@ from MediaKraken import public, user, admins
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
+    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
     # did not fix the flask port dropping issue
@@ -36,7 +37,7 @@ def create_app(config_object=ProdConfig):
 def register_extensions(app):
     assets.init_app(app)
     bcrypt.init_app(app)
-    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+#    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
