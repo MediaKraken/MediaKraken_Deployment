@@ -26,7 +26,6 @@ RUN buildDeps="autoconf \
         openssl-dev \
         tar \
 	yasm \
-        yasm-dev \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk update && \
