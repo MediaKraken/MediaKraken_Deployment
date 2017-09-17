@@ -1,4 +1,4 @@
-FROM datarhei/ffmpeg:3.3 as ffmpeg
+FROM datarhei/ffmpeg as ffmpeg
 
 ENV NGINX_VERSION=1.13.4 \
     NGINX_RTMP_VERSION=dev \
