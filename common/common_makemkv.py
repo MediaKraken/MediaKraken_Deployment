@@ -74,3 +74,7 @@ Current progress - 100%  , Total progress - 100%
 1 titles saved
 Copy complete. 1 titles saved.
 '''
+
+# https://github.com/cmlburnett/PyBluRead/blob/master/setup.py
+
+# sudo apt-get install libbluray-dev
