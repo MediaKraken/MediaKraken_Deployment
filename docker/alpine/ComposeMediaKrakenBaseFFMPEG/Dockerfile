@@ -69,7 +69,6 @@ RUN buildDeps="autoconf \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
         --extra-ldflags="-L${SRC}/lib" \
-        --extra-libs=-ldl \
         --prefix="${SRC}" \
         --enable-nonfree \
         --enable-gpl \
