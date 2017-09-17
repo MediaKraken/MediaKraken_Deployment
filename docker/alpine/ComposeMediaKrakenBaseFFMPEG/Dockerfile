@@ -36,21 +36,21 @@ RUN buildDeps="autoconf \
     curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
-    make -j 16 && \
+    make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${SRC}" -DENABLE_SHARED:bool=off ./source && \
-    make -j 16 && \
+    make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static --enable-nasm --datarootdir="${DIR}" && \
-    make -j 16 && \
+    make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -58,7 +58,7 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     autoreconf -fiv && \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
-    make -j 16 && \
+    make && \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -87,7 +87,7 @@ RUN buildDeps="autoconf \
         --disable-doc \
         --disable-static \
         --disable-ffserver && \
-    make -j 16 && \
+    make && \
     make install && \
     hash -r
     
