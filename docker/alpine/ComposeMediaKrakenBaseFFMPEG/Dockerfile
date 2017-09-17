@@ -8,6 +8,7 @@ ARG LAME_VERSION=3.99.5
 ARG X264_VERSION=20170917-2245-stable
 ARG X265_VERSION=2.5
 ARG FFMPEG_VERSION="3.3.4"
+ARG SPEEX_VERSION=1.2.0
 
 RUN buildDeps="autoconf \
         automake \
@@ -60,6 +61,14 @@ RUN buildDeps="autoconf \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
     make && \
     make install && \
+
+    DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -sL http://downloads.xiph.org/releases/speex/speex-${SPEEX_VERSION}.tar.gz | \
+    tar -zx --strip-components=1 && \
+    autoreconf -fiv && \
+    ./configure && \
+    make && \
+    make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -81,6 +90,7 @@ RUN buildDeps="autoconf \
         --enable-postproc \
         --enable-small \
         --enable-libfdk_aac \
+        --enable-libspeex \
         --enable-shared \
         --disable-debug \
         --disable-doc \
