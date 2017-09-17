@@ -13,3 +13,4 @@ docker tag mk_musicbrainz mediakraken/mkmusicbrainz:latest
 docker tag mk_mumble mediakraken/mkmumble:latest
 docker tag mk_phppgadmin mediakraken/mkphppgadmin:latest
 docker tag mk_smtp mediakraken/mksmtp:latest
+docker tag mk_nginxrtmp mediakraken/mknginxrtmp:latest

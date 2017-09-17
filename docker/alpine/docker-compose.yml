@@ -232,8 +232,18 @@ services:
     container_name: mknginxrtmp
     ports:
       - "1935:1935"
-    networks:
-      - mediakraken_dbnetwork
+    volumes:
+      - /home/mediakraken:/mediakraken/mnt
+    restart: unless-stopped
+
+  nginxrtmpforward:
+    build:
+      context: ./ComposeMediaKrakenNginxRTMPStreamForward
+      dockerfile: Dockerfile
+    container_name: mknginxrtmpforward
+    ports:
+      - "1935:1935"
+      - "80:80"
     restart: unless-stopped
 
   # rabbit
