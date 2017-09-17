@@ -5,7 +5,8 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
 
 ARG FDKAAC_VERSION=0.1.5
 ARG LAME_VERSION=3.99.5
-ARG X264_VERSION=20170807-2245-stable
+ARG X264_VERSION=20170917-2245-stable
+ARG X265_VERSION=2.5
 ARG FFMPEG_VERSION="2.8.12"
 
 RUN buildDeps="autoconf \
@@ -24,7 +25,7 @@ RUN buildDeps="autoconf \
         python \
         openssl-dev \
         tar \
-        yasm \
+        yasm-dev \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk update && \
@@ -35,14 +36,21 @@ RUN buildDeps="autoconf \
     curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
-    make && \
+    make -j 16 && \
+    make install && \
+
+    DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
+    tar -jx --strip-components=1 && \
+    cmake ../source && \
+    make -j 16 && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static --enable-nasm --datarootdir="${DIR}" && \
-    make && \
+    make -j 16 && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -50,7 +58,7 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     autoreconf -fiv && \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
-    make && \
+    make -j 16 && \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -69,6 +77,7 @@ RUN buildDeps="autoconf \
         --enable-avresample \
         --enable-libmp3lame \
         --enable-libx264 \
+        --enable-libx265 \
         --enable-openssl \
         --enable-postproc \
         --enable-small \
@@ -78,7 +87,7 @@ RUN buildDeps="autoconf \
         --disable-doc \
         --disable-static \
         --disable-ffserver && \
-    make && \
+    make -j 16 && \
     make install && \
     hash -r
     
