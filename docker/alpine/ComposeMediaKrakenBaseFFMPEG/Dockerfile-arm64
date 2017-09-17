@@ -1,4 +1,4 @@
-FROM alpine:3.6 as builder
+FROM resin/aarch64-alpine:latest as builder
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
@@ -10,6 +10,7 @@ ARG FFMPEG_VERSION="2.8.12"
 
 RUN buildDeps="autoconf \
         automake \
+        autoconf \
         bash \
         binutils \
         bzip2 \
@@ -41,7 +42,8 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static --enable-nasm --datarootdir="${DIR}" && \
+    cp /usr/share/automake-*/config.guess config.guess && \
+    ./config.guess && ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static --enable-nasm --datarootdir="${DIR}" && \
     make && \
     make install && \
 
@@ -82,7 +84,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:latest
+FROM resin/aarch64-alpine:latest
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe

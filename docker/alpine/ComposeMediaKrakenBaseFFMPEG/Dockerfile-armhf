@@ -1,4 +1,4 @@
-FROM alpine:3.6 as builder
+FROM resin/armhf-alpine:latest as builder
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
@@ -82,7 +82,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:latest
+FROM resin/armhf-alpine:latest
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
