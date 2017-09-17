@@ -225,6 +225,17 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
+  nginxrtmp:
+    build:
+      context: ./ComposeMediaKrakenNginxRTMP
+      dockerfile: Dockerfile
+    container_name: mknginxrtmp
+    ports:
+      - "1935:1935"
+    networks:
+      - mediakraken_dbnetwork
+    restart: unless-stopped
+
   # rabbit
   # https://github.com/maryvilledev/alpine-rmq
   rabbit:
