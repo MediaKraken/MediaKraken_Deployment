@@ -30,6 +30,10 @@ docker build -t mediakraken/mkslave .
 cd ../ComposeMediaKrakenSlaveNvidiaDebian
 docker build -t mediakraken/mkslavenvidiadebian .
 
+# Build the nginx RTMP
+cd ../ComposeMediaKrakenNginxRTMP
+docker build -t mediakraken/mknginxrtmp .
+
 # nuke old images
 ../../purge_images_none.sh
 
