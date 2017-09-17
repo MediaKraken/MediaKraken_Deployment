@@ -19,14 +19,6 @@
 #from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 
-# https://github.com/cmlburnett/PyDvdRead
-
-'''
-python3 setup.py build
-python3 setup.py install
-sudo apt-get install libdvdread-dev
-'''
-
 import dvdread
 help(dvdread.DVD)
 
@@ -37,4 +29,6 @@ with dvdread.DVD("/dev/sr0") as d:
         t = d.GetTitle(tt)
         #print(d.GetName())
         print(d.GetNameTitleCase()) # this gives "better" name
-        print("Title %d has %d angles, %d audio tracks, %d chapters, %d subpictures, and runs for %s" % (t.TitleNum, t.NumberOfAngles, t.NumberOfAudios, t.NumberOfChapters, t.NumberOfSubpictures, t.PlaybackTimeFancy))
+        print("Title %d has %d angles, %d audio tracks, %d chapters, %d subpictures, and runs for %s"
+              % (t.TitleNum, t.NumberOfAngles, t.NumberOfAudios, t.NumberOfChapters,
+              t.NumberOfSubpictures, t.PlaybackTimeFancy))
