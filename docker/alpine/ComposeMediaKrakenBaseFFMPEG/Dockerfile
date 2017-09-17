@@ -42,7 +42,7 @@ RUN buildDeps="autoconf \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
-    tar -jx --strip-components=1 && \
+    tar -zx --strip-components=1 && \
     cmake ../source && \
     make -j 16 && \
     make install && \
