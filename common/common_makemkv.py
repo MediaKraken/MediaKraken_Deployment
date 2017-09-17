@@ -65,8 +65,10 @@ Title  3
 
 # title 0 to path
 # makemkvcon mkv disc:0 0 .
-# makemkvcon --progress=-same mkv disc:0 0 .
+# makemkvcon --progress=-same --cache=128 mkv disc:0 0 .
 ## Current action: Saving to MKV file
+# makemkvcon mkv disc:0 all c:\folder
+
 '''
 Current progress - 100%  , Total progress - 100%
 1 titles saved
