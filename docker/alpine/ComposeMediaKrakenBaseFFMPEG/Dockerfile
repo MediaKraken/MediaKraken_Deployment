@@ -25,7 +25,6 @@ RUN buildDeps="autoconf \
         gnupg \
         gnutls-dev \
         libogg-dev \
-        libstdc++ \
         libtheora \
         libtheora-dev \
         libtool \
