@@ -69,6 +69,13 @@ RUN buildDeps="autoconf \
     ./configure && \
     make && \
     make install && \
+
+    DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -L -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/libmodplug-0.8.8.5.tar.gz | \
+    tar -zx --strip-components=1 && \
+    ./configure && \
+    make && \
+    make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -91,6 +98,7 @@ RUN buildDeps="autoconf \
         --enable-small \
         --enable-libfdk_aac \
         --enable-libspeex \
+	--enable-libmodplug \
         --enable-shared \
         --disable-debug \
         --disable-doc \
