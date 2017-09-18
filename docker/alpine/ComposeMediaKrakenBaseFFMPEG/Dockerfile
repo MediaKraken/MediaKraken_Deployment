@@ -10,6 +10,7 @@ ARG X265_VERSION=2.5
 ARG FFMPEG_VERSION="3.3.4"
 ARG SPEEX_VERSION=1.2.0
 ARG OPENMPT_VERSION=0.2.8760-beta27
+ARG XVID_VERSION=1.3.4
 
 RUN buildDeps="autoconf \
         automake \
@@ -84,6 +85,13 @@ RUN buildDeps="autoconf \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -sL http://downloads.xvid.org/downloads/xvidcore-${XVID_VERSION}.tar.gz | \
+    tar -zx --strip-components=1 && \
+    ./configure && \
+    make && \
+    make install && \
+
+    DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     ./configure \
@@ -104,6 +112,7 @@ RUN buildDeps="autoconf \
         --enable-libfdk_aac \
         --enable-libspeex \
         --enable-libmodplug \
+        --enable-libxvid \
         --enable-shared \
         --disable-debug \
         --disable-doc \
