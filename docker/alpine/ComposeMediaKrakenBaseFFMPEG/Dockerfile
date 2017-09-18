@@ -39,6 +39,7 @@ RUN buildDeps="autoconf \
 	yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
+    export LD_RUN_PATH=/usr/local/lib && \
     apk update && \
     apk upgrade && \
     apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libssl1.0 && \
