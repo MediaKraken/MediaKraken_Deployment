@@ -26,14 +26,18 @@ RUN buildDeps="autoconf \
         gnutls-dev \
         libogg-dev \
         libstdc++ \
+        libtheora \
         libtheora-dev \
         libtool \
+        libvorbis \
         libvorbis-dev \
         make \
+        opus \
         opus-dev \
         python \
         python-dev \
         openssl-dev \
+        samba \
         samba-dev \
         tar \
 	yasm \
