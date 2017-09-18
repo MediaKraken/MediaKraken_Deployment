@@ -71,14 +71,14 @@ RUN buildDeps="autoconf \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/libmodplug-0.8.8.5.tar.gz | \
+    curl -sL -O https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/libmodplug-0.8.8.5.tar.gz | \
     tar -zx --strip-components=1 && \
     ./configure && \
     make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L -O https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
+    curl -sL -O https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     make && \
     make install && \
