@@ -24,6 +24,7 @@ RUN buildDeps="autoconf \
         g++ \
         gcc \
         gnupg \
+        gnutls-dev \
         libstdc++ \
         libtool \
         make \
