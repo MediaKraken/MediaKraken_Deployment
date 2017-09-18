@@ -9,6 +9,7 @@ ARG X264_VERSION=20170917-2245-stable
 ARG X265_VERSION=2.5
 ARG FFMPEG_VERSION="3.3.4"
 ARG SPEEX_VERSION=1.2.0
+ARG OPENMPT_VERSION=0.2.8760-beta27
 
 RUN buildDeps="autoconf \
         automake \
@@ -76,6 +77,12 @@ RUN buildDeps="autoconf \
     ./configure && \
     make && \
     make install && \
+
+    DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -L -O https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
+    tar -zx --strip-components=1 && \
+    make && \
+    make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -98,7 +105,8 @@ RUN buildDeps="autoconf \
         --enable-small \
         --enable-libfdk_aac \
         --enable-libspeex \
-	--enable-libmodplug \
+        --enable-libmodplug \
+        --enable-libopenmpt \
         --enable-shared \
         --disable-debug \
         --disable-doc \
