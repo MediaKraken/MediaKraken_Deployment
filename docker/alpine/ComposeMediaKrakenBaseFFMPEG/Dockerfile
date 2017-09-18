@@ -113,7 +113,6 @@ RUN buildDeps="autoconf \
         --enable-small \
         --enable-libfdk_aac \
         --enable-libspeex \
-        --enable-libmodplug \
         --enable-libxvid \
         --enable-shared \
         --disable-debug \
