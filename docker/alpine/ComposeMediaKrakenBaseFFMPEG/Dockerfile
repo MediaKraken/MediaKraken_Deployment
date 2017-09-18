@@ -87,6 +87,7 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL http://downloads.xvid.org/downloads/xvidcore-${XVID_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
+    cd build/generic && \
     ./configure && \
     make && \
     make install && \
