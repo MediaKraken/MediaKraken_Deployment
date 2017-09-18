@@ -66,7 +66,6 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL http://downloads.xiph.org/releases/speex/speex-${SPEEX_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    autoreconf -fiv && \
     ./configure && \
     make && \
     make install && \
