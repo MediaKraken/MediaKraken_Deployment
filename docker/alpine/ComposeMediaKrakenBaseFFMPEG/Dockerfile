@@ -48,14 +48,14 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
-    ./configure --prefix="$HOME/ffmpeg_build" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
+    ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
     make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ./source && \
+    cmake -G "Unix Makefiles" -DENABLE_SHARED:bool=off ./source && \
     make && \
     make install && \
 
@@ -79,8 +79,8 @@ RUN buildDeps="autoconf \
     ./configure \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
-        --extra-cflags="-I$HOME/ffmpeg_build/include -I${SRC}/include" \
-        --extra-ldflags="-L$HOME/ffmpeg_build/lib -L${SRC}/lib" \
+        --extra-cflags="-I${SRC}/include" \
+        --extra-ldflags="-L${SRC}/lib" \
         --prefix="${SRC}" \
         --enable-nonfree \
         --enable-gpl \
