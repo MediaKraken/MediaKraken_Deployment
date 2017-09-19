@@ -3,16 +3,16 @@ git pull
 docker-compose down
 docker-compose build
 
+# Build the base FFMPEG from base images
+cd ComposeMediaKrakenBaseFFMPEG
+docker build -t mediakraken/mkbaseffmpeg .
+
 # Build the base Nvidia Cuda
-cd ComposeMediaKrakenNvidia
-#docker build -t mediakraken/mkbasenvidia .
+cd ../ComposeMediaKrakenNvidia
+docker build -t mediakraken/mkbasenvidia .
 
 cd ../ComposeMediaKrakenNvidiaDebian
 docker build -t mediakraken/mkbasenvidiadebian .
-
-# Build the base FFMPEG from base images
-cd ../ComposeMediaKrakenBaseFFMPEG
-docker build -t mediakraken/mkbaseffmpeg .
 
 #cd ../ComposeMediaKrakenBaseFFMPEGNvidia
 #docker build -t mediakraken/mkbaseffmpegnvidia .
@@ -36,5 +36,3 @@ docker build -t mediakraken/mknginxrtmp .
 
 # nuke old images
 ../../purge_images_none.sh
-
-
