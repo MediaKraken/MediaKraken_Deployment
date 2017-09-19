@@ -87,7 +87,7 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    make && \
+    make EXAMPLES=0 && \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
