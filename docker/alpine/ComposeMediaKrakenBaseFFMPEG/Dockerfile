@@ -24,21 +24,18 @@ RUN buildDeps="autoconf \
         gcc \
         gnupg \
         gnutls-dev \
+        lame-dev \
         libmodplug-dev \
         libogg-dev \
-        libtheora \
         libtheora-dev \
         libtool \
-        libvorbis \
         libvorbis-dev \
         make \
-        opus \
         opus-dev \
-        python \
         python-dev \
         openssl-dev \
-        samba \
         samba-dev \
+        speex-dev \
         tar \
         xvidcore-dev \
 	yasm \
@@ -63,24 +60,10 @@ RUN buildDeps="autoconf \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
-    tar -zx --strip-components=1 && \
-    ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static --enable-nasm --datarootdir="${DIR}" && \
-    make && \
-    make install && \
-
-    DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     autoreconf -fiv && \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
-    make && \
-    make install && \
-
-    DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -sL http://downloads.xiph.org/releases/speex/speex-${SPEEX_VERSION}.tar.gz | \
-    tar -zx --strip-components=1 && \
-    ./configure && \
     make && \
     make install && \
 
