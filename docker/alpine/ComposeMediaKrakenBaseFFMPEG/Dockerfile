@@ -24,6 +24,7 @@ RUN buildDeps="autoconf \
         gcc \
         gnupg \
         gnutls-dev \
+        libmodplug-dev \
         libogg-dev \
         libtheora \
         libtheora-dev \
@@ -39,6 +40,7 @@ RUN buildDeps="autoconf \
         samba \
         samba-dev \
         tar \
+        xvidcore-dev \
 	yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
@@ -49,14 +51,14 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
-    ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
+    ./configure --prefix="$HOME/ffmpeg_build" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
     make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${SRC}" -DENABLE_SHARED:bool=off ./source && \
+    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ./source && \
     make && \
     make install && \
 
@@ -83,34 +85,19 @@ RUN buildDeps="autoconf \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -sL https://github.com/MediaKraken/MediaKraken_Submodules/raw/master/libmodplug-0.8.8.5.tar.gz | \
-    tar -zx --strip-components=1 && \
-    ./configure && \
-    make && \
-    make install && \
-
-    DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     make && \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -sL http://downloads.xvid.org/downloads/xvidcore-${XVID_VERSION}.tar.gz | \
-    tar -zx --strip-components=1 && \
-    cd build/generic && \
-    ./configure && \
-    make && \
-    make install && \
-
-    DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     ./configure \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
-        --extra-cflags="-I${SRC}/include" \
-        --extra-ldflags="-L${SRC}/lib" \
+        --extra-cflags="I$HOME/ffmpeg_build/include -I${SRC}/include" \
+        --extra-ldflags="-L$HOME/ffmpeg_build/lib -L${SRC}/lib" \
         --prefix="${SRC}" \
         --enable-nonfree \
         --enable-gpl \
@@ -119,6 +106,9 @@ RUN buildDeps="autoconf \
         --enable-libmp3lame \
         --enable-libopus \        
         --enable-libx264 \
+        --enable-libx265 \
+        --enable-libopenmpt \
+        --enable-libmodplug \
         --enable-openssl \
         --enable-postproc \
         --enable-small \
