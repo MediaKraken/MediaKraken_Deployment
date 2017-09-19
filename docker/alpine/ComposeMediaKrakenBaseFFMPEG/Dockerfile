@@ -79,7 +79,7 @@ RUN buildDeps="autoconf \
     ./configure \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
-        --extra-cflags="I$HOME/ffmpeg_build/include -I${SRC}/include" \
+        --extra-cflags="-I$HOME/ffmpeg_build/include -I${SRC}/include" \
         --extra-ldflags="-L$HOME/ffmpeg_build/lib -L${SRC}/lib" \
         --prefix="${SRC}" \
         --enable-nonfree \
@@ -87,7 +87,7 @@ RUN buildDeps="autoconf \
         --enable-version3 \
         --enable-avresample \
         --enable-libmp3lame \
-        --enable-libopus \        
+        --enable-libopus \
         --enable-libx264 \
         --enable-libx265 \
         --enable-libopenmpt \
