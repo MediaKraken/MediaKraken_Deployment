@@ -55,7 +55,8 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -sL https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
-    cmake -G "Unix Makefiles" -DENABLE_SHARED:bool=off ./source && \
+    cd build/linux && \
+    cmake -G "Unix Makefiles" ../../source && \
     make && \
     make install && \
 
