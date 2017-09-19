@@ -36,7 +36,7 @@ RUN buildDeps="autoconf \
         speex-dev \
         tar \
         xvidcore-dev \
-	yasm \
+        yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk update && \
