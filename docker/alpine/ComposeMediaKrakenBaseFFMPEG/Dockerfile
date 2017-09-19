@@ -117,7 +117,7 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update libssl1.0 && \
+RUN apk add --update libssl1.0 libsmbclient.0 libmodplug.1 && \
     ffmpeg -buildconf
 
 CMD ["--help"]
