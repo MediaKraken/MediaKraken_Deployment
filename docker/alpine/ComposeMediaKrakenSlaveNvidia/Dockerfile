@@ -4,7 +4,8 @@ FROM mediakraken/mkbaseffmpegnvidia
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"
 
-# don't create /mediakraken as it's in the base image
+# create work dir
+RUN mkdir /mediakraken
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
