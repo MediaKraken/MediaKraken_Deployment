@@ -22,6 +22,7 @@ RUN buildDeps="autoconf \
         gnupg \
         gnutls-dev \
         lame-dev \
+        libass-dev \
         libmodplug-dev \
         libogg-dev \
         libtheora-dev \
@@ -84,6 +85,7 @@ RUN buildDeps="autoconf \
         --enable-gpl \
         --enable-version3 \
         --enable-avresample \
+        --enable-libass \
         --enable-libmp3lame \
         --enable-libopus \
         --enable-libx264 \
@@ -114,7 +116,8 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update libssl1.0 samba-client lame libmodplug libogg libtheora libvorbis opus speex xvidcore && \
+RUN apk add --update libssl1.0 samba-client lame libass libmodplug libogg && \
+    libtheora libvorbis opus speex xvidcore && \
     ffmpeg -buildconf
 
 CMD ["--help"]
