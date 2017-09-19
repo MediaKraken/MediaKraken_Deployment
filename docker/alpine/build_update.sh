@@ -8,10 +8,10 @@ cd ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
 # Build the base Nvidia Cuda
-cd ../ComposeMediaKrakenNvidia
+cd ../ComposeMediaKrakenBaseNvidia
 docker build -t mediakraken/mkbasenvidia .
 
-cd ../ComposeMediaKrakenNvidiaDebian
+cd ../ComposeMediaKrakenBaseNvidiaDebian
 docker build -t mediakraken/mkbasenvidiadebian .
 
 #cd ../ComposeMediaKrakenBaseFFMPEGNvidia
