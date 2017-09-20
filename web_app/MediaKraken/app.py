@@ -10,7 +10,6 @@ from MediaKraken.settings import ProdConfig
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (
     bcrypt,
-    cache,
     db,
     login_manager,
     migrate,
@@ -36,7 +35,6 @@ def create_app(config_object=ProdConfig):
 def register_extensions(app):
     assets.init_app(app)
     bcrypt.init_app(app)
-    cache.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
