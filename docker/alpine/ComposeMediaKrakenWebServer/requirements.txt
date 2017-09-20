@@ -10,10 +10,7 @@ Flask-Paginate
 Flask-Moment
 Flask-Assets
 Flask-SQLAlchemy
-Flask-Migrate
 Flask-KVSession
-Flask-DebugToolbar
-Flask-Migrate
 flask-pika
 ipgetter
 uwsgi

@@ -4,7 +4,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 from flask_script import Manager, Shell, Server
 from flask_script.commands import Clean, ShowUrls
-from flask_migrate import MigrateCommand
 
 from MediaKraken.app import create_app
 from MediaKraken.user.models import User
@@ -33,7 +32,6 @@ def test():
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
-manager.add_command('db', MigrateCommand)
 manager.add_command("urls", ShowUrls())
 manager.add_command("clean", Clean())
 

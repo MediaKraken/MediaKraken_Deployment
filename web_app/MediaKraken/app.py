@@ -12,7 +12,6 @@ from MediaKraken.extensions import (
     bcrypt,
     db,
     login_manager,
-    migrate,
     fpika,
 )
 from MediaKraken import public, user, admins
@@ -37,7 +36,6 @@ def register_extensions(app):
     bcrypt.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    migrate.init_app(app, db)
     fpika.init_app(app)
     return None
 
