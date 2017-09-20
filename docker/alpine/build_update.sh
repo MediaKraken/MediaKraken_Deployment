@@ -14,7 +14,7 @@ docker build -t mediakraken/mkbasenvidia .
 cd ../ComposeMediaKrakenBaseNvidiaDebian
 docker build -t mediakraken/mkbasenvidiadebian .
 
-#cd ../ComposeMediaKrakenBaseFFMPEGNvidia
+cd ../ComposeMediaKrakenBaseFFMPEGNvidia
 #docker build -t mediakraken/mkbaseffmpegnvidia .
 
 cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
