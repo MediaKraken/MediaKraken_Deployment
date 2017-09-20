@@ -18,6 +18,7 @@ RUN apk add --update \
   bash \
   postgresql-client \
   alpine-sdk \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
@@ -31,6 +32,7 @@ RUN apk add --update \
   && pip install -r requirements.txt \
   && apk del \
   alpine-sdk \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
