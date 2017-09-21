@@ -16,27 +16,24 @@
 #  MA 02110-1301, USA.
 #
 
-PKG_NAME="kivy"
-PKG_VERSION="1.10.0"
+PKG_NAME="cython"
+PKG_VERSION="0.26.1"
 PKG_ARCH="any"
-PKG_LICENSE="MIT"
-PKG_SITE="https://kivy.org/#home"
-PKG_URL="https://github.com/kivy/kivy/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain Python distutilscross:host zlib freetype libjpeg-turbo tiff cython"
-PKG_SECTION="python"
-PKG_SHORTDESC="kivy: GUI"
-PKG_LONGDESC="Open source Python library for rapid development of applications that make use of innovative user interfaces, such as multi-touch apps."
+PKG_LICENSE="apache"
+PKG_SITE="http://cython.org/"
+PKG_URL="https://github.com/cython/cython/archive/$PKG_VERSIONtar.gz"
+PKG_DEPENDS_HOST="Python:host"
+PKG_SECTION="python/devel"
+PKG_SHORTDESC="cython: A Python to C compiler "
+PKG_LONGDESC="Cython (http://cython.org) is a language that makes writing C extensions for the Python language as easy as Python itself.  Cython is based on the well-known Pyrex, but supports more cutting edge functionality and optimizations."
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
-make_target() {
+make_host() {
   make
 }
 
-makeinstall_target() {
-  mkdir -p $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME
-  cp $PKG_LIBPATH $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME
-  echo "set($PKG_LIBVAR $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME)" > $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME/$PKG_NAME-config.cmake
+makeinstall_host() {
+  make install
 }
-
