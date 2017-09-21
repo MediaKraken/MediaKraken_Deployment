@@ -30,3 +30,13 @@ PKG_LONGDESC="mpv a free, open source, and cross-platform media player."
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
+make_target() {
+  make
+}
+
+makeinstall_target() {
+  mkdir -p $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME
+  cp $PKG_LIBPATH $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME
+  echo "set($PKG_LIBVAR $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME)" > $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME/$PKG_NAME-config.cmake
+}
+
