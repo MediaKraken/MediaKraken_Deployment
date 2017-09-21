@@ -2,8 +2,14 @@ sudo dpkg-reconfigure dash
 
 CODEVERSION=8.1.1
 
-wget https://github.com/LibreELEC/LibreELEC.tv/archive/$CODEVERSION.zip
-unzip $CODEVERSION.zip
+# check to see if it's already been fetched
+if [ ! -f "$CODEVERSION.zip" ]
+then
+    wget get https://github.com/LibreELEC/LibreELEC.tv/archive/$CODEVERSION.zip
+    unzip $CODEVERSION.zip
+fi
+
+# enter le folder
 cd LibreELEC.tv-$CODEVERSION
 
 # copy over the mediakraken distro settings
