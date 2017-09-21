@@ -16,16 +16,18 @@
 #  MA 02110-1301, USA.
 #
 
-PKG_NAME="mediakraken"
-PKG_VERSION="dev-0.7.4"
+PKG_NAME="pyopenssl"
+PKG_VERSION="17.3.0"
 PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://www.mediakraken.org"
-PKG_URL="https://github.com/MediaKraken/MediaKraken_Deployment/archive/$PKG_VERSION.zip"
-PKG_DEPENDS_TARGET="Python setuptools pyopenssl libhdhomerun mpv kivy crochet mkmakemkv libretro-4do libretro-stella mame libretro-dosbox libretro-mupen64plus libretro-vecx"
-PKG_SECTION="mediacenter"
-PKG_SHORTDESC="MediaKraken: MediaKraken Mediacenter"
-PKG_LONGDESC="MediaKraken is a free and open source cross-platform media player and home entertainment system."
+PKG_LICENSE="Apache"
+PKG_SITE="https://pyopenssl.org/en/stable/"
+PKG_URL="https://github.com/pyca/pyopenssl/archive/$PKG_VERSION.tar.gz"
+PKG_DEPENDS_TARGET="toolchain Python"
+PKG_SECTION="python/system"
+PKG_SHORTDESC="pyOpenSSL is a rather thin wrapper around (a subset of) the OpenSSL library."
+PKG_LONGDESC="pyOpenSSL is a rather thin wrapper around (a subset of) the OpenSSL library."
+
+PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
 pre_make_target() {
