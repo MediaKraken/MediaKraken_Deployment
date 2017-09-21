@@ -16,28 +16,35 @@
 #  MA 02110-1301, USA.
 #
 
-PKG_NAME="kivy"
-PKG_VERSION="1.10.0"
+PKG_NAME="pip"
+PKG_VERSION="9.0.1"
 PKG_ARCH="any"
-PKG_LICENSE="MIT"
-PKG_SITE="https://kivy.org/#home"
-PKG_URL="https://github.com/kivy/kivy/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain Python distutilscross:host zlib freetype libjpeg-turbo tiff pip"
-PKG_SECTION="python"
-PKG_SHORTDESC="kivy: GUI"
-PKG_LONGDESC="Open source Python library for rapid development of applications that make use of innovative user interfaces, such as multi-touch apps."
+PKG_LICENSE="PIP"
+PKG_SITE="https://pip.pypa.io/en/stable/"
+PKG_URL="https://github.com/pypa/pip/archive/$PKG_VERSION.tar.gz"
+
+PKG_DEPENDS_TARGET="toolchain Python distutilscross:host"
+PKG_SECTION="python/devel"
+PKG_SHORTDESC="The PyPA recommended tool for installing Python packages"
+PKG_LONGDESC="The PyPA recommended tool for installing Python packages"
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
+pre_make_target() {
+  strip_lto
+  export PYTHONXCPREFIX="$SYSROOT_PREFIX/usr"
+}
+
 make_target() {
-  pip install cython
-  make
+  python setup.py build --cross-compile
 }
 
 makeinstall_target() {
-  mkdir -p $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME
-  cp $PKG_LIBPATH $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME
-  echo "set($PKG_LIBVAR $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME)" > $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME/$PKG_NAME-config.cmake
+  python setup.py install --root=$INSTALL --prefix=/usr
 }
 
+post_makeinstall_target() {
+  find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
+  rm -rf $INSTALL/usr/lib/python*/site-packages/*/tests
+}
