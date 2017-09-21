@@ -31,7 +31,10 @@ PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
 make_target() {
-  make
+    ./bootstrap.py
+    ./waf configure
+    ./waf
+    ./waf install
 }
 
 makeinstall_target() {
