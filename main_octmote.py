@@ -23,48 +23,19 @@ import os
 # import plyer to fetch UID of devices
 from plyer import uniqueid
 from common import common_database_octmote
-from common import common_iscp
-from common import common_lirc
-from common import common_emby
-from common import common_emby_network
+#from common import common_network_iscp
+#from common import common_lirc
 from common import common_json
-from common import common_kodi
-from common import common_mediakraken
+from common import common_emby_network
+from common import common_network_kodi
+from common import common_network_mediakraken
 from common import common_network
-from common import common_roku_network
+from common import common_hardware_roku_network
 from common import common_serial
 from common import common_signal
-from common import common_ssdp
+from common import common_network_ssdp
 from common import common_network_telnet
 from common import common_version
-
-#install_twisted_rector must be called before importing the reactor
-from kivy.support import install_twisted_reactor
-from kivy.lang import Builder
-install_twisted_reactor()
-from twisted.internet import ssl, reactor, protocol
-
-
-class EchoClient(protocol.Protocol):
-    def connectionMade(self):
-        self.factory.app.on_connection(self.transport)
-
-
-    def dataReceived(self, data):
-        self.factory.app.print_message(data)
-
-
-class EchoFactory(protocol.ClientFactory):
-    protocol = EchoClient
-
-    def __init__(self, app):
-        self.app = app
-
-    def clientConnectionLost(self, conn, reason):
-        logging.info("Connection Lost")
-
-    def clientConnectionFailed(self, conn, reason):
-        logging.info("Connection Failed")
 
 
 import kivy
@@ -86,6 +57,7 @@ from kivy.uix.image import Image
 from kivy.properties import NumericProperty, BooleanProperty, ListProperty,\
      StringProperty, ObjectProperty
 from kivy.uix.popup import Popup
+from kivy.lang import Builder
 from functools import partial
 
 
@@ -109,8 +81,7 @@ class OctMoteNotificationScreen(BoxLayout):
 
 
 class OctMoteApp(App):
-    connection = None
-    def __init__(self, app):
+    def __init__(self):
         self.base_device_guid_dict = None
         self.base_item_guid_dict = None
         self.base_layout_guid_dict = None
@@ -148,30 +119,11 @@ class OctMoteApp(App):
         # fetch and import any item/layout files
         common_json.com_json_find()
         root = OctMote()
-        self.connect_to_server()
         return root
 
 
-    def connect_to_server(self):
-        reactor.connectSSL(self.octmote_server_connection_data[0],
-            self.octmote_server_connection_data[1], EchoFactory(self), ssl.ClientContextFactory())
-
-
-    def on_connection(self, connection):
-        print("Connected succesfully to OctMote server!")
-        self.connection = connection
-        # load control layout
-
-
-    def send_message(self, *args):
-        msg = self.textbox.text
-        if msg and self.connection:
-            self.connection.write(str(self.textbox.text))
-            self.textbox.text = ""
-
-
     def mediakraken_find_server_list(self):
-        self.server_list = common_mediakraken.com_network_mediakraken_find_server()
+        self.server_list = common_network_mediakraken.com_net_mediakraken_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],
@@ -185,7 +137,7 @@ class OctMoteApp(App):
 
 
     def emby_find_server_list(self):
-        self.server_list = common_emby_network.com_network_emby_find_server()
+        self.server_list = common_emby_network.com_net_emby_find_server()
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
@@ -197,7 +149,7 @@ class OctMoteApp(App):
 
 
     def emby_event_button_server_select(self, server_addr, *args):
-        self.server_user_list = common_emby_network.com_network_emby_find_users(server_addr)
+        self.server_user_list = common_emby_network.com_net_emby_find_users(server_addr)
         self.root.ids.user_list_layout.clear_widgets()
         self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
         for found_user in self.server_user_list:
@@ -220,7 +172,7 @@ class OctMoteApp(App):
 
     def emby_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        self.emby_user_connection_json = common_emby_network.com_network_emby_user_login(
+        self.emby_user_connection_json = common_emby_network.com_net_emby_user_login(
             self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
         # build header parameters to url
         user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
@@ -340,11 +292,11 @@ class OctMoteApp(App):
             if json_data["Protocol"]["Method"].lower() == "rs232":
                 if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
                     self.rs232_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_network_telnet.OctMote_Telnet_Open_Device(
+                        = common_network_telnet.com_net_telnet_open_device(
                         json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                         json_data["Protocol"]["Password"])
-                common__network_telnet.OctMote_Telnet_Write_Device(self.rs232_devices_dict[\
+                common_network_telnet.com_net_telnet_write_device(self.rs232_devices_dict[\
                     json_data["Protocol"]["Host IP"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
                 pass
@@ -361,11 +313,11 @@ class OctMoteApp(App):
                 # check to see if telnet device already opened
                 if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]]\
-                        = common_network_telnet.MK_Telnet_Open_Device(
+                        = common_network_telnet.com_net_telnet_open_device(
                         json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                         json_data["Protocol"]["Password"])
-                common_network_telnet.MK_Telnet_Write_Device(
+                common_network_telnet.com_net_telnet_write_device(
                     self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "serial":
@@ -374,11 +326,11 @@ class OctMoteApp(App):
                         in self.serial_devices_dict:
                     self.serial_devices_dict[(json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Hardware Port"])]\
-                        = common_serial.MK_Serial_Open_Device(
+                        = common_serial.com_net_telnet_open_device(
                         json_data["Protocol"]["Hardware Port"],
                         json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],
                         json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
-                common_serial.MK_Serial_Write_Device(
+                common_serial.com_net_telnet_write_device(
                     self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "eiscp":
@@ -392,7 +344,7 @@ class OctMoteApp(App):
                         json_data["Protocol"]["Hardware Port"])]\
                         = (json_data["Protocol"]["Host IP"],
                         json_data["Protocol"]["Hardware Port"])
-                common_kodi.com_network_kodi_command(json_data["Protocol"]["Host IP"],
+                common_network_kodi.com_net_kodi_command(json_data["Protocol"]["Host IP"],
                     json_data["Protocol"]["Hardware Port"],
                     self.octmote_json_fetch_data_for_command(json_data, action_type_list))
             elif json_data["Protocol"]["Method"].lower() == "emby":
@@ -1900,9 +1852,9 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
-    Builder.load_file('kivy_layouts/main.kv')
-    Builder.load_file('kivy_layouts/OctMote_KV_Layout_Load_Dialog.kv')
-    Builder.load_file('kivy_layouts/OctMote_KV_Layout_Login.kv')
-    Builder.load_file('kivy_layouts/OctMote_KV_Layout_Notification.kv')
-    Builder.load_file('kivy_layouts/OctMote_KV_Layout_Slider.kv')
+    Builder.load_file('./octmote/kivy_layouts/main.kv')
+    Builder.load_file('./octmote/kivy_layouts/OctMote_KV_Layout_Load_Dialog.kv')
+    Builder.load_file('./octmote/kivy_layouts/OctMote_KV_Layout_Login.kv')
+    Builder.load_file('./octmote/kivy_layouts/OctMote_KV_Layout_Notification.kv')
+    Builder.load_file('./octmote/kivy_layouts/OctMote_KV_Layout_Slider.kv')
     OctMoteApp().run()
