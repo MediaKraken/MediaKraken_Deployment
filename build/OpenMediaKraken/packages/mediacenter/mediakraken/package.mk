@@ -16,17 +16,32 @@
 #  MA 02110-1301, USA.
 #
 
-PKG_NAME="mpv"
-PKG_VERSION="0.26.0"
+PKG_NAME="mediakraken"
+PKG_VERSION="dev-0.7.4"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://mpv.io/"
-PKG_URL="https://github.com/mpv-player/mpv/archive/v$PKG_VERSION.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain fontconfig freetype libxml2"
-PKG_SECTION="multimedia"
-PKG_SHORTDESC="MPV: a free, open source, and cross-platform media player"
-PKG_LONGDESC="mpv a free, open source, and cross-platform media player."
-
-PKG_IS_ADDON="no"
+PKG_SITE="http://www.mediakraken.org"
+PKG_URL="https://github.com/MediaKraken/MediaKraken_Deployment/archive/$PKG_VERSION.zip"
+PKG_DEPENDS_TARGET="Python libhdhomerun kivy"
+PKG_SECTION="mediacenter"
+PKG_SHORTDESC="MediaKraken: MediaKraken Mediacenter"
+PKG_LONGDESC="MediaKraken is a free and open source cross-platform media player and home entertainment system."
 PKG_AUTORECONF="no"
 
+pre_make_target() {
+  strip_lto
+  export PYTHONXCPREFIX="$SYSROOT_PREFIX/usr"
+}
+
+make_target() {
+  python setup.py build --cross-compile
+}
+
+makeinstall_target() {
+  python setup.py install --root=$INSTALL --prefix=/usr
+}
+
+post_makeinstall_target() {
+  find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
+  rm -rf $INSTALL/usr/lib/python*/site-packages/*/tests
+}
