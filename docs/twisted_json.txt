@@ -3,6 +3,7 @@
 Type - type of request......list, detail, etc
 		Sub - subrequest type
 	Genre List - grab genre list of media
+	FFMPEG - ffrobe the media
 	Flag Mismatch UUID
 	Ident - send client info to server (build user)
 		* UUID - unique id of the client device

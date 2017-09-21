@@ -23,6 +23,8 @@ import os
 import uuid
 import time
 import json
+import pika
+import subprocess
 from concurrent import futures
 from common import common_config_ini
 from common import common_internationalization
@@ -32,7 +34,6 @@ from common import common_logging
 from common import common_network_cifs
 from common import common_signal
 from common import common_string
-#lock = threading.Lock()
 
 
 # set signal exit breaks
@@ -166,6 +167,12 @@ def worker(audit_directory):
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,
                     new_class_type_uuid, None, media_ffprobe_json, media_json)
+                # Send a message so ffprobe runs
+                channel.basic_publish(exchange='mkque_ex',
+                                      routing_key='mkque',
+                                      body=json.dumps({'Type': 'FFMPEG', 'Data': media_id}),
+                                      properties=pika.BasicProperties(content_type='text/plain',
+                                                                      delivery_mode=1))
                 if save_dl_record:
                     # media id begin and download que insert
                     thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
@@ -188,6 +195,23 @@ def worker(audit_directory):
     thread_db.db_close()
     return
 
+
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
+
+# Open a connection to RabbitMQ on localhost using all default parameters
+connection = pika.BlockingConnection()
+
+# Open the channel
+channel = connection.channel()
+
+# Declare the queue
+channel.queue_declare(queue="mkque", durable=True, exclusive=False, auto_delete=False)
+
+# Turn on delivery confirmations
+channel.confirm_delivery()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
