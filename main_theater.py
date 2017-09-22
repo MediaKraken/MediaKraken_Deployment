@@ -334,15 +334,6 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_list_scrollview.add_widget(
                     ListView(adapter=self.list_adapter))
                 self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
-
-                # for video_list in json_message['Data']:
-                #     logging.info('vid list item %s', video_list)
-                #     btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
-                #                         size_hint_y=None,
-                #                         width=self.root.ids.theater_media_video_list_scrollview.width,
-                #                         height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                #     btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
-                #     self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
