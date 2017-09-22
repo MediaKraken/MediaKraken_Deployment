@@ -34,5 +34,9 @@ docker build -t mediakraken/mkslavenvidiadebian .
 cd ../ComposeMediaKrakenNginxRTMP
 docker build -t mediakraken/mknginxrtmp .
 
+# build the mediabrainz
+cd ../ComposeMediaKrakenMusicBrainz
+docker build -t mediakraken/mkmusicbrainz .
+
 # nuke old images
 ../../purge_images_none.sh
