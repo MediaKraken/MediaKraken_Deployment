@@ -237,7 +237,8 @@ class MediaKrakenApp(App):
             if json_message['Type'] != "Image":
                 logging.info("Got Message: %s", server_msg)
             else:
-                logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
+                logging.info("Got Image Message: %s %s", json_message['Sub'],
+                             json_message['UUID'])
         except:
             logging.info("full record: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
@@ -326,6 +327,7 @@ class MediaKrakenApp(App):
                                            cls=ListItemButton, selection_mode='single',
                                            allow_empty_selection=False)
                 list_view = ListView(adapter=list_adapter)
+
                 for video_list in json_message['Data']:
                     logging.info('vid list item %s', video_list)
                     btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
