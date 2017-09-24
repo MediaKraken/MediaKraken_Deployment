@@ -9,16 +9,16 @@ docker build -t mediakraken/mkbaseffmpeg .
 
 # Build the base Nvidia Cuda
 cd ../ComposeMediaKrakenBaseNvidia
-docker build -t mediakraken/mkbasenvidia .
+#docker build -t mediakraken/mkbasenvidia .
 
 cd ../ComposeMediaKrakenBaseNvidiaDebian
-docker build -t mediakraken/mkbasenvidiadebian .
+#docker build -t mediakraken/mkbasenvidiadebian .
 
 cd ../ComposeMediaKrakenBaseFFMPEGNvidia
 #docker build -t mediakraken/mkbaseffmpegnvidia .
 
 cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
-docker build -t mediakraken/mkbaseffmpegnvidiadebian .
+#docker build -t mediakraken/mkbaseffmpegnvidiadebian .
 
 # Build the base slave images from other base images
 cd ../ComposeMediaKrakenSlave
@@ -28,7 +28,7 @@ docker build -t mediakraken/mkslave .
 #docker build -t mediakraken/mkslavenvidia .
 
 cd ../ComposeMediaKrakenSlaveNvidiaDebian
-docker build -t mediakraken/mkslavenvidiadebian .
+#docker build -t mediakraken/mkslavenvidiadebian .
 
 # Build the nginx RTMP
 cd ../ComposeMediaKrakenNginxRTMP
