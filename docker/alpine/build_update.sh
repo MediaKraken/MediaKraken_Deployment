@@ -38,5 +38,5 @@ docker build -t mediakraken/mknginxrtmp .
 cd ../ComposeMediaKrakenMusicBrainz
 docker build -t mediakraken/mkmusicbrainz .
 
-# nuke old images
-../../purge_images_none.sh
+# nuke old images (commented due to base ffmpeg)
+#../../purge_images_none.sh
