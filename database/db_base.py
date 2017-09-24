@@ -46,7 +46,8 @@ def db_open(self, db_build=False):
     #self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
-    self.db_cursor.execute('SET max_parallel_workers_per_gather TO %d;', common_system.com_system_cpu_count())
+    self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;',
+                           common_system.com_system_cpu_count())
 
 
 def db_close(self):
