@@ -109,3 +109,11 @@ def db_query(self, query_string):
         return self.db_cursor.fetchall()
     except:
         return None
+
+
+def db_parallel_workers(self):
+    """
+    Return number of workers
+    """
+    self.db_cursor.execute('show max_parallel_workers_per_gather')
+    return self.db_cursor.fetchone()[0]
