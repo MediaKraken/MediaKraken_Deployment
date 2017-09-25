@@ -251,7 +251,6 @@ class MediaKrakenApp(App):
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
-                self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
                 self.root.ids.theater_media_video_title.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['title']
                 self.root.ids.theater_media_video_subtitle.text \
