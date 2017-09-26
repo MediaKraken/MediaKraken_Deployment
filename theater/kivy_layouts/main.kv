@@ -419,6 +419,19 @@
                                 id: theater_media_video_production_companies
                                 text: '(NA)'
                                 size: self.texture_size
+
+                        ScrollView:
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.2
+                            Label:
+                                id: theater_media_video_overview
+                                text: '(NA)'
+                                text_size: self.width, None
+                                halign: 'left'
+                                valign: 'middle'
+                                size_hint_y: None
+                                height: self.texture_size[1]
+
                         BoxLayout:
                             orientation: 'vertical'
                             size_hint: None, None

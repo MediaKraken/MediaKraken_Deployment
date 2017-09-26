@@ -48,6 +48,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.listview import ListView, ListItemButton
 from kivy.adapters.listadapter import ListAdapter
+from kivy.uix.recycleview import RecycleView
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
@@ -550,6 +552,8 @@ class MediaKrakenApp(App):
         if len(adapter.selection) == 0:
             logging.info("No selected item")
         else:
+            logging.info(adapter.selection[0])
+            #logging.info(adapter.data[adapter.selection[0]])
             logging.info(adapter.get_data_item(0)['uuid'])
         self.media_guid = adapter.get_data_item(0)['uuid']
         self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
