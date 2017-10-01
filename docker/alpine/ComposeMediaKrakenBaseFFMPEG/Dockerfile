@@ -31,7 +31,7 @@ RUN buildDeps="autoconf \
         make \
         opus-dev \
         python-dev \
-        libressl-dev \
+        openssl-dev \
         samba-dev \
         speex-dev \
         tar \

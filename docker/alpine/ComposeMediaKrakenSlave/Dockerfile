@@ -12,6 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  openssl-dev \
   python \
   cifs-utils \
   nfs-utils \
