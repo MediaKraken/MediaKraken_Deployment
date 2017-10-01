@@ -31,4 +31,8 @@ RUN set -ex; \
     rm pypy2-v${PYPY_VERSION}-src.tar.bz2; \
     apk del wget
 
-WORKDIR /usr/src/pypy
+cd /usr/src/pypy/goal
+pypy ../../rpython/bin/rpython --opt=jit
+
+cd /usr/src/pypy/tool/release
+pypy package.py --archive-name "pypy2-v$PYPY_VERSION-linux64"
