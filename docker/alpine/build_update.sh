@@ -8,7 +8,7 @@ cd ComposeMediaKrakenBasePYPY
 docker build -t mediakraken/mkbasepypy .
 
 # Build the base FFMPEG from base images
-cd ComposeMediaKrakenBaseFFMPEG
+cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
 # Build the base Nvidia Cuda
