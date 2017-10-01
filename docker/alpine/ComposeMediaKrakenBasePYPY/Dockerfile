@@ -25,7 +25,7 @@ ENV PYPY_VERSION 5.8.0
 
 RUN set -ex; \
     apk add --no-cache wget; \
-    wget -O --no-check-certificate https://bitbucket.org/pypy/pypy/downloads/pypy2-v${PYPY_VERSION}-src.tar.bz2; \
+    wget --no-check-certificate -O https://bitbucket.org/pypy/pypy/downloads/pypy2-v${PYPY_VERSION}-src.tar.bz2; \
     mkdir -p /usr/src/pypy; \
     tar -xjC /usr/src/pypy --strip-components=1 -f pypy2-v${PYPY_VERSION}-src.tar.bz2; \
     rm pypy2-v${PYPY_VERSION}-src.tar.bz2; \
