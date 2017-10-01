@@ -48,6 +48,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.listview import ListView, ListItemButton
 from kivy.adapters.listadapter import ListAdapter
+from kivy.uix.recycleview import RecycleView
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
@@ -237,7 +239,8 @@ class MediaKrakenApp(App):
             if json_message['Type'] != "Image":
                 logging.info("Got Message: %s", server_msg)
             else:
-                logging.info("Got Image Message: %s %s", json_message['Sub'], json_message['UUID'])
+                logging.info("Got Image Message: %s %s", json_message['Sub'],
+                             json_message['UUID'])
         except:
             logging.info("full record: %s", server_msg)
         logging.info("len total: %s", len(server_msg))
@@ -250,7 +253,6 @@ class MediaKrakenApp(App):
             Clock.schedule_interval(self.main_image_refresh, 5.0)
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
-                self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
                 self.root.ids.theater_media_video_title.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['title']
                 self.root.ids.theater_media_video_subtitle.text \
@@ -319,21 +321,20 @@ class MediaKrakenApp(App):
                 #                chapter_box.add_widget(chapter_image)
                 #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
             elif json_message['Sub'] == "List":
-                data = [{'text': str(i), 'is_selected': False} for i in range(100)]
-                args_converter = lambda row_index,\
-                                        rec: {'text': rec['text'], 'size_hint_y': None, 'height': 25}
-                list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                           cls=ListItemButton, selection_mode='single',
-                                           allow_empty_selection=False)
-                list_view = ListView(adapter=list_adapter)
+                data = []
                 for video_list in json_message['Data']:
-                    logging.info('vid list item %s', video_list)
-                    btn1 = ToggleButton(text=video_list[0], group='button_group_video_list',
-                                        size_hint_y=None,
-                                        width=self.root.ids.theater_media_video_list_scrollview.width,
-                                        height=(self.root.ids.theater_media_video_list_scrollview.height / 8))
-                    btn1.bind(on_press=partial(self.theater_event_button_video_select, video_list[1]))
-                    self.root.ids.theater_media_video_list_scrollview.add_widget(btn1)
+                    data.append({'text': video_list[0], 'is_selected': False,
+                                 'uuid': video_list[1]})
+                args_converter = lambda row_index,\
+                                        rec: {'text': rec['text'], 'size_hint_y': None,
+                                              'height': 25}
+                self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                                           cls=ListItemButton,
+                                           selection_mode='single',
+                                           allow_empty_selection=False)
+                self.root.ids.theater_media_video_list_scrollview.add_widget(
+                    ListView(adapter=self.list_adapter))
+                self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -547,10 +548,15 @@ class MediaKrakenApp(App):
         return True
 
     # video select
-    def theater_event_button_video_select(self, *args):
-        logging.info("vid select: %s", args)
-        self.media_guid = args[0]
-        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': args[0]}))
+    def theater_event_button_video_select(self, adapter, *args):
+        if len(adapter.selection) == 0:
+            logging.info("No selected item")
+        else:
+            logging.info(adapter.selection[0])
+            #logging.info(adapter.data[adapter.selection[0]])
+            logging.info(adapter.get_data_item(0)['uuid'])
+        self.media_guid = adapter.get_data_item(0)['uuid']
+        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):

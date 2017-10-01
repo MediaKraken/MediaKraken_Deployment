@@ -340,7 +340,8 @@ def admin_database_statistics():
                                common_internationalization.com_inter_number_format(row_data[2])))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
-                           data_db_count=db_stats_count)
+                           data_db_count=db_stats_count,
+                           data_workers=db_connection.db_parallel_workers())
 
 
 @blueprint.route('/', defaults={'path': ''})

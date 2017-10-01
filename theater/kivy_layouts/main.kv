@@ -1,4 +1,5 @@
 #:kivy 1.10.0
+#:import ListAdapter kivy.adapters.listadapter.ListAdapter
 <MediaKraken>:
     AnchorLayout:
         anchor_x: 'center'
@@ -315,186 +316,139 @@
                         allow_stretch: True
                         opacity: 0.5
             Screen:
-                name: 'Main_Theater_Media_Video_Detail'
-                BoxLayout:
-                    orientation: 'vertical'
-                    size_hint: None, None
-                    size: self.parent.width * 0.5, self.parent.height
-                    Button:
-                        id: theater_media_video_play
-                        pos: 0,0
-                        on_press: app.main_mediakraken_event_button_video_play('Play')
-                        size_hint: None, None
-                        size: self.parent.width * 0.2, self.parent.height * 0.2
-                        Image:
-                            source: './theater/images/movie_ticket.png'
-                            y: self.parent.y
-                            x: self.parent.x
-                            size: self.parent.width, self.parent.height
-                            allow_stretch: True
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_title_header
-                            text: 'Media Title:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_title
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_subtitle
-                            text: ''
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_director_header
-                            text: 'Director:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_director
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_writer_header
-                            text: 'Writer:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_writer
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_rating_header
-                            text: 'Rating:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_rating
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_runtime_header
-                            text: 'Run Time:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_runtime
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_genres_header
-                            text: 'Genres:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_genres
-                            text: '(NA)'
-                            size: self.texture_size
-                    BoxLayout:
-                        orientation: 'horizontal'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.075
-                        Label:
-                            id: theater_media_video_production_companies_header
-                            text: 'Production:'
-                            size: self.texture_size
-                        Label:
-                            id: theater_media_video_production_companies
-                            text: '(NA)'
-                            size: self.texture_size
-                    ScrollView:
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.2
-                        Label:
-                            id: theater_media_video_overview
-                            text: '(NA)'
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: self.texture_size[1]
-                    ScrollView:
-                        size_hint: None, None
-                        GridLayout:
-                            id: theater_media_video_chapter_grid
-                            cols: 4
-                            orientation: 'vertical'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height
-                BoxLayout:
-                    orientation: 'horizontal'
-                    size_hint: None, None
-                    size: self.parent.width * 0.5, self.parent.height
-                    BoxLayout:
-                        orientation: 'vertical'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.6
-                        Image:
-                            id: theater_media_video_poster
-                            y: 0
-                            x: self.parent.height
-                            size: self.parent.width, self.parent.height
-                            allow_stretch: True
-                    BoxLayout:
-                        orientation: 'vertical'
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height * 0.4
-                        Spinner:
-                            id: theater_media_video_audio_spinner
-                            text: "Audio First thing"
-                            values: ["Audio First thing", "Second thing", "Third thing"]
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.5
-                        Spinner:
-                            id: theater_media_video_subtitle_spinner
-                            text: "Sub First thing"
-                            values: ["Sub First thing", "Second thing", "Third thing"]
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.5
-            Screen: 
                 name: 'Main_Theater_Media_Video_List'
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: None, None
-                    size: self.parent.width, self.parent.height
-                    ScrollView:
+                    ListView:
+                        size: self.parent.width * 0.5, self.parent.height
+                        id: theater_media_video_list_scrollview
+                    BoxLayout:
+                        orientation: 'vertical'
                         size_hint: None, None
                         size: self.parent.width * 0.5, self.parent.height
+
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_title_header
+                                text: 'Media Title:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_title
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_subtitle
+                                text: ''
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_director_header
+                                text: 'Director:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_director
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_writer_header
+                                text: 'Writer:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_writer
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_rating_header
+                                text: 'Rating:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_rating
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_runtime_header
+                                text: 'Run Time:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_runtime
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_genres_header
+                                text: 'Genres:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_genres
+                                text: '(NA)'
+                                size: self.texture_size
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.075
+                            Label:
+                                id: theater_media_video_production_companies_header
+                                text: 'Production:'
+                                size: self.texture_size
+                            Label:
+                                id: theater_media_video_production_companies
+                                text: '(NA)'
+                                size: self.texture_size
+
+                        ScrollView:
+                            size_hint: None, None
+                            size: self.parent.width, self.parent.height * 0.2
+                            Label:
+                                id: theater_media_video_overview
+                                text: '(NA)'
+                                text_size: self.width, None
+                                halign: 'left'
+                                valign: 'middle'
+                                size_hint_y: None
+                                height: self.texture_size[1]
+
                         BoxLayout:
                             orientation: 'vertical'
-                            id: theater_media_genre_list_scrollview
                             size_hint: None, None
-                            size: self.parent.width, self.parent.height
-                    ScrollView:
-                        size_hint: None, None
-                        size: self.parent.width * 0.5, self.parent.height
-                        BoxLayout:
-                            orientation: 'vertical'
-                            id: theater_media_video_list_scrollview
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height   
+                            size: self.parent.width, self.parent.height * 0.1
+                            Spinner:
+                                id: theater_media_video_audio_spinner
+                                text: "Audio First thing"
+                                values: ["Audio First thing", "Second thing", "Third thing"]
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.5
+                            Spinner:
+                                id: theater_media_video_subtitle_spinner
+                                text: "Sub First thing"
+                                values: ["Sub First thing", "Second thing", "Third thing"]
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.5
+
             Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:

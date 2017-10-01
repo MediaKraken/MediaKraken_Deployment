@@ -4,7 +4,8 @@ FROM mediakraken/mkbaseffmpeg
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"
 
-# don't create /mediakraken as it's in the base image
+# create work dir
+RUN mkdir /mediakraken
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
@@ -17,6 +18,7 @@ RUN apk add --update \
   bash \
   postgresql-client \
   alpine-sdk \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
@@ -30,6 +32,7 @@ RUN apk add --update \
   && pip install -r requirements.txt \
   && apk del \
   alpine-sdk \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \

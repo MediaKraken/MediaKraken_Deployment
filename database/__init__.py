@@ -9,6 +9,7 @@ class MKServerDatabase(object):
         db_table_index_check,\
         db_table_count,\
         db_query, \
+        db_parallel_workers, \
         db_drop_table
     from database.db_base_activity import db_activity_insert,\
         db_activity_purge

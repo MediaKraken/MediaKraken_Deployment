@@ -3,34 +3,44 @@ git pull
 docker-compose down
 docker-compose build
 
-# Build the base Nvidia Cuda
-cd ComposeMediaKrakenNvidia
-#docker build -t mediakraken/mkbasenvidia .
-
-cd ../ComposeMediaKrakenNvidiaDebian
-docker build -t mediakraken/mkbasenvidiadebian .
+# Build the base pypy
+cd alpine-pypy/2
+docker build -t mediakraken/mkbasepypy .
 
 # Build the base FFMPEG from base images
-cd ../ComposeMediaKrakenBaseFFMPEG
+cd ../../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
-#cd ../ComposeMediaKrakenBaseFFMPEGNvidia
+# Build the base Nvidia Cuda
+cd ../ComposeMediaKrakenBaseNvidia
+#docker build -t mediakraken/mkbasenvidia .
+
+cd ../ComposeMediaKrakenBaseNvidiaDebian
+#docker build -t mediakraken/mkbasenvidiadebian .
+
+cd ../ComposeMediaKrakenBaseFFMPEGNvidia
 #docker build -t mediakraken/mkbaseffmpegnvidia .
 
 cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
-docker build -t mediakraken/mkbaseffmpegnvidiadebian .
+#docker build -t mediakraken/mkbaseffmpegnvidiadebian .
 
 # Build the base slave images from other base images
 cd ../ComposeMediaKrakenSlave
 docker build -t mediakraken/mkslave .
 
-#cd ../ComposeMediaKrakenSlaveNvidia
+cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t mediakraken/mkslavenvidia .
 
 cd ../ComposeMediaKrakenSlaveNvidiaDebian
-docker build -t mediakraken/mkslavenvidiadebian .
+#docker build -t mediakraken/mkslavenvidiadebian .
 
-# nuke old images
-../../purge_images_none.sh
+# Build the nginx RTMP
+cd ../ComposeMediaKrakenNginxRTMP
+docker build -t mediakraken/mknginxrtmp .
 
+# build the mediabrainz
+cd ../ComposeMediaKrakenMusicBrainz
+docker build -t mediakraken/mkmusicbrainz .
 
+# nuke old images (commented due to base ffmpeg)
+#../../purge_images_none.sh

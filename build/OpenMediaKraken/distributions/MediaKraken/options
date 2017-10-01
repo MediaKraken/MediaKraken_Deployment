@@ -24,7 +24,7 @@
   GLIBC_LOCALES="yes"
 
 # Mediacenter to use (kodi / no)
-  MEDIACENTER="no"
+  MEDIACENTER="mediakraken"
 
 # Skins to install Estuary
 # Space separated list is supported,

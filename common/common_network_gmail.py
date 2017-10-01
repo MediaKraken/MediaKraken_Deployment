@@ -27,7 +27,6 @@ def com_net_send_email(user, pwd, recipient, subject, body):
     Send email via gmail account
     """
     TO = recipient if type(recipient) is list else [recipient]
-
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (user, ", ".join(TO), subject, body)
     try:
