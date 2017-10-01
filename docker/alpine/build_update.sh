@@ -3,6 +3,10 @@ git pull
 docker-compose down
 docker-compose build
 
+# Build the base pypy
+cd ComposeMediaKrakenBasePYPY
+docker build -t mediakraken/mkbasepypy .
+
 # Build the base FFMPEG from base images
 cd ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
