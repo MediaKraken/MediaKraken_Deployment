@@ -4,7 +4,7 @@ docker-compose down
 docker-compose build
 
 # Build the base pypy
-cd ComposeMediaKrakenBasePYPY
+cd alpine-pypy/2
 docker build -t mediakraken/mkbasepypy .
 
 # Build the base FFMPEG from base images
