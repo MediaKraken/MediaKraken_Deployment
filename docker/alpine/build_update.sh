@@ -28,7 +28,7 @@ cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
 cd ../ComposeMediaKrakenSlave
 docker build -t mediakraken/mkslave .
 
-#cd ../ComposeMediaKrakenSlaveNvidia
+cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t mediakraken/mkslavenvidia .
 
 cd ../ComposeMediaKrakenSlaveNvidiaDebian
