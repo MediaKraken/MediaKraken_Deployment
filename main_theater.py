@@ -48,6 +48,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
@@ -86,6 +89,42 @@ from theater import MediaKrakenSettings
 
 twisted_connection = None
 mk_app = None
+
+
+class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+    ''' Adds selection and focus behaviour to the view. '''
+
+
+class SelectableLabel(RecycleDataViewBehavior, Label):
+    ''' Add selection support to the Label '''
+    index = None
+    selected = BooleanProperty(False)
+    selectable = BooleanProperty(True)
+
+    def refresh_view_attrs(self, rv, index, data):
+        ''' Catch and handle the view changes '''
+        self.index = index
+        return super(SelectableLabel, self).refresh_view_attrs(
+            rv, index, data)
+
+    def on_touch_down(self, touch):
+        ''' Add selection on touch down '''
+        if super(SelectableLabel, self).on_touch_down(touch):
+            return True
+        if self.collide_point(*touch.pos) and self.selectable:
+            return self.parent.select_with_touch(self.index, touch)
+
+    def apply_selection(self, rv, index, is_selected):
+        ''' Respond to the selection of items in the view. '''
+        self.selected = is_selected
+        if is_selected:
+            print("selection changed to {0}".format(rv.data[index]))
+            MKFactory.protocol.sendline_data(twisted_connection,
+                                             json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                                                         'UUID': rv.data[index]['uuid']}))
+        # else:
+        #     print("selection removed for {0}".format(rv.data[index]))
 
 
 class MKEcho(basic.LineReceiver):
@@ -321,7 +360,7 @@ class MediaKrakenApp(App):
             elif json_message['Sub'] == "List":
                 data = []
                 for video_list in json_message['Data']:
-                    data.append({'value': video_list[0], 'uuid': video_list[1]})
+                    data.append({'text': video_list[0], 'uuid': video_list[1]})
                 # args_converter = lambda row_index,\
                 #                         rec: {'text': rec['text'], 'size_hint_y': None,
                 #                               'height': 25}

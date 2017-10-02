@@ -1,4 +1,12 @@
 #:kivy 1.10.0
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 <Row@BoxLayout>:
     canvas.before:
         Color:
@@ -331,17 +339,15 @@
                     RecycleView:
                         size: self.parent.width * 0.5, self.parent.height
                         id: theater_media_video_list_scrollview
-                        scroll_type: ['bars', 'content']
-                        scroll_wheel_distance: dp(114)
-                        bar_width: dp(10)
-                        viewclass: 'Row'
-                        RecycleBoxLayout:
+                        viewclass: 'SelectableLabel'
+                        SelectableRecycleBoxLayout:
                             default_size: None, dp(56)
                             default_size_hint: 1, None
                             size_hint_y: None
                             height: self.minimum_height
                             orientation: 'vertical'
-                            spacing: dp(2)
+                            multiselect: False
+                            touch_multiselect: False
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint: None, None
