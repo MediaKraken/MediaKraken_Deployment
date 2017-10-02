@@ -46,8 +46,6 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.uix.listview import ListView, ListItemButton
-from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.togglebutton import ToggleButton
@@ -323,18 +321,18 @@ class MediaKrakenApp(App):
             elif json_message['Sub'] == "List":
                 data = []
                 for video_list in json_message['Data']:
-                    data.append({'text': video_list[0], 'is_selected': False,
-                                 'uuid': video_list[1]})
-                args_converter = lambda row_index,\
-                                        rec: {'text': rec['text'], 'size_hint_y': None,
-                                              'height': 25}
-                self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                           cls=ListItemButton,
-                                           selection_mode='single',
-                                           allow_empty_selection=False)
-                self.root.ids.theater_media_video_list_scrollview.add_widget(
-                    ListView(adapter=self.list_adapter))
-                self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
+                    data.append({'value': video_list[0], 'uuid': video_list[1]})
+                # args_converter = lambda row_index,\
+                #                         rec: {'text': rec['text'], 'size_hint_y': None,
+                #                               'height': 25}
+                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                #                            cls=ListItemButton,
+                #                            selection_mode='single',
+                #                            allow_empty_selection=False)
+                # self.root.ids.theater_media_video_list_scrollview.add_widget(
+                #     ListView(adapter=self.list_adapter))
+                self.root.ids.theater_media_video_list_scrollview.data = data
+                # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
