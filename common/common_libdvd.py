@@ -19,7 +19,7 @@
 import logging # pylint: disable=W0611
 
 import dvdread
-help(dvdread.DVD)
+#help(dvdread.DVD)
 
 with dvdread.DVD("/dev/sr0") as d:
     d.Open()
