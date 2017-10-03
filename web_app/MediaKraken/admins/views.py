@@ -15,6 +15,7 @@ blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="..
 # need the following three items for admin check
 import flask
 from flask_login import current_user
+from werkzeug.utils import secure_filename
 from functools import wraps
 from functools import partial
 from MediaKraken.admins.forms import AdminSettingsForm
@@ -35,6 +36,7 @@ from common import common_system
 from common import common_version
 import database as database_base
 
+ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -149,14 +151,6 @@ def admins():
                                =common_internationalization.com_inter_number_format(\
                                g.db_connection.db_table_count('mm_download_image_que'))
                           )
-
-
-#@blueprint.route("/dlna")
-#@blueprint.route("/dlna/")
-#@login_required
-#@admin_required
-#def admin_dlna():
-#    return render_template("admin/admin_dlna.html")
 
 
 @blueprint.route("/messages", methods=["GET", "POST"])
@@ -373,6 +367,42 @@ def admin_listdir(path):
                                path=path)
     except IOError:
         abort(404)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@blueprint.route('/upload', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('/mediakraken/uploads', filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
 
 
 @blueprint.before_request

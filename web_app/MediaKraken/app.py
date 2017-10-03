@@ -2,7 +2,6 @@
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask, render_template, g
-from werkzeug.utils import secure_filename
 from flask_moment import Moment
 import redis
 from flask_kvsession import KVSessionExtension
@@ -17,14 +16,12 @@ from MediaKraken.extensions import (
 )
 from MediaKraken import public, user, admins
 
-UPLOAD_FOLDER = '/mediakraken/uploads'
-ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['UPLOAD_FOLDER'] = '/mediakraken/uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     register_extensions(app)
     register_blueprints(app)
