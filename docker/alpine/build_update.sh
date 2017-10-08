@@ -7,6 +7,10 @@ docker-compose build
 cd alpine-pypy/2
 docker build -t mediakraken/mkbasepypy .
 
+# Build the base cuba from alpine
+cd ../../ComposeMediaKrakenBaseCuda
+docker build -t mediakraken/mkbasecuda .
+
 # Build the base FFMPEG from base images
 cd ../../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
