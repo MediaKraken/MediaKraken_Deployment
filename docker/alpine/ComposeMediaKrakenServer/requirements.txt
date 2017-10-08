@@ -27,6 +27,7 @@ plyer
 pylzma
 xmltodict
 google-api-python-client
+apache-libcloud
 youtube_dl
 python-nest
 uritemplate

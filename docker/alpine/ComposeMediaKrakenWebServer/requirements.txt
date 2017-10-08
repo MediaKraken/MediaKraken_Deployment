@@ -16,6 +16,8 @@ flask-pika
 ipgetter
 uwsgi
 pygal
+pdfkit
+apache-libcloud
 natsort
 fastnumbers
 PyVimeo
