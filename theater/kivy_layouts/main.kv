@@ -461,16 +461,32 @@
                             orientation: 'vertical'
                             size_hint: None, None
                             size: self.parent.width, self.parent.height * 0.1
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.5
+                                Button:
+                                    id: theater_media_play_button
+                                    text: 'Play Media'
+                                    on_press: app.main_mediakraken_event_play_media_mpv
+                                    size_hint: None, None
+                                    size: self.parent.width * 0.5, self.parent.height
+                                Spinner:
+                                    id: theater_media_video_cast_spinner
+                                    text: "Cast First thing"
+                                    values: ["Cast First thing", "Cast Second thing", "Cast Third thing"]
+                                    size_hint: None, None
+                                    size: self.parent.width * 0.5, self.parent.height
                             Spinner:
                                 id: theater_media_video_audio_spinner
                                 text: "Audio First thing"
-                                values: ["Audio First thing", "Second thing", "Third thing"]
+                                values: ["Audio First thing", "Audio Second thing", "Audio Third thing"]
                                 size_hint: None, None
                                 size: self.parent.width, self.parent.height * 0.5
                             Spinner:
                                 id: theater_media_video_subtitle_spinner
                                 text: "Sub First thing"
-                                values: ["Sub First thing", "Second thing", "Third thing"]
+                                values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
                                 size_hint: None, None
                                 size: self.parent.width, self.parent.height * 0.5
 

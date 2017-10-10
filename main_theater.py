@@ -123,8 +123,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             MKFactory.protocol.sendline_data(twisted_connection,
                                              json.dumps({'Type': 'Media', 'Sub': 'Detail',
                                                          'UUID': rv.data[index]['uuid']}))
-        # else:
-        #     print("selection removed for {0}".format(rv.data[index]))
 
 
 class MKEcho(basic.LineReceiver):
@@ -583,6 +581,12 @@ class MediaKrakenApp(App):
             # display help
             pass
         return True
+
+    # play media from movie section
+    def main_mediakraken_event_play_media_mpv(self, *args):
+        #TODO check cast spinner and send sub 'cast' if so
+        # TODO pass file name in detail?  then can check for local play
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
 
     # video select
     def theater_event_button_video_select(self, adapter, *args):
