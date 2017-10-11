@@ -26,6 +26,7 @@ import sys
 import json
 import uuid
 import base64
+import subprocess
 import logging # pylint: disable=W0611
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -587,7 +588,12 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_play_media_mpv(self, *args):
         #TODO check cast spinner and send sub 'cast' if so
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
-            pass
+            if os.path.isfile(self.media_path):
+                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--aid=2',
+                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
+                                                     '--audio-device=pulse', '--hwdec=auto',
+                                                     '--input-ipc-server', './mk_mpv.sock',
+                                                     '%s' % self.media_path], shell=False)
         else:
             # TODO pass file name in detail?  then can check for local play
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
@@ -601,6 +607,7 @@ class MediaKrakenApp(App):
             #logging.info(adapter.data[adapter.selection[0]])
             logging.info(adapter.get_data_item(0)['uuid'])
         self.media_guid = adapter.get_data_item(0)['uuid']
+        self.media_path = adapter.get_data_item(0)['path']
         self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
 
     # genre select
