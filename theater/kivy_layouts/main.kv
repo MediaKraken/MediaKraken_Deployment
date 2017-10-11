@@ -456,7 +456,6 @@
                                 valign: 'middle'
                                 size_hint_y: None
                                 height: self.texture_size[1]
-
                         BoxLayout:
                             orientation: 'vertical'
                             size_hint: None, None
@@ -472,9 +471,9 @@
                                     size_hint: None, None
                                     size: self.parent.width * 0.5, self.parent.height
                                 Spinner:
-                                    id: theater_media_video_cast_spinner
-                                    text: "Cast First thing"
-                                    values: ["Cast First thing", "Cast Second thing", "Cast Third thing"]
+                                    id: theater_media_video_play_local_spinner
+                                    text: "This Device"
+                                    values: ["This Device", "Cast Second thing", "Cast Third thing"]
                                     size_hint: None, None
                                     size: self.parent.width * 0.5, self.parent.height
                             Spinner:
@@ -489,7 +488,6 @@
                                 values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
                                 size_hint: None, None
                                 size: self.parent.width, self.parent.height * 0.5
-
             Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:
