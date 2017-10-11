@@ -358,7 +358,8 @@ class MediaKrakenApp(App):
             elif json_message['Sub'] == "List":
                 data = []
                 for video_list in json_message['Data']:
-                    data.append({'text': video_list[0], 'uuid': video_list[1]})
+                    data.append({'text': video_list[0], 'uuid': video_list[1],
+                                 'path': video_list[4]})
                 # args_converter = lambda row_index,\
                 #                         rec: {'text': rec['text'], 'size_hint_y': None,
                 #                               'height': 25}
