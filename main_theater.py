@@ -587,8 +587,11 @@ class MediaKrakenApp(App):
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
         #TODO check cast spinner and send sub 'cast' if so
+        logging.info("X")
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
+            logging.info("XX")
             if os.path.isfile(self.media_path):
+                logging.info("XXX")
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--aid=2',
                                                      '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
                                                      '--audio-device=pulse', '--hwdec=auto',
