@@ -585,8 +585,11 @@ class MediaKrakenApp(App):
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
         #TODO check cast spinner and send sub 'cast' if so
-        # TODO pass file name in detail?  then can check for local play
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
+        if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
+            pass
+        else:
+            # TODO pass file name in detail?  then can check for local play
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
 
     # video select
     def theater_event_button_video_select(self, adapter, *args):
