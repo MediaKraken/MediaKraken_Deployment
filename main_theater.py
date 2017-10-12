@@ -124,6 +124,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             MKFactory.protocol.sendline_data(twisted_connection,
                                              json.dumps({'Type': 'Media', 'Sub': 'Detail',
                                                          'UUID': rv.data[index]['uuid']}))
+            logging.info(rv.data[index]['path'])
+            MediaKrakenApp.media_path = rv.data[index]['path']
 
 
 class MKEcho(basic.LineReceiver):
@@ -587,16 +589,17 @@ class MediaKrakenApp(App):
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
         #TODO check cast spinner and send sub 'cast' if so
+        logging.info(MediaKrakenApp.media_path)
         logging.info("X")
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
             logging.info("XX")
-            if os.path.isfile(self.media_path):
+            if os.path.isfile(MediaKrakenApp.media_path):
                 logging.info("XXX")
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--aid=2',
                                                      '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
                                                      '--audio-device=pulse', '--hwdec=auto',
                                                      '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % self.media_path], shell=False)
+                                                     '%s' % MediaKrakenApp.media_path], shell=False)
         else:
             # TODO pass file name in detail?  then can check for local play
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
@@ -611,6 +614,7 @@ class MediaKrakenApp(App):
             logging.info(adapter.get_data_item(0)['uuid'])
         self.media_guid = adapter.get_data_item(0)['uuid']
         self.media_path = adapter.get_data_item(0)['path']
+        logging.info('what')
         self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
 
     # genre select
