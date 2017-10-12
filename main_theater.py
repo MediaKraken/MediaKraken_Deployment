@@ -588,34 +588,35 @@ class MediaKrakenApp(App):
 
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
-        #TODO check cast spinner and send sub 'cast' if so
         logging.info(MediaKrakenApp.media_path)
-        logging.info("X")
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
-            logging.info("XX")
             if os.path.isfile(MediaKrakenApp.media_path):
-                logging.info("XXX")
-                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--aid=2',
+                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
+                                                     '--ontop', '--no-osc', '--no-osd-bar',
+                                                     '--aid=2',
                                                      '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
                                                      '--audio-device=pulse', '--hwdec=auto',
                                                      '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % MediaKrakenApp.media_path], shell=False)
+                                                     '%s' % MediaKrakenApp.media_path],
+                                                     shell=False)
         else:
-            # TODO pass file name in detail?  then can check for local play
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client', 'UUID': self.media_guid}))
+            # the server will have the target device....to know if cast/stream/etc
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                'UUID': self.media_guid,
+                'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
-    # video select
-    def theater_event_button_video_select(self, adapter, *args):
-        if len(adapter.selection) == 0:
-            logging.info("No selected item")
-        else:
-            logging.info(adapter.selection[0])
-            #logging.info(adapter.data[adapter.selection[0]])
-            logging.info(adapter.get_data_item(0)['uuid'])
-        self.media_guid = adapter.get_data_item(0)['uuid']
-        self.media_path = adapter.get_data_item(0)['path']
-        logging.info('what')
-        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
+    # # video select
+    # def theater_event_button_video_select(self, adapter, *args):
+    #     if len(adapter.selection) == 0:
+    #         logging.info("No selected item")
+    #     else:
+    #         logging.info(adapter.selection[0])
+    #         #logging.info(adapter.data[adapter.selection[0]])
+    #         logging.info(adapter.get_data_item(0)['uuid'])
+    #     self.media_guid = adapter.get_data_item(0)['uuid']
+    #     self.media_path = adapter.get_data_item(0)['path']
+    #     logging.info('what')
+    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
