@@ -40,7 +40,7 @@ psql -d metamandb -c "create extension pg_trgm;"
 
 
 
-
+docker build -t mediakraken/mkdatabaseupgrade .
 
 
 
