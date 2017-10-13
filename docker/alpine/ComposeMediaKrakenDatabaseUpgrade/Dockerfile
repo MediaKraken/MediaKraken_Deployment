@@ -10,9 +10,9 @@ ENV PG_VERSION 9.6.5
 ENV NEW_PG_VERSION 10.0
 
 ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
-ENV PGDATA /var/lib/postgresql/data
+ENV PATH /usr/lib/postgresql/$NEW_PG_MAJOR/bin:$PATH
 
-ENV NEW_PATH /usr/lib/postgresql/$NEW_PG_MAJOR/bin:$PATH
+ENV PGDATA /var/lib/postgresql/data
 ENV NEW_PGDATA /var/lib/postgresql/data
 
 ENV LANG en_US.utf8
