@@ -148,6 +148,21 @@ def read(queue_object):
             logging.info('user stop: %s', mk_containers[json_message['User']])
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
+        elif json_message['Type'] == 'FFMPEG':
+            # to address the 30 char name limit for container
+            name_container = ((json_message['User'] + '_'
+                               + str(uuid.uuid4()).replace('-',''))[-30:])
+            logging.info('ffmpegcont %s', name_container)
+            hwaccel = True
+            if hwaccel == True:
+                image_name = 'mediakraken/mkslavenvidiadebian'
+            else:
+                image_name = 'mediakraken/mkslave'
+            docker_inst.com_docker_run_container(container_image_name=image_name,
+                 container_name=name_container,
+                 container_command=('python subprogram_ffprobe_metadata.py %s' %
+                                    json_message['Data']))
+            logging.info('after docker run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

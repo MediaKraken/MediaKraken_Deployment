@@ -26,6 +26,7 @@ import sys
 import json
 import uuid
 import base64
+import subprocess
 import logging # pylint: disable=W0611
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -46,10 +47,11 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.uix.listview import ListView, ListItemButton
-from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
@@ -88,6 +90,42 @@ from theater import MediaKrakenSettings
 
 twisted_connection = None
 mk_app = None
+
+
+class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+    ''' Adds selection and focus behaviour to the view. '''
+
+
+class SelectableLabel(RecycleDataViewBehavior, Label):
+    ''' Add selection support to the Label '''
+    index = None
+    selected = BooleanProperty(False)
+    selectable = BooleanProperty(True)
+
+    def refresh_view_attrs(self, rv, index, data):
+        ''' Catch and handle the view changes '''
+        self.index = index
+        return super(SelectableLabel, self).refresh_view_attrs(
+            rv, index, data)
+
+    def on_touch_down(self, touch):
+        ''' Add selection on touch down '''
+        if super(SelectableLabel, self).on_touch_down(touch):
+            return True
+        if self.collide_point(*touch.pos) and self.selectable:
+            return self.parent.select_with_touch(self.index, touch)
+
+    def apply_selection(self, rv, index, is_selected):
+        ''' Respond to the selection of items in the view. '''
+        self.selected = is_selected
+        if is_selected:
+            print("selection changed to {0}".format(rv.data[index]))
+            MKFactory.protocol.sendline_data(twisted_connection,
+                                             json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                                                         'UUID': rv.data[index]['uuid']}))
+            logging.info(rv.data[index]['path'])
+            MediaKrakenApp.media_path = rv.data[index]['path']
 
 
 class MKEcho(basic.LineReceiver):
@@ -323,18 +361,19 @@ class MediaKrakenApp(App):
             elif json_message['Sub'] == "List":
                 data = []
                 for video_list in json_message['Data']:
-                    data.append({'text': video_list[0], 'is_selected': False,
-                                 'uuid': video_list[1]})
-                args_converter = lambda row_index,\
-                                        rec: {'text': rec['text'], 'size_hint_y': None,
-                                              'height': 25}
-                self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                                           cls=ListItemButton,
-                                           selection_mode='single',
-                                           allow_empty_selection=False)
-                self.root.ids.theater_media_video_list_scrollview.add_widget(
-                    ListView(adapter=self.list_adapter))
-                self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
+                    data.append({'text': video_list[0], 'uuid': video_list[1],
+                                 'path': video_list[4]})
+                # args_converter = lambda row_index,\
+                #                         rec: {'text': rec['text'], 'size_hint_y': None,
+                #                               'height': 25}
+                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
+                #                            cls=ListItemButton,
+                #                            selection_mode='single',
+                #                            allow_empty_selection=False)
+                # self.root.ids.theater_media_video_list_scrollview.add_widget(
+                #     ListView(adapter=self.list_adapter))
+                self.root.ids.theater_media_video_list_scrollview.data = data
+                # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -547,16 +586,37 @@ class MediaKrakenApp(App):
             pass
         return True
 
-    # video select
-    def theater_event_button_video_select(self, adapter, *args):
-        if len(adapter.selection) == 0:
-            logging.info("No selected item")
+    # play media from movie section
+    def main_mediakraken_event_play_media_mpv(self, *args):
+        logging.info(MediaKrakenApp.media_path)
+        if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
+            if os.path.isfile(MediaKrakenApp.media_path):
+                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
+                                                     '--ontop', '--no-osc', '--no-osd-bar',
+                                                     '--aid=2',
+                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
+                                                     '--audio-device=pulse', '--hwdec=auto',
+                                                     '--input-ipc-server', './mk_mpv.sock',
+                                                     '%s' % MediaKrakenApp.media_path],
+                                                     shell=False)
         else:
-            logging.info(adapter.selection[0])
-            #logging.info(adapter.data[adapter.selection[0]])
-            logging.info(adapter.get_data_item(0)['uuid'])
-        self.media_guid = adapter.get_data_item(0)['uuid']
-        self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
+            # the server will have the target device....to know if cast/stream/etc
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                'UUID': self.media_guid,
+                'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+
+    # # video select
+    # def theater_event_button_video_select(self, adapter, *args):
+    #     if len(adapter.selection) == 0:
+    #         logging.info("No selected item")
+    #     else:
+    #         logging.info(adapter.selection[0])
+    #         #logging.info(adapter.data[adapter.selection[0]])
+    #         logging.info(adapter.get_data_item(0)['uuid'])
+    #     self.media_guid = adapter.get_data_item(0)['uuid']
+    #     self.media_path = adapter.get_data_item(0)['path']
+    #     logging.info('what')
+    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
@@ -716,4 +776,5 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
+    Window.fullscreen = 'auto'
     MediaKrakenApp().run()

@@ -40,6 +40,7 @@ DEVICE_COMPATIBILITY = {
         'Stick': {},
         'TV': {},
         },
+    'OrangePi': {},
     'Raspberry': {
         'P1': {},
         'P2': {},

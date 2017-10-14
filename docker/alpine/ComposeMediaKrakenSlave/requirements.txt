@@ -4,3 +4,4 @@ setuptools
 streamlink
 docker
 pika
+apache-libcloud

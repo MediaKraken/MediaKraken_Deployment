@@ -1,5 +1,22 @@
 #:kivy 1.10.0
-#:import ListAdapter kivy.adapters.listadapter.ListAdapter
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+<Row@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    value: ''
+    Label:
+        text: root.value
 <MediaKraken>:
     AnchorLayout:
         anchor_x: 'center'
@@ -319,14 +336,22 @@
                 name: 'Main_Theater_Media_Video_List'
                 BoxLayout:
                     orientation: 'horizontal'
-                    ListView:
+                    RecycleView:
                         size: self.parent.width * 0.5, self.parent.height
                         id: theater_media_video_list_scrollview
+                        viewclass: 'SelectableLabel'
+                        SelectableRecycleBoxLayout:
+                            default_size: None, dp(56)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: False
+                            touch_multiselect: False
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint: None, None
                         size: self.parent.width * 0.5, self.parent.height
-
                         BoxLayout:
                             orientation: 'horizontal'
                             size_hint: None, None
@@ -431,24 +456,38 @@
                                 valign: 'middle'
                                 size_hint_y: None
                                 height: self.texture_size[1]
-
                         BoxLayout:
                             orientation: 'vertical'
                             size_hint: None, None
                             size: self.parent.width, self.parent.height * 0.1
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.5
+                                Button:
+                                    id: theater_media_play_button
+                                    text: 'Play Media'
+                                    on_press: app.main_mediakraken_event_play_media_mpv()
+                                    size_hint: None, None
+                                    size: self.parent.width * 0.5, self.parent.height
+                                Spinner:
+                                    id: theater_media_video_play_local_spinner
+                                    text: "This Device"
+                                    values: ["This Device", "Cast Second thing", "Cast Third thing"]
+                                    size_hint: None, None
+                                    size: self.parent.width * 0.5, self.parent.height
                             Spinner:
                                 id: theater_media_video_audio_spinner
                                 text: "Audio First thing"
-                                values: ["Audio First thing", "Second thing", "Third thing"]
+                                values: ["Audio First thing", "Audio Second thing", "Audio Third thing"]
                                 size_hint: None, None
                                 size: self.parent.width, self.parent.height * 0.5
                             Spinner:
                                 id: theater_media_video_subtitle_spinner
                                 text: "Sub First thing"
-                                values: ["Sub First thing", "Second thing", "Third thing"]
+                                values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
                                 size_hint: None, None
                                 size: self.parent.width, self.parent.height * 0.5
-
             Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:
