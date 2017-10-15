@@ -35,7 +35,7 @@ class CommonLIRC(object):
         """
         Initialize LIRC
         """
-        return lirc.init(self, "MediaKraken", app_string, False)
+        return lirc.init("MediaKraken", app_string, False)
 
 
     def com_lirc_load_config(self, config_file):
