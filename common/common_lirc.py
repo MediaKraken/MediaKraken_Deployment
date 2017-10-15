@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from kivy.utils import platform
+import pylirc as lirc
 
 
 class CommonLIRC(object):
@@ -27,7 +28,7 @@ class CommonLIRC(object):
     """
 
     def __init__(self, option_config_json):
-        import pylirc as lirc
+        pass
 
 
     def com_lirc_init(self, app_string="MediaKraken"):
