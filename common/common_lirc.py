@@ -56,4 +56,4 @@ class CommonLIRC(object):
         """
         Shutdown LIRC
         """
-        lirc.deinit()
+        lirc.exit()

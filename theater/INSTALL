@@ -43,3 +43,5 @@ install ip2country from build lib
 
 # stuff to install
 socat
+
+lirc
