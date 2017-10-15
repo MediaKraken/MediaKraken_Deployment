@@ -49,7 +49,7 @@ class CommonLIRC(object):
         """
         grab returend code
         """
-        return lirc.nextcode(1)
+        return lirc.nextcode()
 
 
     def com_lirc_close(self):

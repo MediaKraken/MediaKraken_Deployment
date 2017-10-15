@@ -10,8 +10,8 @@ rtn = subprocess.call(["irsend", "SEND_ONCE", "ac", "KEY_POWER"])
 # rtn should equal 0 if command ran without error
 
 
-
-
+# see devices
+grep '^N:' /proc/bus/input/devices
 
 
 #rasp sender
