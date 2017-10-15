@@ -36,6 +36,11 @@ ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -h
 To stream video with HLS, you need to divide your video into segments of a fixed duration and add them to a playlist. 
 
 
+# capture
+https://trac.ffmpeg.org/wiki/Capture/Desktop
+
+# accelearation
+https://developer.nvidia.com/ffmpeg
 
 
 ffmpeg -i source.mp4 -map 0 
