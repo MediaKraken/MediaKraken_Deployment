@@ -19,26 +19,40 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from kivy.utils import platform
-if platform != 'android':
-    import pylirc as lirc
 
 
-def com_lirc_init(app_string="OctMote"):
+class CommonLIRC(object):
     """
-    Initialize LIRC
+    Class for interfacing with lirc
     """
-    return lirc.init(app_string)
+
+    def __init__(self, option_config_json):
+        import pylirc as lirc
 
 
-def com_lirc_load_config(config_file):
-    """
-    Load config file for LIRC
-    """
-    lirc.load_config_file(config_file)
+    def com_lirc_init(self, app_string="MediaKraken"):
+        """
+        Initialize LIRC
+        """
+        return lirc.init(self, app_string, blocking=False)
 
 
-def com_lirc_close():
-    """
-    Shutdown LIRC
-    """
-    lirc.deinit()
+    def com_lirc_load_config(self, config_file):
+        """
+        Load config file for LIRC
+        """
+        lirc.load_config_file(config_file)
+
+
+    def com_lirc_nextcode(self):
+        """
+        grab returend code
+        """
+        return lirc.nextcode(1)
+
+
+    def com_lirc_close(self):
+        """
+        Shutdown LIRC
+        """
+        lirc.deinit()
