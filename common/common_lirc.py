@@ -31,11 +31,11 @@ class CommonLIRC(object):
         pass
 
 
-    def com_lirc_init(self, app_string="MediaKraken"):
+    def com_lirc_init(self, app_string="./conf"):
         """
         Initialize LIRC
         """
-        return lirc.init(self, app_string, blocking=False)
+        return lirc.init(self, app_string, False)
 
 
     def com_lirc_load_config(self, config_file):
