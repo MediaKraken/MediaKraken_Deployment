@@ -13,7 +13,7 @@ print stuff[-1:]
 
 from common import common_lirc
 
-lirc = common_lirc.CommonLIRC()
+lirc = common_lirc.CommonLIRC(None)
 
 lirc.com_lirc_init()
 
