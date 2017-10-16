@@ -9,9 +9,9 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8 
 
-ADD https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb /root/
+ADD https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb /root/
 RUN echo "deb http://www.deb-multimedia.org jessie main non-free" >> /etc/apt/sources.list && \
-    dpkg -i /root/deb-multimedia-keyring_2015.6.1_all.deb && \
+    dpkg -i /root/deb-multimedia-keyring_2016.8.1_all.deb && \
     apt-get update && \
     apt-get install -y \
         abcde \
