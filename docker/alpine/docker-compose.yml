@@ -350,6 +350,14 @@ services:
       - mediakraken_network
     restart: always
 
+  # runs ripper
+  ripper:
+    build:
+      context: ./ComposeMediaKrakenRipper
+      dockerfile: Dockerfile
+    container_name: mkripper
+    restart: always
+
 #  mail:
 #    build:
 #      context: ./ComposeMediaKrakenMail
