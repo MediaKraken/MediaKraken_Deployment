@@ -1,0 +1,18 @@
+#:kivy 1.10.0
+<MediaKrakenLoginScreen>:
+    BoxLayout:
+        padding: 10
+        spacing: 10
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Password'
+            TextInput:
+                id: login_password
+                password: True
+                multiline: False
+                on_text_validate: app.MediaKraken_Event_Button_User_Select_Login()
+        BoxLayout:
+            Button:
+                id: cancel
+                text: 'Cancel'
