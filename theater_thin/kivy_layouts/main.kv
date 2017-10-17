@@ -1,22 +1,4 @@
 #:kivy 1.10.0
-<SelectableLabel>:
-    # Draw a background to indicate selection
-    canvas.before:
-        Color:
-            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-<Row@BoxLayout>:
-    canvas.before:
-        Color:
-            rgba: 0.5, 0.5, 0.5, 1
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    value: ''
-    Label:
-        text: root.value
 <MediaKraken>:
     AnchorLayout:
         anchor_x: 'center'
@@ -333,162 +315,6 @@
                         allow_stretch: True
                         opacity: 0.5
             Screen:
-                name: 'Main_Theater_Media_Video_List'
-                BoxLayout:
-                    orientation: 'horizontal'
-                    RecycleView:
-                        size: self.parent.width * 0.5, self.parent.height
-                        id: theater_media_video_list_scrollview
-                        viewclass: 'SelectableLabel'
-                        SelectableRecycleBoxLayout:
-                            default_size: None, dp(56)
-                            default_size_hint: 1, None
-                            size_hint_y: None
-                            height: self.minimum_height
-                            orientation: 'vertical'
-                            multiselect: False
-                            touch_multiselect: False
-                    BoxLayout:
-                        orientation: 'vertical'
-                        size_hint: None, None
-                        size: self.parent.width * 0.5, self.parent.height
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_title_header
-                                text: 'Media Title:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_title
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_subtitle
-                                text: ''
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_director_header
-                                text: 'Director:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_director
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_writer_header
-                                text: 'Writer:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_writer
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_rating_header
-                                text: 'Rating:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_rating
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_runtime_header
-                                text: 'Run Time:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_runtime
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_genres_header
-                                text: 'Genres:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_genres
-                                text: '(NA)'
-                                size: self.texture_size
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.075
-                            Label:
-                                id: theater_media_video_production_companies_header
-                                text: 'Production:'
-                                size: self.texture_size
-                            Label:
-                                id: theater_media_video_production_companies
-                                text: '(NA)'
-                                size: self.texture_size
-
-                        ScrollView:
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.2
-                            Label:
-                                id: theater_media_video_overview
-                                text: '(NA)'
-                                text_size: self.width, None
-                                halign: 'left'
-                                valign: 'middle'
-                                size_hint_y: None
-                                height: self.texture_size[1]
-                        BoxLayout:
-                            orientation: 'vertical'
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height * 0.1
-                            BoxLayout:
-                                orientation: 'horizontal'
-                                size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
-                                Button:
-                                    id: theater_media_play_button
-                                    text: 'Play Media'
-                                    on_press: app.main_mediakraken_event_play_media_mpv()
-                                    size_hint: None, None
-                                    size: self.parent.width * 0.5, self.parent.height
-                                Spinner:
-                                    id: theater_media_video_play_local_spinner
-                                    text: "This Device"
-                                    values: ["This Device", "Cast Second thing", "Cast Third thing"]
-                                    size_hint: None, None
-                                    size: self.parent.width * 0.5, self.parent.height
-                            Spinner:
-                                id: theater_media_video_audio_spinner
-                                text: "Audio First thing"
-                                values: ["Audio First thing", "Audio Second thing", "Audio Third thing"]
-                                size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
-                            Spinner:
-                                id: theater_media_video_subtitle_spinner
-                                text: "Sub First thing"
-                                values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
-                                size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
-            Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:
                     orientation: 'horizontal'
@@ -498,22 +324,6 @@
                         id: theater_media_video_videoplayer
                         size_hint: None, None
                         size: self.parent.width, self.parent.height
-            Screen:
-                name: 'Main_Theater_Media_Music_List'
-            Screen: 
-                name: 'Main_Theater_Media_TV_Detail'
-            Screen:
-                name: 'Main_Theater_Media_TV_List'
-            Screen: 
-                name: 'Main_Theater_Media_Game_Detail'
-            Screen:
-                name: 'Main_Theater_Media_Game_List'
-            Screen:
-                name: 'Main_Theater_Media_Music_Detail'
-            Screen:
-                name: 'Main_Theater_Media_Video_Playback'
-            Screen:
-                name: 'Main_Theater_Media_Music_Playback'
             Screen:
                 name: 'Main_Theater_Media_Settings_Video'
                 BoxLayout:
@@ -540,35 +350,6 @@
                             on_press: app.main_mediakraken_event_options_video_test_patterns
                             size_hint: None, None
                             size: self.parent.width * 0.2, self.parent.height * 0.2
-            Screen: 
-                name: 'Main_Theater_Media_LIVE_TV_Detail'
-            Screen:
-                name: 'Main_Theater_Media_LIVE_TV_List'
-            Screen: 
-                name: 'Main_Theater_Media_Radio_Detail'
-            Screen:
-                name: 'Main_Theater_Media_Radio_List'
-            Screen: 
-                name: 'Main_Theater_Media_Books_Detail'
-            Screen:
-                name: 'Main_Theater_Media_Books_List'
-            Screen:
-                name: 'Main_Theater_Media_Images_List'
-            Screen:
-                name: 'Main_Theater_Media_Music_Video_List'
-            Screen:
-                name: 'Main_Theater_Cron_List'
-                BoxLayout:
-                    size_hint: None, None
-                    size: self.parent.width, self.parent.height
-                    ScrollView:
-                        size_hint: None, None
-                        size: self.parent.width, self.parent.height
-                        BoxLayout:
-                            orientation: 'vertical'
-                            id: theater_cron_list_scrollview
-                            size_hint: None, None
-                            size: self.parent.width, self.parent.height
             Screen:
                 name: 'Main_Theater_Remote'
                 BoxLayout:
@@ -636,26 +417,6 @@
                                 id: user_list_layout
                                 Label:
                                     text: 'MediaKraken User(s)'
-            Screen:
-                name: 'Setup_Item_Import_Verify'
-                BoxLayout:
-                    orientation: 'vertical'
-                    TextInput:
-                        id: setup_item_json
-                        multiline: True
-                        readonly: True
-                    BoxLayout:
-                        size_hint: 1, 0.0755
-                        orientation: 'vertical'
-                        BoxLayout:
-                            Label:
-                                size_hint: 0.25, 1
-                                text: 'Device Item Name'
-                            TextInput:
-                                id: setup_item_name
-                        Button:
-                            text: 'Verify and Import'
-                            on_press: app.Setup_Import_Item_Json()
             Screen:
                 name: 'Setup_Screen'
                 BoxLayout:

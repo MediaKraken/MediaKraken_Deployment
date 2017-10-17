@@ -47,9 +47,6 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.uix.recycleview import RecycleView
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.togglebutton import ToggleButton
@@ -90,42 +87,6 @@ from theater import MediaKrakenSettings
 
 twisted_connection = None
 mk_app = None
-
-
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
-    ''' Adds selection and focus behaviour to the view. '''
-
-
-class SelectableLabel(RecycleDataViewBehavior, Label):
-    ''' Add selection support to the Label '''
-    index = None
-    selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
-
-    def refresh_view_attrs(self, rv, index, data):
-        ''' Catch and handle the view changes '''
-        self.index = index
-        return super(SelectableLabel, self).refresh_view_attrs(
-            rv, index, data)
-
-    def on_touch_down(self, touch):
-        ''' Add selection on touch down '''
-        if super(SelectableLabel, self).on_touch_down(touch):
-            return True
-        if self.collide_point(*touch.pos) and self.selectable:
-            return self.parent.select_with_touch(self.index, touch)
-
-    def apply_selection(self, rv, index, is_selected):
-        ''' Respond to the selection of items in the view. '''
-        self.selected = is_selected
-        if is_selected:
-            print("selection changed to {0}".format(rv.data[index]))
-            MKFactory.protocol.sendline_data(twisted_connection,
-                                             json.dumps({'Type': 'Media', 'Sub': 'Detail',
-                                                         'UUID': rv.data[index]['uuid']}))
-            logging.info(rv.data[index]['path'])
-            MediaKrakenApp.media_path = rv.data[index]['path']
 
 
 class MKEcho(basic.LineReceiver):
@@ -172,14 +133,6 @@ class MediaKrakenLoginScreen(BoxLayout):
     cancel = ObjectProperty(None)
 
 
-class MediaKrakenLoadDialog(FloatLayout):
-    """
-    Load file dialog
-    """
-    load = ObjectProperty(None)
-    cancel = ObjectProperty(None)
-
-
 class MediaKrakenNotificationScreen(BoxLayout):
     """
     Notification display
@@ -209,17 +162,6 @@ class MediaKrakenApp(App):
         content.ids.message_text.text = message
         self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
-
-    def show_load(self):
-        content = MediaKrakenLoadDialog(load=self.load, cancel=self.dismiss_popup)
-        self._popup = Popup(title="Load media file", content=content,
-                            size_hint=(0.9, 0.9))
-        self._popup.open()
-
-    def load(self, path, filename):
-        with open(os.path.join(path, filename[0])) as stream:
-            self.text_input.text = stream.read()
-        self.dismiss_popup()
 
     def build(self):
         global mk_app
@@ -347,33 +289,6 @@ class MediaKrakenApp(App):
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
-                #            # populate the chapter grid
-                #            for chapter_info in json_message['FFprobe']['chapters']:
-                #                # media_json['ChapterImages']
-                #                chapter_box = BoxLayout(size_hint_y=None)
-                #                chapter_label = Label(text='Test Chapter')
-                #                chapter_label_start = Label(text='Start Time')
-                #                chapter_image = Image(source='./images/3D.png')
-                #                chapter_box.add_widget(chapter_label)
-                #                chapter_box.add_widget(chapter_label)
-                #                chapter_box.add_widget(chapter_image)
-                #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
-            elif json_message['Sub'] == "List":
-                data = []
-                for video_list in json_message['Data']:
-                    data.append({'text': video_list[0], 'uuid': video_list[1],
-                                 'path': video_list[4]})
-                # args_converter = lambda row_index,\
-                #                         rec: {'text': rec['text'], 'size_hint_y': None,
-                #                               'height': 25}
-                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                #                            cls=ListItemButton,
-                #                            selection_mode='single',
-                #                            allow_empty_selection=False)
-                # self.root.ids.theater_media_video_list_scrollview.add_widget(
-                #     ListView(adapter=self.list_adapter))
-                self.root.ids.theater_media_video_list_scrollview.data = data
-                # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -389,59 +304,16 @@ class MediaKrakenApp(App):
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
-
-        elif json_message['Type'] == "Genre List":
-            logging.info("gen")
-            for genre_list in json_message:
-                logging.info("genlist: %s", genre_list)
-                btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
-                                    size_hint_y=None,
-                                    width=self.root.ids.theater_media_genre_list_scrollview.width,
-                                    height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
-                self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-
         elif json_message['Type'] == "Image":
-            if json_message['Sub'] == "Movie":
-                logging.info("here for movie refresh")
-                if json_message['Sub2'] == "Demo":
-                    self.home_demo_file_name = str(uuid.uuid4())
-                    f = open(self.home_demo_file_name, "w")
-                    f.write(base64.b64decode(json_message['Data']))
-                    f.close()
-                    self.demo_media_id = json_message['UUID']
-                    proxy_image_demo = Loader.image(self.home_demo_file_name)
-                    proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
-                    pass
-                elif json_message['Sub2'] == "Movie":
-                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
-                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
-                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
-                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
-                    self.home_movie_file_name = str(uuid.uuid4())
-                    f = open(self.home_movie_file_name, "w")
-                    f.write(base64.b64decode(json_message['Data']))
-                    f.close()
-                    proxy_image_movie = Loader.image(self.home_movie_file_name)
-                    proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
-                elif json_message['Sub2'] == "New Movie":
-                    self.home_movie_new_file_name = str(uuid.uuid4())
-                    f = open(self.home_movie_new_file_name, "w")
-                    f.write(base64.b64decode(json_message['Data']))
-                    f.close()
-                    proxy_image_new_movie = Loader.image(self.home_movie_new_file_name)
-                    proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
-                elif json_message['Sub2'] == "In Progress":
-                    self.home_movie_inprogress_file_name = str(uuid.uuid4())
-                    f = open(self.home_movie_inprogress_file_name, "w")
-                    f.write(base64.b64decode(json_message['Data']))
-                    f.close()
-                    proxy_image_prog_movie = Loader.image(self.home_movie_inprogress_file_name)
-                    proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
-            # elif pickle_data[0] == "MOVIEDETAIL":
-            #     logging.info("here for movie detail refresh: %s", pickle_data[1])
-            #     proxy_image_detail_movie = Loader.image(pickle_data[1])
-            #     proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
+            logging.info("here for movie refresh")
+            if json_message['Sub2'] == "Demo":
+                self.home_demo_file_name = str(uuid.uuid4())
+                f = open(self.home_demo_file_name, "w")
+                f.write(base64.b64decode(json_message['Data']))
+                f.close()
+                self.demo_media_id = json_message['UUID']
+                proxy_image_demo = Loader.image(self.home_demo_file_name)
+                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
         else:
             logging.error("unknown message type")
 
@@ -507,28 +379,6 @@ class MediaKrakenApp(App):
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 # show media information overlay
                 pass
-        elif keycode[1] == 'up':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-                # scroll up a page of media
-                pass
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
-                # scroll up an icon
-                pass
-        elif keycode[1] == 'down':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-                # scroll down a page of media
-                pass
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
-                # scroll down an icon
-                pass
-        elif keycode[1] == 'left':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-                # scroll left an icon
-                pass
-        elif keycode[1] == 'right':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-                # scroll left an icon
-                pass
         elif keycode[1] == 'backspace':
             if self.root.ids._screen_manager.current == 'Main_Theater_Home':
                 pass
@@ -549,18 +399,6 @@ class MediaKrakenApp(App):
             pass
         elif keycode[1] == 'enter':
             pass
-        elif keycode[1] == 'shift':
-            pass
-        elif keycode[1] == 'rshift':
-            pass
-        elif keycode[1] == 'lctrl':
-            pass
-        elif keycode[1] == 'rctrl':
-            pass
-        elif keycode[1] == 'alt':
-            pass
-        elif keycode[1] == 'alt-gr':
-            pass
         elif keycode[1] == 'tab':
             pass
         elif keycode[1] == 'escape':
@@ -577,10 +415,6 @@ class MediaKrakenApp(App):
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
                 # scroll down a page of media
                 self.root.ids.theater_media_video_list_scrollview.scroll_y = 1
-        elif keycode[1] == 'insert':
-            pass
-        elif keycode[1] == 'delete':
-            pass
         elif keycode[1] == 'f1':
             # display help
             pass
@@ -617,12 +451,6 @@ class MediaKrakenApp(App):
     #     self.media_path = adapter.get_data_item(0)['path']
     #     logging.info('what')
     #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
-
-    # genre select
-    def Theater_Event_Button_Genre_Select(self, *args):
-        logging.info("genre select: %s", args)
-        self.media_genre = args[0]
-        self.send_twisted_message(("VIDEOGENRELIST " + args[0]))
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
@@ -689,39 +517,6 @@ class MediaKrakenApp(App):
             # refreshs for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
-            # refreshs for tv stuff
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'TV', 'Sub3': 'Backdrop'}))
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
-            # refreshs for game stuff
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
-            # refreshs for books stuff
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Cover'}))
-            # refresh music stuff
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Cover'}))
-            # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
-            # refresh image stuff
-            # request main screen background refresh
-            #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
-            #self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
-
-    def _image_loaded_detail_movie(self, proxyImage):
-        """
-        Load movie image
-        """
-        if proxyImage.image.texture:
-            self.root.ids.theater_media_video_poster.texture = proxyImage.image.texture
 
     def _image_loaded_home_demo(self, proxyImage):
         """
@@ -731,35 +526,6 @@ class MediaKrakenApp(App):
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
         os.remove(self.home_demo_file_name)
-
-    def _image_loaded_home_movie(self, proxyImage):
-        """
-        Load home movie image
-        """
-        if proxyImage.image.texture:
-            self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_file_name)
-
-    def _image_loaded_home_new_movie(self, proxyImage):
-        """
-        Load new movie image
-        """
-        if proxyImage.image.texture:
-            self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_new_file_name)
-
-
-    def _image_loaded_home_prog_movie(self, proxyImage):
-        """
-        Load in progress movie image
-        """
-        if proxyImage.image.texture:
-            self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_inprogress_file_name)
-
 
 if __name__ == '__main__':
     # for windows exe support
@@ -772,7 +538,6 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater/kivy_layouts/main.kv')
-    Builder.load_file('theater/kivy_layouts/KV_Layout_Load_Dialog.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
