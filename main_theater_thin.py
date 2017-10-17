@@ -439,19 +439,6 @@ class MediaKrakenApp(App):
                 'UUID': self.media_guid,
                 'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
-    # # video select
-    # def theater_event_button_video_select(self, adapter, *args):
-    #     if len(adapter.selection) == 0:
-    #         logging.info("No selected item")
-    #     else:
-    #         logging.info(adapter.selection[0])
-    #         #logging.info(adapter.data[adapter.selection[0]])
-    #         logging.info(adapter.get_data_item(0)['uuid'])
-    #     self.media_guid = adapter.get_data_item(0)['uuid']
-    #     self.media_path = adapter.get_data_item(0)['path']
-    #     logging.info('what')
-    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
-
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
@@ -532,14 +519,12 @@ if __name__ == '__main__':
     from multiprocessing import freeze_support
     freeze_support()
     # begin logging
-    common_logging.com_logging_start('./log/MediaKraken_Theater')
+    common_logging.com_logging_start('./log/MediaKraken_Theater_Thin')
     log.startLogging(sys.stdout) # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
-    Builder.load_file('theater/kivy_layouts/main.kv')
-    Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
-    Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
-    Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
+    Builder.load_file('theater_thin/kivy_layouts/main.kv')
+    Builder.load_file('theater_thin/kivy_layouts/KV_Layout_Notification.kv')
     Window.fullscreen = 'auto'
     MediaKrakenApp().run()
