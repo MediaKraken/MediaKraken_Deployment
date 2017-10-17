@@ -605,19 +605,6 @@ class MediaKrakenApp(App):
                 'UUID': self.media_guid,
                 'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
-    # # video select
-    # def theater_event_button_video_select(self, adapter, *args):
-    #     if len(adapter.selection) == 0:
-    #         logging.info("No selected item")
-    #     else:
-    #         logging.info(adapter.selection[0])
-    #         #logging.info(adapter.data[adapter.selection[0]])
-    #         logging.info(adapter.get_data_item(0)['uuid'])
-    #     self.media_guid = adapter.get_data_item(0)['uuid']
-    #     self.media_path = adapter.get_data_item(0)['path']
-    #     logging.info('what')
-    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
-
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
@@ -766,7 +753,7 @@ if __name__ == '__main__':
     from multiprocessing import freeze_support
     freeze_support()
     # begin logging
-    common_logging.com_logging_start('./log/MediaKraken_Theater')
+    common_logging.com_logging_start('./log/MediaKraken_Theater_Controller')
     log.startLogging(sys.stdout) # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
