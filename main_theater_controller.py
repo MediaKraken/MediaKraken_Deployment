@@ -347,31 +347,11 @@ class MediaKrakenApp(App):
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
-                #            # populate the chapter grid
-                #            for chapter_info in json_message['FFprobe']['chapters']:
-                #                # media_json['ChapterImages']
-                #                chapter_box = BoxLayout(size_hint_y=None)
-                #                chapter_label = Label(text='Test Chapter')
-                #                chapter_label_start = Label(text='Start Time')
-                #                chapter_image = Image(source='./images/3D.png')
-                #                chapter_box.add_widget(chapter_label)
-                #                chapter_box.add_widget(chapter_label)
-                #                chapter_box.add_widget(chapter_image)
-                #                self.root.ids.theater_media_video_chapter_grid.add_widget(chapter_box)
             elif json_message['Sub'] == "List":
                 data = []
                 for video_list in json_message['Data']:
                     data.append({'text': video_list[0], 'uuid': video_list[1],
                                  'path': video_list[4]})
-                # args_converter = lambda row_index,\
-                #                         rec: {'text': rec['text'], 'size_hint_y': None,
-                #                               'height': 25}
-                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                #                            cls=ListItemButton,
-                #                            selection_mode='single',
-                #                            allow_empty_selection=False)
-                # self.root.ids.theater_media_video_list_scrollview.add_widget(
-                #     ListView(adapter=self.list_adapter))
                 self.root.ids.theater_media_video_list_scrollview.data = data
                 # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
@@ -389,7 +369,6 @@ class MediaKrakenApp(App):
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
-
         elif json_message['Type'] == "Genre List":
             logging.info("gen")
             for genre_list in json_message:
@@ -400,7 +379,6 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-
         elif json_message['Type'] == "Image":
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
@@ -414,10 +392,6 @@ class MediaKrakenApp(App):
                     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
                     pass
                 elif json_message['Sub2'] == "Movie":
-                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
-                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
-                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
-                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
                     self.home_movie_file_name = str(uuid.uuid4())
                     f = open(self.home_movie_file_name, "w")
                     f.write(base64.b64decode(json_message['Data']))
