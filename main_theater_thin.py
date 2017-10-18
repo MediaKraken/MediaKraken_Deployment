@@ -246,64 +246,24 @@ class MediaKrakenApp(App):
                 for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
                     genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
-                # "LocalImages": {"Banner": "", "Fanart": "",
-                # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
                 for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
-                # go through streams
-                audio_streams = []
-                subtitle_streams = ['None']
-                if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
-                        and 'streams' in json_message['Data2']['FFprobe']\
-                        and json_message['Data2']['FFprobe']['streams'] is not None:
-                    for stream_info in json_message['Data2']['FFprobe']['streams']:
-                        logging.info("info: %s", stream_info)
-                        stream_language = ''
-                        stream_title = ''
-                        stream_codec = ''
-                        try:
-                            stream_language = stream_info['tags']['language'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_title = stream_info['tags']['title'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_codec \
-                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                                + ' - '
-                        except:
-                            pass
-                        if stream_info['codec_type'] == 'audio':
-                            logging.info('audio')
-                            audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
-                        elif stream_info['codec_type'] == 'subtitle':
-                            subtitle_streams.append(stream_language)
-                            logging.info('sub')
-                # populate the audio streams to select
-                self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
-                self.root.ids.theater_media_video_audio_spinner.text = 'None'
-                # populate the subtitle options
-                self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
-                self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
         elif json_message['Type'] == 'Play': # direct file play
-            # AttributeError: 'NoneType' object has no attribute
-            # 'set_volume'  <- means can't find file
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
             video_source_dir = json_message['Data']
             share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
                 for mapping in share_mapping.iteritems():
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
-            self.root.ids.theater_media_video_videoplayer.source = video_source_dir
-            self.root.ids.theater_media_video_videoplayer.volume = 1
-            self.root.ids.theater_media_video_videoplayer.state = 'play'
-        # after connection receive the list of users to possibly login with
-        elif json_message['Type'] == "User":
-            pass
+                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
+                                                     '--ontop', '--no-osc', '--no-osd-bar',
+                                                     '--aid=2',
+                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
+                                                     '--audio-device=pulse', '--hwdec=auto',
+                                                     '--input-ipc-server', './mk_mpv.sock',
+                                                     '%s' % video_source_dir],
+                                                     shell=False)
         elif json_message['Type'] == "Image":
             logging.info("here for movie refresh")
             if json_message['Sub2'] == "Demo":
@@ -382,21 +342,6 @@ class MediaKrakenApp(App):
         elif keycode[1] == 'backspace':
             if self.root.ids._screen_manager.current == 'Main_Theater_Home':
                 pass
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_Detail':
-                self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
-                self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
-                    self.root.ids._screen_manager.current = 'Main_Theater_Home'
-            pass
         elif keycode[1] == 'enter':
             pass
         elif keycode[1] == 'tab':
@@ -420,25 +365,6 @@ class MediaKrakenApp(App):
             pass
         return True
 
-    # play media from movie section
-    def main_mediakraken_event_play_media_mpv(self, *args):
-        logging.info(MediaKrakenApp.media_path)
-        if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
-            if os.path.isfile(MediaKrakenApp.media_path):
-                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
-                                                     '--ontop', '--no-osc', '--no-osd-bar',
-                                                     '--aid=2',
-                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                                                     '--audio-device=pulse', '--hwdec=auto',
-                                                     '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % MediaKrakenApp.media_path],
-                                                     shell=False)
-        else:
-            # the server will have the target device....to know if cast/stream/etc
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                'UUID': self.media_guid,
-                'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
-
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
@@ -446,12 +372,6 @@ class MediaKrakenApp(App):
         self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
                                           'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
-
-    def main_mediakraken_event_button_video_play(self, *args):
-        logging.info("play: %s", args)
-        msg = "demo " + self.media_guid
-        self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-        self.send_twisted_message(msg)
 
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
