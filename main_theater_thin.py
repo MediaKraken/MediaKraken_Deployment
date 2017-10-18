@@ -335,31 +335,11 @@ class MediaKrakenApp(App):
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         logging.info("keycode received: %s", keycode)
-        if keycode[1] == 'i' or keycode[1] == 'I':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
-                # show media information overlay
-                pass
-        elif keycode[1] == 'backspace':
+        if keycode[1] == 'backspace':
             if self.root.ids._screen_manager.current == 'Main_Theater_Home':
                 pass
-        elif keycode[1] == 'enter':
-            pass
-        elif keycode[1] == 'tab':
-            pass
         elif keycode[1] == 'escape':
             self.root.ids._screen_manager.current = 'Main_Theater_Home'
-        elif keycode[1] == 'home':
-            self.root.ids._screen_manager.current = 'Main_Theater_Home'
-        elif keycode[1] == 'end':
-            pass
-        elif keycode[1] == 'pageup':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-                # scroll up a page of media
-                self.root.ids.theater_media_video_list_scrollview.scroll_y = 0
-        elif keycode[1] == 'pagedown':
-            if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-                # scroll down a page of media
-                self.root.ids.theater_media_video_list_scrollview.scroll_y = 1
         elif keycode[1] == 'f1':
             # display help
             pass
@@ -369,8 +349,9 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
-                                          'Password': self.login_password}))
+        self.send_twisted_message(json.dumps({'Type': 'Login',
+                                              'User': self.global_selected_user_id,
+                                              'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_home(self, *args):
@@ -379,12 +360,6 @@ class MediaKrakenApp(App):
         if args[0] == 'in_progress' or args[0] == 'recent_addition'\
                 or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
-        elif args[0] == 'tv':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
-        elif args[0] == 'games':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Game_List'
-        elif args[0] == 'music_vid':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Music_Video_List'
         elif args[0] == 'demo':
             # add movie id to stream
             try:
@@ -392,16 +367,6 @@ class MediaKrakenApp(App):
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
             except:
                 msg = None
-        elif args[0] == 'pictures':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Images_List'
-        elif args[0] == 'radio':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Radio_List'
-        elif args[0] == 'periodicals':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Books_List'
-        elif args[0] == 'music':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Music_List'
-        elif args[0] == 'live':
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_LIVE_TV_List'
         else:
             logging.error("unknown button event")
         if msg is not None:
@@ -423,7 +388,8 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
 
     def _image_loaded_home_demo(self, proxyImage):
         """

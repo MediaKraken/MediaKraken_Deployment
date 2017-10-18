@@ -337,7 +337,8 @@ class MediaKrakenApp(App):
                             pass
                         if stream_info['codec_type'] == 'audio':
                             logging.info('audio')
-                            audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
+                            audio_streams.append((stream_codec + stream_language
+                                                  + stream_title)[:-3])
                         elif stream_info['codec_type'] == 'subtitle':
                             subtitle_streams.append(stream_language)
                             logging.info('sub')
@@ -363,17 +364,7 @@ class MediaKrakenApp(App):
                 for video_list in json_message['Data']:
                     data.append({'text': video_list[0], 'uuid': video_list[1],
                                  'path': video_list[4]})
-                # args_converter = lambda row_index,\
-                #                         rec: {'text': rec['text'], 'size_hint_y': None,
-                #                               'height': 25}
-                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                #                            cls=ListItemButton,
-                #                            selection_mode='single',
-                #                            allow_empty_selection=False)
-                # self.root.ids.theater_media_video_list_scrollview.add_widget(
-                #     ListView(adapter=self.list_adapter))
                 self.root.ids.theater_media_video_list_scrollview.data = data
-                # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -389,7 +380,6 @@ class MediaKrakenApp(App):
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
-
         elif json_message['Type'] == "Genre List":
             logging.info("gen")
             for genre_list in json_message:
@@ -400,7 +390,6 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-
         elif json_message['Type'] == "Image":
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
@@ -414,10 +403,6 @@ class MediaKrakenApp(App):
                     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
                     pass
                 elif json_message['Sub2'] == "Movie":
-                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
-                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
-                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
-                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
                     self.home_movie_file_name = str(uuid.uuid4())
                     f = open(self.home_movie_file_name, "w")
                     f.write(base64.b64decode(json_message['Data']))
@@ -605,19 +590,6 @@ class MediaKrakenApp(App):
                 'UUID': self.media_guid,
                 'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
-    # # video select
-    # def theater_event_button_video_select(self, adapter, *args):
-    #     if len(adapter.selection) == 0:
-    #         logging.info("No selected item")
-    #     else:
-    #         logging.info(adapter.selection[0])
-    #         #logging.info(adapter.data[adapter.selection[0]])
-    #         logging.info(adapter.get_data_item(0)['uuid'])
-    #     self.media_guid = adapter.get_data_item(0)['uuid']
-    #     self.media_path = adapter.get_data_item(0)['path']
-    #     logging.info('what')
-    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
-
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
@@ -628,8 +600,9 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
-                                          'Password': self.login_password}))
+        self.send_twisted_message(json.dumps({'Type': 'Login',
+                                              'User': self.global_selected_user_id,
+                                              'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
@@ -688,29 +661,39 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
+                                                  'Sub2': 'TV', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
+                                                  'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game',
+                                                  'Sub2': 'Game', 'Sub3': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book',
+                                                  'Sub2': 'Book', 'Sub3': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
+                                                  'Sub2': 'Album', 'Sub3': 'Cover'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
+                                                  'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
