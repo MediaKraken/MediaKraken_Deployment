@@ -9,6 +9,9 @@ git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
 pip install -r requirements.txt
 
+# set timezone
+sudo raspi-config
+
 ####################################
 alpine 3.6 version
 
