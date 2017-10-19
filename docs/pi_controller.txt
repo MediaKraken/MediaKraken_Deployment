@@ -9,5 +9,12 @@ git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
 pip install -r requirements.txt
 
+####################################
+alpine 3.6 version
 
-kivy 1.9.1-1 is the apt-get method.....sigh
+
+cd /home/pi
+git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
+cd MediaKraken_Deployment
+pip install -r requirements.txt
+
