@@ -1,0 +1,9 @@
+raspbian 9.07.2017 (pi/raspberry)
+sudo apt-get update
+sudo apt-get upgrade
+turn on ssh
+pip install --upgrade pip
+cd /home/pi
+git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
+cd MediaKraken_Deployment
+pip install -r requirements.txt
