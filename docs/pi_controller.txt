@@ -3,7 +3,7 @@ sudo apt-get update
 sudo apt-get upgrade
 turn on ssh
 pip install --upgrade pip
-sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libgstreamer1.0-dev cython
+sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libgstreamer1.0-dev cython liblirc-dev
 cd /home/pi
 git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
