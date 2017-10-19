@@ -2,7 +2,6 @@ crochet
 pyopenssl
 service_identity
 setuptools
-pycdio
-lcdproc
 python-lirc
 py-irsend
+kivy

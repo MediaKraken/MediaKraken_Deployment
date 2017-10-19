@@ -3,7 +3,11 @@ sudo apt-get update
 sudo apt-get upgrade
 turn on ssh
 pip install --upgrade pip
+sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libgstreamer1.0-dev cython
 cd /home/pi
 git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
 pip install -r requirements.txt
+
+
+kivy 1.9.1-1 is the apt-get method.....sigh
