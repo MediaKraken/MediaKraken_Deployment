@@ -533,7 +533,7 @@ class MediaKrakenApp(App):
         elif keycode[1] == 'tab':
             pass
         elif keycode[1] == 'escape':
-            self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            sys.exit()
         elif keycode[1] == 'home':
             self.root.ids._screen_manager.current = 'Main_Theater_Home'
         elif keycode[1] == 'end':
@@ -743,5 +743,6 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
-    Window.fullscreen = 'auto'
+    # this makes the rpi3 crash
+    #Window.fullscreen = 'auto'
     MediaKrakenApp().run()
