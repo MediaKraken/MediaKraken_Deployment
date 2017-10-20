@@ -1,7 +1,5 @@
 crochet
 pyopenssl
 service_identity
-setuptools
 python-lirc
 py-irsend
-kivy
