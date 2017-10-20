@@ -232,6 +232,7 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
+        self.first_image_demo = True
         return root
 
     @wait_for(timeout=5.0)
@@ -387,8 +388,12 @@ class MediaKrakenApp(App):
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     self.demo_media_id = json_message['UUID']
-                    proxy_image_demo = Loader.image("image_demo")
-                    proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                    if self.first_image_demo == False:
+                        self.root.ids.main_home_demo_image.reload()
+                    else:
+                        proxy_image_demo = Loader.image("image_demo")
+                        proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                        self.first_image_demo = False
                 elif json_message['Sub2'] == "Movie":
                     f = open("image_movie", "w")
                     f.write(base64.b64decode(json_message['Data']))
