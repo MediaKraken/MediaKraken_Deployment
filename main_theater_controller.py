@@ -692,8 +692,6 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_demo_file_name)
 
     def _image_loaded_home_movie(self, proxyImage):
         """
@@ -701,8 +699,6 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_file_name)
 
     def _image_loaded_home_new_movie(self, proxyImage):
         """
@@ -710,9 +706,6 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_new_file_name)
-
 
     def _image_loaded_home_prog_movie(self, proxyImage):
         """
@@ -720,9 +713,6 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
-        # since it's loaded delete the image
-        os.remove(self.home_movie_inprogress_file_name)
-
 
 if __name__ == '__main__':
     # for windows exe support
