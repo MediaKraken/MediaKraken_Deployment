@@ -339,7 +339,7 @@ class MediaKrakenApp(App):
             if self.root.ids._screen_manager.current == 'Main_Theater_Home':
                 pass
         elif keycode[1] == 'escape':
-            self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            sys.exit()
         elif keycode[1] == 'f1':
             # display help
             pass

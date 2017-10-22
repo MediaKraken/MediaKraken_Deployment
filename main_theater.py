@@ -549,7 +549,7 @@ class MediaKrakenApp(App):
         elif keycode[1] == 'tab':
             pass
         elif keycode[1] == 'escape':
-            self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            sys.exit()
         elif keycode[1] == 'home':
             self.root.ids._screen_manager.current = 'Main_Theater_Home'
         elif keycode[1] == 'end':
