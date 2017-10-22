@@ -384,33 +384,36 @@ class MediaKrakenApp(App):
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
                 if json_message['Sub2'] == "Demo":
-                    f = open("image_demo", "w")
+                    f = open("./image_demo", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     self.demo_media_id = json_message['UUID']
                     if self.first_image_demo == False:
-                        self.root.ids.main_home_demo_image.reload()
+                        logging.info('boom')
+                        #self.root.ids.main_home_demo_image.reload()
+                        logging.info('boom2')
                     else:
+                        logging.info('wha2')
                         proxy_image_demo = Loader.image("image_demo")
                         proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
                         self.first_image_demo = False
                 elif json_message['Sub2'] == "Movie":
-                    f = open("image_movie", "w")
+                    f = open("./image_movie", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
-                    proxy_image_movie = Loader.image("image_movie")
+                    proxy_image_movie = Loader.image("./image_movie")
                     proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
                 elif json_message['Sub2'] == "New Movie":
-                    f = open("image_new_movie", "w")
+                    f = open("./image_new_movie", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
-                    proxy_image_new_movie = Loader.image("image_new_movie")
+                    proxy_image_new_movie = Loader.image("./image_new_movie")
                     proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
                 elif json_message['Sub2'] == "In Progress":
-                    f = open("image_in_progress", "w")
+                    f = open("./image_in_progress", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
-                    proxy_image_prog_movie = Loader.image("image_in_progress")
+                    proxy_image_prog_movie = Loader.image("./image_in_progress")
                     proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
         else:
             logging.error("unknown message type")
@@ -697,6 +700,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove('./image_demo')
 
     def _image_loaded_home_movie(self, proxyImage):
         """
@@ -704,6 +709,8 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
+        # since it's loaded delete the image
+        os.remove('./image_movie')
 
     def _image_loaded_home_new_movie(self, proxyImage):
         """
