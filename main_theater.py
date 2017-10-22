@@ -759,5 +759,7 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
-    Window.fullscreen = 'auto'
+    # so the raspberry pi doesn't crash
+    if os.uname()[4][:3] != 'arm':
+        Window.fullscreen = 'auto'
     MediaKrakenApp().run()
