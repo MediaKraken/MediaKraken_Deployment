@@ -126,6 +126,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
                                                          'UUID': rv.data[index]['uuid']}))
             logging.info(rv.data[index]['path'])
             MediaKrakenApp.media_path = rv.data[index]['path']
+            MediaKrakenApp.media_uuid = rv.data[index]['uuid']
 
 
 class MKEcho(basic.LineReceiver):
@@ -575,7 +576,7 @@ class MediaKrakenApp(App):
         else:
             # the server will have the target device....to know if cast/stream/etc
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                'UUID': self.media_guid,
+                'UUID': MediaKrakenApp.media_uuid,
                 'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
             self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
