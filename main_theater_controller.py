@@ -577,6 +577,7 @@ class MediaKrakenApp(App):
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                 'UUID': self.media_guid,
                 'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+            self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
