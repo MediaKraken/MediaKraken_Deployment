@@ -579,11 +579,11 @@
                         Button:
                             id: button_main_remote_left
                             pos: (((self.parent.width - self.width)/2) - 50), (self.parent.height - 125)
-                            on_press: app.main_mediakraken_event_button_commands_left()
+                            on_press: app.main_remote_event_button_commands_left()
                             size_hint: None, None
                             size: 50, 50
                             Image:
-                                source: './theater/images/button_left.png'
+                                source: './theater_controller/images/button_left.png'
                                 y: self.parent.y + self.parent.height - 50
                                 x: self.parent.x
                                 size: 50, 50
@@ -591,11 +591,263 @@
                         Button:
                             id: button_main_remote_right
                             pos: (((self.parent.width - self.width)/2) + 50), (self.parent.height - 125)
-                            on_press: app.main_mediakraken_event_button_commands_right()
+                            on_press: app.main_remote_event_button_commands_right()
                             size_hint: None, None
                             size: 50, 50
                             Image:
-                                source: './theater/images/button_right.png'
+                                source: './theater_controller/images/button_right.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_up
+                            pos: ((self.parent.width - self.width)/2), (self.parent.height - 75)
+                            on_press: app.main_remote_event_button_commands_up()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_up.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_down
+                            pos: ((self.parent.width - self.width)/2), (self.parent.height - 175)
+                            on_press: app.main_remote_event_button_commands_down()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_down.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_one
+                            pos: ((self.parent.width - self.width)/2) - 65, (self.parent.height - 250)
+                            on_press: app.main_remote_event_button_commands_one()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_one.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_two
+                            pos: (((self.parent.width - self.width)/2)), (self.parent.height - 250)
+                            on_press: app.main_remote_event_button_commands_two()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_two.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_three
+                            pos: ((self.parent.width - self.width)/2) + 65, (self.parent.height - 250)
+                            on_press: app.main_remote_event_button_commands_three()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_three.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_four
+                            pos: ((self.parent.width - self.width)/2) - 65, (self.parent.height - 305)
+                            on_press: app.main_remote_event_button_commands_four()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_four.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_five
+                            pos: (((self.parent.width - self.width)/2)), (self.parent.height - 305)
+                            on_press: app.main_remote_event_button_commands_five()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_five.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_six
+                            pos: ((self.parent.width - self.width)/2) + 65, (self.parent.height - 305)
+                            on_press: app.main_remote_event_button_commands_six()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_six.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_seven
+                            pos: ((self.parent.width - self.width)/2) - 65, (self.parent.height - 360)
+                            on_press: app.main_remote_event_button_commands_seven()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_seven.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_eight
+                            pos: (((self.parent.width - self.width)/2)), (self.parent.height - 360)
+                            on_press: app.main_remote_event_button_commands_eight()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_eight.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_nine
+                            pos: ((self.parent.width - self.width)/2) + 65, (self.parent.height - 360)
+                            on_press: app.main_remote_event_button_commands_nine()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_nine.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_fast_rewind
+                            pos: ((self.parent.width - self.width)/2) - 105, (self.parent.height - 100)
+                            on_press: app.main_remote_event_button_commands_fast_rewind()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_fast_rewind.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_chapter_rewind
+                            pos: ((self.parent.width - self.width)/2) - 105, (self.parent.height - 155)
+                            on_press: app.main_remote_event_button_commands_chapter_rewind()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_chapter_rewind.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_fast_forward
+                            pos: ((self.parent.width - self.width)/2) + 105, (self.parent.height - 100)
+                            on_press: app.main_remote_event_button_commands_fast_forward()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_fast_forward.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_chapter_forward
+                            pos: ((self.parent.width - self.width)/2) + 105, (self.parent.height - 155)
+                            on_press: app.main_remote_event_button_commands_chapter_forward()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_chapter_forward.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_remote_mute
+                            pos: ((self.parent.width - self.width)/2) + 65, (self.parent.height - 415)
+                            on_press: app.main_remote_event_button_commands_sound_mute()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_mute.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_play
+                            pos: ((self.parent.width - self.width)/2) - 130, (self.parent.height - 470)
+                            on_press: app.main_remote_event_button_commands_play()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_play.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_pause
+                            pos: ((self.parent.width - self.width)/2) - 65, (self.parent.height - 470)
+                            on_press: app.main_remote_event_button_commands_pause()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_pause.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_stop
+                            pos: ((self.parent.width - self.width)/2), (self.parent.height - 470)
+                            on_press: app.main_remote_event_button_commands_stop()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_stop.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_info
+                            pos: ((self.parent.width - self.width)/2) + 65, (self.parent.height - 470)
+                            on_press: app.main_remote_event_button_commands_info()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_info.png'
+                                y: self.parent.y + self.parent.height - 50
+                                x: self.parent.x
+                                size: 50, 50
+                                allow_stretch: True
+                        Button:
+                            id: button_main_record
+                            pos: ((self.parent.width - self.width)/2) + 130, (self.parent.height - 470)
+                            on_press: app.main_remote_event_button_commands_record()
+                            size_hint: None, None
+                            size: 50, 50
+                            Image:
+                                source: './theater_controller/images/button_record.png'
                                 y: self.parent.y + self.parent.height - 50
                                 x: self.parent.x
                                 size: 50, 50
