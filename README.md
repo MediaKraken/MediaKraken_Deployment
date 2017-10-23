@@ -2,7 +2,7 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>0.7.7 - bad bot blocker, Current DEV branch on GitHub</b>
+        <li><b>0.7.7 - different theaters for controller, thin, etc, bad bot blocker, Current DEV branch on GitHub</b>
         <li><i>0.7.6 - Playback in client, control samsung tv</b>
         <li>0.7.5 - Listview for Kivy media list, parallel queries in PostgreSQL</b>
         <li>0.7.4 - Read DVD/Bluray info, PostgreSQL 9.6.5</b>
