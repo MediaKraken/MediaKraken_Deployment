@@ -25,7 +25,68 @@ sudo pip install git+https://github.com/kivy/kivy.git@master
 # can now launch kivy demo apps
 
 ####################################
-alpine 3.6 version
+https://wiki.alpinelinux.org/wiki/Raspberry_Pi
+
+alpine 3.6.2 version
+mount sd card
+fdisk a fat32 part (2g)
+mark bootable and save
+extract tarball to fat32 partition
+unmount cd card
+
+card to pi
+
+setup-alpine
+lbu commit -d
+reboot
+
+apk update
+apk upgrade
+lbu commit -d
+reboot
+
+rc-update add swclock boot    # enable the software clock
+rc-update del hwclock boot    # disable the hardware clock
+setup-ntp
+lbu commit -d
+reboot
+
+
+#normal install
+apk add e2fsprogs
+mkfs.ext4 /dev/mmcblk0p2
+
+mkdir /stage
+mount /dev/mmcblk0p2 /stage
+setup-disk -o /media/mmcblk0p1/MYHOSTNAME.apkovl.tar.gz /stage
+
+vi /stage/etc/fstab
+/dev/mmcblk0p1 /media/mmcblk0p1 vfat defaults 0 0
+
+
+mount -o remount,rw /media/mmcblk0p1
+sed -i '$ s/$/ root=\/dev\/mmcblk0p2/' /media/mmcblk0p1/cmdline-rpi2.txt
+
+# on kernel update
+echo /media/mmcblk0p1/boot /boot none defaults,bind 0 0 > /etc/fstab
+
+# x11
+setup-xorg-base 
+apk add xf86-video-fbdev xf86-input-mouse xf86-input-keyboard dbus ?set?xkbmap
+rc-update add dbus
+
+vi /etc/X11/xorg.conf.d/20-modules.conf
+Section "Module"
+    Load "fbdevhw"
+    Load "fb"
+    Load "shadow"
+    Load "shadowfb"
+    Load "dbe"
+    Load "glx"
+    Disable "dri"
+EndSection
+
+rc-update mdev sysinit
 
 
 cd /home/pi
