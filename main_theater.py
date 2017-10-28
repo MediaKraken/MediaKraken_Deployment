@@ -584,11 +584,17 @@ class MediaKrakenApp(App):
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % MediaKrakenApp.media_path],
                                                      shell=False)
+            else:
+                self.theater_play_server()
         else:
-            # the server will have the target device....to know if cast/stream/etc
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                'UUID': self.media_guid,
-                'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+            self.theater_play_server()
+            self.root.ids._screen_manager.current = 'Main_Theater_Remote'
+
+    def theater_play_server(self):
+        # the server will have the target device....to know if cast/stream/etc
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'UUID': MediaKrakenApp.media_uuid,
+                                              'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):

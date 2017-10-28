@@ -563,21 +563,8 @@ class MediaKrakenApp(App):
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
         logging.info(MediaKrakenApp.media_path)
-        if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
-            if os.path.isfile(MediaKrakenApp.media_path):
-                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
-                                                     '--ontop', '--no-osc', '--no-osd-bar',
-                                                     '--aid=2',
-                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                                                     '--audio-device=pulse', '--hwdec=auto',
-                                                     '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % MediaKrakenApp.media_path],
-                                                     shell=False)
-            else:
-                self.theater_play_server()
-        else:
-            self.theater_play_server()
-            self.root.ids._screen_manager.current = 'Main_Theater_Remote'
+        self.theater_play_server()
+        self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
     def theater_play_server(self):
         # the server will have the target device....to know if cast/stream/etc
