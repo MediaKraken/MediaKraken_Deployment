@@ -3,3 +3,4 @@ pyopenssl
 service_identity
 python-lirc
 py-irsend
+pylms

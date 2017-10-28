@@ -6,3 +6,4 @@ pycdio
 lcdproc
 python-lirc
 py-irsend
+pylms
