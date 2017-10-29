@@ -35,7 +35,34 @@ class CommonNetLMS(object):
     def com_net_lms_logged_in(self):
         return self.lms_device.logged_in
 
-    def com_net_lms_status(self):
-        sq = self.lms_device.get_player("00:11:22:33:44:55")
-        return sq.get_name(), sq.get_mode(), sq.get_time_elapsed(), sq.is_connected,\
-            sq.get_wifi_signal_strength(), sq.get_track_title(), sq.get_time_remaining()
+    def com_net_lms_close(self):
+        self.lms_device.disconnect()
+
+    def com_net_lms_play_count(self):
+        return self.lms_device.get_player_count()
+
+    def com_net_lms_get_players(self, update=True):
+        return self.lms_device.get_players(update=update)
+
+    def com_net_lms_connect(self):
+        self.lms_device.login()
+
+    def com_net_lms_request(self, command_string, preserve_encoding=False):
+        self.lms_device.request(command_string, preserve_encoding=preserve_encoding)
+
+    def com_net_lms_request_results(self, command_string, preserve_encoding=False):
+        self.lms_device.request_with_results(command_string, preserve_encoding=preserve_encoding)
+
+    def com_net_lms_rescan(self, mode='fast'):
+        # ‘fast’ for update changes on library, ‘full’ for complete library scan
+        #  and ‘playlists’ for playlists scan only
+        self.lms_device.rescan(mode=mode)
+
+    def com_net_lms_rescanprogress(self):
+        self.lms_device.rescanprogress()
+
+    def com_net_lms_search(self, search_term, mode='albums'):
+        self.lms_device.search(search_term, mode=mode)
+
+    def com_net_lms_telnet_connect(self):
+        self.lms_device.telnet_connect()
