@@ -47,7 +47,7 @@ for platform \
         for game_systems in platform:
             print(game_systems)
             if db_connection.db_meta_games_system_guid_by_short_name(
-                    game_systems['xxxxxxx']) is None:
+                    game_systems['name']) is None:
                 # fetch platform info
                 platform_json = GAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(
                     game_systems['id'])
