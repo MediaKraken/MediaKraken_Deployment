@@ -31,6 +31,6 @@ class CommonMetadataTranslator(object):
     def __init__(self, db_connection):
         self.translator = Translator()
 
-    def com_meta_translator(self, trans_text, country_code='us'):
+    def com_meta_translator(self, trans_text, lang_code='en'):
         # TODO will need to handle stuff > 15k characters at once
-        return self.translator.translate(trans_text, dest=country_code)
+        return self.translator.translate(trans_text, dest=lang_code)
