@@ -297,6 +297,7 @@ class MediaKrakenApp(App):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.first_image_demo = True
+        self.common_remote = common_theater.main_remote_control_event_process
         return root
 
     @wait_for(timeout=5.0)
