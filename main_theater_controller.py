@@ -17,9 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+from common import common_emby_network
 from common import common_logging
 from common import common_network_mediakraken
 from common import common_signal
+from common import common_theater
+from common import common_version
 import platform
 import os
 import sys
@@ -221,6 +224,66 @@ class MediaKrakenApp(App):
         with open(os.path.join(path, filename[0])) as stream:
             self.text_input.text = stream.read()
         self.dismiss_popup()
+
+    def mediakraken_find_server_list(self):
+        self.server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+        if self.server_list is not None:
+            for found_server in self.server_list:
+                btn1 = ToggleButton(text=self.server_list[found_server][1],
+                    group='mediakraken_server',)
+                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,
+                    found_server))
+                self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
+        else:
+            # go back to main menu
+            self.root.ids._screen_manager.current = 'Main_Remote'
+
+    def emby_find_server_list(self):
+        self.server_list = common_emby_network.com_net_emby_find_server()
+        if self.server_list is not None:
+            for found_server in self.server_list:
+                btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
+                btn1.bind(on_press=partial(self.emby_event_button_server_select, found_server))
+                self.root.ids.server_list_layout.add_widget(btn1)
+        else:
+            # go back to main menu
+            self.root.ids._screen_manager.current = 'Main_Remote'
+
+    def emby_event_button_server_select(self, server_addr, *args):
+        self.server_user_list = common_emby_network.com_net_emby_find_users(server_addr)
+        self.root.ids.user_list_layout.clear_widgets()
+        self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
+        for found_user in self.server_user_list:
+            btn1 = ToggleButton(text=found_user, group='emby_user',)
+            btn1.bind(on_press=partial(self.emby_event_button_user_select, found_user))
+            self.root.ids.user_list_layout.add_widget(btn1)
+        self.global_selected_server_addr = server_addr
+
+    def emby_event_button_user_select(self, server_user, *args):
+        print("button server user %s", server_user)
+        self.global_selected_user_id = server_user
+        self.login_password = ''
+        content = MediaKrakenLoginScreen(login_password=self.login_password,
+                                     cancel=self.dismiss_popup)
+        self._popup = Popup(title="Emby Login", content=content,
+            size_hint=(None, None), size=(425, 250))
+        self._popup.open()
+
+    def emby_event_button_user_select_login(self, *args):
+        self.dismiss_popup()
+        self.emby_user_connection_json = common_emby_network.com_net_emby_user_login(
+            self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
+        # build header parameters to url
+        user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
+        self.global_url_headers = {'User-Agent' : user_agent,
+                                   'Authorization' : 'MediaBrowser',
+                                   'UserId' : self.global_selected_user_id,
+                                   'Client' : "Android",
+                                   'Device' : "Samsung Galaxy SIII",
+                                   'DeviceId' : uniqueid.id,
+                                   'Version' : common_version.APP_VERSION}
+        # go back to main menu
+        self.root.ids._screen_manager.current = 'Main_Remote'
 
     def build(self):
         global mk_app
