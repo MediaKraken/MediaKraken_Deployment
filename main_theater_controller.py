@@ -636,6 +636,117 @@ class MediaKrakenApp(App):
             'UUID': MediaKrakenApp.media_uuid,
             'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
+    # navigation select
+    def main_remote_event_button_commands_left(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Left"}))
+
+    def main_remote_event_button_commands_right(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Right"}))
+
+    def main_remote_event_button_commands_up(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Up"}))
+
+    def main_remote_event_button_commands_down(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Down"}))
+
+    def main_remote_event_button_commands_one(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "One"}))
+
+
+    def main_remote_event_button_commands_two(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Two"}))
+
+
+    def main_remote_event_button_commands_three(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Three"}))
+
+
+    def main_remote_event_button_commands_four(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Four"}))
+
+
+    def main_remote_event_button_commands_five(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Five"}))
+
+
+    def main_remote_event_button_commands_six(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Six"}))
+
+
+    def main_remote_event_button_commands_seven(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Seven"}))
+
+
+    def main_remote_event_button_commands_eight(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Eight"}))
+
+
+    def main_remote_event_button_commands_nine(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Nine"}))
+
+
+    def main_remote_event_button_commands_fast_rewind(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "FR"}))
+
+
+    def main_remote_event_button_commands_chapter_rewind(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "CR"}))
+
+
+    def main_remote_event_button_commands_fast_forward(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "FF"}))
+
+
+    def main_remote_event_button_commands_chapter_forward(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "CF"}))
+
+
+    def main_remote_event_button_commands_sound_mute(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Mute"}))
+
+
+    def main_remote_event_button_commands_play(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Play"}))
+
+
+    def main_remote_event_button_commands_pause(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Pause"}))
+
+
+    def main_remote_event_button_commands_stop(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Stop"}))
+
+
+    def main_remote_event_button_commands_info(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Info"}))
+
+
+    def main_remote_event_button_commands_record(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'Target': "Record"}))
+
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
         logging.info("genre select: %s", args)
