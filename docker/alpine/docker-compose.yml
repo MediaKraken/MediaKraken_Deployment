@@ -386,6 +386,17 @@ services:
 #      - mediakraken_network
 #    restart: always
 
+  # runs downloader
+  download:
+    build:
+      context: ./ComposeMediaKrakenDownload
+      dockerfile: Dockerfile
+    container_name: mkdownload
+    volumes:
+      - /var/opt/mediakraken/downloads:/mediakraken/downloads
+    networks:
+      - mediakraken_network
+    restart: always
 
 # Docker private networks
 networks:
