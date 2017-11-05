@@ -23,3 +23,4 @@ docker push mediakraken/mkphppgadmin:latest
 docker push mediakraken/mksmtp:latest
 docker push mediakraken/mknginxrtmp:latest
 docker push mediakraken/mkripper:latest
+docker push mediakraken/mkdocker:latest
