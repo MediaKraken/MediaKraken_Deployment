@@ -193,15 +193,19 @@ class NetworkEvents(basic.LineReceiver):
                 pass
 
         elif json_message['Type'] == "Play":
-            media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
-            if media_path is not None:
-                # launch and attach to local running ffserver
-                http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                    media_path, http_link], shell=False)
-                http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
-                    + self.server_port_ffmpeg + '/stream.ffm'
-            msg = json.dumps({"Type": 'Play', 'Data': http_link})
+            if json_message['Sub'] == 'Client':
+                # TODO obviously send to the proper client
+                self.send_all_users(json_message)
+            else:
+                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
+                if media_path is not None:
+                    # launch and attach to local running ffserver
+                    http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
+                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
+                        media_path, http_link], shell=False)
+                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
+                        + self.server_port_ffmpeg + '/stream.ffm'
+                msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
