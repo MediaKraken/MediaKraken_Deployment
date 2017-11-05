@@ -390,7 +390,7 @@ services:
   download:
     build:
       context: ./ComposeMediaKrakenDownload
-      dockerfile: Dockerfile
+      dockerfile: dockerfile-download
     container_name: mkdownload
     volumes:
       - /var/opt/mediakraken/downloads:/mediakraken/downloads
