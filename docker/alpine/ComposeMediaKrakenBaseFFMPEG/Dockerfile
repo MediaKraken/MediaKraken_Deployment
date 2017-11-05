@@ -44,14 +44,14 @@ RUN buildDeps="autoconf \
     apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libssl1.0 && \
     
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
+    curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
     make && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
+    curl -L --insecure https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     cd build/linux && \
     cmake -G "Unix Makefiles" ../../source && \
@@ -59,7 +59,7 @@ RUN buildDeps="autoconf \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz | \
+    curl -L --insecure https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     autoreconf -fiv && \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
@@ -67,13 +67,13 @@ RUN buildDeps="autoconf \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
+    curl -L --insecure https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     make EXAMPLES=0 && \
     make install && \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -LO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
+    curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     ./configure \
         --bindir="${SRC}/bin" \
