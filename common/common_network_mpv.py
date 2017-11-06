@@ -59,7 +59,6 @@ class CommonNetMPVSocat(object):
 
 
 class CommonNetMPV(object):
-
     def __init__(self, sockfile='./mk_mpv.sock'):
         # allow time for mpv to setup the socket
         while True:
