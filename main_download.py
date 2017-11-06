@@ -31,22 +31,10 @@ def on_message(channel, method_frame, header_frame, body):
     if body is not None:
         logging.info("Message body %s", body)
         json_message = json.loads(body)
-        if json_message['Type'] == 'update':
-            if content_providers == 'themoviedb':
-                subprocess.Popen(['python',
-                                  '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
-            elif content_providers == 'thetvdb':
-                subprocess.Popen(['python',
-                                  '/mediakraken/subprogram_metadata_thetvdb_updates.py'], shell=False)
-            elif content_providers == 'tvmaze':
-                subprocess.Popen(['python',
-                                  '/mediakraken/subprogram_metadata_tvmaze_updates.py'], shell=False)
-        elif json_message['Type'] == 'collection':
-            # this check is just in case there is a tv/etc collection later
-            if content_providers == 'themoviedb':
-                subprocess.Popen(['python',
-                                  '/mediakraken/subprogram_metadata_update_create_collections.py'],
-                                 shell=False)
+        if json_message['Type'] == 'youtube':
+            dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive', 'archive.txt',
+                              json_message['Data']], shell=False)
+            dl_pid.wait()
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 # pika rabbitmq connection
