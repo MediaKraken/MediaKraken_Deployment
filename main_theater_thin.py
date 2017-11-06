@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_logging
 from common import common_network_mediakraken
+from common import common_network_mpv
 from common import common_signal
 import platform
 import os
@@ -174,6 +175,8 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
+        self.mpv_process = None
+        self.mpv_connection = None
         return root
 
     @wait_for(timeout=5.0)
@@ -264,6 +267,7 @@ class MediaKrakenApp(App):
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % video_source_dir],
                                                      shell=False)
+                self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             logging.info("here for movie refresh")
             if json_message['Sub2'] == "Demo":

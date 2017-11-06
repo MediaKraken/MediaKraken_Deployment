@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from common import common_emby_network
 from common import common_logging
 from common import common_network_mediakraken
+from common import common_network_mpv
 from common import common_signal
 from common import common_theater
 from common import common_version
@@ -296,6 +297,7 @@ class MediaKrakenApp(App):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.common_remote = common_theater.main_remote_control_event_process
+        self.mpv_connection = None
         return root
 
     @wait_for(timeout=5.0)
@@ -648,6 +650,7 @@ class MediaKrakenApp(App):
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % MediaKrakenApp.media_path],
                                                      shell=False)
+                self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()
         else:
