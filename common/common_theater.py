@@ -41,7 +41,6 @@ def main_remote_control_event_process(self, action_type_list):
                                                               json_data["Protocol"]["Host IP"]],
                                                               self.octmote_json_fetch_data_for_command(json_data,
                                                               action_type_list))
-            pass
         # check to see if IR device is already open
         elif json_data["Protocol"]["Method"].lower() == "ir":
             if not json_data["fake"] in self.ir_devices_dict:
