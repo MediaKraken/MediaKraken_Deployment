@@ -278,6 +278,8 @@ class MediaKrakenApp(App):
                 self.demo_media_id = json_message['UUID']
                 proxy_image_demo = Loader.image(self.home_demo_file_name)
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+        elif json_message['Type'] == "MPV":
+            self.mpv_connection.execute(json_message['Data'])
         else:
             logging.error("unknown message type")
 
