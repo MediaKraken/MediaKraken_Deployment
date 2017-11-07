@@ -1,3 +1,6 @@
+<B>What is it?</B>
+Yet another media streaming server and client application suite. Also includes media management and remote conrol software to run on a tablet.<BR>
+<BR>
 This program is still quite alpha.<BR>
 <BR>
 
