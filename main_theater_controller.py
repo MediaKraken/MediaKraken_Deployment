@@ -298,6 +298,7 @@ class MediaKrakenApp(App):
         self.connect_to_server()
         self.first_image_demo = True
         self.common_remote = common_theater.main_remote_control_event_process
+        self.play_status = None
         return root
 
     @wait_for(timeout=5.0)
@@ -638,12 +639,20 @@ class MediaKrakenApp(App):
 
     # navigation select
     def main_remote_event_button_commands_left(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                                              'Target': "Left"}))
+        if self.play_status == 'paused':
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                'Data': {"command": 'frame-back-step'}}))
+        else:
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                                  'Target': "Left"}))
 
     def main_remote_event_button_commands_right(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                                              'Target': "Right"}))
+        if self.play_status == 'paused':
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                'Data': {"command": 'frame-step'}}))
+        else:
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                                  'Target': "Right"}))
 
     def main_remote_event_button_commands_up(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
@@ -724,19 +733,38 @@ class MediaKrakenApp(App):
 
 
     def main_remote_event_button_commands_play(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                                              'Target': "Play"}))
+        if self.play_status == 'paused':
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                'Data': {"command": ["set_property", "pause", 'false']}}))
+            self.play_status = 'playing'
+        else:
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                                  'Target': "Play"}))
 
 
     def main_remote_event_button_commands_pause(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                                              'Target': "Pause"}))
+        if False:
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                                  'Target': "Pause"}))
+        else:
+            if self.play_status != 'paused':
+                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                    'Data': { "command": ["set_property", "pause", 'true'] }}))
+                self.play_status = 'paused'
+            else:
+                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                    'Data': { "command": ["set_property", "pause", 'false'] }}))
+                self.play_status = 'playing'
 
 
     def main_remote_event_button_commands_stop(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                                              'Target': "Stop"}))
-
+        if False:
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                                  'Target': "Stop"}))
+        else:
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                                                  'Data': { "command": 'quit-watch-later'}}))
+        self.play_status = 'stopped'
 
     def main_remote_event_button_commands_info(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
