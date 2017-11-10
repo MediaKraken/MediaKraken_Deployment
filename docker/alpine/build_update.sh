@@ -4,8 +4,10 @@ docker-compose down
 docker-compose build
 
 # Build the base pypy
-cd alpine-pypy/2
-docker build -t mediakraken/mkbasepypy .
+cd ComposeMediaKrakenBasePYPY/2
+docker build -t mediakraken/mkbasepypy2 .
+cd ../ComposeMediaKrakenBasePYPY/3
+docker build -t mediakraken/mkbasepypy3 .
 cd ../
 
 # base python 2 images
