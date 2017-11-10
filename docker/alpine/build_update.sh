@@ -8,6 +8,15 @@ cd alpine-pypy/2
 docker build -t mediakraken/mkbasepypy .
 cd ../
 
+cd ../ComposeMediaKrakenBase34
+docker build -t mediakraken/mkbase34
+
+cd ../ComposeMediaKrakenBase35
+docker build -t mediakraken/mkbase35
+
+cd ../ComposeMediaKrakenBase36
+docker build -t mediakraken/mkbase36
+
 # Build the base cuba from alpine
 cd ../ComposeMediaKrakenBaseCuda
 docker build -t mediakraken/mkbasecuda .
