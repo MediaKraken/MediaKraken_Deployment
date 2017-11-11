@@ -1,0 +1,96 @@
+raspbian 9.07.2017 (pi/raspberry)
+sudo apt-get update
+sudo apt-get upgrade
+turn on ssh
+pip install --upgrade pip
+sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libgstreamer1.0-dev cython liblirc-dev
+cd /home/pi
+git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
+cd MediaKraken_Deployment
+pip install -r requirements.txt
+
+# set timezone
+sudo raspi-config
+
+**********other way
+sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+   pkg-config libgl1-mesa-dev libgles2-mesa-dev \
+   python-setuptools libgstreamer1.0-dev git-core \
+   gstreamer1.0-plugins-{bad,base,good,ugly} \
+   gstreamer1.0-{omx,alsa} python-dev libmtdev-dev \
+   xclip
+sudo pip install -U Cython==0.25.2
+sudo pip install git+https://github.com/kivy/kivy.git@master
+
+# can now launch kivy demo apps
+
+####################################
+https://wiki.alpinelinux.org/wiki/Raspberry_Pi
+
+alpine 3.6.2 version
+mount sd card
+fdisk a fat32 part (2g)
+mark bootable and save
+extract tarball to fat32 partition
+unmount cd card
+
+card to pi
+
+setup-alpine
+lbu commit -d
+reboot
+
+apk update
+apk upgrade
+lbu commit -d
+reboot
+
+rc-update add swclock boot    # enable the software clock
+rc-update del hwclock boot    # disable the hardware clock
+setup-ntp
+lbu commit -d
+reboot
+
+
+#normal install
+apk add e2fsprogs
+mkfs.ext4 /dev/mmcblk0p2
+
+mkdir /stage
+mount /dev/mmcblk0p2 /stage
+setup-disk -o /media/mmcblk0p1/MYHOSTNAME.apkovl.tar.gz /stage
+
+vi /stage/etc/fstab
+/dev/mmcblk0p1 /media/mmcblk0p1 vfat defaults 0 0
+
+
+mount -o remount,rw /media/mmcblk0p1
+sed -i '$ s/$/ root=\/dev\/mmcblk0p2/' /media/mmcblk0p1/cmdline-rpi2.txt
+
+# on kernel update
+echo /media/mmcblk0p1/boot /boot none defaults,bind 0 0 > /etc/fstab
+
+# x11
+setup-xorg-base 
+apk add xf86-video-fbdev xf86-input-mouse xf86-input-keyboard dbus ?set?xkbmap
+rc-update add dbus
+
+vi /etc/X11/xorg.conf.d/20-modules.conf
+Section "Module"
+    Load "fbdevhw"
+    Load "fb"
+    Load "shadow"
+    Load "shadowfb"
+    Load "dbe"
+    Load "glx"
+    Disable "dri"
+EndSection
+
+rc-update mdev sysinit
+
+
+cd /home/pi
+git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
+cd MediaKraken_Deployment
+pip install -r requirements.txt
+

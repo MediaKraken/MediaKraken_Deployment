@@ -16,3 +16,5 @@ subliminal
 steam
 pika
 psutil
+hyper
+googletrans

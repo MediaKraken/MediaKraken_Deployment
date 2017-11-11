@@ -17,9 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+from common import common_emby_network
 from common import common_logging
 from common import common_network_mediakraken
+from common import common_network_mpv
 from common import common_signal
+from common import common_theater
+from common import common_version
 import platform
 import os
 import sys
@@ -221,6 +225,66 @@ class MediaKrakenApp(App):
             self.text_input.text = stream.read()
         self.dismiss_popup()
 
+    def mediakraken_find_server_list(self):
+        self.server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+        if self.server_list is not None:
+            for found_server in self.server_list:
+                btn1 = ToggleButton(text=self.server_list[found_server][1],
+                    group='mediakraken_server',)
+                btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,
+                    found_server))
+                self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
+        else:
+            # go back to main menu
+            self.root.ids._screen_manager.current = 'Main_Remote'
+
+    def emby_find_server_list(self):
+        self.server_list = common_emby_network.com_net_emby_find_server()
+        if self.server_list is not None:
+            for found_server in self.server_list:
+                btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
+                btn1.bind(on_press=partial(self.emby_event_button_server_select, found_server))
+                self.root.ids.server_list_layout.add_widget(btn1)
+        else:
+            # go back to main menu
+            self.root.ids._screen_manager.current = 'Main_Remote'
+
+    def emby_event_button_server_select(self, server_addr, *args):
+        self.server_user_list = common_emby_network.com_net_emby_find_users(server_addr)
+        self.root.ids.user_list_layout.clear_widgets()
+        self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
+        for found_user in self.server_user_list:
+            btn1 = ToggleButton(text=found_user, group='emby_user',)
+            btn1.bind(on_press=partial(self.emby_event_button_user_select, found_user))
+            self.root.ids.user_list_layout.add_widget(btn1)
+        self.global_selected_server_addr = server_addr
+
+    def emby_event_button_user_select(self, server_user, *args):
+        print("button server user %s", server_user)
+        self.global_selected_user_id = server_user
+        self.login_password = ''
+        content = MediaKrakenLoginScreen(login_password=self.login_password,
+                                     cancel=self.dismiss_popup)
+        self._popup = Popup(title="Emby Login", content=content,
+            size_hint=(None, None), size=(425, 250))
+        self._popup.open()
+
+    def emby_event_button_user_select_login(self, *args):
+        self.dismiss_popup()
+        self.emby_user_connection_json = common_emby_network.com_net_emby_user_login(
+            self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
+        # build header parameters to url
+        user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
+        self.global_url_headers = {'User-Agent' : user_agent,
+                                   'Authorization' : 'MediaBrowser',
+                                   'UserId' : self.global_selected_user_id,
+                                   'Client' : "Android",
+                                   'Device' : "Samsung Galaxy SIII",
+                                   'DeviceId' : uniqueid.id,
+                                   'Version' : common_version.APP_VERSION}
+        # go back to main menu
+        self.root.ids._screen_manager.current = 'Main_Remote'
+
     def build(self):
         global mk_app
         mk_app = self
@@ -232,6 +296,8 @@ class MediaKrakenApp(App):
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
+        self.common_remote = common_theater.main_remote_control_event_process
+        self.mpv_connection = None
         return root
 
     @wait_for(timeout=5.0)
@@ -337,7 +403,8 @@ class MediaKrakenApp(App):
                             pass
                         if stream_info['codec_type'] == 'audio':
                             logging.info('audio')
-                            audio_streams.append((stream_codec + stream_language + stream_title)[:-3])
+                            audio_streams.append((stream_codec + stream_language
+                                                  + stream_title)[:-3])
                         elif stream_info['codec_type'] == 'subtitle':
                             subtitle_streams.append(stream_language)
                             logging.info('sub')
@@ -363,17 +430,7 @@ class MediaKrakenApp(App):
                 for video_list in json_message['Data']:
                     data.append({'text': video_list[0], 'uuid': video_list[1],
                                  'path': video_list[4]})
-                # args_converter = lambda row_index,\
-                #                         rec: {'text': rec['text'], 'size_hint_y': None,
-                #                               'height': 25}
-                # self.list_adapter = ListAdapter(data=data, args_converter=args_converter,
-                #                            cls=ListItemButton,
-                #                            selection_mode='single',
-                #                            allow_empty_selection=False)
-                # self.root.ids.theater_media_video_list_scrollview.add_widget(
-                #     ListView(adapter=self.list_adapter))
                 self.root.ids.theater_media_video_list_scrollview.data = data
-                # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
         elif json_message['Type'] == 'Play': # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
@@ -389,7 +446,6 @@ class MediaKrakenApp(App):
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
-
         elif json_message['Type'] == "Genre List":
             logging.info("gen")
             for genre_list in json_message:
@@ -400,7 +456,6 @@ class MediaKrakenApp(App):
                                     height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
-
         elif json_message['Type'] == "Image":
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
@@ -414,10 +469,6 @@ class MediaKrakenApp(App):
                     proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
                     pass
                 elif json_message['Sub2'] == "Movie":
-                    # texture = Texture.create(size=(640, 480), colorfmt=str('rgba'))
-                    # texture.blit_buffer(base64.b64decode(json_message['Data']))
-                    # self.root.ids.main_home_movie_image.texture = Image(size=texture.size, texture=texture).texture
-                    #self.root.ids.main_home_movie_image.texture = ImageLoaderPygame(StringIO.StringIO(base64.b64decode(json_message['Data']))).texture
                     self.home_movie_file_name = str(uuid.uuid4())
                     f = open(self.home_movie_file_name, "w")
                     f.write(base64.b64decode(json_message['Data']))
@@ -564,7 +615,7 @@ class MediaKrakenApp(App):
         elif keycode[1] == 'tab':
             pass
         elif keycode[1] == 'escape':
-            self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            sys.exit()
         elif keycode[1] == 'home':
             self.root.ids._screen_manager.current = 'Main_Theater_Home'
         elif keycode[1] == 'end':
@@ -599,24 +650,18 @@ class MediaKrakenApp(App):
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % MediaKrakenApp.media_path],
                                                      shell=False)
+                self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
+            else:
+                self.theater_play_server()
         else:
-            # the server will have the target device....to know if cast/stream/etc
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-                'UUID': self.media_guid,
-                'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+            self.theater_play_server()
+            self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
-    # # video select
-    # def theater_event_button_video_select(self, adapter, *args):
-    #     if len(adapter.selection) == 0:
-    #         logging.info("No selected item")
-    #     else:
-    #         logging.info(adapter.selection[0])
-    #         #logging.info(adapter.data[adapter.selection[0]])
-    #         logging.info(adapter.get_data_item(0)['uuid'])
-    #     self.media_guid = adapter.get_data_item(0)['uuid']
-    #     self.media_path = adapter.get_data_item(0)['path']
-    #     logging.info('what')
-    #     self.send_twisted_message(json.dumps({'Type': 'Media', 'Sub': 'Detail', 'UUID': self.media_guid}))
+    def theater_play_server(self):
+        # the server will have the target device....to know if cast/stream/etc
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+                                              'UUID': MediaKrakenApp.media_uuid,
+                                              'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
@@ -628,8 +673,9 @@ class MediaKrakenApp(App):
         self.dismiss_popup()
         logging.info("button server user login %s", self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
-        self.send_twisted_message(json.dumps({'Type': 'Login',  'User': self.global_selected_user_id,
-                                          'Password': self.login_password}))
+        self.send_twisted_message(json.dumps({'Type': 'Login',
+                                              'User': self.global_selected_user_id,
+                                              'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
@@ -688,29 +734,39 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie', 'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
+                                                  'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
+                                                  'Sub2': 'TV', 'Sub3': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV', 'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
+                                                  'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game', 'Sub2': 'Game', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game',
+                                                  'Sub2': 'Game', 'Sub3': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book', 'Sub2': 'Book', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book',
+                                                  'Sub2': 'Book', 'Sub3': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Album', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
+                                                  'Sub2': 'Album', 'Sub3': 'Cover'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music', 'Sub2': 'Video', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
+                                                  'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
@@ -776,5 +832,7 @@ if __name__ == '__main__':
     Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
-    Window.fullscreen = 'auto'
+    # so the raspberry pi doesn't crash
+    if os.uname()[4][:3] != 'arm':
+        Window.fullscreen = 'auto'
     MediaKrakenApp().run()

@@ -12,4 +12,6 @@ docker tag mk_transmission:latest mediakraken/mktransmission:latest
 docker tag mk_mumble mediakraken/mkmumble:latest
 docker tag mk_phppgadmin mediakraken/mkphppgadmin:latest
 docker tag mk_smtp mediakraken/mksmtp:latest
+docker tag mk_ripper mediakraken/mkripper:latest
+docker tag mk_download mediakraken/mkdownload:latest
 

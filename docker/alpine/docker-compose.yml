@@ -350,6 +350,14 @@ services:
       - mediakraken_network
     restart: always
 
+  # runs ripper
+  ripper:
+    build:
+      context: ./ComposeMediaKrakenRipper
+      dockerfile: Dockerfile
+    container_name: mkripper
+    restart: always
+
 #  mail:
 #    build:
 #      context: ./ComposeMediaKrakenMail
@@ -378,6 +386,20 @@ services:
 #      - mediakraken_network
 #    restart: always
 
+  # runs downloader
+  download:
+    build:
+      context: ./ComposeMediaKrakenDownload
+      dockerfile: dockerfile-download
+    container_name: mkdownload
+    depends_on:
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_download.py
+    volumes:
+      - /var/opt/mediakraken/downloads:/mediakraken/downloads
+    networks:
+      - mediakraken_network
+    restart: always
 
 # Docker private networks
 networks:

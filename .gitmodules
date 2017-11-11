@@ -10,6 +10,3 @@
 [submodule "MediaKraken_Kodi"]
 	path = MediaKraken_Kodi
 	url = ../MediaKraken_Kodi
-[submodule "MediaKraken_OS"]
-	path = MediaKraken_OS
-	url = ../LibreELEC.tv

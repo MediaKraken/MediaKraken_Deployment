@@ -59,6 +59,11 @@ RUN cd ip2country \
   && python setup.py install \
   && cd .. \
   && rm -R ./ip2country
+ADD np_inline-0.3 /mediakraken/np_inline
+RUN cd /mediakraken/np_inline
+  && python setup.py install \
+  && cd .. \
+  && rm -R ./np_inline
 
 EXPOSE 8903
 

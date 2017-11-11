@@ -162,5 +162,13 @@ if db_connection.db_version_check() == 11:
     db_connection.db_commit()
 
 
+if db_connection.db_version_check() == 12:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'API': {'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb'}})
+    db_connection.db_opt_update(options_json)
+    db_connection.db_version_update(13)
+    db_connection.db_commit()
+
+
 # close the database
 db_connection.db_close()

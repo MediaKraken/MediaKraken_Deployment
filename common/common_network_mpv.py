@@ -24,7 +24,7 @@ import os
 import time
 import subprocess
 
-
+# https://mpv.io/manual/master/#json-ipc
 class CommonNetMPVSocat(object):
     def __init__(self, sockfile='./mk_mpv.sock'):
         # allow time for mpv to setup the socket
@@ -59,7 +59,6 @@ class CommonNetMPVSocat(object):
 
 
 class CommonNetMPV(object):
-
     def __init__(self, sockfile='./mk_mpv.sock'):
         # allow time for mpv to setup the socket
         while True:
