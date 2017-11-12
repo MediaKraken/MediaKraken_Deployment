@@ -35,7 +35,7 @@ def db_open(self, db_build=False):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     #psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     #psycopg2.extras.register_default_json(loads=lambda x: x)
-    if db_build == True:
+    if db_build == False:
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"\
             % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'], 'mkpgbounce', 6432,
             os.environ['POSTGRES_PASSWORD']))
