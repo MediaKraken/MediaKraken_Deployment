@@ -22,7 +22,7 @@ API_LIMIT = {
     'imvdb': (1000, 60), # 1000 per minute (6/30/2016)
     'isbndb': (9999, 1), # no mention of limits 1/01/2017
     'lastfm': (5,1), # five per second (11/8/2016)
-    'musicbrainz': (9999, 1),
+    'musicbrainz': (1, 1), # 1 per second (11/11/2017)
     'netflixroulette': (9999, 1), # (6-27-2016)
     'omdb': (20, 1), # 7/29/2016 says 20 concurrent connections
     'openlibrary': (100, 300), # 1/14/2017 100 every 5 minutes
