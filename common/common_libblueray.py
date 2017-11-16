@@ -20,6 +20,9 @@ import logging # pylint: disable=W0611
 import bluread
 #help(bluread)
 
+# https://github.com/cmlburnett/PyBluRead/blob/master/setup.py
+# sudo apt-get install libbluray-dev
+
 with bluread.Bluray("/dev/sr0") as b:
     b.Open()
     print("Volume ID: %s" % b.VolumeId)
