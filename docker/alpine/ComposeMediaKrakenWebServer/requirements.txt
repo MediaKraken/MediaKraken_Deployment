@@ -18,6 +18,7 @@ uwsgi
 pygal
 pdfkit
 apache-libcloud
+pyexcel
 natsort
 fastnumbers
 PyVimeo
