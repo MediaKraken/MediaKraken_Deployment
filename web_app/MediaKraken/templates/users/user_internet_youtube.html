@@ -19,7 +19,7 @@
         {% for row_data in media %}
         <div class="main_photo">
             <a href= {{ url_for('user_internet.user_internet_youtube_detail', uuid=row_data['items'][0]['id']) }} >
-            <img src= {{ row_data['items'][0]['snippet']['thumbnails']['default']['url'] }} height="300" width="200">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data['items'][0]['snippet']['thumbnails']['default']['url'] }} height="300" width="200">
         </a>
         <div class="description">
             <p class="description_content_left">{{row_data['items'][0]['snippet']['title']}}</p>
@@ -32,4 +32,11 @@
     {% endif %}
     {% endblock %}
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
 </body>

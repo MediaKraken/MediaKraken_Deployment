@@ -19,27 +19,34 @@
         {% endif %}
         <div>
             <a href= {{"../../cast/back/" + data_uuid}} >
-            <img src="/static/images/navigation/arrow_left.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/arrow_left.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/rewind/" + data_uuid}} >
-            <img src="/static/images/navigation/rewind.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/rewind.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/stop/" + data_uuid}} >
-            <img src="/static/images/navigation/stop.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/stop.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/play/" + data_uuid}} >
-            <img src="/static/images/navigation/play.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/play.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/pause/" + data_uuid}} >
-            <img src="/static/images/navigation/pause.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/pause.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/ff/" + data_uuid}} >
-            <img src="/static/images/navigation/forward.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/forward.png" height="50" width="50">
             </a>
             <a href= {{"../../cast/forward/" + data_uuid}} >
-            <img src="/static/images/navigation/arrow_right.png" height="50" width="50">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/arrow_right.png" height="50" width="50">
             </a>
         </div>
+        <script src="/static/js/blazy.min.js"></script>
+        <script>
+            ;(function() {
+                // Initialize
+                var bLazy = new Blazy();
+            })();
+        </script>
     </body>
 </html>
 {% endblock %}

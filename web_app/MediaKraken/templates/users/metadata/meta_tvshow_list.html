@@ -23,9 +23,9 @@
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = "{{ url_for('user_metadata_tv.metadata_tvshow_detail', guid=row_data[0]) }}" >
                 {% if row_data[3] == None %}
-                <img src= "/static/images/missing_icon.jpg" height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "/static/images/missing_icon.jpg" height="300" width="200">
                 {% else %}
-                <img src= {{ "/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
                 {% endif %}
                 </a>
                 {% if row_data[2] != None %}
@@ -42,5 +42,12 @@
     <p id="general_text">No TV show metadata found.</p>
     {% endif %}
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
 </body>
 {% endblock %}
