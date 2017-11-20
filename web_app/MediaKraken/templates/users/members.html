@@ -19,13 +19,13 @@
     </head>
     <body id="data_background">
         <a href="{{ url_for('user_movie_genre.user_movie_page', genre='All') }}">
-        <img src="/static/images/movie_ticket.png" alt="Movie Ticket" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/movie_ticket.png" alt="Movie Ticket" height="200" width="200">
         </a>
         <a href="{{ url_for('user_music.user_album_list_page') }}">
-        <img src="/static/images/headphone.png" alt="Music" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/headphone.png" alt="Music" height="200" width="200">
         </a>
         <a href="{{ url_for('user_tv.user_tv_page') }}">
-        <img src="/static/images/television.png" alt="TV" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/television.png" alt="TV" height="200" width="200">
         </a>
         <a href="{{ url_for('user_sports.user_sports_page') }}">
         <img src="/static/images/stadium.png" alt="Sports" height="200" width="200">
@@ -92,6 +92,13 @@
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/jquery.burn.min.js"></script>
     <script src="/static/js/scripts_burn.js"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
     </body>
 </html>
 {% endblock %}
