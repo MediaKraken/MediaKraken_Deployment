@@ -5,7 +5,7 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>0.7.8 - Base Excel code, Base Xbox Live code, lazy load images, base Soundcloud code - Current DEV branch on GitHub</b>
+        <li><b>0.7.8 - Base Excel code, Base Xbox Live code, lazy load images, base Soundcloud code, base Instragram code - Current DEV branch on GitHub</b>
         <li><i>0.7.7 - Redis 3.2.11, Nginx 1.13.6, PostgreSQL 9.6.6, different theaters (controller, thin, etc), bad bot blocker, base lms code, base weather code, base translation code</b>
         <li>0.7.6 - Playback in client, control samsung tv</b>
         <li>0.7.5 - Listview for Kivy media list, parallel queries in PostgreSQL</b>
