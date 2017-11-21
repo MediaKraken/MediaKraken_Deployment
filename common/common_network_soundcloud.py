@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -18,8 +18,24 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+import soundcloud
 
 
-APP_VERSION = '0.7.8'
+class CommonNetworkSoundcloud(object):
+    """
+    Class for interfacing with Soundcloud
+    """
+    def __init__(self, access_token):
+        self.soundcloud_inst = soundcloud.Client(access_token=access_token)
 
-DB_VERSION = 14
+    def com_net_soundcloud_follow(self, user_id_to_follow):
+        self.soundcloud_inst.put('/me/followings/%d' % user_id_to_follow)
+
+    def com_net_soundcloud_desc(self, description):
+        self.soundcloud_inst.put('/me', user={'description': description})
+
+    def com_net_soundcloud_upload(self, track_title, file_name):
+        track = self.soundcloud_inst.post('/tracks', track={
+            'title': track_title,
+            'sharing': 'private',
+            'asset_data': open(file_name, 'rb')})

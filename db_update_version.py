@@ -169,6 +169,12 @@ if db_connection.db_version_check() == 12:
     db_connection.db_version_update(13)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 13:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'API': {'soundcloud': None}})
+    db_connection.db_opt_update(options_json)
+    db_connection.db_version_update(14)
+    db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
