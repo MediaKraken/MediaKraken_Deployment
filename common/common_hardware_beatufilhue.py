@@ -1,0 +1,44 @@
+'''
+  Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License version 2 for more details.
+
+  You should have received a copy of the GNU General Public License
+  version 2 along with this program; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+'''
+
+from __future__ import absolute_import, division, print_function, unicode_literals
+import logging # pylint: disable=W0611
+from beautifulhue.api import Bridge
+
+
+class CommonHardwareBeatifulHue(object):
+    """
+    Class for interfacing with beatifulhue
+    """
+    def __init__(self, ip_addr, user_id):
+        self.beatifulhue_inst = Bridge(device={'ip': ip_addr}, user={'name': user_id})
+
+    def com_hardware_beatiful_get_light(self, light_id):
+        # n
+        # 'new'
+        # 'all'
+        return self.beatifulhue_inst.light.get({'which': light_id, 'verbose':True})
+
+    def com_hardward_beatiful_update_light(self, light_id, attr_desc):
+        resource = {
+            'which': light_id,
+            'data': {
+                'attr': {'name': attr_desc}
+            }
+        }
+        self.beatifulhue_inst.light.update(resource)
