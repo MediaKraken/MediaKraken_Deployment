@@ -23,7 +23,7 @@ from twilio.rest import Client
 
 class CommonNetworkTwilio(object):
     """
-    Class for interfacing with Vimeo
+    Class for interfacing with twilio
     """
     def __init__(self, account, token):
         self.twilio_inst = Client(account, token)
