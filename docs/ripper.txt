@@ -1,0 +1,8 @@
+debian on main box for ease of makemkv and eject commands
+
+server listens via twisted
+
+raspberry pi will run the show telling server when cd's should load
+
+will also tell the ardionos to do their jobs via usb hub
+
