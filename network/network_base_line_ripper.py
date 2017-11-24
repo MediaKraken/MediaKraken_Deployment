@@ -85,13 +85,19 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Data'] == "DVD":
                 # TODO id disc
                 # TODO see if in db already
-                subprocess.call(['makemkvcon', 'mkv', 'disc:0', 'all', '.'])
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
             elif json_message['Data'] == "Bray":
-                pass
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
             elif json_message['Data'] == "UHD":
-                pass
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
             elif json_message['Data'] == "HDVD":
-                pass
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
             else:
                 pass
         elif json_message['Type'] == "Ident":
