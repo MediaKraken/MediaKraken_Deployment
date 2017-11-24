@@ -83,6 +83,8 @@ class NetworkEvents(basic.LineReceiver):
                     # call waits until done
                     subprocess.call(['abcde', '-d', json_message['Target']])
             elif json_message['Data'] == "DVD":
+                # TODO id disc
+                # TODO see if in db already
                 subprocess.call(['makemkvcon', 'mkv', 'disc:0', 'all', '.'])
             elif json_message['Data'] == "Bray":
                 pass
