@@ -85,19 +85,23 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Data'] == "DVD":
                 # TODO id disc
                 # TODO see if in db already
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
             elif json_message['Data'] == "Bray":
                 # TODO id disc
                 # TODO see if in db already
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all',json_message['Location']])
             elif json_message['Data'] == "UHD":
                 # TODO id disc
                 # TODO see if in db already
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
             elif json_message['Data'] == "HDVD":
                 # TODO id disc
                 # TODO see if in db already
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'], 'all', '.'])
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
             else:
                 pass
         elif json_message['Type'] == "Ident":
