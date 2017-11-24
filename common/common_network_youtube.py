@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from . import common_google
+from . import youtubeapi
 import youtube_dl
 import bs4 as bs
 import urllib
@@ -53,3 +54,50 @@ def com_net_yt_trending(country_code='US'):
             link_list.append(links_set[i]['href'].strip(''))
     link_list2=["www.youtube.com"+link_list[i] for i in range(len(link_list)) if i%2==0]
     return link_list2
+
+class CommonNetworkYoutube(object):
+    """
+    Class for interfacing with youtube
+    """
+    def __init__(self):
+        pass
+        self.youtube_inst = youtubeapi.YoutubeAPI({'key': '/* Your API key here */'})
+
+    def com_net_yt_video_info(self, video_id):
+        return self.youtube_inst.get_video_info(video_id)
+
+    # Search playlists, channels and videos
+    def com_net_yt_search_all(self, search_string):
+        return self.youtube_inst.search(search_string)
+
+    # Search only Videos
+    def com_net_yt_search_video(self, search_string):
+        return self.youtube_inst.search_videos(search_string)
+
+    # Search only Videos in a given channel
+    def com_net_yt_search_in_channel(self, search_string, channel_id):
+        video_list = self.youtube_inst.search_channel_videos(search_string, channel_id, 50)
+
+        # TODO
+        results = self.youtube_inst.search_advanced({'fake': 'param'})
+
+    def com_net_yt_channel_by_name(self, channel_name):
+        return self.youtube_inst.get_channel_by_name(channel_name)
+
+    def com_net_yt_channel_by_id(self, channel_id):
+        return self.youtube_inst.get_channel_by_id(channel_id)
+
+    def com_net_yt_playlist_by_id(self, playlist_id):
+        return self.youtube_inst.get_playlist_by_id(playlist_id)
+
+    def com_net_yt_playlist_by_channel(self, channel_id):
+        return self.youtube_inst.get_playlists_by_channel_id(channel_id)
+
+    def com_net_yt_items_in_playlist(self, playlist_id):
+        return self.youtube_inst.get_playlist_items_by_playlist_id(playlist_id)
+
+    def com_net_yt_activities_by_channel(self, channel_id):
+        return self.youtube_inst.get_activities_by_channel_id(channel_id)
+
+    def com_net_yt_vid_id_from_url(self, url_name):
+        return self.youtube_inst.parse_vid_from_url(url_name)
