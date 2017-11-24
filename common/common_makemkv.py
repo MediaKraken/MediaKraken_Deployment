@@ -21,60 +21,19 @@ import logging # pylint: disable=W0611
 import subprocess
 
 
-# info on inserted disk in drive 0
-# makemkvcon info disc:0
+def com_makemkv_drive_list():
+    makemkv_pid = subprocess.Popen(['makemkvcon', '-r', '--cache=1', 'info', 'disc:9999'],
+                                    stdout=subprocess.PIPE, bufsize=1)
+    for line in iter(makemkv_pid.stdout.readline, b''):
+        print(line,)
+        makemkv_pid.communicate()
 
-'''
-Operation successfully completed
-Total 4 titles
-Title  0
-0 Video Mpeg2
-1 Audio Dolby Digital
-2 Audio Dolby Digital
-3 Audio Dolby Digital
-4 Audio Dolby Digital
-5 Subtitles Dvd Subtitles
-6 Subtitles Dvd Subtitles
-7 Subtitles Dvd Subtitles
-8 Subtitles Dvd Subtitles
-9 Subtitles Dvd Subtitles
-
-Title  1
-0 Video Mpeg2
-1 Audio Dolby Digital
-2 Subtitles Dvd Subtitles
-3 Subtitles Dvd Subtitles
-4 Subtitles Dvd Subtitles
-
-Title  2
-0 Video Mpeg2
-1 Audio Dolby Digital
-2 Audio Dolby Digital
-3 Audio Dolby Digital
-4 Subtitles Dvd Subtitles
-5 Subtitles Dvd Subtitles
-
-Title  3
-0 Video Mpeg2
-1 Audio Dolby Digital
-2 Audio Dolby Digital
-3 Audio Dolby Digital
-4 Subtitles Dvd Subtitles
-5 Subtitles Dvd Subtitles
-'''
-
-# title 0 to path
-# makemkvcon mkv disc:0 0 .
-# makemkvcon --progress=-same --cache=128 mkv disc:0 0 .
-## Current action: Saving to MKV file
-# makemkvcon mkv disc:0 all c:\folder
-
-'''
-Current progress - 100%  , Total progress - 100%
-1 titles saved
-Copy complete. 1 titles saved.
-'''
-
-# https://github.com/cmlburnett/PyBluRead/blob/master/setup.py
-
-# sudo apt-get install libbluray-dev
+def com_makemkv_rip_disc(file_location, cache_size=1024, disc=0, track='all', min_seconds=120):
+    makemkv_pid = subprocess.Popen(['makemkvcon', '--noscan', '-r',
+                                    ('--minlength=%s' % min_seconds)
+                                    ('--cache=%s' % cache_size),
+                                    ('disc:%s' % disc), track, file_location],
+                                    stdout=subprocess.PIPE, bufsize=1)
+    for line in iter(makemkv_pid.stdout.readline, b''):
+        print(line, )
+        makemkv_pid.communicate()

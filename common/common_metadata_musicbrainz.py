@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import musicbrainzngs
+from common import common_version
 
 '''
 A musicbrainz release represents the unique release (i.e. issuing) of a product on a
@@ -38,24 +39,24 @@ class CommonMetadataMusicbrainz(object):
     Class for interfacing with musicbrainz
     """
     def __init__(self, option_config_json):
-        global musicbrainzngs
         # If you plan to submit data, authenticate
         #musicbrainzngs.auth(option_config_json.get('MediaBrainz','User').strip(),
         #option_config_json.get('MediaBrainz','Password').strip())
-        # http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
-        musicbrainzngs.set_useragent("MediaKraken_Server", "0.1.6",
-            "spootdev@gmail.com https://github.com/MediaKraken_Deployment")
+        musicbrainzngs.set_useragent("MediaKraken_Server", common_version.APP_VERSION,
+            "spootdev@gmail.com http://www.mediakraken.org")
         # If you are connecting to a development server
         if option_config_json['MediaBrainz']['Host'] != 'None':
-            musicbrainzngs.set_hostname(option_config_json['MediaBrainz']['Host'] + ':'
-                                        + option_config_json['MediaBrainz']['Port'])
+            if option_config_json['MediaBrainz']['Host'] != 'Docker':
+                musicbrainzngs.set_hostname(option_config_json['MediaBrainz']['Host'] + ':'
+                                            + option_config_json['MediaBrainz']['Port'])
+            else:
+                musicbrainzngs.set_hostname('mkbrainz:5000')
 
 
     def show_release_details(self, rel):
         """
         Get release details
         """
-        global musicbrainzngs
         # "artist-credit-phrase" is a flat string of the credited artists
         # joined with " + " or whatever is given by the server.
         # You can also work with the "artist-credit" list manually.
@@ -70,7 +71,6 @@ class CommonMetadataMusicbrainz(object):
         """
         # search by artist and album name
         """
-        global musicbrainzngs
         if disc_id is not None:
             result = musicbrainzngs.get_releases_by_discid(disc_id,
                 includes=["artists", "recordings"])
@@ -92,7 +92,6 @@ class CommonMetadataMusicbrainz(object):
         """
         # search by artist and song name
         """
-        global musicbrainzngs
         result = musicbrainzngs.search_recordings(artist=artist_name, release=release_name,
             recording=song_name, limit=return_limit, strict=strict_flag)
         if not result['recording-list']:

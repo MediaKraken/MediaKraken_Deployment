@@ -14,7 +14,7 @@
             {% for row_data in media[0] %}
             <tr>
                 <td>{{ row_data[0] }}</td>
-                <img src=row_data[1] style="max-width:100%;">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src=row_data[1] style="max-width:100%;">
             </tr>
             {% endfor %}
         </tbody>
@@ -56,4 +56,11 @@
 {% else %}
 <p id="general_text">No media found.</p>
 {% endif %}
+<script src="/static/js/blazy.min.js"></script>
+<script>
+    ;(function() {
+        // Initialize
+        var bLazy = new Blazy();
+    })();
+</script>
 {% endblock %}

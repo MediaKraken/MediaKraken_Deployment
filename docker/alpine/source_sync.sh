@@ -18,6 +18,10 @@ cp /home/spoot/MediaKraken_Deployment/build_trailer_directory.py /home/spoot/Med
 cp /home/spoot/MediaKraken_Deployment/subprogram*.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/spoot/MediaKraken_Deployment/bulk_themoviedb_netfetch.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 
+# ripper
+cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
+cp /home/spoot/MediaKraken_Deployment/main_ripper.py /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
+
 # server
 cp -R /home/spoot/MediaKraken_Deployment/common /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp -R /home/spoot/MediaKraken_Deployment/database /home/spoot/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.

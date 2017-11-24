@@ -83,7 +83,7 @@
             {% for season_info in data_season_count %}
             <div class="main_photo">
                 <a href= {{ "../../tv_season_detail/" + data_guid + "/" + season_info|string }} >
-                <img src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/images/missing_icon.jpg" }} height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/images/missing_icon.jpg" }} height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content">{{data_season_data[season_info]}}</p>
@@ -98,5 +98,12 @@
     {% endif %}
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
     <script src="/static/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
 </body>
 {% endblock %}

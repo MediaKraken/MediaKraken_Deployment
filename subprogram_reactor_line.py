@@ -128,10 +128,11 @@ def read(queue_object):
                                 " -t {t:.6f} pipe:%d.ts".format(**locals()))
             elif json_message['Sub'] == 'HDHomerun':
                 # stream from homerun
-                # container_command = ["ffmpeg", "-i", "http://"+ip+":5004/auto/v"+channel\
-                #                      +"?transcode="+quality, "-vcodec", "copy",
-                #                      "./static/streams/"+channel+".m3u8"]).pid"]
-                pass
+                container_command = "ffmpeg -i http://" + json_message['IP'] \
+                                    + ":5004/auto/v" + json_message['Channel']\
+                                    + "?transcode=" + json_message['Quality'] + "-vcodec copy"\
+                                    + "./static/streams/" + json_message['Channel'] + ".m3u8"
+                container_command = shlex.split(container_command)
             else:
                 pass
             logging.info('b4 docker run')
