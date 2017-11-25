@@ -412,8 +412,41 @@ services:
       - mediakraken_network
     restart: always
 
+  elasticsearch:
+    image: elasticsearch
+    networks:
+      logging:
+    # If you need to acces ES directly, just uncomment those lines.
+    ports:
+     - "9200:9200"
+    #  - "9300:9300"
+
+  logstash:
+    container_name: elk-logstash
+    build:
+      context: .
+      dockerfile: docker/logstash/Dockerfile
+    networks:
+      logging:
+      external:
+    ports:
+      - "12201:12201/udp"
+    links:
+      - elasticsearch:elasticsearch-elk-sys.marathon
+
+  kibana:
+    image: kibana
+    networks:
+      logging:
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+
 # Docker private networks
 networks:
+  logging:
+    driver: bridge
   # Twisted and AMQP communications network
   mediakraken_network:
     driver: bridge
