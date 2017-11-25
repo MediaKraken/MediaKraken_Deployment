@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 RUN apk add --update \
   postgresql-client \
   ack \
+  git \
   gcc \
   libxml2-dev \
   libxslt-dev \
@@ -34,6 +35,7 @@ RUN apk add --update \
   && pip install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \
+  git \
   musl-dev \
   linux-headers \
   py-pip \
