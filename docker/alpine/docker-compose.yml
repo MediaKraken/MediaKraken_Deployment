@@ -424,6 +424,16 @@ services:
       - mediakraken_network
     restart: always
 
+  elk:
+    build:
+      context: ./ComposeMediaKrakenELK
+      dockerfile: Dockerfile
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+    container_name: mkelk
+
 # Docker private networks
 networks:
   # Twisted and AMQP communications network
