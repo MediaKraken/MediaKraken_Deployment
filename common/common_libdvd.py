@@ -21,13 +21,13 @@ import logging # pylint: disable=W0611
 import dvdread
 #help(dvdread.DVD)
 
-with dvdread.DVD("/dev/sr0") as d:
-    d.Open()
-    print("Number of titles on disc: %d" % d.NumberOfTitles)
-    for tt in range(1, d.NumberOfTitles):
-        t = d.GetTitle(tt)
-        #print(d.GetName())
-        print(d.GetNameTitleCase()) # this gives "better" name
-        print("Title %d has %d angles, %d audio tracks, %d chapters, %d subpictures, and runs for %s"
-              % (t.TitleNum, t.NumberOfAngles, t.NumberOfAudios, t.NumberOfChapters,
-              t.NumberOfSubpictures, t.PlaybackTimeFancy))
+def com_dvd_read_titles(drive_name):
+    track_data = []
+    with dvdread.DVD(drive_name) as d:
+        d.Open()
+        for tt in range(1, d.NumberOfTitles):
+            t = d.GetTitle(tt)
+            track_data.append((d.GetNameTitleCase(), t.TitleNum, t.NumberOfAngles,
+                               t.NumberOfAudios, t.NumberOfChapters,
+                               t.NumberOfSubpictures, t.PlaybackTimeFancy))
+    return track_data

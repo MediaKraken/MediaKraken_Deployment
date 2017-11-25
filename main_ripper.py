@@ -37,36 +37,12 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         self.users = {} # maps user names to network instances
         logging.info("Ready for connections!")
 
-
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)
-
 
 if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # setup for the ssl keys
-    reactor.listenTCP(5000, MediaKrakenServerApp())
+    reactor.listenTCP(7000, MediaKrakenServerApp())
     reactor.run()
-
-'''
-# Rip drive to FLAC using abcde
-def begin_rip(directory):
-    drive_loc = '/dev/' + directory.split('=')[-1]
-    # Continuous loop to search for newly entered discs
-    while True:
-        if path.exists(directory): # Checks if an audio disc has been entered
-            print('Found disc in drive ', drive_loc)
-            subprocess.call(['abcde','-d', drive_loc]) # Run abcde with drive
-            print('Finished processing disc in drive ', drive_loc)
-        time.sleep(5)
-
-# These directories will need to change based on where your cd's mount
-d1 = Process(target=begin_rip, args=('/run/user/1000/gvfs/cdda:host=sr0',))
-d2 = Process(target=begin_rip, args=('/run/user/1000/gvfs/cdda:host=sr1',))
-d3 = Process(target=begin_rip, args=('/run/user/1000/gvfs/cdda:host=sr2',))
-
-d1.start()
-d2.start()
-d3.start()
-'''

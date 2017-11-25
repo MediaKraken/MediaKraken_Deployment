@@ -5,15 +5,16 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>0.7.8 - Base Excel code, Base Xbox Live code, lazy load images, base Soundcloud code, base Instragram code, base BeautifulHue code, ID3 tagging, base OpenSubtitles search, base Twilio support, YT api v3 - Current DEV branch on GitHub</b>
-        <li><i>0.7.7 - Redis 3.2.11, Nginx 1.13.6, PostgreSQL 9.6.6, different theaters (controller, thin, etc), bad bot blocker, base lms code, base weather code, base translation code</b>
-        <li>0.7.6 - Playback in client, control samsung tv</b>
-        <li>0.7.5 - Listview for Kivy media list, parallel queries in PostgreSQL</b>
-        <li>0.7.4 - Read DVD/Bluray info, PostgreSQL 9.6.5</b>
-        <li>0.7.3 - Tasks instead of cron, Youtube playback, basic Youtube support, alot of search code, base LCD code</b>
-        <li>0.7.2 - Mail server, Calibre, base search code, PostgreSQL 9.6.4</b>
-        <li>0.7.1 - Better url link support, NVidia Cuda base code, basic control of Marantz equipment over network</b>
-        <li>0.7.0 - NGINX SSL Proxy to webserver, code cleanup, pika to metadata programs, ssl key reuse for server and website</b>
+        <li><b>0.7.9 - Clean up disc read - Current DEV branch on GitHub</b>
+        <li><i>0.7.8 - Base Excel code, Base Xbox Live code, lazy load images, base Soundcloud code, base Instragram code, base BeautifulHue code, ID3 tagging, base OpenSubtitles search, base Twilio support, YT api v3
+        <li>0.7.7 - Redis 3.2.11, Nginx 1.13.6, PostgreSQL 9.6.6, different theaters (controller, thin, etc), bad bot blocker, base lms code, base weather code, base translation code
+        <li>0.7.6 - Playback in client, control samsung tv
+        <li>0.7.5 - Listview for Kivy media list, parallel queries in PostgreSQL
+        <li>0.7.4 - Read DVD/Bluray info, PostgreSQL 9.6.5
+        <li>0.7.3 - Tasks instead of cron, Youtube playback, basic Youtube support, alot of search code, base LCD code
+        <li>0.7.2 - Mail server, Calibre, base search code, PostgreSQL 9.6.4
+        <li>0.7.1 - Better url link support, NVidia Cuda base code, basic control of Marantz equipment over network
+        <li>0.7.0 - NGINX SSL Proxy to webserver, code cleanup, pika to metadata programs, ssl key reuse for server and website
         <li>0.6.x - Kivy update, use Twisted line reactor in server and client via Crochet, many metadata view fixes, use json for Twisted messages
         <li>0.5.0 - Fixes
         <li>0.4.x - More pika code and playback of media via Chromecast

@@ -26,6 +26,8 @@ import subprocess
 from twisted.internet import reactor, protocol
 from twisted.protocols import basic
 from common import common_network
+from common import common_discid
+from common import common_metadata_musicbrainz
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -41,10 +43,9 @@ class NetworkEvents(basic.LineReceiver):
         self.users = users
         self.user_device_uuid = None
         self.user_ip_addy = None
-        self.user_user_name = None
-        self.user_platform = None
-        self.user_slave = False
-        self.user_verified = 0
+        # initing musicbrainz here since there will only be ONE client connect
+        self.mbrainz_inst = common_metadata_musicbrainz.CommonMetadataMusicbrainz(
+            {'MediaBrainz': {'Host': 'mediakraken', 'Port': 5000}})
 
     def connectionMade(self):
         """
@@ -53,7 +54,6 @@ class NetworkEvents(basic.LineReceiver):
         logging.info('Got Connection')
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
-
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
@@ -61,7 +61,6 @@ class NetworkEvents(basic.LineReceiver):
         logging.info('Lost Connection')
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
-
 
     def lineReceived(self, data):
         """
@@ -72,38 +71,45 @@ class NetworkEvents(basic.LineReceiver):
         json_message = json.loads(data)
         logging.info('Message: %s', json_message)
 
-        if json_message['Type'] == "CPU Usage":
-            self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
-
-        elif json_message['Type'] == "Genre List":
-            msg = json.dumps({'Type': 'Genre List',
-                              'Data': self.db_connection.db_meta_genre_list()})
-
+        if json_message['Type'] == "Rip":
+            if json_message['Data'] == "CD":
+                disc_id = common_discid.com_discid_spec_device(json_message['Target'])
+                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(disc_id)
+                disc_id_found = False
+                # TODO if NOT in DB already
+                if disc_id_found is True:
+                    pass
+                else:
+                    # call waits until done
+                    subprocess.call(['abcde', '-d', json_message['Target']])
+            elif json_message['Data'] == "DVD":
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
+            elif json_message['Data'] == "Bray":
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all',json_message['Location']])
+            elif json_message['Data'] == "UHD":
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
+            elif json_message['Data'] == "HDVD":
+                # TODO id disc
+                # TODO see if in db already
+                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']])
+            else:
+                pass
         elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
             self.user_device_uuid = json_message['UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
-            self.user_user_name = None
-            self.user_platform = json_message['Platform']
             self.users[self.user_device_uuid] = self
             logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
-            if self.user_user_name == 'Link':
-                pass
-            else:
-                user_data = []
-                for user in self.db_connection.db_user_list_name():
-                    if user['active'] == True:
-                        user_data.append((user['id'], user['username']))
-                msg = json.dumps({'Type': 'User', 'Data': user_data})
-
-        elif json_message['Type'] == "Login":
-            self.db_connection.db_user_login(json_message['User'], json_message['Password'])
-
-        elif json_message['Type'] == "Media":
-            if json_message['Sub'] == 'Detail':
-                mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
-                    = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
-
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"
@@ -116,6 +122,5 @@ class NetworkEvents(basic.LineReceiver):
         Send message to all users
         """
         for user_device_uuid, protocol in self.users.iteritems():
-            if self.users[user_device_uuid].user_verified == 1:
-                logging.info('send all: %s', message)
-                protocol.transport.write(message.encode("utf8"))
+            logging.info('send all: %s', message)
+            protocol.transport.write(message.encode("utf8"))

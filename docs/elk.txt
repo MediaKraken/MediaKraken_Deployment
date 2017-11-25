@@ -1,0 +1,2 @@
+# need to run from alpine host when Docker
+sysctl -w kernel.pax.softmode=1

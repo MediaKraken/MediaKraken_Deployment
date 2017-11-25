@@ -23,6 +23,7 @@ from common import common_signal
 import sys
 import os
 import json
+import uuid
 from crochet import wait_for, run_in_reactor, setup
 setup()
 
@@ -167,7 +168,7 @@ class MediaKrakenApp(App):
         logging.info('conn server')
         if self.config is not None:
             logging.info('here in connect to server')
-            reactor.connectTCP('10.0.0.1', 5000, MKFactory())
+            reactor.connectTCP('10.0.0.1', 7000, MKFactory())
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
@@ -192,10 +193,7 @@ class MediaKrakenApp(App):
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
-                                                         'UUID': str(uuid.uuid4()),
-                                                         'Platform': platform.node()}))
-            # start up the image refresh since we have a connection
-            Clock.schedule_interval(self.main_image_refresh, 5.0)
+                                                         'UUID': str(uuid.uuid4())}))
         else:
             logging.error("unknown message type")
 

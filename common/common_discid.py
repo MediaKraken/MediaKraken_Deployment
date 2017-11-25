@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 import discid
+from libdiscid import read
 
 # uh, what about the python-cddb stuff I have
 
@@ -33,7 +34,6 @@ def com_discid_default_device():
     logging.info("submission url:\n%s", disc.submission_url)
     return discid
 
-
 def com_discid_caclulate_dir(dir_to_calculate):
     """
     Calculate the discid from specified directory
@@ -46,3 +46,7 @@ def com_discid_caclulate_dir(dir_to_calculate):
     last_track = disc.tracks[disc.last_track_num - 1]
     logging.info("last track length: %s seconds", last_track.seconds)
     return disc
+
+def com_discid_spec_device(device_id):
+    #return read(device=u'/dev/cdrom1')
+    return read(device=device_id)
