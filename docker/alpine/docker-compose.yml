@@ -428,7 +428,7 @@ services:
       dockerfile: Dockerfile
     networks:
       logging:
-      external:
+      mediakraken_network:
     ports:
       - "12201:12201/udp"
     links:
