@@ -21,6 +21,7 @@ import logging # pylint: disable=W0611
 import virtualbox
 
 
+# https://github.com/mjdorma/pyvbox
 class CommonNetworkVirtualBox(object):
     """
     Class for interfacing via virtualbox
