@@ -415,7 +415,7 @@ services:
   elasticsearch:
     image: elasticsearch
     networks:
-      logging:
+      - logging
     # If you need to acces ES directly, just uncomment those lines.
     ports:
      - "9200:9200"
@@ -427,8 +427,8 @@ services:
       context: ./ComposeMediaKrakenLogstash
       dockerfile: Dockerfile
     networks:
-      logging:
-      mediakraken_network:
+      - logging
+      - mediakraken_network
     ports:
       - "12201:12201/udp"
     links:
@@ -437,7 +437,7 @@ services:
   kibana:
     image: kibana
     networks:
-      logging:
+      - logging
     ports:
       - "5601:5601"
     environment:
