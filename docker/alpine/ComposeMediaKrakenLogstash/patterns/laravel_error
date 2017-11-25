@@ -1,0 +1,3 @@
+LINE_ERROR ^#[0-9]%{GREEDYDATA}$
+LINE_STACK ^Stack trace:$
+LARAVEL_ERROR_STACK (%{LINE_STACK:stack_title}|%{LINE_ERROR:stack_line})

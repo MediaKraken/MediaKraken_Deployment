@@ -1,0 +1,4 @@
+PHPFPM_DATE %{MONTHDAY}-%{MONTH}-%{YEAR} %{TIME}
+PHPFPM_MESSAGE \[%{PHPFPM_DATE:error_date}\] %{LOGLEVEL:log_level}: \[pool %{WORD:pool_name}\] child %{NUMBER:child_num} said into stderr: "%{GREEDYDATA:error_clean_message}"
+PHPFPM_ERROR %{LOGLEVEL:php_error_level}: PHP message: \[%{TIMESTAMP_ISO8601:error_time}\] %{WORD:environment}\.%{LOGLEVEL:laravel_error_level}: %{WORD:exception}: %{GREEDYDATA:exception_message} in %{GREEDYDATA:file}:%{NUMBER:line}
+PHPFPM_ACCESS %{IPORHOST:client_ip} %{IPORHOST:docker_ip} - %{HTTPDATE:timestamp} "%{WORD:request_method} %{URIPATHPARAM:request_url}" %{NUMBER:status_code} %{NUMBER:request_time}ms %{NUMBER:request_memory_peak}KB %{NUMBER:request_cpu}\%

@@ -1,0 +1,5 @@
+#Nginx
+NGUSERNAME [a-zA-Z\.\@\-\+_%]+
+NGUSER %{NGUSERNAME}
+NGINX_ACCESS ^%{IPORHOST:client_ip} - %{NGUSER:ident} \[%{HTTPDATE:timestamp}\] "%{WORD:request_method} %{URIPATHPARAM:request_url} HTTP/%{NUMBER:http_version}" %{NUMBER:status_code} %{NUMBER:request_content_length} "(?:%{URI:referrer}|-)" %{QS:user_agent}
+NGINX_ERROR %{DATE} %{TIME} %{GREEDYDATA} "PHP message: \[%{TIMESTAMP_ISO8601:error_time}\] %{WORD:environment}\.%{LOGLEVEL:severity}: %{WORD:exception}: %{GREEDYDATA:exception_message} in %{GREEDYDATA:file}:%{NUMBER:line}

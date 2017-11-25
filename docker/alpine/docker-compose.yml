@@ -424,8 +424,8 @@ services:
   logstash:
     container_name: elk-logstash
     build:
-      context: .
-      dockerfile: docker/logstash/Dockerfile
+      context: ./ComposeMediaKrakenLogstash
+      dockerfile: Dockerfile
     networks:
       logging:
       external:
