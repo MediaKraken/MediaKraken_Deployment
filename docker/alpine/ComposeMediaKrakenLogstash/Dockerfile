@@ -2,8 +2,8 @@ FROM logstash
 
 MAINTAINER Daniel Ibáñez Fernández <daniel.ibanez@softonic.com>
 
-ADD ./docker/logstash/config /config-dir
+ADD config /config-dir
 
-COPY ./docker/logstash/patterns/ /etc/logstash/patterns/
+COPY patterns/ /etc/logstash/patterns/
 
 CMD ["-f","/config-dir/logstash.conf"]
