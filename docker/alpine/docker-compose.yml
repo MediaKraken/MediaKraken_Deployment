@@ -365,7 +365,7 @@ services:
   ripper:
     build:
       context: ./ComposeMediaKrakenRipper
-      dockerfile: Dockerfile
+      dockerfile: dockerfile-ripper
     container_name: mkripper
     restart: always
 
