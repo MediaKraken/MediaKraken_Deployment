@@ -24,36 +24,34 @@ if platform != 'android':
     import eiscp
 
 
-def com_net_eiscp_discovery():
+class CommonNetworkEISCP(object):
     """
-    # the EISCP auto discover only works on 2011 models or higher
+    Class for interfacing via Onkyo equipment
     """
-    return eiscp.eISCP.discover(timeout=5)
+    def __init__(self, ip_addr):
+        self.eiscp_inst = eiscp.eISCP(ip_addr)
+
+    def com_net_eiscp_discovery(self):
+        """
+        # the EISCP auto discover only works on 2011 models or higher
+        """
+        return eiscp.eISCP.discover(timeout=5)
+
+    def com_net_eiscp_disconnect(self):
+        """
+        Disconnect from device
+        """
+        self.eiscp_inst.disconnect()
+
+    def com_net_eiscp_command(self, eiscp_command):
+        """
+        Send command via eiscp
+        """
+        self.eiscp_inst.command(self, eiscp_command)
 
 
-def com_net_eiscp_connection(ip_addr):
-    """
-    Connect by ip address
-    """
-    return eiscp.eISCP(ip_addr)
-
-
-def com_net_eiscp_disconnect(eiscp_device):
-    """
-    Disconnect from device
-    """
-    eiscp_device.disconnect()
-
-
-def com_net_eiscp_command(eiscp_device, eiscp_command):
-    """
-    Send command via eiscp
-    """
-    eiscp_device.command(eiscp_command)
-
-
-def com_net_eiscp_command_raw(eiscp_device, eiscp_raw_command):
-    """
-    Send raw tcp
-    """
-    eiscp_device.raw(eiscp_raw_command)
+    def com_net_eiscp_command_raw(self, eiscp_raw_command):
+        """
+        Send raw tcp
+        """
+        self.eiscp_inst.raw(eiscp_raw_command)
