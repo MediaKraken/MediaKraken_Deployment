@@ -18,7 +18,7 @@ setup.template.settings:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["localhost:9200"]
+  hosts: ["mkelk:9200"]
 
   # Optional protocol and basic auth credentials.
   #protocol: "https"
@@ -28,7 +28,7 @@ output.elasticsearch:
 #----------------------------- Logstash output --------------------------------
 #output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
+  #hosts: ["mkelk:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications

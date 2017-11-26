@@ -433,6 +433,8 @@ services:
       - "9200:9200"
       - "5044:5044"
     container_name: mkelk
+    networks:
+      - mediakraken_network
 
 # Docker private networks
 networks:
