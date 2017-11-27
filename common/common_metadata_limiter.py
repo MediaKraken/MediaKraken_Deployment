@@ -17,7 +17,7 @@ API_LIMIT = {
     'chart_lyrics': (9999, 1), # no mention of limits 7/29/2016 just says don't abuse
     'comicvine': (1, 1), # (4-16-2016)
     'discogs': (240, 60), # (1-16-2017)
-    'giantbomb': (1, 1), # (4-16-2016)
+    'giantbomb': (200, 3600), # (11-25-2017) 200 per hour
     'imdb': (9999, 1), # no mention of limits 7/29/2016
     'imvdb': (1000, 60), # 1000 per minute (6/30/2016)
     'isbndb': (9999, 1), # no mention of limits 1/01/2017
