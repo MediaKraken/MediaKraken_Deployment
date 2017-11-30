@@ -105,6 +105,7 @@ RUN buildDeps="autoconf \
         --disable-debug \
         --disable-doc \
         --disable-static \
+        --disable-ffplay \
         --disable-ffserver && \
     make && \
     make install && \
