@@ -9,6 +9,8 @@ ARG X265_VERSION=2.5
 ARG FFMPEG_VERSION="3.4"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
+ADD scripts /mediakraken
+
 RUN buildDeps="autoconf \
         automake \
         bash \
@@ -17,10 +19,12 @@ RUN buildDeps="autoconf \
         cmake \
         curl \
         coreutils \
+        fontconfig-dev \
         g++ \
         gcc \
         gnupg \
         gnutls-dev \
+        freetype-dev \
         lame-dev \
         libass-dev \
         libmodplug-dev \
@@ -28,12 +32,16 @@ RUN buildDeps="autoconf \
         libtheora-dev \
         libtool \
         libvorbis-dev \
+        libvpx-dev \
+        libwebp-dev \
         make \
+        openjpeg-dev \
         opus-dev \
         python-dev \
         openssl-dev \
         samba-dev \
         speex-dev \
+        soxr-dev \
         tar \
         xvidcore-dev \
         yasm \
@@ -47,7 +55,7 @@ RUN buildDeps="autoconf \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
-    make && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -55,7 +63,7 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     cd build/linux && \
     cmake -G "Unix Makefiles" ../../source && \
-    make && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -63,7 +71,7 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     autoreconf -fiv && \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
-    make && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
 
     DIR=$(mktemp -d) && cd ${DIR} && \
@@ -81,33 +89,55 @@ RUN buildDeps="autoconf \
         --extra-cflags="-I${SRC}/include" \
         --extra-ldflags="-L${SRC}/lib" \
         --prefix="${SRC}" \
+
+    ./mediakraken/openh264.sh \
+    ./mediakraken/vidstab.sh \
+
+    --enable-ladspa \
+    --enable-libpulse \
+    --enable-libschroedinger \
+    --enable-avfilter \
+    --enable-avresample \
+    --enable-pthreads \
+    --enable-libkvazaar \
+    --enable-librtmp \
+
         --enable-nonfree \
         --enable-gpl \
         --enable-version3 \
         --enable-avresample \
         --enable-libass \
+        --enable-fontconfig \
+        --enable-libfreetype \
         --enable-libmp3lame \
         --enable-libopus \
         --enable-libx264 \
         --enable-libx265 \
         --enable-libopenmpt \
         --enable-libmodplug \
+        --enable-libopenjpeg \
+        --enable-libwebp \
         --enable-openssl \
+        --enable-libopenh264 \
         --enable-postproc \
         --enable-small \
+        --enable-libsoxr \
         --enable-libfdk_aac \
         --enable-libspeex \
         --enable-libvorbis \
         --enable-libxvid \
         --enable-libsmbclient \
         --enable-libtheora \
+        --enable-libvidstab \
+        --enable-libvpx \
         --enable-shared \
+        --enable-zlib \
         --disable-debug \
         --disable-doc \
         --disable-static \
         --disable-ffplay \
         --disable-ffserver && \
-    make && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
     hash -r
     
@@ -118,7 +148,8 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --update libssl1.0 samba-client lame libass libmodplug libogg \
-    libtheora libvorbis opus speex xvidcore && \
+    libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
+    soxr fontconfig libvpx && \
     ffmpeg -buildconf
 
 CMD ["--help"]

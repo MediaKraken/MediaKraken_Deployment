@@ -36,7 +36,7 @@ RUN export buildDeps="autoconf \
     auto/configure \
         --with-http_ssl_module \
         --add-module="../nginx-rtmp-module-${NGINX_RTMP_VERSION}" && \
-    make && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
     rm -rf "${DIR}" && \
     apk del --purge git && \
