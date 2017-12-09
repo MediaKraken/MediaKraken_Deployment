@@ -19,3 +19,4 @@ psutil
 hyper
 googletrans
 mutagen
+discogs_client
