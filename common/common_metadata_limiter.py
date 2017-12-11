@@ -38,6 +38,7 @@ API_LIMIT = {
     'tv_intros': (1, 1), # since I'm scraping
     'tvmaze': (20, 10), # 20 every 10 (6-11-2017)
     'tvshowtime': (10, 60), # 10 requests per minute (4-16-2016)
+    'twitch': (1,1), # (12-10-2017)
     'Z': (None, None), # catch all for limiter api program
 }
 
