@@ -24,11 +24,13 @@ RUN buildDeps="autoconf \
         gcc \
         gnupg \
         gnutls-dev \
+        fontconfig-dev \
         freetype-dev \
         lame-dev \
         libass-dev \
         libmodplug-dev \
         libogg-dev \
+        rtmpdump-dev \
         libtheora-dev \
         libtool \
         libvorbis-dev \
@@ -36,6 +38,7 @@ RUN buildDeps="autoconf \
         libwebp-dev \
         make \
         openjpeg-dev \
+        openssl-dev \
         opus-dev \
         python-dev \
         openssl-dev \
@@ -79,58 +82,59 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     make EXAMPLES=0 && \
     make install && \
+
+    ./mediakraken/kvazaar.sh \
+    ./mediakraken/openh264.sh \
+    ./mediakraken/vidstab.sh \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     ./configure \
+	--target-os=linux \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
         --extra-ldflags="-L${SRC}/lib" \
         --prefix="${SRC}" \
-
-    ./mediakraken/openh264.sh \
-    ./mediakraken/vidstab.sh \
-
-    --enable-ladspa \
-    --enable-libpulse \
-    --enable-libschroedinger \
-    --enable-avfilter \
-    --enable-avresample \
-    --enable-pthreads \
-    --enable-libkvazaar \
-    --enable-librtmp \
-
-        --enable-nonfree \
-        --enable-gpl \
-        --enable-version3 \
+        --enable-avfilter \
         --enable-avresample \
+        --enable-fontconfig \
+        --enable-gpl \
+        --enable-ladspa \
         --enable-libass \
+        --enable-libfdk_aac \
         --enable-fontconfig \
         --enable-libfreetype \
+        --enable-libkvazaar \
+        --enable-libmodplug \
         --enable-libmp3lame \
+        --enable-libopenh264 \
+        --enable-libopenjpeg \
+        --enable-libopenmpt \
+        --enable-libopenssl \
         --enable-libopus \
+        --enable-libpulse \
+        --enable-librtmp \
+        --enable-libschroedinger \
+        --enable-libsoxr \
+        --enable-libsmbclient \
+        --enable-libspeex \
+        --enable-libtheora \
+        --enable-libwebp \
+        --enable-libvidstab \
+        --enable-libvorbis \
+        --enable-libvpx \
         --enable-libx264 \
         --enable-libx265 \
-        --enable-libopenmpt \
-        --enable-libmodplug \
-        --enable-libopenjpeg \
-        --enable-libwebp \
-        --enable-openssl \
-        --enable-libopenh264 \
-        --enable-postproc \
-        --enable-small \
-        --enable-libsoxr \
-        --enable-libfdk_aac \
-        --enable-libspeex \
-        --enable-libvorbis \
         --enable-libxvid \
-        --enable-libsmbclient \
-        --enable-libtheora \
-        --enable-libvidstab \
-        --enable-libvpx \
+        --enable-nonfree \
+        --enable-openssl \
+        --enable-postproc \
+        --enable-pthreads \
         --enable-shared \
+        --enable-small \
+        --enable-version3 \
         --enable-zlib \
         --disable-debug \
         --disable-doc \
