@@ -26,7 +26,8 @@ Adafruit_MotorShield AFMSbottom(0x60);
 
 // define the stepper motors
 Adafruit_StepperMotor *stepper_cd_spinner = AFMSbottom.getStepper(200, 1);
-Adafruit_StepperMotor *stepper_move_arm = AFMSbottom.getStepper(200, 2);
+Adafruit_StepperMotor *stepper_move_arm_horizontal = AFMSbottom.getStepper(200, 2);
+Adafruit_StepperMotor *stepper_move_arm_vertical = AFMSbottom.getStepper(200, 3);
 SoftwareSerial robobuff_serial(10, 11); // RX, TX
 
 // steppers forward and reverse code
@@ -40,31 +41,46 @@ void stepper_cd_spinner_backward()
     stepper_cd_spinner->onestep(BACKWARD, MICROSTEP);
 }
 
-void stepper_arm_forward()
+void stepper_arm_horizontal_forward()
 {
-    stepper_move_arm->onestep(FORWARD, MICROSTEP);
+    stepper_move_arm_horizontal->onestep(FORWARD, MICROSTEP);
 }
 
-void stepper_arm_backward()
+void stepper_arm_horizontal_backward()
 {
-    stepper_move_arm->onestep(BACKWARD, MICROSTEP);
+    stepper_move_arm_horizontal->onestep(BACKWARD, MICROSTEP);
+}
+
+void stepper_arm_vertical_forward()
+{
+    stepper_move_arm_vertical->onestep(FORWARD, MICROSTEP);
+}
+
+void stepper_arm_vertical_backward()
+{
+    stepper_move_arm_vertical->onestep(BACKWARD, MICROSTEP);
 }
 
 // setup the accellstepper
 AccelStepper Accelstepper_cd_spinner(stepper_cd_spinner_forward, stepper_cd_spinner_backward);
-AccelStepper Accelstepper_move_arm(stepper_arm_forward, stepper_arm_backward);
+AccelStepper Accelstepper_move_arm_horizontal(stepper_arm_horizontal_forward, stepper_arm_horizontal_backward);
+AccelStepper Accelstepper_move_arm_vertical(stepper_arm_vertical_forward, stepper_arm_vertical_backward);
 
 void setup()
 {
     AFMSbottom.begin(); // Start the bottom board
-    // Setup cd spinnder motor
+    // Setup cd spinner motor
     Accelstepper_cd_spinner.setMaxSpeed(100.0);
     Accelstepper_cd_spinner.setAcceleration(100.0);
     Accelstepper_cd_spinner.moveTo(24);
-    // setup move arm motor
-    Accelstepper_move_arm.setMaxSpeed(200.0);
-    Accelstepper_move_arm.setAcceleration(100.0);
-    Accelstepper_move_arm.moveTo(50000);
+    // setup move horizontal motor
+    Accelstepper_move_arm_horizontal.setMaxSpeed(200.0);
+    Accelstepper_move_arm_horizontal.setAcceleration(100.0);
+    Accelstepper_move_arm_horizontal.moveTo(50000);
+    // setup move vertical motor
+    Accelstepper_move_arm_vertical.setMaxSpeed(200.0);
+    Accelstepper_move_arm_vertical.setAcceleration(100.0);
+    Accelstepper_move_arm_vertical.moveTo(50000);
     // line serial communication
     robobuff_serial.begin(1200);
 }
@@ -75,11 +91,11 @@ void loop()
     if (Accelstepper_cd_spinner.distanceToGo() == 0)
         Accelstepper_cd_spinner.moveTo(-Accelstepper_cd_spinner.currentPosition());
 
-    if (Accelstepper_move_arm.distanceToGo() == 0)
-        Accelstepper_move_arm.moveTo(-Accelstepper_move_arm.currentPosition());
+    if (Accelstepper_move_arm_horizontal.distanceToGo() == 0)
+        Accelstepper_move_arm_horizontal.moveTo(-Accelstepper_move_arm.currentPosition());
 
     Accelstepper_cd_spinner.run();
-    Accelstepper_move_arm.run();
+    Accelstepper_move_arm_horizontal.run();
     if (robobuff_serial.available())
         Serial.write(robobuff_serial.read());
     if (Serial.available())
