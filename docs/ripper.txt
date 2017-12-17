@@ -6,3 +6,17 @@ raspberry pi will run the show telling server when cd's should load
 
 will also tell the ardionos to do their jobs via usb hub
 
+just crossover cable/adapter
+
+**********************************
+
+Horizontal stepper - moves entire arm assembly on tracks left/right
+veritical stepper - moves arm assembly on track up/down
+
+spinner stepper - rotates cd for buffing
+
+buffer stepper - rotates buffing wheel
+
+relay - vacuum pump to hold disc
+relay - water pump to cool/wash disc
+

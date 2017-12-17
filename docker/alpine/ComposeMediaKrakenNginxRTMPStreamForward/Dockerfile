@@ -65,7 +65,7 @@ RUN cd /tmp/ffmpeg-${FFMPEG_VERSION} && \
   --enable-libfreetype \
   --enable-openssl \
   --disable-debug \
-  && make && make install && make distclean
+  && make -j`getconf _NPROCESSORS_ONLN` && make install && make distclean
 
 # Cleanup.
 RUN rm -rf /var/cache/* /tmp/*

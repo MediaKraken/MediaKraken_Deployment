@@ -214,9 +214,6 @@ class MediaKrakenApp(App):
         return True
 
 if __name__ == '__main__':
-    # for windows exe support
-    from multiprocessing import freeze_support
-    freeze_support()
     # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Ripper_Pi')
     log.startLogging(sys.stdout) # for twisted

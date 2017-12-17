@@ -1,3 +1,8 @@
+cmd = [hdhomerun_config, device_id, "set"]
+        cmd.extend(["/tuner%s/program" % tuner_num, self.subchannel])
+        subprocess.Popen(cmd).wait()
+
+
 # web based discovery
 http://ipv4-my.hdhomerun.com/discover
 
@@ -29,8 +34,6 @@ hdhomerun_config $DEVICE set /tuner$TUNER/target rtp://$MY_IP:$RTP_PORT
 p=subprocess.Popen(["ffmpeg","-i","http://"+host+":5004/auto/v"+channelComp,"-vcodec","libx264","-preset","veryfast","-acodec"]+acodecs+["-vf","yadif=0:0:0","out.m3u8"],stdout=logfile,stderr=logfile)
 
 
-
-
 hdhomerun_config discover
 
 10.0.0.45
@@ -38,5 +41,31 @@ hdhomerun_config discover
 # set channel map for tuner0 and 1
 ./hdhomerun_config 1015E13C set /tuner0/channelmap us-bcast
 ./hdhomerun_config 1015E13C set /tuner1/channelmap us-bcast
+
+
+
+
+
+
+
+# Discover device name
+device=$(hdhomerun_config discover |awk '{print $3}')
+
+# Scan channels directly into while loop - pull relevant data and create strm file
+hdhomerun_config $device scan 1 | grep -vEi 'tsid|lock|none' | while read output
+	do
+		if [[ "$output" == "SCANNING"* ]]; then
+			scan=$(echo $output | awk '{print $2}')
+		fi
+		if [[ "$output" == "PROGRAM"* ]]; then
+			prog=$(echo $output | awk '{print $2}')
+			file=$(echo $output | cut -d':' -f2)
+			# Create .strm file
+			echo hdhomerun://$device-1/tuner1$file\?channel\=auto\:$scan\&program\=${prog/:/} > ~/Videos/Live\ TV/"${file/\ /}".strm		
+		fi
+	done
+exit 0
+
+
 
 

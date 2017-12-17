@@ -412,6 +412,30 @@ services:
       - mediakraken_network
     restart: always
 
+  # runs filebeat
+  filebeat:
+    build:
+      context: ./ComposeMediaKrakenFilebeat
+      dockerfile: Dockerfile
+    container_name: mkfilebeat
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+    networks:
+      - mediakraken_network
+    restart: always
+
+  elk:
+    build:
+      context: ./ComposeMediaKrakenELK
+      dockerfile: Dockerfile
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+    container_name: mkelk
+    networks:
+      - mediakraken_network
+
 # Docker private networks
 networks:
   # Twisted and AMQP communications network

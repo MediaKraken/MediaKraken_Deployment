@@ -94,12 +94,12 @@ RUN \
  git clone git://github.com/metabrainz/postgresql-musicbrainz-unaccent \
 	/tmp/postgresql-musicbrainz-unaccent && \
  cd /tmp/postgresql-musicbrainz-unaccent && \
-	make && \
+	make -j`getconf _NPROCESSORS_ONLN` && \
 	make install && \
  git clone git://github.com/metabrainz/postgresql-musicbrainz-collate.git \
 	/tmp/postgresql-musicbrainz-collate && \
  cd /tmp/postgresql-musicbrainz-collate && \
-	make && \
+	make -j`getconf _NPROCESSORS_ONLN` && \
 	make install && \
 
 # configure nginx
