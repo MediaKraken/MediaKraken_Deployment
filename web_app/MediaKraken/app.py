@@ -3,6 +3,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask, render_template, g
 from flask_moment import Moment
+from flask_uwsgi_websocket import GeventWebSocket
 import redis
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
@@ -27,6 +28,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     moment = Moment(app)
+    websocket = GeventWebSocket(app)
     return app
 
 

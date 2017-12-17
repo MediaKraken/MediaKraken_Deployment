@@ -13,6 +13,7 @@ Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
 flask-pika
+Flask-uWSGI-WebSocket
 ipgetter
 uwsgi
 pygal
