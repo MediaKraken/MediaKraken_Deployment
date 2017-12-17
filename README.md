@@ -5,7 +5,8 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>0.7.9/elk - Clean up disc read, basic videojs resume, base SoundCloud videojs, base Frame by Frame videojs, background videojs, base chapter videojs, libnfs support, scanning support via Sane, WebOS control, basic Samsung TV control via SOAP, basic pioneer control, basic Discogs support, basic TheSubDB support - Current DEV branch on GitHub</b>
+        <li><b>0.7.10 - Current DEV branch on GitHub</b>
+        <li><i>0.7.9/elk - Clean up disc read, basic videojs resume, base SoundCloud videojs, base Frame by Frame videojs, background videojs, base chapter videojs, libnfs support, scanning support via Sane, WebOS control, basic Samsung TV control via SOAP, basic pioneer control, basic Discogs support, basic TheSubDB support
         <li><i>0.7.8 - Base Excel code, Base Xbox Live code, lazy load images, base Soundcloud code, base Instragram code, base BeautifulHue code, ID3 tagging, base OpenSubtitles search, base Twilio support, YT api v3
         <li>0.7.7 - Redis 3.2.11, Nginx 1.13.6, PostgreSQL 9.6.6, different theaters (controller, thin, etc), bad bot blocker, base lms code, base weather code, base translation code
         <li>0.7.6 - Playback in client, control samsung tv
