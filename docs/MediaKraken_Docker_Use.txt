@@ -53,6 +53,8 @@ docker build -t mediakraken/mkbasenvidia .
 
 docker build -t mediakraken/mkslave .
 
+docker build -t mediakraken/mkstreamvod .
+
 
 docker build -t mediakraken/mkbaseffmpeg .
 
