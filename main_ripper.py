@@ -31,7 +31,7 @@ from network import network_base_line_ripper as network_base
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')
+        common_logging.com_logging_start('./log/MediaKraken_Ripper_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {} # maps user names to network instances
