@@ -43,9 +43,6 @@ class NetworkEvents(basic.LineReceiver):
         self.users = users
         self.user_device_uuid = None
         self.user_ip_addy = None
-        # initing musicbrainz here since there will only be ONE client connect
-        self.mbrainz_inst = common_metadata_musicbrainz.CommonMetadataMusicbrainz(
-            {'MediaBrainz': {'Host': 'mediakraken', 'Port': 5000}})
 
     def connectionMade(self):
         """
