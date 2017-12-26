@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
+from concurrent import futures
 from common import common_logging
 from common import common_signal
 import sys
@@ -79,7 +80,18 @@ from kivy.graphics import *
 
 twisted_connection = None
 mk_app = None
+thread_status = None
 
+def worker():
+    """
+    Worker thread for ripper
+    """
+    # connect to arduinos
+
+    # reset machine
+
+    while thread_status:
+        pass
 
 class MKEcho(basic.LineReceiver):
     MAX_LENGTH = 32000000  # pylint: disable=C0103
@@ -196,6 +208,19 @@ class MediaKrakenApp(App):
                                                          'UUID': str(uuid.uuid4())}))
         else:
             logging.error("unknown message type")
+
+    def main_mediakraken_event_button_start(self, *args):
+        global thread_status
+        logging.info("start select: %s", args)
+        with futures.ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(worker)
+            logging.info(future.result())
+        thread_status = True
+
+    def main_mediakraken_event_button_stop(self, *args):
+        global thread_status
+        logging.info("stop select: %s", args)
+        thread_status = False
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
