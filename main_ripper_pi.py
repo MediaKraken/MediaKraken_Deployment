@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging # pylint: disable=W0611
 from concurrent import futures
+from common import common_hardware_arduino_usb_serial
 from common import common_logging
 from common import common_signal
 import sys
@@ -82,16 +83,30 @@ twisted_connection = None
 mk_app = None
 thread_status = None
 
-def worker():
+def worker(spinner_one_text, spinner_two_text, spinner_three_text, spinner_four_text):
     """
     Worker thread for ripper
     """
-    # connect to arduinos
-
-    # reset machine
-
+    global thread_status
+    # connect to arduinos and reset arm/track
+    arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
+    arm_arduino.com_arduino_usb_serial_writestring('arm max')
+    track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
+    track_arduino.com_arduino_usb_serial_writestring('track min')
     while thread_status:
-        pass
+        if spinner_one_text != 'Empty':
+            track_arduino.com_arduino_usb_serial_writestring('track one')
+        elif spinner_two_text != 'Empty':
+            track_arduino.com_arduino_usb_serial_writestring('track two')
+        elif spinner_three_text != 'Empty':
+            track_arduino.com_arduino_usb_serial_writestring('track three')
+        elif spinner_four_text != 'Empty':
+            track_arduino.com_arduino_usb_serial_writestring('track four')
+        arm_arduino.com_arduino_usb_serial_writestring('arm pickup')
+        arm_arduino.com_arduino_usb_serial_writestring('arm vaccuum on')
+
+        if thread_status == False:
+            break
 
 class MKEcho(basic.LineReceiver):
     MAX_LENGTH = 32000000  # pylint: disable=C0103
@@ -213,7 +228,10 @@ class MediaKrakenApp(App):
         global thread_status
         logging.info("start select: %s", args)
         with futures.ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(worker)
+            future = executor.submit(worker, self.root.ids.spinner_one.text,
+                                     self.root.ids.spinner_two.text,
+                                     self.root.ids.spinner_three.text,
+                                     self.root.ids.spinner_four.text)
             logging.info(future.result())
         thread_status = True
 
