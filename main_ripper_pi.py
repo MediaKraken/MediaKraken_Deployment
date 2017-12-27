@@ -82,18 +82,57 @@ from kivy.graphics import *
 twisted_connection = None
 mk_app = None
 thread_status = None
+buffer_busy = False
+arm_arduino = None
+track_arduino = None
+dvd_drives = {}
+bray_drives = {}
+hddvd_drives = {}
+
+def arduino_connect():
+    global arm_arduino
+    global track_arduino
+    # connect to arduinos and reset arm/track
+    arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
+    arm_arduino.com_arduino_usb_serial_writestring('arm max')
+    track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
+    track_arduino.com_arduino_usb_serial_writestring('track min')
+
+def pickup_cd():
+    global arm_arduino
+    global track_arduino
+    # lower arm till cd contact or find empty
+    arm_arduino.com_arduino_usb_serial_writestring('arm pickup')
+    # turn on vaccuum to grab disc
+    arm_arduino.com_arduino_usb_serial_writestring('arm vaccuum on')
+    # raise arm to max to allow moving
+    arm_arduino.com_arduino_usb_serial_writestring('arm max')
+
+def load_buffer():
+    global arm_arduino
+    global track_arduino
+    # move track to buffer
+    track_arduino.com_arduino_usb_serial_writestring('track buffer')
+    # lower disc to buffer pad
+    arm_arduino.com_arduino_usb_serial_writestring('arm buffer')
+    # drop disc
+    arm_arduino.com_arduino_usb_serial_writestring('arm vaccuum off')
+    # raise arm to give buffer room
+    arm_arduino.com_arduino_usb_serial_writestring('arm max')
 
 def worker(spinner_one_text, spinner_two_text, spinner_three_text, spinner_four_text):
     """
     Worker thread for ripper
     """
     global thread_status
-    # connect to arduinos and reset arm/track
-    arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
-    arm_arduino.com_arduino_usb_serial_writestring('arm max')
-    track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
-    track_arduino.com_arduino_usb_serial_writestring('track min')
+    global buffer_busy
+    global arm_arduino
+    global track_arduino
+    arduino_connect()
     while thread_status:
+
+
+        # position for pickup disc
         if spinner_one_text != 'Empty':
             track_arduino.com_arduino_usb_serial_writestring('track one')
         elif spinner_two_text != 'Empty':
@@ -102,8 +141,9 @@ def worker(spinner_one_text, spinner_two_text, spinner_three_text, spinner_four_
             track_arduino.com_arduino_usb_serial_writestring('track three')
         elif spinner_four_text != 'Empty':
             track_arduino.com_arduino_usb_serial_writestring('track four')
-        arm_arduino.com_arduino_usb_serial_writestring('arm pickup')
-        arm_arduino.com_arduino_usb_serial_writestring('arm vaccuum on')
+        pickup_cd()
+
+        load_buffer()
 
         if thread_status == False:
             break
