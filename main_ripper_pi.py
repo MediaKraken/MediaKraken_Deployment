@@ -173,69 +173,62 @@ class MediaKrakenApp(App):
                 break
             time.sleep(1)
 
-
-
     def next_disc(self, spinner_no, spinner_text):
-        if spinner_text is not None:
-            if self.find_empty_drive():
-                self.track_arduino.com_arduino_usb_serial_writestring('track %s' % spinner_no)
-                self.pickup_cd(spinner_no)
-                self.load_cd_dvd(spinner_no)
-
-    def load_cd_dvd(self, spinner_no):
-        for drive_id in self.rom_drives:
-            if drive_id is None:
-                # TODO load this one
-                self.track_arduino.com_arduino_usb_serial_writestring('track %s' % spinner_no)
-                self.pickup_cd()
-                self.load_drive()
-                # TODO crochet message since thread to have main pc eject proper drive
-                pass
-
-
-
-    def find_empty_drive(self, spinner_text):
         for drive_status in self.rom_drives:
             if drive_status['Status'] is None and (drive_status['Type'] == spinner_text
                     or (drive_status['Type'] == 'DVD' and spinner_text == 'Audio CD')):
-                return drive_status
-        return False
+                # load this one
+                self.track_arduino.com_arduino_usb_serial_writestring(
+                    'track %s' % self.spindles_media_to_process[spinner_no]['Pos'])
+                self.pickup_cd()
+                self.load_drive(drive_status)
+                # crochet message since thread to have main pc eject proper drive
+                # which then starts the rip process
+                self.send_twisted_message_thread(json.dumps({'Type': 'Rip',
+                                                             'Target': drive_status['Device']}))
 
-    def arduino_connect(self):
-        # connect to arduinos and reset arm/track
-        self.arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
-        self.arm_arduino.com_arduino_usb_serial_writestring('arm max')
-        self.track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino()
-        self.track_arduino.com_arduino_usb_serial_writestring('track min')
-
-    def pickup_cd(self, buffer_spool):
+    def pickup_cd(self):
         # lower arm till cd contact or find empty
         self.arm_arduino.com_arduino_usb_serial_writestring('pickup')
         # TODO if hit limiter......None the spinner
         # turn on vaccuum to grab disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuumon')
+        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum on')
         # raise arm to max to allow moving
+        # TODO don't do max....just high enough for the drive that will be loaded
         self.arm_arduino.com_arduino_usb_serial_writestring('max')
 
     def load_buffer(self):
         # move track to buffer
-        self.track_arduino.com_arduino_usb_serial_writestring('track buffer')
+        self.track_arduino.com_arduino_usb_serial_writestring(
+            'track %s' % self.buffer_drives[1]['Pos']['Track'])
         # lower disc to buffer pad
-        self.arm_arduino.com_arduino_usb_serial_writestring('arm buffer')
+        self.arm_arduino.com_arduino_usb_serial_writestring(
+            'arm %s' % self.buffer_drives[1]['Pos']['Arm'])
         # drop disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuumoff')
+        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum off')
         # raise arm to give buffer room
         self.arm_arduino.com_arduino_usb_serial_writestring('max')
 
-    def load_drive(self):
-        # move track to drive row
-        self.track_arduino.com_arduino_usb_serial_writestring('track buffer')
+    def load_drive(self, drive_status):
+        # move to track position for drive
+        self.track_arduino.com_arduino_usb_serial_writestring(
+            'track %s' % drive_status['Pos']['Track'])
         # lower disc to drive pad
-        self.arm_arduino.com_arduino_usb_serial_writestring('arm buffer')
+        self.arm_arduino.com_arduino_usb_serial_writestring(
+            'arm %s' % drive_status['Pos']['Arm'])
         # drop disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuumoff')
+        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum off')
         # raise arm
         self.arm_arduino.com_arduino_usb_serial_writestring('max')
+
+    def arduino_connect(self):
+        # connect to arduinos and reset arm/track
+        self.arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
+            baud_rate='1200')
+        self.arm_arduino.com_arduino_usb_serial_writestring('arm max')
+        self.track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
+            baud_rate='1200')
+        self.track_arduino.com_arduino_usb_serial_writestring('track min')
 
     def exit_program(self):
         pass
@@ -279,11 +272,11 @@ class MediaKrakenApp(App):
                                           4: {'Pos': 1400, 'Discs': 0}}]
         self.spindles_error = [{1: {'Pos': 1500, 'Discs': 0}}]
         self.buffer_drives = [{1: {'Pos': {'Track': 1, 'Arm': 2}}}]
-        self.rom_drives = [{1: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None},
-                           {2: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None}},
-                           {3: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None}},
-                           {4: {'Type': 'BluRay', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None}},
-                           {5: {'Type': 'HDDVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None}]
+        self.rom_drives = [{1: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None, 'Device': None},
+                           {2: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
+                           {3: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
+                           {4: {'Type': 'BluRay', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
+                           {5: {'Type': 'HDDVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None, 'Device': None}]
         return root
 
     @wait_for(timeout=5.0)
