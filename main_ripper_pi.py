@@ -225,10 +225,10 @@ class MediaKrakenApp(App):
         # connect to arduinos and reset arm/track
         self.arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
             baud_rate='1200')
-        self.arm_arduino.com_arduino_usb_serial_writestring('arm max')
+        self.arm_arduino.com_arduino_usb_serial_writestring('max')
         self.track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
             baud_rate='1200')
-        self.track_arduino.com_arduino_usb_serial_writestring('track min')
+        self.track_arduino.com_arduino_usb_serial_writestring('min')
 
     def exit_program(self):
         pass
