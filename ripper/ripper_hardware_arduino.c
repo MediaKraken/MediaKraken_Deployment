@@ -66,10 +66,9 @@ void loop()
         serial_char = ripper_serial.read();
         if (serial_char == '\n')
         {
-            if (txtMsg.length() > 3)
+            if (txtMsg.length() > 6)
             {
-                // check for wipe mode
-                if (txtMsg.substring(0,1) == "W")
+                if (txtMsg.substring(0,6) == "pickup")
                 {
 
                 }
