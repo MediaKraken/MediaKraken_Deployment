@@ -1,0 +1,73 @@
+/* Chapter Thumbnails Menu */
+
+.vjs-chapter-thumbnails-menu
+{
+  .vjs-menu-button-popup &
+  {
+    left: auto;
+    right: 0;
+    width: auto;
+  }
+}
+
+/* Chapter Thumbnails Menu Content */
+
+.vjs-chapter-thumbnails-menu .vjs-menu-content
+{
+  /* Chapter Thumbnails Menu — Show when video has started */
+
+  .vjs-has-started &
+  {
+    opacity: 1;
+    transition: visibility 0.1s, opacity 0.1s;
+    visibility: visible;
+  }
+
+  /* Chapter Thumbnails Menu — Hide when user becomes inactive */
+
+  .vjs-has-started.vjs-user-inactive.vjs-playing &
+  {
+    opacity: 0;
+    transition: visibility 1s, opacity 1s;
+    visibility: visible;
+  }
+
+  .vjs-menu-button-popup &
+  {
+    border-radius: 3px;
+    overflow-y: auto;
+    right: 0;
+    white-space: nowrap;
+    width: 240px;
+  }
+}
+
+/* Chapter Thumbnails Menu Item */
+
+.vjs-menu .vjs-chapter-thumbnails-menu-item
+{
+  padding: 0;
+}
+
+/* Chapter Thumbnails Item */
+
+.vjs-chapters-thumbnails-item
+{
+  cursor: pointer;
+  overflow: hidden;
+  padding: 5px 5px 10px;
+  text-align: left;
+}
+
+.vjs-chapters-thumbnails-item-image
+{
+  float: left;
+  margin-right: 10px;
+  width: 70px;
+}
+
+.vjs-chapters-thumbnails-item-title
+{
+  display: block;
+  text-transform: capitalize;
+}
