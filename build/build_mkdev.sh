@@ -1,6 +1,6 @@
 apk update
 apk upgrade
-apk install alpine-sdk
+apk add alpine-sdk
 
 pip install -r ../testing/pip_requirements.txt
 pip install -r ../docker/alpine/ComposeMediaKrakenWebServer/requirements.txt
