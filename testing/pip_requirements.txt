@@ -1,4 +1,4 @@
-pytest
+﻿pytest
 pytest-xdist
 pytest-selenium
 selenium
@@ -8,4 +8,15 @@ tox
 pyflakes
 pytest-timeout
 pytest-profiling
-
+httplib2
+plyer
+psutil
+transmissionrpc
+watchdog
+easysnmp
+BeautifulSoup
+xmltodict
+synolopy
+nest
+boto
+discid
