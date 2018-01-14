@@ -22,10 +22,12 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 #include <SoftwareSerial.h>
 
+#define home_switch_spindle 7 // Pin 7 connected to Home Switch (MicroSwitch)
 #define home_switch_arm 8 // Pin 8 connected to Home Switch (MicroSwitch)
 #define home_switch_track 9 // Pin 9 connected to Home Switch (MicroSwitch)
 long initial_arm_homing=-1;  // Used to Home Stepper at startup
 long initial_track_homing=-1;  // Used to Home Stepper at startup
+char serialdata[20];
 
 // the track/arm motor shield
 Adafruit_MotorShield AFMSbottom(0x60);
@@ -103,21 +105,30 @@ void loop()
 {
     while (ripper_serial.available() > 0)
     {
-        serial_char = ripper_serial.read();
-        if (serial_char == '\n')
+        ripper_serial.readBytesUntil('|', serialdata, 20);
+        if (serialdata == 'arm')
         {
-            if (txtMsg.length() > 6)
-            {
-                if (txtMsg.substring(0,6) == "pickup")
-                {
-
-                }
+            Accelstepper_arm.moveTo(ripper_serial.parseInt());
+            Accelstepper_arm.run();
+        }
+        else if (serialdata == 'track')
+        {
+            Accelstepper_track.moveTo(ripper_serial.parseInt());
+            Accelstepper_track.run();
+        }
+        else if (serialdata == 'pickup')
+        {
+            while (digitalRead(home_switch_spindle)) {
+                Accelstepper_arm.moveTo(initial_arm_homing);
+                initial_arm_homing--;
+                Accelstepper_arm.run();
+                delay(5);
             }
-            txtMsg = "";
         }
         else
         {
-            txtMsg.concat(serial_char);
+            stepper_to_move = Accelstepper_cd_spinner;
         }
+
     }
 }
