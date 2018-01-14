@@ -1,3 +1,4 @@
+#@IgnoreInspection BashAddShebang
 # setup discid libs
 tar -xvf ./lib/libdiscid-0.6.1.tar.gz
 cd ./libdiscid-0.6.1
