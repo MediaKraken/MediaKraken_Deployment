@@ -22,6 +22,7 @@ from common import common_config_ini
 from common import common_internationalization
 from common import common_logging
 from common import common_network
+from common import common_version
 import zipfile
 import os
 import uuid
@@ -39,10 +40,11 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 
 # create mame game list
 if False:
-    file_name = '/mediakraken/emulation/mame0189lx.zip'
+    file_name = ('/mediakraken/emulation/mame%slx.zip' % common_version.MAME_VERSION)
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
-            'https://github.com/mamedev/mame/releases/download/mame0189/mame0189lx.zip',
+            ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
+             % common_version.MAME_VERSION, common_version.MAME_VERSION),
             file_name)
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
@@ -76,7 +78,8 @@ if True:
     file_name = '/mediakraken/emulation/mame0189s.zip'
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
-            'https://github.com/mamedev/mame/releases/download/mame0189/mame0189s.zip',
+            ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
+             % common_version.MAME_VERSION, common_version.MAME_VERSION),
             file_name)
     total_software = 0
     total_software_update = 0
@@ -154,10 +157,10 @@ if True:
 
 
 # update mame game descriptions from history dat
-file_name = '/mediakraken/emulation/history189.zip'
+file_name = ('/mediakraken/emulation/history%s.zip' % common_version.MAME_VERSION)
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        'https://www.arcade-history.com/dats/history189.zip', file_name)
+        ('https://www.arcade-history.com/dats/history%s.zip' % common_version.MAME_VERSION), file_name)
 if True:
     game_titles = []
     game_desc = ""
