@@ -22,6 +22,7 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 #include <SoftwareSerial.h>
 
+const int vaccuum_pin 6;
 #define home_switch_spindle 7 // Pin 7 connected to Home Switch (MicroSwitch)
 #define home_switch_arm 8 // Pin 8 connected to Home Switch (MicroSwitch)
 #define home_switch_track 9 // Pin 9 connected to Home Switch (MicroSwitch)
@@ -45,24 +46,8 @@ AccelStepper Accelstepper_cd_spinner(stepper_cd_spinner->onestep(FORWARD, MICROS
 AccelStepper Accelstepper_track(stepper_track->onestep(FORWARD, MICROSTEP), stepper_track->onestep(BACKWARD, MICROSTEP));
 AccelStepper Accelstepper_arm(stepper_arm->onestep(FORWARD, MICROSTEP), stepper_arm->onestep(BACKWARD, MICROSTEP));
 
-# setup the devices and home them
-void setup()
+void arm_home()
 {
-    AFMSbottom.begin(); // Start the bottom board
-    // Setup cd spinner motor
-    Accelstepper_cd_spinner.setMaxSpeed(400.0);
-    Accelstepper_cd_spinner.setAcceleration(100.0);
-//    Accelstepper_cd_spinner.moveTo(24);
-    // setup move track motor
-//    Accelstepper_track.setMaxSpeed(200.0);
-//    Accelstepper_track.setAcceleration(100.0);
-//    Accelstepper_track.moveTo(50000);
-//    // setup move arm motor
-//    Accelstepper_arm.setMaxSpeed(200.0);
-//    Accelstepper_arm.setAcceleration(100.0);
-//    Accelstepper_arm.moveTo(50000);
-    // line serial communication
-    ripper_serial.begin(1200);
     // home the arm
     while (digitalRead(home_switch_arm)) {  // Make the Stepper move CCW until the switch is activated
         Accelstepper_arm.moveTo(initial_arm_homing);  // Set the position to move to
@@ -81,6 +66,10 @@ void setup()
         delay(5);
     }
     Accelstepper_arm.setCurrentPosition(0);
+}
+
+void track_home()
+{
     // home the track
     while (digitalRead(home_switch_track)) {  // Make the Stepper move CCW until the switch is activated
         Accelstepper_track.moveTo(initial_track_homing);  // Set the position to move to
@@ -99,6 +88,19 @@ void setup()
         delay(5);
     }
     Accelstepper_track.setCurrentPosition(0);
+}
+
+# setup the devices and home them
+void setup()
+{
+    AFMSbottom.begin(); // Start the bottom board
+    // Setup cd spinner motor
+    Accelstepper_cd_spinner.setMaxSpeed(400.0);
+    Accelstepper_cd_spinner.setAcceleration(100.0);
+    // line serial communication
+    ripper_serial.begin(1200);
+    arm_home()
+    track_home()
 
 // begin main loop
 void loop()
@@ -124,6 +126,15 @@ void loop()
                 Accelstepper_arm.run();
                 delay(5);
             }
+            digitalWrite(vaccuum_pin, HIGH);
+            arm_home()
+        }
+        else if (serialdata == 'drop')
+        {
+            Accelstepper_arm.moveTo(ripper_serial.parseInt());
+            Accelstepper_arm.run();
+            digitalWrite(vaccuum_pin, LOW);
+            arm_home()
         }
         else
         {
