@@ -108,18 +108,18 @@ void loop()
 {
   while (ripper_serial.available() > 0)
   {
-    ripper_serial.readBytesUntil('|', serialdata, 20);
-    if (serialdata == 'arm')
+    String serialdata = ripper_serial.readStringUntil('|');
+    if (serialdata == "arm")
     {
       Accelstepper_arm.moveTo(ripper_serial.parseInt());
       Accelstepper_arm.run();
     }
-    else if (serialdata == 'track')
+    else if (serialdata == "track")
     {
       Accelstepper_track.moveTo(ripper_serial.parseInt());
       Accelstepper_track.run();
     }
-    else if (serialdata == 'pickup')
+    else if (serialdata == "pickup")
     {
       while (digitalRead(home_switch_spindle)) {
         Accelstepper_arm.moveTo(initial_arm_homing);
@@ -130,7 +130,7 @@ void loop()
       digitalWrite(vaccuum_pin, HIGH);
       arm_home();
     }
-    else if (serialdata == 'drop')
+    else if (serialdata == "drop")
     {
       Accelstepper_arm.moveTo(ripper_serial.parseInt());
       Accelstepper_arm.run();
