@@ -147,16 +147,20 @@ class MediaKrakenApp(App):
             if buffer_busy == False:
                 # position for pickup disc for buffing
                 if spinner_one_text is not None and spinner_one_text.find('Buff') != -1:
-                    self.track_arduino.com_arduino_usb_serial_writestring('track one')
+                    self.track_arduino.com_arduino_usb_serial_writestring(
+                        'track|%s' % self.spindles_media_to_process[1]['Pos'])
                     buffer_spool = 'one'
                 elif spinner_two_text is not None and spinner_two_text.find('Buff') != -1:
-                    self.track_arduino.com_arduino_usb_serial_writestring('track two')
+                    self.track_arduino.com_arduino_usb_serial_writestring(
+                        'track|%s' % self.spindles_media_to_process[2]['Pos'])
                     buffer_spool = 'two'
                 elif spinner_three_text is not None and spinner_three_text.find('Buff') != -1:
-                    self.track_arduino.com_arduino_usb_serial_writestring('track three')
+                    self.track_arduino.com_arduino_usb_serial_writestring(
+                        'track|%s' % self.spindles_media_to_process[3]['Pos'])
                     buffer_spool = 'three'
                 elif spinner_four_text is not None and spinner_four_text.find('Buff') != -1:
-                    self.track_arduino.com_arduino_usb_serial_writestring('track four')
+                    self.track_arduino.com_arduino_usb_serial_writestring(
+                        'track|%s' % self.spindles_media_to_process[4]['Pos'])
                     buffer_spool = 'four'
                 self.pickup_cd(buffer_spool)
                 self.load_buffer()
@@ -179,7 +183,7 @@ class MediaKrakenApp(App):
                     or (drive_status['Type'] == 'DVD' and spinner_text == 'Audio CD')):
                 # load this one
                 self.track_arduino.com_arduino_usb_serial_writestring(
-                    'track %s' % self.spindles_media_to_process[spinner_no]['Pos'])
+                    'track|%s' % self.spindles_media_to_process[spinner_no]['Pos'])
                 self.pickup_cd()
                 self.load_drive(drive_status)
                 # crochet message since thread to have main pc eject proper drive
@@ -191,44 +195,29 @@ class MediaKrakenApp(App):
         # lower arm till cd contact or find empty
         self.arm_arduino.com_arduino_usb_serial_writestring('pickup')
         # TODO if hit limiter......None the spinner
-        # turn on vaccuum to grab disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum on')
-        # raise arm to max to allow moving
-        # TODO don't do max....just high enough for the drive that will be loaded
-        self.arm_arduino.com_arduino_usb_serial_writestring('max')
 
     def load_buffer(self):
         # move track to buffer
         self.track_arduino.com_arduino_usb_serial_writestring(
-            'track %s' % self.buffer_drives[1]['Pos']['Track'])
-        # lower disc to buffer pad
-        self.arm_arduino.com_arduino_usb_serial_writestring(
-            'arm %s' % self.buffer_drives[1]['Pos']['Arm'])
+            'track|%s' % self.buffer_drives[1]['Pos']['Track'])
         # drop disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum off')
-        # raise arm to give buffer room
-        self.arm_arduino.com_arduino_usb_serial_writestring('max')
+        self.arm_arduino.com_arduino_usb_serial_writestring(
+            'drop|%s' % self.buffer_drives[1]['Pos']['Arm'])
 
     def load_drive(self, drive_status):
         # move to track position for drive
         self.track_arduino.com_arduino_usb_serial_writestring(
-            'track %s' % drive_status['Pos']['Track'])
-        # lower disc to drive pad
-        self.arm_arduino.com_arduino_usb_serial_writestring(
-            'arm %s' % drive_status['Pos']['Arm'])
+            'track|%s' % drive_status['Pos']['Track'])
         # drop disc
-        self.arm_arduino.com_arduino_usb_serial_writestring('vaccuum off')
-        # raise arm
-        self.arm_arduino.com_arduino_usb_serial_writestring('max')
+        self.arm_arduino.com_arduino_usb_serial_writestring(
+            'drop|%s' % drive_status['Pos']['Arm'])
 
     def arduino_connect(self):
         # connect to arduinos and reset arm/track
         self.arm_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
             baud_rate='1200')
-        self.arm_arduino.com_arduino_usb_serial_writestring('max')
         self.track_arduino = common_hardware_arduino_usb_serial.CommonHardwareArduino(
             baud_rate='1200')
-        self.track_arduino.com_arduino_usb_serial_writestring('min')
 
     def exit_program(self):
         pass
@@ -284,7 +273,7 @@ class MediaKrakenApp(App):
         logging.info('conn server')
         if self.config is not None:
             logging.info('here in connect to server')
-            reactor.connectTCP('10.0.0.1', 7000, MKFactory())
+            reactor.connectTCP('10.1.0.1', 7000, MKFactory())
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
