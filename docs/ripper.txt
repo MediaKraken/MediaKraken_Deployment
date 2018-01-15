@@ -20,3 +20,8 @@ buffer stepper - rotates buffing wheel
 relay - vacuum pump to hold disc
 relay - water pump to cool/wash disc
 
+********************
+
+setup the raspbian image for the pi
+
+dd bs=4M if=2017-11-29-raspbian-stretch.img of=/dev/sdb conv=fsync
