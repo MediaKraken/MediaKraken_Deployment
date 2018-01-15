@@ -22,6 +22,7 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 #include <SoftwareSerial.h>
 
+const int water_pin 5;
 const int vaccuum_pin 6;
 #define home_switch_spindle 7 // Pin 7 connected to Home Switch (MicroSwitch)
 #define home_switch_arm 8 // Pin 8 connected to Home Switch (MicroSwitch)
