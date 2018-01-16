@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function #, unicode_literals
 import logging # pylint: disable=W0611
 import urllib2
+import os
 from smb.SMBHandler import SMBHandler
 from smb.SMBConnection import SMBConnection
 
@@ -122,7 +123,7 @@ class CommonCIFSShare(object):
         """
         Upload file to smb
         """
-        self.smb_conn.storeFile(self.sharename, '/' + file_path, open(file_path, 'rb'))
+        self.smb_conn.storeFile(os.path.join(self.sharename, file_path), open(file_path, 'rb'))
 
 
     def com_cifs_share_file_download(self, file_path):
@@ -136,7 +137,7 @@ class CommonCIFSShare(object):
         """
         Delete from smb
         """
-        self.smb_conn.deleteFiles(share_name, '/' + file_path)
+        self.smb_conn.deleteFiles(os.path.join(share_name, file_path))
 
 
     def com_cifs_close(self):
@@ -159,8 +160,9 @@ class CommonCIFSShare(object):
                 nondirs.append(name.filename)
         yield file_path, dirs, nondirs
         for name in dirs:
-            new_path = file_path + '\\' + name
-            for ndx in self.com_cifs_walk(share_name, new_path):
+ #           new_path = file_path + '\\' + name
+#            for ndx in self.com_cifs_walk(share_name, new_path):
+            for ndx in self.com_cifs_walk(share_name, os.path.join(file_path, name)):
                 yield ndx
 
 #    ans = com_cifs_Walk(conn, 'SHARE_FOLDER',file_path= '/')
