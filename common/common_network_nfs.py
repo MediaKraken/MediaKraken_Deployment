@@ -26,9 +26,9 @@ class CommonNetNFS(object):
         self.nfs_inst = libnfs.NFS('nfs://%s/%s' % (hostname, nfs_share))
 
     def com_net_nfs_writefile(self, file_name, file_data):
-        a = self.nfs_inst.open(file_name, mode='w+')
-        a.write(file_data)
-        a.close()
+        file_handle = self.nfs_inst.open(file_name, mode='w+')
+        file_handle.write(file_data)
+        file_handle.close()
 
     def com_net_nfs_readfile(self, file_name):
         return self.nfs_inst.open('/foo-test', mode='r').read()
