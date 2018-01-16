@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 from . import common_network_telnet
 
 
-class CommonTivo(object):
+class CommonHardwareTivo(object):
     """
     Class for interfacing with tivo device
     """

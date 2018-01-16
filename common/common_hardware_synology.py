@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 from synolopy import NasApi
 
 
-class CommonSynology(object):
+class CommonHardwareSynology(object):
     """
     Class for interfacing with synology nas
     """
