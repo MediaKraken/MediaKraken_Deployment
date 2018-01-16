@@ -29,6 +29,6 @@ class CommonMetadataOpenLibrary(object):
         pass
 
 
-    def com_meta_openlibrary_fetch_cover(self, isbn_id):
+    def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
         common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'
                                                  + isbn_id + '-L.jpg', image_path)
