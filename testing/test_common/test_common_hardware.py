@@ -52,7 +52,7 @@ def test_mk_hardware_vibration():
     """
     Test function
     """
-    common_hardware.mk_hardware_vibration(pattern_string)
+    common_hardware.mk_hardware_vibration()
 
 
 # vibration via time
