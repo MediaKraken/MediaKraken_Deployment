@@ -31,5 +31,6 @@ def com_bray_read_titles(drive_name):
         print("Org ID: %s" % b.OrgId)
         for i in range(b.NumberOfTitles):
             t = b.GetTitle(i)
-            track_data.append((i, t.NumberOfAngles, t.NumberOfChapters, t.NumberOfClips, t.LengthFancy))
+            track_data.append((i, t.NumberOfAngles, t.NumberOfChapters,
+                               t.NumberOfClips, t.LengthFancy))
     return track_data
