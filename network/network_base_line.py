@@ -207,6 +207,9 @@ class NetworkEvents(basic.LineReceiver):
                         + self.server_port_ffmpeg + '/stream.ffm'
                 msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
+        elif json_message['Type'] == "MPV":
+            self.send_all_users(json_message['Data'])
+
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"
