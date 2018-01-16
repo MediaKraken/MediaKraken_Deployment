@@ -21,34 +21,33 @@ import logging # pylint: disable=W0611
 import nest
 from nest import utils as nest_utils
 
-
-def com_nest_device_connect(user_name, password):
+class CommonHardwareNest(object):
     """
-    Connect to NEST
+    Class for interfacing with arduino device over usb
     """
-    nest_device = nest.Nest(user_name, password)
-    return nest_device
+    def __init__(self, user_name, password):
+        """
+        Connect to NEST
+        """
+        self.nest_device = nest.Nest(user_name, password)
 
-
-def com_nest_device_structures(nest_device):
-    """
-    # grab structures and the devices
-    """
-    for structure in nest_device.structures:
-        logging.info('Structure %s', structure.name)
-        logging.info('Away: %s', structure.away)
-        logging.info('Devices:')
-        for device in structure.devices:
-            logging.info('Device: %s', device.name)
-            logging.info('Temp: %0.1f', device.temperature)
-
+    def com_nest_device_structures(self):
+        """
+        # grab structures and the devices
+        """
+        for structure in self.nest_device.structures:
+            logging.info('Structure %s', structure.name)
+            logging.info('Away: %s', structure.away)
+            logging.info('Devices:')
+            for device in structure.devices:
+                logging.info('Device: %s', device.name)
+                logging.info('Temp: %0.1f', device.temperature)
 
 def com_nest_c_to_f(temp_data):
     """
     C to F temp conversion
     """
     return nest_utils.c_to_f(temp_data)
-
 
 def com_nest_f_to_c(temp_data):
     """
