@@ -1,0 +1,12 @@
+== How to build the Docker images and push to Docker Hub ==
+
+# Run these commands from MediaKraken_Deployment/docker/alpine directory
+
+# Make sure latest code.  Also, this will launch all the build steps to create images.
+./build_update.sh
+
+# Tag for latest
+./tag_rename_images.sh
+
+# Push all images to docker hub
+./images_push_to_hub.s
