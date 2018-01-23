@@ -1,3 +1,19 @@
+== Jenkins ==
+Centos7
+yum check-update
+curl -fsSL https://get.docker.com/ | sh
+systemctl start docker
+systemctl enable docker
+rpm -iUvh https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+yum update
+yum install python-pip
+pip install docker-compose
+turn off selinux and reboot
+*docker run -p 8080:8080 -p 50000:50000 -v /opt/jenkins:/var/jenkins_home jenkins/jenkins:lts
+*installed recommended plugins
+**proxmox plugin
+
+
 == Tizen Dev env setup ==
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:webupd8team/java
