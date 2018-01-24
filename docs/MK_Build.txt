@@ -9,4 +9,4 @@
 ./tag_rename_images.sh
 
 # Push all images to docker hub
-./images_push_to_hub.s
+./images_push_to_hub.sh
