@@ -207,3 +207,10 @@ def com_hash_opensubtitles(file_name):
         return returnedhash
     except IOError:
         return "IOError"
+
+def com_hash_md5_by_filename(filename):
+    md5 = hashlib.md5()
+    with open(filename,'rb') as f:
+        for chunk in iter(lambda: f.read(8192), b''):
+            md5.update(chunk)
+    return md5.digest()
