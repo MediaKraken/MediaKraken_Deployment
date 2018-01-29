@@ -16,21 +16,19 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_cifs
 
 
 class TestCommonCIFSShareURL(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_network_cifs.CommonNetworkCIFSShareURL()
-
 
     @classmethod
     def teardown_class(self):
@@ -48,20 +46,16 @@ class TestCommonCIFSShareURL(object):
 
 class TestCommonCIFSShare(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_network_cifs.CommonCIFSShare()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
-# connect
-# def com_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
-
+    # connect
+    # def com_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
 
     # list shares
     def test_com_cifs_share_list_by_connection(self):
@@ -70,30 +64,23 @@ class TestCommonCIFSShare(object):
         """
         self.db_connection.com_cifs_share_list_by_connection()
 
+    # list files in share
+    # def com_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
 
-# list files in share
-# def com_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
+    # verify smb directory
+    # def com_cifs_Share_Directory_Check(self, share_name, dir_path):
 
+    # get specific path/file info
+    # def com_cifs_Share_File_Dir_Info(self, share_name, file_path):
 
-# verify smb directory
-# def com_cifs_Share_Directory_Check(self, share_name, dir_path):
+    # upload file to smb
+    # def com_cifs_Share_File_Upload(self, file_path):
 
+    # download from smb
+    # def com_cifs_Share_File_Download(self, file_path):
 
-# get specific path/file info
-# def com_cifs_Share_File_Dir_Info(self, share_name, file_path):
-
-
-# upload file to smb
-# def com_cifs_Share_File_Upload(self, file_path):
-
-
-# download from smb
-# def com_cifs_Share_File_Download(self, file_path):
-
-
-# delete from smb
-# def com_cifs_Share_File_Delete(self, share_name, file_path):
-
+    # delete from smb
+    # def com_cifs_Share_File_Delete(self, share_name, file_path):
 
     # close connection
     def test_com_cifs_close(self):
@@ -101,7 +88,6 @@ class TestCommonCIFSShare(object):
         Test function
         """
         self.db_connection.com_cifs_close()
-
 
 # cifs directory walk
 # def com_cifs_Walk(self, share_name, file_path='/'):

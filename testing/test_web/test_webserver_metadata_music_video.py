@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 from .test_webserver_base import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys

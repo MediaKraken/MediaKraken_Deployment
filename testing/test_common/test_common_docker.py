@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_docker
 
 
 class TestCommonDocker(object):
 
-
     @classmethod
     def setup_class(self):
         self.docker_handle = common_docker.CommonDocker('tcp://127.0.0.1', 2375)
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     def test_com_docker_connect(self):
         """
@@ -44,13 +41,11 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_connect()
 
-
     def test_com_docker_container_list(self):
         """
         List containers on host
         """
         self.docker_handle.com_docker_container_list()
-
 
     def test_com_docker_info(self):
         """
@@ -58,13 +53,11 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_info()
 
-
     def test_com_docker_swarm_init(self):
         """
         initialize swarm on host
         """
         self.docker_handle.com_docker_swarm_init()
-
 
     def test_com_docker_swarm_inspect(self):
         """
@@ -72,13 +65,11 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_swarm_inspect()
 
-
     def test_com_docker_swarm_leave(self):
         """
         leave current swarm
         """
         self.docker_handle.com_docker_swarm_leave()
-
 
     def test_com_docker_node_list(self):
         """
@@ -86,13 +77,11 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_node_list()
 
-
     def test_com_docker_version(self):
         """
         return docker version on host
         """
         self.docker_handle.com_docker_version()
-
 
     def test_com_docker_volume_info(self, volume_name):
         """
@@ -100,13 +89,11 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_volume_info()
 
-
     def test_com_docker_volume_remove(self, volume_name):
         """
         remove volume from docker
         """
         self.docker_handle.com_docker_volume_remove()
-
 
     def test_com_docker_volume_list(self):
         """

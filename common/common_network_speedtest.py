@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import pyspeedtest
 
 
@@ -25,6 +25,7 @@ class CommonNetworkSpeedtest(object):
     """
     Class for interfacing with speedtest
     """
+
     def __init__(self, access_token):
         self.st = pyspeedtest.SpeedTest()
 

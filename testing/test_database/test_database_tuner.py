@@ -16,17 +16,16 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
 import sys
+
 sys.path.append('.')
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import database as database_base
 
 
 class TestDatabaseTuner(object):
-
 
     @classmethod
     def setup_class(self):
@@ -34,11 +33,9 @@ class TestDatabaseTuner(object):
         self.db_connection.db_open()
         self.new_guid = None
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_tuner_count(self):
         """
@@ -46,7 +43,6 @@ class TestDatabaseTuner(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_tuner_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -59,14 +55,12 @@ class TestDatabaseTuner(object):
         self.db_connection.db_rollback()
         self.db_connection.db_tuner_list(offset, records)
 
-
     def test_db_tuner_insert(self):
         """
         # insert record
         """
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_tuner_insert(json.dumps({'ID': 'test'}))
-
 
     def test_db_tuner_update(self):
         """
@@ -76,14 +70,12 @@ class TestDatabaseTuner(object):
         self.db_connection.db_tuner_update(self.new_guid, json.dumps({'ID': 'test2'}))
         self.db_connection.db_commit()
 
-
     def test_db_tuner_by_serial(self):
         """
         # find detials by hardware id (serial)
         """
         self.db_connection.db_rollback()
         self.db_connection.db_tuner_by_serial('test2')
-
 
     def test_db_tuner_delete(self):
         """

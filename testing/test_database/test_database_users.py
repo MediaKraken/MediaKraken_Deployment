@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseUsers(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_user_list_name_count(self):
         """
@@ -44,7 +41,6 @@ class TestDatabaseUsers(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_user_list_name_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -57,10 +53,9 @@ class TestDatabaseUsers(object):
         self.db_connection.db_rollback()
         self.db_connection.db_user_list_name(offset, records)
 
-
     @pytest.mark.parametrize(("guid"), [
         (1),
-        (923894894893)]) # not exist
+        (923894894893)])  # not exist
     def test_db_user_detail(self, guid):
         """
         # return all data for specified user
@@ -68,10 +63,9 @@ class TestDatabaseUsers(object):
         self.db_connection.db_rollback()
         self.db_connection.db_user_detail(guid)
 
-
     @pytest.mark.parametrize(("user_guid"), [
         (1),
-        (923894894893)]) # not exist
+        (923894894893)])  # not exist
     def test_db_user_delete(self, user_guid):
         """
         # remove user
@@ -79,7 +73,6 @@ class TestDatabaseUsers(object):
         self.db_connection.db_rollback()
         self.db_connection.db_user_delete(user_guid)
         self.db_connection.db_rollback()
-
 
     # verify user logon
     # def db_user_login_kodi(self, user_data):

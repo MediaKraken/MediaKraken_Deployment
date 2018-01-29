@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 
 
@@ -47,13 +47,13 @@ def db_link_list(self, offset=None, records=None, search_value=None):
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
-                ' where mm_link_guid in (select mm_link_guid'
-                ' from mm_link where mm_link_name %% %s offset %s limit %s)',
-                (search_value, offset, records))
+                                   ' where mm_link_guid in (select mm_link_guid'
+                                   ' from mm_link where mm_link_name %% %s offset %s limit %s)',
+                                   (search_value, offset, records))
         else:
             self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
-                ' where mm_link_guid in (select mm_link_guid from mm_link offset %s limit %s)',
-                (offset, records))
+                                   ' where mm_link_guid in (select mm_link_guid from mm_link'
+                                   ' offset %s limit %s)', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -63,7 +63,7 @@ def db_link_insert(self, link_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_link (mm_link_guid, mm_link_json)'
-        ' values (%s, %s)', (new_guid, link_json))
+                           ' values (%s, %s)', (new_guid, link_json))
     self.db_commit()
     return new_guid
 

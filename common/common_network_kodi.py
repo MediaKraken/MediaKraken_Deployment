@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 from kodipydent import Kodi
 
@@ -42,7 +42,8 @@ def com_net_kodi_command(host_ip, host_port, kodi_command):
     kodi_socket.close()
     return kodi_response
 
-#com_net_kodi_command('10.1.0.20', 9090, KODI_SHOW_INFO)
+
+# com_net_kodi_command('10.1.0.20', 9090, KODI_SHOW_INFO)
 
 
 def com_net_kodi_media_update(db_connection, movie_data=False, collections_data=False,

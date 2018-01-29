@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hash
 
@@ -63,7 +63,7 @@ def test_com_hash_crc32(file_name, expected_result):
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
-#def com_hash_ed2k(filePath):
+# def com_hash_ed2k(filePath):
 #    """ Returns the ed2k hash of a given file."""
 #    md4 = hashlib.new('md4').copy
 #    def gen(f):

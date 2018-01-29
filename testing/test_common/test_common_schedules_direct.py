@@ -16,29 +16,25 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_schedules_direct
 
 
 class TestCommonSchedulesDirect(object):
 
-
     @classmethod
     def setup_class(self):
         self.sd_connection = common_schedules_direct.CommonSchedulesDirect()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
-#    def com_Schedules_Direct_Login(self, user_name, user_password):
-
+    #    def com_Schedules_Direct_Login(self, user_name, user_password):
 
     def test_com_schedules_direct_status(self):
         """
@@ -46,29 +42,23 @@ class TestCommonSchedulesDirect(object):
         """
         self.sd_connection.com_schedules_direct_status()
 
-
     def test_com_schedules_direct_client_version(self):
         """
         Test function
         """
         self.sd_connection.com_schedules_direct_client_version()
 
+    #    def com_Schedules_Direct_Available(self, countries=None):
 
-#    def com_Schedules_Direct_Available(self, countries=None):
+    #    def com_Schedules_Direct_Headends(self, country_code, postal_code):
 
-
-#    def com_Schedules_Direct_Headends(self, country_code, postal_code):
-
-
-#    def com_Schedules_Direct_Lineup_Add(self, lineup_id):
-
+    #    def com_Schedules_Direct_Lineup_Add(self, lineup_id):
 
     def test_com_schedules_direct_lineup_list(self):
         """
         Test function
         """
         self.sd_connection.com_schedules_direct_lineup_list()
-
 
 #    def com_Schedules_Direct_Lineup_Delete(self, lineup_id):
 
@@ -79,7 +69,7 @@ class TestCommonSchedulesDirect(object):
 #    def com_Schedules_Direct_Program_Info(self, program_ids):
 
 
-    # this one is only for EP types, not MV
+# this one is only for EP types, not MV
 #    def com_Schedules_Direct_Program_Desc(self, program_ids):
 
 

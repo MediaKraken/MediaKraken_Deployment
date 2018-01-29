@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from pythonopensubtitles.opensubtitles import OpenSubtitles
 from pythonopensubtitles.utils import File
 
@@ -26,6 +26,7 @@ class CommonMetadataOpenSubtitles(object):
     """
     Class for interfacing with Opensubtitles
     """
+
     def __init__(self, user_name, user_password):
         self.opensubtitles_inst = OpenSubtitles()
         self.token = self.opensubtitles_inst.login(user_name, user_password)

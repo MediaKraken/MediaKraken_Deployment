@@ -16,8 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function #, unicode_literals
-import logging # pylint: disable=W0611
+from __future__ import absolute_import, division, print_function  # , unicode_literals
+import logging  # pylint: disable=W0611
 import urllib2
 import os
 from smb.SMBHandler import SMBHandler
@@ -28,16 +28,15 @@ class CommonNetworkCIFSShareURL(object):
     """
     Handle CIFS shares
     """
+
     def __init__(self):
         pass
-
 
     def com_cifs_url_director(self, connect_string):
         """
         Create director for CIFS management
         """
         self.director = urllib2.build_opener(SMBHandler)
-
 
     def com_cifs_url_download(self, connect_string):
         """
@@ -48,7 +47,6 @@ class CommonNetworkCIFSShareURL(object):
             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
         # Process file_con like a file-like object and then close it.
         file_con.close()
-
 
     def com_cifs_url_upload(self, file_path, connect_string):
         """
@@ -64,9 +62,9 @@ class CommonCIFSShare(object):
     """
     Handle CIFS shares
     """
+
     def __init__(self):
         self.smb_conn = None
-
 
     def com_cifs_connect(self, ip_addr, user_name='guest', user_password=''):
         """
@@ -75,9 +73,8 @@ class CommonCIFSShare(object):
         server_name = 'Server'
         client_name = 'My Computer'
         self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,
-            use_ntlm_v2=True)
+                                      use_ntlm_v2=True)
         self.smb_conn.connect(ip_addr, 139)
-
 
     def com_cifs_share_list_by_connection(self):
         """
@@ -88,7 +85,6 @@ class CommonCIFSShare(object):
             share_names.append(row_data.name)
         return share_names
 
-
     def com_cifs_share_file_list_by_share(self, share_name, path_text='/'):
         """
         List files in share
@@ -98,7 +94,6 @@ class CommonCIFSShare(object):
             logging.info(row_data.filename)
             file_names.append(row_data.filename)
         return file_names
-
 
     def com_cifs_share_directory_check(self, share_name, dir_path):
         """
@@ -111,13 +106,11 @@ class CommonCIFSShare(object):
             pass
         return False
 
-
     def com_cifs_share_file_dir_info(self, share_name, file_path):
         """
         Get specific path/file info
         """
         return self.smb_conn.getAttributes(share_name, file_path)
-
 
     def com_cifs_share_file_upload(self, file_path):
         """
@@ -125,13 +118,11 @@ class CommonCIFSShare(object):
         """
         self.smb_conn.storeFile(os.path.join(self.sharename, file_path), open(file_path, 'rb'))
 
-
     def com_cifs_share_file_download(self, file_path):
         """
         Download from smb
         """
         self.smb_conn.retrieveFile(self.sharename, open(file_path, 'wb'))
-
 
     def com_cifs_share_file_delete(self, share_name, file_path):
         """
@@ -139,13 +130,11 @@ class CommonCIFSShare(object):
         """
         self.smb_conn.deleteFiles(os.path.join(share_name, file_path))
 
-
     def com_cifs_close(self):
         """
         Close connection
         """
         self.smb_conn.close()
-
 
     def com_cifs_walk(self, share_name, file_path='/'):
         """
@@ -160,8 +149,8 @@ class CommonCIFSShare(object):
                 nondirs.append(name.filename)
         yield file_path, dirs, nondirs
         for name in dirs:
- #           new_path = file_path + '\\' + name
-#            for ndx in self.com_cifs_walk(share_name, new_path):
+            #           new_path = file_path + '\\' + name
+            #            for ndx in self.com_cifs_walk(share_name, new_path):
             for ndx in self.com_cifs_walk(share_name, os.path.join(file_path, name)):
                 yield ndx
 

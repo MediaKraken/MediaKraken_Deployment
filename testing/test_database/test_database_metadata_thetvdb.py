@@ -16,33 +16,30 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataThetvdb(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # insert
     # def db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
 #        self.db_connection.db_rollback()
 
 
-    # updated
-    # def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
+# updated
+# def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
 #        self.db_connection.db_rollback()

@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from time import sleep
-#import android
+# import android
 from jnius import autoclass
 
 
@@ -27,10 +27,10 @@ class CommonAndroidHardwareInstance(object):
     """
     Class for interfacing with android hardware
     """
+
     def __init__(self):
         # get hardware instance of device
         self.android_hardware = autoclass('org.renpy.android.Hardware')
-
 
     def com_android_get_dpi(self):
         """
@@ -39,13 +39,11 @@ class CommonAndroidHardwareInstance(object):
         logging.info('DPI is %s', self.android_hardware.getDPI())
         return self.android_hardware.getDPI()
 
-
     def com_android_vibrate(self, vibrate_time):
         """
         Vibrate the device
         """
         self.android_hardware.vibrate(vibrate_time)
-
 
     def com_android_motion(self, time_range):
         """
@@ -53,7 +51,7 @@ class CommonAndroidHardwareInstance(object):
         """
         self.android_hardware.accelerometerEnable(True)
         accel_data = []
-        for ndx in xrange(time_range): # pylint: disable=W0612
+        for ndx in xrange(time_range):  # pylint: disable=W0612
             logging.info('Motion: %s', self.android_hardware.accelerometerReading())
             accel_data.append(self.android_hardware.accelerometerReading())
             sleep(.1)

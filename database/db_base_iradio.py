@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 
 
@@ -26,7 +26,7 @@ def db_iradio_insert(self, radio_channel):
     Insert iradio channel
     """
     if self.db_cursor.execute('select count(*) from mm_radio where mm_radio_adress = %s',
-        (radio_channel,)):
+                              (radio_channel,)):
         if self.db_cursor.fetchall()[0][0] == 0:
             new_guid = str(uuid.uuid4())
             self.db_cursor.execute('insert into mm_radio (mm_radio_guid,mm_radio_adress,'
@@ -41,9 +41,9 @@ def db_iradio_list_count(self, active_station=True, search_value=None):
     Iradio count
     """
     if search_value is not None:
-            self.db_cursor.execute('select count(*) from mm_radio '
-                                   'where mm_radio_active = %s and mm_radio_name %% %s',
-                                   (active_station,))
+        self.db_cursor.execute('select count(*) from mm_radio '
+                               'where mm_radio_active = %s and mm_radio_name %% %s',
+                               (active_station,))
     else:
         self.db_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',
                                (active_station,))
@@ -57,25 +57,27 @@ def db_iradio_list(self, offset=None, records=None, active_station=True, search_
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'
-                ' from mm_radio where mm_radio_active = %s '
-                'and mm_radio_name %% %s order by LOWER(mm_radio_name)',
-                (active_station, search_value))
+                                   ' from mm_radio where mm_radio_active = %s '
+                                   'and mm_radio_name %% %s order by LOWER(mm_radio_name)',
+                                   (active_station, search_value))
         else:
             self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'
-                ' from mm_radio where mm_radio_active = %s order by LOWER(mm_radio_name)',
-                (active_station,))
+                                   ' from mm_radio where mm_radio_active = %s'
+                                   ' order by LOWER(mm_radio_name)', (active_station,))
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'
-                ' from mm_radio where mm_radio_guid in (select mm_radio_guid from mm_radio'
-                ' where mm_radio_active = %s and mm_radio_name %% %s'
-                ' order by LOWER(mm_radio_name) offset %s limit %s)'
-                ' order by LOWER(mm_radio_name)',
-                (active_station, search_value, offset, records))
+                                   ' from mm_radio where mm_radio_guid '
+                                   'in (select mm_radio_guid from mm_radio'
+                                   ' where mm_radio_active = %s and mm_radio_name %% %s'
+                                   ' order by LOWER(mm_radio_name) offset %s limit %s)'
+                                   ' order by LOWER(mm_radio_name)',
+                                   (active_station, search_value, offset, records))
         else:
-           self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'
-               ' from mm_radio where mm_radio_guid in (select mm_radio_guid from mm_radio'
-               ' where mm_radio_active = %s order by LOWER(mm_radio_name) offset %s limit %s)'
-               ' order by LOWER(mm_radio_name)',
-               (active_station, offset, records))
+            self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_adress'
+                                   ' from mm_radio where mm_radio_guid'
+                                   ' in (select mm_radio_guid from mm_radio'
+                                   ' where mm_radio_active = %s order by LOWER(mm_radio_name)'
+                                   ' offset %s limit %s) order by LOWER(mm_radio_name)',
+                                   (active_station, offset, records))
     return self.db_cursor.fetchall()

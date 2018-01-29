@@ -16,16 +16,15 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseTriggers(object):
-
 
     @classmethod
     def setup_class(self):
@@ -33,11 +32,9 @@ class TestDatabaseTriggers(object):
         self.db_connection.db_open()
         self.new_guid = None
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_trigger_insert(self):
         """
@@ -46,14 +43,12 @@ class TestDatabaseTriggers(object):
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_trigger_insert(('ls', '-al'))
 
-
     def test_db_triggers_read(self):
         """
         # read the triggers
         """
         self.db_connection.db_rollback()
         self.db_connection.db_triggers_read()
-
 
     def test_db_triggers_delete(self):
         """

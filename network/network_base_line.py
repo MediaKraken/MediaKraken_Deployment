@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import base64
 import json
 import sys
 import os
 import signal
+
 sys.path.append("./vault/lib")
 import subprocess
 from twisted.internet import reactor, protocol
@@ -59,14 +60,12 @@ class NetworkEvents(basic.LineReceiver):
         self.proc_anime_match = None
         self.proc_subtitle_media_match = None
 
-
     def connectionMade(self):
         """
         Network connection made from client so ask for ident
         """
         logging.info('Got Connection')
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
-
 
     def connectionLost(self, reason):
         """
@@ -75,7 +74,6 @@ class NetworkEvents(basic.LineReceiver):
         logging.info('Lost Connection')
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
-
 
     def lineReceived(self, data):
         """
@@ -131,7 +129,7 @@ class NetworkEvents(basic.LineReceiver):
                     = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
             elif json_message['Sub'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
-                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie'\
+                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie' \
                         or json_message['Sub2'] == 'Demo':
                     image_json, metadata_id \
                         = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
@@ -172,22 +170,23 @@ class NetworkEvents(basic.LineReceiver):
                     if 'Offset' in json_message:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
                             self.db_connection.db_web_media_list(
-                            self.db_connection.db_media_uuid_by_class(json_message['Data']),
-                            json_message['Type'], offset=json_message['Offset'],
-                            list_limit=json_message['Limit'])})
+                                self.db_connection.db_media_uuid_by_class(json_message['Data']),
+                                json_message['Type'], offset=json_message['Offset'],
+                                list_limit=json_message['Limit'])})
                     else:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List',
                                           'Data': self.db_connection.db_web_media_list(
-                                         self.db_connection.db_media_uuid_by_class(
-                                             json_message['Data']),
-                                         json_message['Type'])})
+                                              self.db_connection.db_media_uuid_by_class(
+                                                  json_message['Data']),
+                                              json_message['Type'])})
             elif json_message['Sub'] == 'In Progress':
                 # (Offset, Limit)
                 pass
             elif json_message['Sub'] == 'New':
                 msg = json.dumps({'Type': 'Media', 'Sub': 'New',
-                    'Data': self.db_connection.db_read_media_new(json_message['Offset'],
-                                                                 json_message['Limit'])})
+                                  'Data': self.db_connection.db_read_media_new(
+                                      json_message['Offset'],
+                                      json_message['Limit'])})
             elif json_message['Sub'] == 'Update':
                 # (playback, love, hate, etc)
                 pass
@@ -202,9 +201,9 @@ class NetworkEvents(basic.LineReceiver):
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
                     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                        media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':'\
-                        + self.server_port_ffmpeg + '/stream.ffm'
+                                                                media_path, http_link], shell=False)
+                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
+                                + self.server_port_ffmpeg + '/stream.ffm'
                 msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         elif json_message['Type'] == "MPV":
@@ -217,17 +216,15 @@ class NetworkEvents(basic.LineReceiver):
             logging.info("should be sending data len: %s", len(msg))
             self.sendLine(msg.encode("utf8"))
 
-
     def send_single_user(self, message):
         """
         Send message to single user
         """
-        for user_device_uuid, protocol in self.users.iteritems(): # pylint: disable=W0612
+        for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
                 logging.info('send single: %s', message)
                 protocol.transport.write(message.encode("utf8"))
                 break
-
 
     def send_all_users(self, message):
         """
@@ -237,7 +234,6 @@ class NetworkEvents(basic.LineReceiver):
             if self.users[user_device_uuid].user_verified == 1:
                 logging.info('send all: %s', message)
                 protocol.transport.write(message.encode("utf8"))
-
 
     def send_all_links(self, message):
         """

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_google
 from . import youtubeapi
 import youtube_dl
@@ -46,14 +46,14 @@ def com_net_yt_fetch_video_list(search_string, max_files):
 
 
 def com_net_yt_trending(country_code='US'):
-    link_list=[]
-    source=bs.BeautifulSoup(urllib.urlopen(
+    link_list = []
+    source = BeautifulSoup(urllib.urlopen(
         "https://www.youtube.com/feed/trending?gl=%s" % country_code).read(), 'html.parser')
-    links_set=source.find_all('a',href=True)
+    links_set = source.find_all('a', href=True)
     for i in range(len(links_set)):
-        if (links_set[i]['href'].strip('')[0:6]=='/watch'):
+        if (links_set[i]['href'].strip('')[0:6] == '/watch'):
             link_list.append(links_set[i]['href'].strip(''))
-    link_list2=["www.youtube.com"+link_list[i] for i in range(len(link_list)) if i%2==0]
+    link_list2 = ["www.youtube.com" + link_list[i] for i in range(len(link_list)) if i % 2 == 0]
     return link_list2
 
 
@@ -76,20 +76,22 @@ def com_net_yt_top_tracks(playlist_type):
         yt_link = 'https://www.youtube.com/playlist?list=PLhd1HyMTk3f5PzRjJzmzH7kkxjfdVoPPj'
     elif playlist_type == 'alt rock':
         yt_link = 'https://www.youtube.com/playlist?list=PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7'
-    r=requests.get(yt_link)
-    data=r.text
-    soup=BeautifulSoup(data)
-    images=soup.select(".yt-thumb-clip")
-    imagelinks=[]
-    for image in images[9:len(images)]: #First few images are useless
+    r = requests.get(yt_link)
+    data = r.text
+    soup = BeautifulSoup(data)
+    images = soup.select(".yt-thumb-clip")
+    imagelinks = []
+    for image in images[9:len(images)]:  # First few images are useless
         imagelinks.append(image.img["data-thumb"])
-    #Titles and Videolinks
-    links=soup.find_all("a",class_="pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link ",limit=10)
+    # Titles and Videolinks
+    links = soup.find_all("a",
+                          class_="pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link ",
+                          limit=10)
     titles = []
     videolinks = []
     for link in links:
         titles.append(link.string.strip())
-        videolinks.append("https://youtube.com"+link["href"])
+        videolinks.append("https://youtube.com" + link["href"])
     return imagelinks, titles, videolinks
 
 
@@ -97,6 +99,7 @@ class CommonNetworkYoutube(object):
     """
     Class for interfacing with youtube
     """
+
     def __init__(self):
         pass
         self.youtube_inst = youtubeapi.YoutubeAPI({'key': '/* Your API key here */'})

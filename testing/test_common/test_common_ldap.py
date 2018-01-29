@@ -16,30 +16,26 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_ldap
 
 
 class TestCommonLDAP(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_ldap.CommonLDAP()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
-#class com_LDAP_API:
-#    def __init__(self, ldap_server, ou_name, dc_name):
-
+    # class com_LDAP_API:
+    #    def __init__(self, ldap_server, ou_name, dc_name):
 
     @pytest.mark.parametrize(("user_name", "user_password", "expected_result"), [
         ("metaman", "metaman", True),
@@ -51,10 +47,8 @@ class TestCommonLDAP(object):
         """
         self.db_connection.com_ldap_logon(user_name, user_password, expected_result)
 
-
     def test_com_ldap_close(self):
         """
         Test ldap close
         """
         self.db_connection.com_ldap_close()
-

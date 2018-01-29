@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import pika
 import subprocess
@@ -56,7 +56,6 @@ for media in db_connection.db_read_media():
 
 # commit all changes
 db_connection.db_commit()
-
 
 # close DB
 db_connection.db_close()

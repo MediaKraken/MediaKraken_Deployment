@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_system_android
 
 
 class TestAndroidHardwareInstance(object):
 
-
     @classmethod
     def setup_class(self):
         self.android_connection = common_system_android.CommonAndroidHardwareInstance()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     # return the dpi for the device
     def test_com_android_get_dpi(self):
@@ -43,7 +40,6 @@ class TestAndroidHardwareInstance(object):
         Test function
         """
         self.android_connection.com_android_get_dpi()
-
 
     # vibrate the device
     @pytest.mark.parametrize(("vibrate_time"), [
@@ -54,7 +50,6 @@ class TestAndroidHardwareInstance(object):
         Test function
         """
         self.android_connection.com_android_vibrate(vibrate_time)
-
 
     # return data from the motion controller
     @pytest.mark.parametrize(("vibrate_time"), [

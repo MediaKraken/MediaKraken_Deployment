@@ -16,10 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 
 import dvdread
-#help(dvdread.DVD)
+
+
+# help(dvdread.DVD)
 
 def com_dvd_read_titles(drive_name):
     track_data = []

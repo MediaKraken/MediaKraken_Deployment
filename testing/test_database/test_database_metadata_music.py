@@ -16,67 +16,56 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataMusic(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     # query to see if song is in local DB
     # def db_music_lookup(self, artist_name, album_name, song_title):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # return musician data by guid
     # def db_meta_musician_by_guid(self, guid):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # insert musician
     # def db_meta_musician_add(self, data_name, data_id, data_json):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # return album data by guid
     # def db_meta_album_by_guid(self, guid):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # insert album
     # def db_meta_album_add(self, data_name, data_id, data_json):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # return song data by guid
     # def db_meta_song_by_guid(self, guid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # insert song
     # def db_meta_song_add(self, data_name, data_id, data_json):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # return song list from ablum guid
     # def db_meta_songs_by_album_guid(self, guid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -88,7 +77,6 @@ class TestDatabaseMetadataMusic(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_album_list(offset, records)
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),

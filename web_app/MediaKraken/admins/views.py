@@ -3,14 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 import pygal
 import json
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
+    url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
+
 blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
@@ -41,7 +43,6 @@ ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
 
 
@@ -61,6 +62,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -68,6 +70,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -93,12 +96,13 @@ def admins():
     data_alerts = []
     # read in the notifications
     for row_data in g.db_connection.db_notification_read():
-        if row_data['mm_notification_dismissable']: # check for dismissable
+        if row_data['mm_notification_dismissable']:  # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],
-                row_data['mm_notification_text'], row_data['mm_notification_time']))
+                                            row_data['mm_notification_text'],
+                                            row_data['mm_notification_time']))
         else:
             data_alerts.append((row_data['mm_notification_guid'],
-                row_data['mm_notification_text'], row_data['mm_notification_time']))
+                                row_data['mm_notification_text'], row_data['mm_notification_time']))
     data_transmission_active = False
     if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] != None:
         data_transmission_active = True
@@ -110,47 +114,47 @@ def admins():
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count=\
-                               common_internationalization.com_inter_number_format(\
-                               g.db_connection.db_user_list_name_count()),
+                           data_user_count= \
+                               common_internationalization.com_inter_number_format( \
+                                   g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
                            data_host_ip=docker_info['Swarm']['NodeAddr'],
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port\
+                           data_server_info_server_port \
                                =option_config_json['MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version=common_version.APP_VERSION,
                            data_server_uptime=common_system.com_system_uptime(),
-                           data_active_streams=\
-                               common_internationalization.com_inter_number_format(\
-                               0),
+                           data_active_streams= \
+                               common_internationalization.com_inter_number_format( \
+                                   0),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
-                           data_count_media_files=\
-                               common_internationalization.com_inter_number_format(\
-                               g.db_connection.db_known_media_count()),
-                           data_count_matched_media=\
-                               common_internationalization.com_inter_number_format(\
-                               g.db_connection.db_matched_media_count()),
-                           data_count_streamed_media=\
-                               common_internationalization.com_inter_number_format(\
-                                0),
-                           data_library=\
-                               common_internationalization.com_inter_number_format(\
-                               g.db_connection.db_table_count('mm_media_dir')),
-                           data_share=\
-                               common_internationalization.com_inter_number_format(\
-                               g.db_connection.db_table_count('mm_media_share')),
+                           data_count_media_files= \
+                               common_internationalization.com_inter_number_format( \
+                                   g.db_connection.db_known_media_count()),
+                           data_count_matched_media= \
+                               common_internationalization.com_inter_number_format( \
+                                   g.db_connection.db_matched_media_count()),
+                           data_count_streamed_media= \
+                               common_internationalization.com_inter_number_format( \
+                                   0),
+                           data_library= \
+                               common_internationalization.com_inter_number_format( \
+                                   g.db_connection.db_table_count('mm_media_dir')),
+                           data_share= \
+                               common_internationalization.com_inter_number_format( \
+                                   g.db_connection.db_table_count('mm_media_share')),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages,
                            data_count_meta_fetch
-                               =common_internationalization.com_inter_number_format(\
+                           =common_internationalization.com_inter_number_format( \
                                g.db_connection.db_table_count('mm_download_que')),
                            data_count_images_fetch
-                               =common_internationalization.com_inter_number_format(\
+                           =common_internationalization.com_inter_number_format( \
                                g.db_connection.db_table_count('mm_download_image_que'))
-                          )
+                           )
 
 
 @blueprint.route("/messages", methods=["GET", "POST"])
@@ -191,10 +195,14 @@ def admin_books_add():
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
                 g.db_connection.db_insert_media(media_id, None, class_uuid,
-                    None, None, None)
+                                                None, None, None)
                 g.db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                    'Path': None, 'ClassID': class_uuid, 'Status': None,
-                    'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': book_item.strip()}))
+                                                                       'Path': None,
+                                                                       'ClassID': class_uuid,
+                                                                       'Status': None,
+                                                                       'MetaNewID': str(
+                                                                           uuid.uuid4()),
+                                                                       'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
         return redirect(url_for('admins.admin_books_add'))
     form = BookAddForm(request.form, csrf_enabled=False)
@@ -346,6 +354,7 @@ def admin_listdir(path):
     """
     Local file browser
     """
+
     def gather_fileinfo(path, ospath, filename):
         osfilepath = os.path.join(ospath, filename)
         if os.path.isdir(osfilepath) and not filename.startswith('.'):
@@ -355,6 +364,7 @@ def admin_listdir(path):
         else:
             return {'type': 'f', 'filename': filename,
                     'fullpath': os.path.join(path, filename)}
+
     try:
         path = os.path.normpath(path)
         ospath = os.path.join('/', path)

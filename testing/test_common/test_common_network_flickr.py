@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_flickr
 
 
 class TestCommonFlickr(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_network_flickr.CommonNetworkFlickr()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
 # class com_Flickr_API:
 #    def __init__(self, api_key, api_secret):

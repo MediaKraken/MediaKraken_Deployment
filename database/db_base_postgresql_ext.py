@@ -4,7 +4,7 @@ Postgresql extensions
 # from psycopg2 documentation
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import datetime
 import psycopg2
 import psycopg2.extensions
@@ -14,6 +14,7 @@ class LoggingCursor(psycopg2.extensions.cursor):
     """
     Use for cursor that logs all queries
     """
+
     def execute(self, sql, args=None):
         """
         Shut up pylint
@@ -31,8 +32,10 @@ class InfDateAdapter(object):
     """
     Infinite date adapter
     """
+
     def __init__(self, wrapped):
         self.wrapped = wrapped
+
     def getquoted(self):
         """
         Shut up pylint
@@ -43,7 +46,6 @@ class InfDateAdapter(object):
             return b"'-infinity'::date"
         else:
             return psycopg2.extensions.DateFromPy(self.wrapped).getquoted()
-
 
 # cur = conn.cursor(cursor_factory=LoggingCursor)
 # psycopg2.extensions.register_adapter(datetime.date, InfDateAdapter)

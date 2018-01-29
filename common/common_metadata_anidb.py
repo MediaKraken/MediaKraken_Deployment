@@ -17,13 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import gzip
 import time
 import sys
 import json
 from . import common_file
 from . import common_network
+
 sys.path.append("./vault/lib")
 import adba
 
@@ -32,10 +33,10 @@ class CommonMetadataANIdb(object):
     """
     Class for interfacing with anidb
     """
+
     def __init__(self, db_connection):
         self.adba_connection = None
         self.db_connection = db_connection
-
 
     def com_net_anidb_fetch_titles_file(self):
         """
@@ -46,9 +47,8 @@ class CommonMetadataANIdb(object):
                 < (time.time() - 86400):
             common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',
                                                      './cache/anidb_titles.gz')
-            return True # new file
+            return True  # new file
         return False
-
 
     def com_net_anidb_save_title_data_to_db(self, title_file='./cache/anidb_titles.gz'):
         """
@@ -56,34 +56,33 @@ class CommonMetadataANIdb(object):
         """
         logging.info('start')
         file_handle = gzip.open(title_file, 'rb')
-        #file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
+        # file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
         anime_aid = None
         anime_title = None
         anime_title_ja = None
         for file_line in file_handle.readlines():
-            #logging.info('line: %s', file_line.decode('utf-8'))
+            # logging.info('line: %s', file_line.decode('utf-8'))
             if file_line.decode('utf-8').find('<anime aid="') != -1:
                 anime_aid = file_line.decode('utf-8').split('"', 1)[1].rsplit('"', 1)[0]
-                #logging.info('aid: %s', anime_aid)
+                # logging.info('aid: %s', anime_aid)
             elif file_line.decode('utf-8').find('title xml:lang="ja"') != -1:
                 anime_title_ja = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                #logging.info('title: %s', anime_title_ja)
+                # logging.info('title: %s', anime_title_ja)
             elif file_line.decode('utf-8').find('title xml:lang="en"') != -1:
                 anime_title = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                #logging.info('title: %s', anime_title)
+                # logging.info('title: %s', anime_title)
             elif file_line.decode('utf-8').find('</anime>') != -1:
                 if self.db_connection.db_meta_anime_meta_by_id(anime_aid) is None:
                     if anime_title is None:
                         anime_title = anime_title_ja
                     self.db_connection.db_meta_anime_title_insert(
                         json.dumps({'anidb': anime_aid}), anime_title,
-                        None, None, None , None, None)
+                        None, None, None, None, None)
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None
-                #logging.info('end insert')
+                # logging.info('end insert')
         file_handle.close()
         logging.info('end')
-
 
     def com_net_anidb_aid_by_title(self, title_to_search):
         """
@@ -101,7 +100,6 @@ class CommonMetadataANIdb(object):
         else:
             return local_db_result
 
-
     def com_net_anidb_connect(self, user_name, user_password):
         """
         Remote api calls
@@ -113,13 +111,11 @@ class CommonMetadataANIdb(object):
             logging.error("exception msg: %s", err_code)
         return self.adba_connection
 
-
     def com_net_anidb_logout(self):
         """
         Logout of anidb
         """
         self.adba_connection.logout()
-
 
     def com_net_anidb_stop(self):
         """

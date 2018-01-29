@@ -16,33 +16,30 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMediaTV(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # grab tv data
     # def db_web_tvmedia_list(self, list_type, genre_type=None, list_limit=None, group_collection=False, offset=None):
 #        self.db_connection.db_rollback()
 
 
-    # grab tv data count
-    # def db_web_tvmedia_list_Count(self, list_type, genre_type=None, group_collection=False):
+# grab tv data count
+# def db_web_tvmedia_list_Count(self, list_type, genre_type=None, group_collection=False):
 #        self.db_connection.db_rollback()

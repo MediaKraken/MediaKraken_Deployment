@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import urllib
 
 
@@ -26,10 +26,10 @@ def com_meta_chart_lyrics(artist_name, song_name):
     Generate url link and fetch lyrics
     """
     lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'
-        % urllib.urlencode({'artist' : artist_name, 'song' : song_name})).read()
+                                % urllib.urlencode(
+        {'artist': artist_name, 'song': song_name})).read()
     logging.info(lyric_text)
     return lyric_text
 
-
-#com_meta_chart_lyrics('Megadeath','Peace Sells')
-#com_meta_chart_lyrics('Metallica','ride the lightning')
+# com_meta_chart_lyrics('Megadeath','Peace Sells')
+# com_meta_chart_lyrics('Metallica','ride the lightning')

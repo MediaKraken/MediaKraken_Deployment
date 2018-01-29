@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 
 
@@ -26,7 +26,7 @@ def db_review_count(self, metadata_id):
     # count reviews for media
     """
     self.db_cursor.execute('select count(*) from mm_review where mm_review_metadata_guid = %s',
-        (metadata_id,))
+                           (metadata_id,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -35,7 +35,7 @@ def db_review_list_by_tmdb_guid(self, metadata_id):
     # grab reviews for metadata
     """
     self.db_cursor.execute('select mm_review_guid,mm_review_json from mm_review'
-        ' where mm_review_metadata_id->\'themoviedb\' ? %s', (metadata_id,))
+                           ' where mm_review_metadata_id->\'themoviedb\' ? %s', (metadata_id,))
     return self.db_cursor.fetchall()
 
 
@@ -45,6 +45,7 @@ def db_review_insert(self, metadata_id, review_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_review (mm_review_guid, mm_review_metadata_id,'
-        ' mm_review_json) values (%s,%s,%s)', (new_guid, metadata_id, review_json))
+                           ' mm_review_json) values (%s,%s,%s)',
+                           (new_guid, metadata_id, review_json))
     self.db_commit()
     return new_guid

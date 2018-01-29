@@ -16,30 +16,26 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_tvmaze
 
 
 class TestCommonMetadatatvmaze(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_metadata_tvmaze.CommonMetadatatvmaze()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
-# show list 50 per page - 0 is first page
-# def com_meta_TheMaze_Show_List(self, page_no=0):
-
+    # show list 50 per page - 0 is first page
+    # def com_meta_TheMaze_Show_List(self, page_no=0):
 
     # show when last updated
     def test_com_meta_tvmaze_show_updated(self):
@@ -47,7 +43,6 @@ class TestCommonMetadatatvmaze(object):
         Test function
         """
         self.db_connection.com_meta_tvmaze_show_updated()
-
 
 # lookup show
 # def com_meta_TvMaze_WideSearch(self, show_name, show_year=None):

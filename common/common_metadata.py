@@ -17,14 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-import string # pylint: disable=W0402
+import logging  # pylint: disable=W0611
+import string  # pylint: disable=W0402
 import os
 import re
 import random
 from . import common_config_ini
 from . import common_network
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -63,7 +62,7 @@ def com_meta_image_file_path(media_name, media_type):
     logging.info("filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
-        if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename
+        if re.search(pattern, os.path.basename(media_name)[0]):  # first char of filename
             file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
                                      media_type, random.choice(string.ascii_lowercase))
         else:
@@ -92,14 +91,14 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     elif source_link == 'thetvdb':
         url = 'https://thetvdb.com/banners/'
         # the following is part of the json data so no need for this
-#        if media_type == 'banner':
-#            url += 'graphical/'
-#        elif media_type == 'fanart':
-#            url += 'fanart/original/'
-#        elif media_type == 'poster':
-#            url += 'posters/'
-#        elif media_type == 'actor':
-#           url += 'actors/'
+    #        if media_type == 'banner':
+    #            url += 'graphical/'
+    #        elif media_type == 'fanart':
+    #            url += 'fanart/original/'
+    #        elif media_type == 'poster':
+    #            url += 'posters/'
+    #        elif media_type == 'actor':
+    #           url += 'actors/'
     elif source_link == 'thelogodb':
         # simply a placeholder so I don't ponder about this one in the future
         url = ''

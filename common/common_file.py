@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import time
+
 # built into 3.5 so try first then fallback to py2.x lib
 try:
-    from os import walk # pylint: disable=C0412
+    from os import walk  # pylint: disable=C0412
 except ImportError:
     from scandir import walk
 try:
@@ -41,7 +42,7 @@ JUNK_FILES = [
     'full album',
     'full length',
     'deleted scene',
-    ]
+]
 
 
 def com_file_modification_timestamp(file_name):
@@ -105,7 +106,7 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                     else:
                         match_list.append(os.path.join(dir_name, file_name))
         else:
-            for root, dirs, files in walk(dir_name): # pylint: disable=W0612
+            for root, dirs, files in walk(dir_name):  # pylint: disable=W0612
                 for file_name in files:
                     if filter_text is not None:
                         if file_name.endswith(filter_text):
@@ -122,7 +123,8 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
             match_list_size = []
             for row_data in match_list:
                 match_list_size.append((row_data,
-                    common_string.com_string_bytes2human(os.path.getsize(row_data))))
+                                        common_string.com_string_bytes2human(
+                                            os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:

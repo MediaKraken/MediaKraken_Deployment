@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import platform
+
 try:
     import cPickle as pickle
 except:
@@ -44,17 +45,14 @@ class TheaterClient(Int32StringReceiver):
     PORTCLOSED = 4
     CLOSED = 5
 
-
     def __init__(self):
         self.MAX_LENGTH = 32000000
         self.connStatus = TheaterClient.STARTED
-
 
     def connectionMade(self):
         global networkProtocol
         self.connStatus = TheaterClient.CONNECTED
         networkProtocol = self
-
 
     def stringReceived(self, data):
         MediaKrakenApp.process_message(metaapp, data)
@@ -66,18 +64,14 @@ class TheaterFactory(ClientFactory):
         self.app = app
         self.protocol = None
 
-
     def startedConnecting(self, connector):
         logging.info('Started to connect to %s', connector.getDestination())
-
 
     def clientConnectionLost(self, conn, reason):
         logging.info("Connection Lost")
 
-
     def clientConnectionFailed(self, conn, reason):
         logging.info("Connection Failed")
-
 
     def buildProtocol(self, addr):
         logging.info('Connected to %s', str(addr))
@@ -88,11 +82,9 @@ class TheaterFactory(ClientFactory):
 class MediaKrakenApp(object):
     connection = None
 
-
     def exit_program(self):
         # close the database
         self.db_connection.db_close()
-
 
     def build(self):
         global metaapp
@@ -105,15 +97,13 @@ class MediaKrakenApp(object):
         self.connect_to_server()
         return root
 
-
     def connect_to_server(self):
         """
         Connect to media server
         """
         reactor.connectSSL(sys.argv[1], int(sys.argv[2]),
-            TheaterFactory(self), ssl.ClientContextFactory())
+                           TheaterFactory(self), ssl.ClientContextFactory())
         reactor.run()
-
 
     def process_message(self, server_msg):
         """
@@ -169,8 +159,9 @@ class MediaKrakenApp(object):
                     # for "keys" in new_media[3]
                     pass
                 self.db_connection.db_insert_remote_media(link_server, new_media[0],
-                    self.db_connection.db_media_uuid_by_class(new_media[1]),
-                    new_media[2], metadata_guid)
+                                                          self.db_connection.db_media_uuid_by_class(
+                                                              new_media[1]),
+                                                          new_media[2], metadata_guid)
             self.db_connection.db_commit()
         else:
             logging.info("unknown message type")

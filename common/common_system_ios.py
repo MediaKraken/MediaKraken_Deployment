@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from pyobjus import autoclass
 
 
@@ -25,10 +25,10 @@ class CommoniOSHardwareInstance(object):
     """
     Class for interfacing with iOS hardware
     """
-    def __init__(self):
-# get hardware instance of device
-        self.ios_hardware = autoclass('bridge')
 
+    def __init__(self):
+        # get hardware instance of device
+        self.ios_hardware = autoclass('bridge')
 
     def com_ios_motion(self, time_range):
         """
@@ -38,11 +38,10 @@ class CommoniOSHardwareInstance(object):
         br.motionManager.setAccelerometerUpdateInterval_(0.1)
         br.startAccelerometer()
         accel_data = []
-        for ndx in range(time_range): # pylint: disable=W0612
+        for ndx in range(time_range):  # pylint: disable=W0612
             logging.info('x: {0} y: {1} z: {2}'.format(br.ac_x, br.ac_y, br.ac_z))
             accel_data.append((br.ac_x, br.ac_y, br.ac_z))
         return accel_data
-
 
     def com_ios_gyro(self, time_range):
         """
@@ -51,11 +50,10 @@ class CommoniOSHardwareInstance(object):
         br = self.ios_hardware.alloc().init()
         br.startGyroscope()
         gyro_data = []
-        for ndx in range(time_range): # pylint: disable=W0612
+        for ndx in range(time_range):  # pylint: disable=W0612
             logging.info('x: {0} y: {1} z: {2}'.format(br.gy_x, br.gy_y, br.gy_z))
             gyro_data.append((br.ac_x, br.ac_y, br.ac_z))
         return gyro_data
-
 
     def com_ios_magnetometer(self, time_range):
         """
@@ -64,7 +62,7 @@ class CommoniOSHardwareInstance(object):
         br = self.ios_hardware.alloc().init()
         br.startMagnetometer()
         mag_data = []
-        for ndx in range(time_range): # pylint: disable=W0612
+        for ndx in range(time_range):  # pylint: disable=W0612
             logging.info('x: {0} y: {1} z: {2}'.format(br.mg_x, br.mg_y, br.mg_z))
             mag_data.append((br.mg_x, br.mg_y, br.mg_z))
         return mag_data

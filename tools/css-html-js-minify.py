@@ -43,7 +43,6 @@ try:
 except ImportError:
     resource = None
 
-
 __version__ = '1.4.0'
 __license__ = 'GPLv3+ LGPLv3+'
 __author__ = 'Juan Carlos'
@@ -52,62 +51,77 @@ __url__ = 'https://github.com/juancarlospaco/css-html-js-minify'
 __source__ = ('https://raw.githubusercontent.com/juancarlospaco/'
               'css-html-js-minify/master/css-html-js-minify.py')
 
-
 EXTENDED_NAMED_COLORS, start_time = {  # 'Color Name String': (R, G, B)
-    'azure': (240, 255, 255), 'beige': (245, 245, 220),
-    'bisque': (255, 228, 196), 'blanchedalmond': (255, 235, 205),
-    'brown': (165, 42, 42), 'burlywood': (222, 184, 135),
-    'chartreuse': (127, 255, 0), 'chocolate': (210, 105, 30),
-    'coral': (255, 127, 80), 'cornsilk': (255, 248, 220),
-    'crimson': (220, 20, 60), 'cyan': (0, 255, 255), 'darkcyan': (0, 139, 139),
-    'darkgoldenrod': (184, 134, 11), 'darkgray': (169, 169, 169),
-    'darkgreen': (0, 100, 0), 'darkgrey': (169, 169, 169),
-    'darkkhaki': (189, 183, 107), 'darkmagenta': (139, 0, 139),
-    'darkolivegreen': (85, 107, 47), 'darkorange': (255, 140, 0),
-    'darkorchid': (153, 50, 204), 'darkred': (139, 0, 0),
-    'darksalmon': (233, 150, 122), 'darkseagreen': (143, 188, 143),
-    'darkslategray': (47, 79, 79), 'darkslategrey': (47, 79, 79),
-    'darkturquoise': (0, 206, 209), 'darkviolet': (148, 0, 211),
-    'deeppink': (255, 20, 147), 'dimgray': (105, 105, 105),
-    'dimgrey': (105, 105, 105), 'firebrick': (178, 34, 34),
-    'forestgreen': (34, 139, 34), 'gainsboro': (220, 220, 220),
-    'gold': (255, 215, 0), 'goldenrod': (218, 165, 32),
-    'gray': (128, 128, 128), 'green': (0, 128, 0), 'grey': (128, 128, 128),
-    'honeydew': (240, 255, 240), 'hotpink': (255, 105, 180),
-    'indianred': (205, 92, 92), 'indigo': (75, 0, 130),
-    'ivory': (255, 255, 240), 'khaki': (240, 230, 140),
-    'lavender': (230, 230, 250), 'lavenderblush': (255, 240, 245),
-    'lawngreen': (124, 252, 0), 'lemonchiffon': (255, 250, 205),
-    'lightcoral': (240, 128, 128), 'lightcyan': (224, 255, 255),
-    'lightgray': (211, 211, 211), 'lightgreen': (144, 238, 144),
-    'lightgrey': (211, 211, 211), 'lightpink': (255, 182, 193),
-    'lightsalmon': (255, 160, 122), 'lightseagreen': (32, 178, 170),
-    'lightslategray': (119, 136, 153), 'lightslategrey': (119, 136, 153),
-    'lime': (0, 255, 0), 'limegreen': (50, 205, 50), 'linen': (250, 240, 230),
-    'magenta': (255, 0, 255), 'maroon': (128, 0, 0),
-    'mediumorchid': (186, 85, 211), 'mediumpurple': (147, 112, 219),
-    'mediumseagreen': (60, 179, 113), 'mediumspringgreen': (0, 250, 154),
-    'mediumturquoise': (72, 209, 204), 'mediumvioletred': (199, 21, 133),
-    'mintcream': (245, 255, 250), 'mistyrose': (255, 228, 225),
-    'moccasin': (255, 228, 181), 'navy': (0, 0, 128),
-    'oldlace': (253, 245, 230), 'olive': (128, 128, 0),
-    'olivedrab': (107, 142, 35), 'orange': (255, 165, 0),
-    'orangered': (255, 69, 0), 'orchid': (218, 112, 214),
-    'palegoldenrod': (238, 232, 170), 'palegreen': (152, 251, 152),
-    'paleturquoise': (175, 238, 238), 'palevioletred': (219, 112, 147),
-    'papayawhip': (255, 239, 213), 'peachpuff': (255, 218, 185),
-    'peru': (205, 133, 63), 'pink': (255, 192, 203), 'plum': (221, 160, 221),
-    'purple': (128, 0, 128), 'rosybrown': (188, 143, 143),
-    'saddlebrown': (139, 69, 19), 'salmon': (250, 128, 114),
-    'sandybrown': (244, 164, 96), 'seagreen': (46, 139, 87),
-    'seashell': (255, 245, 238), 'sienna': (160, 82, 45),
-    'silver': (192, 192, 192), 'slategray': (112, 128, 144),
-    'slategrey': (112, 128, 144), 'snow': (255, 250, 250),
-    'springgreen': (0, 255, 127), 'teal': (0, 128, 128),
-    'thistle': (216, 191, 216), 'tomato': (255, 99, 71),
-    'turquoise': (64, 224, 208), 'violet': (238, 130, 238),
-    'wheat': (245, 222, 179)}, datetime.now()
-
+                                        'azure': (240, 255, 255), 'beige': (245, 245, 220),
+                                        'bisque': (255, 228, 196),
+                                        'blanchedalmond': (255, 235, 205),
+                                        'brown': (165, 42, 42), 'burlywood': (222, 184, 135),
+                                        'chartreuse': (127, 255, 0), 'chocolate': (210, 105, 30),
+                                        'coral': (255, 127, 80), 'cornsilk': (255, 248, 220),
+                                        'crimson': (220, 20, 60), 'cyan': (0, 255, 255),
+                                        'darkcyan': (0, 139, 139),
+                                        'darkgoldenrod': (184, 134, 11),
+                                        'darkgray': (169, 169, 169),
+                                        'darkgreen': (0, 100, 0), 'darkgrey': (169, 169, 169),
+                                        'darkkhaki': (189, 183, 107), 'darkmagenta': (139, 0, 139),
+                                        'darkolivegreen': (85, 107, 47),
+                                        'darkorange': (255, 140, 0),
+                                        'darkorchid': (153, 50, 204), 'darkred': (139, 0, 0),
+                                        'darksalmon': (233, 150, 122),
+                                        'darkseagreen': (143, 188, 143),
+                                        'darkslategray': (47, 79, 79),
+                                        'darkslategrey': (47, 79, 79),
+                                        'darkturquoise': (0, 206, 209), 'darkviolet': (148, 0, 211),
+                                        'deeppink': (255, 20, 147), 'dimgray': (105, 105, 105),
+                                        'dimgrey': (105, 105, 105), 'firebrick': (178, 34, 34),
+                                        'forestgreen': (34, 139, 34), 'gainsboro': (220, 220, 220),
+                                        'gold': (255, 215, 0), 'goldenrod': (218, 165, 32),
+                                        'gray': (128, 128, 128), 'green': (0, 128, 0),
+                                        'grey': (128, 128, 128),
+                                        'honeydew': (240, 255, 240), 'hotpink': (255, 105, 180),
+                                        'indianred': (205, 92, 92), 'indigo': (75, 0, 130),
+                                        'ivory': (255, 255, 240), 'khaki': (240, 230, 140),
+                                        'lavender': (230, 230, 250),
+                                        'lavenderblush': (255, 240, 245),
+                                        'lawngreen': (124, 252, 0), 'lemonchiffon': (255, 250, 205),
+                                        'lightcoral': (240, 128, 128), 'lightcyan': (224, 255, 255),
+                                        'lightgray': (211, 211, 211), 'lightgreen': (144, 238, 144),
+                                        'lightgrey': (211, 211, 211), 'lightpink': (255, 182, 193),
+                                        'lightsalmon': (255, 160, 122),
+                                        'lightseagreen': (32, 178, 170),
+                                        'lightslategray': (119, 136, 153),
+                                        'lightslategrey': (119, 136, 153),
+                                        'lime': (0, 255, 0), 'limegreen': (50, 205, 50),
+                                        'linen': (250, 240, 230),
+                                        'magenta': (255, 0, 255), 'maroon': (128, 0, 0),
+                                        'mediumorchid': (186, 85, 211),
+                                        'mediumpurple': (147, 112, 219),
+                                        'mediumseagreen': (60, 179, 113),
+                                        'mediumspringgreen': (0, 250, 154),
+                                        'mediumturquoise': (72, 209, 204),
+                                        'mediumvioletred': (199, 21, 133),
+                                        'mintcream': (245, 255, 250), 'mistyrose': (255, 228, 225),
+                                        'moccasin': (255, 228, 181), 'navy': (0, 0, 128),
+                                        'oldlace': (253, 245, 230), 'olive': (128, 128, 0),
+                                        'olivedrab': (107, 142, 35), 'orange': (255, 165, 0),
+                                        'orangered': (255, 69, 0), 'orchid': (218, 112, 214),
+                                        'palegoldenrod': (238, 232, 170),
+                                        'palegreen': (152, 251, 152),
+                                        'paleturquoise': (175, 238, 238),
+                                        'palevioletred': (219, 112, 147),
+                                        'papayawhip': (255, 239, 213), 'peachpuff': (255, 218, 185),
+                                        'peru': (205, 133, 63), 'pink': (255, 192, 203),
+                                        'plum': (221, 160, 221),
+                                        'purple': (128, 0, 128), 'rosybrown': (188, 143, 143),
+                                        'saddlebrown': (139, 69, 19), 'salmon': (250, 128, 114),
+                                        'sandybrown': (244, 164, 96), 'seagreen': (46, 139, 87),
+                                        'seashell': (255, 245, 238), 'sienna': (160, 82, 45),
+                                        'silver': (192, 192, 192), 'slategray': (112, 128, 144),
+                                        'slategrey': (112, 128, 144), 'snow': (255, 250, 250),
+                                        'springgreen': (0, 255, 127), 'teal': (0, 128, 128),
+                                        'thistle': (216, 191, 216), 'tomato': (255, 99, 71),
+                                        'turquoise': (64, 224, 208), 'violet': (238, 130, 238),
+                                        'wheat': (245, 222, 179)}, datetime.now()
 
 CSS_PROPS_TEXT = '''
 
@@ -213,7 +227,7 @@ def _compile_props(props_text, grouped=False):
     props = filter(lambda line: not line.startswith('#'), props)
     if not grouped:
         props = list(filter(None, props))
-        return props, [0]*len(props)
+        return props, [0] * len(props)
     final_props, groups, g_id = [], [], 0
     for prop in props:
         if prop.strip():
@@ -241,9 +255,9 @@ def _props_grouper(props, pgs):
     if not props:
         return props
     # props = sorted([
-        # _ if _.strip().endswith(";")
-        # and not _.strip().endswith("*/") and not _.strip().endswith("/*")
-        # else _.rstrip() + ";\n" for _ in props])
+    # _ if _.strip().endswith(";")
+    # and not _.strip().endswith("*/") and not _.strip().endswith("/*")
+    # else _.rstrip() + ";\n" for _ in props])
     props_pg = zip(map(lambda prop: _prioritify(prop, pgs), props), props)
     props_pg = sorted(props_pg, key=lambda item: item[0][1])
     props_by_groups = map(
@@ -392,8 +406,8 @@ def condense_multidimensional_zeros(css):
     log.debug("Condensing all multidimensional zeroes on values.")
     return css.replace(":0 0 0 0;", ":0;").replace(
         ":0 0 0;", ":0;").replace(":0 0;", ":0;").replace(
-            "background-position:0;", "background-position:0 0;").replace(
-                "transform-origin:0;", "transform-origin:0 0;")
+        "background-position:0;", "background-position:0 0;").replace(
+        "transform-origin:0;", "transform-origin:0 0;")
 
 
 def condense_floating_points(css):
@@ -458,8 +472,9 @@ def condense_std_named_colors(css):
     """Condense named color values to shorter replacement using HEX."""
     log.debug("Condensing standard named color values.")
     for color_name, color_hexa in iter(tuple({
-        ':aqua;': ':#0ff;', ':blue;': ':#00f;',
-            ':fuchsia;': ':#f0f;', ':yellow;': ':#ff0;'}.items())):
+                                                 ':aqua;': ':#0ff;', ':blue;': ':#00f;',
+                                                 ':fuchsia;': ':#f0f;',
+                                                 ':yellow;': ':#ff0;'}.items())):
         css = css.replace(color_name, color_hexa)
     return css
 
@@ -496,7 +511,7 @@ def restore_needed_space(css):
     """Fix CSS for some specific cases where a white space is needed."""
     return css.replace("!important", " !important").replace(  # !important
         "@media(", "@media (").replace(  # media queries # jpeg > jpg
-            "data:image/jpeg;base64,", "data:image/jpg;base64,").rstrip("\n;")
+        "data:image/jpeg;base64,", "data:image/jpg;base64,").rstrip("\n;")
 
 
 def unquote_selectors(css):
@@ -557,7 +572,7 @@ def condense_style(html):
     log.debug("Condensing HTML Style CSS tags.")
     return html.replace('<style type="text/css">', '<style>').replace(
         "<style type='text/css'>", '<style>').replace(
-            "<style type=text/css>", '<style>')
+        "<style type=text/css>", '<style>')
 
 
 def condense_script(html):
@@ -569,7 +584,7 @@ def condense_script(html):
     log.debug("Condensing HTML Script JS tags.")
     return html.replace('<script type="text/javascript">', '<script>').replace(
         "<style type='text/javascript'>", '<script>').replace(
-            "<style type=text/javascript>", '<script>')
+        "<style type=text/javascript>", '<script>')
 
 
 def clean_unneeded_html_tags(html):
@@ -584,7 +599,7 @@ def clean_unneeded_html_tags(html):
         </input> </li> </link> </meta> </option> </param> <tbody> </tbody>
         </td> </tfoot> </th> </thead> </tr> </basefont> </isindex> </param>
             """.split()):
-            html = html.replace(tag_to_remove, '')
+        html = html.replace(tag_to_remove, '')
     return html  # May look silly but Emmet does this and is wrong.
 
 
@@ -732,7 +747,6 @@ def slim_params(code):
 
 
 class NamesGenerator:
-
     """Class to generate names for Javascript code function variables."""
 
     def __init__(self):
@@ -797,7 +811,6 @@ def js_minify2(js):
 
 
 class JavascriptMinify(object):
-
     """Minify an input stream of Javascript, writing to an output stream."""
 
     def __init__(self, instream=None, outstream=None):
@@ -1218,6 +1231,7 @@ def make_logger(name=str(os.getpid())):
     if not sys.platform.startswith("win") and sys.stderr.isatty():
         def add_color_emit_ansi(fn):
             """Add methods we need to the class."""
+
             def new(*args):
                 """Method overload."""
                 if len(args) == 2:
@@ -1244,7 +1258,9 @@ def make_logger(name=str(os.getpid())):
                 except Exception as reason:
                     print(reason)  # Do not use log here.
                 return fn(*new_args)
+
             return new
+
         log.StreamHandler.emit = add_color_emit_ansi(log.StreamHandler.emit)
     log_file = os.path.join(gettempdir(), str(name).lower().strip() + ".log")
     log.basicConfig(level=-1, filemode="w", filename=log_file)
@@ -1265,9 +1281,9 @@ def make_post_execution_message(app=__doc__.splitlines()[0].strip()):
     use, al = 0, 0
     if sys.platform.startswith("linux"):
         use = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss *
-                    resource.getpagesize() / 1024 / 1024 if resource else 0)
+                  resource.getpagesize() / 1024 / 1024 if resource else 0)
         al = int(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
-                      / 1024 / 1024 if hasattr(os, "sysconf") else 0)
+                 / 1024 / 1024 if hasattr(os, "sysconf") else 0)
     msg = "Total Maximum RAM Memory used: ~{0} of {1}MegaBytes".format(use, al)
     log.info(msg)
     if start_time and datetime:
@@ -1334,11 +1350,13 @@ def main():
     set_process_name_and_cpu_priority("css-html-js-minify")
     set_single_instance("css-html-js-minify")
     if args._42:  # Resynchronize flux capacitor.
-        print((lambda r: '\n'.join(''.join('#' if (y >= r and((x - r) ** 2 + (
-            y - r) ** 2 <= r ** 2 or (x - 3 * r) ** 2 + (y - r) ** 2 < r ** 2)
-        ) or (y < r and x + r < y and x - r > 4 * r - y) else '.' for x in
-            range(4 * r)) for y in range(1, 3 * r, 2)))(9) +
-            "\n! ti htiw laeD ........####################........\n"[::-1])
+        print((lambda r: '\n'.join(''.join('#' if (y >= r and ((x - r) ** 2 + (
+                y - r) ** 2 <= r ** 2 or (x - 3 * r) ** 2 + (y - r) ** 2 < r ** 2)
+                                                   ) or (
+                                                          y < r and x + r < y and x - r > 4 * r - y) else '.'
+                                           for x in
+                                           range(4 * r)) for y in range(1, 3 * r, 2)))(9) +
+              "\n! ti htiw laeD ........####################........\n"[::-1])
     check_for_updates() if args.checkupdates else log.debug("No Check Updates")
     if args.tests:
         testmod(verbose=True, report=True, exclude_empty=True)

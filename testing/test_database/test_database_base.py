@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseBase(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     @pytest.mark.parametrize(("resource_name"), [
         ('mm_media'),
@@ -48,7 +45,6 @@ class TestDatabaseBase(object):
         self.db_connection.db_rollback()
         self.db_connection.db_table_index_check(resource_name)
 
-
     @pytest.mark.parametrize(("table_name", "expected_result"), [
         ('mm_options_and_status', 1),
         ('fake_table', None)])
@@ -58,7 +54,6 @@ class TestDatabaseBase(object):
         """
         self.db_connection.db_rollback()
         assert self.db_connection.db_table_count(table_name) == expected_result
-
 
     @pytest.mark.parametrize(("query_string"), [
         ('select 1 from mm_media'),

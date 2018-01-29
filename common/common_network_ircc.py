@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
+
 sys.path.append("./vault/lib")
 
 
@@ -27,8 +28,8 @@ def com_net_ircc_discover():
     # ircc device discovery via ssdp
     """
     SSDP_MSearch.search(cbFoundDevice=com_net_ircc_found_device,
-        cbFinishedSearching=com_net_ircc_finished_searching,
-        target='urn:schemas-sony-com:service:IRCC:1')
+                        cbFinishedSearching=com_net_ircc_finished_searching,
+                        target='urn:schemas-sony-com:service:IRCC:1')
 
 
 def com_net_ircc_found_device(ircc_device):
@@ -42,7 +43,7 @@ def com_net_ircc_finished_searching(devices):
     """
     # process the found devices
     """
-    ircc_device = devices[0] # first device only for now
+    ircc_device = devices[0]  # first device only for now
     ircc_service = ircc_device.get_service('schemas.sony.com/IRCC/1')
     com_net_ircc_register_device(ircc_device, ircc_service)
 

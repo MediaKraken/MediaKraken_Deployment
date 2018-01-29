@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 from common import common_file
 from common import common_logging
@@ -26,19 +26,16 @@ from common import common_signal
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Subtitle_Downloader')
 
-
 total_download_attempts = 0
-
 
 # parse arguments
 sub_lang = "en"
 # search the directory for filter files
 for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
-        ('avi', 'mkv', 'mp4', 'm4v'), True):
+                                               ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
     logging.info("title check: %s", media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt")
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
@@ -50,6 +47,5 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         file_handle = os.popen("subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
         cmd_output = file_handle.read()
         logging.info("Download Status: %s", cmd_output)
-
 
 print('Total subtitle download attempts: %s' % total_download_attempts)

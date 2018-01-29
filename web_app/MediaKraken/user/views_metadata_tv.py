@@ -3,17 +3,19 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+from flask import Blueprint, render_template, g, request, current_app, jsonify, \
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
+
 blueprint = Blueprint("user_metadata_tv", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import natsort
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -22,7 +24,6 @@ from common import common_pagination
 from common import common_string
 import database as database_base
 from MediaKraken.public.forms import SearchForm
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -78,7 +79,7 @@ def metadata_tvshow_detail(guid):
             data_overview = None
         # build gen list
         data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series']\
+        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series'] \
                 and json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'] is not None:
             for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
                 data_genres_list += (ndx + ', ')
@@ -98,10 +99,10 @@ def metadata_tvshow_detail(guid):
     except:
         data_background_image = None
     data_season_data = g.db_connection.db_read_tvmeta_eps_season(guid)
-#    # build production list
-#    production_list = ''
-#    for ndx in range(0,len(json_metadata['production_companies'])):
-#        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
+    #    # build production list
+    #    production_list = ''
+    #    for ndx in range(0,len(json_metadata['production_companies'])):
+    #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
     return render_template('users/metadata/meta_tvshow_detail.html',
                            data_title=data_metadata['mm_metadata_tvshow_name'],
                            data_runtime=data_runtime,
@@ -114,7 +115,7 @@ def metadata_tvshow_detail(guid):
                            data_season_data=data_season_data,
                            data_season_count=sorted(data_season_data.iterkeys()),
                            data_genres_list=data_genres_list[:-2]
-                          )
+                           )
 
 
 # tv show season detail - show guid then season #
@@ -141,7 +142,7 @@ def metadata_tvshow_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview\
+            data_overview \
                 = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
@@ -205,7 +206,7 @@ def metadata_tvshow_season_detail_page(guid, season):
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count,
                            data_episode_keys=data_episode_keys
-                          )
+                           )
 
 
 # tv show season detail - show guid then season #
@@ -238,7 +239,7 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
                            data_first_aired=data_metadata['eps_first_air'],
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
-                          )
+                           )
 
 
 @blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
@@ -260,20 +261,21 @@ def metadata_tvshow_list():
         mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page)
     for row_data in mediadata:
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
-            row_data['mm_metadata_tvshow_name'], row_data[2], row_data[3])) # TODO dictcursor
+                             row_data['mm_metadata_tvshow_name'], row_data[2],
+                             row_data[3]))  # TODO dictcursor
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_tvshow_list_count(),
                                                   record_name='TV Shows',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template('users/metadata/meta_tvshow_list.html', form=form,
                            media_tvshow=media_tvshow,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.before_request
@@ -286,7 +288,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from kivy.utils import platform
+
 # this is for network and rs232 control of Integra/Onkyo receivers
 if platform != 'android':
     import eiscp
@@ -28,6 +29,7 @@ class CommonNetworkEISCP(object):
     """
     Class for interfacing via Onkyo equipment
     """
+
     def __init__(self, ip_addr):
         self.eiscp_inst = eiscp.eISCP(ip_addr)
 
@@ -48,7 +50,6 @@ class CommonNetworkEISCP(object):
         Send command via eiscp
         """
         self.eiscp_inst.command(self, eiscp_command)
-
 
     def com_net_eiscp_command_raw(self, eiscp_raw_command):
         """

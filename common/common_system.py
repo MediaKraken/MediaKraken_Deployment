@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import sys
 import psutil
@@ -52,7 +52,7 @@ def com_system_virtual_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.info('%-10s : %7s', (name.capitalize(), value))
+            # logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -70,7 +70,7 @@ def com_system_swap_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.info('%-10s : %7s', (name.capitalize(), value))
+            # logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -156,7 +156,7 @@ def com_system_uptime():
     """
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
         uptime_proc = subprocess.Popen(['net', 'statistics', 'server'], stdout=subprocess.PIPE)
-        out, err = uptime_proc.communicate() # pylint: disable=W0612
+        out, err = uptime_proc.communicate()  # pylint: disable=W0612
         uptime_proc.wait()
         for out_line in out:
             if out_line.find('Statistics since') != -1:

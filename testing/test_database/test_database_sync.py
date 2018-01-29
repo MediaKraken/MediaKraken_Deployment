@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseSync(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_sync_list_count(self):
         """
@@ -44,7 +41,6 @@ class TestDatabaseSync(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_sync_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records", "user_guid"), [
         (None, None, None),
@@ -60,17 +56,16 @@ class TestDatabaseSync(object):
         self.db_connection.db_rollback()
         self.db_connection.db_sync_list(offset, records, user_guid)
 
-
     # insert sync job
     # def db_sync_insert(self, sync_path, sync_path_to, sync_json):
 #        self.db_connection.db_rollback()
 
 
-    # update progress
-    # def db_sync_progress_update(self, sync_guid, sync_percent):
+# update progress
+# def db_sync_progress_update(self, sync_guid, sync_percent):
 #        self.db_connection.db_rollback()
 
 
-    # delete sync job
-    # def db_sync_delete(self, sync_guid):
+# delete sync job
+# def db_sync_delete(self, sync_guid):
 #        self.db_connection.db_rollback()

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_network_telnet
 
 
@@ -25,9 +25,9 @@ class CommonHardwareTivo(object):
     """
     Class for interfacing with tivo device
     """
+
     def __init__(self):
         self.tivo_device = None
-
 
     def com_tivo_connect(self, telnet_host, telnet_port=31339):
         """

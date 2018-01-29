@@ -17,10 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import re
 from socket import inet_ntoa
-
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
 STACK_CD1 = re.compile('-cd1(?!\d)', re.IGNORECASE)
@@ -83,7 +82,8 @@ def com_string_password_test(password_text):
     )
     strength, improvements = passwordmeter.test(password_text)
     logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,
-                 int(strength * len(ratings)))])))
+                                                                            int(strength * len(
+                                                                                ratings)))])))
     return (strength, improvements)
 
 

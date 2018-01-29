@@ -20,21 +20,23 @@
 # https://developers.google.com/cast/docs/media#subtitles--closed-captions
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import pychromecast
 import pychromecast.controllers.youtube as youtube
-#from pychromecast.controllers import BaseController
+
+
+# from pychromecast.controllers import BaseController
 
 
 class CommonHardwareChromecast(object):
     """
     Class for interfacing with chromecast
     """
+
     def __init__(self):
         self.chromecast_dev = None
         self.cast = None
         self.chromecast_device = None
-
 
     def com_chromecast_discover(self):
         """
@@ -43,20 +45,17 @@ class CommonHardwareChromecast(object):
         self.chromecast_dev = pychromecast.get_chromecasts()
         return self.chromecast_dev
 
-
     # def com_chromecast_info(self):
     #     """
     #     # get detail by name
     #     """
     #     return self.cast.device
 
-
     # def com_chromecast_status(self):
     #     """
     #     # get status by name
     #     """
     #     return self.cast.status
-
 
     def com_chromecast_connect_by_name(self, key_name):
         """
@@ -67,7 +66,6 @@ class CommonHardwareChromecast(object):
         self.cast.wait()
         self.chromecast_device = self.cast.media_controller
 
-
     def com_chromecast_play_yt(self, yt_id):
         """
         # play youtube video
@@ -76,13 +74,11 @@ class CommonHardwareChromecast(object):
         self.chromecast_device.register_handler(yt_controller)
         yt_controller.play_video(yt_id)
 
-
     def com_chromecast_play_media(self, media_file, media_type):
         """
         # play media file
         """
         self.chromecast_device.play_media(media_file, media_type)
-
 
     def com_chromecast_device_command(self, command):
         """
@@ -94,7 +90,6 @@ class CommonHardwareChromecast(object):
             self.chromecast_device.play()
         elif command == "Stop":
             self.chromecast_device.stop()
-
 
     def com_chromecast_device_close(self):
         """

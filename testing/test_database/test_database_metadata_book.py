@@ -16,38 +16,35 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadata_book(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # metadata guid by isbm id
     # def db_metabook_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
 #        self.db_connection.db_rollback()
 
 
-    # metadata guid by name
-    # def db_metabook_guid_by_name(self, book_name):
+# metadata guid by name
+# def db_metabook_guid_by_name(self, book_name):
 #        self.db_connection.db_rollback()
 
 
-    # insert metadata json from isbndb
-    # def db_metabook_book_insert(self, json_data):
+# insert metadata json from isbndb
+# def db_metabook_book_insert(self, json_data):
 #        self.db_connection.db_rollback()

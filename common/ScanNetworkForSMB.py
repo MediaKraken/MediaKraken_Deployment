@@ -37,7 +37,7 @@ class NonBlockingNetBIOS(base.NBNS):
 
     def write(self, data, ip, port):
         assert self.sock, 'Socket is already closed'
-        self.sock.sendto(data, ( ip, port ))
+        self.sock.sendto(data, (ip, port))
 
     def queryIPForName(self, ip):
         assert self.sock, 'Socket is already closed'
@@ -53,16 +53,16 @@ class NonBlockingNetBIOS(base.NBNS):
         if results:
             print(ip.rjust(16), '-->', ' '.join(results))
 
-    def poll(self, timeout = 0):
+    def poll(self, timeout=0):
         end_time = time.time() + timeout
         while self.pending_count > 0 and (timeout == 0 or time.time() < end_time):
             t = max(0, end_time - time.time())
             try:
-                ready, _, _ = select.select([ self.sock.fileno() ], [ ], [ ], t)
+                ready, _, _ = select.select([self.sock.fileno()], [], [], t)
                 if not ready:
                     return None
 
-                data, ( ip, port ) = self.sock.recvfrom(0xFFFF)
+                data, (ip, port) = self.sock.recvfrom(0xFFFF)
                 _, ret = self.decodeIPQueryPacket(data)
 
                 try:
@@ -70,7 +70,8 @@ class NonBlockingNetBIOS(base.NBNS):
                     self.pending_count -= 1
 
                     self.queryResult(ip, set(ret))
-                except KeyError: pass
+                except KeyError:
+                    pass
             except select.error, ex:
                 if type(ex) is types.TupleType:
                     if ex[0] != errno.EINTR and ex[0] != errno.EAGAIN:
@@ -86,14 +87,16 @@ def DottedIPToInt(dotted_ip):
     for quad in dotted_ip.split('.'):
         intip = intip + (int(quad) * (256 ** exp))
         exp = exp - 1
-    return(intip)
+    return (intip)
 
-def IntToDottedIP( intip ):
+
+def IntToDottedIP(intip):
     octet = ''
-    for exp in [3,2,1,0]:
-        octet = octet + str(intip / ( 256 ** exp )) + "."
-        intip = intip % ( 256 ** exp )
-    return(octet.rstrip('.'))
+    for exp in [3, 2, 1, 0]:
+        octet = octet + str(intip / (256 ** exp)) + "."
+        intip = intip % (256 ** exp)
+    return (octet.rstrip('.'))
+
 
 def main():
     if len(sys.argv) > 2:
@@ -108,7 +111,7 @@ def main():
         print('Usage:', sys.argv[0], 'start-IP-address [end-IP-address]')
         return
 
-    print('Beginning scanning %d IP addresses...' % ( end_ip-start_ip+1, ))
+    print('Beginning scanning %d IP addresses...' % (end_ip - start_ip + 1,))
 
     ns = NonBlockingNetBIOS()
     for ip in range(start_ip, end_ip + 1):

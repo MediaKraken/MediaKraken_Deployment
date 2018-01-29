@@ -16,46 +16,43 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_thetvdb
 
 
 class TestCommonTheTVDB(object):
 
-
     @classmethod
     def setup_class(self):
         self.thetvdb_connection = common_thetvdb.CommonTheTVDB()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
     # get show information
 #    def com_TheTVDB_Show_Info(self, show_title, show_language):
 
 
-    # search for show
+# search for show
 #    def com_TheTVDB_Search(self, show_title, show_year, show_id, show_language, save_db=True):
 
 
-    # save entire show info
+# save entire show info
 #    def com_TheTVDB_Show_DB_Save(self, show_data):
 
 
-    # get episode information
+# get episode information
 #    def com_TheTVDB_Episode_Info(self, show_language, episode_id):
 
 
-    # get episode information by season and episode
+# get episode information by season and episode
 #    def com_TheTVDB_Season_Episode_Info(self, show_language, season_no, ep_no, show_id):
 
 
-    # show data from result
+# show data from result
 #    def com_TheTVDB_Show_Details(self, show_data):

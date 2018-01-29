@@ -27,14 +27,12 @@ from common import common_logging
 from common import common_metadata_limiter
 from common import common_signal
 
-
 # TODO should be using env variables
 # build image directories if needed
 if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
     pass
 else:
     build_image_dirs()
-
 
 # TODO should be using env variables
 # build trailer directories if needed
@@ -43,14 +41,11 @@ if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/
 else:
     build_trailer_dirs()
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Metadata_API')
-
 
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
@@ -58,15 +53,13 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672'], shell=False)
 wait_pid.wait()
 
-
 # fire up the workers for each provider
 for meta_provider in common_metadata_limiter.API_LIMIT.keys():
     logging.info("meta_provider: %s", meta_provider)
     proc_api_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker.py',
                                        meta_provider], shell=False)
 
-
 # fire up the image downloader
 proc_image_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker_image.py'],
                                     shell=False)
-proc_image_fetch.wait() # so this doesn't end which will cause docker to restart
+proc_image_fetch.wait()  # so this doesn't end which will cause docker to restart

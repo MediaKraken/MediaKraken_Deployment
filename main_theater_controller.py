@@ -29,11 +29,13 @@ import json
 import uuid
 import base64
 import subprocess
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
+
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
 from crochet import wait_for, run_in_reactor, setup
+
 setup()
 
 from kivy.lang import Builder
@@ -44,6 +46,7 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+
 kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -142,14 +145,14 @@ class MKEcho(basic.LineReceiver):
     def lineReceived(self, line):
         global mk_app
         logging.info('linereceived len: %s', len(line))
-        #logging.info('linereceived: %s', line)
-        #logging.info('app: %s', mk_app)
+        # logging.info('linereceived: %s', line)
+        # logging.info('app: %s', mk_app)
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
-        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+        # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
         logging.info('sending: %s', line)
@@ -229,9 +232,9 @@ class MediaKrakenApp(App):
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],
-                    group='mediakraken_server',)
+                                    group='mediakraken_server', )
                 btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,
-                    found_server))
+                                           found_server))
                 self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
         else:
             # go back to main menu
@@ -271,8 +274,8 @@ class MediaKrakenApp(App):
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                MKFactory(), ssl.ClientContextFactory())
+                               int(self.config.get('MediaKrakenServer', 'Port').strip()),
+                               MKFactory(), ssl.ClientContextFactory())
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
@@ -320,18 +323,23 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_overview.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0,
+                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
+                    genres_list += (
+                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
+                                'name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
+                                            'production_companies'])):
+                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
+                                            'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
                 if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
-                        and 'streams' in json_message['Data2']['FFprobe']\
+                        and 'streams' in json_message['Data2']['FFprobe'] \
                         and json_message['Data2']['FFprobe']['streams'] is not None:
                     for stream_info in json_message['Data2']['FFprobe']['streams']:
                         logging.info("info: %s", stream_info)
@@ -349,7 +357,7 @@ class MediaKrakenApp(App):
                         try:
                             stream_codec \
                                 = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                                + ' - '
+                                  + ' - '
                         except:
                             pass
                         if stream_info['codec_type'] == 'audio':
@@ -363,7 +371,7 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
-                self.root.ids.theater_media_video_subtitle_spinner.values\
+                self.root.ids.theater_media_video_subtitle_spinner.values \
                     = map(str, subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Sub'] == "List":
@@ -373,7 +381,7 @@ class MediaKrakenApp(App):
                                  'path': video_list[4]})
                 self.root.ids.theater_media_video_list_scrollview.data = data
                 # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
-        elif json_message['Type'] == 'Play': # direct file play
+        elif json_message['Type'] == 'Play':  # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
@@ -395,7 +403,8 @@ class MediaKrakenApp(App):
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
                                     size_hint_y=None,
                                     width=self.root.ids.theater_media_genre_list_scrollview.width,
-                                    height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
+                                    height=(
+                                            self.root.ids.theater_media_genre_list_scrollview.height / 8))
                 btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
         elif json_message['Type'] == "Image":
@@ -408,7 +417,7 @@ class MediaKrakenApp(App):
                     self.demo_media_id = json_message['UUID']
                     if self.first_image_demo == False:
                         logging.info('boom')
-                        #self.root.ids.main_home_demo_image.reload()
+                        # self.root.ids.main_home_demo_image.reload()
                         logging.info('boom2')
                     else:
                         logging.info('wha2')
@@ -527,16 +536,16 @@ class MediaKrakenApp(App):
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
             elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
-                    self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
+                self.root.ids._screen_manager.current = 'Main_Theater_Home'
             pass
         elif keycode[1] == 'enter':
             pass
@@ -586,14 +595,14 @@ class MediaKrakenApp(App):
     def theater_play_server(self):
         # the server will have the target device....to know if cast/stream/etc
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
-            'UUID': MediaKrakenApp.media_uuid,
-            'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+                                              'UUID': MediaKrakenApp.media_uuid,
+                                              'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
     # navigation select
     def main_remote_event_button_commands_left(self, *args):
         if self.play_status == 'paused':
             self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                'Data': {"command": 'frame-back-step'}}))
+                                                  'Data': {"command": 'frame-back-step'}}))
         else:
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                                   'Target': "Left"}))
@@ -601,7 +610,7 @@ class MediaKrakenApp(App):
     def main_remote_event_button_commands_right(self, *args):
         if self.play_status == 'paused':
             self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                'Data': {"command": 'frame-step'}}))
+                                                  'Data': {"command": 'frame-step'}}))
         else:
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                                   'Target': "Right"}))
@@ -618,81 +627,67 @@ class MediaKrakenApp(App):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "One"}))
 
-
     def main_remote_event_button_commands_two(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Two"}))
-
 
     def main_remote_event_button_commands_three(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Three"}))
 
-
     def main_remote_event_button_commands_four(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Four"}))
-
 
     def main_remote_event_button_commands_five(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Five"}))
 
-
     def main_remote_event_button_commands_six(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Six"}))
-
 
     def main_remote_event_button_commands_seven(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Seven"}))
 
-
     def main_remote_event_button_commands_eight(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Eight"}))
-
 
     def main_remote_event_button_commands_nine(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Nine"}))
 
-
     def main_remote_event_button_commands_fast_rewind(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "FR"}))
-
 
     def main_remote_event_button_commands_chapter_rewind(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "CR"}))
 
-
     def main_remote_event_button_commands_fast_forward(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "FF"}))
-
 
     def main_remote_event_button_commands_chapter_forward(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "CF"}))
 
-
     def main_remote_event_button_commands_sound_mute(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Mute"}))
 
-
     def main_remote_event_button_commands_play(self, *args):
         if self.play_status == 'paused':
             self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                'Data': {"command": ["set_property", "pause", 'false']}}))
+                                                  'Data': {"command": ["set_property", "pause",
+                                                                       'false']}}))
             self.play_status = 'playing'
         else:
             self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                                   'Target': "Play"}))
-
 
     def main_remote_event_button_commands_pause(self, *args):
         if False:
@@ -701,13 +696,14 @@ class MediaKrakenApp(App):
         else:
             if self.play_status != 'paused':
                 self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                    'Data': { "command": ["set_property", "pause", 'true'] }}))
+                                                      'Data': {"command": ["set_property", "pause",
+                                                                           'true']}}))
                 self.play_status = 'paused'
             else:
                 self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                    'Data': { "command": ["set_property", "pause", 'false'] }}))
+                                                      'Data': {"command": ["set_property", "pause",
+                                                                           'false']}}))
                 self.play_status = 'playing'
-
 
     def main_remote_event_button_commands_stop(self, *args):
         if False:
@@ -715,13 +711,12 @@ class MediaKrakenApp(App):
                                                   'Target': "Stop"}))
         else:
             self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
-                                                  'Data': { "command": 'quit-watch-later'}}))
+                                                  'Data': {"command": 'quit-watch-later'}}))
         self.play_status = 'stopped'
 
     def main_remote_event_button_commands_info(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'Target': "Info"}))
-
 
     def main_remote_event_button_commands_record(self, *args):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
@@ -751,7 +746,7 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
-        if args[0] == 'in_progress' or args[0] == 'recent_addition'\
+        if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
@@ -833,8 +828,8 @@ class MediaKrakenApp(App):
                                                   'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
-            #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
-            #self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
+            # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
+            # self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
@@ -875,10 +870,11 @@ class MediaKrakenApp(App):
         if proxyImage.image.texture:
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
 
+
 if __name__ == '__main__':
     # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Theater_Controller')
-    log.startLogging(sys.stdout) # for twisted
+    log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_cloud
 
@@ -55,15 +55,15 @@ def test_common_cloud_backup_list():
 # create direcgtory in cloud
 @pytest.mark.parametrize(("cloud_type", "dir_name"), [
     ("awss3", "dir_test"),
-    ("awss3", "dir_test"), # dupe test
+    ("awss3", "dir_test"),  # dupe test
     ("dropbox", "dir_test"),
-    ("dropbox", "dir_test"), # dupe test
+    ("dropbox", "dir_test"),  # dupe test
     ("google", "dir_test"),
-    ("google", "dir_test"), # dupe test
+    ("google", "dir_test"),  # dupe test
     ("local", "dir_test"),
-    ("local", "dir_test"), # dupe test
+    ("local", "dir_test"),  # dupe test
     ("onedrive", "dir_test"),
-    ("onedrive", "dir_test")]) # dupe test
+    ("onedrive", "dir_test")])  # dupe test
 def test_common_cloud_create_folder(cloud_type, dir_name):
     """
     Test function

@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from pyhdhomerun.adapter import HdhrUtility, HdhrDeviceQuery
 from pyhdhomerun.constants import MAP_US_BCAST
+
 
 # https://github.com/dsoprea/PyHdHomeRun - forked to MK
 
@@ -27,9 +28,9 @@ class CommonHardwareHDHomeRunPY(object):
     """
     Class for interfacing with hdhomerun
     """
+
     def __init__(self):
         self.devices = None
-
 
     def com_hdhomerun_discover(self):
         """
@@ -37,13 +38,11 @@ class CommonHardwareHDHomeRunPY(object):
         """
         self.devices = HdhrUtility.discover_find_devices_custom()
 
-
     def com_hdhomerun_list(self):
         """
         List hdhomerun tuners
         """
         return self.devices
-
 
     def get_tuner_vstatus(self, device_adapter):
         """
@@ -51,7 +50,6 @@ class CommonHardwareHDHomeRunPY(object):
         """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
         logging.info(vstatus)
-
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
         """
@@ -61,7 +59,6 @@ class CommonHardwareHDHomeRunPY(object):
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
         logging.info(vstatus)
 
-
     def set_stream(self, device_adapter, vchannel, target_uri):
         """
         Set stream
@@ -69,20 +66,17 @@ class CommonHardwareHDHomeRunPY(object):
         device_adapter.set_tuner_vchannel(vchannel)
         device_adapter.set_tuner_target(target_uri)
 
-
     def get_supported(self, device_adapter):
         """
         Get supported info
         """
         logging.info(device_adapter.get_supported())
 
-
     def scan(self, device_adapter):
         """
         Generator for scan by channel map
         """
         device_adapter.scan_channels(MAP_US_BCAST)
-
 
     def get_count(self):
         """

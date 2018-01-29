@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseOptionStatus(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_opt_status_read(self):
         """
@@ -45,14 +42,13 @@ class TestDatabaseOptionStatus(object):
         self.db_connection.db_rollback()
         self.db_connection.db_opt_status_read()
 
-
     # def db_opt_status_update(self, option_json, status_json):
 #        self.db_connection.db_rollback()
 
 
-    # def db_opt_status_update_scan(self, scan_json):
+# def db_opt_status_update_scan(self, scan_json):
 #        self.db_connection.db_rollback()
 
 
-    # def db_opt_status_update_scan_rec(self, dir_path, scan_status, scan_percent):
+# def db_opt_status_update_scan_rec(self, dir_path, scan_status, scan_percent):
 #         self.db_connection.db_rollback()

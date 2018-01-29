@@ -3,13 +3,15 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+from flask import Blueprint, render_template, g, request, current_app, jsonify, \
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
+
 blueprint = Blueprint("user_tv", __name__, url_prefix='/users', static_folder="../static")
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -18,7 +20,6 @@ from common import common_pagination
 import database as database_base
 import natsort
 from MediaKraken.public.forms import SearchForm
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -54,7 +55,8 @@ def user_tv_page():
         except:
             media.append((row_data['mm_metadata_tvshow_name'],
                           row_data['mm_metadata_tvshow_guid'],
-                None, common_internationalization.com_inter_number_format(row_data['mm_count'])))
+                          None, common_internationalization.com_inter_number_format(
+                row_data['mm_count'])))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
@@ -62,12 +64,12 @@ def user_tv_page():
                                                   record_name='media',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template('users/user_tv_page.html', media=media, form=form,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 # tv show detail
@@ -92,7 +94,7 @@ def user_tv_show_detail_page(guid):
         data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
-            #data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
+            # data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
             if 'runtime' in json_metadata['Meta']['tvmaze']:
                 data_runtime = json_metadata['Meta']['tvmaze']['runtime']
             else:
@@ -107,7 +109,8 @@ def user_tv_show_detail_page(guid):
                 data_first_aired = None
             if 'summary' in json_metadata['Meta']['tvmaze']:
                 data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>',
-                    '').replace('</p>', '')
+                                                                                   '').replace(
+                    '</p>', '')
             else:
                 data_overview = None
             # build gen list
@@ -141,11 +144,11 @@ def user_tv_show_detail_page(guid):
                 data_genres_list = data_genres_list[2:-2]
 
         # vote count format
-        data_vote_count = 0 # common_internationlzia.('%d', json_metadata['vote_count'], True)
+        data_vote_count = 0  # common_internationlzia.('%d', json_metadata['vote_count'], True)
 
         # build production list
         production_list = ''
-        #for ndx in range(0,len(json_metadata['production_companies'])):
+        # for ndx in range(0,len(json_metadata['production_companies'])):
         #    production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
         # poster image
         try:
@@ -161,7 +164,7 @@ def user_tv_show_detail_page(guid):
         except:
             data_background_image = None
         # grab reviews
-        #review = g.db_connection.db_Review_List(data[0])
+        # review = g.db_connection.db_Review_List(data[0])
         data_season_data = g.db_connection.db_read_tvmeta_eps_season(guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
@@ -188,7 +191,7 @@ def user_tv_show_detail_page(guid):
                                data_season_data=data_season_data,
                                data_season_count=data_season_count,
                                data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
-                              )
+                               )
 
 
 # tv show season detail - show guid then season #
@@ -215,7 +218,7 @@ def user_tv_season_detail_page(guid, season):
         else:
             data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview\
+            data_overview \
                 = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
         else:
             data_overview = None
@@ -277,7 +280,7 @@ def user_tv_season_detail_page(guid, season):
                            data_background_image=data_background_image,
                            data_episode_count=data_episode_count,
                            data_episode_keys=data_episode_keys
-                          )
+                           )
 
 
 # tv show episode detail
@@ -305,7 +308,7 @@ def user_tv_episode_detail_page(guid, season, episode):
     return render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
-                          )
+                           )
 
 
 @blueprint.before_request
@@ -318,7 +321,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

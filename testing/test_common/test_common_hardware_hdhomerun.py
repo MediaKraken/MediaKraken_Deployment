@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hardware_hdhomerun
 
 
 class TestCommonHardwareHDHomeRun(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     # discover items
     def test_com_hdhomerun_discover(self):
@@ -44,7 +41,6 @@ class TestCommonHardwareHDHomeRun(object):
         """
         self.db_connection.com_hdhomerun_discover()
 
-
     # item list
     def test_com_hdhomerun_list(self):
         """
@@ -52,30 +48,29 @@ class TestCommonHardwareHDHomeRun(object):
         """
         self.db_connection.com_hdhomerun_list()
 
-
     # item detail
 #    def com_HDHomeRun_Detail(self, ndx):
 
 
-    # firmware upgrade
+# firmware upgrade
 #    def com_HDHomeRun_Upgrade(self, ndx, firmware_file):
 
 
-    # set lock request
+# set lock request
 #    def com_HDHomeRun_Lock_Request(self, ndx):
 
 
-    # release lock
+# release lock
 #    def com_HDHomeRun_Lock_Release(self, ndx):
 
 
-    # get lock owner
+# get lock owner
 #    def com_HDHomeRun_Lock_Owner(self, ndx):
 
 
-    # set tuner
+# set tuner
 #    def com_HDHomeRun_Set_Tuner(self, ndx, tuner_no):
 
 
-    # get tuner status
+# get tuner status
 #    def com_HDHomeRun_Get_Tuner_Status(self, ndx):

@@ -3,7 +3,7 @@ Threads for transfering files
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import threading
 import struct
@@ -26,13 +26,13 @@ class FileSenderThread(threading.Thread):
     """
     Thread for sending a file
     """
+
     def __init__(self, targetip, targetport, filenames, filelocations):
         self.host = targetip
         self.port = targetport
         self.filenames = filenames
         self.filelocations = filelocations
         threading.Thread.__init__(self)
-
 
     def run(self):
         try:
@@ -42,11 +42,11 @@ class FileSenderThread(threading.Thread):
             for fileindex in xrange(0, len(self.filenames)):
                 data = open(self.filelocations[fileindex], 'rb').read()
                 logging.info("fn: %s %s", self.filenames[fileindex],
-                    type(self.filenames[fileindex]))
-                clientsocket.sendall("FILE"+struct.pack("<i256s", len(data),
-                    str(self.filenames[fileindex])))
-                for ndx in xrange(0, (len(data)+1023)/1024):
-                    clientsocket.sendall(data[ndx*1024:(ndx+1)*1024])
+                             type(self.filenames[fileindex]))
+                clientsocket.sendall("FILE" + struct.pack("<i256s", len(data),
+                                                          str(self.filenames[fileindex])))
+                for ndx in xrange(0, (len(data) + 1023) / 1024):
+                    clientsocket.sendall(data[ndx * 1024:(ndx + 1) * 1024])
                     time.sleep(0.05)
             clientsocket.sendall('FEND')
             clientsocket.close()
@@ -58,12 +58,12 @@ class FileReceiverThread(threading.Thread):
     """
     Thread for receiving files
     """
+
     def __init__(self, receive_port):
         threading.Thread.__init__(self)
         self.filedone = 0
         self.filesize = 1
         self.receive_port = receive_port
-
 
     def run(self):
         try:

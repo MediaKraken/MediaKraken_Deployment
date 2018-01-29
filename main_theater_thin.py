@@ -28,11 +28,13 @@ import json
 import uuid
 import base64
 import subprocess
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
+
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
 from crochet import wait_for, run_in_reactor, setup
+
 setup()
 
 from kivy.lang import Builder
@@ -43,6 +45,7 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+
 kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -101,14 +104,14 @@ class MKEcho(basic.LineReceiver):
     def lineReceived(self, line):
         global mk_app
         logging.info('linereceived len: %s', len(line))
-        #logging.info('linereceived: %s', line)
-        #logging.info('app: %s', mk_app)
+        # logging.info('linereceived: %s', line)
+        # logging.info('app: %s', mk_app)
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
-        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+        # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
         logging.info('sending: %s', line)
@@ -197,8 +200,8 @@ class MediaKrakenApp(App):
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                MKFactory(), ssl.ClientContextFactory())
+                               int(self.config.get('MediaKrakenServer', 'Port').strip()),
+                               MKFactory(), ssl.ClientContextFactory())
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
@@ -246,14 +249,19 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_overview.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0,
+                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
+                    genres_list += (
+                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
+                                'name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
+                                            'production_companies'])):
+                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
+                                            'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
-        elif json_message['Type'] == 'Play': # direct file play
+        elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
             share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
@@ -266,7 +274,7 @@ class MediaKrakenApp(App):
                                                      '--audio-device=pulse', '--hwdec=auto',
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % video_source_dir],
-                                                     shell=False)
+                                                    shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             logging.info("here for movie refresh")
@@ -363,7 +371,7 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
-        if args[0] == 'in_progress' or args[0] == 'recent_addition'\
+        if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'demo':
@@ -406,13 +414,15 @@ class MediaKrakenApp(App):
         # since it's loaded delete the image
         os.remove(self.home_demo_file_name)
 
+
 if __name__ == '__main__':
     # for windows exe support
     from multiprocessing import freeze_support
+
     freeze_support()
     # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Theater_Thin')
-    log.startLogging(sys.stdout) # for twisted
+    log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

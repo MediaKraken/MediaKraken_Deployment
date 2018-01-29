@@ -23,6 +23,7 @@
 
 from bbio import *
 
+
 def com_hardware_bbb_serial_setup(selected_speed):
     """
     Set connection speed for connection

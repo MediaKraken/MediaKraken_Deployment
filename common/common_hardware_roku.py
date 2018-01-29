@@ -14,7 +14,7 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       They don't look right for me when I set the video height to 480
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import tempfile
 from subprocess import Popen, PIPE
@@ -36,7 +36,7 @@ def getmp4info(filename):
     details = {'type': "", 'length': 0, 'bitrate': 1500, 'format': "", 'size': ""}
     cmd = ["mp4info", filename]
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
-    (stdout, stderr) = proc.communicate() # pylint: disable=W0612
+    (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
     # Parse the results
     for line in stdout.split('\n'):
         fields = line.split(None, 2)
@@ -66,9 +66,9 @@ def extractimages(videofile, directory, interval, mode=0, offset=0):
     """
     size = "x".join([str(ndx) for ndx in VIDEOSIZES[mode]])
     cmd = ["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
-           "-r", "%0.2f" % (1.00/interval), "-s", size, "%s/%%08d.jpg" % directory]
+           "-r", "%0.2f" % (1.00 / interval), "-s", size, "%s/%%08d.jpg" % directory]
     proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
-    (stdout, stderr) = proc.communicate() # pylint: disable=W0612
+    (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
 
 
 def makebif(filename, directory, interval):
@@ -94,7 +94,7 @@ def makebif(filename, directory, interval):
     file_handle.write(struct.pack("<I1", version))
     file_handle.write(struct.pack("<I1", len(images)))
     file_handle.write(struct.pack("<I1", 1000 * interval))
-    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(file_handle) # pylint: disable=W0612
+    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(file_handle)  # pylint: disable=W0612
 
     biftablesize = 8 + (8 * len(images))
     imageindex = 64 + biftablesize

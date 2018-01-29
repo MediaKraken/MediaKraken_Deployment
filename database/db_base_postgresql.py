@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 
 
 # query provided by postgresql wiki
@@ -28,10 +28,13 @@ def db_pgsql_table_sizes(self):
     # return tables sizes (includex indexes, etc)
     """
     self.db_cursor.execute('SELECT nspname || \'.\' || relname AS "relation",'
-        ' pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C'
-        ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname'
-        ' NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\''
-        ' AND nspname !~ \'^pg_toast\' ORDER BY pg_total_relation_size(C.oid) DESC')
+                           ' pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size"'
+                           ' FROM pg_class C'
+                           ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname'
+                           ' NOT IN (\'pg_catalog\', \'information_schema\')'
+                           ' AND C.relkind <> \'i\''
+                           ' AND nspname !~ \'^pg_toast\''
+                           ' ORDER BY pg_total_relation_size(C.oid) DESC')
     return self.db_cursor.fetchall()
 
 
@@ -41,8 +44,8 @@ def db_pgsql_row_count(self):
     # return tables and row count
     """
     # this one doesn't show "old old" stuff in cache?
-#    self.db_cursor.execute('SELECT schemaname,relname,n_live_tup'
-#        ' FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
+    #    self.db_cursor.execute('SELECT schemaname,relname,n_live_tup'
+    #        ' FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
     self.db_cursor.execute('SELECT nspname AS schemaname,relname,reltuples FROM pg_class C'
                            ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)'
                            ' WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\')'
@@ -56,15 +59,18 @@ def db_pgsql_vacuum_stat_by_day(self, days=1):
     """
     if days == 0:
         self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'
-            ' WHERE schemaname = \'public\'')
+                               ' WHERE schemaname = \'public\'')
     else:
         self.db_cursor.execute('SELECT relname FROM pg_stat_all_tables'
-            ' WHERE schemaname = \'public\' AND ((last_analyze is NULL'
-            ' AND last_autoanalyze is NULL) OR ((last_analyze < last_autoanalyze'
-            ' OR last_analyze is null) AND last_autoanalyze < now() - interval %s)'
-            ' OR ((last_autoanalyze < last_analyze OR last_autoanalyze is null)'
-            ' AND last_analyze < now() - interval %s));', [str(days) + ' day',
-            str(days) + ' day'])
+                               ' WHERE schemaname = \'public\' AND ((last_analyze is NULL'
+                               ' AND last_autoanalyze is NULL)'
+                               ' OR ((last_analyze < last_autoanalyze'
+                               ' OR last_analyze is null)'
+                               ' AND last_autoanalyze < now() - interval %s)'
+                               ' OR ((last_autoanalyze < last_analyze'
+                               ' OR last_autoanalyze is null)'
+                               ' AND last_analyze < now() - interval %s));',
+                               [str(days) + ' day', str(days) + ' day'])
     return self.db_cursor.fetchall()
 
 
@@ -73,9 +79,9 @@ def db_pgsql_vacuum_table(self, table_name):
     # vacuum table
     """
     if self.db_pgsql_table_exits(table_name) is not None:
-        #self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        # self.db_pgsql_set_iso_level(ISOLATION_LEVEL_AUTOCOMMIT)
         self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
-        #self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
+        # self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
     else:
         logging.info('Vacuum table missing: %s', table_name)
 

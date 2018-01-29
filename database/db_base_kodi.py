@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 
 
@@ -37,21 +37,21 @@ def db_kodi_user_sync_movie(self, synctime):
     # title, plot, shortplot, tagline, votecount, rating, writer, year, imdb, sorttitle,
     # runtime, mpaa, genre, director, studio, trailer, country, movieid, date_added, cast
     self.db_cursor.execute('select mm_media_name, mm_metadata_json->\'Meta\'->\'themoviedb\''
-        '->\'Meta\'->>\'overview\', NULL, mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\''
-        '->>\'tagline\', mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'vote_count\','
-        ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'vote_average\','
-        ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Crew\', mm_metadata_json->\'Meta\''
-        '->\'themoviedb\'->\'Meta\'->>\'release_date\', mm_metadata_json->\'Meta\'->\'themoviedb\''
-        '->\'Meta\'->>\'imdb_id\', LOWER(mm_media_name), mm_metadata_json->\'Meta\''
-        '->\'themoviedb\'->\'Meta\'->>\'runtime\', NULL, mm_metadata_json->\'Meta\'->\'themoviedb\''
-        '->\'Meta\'->>\'genres\', mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Crew\','
-        ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\''
-        '->>\'production_companies\', mm_metadata_json->\'Meta\'->\'themoviedb\''
-        '->\'Meta\'->>\'production_countries\', mm_media_guid,'
-        ' mm_media_json->\'DateAdded\','
-        ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\' from mm_media,'
-        ' mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
-        ' and mm_media_json->>\'DateAdded\' >= %s', (synctime,))
+                           '->\'Meta\'->>\'overview\', NULL, mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\''
+                           '->>\'tagline\', mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'vote_count\','
+                           ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'vote_average\','
+                           ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Crew\', mm_metadata_json->\'Meta\''
+                           '->\'themoviedb\'->\'Meta\'->>\'release_date\', mm_metadata_json->\'Meta\'->\'themoviedb\''
+                           '->\'Meta\'->>\'imdb_id\', LOWER(mm_media_name), mm_metadata_json->\'Meta\''
+                           '->\'themoviedb\'->\'Meta\'->>\'runtime\', NULL, mm_metadata_json->\'Meta\'->\'themoviedb\''
+                           '->\'Meta\'->>\'genres\', mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Crew\','
+                           ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\''
+                           '->>\'production_companies\', mm_metadata_json->\'Meta\'->\'themoviedb\''
+                           '->\'Meta\'->>\'production_countries\', mm_media_guid,'
+                           ' mm_media_json->\'DateAdded\','
+                           ' mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Cast\' from mm_media,'
+                           ' mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
+                           ' and mm_media_json->>\'DateAdded\' >= %s', (synctime,))
     return self.db_cursor.fetchall()
 
 
@@ -77,6 +77,7 @@ def db_kodi_user_sync_tv_seasons(self, synctime):
     """
     tv season data for kodi
     """
+
 
 def db_kodi_user_sync_tv_episodes(self, synctime):
     """

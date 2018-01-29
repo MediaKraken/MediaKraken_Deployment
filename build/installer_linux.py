@@ -16,18 +16,17 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import platform
 import subprocess
 import sys
 
 LINUX_VERSIONS = {
-                  'alpine': (3.6, 'apk add'),
-                  'debian': (8.4, 'apt_get -y install'),
-                  'redhat': (7.1, 'yum install'),
-                  'ubuntu': (17.04, 'apt_get -y install')}
+    'alpine': (3.6, 'apk add'),
+    'debian': (8.4, 'apt_get -y install'),
+    'redhat': (7.1, 'yum install'),
+    'ubuntu': (17.04, 'apt_get -y install')}
 
 print('1:', platform.platform())
 print('2:', platform.system())
@@ -55,7 +54,6 @@ elif platform.system() != 'Linux':
     print('Non-Linux system found. Exiting...')
     sys.exit(0)
 
-
 # check minimum linux versions
 print('Checking linux version...')
 print('I see you\'re running', platform.dist()[0], 'version', platform.dist()[1])
@@ -66,11 +64,10 @@ except KeyError:
     print('Unsupported linux distribution. Exiting...')
     sys.exit(0)
 
-    
 ## install wget
-#print('Installing wget...')
-#install_pid = subprocess.Popen([, 'wget'])
-#install_pid.wait()
+# print('Installing wget...')
+# install_pid = subprocess.Popen([, 'wget'])
+# install_pid.wait()
 
 
 # find current version
@@ -79,11 +76,9 @@ file_handle = open('newfile.txt', 'r')
 current_version = file_handle.read()
 file_handle.close()
 
-
 # fetch the application tarball
 file_name = 'MediaKraken_' + current_version + '.tar.bz2'
 wget_wait('http://www.mediakraken.org/%s' % file_name)
-
 
 # untar to home directory
 tar_pid = subprocess.Popen(['tar', 'xvjf', file_name, '-C' '~'])

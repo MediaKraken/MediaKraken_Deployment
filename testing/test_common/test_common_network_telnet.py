@@ -16,36 +16,31 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_telnet
 
 
 class TestCommonTelnet(object):
 
-
     @classmethod
     def setup_class(self):
         self.telnet_connection = common_network_telnet.CommonNetworkTelnet()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
-#    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
-
+    #    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
 
     def test_com_net_telnet_read_device(self):
         """
         Test function
         """
         self.telnet_connection.com_net_telnet_read_device()
-
 
     def test_com_net_telnet_write_device(self):
         """

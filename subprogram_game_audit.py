@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
 import threading
 import os
@@ -29,15 +29,16 @@ import multiprocessing
 from threading import Thread
 from Queue import Queue
 import hashlib
+
 SHA1 = hashlib.sha1()
 import os.path
 from common import common_config_ini
 from common import common_file
 from common import common_signal
 import pylzma
+
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
-
 
 lock = threading.Lock()
 
@@ -51,6 +52,7 @@ fileHASHNameList = []
 fileHASHListSingle = []
 fileHASHNameListSingle = []
 
+
 class HashGenerate(Thread):
     def __init__(self, file_name):
         Thread.__init__(self)
@@ -62,7 +64,7 @@ class HashGenerate(Thread):
 
     def run(self):
         if self.file_name[-3:] == 'zip':
-            #Need to unpack the zip and check all files inside it
+            # Need to unpack the zip and check all files inside it
             try:
                 lock.acquire()
                 zip = zipfile.ZipFile(self.file_name, 'r')  # issues if u do RB
@@ -76,8 +78,8 @@ class HashGenerate(Thread):
                         hash_dict[zippedFile] = sha1_hash_data
                     except:
                         lock.acquire()
-                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                            + "|Error on SHA1 of file")
+                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                               + "|Error on SHA1 of file")
                         lock.release()
                 zip.close()
                 if len(hash_dict) > 0:
@@ -90,11 +92,11 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                    + "|Error reading zip")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                       + "|Error reading zip")
                 lock.release()
         elif self.file_name[-2:] == '7z':
-            #Need to unpack the 7z and check all files inside it
+            # Need to unpack the 7z and check all files inside it
             try:
                 lock.acquire()
                 fp = open(self.file_name, 'rb')
@@ -109,11 +111,11 @@ class HashGenerate(Thread):
                         SHA1.update(cf.read())
                         sha1_hash_data = SHA1.hexdigest()
                         hash_dict[filename] = sha1_hash_data
-                        #self.hash_result = self.file_name,fileHash,sha1_hash_data
+                        # self.hash_result = self.file_name,fileHash,sha1_hash_data
                     except:
                         lock.acquire()
-                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                            + "|Error on SHA1 of file")
+                        Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                               + "|Error on SHA1 of file")
                         lock.release()
                 if len(hash_dict) > 0:
                     if len(hash_dict) == 1:
@@ -126,8 +128,8 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                    + "|Error reading 7z")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                       + "|Error reading 7z")
                 lock.release()
         else:
             try:
@@ -137,7 +139,7 @@ class HashGenerate(Thread):
                 file_pointer.seek(0, 0)
                 try:
                     SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-                    for chunk in iter(lambda: file_pointer.read(128*SHA1.block_size), ''):
+                    for chunk in iter(lambda: file_pointer.read(128 * SHA1.block_size), ''):
                         SHA1.update(chunk)
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict = {}
@@ -145,8 +147,8 @@ class HashGenerate(Thread):
                     print("single: %s", self.file_name, sha1_hash_data)
                 except:
                     lock.acquire()
-                    Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                        + "|Error on SHA1 of file")
+                    Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                           + "|Error on SHA1 of file")
                     lock.release()
                 if len(hash_dict) > 0:
                     fileHASHListSingle.append(hash_dict.values()[0])
@@ -155,9 +157,10 @@ class HashGenerate(Thread):
                 lock.release()
             except:
                 lock.acquire()
-                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)\
-                    + "|Error reading file")
+                Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name) \
+                                                       + "|Error reading file")
                 lock.release()
+
 
 class HashScanner(object):
     def __init__(self):
@@ -179,8 +182,8 @@ class HashScanner(object):
             thread.join()
             # update percentage
             onFile += 1
-            if onFile*100/total_files != lastPercent:
-                lastPercent = onFile*100/total_files
+            if onFile * 100 / total_files != lastPercent:
+                lastPercent = onFile * 100 / total_files
                 self.percentComplete = lastPercent
             Client_GlobalData.audit_on_file += 1
 
@@ -203,12 +206,12 @@ class HashScanner(object):
         files = {}
         zippedFiles = {}
         hashFileMap = {}
-        #Client_GlobalData.audit_files_to_audit = len(files_to_hash)
+        # Client_GlobalData.audit_files_to_audit = len(files_to_hash)
         # start the audit threads
         audit_q = Queue(multiprocessing.cpu_count() * 1)
         prod_thread = threading.Thread(target=self.calc_hash, args=(audit_q, files_to_hash))
-        cons_thread = threading.Thread(target=self.get_hash_result,\
-            args=(audit_q, len(files_to_hash)))
+        cons_thread = threading.Thread(target=self.get_hash_result, \
+                                       args=(audit_q, len(files_to_hash)))
         prod_thread.start()
         cons_thread.start()
         prod_thread.join()
@@ -216,6 +219,7 @@ class HashScanner(object):
         # verify all thread/ques are complete
         while not audit_q.empty():
             time.sleep(0.05)
+
 
 class ROMFileParser(object):
     def __init__(self, files, zippedFiles, hashFileMap):
@@ -234,9 +238,9 @@ class ROMFileParser(object):
         curs_game = conn_game.cursor()
         conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         # parse for multi roms archives and files
-        curs_game.execute('select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from'\
-            ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id'\
-            ' IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)')
+        curs_game.execute('select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from' \
+                          ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id' \
+                          ' IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)')
         first_rec = True
         for sql_row in curs_game:
             if first_rec:
@@ -264,7 +268,7 @@ class ROMFileParser(object):
             rom_hash_length = len(rom_hash_data)
             for db_hash_dict in db_full_hash_dict:
                 # in theory all crc32 and sha1 should match here for mame roms
-                if rom_hash_length == len(db_hash_dict[1])\
+                if rom_hash_length == len(db_hash_dict[1]) \
                         and cmp(rom_hash_data, db_hash_dict[1]) == 0:
                     Client_GlobalData.found_rom_ids.append(db_hash_dict[0])
                     Client_GlobalData.found_rom_paths.append(fileHASHNameList[item_ndx])
@@ -274,9 +278,9 @@ class ROMFileParser(object):
         # do parse for single rom archives and files
         db_full_hash_dict = []
         temp_list = []
-        curs_game.execute('select gir_gi_id,gir_sha1 from game_info,game_info_roms'\
-            ' where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms'\
-            ' group by gir_gi_id having count(*) = 1)')
+        curs_game.execute('select gir_gi_id,gir_sha1 from game_info,game_info_roms' \
+                          ' where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms' \
+                          ' group by gir_gi_id having count(*) = 1)')
         for sql_row in curs_game:
             temp_list.append(sql_row[0])
             temp_list.append(sql_row[1])
@@ -314,6 +318,7 @@ class ROMFileParser(object):
                 return False
         return True
 
+
 class GameAuditer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -349,14 +354,14 @@ class GameAuditer(threading.Thread):
         curs_game = conn_game.cursor()
         conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         curs_game.execute("attach database 'db/hubcade_gui.db' as gui_db")
-        curs_game.execute('select gs_system_long_name,gi_short_name,gi_long_name,gi_id,'\
-            '(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
-            'gc_category from game_info,gui_db.game_audit,game_systems,game_category'\
-            ' where gi_id = gui_db.game_audit.ga_game_id and gs_id = gi_system_id'\
-            ' and gi_gc_category = gc_id union all select \'Arcade\',gi_short_name,gi_long_name,'\
-            'gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'\
-            'gc_category from game_info,gui_db.game_audit,game_category where gi_system_id = 0'\
-            ' and gi_id = gui_db.game_audit.ga_game_id and gi_gc_category = gc_id')
+        curs_game.execute('select gs_system_long_name,gi_short_name,gi_long_name,gi_id,' \
+                          '(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,' \
+                          'gc_category from game_info,gui_db.game_audit,game_systems,game_category' \
+                          ' where gi_id = gui_db.game_audit.ga_game_id and gs_id = gi_system_id' \
+                          ' and gi_gc_category = gc_id union all select \'Arcade\',gi_short_name,gi_long_name,' \
+                          'gi_id,(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,' \
+                          'gc_category from game_info,gui_db.game_audit,game_category where gi_system_id = 0' \
+                          ' and gi_id = gui_db.game_audit.ga_game_id and gi_gc_category = gc_id')
         # for the times/time played
         conn_game_info = connect('db/hubcade_gui.db')
         curs_game_info = conn_game_info.cursor()
@@ -375,8 +380,8 @@ class GameAuditer(threading.Thread):
             game_players = 0
             game_category = "NA"
             sql_args = str(sql_row[3]),
-            curs_game_info.execute('select game_times_played,game_time_played from game_info'\
-                ' where game_rom_id = ?', sql_args)
+            curs_game_info.execute('select game_times_played,game_time_played from game_info' \
+                                   ' where game_rom_id = ?', sql_args)
             row = curs_game_info.fetchone()
             if row is None:
                 pass
@@ -400,16 +405,16 @@ class GameAuditer(threading.Thread):
                 game_name = sql_row[2]
             if old_system_long_name != sql_row[0]:
                 if len(game_info) > 0:
-                    Client_GlobalData.audit_gameList[old_system_long_name]\
+                    Client_GlobalData.audit_gameList[old_system_long_name] \
                         = copy.deepcopy(game_info.items())
                     Client_GlobalData.audit_gameList[old_system_long_name].sort()
                 old_system_long_name = sql_row[0]
                 game_info = {}
-            game_info[game_name] = game_times_played, game_time_played, game_monitor,\
-                game_players, str(sql_row[3]), game_category
+            game_info[game_name] = game_times_played, game_time_played, game_monitor, \
+                                   game_players, str(sql_row[3]), game_category
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
-            Client_GlobalData.audit_gameList[old_system_long_name]\
+            Client_GlobalData.audit_gameList[old_system_long_name] \
                 = copy.deepcopy(game_info.items())
             Client_GlobalData.audit_gameList[old_system_long_name].sort()
         curs_game_info.close()
@@ -433,11 +438,15 @@ class GameAuditer(threading.Thread):
             # need to break down gameSystem as technically it's
             # all the systems and data underneath it
             for gameData in gameSystem[1]:
-                if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal"\
-                    and gameData[1][2] != "Horizontal")\
-                    or (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical"\
-                    and gameData[1][2] != "Vertical")\
-                    or (int(gameData[1][3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != gameData[1][5]):
+                if (Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Horizontal" \
+                    and gameData[1][2] != "Horizontal") \
+                        or (
+                        Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical" \
+                        and gameData[1][2] != "Vertical") \
+                        or (int(gameData[1][
+                                    3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (
+                        Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() !=
+                        gameData[1][5]):
                     pass
                 else:
                     if first_record:
@@ -446,8 +455,9 @@ class GameAuditer(threading.Thread):
                     if subString in gameData[0].lower():
                         if gameSystem[0] not in gameList:
                             gameList[gameSystem[0]] = []
-                        game_info[gameData[0]] = gameData[1][0], gameData[1][1],\
-                            gameData[1][2], gameData[1][3], gameData[1][4], gameData[1][5]
+                        game_info[gameData[0]] = gameData[1][0], gameData[1][1], \
+                                                 gameData[1][2], gameData[1][3], gameData[1][4], \
+                                                 gameData[1][5]
                     if old_system_long_name != gameSystem[0]:
                         if len(game_info) > 0:
                             gameList[old_system_long_name] = copy.deepcopy(game_info.items())
@@ -459,6 +469,7 @@ class GameAuditer(threading.Thread):
             gameList[old_system_long_name] = copy.deepcopy(game_info.items())
             gameList[old_system_long_name].sort()
         return gameList
+
 
 if __name__ == '__main__':
     # set signal exit breaks

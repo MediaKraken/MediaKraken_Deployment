@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import glob
 import json
 from kivy import platform
@@ -52,7 +52,7 @@ def com_json_import(file_name):
         try:
             # layout
             common_database_octmote.com_db_layout_config_insert(json_data['Layout'],
-                json_data)
+                                                                json_data)
         except:
             pass
 

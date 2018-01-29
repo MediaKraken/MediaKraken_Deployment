@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_emby
 
@@ -27,7 +27,7 @@ from common import common_emby
 # determine install directory
 @pytest.mark.parametrize(("dir_name"), [
     (None),
-    #("./cache"), #TODO valid dir
+    # ("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_installed_directory(dir_name):
     """
@@ -39,7 +39,7 @@ def test_com_emby_installed_directory(dir_name):
 # fetch library list
 @pytest.mark.parametrize(("dir_name"), [
     (None),
-    #("./cache"), #TODO valid dir
+    # ("./cache"), #TODO valid dir
     ("./cache_fake")])
 def test_com_emby_library_list(dir_name):
     """
@@ -54,7 +54,6 @@ def test_com_emby_check_instance():
     Test function
     """
     common_emby.com_emby_check_instance()
-
 
 # C# guid to text
 # def com_Emby_guid_To_UUID(emby_guid):

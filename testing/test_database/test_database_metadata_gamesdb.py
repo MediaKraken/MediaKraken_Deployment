@@ -16,37 +16,34 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataGamesdb(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     @pytest.mark.parametrize(("platform_id", "platform_name", "platform_alias", "platform_json"), [
         (34, 'Test', 'Test', json.dumps({'Tt': 'M'})),
         (3, 'Tst', 'Tst', None)])
     def test_db_meta_gamesdb_system_insert(self, platform_id, platform_name,
-            platform_alias, platform_json):
+                                           platform_alias, platform_json):
         """
         # insert gamesdb game system
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_gamesdb_system_insert(platform_id, platform_name,
-            platform_alias, platform_json)
+                                                         platform_alias, platform_json)

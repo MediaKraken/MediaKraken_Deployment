@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
 
@@ -26,5 +26,6 @@ class CommonNetworkVMWare(object):
     """
     Class for interfacing via vmware
     """
+
     def __init__(self):
         pass

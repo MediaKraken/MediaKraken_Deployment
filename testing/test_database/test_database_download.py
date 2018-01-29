@@ -16,17 +16,16 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseDownload(object):
-
 
     @classmethod
     def setup_class(self):
@@ -34,11 +33,9 @@ class TestDatabaseDownload(object):
         self.db_connection.db_open()
         self.new_guid = None
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_download_insert(self):
         """
@@ -47,7 +44,6 @@ class TestDatabaseDownload(object):
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_download_insert('themovedb',
                                                               json.dumps({'test': 234}))
-
 
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),
@@ -59,7 +55,6 @@ class TestDatabaseDownload(object):
         self.db_connection.db_rollback()
         self.db_connection.db_download_read_provider(provider_name)
 
-
     def test_db_download_update_provider(self):
         """
         # update provider
@@ -67,14 +62,12 @@ class TestDatabaseDownload(object):
         self.db_connection.db_rollback()
         self.db_connection.db_download_update_provider('thetvdb', self.new_guid)
 
-
     def test_db_download_update(self):
         """
         Update the json for download
         """
         self.db_connection.db_rollback()
         self.db_connection.db_download_update(json.dumps({'test2': 23}), self.new_guid)
-
 
     def test_db_download_delete(self):
         """

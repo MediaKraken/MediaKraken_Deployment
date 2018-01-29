@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_iscp
 
@@ -30,7 +30,6 @@ def test_com_net_eiscp_discovery():
     Test function
     """
     common_network_iscp.com_net_eiscp_discovery()
-
 
 # def MK_EISCP_Connection(ip_addr):
 

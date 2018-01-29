@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_cloud
 from common import common_config_ini
 from common import common_logging
@@ -42,19 +42,19 @@ def worker(row_data):
         row_data['mm_sync_options_json']['Media GUID'])[0]]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs',
-            row_data['mm_sync_options_json']['Options']['Size']))
+                              row_data['mm_sync_options_json']['Options']['Size']))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
         ffmpeg_params.extend(('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
     if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
         ffmpeg_params.extend(('-ac',
-            row_data['mm_sync_options_json']['Options']['AudioChannels']))
+                              row_data['mm_sync_options_json']['Options']['AudioChannels']))
     if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
         ffmpeg_params.extend(('-acodec',
-            row_data['mm_sync_options_json']['Options']['ACodec']))
+                              row_data['mm_sync_options_json']['Options']['ACodec']))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
         ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
-    ffmpeg_params.append(row_data['mm_sync_path_to'] + "."\
-        + row_data['mm_sync_options_json']['Options']['VContainer'])
+    ffmpeg_params.append(row_data['mm_sync_path_to'] + "." \
+                         + row_data['mm_sync_options_json']['Options']['VContainer'])
     logging.info("ffmpeg: %s", ffmpeg_params)
     ffmpeg_pid = subprocess.Popen(ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
@@ -72,7 +72,7 @@ def worker(row_data):
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
                 thread_db.db_sync_progress_update(row_data['mm_sync_guid'],
-                    time_percent)
+                                                  time_percent)
                 thread_db.db_commit()
         else:
             break
@@ -83,19 +83,22 @@ def worker(row_data):
         pass
     elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
         XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],
-            row_data['mm_sync_options_json']['TargetPort'],
-            row_data['mm_sync_path_to'] + "."\
-            + row_data['mm_sync_options_json']['Options']['VContainer'],
-            row_data['mm_sync_path_to'])
-    else: # cloud item
+                                                   row_data['mm_sync_options_json']['TargetPort'],
+                                                   row_data['mm_sync_path_to'] + "." \
+                                                   + row_data['mm_sync_options_json']['Options'][
+                                                       'VContainer'],
+                                                   row_data['mm_sync_path_to'])
+    else:  # cloud item
         CLOUD_HANDLE = common_cloud.CommonCloud()
         CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],
-            row_data['mm_sync_path_to'], row_data['mm_sync_path_to'] + "."\
-            + row_data['mm_sync_options_json']['Options']['VContainer'].split('/', 1)[1], False)
+                                          row_data['mm_sync_path_to'],
+                                          row_data['mm_sync_path_to'] + "." \
+                                          + row_data['mm_sync_options_json']['Options'][
+                                              'VContainer'].split('/', 1)[1], False)
     thread_db.db_activity_insert('MediaKraken_Server Sync', None,
-        'System: Server Sync', 'ServerSync', None, None, 'System')
-    thread_db.db_sync_delete(row_data[0]) # guid of sync record
-    #thread_db.store record in activity table
+                                 'System: Server Sync', 'ServerSync', None, None, 'System')
+    thread_db.db_sync_delete(row_data[0])  # guid of sync record
+    # thread_db.store record in activity table
     thread_db.db_commit()
     thread_db.db_close()
     return
@@ -104,19 +107,16 @@ def worker(row_data):
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
-
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,
-    'System: Server Sync Start', 'ServerSyncStart', None, None, 'System')
-
+                                 'System: Server Sync Start', 'ServerSyncStart', None, None,
+                                 'System')
 
 # switched to this since tracebacks work this method
 sync_data = db_connection.db_sync_list()
@@ -125,15 +125,12 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     for future in futures:
         logging.info(future.result())
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,
-    'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
-
+                                 'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

@@ -3,14 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 import pygal
 import json
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
+    url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
+
 blueprint = Blueprint("admins_chromecasts", __name__, url_prefix='/admin',
                       static_folder="../static")
 # need the following three items for admin check
@@ -24,7 +26,6 @@ from common import common_config_ini
 from common import common_internationalization
 from common import common_version
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -45,6 +46,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -52,6 +54,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -88,8 +91,8 @@ def admin_chromecast_edit_page():
                                                    request.form['ipaddr']) == 0:
                     g.db_connection.db_device_insert('cast',
                                                      json.dumps({'Name': request.form['name'],
-                                                                'Model': "NA",
-                                                                'IP': request.form['ipaddr']}))
+                                                                 'Model': "NA",
+                                                                 'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_chromecasts.admin_chromecast'))
                 else:
@@ -118,7 +121,8 @@ def admin_chromecast_delete_page():
 def getChromecastById():
     result = g.db_connection.db_device_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
-        'Name': result['mm_device_json']['Name'], 'IP': result['mm_device_json']['IP']})
+                       'Name': result['mm_device_json']['Name'],
+                       'IP': result['mm_device_json']['IP']})
 
 
 @blueprint.route('/updateChromecast', methods=['POST'])
@@ -126,7 +130,7 @@ def getChromecastById():
 @admin_required
 def updateChromecast():
     g.db_connection.db_device_update_by_uuid(request.form['name'],
-        request.form['ipaddr'], request.form['id'])
+                                             request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

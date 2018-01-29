@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import sys
 
@@ -26,6 +26,7 @@ class CommonHardwarePioneer(object):
     """
     Class for interfacing with pioneer equipment over network connection
     """
+
     def __init__(self, device_ip, device_port):
         self.pioneer_inst = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.pioneer_inst.connect((device_ip, device_port))
@@ -60,6 +61,7 @@ class CommonHardwarePioneer(object):
                         self.pioneer_inst.close()
                         break
                 return data.decode(encoding='ascii')
+
 
 """
 Volume:

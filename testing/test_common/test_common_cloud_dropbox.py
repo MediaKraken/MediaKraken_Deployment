@@ -16,33 +16,29 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_cloud_dropbox
 
 
 class TestCommonDropBox(object):
 
-
     @classmethod
     def setup_class(self):
         self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     def test_dropbox_user_auth(self):
         """
         Test function
         """
         self.dropbox_connection.dropbox_user_auth()
-
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("./cache/HashCalc.txt", "HashCalc.txt"),
@@ -53,17 +49,15 @@ class TestCommonDropBox(object):
         """
         self.dropbox_connection.dropbox_upload(file_name, file_save_name)
 
-
     @pytest.mark.parametrize(("dir_name"), [
         ("/"),
         ("metaman"),
         ("fakedir")])
-    def test_dropbox_list(self, dir_name = '/'):
+    def test_dropbox_list(self, dir_name='/'):
         """
         Test function
         """
         self.dropbox_connection.dropbox_list(dir_name)
-
 
     @pytest.mark.parametrize(("file_name", "file_save_name"), [
         ("HashCalc.txt", "./cache/HashCalcDown.txt"),

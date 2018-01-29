@@ -16,15 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
 import shutil
+
 sys.path.append('../MediaKraken-PyLint/build_code/jenkins/')
 import pipeline_packages_list
-
 
 # nuke previous pyinstaller directories to start fresh
 try:
@@ -36,13 +35,11 @@ try:
 except:
     pass
 
-
 # start building python "app"
-os.system('pyinstaller --clean'\
-    ' C:\\Users\\jenkinsbuild\\Documents\\github\\main_server.py')
-
+os.system('pyinstaller --clean' \
+          ' C:\\Users\\jenkinsbuild\\Documents\\github\\main_server.py')
 
 # start building python programs
 for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
-    os.system('pyinstaller --clean C:\\Users\\jenkinsbuild\\Documents\\github\\'\
+    os.system('pyinstaller --clean C:\\Users\\jenkinsbuild\\Documents\\github\\' \
               + app_to_build + '.py')

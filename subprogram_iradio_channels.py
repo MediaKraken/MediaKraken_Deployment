@@ -17,34 +17,29 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_file
 from common import common_logging
 from common import common_network_radio
 from common import common_signal
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,
-    'System: Server iRadio Start', 'ServeriRadioStart', None, None, 'System')
-
+                                 'System: Server iRadio Start', 'ServeriRadioStart', None, None,
+                                 'System')
 
 # start code for updating iradio database
 common_network_radio.com_net_radio()
-
 
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
@@ -52,20 +47,18 @@ for row_data in radio_cache:
     logging.info('radio cache: %s', row_data)
     db_connection.db_iradio_insert(row_data)
 
-#radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
+# radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,
-    'System: Server iRadio Stop', 'ServeriRadioStop', None, None, 'System')
-
+                                 'System: Server iRadio Stop', 'ServeriRadioStop', None, None,
+                                 'System')
 
 # commit
 db_connection.db_commit()
 
-
 # vaccum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_radio')
-
 
 # close the database
 db_connection.db_close()

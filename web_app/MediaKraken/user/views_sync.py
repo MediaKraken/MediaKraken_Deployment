@@ -3,21 +3,22 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+from flask import Blueprint, render_template, g, request, current_app, jsonify, \
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
 from MediaKraken.user.forms import SyncEditForm
+
 blueprint = Blueprint("user_sync", __name__, url_prefix='/users', static_folder="../static")
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -37,13 +38,13 @@ def sync_display_all():
                                                   record_name='Sync Jobs',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template('users/user_sync.html',
                            media_sync=g.db_connection.db_sync_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.route('/sync_edit/<guid>/', methods=['GET', 'POST'])
@@ -55,18 +56,18 @@ def sync_edit(guid):
     """
     if request.method == 'POST':
         sync_json = {'Type': request.form['target_type'],
-            'Media GUID': guid,
-            'Options': {'VContainer': request.form['target_container'],
-            'VCodec': request.form['target_codec'],
-            'Size': request.form['target_file_size'],
-            'AudioChannels': request.form['target_audio_channels'],
-            'ACodec': request.form['target_audio_codec'],
-            'ASRate': request.form['target_sample_rate']},
-            'Priority': request.form['target_priority'],
-            'Status': 'Scheduled',
-            'Progress': 0}
+                     'Media GUID': guid,
+                     'Options': {'VContainer': request.form['target_container'],
+                                 'VCodec': request.form['target_codec'],
+                                 'Size': request.form['target_file_size'],
+                                 'AudioChannels': request.form['target_audio_channels'],
+                                 'ACodec': request.form['target_audio_codec'],
+                                 'ASRate': request.form['target_sample_rate']},
+                     'Priority': request.form['target_priority'],
+                     'Status': 'Scheduled',
+                     'Progress': 0}
         g.db_connection.db_sync_insert(request.form['name'],
-            request.form['target_output_path'], json.dumps(sync_json))
+                                       request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(request.form, csrf_enabled=False)
@@ -83,7 +84,7 @@ def admin_sync_delete_page():
     """
     g.db_connection.db_sync_delete(request.form['id'])
     g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.before_request
@@ -96,7 +97,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

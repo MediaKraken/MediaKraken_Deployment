@@ -32,6 +32,6 @@ def email_addr_verify(email_address_to_check):
     Verify email addr
     """
     if (repr(email_address_to_check), email_address.match(email_address_to_check))[1] is None:
-        return False # invalid
+        return False  # invalid
     else:
-        return True # valid
+        return True  # valid

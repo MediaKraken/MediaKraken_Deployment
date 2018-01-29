@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 from . import common_network
 
@@ -26,9 +26,9 @@ class CommonMetadataTheLogoDB(object):
     """
     Class for interfacing with thelogodb
     """
+
     def __init__(self, option_config_json):
         self.logo_api_key = option_config_json['API']['thelogodb']
-
 
     def com_thelogodb_fetch_latest(self):
         """

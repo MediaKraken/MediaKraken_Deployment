@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import urllib2
 import json
 import gzip
@@ -28,6 +28,7 @@ class CommonMetadataOpenweatherMap(object):
     """
     Class for interfacing with OpenweatherMap
     """
+
     def __init__(self, option_config_json):
         self.api_key = option_config_json['API']['openweathermap']
 
@@ -35,8 +36,9 @@ class CommonMetadataOpenweatherMap(object):
         """
         Grab the weather for city
         """
-        return json.load(urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s'\
-              % (city, self.api_key)))
+        return json.load(
+            urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s' \
+                            % (city, self.api_key)))
 
     def com_openweathermap_fetch_city(self):
         common_network.mk_network_fetch_from_url(

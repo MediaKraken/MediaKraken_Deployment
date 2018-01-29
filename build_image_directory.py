@@ -21,34 +21,33 @@ import logging  # pylint: disable=W0611
 import os
 from string import ascii_lowercase
 
-
 image_dir = [
-             'backdrop',
-             'banner',
-             'box_bluray',
-             'box_cd',
-             'box_dvd',
-             'box_hddvd',
-             'box_laserdisc',
-             'box_vhs',
-             'chapter',
-             'character',
-             'fanart',
-             'game',
-             'game_box',
-             'game_media',
-             'logo',
-             'media_bluray',
-             'media_cd',
-             'media_dvd',
-             'media_hddvd',
-             'media_laserdisc',
-             'media_vhs',
-             'person',
-             'poster',
-             'profile',
-             'still',
-             ]
+    'backdrop',
+    'banner',
+    'box_bluray',
+    'box_cd',
+    'box_dvd',
+    'box_hddvd',
+    'box_laserdisc',
+    'box_vhs',
+    'chapter',
+    'character',
+    'fanart',
+    'game',
+    'game_box',
+    'game_media',
+    'logo',
+    'media_bluray',
+    'media_cd',
+    'media_dvd',
+    'media_hddvd',
+    'media_laserdisc',
+    'media_vhs',
+    'person',
+    'poster',
+    'profile',
+    'still',
+]
 
 
 def build_image_dirs():
@@ -57,4 +56,5 @@ def build_image_dirs():
         for i in ascii_lowercase:
             os.mkdir(os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
                                   image_info, i))
-    os.mkdir('/mediakraken/web_app/MediaKraken/static/meta/images/episodes') # since a-z won't be used
+    os.mkdir(
+        '/mediakraken/web_app/MediaKraken/static/meta/images/episodes')  # since a-z won't be used

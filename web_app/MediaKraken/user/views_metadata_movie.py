@@ -3,17 +3,19 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+from flask import Blueprint, render_template, g, request, current_app, jsonify, \
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
+
 blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import natsort
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -22,7 +24,6 @@ from common import common_pagination
 from common import common_string
 import database as database_base
 from MediaKraken.public.forms import SearchForm
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -38,7 +39,7 @@ def metadata_movie_detail(guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = common_internationalization.com_inter_number_format(\
+    data_vote_count = common_internationalization.com_inter_number_format( \
         json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
     # build gen list
     genres_list = ''
@@ -47,13 +48,13 @@ def metadata_movie_detail(guid):
     # build production list
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
-        production_list\
+        production_list \
             += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
-            + ', ')
+                + ', ')
     # poster image
     try:
         if json_imagedata['Images']['themoviedb']['Poster'] is not None:
-            data_poster_image\
+            data_poster_image \
                 = json_imagedata['Images']['themoviedb']['Poster']
         else:
             data_poster_image = None
@@ -68,7 +69,7 @@ def metadata_movie_detail(guid):
     except:
         data_background_image = None
     # grab reviews
-#    review = g.db_connection.db_Review_List(data[1])
+    #    review = g.db_connection.db_Review_List(data[1])
     return render_template('users/metadata/meta_movie_detail.html',
                            # data_media_ids=data[1],
                            data_name=data[2],
@@ -79,9 +80,9 @@ def metadata_movie_detail(guid):
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
-                           data_budget=common_internationalization.com_inter_number_format(\
+                           data_budget=common_internationalization.com_inter_number_format( \
                                json_metadata['Meta']['themoviedb']['Meta']['budget'])
-                          )
+                           )
 
 
 @blueprint.route('/meta_movie_list', methods=["GET", "POST"])
@@ -104,30 +105,31 @@ def metadata_movie_list():
     for row_data in metadata:
         # set watched
         try:
-            watched_status\
+            watched_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
         except:
             watched_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
-            and 'UserStats' in row_data['mm_metadata_user_json']\
-            and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats']\
-            and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
-                rating_status \
-                    = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
-                if rating_status == 'favorite':
-                    rating_status = '/static/images/favorite-mark.png'
-                elif rating_status == 'like':
-                    rating_status = '/static/images/thumbs-up.png'
-                elif rating_status == 'dislike':
-                    rating_status = '/static/images/dislike-thumb.png'
-                elif rating_status == 'poo':
-                    rating_status = '/static/images/pile-of-dung.png'
+                and 'UserStats' in row_data['mm_metadata_user_json'] \
+                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
+            current_user.get_id()]:
+            rating_status \
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+            if rating_status == 'favorite':
+                rating_status = '/static/images/favorite-mark.png'
+            elif rating_status == 'like':
+                rating_status = '/static/images/thumbs-up.png'
+            elif rating_status == 'dislike':
+                rating_status = '/static/images/dislike-thumb.png'
+            elif rating_status == 'poo':
+                rating_status = '/static/images/pile-of-dung.png'
         else:
             rating_status = None
         # set requested
         try:
-            request_status\
+            request_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
@@ -142,13 +144,13 @@ def metadata_movie_list():
                                                   record_name='Movies',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template('users/metadata/meta_movie_list.html', form=form,
                            media_movie=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.before_request
@@ -161,7 +163,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

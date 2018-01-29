@@ -16,39 +16,33 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_thetvdb
 
 
 class TestCommonMetadataTheTVDB(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_metadata_thetvdb.CommonMetadataTheTVDB()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
+    # def com_meta_TheTVDB_Updates(self, frequency='day'):
 
-# def com_meta_TheTVDB_Updates(self, frequency='day'):
-
-
-# def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
-
+    # def com_meta_TheTVDB_Get_ZIP_by_ID(self, tv_show_id, lang_code='en'):
 
     def test_com_meta_thetvdb_get_server_epoc_time(self):
         """
         Test function
         """
         self.db_connection.com_meta_thetvdb_get_server_epoc_time()
-
 
 # def com_meta_TheTVDB_Updates_by_Epoc(self, epoc_timestamp):
 

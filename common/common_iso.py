@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import isoparser
 
 
@@ -25,9 +25,9 @@ class CommonISO(object):
     """
     Class for interfacing with iso images
     """
+
     def __init__(self):
         self.iso = None
-
 
     def com_iso_load(self, url_file):
         """

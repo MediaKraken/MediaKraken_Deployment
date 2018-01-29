@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_pitchfork
 
 
 class TestCommonpitchfork(object):
 
-
     @classmethod
     def setup_class(self):
         self.pitchfork_connection = common_metadata_pitchfork.CommonMetadataPitchfork()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     @pytest.mark.parametrize(("artist_name", "album_title"), [
         ("Megadeath", "Youthanasia"),
@@ -46,13 +43,11 @@ class TestCommonpitchfork(object):
         """
         self.pitchfork_connection.com_pfork_search(artist_name, album_title)
 
-
     def test_com_pfork_album_title(self):
         """
         Test function
         """
         self.pitchfork_connection.com_pfork_album_title()
-
 
     def test_com_pfork_album_label(self):
         """
@@ -60,20 +55,17 @@ class TestCommonpitchfork(object):
         """
         self.pitchfork_connection.com_pfork_album_label()
 
-
     def test_com_pfork_album_review(self):
         """
         Test function
         """
         self.pitchfork_connection.com_pfork_album_review()
 
-
     def test_com_pfork_album_cover_art_link(self):
         """
         Test function
         """
         self.pitchfork_connection.com_pfork_album_cover_art_link()
-
 
     def test_com_pfork_album_review_score(self):
         """

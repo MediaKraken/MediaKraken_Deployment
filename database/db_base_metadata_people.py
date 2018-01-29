@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 import json
 
@@ -41,25 +41,25 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                ' from mm_metadata_person where mmp_person_name %% %s'
-                ' order by mmp_person_name', (search_value,))
+                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person where mmp_person_name %% %s'
+                                   ' order by mmp_person_name', (search_value,))
         else:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                ' from mm_metadata_person order by mmp_person_name')
+                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person order by mmp_person_name')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                ' from mm_metadata_person where mmp_person_name %% %s'
-                ' order by mmp_person_name offset %s limit %s',
-                (search_value, offset, records))
+                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person where mmp_person_name %% %s'
+                                   ' order by mmp_person_name offset %s limit %s',
+                                   (search_value, offset, records))
         else:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                'mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                ' from mm_metadata_person order by mmp_person_name offset %s limit %s',
-                (offset, records))
+                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person order by mmp_person_name'
+                                   ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -68,7 +68,8 @@ def db_meta_person_by_guid(self, guid):
     # return person data
     """
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
-        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_id = %s', (guid,))
+                           ' mmp_person_image, mmp_person_name from mm_metadata_person'
+                           ' where mmp_id = %s', (guid,))
     try:
         return self.db_cursor.fetchone()
     except:
@@ -80,8 +81,8 @@ def db_meta_person_by_name(self, person_name):
     # return person data by name
     """
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
-        ' mmp_person_image, mmp_person_name from mm_metadata_person where mmp_person_name = %s',
-        (person_name,))
+                           ' mmp_person_image, mmp_person_name from mm_metadata_person'
+                           ' where mmp_person_name = %s', (person_name,))
     try:
         return self.db_cursor.fetchone()
     except:
@@ -92,18 +93,21 @@ def db_meta_person_id_count(self, host_type, guid):
     """
     # does person exist already by host/id
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_person'\
-        ' where mmp_person_media_id @> \'{"' + host_type + '":"' + str(guid) + '"}\'')
+    self.db_cursor.execute('select count(*) from mm_metadata_person' \
+                           ' where mmp_person_media_id @> \'{"' + host_type + '":"'
+                           + str(guid) + '"}\'')
     return self.db_cursor.fetchone()[0]
+
+
 # works after the refactor
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"themoviedb": "22358"}'
 # works in postgresql
 # select count(*) from mm_metadata_person where mmp_person_media_id @> '{"Host":"themoviedb"}'
-    #and mmp_person_meta_json @> '{"id":169}'
+# and mmp_person_meta_json @> '{"id":169}'
 
 
 def db_meta_person_insert(self, person_name, media_id_json, person_json,
-        image_json=None):
+                          image_json=None):
     """
     # insert person
     """
@@ -111,8 +115,9 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
                  person_json, image_json)
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
-        ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image) values (%s,%s,%s,%s,%s)',
-        (new_guid, person_name, media_id_json, person_json, image_json))
+                           ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image)'
+                           ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id_json,
+                                                        person_json, image_json))
     self.db_commit()
     return new_guid
 
@@ -121,7 +126,7 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     update the person bio/etc
     """
-    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '\
+    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, ' \
                            'mmp_person_image = %s where mmp_person_media_id->\'' \
                            + provider_name + '\' ? %s',
                            (json.dumps(person_bio), json.dumps(person_image), str(provider_uuid)))
@@ -159,17 +164,18 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     person_name = person_json['Name']
             else:
                 person_id = None
-                #person_name = None # not used later so don't set
+                # person_name = None # not used later so don't set
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
                     logging.info("skippy")
                 else:
                     # insert download record for bio/info
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
-                        "ProviderMetaID": str(person_id)}))
+                                                                      "ProviderMetaID": str(
+                                                                          person_id)}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
-                        json.dumps({meta_type: str(person_id)}), None, None)
+                                               json.dumps({meta_type: str(person_id)}), None, None)
     else:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
@@ -186,17 +192,18 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_name = person_json['Name']
         else:
             person_id = None
-            #person_name = None # not used later so don't set
+            # person_name = None # not used later so don't set
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 logging.info("skippy")
             else:
                 # insert download record for bio/info
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
-                    "ProviderMetaID": str(person_id)}))
+                                                                  "ProviderMetaID": str(
+                                                                      person_id)}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
-                    json.dumps({meta_type: str(person_id)}), None, None)
+                                           json.dumps({meta_type: str(person_id)}), None, None)
 
 
 def db_meta_person_as_seen_in(self, person_guid):
@@ -204,36 +211,36 @@ def db_meta_person_as_seen_in(self, person_guid):
     # find other media for person
     """
     row_data = self.db_meta_person_by_guid(person_guid)
-    if row_data is None: # exit on not found person
+    if row_data is None:  # exit on not found person
         return None
     logging.info("row_data: %s", row_data)
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-            'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-            ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
-            ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
+                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
+                               ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
+                               ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
         logging.info('sql paramts: %s' % sql_params)
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-            'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
-            ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-            '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by mm_metadata_tvshow_name',
-            sql_params)
-            # TODO won't this need to be like below?
+                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
+                               ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+                               '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by mm_metadata_tvshow_name',
+                               sql_params)
+        # TODO won't this need to be like below?
     elif 'thetvdb' in row_data['mmp_person_media_id']:
-        #sql_params = str(row_data[1]['thetvdb']),
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'\
-            'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''\
-            ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''\
-            '->\'Cast\'->\'Actor\' @> \'[{"id": \"'\
-            + str(row_data['mmp_person_media_id']['thetvdb'])\
-            + '\"}]\' order by mm_metadata_tvshow_name')  #, sql_params)  #TODO
+        # sql_params = str(row_data[1]['thetvdb']),
+        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,' \
+                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\'' \
+                               ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'' \
+                               '->\'Cast\'->\'Actor\' @> \'[{"id": \"' \
+                               + str(row_data['mmp_person_media_id']['thetvdb']) \
+                               + '\"}]\' order by mm_metadata_tvshow_name')  # , sql_params)  #TODO
     return self.db_cursor.fetchall()
 
 ## works
-#select mm_metadata_tvshow_guid,mm_metadata_tvshow_name as
+# select mm_metadata_tvshow_guid,mm_metadata_tvshow_name as
 # media_query_name,mm_metadata_tvshow_localimage_json
-#from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->'Meta'
-#->'tvmaze'->'_embedded'->'cast' @> '[{"person": {"id": 96405}}]'
+# from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->'Meta'
+# ->'tvmaze'->'_embedded'->'cast' @> '[{"person": {"id": 96405}}]'

@@ -35,7 +35,8 @@ class YoutubeAPI:
             raise ValueError('The configuration options must be an array..')
 
         if 'key' not in params:
-            raise ValueError('Google API key is required, please visit http://code.google.com/apis/console')
+            raise ValueError(
+                'Google API key is required, please visit http://code.google.com/apis/console')
 
         self.youtube_key = params['key']
 
@@ -303,5 +304,3 @@ class YoutubeAPI:
                 params[item[0]] = item[1]
 
         return params
-
-

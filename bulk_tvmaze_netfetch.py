@@ -22,17 +22,14 @@ import uuid
 from common import common_config_ini
 from common import common_metadata_tvmaze
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
 
 # setup the tvmaze class
 if option_config_json['API']['tvmaze'] is not None:
     TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze(option_config_json)
 else:
     TVMAZE_CONNECTION = None
-
 
 for page_ndx in range(1, 75):
     result = TVMAZE_CONNECTION.com_meta_tvmaze_show_list(page_ndx)
@@ -43,8 +40,9 @@ for page_ndx in range(1, 75):
         if db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id)) is None:
             if db_connection.db_download_que_exists(None, 2, 'tvmaze', str(tvmaze_id)) is None:
                 db_connection.db_download_insert('tvmaze', 2, json.dumps({"Status": "Fetch",
-                                                 "ProviderMetaID": str(tvmaze_id),
-                                                 "MetaNewID": str(uuid.uuid4())}))
+                                                                          "ProviderMetaID": str(
+                                                                              tvmaze_id),
+                                                                          "MetaNewID": str(
+                                                                              uuid.uuid4())}))
     # commit all changes
     db_connection.db_commit()
-

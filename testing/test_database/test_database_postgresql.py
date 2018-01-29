@@ -16,29 +16,26 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED # the default
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 
 
 class TestDatabasePostgresql(object):
-
 
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # query provided by postgresql wiki
     def test_db_pgsql_table_sizes(self):
@@ -48,7 +45,6 @@ class TestDatabasePostgresql(object):
         self.db_connection.db_rollback()
         self.db_connection.db_pgsql_table_sizes()
 
-
     # query provided by postgresql wiki
     def test_db_pgsql_row_count(self):
         """
@@ -56,7 +52,6 @@ class TestDatabasePostgresql(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_pgsql_row_count()
-
 
     @pytest.mark.parametrize(("days"), [
         (1),
@@ -68,7 +63,6 @@ class TestDatabasePostgresql(object):
         self.db_connection.db_rollback()
         self.db_connection.db_pgsql_vacuum_stat_by_day(days)
 
-
     @pytest.mark.parametrize(("table_name"), [
         ('mm_media'),
         ('mm_media_fake_table')])
@@ -79,7 +73,6 @@ class TestDatabasePostgresql(object):
         self.db_connection.db_rollback()
         self.db_connection.db_pgsql_vacuum_table(table_name)
 
-
     @pytest.mark.parametrize(("isolation_level"), [
         (ISOLATION_LEVEL_AUTOCOMMIT),
         (ISOLATION_LEVEL_READ_COMMITTED)])
@@ -89,7 +82,6 @@ class TestDatabasePostgresql(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_pgsql_set_iso_level(isolation_level)
-
 
     @pytest.mark.parametrize(("table_name", "expected_result"), [
         ('mm_media', 'mm_media'),

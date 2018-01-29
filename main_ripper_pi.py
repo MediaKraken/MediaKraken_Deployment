@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from concurrent import futures
 from common import common_hardware_arduino_usb_serial
 from common import common_logging
@@ -28,6 +28,7 @@ import os
 import json
 import uuid
 from crochet import wait_for, run_in_reactor, setup
+
 setup()
 
 from kivy.lang import Builder
@@ -38,6 +39,7 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+
 kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -84,6 +86,7 @@ twisted_connection = None
 mk_app = None
 thread_status = None
 
+
 class MKEcho(basic.LineReceiver):
     MAX_LENGTH = 32000000  # pylint: disable=C0103
 
@@ -95,27 +98,30 @@ class MKEcho(basic.LineReceiver):
     def lineReceived(self, line):
         global mk_app
         logging.info('linereceived len: %s', len(line))
-        #logging.info('linereceived: %s', line)
-        #logging.info('app: %s', mk_app)
+        # logging.info('linereceived: %s', line)
+        # logging.info('app: %s', mk_app)
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
-        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+        # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
         logging.info('sending: %s', line)
         self.sendLine(line.encode("utf8"))
 
+
 class MKFactory(protocol.ClientFactory):
     protocol = MKEcho
+
 
 class MediaKraken(FloatLayout):
     """
     This is the base class that builds the gui
     """
     pass
+
 
 class MediaKrakenLoginScreen(BoxLayout):
     """
@@ -124,12 +130,14 @@ class MediaKrakenLoginScreen(BoxLayout):
     password = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
+
 class MediaKrakenNotificationScreen(BoxLayout):
     """
     Notification display
     """
     message_text = ObjectProperty(None)
     ok_button = ObjectProperty(None)
+
 
 class MediaKrakenApp(App):
     global twisted_connection
@@ -180,7 +188,8 @@ class MediaKrakenApp(App):
     def next_disc(self, spinner_no, spinner_text):
         for drive_status in self.rom_drives:
             if drive_status['Status'] is None and (drive_status['Type'] == spinner_text
-                    or (drive_status['Type'] == 'DVD' and spinner_text == 'Audio CD')):
+                                                   or (drive_status[
+                                                           'Type'] == 'DVD' and spinner_text == 'Audio CD')):
                 # load this one
                 self.track_arduino.com_arduino_usb_serial_writestring(
                     'track|%s' % self.spindles_media_to_process[spinner_no]['Pos'])
@@ -261,11 +270,17 @@ class MediaKrakenApp(App):
                                           4: {'Pos': 1400, 'Discs': 0}}]
         self.spindles_error = [{1: {'Pos': 1500, 'Discs': 0}}]
         self.buffer_drives = [{1: {'Pos': {'Track': 1, 'Arm': 2}}}]
-        self.rom_drives = [{1: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None, 'Device': None},
-                           {2: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
-                           {3: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
-                           {4: {'Type': 'BluRay', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None, 'Device': None}},
-                           {5: {'Type': 'HDDVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None, 'Device': None}]
+        self.rom_drives = [
+            {1: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None,
+             'Device': None},
+            {2: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None,
+                 'Device': None}},
+            {3: {'Type': 'DVD', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None,
+                 'Device': None}},
+            {4: {'Type': 'BluRay', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None,
+                 'Device': None}},
+            {5: {'Type': 'HDDVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None,
+             'Device': None}]
         return root
 
     @wait_for(timeout=5.0)
@@ -334,10 +349,11 @@ class MediaKrakenApp(App):
             pass
         return True
 
+
 if __name__ == '__main__':
     # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Ripper_Pi')
-    log.startLogging(sys.stdout) # for twisted
+    log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

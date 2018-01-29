@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network
 
@@ -69,7 +69,7 @@ def test_mk_network_get_default_ip():
 
 
 # ping modules
-#class pingit(Thread):
+# class pingit(Thread):
 #    def __init__(self, ip):
 #       Thread.__init__(self)
 #       self.ip = ip
@@ -92,6 +92,8 @@ def test_mk_network_get_default_ip():
 
 
 host_list = ('www.yahoo.com', 'www.cnn.com', '8.8.8.8')
+
+
 def test_mk_network_ping_list():
     """
     # ping host list

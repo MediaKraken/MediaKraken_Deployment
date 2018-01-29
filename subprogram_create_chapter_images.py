@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import uuid
 import subprocess
@@ -27,9 +27,8 @@ from common import common_internationalization
 from common import common_logging
 from common import common_metadata
 from common import common_signal
-#from common import common_system
+# from common import common_system
 from concurrent import futures
-
 
 # set before everything else
 total_images_created = 0
@@ -39,7 +38,7 @@ def worker(worker_file_list):
     global total_images_created
     chapter_image_list = {}
     json_id, json_data, json_obj, media_path = worker_file_list
-    #logging.info('value=%s', json_id)
+    # logging.info('value=%s', json_id)
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     # begin image generation
@@ -51,10 +50,11 @@ def worker(worker_file_list):
         # check image save option whether to save this in media folder or metadata folder
         if option_config_json['MetadataImageLocal'] == False:
             image_file_path = os.path.join(common_metadata.com_meta_image_file_path(media_path,
-                'chapter'), (str(uuid.uuid4()) + '.png'))
+                                                                                    'chapter'),
+                                           (str(uuid.uuid4()) + '.png'))
         else:
             image_file_path = os.path.join(os.path.dirname(media_path),
-                'chapters')
+                                           'chapters')
             # have this bool so I don't hit the os looking for path each time
             if first_image == True and not os.path.isdir(image_file_path):
                 os.makedirs(image_file_path)
@@ -73,7 +73,7 @@ def worker(worker_file_list):
         command_list.append('1')
         command_list.append(image_file_path)
         ffmpeg_proc = subprocess.Popen(command_list, shell=False)
-        ffmpeg_proc.wait() # wait for subprocess to finish to not flood with ffmpeg processes
+        ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
         # as the worker might see it as finished if allowed to continue
         chapter_image_list[chapter_data['tags']['title']] = image_file_path
         total_images_created += 1
@@ -95,19 +95,16 @@ def worker(worker_file_list):
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
-
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,
-    'System: Server Create Chapter Start', 'ServerCreateChapterStart', None, None, 'System')
-
+                                 'System: Server Create Chapter Start', 'ServerCreateChapterStart',
+                                 None, None, 'System')
 
 # begin the media match on NULL matches
 file_list = []
@@ -117,7 +114,6 @@ for row_data in db_connection.db_known_media_chapter_scan():
     if row_data['mm_media_ffprobe_json'] is not None:
         file_list.append(row_data)
 
-
 # start processing the files
 if len(file_list) > 0:
     with futures.ThreadPoolExecutor(len(file_list)) as executor:
@@ -125,22 +121,19 @@ if len(file_list) > 0:
         for future in futures:
             logging.info(future.result())
 
-
 # send notications
 if total_images_created > 0:
     db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_images_created)\
+        common_internationalization.com_inter_number_format(total_images_created) \
         + " chapter image(s) generated.", True)
-
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,
-    'System: Server Create Chapter Stop', 'ServerCreateChapterStop', None, None, 'System')
-
+                                 'System: Server Create Chapter Stop', 'ServerCreateChapterStop',
+                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

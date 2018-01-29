@@ -20,12 +20,12 @@
 # they decided to go pay only
 #
 
-#from __future__ import absolute_import, division, print_function, unicode_literals
-#import logging # pylint: disable=W0611
-#import rtsimple as rt
+# from __future__ import absolute_import, division, print_function, unicode_literals
+# import logging # pylint: disable=W0611
+# import rtsimple as rt
 #
 #
-#class CommonMetadataRottenTomatoes(object):
+# class CommonMetadataRottenTomatoes(object):
 #    """
 #    Class for interfacing with rotten tomatoes
 #    """

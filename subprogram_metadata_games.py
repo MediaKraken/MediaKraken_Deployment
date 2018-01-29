@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_internationalization
 from common import common_logging
@@ -113,13 +113,15 @@ if True:
                         if '@name' in json_data['softwarelist']['software']:
                             # TODO check to see if exists....if so, update
                             db_connection.db_meta_game_insert(game_short_name_guid,
-                                json_data['softwarelist']['software']['@name'],
-                                json_data['softwarelist']['software']['@name'],
-                                json_data['softwarelist']['software'])
+                                                              json_data['softwarelist']['software'][
+                                                                  '@name'],
+                                                              json_data['softwarelist']['software'][
+                                                                  '@name'],
+                                                              json_data['softwarelist']['software'])
                         else:
                             for json_game in json_data['softwarelist']['software']:
                                 print('xml: %s', json_game)
-                                #json_game = json.loads(json_game)
+                                # json_game = json.loads(json_game)
                                 # TODO check to see if exists....if so, update
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
@@ -132,8 +134,10 @@ if True:
                         if '@name' in json_data['hashfile']['hash']:
                             # TODO check to see if exists....if so, update
                             db_connection.db_meta_game_insert(game_short_name_guid,
-                                                              json_data['hashfile']['hash']['@name'],
-                                                              json_data['hashfile']['hash']['@name'],
+                                                              json_data['hashfile']['hash'][
+                                                                  '@name'],
+                                                              json_data['hashfile']['hash'][
+                                                                  '@name'],
                                                               json_data['hashfile']['hash'])
                         else:
                             for json_game in json_data['hashfile']['hash']:
@@ -155,12 +159,12 @@ if True:
             common_internationalization.com_inter_number_format(total_software_update)
             + " games(s) metadata updated from MAME hash", True)
 
-
 # update mame game descriptions from history dat
 file_name = ('/mediakraken/emulation/history%s.zip' % common_version.MAME_VERSION)
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        ('https://www.arcade-history.com/dats/history%s.zip' % common_version.MAME_VERSION), file_name)
+        ('https://www.arcade-history.com/dats/history%s.zip' % common_version.MAME_VERSION),
+        file_name)
 if True:
     game_titles = []
     game_desc = ""
@@ -174,16 +178,16 @@ if True:
     history_file = open("/mediakraken/emulation/history.dat", "rb")
     while 1:
         line = history_file.readline().decode("utf-8")
-        #print('line: %s' % line)
+        # print('line: %s' % line)
         if not line:
             break
-        if line[0] == '$' and line[-1:] == ',': # this could be a new system/game item
+        if line[0] == '$' and line[-1:] == ',':  # this could be a new system/game item
             # MAME "system"....generally a PCB game
-            if line.find("$info=") == 0: # goes by position if found
+            if line.find("$info=") == 0:  # goes by position if found
                 system_name = None
                 game_titles = line.split("=", 1)[1].split(",")
             # end of info block for game
-            elif line.find("$end") == 0: # goes by position if found
+            elif line.find("$end") == 0:  # goes by position if found
                 add_to_desc = False
                 for game in game_titles:
                     print('game: %s' % game)
@@ -198,13 +202,15 @@ if True:
                         game_data['gi_game_info_json']['overview'] = game_desc
                         print(game_data['gi_id'])
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
-                            json.dumps(game_data['gi_game_info_json']))
+                                                                  json.dumps(game_data[
+                                                                                 'gi_game_info_json']))
                         total_software_update += 1
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info
-            elif line.find("$bio") == 0: # goes by position if found
-                line = history_file.readline().decode("utf-8") # skip blank line
-                new_title = history_file.readline().decode("utf-8").strip() # grab the "real" game name
+            elif line.find("$bio") == 0:  # goes by position if found
+                line = history_file.readline().decode("utf-8")  # skip blank line
+                new_title = history_file.readline().decode(
+                    "utf-8").strip()  # grab the "real" game name
                 add_to_desc = True
             else:
                 # should be a system/game
@@ -227,7 +233,6 @@ if True:
 
 # commit all changes to db
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

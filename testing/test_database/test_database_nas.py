@@ -16,17 +16,16 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseNas(object):
-
 
     @classmethod
     def setup_class(self):
@@ -34,11 +33,9 @@ class TestDatabaseNas(object):
         self.db_connection.db_open()
         self.new_guid = None
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_nas_count(self):
         """
@@ -47,14 +44,12 @@ class TestDatabaseNas(object):
         self.db_connection.db_rollback()
         self.db_connection.db_nas_count()
 
-
     def test_db_nas_list(self):
         """
         # read nas
         """
         self.db_connection.db_rollback()
         self.db_connection.db_nas_list()
-
 
     @pytest.mark.parametrize(("nas_json"), [
         (json.dumps({'Nas': 234}))])
@@ -65,7 +60,6 @@ class TestDatabaseNas(object):
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_nas_insert(nas_json)
 
-
     def test_db_nas_update(self):
         """
         # update record
@@ -74,14 +68,12 @@ class TestDatabaseNas(object):
         self.db_connection.db_nas_update(self.new_guid, json.dumps({'Nas': 484884}))
         self.db_connection.db_commit()
 
-
     def test_db_nas_read(self):
         """
         # find details by nas
         """
         self.db_connection.db_rollback()
         self.db_connection.db_nas_read(self.new_guid)
-
 
     def test_db_nas_delete(self):
         """

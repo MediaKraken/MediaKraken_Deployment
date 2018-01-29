@@ -25,6 +25,7 @@ class CommonNetworkXboxLive(object):
     """
     Class for interfacing with xbox
     """
+
     def __init__(self, email_address, password):
         xbox.client.authenticate(email_address, password)
 

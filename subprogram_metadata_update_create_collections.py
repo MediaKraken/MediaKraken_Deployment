@@ -18,7 +18,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
 import json
 from common import common_config_ini
@@ -27,24 +27,20 @@ from common import common_logging
 from common import common_metadata_tmdb
 from common import common_signal
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Update_Create_Collections')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Create Collection Start', None,
-    'System: Server Create Collection Start', 'ServerCreateCollectionStart', None, None,
-    'System')
-
+                                 'System: Server Create Collection Start',
+                                 'ServerCreateCollectionStart', None, None,
+                                 'System')
 
 # pull in all metadata with part of collection in metadata
 old_collection_name = ''
@@ -55,23 +51,25 @@ guid_list = []
 first_record = True
 total_collections_downloaded = 0
 for row_data in db_connection.db_media_collection_scan():
-    #mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
-    if old_collection_name != row_data['mm_metadata_json']['Meta']\
+    # mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
+    if old_collection_name != row_data['mm_metadata_json']['Meta'] \
             ['themoviedb']['Meta']['belongs_to_collection']['name']:
         if not first_record:
             db_connection.db_download_insert('themoviedb',
-                json.dumps({'Status': 'FetchCollection',
-                'Name': old_collection_name, 'GUID': guid_list,
-                'Poster': old_poster_path, 'Backdrop': old_backdrop_path,
-                'ProviderMetaID': str(old_id)}))
+                                             json.dumps({'Status': 'FetchCollection',
+                                                         'Name': old_collection_name,
+                                                         'GUID': guid_list,
+                                                         'Poster': old_poster_path,
+                                                         'Backdrop': old_backdrop_path,
+                                                         'ProviderMetaID': str(old_id)}))
             total_collections_downloaded += 1
-        old_collection_name = row_data['mm_metadata_json']['Meta']\
+        old_collection_name = row_data['mm_metadata_json']['Meta'] \
             ['themoviedb']['Meta']['belongs_to_collection']['name']
-        old_poster_path = row_data['mm_metadata_json']['Meta']\
+        old_poster_path = row_data['mm_metadata_json']['Meta'] \
             ['themoviedb']['Meta']['belongs_to_collection']['poster_path']
-        old_backdrop_path = row_data['mm_metadata_json']['Meta']\
+        old_backdrop_path = row_data['mm_metadata_json']['Meta'] \
             ['themoviedb']['Meta']['belongs_to_collection']['backdrop_path']
-        old_id = row_data['mm_metadata_json']['Meta']\
+        old_id = row_data['mm_metadata_json']['Meta'] \
             ['themoviedb']['Meta']['belongs_to_collection']['id']
         guid_list = []
         first_record = False
@@ -79,27 +77,25 @@ for row_data in db_connection.db_media_collection_scan():
 # do last insert/update
 if len(guid_list) > 0:
     db_connection.db_download_insert('themoviedb',
-        json.dumps({'Status': 'FetchCollection',
-        'Name': old_collection_name, 'GUID': guid_list,
-        'Poster': old_poster_path, 'Backdrop': old_backdrop_path,
-        'ProviderMetaID': str(old_id)}))
+                                     json.dumps({'Status': 'FetchCollection',
+                                                 'Name': old_collection_name, 'GUID': guid_list,
+                                                 'Poster': old_poster_path,
+                                                 'Backdrop': old_backdrop_path,
+                                                 'ProviderMetaID': str(old_id)}))
     total_collections_downloaded += 1
-
 
 if total_collections_downloaded > 0:
     db_connection.db_notification_insert(
         common_internationalization.com_inter_number_format(total_collections_downloaded)
         + " collection(s) metadata downloaded.", True)
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Create Collection Stop', None,
-    'System: Server Create Collection Stop', 'ServerCreateCollectionStop', None, None, 'System')
-
+                                 'System: Server Create Collection Stop',
+                                 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

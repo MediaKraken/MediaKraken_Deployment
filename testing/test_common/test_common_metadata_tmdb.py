@@ -16,42 +16,35 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_tmdb
 
 
 class TestCommonMetadataTMDB(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_metadata_tmdb.CommonMetadataTMDB()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
+    # search for movie title and year
+    # def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
 
-# search for movie title and year
-# def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
+    # search by tmdb
+    # def com_tmdb_Metadata_by_ID(self, tmdb_id):
 
+    # search by tmdb
+    # def com_tmdb_Metadata_Cast_by_ID(self, tmdb_id):
 
-# search by tmdb
-# def com_tmdb_Metadata_by_ID(self, tmdb_id):
-
-
-# search by tmdb
-# def com_tmdb_Metadata_Cast_by_ID(self, tmdb_id):
-
-
-# review by tmdb
-# def com_tmdb_Metadata_Review_by_ID(self, tmdb_id):
-
+    # review by tmdb
+    # def com_tmdb_Metadata_Review_by_ID(self, tmdb_id):
 
     # movie changes since date within 24 hours
     def test_com_tmdb_meta_changes_movie(self):
@@ -60,7 +53,6 @@ class TestCommonMetadataTMDB(object):
         """
         self.db_connection.com_tmdb_meta_changes_movie()
 
-
     # tv changes since date within 24 hours
     def test_com_tmdb_meta_changes_tv(self):
         """
@@ -68,14 +60,12 @@ class TestCommonMetadataTMDB(object):
         """
         self.db_connection.com_tmdb_meta_changes_tv()
 
-
     # person changes since date within 24 hours
     def test_com_tmdb_meta_changes_person(self):
         """
         Test function
         """
         self.db_connection.com_tmdb_meta_changes_person()
-
 
 # collection info
 # def com_tmdb_Metadata_Collection_by_ID(self, tmdb_id):

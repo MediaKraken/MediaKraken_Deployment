@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import time
 from kivy.utils import platform
+
 # import the pyserial library for use in rs232c communications
 if platform != 'android':
     import serial
@@ -29,9 +30,9 @@ class CommonSerial(object):
     """
     Class for interfacing via serial devices
     """
+
     def __init__(self):
         self.serial_device = None
-
 
     def com_serial_open_device(self, dev_port='/dev/ttyUSB1', dev_baudrate=9600,
                                dev_parity=serial.PARITY_ODD,
@@ -50,7 +51,6 @@ class CommonSerial(object):
         self.serial_device.open()
         self.serial_device.isOpen()
 
-
     def com_serial_read_device(self):
         """
         Read data from serial device
@@ -61,13 +61,11 @@ class CommonSerial(object):
             read_data += self.serial_device.read(1)
         return read_data
 
-
     def com_serial_close_device(self):
         """
         Close serial device
         """
         self.serial_device.close()
-
 
     def com_serial_write_device(self, message):
         """

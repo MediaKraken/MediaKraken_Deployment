@@ -10,18 +10,16 @@ class ShareAddEditForm(Form):
     """
     for editing the shares
     """
-    #description = TextAreaField('Description', validators=[DataRequired()])
+    # description = TextAreaField('Description', validators=[DataRequired()])
     storage_mount_type = SelectField('Share type',
-        choices=[('unc', 'UNC'), ('smb', 'SMB/CIFS'), ('nfs', 'NFS')])
+                                     choices=[('unc', 'UNC'), ('smb', 'SMB/CIFS'), ('nfs', 'NFS')])
     storage_mount_user = TextField('Share User')
     storage_mount_password = TextField('Share Password')
     storage_mount_server = TextField('Share hostname or IP address')
     storage_mount_path = TextField('Path')
 
-
     def __init__(self, *args, **kwargs):
         super(ShareAddEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(ShareAddEditForm, self).validate()
@@ -50,13 +48,12 @@ class LibraryAddEditForm(Form):
     """
     for editing the library
     """
-    #description = TextAreaField('Description', validators=[DataRequired()])
-    library_path = TextField('Library Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
-
+    # description = TextAreaField('Description', validators=[DataRequired()])
+    library_path = TextField(
+        'Library Path')  # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
     def __init__(self, *args, **kwargs):
         super(LibraryAddEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(LibraryAddEditForm, self).validate()
@@ -69,11 +66,11 @@ class LinkAddEditForm(Form):
     """
     for editing the link
     """
-    link_path = TextField('Link Path') # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
+    link_path = TextField(
+        'Link Path')  # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
     def __init__(self, *args, **kwargs):
         super(LinkAddEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(LinkAddEditForm, self).validate()
@@ -87,14 +84,13 @@ class BackupEditForm(Form):
     for editing backups
     """
     enabled = BooleanField('Enabled')
-    #interval = SelectField('Interval', choices=[('Hours', 'Hours'),\
-    #('Days', 'Days'), ('Weekly', 'Weekly')])
-    #time = DecimalField('Time', places = 2, rounding=ROUND_UP)
 
+    # interval = SelectField('Interval', choices=[('Hours', 'Hours'),\
+    # ('Days', 'Days'), ('Weekly', 'Weekly')])
+    # time = DecimalField('Time', places = 2, rounding=ROUND_UP)
 
     def __init__(self, *args, **kwargs):
         super(BackupEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(BackupEditForm, self).validate()
@@ -109,10 +105,8 @@ class DLNAEditForm(Form):
     """
     enabled = BooleanField('Enabled')
 
-
     def __init__(self, *args, **kwargs):
         super(DLNAEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(DLNAEditForm, self).validate()
@@ -126,20 +120,18 @@ class UserEditForm(Form):
     for editing user
     """
     username = TextField('Username',
-                    validators=[DataRequired(), Length(min=3, max=25)])
+                         validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
-                    validators=[DataRequired(), Email(), Length(min=6, max=40)])
+                      validators=[DataRequired(), Email(), Length(min=6, max=40)])
     password = PasswordField('Password',
-                                validators=[DataRequired(), Length(min=6, max=40)])
+                             validators=[DataRequired(), Length(min=6, max=40)])
     confirm = PasswordField('Verify password',
-                [DataRequired(), EqualTo('password', message='Passwords must match')])
+                            [DataRequired(), EqualTo('password', message='Passwords must match')])
     enabled = BooleanField('Enabled')
     is_admin = BooleanField('Admin')
 
-
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(UserEditForm, self).validate()
@@ -157,24 +149,27 @@ class AdminSettingsForm(Form):
     server_bind_addr = TextField('Bind Addr', validators=[Length(min=7, max=15)])
     server_bind_port = TextField('Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
-        choices=[('Never', 'Never'), ('1 Day', '1 Day'), ('Week', 'Week'), ('Month', 'Month'),
-        ('Quarter', 'Quarter'), ('6 Months', '6 Months'), ('Year', 'Year')])
+                                          choices=[('Never', 'Never'), ('1 Day', '1 Day'),
+                                                   ('Week', 'Week'), ('Month', 'Month'),
+                                                   ('Quarter', 'Quarter'), ('6 Months', '6 Months'),
+                                                   ('Year', 'Year')])
     user_password_lock = SelectField('Lock account after failed attempts',
-        choices=[('Never', 'Never'), ('3', '3'), ('5', '5'), ('10', '10')])
+                                     choices=[('Never', 'Never'), ('3', '3'), ('5', '5'),
+                                              ('10', '10')])
     metadata_download_metadata = BooleanField('Download Metadata')
     metadata_artwork_metadata = BooleanField('Download Artwork')
-    #language = SelectField('Interval', choices=[('Hours', 'Hours'),
-    #('Days', 'Days'), ('Weekly', 'Weekly')])
-    #country = SelectField('Interval', choices=[('Hours', 'Hours'),
-    #('Days', 'Days'), ('Weekly', 'Weekly')])
+    # language = SelectField('Interval', choices=[('Hours', 'Hours'),
+    # ('Days', 'Days'), ('Weekly', 'Weekly')])
+    # country = SelectField('Interval', choices=[('Hours', 'Hours'),
+    # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
     metadata_path = TextField('Metadata Path', validators=[DataRequired(),
                                                            Length(min=1, max=250)])
     metadata_with_media = BooleanField('Metadata with Media')
     metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
     metadata_sub_episode_down = BooleanField('Download TV Subtitle')
-    #meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
-    #('Days', 'Days'), ('Weekly', 'Weekly')])
+    # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
+    # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     metadata_source_down_tvmaze = BooleanField('tvmaze')
     metadata_source_down_tmdb = BooleanField('themoviedb')
@@ -189,12 +184,10 @@ class AdminSettingsForm(Form):
     metadata_source_down_omdb = BooleanField('omdb')
     metadata_source_down_netflixroulette = BooleanField('netflixroulette')
     metadata_sync_path = TextField('Metadata Sync Path',
-        validators=[DataRequired(), Length(min=1, max=250)])
-
+                                   validators=[DataRequired(), Length(min=1, max=250)])
 
     def __init__(self, *args, **kwargs):
         super(AdminSettingsForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(AdminSettingsForm, self).validate()
@@ -211,14 +204,12 @@ class CronEditForm(Form):
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
-        ('Days', 'Days'), ('Weekly', 'Weekly')])
-    time = DecimalField('Time', places = 2, rounding=ROUND_UP)
+                                                ('Days', 'Days'), ('Weekly', 'Weekly')])
+    time = DecimalField('Time', places=2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
-
 
     def __init__(self, *args, **kwargs):
         super(CronEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(CronEditForm, self).validate()
@@ -235,10 +226,8 @@ class ChromecastEditForm(Form):
     ipaddr = TextField('IP Address', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
 
-
     def __init__(self, *args, **kwargs):
         super(ChromecastEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(ChromecastEditForm, self).validate()
@@ -255,10 +244,8 @@ class TVTunerEditForm(Form):
     ipaddr = TextField('IP Address', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
 
-
     def __init__(self, *args, **kwargs):
         super(TVTunerEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(TVTunerEditForm, self).validate()
@@ -275,14 +262,12 @@ class TaskEditForm(Form):
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
-        ('Days', 'Days'), ('Weekly', 'Weekly')])
-    time = DecimalField('Time', places = 2, rounding=ROUND_UP)
+                                                ('Days', 'Days'), ('Weekly', 'Weekly')])
+    time = DecimalField('Time', places=2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
-
 
     def __init__(self, *args, **kwargs):
         super(TaskEditForm, self).__init__(*args, **kwargs)
-
 
     def validate(self):
         initial_validation = super(TaskEditForm, self).validate()

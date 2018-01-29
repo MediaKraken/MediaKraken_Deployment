@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_emby_network
 
@@ -30,7 +30,6 @@ def test_common_network_emby_find_server():
     Test function
     """
     common_emby_network.com_network_emby_find_server()
-
 
 # create dictionary containing
 # Name = Id, PrimaryImageTag (or NULL)
@@ -83,7 +82,7 @@ def test_common_network_emby_find_server():
 # download images
 # https://github.com/MediaBrowser/Emby/wiki/Images
 # def common_network_Emby_Image_Download():
-    #for users, the url's are /Users/{Id}/Images/{Type} and /Users/{Id}/Images/{Type}/{Index}. For media items, it's /Items/{Id}/Images/{Type}, as well as /Items/{Id}/Images/{Type}/{Index}
+# for users, the url's are /Users/{Id}/Images/{Type} and /Users/{Id}/Images/{Type}/{Index}. For media items, it's /Items/{Id}/Images/{Type}, as well as /Items/{Id}/Images/{Type}/{Index}
 # TODO types
 # TODO percentage complete
 # TODO played or not image

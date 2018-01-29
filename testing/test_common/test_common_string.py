@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_string
 
@@ -58,7 +58,6 @@ def test_com_string_password_test(password_text, expected_result):
     # test password
     """
     assert common_string.com_string_password_test(password_text) == expected_result
-
 
 # def ip_ascii_to_int(ip):
 

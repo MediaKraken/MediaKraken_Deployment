@@ -17,19 +17,17 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import json
 from common import common_config_ini
 from common import common_metadata_imvdb
 
-
 option_config_json, db_connection = common_config_ini.com_config_read()
-
 
 # verify imvdb key exists
 if option_config_json['API']['imvdb'] is not None:
-    IMVDB_CONNECTION\
+    IMVDB_CONNECTION \
         = common_metadata_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
 else:
     IMVDB_CONNECTION = None
@@ -56,7 +54,7 @@ def imvdb_lookup(db_connection, file_name):
     song_name = song_name.replace(' ', '-')
     logging.info('mv title: %s, %s', band_name, song_name)
     # if same as last, return last id and save lookup
-    if band_name == imvdb_lookup.metadata_last_band\
+    if band_name == imvdb_lookup.metadata_last_band \
             and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
     metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
@@ -72,8 +70,10 @@ def imvdb_lookup(db_connection, file_name):
                 logging.info("vid data: %s", video_data)
                 if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                     db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
-                        video_data['song_slug'], json.dumps({'imvdb': str(video_data['id'])}),
-                        json.dumps(video_data), json.dumps({'Images': {'imvdb': None}}))
+                                                          video_data['song_slug'], json.dumps(
+                            {'imvdb': str(video_data['id'])}),
+                                                          json.dumps(video_data),
+                                                          json.dumps({'Images': {'imvdb': None}}))
             # try after inserting new records
             metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
             if metadata_uuid == []:

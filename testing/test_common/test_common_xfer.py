@@ -16,13 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_xfer
-
 
 # def getallbytes(con, bytesLeft):
 
@@ -36,4 +35,3 @@ from common import common_xfer
 # class FileReceiverThread(threading.Thread):
 
 #    def run(self):
-

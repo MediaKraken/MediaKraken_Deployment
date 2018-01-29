@@ -16,13 +16,13 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-#from kivy.lang import Builder
+import logging  # pylint: disable=W0611
+# from kivy.lang import Builder
 from kivy.clock import Clock
 from plyer import accelerometer
 from plyer import gps
+
 VIBRATION_PATTERN = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 
@@ -48,9 +48,9 @@ def mk_get_acceleration(dt):
     """
     val = accelerometer.acceleration[:3]
     if not val == (None, None, None):
-        #ids.x_label.text = "X: " + str(val[0])
-        #ids.y_label.text = "Y: " + str(val[1])
-        #ids.z_label.text = "Z: " + str(val[2])
+        # ids.x_label.text = "X: " + str(val[0])
+        # ids.y_label.text = "Y: " + str(val[1])
+        # ids.z_label.text = "Z: " + str(val[2])
         return val
 
 

@@ -21,18 +21,20 @@ import logging  # pylint: disable=W0611
 import os
 from string import ascii_lowercase
 
-
 trailer_dir = [
-             'trailer',
-             'behind',
-             'clip',
-             'carpool',
-             'featurette',
-             ]
+    'trailer',
+    'behind',
+    'clip',
+    'carpool',
+    'featurette',
+]
 
 
 def build_trailer_dirs():
     for trailer_info in trailer_dir:
-        os.mkdir(os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info))
+        os.mkdir(
+            os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info))
         for i in ascii_lowercase:
-            os.mkdir(os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info, i))
+            os.mkdir(
+                os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info,
+                             i))

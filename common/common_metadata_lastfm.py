@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_network
 from lastfm import lfm
 
@@ -26,5 +26,6 @@ class CommonMetadataLastFM(object):
     """
     Class for interfacing with LastFM
     """
+
     def __init__(self, option_config_json):
         self.app = lfm.App(API_KEY, SECRET)

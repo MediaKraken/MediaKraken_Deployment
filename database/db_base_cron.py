@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import datetime
 import uuid
 
@@ -52,25 +52,31 @@ def db_cron_list(self, enabled_only=False, offset=None, records=None):
     if offset is None:
         if not enabled_only:
             self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path'
-                ' from mm_cron order by mm_cron_name')
+                                   ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                                   ' mm_cron_file_path'
+                                   ' from mm_cron order by mm_cron_name')
         else:
             self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path'
-                ' from mm_cron where mm_cron_enabled = true order by mm_cron_name')
+                                   ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                                   ' mm_cron_file_path'
+                                   ' from mm_cron where mm_cron_enabled = true'
+                                   ' order by mm_cron_name')
     else:
         if not enabled_only:
             self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path'
-                ' from mm_cron where mm_cron_guid in (select mm_cron_guid from mm_cron'
-                ' order by mm_cron_name offset %s limit %s) order by mm_cron_name',
-                (offset, records))
+                                   ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                                   ' mm_cron_file_path from mm_cron where mm_cron_guid'
+                                   ' in (select mm_cron_guid from mm_cron'
+                                   ' order by mm_cron_name offset %s limit %s)'
+                                   ' order by mm_cron_name', (offset, records))
         else:
             self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path'
-                ' from mm_cron where mm_cron_guid in (select mm_cron_guid from mm_cron'
-                ' where mm_cron_enabled = true order by mm_cron_name offset %s limit %s)'
-                ' order by mm_cron_name', (offset, records))
+                                   ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                                   ' mm_cron_file_path from mm_cron where mm_cron_guid'
+                                   ' in (select mm_cron_guid from mm_cron'
+                                   ' where mm_cron_enabled = true'
+                                   ' order by mm_cron_name offset %s limit %s)'
+                                   ' order by mm_cron_name', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -87,7 +93,7 @@ def db_cron_delete(self, cron_uuid):
     Delete cron job
     """
     self.db_cursor.execute('delete from mm_cron where mm_cron_guid = %s',
-        (cron_uuid,))
+                           (cron_uuid,))
 
 
 def db_cron_info(self, cron_uuid):

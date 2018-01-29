@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from twilio.rest import Client
 
 
@@ -25,6 +25,7 @@ class CommonNetworkTwilio(object):
     """
     Class for interfacing with twilio
     """
+
     def __init__(self, account, token):
         self.twilio_inst = Client(account, token)
 

@@ -17,24 +17,26 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 
 class CommonNetworkProxMox(object):
     """
     Class for interfacing via proxmox
     """
+
     def __init__(self, node_addr, node_user, node_password):
         self.httpheaders = {'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'}
+                            'Content-Type': 'application/x-www-form-urlencoded'}
         self.full_url = ('https://%s:8006/api2/json/' % node_addr)
         api_response = requests.post(self.full_url + 'access/ticket', verify=False,
-            data={'username': node_user, 'password': node_password}).json()
+                                     data={'username': node_user, 'password': node_password}).json()
         self.prox_ticket = {'PVEAuthCookie': api_response['data']['ticket']}
         self.httpheaders['CSRFPreventionToken'] = str(api_response['data']['CSRFPreventionToken'])
-
 
     def com_net_prox_api_call(self, request_type, api_call_type, post_data=None):
         """
@@ -62,36 +64,29 @@ class CommonNetworkProxMox(object):
     # Access/domains API
     ###
 
-
     ###
     # Access/groups API
     ###
-
 
     ###
     # Access/roles API
     ###
 
-
     ###
     # Access/users API
     ###
-
 
     ###
     # Access/acl API
     ###
 
-
     ###
     # Access/password API
     ###
 
-
     ###
     # Access/ticket API
     ###
-
 
     ###
     # Cluster API
@@ -102,7 +97,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster')
 
-
     ###
     # Cluster/backup API
     ###
@@ -112,13 +106,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/backup')
 
-
     def com_net_prox_cluster_backup_create(self, post_data_json):
         """
         Create new vzdump backup job.
         """
         return self.com_net_prox_api_call('post', 'cluster/backup', post_data_json)
-
 
     def com_net_prox_cluster_backup_conf(self, backup_id):
         """
@@ -126,20 +118,17 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/backup/%s' % backup_id)
 
-
     def com_net_prox_cluster_backup_update(self, backup_id, post_data_json):
         """
         Update vzdump backup job definition.
         """
         return self.com_net_prox_api_call('get', 'cluster/backup/%s' % backup_id, post_data_json)
 
-
     def com_net_prox_cluster_backup_delete(self, backup_id):
         """
         Delete vzdump backup job definition.
         """
         return self.com_net_prox_api_call('delete', 'cluster/backup/%s' % backup_id)
-
 
     ###
     # Cluster/firewall API
@@ -150,7 +139,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/firewall')
 
-
     ###
     # Cluster/ha API
     ###
@@ -160,20 +148,17 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/ha')
 
-
     def com_net_prox_cluster_ha_groups(self):
         """
         Get HA groups.
         """
         return self.com_net_prox_api_call('get', 'cluster/ha/groups')
 
-
     def com_net_prox_cluster_ha_group_create(self, post_data_json):
         """
         Create a new HA group.
         """
         return self.com_net_prox_api_call('put', 'cluster/ha/groups', post_data_json)
-
 
     ###
     # Cluster/log API
@@ -184,7 +169,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/log')
 
-
     ###
     # Cluster/nextid API
     ###
@@ -193,7 +177,6 @@ class CommonNetworkProxMox(object):
         Get next free VMID. If you pass an VMID it will raise an error if the ID is already used.
         """
         return self.com_net_prox_api_call('get', 'cluster/nextid')
-
 
     ###
     # Cluster/options API
@@ -204,13 +187,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/options')
 
-
     def com_net_prox_cluster_options_update(self, post_data_json):
         """
         Set datacenter options.
         """
         return self.com_net_prox_api_call('put', 'cluster/options', post_data_json)
-
 
     ###
     # Cluster/resources API
@@ -221,7 +202,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/resources')
 
-
     ###
     # Cluster/status API
     ###
@@ -230,7 +210,6 @@ class CommonNetworkProxMox(object):
         Get the status of the cluster
         """
         return self.com_net_prox_api_call('get', 'cluster/status')
-
 
     ###
     # Cluster/tasks API
@@ -241,31 +220,26 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'cluster/tasks')
 
-
     ###
     # Nodes
     ###
-    def com_net_prox_node_index(self,):
+    def com_net_prox_node_index(self, ):
         """
         Cluster node index.
         """
         return self.com_net_prox_api_call('get', 'nodes')
 
-
     ###
     # Nodes/apt
     ###
-
 
     ###
     # Nodes/ceph
     ###
 
-
     ###
     # Nodes/firewall
     ###
-
 
     ###
     # Nodes/lxc
@@ -276,7 +250,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/lxc' % node_name)
 
-
     def com_net_prox_node_lxc_create(self, node_name, host_name, memory_size,
                                      template_name, storage_id, os_type):
         """
@@ -284,57 +257,51 @@ class CommonNetworkProxMox(object):
         """
         post_data = {'vmid': self.com_net_prox_cluster_nextid()['data'],
                      'ostemplate': template_name}
-                      # 'hostname': host_name,
-                     # 'storage': storage_id,
-                     # 'cpulimit': 8,
-                     # 'memory': memory_size, 'ostype': os_type,
-                     # 'password': 'metaman',
-                     # #'net': 'name=eth0'}
-                     # 'rootfs': '32'}
-                     # #'rootfs': 'vm-118-disk-1a, size=32G'}
+        # 'hostname': host_name,
+        # 'storage': storage_id,
+        # 'cpulimit': 8,
+        # 'memory': memory_size, 'ostype': os_type,
+        # 'password': 'metaman',
+        # #'net': 'name=eth0'}
+        # 'rootfs': '32'}
+        # #'rootfs': 'vm-118-disk-1a, size=32G'}
         print('post %s' % post_data)
         return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name, post_data)
-
 
     def com_net_prox_node_lxc_status(self, node_name, vm_id):
         """
         Get a status of the lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/current'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/current' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_lxc_start(self, node_name, vm_id):
         """
         Start lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/start'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/start' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_lxc_stop(self, node_name, vm_id):
         """
         Stop lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/stop'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/stop' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_lxc_snaps(self, node_name, vm_id):
         """
         List snaps for lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/snapshot'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/snapshot' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_lxc_clone(self, node_name, vm_id, post_data_json):
         """
        Create clone for lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/clone'\
-            % (node_name, vm_id), post_data_json)
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/clone' \
+                                          % (node_name, vm_id), post_data_json)
 
     ###
     # Nodes/network
@@ -345,13 +312,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/network' % node_name)
 
-
     def com_net_prox_net_create(self, node_name, post_data_json):
         """
         List available networks
         """
         return self.com_net_prox_api_call('put', 'nodes/%s/network' % node_name, post_data_json)
-
 
     def com_net_prox_net_delete(self, node_name, post_data_json):
         """
@@ -359,28 +324,24 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('delete', 'nodes/%s/network' % node_name, post_data_json)
 
-
     def com_net_prox_net_nic_conf(self, node_name, iface):
         """
         Read network device configuration
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' % (node_name, iface))
 
-
     def com_net_prox_net_nic_conf_update(self, node_name, iface, post_data_json):
         """
         Update network device configuration
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s'\
-            % (node_name, iface), post_data_json)
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' \
+                                          % (node_name, iface), post_data_json)
 
     def com_net_prox_net_nic_conf_delete(self, node_name, iface):
         """
         Delete network device configuration
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' % (node_name, iface))
-
 
     ###
     # Nodes/qemu
@@ -391,46 +352,40 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/qemu' % node_name)
 
-
     def com_net_prox_node_qemu_status(self, node_name, vm_id):
         """
         Get a status of the qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/current'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/current' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_qemu_start(self, node_name, vm_id):
         """
         Start qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/start'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/start' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_qemu_stop(self, node_name, vm_id):
         """
         Stop qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/stop'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/stop' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_qemu_snaps(self, node_name, vm_id):
         """
         List snaps for qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/snapshot'\
-            % (node_name, vm_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/snapshot' \
+                                          % (node_name, vm_id))
 
     def com_net_prox_node_qemu_clone(self, node_name, vm_id, post_data_json):
         """
        Create clone for qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/clone'\
-            % (node_name, vm_id), post_data_json)
-
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/clone' \
+                                          % (node_name, vm_id), post_data_json)
 
     ###
     # Nodes/scan
@@ -441,22 +396,19 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan' % node_name)
 
-
     def com_net_prox_node_scan_glusterfs(self, node_name, post_data_json):
         """
         Scan remote GlusterFS server.
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/glusterfs' % node_name,
-            post_data_json)
-
+                                          post_data_json)
 
     def com_net_prox_node_scan_iscsi(self, node_name, post_data_json):
         """
         Scan remote iSCSI server.
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/iscsi' % node_name,
-            post_data_json)
-
+                                          post_data_json)
 
     def com_net_prox_node_scan_lvm(self, node_name):
         """
@@ -464,22 +416,19 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvm' % node_name)
 
-
     def com_net_prox_node_scan_lvmthin(self, node_name, post_data_json):
         """
         List local LVM Thin Pools.
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/lvmthin' % node_name,
-            post_data_json)
-
+                                          post_data_json)
 
     def com_net_prox_node_scan_nfs(self, node_name, post_data_json):
         """
         Scan remote NFS server.
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/nfs' % node_name,
-            post_data_json)
-
+                                          post_data_json)
 
     def com_net_prox_node_scan_usb(self, node_name):
         """
@@ -487,13 +436,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/usb' % node_name)
 
-
     def com_net_prox_node_scan_zfs(self, node_name):
         """
         Scan zfs pool list on local node.
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/scan/zfs' % node_name)
-
 
     ###
     # Nodes/services
@@ -504,53 +451,46 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/services' % node_name)
 
-
     def com_net_prox_node_services_ndx(self, node_name, service_id):
         """
         Directory index
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/services/%s' % (node_name, service_id))
 
-
     def com_net_prox_node_service_reload(self, node_name, service_id):
         """
         Reload service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/relaod'\
-            % (node_name, service_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/relaod' \
+                                          % (node_name, service_id))
 
     def com_net_prox_node_service_restart(self, node_name, service_id):
         """
         Restart service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/restart'\
-            % (node_name, service_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/restart' \
+                                          % (node_name, service_id))
 
     def com_net_prox_node_service_start(self, node_name, service_id):
         """
         Start service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/start'\
-            % (node_name, service_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/start' \
+                                          % (node_name, service_id))
 
     def com_net_prox_node_service_state(self, node_name, service_id):
         """
         Service state.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/state'\
-            % (node_name, service_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/state' \
+                                          % (node_name, service_id))
 
     def com_net_prox_node_service_stop(self, node_name, service_id):
         """
         Stop service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/stop'\
-            % (node_name, service_id))
-
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/stop' \
+                                          % (node_name, service_id))
 
     ###
     # Nodes/storage
@@ -561,31 +501,25 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/storage' % node_name, post_data_json)
 
-
     ###
     # Nodes/tasks
     ###
-
 
     ###
     # Nodes/aplinfo
     ###
 
-
     ###
     # Nodes/dns
     ###
-
 
     ###
     # Nodes/execute
     ###
 
-
     ###
     # Nodes/migreateall
     ###
-
 
     ###
     # Nodes/netstat
@@ -596,7 +530,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/netstat' % node_name)
 
-
     ###
     # Nodes/report
     ###
@@ -606,41 +539,33 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/report' % node_name)
 
-
     ###
     # Nodes/rrd
     ###
-
 
     ###
     # Nodes/rrddata
     ###
 
-
     ###
     # Nodes/spiceshell
     ###
-
 
     ###
     # Nodes/startall
     ###
 
-
     ###
     # Nodes/status
     ###
-
 
     ###
     # Nodes/stopall
     ###
 
-
     ###
     # Nodes/subscription
     ###
-
 
     ###
     # Nodes/syslog
@@ -651,7 +576,6 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/syslog' % node_name)
 
-
     ###
     # Nodes/time
     ###
@@ -661,26 +585,21 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'nodes/%s/time' % node_name)
 
-
     ###
     # Nodes/version
     ###
-
 
     ###
     # Nodes/vncshell
     ###
 
-
     ###
     # Nodes/vncwebsocket
     ###
 
-
     ###
     # Nodes/vzdump
     ###
-
 
     ###
     # Pools
@@ -691,13 +610,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'pools')
 
-
     def com_net_prox_pool_create(self, post_data_json):
         """
         Create pool
         """
         return self.com_net_prox_api_call('post', 'pools', post_data_json)
-
 
     def com_net_prox_pool_update(self, pool_name, post_data_json):
         """
@@ -705,13 +622,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('post', 'pools/%s' % pool_name, post_data_json)
 
-
     def com_net_prox_pool_delete(self, pool_name):
         """
         Delete pool
         """
         return self.com_net_prox_api_call('delete', 'pools/%s' % pool_name)
-
 
     ###
     # Storage
@@ -722,13 +637,11 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'storage')
 
-
     def com_net_prox_storage_create(self, post_data_json):
         """
         Create a new storage.
         """
         return self.com_net_prox_api_call('post', 'storage', post_data_json)
-
 
     def com_net_prox_storage_config(self, storage_name):
         """
@@ -736,20 +649,17 @@ class CommonNetworkProxMox(object):
         """
         return self.com_net_prox_api_call('get', 'storage/%s' % storage_name)
 
-
     def com_net_prox_storage_config_update(self, storage_name, post_data_json):
         """
         Read storage configuration.
         """
         return self.com_net_prox_api_call('get', 'storage/%s' % storage_name, post_data_json)
 
-
     def com_net_prox_storage_config_delete(self, storage_name):
         """
         Delete storage configuration.
         """
         return self.com_net_prox_api_call('delete', 'storage/%s' % storage_name)
-
 
     ###
     # Version

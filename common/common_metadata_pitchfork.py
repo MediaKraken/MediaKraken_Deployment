@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import pitchfork
 
 
@@ -25,9 +25,9 @@ class CommonMetadataPitchfork(object):
     """
     Class for interfacing with pitchfork
     """
+
     def __init__(self):
         self.pitchfork_api = None
-
 
     def com_pfork_search(self, artist_name, album_title):
         """
@@ -35,13 +35,11 @@ class CommonMetadataPitchfork(object):
         """
         self.pitchfork_api = pitchfork.search(artist_name, album_title)
 
-
     def com_pfork_album_title(self):
         """
         Album title
         """
         return self.pitchfork_api.album()
-
 
     def com_pfork_album_label(self):
         """
@@ -49,20 +47,17 @@ class CommonMetadataPitchfork(object):
         """
         return self.pitchfork_api.label()
 
-
     def com_pfork_album_review(self):
         """
         Album review
         """
         return self.pitchfork_api.editorial()
 
-
     def com_pfork_album_cover_art_link(self):
         """
         Get album coverart link
         """
         return self.pitchfork_api.cover()
-
 
     def com_pfork_album_review_score(self):
         """

@@ -14,6 +14,7 @@ import struct
 BROADCAST_IP = '255.255.255.255'
 DEFAULT_PORT = 9
 
+
 def create_magic_packet(macaddress):
     """
     Create a magic packet which can be used for wake on lan using the

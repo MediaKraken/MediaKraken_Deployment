@@ -16,44 +16,37 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataMusicVideo(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     # query to see if song is in local DB
     # def db_meta_music_video_lookup(self, artist_name, song_title):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # def db_meta_music_video_add(self, artist_name, artist_song, id_json, data_json, image_json):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # def db_meta_music_video_detail_uuid(self, item_guid):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # def db_meta_music_video_count(self, imvdb_ID=None):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),

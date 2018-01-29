@@ -17,13 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import time
 from common import common_config_ini
 from common import common_logging
 from common import common_network
 from common import common_signal
-
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -37,9 +36,9 @@ def main():
             common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'],
                                                      row_data['mdq_image_download_json']['local'])
             thread_db.db_download_image_delete(row_data['mdq_image_id'])
-            #thread_db.db_commit() - commit done in delete function above
+            # thread_db.db_commit() - commit done in delete function above
         time.sleep(1)
-#        break # TODO for now testing.......
+    #        break # TODO for now testing.......
     thread_db.db_close()
 
 

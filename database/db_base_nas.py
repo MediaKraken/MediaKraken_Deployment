@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 
 
@@ -43,7 +43,7 @@ def db_nas_insert(self, nas_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_nas (mm_nas_id, mm_nas_json) values (%s,%s)',
-        (new_guid, nas_json))
+                           (new_guid, nas_json))
     self.db_commit()
     return new_guid
 
@@ -53,7 +53,7 @@ def db_nas_update(self, guid, nas_json):
     # update record
     """
     self.db_cursor.execute('update mm_nas set mm_nas_json = %s where mm_nas_id = %s',
-        (nas_json, guid))
+                           (nas_json, guid))
     self.db_commit()
 
 

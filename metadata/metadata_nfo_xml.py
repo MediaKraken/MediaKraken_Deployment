@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 from common import common_file
 from common import common_file_extentions
@@ -30,7 +30,7 @@ def nfo_xml_file(media_file_path):
     """
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
-    try: # pull the "real" extention
+    try:  # pull the "real" extention
         ext_check = media_file_path[-4:].lower().split(".")[-1]
     except:
         ext_check = None
@@ -41,17 +41,17 @@ def nfo_xml_file(media_file_path):
     else:
         nfo_file_check = media_file_path.rsplit('.', 1)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
-    if os.path.isfile(nfo_file_check): # check for nfo
+    if os.path.isfile(nfo_file_check):  # check for nfo
         logging.info('nfo file found: %s', nfo_file_check)
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:
         nfo_data = None
         # only check for xml if nfo doesn't exist
-        if os.path.isfile(xml_file_name): # check for xml
+        if os.path.isfile(xml_file_name):  # check for xml
             logging.info('xml file found: %s', xml_file_name)
             xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),
-                'movie.xml')):
+                                         'movie.xml')):
             logging.info('movie xml file found: %s', xml_file_name)
             xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
                 os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
@@ -69,7 +69,7 @@ def nfo_xml_file_tv(media_file_path):
         nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
     else:
         nfo_file_check = media_file_path.rsplit('\\', 1)[0] + 'tvinfo.nfo'
-    if os.path.isfile(nfo_file_check): # check for nfo
+    if os.path.isfile(nfo_file_check):  # check for nfo
         logging.info('nfo tv file found: %s', nfo_file_check)
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:
@@ -86,36 +86,36 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
     rt_id = None
     # load both fields for more data in media_id_json on db
     if nfo_data is not None:
-        try: # not all will have imdb
+        try:  # not all will have imdb
             imdb_id = nfo_data['movie']['imdbid']
             if len(imdb_id) == 0:
                 imdb_id = None
         except:
             pass
-        try: # not all nfo's have the movie/tmdb
+        try:  # not all nfo's have the movie/tmdb
             tmdb_id = nfo_data['movie']['tmdbid']
             if len(tmdb_id) == 0:
                 tmdb_id = None
         except:
             pass
         # TODO RT
-        try: # not all nfo's have the rt
+        try:  # not all nfo's have the rt
             rt_id = nfo_data['movie']['fakert']
             if len(rt_id) == 0:
                 rt_id = None
         except:
             pass
     if xml_data is not None:
-        if 'movie' in xml_data: # standard nfo/xml file
+        if 'movie' in xml_data:  # standard nfo/xml file
             if imdb_id is None:
-                try: # not all xmls's will have the imdb
+                try:  # not all xmls's will have the imdb
                     imdb_id = xml_data['movie']['imdbid']
                     if len(imdb_id) == 0:
                         imdb_id = None
                 except:
                     pass
             if tmdb_id is None:
-                try: # not all xml's have the movie/tmdb
+                try:  # not all xml's have the movie/tmdb
                     tmdb_id = xml_data['movie']['tmdbid']
                     if len(tmdb_id) == 0:
                         tmdb_id = None
@@ -123,22 +123,22 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                     pass
             # TODO RT
             if rt_id is None:
-                try: # not all xml's have the rt
+                try:  # not all xml's have the rt
                     rt_id = xml_data['movie']['fakert']
                     if len(rt_id) == 0:
                         rt_id = None
                 except:
                     pass
-        else: # movie.xml
+        else:  # movie.xml
             if imdb_id is None:
-                try: # not all xmls's will have the imdb
+                try:  # not all xmls's will have the imdb
                     imdb_id = xml_data['Title']['IMDB']
                     if len(imdb_id) == 0:
                         imdb_id = None
                 except:
                     pass
             if tmdb_id is None:
-                try: # not all xml's have the movie/tmdb
+                try:  # not all xml's have the movie/tmdb
                     tmdb_id = xml_data['Title']['TMDbId']
                     if len(tmdb_id) == 0:
                         tmdb_id = None
@@ -146,7 +146,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                     pass
             # TODO RT
             if rt_id is None:
-                try: # not all xml's have the rt
+                try:  # not all xml's have the rt
                     rt_id = xml_data['Title']['RottenTomatoesId']
                     if len(rt_id) == 0:
                         rt_id = None
@@ -177,7 +177,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
                 imdb_id = None
         except:
             pass
-    # TODO RT
+        # TODO RT
         try:
             rt_id = nfo_data['episodedetails']['fakert']
             if len(rt_id) == 0:
@@ -197,7 +197,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
                 imdb_id = None
         except:
             pass
-    # TODO RT
+        # TODO RT
         try:
             rt_id = xml_data['episodedetails']['fakert']
             if len(rt_id) == 0:

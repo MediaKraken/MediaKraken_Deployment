@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseCron(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_cron_list_count(self):
         """
@@ -45,7 +42,6 @@ class TestDatabaseCron(object):
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list_count()
 
-
     def test_db_cron_list_count_false(self):
         """
         Test function
@@ -53,14 +49,12 @@ class TestDatabaseCron(object):
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list_count(False)
 
-
     def test_db_cron_list_count_true(self):
         """
         Test function
         """
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list_count(True)
-
 
     @pytest.mark.parametrize(("enabled_only", "offset", "records"), [
         (False, None, None),
@@ -75,7 +69,6 @@ class TestDatabaseCron(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_cron_list(enabled_only, offset, records)
-
 
     @pytest.mark.parametrize(("cron_type"), [
         ('Game Audit'),

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import os
 
@@ -40,13 +40,13 @@ def com_net_share_mount(share_list):
             mount_command.append('nfs')
             if share['mm_media_share_user'] != 'guest':
                 mount_command.append('-o')
-                mount_command.append('uid=1000') # gid=1000
+                mount_command.append('uid=1000')  # gid=1000
             mount_command.append(share['mm_media_share_server']
                                  + ':/' + share['mm_media_share_path'])
             mount_command.append('./mnt/%s' % share['mm_media_share_guid'])
         else:
             # unc/smb
-#            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
+            #            mount -t cifs //<host>/<path> /<localpath> -o user=<user>,password=<user>
             mount_command.append('cifs')
             mount_command.append('//' + share['mm_media_share_server'] + '/'
                                  + share['mm_media_share_path'])

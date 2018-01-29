@@ -17,19 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_logging
 from common import common_network_ssh
 
-
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Task_ZFS_Check')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
 
 # loop through zfs host list and validate
 for zfs_host in option_config_json['zfs']['host']:
@@ -41,10 +38,8 @@ for zfs_host in option_config_json['zfs']['host']:
     # TODO and send notification
     ssh_instance.com_net_ssh_close()
 
-
 # commit all changes
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

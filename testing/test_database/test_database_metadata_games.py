@@ -16,32 +16,28 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataGames(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     # return game system data
     # def db_meta_game_system_by_guid(self, guid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     def test_db_meta_game_system_list_count(self):
         """
@@ -49,7 +45,6 @@ class TestDatabaseMetadataGames(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_game_system_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -62,14 +57,12 @@ class TestDatabaseMetadataGames(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_game_system_list(offset, records)
 
-
     def test_db_meta_game_list_count(self):
         """
         # return list of games count
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_game_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -82,27 +75,26 @@ class TestDatabaseMetadataGames(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_game_list(offset, records)
 
-
     # return game data
     # def db_meta_game_by_guid(self, guid):
 #        self.db_connection.db_rollback()
 
 
-    # game list by system count
-    # def db_meta_game_by_system_count(self, guid):
+# game list by system count
+# def db_meta_game_by_system_count(self, guid):
 #        self.db_connection.db_rollback()
 
 
-    # game list by system count
-    # def db_meta_game_by_system(self, guid, offset=None, records=None):
+# game list by system count
+# def db_meta_game_by_system(self, guid, offset=None, records=None):
 #        self.db_connection.db_rollback()
 
 
-    # game by sha1
-    # def db_meta_game_by_sha1(self, sha1_hash):
+# game by sha1
+# def db_meta_game_by_sha1(self, sha1_hash):
 #        self.db_connection.db_rollback()
 
 
-    # game by name and system short name
-    # def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
+# game by name and system short name
+# def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
 #        self.db_connection.db_rollback()

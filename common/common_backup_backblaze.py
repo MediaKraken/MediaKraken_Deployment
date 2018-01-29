@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from .backblazeb2 import BackBlazeB2
 
 
@@ -25,9 +25,9 @@ class CommonBackupBackblaze(object):
     """
     Class for interfacing with backblaze
     """
+
     def __init__(self, account_id, app_key):
         self.b2_blaze = BackBlazeB2(account_id, app_key)
-
 
     def com_backblaze_bucket_list(self):
         """
@@ -35,14 +35,12 @@ class CommonBackupBackblaze(object):
         """
         return self.b2_blaze.list_buckets()
 
-
     def com_backblaze_bucket_create(self, bucket_name):
         """
         Create specified bucket name
         """
         response = self.b2_blaze.create_bucket(bucket_name, bucket_type='allPrivate')
         logging.info("b2 create: %s", response)
-
 
     def com_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
         """
@@ -53,7 +51,6 @@ class CommonBackupBackblaze(object):
         else:
             self.b2_blaze.upload_file(file_name, bucket_name=bucket_name, password=file_password)
 
-
     def com_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
         """
         Upload entire directory into specified bucket
@@ -62,8 +59,7 @@ class CommonBackupBackblaze(object):
             self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
         else:
             self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name,
-                    multithread=True, password=dir_password)
-
+                                           multithread=True, password=dir_password)
 
     def com_backblaze_download_file(self, file_name, local_file_name, file_password):
         """
@@ -73,5 +69,5 @@ class CommonBackupBackblaze(object):
             response = self.b2_blaze.download_file_by_name(file_name, local_file_name)
         else:
             response = self.b2_blaze.download_file_by_name(file_name, local_file_name,
-                    password=file_password)
+                                                           password=file_password)
         logging.info("b2 down: %s", response)

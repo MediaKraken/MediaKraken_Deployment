@@ -3,14 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import uuid
 import pygal
 import json
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
+    url_for, redirect, session, abort
 from flask_login import login_required
 from flask_paginate import Pagination
+
 blueprint = Blueprint("admins_link", __name__, url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
@@ -24,7 +26,6 @@ from common import common_internationalization
 from common import common_pagination
 from common import common_version
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -45,6 +46,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -52,6 +54,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -70,7 +73,7 @@ def admin_server_link_server():
                                                   record_name='linked servers',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template("admin/admin_link.html",
                            data=g.db_connection.db_link_list(offset, per_page),
                            page=page,
@@ -101,7 +104,7 @@ def admin_link_delete_page():
     """
     g.db_connection.db_link_delete(request.form['id'])
     g.db_connection.db_commit()
-    return json.dumps({'status':'OK'})
+    return json.dumps({'status': 'OK'})
 
 
 @blueprint.before_request

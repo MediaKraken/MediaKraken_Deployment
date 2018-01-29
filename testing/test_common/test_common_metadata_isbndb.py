@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_isbndb
 
 
 class TestCommonISBNdb(object):
 
-
     @classmethod
     def setup_class(self):
         self.isbndb_connection = common_metadata_isbndb.CommonMetadataISBNdb()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
 # http://isbndb.com/api/v2/docs/authors
 # http://isbndb.com/api/v2/json/[your-api-key]/author/richards_rowland

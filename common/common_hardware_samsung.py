@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import base64
 
@@ -26,6 +26,7 @@ class CommonHardwareSamsung(object):
     """
     Class for interfacing with samsung TV equipment over network connection
     """
+
     def __init__(self, device_ip):
         self.src = '192.168.1.2'  # ip of remote
         self.mac = '00-AB-11-11-11-11'  # mac of remote
@@ -50,6 +51,7 @@ class CommonHardwareSamsung(object):
               chr(len(msg)) + chr(0x00) + msg
         new.send(pkt)
         new.close()
+
 
 """
 Keycodes

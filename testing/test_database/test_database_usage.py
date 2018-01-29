@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
+
 sys.path.append('.')
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import database as database_base
 
 
 class TestDatabaseUsage(object):
-
 
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_usage_top10_alltime(self):
         """
@@ -45,7 +42,6 @@ class TestDatabaseUsage(object):
         self.db_connection.db_rollback()
         self.db_connection.db_usage_top10_alltime()
 
-
     def test_db_usage_top10_movie(self):
         """
         top 10 movie
@@ -53,14 +49,12 @@ class TestDatabaseUsage(object):
         self.db_connection.db_rollback()
         self.db_connection.db_usage_top10_movie()
 
-
     def test_db_usage_top10_tv_show(self):
         """
         top 10 tv show
         """
         self.db_connection.db_rollback()
         self.db_connection.db_usage_top10_tv_show()
-
 
     def test_db_usage_top10_tv_episode(self):
         """

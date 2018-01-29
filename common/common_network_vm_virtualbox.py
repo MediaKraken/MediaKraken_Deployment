@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import virtualbox
 
 
@@ -26,5 +26,6 @@ class CommonNetworkVirtualBox(object):
     """
     Class for interfacing via virtualbox
     """
+
     def __init__(self):
         pass

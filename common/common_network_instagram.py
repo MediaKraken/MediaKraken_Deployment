@@ -25,6 +25,7 @@ class CommonNetworkInstragram(object):
     """
     Class for interfacing with instagram
     """
+
     def __init__(self, user, password):
         self.instagram_inst = InstagramAPI(user, password)
         self.instagram_inst.login()
@@ -37,6 +38,7 @@ class CommonNetworkInstragram(object):
 
     def com_net_instagram_album_upload(self, media, caption_text):
         self.instagram_inst.uploadAlbum(media, caption=caption_text)
+
 
 '''
     tagFeed(TODO);
@@ -144,4 +146,3 @@ class CommonNetworkInstragram(object):
     getLikedMedia;
 
 '''
-

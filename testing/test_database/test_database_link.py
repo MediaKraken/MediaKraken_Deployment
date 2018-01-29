@@ -16,17 +16,16 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseLink(object):
-
 
     @classmethod
     def setup_class(self):
@@ -34,11 +33,9 @@ class TestDatabaseLink(object):
         self.db_connection.db_open()
         self.new_guid = None
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_link_list_count(self):
         """
@@ -46,7 +43,6 @@ class TestDatabaseLink(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_link_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -59,7 +55,6 @@ class TestDatabaseLink(object):
         self.db_connection.db_rollback()
         self.db_connection.db_link_list(offset, records)
 
-
     def test_db_link_insert(self):
         """
         # insert link job
@@ -67,7 +62,6 @@ class TestDatabaseLink(object):
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_link_insert(json.dumps({'test': 'stuff'}))
         self.db_connection.db_commit()
-
 
     def test_db_link_delete(self):
         """

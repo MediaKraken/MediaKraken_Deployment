@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import time
+
 
 # rank
 # DEBUG
@@ -33,5 +34,5 @@ def com_logging_start(log_name="./log/MediaKraken_Main"):
     Fire up logging processing and file with timestamp
     """
     logging.basicConfig(filename=(log_name + '_' + time.strftime("%Y%m%d%H%M%S")
-                        + '.log'), format='%(asctime)s: %(levelname)s %(message)s',
+                                  + '.log'), format='%(asctime)s: %(levelname)s %(message)s',
                         level=logging.INFO)

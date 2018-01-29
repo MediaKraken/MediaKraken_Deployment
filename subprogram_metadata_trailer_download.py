@@ -18,7 +18,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import xmltodict
 import sys
 import json
@@ -28,26 +28,21 @@ from common import common_logging
 from common import common_network
 from common import common_signal
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Trailer_Download')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Trailer Download Start', None,
-    'System: Server Trailer Download Start', 'ServerTrailerDownloadStart', None, None, 'System')
-
+                                 'System: Server Trailer Download Start',
+                                 'ServerTrailerDownloadStart', None, None, 'System')
 
 total_trailers_downloaded = 0
-
 
 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
     "http://feeds.hd-trailers.net/hd-trailers", None))
@@ -56,13 +51,13 @@ if data is not None:
         logging.info('item: %s', item)
         download_link = None
         if ('(Trailer' in data['item']['title']
-                and option_config_json['Trailer']['Trailer'] is True)\
+            and option_config_json['Trailer']['Trailer'] is True) \
                 or ('(Behind' in data['item']['title'] \
-                    and option_config_json['Trailer']['Behind'] is True)\
+                    and option_config_json['Trailer']['Behind'] is True) \
                 or ('(Clip' in data['item']['title'] \
-                    and option_config_json['Trailer']['Clip'] is True)\
+                    and option_config_json['Trailer']['Clip'] is True) \
                 or ('(Featurette' in data['item']['title'] \
-                    and option_config_json['Trailer']['Featurette'] is True)\
+                    and option_config_json['Trailer']['Featurette'] is True) \
                 or ('(Carpool' in data['item']['title'] \
                     and option_config_json['Trailer']['Carpool'] is True):
             for trailer_url in data['item']['enclosure url']:
@@ -74,21 +69,18 @@ if data is not None:
             # TODO so only insert db dl records
             common_network.mk_network_fetch_from_url(download_link, '/static/meta/trailer')
 
-
 if total_trailers_downloaded > 0:
     db_connection.db_notification_insert(
         common_internationalization.com_inter_number_format(total_trailers_downloaded)
         + " trailers(s) flagged for download.", True)
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Trailer Download Stop', None,
-    'System: Server Trailer Download Stop', 'ServerTrailerDownloadStop', None, None, 'System')
-
+                                 'System: Server Trailer Download Stop',
+                                 'ServerTrailerDownloadStop', None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

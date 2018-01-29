@@ -16,38 +16,34 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseiradio(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
         self.db_connection.db_open()
 
-
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     @pytest.mark.parametrize(("radio_channel"), [
         ('http://www.mediakraken.org'),
-        ('http://www.mediakraken.org')]) # so it dupes
+        ('http://www.mediakraken.org')])  # so it dupes
     def test_db_iradio_insert(self, radio_channel):
         """
         # insert iradio channel
         """
         self.db_connection.db_rollback()
         self.db_connection.db_iradio_insert(radio_channel)
-
 
     @pytest.mark.parametrize(("active_station"), [
         (True,),
@@ -58,7 +54,6 @@ class TestDatabaseiradio(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_iradio_list_count(active_station)
-
 
     @pytest.mark.parametrize(("active_station", "offset", "records"), [
         (True, None, None),

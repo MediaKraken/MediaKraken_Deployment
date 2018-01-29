@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import httplib
 import StringIO
@@ -23,10 +23,10 @@ class SSDPResponse(object):
     """
     Class for interfacing via SSDP
     """
+
     class _FakeSocket(StringIO.StringIO):
         def makefile(self, *args, **kw):
             return self
-
 
     def __init__(self, response):
         ssdp_response = httplib.HTTPResponse(self._FakeSocket(response))

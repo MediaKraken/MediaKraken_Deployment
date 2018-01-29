@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_irdb
 
@@ -39,7 +39,6 @@ def test_com_irdb_device_types_by_brand(brand_text):
     Test function
     """
     common_network_irdb.com_irdb_device_types_by_brand(brand_text)
-
 
 # See which sets of codes we have for that brand and device type:
 # def com_IRDB_Codesets_by_Brand_Device(brand_text, device_type):

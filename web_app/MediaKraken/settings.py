@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
+
 os_env = os.environ
 import sys
+
 sys.path.append('..')
 from common import common_file
 
@@ -14,14 +16,14 @@ class Config(object):
         data = os.urandom(24).encode('hex')
         common_file.com_file_save_data('web_secret_key.txt', data, False)
     SECRET_KEY = os_env.get('MEDIAKRAKEN_SECRET',
-        common_file.com_file_load_data('web_secret_key.txt', False))
-    APP_DIR = os.path.abspath(os.path.dirname(__file__)) # This directory
+                            common_file.com_file_load_data('web_secret_key.txt', False))
+    APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BCRYPT_LOG_ROUNDS = 13
     ASSETS_DEBUG = False
-    DEBUG_TB_ENABLED = False # Disable Debug toolbar
+    DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    CACHE_TYPE = 'simple' # Can be "memcached", "redis", etc.
+    CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
 
 
 class ProdConfig(Config):
@@ -29,14 +31,14 @@ class ProdConfig(Config):
     ENV = 'prod'
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":" \
-        + os.environ['POSTGRES_PASSWORD'] + "@mkpgbounce:6432/" \
-        + os.environ['POSTGRES_DB']
-    DEBUG_TB_ENABLED = False # Disable Debug toolbar
+                              + os.environ['POSTGRES_PASSWORD'] + "@mkpgbounce:6432/" \
+                              + os.environ['POSTGRES_DB']
+    DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     FLASK_PIKA_PARAMS = {
-        'host': 'mkrabbitmq',      #amqp.server.com
-        'username': 'guest',  #convenience param for username
-        'password': 'guest',  #convenience param for password
-        'port': 5672            #amqp server port
+        'host': 'mkrabbitmq',  # amqp.server.com
+        'username': 'guest',  # convenience param for username
+        'password': 'guest',  # convenience param for password
+        'port': 5672  # amqp server port
     }
     FLASK_PIKA_POOL_PARAMS = {
         'pool_size': 8,

@@ -18,14 +18,16 @@
 
 from Arduino import Arduino
 
+
 class CommonHardwareArduino(object):
     """
     Class for interfacing with arduino device over usb
     """
+
     def __init__(self, baud_rate='9600', device_port="/dev/ttyACM0"):
         self.arduino_device = Arduino(baud_rate, port=device_port)
 
-    def com_arduino_usb_serial_digitalwrite(self, pin_number, pin_high_low='HIGH'): # 'LOW'
+    def com_arduino_usb_serial_digitalwrite(self, pin_number, pin_high_low='HIGH'):  # 'LOW'
         self.arduino_device.digitalWrite(pin_number, pin_high_low)
 
     def com_arduino_usb_serial_writestring(self, serial_string):

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import docker
 import socket
@@ -27,10 +27,10 @@ class CommonDocker(object):
     """
     Class for interfacing with docker
     """
+
     def __init__(self):
         self.cli = docker.from_env()
         self.cli_api = docker.APIClient(base_url='unix://var/run/docker.sock')
-
 
     def com_docker_container_list(self):
         """
@@ -38,13 +38,11 @@ class CommonDocker(object):
         """
         return self.cli.containers()
 
-
     def com_docker_info(self):
         """
         docker info on host
         """
         return self.cli.info()
-
 
     def com_docker_port(self, container_id=None, mapped_port=5050):
         """
@@ -54,7 +52,6 @@ class CommonDocker(object):
             # docker containers spun up have container id as hostname
             container_id = socket.gethostname()
         return self.cli_api.port(container_id, mapped_port)
-
 
     def com_docker_swarm_init(self):
         """
@@ -68,13 +65,11 @@ class CommonDocker(object):
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
-
     def com_docker_swarm_inspect(self):
         """
         swarm info on host
         """
         return self.cli_api.inspect_swarm()
-
 
     def com_docker_swarm_leave(self):
         """
@@ -82,13 +77,11 @@ class CommonDocker(object):
         """
         return self.cli_api.leave_swarm()
 
-
     def com_docker_node_list(self):
         """
         List nodes in swarm
         """
         return self.cli_api.nodes()
-
 
     def com_docker_version(self):
         """
@@ -96,13 +89,11 @@ class CommonDocker(object):
         """
         return self.cli.version()
 
-
     def com_docker_volume_info(self, volume_name):
         """
         return info no specified volume
         """
         return self.cli.inspect_volume(volume_name)
-
 
     def com_docker_volume_remove(self, volume_name):
         """
@@ -110,20 +101,17 @@ class CommonDocker(object):
         """
         return self.cli.remove_volume(volume_name)
 
-
     def com_docker_volume_list(self):
         """
         list docker volumes
         """
         return self.cli.volumes()
 
-
     def com_docker_run_command(self, container_id, docker_command):
         """
         run command in a container
         """
         return self.cli.exec_run(cmd=docker_command)
-
 
     def com_docker_run_container(self, container_command, container_name,
                                  container_image_name='mediakraken/mkslave',
@@ -141,8 +129,7 @@ class CommonDocker(object):
                                        detach=container_detach, ports=container_port,
                                        command=container_command, volumes=container_volumes,
                                        name=container_name)
-                                       #auto_remove=container_remove)
-
+        # auto_remove=container_remove)
 
     def com_docker_delete_container(self, container_image_name, container_force=True):
         """
@@ -151,13 +138,11 @@ class CommonDocker(object):
         return self.cli_api.remove_container(container=container_image_name,
                                              force=container_force)
 
-
     def com_docker_pause_container(self, container_image_name):
         """
         pause container
         """
         return self.cli_api.pause(container=container_image_name)
-
 
     def com_docker_unpause_container(self, container_image_name):
         """

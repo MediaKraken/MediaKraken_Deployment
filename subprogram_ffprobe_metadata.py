@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import sys
 from common import common_config_ini
@@ -32,7 +32,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 db_connection.db_media_ffmeg_update(sys.argv[1],
                                     json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
-                                    db_connection.db_read_media(sys.argv[1])['mm_media_path'])))
+                                        db_connection.db_read_media(sys.argv[1])['mm_media_path'])))
 
 # commit
 db_connection.db_commit()

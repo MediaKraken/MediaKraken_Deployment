@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from pylgtv import WebOsClient
+
 
 # python >= 3.3
 
@@ -26,6 +27,7 @@ class CommonNetworkWebOS(object):
     """
     Class for interfacing with webos
     """
+
     def __init__(self, host_name):
         self.webos_inst = WebOsClient(host_name)
 

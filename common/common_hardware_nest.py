@@ -17,14 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import nest
 from nest import utils as nest_utils
+
 
 class CommonHardwareNest(object):
     """
     Class for interfacing with arduino device over usb
     """
+
     def __init__(self, user_name, password):
         """
         Connect to NEST
@@ -43,11 +45,13 @@ class CommonHardwareNest(object):
                 logging.info('Device: %s', device.name)
                 logging.info('Temp: %0.1f', device.temperature)
 
+
 def com_nest_c_to_f(temp_data):
     """
     C to F temp conversion
     """
     return nest_utils.c_to_f(temp_data)
+
 
 def com_nest_f_to_c(temp_data):
     """

@@ -16,21 +16,19 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_vimeo
 
 
 class TestCommonVimeo(object):
 
-
     @classmethod
     def setup_class(self):
         self.vimeo_connection = common_network_vimeo.CommonNetworkVimeo()
-
 
     @classmethod
     def teardown_class(self):

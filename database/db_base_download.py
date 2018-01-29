@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 
 
@@ -91,9 +91,9 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
                                ' and mdq_download_json->\'ProviderMetaID\' ? %s'
                                ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
                                (provider_name, download_que_type, provider_id,))
-# why do I care about the download que id?
-#            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
-#            (provider_name, download_que_type, provider_id, download_que_uuid))
+    # why do I care about the download que id?
+    #            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
+    #            (provider_name, download_que_type, provider_id, download_que_uuid))
     else:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
                                ' where mdq_provider = %s and mdq_que_type = %s'

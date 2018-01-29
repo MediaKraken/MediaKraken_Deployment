@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_network
 
 
@@ -25,9 +25,9 @@ class CommonMetadataOpenLibrary(object):
     """
     Class for interfacing with OpenLibrary
     """
+
     def __init__(self, option_config_json):
         pass
-
 
     def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
         common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'

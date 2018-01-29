@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import json
 import os
@@ -25,14 +25,13 @@ import time
 import subprocess
 from common import common_network_mpv
 
-
 mpv_process = subprocess.Popen(['mpv', '--no-config', '--ontop', '--no-osc', '--no-osd-bar',
-                             '--aid=2',
-                             '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                             '--audio-device=pulse', '--hwdec=auto',
-                             '--input-ipc-server', './mk_mpv.sock',
-                             '/home/spoot/github/MediaKraken/mkarchive/big_buck_bunny.avi'],
-                             shell=False)
+                                '--aid=2',
+                                '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
+                                '--audio-device=pulse', '--hwdec=auto',
+                                '--input-ipc-server', './mk_mpv.sock',
+                                '/home/spoot/github/MediaKraken/mkarchive/big_buck_bunny.avi'],
+                               shell=False)
 mpv_connection = common_network_mpv.CommonNetMPVSocat()
 time.sleep(5)
 mpv_connection.execute('{ "command": ["set_property", "pause", true] }')

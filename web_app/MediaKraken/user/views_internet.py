@@ -3,16 +3,18 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
+from flask import Blueprint, render_template, g, request, current_app, jsonify, \
     redirect, url_for, abort
 from flask_login import login_required
 from flask_login import current_user
+
 blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import locale
 import json
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
@@ -24,10 +26,10 @@ from common import common_pagination
 import database as database_base
 from MediaKraken.public.forms import SearchForm
 
-
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 google_instance = common_google.CommonGoogle(option_config_json)
+
 
 # internet sites
 @blueprint.route('/internet')
@@ -66,7 +68,7 @@ def user_internet_youtube():
                                                                                      'snippet')))
     logging.info('temphold: %s', youtube_videos)
     return render_template("users/user_internet_youtube.html", form=form,
-        media=youtube_videos)
+                           media=youtube_videos)
 
 
 # youtube detail
@@ -79,8 +81,8 @@ def user_internet_youtube_detail(uuid):
     """
     form = SearchForm(request.form)
     return render_template("users/user_internet_youtube_detail.html", form=form,
-        media=json.loads(google_instance.com_google_youtube_info(uuid)),
-        data_guid=uuid)
+                           media=json.loads(google_instance.com_google_youtube_info(uuid)),
+                           data_guid=uuid)
 
 
 # vimeo
@@ -109,19 +111,20 @@ def user_internet_twitch():
         try:
             if stream_data['stream']['game'] is None:
                 twitch_media.append((stream_data['stream']['name'],
-                    stream_data['stream']['preview']['medium'], 'Not Available'))
+                                     stream_data['stream']['preview']['medium'], 'Not Available'))
             else:
                 twitch_media.append((stream_data['stream']['name'],
-                    stream_data['stream']['preview']['medium'], stream_data['stream']['game']))
+                                     stream_data['stream']['preview']['medium'],
+                                     stream_data['stream']['game']))
         except:
             if stream_data['stream']['channel']['game'] is None:
                 twitch_media.append((stream_data['stream']['channel']['name'],
-                    stream_data['stream']['preview']['medium'],
-                    'Not Available'))
+                                     stream_data['stream']['preview']['medium'],
+                                     'Not Available'))
             else:
                 twitch_media.append((stream_data['stream']['channel']['name'],
-                    stream_data['stream']['preview']['medium'],
-                    stream_data['stream']['channel']['game']))
+                                     stream_data['stream']['preview']['medium'],
+                                     stream_data['stream']['channel']['game']))
     return render_template("users/user_internet_twitch.html", media=twitch_media)
 
 
@@ -133,9 +136,9 @@ def user_internet_twitch_stream_detail(stream_name):
     """
     Show twitch stream detail page
     """
-    #twitch_api = common_network_Twitch.com_Twitch_API()
-    #media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
-    #logging.info("str detail: %s", media)
+    # twitch_api = common_network_Twitch.com_Twitch_API()
+    # media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
+    # logging.info("str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
 
@@ -182,7 +185,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

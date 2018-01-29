@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from beautifulhue.api import Bridge
 import sys
 
@@ -26,6 +26,7 @@ class CommonHardwareBeatifulHue(object):
     """
     Class for interfacing with beatifulhue
     """
+
     def __init__(self, ip_addr, user_id):
         self.beatifulhue_inst = Bridge(device={'ip': ip_addr}, user={'name': user_id})
 
@@ -33,7 +34,8 @@ class CommonHardwareBeatifulHue(object):
         created = False
         print('Press the button on the Hue bridge')
         while not created:
-            resource = {'user': {'devicetype': 'MediaKraken', 'name': '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m'}}
+            resource = {'user': {'devicetype': 'MediaKraken',
+                                 'name': '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m'}}
             response = self.beatifulhue_inst.config.create(resource)['resource']
             if 'error' in response[0]:
                 if response[0]['error']['type'] != 101:
@@ -49,7 +51,7 @@ class CommonHardwareBeatifulHue(object):
         # n
         # 'new'
         # 'all'
-        return self.beatifulhue_inst.light.get({'which': light_id, 'verbose':True})
+        return self.beatifulhue_inst.light.get({'which': light_id, 'verbose': True})
 
     def com_hardward_beatifulhue_update_light(self, light_id, attr_name, attr_desc):
         resource = {
@@ -62,6 +64,6 @@ class CommonHardwareBeatifulHue(object):
 
 
 stuff = CommonHardwareBeatifulHue('10.0.0.225', '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m')
-#stuff.com_hardware_beatifulhue_config()
+# stuff.com_hardware_beatifulhue_config()
 print(stuff.com_hardware_beatifulhue_info())
 print(stuff.com_hardware_beatifulhue_get_light('all'))

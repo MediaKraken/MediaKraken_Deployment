@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import smtplib
+
 
 # http://stackoverflow.com/users/547050/david-okwii
 # code from stackoverflow

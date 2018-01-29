@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import mutagen
 from mutagen.flac import FLAC
 from mutagen.mp3 import MP3
@@ -25,25 +25,31 @@ from mutagen.id3 import ID3
 from mutagen.oggvorbis import OggVorbis
 from mutagen.easyid3 import EasyID3
 
+
 def com_meta_mutagen_file_type(file_name):
     return mutagen.FileType(file_name)
 
+
 def com_meta_mutagen_file_detail(file_name):
     return mutagen.File(file_name)
+
 
 def com_meta_mutagen_update(file_name, attr_name, attr_desc):
     audio = FLAC(file_name)
     audio[attr_name] = attr_desc
     audio.save()
 
+
 def com_meta_mutagen_lenbit(file_name):
     audio = MP3(file_name)
     print(audio.info.length)
     print(audio.info.bitrate)
 
+
 def com_meta_mutagen_remove_id(file_name):
     audio = ID3(file_name)
     audio.delete()
+
 
 def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
     audio = EasyID3(file_name)
@@ -56,4 +62,4 @@ def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
 
 
 print(EasyID3.valid_keys.keys())
-#print(com_meta_mutagen_file_type('/home/spoot/test.flac'))
+# print(com_meta_mutagen_file_type('/home/spoot/test.flac'))

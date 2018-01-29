@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hardware_hdhomerun_py
 
 
 class TestCommonHardwareHDHomeRunPy(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     # discover items
     def test_com_hdhomerun_discover(self):
@@ -44,7 +41,6 @@ class TestCommonHardwareHDHomeRunPy(object):
         """
         self.db_connection.com_hdhomerun_discover()
 
-
     # item list
     def test_com_hdhomerun_list(self):
         """
@@ -52,21 +48,15 @@ class TestCommonHardwareHDHomeRunPy(object):
         """
         self.db_connection.com_hdhomerun_list()
 
+    #    def get_tuner_vstatus(self, device_adapter):
 
-#    def get_tuner_vstatus(self, device_adapter):
+    #    def set_tuner_vchannel(self, device_adapter, vchannel):
 
+    #    def set_stream(self, device_adapter, vchannel, target_uri):
 
-#    def set_tuner_vchannel(self, device_adapter, vchannel):
+    #    def get_supported(self, device_adapter):
 
-
-#    def set_stream(self, device_adapter, vchannel, target_uri):
-
-
-#    def get_supported(self, device_adapter):
-
-
-#    def scan(self, device_adapter):
-
+    #    def scan(self, device_adapter):
 
     def test_get_count(self):
         """

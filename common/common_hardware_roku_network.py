@@ -19,7 +19,7 @@
 # the Roku api docs
 # http://sdkdocs.roku.com/display/sdkdoc/External+Control+Guide
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import urllib2
 import time
 from . import common_network_ssdp
@@ -36,7 +36,7 @@ def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_se
     """
     Send comment to roku device
     """
-    #urllib2.post('http://' + self.roku_address + "/keypress/" + roku_command)
+    # urllib2.post('http://' + self.roku_address + "/keypress/" + roku_command)
     if roku_command_seconds > 0:
         response = urllib2.urlopen(roku_addr + ':' + roku_port + '/keydown/' + roku_command)
         time.sleep(roku_command_seconds)

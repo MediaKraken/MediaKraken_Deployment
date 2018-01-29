@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import ldap
 
 
@@ -25,6 +25,7 @@ class CommonLDAP(object):
     """
     Class for interfacing with ldap server
     """
+
     def __init__(self, ldap_server, ou_name, dc_name):
         # Initialize connection
         try:
@@ -36,10 +37,9 @@ class CommonLDAP(object):
             else:
                 print(err_code)
         # Bind to the server (ie. actually connect) - not needed as simple_bind for check
-        #self.con.simple_bind("ou=People,dc=hotbot,dc=com")
+        # self.con.simple_bind("ou=People,dc=hotbot,dc=com")
         self.ou_name = ou_name
         self.dc_name = dc_name
-
 
     def com_ldap_logon(self, user_name, user_password):
         """
@@ -57,7 +57,6 @@ class CommonLDAP(object):
                 print(err_code.message['desc'])
             else:
                 print(err_code)
-
 
     def com_ldap_close(self):
         """

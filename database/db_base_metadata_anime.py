@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import uuid
 import json
 
@@ -29,11 +29,12 @@ def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'
-        ' mm_metadata_anime_media_id, mm_media_anime_name, mm_metadata_anime_json,'
-        ' mm_metadata_anime_localimage_json, mm_metadata_anime_user_json,'
-        ' mm_metadata_anime_mapping, mm_metadata_anime_mapping_before)'
-        ' values (%s,%s,%s,%s,%s,%s,%s,%s)', (new_guid, ani_media_id_json, ani_name, ani_json,
-        ani_image_local, ani_user_json, mapping_data, before_data))
+                           ' mm_metadata_anime_media_id, mm_media_anime_name,'
+                           ' mm_metadata_anime_json, mm_metadata_anime_localimage_json,'
+                           ' mm_metadata_anime_user_json, mm_metadata_anime_mapping,'
+                           ' mm_metadata_anime_mapping_before) values (%s,%s,%s,%s,%s,%s,%s,%s)',
+                           (new_guid, ani_media_id_json, ani_name, ani_json,
+                            ani_image_local, ani_user_json, mapping_data, before_data))
     self.db_commit()
     return new_guid
 
@@ -44,7 +45,7 @@ def db_meta_anime_title_search(self, title_to_search):
     """
     # TODO hit movie and tv db's as well?
     self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
-        ' where mm_media_anime_name = %s', (title_to_search,))
+                           ' where mm_media_anime_name = %s', (title_to_search,))
     try:
         return self.db_cursor.fetchone()[0]
     except:
@@ -61,7 +62,7 @@ def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_befo
                            ' mm_metadata_anime_mapping_before = %s'
                            ' where mm_metadata_anime_media_id->\'anidb\' ? %s',
                            (media_id_json, mapping_json, mapping_before,
-                           json.loads(media_id_json)['anidb']))
+                            json.loads(media_id_json)['anidb']))
     self.db_commit()
 
 
@@ -71,7 +72,7 @@ def db_meta_anime_meta_by_id(self, anidb_id):
     """
     logging.info('exist ani: %s', anidb_id)
     self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
-        ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))
+                           ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_anime_guid']
     except:

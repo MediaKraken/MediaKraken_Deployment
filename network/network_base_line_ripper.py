@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import sys
 import os
@@ -88,7 +88,7 @@ class NetworkEvents(basic.LineReceiver):
                 # TODO id disc
                 # TODO see if in db already
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all',json_message['Location']])
+                                 'all', json_message['Location']])
             elif json_message['Data'] == "UHD":
                 # TODO id disc
                 # TODO see if in db already

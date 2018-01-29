@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import transmissionrpc
 
 
@@ -26,11 +26,11 @@ class CommonTransmission(object):
     """
     Class for interfacing with transmission bitorrent server
     """
+
     def __init__(self, option_config_json):
         self.trans_connection = transmissionrpc.Client(
             option_config_json['Transmission']['Host'],
             int(option_config_json['Transmission']['Port']))
-
 
     def com_trans_get_torrent_list(self):
         """
@@ -38,14 +38,12 @@ class CommonTransmission(object):
         """
         return self.trans_connection.get_torrents()
 
-
     def com_trans_add_torrent(self, torrent_path):
         """
         Add torrent by file path
         """
-        #trans_connection.add_torrent('http://releases.ubuntu.com/8.10/i386.iso.torrent')
+        # trans_connection.add_torrent('http://releases.ubuntu.com/8.10/i386.iso.torrent')
         self.trans_connection.add_torrent(torrent_path)
-
 
     def com_trans_remove_torrent(self, torrent_hash):
         """
@@ -53,13 +51,11 @@ class CommonTransmission(object):
         """
         self.trans_connection.remove_torrent(torrent_hash)
 
-
     def com_trans_name(self, torrent_no):
         """
         Get name of torrent by id
         """
         return self.trans_connection.get_torrent(torrent_no)
-
 
     def com_trans_torrent_detail(self, torrent_no):
         """
@@ -68,13 +64,11 @@ class CommonTransmission(object):
         torrent = self.trans_connection.get_torrent(torrent_no)[1]
         return torrent.name, torrent.hashString, torrent.status, torrent.eta
 
-
     def com_trans_torrent_start(self, torrent_no):
         """
         Start the specified torrent
         """
         self.trans_connection.start_torrent(torrent_no)
-
 
     def com_trans_torrent_stop(self, torrent_no):
         """
