@@ -27,7 +27,8 @@ def db_download_insert(self, provider, que_type, down_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_download_que (mdq_id,mdq_provider,mdq_que_type,'
-        'mdq_download_json) values (%s,%s,%s,%s)', (new_guid, provider, que_type, down_json))
+                           'mdq_download_json) values (%s,%s,%s,%s)',
+                           (new_guid, provider, que_type, down_json))
     self.db_commit()
     return new_guid
 
@@ -37,7 +38,7 @@ def db_download_read_provider(self, provider_name):
     Read the downloads by provider
     """
     self.db_cursor.execute('select mdq_id,mdq_que_type,mdq_download_json from mm_download_que'
-        ' where mdq_provider = %s', (provider_name,))
+                           ' where mdq_provider = %s', (provider_name,))
     return self.db_cursor.fetchall()
 
 
@@ -55,7 +56,7 @@ def db_download_update_provider(self, provider_name, guid):
     """
     logging.info('download update provider: %s %s', provider_name, guid)
     self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',
-        (provider_name, guid))
+                           (provider_name, guid))
     self.db_commit()
 
 
@@ -86,18 +87,18 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     logging.info('db que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
-            ' where mdq_provider = %s and mdq_que_type = %s'
-            ' and mdq_download_json->\'ProviderMetaID\' ? %s'
-            ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
-            (provider_name, download_que_type, provider_id,))
+                               ' where mdq_provider = %s and mdq_que_type = %s'
+                               ' and mdq_download_json->\'ProviderMetaID\' ? %s'
+                               ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
+                               (provider_name, download_que_type, provider_id,))
 # why do I care about the download que id?
 #            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
 #            (provider_name, download_que_type, provider_id, download_que_uuid))
     else:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
-            ' where mdq_provider = %s and mdq_que_type = %s'
-            ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',
-            (provider_name, download_que_type, provider_id))
+                               ' where mdq_provider = %s and mdq_que_type = %s'
+                               ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',
+                               (provider_name, download_que_type, provider_id))
     # if no data, send none back
     try:
         return self.db_cursor.fetchone()[0]

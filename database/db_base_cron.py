@@ -28,9 +28,10 @@ def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron
     insert cron job
     """
     self.db_cursor.execute('insert into mm_cron (mm_cron_guid, mm_cron_name,'
-        ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
-        ' mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)', (str(uuid.uuid4()), cron_name,
-        cron_desc, cron_enabled, cron_schedule, cron_last_run, cron_file_path))
+                           ' mm_cron_description, mm_cron_enabled, mm_cron_schedule,'
+                           ' mm_cron_last_run, mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)',
+                           (str(uuid.uuid4()), cron_name, cron_desc, cron_enabled, cron_schedule,
+                            cron_last_run, cron_file_path))
 
 
 def db_cron_list_count(self, enabled_only=False):
@@ -78,7 +79,7 @@ def db_cron_time_update(self, cron_type):
     Update the datetime in which a cron job was run
     """
     self.db_cursor.execute('update mm_cron set mm_cron_last_run = %s where mm_cron_name = %s',
-        (datetime.datetime.now(), cron_type))
+                           (datetime.datetime.now(), cron_type))
 
 
 def db_cron_delete(self, cron_uuid):
@@ -94,6 +95,7 @@ def db_cron_info(self, cron_uuid):
     Cron job info
     """
     self.db_cursor.execute('select mm_cron_guid, mm_cron_name,'
-        ' mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
-        ' mm_cron_file_path from mm_cron where mm_cron_guid = %s', (cron_uuid,))
+                           ' mm_cron_description, mm_cron_enabled, mm_cron_schedule,'
+                           ' mm_cron_last_run, mm_cron_file_path from mm_cron'
+                           ' where mm_cron_guid = %s', (cron_uuid,))
     return self.db_cursor.fetchone()

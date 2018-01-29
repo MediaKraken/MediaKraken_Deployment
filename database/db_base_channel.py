@@ -21,7 +21,7 @@ import logging # pylint: disable=W0611
 
 
 def db_channel_insert(self, channel_id, channel_name, channel_language,
-        channel_country, channel_logo_id):
+                      channel_country, channel_logo_id):
     """
     # insert channel
     """

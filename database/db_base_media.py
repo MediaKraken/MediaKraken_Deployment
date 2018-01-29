@@ -23,7 +23,7 @@ import datetime
 
 
 def db_insert_media(self, media_uuid, media_path, media_class_uuid,
-        media_metadata_uuid, media_ffprobe_json, media_json):
+                    media_metadata_uuid, media_ffprobe_json, media_json):
     """
     # insert media into database
     """
