@@ -32,15 +32,14 @@ def main_remote_control_event_process(self, action_type_list):
         # check to see if rs232 device is already open
         if json_data["Protocol"]["Method"].lower() == "rs232":
             if not json_data["Protocol"]["Hardware Port"] in self.rs232_devices_dict:
+                com_net_telnet_device = common_network_telnet.CommonNetworkTelnet()
                 self.rs232_devices_dict[json_data["Protocol"]["Host IP"]] \
-                    = common_network_telnet.com_net_telnet_open_device(
+                    = com_net_telnet_device.com_net_telnet_open_device(
                     json_data["Protocol"]["Host IP"],
                     json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                     json_data["Protocol"]["Password"])
-            common_network_telnet.com_net_telnet_write_device(self.rs232_devices_dict[ \
-                                                              json_data["Protocol"]["Host IP"]],
-                                                              self.octmote_json_fetch_data_for_command(json_data,
-                                                              action_type_list))
+                com_net_telnet_device.com_net_telnet_write_device(self.octmote_json_fetch_data_for_command(json_data,
+                                                                  action_type_list))
         # check to see if IR device is already open
         elif json_data["Protocol"]["Method"].lower() == "ir":
             if not json_data["fake"] in self.ir_devices_dict:
@@ -53,27 +52,27 @@ def main_remote_control_event_process(self, action_type_list):
         elif json_data["Protocol"]["Method"].lower() == "telnet":
             # check to see if telnet device already opened
             if not json_data["Protocol"]["Host IP"] in self.telnet_devices_dict:
+                com_net_telnet_device = common_network_telnet.CommonNetworkTelnet()
                 self.telnet_devices_dict[json_data["Protocol"]["Host IP"]] \
-                    = common_network_telnet.com_net_telnet_open_device(
+                    = com_net_telnet_device.com_net_telnet_open_device(
                     json_data["Protocol"]["Host IP"],
                     json_data["Protocol"]["Host Port"], json_data["Protocol"]["User"],
                     json_data["Protocol"]["Password"])
-            common_network_telnet.com_net_telnet_write_device(
-                self.telnet_devices_dict[json_data["Protocol"]["Host IP"]],
-                self.octmote_json_fetch_data_for_command(json_data, action_type_list))
+                com_net_telnet_device.com_net_telnet_write_device(
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
         elif json_data["Protocol"]["Method"].lower() == "serial":
             # check to see if serial device already opened
             if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) \
                     in self.serial_devices_dict:
+                com_net_serial_device = common_serial.CommonSerial()
                 self.serial_devices_dict[(json_data["Protocol"]["Host IP"],
                                           json_data["Protocol"]["Hardware Port"])] \
-                    = common_serial.com_net_telnet_open_device(
-                    json_data["Protocol"]["Hardware Port"],
-                    json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],
-                    json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
-            common_serial.com_net_telnet_write_device(
-                self.serial_devices_dict[json_data["Protocol"]["Hardware Port"]],
-                self.octmote_json_fetch_data_for_command(json_data, action_type_list))
+                    = com_net_serial_device.com_serial_open_device(
+                        json_data["Protocol"]["Hardware Port"],
+                        json_data["Protocol"]["Baud Rate"], json_data["Protocol"]["Parity Bit"],
+                        json_data["Protocol"]["Stop Bit"], json_data["Protocol"]["Data Length"])
+                com_net_serial_device.com_serial_write_device(
+                    self.octmote_json_fetch_data_for_command(json_data, action_type_list))
         elif json_data["Protocol"]["Method"].lower() == "eiscp":
             # check to see if eiscp device already open
             if not json_data["Protocol"]["Host IP"] in self.eiscp_devices_dict:
@@ -89,8 +88,6 @@ def main_remote_control_event_process(self, action_type_list):
                                                      json_data["Protocol"]["Hardware Port"],
                                                      self.octmote_json_fetch_data_for_command(json_data,
                                                      action_type_list))
-        elif json_data["Protocol"]["Method"].lower() == "emby":
-            pass
         else:
             print("Unhandled Protocol Method %s", json_data["Protocol"]["Method"])
     except:
