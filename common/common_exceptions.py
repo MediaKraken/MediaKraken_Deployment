@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import functools
 import traceback
 
@@ -28,6 +28,7 @@ def reraise_with_stack(func):
     """
     decorator for stack trace for futures
     """
+
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         try:
@@ -35,4 +36,5 @@ def reraise_with_stack(func):
         except Exception as e:
             traceback_str = traceback.format_exc(e)
             raise StandardError("Error occurred. Original traceback is\n%s\n" % traceback_str)
+
     return wrapped

@@ -27,9 +27,9 @@ def db_meta_movie_image_random(self, return_image_type='Poster'):  # poster, bac
     """
     self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\' as image_json,mm_metadata_guid'
-                           ' from mm_media,mm_metadata_movie' \
-                           ' where mm_media_metadata_guid = mm_metadata_guid' \
-                           ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                                                 ' from mm_media,mm_metadata_movie' \
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid' \
+                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:

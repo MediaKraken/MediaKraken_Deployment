@@ -12,10 +12,11 @@
 # print stuff[-1:]
 import time
 from metadata import metadata_game
-#from common import common_lirc
+# from common import common_lirc
 from common import common_config_ini
 from common import common_metadata_openweathermap
-#metadata_game.game_system_update()
+
+# metadata_game.game_system_update()
 
 # lirc = common_lirc.CommonLIRC(None)
 #

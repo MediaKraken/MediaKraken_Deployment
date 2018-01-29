@@ -189,7 +189,8 @@ if response is None or len(response) == 0:
                     "    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh\n"
 else:
     compose_text += (
-    "    entrypoint: ./wait-for-it-ash.sh -h %s -p 5432 -t 30 -- ./entrypoint.sh\n", (response,))
+        "    entrypoint: ./wait-for-it-ash.sh -h %s -p 5432 -t 30 -- ./entrypoint.sh\n",
+        (response,))
 compose_text += "    networks:\n" \
                 "      - mediakraken_dbnetwork\n" \
                 "    restart: unless-stopped\n"

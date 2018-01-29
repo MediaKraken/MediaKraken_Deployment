@@ -45,7 +45,8 @@ class SyncEditForm(Form):
                                                              ('aac', 'AAC (Advanced Audio Coding)'),
                                                              ('ac3', 'ATSC A/52A (AC-3)'),
                                                              (
-                                                             'dts', 'DCA (DTS Coherent Acoustics)'),
+                                                                 'dts',
+                                                                 'DCA (DTS Coherent Acoustics)'),
                                                              ('flac', 'FLAC'), ('mp3', 'MP3'),
                                                              ('opus', 'Opus'), ('truehd', 'TrueHD'),
                                                              ('vorbis', 'Vorbis')])

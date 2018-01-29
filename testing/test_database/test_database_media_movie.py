@@ -58,7 +58,8 @@ class TestDatabaseMediaMovie(object):
     @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "group_collection",
                               "include_remote"), [
                                  (
-                                 '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False, False),
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False,
+                                         False),
                                  # exists
                                  ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False, True),
                                  # exists
@@ -69,7 +70,8 @@ class TestDatabaseMediaMovie(object):
                                  ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False,
                                   True),  # exists
                                  (
-                                 '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', True, True),
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama',
+                                         True, True),
                                  # exists
                                  ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False,
                                   False)])  # no exist
@@ -91,11 +93,13 @@ class TestDatabaseMediaMovie(object):
                                  ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, True, 0,
                                   True),  # exists
                                  (
-                                 '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, False, 0,
-                                 False),  # exists
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
+                                         False, 0,
+                                         False),  # exists
                                  (
-                                 '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, False, 0,
-                                 True),  # exists
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
+                                         False, 0,
+                                         True),  # exists
                                  ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0,
                                   True),  # exists
                                  ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0,

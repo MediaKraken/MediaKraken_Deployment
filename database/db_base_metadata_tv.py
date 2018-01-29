@@ -269,7 +269,8 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
         else:
             episode_data[row_data['eps_num']] \
                 = (
-            row_data['eps_name'], row_data['eps_filename'], row_data['eps_id'], str(season_number))
+                row_data['eps_name'], row_data['eps_filename'], row_data['eps_id'],
+                str(season_number))
     return episode_data
 
 

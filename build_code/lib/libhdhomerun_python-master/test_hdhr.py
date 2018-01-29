@@ -8,7 +8,7 @@ if len(devices) > 0:
     try:
         devices[0].set_tuner(2)
         devices[0].tuner_lockkey_request()
-        #devices[0].upgrade(filename='hdhomerun3_cablecard_firmware_20150604.bin', wait=True)
+        # devices[0].upgrade(filename='hdhomerun3_cablecard_firmware_20150604.bin', wait=True)
         devices[0].set_var(item='/tuner2/vchannel', value='702')
         pprint(devices[0].wait_for_lock())
         pprint(devices[0].get_tuner_status())
@@ -29,9 +29,8 @@ if len(devices) > 0:
         xx = devices[0].clone()
         print 'OOB status: ' + str(xx.get_oob_status())
         print 'Versions: %s %d' % xx.get_version()
-        #print 'Supported: %s' % devices[0].get_supported(prefix='tuner')
-        #print devices[0].get_tuner_plotsample()
+        # print 'Supported: %s' % devices[0].get_supported(prefix='tuner')
+        # print devices[0].get_tuner_plotsample()
         devices[0].tuner_lockkey_release()
     except DeviceError as sd_error:
         print 'Failure: ' + str(sd_error)
-

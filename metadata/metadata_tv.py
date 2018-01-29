@@ -149,43 +149,43 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         if episode_info['filename'] is not None:
                             db_connection.db_download_image_insert('thetvdb',
                                                                    json.dumps({
-                                                                                  'url': 'https://thetvdb.com/banners/'
-                                                                                         +
-                                                                                         episode_info[
-                                                                                             'filename'],
-                                                                                  'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                                           +
-                                                                                           episode_info[
-                                                                                               'filename']}))
+                                                                       'url': 'https://thetvdb.com/banners/'
+                                                                              +
+                                                                              episode_info[
+                                                                                  'filename'],
+                                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                                +
+                                                                                episode_info[
+                                                                                    'filename']}))
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         db_connection.db_download_image_insert('thetvdb',
                                                                json.dumps({
-                                                                              'url': 'https://thetvdb.com/banners/' +
-                                                                                     xml_show_data[
-                                                                                         'Data'][
-                                                                                         'Episode'][
-                                                                                         'filename'],
-                                                                              'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                                       +
-                                                                                       xml_show_data[
-                                                                                           'Data'][
-                                                                                           'Episode'][
-                                                                                           'filename']}))
+                                                                   'url': 'https://thetvdb.com/banners/' +
+                                                                          xml_show_data[
+                                                                              'Data'][
+                                                                              'Episode'][
+                                                                              'filename'],
+                                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                            +
+                                                                            xml_show_data[
+                                                                                'Data'][
+                                                                                'Episode'][
+                                                                                'filename']}))
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     db_connection.db_download_image_insert('thetvdb',
                                                            json.dumps({
-                                                                          'url': 'https://thetvdb.com/banners/'
-                                                                                 + xml_show_data[
-                                                                                     'Data'][
-                                                                                     'Episode'][
-                                                                                     'filename'],
-                                                                          'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                                   + xml_show_data[
-                                                                                       'Data'][
-                                                                                       'Episode'][
-                                                                                       'filename']}))
+                                                               'url': 'https://thetvdb.com/banners/'
+                                                                      + xml_show_data[
+                                                                          'Data'][
+                                                                          'Episode'][
+                                                                          'filename'],
+                                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                        + xml_show_data[
+                                                                            'Data'][
+                                                                            'Episode'][
+                                                                            'filename']}))
         db_connection.db_commit()
     return metadata_uuid
 

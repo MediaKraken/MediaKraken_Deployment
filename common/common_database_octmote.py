@@ -75,7 +75,8 @@ class CommonDatabaseOctmote(object):
             # add base devices to database
             self.db_cursor.execute('insert into octmote_device'
                                    ' (device_guid, device_name, device_description)'
-                                   ' values (?,\'BluRay\', \'BluRay Player\')', (str(uuid.uuid4()),))
+                                   ' values (?,\'BluRay\', \'BluRay Player\')',
+                                   (str(uuid.uuid4()),))
             self.db_cursor.execute('insert into octmote_device'
                                    ' (device_guid, device_name, device_description)'
                                    ' values (?,\'DVD\', \'DVD Player\')', (str(uuid.uuid4()),))

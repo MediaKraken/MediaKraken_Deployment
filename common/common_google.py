@@ -58,8 +58,9 @@ class CommonGoogle(object):
                                                          + self.YOUTUBE_API_SERVICE_NAME + '/'
                                                          + self.YOUTUBE_API_VERSION
                                                          + '/videos?id='
-                                                         + video_url.replace('www.youtube.com/watch?v=',
-                                                                             '') + '&key='
+                                                         + video_url.replace(
+                    'www.youtube.com/watch?v=',
+                    '') + '&key='
                                                          + self.DEVELOPER_KEY
                                                          + '&part=' + video_data), None)
 

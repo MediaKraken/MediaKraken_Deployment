@@ -99,7 +99,7 @@ class Read2Encrypt(file):
         self.bs = AES.block_size
         self.cipher = AES.new(key, AES.MODE_CBC, iv)
         (self.salt, self.key_length, self.key, self.iv) = (
-        salt, key_length, key, iv)
+            salt, key_length, key, iv)
         self.finished = False
         self._size = size
         self._args = args
@@ -453,8 +453,8 @@ class BackBlazeB2(object):
                     break
                 except Exception, e:
                     print(
-                    "WARNING: Error processing file '%s'\n%s\nTrying again." % (
-                    path, e))
+                            "WARNING: Error processing file '%s'\n%s\nTrying again." % (
+                        path, e))
                     time.sleep(1)
 
     def recursive_upload(self, path, bucket_id=None, bucket_name=None,
@@ -476,7 +476,7 @@ class BackBlazeB2(object):
                 self.upload_queue_done = False
                 for i in range(self.queue_size):
                     t = threading.Thread(target=self._upload_worker, args=(
-                    password, bucket_id, bucket_name,))
+                        password, bucket_id, bucket_name,))
                     self.threads.append(t)
                     t.start()
 
@@ -484,9 +484,9 @@ class BackBlazeB2(object):
                 for f in files:
                     if os.path.islink(root + '/' + f): continue
                     if exclude_regex and exclude_regex.match(
-                                        root + '/' + f): continue
+                            root + '/' + f): continue
                     if include_regex and not include_regex.match(
-                                        root + '/' + f): continue
+                            root + '/' + f): continue
                     if multithread:
                         print("UPLOAD: %s" % root + '/' + f)
                         self.upload_queue.put(root + '/' + f)
@@ -577,8 +577,9 @@ if __name__ == "__main__":
                         help='Upload multithreaded worker queue size')
     args = parser.parse_args()
 
-    if (not args.bucket_name and not args.bucket_id and not args.new_bucket and not args.list_buckets) or (
-        args.bucket_name and args.bucket_id):
+    if (
+            not args.bucket_name and not args.bucket_id and not args.new_bucket and not args.list_buckets) or (
+            args.bucket_name and args.bucket_id):
         parser.print_help()
         print("Must specify either -b/--bucket-name or -B/--bucket-id")
         sys.exit(1)
@@ -631,7 +632,7 @@ if __name__ == "__main__":
         buckets = b2.list_buckets()
         for bucket in buckets['buckets']:
             print("%s %s %s" % (
-            bucket['bucketType'], bucket['bucketId'], bucket['bucketName']))
+                bucket['bucketType'], bucket['bucketId'], bucket['bucketName']))
 
     # List files in bucket
     if args.list_files:
@@ -641,4 +642,4 @@ if __name__ == "__main__":
         print("contentSha1 size uploadTimestamp fileName")
         for f in files['files']:
             print("%s %s %s %s" % (
-            f['contentSha1'], f['size'], f['uploadTimestamp'], f['fileName']))
+                f['contentSha1'], f['size'], f['uploadTimestamp'], f['fileName']))
