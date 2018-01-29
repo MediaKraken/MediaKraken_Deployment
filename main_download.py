@@ -39,11 +39,13 @@ def on_message(channel, method_frame, header_frame, body):
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 # pika rabbitmq connection
-parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
+parameters =  pika.ConnectionParameters('mkrabbitmq',
+                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct", durable=True)
+exchange = channel.exchange_declare(exchange="mkque_download_ex",
+                                    exchange_type="direct", durable=True)
 queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
