@@ -41,11 +41,18 @@ class CommonMetadataOpenweatherMap(object):
                             % (city, self.api_key)))
 
     def com_openweathermap_fetch_city(self):
+        """
+        Fetch city list
+        """
         common_network.mk_network_fetch_from_url(
             'http://bulk.openweathermap.org/sample/city.list.json.gz', 'city.list.json.gz')
 
     def com_openweathermap_add_city(self):
-        with gzip.open('city.list.json.gz', 'rb') as f:
-            file_content = f.read()
+        """
+        Add the cities from the list
+        """
+        with gzip.open('city.list.json.gz', 'rb') as file_handle:
+            file_content = file_handle.read()
         for json_item in file_content:
             print(json_item)
+        file_handle.close()

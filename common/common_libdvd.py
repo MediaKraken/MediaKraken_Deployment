@@ -24,12 +24,17 @@ import dvdread
 # help(dvdread.DVD)
 
 def com_dvd_read_titles(drive_name):
+    """
+    Read the titles for selected drive name
+    """
     track_data = []
-    with dvdread.DVD(drive_name) as d:
-        d.Open()
-        for tt in range(1, d.NumberOfTitles):
-            t = d.GetTitle(tt)
-            track_data.append((d.GetNameTitleCase(), t.TitleNum, t.NumberOfAngles,
-                               t.NumberOfAudios, t.NumberOfChapters,
-                               t.NumberOfSubpictures, t.PlaybackTimeFancy))
+    with dvdread.DVD(drive_name) as disk_handle:
+        disk_handle.Open()
+        for ndx in range(1, disk_handle.NumberOfTitles):
+            disk_title = disk_handle.GetTitle(ndx)
+            track_data.append(
+                (disk_handle.GetNameTitleCase(), disk_title.TitleNum,
+                 disk_title.NumberOfAngles, disk_title.NumberOfAudios,
+                 disk_title.NumberOfChapters, disk_title.NumberOfSubpictures,
+                 disk_title.PlaybackTimeFancy))
     return track_data

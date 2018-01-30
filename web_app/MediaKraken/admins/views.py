@@ -36,6 +36,7 @@ from common import common_pagination
 from common import common_string
 from common import common_system
 from common import common_version
+from common import common_zfs
 import database as database_base
 
 ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -393,15 +394,15 @@ def upload_file():
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        file = request.files['file']
+        file_handle = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
+        if file_handle.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join('/mediakraken/uploads', filename))
+        if file_handle and allowed_file(file_handle.filename):
+            filename = secure_filename(file_handle.filename)
+            file_handle.save(os.path.join('/mediakraken/uploads', filename))
             return redirect(url_for('uploaded_file',
                                     filename=filename))
     return '''
