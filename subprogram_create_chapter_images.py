@@ -103,8 +103,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,
-                                 'System: Server Create Chapter Start', 'ServerCreateChapterStart',
-                                 None, None, 'System')
+                                 'System: Server Create Chapter Start',
+                                 'ServerCreateChapterStart', None, None, 'System')
 
 # begin the media match on NULL matches
 file_list = []
@@ -129,8 +129,8 @@ if total_images_created > 0:
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,
-                                 'System: Server Create Chapter Stop', 'ServerCreateChapterStop',
-                                 None, None, 'System')
+                                 'System: Server Create Chapter Stop',
+                                 'ServerCreateChapterStop', None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

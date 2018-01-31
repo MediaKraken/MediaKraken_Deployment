@@ -194,11 +194,12 @@ if __name__ == '__main__':
     wait_pid.wait()
 
     # pika rabbitmq connection
-    parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
-    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
-    d = cc.connectTCP('mkrabbitmq', 5672)
-    d.addCallback(lambda protocol: protocol.ready)
-    d.addCallback(run)
+    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,
+                                pika.ConnectionParameters(
+                                    credentials=pika.PlainCredentials('guest', 'guest')))
+    pika_instance = cc.connectTCP('mkrabbitmq', 5672)
+    pika_instance.addCallback(lambda protocol: protocol.ready)
+    pika_instance.addCallback(run)
 
     # setup for the ssl keys
     reactor.listenSSL(8903, MediaKrakenServerApp(),

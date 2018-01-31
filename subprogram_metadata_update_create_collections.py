@@ -78,7 +78,8 @@ for row_data in db_connection.db_media_collection_scan():
 if len(guid_list) > 0:
     db_connection.db_download_insert('themoviedb',
                                      json.dumps({'Status': 'FetchCollection',
-                                                 'Name': old_collection_name, 'GUID': guid_list,
+                                                 'Name': old_collection_name,
+                                                 'GUID': guid_list,
                                                  'Poster': old_poster_path,
                                                  'Backdrop': old_backdrop_path,
                                                  'ProviderMetaID': str(old_id)}))
