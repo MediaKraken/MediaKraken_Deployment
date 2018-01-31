@@ -129,7 +129,8 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, ' \
                            'mmp_person_image = %s where mmp_person_media_id->\'' \
                            + provider_name + '\' ? %s',
-                           (json.dumps(person_bio), json.dumps(person_image), str(provider_uuid)))
+                           (json.dumps(person_bio), json.dumps(person_image),
+                            str(provider_uuid)))
     self.db_commit()
 
 
@@ -175,7 +176,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                                           person_id)}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
-                                               json.dumps({meta_type: str(person_id)}), None, None)
+                                               json.dumps({meta_type: str(person_id)}),
+                                               None, None)
     else:
         if meta_type == "tvmaze":
             person_id = person_json['person']['id']
@@ -203,7 +205,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                                       person_id)}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
-                                           json.dumps({meta_type: str(person_id)}), None, None)
+                                           json.dumps({meta_type: str(person_id)}),
+                                           None, None)
 
 
 def db_meta_person_as_seen_in(self, person_guid):

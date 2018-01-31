@@ -94,7 +94,8 @@ def db_meta_music_video_list(self, offset=None, records=None, search_value=None)
                                    ' order by mm_media_music_video_band,'
                                    ' mm_media_music_video_song', (search_value,))
         else:
-            self.db_cursor.execute('select mm_metadata_music_video_guid, mm_media_music_video_band,'
+            self.db_cursor.execute('select mm_metadata_music_video_guid,'
+                                   ' mm_media_music_video_band,'
                                    ' mm_media_music_video_song,'
                                    ' mm_metadata_music_video_localimage_json'
                                    ' from mm_metadata_music_video'
