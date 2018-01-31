@@ -25,7 +25,6 @@ from common import common_network
 from common import common_version
 import zipfile
 import os
-import uuid
 import json
 import xmltodict
 
@@ -47,9 +46,9 @@ if False:
              % common_version.MAME_VERSION, common_version.MAME_VERSION),
             file_name)
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
+    update_game = 0
+    insert_game = 0
     for zippedfile in zip_handle.namelist():
-        update_game = 0
-        insert_game = 0
         json_data = xmltodict.parse(zip_handle.read(zippedfile))
         for child_of_root in json_data['mame']['machine']:
             logging.info("child: %s", child_of_root)
@@ -203,7 +202,7 @@ if True:
                         print(game_data['gi_id'])
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
-                                                                                 'gi_game_info_json']))
+                                                                  'gi_game_info_json']))
                         total_software_update += 1
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info
