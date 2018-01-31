@@ -36,8 +36,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', None,
-                                 'System: Server DB Backup Start', 'ServerBackupStart', None, None,
-                                 'System')
+                                 'System: Server DB Backup Start', 'ServerBackupStart',
+                                 None, None, 'System')
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
@@ -59,8 +59,8 @@ if option_json['Backup']['BackupType'] != 'local':
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,
-                                 'System: Server DB Backup Stop', 'ServerBackupStop', None, None,
-                                 'System')
+                                 'System: Server DB Backup Stop', 'ServerBackupStop',
+                                 None, None, 'System')
 
 # commit records
 db_connection.db_commit()

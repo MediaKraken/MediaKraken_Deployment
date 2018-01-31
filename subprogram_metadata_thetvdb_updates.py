@@ -39,8 +39,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,
-                                 'System: Server thetvdb Start', 'ServerthetvdbStart', None, None,
-                                 'System')
+                                 'System: Server thetvdb Start', 'ServerthetvdbStart',
+                                 None, None, 'System')
 
 # grab the data
 thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
@@ -91,8 +91,8 @@ for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,
-                                 'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None,
-                                 'System')
+                                 'System: Server thetvdb Stop', 'ServerthetvdbStop',
+                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

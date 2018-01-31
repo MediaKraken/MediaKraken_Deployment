@@ -36,8 +36,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server TMDB Update Start', None,
-                                 'System: Server TMDB Start', 'ServertheTMDBStart', None, None,
-                                 'System')
+                                 'System: Server TMDB Start', 'ServertheTMDBStart',
+                                 None, None, 'System')
 
 # grab the updated data
 tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
@@ -83,8 +83,8 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server TMDB Update Stop', None,
-                                 'System: Server TMDB Stop', 'ServertheTMDBStop', None, None,
-                                 'System')
+                                 'System: Server TMDB Stop', 'ServertheTMDBStop',
+                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

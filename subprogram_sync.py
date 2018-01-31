@@ -115,8 +115,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,
-                                 'System: Server Sync Start', 'ServerSyncStart', None, None,
-                                 'System')
+                                 'System: Server Sync Start', 'ServerSyncStart',
+                                 None, None, 'System')
 
 # switched to this since tracebacks work this method
 sync_data = db_connection.db_sync_list()
@@ -127,7 +127,8 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,
-                                 'System: Server Sync Stop', 'ServerSyncStop', None, None, 'System')
+                                 'System: Server Sync Stop', 'ServerSyncStop',
+                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

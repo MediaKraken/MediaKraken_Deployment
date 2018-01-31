@@ -36,8 +36,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
-                                 'System: Server tvmaze Start', 'ServerthetvmazeStart', None, None,
-                                 'System')
+                                 'System: Server tvmaze Start', 'ServerthetvmazeStart',
+                                 None, None, 'System')
 
 # grab updated show list with epoc data
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
@@ -67,8 +67,8 @@ for tvmaze_id, tvmaze_time in result.items():
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,
-                                 'System: Server tvmaze Stop', 'ServerthetvmazeStop', None, None,
-                                 'System')
+                                 'System: Server tvmaze Stop', 'ServerthetvmazeStop',
+                                 None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
