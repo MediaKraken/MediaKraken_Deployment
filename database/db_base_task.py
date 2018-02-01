@@ -80,27 +80,30 @@ def db_task_list(self, enabled_only=False, offset=None, records=None):
                                    ' order by mm_task_name', (offset, records))
             return self.db_cursor.fetchall()
 
-        def db_task_time_update(self, task_type):
-            """
-            Update the datetime in which a task job was run
-            """
-            self.db_cursor.execute('update mm_task set mm_task_last_run = %s'
-                                   ' where mm_task_name = %s',
-                                   (datetime.datetime.now(), task_type))
 
-        def db_task_delete(self, task_uuid):
-            """
-            Delete task job
-            """
-            self.db_cursor.execute('delete from mm_task where mm_task_guid = %s',
-                                   (task_uuid,))
+def db_task_time_update(self, task_type):
+    """
+    Update the datetime in which a task job was run
+    """
+    self.db_cursor.execute('update mm_task set mm_task_last_run = %s'
+                           ' where mm_task_name = %s',
+                           (datetime.datetime.now(), task_type))
 
-        def db_task_info(self, task_uuid):
-            """
-            task job info
-            """
-            self.db_cursor.execute('select mm_task_guid, mm_task_name,'
-                                   ' mm_task_description, mm_task_enabled, mm_task_schedule,'
-                                   ' mm_task_last_run, mm_task_file_path, mm_task_json'
-                                   ' from mm_task where mm_task_guid = %s', (task_uuid,))
-            return self.db_cursor.fetchone()
+
+def db_task_delete(self, task_uuid):
+    """
+    Delete task job
+    """
+    self.db_cursor.execute('delete from mm_task where mm_task_guid = %s',
+                           (task_uuid,))
+
+
+def db_task_info(self, task_uuid):
+    """
+    task job info
+    """
+    self.db_cursor.execute('select mm_task_guid, mm_task_name,'
+                           ' mm_task_description, mm_task_enabled, mm_task_schedule,'
+                           ' mm_task_last_run, mm_task_file_path, mm_task_json'
+                           ' from mm_task where mm_task_guid = %s', (task_uuid,))
+    return self.db_cursor.fetchone()
