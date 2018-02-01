@@ -57,8 +57,7 @@ class TestCommonCloudAWSS3(object):
         """
         Test function
         """
-        self.awss3.com_aws_s3_download(source_key, destination_filename,
-                                       backup_bucket=backup_bucket)
+        self.awss3.com_aws_s3_download(source_key, destination_filename, backup_bucket)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
 
