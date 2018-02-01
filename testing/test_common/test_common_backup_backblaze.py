@@ -71,7 +71,7 @@ class TestCommonBackupBackblaze(object):
         ("./cachefake", "bucket_upload_fake", None),
         ("./cache", "bucket_test", "test")])
     def test_com_backup_backblaze_upload_directory(self, dir_name, bucket_name,
-                                                   dir_password=None):
+                                                   dir_password):
         """
         Test function
         """

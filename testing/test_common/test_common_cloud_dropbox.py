@@ -53,7 +53,7 @@ class TestCommonDropBox(object):
         ("/"),
         ("metaman"),
         ("fakedir")])
-    def test_dropbox_list(self, dir_name='/'):
+    def test_dropbox_list(self, dir_name):
         """
         Test function
         """
