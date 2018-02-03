@@ -29,7 +29,7 @@ class TestDatabaseMetadataThesportsdb(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open()
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):

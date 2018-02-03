@@ -29,7 +29,7 @@ class TestDatabaseTriggers(object):
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open()
+        self.db_connection.db_open(True)
         self.new_guid = None
 
     @classmethod
