@@ -21,11 +21,11 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_rdma
-
-
-def test_com_rdma_get_devices():
-    """
-    # get list of RDMA devices
-    """
-    common_rdma.com_rdma_get_devices()
+# from common import common_rdma
+#
+#
+# def test_com_rdma_get_devices():
+#     """
+#     # get list of RDMA devices
+#     """
+#     common_rdma.com_rdma_get_devices()
