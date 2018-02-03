@@ -21,4 +21,4 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_network_mythtv
+#from common import common_network_mythtv
