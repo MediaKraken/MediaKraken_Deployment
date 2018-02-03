@@ -52,7 +52,7 @@ class TestAndroidHardwareInstance(object):
         self.android_connection.com_android_vibrate(vibrate_time)
 
     # return data from the motion controller
-    @pytest.mark.parametrize(("vibrate_time"), [
+    @pytest.mark.parametrize(("time_range"), [
         (0.5),
         (5)])
     def test_com_android_motion(self, time_range):
