@@ -21,22 +21,22 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_lirc
-
-
-# def MK_LIRC_Init(app_string="OctMote"):
-def test_com_lirc_init():
-    """
-    Test function
-    """
-    common_lirc.com_lirc_init()
-
-
-# def MK_LIRC_Load_Config(config_file):
-
-
-def test_com_lirc_close():
-    """
-    Test function
-    """
-    common_lirc.com_lirc_close()
+# from common import common_lirc
+#
+#
+# # def MK_LIRC_Init(app_string="OctMote"):
+# def test_com_lirc_init():
+#     """
+#     Test function
+#     """
+#     common_lirc.com_lirc_init()
+#
+#
+# # def MK_LIRC_Load_Config(config_file):
+#
+#
+# def test_com_lirc_close():
+#     """
+#     Test function
+#     """
+#     common_lirc.com_lirc_close()
