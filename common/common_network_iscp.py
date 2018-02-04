@@ -25,6 +25,13 @@ if platform != 'android':
     import eiscp
 
 
+def com_net_eiscp_discovery(self):
+    """
+    # the EISCP auto discover only works on 2011 models or higher
+    """
+    return eiscp.eISCP.discover(timeout=5)
+
+
 class CommonNetworkEISCP(object):
     """
     Class for interfacing via Onkyo equipment
@@ -32,12 +39,6 @@ class CommonNetworkEISCP(object):
 
     def __init__(self, ip_addr):
         self.eiscp_inst = eiscp.eISCP(ip_addr)
-
-    def com_net_eiscp_discovery(self):
-        """
-        # the EISCP auto discover only works on 2011 models or higher
-        """
-        return eiscp.eISCP.discover(timeout=5)
 
     def com_net_eiscp_disconnect(self):
         """
