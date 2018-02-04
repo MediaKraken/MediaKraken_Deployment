@@ -41,7 +41,7 @@ def db_open(self, db_build=False):
                                              'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
-                                          " host='th-postgresql-1' port=5432 password='metamanpg'")
+                                          " host='10.0.0.234' port=5432 password='metamanpg'")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
