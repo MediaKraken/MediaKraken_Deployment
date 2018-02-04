@@ -32,18 +32,6 @@ from common import common_network
 # def mk_network_wol(mac_address):
 
 
-# send email
-@pytest.mark.parametrize(("email_receipient", "email_subject", "email_body"), [
-    ('spootdevfake@gmail.com', "test1", "body"),
-    ('spootdev@gmail.com', "test2", "body"),
-    ('spootdev@fakegmail.com', "test3", "body")])
-def test_mk_network_send_email(email_receipient, email_subject, email_body):
-    """
-    Test function
-    """
-    common_network.mk_network_send_email(email_receipient, email_subject, email_body)
-
-
 # get MAC address
 def test_mk_network_get_mac():
     """
