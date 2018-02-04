@@ -25,8 +25,8 @@ from common import common_hash
 
 
 @pytest.mark.parametrize(("file_name", "expected_result"), [
-    ('./cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
-    ('./fakedirzz', None)])
+    ('./testing/cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
+    ('./testing/fakedirzz', None)])
 def test_com_hash_sha1_by_filename(file_name, expected_result):
     """
     Test function
@@ -36,11 +36,11 @@ def test_com_hash_sha1_by_filename(file_name, expected_result):
 
 # c call for sha1 hash
 @pytest.mark.parametrize(("file_name", "expected_result"), [
-    ('./cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
-    ('./cache/HashCalc.txt.7z', None),
-    ('./cache/HashCalc.txt.tar', None),
-    ('./cache/HashCalc.txt.tar.bz2', None),
-    ('./fakedirzz', None)])
+    ('./testing/cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
+    ('./testing/cache/HashCalc.txt.7z', '8424944223b7437d9f5c33459b97a58961a726a7'),
+    ('./testing/cache/HashCalc.txt.tar', '22b1b418d3822997b4c80e7fcf3394ebd7e1bdbe'),
+    ('./testing/cache/HashCalc.txt.tar.bz2', '7c9f83432b09e2607995ebf050c734fb347659b0'),
+    ('./testing/fakedirzz', None)])
 def test_com_hash_sha1_c(file_name, expected_result):
     """
     Test function
@@ -50,11 +50,11 @@ def test_com_hash_sha1_c(file_name, expected_result):
 
 # caclucate crc32 for file
 @pytest.mark.parametrize(("file_name", "expected_result"), [
-    ('./cache/HashCalc.txt', 'f3c9a423'),
-    ('./cache/HashCalc.txt.7z', None),
-    ('./cache/HashCalc.txt.tar', None),
-    ('./cache/HashCalc.txt.tar.bz2', None),
-    ('./fakedirzz', None)])
+    ('./testing/cache/HashCalc.txt', 'f3c9a423'),
+    ('./testing/cache/HashCalc.txt.7z', '2269317160'),
+    ('./testing/cache/HashCalc.txt.tar', '1490977407'),
+    ('./testing/cache/HashCalc.txt.tar.bz2', '3098236506'),
+    ('./testing/fakedirzz', None)])
 def test_com_hash_crc32(file_name, expected_result):
     """
     Test function
@@ -87,9 +87,9 @@ def test_com_hash_crc32(file_name, expected_result):
 
 # hash for thesubdb
 @pytest.mark.parametrize(("file_name"), [
-    ("./cache/BigBuckBunny.ogv"),
-    ("./cache/BigBuckBunny_512kb.mp4"),
-    ("./cache/fake_video.mp4")])
+    ("./testing/cache/BigBuckBunny.ogv"),
+    ("./testing/cache/BigBuckBunny_512kb.mp4"),
+    ("./testing/cache/fake_video.mp4")])
 def test_com_hash_thesubdb(file_name):
     """
     Test function
@@ -99,9 +99,9 @@ def test_com_hash_thesubdb(file_name):
 
 # hash for opensubtiles.org
 @pytest.mark.parametrize(("file_name"), [
-    ("./cache/BigBuckBunny.ogv"),
-    ("./cache/BigBuckBunny_512kb.mp4"),
-    ("./cache/fake_video.mp4")])
+    ("./testing/cache/BigBuckBunny.ogv"),
+    ("./testing/cache/BigBuckBunny_512kb.mp4"),
+    ("./testing/cache/fake_video.mp4")])
 def test_com_hash_opensubtitles(file_name):
     """
     Test function

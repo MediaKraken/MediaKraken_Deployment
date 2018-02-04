@@ -36,8 +36,8 @@ class TestCommonISO(object):
 
     # open the osi file for parsing (url or file)
     @pytest.mark.parametrize(("url_file"), [
-        ("./cache/cache.iso"),
-        ("./cache/cache_fake.iso")])
+        ("./testing/cache/cache.iso"),
+        ("./testing/cache/cache_fake.iso")])
     def test_com_iso_load(self, url_file):
         """
         Test function
