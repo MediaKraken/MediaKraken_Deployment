@@ -59,21 +59,30 @@ def mk_hardware_vibration(pattern_string):
     """
     Setup of the vibration via pattern
     """
-    vibrator.pattern([float(n) for n in pattern_string.text.split(',')])
+    try:
+        vibrator.pattern([float(n) for n in pattern_string.text.split(',')])
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Vibration via time
     """
-    vibrator.vibrate(seconds_to_vibrate)
+    try:
+        vibrator.vibrate(seconds_to_vibrate)
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_vibration_stop():
     """
     Stop vibration
     """
-    vibrator.cancel()
+    try:
+        vibrator.cancel()
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_gps_on():
