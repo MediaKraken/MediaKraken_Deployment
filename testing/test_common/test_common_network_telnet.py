@@ -34,16 +34,24 @@ class TestCommonTelnet(object):
     def teardown_class(self):
         pass
 
-    #    def MK_Telnet_Open_Device(self, telnet_host, telnet_port, telnet_user=None, telnet_password=None):
+    @pytest.mark.parametrize(("telnet_host", "telnet_port", "telnet_user", "telnet_password"), [
+        ('', 'spootdevfake@gmail.com', "test1", "body"),
+        ('', 'spootdev@gmail.com', "test2", "body"),
+        ('', 'spootdev@fakegmail.com', "test3", "body")])
+    def test_com_net_telnet_open_device(self, telnet_host, telnet_port, telnet_user,
+                                        telnet_password):
+        self.test_device = common_network_telnet.CommonNetworkTelnet(telnet_host, telnet_port,
+                                                                     telnet_user,
+                                                                     telnet_password)
 
     def test_com_net_telnet_read_device(self):
         """
         Test function
         """
-        self.telnet_connection.com_net_telnet_read_device()
+        self.test_device.com_net_telnet_read_device()
 
     def test_com_net_telnet_write_device(self):
         """
         Test function
         """
-        self.telnet_connection.com_net_telnet_write_device("Telnet test message")
+        self.test_device.com_net_telnet_write_device("Telnet test message")
