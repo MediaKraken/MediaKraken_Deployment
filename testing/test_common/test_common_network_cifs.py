@@ -58,11 +58,11 @@ class TestCommonCIFSShare(object):
     # def com_cifs_Connect(self, ip_addr, user_name='guest', user_password=''):
 
     # list shares
-    def test_com_cifs_share_list_by_connection(self):
-        """
-        Test function
-        """
-        self.db_connection.com_cifs_share_list_by_connection()
+    # def test_com_cifs_share_list_by_connection(self):
+    #     """
+    #     Test function
+    #     """
+    #     self.db_connection.com_cifs_share_list_by_connection()
 
     # list files in share
     # def com_cifs_Share_File_List_by_Share(self, share_name, path_text='/'):
@@ -83,11 +83,11 @@ class TestCommonCIFSShare(object):
     # def com_cifs_Share_File_Delete(self, share_name, file_path):
 
     # close connection
-    def test_com_cifs_close(self):
-        """
-        Test function
-        """
-        self.db_connection.com_cifs_close()
+    # def test_com_cifs_close(self):
+    #     """
+    #     Test function
+    #     """
+    #     self.db_connection.com_cifs_close()
 
 # cifs directory walk
 # def com_cifs_Walk(self, share_name, file_path='/'):
