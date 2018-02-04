@@ -49,10 +49,10 @@ def test_com_string_bytes2human(n, expected_result):
 
 
 @pytest.mark.parametrize(("password_text", "expected_result"), [
-    ("password", "0.11086303015729373"),
-    ("Password", "0.1673790562956108"),
-    ("sRji#234", "0.9061487395320603"),
-    ("jfioj23$29#DFWEWFWE454938", "0.9169341505208981")])
+    ("password", 0.11086303015729373),
+    ("Password", 0.1673790562956108),
+    ("sRji#234", 0.9061487395320603),
+    ("jfioj23$29#DFWEWFWE454938", 0.9169341505208981)])
 def test_com_string_password_test(password_text, expected_result):
     """
     # test password
