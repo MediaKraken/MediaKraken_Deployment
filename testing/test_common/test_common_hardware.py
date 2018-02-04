@@ -57,8 +57,8 @@ def test_mk_hardware_vibration():
 
 # vibration via time
 @pytest.mark.parametrize(("seconds_to_vibrate"), [
-    ("0.5"),
-    ("2")])
+    (0.5),
+    (2)])
 def test_mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Test function
