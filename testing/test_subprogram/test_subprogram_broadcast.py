@@ -48,7 +48,7 @@ class TestSubprogramBroadcast(object):
 
     @classmethod
     def teardown_class(self):
-        os.kill(self.proc_broadcast, signal.SIGTERM)
+        os.kill(self.proc_broadcast.pid, signal.SIGTERM)
 
     def test_sub_broadcast(self):
         """
