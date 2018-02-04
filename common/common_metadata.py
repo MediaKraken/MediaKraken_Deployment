@@ -25,8 +25,6 @@ import random
 from . import common_config_ini
 from . import common_network
 
-option_config_json, db_connection = common_config_ini.com_config_read()
-
 
 def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
     """
@@ -84,6 +82,7 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     source_link - the website/host to use
     source_file - the "file name" on the url
     """
+    url = ''
     file_path = com_meta_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == 'themoviedb':
@@ -101,10 +100,10 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     #           url += 'actors/'
     elif source_link == 'thelogodb':
         # simply a placeholder so I don't ponder about this one in the future
-        url = ''
+        pass
     elif source_link == 'tvmaze':
         # simply a placeholder so I don't ponder about this one in the future
-        url = ''
+        pass
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):
