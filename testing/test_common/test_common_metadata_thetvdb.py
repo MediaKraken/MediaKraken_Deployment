@@ -21,6 +21,7 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
+from common import common_config_ini
 from common import common_metadata_thetvdb
 
 
@@ -28,7 +29,9 @@ class TestCommonMetadataTheTVDB(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_metadata_thetvdb.CommonMetadataTheTVDB()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.db_connection = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
     @classmethod
     def teardown_class(self):
