@@ -29,7 +29,7 @@ def test_com_net_eiscp_discovery():
     """
     Test function
     """
-    common_network_iscp.com_net_eiscp_discovery()
+    common_network_iscp.com_net_eiscp_discovery('10.0.0.1')
 
 # def MK_EISCP_Connection(ip_addr):
 
