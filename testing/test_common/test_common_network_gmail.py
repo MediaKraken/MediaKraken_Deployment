@@ -25,12 +25,15 @@ from common import common_network_gmail
 
 
 # send email
-@pytest.mark.parametrize(("email_receipient", "email_subject", "email_body"), [
-    ('spootdevfake@gmail.com', "test1", "body"),
-    ('spootdev@gmail.com', "test2", "body"),
-    ('spootdev@fakegmail.com', "test3", "body")])
-def test_com_net_send_email(email_receipient, email_subject, email_body):
+@pytest.mark.parametrize(("user_name", "user_password", "email_receipient", "email_subject",
+                          "email_body"), [
+    ('', '', 'spootdevfake@gmail.com', "test1", "body"),
+    ('', '', 'spootdev@gmail.com', "test2", "body"),
+    ('', '', 'spootdev@fakegmail.com', "test3", "body")])
+def test_com_net_send_email(user_name, user_password, email_receipient,
+                            email_subject, email_body):
     """
     Test function
     """
-    common_network_gmail.com_net_send_email(email_receipient, email_subject, email_body)
+    common_network_gmail.com_net_send_email(user_name, user_password, email_receipient,
+                                            email_subject, email_body)
