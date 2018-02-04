@@ -28,7 +28,7 @@ class TestCommonHardwareChromecast(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_hardware_chromecast.CommonHardwareChromecast()
+        self.chrome_device = common_hardware_chromecast.CommonHardwareChromecast()
 
     @classmethod
     def teardown_class(self):
@@ -39,36 +39,36 @@ class TestCommonHardwareChromecast(object):
         """
         Test function
         """
-        self.db_connection.com_chromecast_discover_dict()
+        self.chrome_device.com_chromecast_discover()
 
     # get detail by name
     def test_com_chromecast_info(self):
         """
         Test function
         """
-        self.db_connection.com_chromecast_info()
+        self.chrome_device.com_chromecast_info()
 
     # get status by name
     def test_com_chromecast_status(self):
         """
         Test function
         """
-        self.db_connection.com_chromecast_status()
+        self.chrome_device.com_chromecast_status()
 
     # connect to device
-    #    def MK_Chromecast_Connect_by_Name(self, key_name):
+    #    def com_chromecast_connect_by_name(self, key_name):
 
     # play youtube video
-    #    def MK_Chromecast_Play_YT(self, yt_id):
+    #    def com_chromecast_play_yt(self, yt_id):
 
     # play media file
-    #    def MK_Chromecast_Play_Media(self, media_file, media_type):
+    #    def com_chromecast_play_media(self, media_file, media_type):
 
     # send chromecast commands
-    #    def MK_Chromecast_Device_Command(self, command):
+    #    def com_chromecast_device_command(self, command):
 
     def test_com_chromecast_device_close(self):
         """
         Test function
         """
-        self.db_connection.com_chromecast_device_close()
+        self.chrome_device.com_chromecast_device_close()

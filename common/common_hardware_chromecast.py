@@ -45,17 +45,17 @@ class CommonHardwareChromecast(object):
         self.chromecast_dev = pychromecast.get_chromecasts()
         return self.chromecast_dev
 
-    # def com_chromecast_info(self):
-    #     """
-    #     # get detail by name
-    #     """
-    #     return self.cast.device
+    def com_chromecast_info(self):
+        """
+        # get detail by name
+        """
+        return self.cast.device
 
-    # def com_chromecast_status(self):
-    #     """
-    #     # get status by name
-    #     """
-    #     return self.cast.status
+    def com_chromecast_status(self):
+        """
+        # get status by name
+        """
+        return self.cast.status
 
     def com_chromecast_connect_by_name(self, key_name):
         """
