@@ -24,119 +24,119 @@ sys.path.append('.')
 from common import common_metadata_netflixroulette
 
 
-@pytest.mark.parametrize(("media_title", "media_year"), [
-    ("Die Hard", None),
-    ("fakezzzzzz", None),
-    ("Red", None),
-    ("Robocop", 1987)])
-def test_com_meta_flix_get_all_data(media_title, media_year):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_all_data(media_title, media_year)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_id(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_id(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_director(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_director(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_summary(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_summary(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_category(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_category(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_cast(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_cast(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_release_year(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_release_year(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_type(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_type(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_media_poster(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_media_poster(media_title)
-
-
-@pytest.mark.parametrize(("media_title"), [
-    ("Die Hard"),
-    ("fakezzzzzz"),
-    ("Red")])
-def test_com_meta_flix_get_rating(media_title):
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_rating(media_title)
-
-
-def test_com_meta_flix_get_version():
-    """
-    Test function
-    """
-    common_metadata_netflixroulette.com_meta_flix_get_version()
+# @pytest.mark.parametrize(("media_title", "media_year"), [
+#     ("Die Hard", None),
+#     ("fakezzzzzz", None),
+#     ("Red", None),
+#     ("Robocop", 1987)])
+# def test_com_meta_flix_get_all_data(media_title, media_year):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_all_data(media_title, media_year)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_id(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_id(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_director(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_director(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_summary(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_summary(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_category(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_category(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_cast(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_cast(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_release_year(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_release_year(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_type(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_type(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_media_poster(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_media_poster(media_title)
+#
+#
+# @pytest.mark.parametrize(("media_title"), [
+#     ("Die Hard"),
+#     ("fakezzzzzz"),
+#     ("Red")])
+# def test_com_meta_flix_get_rating(media_title):
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_rating(media_title)
+#
+#
+# def test_com_meta_flix_get_version():
+#     """
+#     Test function
+#     """
+#     common_metadata_netflixroulette.com_meta_flix_get_version()
