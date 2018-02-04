@@ -29,17 +29,11 @@ class TestCommonDocker(object):
 
     @classmethod
     def setup_class(self):
-        self.docker_handle = common_docker.CommonDocker('tcp://127.0.0.1', 2375)
+        self.docker_handle = common_docker.CommonDocker() # 'tcp://127.0.0.1', 2375)
 
     @classmethod
     def teardown_class(self):
         pass
-
-    def test_com_docker_connect(self):
-        """
-        Connect to specified machine
-        """
-        self.docker_handle.com_docker_connect()
 
     def test_com_docker_container_list(self):
         """
