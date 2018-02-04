@@ -28,7 +28,8 @@ class TestCommonSynology(object):
 
     @classmethod
     def setup_class(self):
-        self.db_connection = common_hardware_synology.CommonSynology()
+        self.db_connection = common_hardware_synology.CommonHardwareSynology(addr, user_name,
+                                                                             user_password)
 
     @classmethod
     def teardown_class(self):
