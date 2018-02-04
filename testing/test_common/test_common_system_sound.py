@@ -37,8 +37,8 @@ def test_com_sound_text_to_speech(message_to_speak):
 
 # play audio file
 @pytest.mark.parametrize(("file_name"), [
-    ("./cache/250Hz_44100Hz_16bit_05sec.wav"),
-    ("./cache/250Hz_44100Hz_16bit_05sec.mp3")])
+    ("./testing/cache/250Hz_44100Hz_16bit_05sec.wav"),
+    ("./testing/cache/250Hz_44100Hz_16bit_05sec.mp3")])
 def test_com_sound_play_file(file_name):
     """
     Test function
