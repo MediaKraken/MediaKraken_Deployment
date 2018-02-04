@@ -26,10 +26,7 @@ class CommonHardwareSynology(object):
     Class for interfacing with synology nas
     """
 
-    def __init__(self):
-        self.synology_nas = None
-
-    def com_synology_connect(self, addr, user_name, user_password):
+    def __init__(self, addr, user_name, user_password):
         """
         Connect to synology
         """
