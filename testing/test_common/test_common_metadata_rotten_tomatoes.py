@@ -24,23 +24,23 @@ sys.path.append('.')
 from common import common_metadata_rotten_tomatoes
 
 
-class TestCommonMetadataRottenTomatoes(object):
-
-    @classmethod
-    def setup_class(self):
-        self.rt_connection = common_metadata_rotten_tomatoes.CommonMetadataRottenTomatoes()
-
-    @classmethod
-    def teardown_class(self):
-        pass
-
-    # search for movie title and year
-    @pytest.mark.parametrize(("movie_title", "movie_year"), [
-        ("Robocop", None),
-        ("Robocop", 1987),
-        ("Fake", None)])
-    def test_com_rt_search(self, movie_title, movie_year):
-        """
-        Test function
-        """
-        self.rt_connection.com_rt_search(movie_title, movie_year)
+# class TestCommonMetadataRottenTomatoes(object):
+#
+#     @classmethod
+#     def setup_class(self):
+#         self.rt_connection = common_metadata_rotten_tomatoes.CommonMetadataRottenTomatoes()
+#
+#     @classmethod
+#     def teardown_class(self):
+#         pass
+#
+#     # search for movie title and year
+#     @pytest.mark.parametrize(("movie_title", "movie_year"), [
+#         ("Robocop", None),
+#         ("Robocop", 1987),
+#         ("Fake", None)])
+#     def test_com_rt_search(self, movie_title, movie_year):
+#         """
+#         Test function
+#         """
+#         self.rt_connection.com_rt_search(movie_title, movie_year)
