@@ -45,7 +45,7 @@ class TestCommonLDAP(object):
         """
         Test ldap login
         """
-        self.db_connection.com_ldap_logon(user_name, user_password, expected_result)
+        self.db_connection.com_ldap_logon(user_name, user_password)
 
     def test_com_ldap_close(self):
         """
