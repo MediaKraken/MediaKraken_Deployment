@@ -39,7 +39,7 @@ def test_com_system_cpu_count():
     """
     # return cpu count
     """
-    assert common_system.com_system_cpu_count() == 8
+    assert common_system.com_system_cpu_count() == 16
 
 
 def test_com_system_partitions():
