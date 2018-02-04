@@ -34,22 +34,24 @@ class TestCommonSerial(object):
     def teardown_class(self):
         pass
 
-    #    def MK_Serial_Open_Device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits, dev_bytesize):
+    def test_com_serial_device(self, dev_port, dev_baudrate, dev_parity, dev_stopbits,
+                               dev_bytesize):
+        self.serial_device = common_serial.CommonSerial()
 
     def test_com_serial_read_device(self):
         """
         Test function
         """
-        self.serial_connection.com_serial_read_device()
+        self.serial_device.com_serial_read_device()
 
     def test_com_serial_close_device(self):
         """
         Test function
         """
-        self.serial_connection.com_serial_close_device()
+        self.serial_device.com_serial_close_device()
 
     def test_com_serial_write_device(self):
         """
         Test function
         """
-        self.serial_connection.com_serial_write_device("Test serial message")
+        self.serial_device.com_serial_write_device("Test serial message")

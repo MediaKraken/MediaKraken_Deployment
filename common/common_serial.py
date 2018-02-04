@@ -31,23 +31,19 @@ class CommonSerial(object):
     Class for interfacing via serial devices
     """
 
-    def __init__(self):
-        self.serial_device = None
-
-    def com_serial_open_device(self, dev_port='/dev/ttyUSB1', dev_baudrate=9600,
-                               dev_parity=serial.PARITY_ODD,
-                               dev_stopbits=serial.STOPBITS_TWO,
-                               dev_bytesize=serial.SEVENBITS):
+    def __init__(self, dev_port='/dev/ttyUSB1', dev_baudrate=9600,
+                 dev_parity=serial.PARITY_ODD,
+                 dev_stopbits=serial.STOPBITS_TWO,
+                 dev_bytesize=serial.SEVENBITS):
         """
         Open serial device for read/write
         """
-        self.serial_device = serial.Serial(
-            port=dev_port,
-            baudrate=dev_baudrate,
-            parity=dev_parity,
-            stopbits=dev_stopbits,
-            bytesize=dev_bytesize
-        )
+        self.serial_device = serial.Serial(port=dev_port,
+                                           baudrate=dev_baudrate,
+                                           parity=dev_parity,
+                                           stopbits=dev_stopbits,
+                                           bytesize=dev_bytesize
+                                           )
         self.serial_device.open()
         self.serial_device.isOpen()
 
