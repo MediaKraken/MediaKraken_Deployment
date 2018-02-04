@@ -22,6 +22,7 @@ import logging  # pylint: disable=W0611
 from kivy.clock import Clock
 from plyer import accelerometer
 from plyer import gps
+from plyer import vibrator
 
 VIBRATION_PATTERN = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
@@ -58,7 +59,7 @@ def mk_hardware_vibration(pattern_string):
     """
     Setup of the vibration via pattern
     """
-    vibrator.pattern([float(n) for n in ti.text.split(',')])
+    vibrator.pattern([float(n) for n in pattern_string.text.split(',')])
 
 
 def mk_hardware_vibration_time(seconds_to_vibrate):
@@ -79,14 +80,13 @@ def mk_hardware_gps_on():
     """
     gps setup
     """
-    self.gps = gps
     try:
-        self.gps.configure(on_location=self.on_location, on_status=self.on_status)
+        gps.configure(on_location=on_location, on_status=on_status)
     except NotImplementedError:
         import traceback
         traceback.print_exc()
-        self.gps_status = 'GPS is not implemented for your platform'
-    return self.gps
+        gps_status = 'GPS is not implemented for your platform'
+    return gps
 
 
 def on_location(self, **kwargs):
