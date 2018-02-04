@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging  # pylint: disable=W0611
 import os
 import re
-# import time
 from threading import Thread
 import urllib2
 import ssl
@@ -135,7 +134,7 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
+        logging.info("Status from %s is %s", pingle.ip_addr, report[pingle.status])
 
 
 def mk_network_io_counter(show_nic=False):
