@@ -57,7 +57,7 @@ def test_com_string_password_test(password_text, expected_result):
     """
     # test password
     """
-    assert common_string.com_string_password_test(password_text) == expected_result
+    assert common_string.com_string_password_test(password_text)[0] == expected_result
 
 # def ip_ascii_to_int(ip):
 
