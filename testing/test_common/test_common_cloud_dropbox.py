@@ -22,13 +22,16 @@ import sys
 
 sys.path.append('.')
 from common import common_cloud_dropbox
+from common import common_config_ini
 
 
 class TestCommonDropBox(object):
 
     @classmethod
     def setup_class(self):
-        self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
 
     @classmethod
     def teardown_class(self):

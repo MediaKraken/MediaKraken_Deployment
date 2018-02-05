@@ -42,7 +42,7 @@ class TestCommonBackupBackblaze(object):
         """
         Test bucket list
         """
-        self.backblaze_connection.com_backup_backblaze_bucket_list()
+        self.backblaze_connection.com_backblaze_bucket_list()
 
     @pytest.mark.parametrize(("bucket_name"), [
         ("bucket_upload"),
@@ -52,7 +52,7 @@ class TestCommonBackupBackblaze(object):
         """
         Test function
         """
-        self.backblaze_connection.com_backup_backblaze_bucket_create(bucket_name)
+        self.backblaze_connection.com_backblaze_bucket_create(bucket_name)
 
     @pytest.mark.parametrize(("file_name", "bucket_name", "file_password"), [
         ("./cache/HashCalc.txt", "bucket_upload", None),
@@ -63,7 +63,7 @@ class TestCommonBackupBackblaze(object):
         """
         Test function
         """
-        self.backblaze_connection.com_backup_backblaze_upload_file(file_name, bucket_name,
+        self.backblaze_connection.com_backblaze_upload_file(file_name, bucket_name,
                                                                    file_password)
 
     @pytest.mark.parametrize(("dir_name", "bucket_name", "dir_password"), [
@@ -75,7 +75,7 @@ class TestCommonBackupBackblaze(object):
         """
         Test function
         """
-        self.backblaze_connection.com_backup_backblaze_upload_directory(dir_name, bucket_name,
+        self.backblaze_connection.com_backblaze_upload_directory(dir_name, bucket_name,
                                                                         dir_password)
 
     @pytest.mark.parametrize(("file_name", "local_file_name", "file_password"), [
@@ -85,7 +85,7 @@ class TestCommonBackupBackblaze(object):
         """
         Test function
         """
-        self.backblaze_connection.com_backup_backblaze_download_file(file_name, local_file_name,
+        self.backblaze_connection.com_backblaze_download_file(file_name, local_file_name,
                                                                      file_password)
         os.remove("./cache/down.txt")
         os.remove("./cache/down_pass.txt")

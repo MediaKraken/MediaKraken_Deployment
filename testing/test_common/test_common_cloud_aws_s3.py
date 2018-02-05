@@ -23,13 +23,16 @@ import sys
 
 sys.path.append('.')
 from common import common_cloud_aws_s3
+from common import common_config_ini
 
 
 class TestCommonCloudAWSS3(object):
 
     @classmethod
     def setup_class(self):
-        self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
 
     @classmethod
     def teardown_class(self):

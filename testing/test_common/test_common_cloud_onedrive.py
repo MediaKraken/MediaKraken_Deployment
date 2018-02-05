@@ -22,13 +22,16 @@ import sys
 
 sys.path.append('.')
 from common import common_cloud_onedrive
+from common import common_config_ini
 
 
 class TestCommonCloudOneDrive(object):
 
     @classmethod
     def setup_class(self):
-        self.onedrive_connection = common_cloud_onedrive.CommonCloudOneDrive()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.onedrive_connection = common_cloud_onedrive.CommonCloudOneDrive(option_config_json)
 
     @classmethod
     def teardown_class(self):
