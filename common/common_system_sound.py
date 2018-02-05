@@ -36,7 +36,10 @@ def com_sound_play_file(file_name):
     """
     # play audio file
     """
-    sound_data = SoundLoader.load(file_name)
+    try:
+        sound_data = SoundLoader.load(file_name)
+    except GstPlayerException:
+        pass
     if sound_data:
         logging.info("Sound found at %s", sound_data.source)
         logging.info("Sound is %.3f seconds", sound_data.length)
