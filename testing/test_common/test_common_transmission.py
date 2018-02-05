@@ -21,6 +21,7 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
+from common import common_config_ini
 from common import common_transmission
 
 
@@ -28,7 +29,9 @@ class TestCommonTransmission(object):
 
     @classmethod
     def setup_class(self):
-        self.transmission_connection = common_transmission.CommonTransmission()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.transmission_connection = common_transmission.CommonTransmission(option_config_json)
 
     @classmethod
     def teardown_class(self):
