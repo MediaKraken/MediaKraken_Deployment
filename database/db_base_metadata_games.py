@@ -40,26 +40,26 @@ def db_meta_game_list(self, offset=None, records=None, search_value=None):
     """
     if offset is None:
         if search_value is not None:
-            self.db_cursor.execute('select gi_id,game_short_name,gi_game_info_name, '
+            self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name, '
                                    'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id and gi_game_info_name %% %s '
                                    'order by gi_game_info_name', (search_value,))
         else:
-            self.db_cursor.execute('select gi_id,game_short_name,gi_game_info_name,'
+            self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
                                    'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id order by gi_game_info_name')
     else:
         if search_value is not None:
-            self.db_cursor.execute('select gi_id,game_short_name,gi_game_info_name,'
+            self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
                                    'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id and gi_game_info_name %% %s '
                                    'order by gi_game_info_name'
                                    ' offset %s limit %s', (search_value, offset, records))
         else:
-            self.db_cursor.execute('select gi_id,game_short_name,gi_game_info_name,'
+            self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
                                    'gi_game_info_json->\'year\',gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id order by gi_game_info_name'
