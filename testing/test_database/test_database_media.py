@@ -151,54 +151,6 @@ class TestDatabaseMedia(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_path_by_uuid(media_guid)
 
-    @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, False),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_db_media_watched_status_update(self, media_guid, user_id, status_bool):
-        """
-        # set watched/unwatched status for media
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_media_watched_status_update(media_guid, user_id, status_bool)
-
-    @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, False),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_db_media_favorite_status_update(self, media_guid, user_id, status_bool):
-        """
-        # set favorite status for media
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_media_favorite_status_update(media_guid, user_id, status_bool)
-
-    @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, False),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_db_media_poo_status_update(self, media_guid, user_id, status_bool):
-        """
-        # set favorite status for media
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_media_poo_status_update(media_guid, user_id, status_bool)
-
-    @pytest.mark.parametrize(("media_guid", "user_id", "status_bool"), [
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, False),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, False),  # not found
-        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, True),  # exists
-        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, True)])  # not found
-    def test_db_media_mismatch_status_update(self, media_guid, user_id, status_bool):
-        """
-        # set favorite status for media
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_media_mismatch_status_update(media_guid, user_id, status_bool)
-
     @pytest.mark.parametrize(("media_guid", "user_id", "ffmpeg_time"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, 100),  # exists
         ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, 100),  # not found

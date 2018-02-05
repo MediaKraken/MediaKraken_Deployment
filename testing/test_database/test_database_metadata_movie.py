@@ -34,3 +34,15 @@ class TestDatabaseMetadataMovie(object):
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
+
+    @pytest.mark.parametrize(("metadata_guid", "user_id", "status_text"), [
+        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, 'watched'),  # exists
+        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, 'watched'),  # not found
+        ('04442b10-3fb5-4d87-95a6-b50dbd072630', 1, 'watched'),  # exists
+        ('04442b10-3fb5-4d87-95a6-b50dbd072633', 1, 'watched')])  # not found
+    def test_db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
+        """
+        # set favorite status for media
+        """
+        self.db_connection.db_rollback()
+        self.db_connection.db_meta_movie_status_update(metadata_guid, user_id, status_text)
