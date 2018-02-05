@@ -35,15 +35,12 @@ class TestDatabaseMediaMovie(object):
     def teardown_class(self):
         self.db_connection.db_close()
 
-    @pytest.mark.parametrize(("image_type"), [
-        ('Poster'),
-        (None)])
-    def test_db_media_random(self, image_type):
+    def test_db_media_random(self):
         """
         # find random movie
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_media_random(image_type)
+        self.db_connection.db_media_random()
 
     @pytest.mark.parametrize(("class_guid"), [
         ('928c56c3-253d-4e30-924e-5698be6d3d39'),  # exists
