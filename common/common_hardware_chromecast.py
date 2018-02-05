@@ -90,9 +90,3 @@ class CommonHardwareChromecast(object):
             self.chromecast_device.play()
         elif command == "Stop":
             self.chromecast_device.stop()
-
-    def com_chromecast_device_close(self):
-        """
-        Close the chromecast device
-        """
-        self.chromecast_device.quit_app()

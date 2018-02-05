@@ -66,9 +66,3 @@ class TestCommonHardwareChromecast(object):
 
     # send chromecast commands
     #    def com_chromecast_device_command(self, command):
-
-    def test_com_chromecast_device_close(self):
-        """
-        Test function
-        """
-        self.chrome_device.com_chromecast_device_close()
