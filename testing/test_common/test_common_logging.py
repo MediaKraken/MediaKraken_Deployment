@@ -26,7 +26,6 @@ from common import common_logging
 
 # def com_logging_start(log_name="./log/MediaKraken_Main"):
 @pytest.mark.parametrize(("log_name"), [
-    (None),
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
 def test_common_logging_start(log_name):
