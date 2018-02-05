@@ -26,7 +26,10 @@ def com_sound_text_to_speech(message_to_speak):
     """
     # text to speech
     """
-    tts.speak(message_to_speak)
+    try:
+        tts.speak(message_to_speak)
+    except NotImplementedError:
+        pass
 
 
 def com_sound_play_file(file_name):
