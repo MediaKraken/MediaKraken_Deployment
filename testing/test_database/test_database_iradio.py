@@ -55,16 +55,16 @@ class TestDatabaseiradio(object):
         self.db_connection.db_rollback()
         self.db_connection.db_iradio_list_count(active_station)
 
-    @pytest.mark.parametrize(("active_station", "offset", "records"), [
-        (True, None, None),
-        (True, 100, 100),
-        (True, 100000000, 1000),
-        (False, None, None),
-        (False, 100, 100),
-        (False, 100000000, 1000)])
-    def test_db_iradio_list(self, active_station, offset, records):
+    @pytest.mark.parametrize(("active_station", "search_value", "offset", "records"), [
+        (True, None, None, None),
+        (True, None, 100, 100),
+        (True, None, 100000000, 1000),
+        (False, None, None, None),
+        (False, None, 100, 100),
+        (False, None, 100000000, 1000)])
+    def test_db_iradio_list(self, active_station, search_value, offset, records):
         """
         # iradio list
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_iradio_list(active_station, offset, records)
+        self.db_connection.db_iradio_list(offset, records, active_station, search_value)
