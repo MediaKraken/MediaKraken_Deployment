@@ -58,15 +58,15 @@ class TestDatabaseAudit(object):
     # def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     #        self.db_connection.db_rollback()
 
-    @pytest.mark.parametrize(("dir_path", "class_guid"), [
-        ('/home/spoot/fakedirzz', 'b3420d91-999b-4d10-a582-3cddef2ce278'),
-        ('/home/spoot', '18479e1a-68a4-4137-8c96-b7d7dab5c66f')])
-    def test_db_audit_path_add(self, dir_path, class_guid):
+    @pytest.mark.parametrize(("dir_path", "class_guid", "share_guid"), [
+        ('/home/spoot/fakedirzz', 'b3420d91-999b-4d10-a582-3cddef2ce278', None),
+        ('/home/spoot', '18479e1a-68a4-4137-8c96-b7d7dab5c66f', None)])
+    def test_db_audit_path_add(self, dir_path, class_guid, share_guid):
         """
         ## add media path
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_audit_path_add(dir_path, class_guid)
+        self.new_guid = self.db_connection.db_audit_path_add(dir_path, class_guid, share_guid)
 
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
