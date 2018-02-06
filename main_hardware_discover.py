@@ -65,4 +65,5 @@ chrome_pid.wait()
 for roku in common_hardware_roku_network.com_roku_network_discovery():
     media_devices.append({'Roku': roku})
 
-common_file.com_file_save_data('./devices/Device_Scan', media_devices, True, False, None)
+common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
+                               media_devices, True, False, None)
