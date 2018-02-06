@@ -77,17 +77,21 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_version()
 
+    @pytest.mark.parametrize(("volume_name"), [
+        ('fake')])
     def test_com_docker_volume_info(self, volume_name):
         """
         return info no specified volume
         """
-        self.docker_handle.com_docker_volume_info()
+        self.docker_handle.com_docker_volume_info(volume_name)
 
+    @pytest.mark.parametrize(("volume_name"), [
+        ('fake')])
     def test_com_docker_volume_remove(self, volume_name):
         """
         remove volume from docker
         """
-        self.docker_handle.com_docker_volume_remove()
+        self.docker_handle.com_docker_volume_remove(volume_name)
 
     def test_com_docker_volume_list(self):
         """
