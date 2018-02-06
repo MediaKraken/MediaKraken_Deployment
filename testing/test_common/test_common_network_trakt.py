@@ -21,6 +21,7 @@ import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
+from common import common_config_ini
 from common import common_network_trakt
 
 
@@ -28,7 +29,9 @@ class TestCommonTrakt(object):
 
     @classmethod
     def setup_class(self):
-        self.trakt_connection = common_network_trakt.CommonNetworkTrakt()
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read(True)
+        self.trakt_connection = common_network_trakt.CommonNetworkTrakt(option_config_json)
 
     @classmethod
     def teardown_class(self):
@@ -45,7 +48,7 @@ class TestCommonTrakt(object):
         """
         Test function
         """
-        self.trakt_connection.com_trakt_calendar_by_days(day_count)
+        self.trakt_connection.com_net_trakt_calendar_by_days(day_count)
 
     # dismiss recommendation
 #    def com_trakt_dismiss_recommendation(imdb_id, imdb_title, imdb_year):
