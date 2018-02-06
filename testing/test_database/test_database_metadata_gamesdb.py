@@ -45,5 +45,5 @@ class TestDatabaseMetadataGamesdb(object):
         # insert gamesdb game system
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_meta_gamesdb_system_insert(platform_id, platform_name,
+        self.db_connection.db_meta_games_system_insert(platform_id, platform_name,
                                                          platform_alias, platform_json)
