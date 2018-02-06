@@ -99,6 +99,7 @@ services:
     entrypoint: python main_hardware_discover.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /var/opt/mediakraken/devices:/mediakraken/devices
     network_mode: host
 
   # runs the server to fetch/process all metadata
