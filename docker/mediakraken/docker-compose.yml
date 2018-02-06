@@ -202,16 +202,29 @@ services:
     networks:
       - mediakraken_network
 
-  # runs the phppgadmin
-  phppgadmin:
-    image: mediakraken/mkphppgadmin:latest
-    container_name: mkphppgadmin
-    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+  # pgadmin4
+  # https://github.com/Chorss/docker-pgAdmin4
+  pgadmin:
+    image: mediakraken/mkpgadmin:latest
+    container_name: mkpgadmin
     ports:
-      - "12345:80"
-    networks:
-      - mediakraken_dbnetwork
+      - "12345:5050"
+    volumes:
+      - /var/opt/mediakraken/pgadmin:/data
     restart: unless-stopped
+    networks:
+      - mediakraken_network
+
+#  # runs the phppgadmin
+#  phppgadmin:
+#    image: mediakraken/mkphppgadmin:latest
+#    container_name: mkphppgadmin
+#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+#    ports:
+#      - "12345:80"
+#    networks:
+#      - mediakraken_dbnetwork
+#    restart: unless-stopped
 
   # runs portainer
   dockmanage:
