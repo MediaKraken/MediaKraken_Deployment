@@ -27,7 +27,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # setup the tvmaze class
 if option_config_json['API']['tvmaze'] is not None:
-    TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze(option_config_json)
+    TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
 else:
     TVMAZE_CONNECTION = None
 
