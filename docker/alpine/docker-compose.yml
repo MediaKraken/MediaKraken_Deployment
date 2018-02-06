@@ -24,7 +24,6 @@ services:
       - "8903:8903"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
-      - /var/opt/mediakraken/devices:/mediakraken/devices
       - /var/opt/mediakraken/certs:/mediakraken/key
       - /var/opt/mediakraken/backup:/mediakraken/backup
       - /home/mediakraken:/mediakraken/mnt
@@ -100,7 +99,6 @@ services:
     entrypoint: python main_hardware_discover.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
-      - /var/opt/mediakraken/devices:/mediakraken/devices
     network_mode: host
 
   # runs the server to fetch/process all metadata

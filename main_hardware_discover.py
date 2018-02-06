@@ -21,7 +21,6 @@ import logging  # pylint: disable=W0611
 import subprocess
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
-from common import common_file
 from common import common_logging
 from common import common_string
 from common import common_signal
@@ -64,6 +63,3 @@ chrome_pid.wait()
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
     media_devices.append({'Roku': roku})
-
-common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
-                               media_devices, True, False, None)
