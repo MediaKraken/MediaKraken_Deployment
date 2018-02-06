@@ -189,8 +189,10 @@ def db_meta_tvshow_detail(self, guid):
     # return metadata for tvshow
     """
     self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
-                           ' mm_metadata_tvshow_localimage_json, COALESCE(mm_metadata_tvshow_localimage_json'
-                           '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+                           ' mm_metadata_tvshow_localimage_json,'
+                           ' COALESCE(mm_metadata_tvshow_localimage_json'
+                           '->\'Images\'->\'tvmaze\'->>\'Poster\','
+                           ' mm_metadata_tvshow_localimage_json'
                            '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
                            ' where mm_metadata_tvshow_guid = %s', (guid,))
     try:
@@ -265,7 +267,8 @@ def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
     for row_data in self.db_cursor.fetchall():
         if row_data['eps_filename'] is None:
             episode_data[row_data['eps_num']] \
-                = (row_data['eps_name'], 'missing_icon.jpg', row_data['eps_id'], str(season_number))
+                = (row_data['eps_name'], 'missing_icon.jpg', row_data['eps_id'],
+                   str(season_number))
         else:
             episode_data[row_data['eps_num']] \
                 = (

@@ -43,9 +43,6 @@ def db_pgsql_row_count(self):
     """
     # return tables and row count
     """
-    # this one doesn't show "old old" stuff in cache?
-    #    self.db_cursor.execute('SELECT schemaname,relname,n_live_tup'
-    #        ' FROM pg_stat_user_tables ORDER BY n_live_tup DESC')
     self.db_cursor.execute('SELECT nspname AS schemaname,relname,reltuples FROM pg_class C'
                            ' LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)'
                            ' WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\')'
