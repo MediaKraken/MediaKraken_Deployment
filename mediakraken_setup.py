@@ -186,7 +186,8 @@ compose_text += "\n\n  # pgbouncer\n" \
 if response is None or len(response) == 0:
     compose_text += "    depends_on:\n" \
                     "      - database\n" \
-                    "    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh\n"
+                    "    entrypoint: ./wait-for-it-ash.sh -h database -p 5432" \
+                    " -t 30 -- ./entrypoint.sh\n"
 else:
     compose_text += (
         "    entrypoint: ./wait-for-it-ash.sh -h %s -p 5432 -t 30 -- ./entrypoint.sh\n",
@@ -200,7 +201,8 @@ compose_text += "\n\n  # runs the nginx proxy service\n" \
                 "  nginx:\n" \
                 "    image: mediakraken/mknginx:latest\n" \
                 "    container_name: mknginx\n" \
-                "    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx\n" \
+                "    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080" \
+                " -t 30 -- nginx\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx\n" \
                 "      - /var/opt/mediakraken/certs:/etc/nginx/certs\n" \
@@ -281,11 +283,11 @@ else:
     response = raw_input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 
 if py3:
-    response = input(
-        "Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
+    response = input("Please enter your Transmission instance IP/Hostname"
+                     " (None for builtin server - default builtin: ")
 else:
-    response = raw_input(
-        "Please enter your Transmission instance IP/Hostname (None for builtin server - default builtin: ")
+    response = raw_input("Please enter your Transmission instance IP/Hostname"
+                         " (None for builtin server - default builtin: ")
 if response == 'None' or len(response) == 0:
     # builtin
     pass
@@ -315,5 +317,5 @@ print("Pulling newest images from Docker Hub for MediaKraken....this may take aw
 docker_pid = subprocess.Popen(['docker-compose', 'pull'])
 docker_pid.wait()
 
-print(
-    "MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux/MacOS or 'docker-compose up -d' to start the application.")
+print("MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux/MacOS"
+      " or 'docker-compose up -d' to start the application.")
