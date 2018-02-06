@@ -97,8 +97,8 @@ FOREIGN KEY (book_id) REFERENCES books (id);
 # create table for media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media (mm_media_guid uuid'
                        ' CONSTRAINT mm_media_pk PRIMARY KEY, mm_media_class_guid uuid,'
-                       ' mm_media_metadata_guid uuid, mm_media_path text, mm_media_ffprobe_json jsonb,'
-                       ' mm_media_json jsonb)')
+                       ' mm_media_metadata_guid uuid, mm_media_path text,'
+                       ' mm_media_ffprobe_json jsonb, mm_media_json jsonb)')
 if db_connection.db_table_index_check('mm_media_idxgin_ffprobe') is None:
     db_connection.db_query('CREATE INDEX mm_media_idxgin_ffprobe'
                            ' ON mm_media USING gin (mm_media_ffprobe_json)')
@@ -110,8 +110,9 @@ if db_connection.db_table_index_check('mm_media_idx_path') is None:
 
 # create table for remote media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_remote (mmr_media_guid uuid'
-                       ' CONSTRAINT mmr_media_remote_pk PRIMARY KEY, mmr_media_link_id uuid, mmr_media_uuid uuid,'
-                       ' mmr_media_class_guid uuid, mmr_media_metadata_guid uuid, mmr_media_ffprobe_json jsonb,'
+                       ' CONSTRAINT mmr_media_remote_pk PRIMARY KEY, mmr_media_link_id uuid,'
+                       ' mmr_media_uuid uuid, mmr_media_class_guid uuid,'
+                       ' mmr_media_metadata_guid uuid, mmr_media_ffprobe_json jsonb,'
                        ' mmr_media_json jsonb)')
 if db_connection.db_table_index_check('mmr_media_idxgin_ffprobe') is None:
     db_connection.db_query('CREATE INDEX mmr_media_idxgin_ffprobe ON mm_media_remote'
@@ -125,17 +126,20 @@ if db_connection.db_table_index_check('mmr_media_idx_link_uuid') is None:
 
 # create table for remote server link
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_link (mm_link_guid uuid'
-                       ' CONSTRAINT mm_link_guid_pk PRIMARY KEY, mm_link_name text, mm_link_json jsonb)')
+                       ' CONSTRAINT mm_link_guid_pk PRIMARY KEY, mm_link_name text,'
+                       ' mm_link_json jsonb)')
 if db_connection.db_table_index_check('mm_link_json_idxgin') is None:
     db_connection.db_query('CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
 if db_connection.db_table_index_check('mm_link_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_link_idx_name ON mm_link(mm_link_name)')
 
 # create table for metadata of tvshows (full json w/crew, w/episodes)
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_tvshow (mm_metadata_tvshow_guid uuid'
-                       ' CONSTRAINT mm_metadata_tvshow_pk PRIMARY KEY, mm_metadata_media_tvshow_id jsonb,'
+db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_tvshow ('
+                       'mm_metadata_tvshow_guid uuid CONSTRAINT mm_metadata_tvshow_pk PRIMARY KEY,'
+                       ' mm_metadata_media_tvshow_id jsonb,'
                        ' mm_metadata_tvshow_name text, mm_metadata_tvshow_json jsonb,'
-                       ' mm_metadata_tvshow_localimage_json jsonb, mm_metadata_tvshow_user_json jsonb)')
+                       ' mm_metadata_tvshow_localimage_json jsonb,'
+                       ' mm_metadata_tvshow_user_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idx_name'
                            ' ON mm_metadata_tvshow(mm_metadata_tvshow_name)')
@@ -154,26 +158,33 @@ if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_localimage_json
 # yes double parans required
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_media_id_imdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_imdb'
-                           ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'imdb\'))')
+                           ' ON mm_metadata_tvshow USING gin'
+                           ' ((mm_metadata_media_tvshow_id->\'imdb\'))')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_media_id_thetvdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdb'
-                           ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'thetvdb\'))')
+                           ' ON mm_metadata_tvshow USING gin'
+                           ' ((mm_metadata_media_tvshow_id->\'thetvdb\'))')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_media_id_tmdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tmdb'
-                           ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'tmdb\'))')
+                           ' ON mm_metadata_tvshow USING gin'
+                           ' ((mm_metadata_media_tvshow_id->\'tmdb\'))')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_media_id_thetvdbseries') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdbseries'
-                           ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'thetvdbSeries\'))')
+                           ' ON mm_metadata_tvshow USING gin'
+                           ' ((mm_metadata_media_tvshow_id->\'thetvdbSeries\'))')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_media_id_tvmaze') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tvmaze'
-                           ' ON mm_metadata_tvshow USING gin ((mm_metadata_media_tvshow_id->\'tvmaze\'))')
+                           ' ON mm_metadata_tvshow USING gin'
+                           ' ((mm_metadata_media_tvshow_id->\'tvmaze\'))')
 if db_connection.db_table_index_check('mm_metadata_tvshow_idxgin_user_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_tvshow_idxgin_user_json'
                            ' ON mm_metadata_tvshow USING gin (mm_metadata_tvshow_user_json)')
 
 # create table for metadata sports media
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_sports (mm_metadata_sports_guid uuid'
-                       ' CONSTRAINT mm_metadata_sports_pk PRIMARY KEY, mm_metadata_media_sports_id jsonb,'
+db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_sports'
+                       ' (mm_metadata_sports_guid uuid'
+                       ' CONSTRAINT mm_metadata_sports_pk PRIMARY KEY,'
+                       ' mm_metadata_media_sports_id jsonb,'
                        ' mm_metadata_sports_name text, mm_metadata_sports_json jsonb,'
                        ' mm_metadata_sports_image_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_sports_idx_name') is None:
@@ -191,26 +202,33 @@ if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id') is N
 # yes double parans required
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_imdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_imdb'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'imdb\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'imdb\'))')
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_thetvdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdb'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'thetvdb\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'thetvdb\'))')
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_tmdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_tmdb'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'tmdb\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'tmdb\'))')
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_thetvdbseries') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdbseries'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'thetvdbSeries\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'thetvdbSeries\'))')
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_tvmaze') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_tvmaze'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'tvmaze\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'tvmaze\'))')
 if db_connection.db_table_index_check('mm_metadata_sports_idxgin_media_id_thesportsdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_sports_idxgin_media_id_thesportsdb'
-                           ' ON mm_metadata_sports USING gin ((mm_metadata_media_sports_id->\'thesportsdb\'))')
+                           ' ON mm_metadata_sports USING gin'
+                           ' ((mm_metadata_media_sports_id->\'thesportsdb\'))')
 
 # setup table for musician
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_musician'
-                       ' (mm_metadata_musician_guid uuid CONSTRAINT mm_metadata_musician_pk PRIMARY KEY,'
+                       ' (mm_metadata_musician_guid uuid'
+                       ' CONSTRAINT mm_metadata_musician_pk PRIMARY KEY,'
                        ' mm_metadata_musician_name text, mm_metadata_musician_id jsonb,'
                        ' mm_metadata_musician_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_musician_idx_name') is None:
@@ -249,7 +267,8 @@ if db_connection.db_table_index_check('mm_metadata_album_idx_musician') is None:
 
 # create table for metadata of music songs
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_music (mm_metadata_music_guid uuid'
-                       ' CONSTRAINT mm_metadata_music_pk PRIMARY KEY, mm_metadata_media_music_id jsonb,'
+                       ' CONSTRAINT mm_metadata_music_pk PRIMARY KEY,'
+                       ' mm_metadata_media_music_id jsonb,'
                        ' mm_metadata_music_name text, mm_metadata_music_json jsonb,'
                        ' mm_metadata_music_album_guid uuid)')
 if db_connection.db_table_index_check('mm_metadata_music_idx_name') is None:
@@ -282,9 +301,12 @@ for media_class in base_media_classes:
 
 # create table for anime metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'
-                       ' CONSTRAINT mm_metadata_anime_pk PRIMARY KEY, mm_metadata_anime_media_id jsonb,'
-                       ' mm_media_anime_name text, mm_metadata_anime_json jsonb, mm_metadata_anime_mapping jsonb,'
-                       ' mm_metadata_anime_mapping_before text, mm_metadata_anime_localimage_json jsonb,'
+                       ' CONSTRAINT mm_metadata_anime_pk PRIMARY KEY,'
+                       ' mm_metadata_anime_media_id jsonb,'
+                       ' mm_media_anime_name text, mm_metadata_anime_json jsonb,'
+                       ' mm_metadata_anime_mapping jsonb,'
+                       ' mm_metadata_anime_mapping_before text,'
+                       ' mm_metadata_anime_localimage_json jsonb,'
                        ' mm_metadata_anime_user_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_anime_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idx_name'
@@ -301,24 +323,30 @@ if db_connection.db_table_index_check('mm_metadata_aniem_idxgin_media_id') is No
 # yes double paran is required
 if db_connection.db_table_index_check('mm_metadata_anime_idxgin_media_id_anidb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idxgin_media_id_anidb'
-                           ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'anidb\'))')
+                           ' ON mm_metadata_anime USING gin'
+                           ' ((mm_metadata_anime_media_id->\'anidb\'))')
 if db_connection.db_table_index_check('mm_metadata_anime_idxgin_media_id_thetvdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idxgin_media_id_thetvdb'
-                           ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'thetvdb\'))')
+                           ' ON mm_metadata_anime USING gin'
+                           ' ((mm_metadata_anime_media_id->\'thetvdb\'))')
 if db_connection.db_table_index_check('mm_metadata_anime_idxgin_media_id_tmdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb'
-                           ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'tmdb\'))')
+                           ' ON mm_metadata_anime USING gin'
+                           ' ((mm_metadata_anime_media_id->\'tmdb\'))')
 if db_connection.db_table_index_check('mm_metadata_anime_idxgin_media_id_imdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb'
-                           ' ON mm_metadata_anime USING gin ((mm_metadata_anime_media_id->\'imdb\'))')
+                           ' ON mm_metadata_anime USING gin'
+                           ' ((mm_metadata_anime_media_id->\'imdb\'))')
 if db_connection.db_table_index_check('mm_metadata_anime_idxgin_user_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_anime_idxgin_user_json'
                            ' ON mm_metadata_anime USING gin (mm_metadata_anime_user_json)')
 
 # create table for metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_movie (mm_metadata_guid uuid'
-                       ' CONSTRAINT mm_metadata_pk PRIMARY KEY, mm_metadata_media_id jsonb, mm_media_name text,'
-                       ' mm_metadata_json jsonb, mm_metadata_localimage_json jsonb, mm_metadata_user_json jsonb)')
+                       ' CONSTRAINT mm_metadata_pk PRIMARY KEY, mm_metadata_media_id jsonb,'
+                       ' mm_media_name text,'
+                       ' mm_metadata_json jsonb, mm_metadata_localimage_json jsonb,'
+                       ' mm_metadata_user_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idx_name ON mm_metadata_movie(mm_media_name)')
 if db_connection.db_table_index_check('mm_metadata_idx_name_lower') is None:
@@ -346,7 +374,8 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_user_json') is None:
 
 # create table for metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_music_video'
-                       ' (mm_metadata_music_video_guid uuid CONSTRAINT mm_metadata_music_video_pk PRIMARY KEY,'
+                       ' (mm_metadata_music_video_guid uuid'
+                       ' CONSTRAINT mm_metadata_music_video_pk PRIMARY KEY,'
                        ' mm_metadata_music_video_media_id jsonb, mm_media_music_video_band text,'
                        ' mm_media_music_video_song text, mm_metadata_music_video_json jsonb,'
                        ' mm_metadata_music_video_localimage_json jsonb)')
@@ -367,16 +396,19 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_json') is 
                            ' ON mm_metadata_music_video USING gin (mm_metadata_music_video_json)')
 if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_media_id') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idxgin_music_video_media_id'
-                           ' ON mm_metadata_music_video USING gin (mm_metadata_music_video_media_id)')
+                           ' ON mm_metadata_music_video USING gin'
+                           ' (mm_metadata_music_video_media_id)')
 # yes double paran is required
 if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_media_id_imvdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idxgin_music_video_media_id_imvdb'
-                           ' ON mm_metadata_music_video USING gin ((mm_metadata_music_video_media_id->\'imvdb\'))')
+                           ' ON mm_metadata_music_video USING gin'
+                           ' ((mm_metadata_music_video_media_id->\'imvdb\'))')
 
 # create table for metadata for book
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_book (mm_metadata_book_guid uuid'
                        ' CONSTRAINT mm_metadata_book_pk PRIMARY KEY, mm_metadata_book_isbn text,'
-                       ' mm_metadata_book_isbn13 text, mm_metadata_book_name text, mm_metadata_book_json jsonb,'
+                       ' mm_metadata_book_isbn13 text, mm_metadata_book_name text,'
+                       ' mm_metadata_book_json jsonb,'
                        ' mm_metadata_book_image_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_idx_book_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idx_book_name'
@@ -396,9 +428,12 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_isbn13') is None:
 
 # create user activity table
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_activity (mm_activity_guid uuid'
-                       ' CONSTRAINT mm_activity_pk PRIMARY KEY, mm_activity_name text, mm_activity_overview text,'
-                       ' mm_activity_short_overview text, mm_activity_type text, mm_activity_itemid uuid,'
-                       ' mm_activity_userid uuid, mm_activity_datecreated timestamp, mm_activity_log_severity text)')
+                       ' CONSTRAINT mm_activity_pk PRIMARY KEY, mm_activity_name text,'
+                       ' mm_activity_overview text,'
+                       ' mm_activity_short_overview text, mm_activity_type text,'
+                       ' mm_activity_itemid uuid,'
+                       ' mm_activity_userid uuid, mm_activity_datecreated timestamp,'
+                       ' mm_activity_log_severity text)')
 if db_connection.db_table_index_check('mm_user_activity_idx_user_guid') is None:
     db_connection.db_query('CREATE INDEX mm_user_activity_idx_user_guid'
                            ' ON mm_user_activity(mm_activity_userid)')
@@ -419,7 +454,8 @@ if db_connection.db_table_index_check('mm_notification_idx_dismissable') is None
 
 # create table for user
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KEY,'
-                       ' username text, email text, password text, created_at timestamp with time zone,'
+                       ' username text, email text, password text,'
+                       ' created_at timestamp with time zone,'
                        ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_connection.db_table_index_check('mm_user_idx_username') is None:
     db_connection.db_query('CREATE INDEX mm_user_idx_username ON mm_user(username)')
@@ -445,12 +481,16 @@ if db_connection.db_table_index_check('mm_metadata_review_idx_metadata_uuid') is
 
 # create table for metadata collections
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_collection'
-                       ' (mm_metadata_collection_guid uuid CONSTRAINT mm_metadata_collection_guid_pk PRIMARY KEY,'
-                       ' mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids jsonb,'
-                       ' mm_metadata_collection_json jsonb, mm_metadata_collection_imagelocal_json jsonb)')
+                       ' (mm_metadata_collection_guid uuid'
+                       ' CONSTRAINT mm_metadata_collection_guid_pk PRIMARY KEY,'
+                       ' mm_metadata_collection_name jsonb,'
+                       ' mm_metadata_collection_media_ids jsonb,'
+                       ' mm_metadata_collection_json jsonb,'
+                       ' mm_metadata_collection_imagelocal_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_collection_idxgin_media_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_collection_idxgin_media_json'
-                           ' ON mm_metadata_collection USING gin (mm_metadata_collection_media_ids)')
+                           ' ON mm_metadata_collection USING gin'
+                           ' (mm_metadata_collection_media_ids)')
 if db_connection.db_table_index_check('mm_metadata_collection_idxgin_name_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_collection_idxgin_name_json'
                            ' ON mm_metadata_collection USING gin (mm_metadata_collection_name)')
@@ -460,7 +500,8 @@ if db_connection.db_table_index_check('mm_metadata_collection_idxgin_meta_json')
 
 # create task tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_task (mm_task_guid uuid'
-                       ' CONSTRAINT mm_task_guid_pk PRIMARY KEY, mm_task_name text, mm_task_description text,'
+                       ' CONSTRAINT mm_task_guid_pk PRIMARY KEY, mm_task_name text,'
+                       ' mm_task_description text,'
                        ' mm_task_enabled bool, mm_task_schedule text, mm_task_last_run timestamp,'
                        ' mm_task_file_path text, mm_task_json jsonb)')
 # create base task entries
@@ -514,7 +555,8 @@ for base_item in base_task:
 
 # create cron tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
-                       ' CONSTRAINT mm_cron_guid_pk PRIMARY KEY, mm_cron_name text, mm_cron_description text,'
+                       ' CONSTRAINT mm_cron_guid_pk PRIMARY KEY, mm_cron_name text,'
+                       ' mm_cron_description text,'
                        ' mm_cron_enabled bool, mm_cron_schedule text, mm_cron_last_run timestamp,'
                        ' mm_cron_file_path text)')
 
@@ -554,16 +596,18 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_radio (mm_radio_guid uuid'
 
 # create tables for sync
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_sync (mm_sync_guid uuid'
-                       ' CONSTRAINT mm_sync_guid_pk PRIMARY KEY, mm_sync_path text, mm_sync_path_to text,'
-                       ' mm_sync_options_json jsonb)')
+                       ' CONSTRAINT mm_sync_guid_pk PRIMARY KEY, mm_sync_path text,'
+                       ' mm_sync_path_to text, mm_sync_options_json jsonb)')
 if db_connection.db_table_index_check('mm_sync_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_sync_idxgin_json'
                            ' ON mm_sync USING gin (mm_sync_options_json)')
 
 # create the table for loaning media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
-                       ' CONSTRAINT mm_loan_guid_pk PRIMARY KEY, mm_loan_media_id uuid, mm_loan_user_id uuid,'
-                       ' mm_load_user_loan_id uuid, mm_loan_time timestamp, mm_loan_return_time timestamp)')
+                       ' CONSTRAINT mm_loan_guid_pk PRIMARY KEY, mm_loan_media_id uuid,'
+                       ' mm_loan_user_id uuid,'
+                       ' mm_load_user_loan_id uuid, mm_loan_time timestamp,'
+                       ' mm_loan_return_time timestamp)')
 
 ## create the table for "triggers"
 # db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
@@ -585,7 +629,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
 
 # create table for logos
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_logo (mm_metadata_logo_guid uuid'
-                       ' CONSTRAINT mm_metadata_logo_guid_pk PRIMARY KEY, mm_metadata_logo_media_guid jsonb,'
+                       ' CONSTRAINT mm_metadata_logo_guid_pk PRIMARY KEY,'
+                       ' mm_metadata_logo_media_guid jsonb,'
                        ' mm_metadata_logo_image_path text)')
 if db_connection.db_table_index_check('mm_metadata_logo_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_logo_idxgin_json'
@@ -594,7 +639,8 @@ if db_connection.db_table_index_check('mm_metadata_logo_idxgin_json') is None:
 # create table for channels
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_channel (mm_channel_guid uuid'
                        ' CONSTRAINT mm_channel_guid_pk PRIMARY KEY, mm_channel_name text,'
-                       ' mm_channel_media_id jsonb, mm_channel_country_guid uuid, mm_channel_logo_guid uuid)')
+                       ' mm_channel_media_id jsonb, mm_channel_country_guid uuid,'
+                       ' mm_channel_logo_guid uuid)')
 if db_connection.db_table_index_check('mm_channel_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_channel_idx_name ON mm_channel(mm_channel_name)')
 if db_connection.db_table_index_check('mm_channel_idxgin_json') is None:
@@ -653,7 +699,8 @@ for base_item in base_user:
 
 # create options and status table
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
-                       ' (mm_options_and_status_guid uuid CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
+                       ' (mm_options_and_status_guid uuid'
+                       ' CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
                        ' mm_options_json jsonb, mm_status_json jsonb)')
 db_connection.db_query('select count(*) from mm_options_and_status')
 db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local', 'Interval': 0},
@@ -705,8 +752,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
 
 # create table game_info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
-                       ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid, gi_game_info_name text,'
-                       ' gi_game_info_json jsonb)')
+                       ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid,'
+                       ' gi_game_info_name text, gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
                            ' on mm_metadata_game_software_info (gi_system_id);')  # so can match systems quickly
@@ -715,7 +762,8 @@ if db_connection.db_table_index_check('mm_game_info_idxgin_json') is None:
                            ' ON mm_metadata_game_software_info USING gin (gi_game_info_json)')
 if db_connection.db_table_index_check('mm_game_info_idxgin_name') is None:
     db_connection.db_query('CREATE INDEX mm_game_info_idxgin_name'
-                           ' ON mm_metadata_game_software_info USING gin ((gi_game_info_json->\'@name\'))')
+                           ' ON mm_metadata_game_software_info USING gin'
+                           ' ((gi_game_info_json->\'@name\'))')
 if db_connection.db_table_index_check('gi_game_idx_name') is None:
     db_connection.db_query('CREATE INDEX gi_game_idx_name'
                            ' on mm_metadata_game_software_info (gi_game_info_name);')
@@ -723,7 +771,8 @@ if db_connection.db_table_index_check('gi_game_idx_name') is None:
 # create table for games systems
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_systems_info (gs_id uuid'
                        ' CONSTRAINT gs_id_pk primary key, gs_game_system_id integer,'
-                       ' gs_game_system_name text, gs_game_system_alias text, gs_game_system_json jsonb)')
+                       ' gs_game_system_name text, gs_game_system_alias text,'
+                       ' gs_game_system_json jsonb)')
 if db_connection.db_table_index_check('mm_game_systems_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_game_systems_idxgin_json'
                            ' ON mm_metadata_game_systems_info USING gin (gs_game_system_json)')
@@ -731,7 +780,8 @@ if db_connection.db_table_index_check('mm_game_systems_idxgin_json') is None:
 # person for bio and image info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_person (mmp_id uuid'
                        ' CONSTRAINT mmp_id_pk primary key, mmp_person_media_id jsonb,'
-                       ' mmp_person_meta_json jsonb, mmp_person_image jsonb, mmp_person_name text)')
+                       ' mmp_person_meta_json jsonb, mmp_person_image jsonb,'
+                       ' mmp_person_name text)')
 if db_connection.db_table_index_check('mm_metadata_person_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_person_idx_name'
                            ' ON mm_metadata_person(mmp_person_name)')
@@ -744,8 +794,8 @@ if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is 
 
 # queue
 db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
-                       ' CONSTRAINT mdq_id_pk primary key, mdq_provider text, mdq_que_type smallint, '
-                       'mdq_download_json jsonb)')
+                       ' CONSTRAINT mdq_id_pk primary key, mdq_provider text,'
+                       ' mdq_que_type smallint, mdq_download_json jsonb)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
@@ -772,7 +822,8 @@ if db_connection.db_table_index_check('mm_image_download_idx_provider') is None:
 
 # hardware device
 db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
-                       ' CONSTRAINT mm_device_id_pk primary key, mm_device_type text, mm_device_json jsonb)')
+                       ' CONSTRAINT mm_device_id_pk primary key, mm_device_type text,'
+                       ' mm_device_json jsonb)')
 if db_connection.db_table_index_check('mm_device_idx_type') is None:
     db_connection.db_query('CREATE INDEX mm_device_idx_type ON mm_device(mm_device_type)')
 if db_connection.db_table_index_check('mm_device_idxgin_json') is None:
@@ -782,8 +833,8 @@ if db_connection.db_table_index_check('mm_device_idxgin_json') is None:
 # tv channel/station
 db_connection.db_query('create table IF NOT EXISTS mm_tv_stations (mm_tv_stations_id uuid'
                        ' CONSTRAINT mm_tv_stations_id_pk primary key, mm_tv_station_name text,'
-                       ' mm_tv_station_id text, mm_tv_station_channel text, mm_tv_station_json jsonb,'
-                       ' mm_tv_station_image text)')
+                       ' mm_tv_station_id text, mm_tv_station_channel text,'
+                       ' mm_tv_station_json jsonb, mm_tv_station_image text)')
 if db_connection.db_table_index_check('mm_tv_stations_idx_station') is None:
     db_connection.db_query('CREATE INDEX mm_tv_stations_idx_station'
                            ' ON mm_tv_stations(mm_tv_station_id)')
@@ -793,7 +844,8 @@ if db_connection.db_table_index_check('mm_tv_stations_idx_name') is None:
 
 # tv shedules
 db_connection.db_query('create table IF NOT EXISTS mm_tv_schedule (mm_tv_schedule_id uuid'
-                       ' CONSTRAINT mm_tv_schedule_id_pk primary key, mm_tv_schedule_station_id text,'
+                       ' CONSTRAINT mm_tv_schedule_id_pk primary key,'
+                       ' mm_tv_schedule_station_id text,'
                        ' mm_tv_schedule_date date, mm_tv_schedule_json jsonb)')
 if db_connection.db_table_index_check('mm_tv_schedule_idx_date') is None:
     db_connection.db_query('CREATE INDEX mm_tv_schedule_idx_date'
@@ -804,7 +856,8 @@ if db_connection.db_table_index_check('mm_tv_schedule_idx_station') is None:
 
 # tv schedules programs
 db_connection.db_query('create table IF NOT EXISTS mm_tv_schedule_program'
-                       ' (mm_tv_schedule_program_guid uuid CONSTRAINT mm_tv_schedule_program_guid_pk primary key,'
+                       ' (mm_tv_schedule_program_guid uuid'
+                       ' CONSTRAINT mm_tv_schedule_program_guid_pk primary key,'
                        ' mm_tv_schedule_program_id text, mm_tv_schedule_program_json jsonb)')
 if db_connection.db_table_index_check('mm_tv_schedule_idx_program') is None:
     db_connection.db_query('CREATE INDEX mm_tv_schedule_idx_program'
@@ -812,31 +865,43 @@ if db_connection.db_table_index_check('mm_tv_schedule_idx_program') is None:
 
 # create indexes for pg_trgm
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow USING gist(mm_metadata_tvshow_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON mm_metadata_tvshow'
+    ' USING gist(mm_metadata_tvshow_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports USING gist(mm_metadata_sports_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_sports_name_trigram_idx ON mm_metadata_sports'
+    ' USING gist(mm_metadata_sports_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician USING gist(mm_metadata_musician_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_musician_name_trigram_idx ON mm_metadata_musician'
+    ' USING gist(mm_metadata_musician_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_album_name_trigram_idx ON mm_metadata_album USING gist(mm_metadata_album_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_album_name_trigram_idx ON mm_metadata_album'
+    ' USING gist(mm_metadata_album_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_music_name_trigram_idx ON mm_metadata_music USING gist(mm_metadata_music_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_music_name_trigram_idx ON mm_metadata_music'
+    ' USING gist(mm_metadata_music_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_media_anime_name_trigram_idx ON mm_metadata_anime USING gist(mm_media_anime_name gist_trgm_ops);')
+    'CREATE INDEX mm_media_anime_name_trigram_idx ON mm_metadata_anime'
+    ' USING gist(mm_media_anime_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_movie USING gist(mm_media_name gist_trgm_ops);')
+    'CREATE INDEX mm_media_name_trigram_idx ON mm_metadata_movie'
+    ' USING gist(mm_media_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_band gist_trgm_ops);')
+    'CREATE INDEX mm_media_music_video_band_trigram_idx ON mm_metadata_music_video'
+    ' USING gist(mm_media_music_video_band gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video USING gist(mm_media_music_video_song gist_trgm_ops);')
+    'CREATE INDEX mm_media_music_video_song_trigram_idx ON mm_metadata_music_video'
+    ' USING gist(mm_media_music_video_song gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book USING gist(mm_metadata_book_name gist_trgm_ops);')
+    'CREATE INDEX mm_metadata_book_name_trigram_idx ON mm_metadata_book'
+    ' USING gist(mm_metadata_book_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info USING gist(gi_game_info_name gist_trgm_ops);')
+    'CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info'
+    ' USING gist(gi_game_info_name gist_trgm_ops);')
 # since it's json, gist trgm_ops won't work
 # db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
 db_connection.db_query(
-    'CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person USING gist(mmp_person_name gist_trgm_ops);')
+    'CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person'
+    ' USING gist(mmp_person_name gist_trgm_ops);')
 
 db_connection.db_commit()
 db_connection.db_close()
