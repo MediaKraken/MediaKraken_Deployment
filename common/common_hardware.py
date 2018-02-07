@@ -60,7 +60,7 @@ def mk_hardware_vibration(pattern_string):
     Setup of the vibration via pattern
     """
     try:
-        vibrator.pattern([float(n) for n in pattern_string.text.split(',')])
+        vibrator.pattern([float(n) for n in pattern_string.split(',')])
     except NotImplementedError:
         pass
 
