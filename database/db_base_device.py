@@ -36,10 +36,11 @@ def db_device_list(self, device_type=None, offset=None, records=None, search_val
     if device_type is None:
         if offset is None:
             self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device')
+                                   ' from mm_device order by mm_device_type')
         else:
             self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device offset %s limit %s', (offset, records))
+                                   ' from mm_device order by mm_device_type'
+                                   ' offset %s limit %s', (offset, records))
     else:
         if offset is None:
             self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
