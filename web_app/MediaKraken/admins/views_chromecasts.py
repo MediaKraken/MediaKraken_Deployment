@@ -23,6 +23,7 @@ from functools import partial
 from MediaKraken.admins.forms import ChromecastEditForm
 
 from common import common_config_ini
+from common import common_docker
 from common import common_internationalization
 from common import common_version
 import database as database_base
@@ -66,6 +67,10 @@ def admin_chromecast():
     """
     List chromecasts
     """
+    if request.method == 'POST':
+        docker_inst = common_docker.CommonDocker()
+        docker_inst.com_docker_run_container()
+        flash("Scheduled Chromecast scan.")
     device_list = []
     for row_data in g.db_connection.db_device_list('cast'):
         device_list.append((row_data['mm_device_id'], row_data['mm_device_json']['Name'],
