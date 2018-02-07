@@ -47,13 +47,6 @@ class TestDatabaseAudit(object):
     # def db_audit_path_update_status(self, lib_guid, status_json):
     #        self.db_connection.db_rollback()
 
-    def test_db_audit_paths_count(self):
-        """
-        # read the paths to audit
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_audit_paths_count()
-
     ## update audit path
     # def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     #        self.db_connection.db_rollback()
