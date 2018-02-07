@@ -35,9 +35,6 @@ class TestCommonSynology(object):
     def teardown_class(self):
         pass
 
-    # connect to synology
-    # def com_synology_connect(self, addr, user_name, user_password):
-
     # get nas info
     def test_com_Synology_Info(self):
         """
