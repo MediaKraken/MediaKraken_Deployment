@@ -121,8 +121,9 @@ def read(queue_object):
                                                 " -i ".format(**locals())) \
                                     + json_message['Data'] \
                                     + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
-                                                  " -c:v libx264 -pix_fmt yuv420p -profile:v high -level 4.0 "
-                                                  "-preset ultrafast -trellis 0"
+                                                  " -c:v libx264 -pix_fmt yuv420p"
+                                                  " -profile:v high -level 4.0"
+                                                  " -preset ultrafast -trellis 0"
                                                   " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
                                                   " -shortest -f mpegts"
                                                   " -output_ts_offset {output_ts_offset:.6f}"
@@ -139,9 +140,9 @@ def read(queue_object):
             logging.info('b4 docker run')
             hwaccel = True
             if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian'
+                image_name = 'mediakraken/mkslavenvidiadebian:latest'
             else:
-                image_name = 'mediakraken/mkslave'
+                image_name = 'mediakraken/mkslave:latest'
             docker_inst.com_docker_run_container(container_image_name=image_name,
                                                  container_name=name_container,
                                                  container_command=(container_command))
@@ -158,9 +159,9 @@ def read(queue_object):
             logging.info('ffmpegcont %s', name_container)
             hwaccel = True
             if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian'
+                image_name = 'mediakraken/mkslavenvidiadebian:latest'
             else:
-                image_name = 'mediakraken/mkslave'
+                image_name = 'mediakraken/mkslave:latest'
             docker_inst.com_docker_run_container(container_image_name=image_name,
                                                  container_name=name_container,
                                                  container_command=(
