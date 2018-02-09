@@ -22,10 +22,6 @@ import json
 import sys
 from common import common_config_ini
 from common import common_ffmpeg
-from common import common_logging
-
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_FFPROBE_Scan')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
