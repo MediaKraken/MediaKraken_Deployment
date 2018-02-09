@@ -66,6 +66,7 @@ if data is not None:
                     break
         if download_link is not None:
             # TODO let the metadata fetch program grab these
+            # TODO verify this trailer has not been downloaded before
             # TODO so only insert db dl records
             common_network.mk_network_fetch_from_url(download_link, '/static/meta/trailer')
 
