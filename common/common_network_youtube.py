@@ -25,7 +25,6 @@ from bs4 import BeautifulSoup
 import requests
 import urllib
 from apiclient.discovery import build
-import json
 
 
 def com_net_yt_fetch_video_by_url(url_location, file_name):
@@ -76,8 +75,8 @@ def com_net_yt_top_tracks(playlist_type):
         yt_link = 'https://www.youtube.com/playlist?list=PLhd1HyMTk3f5PzRjJzmzH7kkxjfdVoPPj'
     elif playlist_type == 'alt rock':
         yt_link = 'https://www.youtube.com/playlist?list=PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7'
-    r = requests.get(yt_link)
-    data = r.text
+    req_results = requests.get(yt_link)
+    data = req_results.text
     soup = BeautifulSoup(data)
     images = soup.select(".yt-thumb-clip")
     imagelinks = []
@@ -101,24 +100,28 @@ class CommonNetworkYoutube(object):
     """
 
     def __init__(self):
-        pass
         self.youtube_inst = youtubeapi.YoutubeAPI({'key': '/* Your API key here */'})
 
     def com_net_yt_video_info(self, video_id):
         return self.youtube_inst.get_video_info(video_id)
 
-    # Search playlists, channels and videos
     def com_net_yt_search_all(self, search_string):
+        """
+        Search playlists, channels and videos
+        """
         return self.youtube_inst.search(search_string)
 
-    # Search only Videos
     def com_net_yt_search_video(self, search_string):
+        """
+        Search only Videos
+        """
         return self.youtube_inst.search_videos(search_string)
 
-    # Search only Videos in a given channel
     def com_net_yt_search_in_channel(self, search_string, channel_id):
+        """
+        Search only Videos in a given channel
+        """
         video_list = self.youtube_inst.search_channel_videos(search_string, channel_id, 50)
-
         # TODO
         results = self.youtube_inst.search_advanced({'fake': 'param'})
 

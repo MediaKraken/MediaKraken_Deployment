@@ -21,9 +21,6 @@ import logging  # pylint: disable=W0611
 import base64
 import json
 import sys
-import os
-import signal
-
 sys.path.append("./vault/lib")
 import subprocess
 from twisted.internet import reactor, protocol
