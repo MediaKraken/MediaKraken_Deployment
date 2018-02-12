@@ -22,7 +22,6 @@ from common import common_network_mediakraken
 from common import common_network_mpv
 from common import common_signal
 from common import common_theater
-from common import common_version
 import platform
 import os
 import sys

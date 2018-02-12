@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 
 
 def db_web_tvmedia_list(self, genre_type=None, list_limit=None,

@@ -17,8 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
-from datetime import date, datetime, time
 from babel.dates import format_date, format_datetime, format_time
 from babel.numbers import format_number, format_decimal, format_percent
 

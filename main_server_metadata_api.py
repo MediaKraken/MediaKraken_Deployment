@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import logging
 import subprocess
-import json
 from build_image_directory import build_image_dirs
 from build_trailer_directory import build_trailer_dirs
 from common import common_logging

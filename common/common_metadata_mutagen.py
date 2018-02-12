@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import mutagen
 from mutagen.flac import FLAC
 from mutagen.mp3 import MP3

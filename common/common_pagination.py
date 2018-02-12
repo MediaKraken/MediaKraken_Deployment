@@ -3,7 +3,6 @@ The pagination for the flask server webserver
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 from flask import request, current_app
 from flask_paginate import Pagination
 

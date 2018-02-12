@@ -98,7 +98,7 @@ def admin_library_edit_page():
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    logging.info('smb info: %s %s %s', (addr, share, path))
+                    logging.info('smb info: %s %s %s' % (addr, share, path))
                     if addr is None:  # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))

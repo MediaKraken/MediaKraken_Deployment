@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import trakt
 from trakt.calendar import PremiereCalendar
 from trakt.movies import (trending_movies, updated_movies, Movie, Release,

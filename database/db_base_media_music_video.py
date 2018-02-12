@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 
 
 def db_music_video_list(self, offset=None, per_page=None, search_value=None):

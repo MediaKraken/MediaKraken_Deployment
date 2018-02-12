@@ -22,7 +22,6 @@ import string  # pylint: disable=W0402
 import os
 import re
 import random
-from . import common_config_ini
 from . import common_network
 
 

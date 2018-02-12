@@ -14,7 +14,6 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       They don't look right for me when I set the video height to 480
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import os
 import tempfile
 from subprocess import Popen, PIPE

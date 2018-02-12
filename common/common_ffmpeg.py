@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import subprocess
 
 
@@ -26,7 +25,6 @@ def com_ffmpeg_media_attr(file_path):
     """
     Runs ffprobe to generate the media file specifications which is returned in json
     """
-    logging.info("ffmpeg attr: %s", file_path)
     try:
         media_json = subprocess.check_output(['ffprobe',
                                               '-show_format', '-show_streams',

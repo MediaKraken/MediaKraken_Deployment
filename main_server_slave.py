@@ -26,7 +26,6 @@ from common import common_logging
 from common import common_network_share
 from common import common_signal
 from common import common_system
-from common import common_version
 
 
 class MKConsumer(object):
