@@ -8,10 +8,9 @@ import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
-    url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect
 from flask_login import login_required
-from flask_paginate import Pagination
 
 blueprint = Blueprint("admins_chromecasts", __name__, url_prefix='/admin',
                       static_folder="../static")
@@ -24,8 +23,6 @@ from MediaKraken.admins.forms import ChromecastEditForm
 
 from common import common_config_ini
 from common import common_docker
-from common import common_internationalization
-from common import common_version
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()

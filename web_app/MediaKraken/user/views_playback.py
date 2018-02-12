@@ -3,11 +3,9 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify, \
-    redirect, url_for, abort
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 from flask_login import current_user
-from fractions import Fraction
 
 blueprint = Blueprint("user_playback", __name__, url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611

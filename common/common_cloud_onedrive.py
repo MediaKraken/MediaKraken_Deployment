@@ -79,7 +79,7 @@ class CommonCloudOneDrive(object):
         i = onedrivesdk.Item()
         i.name = folder_name
         i.folder = folder_handle
-        returned_item = self.client.item(drive="me", id="root").children.add(i)
+        self.client.item(drive="me", id="root").children.add(i)
 
     def com_cloud_onedrive_copy(self, file_from, file_to):
         """

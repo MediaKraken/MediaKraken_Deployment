@@ -8,10 +8,9 @@ import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
-    url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect, abort
 from flask_login import login_required
-from flask_paginate import Pagination
 
 blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
@@ -23,17 +22,12 @@ from functools import partial
 from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import BackupEditForm
 from MediaKraken.admins.forms import BookAddForm
-from MediaKraken.admins.forms import DLNAEditForm
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_network_cifs
 from common import common_cloud
 from common import common_docker
-from common import common_file
 from common import common_network
-from common import common_pagination
-from common import common_string
 from common import common_system
 from common import common_version
 from common import common_zfs

@@ -1,31 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
 import json
 import logging  # pylint: disable=W0611
 import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash, \
-    url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect
 from flask_login import login_required
-from flask_paginate import Pagination
 
 blueprint = Blueprint("admins_share", __name__, url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
 from functools import wraps
-from functools import partial
 from MediaKraken.admins.forms import ShareAddEditForm
 
 from common import common_config_ini
-from common import common_internationalization
 from common import common_network_cifs
 from common import common_pagination
-from common import common_version
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
