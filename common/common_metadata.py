@@ -59,7 +59,8 @@ def com_meta_image_file_path(media_name, media_type):
     logging.info("filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
-        if re.search(pattern, os.path.basename(media_name)[0]):  # first char of filename
+        # first char of filename
+        if re.search(pattern, os.path.basename(media_name)[0]):
             file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
                                      media_type, random.choice(string.ascii_lowercase))
         else:

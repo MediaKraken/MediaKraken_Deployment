@@ -95,7 +95,8 @@ def metadata_search(thread_db, provider_name, download_data):
                                                                        download_data[
                                                                            'mdq_download_json'][
                                                                            'Path'])
-        logging.info('metadata_uuid %s, match_result %s', metadata_uuid, match_result)
+        logging.info('metadata_uuid %s, match_result %s',
+                     metadata_uuid, match_result)
         # if match_result is an int, that means the lookup found a match but isn't in db
         if metadata_uuid is None and type(match_result) != int:
             update_provider = 'omdb'
@@ -125,7 +126,8 @@ def metadata_search(thread_db, provider_name, download_data):
 
     # if search is being updated to new provider
     if update_provider is not None:
-        thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
+        thread_db.db_download_update_provider(
+            update_provider, download_data['mdq_id'])
         return  # no need to continue with checks
     # if lookup halt set to ZZ so it doesn't get picked up my metadata dl ques
     if lookup_halt:
@@ -148,7 +150,8 @@ def metadata_search(thread_db, provider_name, download_data):
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          download_data['mdq_download_json']['MetaNewID'])
             logging.info('after media id')
-            download_data['mdq_download_json'].update({'ProviderMetaID': str(match_result)})
+            download_data['mdq_download_json'].update(
+                {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
             logging.info('after json update')
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
@@ -173,18 +176,21 @@ def metadata_fetch(thread_db, provider_name, download_data):
     if provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == 3:  # person info
             logging.info('%s fetch person bio', provider_name)
-            metadata_person.metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+            metadata_person.metadata_fetch_tmdb_person(
+                thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
             if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt':  # imdb id check
                 tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(
                     download_data['mdq_download_json']['ProviderMetaID'])
                 if tmdb_id is not None:
-                    download_data['mdq_download_json'].update({'ProviderMetaID': str(tmdb_id)})
+                    download_data['mdq_download_json'].update(
+                        {'ProviderMetaID': str(tmdb_id)})
                     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                                  download_data['mdq_id'])
                 else:
                     # TODO this is kinda bad if you have a valid id
-                    thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+                    thread_db.db_download_update_provider(
+                        'ZZ', download_data['mdq_id'])
             else:
                 metadata_movie.movie_fetch_save_tmdb(thread_db,
                                                      download_data['mdq_download_json'][

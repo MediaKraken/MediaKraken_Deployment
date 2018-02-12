@@ -67,4 +67,5 @@ class TestDatabaseiradio(object):
         # iradio list
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_iradio_list(offset, records, active_station, search_value)
+        self.db_connection.db_iradio_list(
+            offset, records, active_station, search_value)

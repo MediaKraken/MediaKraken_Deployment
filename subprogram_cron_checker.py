@@ -43,7 +43,8 @@ while 1:
         if row_data['mm_cron_name'] in pid_dict:
             pass
         else:
-            pid_dict[row_data['mm_cron_name']] = -9999999  # fake pid so it can't be found
+            pid_dict[row_data['mm_cron_name']] = - \
+                9999999  # fake pid so it can't be found
         time_frame = None
         if row_data['mm_cron_schedule'] == "Weekly":  # chedule
             time_frame = datetime.timedelta(weeks=1)
@@ -66,7 +67,8 @@ while 1:
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
-                logging.info("Cron %s PID %s:", row_data['mm_cron_name'], proc.pid)
+                logging.info("Cron %s PID %s:",
+                             row_data['mm_cron_name'], proc.pid)
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match

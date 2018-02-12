@@ -40,7 +40,8 @@ def db_cron_list_count(self, enabled_only=False):
     if not enabled_only:
         self.db_cursor.execute('select count(*) from mm_cron')
     else:
-        self.db_cursor.execute('select count(*) from mm_cron where mm_cron_enabled = true')
+        self.db_cursor.execute(
+            'select count(*) from mm_cron where mm_cron_enabled = true')
     return self.db_cursor.fetchone()[0]
 
 

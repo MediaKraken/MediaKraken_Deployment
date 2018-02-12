@@ -128,7 +128,8 @@ class MediaKrakenApp(object):
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
                 if new_media[1] == 'Movie':
-                    metadata_guid = self.db_connection.db_meta_guid_by_imdb(new_media[3]['imdb'])
+                    metadata_guid = self.db_connection.db_meta_guid_by_imdb(
+                        new_media[3]['imdb'])
                     if metadata_guid is None:
                         metadata_guid = self.db_connection.db_meta_guid_by_tmdb(
                             new_media[3]['themoviedb'])

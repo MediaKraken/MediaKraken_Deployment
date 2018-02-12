@@ -165,7 +165,8 @@ class CommonDatabaseOctmote(object):
                                    ' device_description) values (?,\'UPS\', \'Uninteruptable Power Supply\')',
                                    (str(uuid.uuid4()),))
             self.sql3_conn.commit()
-        self.db_cursor.execute('select server_host, server_port from octmote_server_settings')
+        self.db_cursor.execute(
+            'select server_host, server_port from octmote_server_settings')
         try:
             return self.db_cursor.fetchone()[0]
         except:
@@ -262,7 +263,8 @@ class CommonDatabaseOctmote(object):
         """
         item detail
         """
-        self.db_cursor.execute('select item_type from octmote_item where item_guid = ?', (guid,))
+        self.db_cursor.execute(
+            'select item_type from octmote_item where item_guid = ?', (guid,))
         return self.db_cursor
 
     def com_db_general_query(self, sql_command):

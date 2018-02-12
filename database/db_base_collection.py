@@ -114,7 +114,8 @@ def db_collection_insert(self, collection_name, guid_json, metadata_json,
                            ' mm_metadata_collection_json, mm_metadata_collection_imagelocal_json)'
                            ' values (%s,%s,%s,%s,%s)', (new_guid, json.dumps(collection_name),
                                                         json.dumps(guid_json),
-                                                        json.dumps(metadata_json),
+                                                        json.dumps(
+                                                            metadata_json),
                                                         json.dumps(localimage_json)))
     return new_guid
 

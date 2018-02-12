@@ -36,7 +36,8 @@ class CommonCloudAWSS3(object):
             self.aws_bucket_name = option_config_json['AWSS3']['Bucket']
             self.aws_bucket_backup_name = option_config_json['AWSS3']['BackupBucket']
             # setup connection and buckets for later use
-            conn = boto.connect_s3(self.aws_access_key_id, self.aws_secret_access_key)
+            conn = boto.connect_s3(
+                self.aws_access_key_id, self.aws_secret_access_key)
             self.bucket = conn.get_bucket(self.aws_bucket_name)
             self.bucket_backup = conn.get_bucket(self.aws_bucket_backup_name)
             self.active = True
@@ -78,7 +79,8 @@ class CommonCloudAWSS3(object):
         """
         # Delete files older than days to keep.
         for key in self.bucket_backup.list():
-            timestamp = time.strptime(key.last_modified, '%Y-%m-%dT%H:%M:%S.%fZ')
+            timestamp = time.strptime(
+                key.last_modified, '%Y-%m-%dT%H:%M:%S.%fZ')
             if timestamp < days_to_keep:
                 self.bucket_backup.delete_key(key)
 

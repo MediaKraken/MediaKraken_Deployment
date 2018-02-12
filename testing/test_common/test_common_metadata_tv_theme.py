@@ -32,4 +32,5 @@ def test_com_tvtheme_download(show_name, expected_results):
     """
     Test function
     """
-    assert common_metadata_tv_theme.com_tvtheme_download(show_name) == expected_results
+    assert common_metadata_tv_theme.com_tvtheme_download(
+        show_name) == expected_results

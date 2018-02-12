@@ -34,12 +34,13 @@ def metadata_movie_detail(guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = common_internationalization.com_inter_number_format( \
+    data_vote_count = common_internationalization.com_inter_number_format(
         json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
     # build gen list
     genres_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-        genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
+        genres_list += (json_metadata['Meta']['themoviedb']
+                        ['Meta']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
     for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
@@ -106,10 +107,10 @@ def metadata_movie_list():
             watched_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
-                and 'UserStats' in row_data['mm_metadata_user_json'] \
-                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
-                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-            current_user.get_id()]:
+            and 'UserStats' in row_data['mm_metadata_user_json'] \
+            and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+            and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
+                current_user.get_id()]:
             rating_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
             if rating_status == 'favorite':
@@ -128,7 +129,8 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
-        logging.info("status: %s %s %s", watched_status, rating_status, request_status)
+        logging.info("status: %s %s %s", watched_status,
+                     rating_status, request_status)
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status))

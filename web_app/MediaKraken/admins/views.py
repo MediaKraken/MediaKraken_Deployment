@@ -12,7 +12,8 @@ from flask import Blueprint, render_template, g, request, flash, \
     url_for, redirect, abort
 from flask_login import login_required
 
-blueprint = Blueprint("admins", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
@@ -105,49 +106,42 @@ def admins():
     data_scan_info = []
     scanning_json = g.db_connection.db_opt_status_read()['mm_status_json']
     if 'Status' in scanning_json:
-        data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
+        data_scan_info.append(
+            ('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db_connection.db_audit_path_status():
-        data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
+        data_scan_info.append(
+            (dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
-                           data_user_count= \
-                               common_internationalization.com_inter_number_format( \
-                                   g.db_connection.db_user_list_name_count()),
+                           data_user_count=common_internationalization.com_inter_number_format(
+                               g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
                            data_host_ip=docker_info['Swarm']['NodeAddr'],
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port \
-                               =option_config_json['MediaKrakenServer']['ListenPort'],
+                           data_server_info_server_port=option_config_json[
+                               'MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version=common_version.APP_VERSION,
                            data_server_uptime=common_system.com_system_uptime(),
-                           data_active_streams= \
-                               common_internationalization.com_inter_number_format( \
-                                   0),
+                           data_active_streams=common_internationalization.com_inter_number_format(
+                               0),
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
-                           data_count_media_files= \
-                               common_internationalization.com_inter_number_format( \
-                                   g.db_connection.db_known_media_count()),
-                           data_count_matched_media= \
-                               common_internationalization.com_inter_number_format( \
-                                   g.db_connection.db_matched_media_count()),
-                           data_count_streamed_media= \
-                               common_internationalization.com_inter_number_format( \
-                                   0),
-                           data_library= \
-                               common_internationalization.com_inter_number_format( \
-                                   g.db_connection.db_table_count('mm_media_dir')),
-                           data_share= \
-                               common_internationalization.com_inter_number_format( \
-                                   g.db_connection.db_table_count('mm_media_share')),
+                           data_count_media_files=common_internationalization.com_inter_number_format(
+                               g.db_connection.db_known_media_count()),
+                           data_count_matched_media=common_internationalization.com_inter_number_format(
+                               g.db_connection.db_matched_media_count()),
+                           data_count_streamed_media=common_internationalization.com_inter_number_format(
+                               0),
+                           data_library=common_internationalization.com_inter_number_format(
+                               g.db_connection.db_table_count('mm_media_dir')),
+                           data_share=common_internationalization.com_inter_number_format(
+                               g.db_connection.db_table_count('mm_media_share')),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages,
-                           data_count_meta_fetch
-                           =common_internationalization.com_inter_number_format( \
+                           data_count_meta_fetch=common_internationalization.com_inter_number_format(
                                g.db_connection.db_table_count('mm_download_que')),
-                           data_count_images_fetch
-                           =common_internationalization.com_inter_number_format( \
+                           data_count_images_fetch=common_internationalization.com_inter_number_format(
                                g.db_connection.db_table_count('mm_download_image_que'))
                            )
 
@@ -215,9 +209,12 @@ def admin_server_stat():
     Display server stats via psutils
     """
     return render_template("admin/admin_server_stats.html",
-                           data_disk=common_system.com_system_disk_usage_all(True),
-                           data_cpu_usage=common_system.com_system_cpu_usage(True),
-                           data_mem_usage=common_system.com_system_virtual_memory(None),
+                           data_disk=common_system.com_system_disk_usage_all(
+                               True),
+                           data_cpu_usage=common_system.com_system_cpu_usage(
+                               True),
+                           data_mem_usage=common_system.com_system_virtual_memory(
+                               None),
                            data_network_io=common_network.mk_network_io_counter())
 
 
@@ -297,10 +294,14 @@ def admin_chart_browser():
     line_chart = pygal.Line()
     line_chart.title = 'Browser usage'
     line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Firefox', [None, None, 0, 16.6, 25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Chrome', [None, None, None, None, None, None, 0, 3.9, 10.8, 23.8, 35.3])
-    line_chart.add('IE', [85.8, 84.6, 84.7, 74.5, 66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('Others', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Firefox', [None, None, 0, 16.6,
+                               25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
+    line_chart.add('Chrome', [None, None, None, None,
+                              None, None, 0, 3.9, 10.8, 23.8, 35.3])
+    line_chart.add('IE', [85.8, 84.6, 84.7, 74.5, 66,
+                          58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
+    line_chart.add('Others', [14.2, 15.4, 15.3, 8.9,
+                              9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
     return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
@@ -313,12 +314,18 @@ def admin_chart_client_usage():
     line_chart = pygal.Line()
     line_chart.title = 'Client usage'
     line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Theater', [None, None, 0, 16.6, 25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Roku', [None, None, None, None, None, None, 0, 3.9, 10.8, 23.8, 35.3])
-    line_chart.add('Web', [85.8, 84.6, 84.7, 74.5, 66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('iOS', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
-    line_chart.add('Android', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
-    line_chart.add('Tizen', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Theater', [None, None, 0, 16.6,
+                               25, 31, 36.4, 45.5, 46.3, 42.8, 37.1])
+    line_chart.add('Roku', [None, None, None, None,
+                            None, None, 0, 3.9, 10.8, 23.8, 35.3])
+    line_chart.add('Web', [85.8, 84.6, 84.7, 74.5, 66,
+                           58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
+    line_chart.add('iOS', [14.2, 15.4, 15.3, 8.9, 9,
+                           10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Android', [14.2, 15.4, 15.3, 8.9,
+                               9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
+    line_chart.add('Tizen', [14.2, 15.4, 15.3, 8.9,
+                             9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
     return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
@@ -363,9 +370,11 @@ def admin_listdir(path):
     try:
         path = os.path.normpath(path)
         ospath = os.path.join('/', path)
-        files = list(map(partial(gather_fileinfo, path, ospath), os.listdir(ospath)))
+        files = list(
+            map(partial(gather_fileinfo, path, ospath), os.listdir(ospath)))
         files = list(filter(lambda file: file is not None, files))
-        files.sort(key=lambda i: (i['type'] == 'file' and '1' or '0') + i['filename'].lower())
+        files.sort(key=lambda i: (
+            i['type'] == 'file' and '1' or '0') + i['filename'].lower())
         return render_template('admin/admin_fs_browse.html',
                                files=files,
                                parent=os.path.dirname(path),

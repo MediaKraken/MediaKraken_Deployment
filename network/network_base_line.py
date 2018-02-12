@@ -98,11 +98,13 @@ class NetworkEvents(basic.LineReceiver):
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
-            country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
+            country_data = ip2country.IP2Country(
+                verbose=1).lookup(self.user_ip_addy)
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
-            logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
+            logging.info("user: %s %s", self.user_device_uuid,
+                         self.user_ip_addy)
             if self.user_user_name == 'Link':
                 pass
             else:
@@ -152,7 +154,8 @@ class NetworkEvents(basic.LineReceiver):
                                   "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
-            self.db_connection.db_user_login(json_message['User'], json_message['Password'])
+            self.db_connection.db_user_login(
+                json_message['User'], json_message['Password'])
 
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == 'Detail':
@@ -166,10 +169,11 @@ class NetworkEvents(basic.LineReceiver):
                 if json_message['Data'] == 'Movie':
                     if 'Offset' in json_message:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
-                            self.db_connection.db_web_media_list(
-                                self.db_connection.db_media_uuid_by_class(json_message['Data']),
-                                json_message['Type'], offset=json_message['Offset'],
-                                list_limit=json_message['Limit'])})
+                                          self.db_connection.db_web_media_list(
+                                              self.db_connection.db_media_uuid_by_class(
+                                                  json_message['Data']),
+                                              json_message['Type'], offset=json_message['Offset'],
+                                              list_limit=json_message['Limit'])})
                     else:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List',
                                           'Data': self.db_connection.db_web_media_list(
@@ -193,7 +197,8 @@ class NetworkEvents(basic.LineReceiver):
                 # TODO obviously send to the proper client
                 self.send_all_users(json_message)
             else:
-                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
+                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[
+                    0]
                 if media_path is not None:
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'

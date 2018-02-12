@@ -69,7 +69,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(
             os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_hash = common_hash.com_hash_sha1_by_filename(download_que_json['Path'])
+            sha1_hash = common_hash.com_hash_sha1_by_filename(
+                download_que_json['Path'])
             if sha1_hash is not None:
                 # TODO lookup the sha1
                 pass
@@ -101,12 +102,13 @@ def metadata_identification(db_connection, class_text, download_que_json,
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-                download_que_json['Path'].replace('\\theme\\', '\\') \
-                    .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
+                download_que_json['Path'].replace('\\theme\\', '\\')
+                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-                download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/') \
-                    .rsplit('/', 1)[0]))
+                download_que_json['Path'].replace(
+                    '/theme/', '/').replace('/backdrops/', '/')
+                .rsplit('/', 1)[0]))
         logging.info('mtheme guid: %s', metadata_uuid)
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
@@ -176,13 +178,14 @@ def metadata_identification(db_connection, class_text, download_que_json,
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-                download_que_json['Path'].replace('\\theme\\', '\\') \
-                    .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
+                download_que_json['Path'].replace('\\theme\\', '\\')
+                .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
         else:
             logging.info('tv theme ident 2')
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-                download_que_json['Path'].replace('/theme/', '/').replace('/backdrops/', '/') \
-                    .rsplit('/', 1)[0]))
+                download_que_json['Path'].replace(
+                    '/theme/', '/').replace('/backdrops/', '/')
+                .rsplit('/', 1)[0]))
             logging.info('tv theme ident 3')
         if metadata_uuid is not None:
             logging.info('tv theme ident 4')
@@ -197,7 +200,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
             if metadata_uuid is None:
                 logging.info('tv theme ident 7')
                 # TODO so, the show hasn't been fetched yet.....so, no path match
-                db_connection.db_download_update_provider('ZZ', download_que_id)
+                db_connection.db_download_update_provider(
+                    'ZZ', download_que_id)
     elif class_text == "TV Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':

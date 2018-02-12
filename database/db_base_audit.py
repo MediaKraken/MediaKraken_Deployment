@@ -52,7 +52,8 @@ def db_audit_path_delete(self, lib_guid):
     """
     # remove media path
     """
-    self.db_cursor.execute('delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
+    self.db_cursor.execute(
+        'delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
 def db_audit_path_add(self, dir_path, class_guid, share_guid):

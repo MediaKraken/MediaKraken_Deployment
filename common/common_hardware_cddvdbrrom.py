@@ -11,8 +11,10 @@ def com_hard_cddvdbrrom():
         if device.has_property("ID_CDROM"):
             logging.info("Found CD/DVD drive at %s" % device.get_device_file())
             if device.has_property("ID_FS_LABEL"):
-                logging.info("Found disc: %s" % device.get_property("ID_FS_LABEL"))
-                drives[device.get_device_file()] = (True, device.get_property("ID_FS_LABEL"))
+                logging.info("Found disc: %s" %
+                             device.get_property("ID_FS_LABEL"))
+                drives[device.get_device_file()] = (
+                    True, device.get_property("ID_FS_LABEL"))
             elif device.has_property("ID_FS_TYPE"):
                 drives[device.get_device_file()] = (True, None)
                 logging.info("Found disc")

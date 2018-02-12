@@ -49,7 +49,7 @@ class CommonMetadataGamesDB(object):
         """
         # 'mega man'
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s' \
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'
                                             % game_name.replace(' ', '%20'),
                                             verify=False, headers=self.httpheaders).text)
 
@@ -71,7 +71,7 @@ class CommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s' \
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'
                                             % platform_id,
                                             verify=False, headers=self.httpheaders).text)
 
@@ -79,7 +79,7 @@ class CommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s' \
+        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'
                                             % platform_name,
                                             verify=False, headers=self.httpheaders).text)
 

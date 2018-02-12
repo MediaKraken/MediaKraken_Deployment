@@ -32,7 +32,8 @@ class CommonNetMPVSocat(object):
         while True:
             time.sleep(0.1)
             try:
-                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.socket_stream = socket.socket(
+                    socket.AF_UNIX, socket.SOCK_STREAM)
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
@@ -65,7 +66,8 @@ class CommonNetMPV(object):
         while True:
             time.sleep(0.1)
             try:
-                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.socket_stream = socket.socket(
+                    socket.AF_UNIX, socket.SOCK_STREAM)
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):

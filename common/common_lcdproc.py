@@ -39,20 +39,23 @@ class CommonLCDProc(object):
         self.screens[name].set_duration(duration)
 
     def com_lcdproc_add_string(self, screen_name, name, text, x, y):
-        string_widget = self.screens[screen_name].add_string_widget(name, text=text, x=x, y=y)
+        string_widget = self.screens[screen_name].add_string_widget(
+            name, text=text, x=x, y=y)
 
     def com_lcdproc_add_scroller(self, screen_name, name, text, speed=2):
         scroller_widget = self.screens[screen_name].add_scroller_widget(name, text=text,
                                                                         speed=speed)
 
     def com_lcdproc_add_hbar(self, screen_name, name, x, y, length=60):
-        hbar_widget = self.screens[screen_name].add_hbar_widget(name, x=x, y=y, length=length)
+        hbar_widget = self.screens[screen_name].add_hbar_widget(
+            name, x=x, y=y, length=length)
 
     def com_lcdproc_add_frame(self, screen_name, name):
         frame_widget = self.screens[screen_name].add_frame_widget(name)
 
     def com_lcdproc_add_number(self, screen_name, name, x, value):
-        num1_widget = self.screens[screen_name].add_number_widget(name, x=x, value=value)
+        num1_widget = self.screens[screen_name].add_number_widget(
+            name, x=x, value=value)
 
 #
 # progress = 0

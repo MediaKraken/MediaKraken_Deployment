@@ -84,7 +84,8 @@ def db_sync_delete(self, sync_guid):
     """
     # delete sync job
     """
-    self.db_cursor.execute('delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
+    self.db_cursor.execute(
+        'delete from mm_sync where mm_sync_guid = %s', (sync_guid,))
     self.db_commit()
 
 

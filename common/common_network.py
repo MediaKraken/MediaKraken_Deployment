@@ -38,7 +38,8 @@ def mk_network_fetch_from_url(url, directory=None):
         if sys.version_info < (2, 9, 0):
             datafile = urllib2.urlopen(url)
         else:
-            datafile = urllib2.urlopen(url, context=ssl._create_unverified_context())
+            datafile = urllib2.urlopen(
+                url, context=ssl._create_unverified_context())
         if directory is not None:
             try:
                 localfile = open(directory, 'wb')
@@ -134,7 +135,8 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        logging.info("Status from %s is %s", pingle.ip_addr, report[pingle.status])
+        logging.info("Status from %s is %s",
+                     pingle.ip_addr, report[pingle.status])
 
 
 def mk_network_io_counter(show_nic=False):

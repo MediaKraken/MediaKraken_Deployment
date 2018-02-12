@@ -8,7 +8,8 @@ sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
-blueprint = Blueprint("admins_link", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_link", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user

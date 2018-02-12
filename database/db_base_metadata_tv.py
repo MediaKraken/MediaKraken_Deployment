@@ -38,7 +38,8 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                ' or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\''
                                ' from 0 for 5) in (%s,%s,%s))',
                                (tvshow_name.lower(), str(tvshow_year),
-                                str(int(tvshow_year) + 1), str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) +
+                                    1), str(int(tvshow_year) - 1),
                                 str(tvshow_year),
                                 str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
     for row_data in self.db_cursor.fetchall():
@@ -332,14 +333,15 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
 # mm_metadata_tvshow_json->'Meta'->'tvmaze'->'_embedded'->'episodes')
 # - 1)->'season'
 
-def db_meta_tvshow_image_random(self, return_image_type='Poster'):  # poster, backdrop, etc
+# poster, backdrop, etc
+def db_meta_tvshow_image_random(self, return_image_type='Poster'):
     """
     Find random movie image
     """
     self.db_cursor.execute(
         'select mm_metadata_tvshow_localimage_json->\'Images\'->\'themoviedb\'->>\''
-        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_tvshow' \
-                              ' where mm_media_metadata_guid = mm_metadata_guid' \
+        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_tvshow'
+                              ' where mm_media_metadata_guid = mm_metadata_guid'
                               ' and (mm_metadata_tvshow_localimage_json->\'Images\'->\'themoviedb\'->>\''
         + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
     try:

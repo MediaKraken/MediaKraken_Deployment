@@ -49,7 +49,8 @@ class TestCommonCloudAWSS3(object):
         """
         Test function
         """
-        self.awss3.com_aws_s3_upload(source_path, destination_filename, backup_bucket)
+        self.awss3.com_aws_s3_upload(
+            source_path, destination_filename, backup_bucket)
 
     # download from s3
     # def com_AWS_S3_Download(self, source_key, destination_filename, backup_bucket = False):
@@ -60,7 +61,8 @@ class TestCommonCloudAWSS3(object):
         """
         Test function
         """
-        self.awss3.com_aws_s3_download(source_key, destination_filename, backup_bucket)
+        self.awss3.com_aws_s3_download(
+            source_key, destination_filename, backup_bucket)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
 

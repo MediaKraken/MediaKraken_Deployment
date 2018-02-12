@@ -64,7 +64,8 @@ class CommonCloudGoogleDrive(object):
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
             os.makedirs(credential_dir)
-        credential_path = os.path.join(credential_dir, 'drive-python-quickstart.json')
+        credential_path = os.path.join(
+            credential_dir, 'drive-python-quickstart.json')
         store = oauth2client.file.Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:

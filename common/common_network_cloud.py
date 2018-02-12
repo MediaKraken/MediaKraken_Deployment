@@ -40,7 +40,8 @@ class CommonLibCloud(object):
         self.driver = self.cls('my username', 'my api key')
 
     def com_net_cloud_upload(self, input_file_name, output_file_name):
-        container = self.driver.get_container(container_name='my-backups-12345')
+        container = self.driver.get_container(
+            container_name='my-backups-12345')
         extra = {'meta_data': {'owner': 'myuser', 'created': '2014-02-2'}}
         with open(input_file_name, 'rb') as iterator:
             obj = self.driver.upload_object_via_stream(iterator=iterator,

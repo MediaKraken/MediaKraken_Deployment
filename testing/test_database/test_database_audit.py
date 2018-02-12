@@ -43,11 +43,11 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_status()
 
-    ## update status
+    # update status
     # def db_audit_path_update_status(self, lib_guid, status_json):
     #        self.db_connection.db_rollback()
 
-    ## update audit path
+    # update audit path
     # def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     #        self.db_connection.db_rollback()
 
@@ -59,7 +59,8 @@ class TestDatabaseAudit(object):
         ## add media path
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_audit_path_add(dir_path, class_guid, share_guid)
+        self.new_guid = self.db_connection.db_audit_path_add(
+            dir_path, class_guid, share_guid)
 
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
@@ -81,7 +82,7 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_dir_timestamp_update(dir_path)
 
-    ## read the paths to audit
+    # read the paths to audit
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),

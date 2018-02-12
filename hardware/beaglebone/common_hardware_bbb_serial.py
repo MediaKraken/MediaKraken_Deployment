@@ -28,7 +28,8 @@ def com_hardware_bbb_serial_setup(selected_speed):
     """
     Set connection speed for connection
     """
-    baud_rates = [300, 1200, 2400, 9600, 19200, 38400, 57600, 115200, 230400, 460800]
+    baud_rates = [300, 1200, 2400, 9600, 19200,
+                  38400, 57600, 115200, 230400, 460800]
     # Start Serial2 at selected baud:
     Serial2.begin(baud_rates[selected_speed])
 

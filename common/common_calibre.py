@@ -25,5 +25,6 @@ import subprocess
 
 
 def com_calibre_convert_ebook(target_file, target_format):
-    calibre_pid = subprocess.Popen(['./bin/calibre/ebook-convert', target_file, target_format])
+    calibre_pid = subprocess.Popen(
+        ['./bin/calibre/ebook-convert', target_file, target_format])
     return calibre_pid

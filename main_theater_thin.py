@@ -162,9 +162,11 @@ class MediaKrakenApp(App):
 
     # notification dialog
     def mediakraken_notification_popup(self, header, message):
-        content = MediaKrakenNotificationScreen(ok_button=self.dismiss_notification_popup)
+        content = MediaKrakenNotificationScreen(
+            ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
-        self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
+        self._notification_popup = Popup(
+            title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
 
     def build(self):
@@ -175,7 +177,8 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
+        self._keyboard = Window.request_keyboard(
+            self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.mpv_process = None
@@ -193,14 +196,17 @@ class MediaKrakenApp(App):
                 logging.info('server list: %s', server_list)
                 host_ip = server_list[0]
                 # TODO allow pick from list and save it below
-                self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
-                self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
+                self.config.set('MediaKrakenServer', 'Host',
+                                host_ip.split(':')[0])
+                self.config.set('MediaKrakenServer', 'Port',
+                                host_ip.split(':')[1])
                 with open(r'mediakraken.ini', 'wb') as configfile:
                     self.config.write()
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
-                               int(self.config.get('MediaKrakenServer', 'Port').strip()),
+                               int(self.config.get(
+                                   'MediaKrakenServer', 'Port').strip()),
                                MKFactory(), ssl.ClientContextFactory())
 
     @wait_for(timeout=5.0)
@@ -252,21 +258,24 @@ class MediaKrakenApp(App):
                 for ndx in range(0,
                                  len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
                     genres_list += (
-                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
-                                'name'] + ', ')
+                        json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
+                            'name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 production_list = ''
                 for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'])):
+                        'production_companies'])):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
+                        'production_companies'][ndx]['name'] + ', ')
+                self.root.ids.theater_media_video_production_companies.text = production_list[
+                    :-2]
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
-            share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+            share_mapping = (
+                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
                 for mapping in share_mapping.iteritems():
-                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+                    video_source_dir = video_source_dir.replace(
+                        mapping[0], mapping[1])
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
                                                      '--ontop', '--no-osc', '--no-osd-bar',
                                                      '--aid=2',
@@ -361,7 +370,8 @@ class MediaKrakenApp(App):
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        logging.info("button server user login %s", self.global_selected_user_id)
+        logging.info("button server user login %s",
+                     self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
         self.send_twisted_message(json.dumps({'Type': 'Login',
                                               'User': self.global_selected_user_id,

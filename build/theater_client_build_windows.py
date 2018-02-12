@@ -36,10 +36,10 @@ except:
     pass
 
 # start building python "app"
-os.system('pyinstaller --clean' \
+os.system('pyinstaller --clean'
           ' C:\\Users\\jenkinsbuild\\Documents\\github\\main_server.py')
 
 # start building python programs
 for app_to_build in pipeline_packages_list.PIPELINE_APP_LIST:
-    os.system('pyinstaller --clean C:\\Users\\jenkinsbuild\\Documents\\github\\' \
+    os.system('pyinstaller --clean C:\\Users\\jenkinsbuild\\Documents\\github\\'
               + app_to_build + '.py')

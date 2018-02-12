@@ -40,7 +40,8 @@ def db_read_media(self, media_guid=None):
     # read in all media unless guid specified
     """
     if media_guid is not None:
-        self.db_cursor.execute('select * from mm_media where mm_media_guid = %s', (media_guid,))
+        self.db_cursor.execute(
+            'select * from mm_media where mm_media_guid = %s', (media_guid,))
         try:
             return self.db_cursor.fetchone()
         except:
@@ -63,7 +64,8 @@ def db_known_media(self, offset=None, records=None):
     # find all known media
     """
     if offset is None:
-        self.db_cursor.execute('select mm_media_path from mm_media order by mm_media_path')
+        self.db_cursor.execute(
+            'select mm_media_path from mm_media order by mm_media_path')
     else:
         self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid'
                                ' in (select mm_media_guid from mm_media order by mm_media_path'
@@ -84,7 +86,8 @@ def db_known_media_all_unmatched_count(self):
     """
     # count all media that is NULL for meatadata match
     """
-    self.db_cursor.execute('select count(*) from mm_media where mm_media_metadata_guid is NULL')
+    self.db_cursor.execute(
+        'select count(*) from mm_media where mm_media_metadata_guid is NULL')
     return self.db_cursor.fetchone()[0]
 
 
@@ -213,7 +216,8 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
         else:
-            json_data['UserStats'][user_id] = {'ffmpeg_checkpoint': ffmpeg_time}
+            json_data['UserStats'][user_id] = {
+                'ffmpeg_checkpoint': ffmpeg_time}
         self.db_update_media_json(media_guid, json.dumps(json_data))
         self.db_commit()
     except:

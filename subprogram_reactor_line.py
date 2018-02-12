@@ -107,7 +107,8 @@ def read(queue_object):
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
                     subtitle_command = ' -subtitles ' + json_message['Subtitle'] \
-                                       + ' -subtitles_language ' + json_message['Language']
+                                       + ' -subtitles_language ' + \
+                        json_message['Language']
                 else:
                     subtitle_command = ''
                 container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py' \
@@ -117,23 +118,24 @@ def read(queue_object):
                                     + json_message['Data'] + '\''
             elif json_message['Sub'] == 'Web':
                 # stream to web
-                container_command = shlex.split("ffmpeg -v fatal {ss_string}" \
+                container_command = shlex.split("ffmpeg -v fatal {ss_string}"
                                                 " -i ".format(**locals())) \
-                                    + json_message['Data'] \
-                                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
-                                                  " -c:v libx264 -pix_fmt yuv420p"
-                                                  " -profile:v high -level 4.0"
-                                                  " -preset ultrafast -trellis 0"
-                                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
-                                                  " -shortest -f mpegts"
-                                                  " -output_ts_offset {output_ts_offset:.6f}"
-                                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
+                    + json_message['Data'] \
+                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
+                                  " -c:v libx264 -pix_fmt yuv420p"
+                                  " -profile:v high -level 4.0"
+                                  " -preset ultrafast -trellis 0"
+                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
+                                  " -shortest -f mpegts"
+                                  " -output_ts_offset {output_ts_offset:.6f}"
+                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
             elif json_message['Sub'] == 'HDHomerun':
                 # stream from homerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
                                     + ":5004/auto/v" + json_message['Channel'] \
                                     + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
-                                    + "./static/streams/" + json_message['Channel'] + ".m3u8"
+                                    + "./static/streams/" + \
+                    json_message['Channel'] + ".m3u8"
                 container_command = shlex.split(container_command)
             else:
                 pass
@@ -165,8 +167,8 @@ def read(queue_object):
             docker_inst.com_docker_run_container(container_image_name=image_name,
                                                  container_name=name_container,
                                                  container_command=(
-                                                         'python subprogram_ffprobe_metadata.py %s' %
-                                                         json_message['Data']))
+                                                     'python subprogram_ffprobe_metadata.py %s' %
+                                                     json_message['Data']))
             logging.info('after docker run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
@@ -174,7 +176,8 @@ def read(queue_object):
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')
+        common_logging.com_logging_start(
+            './log/MediaKraken_Subprogram_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances

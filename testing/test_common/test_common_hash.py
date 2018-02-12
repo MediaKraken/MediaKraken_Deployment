@@ -39,7 +39,8 @@ def test_com_hash_sha1_by_filename(file_name, expected_result):
     ('./testing/cache/HashCalc.txt', 'b2dfeef48e0ad8b260674dcf2a8fb92f1456afba'),
     ('./testing/cache/HashCalc.txt.7z', '8424944223b7437d9f5c33459b97a58961a726a7'),
     ('./testing/cache/HashCalc.txt.tar', '22b1b418d3822997b4c80e7fcf3394ebd7e1bdbe'),
-    ('./testing/cache/HashCalc.txt.tar.bz2', '7c9f83432b09e2607995ebf050c734fb347659b0'),
+    ('./testing/cache/HashCalc.txt.tar.bz2',
+     '7c9f83432b09e2607995ebf050c734fb347659b0'),
     ('./testing/fakedirzz', None)])
 def test_com_hash_sha1_c(file_name, expected_result):
     """

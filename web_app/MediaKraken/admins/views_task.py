@@ -9,7 +9,8 @@ from flask import Blueprint, render_template, g, request, flash, \
     url_for, redirect
 from flask_login import login_required
 
-blueprint = Blueprint("admins_task", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_task", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
@@ -66,13 +67,15 @@ def admin_task_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_task_list_count(False),
+                                                  total=g.db_connection.db_task_list_count(
+                                                      False),
                                                   record_name='task Jobs',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('admin/admin_task.html',
-                           media_task=g.db_connection.db_task_list(False, offset, per_page),
+                           media_task=g.db_connection.db_task_list(
+                               False, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

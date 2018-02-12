@@ -29,7 +29,8 @@ from common import common_signal
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Lyrics_Download')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_Lyrics_Download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -46,7 +47,8 @@ print('Total lyrics download attempts: %s' % total_download_attempts)
 # send notifications
 if total_download_attempts > 0:
     db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_download_attempts)
+        common_internationalization.com_inter_number_format(
+            total_download_attempts)
         + " lyric(s) downloaded.", True)
 
 # commit all changes

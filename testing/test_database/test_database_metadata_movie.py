@@ -45,4 +45,5 @@ class TestDatabaseMetadataMovie(object):
         # set favorite status for media
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_meta_movie_status_update(metadata_guid, user_id, status_text)
+        self.db_connection.db_meta_movie_status_update(
+            metadata_guid, user_id, status_text)

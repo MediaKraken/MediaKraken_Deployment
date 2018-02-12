@@ -144,14 +144,19 @@ class AdminSettingsForm(Form):
     """
     for editing user
     """
-    servername = TextField('Server Name', validators=[DataRequired(), Length(min=3, max=250)])
+    servername = TextField('Server Name', validators=[
+                           DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
-    server_bind_addr = TextField('Bind Addr', validators=[Length(min=7, max=15)])
-    server_bind_port = TextField('Bind Port', validators=[Length(min=4, max=5)])
+    server_bind_addr = TextField('Bind Addr', validators=[
+                                 Length(min=7, max=15)])
+    server_bind_port = TextField(
+        'Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
-                                                   ('Week', 'Week'), ('Month', 'Month'),
-                                                   ('Quarter', 'Quarter'), ('6 Months', '6 Months'),
+                                                   ('Week', 'Week'), ('Month',
+                                                                      'Month'),
+                                                   ('Quarter', 'Quarter'), ('6 Months',
+                                                                            '6 Months'),
                                                    ('Year', 'Year')])
     user_password_lock = SelectField('Lock account after failed attempts',
                                      choices=[('Never', 'Never'), ('3', '3'), ('5', '5'),
@@ -170,7 +175,8 @@ class AdminSettingsForm(Form):
     metadata_sub_episode_down = BooleanField('Download TV Subtitle')
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
+    metadata_sub_skip_if_audio = BooleanField(
+        'Skip subtitle if lang in audio track')
     metadata_source_down_tvmaze = BooleanField('tvmaze')
     metadata_source_down_tmdb = BooleanField('themoviedb')
     metadata_source_down_tvdb = BooleanField('thetvdb')
@@ -206,7 +212,8 @@ class CronEditForm(Form):
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
                                                 ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places=2, rounding=ROUND_UP)
-    script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
+    script_path = TextField('Script Path', validators=[
+                            DataRequired(), Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
         super(CronEditForm, self).__init__(*args, **kwargs)
@@ -264,7 +271,8 @@ class TaskEditForm(Form):
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
                                                 ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places=2, rounding=ROUND_UP)
-    script_path = TextField('Script Path', validators=[DataRequired(), Length(min=1, max=255)])
+    script_path = TextField('Script Path', validators=[
+                            DataRequired(), Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
         super(TaskEditForm, self).__init__(*args, **kwargs)

@@ -61,7 +61,8 @@ class CommonDocker(object):
             try:
                 return self.cli_api.init_swarm()
             except:
-                logging.critical('Must define Docker Swarm IP in ENV file since multiple IP')
+                logging.critical(
+                    'Must define Docker Swarm IP in ENV file since multiple IP')
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
@@ -116,7 +117,8 @@ class CommonDocker(object):
     def com_docker_run_container(self, container_command, container_name,
                                  container_image_name='mediakraken/mkslave',
                                  container_detach=True,
-                                 container_port={'5050/tcp': None, '5060/tcp': None},
+                                 container_port={
+                                     '5050/tcp': None, '5060/tcp': None},
                                  container_network='mk_mediakraken_network',
                                  container_volumes=['/var/log/mediakraken:/mediakraken/log',
                                                     '/home/mediakraken:/mediakraken/mnt',

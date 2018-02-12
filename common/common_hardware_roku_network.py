@@ -37,11 +37,14 @@ def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_se
     """
     # urllib2.post('http://' + self.roku_address + "/keypress/" + roku_command)
     if roku_command_seconds > 0:
-        response = urllib2.urlopen(roku_addr + ':' + roku_port + '/keydown/' + roku_command)
+        response = urllib2.urlopen(
+            roku_addr + ':' + roku_port + '/keydown/' + roku_command)
         time.sleep(roku_command_seconds)
-        response = urllib2.urlopen(roku_addr + ':' + roku_port + '/keyup/' + roku_command)
+        response = urllib2.urlopen(
+            roku_addr + ':' + roku_port + '/keyup/' + roku_command)
     else:
-        response = urllib2.urlopen(roku_addr + ':' + roku_port + '/keypress/' + roku_command)
+        response = urllib2.urlopen(
+            roku_addr + ':' + roku_port + '/keypress/' + roku_command)
     return response
 
 

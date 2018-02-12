@@ -10,7 +10,8 @@ from flask import Blueprint, render_template, g, request, flash, \
     url_for, redirect
 from flask_login import login_required
 
-blueprint = Blueprint("admins_share", __name__, url_prefix='/admin', static_folder="../static")
+blueprint = Blueprint("admins_share", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
@@ -71,7 +72,8 @@ def admin_share():
                                                   format_number=True,
                                                   )
     return render_template("admin/admin_share.html",
-                           media_dir=g.db_connection.db_audit_shares(offset, per_page),
+                           media_dir=g.db_connection.db_audit_shares(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

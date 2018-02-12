@@ -43,7 +43,8 @@ if db_connection.db_version_check() == 2:
 
 if db_connection.db_version_check() == 3:
     # add docker info to options
-    option_config_json.update({'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0}})
+    option_config_json.update(
+        {'Docker': {'Nodes': 0, 'SwarmID': None, 'Instances': 0}})
     db_connection.db_opt_update(option_config_json)
     db_connection.db_version_update(4)
     db_connection.db_commit()
@@ -154,7 +155,8 @@ if db_connection.db_version_check() == 8:
     ]
     for base_item in base_task:
         db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
-                                     psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2],
+                                     psycopg2.Timestamp(
+                                         1970, 1, 1, 0, 0, 1), base_item[2],
                                      json.dumps(base_item[3]))
     db_connection.db_version_update(9)
     db_connection.db_commit()
@@ -186,7 +188,8 @@ if db_connection.db_version_check() == 11:
 
 if db_connection.db_version_check() == 12:
     options_json, status_json = db_connection.db_opt_status_read()
-    options_json.update({'API': {'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb'}})
+    options_json.update(
+        {'API': {'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb'}})
     db_connection.db_opt_update(options_json)
     db_connection.db_version_update(13)
     db_connection.db_commit()

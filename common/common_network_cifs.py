@@ -116,7 +116,8 @@ class CommonCIFSShare(object):
         """
         Upload file to smb
         """
-        self.smb_conn.storeFile(os.path.join(self.sharename, file_path), open(file_path, 'rb'))
+        self.smb_conn.storeFile(os.path.join(
+            self.sharename, file_path), open(file_path, 'rb'))
 
     def com_cifs_share_file_download(self, file_path):
         """

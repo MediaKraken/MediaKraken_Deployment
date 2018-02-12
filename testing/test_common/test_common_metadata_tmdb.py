@@ -30,8 +30,10 @@ class TestCommonMetadataTMDB(object):
     @classmethod
     def setup_class(self):
         # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read(True)
-        self.db_connection = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+        option_config_json, db_connection = common_config_ini.com_config_read(
+            True)
+        self.db_connection = common_metadata_tmdb.CommonMetadataTMDB(
+            option_config_json)
 
     @classmethod
     def teardown_class(self):

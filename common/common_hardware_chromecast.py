@@ -60,7 +60,8 @@ class CommonHardwareChromecast(object):
         """
         # connect to device
         """
-        self.cast = next(cc for cc in self.chromecast_dev if cc.device.friendly_name == key_name)
+        self.cast = next(
+            cc for cc in self.chromecast_dev if cc.device.friendly_name == key_name)
         # Wait for cast device to be ready
         self.cast.wait()
         self.chromecast_device = self.cast.media_controller

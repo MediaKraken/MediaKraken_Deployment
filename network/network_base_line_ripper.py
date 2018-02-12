@@ -65,8 +65,10 @@ class NetworkEvents(basic.LineReceiver):
 
         if json_message['Type'] == "Rip":
             if json_message['Data'] == "CD":
-                disc_id = common_discid.com_discid_spec_device(json_message['Target'])
-                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(disc_id)
+                disc_id = common_discid.com_discid_spec_device(
+                    json_message['Target'])
+                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(
+                    disc_id)
                 disc_id_found = False
                 # TODO if NOT in DB already
                 if disc_id_found is True:
@@ -101,7 +103,8 @@ class NetworkEvents(basic.LineReceiver):
             self.user_device_uuid = json_message['UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
             self.users[self.user_device_uuid] = self
-            logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
+            logging.info("user: %s %s", self.user_device_uuid,
+                         self.user_ip_addy)
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"

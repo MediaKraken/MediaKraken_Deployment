@@ -139,7 +139,8 @@ class TestDatabaseMedia(object):
         # list duplicate detail
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_media_duplicate_detail(media_guid, offset, records)
+        self.db_connection.db_media_duplicate_detail(
+            media_guid, offset, records)
 
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
@@ -161,7 +162,8 @@ class TestDatabaseMedia(object):
         # set checkpoint for media (so can pick up where left off per user)
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_media_watched_checkpoint_update(media_guid, user_id, ffmpeg_time)
+        self.db_connection.db_media_watched_checkpoint_update(
+            media_guid, user_id, ffmpeg_time)
 
     # update the mediaid
     # def db_update_media_id(self, media_guid, metadata_guid):
@@ -180,7 +182,7 @@ class TestDatabaseMedia(object):
 
     @pytest.mark.parametrize(("metadata_guid"), [
         ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4d'),  # exists
-        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4e')])  # not found    
+        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4e')])  # not found
     def test_db_media_by_metadata_guid(self, metadata_guid):
         """
         # fetch all media with METADATA match

@@ -45,6 +45,7 @@ def main_setup_screen(self, *args):
     for item_device in common_database_octmote.com_db_item_list():
         btn1 = ToggleButton(text=item_device[1], size_hint_y=None, height=40,
                             group='setup_item_device_button', )
-        btn1.bind(on_press=partial(self.main_setup_base_item_selected, item_device[0]))
+        btn1.bind(on_press=partial(
+            self.main_setup_base_item_selected, item_device[0]))
         self.root.ids.setup_base_item_gridlayout.add_widget(btn1)
         self.base_item_guid_dict[item_device[0]] = item_device[1]

@@ -94,7 +94,8 @@ def com_string_ip_ascii_to_int(ip_addr):
     octets = [int(octet) for octet in ip_addr.split('.')]
     if len(octets) != 4:
         raise Exception("IP [%s] does not have four octets." % (ip_addr))
-    encoded = ("%02x%02x%02x%02x" % (octets[0], octets[1], octets[2], octets[3]))
+    encoded = ("%02x%02x%02x%02x" %
+               (octets[0], octets[1], octets[2], octets[3]))
     return int(encoded, 16)
 
 

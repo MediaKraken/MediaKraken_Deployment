@@ -65,7 +65,9 @@ class CommonMetadataTheSportsDB(object):
                                                         + self.thesportsdb_api_key
                                                         + '/searchplayers.php?t='
                                                         + team_name.replace(' ', '%20')
-                                                        + '&p=' + player_name.replace(' ', '%20'),
+                                                        + '&p=' +
+                                                        player_name.replace(
+                                                            ' ', '%20'),
                                                         None)
 
     # event lookups

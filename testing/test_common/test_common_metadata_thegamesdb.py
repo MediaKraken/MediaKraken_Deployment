@@ -83,7 +83,8 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(platform_id)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(
+            platform_id)
 
     @pytest.mark.parametrize(("platform_name"), [
         ("SNES"),
@@ -92,7 +93,8 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(platform_name)
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(
+            platform_name)
 
     @pytest.mark.parametrize(("update_time"), [
         ("234553")])
@@ -100,4 +102,5 @@ class TestCommonMetadataGamesDB(object):
         """
         Games updated in last n seconds
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(update_time)
+        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(
+            update_time)

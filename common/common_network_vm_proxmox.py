@@ -35,7 +35,8 @@ class CommonNetworkProxMox(object):
         api_response = requests.post(self.full_url + 'access/ticket', verify=False,
                                      data={'username': node_user, 'password': node_password}).json()
         self.prox_ticket = {'PVEAuthCookie': api_response['data']['ticket']}
-        self.httpheaders['CSRFPreventionToken'] = str(api_response['data']['CSRFPreventionToken'])
+        self.httpheaders['CSRFPreventionToken'] = str(
+            api_response['data']['CSRFPreventionToken'])
 
     def com_net_prox_api_call(self, request_type, api_call_type, post_data=None):
         """
@@ -271,35 +272,35 @@ class CommonNetworkProxMox(object):
         """
         Get a status of the lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/current' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/status/current'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_lxc_start(self, node_name, vm_id):
         """
         Start lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/start' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/start'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_lxc_stop(self, node_name, vm_id):
         """
         Stop lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/stop' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/status/stop'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_lxc_snaps(self, node_name, vm_id):
         """
         List snaps for lxc vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/snapshot' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/lxc/%s/snapshot'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_lxc_clone(self, node_name, vm_id, post_data_json):
         """
        Create clone for lxc vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/clone' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/lxc/%s/clone'
                                           % (node_name, vm_id), post_data_json)
 
     ###
@@ -333,7 +334,7 @@ class CommonNetworkProxMox(object):
         """
         Update network device configuration
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/network/%s'
                                           % (node_name, iface), post_data_json)
 
     def com_net_prox_net_nic_conf_delete(self, node_name, iface):
@@ -355,35 +356,35 @@ class CommonNetworkProxMox(object):
         """
         Get a status of the qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/current' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/status/current'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_qemu_start(self, node_name, vm_id):
         """
         Start qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/start' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/start'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_qemu_stop(self, node_name, vm_id):
         """
         Stop qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/stop' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/status/stop'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_qemu_snaps(self, node_name, vm_id):
         """
         List snaps for qemu vm
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/snapshot' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/qemu/%s/snapshot'
                                           % (node_name, vm_id))
 
     def com_net_prox_node_qemu_clone(self, node_name, vm_id, post_data_json):
         """
        Create clone for qemu vm
         """
-        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/clone' \
+        return self.com_net_prox_api_call('post', 'nodes/%s/qemu/%s/clone'
                                           % (node_name, vm_id), post_data_json)
 
     ###
@@ -460,35 +461,35 @@ class CommonNetworkProxMox(object):
         """
         Reload service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/relaod' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/relaod'
                                           % (node_name, service_id))
 
     def com_net_prox_node_service_restart(self, node_name, service_id):
         """
         Restart service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/restart' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/restart'
                                           % (node_name, service_id))
 
     def com_net_prox_node_service_start(self, node_name, service_id):
         """
         Start service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/start' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/start'
                                           % (node_name, service_id))
 
     def com_net_prox_node_service_state(self, node_name, service_id):
         """
         Service state.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/state' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/state'
                                           % (node_name, service_id))
 
     def com_net_prox_node_service_stop(self, node_name, service_id):
         """
         Stop service.
         """
-        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/stop' \
+        return self.com_net_prox_api_call('get', 'nodes/%s/services/%s/stop'
                                           % (node_name, service_id))
 
     ###

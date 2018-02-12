@@ -30,10 +30,12 @@ class CommonNetworkInstragram(object):
         self.instagram_inst.login()
 
     def com_net_instagram_upload(self, file_name, caption_text):
-        self.instagram_inst.uploadPhoto(file_name, caption=caption_text, upload_id=None)
+        self.instagram_inst.uploadPhoto(
+            file_name, caption=caption_text, upload_id=None)
 
     def com_net_instagram_vid_upload(self, file_name, thumb_path, caption_text):
-        self.instagram_inst.uploadVideo(file_name, thumb_path, caption=caption_text)
+        self.instagram_inst.uploadVideo(
+            file_name, thumb_path, caption=caption_text)
 
     def com_net_instagram_album_upload(self, media, caption_text):
         self.instagram_inst.uploadAlbum(media, caption=caption_text)

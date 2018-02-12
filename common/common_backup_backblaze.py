@@ -39,7 +39,8 @@ class CommonBackupBackblaze(object):
         """
         Create specified bucket name
         """
-        response = self.b2_blaze.create_bucket(bucket_name, bucket_type='allPrivate')
+        response = self.b2_blaze.create_bucket(
+            bucket_name, bucket_type='allPrivate')
         logging.info("b2 create: %s", response)
 
     def com_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
@@ -49,14 +50,16 @@ class CommonBackupBackblaze(object):
         if file_password is None:
             self.b2_blaze.upload_file(file_name, bucket_name=bucket_name)
         else:
-            self.b2_blaze.upload_file(file_name, bucket_name=bucket_name, password=file_password)
+            self.b2_blaze.upload_file(
+                file_name, bucket_name=bucket_name, password=file_password)
 
     def com_backblaze_upload_directory(self, dir_name, bucket_name, dir_password=None):
         """
         Upload entire directory into specified bucket
         """
         if dir_password is None:
-            self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name, multithread=True)
+            self.b2_blaze.recursive_upload(
+                dir_name, bucket_name=bucket_name, multithread=True)
         else:
             self.b2_blaze.recursive_upload(dir_name, bucket_name=bucket_name,
                                            multithread=True, password=dir_password)
@@ -66,7 +69,8 @@ class CommonBackupBackblaze(object):
         Download specified file
         """
         if file_password is None:
-            response = self.b2_blaze.download_file_by_name(file_name, local_file_name)
+            response = self.b2_blaze.download_file_by_name(
+                file_name, local_file_name)
         else:
             response = self.b2_blaze.download_file_by_name(file_name, local_file_name,
                                                            password=file_password)

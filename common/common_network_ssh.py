@@ -28,8 +28,10 @@ class CommonNetworkSSH(object):
     def __init__(self, host, user_name, user_password):
         # Create an SNMP session to be used for all our requests
         self.ssh_connection = paramiko.SSHClient()
-        self.ssh_connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_connection.connect(host, username=user_name, password=user_password)
+        self.ssh_connection.set_missing_host_key_policy(
+            paramiko.AutoAddPolicy())
+        self.ssh_connection.connect(
+            host, username=user_name, password=user_password)
 
     def com_net_ssh_run_sudo_command(self, command_text, sudo_password='metaman'):
         """

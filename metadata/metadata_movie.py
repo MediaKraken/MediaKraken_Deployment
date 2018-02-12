@@ -37,7 +37,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
+        option_config_json)
 else:
     TMDB_CONNECTION = None
 
@@ -58,14 +59,16 @@ def movie_search_tmdb(db_connection, file_name):
         else:
             match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
                 file_name['title'], None, True)
-        logging.info("meta movie response: %s %s", match_response, match_result)
+        logging.info("meta movie response: %s %s",
+                     match_response, match_result)
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
             metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
             logging.info("meta movie db result: %s", metadata_uuid)
         elif match_response == 'info':
             # store new metadata record and set uuid
-            logging.info("meta movie movielookup info results: %s", match_result)
+            logging.info(
+                "meta movie movielookup info results: %s", match_result)
         elif match_response == 're':
             # multiple results
             logging.info("movielookup multiple results: %s", match_result)
@@ -90,7 +93,8 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         logging.info("series: %s", series_id_json)
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
-                                          result_json['title'], json.dumps(meta_json),
+                                          result_json['title'], json.dumps(
+                                              meta_json),
                                           json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
@@ -134,9 +138,11 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     cast_json = TMDB_CONNECTION.com_tmdb_meta_cast_by_id(tmdb_id)
     if cast_json is not None:  # cast/crew doesn't exist on all media
         if 'cast' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew('themoviedb', cast_json['cast'])
+            db_connection.db_meta_person_insert_cast_crew(
+                'themoviedb', cast_json['cast'])
         if 'crew' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew('themoviedb', cast_json['crew'])
+            db_connection.db_meta_person_insert_cast_crew(
+                'themoviedb', cast_json['crew'])
         # update the metadata record with the cast info
         db_connection.db_meta_movie_update_castcrew(cast_json, metadata_id)
 
@@ -164,7 +170,8 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
     logging.info("colfsdfsd: %s %s", tmdb_collection_id, collection_guid)
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_CONNECTION.com_tmdb_meta_collection_by_id(tmdb_collection_id)
+        collection_meta = TMDB_CONNECTION.com_tmdb_meta_collection_by_id(
+            tmdb_collection_id)
         logging.info("col: %s", collection_meta)
         # poster path
         if download_data['Poster'] is not None:
@@ -180,7 +187,8 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
                                                                       download_data['Backdrop'])
         else:
             image_backdrop_path = None
-        localimage_json = {'Poster': image_poster_path, 'Backdrop': image_backdrop_path}
+        localimage_json = {'Poster': image_poster_path,
+                           'Backdrop': image_backdrop_path}
         db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],
                                            collection_meta, localimage_json)
         # commit all changes to db
@@ -199,7 +207,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     This is the main function called from metadata_identification
     """
     if not hasattr(metadata_movie_lookup, "metadata_last_id"):
-        metadata_movie_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        # it doesn't exist yet, so initialize it
+        metadata_movie_lookup.metadata_last_id = None
         metadata_movie_lookup.metadata_last_title = None
         metadata_movie_lookup.metadata_last_year = None
         metadata_movie_lookup.metadata_last_imdb = None
@@ -212,17 +221,20 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         if file_name['title'] == metadata_movie_lookup.metadata_last_title \
                 and file_name['year'] == metadata_movie_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
-            logging.info('meta movie return 1 %s', metadata_movie_lookup.metadata_last_id)
+            logging.info('meta movie return 1 %s',
+                         metadata_movie_lookup.metadata_last_id)
             # don't need to set last......since they are equal
             return metadata_movie_lookup.metadata_last_id
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
-        logging.info('meta movie return 2 %s', metadata_movie_lookup.metadata_last_id)
+        logging.info('meta movie return 2 %s',
+                     metadata_movie_lookup.metadata_last_id)
         # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
-    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
+    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(
+        nfo_data, xml_data)
     logging.info("meta movie look: %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id,
                  metadata_movie_lookup.metadata_last_imdb, metadata_movie_lookup.metadata_last_tmdb,
                  metadata_movie_lookup.metadata_last_rt)
@@ -259,11 +271,13 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
+                    download_que_json.update(
+                        {'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
                     db_connection.db_download_update(json.dumps(download_que_json),
                                                      download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('themoviedb', download_que_id)
+                    db_connection.db_download_update_provider(
+                        'themoviedb', download_que_id)
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
@@ -272,11 +286,13 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                                                                'themoviedb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
+                    download_que_json.update(
+                        {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     db_connection.db_download_update(json.dumps(download_que_json),
                                                      download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('themoviedb', download_que_id)
+                    db_connection.db_download_update_provider(
+                        'themoviedb', download_que_id)
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
@@ -289,7 +305,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
                                                                 file_name['year'])
         else:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
+            metadata_uuid = db_connection.db_find_metadata_guid(
+                file_name['title'], None)
         logging.info("meta movie db meta: %s", metadata_uuid)
         if metadata_uuid is not None:
             # match found by title/year on local db so purge dl record
@@ -302,7 +319,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
             db_connection.db_download_update(json.dumps(download_que_json),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
-            db_connection.db_download_update_provider('themoviedb', download_que_id)
+            db_connection.db_download_update_provider(
+                'themoviedb', download_que_id)
     logging.info("meta movie metadata_uuid c: %s", metadata_uuid)
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid

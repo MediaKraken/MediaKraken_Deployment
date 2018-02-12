@@ -9,7 +9,8 @@ from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
 
-blueprint = Blueprint("user_movie", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_movie", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import subprocess
 import natsort
@@ -37,10 +38,12 @@ def movie_detail(guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), False)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), False)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), True)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
             return redirect(url_for('user_sync.sync_edit', guid=guid))
@@ -65,7 +68,7 @@ def movie_detail(guid):
         json_imagedata = data['mm_metadata_localimage_json']
         json_metaid = data['mm_metadata_media_id']
         # vote count format
-        data_vote_count = common_internationalization.com_inter_number_format( \
+        data_vote_count = common_internationalization.com_inter_number_format(
             json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
         # build gen list
         genres_list = ''
@@ -110,10 +113,12 @@ def movie_detail(guid):
             except:
                 bitrate = 'NA'
             # file size
-            file_size = common_string.com_string_bytes2human(float(json_ffmpeg['format']['size']))
+            file_size = common_string.com_string_bytes2human(
+                float(json_ffmpeg['format']['size']))
             # calculate a better runtime
             try:
-                minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
+                minutes, seconds = divmod(
+                    float(json_ffmpeg['format']['duration']), 60)
                 hours, minutes = divmod(minutes, 60)
             except:
                 hours = 0
@@ -121,13 +126,14 @@ def movie_detail(guid):
                 seconds = 0
             try:
                 data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' \
-                                  + str(json_ffmpeg['streams'][0]['height'])
+                    + str(json_ffmpeg['streams'][0]['height'])
             except:
                 data_resolution = 'NA'
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
         # check to see if there are other version of this video file (dvd, hddvd, etc)
-        vid_versions = g.db_connection.db_media_by_metadata_guid(data[1])  # metadata guid
+        vid_versions = g.db_connection.db_media_by_metadata_guid(
+            data[1])  # metadata guid
         # audio and sub sreams
         audio_streams = []
         subtitle_streams = [(0, 'None')]
@@ -147,14 +153,15 @@ def movie_detail(guid):
                 try:
                     stream_codec \
                         = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                          + ' - '
+                        + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
                     audio_streams.append((len(audio_streams), (stream_codec + stream_language
                                                                + stream_title)[:-3]))
                 elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
+                    subtitle_streams.append(
+                        (len(subtitle_streams), stream_language[:-2]))
         # poster image
         try:
             if json_imagedata['Images']['themoviedb']['Poster'] is not None:
@@ -173,11 +180,13 @@ def movie_detail(guid):
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(
+            json_metaid['themoviedb'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
             for review_data in review_json[1]['themoviedb']['results']:
-                review.append((review_data['author'], review_data['url'], review_data['content']))
+                review.append(
+                    (review_data['author'], review_data['url'], review_data['content']))
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
         try:
@@ -188,7 +197,8 @@ def movie_detail(guid):
             pass
         # set watched and sync
         try:
-            watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
+            watched_status = json_media['UserStats'][current_user.get_id(
+            )]['Watched']
         except:
             watched_status = False
         try:
@@ -223,7 +233,8 @@ def movie_detail(guid):
                                data_watched_status=watched_status,
                                data_sync_status=sync_status,
                                data_cast=True,
-                               data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
+                               data_runtime="%02dH:%02dM:%02dS" % (
+                                   hours, minutes, seconds)
                                )
 
 

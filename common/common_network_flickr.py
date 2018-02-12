@@ -26,7 +26,8 @@ class CommonNetworkFlickr(object):
     """
 
     def __init__(self, api_key, api_secret):
-        self.flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
+        self.flickr = flickrapi.FlickrAPI(
+            api_key, api_secret, format='parsed-json')
 
 #        photos = flickr.photos.search(user_id='73509078@N00', per_page='10')
 #        sets = flickr.photosets.getList(user_id='73509078@N00')

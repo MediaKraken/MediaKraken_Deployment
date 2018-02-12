@@ -36,7 +36,7 @@ def db_open(self, db_build=False):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if db_build == False:
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" \
+        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
                                           % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
                                              'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
     else:
@@ -44,7 +44,8 @@ def db_open(self, db_build=False):
                                           " host='10.0.0.181' port=5432 password='metamanpg'")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
-    self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    self.db_cursor = self.sql3_conn.cursor(
+        cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            common_system.com_system_cpu_count())
@@ -78,7 +79,8 @@ def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
-    self.db_cursor.execute('SELECT to_regclass(\'public.%s\')' % (resource_name,))
+    self.db_cursor.execute(
+        'SELECT to_regclass(\'public.%s\')' % (resource_name,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -87,7 +89,8 @@ def db_table_count(self, table_name):
     # return count of records in table
     """
     try:
-        self.db_cursor.execute('select count(*) from ' + table_name)  # can't %s due to ' inserted
+        # can't %s due to ' inserted
+        self.db_cursor.execute('select count(*) from ' + table_name)
         return self.db_cursor.fetchone()[0]
     except:
         return None
@@ -97,7 +100,8 @@ def db_drop_table(self, table_name):
     """
     drop a table
     """
-    self.db_cursor.execute('DROP TABLE IF EXISTS ' + table_name)  # can't %s due to ' inserted
+    self.db_cursor.execute('DROP TABLE IF EXISTS ' +
+                           table_name)  # can't %s due to ' inserted
 
 
 def db_query(self, query_string):

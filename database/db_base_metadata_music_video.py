@@ -71,7 +71,8 @@ def db_meta_music_video_count(self, imvdb_id=None, search_value=None):
             self.db_cursor.execute('select count(*) from mm_metadata_music_video'
                                    ' where mm_media_music_video_song %% %s', (search_value,))
         else:
-            self.db_cursor.execute('select count(*) from mm_metadata_music_video')
+            self.db_cursor.execute(
+                'select count(*) from mm_metadata_music_video')
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_music_video'
                                ' where mm_metadata_music_video_media_id->\'imvdb\' ? %s',

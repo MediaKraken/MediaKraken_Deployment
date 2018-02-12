@@ -54,13 +54,13 @@ class CommonGoogle(object):
         """
         # info of particular video
         """
-        return common_network.mk_network_fetch_from_url(('https://www.googleapis.com/' \
+        return common_network.mk_network_fetch_from_url(('https://www.googleapis.com/'
                                                          + self.YOUTUBE_API_SERVICE_NAME + '/'
                                                          + self.YOUTUBE_API_VERSION
                                                          + '/videos?id='
                                                          + video_url.replace(
-                    'www.youtube.com/watch?v=',
-                    '') + '&key='
+                                                             'www.youtube.com/watch?v=',
+                                                             '') + '&key='
                                                          + self.DEVELOPER_KEY
                                                          + '&part=' + video_data), None)
 
@@ -79,7 +79,8 @@ class CommonGoogle(object):
             )).execute()
         return add_subscription_response["snippet"]["title"]
 
-    def com_google_youtube_rate_video(self, video_id, like_dislike='like'):  # or dislike
+    # or dislike
+    def com_google_youtube_rate_video(self, video_id, like_dislike='like'):
         """
         # rate a yt video
         """

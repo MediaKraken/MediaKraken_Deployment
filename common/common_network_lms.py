@@ -47,10 +47,12 @@ class CommonNetLMS(object):
         self.lms_device.login()
 
     def com_net_lms_request(self, command_string, preserve_encoding=False):
-        self.lms_device.request(command_string, preserve_encoding=preserve_encoding)
+        self.lms_device.request(
+            command_string, preserve_encoding=preserve_encoding)
 
     def com_net_lms_request_results(self, command_string, preserve_encoding=False):
-        self.lms_device.request_with_results(command_string, preserve_encoding=preserve_encoding)
+        self.lms_device.request_with_results(
+            command_string, preserve_encoding=preserve_encoding)
 
     def com_net_lms_rescan(self, mode='fast'):
         # ‘fast’ for update changes on library, ‘full’ for complete library scan

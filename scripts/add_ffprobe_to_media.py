@@ -35,7 +35,8 @@ connection = pika.BlockingConnection()
 channel = connection.channel()
 
 # Declare the queue
-channel.queue_declare(queue="mkque", durable=True, exclusive=False, auto_delete=False)
+channel.queue_declare(queue="mkque", durable=True,
+                      exclusive=False, auto_delete=False)
 
 # Turn on delivery confirmations
 channel.confirm_delivery()
@@ -50,7 +51,8 @@ for media in db_connection.db_read_media():
         # Send a message so ffprobe runs
         channel.basic_publish(exchange='mkque_ex',
                               routing_key='mkque',
-                              body=json.dumps({'Type': 'FFMPEG', 'Data': media['mm_media_guid']}),
+                              body=json.dumps(
+                                  {'Type': 'FFMPEG', 'Data': media['mm_media_guid']}),
                               properties=pika.BasicProperties(content_type='text/plain',
                                                               delivery_mode=1))
 

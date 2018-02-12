@@ -27,7 +27,8 @@ class CommonMetadataDiscogs(object):
     """
 
     def __init__(self):
-        self.discogs_inst = discogs_client.Client('MediaKraken/%s' % common_version.APP_VERSION)
+        self.discogs_inst = discogs_client.Client(
+            'MediaKraken/%s' % common_version.APP_VERSION)
 
     def com_meta_discogs_search(self, title):
         return self.discogs_inst.search(title, type='release')

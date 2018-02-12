@@ -30,7 +30,8 @@ class TestCommonMetadatathesportsdb(object):
     @classmethod
     def setup_class(self):
         # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read(True)
+        option_config_json, db_connection = common_config_ini.com_config_read(
+            True)
         self.db_connection = common_metadata_thesportsdb.CommonMetadataTheSportsDB(
             option_config_json)
 
@@ -57,7 +58,8 @@ class TestCommonMetadatathesportsdb(object):
         """
         Test function
         """
-        self.db_connection.com_meta_thesportsdb_search_players_by_team(team_name)
+        self.db_connection.com_meta_thesportsdb_search_players_by_team(
+            team_name)
 
 # def com_meta_thesportsdb_Search_Players_by_Name(self, player_name):
 

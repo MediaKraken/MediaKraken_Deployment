@@ -189,7 +189,7 @@ class MediaKrakenApp(App):
         for drive_status in self.rom_drives:
             if drive_status['Status'] is None and (drive_status['Type'] == spinner_text
                                                    or (drive_status[
-                                                           'Type'] == 'DVD' and spinner_text == 'Audio CD')):
+                                                       'Type'] == 'DVD' and spinner_text == 'Audio CD')):
                 # load this one
                 self.track_arduino.com_arduino_usb_serial_writestring(
                     'track|%s' % self.spindles_media_to_process[spinner_no]['Pos'])
@@ -242,9 +242,11 @@ class MediaKrakenApp(App):
 
     # notification dialog
     def mediakraken_notification_popup(self, header, message):
-        content = MediaKrakenNotificationScreen(ok_button=self.dismiss_notification_popup)
+        content = MediaKrakenNotificationScreen(
+            ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
-        self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
+        self._notification_popup = Popup(
+            title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
 
     def build(self):
@@ -255,7 +257,8 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
+        self._keyboard = Window.request_keyboard(
+            self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.arm_arduino = None

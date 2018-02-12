@@ -57,7 +57,8 @@ while True:
     time.sleep(1)
     # grab message from rabbitmq if available
     try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(queue='mkdownload', no_ack=False)
+        method_frame, header_frame, body = channel.basic_get(
+            queue='mkdownload', no_ack=False)
         on_message(channel, method_frame, header_frame, body)
     except:
         pass

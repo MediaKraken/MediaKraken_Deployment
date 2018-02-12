@@ -68,7 +68,8 @@ def admin_messages():
                                                   format_number=True,
                                                   )
     return render_template("admin/admin_messages.html",
-                           media_dir=g.db_connection.db_message_list(offset, per_page),
+                           media_dir=g.db_connection.db_message_list(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

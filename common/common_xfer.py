@@ -67,7 +67,8 @@ class FileReceiverThread(threading.Thread):
 
     def run(self):
         try:
-            logging.info('Listening for response on port %s', self.receive_port)
+            logging.info('Listening for response on port %s',
+                         self.receive_port)
             localsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             localsocket.settimeout(60.0)
             localsocket.bind(('', self.receive_port))
@@ -94,7 +95,8 @@ class FileReceiverThread(threading.Thread):
                         data = con.recv(min(fileleft, 1024))
                         fileleft = max(0, fileleft - len(data))
                         self.filedone = self.filesize - fileleft
-                        logging.info('percent done %s', self.filedone * 100 / self.filesize)
+                        logging.info('percent done %s',
+                                     self.filedone * 100 / self.filesize)
                         file_handle.write(data)
                     file_handle.close()
                     logging.info('file finished')

@@ -34,7 +34,8 @@ def metadata_person_detail(guid):
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
-            data_person_image = "/static/meta/images/" + json_imagedata['Images']['Poster']
+            data_person_image = "/static/meta/images/" + \
+                json_imagedata['Images']['Poster']
         else:
             data_person_image = "/static/images/person_missing.png"
     except:
@@ -80,7 +81,8 @@ def metadata_person_list():
                 person_image = "/static/images/person_missing.png"
         else:
             person_image = "/static/images/person_missing.png"
-        person_list.append((person_data['mmp_id'], person_data['mmp_person_name'], person_image))
+        person_list.append(
+            (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

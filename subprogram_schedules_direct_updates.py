@@ -31,16 +31,19 @@ common_signal.com_signal_set_break()
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.info("array: %s", meta_program_fetch)
-    meta_program_json = sd.com_schedules_direct_program_info(json.dumps(meta_program_fetch))
+    meta_program_json = sd.com_schedules_direct_program_info(
+        json.dumps(meta_program_fetch))
     logging.info("result: %s", meta_program_json)
     #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(
     # json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
-        db_connection.db_tv_program_insert(program_json['programID'], json.dumps(program_data))
+        db_connection.db_tv_program_insert(
+            program_json['programID'], json.dumps(program_data))
 
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Schedules_Direct_Updates')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_Schedules_Direct_Updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -107,7 +110,8 @@ meta_program_fetch = []
 if len(station_fetch) > 5000:
     logging.critical("Too many channels!!!!  Exiting...")
 elif len(station_fetch) > 0:
-    schedule_json = sd.com_schedules_direct_schedules_by_stationid(json.dumps(station_fetch))
+    schedule_json = sd.com_schedules_direct_schedules_by_stationid(
+        json.dumps(station_fetch))
     # for each station in schedules results
     for station_json in schedule_json:
         # [{u'stationID': u'10093', u'metadata': {u'startDate': u'2016-06-15',

@@ -72,7 +72,8 @@ def metadata_periodical_detail(guid):
     except:
         data_name = 'NA'
     try:
-        data_isbn = isbn.format(json_metadata['mm_metadata_book_json']['isbn10'])
+        data_isbn = isbn.format(
+            json_metadata['mm_metadata_book_json']['isbn10'])
     except:
         data_isbn = 'NA'
     try:

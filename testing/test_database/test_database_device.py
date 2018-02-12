@@ -64,14 +64,16 @@ class TestDatabaseDevices(object):
         # insert record
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_device_insert('test', json.dumps({'dev': 23}))
+        self.new_guid = self.db_connection.db_device_insert(
+            'test', json.dumps({'dev': 23}))
 
     def test_db_device_update(self):
         """
         # update record
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_device_update(self.new_guid, 'test2', json.dumps({'dev2': 22333}))
+        self.db_connection.db_device_update(
+            self.new_guid, 'test2', json.dumps({'dev2': 22333}))
 
     def test_db_device_read(self):
         """

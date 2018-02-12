@@ -31,6 +31,7 @@ class TestSubprogramFileScan(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_file_scan.py'], shell=False)
+        proc_info = subprocess.Popen(
+            ['python', './subprogram_file_scan.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

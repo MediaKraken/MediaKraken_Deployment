@@ -44,7 +44,8 @@ def worker(row_data):
         ffmpeg_params.extend(('-fs',
                               row_data['mm_sync_options_json']['Options']['Size']))
     if row_data['mm_sync_options_json']['Options']['VCodec'] != "Copy":
-        ffmpeg_params.extend(('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
+        ffmpeg_params.extend(
+            ('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
     if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
         ffmpeg_params.extend(('-ac',
                               row_data['mm_sync_options_json']['Options']['AudioChannels']))
@@ -52,11 +53,13 @@ def worker(row_data):
         ffmpeg_params.extend(('-acodec',
                               row_data['mm_sync_options_json']['Options']['ACodec']))
     if row_data['mm_sync_options_json']['Options']['ASRate'] != 'Default':
-        ffmpeg_params.extend(('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
-    ffmpeg_params.append(row_data['mm_sync_path_to'] + "." \
+        ffmpeg_params.extend(
+            ('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
+    ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
     logging.info("ffmpeg: %s", ffmpeg_params)
-    ffmpeg_pid = subprocess.Popen(ffmpeg_params, shell=False, stdout=subprocess.PIPE)
+    ffmpeg_pid = subprocess.Popen(
+        ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
     #  Duration: 01:31:10.10, start: 0.000000, bitrate: 4647 kb/s
     # frame= 1091 fps= 78 q=-1.0 Lsize=    3199kB time=00:00:36.48
@@ -67,7 +70,8 @@ def worker(row_data):
         if line != '':
             logging.info('ffmpeg out: %' % line.rstrip())
             if line.find("Duration:") != -1:
-                media_duration = timedelta(line.split(': ', 1)[1].split(',', 1)[0])
+                media_duration = timedelta(
+                    line.split(': ', 1)[1].split(',', 1)[0])
             elif line[0:5] == "frame":
                 time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
@@ -84,7 +88,7 @@ def worker(row_data):
     elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
         XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],
                                                    row_data['mm_sync_options_json']['TargetPort'],
-                                                   row_data['mm_sync_path_to'] + "." \
+                                                   row_data['mm_sync_path_to'] + "."
                                                    + row_data['mm_sync_options_json']['Options'][
                                                        'VContainer'],
                                                    row_data['mm_sync_path_to'])
@@ -92,7 +96,7 @@ def worker(row_data):
         CLOUD_HANDLE = common_cloud.CommonCloud()
         CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],
                                           row_data['mm_sync_path_to'],
-                                          row_data['mm_sync_path_to'] + "." \
+                                          row_data['mm_sync_path_to'] + "."
                                           + row_data['mm_sync_options_json']['Options'][
                                               'VContainer'].split('/', 1)[1], False)
     thread_db.db_activity_insert('MediaKraken_Server Sync', None,

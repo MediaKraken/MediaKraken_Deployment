@@ -67,7 +67,8 @@ db_connection = common_config_ini.com_config_read(True)
 db_connection.db_query('create extension if not exists pg_trgm')
 
 # create table for version
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
+db_connection.db_query(
+    'CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
     db_connection.db_query(
@@ -106,7 +107,8 @@ if db_connection.db_table_index_check('mm_media_idx_metadata_uuid') is None:
     db_connection.db_query('CREATE INDEX mm_media_idx_metadata_uuid'
                            ' ON mm_media(mm_media_metadata_guid)')
 if db_connection.db_table_index_check('mm_media_idx_path') is None:
-    db_connection.db_query('CREATE INDEX mm_media_idx_path ON mm_media(mm_media_path)')
+    db_connection.db_query(
+        'CREATE INDEX mm_media_idx_path ON mm_media(mm_media_path)')
 
 # create table for remote media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_remote (mmr_media_guid uuid'
@@ -129,9 +131,11 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_link (mm_link_guid uuid'
                        ' CONSTRAINT mm_link_guid_pk PRIMARY KEY, mm_link_name text,'
                        ' mm_link_json jsonb)')
 if db_connection.db_table_index_check('mm_link_json_idxgin') is None:
-    db_connection.db_query('CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
+    db_connection.db_query(
+        'CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
 if db_connection.db_table_index_check('mm_link_idx_name') is None:
-    db_connection.db_query('CREATE INDEX mm_link_idx_name ON mm_link(mm_link_name)')
+    db_connection.db_query(
+        'CREATE INDEX mm_link_idx_name ON mm_link(mm_link_name)')
 
 # create table for metadata of tvshows (full json w/crew, w/episodes)
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_tvshow ('
@@ -297,7 +301,8 @@ if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
 # add media classes
 db_connection.db_query('select count(*) from mm_media_class')
 for media_class in base_media_classes:
-    db_connection.db_media_class_insert(media_class[0], media_class[1], media_class[2])
+    db_connection.db_media_class_insert(
+        media_class[0], media_class[1], media_class[2])
 
 # create table for anime metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'
@@ -348,7 +353,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_movie (mm_metadat
                        ' mm_metadata_json jsonb, mm_metadata_localimage_json jsonb,'
                        ' mm_metadata_user_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_idx_name') is None:
-    db_connection.db_query('CREATE INDEX mm_metadata_idx_name ON mm_metadata_movie(mm_media_name)')
+    db_connection.db_query(
+        'CREATE INDEX mm_metadata_idx_name ON mm_metadata_movie(mm_media_name)')
 if db_connection.db_table_index_check('mm_metadata_idx_name_lower') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idx_name_lower'
                            ' ON mm_metadata_movie(lower(mm_media_name))')
@@ -458,7 +464,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KE
                        ' created_at timestamp with time zone,'
                        ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_connection.db_table_index_check('mm_user_idx_username') is None:
-    db_connection.db_query('CREATE INDEX mm_user_idx_username ON mm_user(username)')
+    db_connection.db_query(
+        'CREATE INDEX mm_user_idx_username ON mm_user(username)')
 
 # add table for reviews
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_review (mm_review_guid uuid'
@@ -550,7 +557,8 @@ base_task = [
 ]
 for base_item in base_task:
     db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
-                                 psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2],
+                                 psycopg2.Timestamp(
+                                     1970, 1, 1, 0, 0, 1), base_item[2],
                                  json.dumps(base_item[3]))
 
 # create cron tables
@@ -609,13 +617,13 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
                        ' mm_load_user_loan_id uuid, mm_loan_time timestamp,'
                        ' mm_loan_return_time timestamp)')
 
-## create the table for "triggers"
+# create the table for "triggers"
 # db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_trigger (mm_trigger_guid uuid'
 #     ' CONSTRAINT mm_trigger_guid_pk PRIMARY KEY, mm_trigger_command bytea,'
 #     ' mm_trigger_background boolean)')
 
 
-## create table for country
+# create table for country
 # db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_country (mm_country_guid uuid'
 # ' CONSTRAINT mm_country_guid_pk PRIMARY KEY, mm_country_name text,'
 # ' mm_country_code text, mm_country_lang_guid uuid)')
@@ -642,7 +650,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_channel (mm_channel_guid u
                        ' mm_channel_media_id jsonb, mm_channel_country_guid uuid,'
                        ' mm_channel_logo_guid uuid)')
 if db_connection.db_table_index_check('mm_channel_idx_name') is None:
-    db_connection.db_query('CREATE INDEX mm_channel_idx_name ON mm_channel(mm_channel_name)')
+    db_connection.db_query(
+        'CREATE INDEX mm_channel_idx_name ON mm_channel(mm_channel_name)')
 if db_connection.db_table_index_check('mm_channel_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_channel_idxgin_json'
                            ' ON mm_channel USING gin (mm_channel_media_id)')
@@ -650,7 +659,8 @@ if db_connection.db_table_index_check('mm_channel_idx_country') is None:
     db_connection.db_query('CREATE INDEX mm_channel_idx_country'
                            ' ON mm_channel(mm_channel_country_guid)')
 if db_connection.db_table_index_check('mm_channel_idx_logo') is None:
-    db_connection.db_query('CREATE INDEX mm_channel_idx_logo ON mm_channel(mm_channel_logo_guid)')
+    db_connection.db_query(
+        'CREATE INDEX mm_channel_idx_logo ON mm_channel(mm_channel_logo_guid)')
 
 # create table for user groups
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_group (mm_user_group_guid uuid'
@@ -667,7 +677,8 @@ base_group = [('Administrator', 'Server administrator',
                json.dumps({'Admin': False, 'PreviewOnly': True}))]
 # create base group entries
 for base_item in base_group:
-    db_connection.db_user_group_insert(base_item[0], base_item[1], base_item[2])
+    db_connection.db_user_group_insert(
+        base_item[0], base_item[1], base_item[2])
 
 # create table for user profiles
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_profile (mm_user_profile_guid uuid'
@@ -797,7 +808,8 @@ db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
                        ' CONSTRAINT mdq_id_pk primary key, mdq_provider text,'
                        ' mdq_que_type smallint, mdq_download_json jsonb)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
-    db_connection.db_query('CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
+    db_connection.db_query(
+        'CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
 if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_download_que_idxgin_meta_json'
                            ' ON mm_download_que USING gin (mdq_download_json)')
@@ -825,7 +837,8 @@ db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
                        ' CONSTRAINT mm_device_id_pk primary key, mm_device_type text,'
                        ' mm_device_json jsonb)')
 if db_connection.db_table_index_check('mm_device_idx_type') is None:
-    db_connection.db_query('CREATE INDEX mm_device_idx_type ON mm_device(mm_device_type)')
+    db_connection.db_query(
+        'CREATE INDEX mm_device_idx_type ON mm_device(mm_device_type)')
 if db_connection.db_table_index_check('mm_device_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_device_idxgin_json'
                            ' ON mm_device USING gin (mm_device_json)')

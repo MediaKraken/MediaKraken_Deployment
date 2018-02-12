@@ -51,7 +51,8 @@ def com_net_yt_trending(country_code='US'):
     for i in range(len(links_set)):
         if (links_set[i]['href'].strip('')[0:6] == '/watch'):
             link_list.append(links_set[i]['href'].strip(''))
-    link_list2 = ["www.youtube.com" + link_list[i] for i in range(len(link_list)) if i % 2 == 0]
+    link_list2 = ["www.youtube.com" + link_list[i]
+                  for i in range(len(link_list)) if i % 2 == 0]
     return link_list2
 
 
@@ -99,7 +100,8 @@ class CommonNetworkYoutube(object):
     """
 
     def __init__(self):
-        self.youtube_inst = youtubeapi.YoutubeAPI({'key': '/* Your API key here */'})
+        self.youtube_inst = youtubeapi.YoutubeAPI(
+            {'key': '/* Your API key here */'})
 
     def com_net_yt_video_info(self, video_id):
         return self.youtube_inst.get_video_info(video_id)
@@ -120,7 +122,8 @@ class CommonNetworkYoutube(object):
         """
         Search only Videos in a given channel
         """
-        video_list = self.youtube_inst.search_channel_videos(search_string, channel_id, 50)
+        video_list = self.youtube_inst.search_channel_videos(
+            search_string, channel_id, 50)
         # TODO
         results = self.youtube_inst.search_advanced({'fake': 'param'})
 

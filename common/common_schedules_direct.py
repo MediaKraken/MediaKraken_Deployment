@@ -40,9 +40,10 @@ class CommonSchedulesDirect(object):
         resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers,
                              data=json.dumps({"password": hashlib.sha1(
                                  user_password.encode('utf-8')).hexdigest(),
-                                              "username": user_name})).json()
+                                 "username": user_name})).json()
         if resp['code'] != 3000:
-            logging.info("SD login response: %s-%s", resp['code'], resp['token'])
+            logging.info("SD login response: %s-%s",
+                         resp['code'], resp['token'])
             self.headers['token'] = resp['token']
         else:
             logging.error("SD Connection failed")
@@ -51,7 +52,8 @@ class CommonSchedulesDirect(object):
         """
         Get status of SD server
         """
-        resp = requests.get(self.BASE_API_URL + "/status", headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/status",
+                            headers=self.headers)
         logging.info("SD Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -87,7 +89,8 @@ class CommonSchedulesDirect(object):
         """
         Add lineup
         """
-        resp = requests.put(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
+        resp = requests.put(self.BASE_API_URL + "/lineups/" +
+                            lineup_id, headers=self.headers)
         if resp.json()['response'] == 'INVALID_LINEUP':
             logging.error("SD Invalid lineup: %s", lineup_id)
         elif resp.json()['response'] == "DUPLICATE_LINEUP":
@@ -101,7 +104,8 @@ class CommonSchedulesDirect(object):
         """
         Get user lineup list
         """
-        resp = requests.get(self.BASE_API_URL + "/lineups", headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/lineups",
+                            headers=self.headers)
         logging.info("SD Lineup: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
@@ -124,7 +128,8 @@ class CommonSchedulesDirect(object):
         """
         Return channel map for lineup
         """
-        resp = requests.get(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/lineups/" +
+                            lineup_id, headers=self.headers)
         logging.info("SD Channel Map: %s-%s", resp.status_code, resp.json())
         return resp.json()
 

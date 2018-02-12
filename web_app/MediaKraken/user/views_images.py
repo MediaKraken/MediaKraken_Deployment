@@ -6,7 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from flask import Blueprint, render_template, g
 from flask_login import login_required
 
-blueprint = Blueprint("user_images", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_images", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import sys
 

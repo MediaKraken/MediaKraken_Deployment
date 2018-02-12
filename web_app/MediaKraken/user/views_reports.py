@@ -6,7 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from flask import Blueprint, render_template, g
 from flask_login import login_required
 
-blueprint = Blueprint("user_reports", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_reports", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import os
 import sys
@@ -37,7 +38,8 @@ def report_display_all_duplicates():
                                                   format_number=True,
                                                   )
     return render_template('users/reports/report_all_duplicate_media.html',
-                           media=g.db_connection.db_media_duplicate(offset, per_page),
+                           media=g.db_connection.db_media_duplicate(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -58,13 +60,15 @@ def report_display_all_duplicates_detail(guid):
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
                 media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
-                              str(stream_data['width']) + 'x' + str(stream_data['height']),
+                              str(stream_data['width']) +
+                              'x' + str(stream_data['height']),
                               media_data['mm_media_ffprobe_json']['format']['duration']))
                 break
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection. \
-                                                  db_media_duplicate_detail_count(guid)[0],
+                                                  total=g.db_connection.
+                                                  db_media_duplicate_detail_count(guid)[
+                                                      0],
                                                   record_name='copies',
                                                   format_total=True,
                                                   format_number=True,

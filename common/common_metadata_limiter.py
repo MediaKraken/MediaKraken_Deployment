@@ -12,7 +12,8 @@ import time
 API_LIMIT = {
     'anidb': (1, 4),  # A Client MUST NOT send more than one packet
     # every four seconds over an extended amount of time. (4-16-2016)
-    'chart_lyrics': (9999, 1),  # no mention of limits 7/29/2016 just says don't abuse
+    # no mention of limits 7/29/2016 just says don't abuse
+    'chart_lyrics': (9999, 1),
     'comicvine': (1, 1),  # (4-16-2016)
     'discogs': (240, 60),  # (1-16-2017)
     'giantbomb': (200, 3600),  # (11-25-2017) 200 per hour

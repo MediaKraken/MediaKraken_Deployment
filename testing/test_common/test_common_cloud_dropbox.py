@@ -31,7 +31,8 @@ class TestCommonDropBox(object):
     def setup_class(self):
         # open the database
         option_config_json, db_connection = common_config_ini.com_config_read()
-        self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
+        self.dropbox_connection = common_cloud_dropbox.CommonCloudDropbox(
+            option_config_json)
 
     @classmethod
     def teardown_class(self):

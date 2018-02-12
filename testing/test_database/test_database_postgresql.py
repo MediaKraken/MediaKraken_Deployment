@@ -88,4 +88,5 @@ class TestDatabasePostgresql(object):
         ('mm_media_fake_table', None)])
     def test_db_pgsql_table_exits(self, table_name, expected_result):
         self.db_connection.db_rollback()
-        assert self.db_connection.db_pgsql_table_exits(table_name) == expected_result
+        assert self.db_connection.db_pgsql_table_exits(
+            table_name) == expected_result

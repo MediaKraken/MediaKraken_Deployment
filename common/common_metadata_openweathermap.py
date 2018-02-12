@@ -36,7 +36,7 @@ class CommonMetadataOpenweatherMap(object):
         Grab the weather for city
         """
         return json.load(
-            urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s' \
+            urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s'
                             % (city, self.api_key)))
 
     def com_openweathermap_fetch_city(self):

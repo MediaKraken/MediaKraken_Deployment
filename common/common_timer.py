@@ -34,7 +34,8 @@ class InfiniteTimer():
 
     def cancel(self):
         if self.thread is not None:
-            self._should_continue = False  # Just in case thread is running and cancel fails.
+            # Just in case thread is running and cancel fails.
+            self._should_continue = False
             self.thread.cancel()
         else:
             print("Timer never started or failed to initialize.")

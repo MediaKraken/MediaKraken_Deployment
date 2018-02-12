@@ -7,7 +7,8 @@ from flask import Blueprint, render_template, g
 from flask_login import login_required
 from MediaKraken.user.forms import SyncEditForm
 
-blueprint = Blueprint("user_cctv", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_cctv", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import sys
 
@@ -36,7 +37,8 @@ def cctv():
                                                   format_number=True,
                                                   )
     return render_template('users/user_cctv.html',
-                           media_sync=g.db_connection.db_sync_list(offset, per_page),
+                           media_sync=g.db_connection.db_sync_list(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

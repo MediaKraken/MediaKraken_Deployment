@@ -41,7 +41,8 @@ def db_task_list_count(self, enabled_only=False):
     if not enabled_only:
         self.db_cursor.execute('select count(*) from mm_task')
     else:
-        self.db_cursor.execute('select count(*) from mm_task where mm_task_enabled = true')
+        self.db_cursor.execute(
+            'select count(*) from mm_task where mm_task_enabled = true')
     return self.db_cursor.fetchone()[0]
 
 

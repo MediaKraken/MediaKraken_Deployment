@@ -42,13 +42,14 @@ class CommonMetadataTheTVDB(object):
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         """
-        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network \
-            .mk_network_fetch_from_url(
-            'http://thetvdb.com/api/' + self.thetvdb_connection
-            + '/updates/updates_' + frequency + '.zip', None)))
+        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network
+                                                            .mk_network_fetch_from_url(
+                                                                'http://thetvdb.com/api/' + self.thetvdb_connection
+                                                                + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
-            xml_show_data = xmltodict.parse(updates_xml_zip.read(zippedshowFile))
+            xml_show_data = xmltodict.parse(
+                updates_xml_zip.read(zippedshowFile))
         return xml_show_data
 
     def com_meta_thetvdb_get_zip_by_id(self, tv_show_id, lang_code='en'):
@@ -58,7 +59,8 @@ class CommonMetadataTheTVDB(object):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
-        logging.info("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
+        logging.info("zip: %s %s %s", self.thetvdb_connection,
+                     tv_show_id, lang_code)
 
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
                                  + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
@@ -83,7 +85,8 @@ class CommonMetadataTheTVDB(object):
                 xml_actor_data = xmltodict.parse(show_zip.read(zippedshowFile))
                 logging.info("xml actor: %s", xml_actor_data)
             elif zippedshowFile == 'banners.xml':
-                xml_banners_data = xmltodict.parse(show_zip.read(zippedshowFile))
+                xml_banners_data = xmltodict.parse(
+                    show_zip.read(zippedshowFile))
                 logging.info("xml banner: %s", xml_banners_data)
         return (xml_show_data, xml_actor_data['Actors'], xml_banners_data['Banners'])
 

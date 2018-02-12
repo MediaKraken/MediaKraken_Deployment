@@ -29,7 +29,8 @@ def db_meta_game_list_count(self, search_value=None):
         self.db_cursor.execute('select count(*) from mm_metadata_game_software_info'
                                ' where gi_game_info_name %% %s', (search_value,))
     else:
-        self.db_cursor.execute('select count(*) from mm_metadata_game_software_info')
+        self.db_cursor.execute(
+            'select count(*) from mm_metadata_game_software_info')
     return self.db_cursor.fetchone()[0]
 
 
@@ -139,14 +140,15 @@ def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
     return self.db_cursor.fetchall()
 
 
-def db_meta_game_image_random(self, return_image_type='Poster'):  # poster, backdrop, etc
+# poster, backdrop, etc
+def db_meta_game_image_random(self, return_image_type='Poster'):
     """
     Find random game image
     """
     self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_guid' \
-                                                 ' from mm_media,mm_metadata_game_software_info' \
-                                                 ' where mm_media_metadata_guid = mm_metadata_guid' \
+                           + return_image_type + '\' as image_json,mm_metadata_guid'
+                                                 ' from mm_media,mm_metadata_game_software_info'
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
                                                  ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')

@@ -38,10 +38,14 @@ class CommonCloud(object):
     """
 
     def __init__(self, option_config_json):
-        self.cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
-        self.cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
-        self.cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive(option_config_json)
-        self.cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive(option_config_json)
+        self.cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(
+            option_config_json)
+        self.cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(
+            option_config_json)
+        self.cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive(
+            option_config_json)
+        self.cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive(
+            option_config_json)
 
     def com_cloud_backup_list(self):
         """
@@ -65,13 +69,16 @@ class CommonCloud(object):
                 pass
         elif cloud_type == "awss3":
             if self.cloud_awss3.active:
-                self.cloud_awss3.com_aws_s3_upload(file_path_name, file_save_name, backup_bucket)
+                self.cloud_awss3.com_aws_s3_upload(
+                    file_path_name, file_save_name, backup_bucket)
         elif cloud_type == "dropbox":
             if self.cloud_dropbox.active:
-                self.cloud_dropbox.com_cloud_dropbox_upload(file_path_name, file_save_name)
+                self.cloud_dropbox.com_cloud_dropbox_upload(
+                    file_path_name, file_save_name)
         elif cloud_type == "onedrive":
             if self.cloud_onedrive.active:
-                self.cloud_onedrive.com_cloud_onedrive_update(file_path_name, file_save_name)
+                self.cloud_onedrive.com_cloud_onedrive_update(
+                    file_path_name, file_save_name)
         else:
             return None
 
@@ -124,10 +131,12 @@ class CommonCloud(object):
                 self.cloud_awss3.com_aws_s3_download(file_name, file_location)
         elif cloud_type == "dropbox":
             if self.cloud_dropbox.active:
-                self.cloud_dropbox.com_cloud_dropbox_download(file_name, file_location)
+                self.cloud_dropbox.com_cloud_dropbox_download(
+                    file_name, file_location)
         elif cloud_type == "onedrive":
             if self.cloud_onedrive.active:
-                self.cloud_onedrive.com_cloud_onedrive_download(file_name, file_location)
+                self.cloud_onedrive.com_cloud_onedrive_download(
+                    file_name, file_location)
         else:
             return None
 

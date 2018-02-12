@@ -61,7 +61,8 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     """
     file_handle = None
     if with_timestamp:
-        file_handle = open(file_name + '_' + time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
+        file_handle = open(file_name + '_' +
+                           time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
     else:
         file_handle = open(file_name, 'w+')
     if as_pickle:
@@ -101,7 +102,8 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                 for file_name in os.listdir(dir_name):
                     if directory_only:
                         if os.path.isdir(os.path.join(dir_name, file_name)):
-                            match_list.append(os.path.join(dir_name, file_name))
+                            match_list.append(
+                                os.path.join(dir_name, file_name))
                     else:
                         match_list.append(os.path.join(dir_name, file_name))
         else:
@@ -113,7 +115,8 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                     else:
                         if directory_only:
                             if os.path.isdir(os.path.join(dir_name, file_name)):
-                                match_list.append(os.path.join(dir_name, file_name))
+                                match_list.append(
+                                    os.path.join(dir_name, file_name))
                         else:
                             match_list.append(os.path.join(root, file_name))
         if skip_junk and len(match_list) > 0:

@@ -46,7 +46,8 @@ def db_download_delete(self, guid):
     """
     Remove download
     """
-    self.db_cursor.execute('delete from mm_download_que where mdq_id = %s', (guid,))
+    self.db_cursor.execute(
+        'delete from mm_download_que where mdq_id = %s', (guid,))
     self.db_commit()
 
 
@@ -84,7 +85,8 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    logging.info('db que exits: %s %s %s', download_que_uuid, provider_name, provider_id)
+    logging.info('db que exits: %s %s %s', download_que_uuid,
+                 provider_name, provider_id)
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
                                ' where mdq_provider = %s and mdq_que_type = %s'

@@ -34,7 +34,8 @@ def user_movie_genre_page():
     for row_data in g.db_connection.db_media_movie_count_by_genre(
             g.db_connection.db_media_uuid_by_class('Movie')):
         media.append((row_data['gen']['name'],
-                      common_internationalization.com_inter_number_format(row_data[1]),
+                      common_internationalization.com_inter_number_format(
+                          row_data[1]),
                       row_data[0]['name'] + ".png"))
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
@@ -64,7 +65,8 @@ def user_movie_page(genre):
             watched_status = False
         # set synced
         try:
-            sync_status = row_data['mm_media_json']['UserStats'][current_user.get_id()]['sync']
+            sync_status = row_data['mm_media_json']['UserStats'][current_user.get_id(
+            )]['sync']
         except:
             sync_status = False
         # set rating

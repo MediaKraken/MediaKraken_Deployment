@@ -43,5 +43,6 @@ def main():
 
 if __name__ == "__main__":
     # start logging
-    common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_Images')
+    common_logging.com_logging_start(
+        './log/MediaKraken_Metadata_API_Worker_Images')
     main()

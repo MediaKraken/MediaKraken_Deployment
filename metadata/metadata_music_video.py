@@ -44,7 +44,8 @@ def imvdb_lookup(db_connection, file_name):
         imvdb_lookup.metadata_last_band = None
         imvdb_lookup.metadata_last_song = None
     # determine names
-    band_name, song_name = os.path.splitext(os.path.basename(file_name.lower()))[0].split('-', 1)
+    band_name, song_name = os.path.splitext(
+        os.path.basename(file_name.lower()))[0].split('-', 1)
     try:
         song_name = song_name.split('(', 1)[0].strip()
     except:
@@ -57,13 +58,15 @@ def imvdb_lookup(db_connection, file_name):
     if band_name == imvdb_lookup.metadata_last_band \
             and song_name == imvdb_lookup.metadata_last_song:
         return imvdb_lookup.metadata_last_id
-    metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
+    metadata_uuid = db_connection.db_meta_music_video_lookup(
+        band_name, song_name)
     logging.info("uuid: %s", metadata_uuid)
     if metadata_uuid == []:
         metadata_uuid = None
     if metadata_uuid is None:
         if IMVDB_CONNECTION is not None:
-            imvdb_json = IMVDB_CONNECTION.com_imvdb_search_video(band_name, song_name)
+            imvdb_json = IMVDB_CONNECTION.com_imvdb_search_video(
+                band_name, song_name)
             logging.info("imvdb return: %s", imvdb_json)
             # parse the results and insert/udpate
             for video_data in imvdb_json['results']:
@@ -71,11 +74,12 @@ def imvdb_lookup(db_connection, file_name):
                 if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                     db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
                                                           video_data['song_slug'], json.dumps(
-                            {'imvdb': str(video_data['id'])}),
-                                                          json.dumps(video_data),
-                                                          json.dumps({'Images': {'imvdb': None}}))
+                        {'imvdb': str(video_data['id'])}),
+                        json.dumps(video_data),
+                        json.dumps({'Images': {'imvdb': None}}))
             # try after inserting new records
-            metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
+            metadata_uuid = db_connection.db_meta_music_video_lookup(
+                band_name, song_name)
             if metadata_uuid == []:
                 metadata_uuid = None
     # set last values to negate lookups for same song

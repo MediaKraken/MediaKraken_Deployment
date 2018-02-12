@@ -65,7 +65,7 @@ class YoutubeAPI:
         }
         api_data = self.api_get(api_url, params)
 
-        return self.decode_list(api_data);
+        return self.decode_list(api_data)
 
     def search(self, q, max_results=10):
 
@@ -209,12 +209,14 @@ class YoutubeAPI:
             vid = path[1:]
             return vid
         else:
-            raise Exception('The supplied URL does not look like a Youtube URL')
+            raise Exception(
+                'The supplied URL does not look like a Youtube URL')
 
     def get_channel_from_url(self, youtube_url):
 
         if 'youtube.com' not in youtube_url:
-            raise Exception('The supplied URL does not look like a Youtube URL')
+            raise Exception(
+                'The supplied URL does not look like a Youtube URL')
         path = self._parse_url_path(youtube_url)
         if '/channel' in path:
             segments = path.split('/')
@@ -225,7 +227,8 @@ class YoutubeAPI:
             username = segments[len(segments) - 1]
             channel = self.get_channel_by_name(username)
         else:
-            raise Exception('The supplied URL does not look like a Youtube Channel URL')
+            raise Exception(
+                'The supplied URL does not look like a Youtube Channel URL')
 
         return channel
 
@@ -236,7 +239,8 @@ class YoutubeAPI:
 
         res_obj = json.loads(api_data)
         if 'error' in res_obj:
-            msg = "Error " + res_obj['error']['code'] + " " + res_obj['error']['message']
+            msg = "Error " + res_obj['error']['code'] + \
+                " " + res_obj['error']['message']
             if res_obj['error']['errors'][0]:
                 msg = msg + " : " + res_obj['error']['errors'][0]['reason']
             raise Exception(msg)
@@ -251,7 +255,8 @@ class YoutubeAPI:
 
         res_obj = json.loads(api_data)
         if 'error' in res_obj:
-            msg = "Error " + res_obj['error']['code'] + " " + res_obj['error']['message']
+            msg = "Error " + res_obj['error']['code'] + \
+                " " + res_obj['error']['message']
             if res_obj['error']['errors'][0]:
                 msg = msg + " : " + res_obj['error']['errors'][0]['reason']
             raise Exception(msg)

@@ -26,7 +26,8 @@ THEGAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 
 def game_system_update():
-    data = THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms']['Platform']
+    data = THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_list()[
+        'Data']['Platforms']['Platform']
     print(type(data))
     print(data)
     for game_system in data:

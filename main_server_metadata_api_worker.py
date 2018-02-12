@@ -64,17 +64,18 @@ from common import common_thetvdb
 common_signal.com_signal_set_break()
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
              / common_metadata_limiter.API_LIMIT['anidb'][1])
 def anidb(thread_db, download_data):
     """
     Rate limiter for AniDB
     """
-    logging.info("here i am in anidb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in anidb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'anidb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]
              / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
 def chart_lyrics(thread_db, download_data):
     """
@@ -85,7 +86,7 @@ def chart_lyrics(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'chart_lyrics', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]
              / common_metadata_limiter.API_LIMIT['comicvine'][1])
 def comicvine(thread_db, download_data):
     """
@@ -96,7 +97,7 @@ def comicvine(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'comicvine', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]
              / common_metadata_limiter.API_LIMIT['giantbomb'][1])
 def giantbomb(thread_db, download_data):
     """
@@ -107,37 +108,40 @@ def giantbomb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'giantbomb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]
              / common_metadata_limiter.API_LIMIT['imdb'][1])
 def imdb(thread_db, download_data):
     """
     Rate limiter for IMDB
     """
-    logging.info("here i am in imdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in imdb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'imdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]
              / common_metadata_limiter.API_LIMIT['imvdb'][1])
 def imvdb(thread_db, download_data):
     """
     Rate limiter for IMVdb
     """
-    logging.info("here i am in imvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in imvdb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'imvdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]
              / common_metadata_limiter.API_LIMIT['isbndb'][1])
 def isbndb(thread_db, download_data):
     """
     Rate limiter for isbndb
     """
-    logging.info("here i am in isbndb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in isbndb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'isbndb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]
              / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
 def musicbrainz(thread_db, download_data):
     """
@@ -148,7 +152,7 @@ def musicbrainz(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['netflixroulette'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['netflixroulette'][0]
              / common_metadata_limiter.API_LIMIT['netflixroulette'][1])
 def netflixroulette(thread_db, download_data):
     """
@@ -156,30 +160,33 @@ def netflixroulette(thread_db, download_data):
     """
     logging.info("here i am in netflixroulette rate %s",
                  datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    metadata_general.metadata_process(thread_db, 'netflixroulette', download_data)
+    metadata_general.metadata_process(
+        thread_db, 'netflixroulette', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
              / common_metadata_limiter.API_LIMIT['omdb'][1])
 def omdb(thread_db, download_data):
     """
     Rate limiter for OMDB
     """
-    logging.info("here i am in omdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in omdb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
              / common_metadata_limiter.API_LIMIT['omdb'][1])
 def openlibrary(thread_db, download_data):
     """
     Rate limiter for openlibrary
     """
-    logging.info("here i am in openlib rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in openlib rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'openlibrary', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]
              / common_metadata_limiter.API_LIMIT['pitchfork'][1])
 def pitchfork(thread_db, download_data):
     """
@@ -190,7 +197,7 @@ def pitchfork(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
              / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
 def televisiontunes(thread_db, download_data):
     """
@@ -198,10 +205,11 @@ def televisiontunes(thread_db, download_data):
     """
     logging.info("here i am in televisiontunes rate %s",
                  datetime.datetime.now().strftime("%H:%M:%S.%f"))
-    metadata_general.metadata_process(thread_db, 'televisiontunes', download_data)
+    metadata_general.metadata_process(
+        thread_db, 'televisiontunes', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]
              / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
 def theaudiodb(thread_db, download_data):
     """
@@ -212,7 +220,7 @@ def theaudiodb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'theaudiodb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]
              / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
 def thegamesdb(thread_db, download_data):
     """
@@ -223,7 +231,7 @@ def thegamesdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thelogodb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['thelogodb'][0]
              / common_metadata_limiter.API_LIMIT['thelogodb'][1])
 def thelogodb(thread_db, download_data):
     """
@@ -234,17 +242,18 @@ def thelogodb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thelogodb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
 def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
-    logging.info("here i am in moviedb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in moviedb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
              / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
 def thesportsdb(thread_db, download_data):
     """
@@ -255,27 +264,29 @@ def thesportsdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]
              / common_metadata_limiter.API_LIMIT['thetvdb'][1])
 def thetvdb(thread_db, download_data):
     """
     Rate limiter for theTVdb
     """
-    logging.info("here i am in thetvdb rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in thetvdb rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]
              / common_metadata_limiter.API_LIMIT['tvmaze'][1])
 def tvmaze(thread_db, download_data):
     """
     Rate limiter for TVMaze
     """
-    logging.info("here i am in tvmaze rate %s", datetime.datetime.now().strftime("%H:%M:%S.%f"))
+    logging.info("here i am in tvmaze rate %s",
+                 datetime.datetime.now().strftime("%H:%M:%S.%f"))
     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
              / common_metadata_limiter.API_LIMIT['tv_intros'][1])
 def tv_intros(thread_db, download_data):
     """
@@ -286,7 +297,7 @@ def tv_intros(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvshowtime'][0] \
+@ratelimited(common_metadata_limiter.API_LIMIT['tvshowtime'][0]
              / common_metadata_limiter.API_LIMIT['tvshowtime'][1])
 def tvshowtime(thread_db, download_data):
     """
@@ -327,7 +338,8 @@ def on_message(channel, method_frame, header_frame, body):
 
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Metadata_API_Worker_%s' % str(sys.argv[1]))
+common_logging.com_logging_start(
+    './log/MediaKraken_Metadata_API_Worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
 logging.info("worker meta api name: %s", content_providers)
 # open the database
@@ -335,7 +347,8 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
+    class_text_dict[class_data['mm_media_class_guid']
+                    ] = class_data['mm_media_class_type']
 
 # pika rabbitmq connection
 parameters = pika.ConnectionParameters('mkrabbitmq',
@@ -402,7 +415,8 @@ while True:
             tvshowtime(thread_db, row_data)
         elif content_providers == 'Z':
             logging.info('worker Z meta api: class: %s rowid: %s json: %s',
-                         class_text_dict[row_data['mdq_download_json']['ClassID']],
+                         class_text_dict[row_data['mdq_download_json']
+                                         ['ClassID']],
                          row_data['mdq_id'], row_data['mdq_download_json'])
             metadata_uuid = None
             # check for book/etc
@@ -430,7 +444,8 @@ while True:
                     elif file_name['title'] == metadata_last_title:
                         thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
-                    logging.info("worker Z meta api uuid: %s file: %s", metadata_uuid, file_name)
+                    logging.info("worker Z meta api uuid: %s file: %s",
+                                 metadata_uuid, file_name)
                     if metadata_uuid is None:
                         # begin id process
                         metadata_uuid = metadata_identification.metadata_identification(thread_db,
@@ -451,7 +466,8 @@ while True:
                     except:
                         metadata_last_year = None
                 else:  # invalid guessit guess so set to ZZ to skip for now
-                    thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
+                    thread_db.db_download_update_provider(
+                        'ZZ', row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
                 logging.info("worker Z meta api update: metaid: %s json mediaid: %s ",
@@ -461,7 +477,8 @@ while True:
     time.sleep(1)
     # grab message from rabbitmq if available
     try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+        method_frame, header_frame, body = channel.basic_get(
+            queue=content_providers, no_ack=False)
         on_message(channel, method_frame, header_frame, body)
     except:
         pass

@@ -43,13 +43,15 @@ def nfo_xml_file(media_file_path):
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
     if os.path.isfile(nfo_file_check):  # check for nfo
         logging.info('nfo file found: %s', nfo_file_check)
-        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        nfo_data = xmltodict.parse(
+            common_file.com_file_load_data(nfo_file_check, False))
     else:
         nfo_data = None
         # only check for xml if nfo doesn't exist
         if os.path.isfile(xml_file_name):  # check for xml
             logging.info('xml file found: %s', xml_file_name)
-            xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
+            xml_data = xmltodict.parse(
+                common_file.com_file_load_data(xml_file_name, False))
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),
                                          'movie.xml')):
             logging.info('movie xml file found: %s', xml_file_name)
@@ -71,7 +73,8 @@ def nfo_xml_file_tv(media_file_path):
         nfo_file_check = media_file_path.rsplit('\\', 1)[0] + 'tvinfo.nfo'
     if os.path.isfile(nfo_file_check):  # check for nfo
         logging.info('nfo tv file found: %s', nfo_file_check)
-        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        nfo_data = xmltodict.parse(
+            common_file.com_file_load_data(nfo_file_check, False))
     else:
         nfo_data = None
     return nfo_data, xml_data

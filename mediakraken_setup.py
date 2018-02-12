@@ -42,7 +42,8 @@ elif sys.platform.startswith('darwin'):
     # MAC OSQ
     pass
 
-py3 = version_info[0] > 2  # creates boolean value for test that Python major version > 2
+# creates boolean value for test that Python major version > 2
+py3 = version_info[0] > 2
 
 compose_text = "version: '2'\n" \
                "# MediaKraken\n" \
@@ -59,7 +60,8 @@ else:
 if response == 'None' or len(response) == 0:
     # builtin
     db_pass = str(uuid.uuid4()).replace('-', '')
-    env_text = ("DBHOST=mkdatabase\nDBDATABASE=metamandb\nDBUSER=metamanpg\nDBPASS=%s", (db_pass,))
+    env_text = (
+        "DBHOST=mkdatabase\nDBDATABASE=metamandb\nDBUSER=metamanpg\nDBPASS=%s", (db_pass,))
     compose_text += "\n\n  # Postgresql server\n" \
                     "  database:\n" \
                     "    image: mediakraken/mkdatabase:latest\n" \
@@ -260,9 +262,11 @@ compose_text += "\n\n  # rabbit\n" \
 # after this point is optional stuff
 
 if py3:
-    response = input("Run Portainer? (See Docker container usage - default no): ")
+    response = input(
+        "Run Portainer? (See Docker container usage - default no): ")
 else:
-    response = raw_input("Run Portainer? (See Docker container usage - default no): ")
+    response = raw_input(
+        "Run Portainer? (See Docker container usage - default no): ")
 if response.lower() == 'y':
     # runs portainer
     compose_text += "\n\n  dockmanage:\n" \
@@ -276,9 +280,11 @@ if response.lower() == 'y':
                     "      restart: unless - stopped\n"
 
 if py3:
-    response = input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+    response = input(
+        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 else:
-    response = raw_input("Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+    response = raw_input(
+        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 
 if py3:
     response = input("Please enter your Transmission instance IP/Hostname"

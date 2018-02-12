@@ -8,7 +8,8 @@ from flask import Blueprint, render_template, g, request, \
 from flask_login import login_required
 from flask_login import current_user
 
-blueprint = Blueprint("user_tv", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_tv", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import sys
 
@@ -84,10 +85,12 @@ def user_tv_show_detail_page(guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), False)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), True)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
@@ -144,7 +147,8 @@ def user_tv_show_detail_page(guid):
                 data_genres_list = data_genres_list[2:-2]
 
         # vote count format
-        data_vote_count = 0  # common_internationlzia.('%d', json_metadata['vote_count'], True)
+        # common_internationlzia.('%d', json_metadata['vote_count'], True)
+        data_vote_count = 0
 
         # build production list
         production_list = ''
@@ -190,7 +194,8 @@ def user_tv_show_detail_page(guid):
                                data_watched_status=watched_status,
                                data_season_data=data_season_data,
                                data_season_count=data_season_count,
-                               data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
+                               data_runtime="%02dH:%02dM:%02dS" % (
+                                   hours, minutes, seconds)
                                )
 
 
@@ -252,7 +257,8 @@ def user_tv_season_detail_page(guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
 
-    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
+    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
+        guid, int(season))
     logging.info('dataeps: %s', data_episode_count)
     data_episode_keys = natsort.natsorted(data_episode_count)
     logging.info('dataepskeys: %s', data_episode_keys)
@@ -291,7 +297,8 @@ def user_tv_episode_detail_page(guid, season, episode):
     """
     Display tv episode detail page
     """
-    data_episode_detail = g.db_connection.db_read_tvmeta_episode(guid, season, episode)
+    data_episode_detail = g.db_connection.db_read_tvmeta_episode(
+        guid, season, episode)
     # poster image
     try:
         data_poster_image = data_episode_detail[3]

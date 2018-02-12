@@ -45,6 +45,7 @@ for fname in dirList:
     iconfile = open(path + "/" + fname, "rb")
     icondata = iconfile.read()
     icondata = base64.b64encode(icondata)
-    fin.write("\"controller_" + fname.split(".")[0] + "\": \"" + icondata + "\",")
+    fin.write("\"controller_" + fname.split(".")
+              [0] + "\": \"" + icondata + "\",")
 fin.write("}")
 fin.close()

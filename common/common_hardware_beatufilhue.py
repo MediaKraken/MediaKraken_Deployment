@@ -27,7 +27,8 @@ class CommonHardwareBeatifulHue(object):
     """
 
     def __init__(self, ip_addr, user_id):
-        self.beatifulhue_inst = Bridge(device={'ip': ip_addr}, user={'name': user_id})
+        self.beatifulhue_inst = Bridge(
+            device={'ip': ip_addr}, user={'name': user_id})
 
     def com_hardware_beatifulhue_config(self):
         created = False
@@ -35,7 +36,8 @@ class CommonHardwareBeatifulHue(object):
         while not created:
             resource = {'user': {'devicetype': 'MediaKraken',
                                  'name': '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m'}}
-            response = self.beatifulhue_inst.config.create(resource)['resource']
+            response = self.beatifulhue_inst.config.create(resource)[
+                'resource']
             if 'error' in response[0]:
                 if response[0]['error']['type'] != 101:
                     print('Unhandled error creating configuration on the Hue')
@@ -62,7 +64,8 @@ class CommonHardwareBeatifulHue(object):
         self.beatifulhue_inst.light.update(resource)
 
 
-stuff = CommonHardwareBeatifulHue('10.0.0.225', '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m')
+stuff = CommonHardwareBeatifulHue(
+    '10.0.0.225', '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m')
 # stuff.com_hardware_beatifulhue_config()
 print(stuff.com_hardware_beatifulhue_info())
 print(stuff.com_hardware_beatifulhue_get_light('all'))

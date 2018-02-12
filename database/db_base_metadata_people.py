@@ -93,8 +93,9 @@ def db_meta_person_id_count(self, host_type, guid):
     """
     # does person exist already by host/id
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_person' \
-                           ' where mmp_person_media_id @> \'{"' + host_type + '":"'
+    self.db_cursor.execute('select count(*) from mm_metadata_person'
+                           ' where mmp_person_media_id @> \'{"' +
+                           host_type + '":"'
                            + str(guid) + '"}\'')
     return self.db_cursor.fetchone()[0]
 
@@ -126,8 +127,8 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     update the person bio/etc
     """
-    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, ' \
-                           'mmp_person_image = %s where mmp_person_media_id->\'' \
+    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '
+                           'mmp_person_image = %s where mmp_person_media_id->\''
                            + provider_name + '\' ? %s',
                            (json.dumps(person_bio), json.dumps(person_image),
                             str(provider_uuid)))
@@ -176,7 +177,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                                           person_id)}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
-                                               json.dumps({meta_type: str(person_id)}),
+                                               json.dumps(
+                                                   {meta_type: str(person_id)}),
                                                None, None)
     else:
         if meta_type == "tvmaze":
@@ -205,7 +207,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                                       person_id)}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
-                                           json.dumps({meta_type: str(person_id)}),
+                                           json.dumps(
+                                               {meta_type: str(person_id)}),
                                            None, None)
 
 
@@ -234,15 +237,15 @@ def db_meta_person_as_seen_in(self, person_guid):
         # TODO won't this need to be like below?
     elif 'thetvdb' in row_data['mmp_person_media_id']:
         # sql_params = str(row_data[1]['thetvdb']),
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,' \
-                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\'' \
-                               ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'' \
-                               '->\'Cast\'->\'Actor\' @> \'[{"id": \"' \
-                               + str(row_data['mmp_person_media_id']['thetvdb']) \
+        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''
+                               ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
+                               '->\'Cast\'->\'Actor\' @> \'[{"id": \"'
+                               + str(row_data['mmp_person_media_id']['thetvdb'])
                                + '\"}]\' order by mm_metadata_tvshow_name')  # , sql_params)  #TODO
     return self.db_cursor.fetchall()
 
-## works
+# works
 # select mm_metadata_tvshow_guid,mm_metadata_tvshow_name as
 # media_query_name,mm_metadata_tvshow_localimage_json
 # from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->'Meta'

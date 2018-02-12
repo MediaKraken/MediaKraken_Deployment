@@ -274,7 +274,8 @@ class BackBlazeB2(object):
             with open(path, 'rb') as f:
                 while True:
                     block = f.read(2 ** 10)
-                    if not block: break
+                    if not block:
+                        break
                     sha.update(block)
             sha = sha.hexdigest()
 
@@ -306,7 +307,8 @@ class BackBlazeB2(object):
             if password:
                 request = urllib2.Request(cur_upload_url, fp, headers)
             else:
-                request = urllib2.Request(cur_upload_url, mm_file_data, headers)
+                request = urllib2.Request(
+                    cur_upload_url, mm_file_data, headers)
             response = urllib2.urlopen(request)
             response_data = json.loads(response.read())
         except urllib2.HTTPError, error:
@@ -453,8 +455,8 @@ class BackBlazeB2(object):
                     break
                 except Exception, e:
                     print(
-                            "WARNING: Error processing file '%s'\n%s\nTrying again." % (
-                        path, e))
+                        "WARNING: Error processing file '%s'\n%s\nTrying again." % (
+                            path, e))
                     time.sleep(1)
 
     def recursive_upload(self, path, bucket_id=None, bucket_name=None,
@@ -482,11 +484,14 @@ class BackBlazeB2(object):
 
             for root, dirs, files in os.walk(path):
                 for f in files:
-                    if os.path.islink(root + '/' + f): continue
+                    if os.path.islink(root + '/' + f):
+                        continue
                     if exclude_regex and exclude_regex.match(
-                            root + '/' + f): continue
+                            root + '/' + f):
+                                continue
                     if include_regex and not include_regex.match(
-                            root + '/' + f): continue
+                            root + '/' + f):
+                                continue
                     if multithread:
                         print("UPLOAD: %s" % root + '/' + f)
                         self.upload_queue.put(root + '/' + f)
@@ -549,7 +554,8 @@ class BackBlazeB2(object):
 
 # Example command line utility
 if __name__ == "__main__":
-    import argparse, ConfigParser
+    import argparse
+    import ConfigParser
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', required=True, dest='config_path',

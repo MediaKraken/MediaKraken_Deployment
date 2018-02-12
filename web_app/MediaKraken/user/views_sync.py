@@ -8,7 +8,8 @@ from flask import Blueprint, render_template, g, request, \
 from flask_login import login_required
 from MediaKraken.user.forms import SyncEditForm
 
-blueprint = Blueprint("user_sync", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_sync", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import json
 import sys
@@ -39,7 +40,8 @@ def sync_display_all():
                                                   format_number=True,
                                                   )
     return render_template('users/user_sync.html',
-                           media_sync=g.db_connection.db_sync_list(offset, per_page),
+                           media_sync=g.db_connection.db_sync_list(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

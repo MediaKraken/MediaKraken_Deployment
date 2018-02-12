@@ -69,7 +69,8 @@ class CommonCloudOneDrive(object):
         """
         root_folder = self.client.item(drive="me", id="root").children.get()
         id_of_file = root_folder[0].id
-        self.client.item(drive="me", id=id_of_file).download("./path_to_download_to.txt")
+        self.client.item(drive="me", id=id_of_file).download(
+            "./path_to_download_to.txt")
 
     def com_cloud_onedrive_add_folder(self, folder_name):
         """
@@ -102,14 +103,16 @@ class CommonCloudOneDrive(object):
         renamed_item = onedrivesdk.Item()
         renamed_item.name = "NewItemName"
         renamed_item.id = "youritemtorename!id"
-        new_item = self.client.item(drive="me", id=renamed_item.id).update(renamed_item)
+        new_item = self.client.item(
+            drive="me", id=renamed_item.id).update(renamed_item)
 
     def com_cloud_onedrive_page(self):
         """
         page through collection
         """
         # get the top three elements of root, leaving the next page for more elements
-        collection = self.client.item(drive="me", id="root").children.request(top=3).get()
+        collection = self.client.item(
+            drive="me", id="root").children.request(top=3).get()
         # get the first item in the collection
         item = collection[0]
         # get the next page of three elements, if none exist, returns None

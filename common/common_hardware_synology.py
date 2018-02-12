@@ -31,7 +31,8 @@ class CommonHardwareSynology(object):
         Connect to synology
         """
         logging.info("syn connect: %s", addr)
-        self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
+        self.synology_nas = NasApi(
+            'http://%s:5000/webapi/' % addr, user_name, user_password)
 
     def com_synology_info(self):
         """

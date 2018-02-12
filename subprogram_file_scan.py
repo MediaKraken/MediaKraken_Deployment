@@ -63,7 +63,7 @@ def worker(audit_directory):
         smb_stuff.com_cifs_connect(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
-                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0] \
+                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
                                  + '\\' + file_name)
         smb_stuff.com_cifs_close()
     else:
@@ -123,7 +123,8 @@ def worker(audit_directory):
                             or file_name.find('\\theme.mp3') != -1 \
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                        media_class_text = thread_db.db_media_class_by_uuid(
+                            new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/trailers/') != -1 \
                                     or file_name.find('\\trailers\\') != -1:
@@ -147,7 +148,8 @@ def worker(audit_directory):
                             new_class_type_uuid = class_text_dict['TV Extras']
                     elif file_name.find('/backdrops/') != -1 \
                             or file_name.find('\\backdrops\\') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                        media_class_text = thread_db.db_media_class_by_uuid(
+                            new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/theme.mp3') != -1 \
                                     or file_name.find('\\theme.mp3') != -1 \
@@ -158,7 +160,8 @@ def worker(audit_directory):
                     if file_name[:1] == "\\":
                         file_name \
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = None  # common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    # common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    media_ffprobe_json = None
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),
                                          'ChapterScan': True})
@@ -168,7 +171,8 @@ def worker(audit_directory):
                 # Send a message so ffprobe runs
                 channel.basic_publish(exchange='mkque_ex',
                                       routing_key='mkque',
-                                      body=json.dumps({'Type': 'FFMPEG', 'Data': media_id}),
+                                      body=json.dumps(
+                                          {'Type': 'FFMPEG', 'Data': media_id}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))
                 if save_dl_record:
@@ -181,19 +185,20 @@ def worker(audit_directory):
                                                                      'ProviderMetaID': None}))
         total_scanned += 1
         thread_db.db_audit_path_update_status(dir_guid,
-                                              json.dumps({'Status': 'File scan: ' \
+                                              json.dumps({'Status': 'File scan: '
                                                                     + common_internationalization.com_inter_number_format(
-                                                  total_scanned) \
-                                                                    + ' / ' + common_internationalization.com_inter_number_format(
-                                                  total_file_in_dir),
+                                                                        total_scanned)
+                                                          + ' / ' + common_internationalization.com_inter_number_format(
+                                                                        total_file_in_dir),
                                                           'Pct': (
-                                                                         total_scanned / total_file_in_dir) * 100}))
+                                                                        total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.db_audit_path_update_status(dir_guid, None)  # set to none so it doesn't show up
+    # set to none so it doesn't show up
+    thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
         thread_db.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_files) \
+            common_internationalization.com_inter_number_format(total_files)
             + " file(s) added from " + dir_path, True)
     thread_db.db_commit()
     thread_db.db_close()
@@ -212,7 +217,8 @@ connection = pika.BlockingConnection()
 channel = connection.channel()
 
 # Declare the queue
-channel.queue_declare(queue="mkque", durable=True, exclusive=False, auto_delete=False)
+channel.queue_declare(queue="mkque", durable=True,
+                      exclusive=False, auto_delete=False)
 
 # Turn on delivery confirmations
 channel.confirm_delivery()
@@ -232,13 +238,15 @@ known_media = db_connection.db_known_media()
 if known_media is not None:
     for media_row in known_media:
         if media_row['mm_media_path'] is not None:
-            global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
+            global_known_media.append(
+                media_row['mm_media_path'].encode('utf-8'))
 known_media = None
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
 for class_data in db_connection.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
+    class_text_dict[class_data['mm_media_class_type']
+                    ] = class_data['mm_media_class_guid']
 logging.info('class: %s', class_text_dict)
 
 # determine directories to audit
@@ -262,12 +270,13 @@ for row_data in db_connection.db_audit_paths():
                                                           json.dumps({'Status': 'Added to scan',
                                                                       'Pct': 100}))
         else:
-            db_connection.db_notification_insert('UNC Library path not found: %s' \
+            db_connection.db_notification_insert('UNC Library path not found: %s'
                                                  % row_data['mm_media_dir_path'], True)
         smb_stuff.com_cifs_close()
     else:
-        if not os.path.isdir(row_data['mm_media_dir_path']):  # make sure the path still exists
-            db_connection.db_notification_insert('Library path not found: %s' \
+        # make sure the path still exists
+        if not os.path.isdir(row_data['mm_media_dir_path']):
+            db_connection.db_notification_insert('Library path not found: %s'
                                                  % row_data['mm_media_dir_path'], True)
         else:
             # verify the directory inodes has changed

@@ -12,13 +12,16 @@ class SyncEditForm(Form):
     # fields
     name = TextField("Name", validators=[DataRequired()])
     target_type = SelectField("Sync Type", choices=[('Local File System', 'Local File System'),
-                                                    ("Remote Client", "Remote Client"),
+                                                    ("Remote Client",
+                                                     "Remote Client"),
                                                     ("google", "Google Drive"),
                                                     ('dropbox', 'Dropbox'),
                                                     ('onedrive', 'OneDrive'), ('awss3', 'AWS S3')])
     target_file_size = SelectField("File Size", choices=[('Clone', 'Clone'), ('250MB', '250MB'),
-                                                         ('500MB', '500MB'), ('1GB', '1GB'),
-                                                         ('2GB', '2GB'), ('2.5GB', '2.5GB'),
+                                                         ('500MB',
+                                                          '500MB'), ('1GB', '1GB'),
+                                                         ('2GB', '2GB'), ('2.5GB',
+                                                                          '2.5GB'),
                                                          ('3GB', '3GB'),
                                                          ('4GB', '4GB'), ('5GB', '5GB'),
                                                          ('10GB', '10GB'), ('25GB', '25GB')])
@@ -34,11 +37,16 @@ class SyncEditForm(Form):
     # hevc          H.265 / HEVC (High Efficiency Video Coding) (encoders: libx265 )
     # mpeg2video           MPEG-2 video (decoders: mpeg2video mpegvideo )
     target_audio_channels = SelectField("Audio Channels", choices=[('1.0', '1.0 Mono'),
-                                                                   ('2.0', '2.0 Stereo'),
-                                                                   ('3.0', '3.0 Surround'),
-                                                                   ('5.1', '5.1 Surround'),
-                                                                   ('6.1', '6.1 Surround'),
-                                                                   ('7.1', '7.1 Surround'),
+                                                                   ('2.0',
+                                                                    '2.0 Stereo'),
+                                                                   ('3.0',
+                                                                    '3.0 Surround'),
+                                                                   ('5.1',
+                                                                    '5.1 Surround'),
+                                                                   ('6.1',
+                                                                    '6.1 Surround'),
+                                                                   ('7.1',
+                                                                    '7.1 Surround'),
                                                                    ('Copy', 'Copy')])
     target_audio_codec = SelectField("Audio Codec", choices=[('Copy', 'Copy'),
                                                              ('aac', 'AAC (Advanced Audio Coding)'),
@@ -47,13 +55,17 @@ class SyncEditForm(Form):
                                                                  'dts',
                                                                  'DCA (DTS Coherent Acoustics)'),
                                                              ('flac', 'FLAC'), ('mp3', 'MP3'),
-                                                             ('opus', 'Opus'), ('truehd', 'TrueHD'),
+                                                             ('opus', 'Opus'), ('truehd',
+                                                                                'TrueHD'),
                                                              ('vorbis', 'Vorbis')])
     target_sample_rate = SelectField("Sample Rate", choices=[('Default', 'Default'),
                                                              ('22050', '22,050'),
-                                                             ('44100', '44,100 Audio CD'),
-                                                             ('96000', '96,000 DVD-Audio'),
-                                                             ('192000', 'DVD-Audio'),
+                                                             ('44100',
+                                                              '44,100 Audio CD'),
+                                                             ('96000',
+                                                              '96,000 DVD-Audio'),
+                                                             ('192000',
+                                                              'DVD-Audio'),
                                                              ('2822400', '2,822,400 SACD')])
     target_priority = SelectField("Priority", choices=[('1', 'Low'), ('2', 'Medium'),
                                                        ('3', 'High'), ('4', 'ASAP')])

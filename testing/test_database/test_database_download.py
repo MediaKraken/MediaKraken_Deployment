@@ -60,14 +60,16 @@ class TestDatabaseDownload(object):
         # update provider
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_download_update_provider('thetvdb', self.new_guid)
+        self.db_connection.db_download_update_provider(
+            'thetvdb', self.new_guid)
 
     def test_db_download_update(self):
         """
         Update the json for download
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_download_update(json.dumps({'test2': 23}), self.new_guid)
+        self.db_connection.db_download_update(
+            json.dumps({'test2': 23}), self.new_guid)
 
     def test_db_download_delete(self):
         """

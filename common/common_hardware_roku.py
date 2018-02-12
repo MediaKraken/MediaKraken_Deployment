@@ -32,7 +32,8 @@ def getmp4info(filename):
     """
     Get mp4 info about the video
     """
-    details = {'type': "", 'length': 0, 'bitrate': 1500, 'format': "", 'size': ""}
+    details = {'type': "", 'length': 0,
+               'bitrate': 1500, 'format': "", 'size': ""}
     cmd = ["mp4info", filename]
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
@@ -93,7 +94,8 @@ def makebif(filename, directory, interval):
     file_handle.write(struct.pack("<I1", version))
     file_handle.write(struct.pack("<I1", len(images)))
     file_handle.write(struct.pack("<I1", 1000 * interval))
-    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(file_handle)  # pylint: disable=W0612
+    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(
+        file_handle)  # pylint: disable=W0612
 
     biftablesize = 8 + (8 * len(images))
     imageindex = 64 + biftablesize
@@ -134,7 +136,8 @@ def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10, opti
         VIDEOSIZES[option_mode] = (width, height)
     tmpdirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
-    extractimages(videofile, tmpdirectory, image_interval, option_mode, first_image_offset)
+    extractimages(videofile, tmpdirectory, image_interval,
+                  option_mode, first_image_offset)
     biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0],
                              MODEEXTENSION[option_mode])
     # Create the BIF file

@@ -6,7 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
-blueprint = Blueprint("user_games", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_games", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import sys
 
@@ -41,7 +42,7 @@ def user_games_list():
 
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection. \
+                                                  total=g.db_connection.
                                                   db_meta_game_system_list_count(),
                                                   record_name='Game Systems',
                                                   format_total=True,
@@ -73,7 +74,8 @@ def metadata_game_detail(guid):
     Display game metadata detail
     """
     return render_template('users/metadata/meta_game_detail.html', guid=guid,
-                           data=g.db_connection.db_meta_game_by_guid(guid)['gi_game_info_json'],
+                           data=g.db_connection.db_meta_game_by_guid(
+                               guid)['gi_game_info_json'],
                            data_review=None)
 
 
@@ -92,10 +94,11 @@ def metadata_game_system_list():
         mediadata = g.db_connection.db_meta_game_system_list_list(offset, per_page,
                                                                   request.form['search_text'])
     else:
-        mediadata = g.db_connection.db_meta_game_system_list_list(offset, per_page)
+        mediadata = g.db_connection.db_meta_game_system_list_list(
+            offset, per_page)
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection. \
+                                                  total=g.db_connection.
                                                   db_meta_game_system_list_count(),
                                                   record_name='Game Systems',
                                                   format_total=True,

@@ -41,14 +41,14 @@ else:
 
 # open the database
 db = database_base.MKServerDatabase()
-db.db_open(Config.get('DB Connections', 'PostDBHost').strip(), \
-           Config.get('DB Connections', 'PostDBPort').strip(), \
-           Config.get('DB Connections', 'PostDBName').strip(), \
-           Config.get('DB Connections', 'PostDBUser').strip(), \
+db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),
+           Config.get('DB Connections', 'PostDBPort').strip(),
+           Config.get('DB Connections', 'PostDBName').strip(),
+           Config.get('DB Connections', 'PostDBUser').strip(),
            Config.get('DB Connections', 'PostDBPass').strip())
 
 # log start
-db.db_activity_insert('MediaKraken_Server thetvdb Batch Start', None, \
+db.db_activity_insert('MediaKraken_Server thetvdb Batch Start', None,
                       'System: Server thetvdb Start', 'ServerthetvdbStart', None, None, 'System')
 
 # pull in the zip file
@@ -66,18 +66,20 @@ for zippedFile in zip.namelist():
             xml_show_data, xml_actor_data, xml_banners_data \
                 = thetvdb_api_connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
             # insert
-            image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
-            series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'], \
-                                         'thetvdb': str(row_data['id']), \
+            image_json = {'Images': {'thetvdb': {
+                'Characters': {}, 'Episodes': {}, "Redo": True}}}
+            series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],
+                                         'thetvdb': str(row_data['id']),
                                          'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-            db.db_metatvdb_insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'], \
-                                  json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'], \
+            db.db_metatvdb_insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'],
+                                  json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'],
                                                                    'Cast': xml_actor_data,
                                                                    'Banner': xml_banners_data}}}),
                                   json.dumps(image_json))
             # insert cast info
             if xml_actor_data is not None:
-                db.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
+                db.db_meta_person_insert_cast_crew(
+                    'thetvdb', xml_actor_data['Actor'])
             tvshow_inserted += 1
             time.sleep(5)  # delays for 5 seconds
         else:
@@ -93,15 +95,15 @@ for zippedFile in zip.namelist():
 zip.close()
 
 # log end
-db.db_activity_insert('MediaKraken_Server thetvdb Batch Stop', None, \
+db.db_activity_insert('MediaKraken_Server thetvdb Batch Stop', None,
                       'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
 
 # send notications
 if tvshow_updated > 0:
-    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_updated) \
+    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_updated)
                               + " TV show(s) metadata updated.", True)
 if tvshow_inserted > 0:
-    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_inserted) \
+    db.db_notification_insert(common_internationalization.com_inter_number_format(tvshow_inserted)
                               + " TV show(s) metadata added.", True)
 
 # commit all changes

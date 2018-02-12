@@ -64,7 +64,7 @@ class TestCommonBackupBackblaze(object):
         Test function
         """
         self.backblaze_connection.com_backblaze_upload_file(file_name, bucket_name,
-                                                                   file_password)
+                                                            file_password)
 
     @pytest.mark.parametrize(("dir_name", "bucket_name", "dir_password"), [
         ("./cache", "bucket_upload", None),
@@ -76,7 +76,7 @@ class TestCommonBackupBackblaze(object):
         Test function
         """
         self.backblaze_connection.com_backblaze_upload_directory(dir_name, bucket_name,
-                                                                        dir_password)
+                                                                 dir_password)
 
     @pytest.mark.parametrize(("file_name", "local_file_name", "file_password"), [
         ("HashCalc.txt", "./cache/down.txt", None),
@@ -86,6 +86,6 @@ class TestCommonBackupBackblaze(object):
         Test function
         """
         self.backblaze_connection.com_backblaze_download_file(file_name, local_file_name,
-                                                                     file_password)
+                                                              file_password)
         os.remove("./cache/down.txt")
         os.remove("./cache/down_pass.txt")

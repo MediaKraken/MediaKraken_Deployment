@@ -51,7 +51,8 @@ def test_com_file_save_data(file_name, data_block, as_pickle, with_timestamp, fi
     """
     Test function
     """
-    common_file.com_file_save_data(file_name, data_block, as_pickle, with_timestamp, file_ext)
+    common_file.com_file_save_data(
+        file_name, data_block, as_pickle, with_timestamp, file_ext)
 
 
 # load file as data
@@ -70,30 +71,40 @@ def test_com_file_load_data(file_name, as_pickle):
 # find all filters files in directory
 @pytest.mark.parametrize(("dir_name", "filter_text", "walk_dir", "skip_junk", "file_size",
                           "directory_only"), [
-                             ('./testing/cachenotfound', None, False, False, False, False),
-                             ('./testing/cache', None, False, False, False, False),
-                             ('./cache', None, True, False, False, False),
-                             ('./testing/cache', None, False, True, False, False),
-                             ('./testing/cache', None, False, False, True, False),
-                             ('./testing/cache', None, False, False, False, True),
-                             ('./testing/cache', "waffle", True, False, False, False),
-                             ('./testing/cache', "waffle", False, True, False, False),
-                             ('./testing/cache', "waffle", False, False, True, False),
-                             ('./testing/cache', "waffle", False, False, False, True),
-                             ('./testing/cache', None, True, True, False, False),
-                             ('./testing/cache', None, True, True, True, False),
-                             ('./testing/cache', None, False, True, True, False),
-                             ('./testing/cache', None, False, True, False, True),
-                             ('./testing/cache', None, False, True, True, True),
-                             ('./testing/cache', None, True, True, False, True),
-                             ('./testing/cache', None, True, True, True, True),
-                             ('./testing/cache', "waffle", True, True, False, False),
-                             ('./testing/cache', "waffle", True, True, True, False),
-                             ('./testing/cache', "waffle", False, True, True, False),
-                             ('./testing/cache', "waffle", False, True, False, True),
-                             ('./testing/cache', "waffle", False, True, True, True),
-                             ('./testing/cache', "waffle", True, True, False, True),
-                             ('./testing/cache', "waffle", True, True, True, True)])
+    ('./testing/cachenotfound', None, False, False, False, False),
+    ('./testing/cache', None, False, False, False, False),
+    ('./cache', None, True, False, False, False),
+    ('./testing/cache', None, False, True, False, False),
+    ('./testing/cache', None, False, False, True, False),
+    ('./testing/cache', None, False, False, False, True),
+    ('./testing/cache', "waffle",
+     True, False, False, False),
+    ('./testing/cache', "waffle",
+     False, True, False, False),
+    ('./testing/cache', "waffle",
+     False, False, True, False),
+    ('./testing/cache', "waffle",
+     False, False, False, True),
+    ('./testing/cache', None, True, True, False, False),
+    ('./testing/cache', None, True, True, True, False),
+    ('./testing/cache', None, False, True, True, False),
+    ('./testing/cache', None, False, True, False, True),
+    ('./testing/cache', None, False, True, True, True),
+    ('./testing/cache', None, True, True, False, True),
+    ('./testing/cache', None, True, True, True, True),
+    ('./testing/cache', "waffle",
+     True, True, False, False),
+    ('./testing/cache', "waffle",
+     True, True, True, False),
+    ('./testing/cache', "waffle",
+     False, True, True, False),
+    ('./testing/cache', "waffle",
+     False, True, False, True),
+    ('./testing/cache', "waffle",
+     False, True, True, True),
+    ('./testing/cache', "waffle",
+     True, True, False, True),
+    ('./testing/cache', "waffle", True, True, True, True)])
 def test_com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk, file_size,
                            directory_only):
     """
@@ -108,7 +119,8 @@ def test_com_file_remove_junk():
     """
     Test function
     """
-    assert common_file.com_file_remove_junk(("ok", "blah full length")) == ("ok")
+    assert common_file.com_file_remove_junk(
+        ("ok", "blah full length")) == ("ok")
 
 
 # see if file is junk

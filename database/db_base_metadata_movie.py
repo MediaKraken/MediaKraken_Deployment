@@ -21,14 +21,15 @@ import logging  # pylint: disable=W0611
 import json
 
 
-def db_meta_movie_image_random(self, return_image_type='Poster'):  # poster, backdrop, etc
+# poster, backdrop, etc
+def db_meta_movie_image_random(self, return_image_type='Poster'):
     """
     Find random movie image
     """
     self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\' as image_json,mm_metadata_guid'
-                                                 ' from mm_media,mm_metadata_movie' \
-                                                 ' where mm_media_metadata_guid = mm_metadata_guid' \
+                                                 ' from mm_media,mm_metadata_movie'
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
                                                  ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
@@ -50,9 +51,11 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     cast_crew_json_row = self.db_cursor.fetchone()[0]
     logging.info('castrow: %s', cast_crew_json_row)
     if 'cast' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update({'Cast': cast_crew_json['cast']})
+        cast_crew_json_row['Meta']['themoviedb'].update(
+            {'Cast': cast_crew_json['cast']})
     if 'crew' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update({'Crew': cast_crew_json['crew']})
+        cast_crew_json_row['Meta']['themoviedb'].update(
+            {'Crew': cast_crew_json['crew']})
     logging.info('upt: %s', cast_crew_json_row)
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
                            ' where mm_metadata_guid = %s',

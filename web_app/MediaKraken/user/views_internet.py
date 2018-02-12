@@ -79,7 +79,8 @@ def user_internet_youtube_detail(uuid):
     """
     form = SearchForm(request.form)
     return render_template("users/user_internet_youtube_detail.html", form=form,
-                           media=json.loads(google_instance.com_google_youtube_info(uuid)),
+                           media=json.loads(
+                               google_instance.com_google_youtube_info(uuid)),
                            data_guid=uuid)
 
 

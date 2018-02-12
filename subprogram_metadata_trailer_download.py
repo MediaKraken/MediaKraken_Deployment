@@ -30,7 +30,8 @@ from common import common_signal
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Trailer_Download')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_Trailer_Download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -50,13 +51,13 @@ if data is not None:
         download_link = None
         if ('(Trailer' in data['item']['title']
             and option_config_json['Trailer']['Trailer'] is True) \
-                or ('(Behind' in data['item']['title'] \
+                or ('(Behind' in data['item']['title']
                     and option_config_json['Trailer']['Behind'] is True) \
-                or ('(Clip' in data['item']['title'] \
+                or ('(Clip' in data['item']['title']
                     and option_config_json['Trailer']['Clip'] is True) \
-                or ('(Featurette' in data['item']['title'] \
+                or ('(Featurette' in data['item']['title']
                     and option_config_json['Trailer']['Featurette'] is True) \
-                or ('(Carpool' in data['item']['title'] \
+                or ('(Carpool' in data['item']['title']
                     and option_config_json['Trailer']['Carpool'] is True):
             for trailer_url in data['item']['enclosure url']:
                 if '1080p' in trailer_url:
@@ -66,11 +67,13 @@ if data is not None:
             # TODO let the metadata fetch program grab these
             # TODO verify this trailer has not been downloaded before
             # TODO so only insert db dl records
-            common_network.mk_network_fetch_from_url(download_link, '/static/meta/trailer')
+            common_network.mk_network_fetch_from_url(
+                download_link, '/static/meta/trailer')
 
 if total_trailers_downloaded > 0:
     db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_trailers_downloaded)
+        common_internationalization.com_inter_number_format(
+            total_trailers_downloaded)
         + " trailers(s) flagged for download.", True)
 
 # log end

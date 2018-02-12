@@ -107,7 +107,8 @@ def metadata_tvshow_detail(guid):
                            data_background_image=data_background_image,
                            data_overview=data_overview,
                            data_season_data=data_season_data,
-                           data_season_count=sorted(data_season_data.iterkeys()),
+                           data_season_count=sorted(
+                               data_season_data.iterkeys()),
                            data_genres_list=data_genres_list[:-2]
                            )
 
@@ -170,7 +171,8 @@ def metadata_tvshow_season_detail_page(guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(guid, int(season))
+    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
+        guid, int(season))
     logging.info('dataeps: %s', data_episode_count)
     data_episode_keys = natsort.natsorted(data_episode_count)
     logging.info('dataepskeys: %s', data_episode_keys)

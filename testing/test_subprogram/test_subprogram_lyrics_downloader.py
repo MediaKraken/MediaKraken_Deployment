@@ -31,6 +31,7 @@ class TestSubprogramLyricsDown(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_lyrics_downloader.py'], shell=False)
+        proc_info = subprocess.Popen(
+            ['python', './subprogram_lyrics_downloader.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

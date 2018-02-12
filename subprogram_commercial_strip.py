@@ -49,17 +49,20 @@ def main(argv):
     Main commercial strip
     """
     # start logging
-    common_logging.com_logging_start('./log/MediaKraken_Subprogram_Commercial_Strip')
+    common_logging.com_logging_start(
+        './log/MediaKraken_Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        logging.info('subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+        logging.info(
+            'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            logging.info('subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+            logging.info(
+                'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg

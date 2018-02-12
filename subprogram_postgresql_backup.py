@@ -28,7 +28,8 @@ from common import common_signal
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Postgresql_Backup')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_Postgresql_Backup')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -39,7 +40,8 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', N
                                  None, None, 'System')
 
 # generate dump file
-backup_file_name = 'MediaKraken_Backup_' + time.strftime("%Y%m%d%H%M%S") + '.dump'
+backup_file_name = 'MediaKraken_Backup_' + \
+    time.strftime("%Y%m%d%H%M%S") + '.dump'
 
 os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD']
           + ' pg_dump -h ' + os.environ['POSTGRES_DB_HOST']

@@ -57,7 +57,8 @@ def worker(worker_file_list):
             # have this bool so I don't hit the os looking for path each time
             if first_image == True and not os.path.isdir(image_file_path):
                 os.makedirs(image_file_path)
-            image_file_path = os.path.join(image_file_path, (str(chapter_count) + '.png'))
+            image_file_path = os.path.join(
+                image_file_path, (str(chapter_count) + '.png'))
         command_list = []
         command_list.append('./bin/ffmpeg')
         # if ss is before the input it seeks and doesn't convert every frame like after input
@@ -78,7 +79,8 @@ def worker(worker_file_list):
         total_images_created += 1
         first_image = False
     if json_data is None:
-        json_data = json.dumps({'ChapterScan': False, 'ChapterImages': chapter_image_list})
+        json_data = json.dumps(
+            {'ChapterScan': False, 'ChapterImages': chapter_image_list})
     else:
         json_data['ChapterScan'] = False
         json_data['ChapterImages'] = chapter_image_list
@@ -95,7 +97,8 @@ def worker(worker_file_list):
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Create_Chapter_Images')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_Create_Chapter_Images')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -123,7 +126,8 @@ if len(file_list) > 0:
 # send notications
 if total_images_created > 0:
     db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_images_created) \
+        common_internationalization.com_inter_number_format(
+            total_images_created)
         + " chapter image(s) generated.", True)
 
 # log end

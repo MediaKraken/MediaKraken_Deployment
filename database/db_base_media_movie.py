@@ -60,7 +60,8 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
     """
     # web media count
     """
-    logging.info("classuid counter: %s %s %s", class_guid, list_type, list_genre)
+    logging.info("classuid counter: %s %s %s",
+                 class_guid, list_type, list_genre)
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -74,7 +75,7 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
                                            ' and mm_media_json->>\'DateAdded\' >= %s)'
                                            ' as temp', (class_guid, (datetime.datetime.now()
                                                                      - datetime.timedelta(
-                                days=7)).strftime("%Y-%m-%d"),))
+                                               days=7)).strftime("%Y-%m-%d"),))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
                                            ' mm_metadata_guid from mm_media, mm_metadata_movie'

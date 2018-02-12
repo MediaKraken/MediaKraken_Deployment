@@ -61,7 +61,7 @@ def admin_tvtuners():
     """
     tv_tuners = []
     for row_data in g.db_connection.db_tuner_list():
-        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel'] \
+        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']
                           + " (" + row_data['mm_tuner_json']['Model'] + ")",
                           row_data['mm_tuner_json']['IP'],
                           row_data['mm_tuner_json']['Active'],

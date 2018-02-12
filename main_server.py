@@ -53,7 +53,8 @@ logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     logging.info('Cert not found, generating.')
-    proc_ssl = subprocess.Popen(['python', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(
+        ['python', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         logging.critical("Cannot generate SSL certificate. Exiting.....")
@@ -69,7 +70,8 @@ db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Serv
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
     logging.info('Database upgrade in progress...')
-    db_create_pid = subprocess.Popen(['python', './db_update_version.py'], shell=False)
+    db_create_pid = subprocess.Popen(
+        ['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
     logging.info('Database upgrade complete.')
 
@@ -95,12 +97,13 @@ logging.info("Validate Paths")
 #        option_config_json['MediaKrakenServer']['MetadataImageLocal'])
 #    sys.exit()
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
-    logging.critical("MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s" % \
+    logging.critical(
+        "MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
+    logging.critical("Invalid Path: %s" %
                      option_config_json['MediaKrakenServer']['BackupLocal'])
     sys.exit()
 
-## look for infiniband rdma devices
+# look for infiniband rdma devices
 # if rmda_enabled_os:
 #    rmda_devices = common_rmda.com_rdma_get_devices()
 #    if rmda_devices is None:
@@ -108,22 +111,24 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 
 # logging.info("Start Watchdog")
-## startup watchdog
+# startup watchdog
 # watchdog = common_watchdog.CommonWatchdog()
 # watchdog.com_watchdog_start(db_connection.db_audit_paths(None, None))
 
 
 # startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(['python', './subprogram_reactor_line.py'], shell=False)
+proc = subprocess.Popen(
+    ['python', './subprogram_reactor_line.py'], shell=False)
 logging.info("Reactor PID: %s", proc.pid)
 
-## fire up web image server
+# fire up web image server
 # proc_image = subprocess.Popen(['python', './subprogram_reactor_web_images.py'], shell=False)
 # logging.info("Reactor Web Image PID: %s", proc_image.pid)
 
 
 # fire up cron service
-proc_cron = subprocess.Popen(['python', './subprogram_cron_checker.py'], shell=False)
+proc_cron = subprocess.Popen(
+    ['python', './subprogram_cron_checker.py'], shell=False)
 logging.info("Cron PID: %s", proc_cron.pid)
 
 # fire up trigger procress
@@ -139,11 +144,11 @@ for link_data in db_connection.db_link_list():
     logging.info("Link PID: %s", proc_link.pid)
     link_pid[link_data[0]] = proc_link.pid
 
-## hold here
+# hold here
 # this will key off the twisted reactor...only reason is so watchdog doesn't shut down
 proc.wait()
 
-## stop watchdog
+# stop watchdog
 # watchdog.com_watchdog_stop()
 
 

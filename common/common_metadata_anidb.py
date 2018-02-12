@@ -63,13 +63,16 @@ class CommonMetadataANIdb(object):
         for file_line in file_handle.readlines():
             # logging.info('line: %s', file_line.decode('utf-8'))
             if file_line.decode('utf-8').find('<anime aid="') != -1:
-                anime_aid = file_line.decode('utf-8').split('"', 1)[1].rsplit('"', 1)[0]
+                anime_aid = file_line.decode(
+                    'utf-8').split('"', 1)[1].rsplit('"', 1)[0]
                 # logging.info('aid: %s', anime_aid)
             elif file_line.decode('utf-8').find('title xml:lang="ja"') != -1:
-                anime_title_ja = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
+                anime_title_ja = file_line.decode(
+                    'utf-8').split('>', 1)[1].rsplit('<', 1)[0]
                 # logging.info('title: %s', anime_title_ja)
             elif file_line.decode('utf-8').find('title xml:lang="en"') != -1:
-                anime_title = file_line.decode('utf-8').split('>', 1)[1].rsplit('<', 1)[0]
+                anime_title = file_line.decode(
+                    'utf-8').split('>', 1)[1].rsplit('<', 1)[0]
                 # logging.info('title: %s', anime_title)
             elif file_line.decode('utf-8').find('</anime>') != -1:
                 if self.db_connection.db_meta_anime_meta_by_id(anime_aid) is None:
@@ -89,7 +92,8 @@ class CommonMetadataANIdb(object):
         Find AID by title
         """
         # check the local DB
-        local_db_result = self.db_connection.db_meta_anime_title_search(title_to_search)
+        local_db_result = self.db_connection.db_meta_anime_title_search(
+            title_to_search)
         if local_db_result is None:
             # check to see if local titles file is older than 24 hours
             if self.com_net_anidb_fetch_titles_file():

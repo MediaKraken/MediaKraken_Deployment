@@ -27,4 +27,5 @@ class CommonNetworkSNMP(object):
 
     def __init__(self):
         # Create an SNMP session to be used for all our requests
-        self.session = Session(hostname='localhost', community='public', version=2)
+        self.session = Session(hostname='localhost',
+                               community='public', version=2)

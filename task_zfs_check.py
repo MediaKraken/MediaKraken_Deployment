@@ -32,7 +32,8 @@ for zfs_host in option_config_json['zfs']['host']:
     ssh_instance = common_network_ssh.CommonNetworkSSH(zfs_host['host'],
                                                        zfs_host['user_name'],
                                                        zfs_host['user_password'])
-    zfs_status = ssh_instance.com_net_ssh_run_command('zpool list -H -o health')
+    zfs_status = ssh_instance.com_net_ssh_run_command(
+        'zpool list -H -o health')
     # TODO check zfs_status for string to determine bad pool
     # TODO and send notification
     ssh_instance.com_net_ssh_close()

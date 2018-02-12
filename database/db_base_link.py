@@ -42,7 +42,8 @@ def db_link_list(self, offset=None, records=None, search_value=None):
             self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json'
                                    ' from mm_link where mm_link_name %% %s', (search_value,))
         else:
-            self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link')
+            self.db_cursor.execute(
+                'select mm_link_guid, mm_link_name, mm_link_json from mm_link')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
@@ -71,5 +72,6 @@ def db_link_delete(self, sync_guid):
     """
     Delete server link
     """
-    self.db_cursor.execute('delete from mm_link where mm_link_guid = %s', (sync_guid,))
+    self.db_cursor.execute(
+        'delete from mm_link where mm_link_guid = %s', (sync_guid,))
     self.db_commit()

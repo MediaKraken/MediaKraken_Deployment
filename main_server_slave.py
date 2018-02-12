@@ -338,7 +338,8 @@ class MKConsumer(object):
                 elif json_message['Command'] == "Pause":
                     pass
                 elif json_message['Command'] == 'Play':
-                    self.proc_ffmpeg_stream = subprocess.Popen((''), shell=False)
+                    self.proc_ffmpeg_stream = subprocess.Popen(
+                        (''), shell=False)
                 elif json_message['Command'] == "Rewind":
                     pass
                 elif json_message['Command'] == 'Stop':

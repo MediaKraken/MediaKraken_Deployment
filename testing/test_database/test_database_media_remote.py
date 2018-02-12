@@ -52,7 +52,7 @@ class TestDatabaseMediaRemote(object):
         self.db_connection.db_known_remote_media_count()
 
     # processed via main_link........
-    ## process new records from network sync event from linked server
+    # process new records from network sync event from linked server
     # def db_media_remote_new_data(self, link_uuid, link_records):
     #        self.db_connection.db_rollback()
 

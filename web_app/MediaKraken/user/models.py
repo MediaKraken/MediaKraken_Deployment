@@ -33,7 +33,8 @@ class User(UserMixin, SurrogatePK, Model):
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
     password = Column(db.String(128), nullable=True)
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    created_at = Column(db.DateTime, nullable=False,
+                        default=dt.datetime.utcnow)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
     user_json = Column(JSON, nullable=True, default=None)

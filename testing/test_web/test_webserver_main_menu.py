@@ -79,7 +79,8 @@ def test_main_menu_metadata_movies(driver):
     Click metadata movies on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_movies")))
@@ -92,7 +93,8 @@ def test_main_menu_metadata_movie_collection(driver):
     Click metadata movies collection on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_movie_collection")))
@@ -105,7 +107,8 @@ def test_main_menu_metadata_tv_shows(driver):
     Click metadata tv shows on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_tv_shows")))
@@ -131,7 +134,8 @@ def test_main_menu_metadata_music_albums(driver):
     Click metadata music albums on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_music_albums")))
@@ -144,7 +148,8 @@ def test_main_menu_metadata_music_videos(driver):
     Click metadata music videos on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_music_videos")))
@@ -157,7 +162,8 @@ def test_main_menu_metadata_sports(driver):
     Click metadata sports on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_sports")))
@@ -170,7 +176,8 @@ def test_main_menu_metadata_games(driver):
     Click metadata games on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_games")))
@@ -183,7 +190,8 @@ def test_main_menu_metadata_game_systems(driver):
     Click metadata game systems on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_game_systems")))
@@ -196,7 +204,8 @@ def test_main_menu_metadata_people(driver):
     Click metadata people on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_people")))
@@ -209,7 +218,8 @@ def test_main_menu_metadata_metadata_class_list(driver):
     Click metadata class list on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_class_list")))

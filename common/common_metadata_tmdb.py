@@ -60,7 +60,7 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata by id to reduce calls
         """
-        return requests.get('https://api.themoviedb.org/3/movie/%s' \
+        return requests.get('https://api.themoviedb.org/3/movie/%s'
                             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                             (tmdb_id, self.API_KEY))
 
@@ -68,7 +68,7 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata bio by id to reduce calls
         """
-        return requests.get('https://api.themoviedb.org/3/person/%s' \
+        return requests.get('https://api.themoviedb.org/3/person/%s'
                             '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
                             (tmdb_id, self.API_KEY))
 

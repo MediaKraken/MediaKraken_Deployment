@@ -41,7 +41,8 @@ if __name__ == "__main__":
     # send notifications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_download_attempts)
+            common_internationalization.com_inter_number_format(
+                total_download_attempts)
             + " IGDB game info downloaded.", True)
     # commit all changes
     db_connection.db_commit()

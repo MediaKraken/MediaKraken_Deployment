@@ -47,7 +47,8 @@ class CommonNetworkTrakt(object):
         # dismiss recommendation
         """
         # dismiss_recommendation(imdb_id='tt3139072', title='Son of Batman', year=2014)
-        dismiss_recommendation(imdb_id=imdb_id, title=imdb_title, year=imdb_year)
+        dismiss_recommendation(
+            imdb_id=imdb_id, title=imdb_title, year=imdb_year)
 
     def com_net_trakt_set_watching_movie(self, movie_name_year):
         """

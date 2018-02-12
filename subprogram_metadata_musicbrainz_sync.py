@@ -28,7 +28,8 @@ import db_base_brainz as database_base_brainz
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_musicbrainz_Sync')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_musicbrainz_Sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -49,22 +50,24 @@ db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,
 # fetch all the artists from brainz
 for row_data in db_brainz.db_brainz_all_artists():
     db_connection.db_meta_musician_add(row_data['name'],
-                                       json.dumps({'musicbrainz': row_data['gid']}),
+                                       json.dumps(
+                                           {'musicbrainz': row_data['gid']}),
                                        json.dumps({'Comment': row_data['comment'],
                                                    'Gender': row_data['gender'],
                                                    'Begin': (str(row_data['begin_date_year']) + ':'
                                                              + str(row_data[
-                                                                       'begin_date_month']) + ':' + str(
-                                                               row_data['begin_date_day'])),
+                                                                 'begin_date_month']) + ':' + str(
+                                                       row_data['begin_date_day'])),
                                                    'End': (str(
                                                        row_data['end_date_year']) + ':' + str(
                                                        row_data['end_date_month']) + ':'
-                                                           + str(row_data['end_date_day']))}))
+                                           + str(row_data['end_date_day']))}))
     logging.info(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],
-                                        json.dumps({'musicbrainz': row_data_album['gid']}),
+                                        json.dumps(
+                                            {'musicbrainz': row_data_album['gid']}),
                                         json.dumps({'Commment': row_data_album['comment'],
                                                     'Language': row_data_album['language'],
                                                     'Barcode': row_data_album['barcode']}))

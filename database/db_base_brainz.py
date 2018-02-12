@@ -38,7 +38,7 @@ class ServerDatabaseBrainz(object):
         psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
         # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
         # psycopg2.extras.register_default_json(loads=lambda x: x)
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'" \
+        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
                                           % (postdbname, postdbuser, postdbhost, int(postdbport),
                                              postdbpass))
         self.db_cursor = self.sql3_conn.cursor()
@@ -84,7 +84,8 @@ class ServerDatabaseBrainz(object):
         """
         # read in all songs
         """
-        self.db_cursor.execute('select gid,name,recording,position,id from track')
+        self.db_cursor.execute(
+            'select gid,name,recording,position,id from track')
         return self.db_cursor.fetchall()
 
     def db_brainz_all_songs_by_rec_uuid(self, record_id):

@@ -32,7 +32,8 @@ from common import common_signal
 common_signal.com_signal_set_break()
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_thetvdb_Updates')
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_thetvdb_Updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -43,7 +44,8 @@ db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None
                                  None, None, 'System')
 
 # grab the data
-thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
+thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(
+    option_config_json)
 option_json, status_json = db_connection.db_opt_status_read()
 # for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc\
 # (status_json['thetvdb_Updated_Epoc'])):
@@ -58,20 +60,22 @@ for row_data in update_item['Data']['Series']:
         xml_show_data, xml_actor_data, xml_banners_data \
             = thetvdb_API_Connection.com_meta_thetvdb_get_zip_by_id(row_data['id'])
         # insert
-        image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        image_json = {'Images': {'thetvdb': {
+            'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['imdb_ID'],
                                      'thetvdb': str(row_data['id']),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         db_connection.db_metatvdb_insert(series_id_json,
                                          xml_show_data['Data']['Series']['SeriesName'],
-                                         json.dumps({'Meta': \
-                                                         {'thetvdb': {'Meta': xml_show_data['Data'],
-                                                                      'Cast': xml_actor_data,
-                                                                      'Banner': xml_banners_data}}}),
+                                         json.dumps({'Meta':
+                                                     {'thetvdb': {'Meta': xml_show_data['Data'],
+                                                                  'Cast': xml_actor_data,
+                                                                  'Banner': xml_banners_data}}}),
                                          json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:
-            db_connection.db_meta_person_insert_cast_crew('thetvdb', xml_actor_data['Actor'])
+            db_connection.db_meta_person_insert_cast_crew(
+                'thetvdb', xml_actor_data['Actor'])
         db_connection.db_commit()
         time.sleep(5)  # delays for 5 seconds
     else:

@@ -39,7 +39,8 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 
 # create mame game list
 if False:
-    file_name = ('/mediakraken/emulation/mame%slx.zip' % common_version.MAME_VERSION)
+    file_name = ('/mediakraken/emulation/mame%slx.zip' %
+                 common_version.MAME_VERSION)
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
             ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
@@ -55,10 +56,12 @@ if False:
             logging.info("childname: %s", child_of_root['@name'])
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
-                db_connection.db_meta_game_update(None, child_of_root['@name'], child_of_root)
+                db_connection.db_meta_game_update(
+                    None, child_of_root['@name'], child_of_root)
                 update_game += 1
             else:
-                db_connection.db_meta_game_insert(None, child_of_root['@name'], child_of_root)
+                db_connection.db_meta_game_insert(
+                    None, child_of_root['@name'], child_of_root)
                 insert_game += 1
     zip_handle.close()
 
@@ -85,7 +88,8 @@ if True:
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
-    zip_handle = zipfile.ZipFile('/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
+    zip_handle = zipfile.ZipFile(
+        '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
         print('zip: %s', zippedfile)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
@@ -98,7 +102,7 @@ if True:
                 print('sys: %s', file_name.split('/', 1)[1])
                 game_short_name_guid \
                     = db_connection.db_meta_games_system_guid_by_short_name(
-                    file_name.split('/', 1)[1])
+                        file_name.split('/', 1)[1])
                 print('wh %s', game_short_name_guid)
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
@@ -155,14 +159,17 @@ if True:
 
     if total_software_update > 0:
         db_connection.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_software_update)
+            common_internationalization.com_inter_number_format(
+                total_software_update)
             + " games(s) metadata updated from MAME hash", True)
 
 # update mame game descriptions from history dat
-file_name = ('/mediakraken/emulation/history%s.zip' % common_version.MAME_VERSION)
+file_name = ('/mediakraken/emulation/history%s.zip' %
+             common_version.MAME_VERSION)
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        ('https://www.arcade-history.com/dats/history%s.zip' % common_version.MAME_VERSION),
+        ('https://www.arcade-history.com/dats/history%s.zip' %
+         common_version.MAME_VERSION),
         file_name)
 if True:
     game_titles = []
@@ -190,11 +197,13 @@ if True:
                 add_to_desc = False
                 for game in game_titles:
                     print('game: %s' % game)
-                    game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[0]
+                    game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[
+                        0]
                     print('data: %s', game_data)
                     if game_data is None:
                         db_connection.db_meta_game_insert(
-                            db_connection.db_meta_games_system_guid_by_short_name(system_name),
+                            db_connection.db_meta_games_system_guid_by_short_name(
+                                system_name),
                             new_title, game, json.dumps({'overview': game_desc}))
                         total_software += 1
                     else:
@@ -202,7 +211,7 @@ if True:
                         print(game_data['gi_id'])
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
-                                                                  'gi_game_info_json']))
+                                                                      'gi_game_info_json']))
                         total_software_update += 1
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info
@@ -227,7 +236,8 @@ if True:
 
     if total_software_update > 0:
         db_connection.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_software_update)
+            common_internationalization.com_inter_number_format(
+                total_software_update)
             + " games(s) metadata updated from MAME hash", True)
 
 # commit all changes to db

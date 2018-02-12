@@ -6,7 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
-blueprint = Blueprint("user_sports", __name__, url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("user_sports", __name__,
+                      url_prefix='/users', static_folder="../static")
 import logging  # pylint: disable=W0611
 import sys
 
@@ -39,7 +40,8 @@ def user_sports_page():
     else:
         mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
     for row_data in mediadata:
-        media.append((row_data['mm_metadata_sports_guid'], row_data['mm_metadata_sports_name']))
+        media.append((row_data['mm_metadata_sports_guid'],
+                      row_data['mm_metadata_sports_name']))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
@@ -78,7 +80,8 @@ def user_sports_detail_page(guid):
     except:
         data_background_image = None
     return render_template("users/user_sports_detail.html",
-                           data=g.db_connection.db_metathesportsdb_select_guid(guid),
+                           data=g.db_connection.db_metathesportsdb_select_guid(
+                               guid),
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                            )
