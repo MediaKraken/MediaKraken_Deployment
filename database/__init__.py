@@ -58,16 +58,6 @@ class MKServerDatabase(object):
     from database.db_base_download_images import db_download_image_insert, \
         db_download_image_read, \
         db_download_image_delete
-    from database.db_base_kodi import db_kodi_user_sync_movie, \
-        db_kodi_user_sync_added, \
-        db_kodi_user_sync_collection, \
-        db_kodi_user_sync_tv_shows, \
-        db_kodi_user_sync_music_videos, \
-        db_kodi_user_sync_tv_seasons, \
-        db_kodi_user_sync_tv_episodes, \
-        db_kodi_user_sync_music_artists, \
-        db_kodi_user_sync_music_albums, \
-        db_kodi_user_sync_music_songs
     from database.db_base_iradio import db_iradio_insert, \
         db_iradio_list_count, \
         db_iradio_list
@@ -189,12 +179,6 @@ class MKServerDatabase(object):
         db_meta_music_video_detail_uuid, \
         db_meta_music_video_count, \
         db_meta_music_video_list
-    from database.db_base_nas import db_nas_count, \
-        db_nas_list, \
-        db_nas_insert, \
-        db_nas_update, \
-        db_nas_delete, \
-        db_nas_read
     from database.db_base_metadata_people import db_meta_person_list_count, \
         db_meta_person_list, \
         db_meta_person_by_guid, \
@@ -263,12 +247,6 @@ class MKServerDatabase(object):
         db_task_insert, \
         db_task_delete, \
         db_task_info
-    from database.db_base_tuner import db_tuner_count, \
-        db_tuner_insert, \
-        db_tuner_delete, \
-        db_tuner_list, \
-        db_tuner_by_serial, \
-        db_tuner_update
     from database.db_base_tv_schedule import db_tv_stations_read, \
         db_tv_stations_read_stationid_list, \
         db_tv_station_insert, \
