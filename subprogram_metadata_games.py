@@ -38,13 +38,13 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 # they just don't have @isdevice = 'yes' like mess hardware does
 
 # create mame game list
-if False:
-    file_name = ('/mediakraken/emulation/mame%slx.zip' %
+if True:
+    file_name = ('/mediakraken/emulation/mame0%slx.zip' %
                  common_version.MAME_VERSION)
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
             ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
-             % common_version.MAME_VERSION, common_version.MAME_VERSION),
+             % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
             file_name)
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
     update_game = 0
@@ -77,7 +77,8 @@ if False:
 
 # load games from hash files
 if True:
-    file_name = '/mediakraken/emulation/mame0189s.zip'
+    file_name = ('/mediakraken/emulation/mame0%ss.zip' %
+                 common_version.MAME_VERSION)
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
             ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
