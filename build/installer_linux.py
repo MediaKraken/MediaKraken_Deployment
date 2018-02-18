@@ -56,15 +56,17 @@ elif platform.system() != 'Linux':
 
 # check minimum linux versions
 print('Checking linux version...')
-print('I see you\'re running', platform.dist()[0], 'version', platform.dist()[1])
+print('I see you\'re running', platform.dist()
+      [0], 'version', platform.dist()[1])
 try:
     if float(platform.dist()[1]) < LINUX_VERSIONS[platform.dist()[0].lower()][0]:
-        print('minimum required version is', LINUX_VERSIONS[platform.dist()[0].lower()][0])
+        print('minimum required version is',
+              LINUX_VERSIONS[platform.dist()[0].lower()][0])
 except KeyError:
     print('Unsupported linux distribution. Exiting...')
     sys.exit(0)
 
-## install wget
+# install wget
 # print('Installing wget...')
 # install_pid = subprocess.Popen([, 'wget'])
 # install_pid.wait()
