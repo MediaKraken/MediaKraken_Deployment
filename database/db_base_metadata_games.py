@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
+
 import json
+import uuid
 
 
 def db_meta_game_list_count(self, search_value=None):
@@ -169,13 +170,14 @@ def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_j
                             json.dumps(game_json)))
 
 
-def db_meta_game_update(self, game_system_id, game_name, game_json):
+def db_meta_game_update(self, game_system_id, game_short_name, game_name, game_json):
     """
     Update game
     """
     self.db_cursor.execute('update mm_metadata_game_software_info set gi_game_info_json = %s'
-                           ' where gi_system_id = %s and gi_game_info_name = %s',
-                           (json.dumps(game_json), game_system_id, game_name))
+                           ' where gi_system_id = %s and gi_game_info_short_name = %s'
+                           ' and gi_game_info_name = %s',
+                           (json.dumps(game_json), game_system_id, game_short_name, game_name))
 
 
 def db_meta_game_by_name(self, game_short_name, game_name):

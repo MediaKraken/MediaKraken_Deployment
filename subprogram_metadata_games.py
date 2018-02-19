@@ -37,6 +37,9 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
 
+# However, mame games are still being put as "games" and not systems
+# to ease search and other filters by game/system
+
 # create mame game list
 if True:
     file_name = ('/mediakraken/emulation/mame0%slx.zip' %
@@ -56,12 +59,14 @@ if True:
             logging.info("childname: %s", child_of_root['@name'])
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
+                # TODO handle shortname properly
                 db_connection.db_meta_game_update(
-                    None, child_of_root['@name'], child_of_root)
+                    None, child_of_root['@name'], child_of_root['@name'], child_of_root)
                 update_game += 1
             else:
+                # TODO handle shortname properly
                 db_connection.db_meta_game_insert(
-                    None, child_of_root['@name'], child_of_root)
+                    None, child_of_root['@name'], child_of_root['@name'], child_of_root)
                 insert_game += 1
     zip_handle.close()
 
