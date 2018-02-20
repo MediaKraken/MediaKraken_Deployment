@@ -41,7 +41,7 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
 # to ease search and other filters by game/system
 
 # create mame game list
-if True:
+if False:
     file_name = ('/mediakraken/emulation/mame0%slx.zip' %
                  common_version.MAME_VERSION)
     if not os.path.exists(file_name):
@@ -81,13 +81,13 @@ if True:
             + " games(s) metadata added from MAME XML", True)
 
 # load games from hash files
-if True:
+if False:
     file_name = ('/mediakraken/emulation/mame0%ss.zip' %
                  common_version.MAME_VERSION)
     if not os.path.exists(file_name):
         common_network.mk_network_fetch_from_url(
             ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
-             % common_version.MAME_VERSION, common_version.MAME_VERSION),
+             % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
             file_name)
     total_software = 0
     total_software_update = 0
