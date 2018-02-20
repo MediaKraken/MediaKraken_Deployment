@@ -61,12 +61,12 @@ if True:
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
                 # TODO handle shortname properly
                 db_connection.db_meta_game_update(
-                    None, child_of_root['@name'], child_of_root['@name'], child_of_root)
+                    None, child_of_root['@name'], child_of_root['description'], child_of_root)
                 update_game += 1
             else:
                 # TODO handle shortname properly
                 db_connection.db_meta_game_insert(
-                    None, child_of_root['@name'], child_of_root['@name'], child_of_root)
+                    None, child_of_root['@name'], child_of_root['description'], child_of_root)
                 insert_game += 1
     zip_handle.close()
 
