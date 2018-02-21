@@ -3,12 +3,12 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_game_system", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
 import sys
 
 sys.path.append('..')
@@ -49,16 +49,14 @@ def metadata_game_system_list():
                                                              request.form['search_text'])
     else:
         mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
-
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music'),
-                                                  record_name='music',
+                                                  total=g.db_connection.db_meta_game_system_list_count(),
+                                                  record_name='game systems',
                                                   format_total=True,
                                                   format_number=True,
+                                                  media_game_system=mediadata
                                                   )
-
     return render_template('users/metadata/meta_game_system_list.html', form=form,
                            page=page,
                            per_page=per_page,
