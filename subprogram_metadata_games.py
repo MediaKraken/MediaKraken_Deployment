@@ -173,6 +173,7 @@ if False:
 file_name = ('/mediakraken/emulation/history%s.zip' %
              common_version.MAME_VERSION)
 if not os.path.exists(file_name):
+    print('tacos')
     common_network.mk_network_fetch_from_url(
         ('https://www.arcade-history.com/dats/history%s.zip' %
          common_version.MAME_VERSION),

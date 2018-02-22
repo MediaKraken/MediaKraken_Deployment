@@ -96,16 +96,16 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
     return self.db_cursor.fetchall()
 
 
-def db_meta_games_system_insert(self, platform_id, platform_name,
+def db_meta_games_system_insert(self, platform_name,
                                 platform_alias, platform_json=None):
     """
     # insert game system
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'
-                           ' gs_game_system_id, gs_game_system_name, gs_game_system_alias,'
+                           ' gs_game_system_name, gs_game_system_alias,'
                            ' gs_game_system_json) values (%s, %s, %s, %s, %s)',
-                           (new_guid, platform_id, platform_name, platform_alias, platform_json))
+                           (new_guid, platform_name, platform_alias, platform_json))
     self.db_commit()
     return new_guid
 
