@@ -201,5 +201,11 @@ if db_connection.db_version_check() == 13:
     db_connection.db_version_update(14)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 14:
+    db_connection.db_query(
+        'ALTER TABLE mm_metadata_game_software_info DROP COLUMN gs_game_system_id')
+    db_connection.db_version_update(15)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

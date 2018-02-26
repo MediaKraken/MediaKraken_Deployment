@@ -20,6 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 APP_VERSION = '0.7.10'
 
-DB_VERSION = 14
+DB_VERSION = 15
 
 MAME_VERSION = '194'
