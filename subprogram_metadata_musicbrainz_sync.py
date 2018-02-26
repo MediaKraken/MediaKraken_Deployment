@@ -44,7 +44,8 @@ db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,
-                                 'System: Server musicbrainz Start', 'ServermusicbrainzStart', None,
+                                 'System: Server musicbrainz Start',
+                                 'ServermusicbrainzStart', None,
                                  None, 'System')
 
 # fetch all the artists from brainz
