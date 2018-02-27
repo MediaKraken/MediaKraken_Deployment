@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import pyinsane2
 from common import common_file
 
@@ -34,7 +33,8 @@ class CommonHardwareScanner(object):
 
     def com_hardware_scanner_scan(self, scanner_device, resolution, file_name):
         try:
-            pyinsane2.set_scanner_opt(scanner_device, 'resolution', [resolution])
+            pyinsane2.set_scanner_opt(
+                scanner_device, 'resolution', [resolution])
             pyinsane2.set_scanner_opt(scanner_device, 'mode', ['Color'])
             pyinsane2.maximize_scan_area(scanner_device)
             scan_session = scanner_device.scan(multiple=False)

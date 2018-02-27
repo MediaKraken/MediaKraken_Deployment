@@ -17,49 +17,48 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 
 
 def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
-        group_collection=False, offset=None, search_value=None):
+                        group_collection=False, offset=None, search_value=None):
     """
     # grab tv data
     """
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
-                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                ' and mm_metadata_tvshow_name %% %s'
-                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)',
-                (search_value,))
+                                   ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                                   ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
+                                   ' and mm_metadata_tvshow_name %% %s'
+                                   ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)',
+                                   (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
-                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
+                                   ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                                   ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
+                                   ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
-                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                ' and mm_metadata_tvshow_name %% %s'
-                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)'
-                ' offset %s limit %s', (search_value, offset, list_limit))
+                                   ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                                   ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
+                                   ' and mm_metadata_tvshow_name %% %s'
+                                   ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)'
+                                   ' offset %s limit %s', (search_value, offset, list_limit))
         else:
             self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
-                '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
-                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)'
-                ' offset %s limit %s', (offset, list_limit))
+                                   ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json'
+                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                                   ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
+                                   ' group by mm_metadata_tvshow_guid order by LOWER(mm_metadata_tvshow_name)'
+                                   ' offset %s limit %s', (offset, list_limit))
     return self.db_cursor.fetchall()
 
 
@@ -68,8 +67,8 @@ def db_web_tvmedia_list_count(self, genre_type=None, group_collection=False, sea
     # grab tv data count
     """
     self.db_cursor.execute('select count(*) from mm_metadata_tvshow, mm_media'
-        ' where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-        ' group by mm_metadata_tvshow_guid')
+                           ' where mm_media_metadata_guid = mm_metadata_tvshow_guid'
+                           ' group by mm_metadata_tvshow_guid')
     sql_data = self.db_cursor.fetchall()
     if sql_data is None:
         return 0

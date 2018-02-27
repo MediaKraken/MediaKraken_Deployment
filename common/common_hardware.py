@@ -16,13 +16,13 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-#from kivy.lang import Builder
+# from kivy.lang import Builder
 from kivy.clock import Clock
 from plyer import accelerometer
 from plyer import gps
+from plyer import vibrator
+
 VIBRATION_PATTERN = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
 
@@ -48,9 +48,9 @@ def mk_get_acceleration(dt):
     """
     val = accelerometer.acceleration[:3]
     if not val == (None, None, None):
-        #ids.x_label.text = "X: " + str(val[0])
-        #ids.y_label.text = "Y: " + str(val[1])
-        #ids.z_label.text = "Z: " + str(val[2])
+        # ids.x_label.text = "X: " + str(val[0])
+        # ids.y_label.text = "Y: " + str(val[1])
+        # ids.z_label.text = "Z: " + str(val[2])
         return val
 
 
@@ -58,35 +58,43 @@ def mk_hardware_vibration(pattern_string):
     """
     Setup of the vibration via pattern
     """
-    vibrator.pattern([float(n) for n in ti.text.split(',')])
+    try:
+        vibrator.pattern([float(n) for n in pattern_string.split(',')])
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Vibration via time
     """
-    vibrator.vibrate(seconds_to_vibrate)
+    try:
+        vibrator.vibrate(seconds_to_vibrate)
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_vibration_stop():
     """
     Stop vibration
     """
-    vibrator.cancel()
+    try:
+        vibrator.cancel()
+    except NotImplementedError:
+        pass
 
 
 def mk_hardware_gps_on():
     """
     gps setup
     """
-    self.gps = gps
     try:
-        self.gps.configure(on_location=self.on_location, on_status=self.on_status)
+        gps.configure(on_location=on_location, on_status=on_status)
     except NotImplementedError:
         import traceback
         traceback.print_exc()
-        self.gps_status = 'GPS is not implemented for your platform'
-    return self.gps
+        gps_status = 'GPS is not implemented for your platform'
+    return gps
 
 
 def on_location(self, **kwargs):

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import json
 import os
@@ -26,7 +26,6 @@ from common import common_logging
 from common import common_network_share
 from common import common_signal
 from common import common_system
-from common import common_version
 
 
 class MKConsumer(object):
@@ -108,7 +107,7 @@ class MKConsumer(object):
             self._connection.ioloop.stop()
         else:
             logging.warning('Connection closed, reopening in 5 seconds: (%s) %s',
-                           reply_code, reply_text)
+                            reply_code, reply_text)
             self._connection.add_timeout(5, self.reconnect)
 
     def reconnect(self):
@@ -120,7 +119,6 @@ class MKConsumer(object):
         self._connection.ioloop.stop()
 
         if not self._closing:
-
             # Create a new connection
             self._connection = self.connect()
 
@@ -171,7 +169,7 @@ class MKConsumer(object):
 
         """
         logging.warning('Channel %i was closed: (%s) %s',
-                       channel, reply_code, reply_text)
+                        channel, reply_code, reply_text)
         self._connection.close()
 
     def setup_exchange(self, exchange_name):
@@ -219,7 +217,7 @@ class MKConsumer(object):
 
         """
         logging.info('Binding %s to %s with %s',
-                    self.EXCHANGE, self.QUEUE, self.ROUTING_KEY)
+                     self.EXCHANGE, self.QUEUE, self.ROUTING_KEY)
         self._channel.queue_bind(self.on_bindok, self.QUEUE,
                                  self.EXCHANGE, self.ROUTING_KEY)
 
@@ -266,7 +264,7 @@ class MKConsumer(object):
 
         """
         logging.info('Consumer was cancelled remotely, shutting down: %r',
-                    method_frame)
+                     method_frame)
         if self._channel:
             self._channel.close()
 
@@ -285,7 +283,7 @@ class MKConsumer(object):
 
         """
         logging.info('Received message # %s from %s: %s',
-                    basic_deliver.delivery_tag, properties.app_id, body)
+                     basic_deliver.delivery_tag, properties.app_id, body)
 
         json_message = json.loads(body)
         if json_message['Type'] != "IMAGE":
@@ -302,26 +300,32 @@ class MKConsumer(object):
                 elif json_message['Command'] == "Fast Forward":
                     pass
                 elif json_message['Command'] == "Mute":
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-mute'), shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-mute'), shell=False)
                 elif json_message['Command'] == "Pause":
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-pause'), shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-pause'), shell=False)
                 elif json_message['Command'] == "Rewind":
                     pass
                 elif json_message['Command'] == 'Stop':
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-stop'), shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-stop'), shell=False)
                 elif json_message['Command'] == "Volume Down":
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-voldown'), shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-voldown'), shell=False)
                 elif json_message['Command'] == "Volume Set":
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-setvol', json_message['Data']),
-                                      shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-setvol', json_message['Data']),
+                        shell=False)
                 elif json_message['Command'] == "Volume Up":
-                    subprocess.Popen(('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                                      '-devicename', json_message['Device'], '-volup'), shell=False)
+                    subprocess.Popen(
+                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-volup'), shell=False)
             elif json_message['Sub'] == 'HDHomeRun':
                 pass
             elif json_message['Sub'] == 'Slave':
@@ -334,7 +338,8 @@ class MKConsumer(object):
                 elif json_message['Command'] == "Pause":
                     pass
                 elif json_message['Command'] == 'Play':
-                    self.proc_ffmpeg_stream = subprocess.Popen((''), shell=False)
+                    self.proc_ffmpeg_stream = subprocess.Popen(
+                        (''), shell=False)
                 elif json_message['Command'] == "Rewind":
                     pass
                 elif json_message['Command'] == 'Stop':
@@ -433,8 +438,9 @@ def main():
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'],
-                                shell=False)
+    wait_pid = subprocess.Popen(
+        ['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672'],
+        shell=False)
     wait_pid.wait()
 
     example = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')

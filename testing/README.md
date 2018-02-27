@@ -1,4 +1,4 @@
-Audio test sounds provided by MediaCollege.com
+﻿Audio test sounds provided by MediaCollege.com
 
 coverage run xxxx.py
 
@@ -9,7 +9,7 @@ coverage report
 
 pip pylint
 
-sudo pip install -r req.txt
+sudo pip install -r pip_requirements.txt
 
 # to build all the pip reqs
 sudo apt-get install postgresql-server-dev-9.5 libsnmp-dev libldap2-dev libsasl2-dev python-dev libssl-dev libxml2-dev libxslt-dev
@@ -33,5 +33,3 @@ sudo nano /etc/postgresql/9.5/main/pg_hba.conf
 change local add all peer to md5 for backup login
 sudo service postgresql restart
 
-
-had to do to 9.4 as well, clean that up

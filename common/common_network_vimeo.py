@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import vimeo
 
 
@@ -25,6 +24,7 @@ class CommonNetworkVimeo(object):
     """
     Class for interfacing with Vimeo
     """
+
     def __init__(self, option_config_json):
         self.vimeo_instance = vimeo.VimeoClient(
             token=option_config_json['Vimeo']['AccessToken'],

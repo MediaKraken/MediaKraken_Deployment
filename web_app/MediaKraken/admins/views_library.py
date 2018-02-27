@@ -1,31 +1,28 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
 import json
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect
 from flask_login import login_required
-from flask_paginate import Pagination
-blueprint = Blueprint("admins_library", __name__, url_prefix='/admin', static_folder="../static")
+
+blueprint = Blueprint("admins_library", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
 from functools import wraps
-from functools import partial
 from MediaKraken.admins.forms import LibraryAddEditForm
 
 from common import common_config_ini
-from common import common_internationalization
 from common import common_network_cifs
 from common import common_pagination
 from common import common_string
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -46,6 +43,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -53,6 +51,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -65,7 +64,8 @@ def admin_library():
     List all media libraries
     """
     if request.method == 'POST':
-        g.db_connection.db_trigger_insert(('python', './subprogram_file_scan.py'))
+        g.db_connection.db_trigger_insert(
+            ('python', './subprogram_file_scan.py'))
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
@@ -75,13 +75,14 @@ def admin_library():
                                                   record_name='library dir(s)',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template("admin/admin_library.html",
-                           media_dir=g.db_connection.db_audit_paths(offset, per_page),
+                           media_dir=g.db_connection.db_audit_paths(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.route("/library_edit", methods=["GET", "POST"])
@@ -100,8 +101,8 @@ def admin_library_edit_page():
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    logging.info('smb info: %s %s %s', (addr, share, path))
-                    if addr is None: # total junk path for UNC
+                    logging.info('smb info: %s %s %s' % (addr, share, path))
+                    if addr is None:  # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
@@ -115,8 +116,10 @@ def admin_library_edit_page():
                 elif request.form['library_path'][0:3] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(ip_addr, user_name='guest', user_password='')
-                    smb_stuff.com_cifs_share_directory_check(share_name, dir_path)
+                    smb_stuff.com_cifs_connect(
+                        ip_addr, user_name='guest', user_password='')
+                    smb_stuff.com_cifs_share_directory_check(
+                        share_name, dir_path)
                     smb_stuff.com_cifs_close()
                 # nfs mount
                 elif request.form['library_path'][0:3] == "nfs":
@@ -132,25 +135,28 @@ def admin_library_edit_page():
                     except:
                         lib_share = None
                     g.db_connection.db_audit_path_add(request.form['library_path'],
-                        request.form['Lib_Class'], lib_share)
+                                                      request.form['Lib_Class'], lib_share)
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_library.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
                     return redirect(url_for('admins_library.admin_library_edit_page'))
-            elif request.form['action_type'] == 'Browse...': # popup browse form
+            elif request.form['action_type'] == 'Browse...':  # popup browse form
                 pass
-            elif request.form['action_type'] == 'Synology': # popup browse form for synology
+            # popup browse form for synology
+            elif request.form['action_type'] == 'Synology':
                 pass
         else:
             flash_errors(form)
     class_list = []
     for row_data in g.db_connection.db_media_class_list():
-        if row_data['mm_media_class_display']: # flagged for display
-            class_list.append((row_data['mm_media_class_type'], row_data['mm_media_class_guid']))
+        if row_data['mm_media_class_display']:  # flagged for display
+            class_list.append(
+                (row_data['mm_media_class_type'], row_data['mm_media_class_guid']))
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
-        share_name = row_data['mm_media_share_server'] + ":" + row_data['mm_media_share_path']
+        share_name = row_data['mm_media_share_server'] + \
+            ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
 
     return render_template("admin/admin_library_edit.html", form=form,
@@ -176,7 +182,8 @@ def admin_library_delete_page():
 def getLibraryById():
     result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
-        'Path': result['mm_media_dir_path'], 'Media Class': result['mm_media_dir_class_type']})
+                       'Path': result['mm_media_dir_path'],
+                       'Media Class': result['mm_media_dir_class_type']})
 
 
 @blueprint.route('/updateLibrary', methods=['POST'])
@@ -184,7 +191,7 @@ def getLibraryById():
 @admin_required
 def updateLibrary():
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
-        request.form['new_class'], request.form['id'])
+                                                 request.form['new_class'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

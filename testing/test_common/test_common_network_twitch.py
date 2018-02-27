@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_network_twitch
 
 
 class TestCommonTwitch(object):
 
-
     @classmethod
     def setup_class(self):
         self.twitch_connection = common_network_twitch.CommonNetworkTwitch()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     @pytest.mark.parametrize(("stream_limit"), [
         (0),
@@ -46,13 +43,11 @@ class TestCommonTwitch(object):
         """
         self.twitch_connection.com_twitch_get_all_streams(stream_limit)
 
-
     def test_com_Twitch_Get_Featured_Streams(self):
         """
         Test function
         """
         self.twitch_connection.com_twitch_get_featured_streams()
-
 
     def test_com_Twitch_Get_Summary(self):
         """
@@ -60,13 +55,11 @@ class TestCommonTwitch(object):
         """
         self.twitch_connection.com_twitch_get_summary()
 
-
     def test_com_Twitch_Get_Summary_Viewers(self):
         """
         Test function
         """
         self.twitch_connection.com_twitch_get_summary_viewers()
-
 
 #    def com_Twitch_Channel_by_User(self, user_name):
 

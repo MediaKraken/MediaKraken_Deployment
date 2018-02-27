@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import socket
 import base64
 
@@ -26,6 +25,7 @@ class CommonHardwareSamsung(object):
     """
     Class for interfacing with samsung TV equipment over network connection
     """
+
     def __init__(self, device_ip):
         self.src = '192.168.1.2'  # ip of remote
         self.mac = '00-AB-11-11-11-11'  # mac of remote
@@ -38,18 +38,20 @@ class CommonHardwareSamsung(object):
         new = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         new.connect((self.dst, 55000))
         msg = chr(0x64) + chr(0x00) + \
-              chr(len(base64.b64encode(self.src))) + chr(0x00) + base64.b64encode(self.src) + \
-              chr(len(base64.b64encode(self.mac))) + chr(0x00) + base64.b64encode(self.mac) + \
-              chr(len(base64.b64encode(self.remote))) + chr(0x00) + base64.b64encode(self.remote)
+            chr(len(base64.b64encode(self.src))) + chr(0x00) + base64.b64encode(self.src) + \
+            chr(len(base64.b64encode(self.mac))) + chr(0x00) + base64.b64encode(self.mac) + \
+            chr(len(base64.b64encode(self.remote))) + \
+            chr(0x00) + base64.b64encode(self.remote)
         pkt = chr(0x00) + chr(len(self.app)) + chr(0x00) + self.app + \
-              chr(len(msg)) + chr(0x00) + msg
+            chr(len(msg)) + chr(0x00) + msg
         new.send(pkt)
         msg = chr(0x00) + chr(0x00) + chr(0x00) + \
-              chr(len(base64.b64encode(key))) + chr(0x00) + base64.b64encode(key)
+            chr(len(base64.b64encode(key))) + chr(0x00) + base64.b64encode(key)
         pkt = chr(0x00) + chr(len(self.tv)) + chr(0x00) + self.tv + \
-              chr(len(msg)) + chr(0x00) + msg
+            chr(len(msg)) + chr(0x00) + msg
         new.send(pkt)
         new.close()
+
 
 """
 Keycodes

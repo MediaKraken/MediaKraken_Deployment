@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_system
 
@@ -39,7 +39,7 @@ def test_com_system_cpu_count():
     """
     # return cpu count
     """
-    assert common_system.com_system_cpu_count() == 8
+    assert common_system.com_system_cpu_count() == 16
 
 
 def test_com_system_partitions():
@@ -84,6 +84,8 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     path = 'C:'
 else:
     path = '/'
+
+
 def test_com_system_disk_usage():
     """
     # get disk usage

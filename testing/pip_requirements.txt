@@ -1,4 +1,4 @@
-pytest
+﻿pytest
 pytest-xdist
 pytest-selenium
 selenium
@@ -8,4 +8,10 @@ tox
 pyflakes
 pytest-timeout
 pytest-profiling
+
+Crypto
+feedgen
+next
+pyobjus
+rxv
 

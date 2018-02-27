@@ -17,16 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-import string # pylint: disable=W0402
+import logging  # pylint: disable=W0611
+import string  # pylint: disable=W0402
 import os
 import re
 import random
-from . import common_config_ini
 from . import common_network
-
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
@@ -63,7 +59,8 @@ def com_meta_image_file_path(media_name, media_type):
     logging.info("filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
-        if re.search(pattern, os.path.basename(media_name)[0]): # first char of filename
+        # first char of filename
+        if re.search(pattern, os.path.basename(media_name)[0]):
             file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
                                      media_type, random.choice(string.ascii_lowercase))
         else:
@@ -85,6 +82,7 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     source_link - the website/host to use
     source_file - the "file name" on the url
     """
+    url = ''
     file_path = com_meta_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == 'themoviedb':
@@ -92,20 +90,20 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     elif source_link == 'thetvdb':
         url = 'https://thetvdb.com/banners/'
         # the following is part of the json data so no need for this
-#        if media_type == 'banner':
-#            url += 'graphical/'
-#        elif media_type == 'fanart':
-#            url += 'fanart/original/'
-#        elif media_type == 'poster':
-#            url += 'posters/'
-#        elif media_type == 'actor':
-#           url += 'actors/'
+    #        if media_type == 'banner':
+    #            url += 'graphical/'
+    #        elif media_type == 'fanart':
+    #            url += 'fanart/original/'
+    #        elif media_type == 'poster':
+    #            url += 'posters/'
+    #        elif media_type == 'actor':
+    #           url += 'actors/'
     elif source_link == 'thelogodb':
         # simply a placeholder so I don't ponder about this one in the future
-        url = ''
+        pass
     elif source_link == 'tvmaze':
         # simply a placeholder so I don't ponder about this one in the future
-        url = ''
+        pass
     file_path += source_file
     # snag file if not downloaded before
     if not os.path.isfile(file_path):

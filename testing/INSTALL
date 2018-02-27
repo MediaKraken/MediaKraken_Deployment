@@ -1,4 +1,4 @@
-15.10 mini Ubuntu
+﻿15.10 mini Ubuntu
 system/software update
 upgrade to 16.04
 sudo apt-get install python-pip phantomjs firefox python-kivy portaudio19-dev arduino
@@ -49,5 +49,4 @@ custom project
 github project to MKdeployment
 build when change posted
 run build pulled down source
-
 

@@ -17,9 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
-import json
 import sys
 import time
 
@@ -43,7 +42,8 @@ def com_net_mediakraken_find_server(server_seconds=1):
     logging.info("end time %s", t_end)
     while time.time() < t_end:
         try:
-            search_socket.sendto("who is MediaKrakenServer?", ('<broadcast>', 9101))
+            search_socket.sendto(
+                "who is MediaKrakenServer?", ('<broadcast>', 9101))
             server_reply = search_socket.recvfrom(1024)[0]
             logging.info('Server reply: ' + server_reply)
             if server_reply not in server_hosts_found:

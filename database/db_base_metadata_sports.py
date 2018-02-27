@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-#import uuid
+
+
+# import uuid
 
 
 def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
@@ -26,7 +27,8 @@ def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     # metadata guid by imdb id
     """
     self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
-        ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s', (thesports_uuid,))
+                           ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s',
+                           (thesports_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_sports_guid']
     except:
@@ -52,25 +54,26 @@ def db_meta_sports_list(self, offset=None, records=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
-                ' from mm_metadata_sports where mm_metadata_sports_name %% %s '
-                'order by mm_metadata_sports_name', (search_value,))
+                                   ' from mm_metadata_sports where mm_metadata_sports_name %% %s '
+                                   'order by mm_metadata_sports_name', (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
-                ' from mm_metadata_sports order by mm_metadata_sports_name')
+                                   ' from mm_metadata_sports order by mm_metadata_sports_name')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
-                ' from mm_metadata_sports where mm_metadata_sports_guid'
-                ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                ' where mm_metadata_sports_name %% %s'
-                ' order by mm_metadata_sports_name offset %s limit %s)'
-                ' order by mm_metadata_sports_name', (search_value, offset, records))
+                                   ' from mm_metadata_sports where mm_metadata_sports_guid'
+                                   ' in (select mm_metadata_sports_guid from mm_metadata_sports'
+                                   ' where mm_metadata_sports_name %% %s'
+                                   ' order by mm_metadata_sports_name offset %s limit %s)'
+                                   ' order by mm_metadata_sports_name',
+                                   (search_value, offset, records))
         else:
             self.db_cursor.execute('select mm_metadata_sports_guid,mm_metadata_sports_name'
-                ' from mm_metadata_sports where mm_metadata_sports_guid'
-                ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                ' order by mm_metadata_sports_name offset %s limit %s)'
-                ' order by mm_metadata_sports_name', (offset, records))
+                                   ' from mm_metadata_sports where mm_metadata_sports_guid'
+                                   ' in (select mm_metadata_sports_guid from mm_metadata_sports'
+                                   ' order by mm_metadata_sports_name offset %s limit %s)'
+                                   ' order by mm_metadata_sports_name', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -79,7 +82,7 @@ def db_meta_sports_guid_by_event_name(self, event_name):
     # fetch guid by event name
     """
     self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
-        ' where mm_metadata_sports_name = %s', (event_name,))
+                           ' where mm_metadata_sports_name = %s', (event_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_sports_guid']
     except:

@@ -16,29 +16,26 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import json
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseDevices(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open(True)
         self.new_guid = None
-
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # count device
     def test_db_device_count(self):
@@ -47,7 +44,6 @@ class TestDatabaseDevices(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_device_count()
-
 
     @pytest.mark.parametrize(("device_type", "offset", "records"), [
         (None, None, None),
@@ -63,22 +59,21 @@ class TestDatabaseDevices(object):
         self.db_connection.db_rollback()
         self.db_connection.db_device_list(device_type, offset, records)
 
-
     def test_db_device_insert(self):
         """
         # insert record
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_device_insert('test', json.dumps({'dev': 23}))
-
+        self.new_guid = self.db_connection.db_device_insert(
+            'test', json.dumps({'dev': 23}))
 
     def test_db_device_update(self):
         """
         # update record
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_device_update(self.new_guid, 'test2', json.dumps({'dev2': 22333}))
-
+        self.db_connection.db_device_update(
+            self.new_guid, 'test2', json.dumps({'dev2': 22333}))
 
     def test_db_device_read(self):
         """
@@ -86,7 +81,6 @@ class TestDatabaseDevices(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_device_read(self.new_guid)
-
 
     def test_db_device_delete(self):
         """

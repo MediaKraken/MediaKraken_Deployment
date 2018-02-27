@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from plyer import tts
 from kivy.core.audio import SoundLoader
 
@@ -26,14 +26,20 @@ def com_sound_text_to_speech(message_to_speak):
     """
     # text to speech
     """
-    tts.speak(message_to_speak)
+    try:
+        tts.speak(message_to_speak)
+    except NotImplementedError:
+        pass
 
 
 def com_sound_play_file(file_name):
     """
     # play audio file
     """
-    sound_data = SoundLoader.load(file_name)
+    try:
+        sound_data = SoundLoader.load(file_name)
+    except GstPlayerException:
+        pass
     if sound_data:
         logging.info("Sound found at %s", sound_data.source)
         logging.info("Sound is %.3f seconds", sound_data.length)

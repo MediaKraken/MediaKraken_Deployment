@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMediaGames(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_com_media_game_system_list_count(self):
         """
@@ -45,11 +42,10 @@ class TestDatabaseMediaGames(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_game_system_list_count()
 
-
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_media_game_system_list(self, offset, records):
         """
         # audited system list
@@ -57,16 +53,13 @@ class TestDatabaseMediaGames(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_game_system_list(offset, records)
 
-
     # audited game list by system count
     # def com_media_game_list_by_system_count(self, system_id):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # audited game list by system
     # def com_media_game_list_by_system(self, system_id, offset=None, records=None):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     def test_com_media_game_list_count(self):
         """
@@ -75,11 +68,10 @@ class TestDatabaseMediaGames(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_game_list_count()
 
-
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_com_media_game_list(self, offset, records):
         """
         # audited games list

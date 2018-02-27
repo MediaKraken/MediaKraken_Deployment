@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseCollection(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # find all known media
     @pytest.mark.parametrize(("offset", "records"), [
@@ -50,7 +47,6 @@ class TestDatabaseCollection(object):
         self.db_connection.db_rollback()
         self.db_connection.db_collection_list(offset, records)
 
-
     # read collection data from json metadata
     def test_db_media_collection_scan(self):
         """
@@ -58,7 +54,6 @@ class TestDatabaseCollection(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_media_collection_scan()
- 
 
     # find guid of collection name
     @pytest.mark.parametrize(("collection_name"), [
@@ -71,10 +66,9 @@ class TestDatabaseCollection(object):
         self.db_connection.db_rollback()
         self.db_connection.db_collection_guid_by_name(collection_name)
 
-
     @pytest.mark.parametrize(("tmdb_id"), [
         (393379),
-        (2)]) # fake id
+        (2)])  # fake id
     def test_db_collection_by_tmdb(self, tmdb_id):
         """
         # find guid of collection id
@@ -82,17 +76,16 @@ class TestDatabaseCollection(object):
         self.db_connection.db_rollback()
         self.db_connection.db_collection_by_tmdb(tmdb_id)
 
-
     # insert collection
     # def db_collection_insert(self, collection_name, guid_json, metadata_json, localimage_json):
 #        self.db_connection.db_rollback()
 
 
-    # update collection ids
-    # def db_collection_update(self, collection_guid, guid_json):
+# update collection ids
+# def db_collection_update(self, collection_guid, guid_json):
 #        self.db_connection.db_rollback()
 
 
-    # pull in colleciton info
-    # def db_collection_read_by_guid(self, media_uuid):
+# pull in colleciton info
+# def db_collection_read_by_guid(self, media_uuid):
 #        self.db_connection.db_rollback()

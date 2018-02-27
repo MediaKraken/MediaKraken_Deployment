@@ -17,10 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import re
-#import time
 from threading import Thread
 import urllib2
 import ssl
@@ -39,7 +38,8 @@ def mk_network_fetch_from_url(url, directory=None):
         if sys.version_info < (2, 9, 0):
             datafile = urllib2.urlopen(url)
         else:
-            datafile = urllib2.urlopen(url, context=ssl._create_unverified_context())
+            datafile = urllib2.urlopen(
+                url, context=ssl._create_unverified_context())
         if directory is not None:
             try:
                 localfile = open(directory, 'wb')
@@ -70,15 +70,15 @@ def mk_network_get_mac():
     Get MAC address
     """
     from uuid import getnode
-    return ':'.join(("%012X" % getnode())[i:i+2] for i in range(0, 12, 2))
+    return ':'.join(("%012X" % getnode())[i:i + 2] for i in range(0, 12, 2))
 
 
 def mk_network_get_outside_ip():
     """
     Get outside ip addy
     """
-    #whatismyip = 'http://checkip.dyndns.org/'
-    #return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
+    # whatismyip = 'http://checkip.dyndns.org/'
+    # return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
     import ipgetter
     return ipgetter.myip()
 
@@ -98,11 +98,11 @@ class PingIt(Thread):
     """
     # ping modules
     """
+
     def __init__(self, ip_addr):
         Thread.__init__(self)
         self.ip_addr = ip_addr
         self.status = -1
-
 
     def run(self):
         """
@@ -135,7 +135,8 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        logging.info("Status from %s is %s", pingle.ip, report[pingle.status])
+        logging.info("Status from %s is %s",
+                     pingle.ip_addr, report[pingle.status])
 
 
 def mk_network_io_counter(show_nic=False):

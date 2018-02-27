@@ -16,41 +16,37 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseNotification(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open(True)
         self.new_guid = None
-
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     @pytest.mark.parametrize(("notification_data", "notification_dismissable"), [
         ('Test Notice', True),
         ('Test nondismiss', False)])
-        # insert notifications
+    # insert notifications
     def test_db_notification_insert(self, notification_data, notification_dismissable):
         """
         Test notice insert
         """
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_notification_insert(notification_data,
-            notification_dismissable)
-
+                                                                  notification_dismissable)
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -62,7 +58,6 @@ class TestDatabaseNotification(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_notification_read(offset, records)
-
 
     def test_db_notification_delete(self):
         """

@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-from datetime import datetime # to handle threading
+import logging  # pylint: disable=W0611
+from datetime import datetime  # to handle threading
 import os
 import uuid
 import time
@@ -35,10 +35,8 @@ from common import common_network_cifs
 from common import common_signal
 from common import common_string
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')
@@ -55,7 +53,7 @@ def worker(audit_directory):
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,
-        json.dumps({'Status': 'File search scan', 'Pct': 0}))
+                                          json.dumps({'Status': 'File search scan', 'Pct': 0}))
     thread_db.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
@@ -65,8 +63,8 @@ def worker(audit_directory):
         smb_stuff.com_cifs_connect(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
-                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]\
-                    + '\\' + file_name)
+                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
+                                 + '\\' + file_name)
         smb_stuff.com_cifs_close()
     else:
         file_data = common_file.com_file_dir_list(dir_path, None, True, False)
@@ -76,26 +74,26 @@ def worker(audit_directory):
     for file_name in file_data:
         # TODO whined about converting both to utf8
         if file_name in global_known_media:
-            pass # already scanned, skip
+            pass  # already scanned, skip
         else:
             filename_base, file_extension = os.path.splitext(file_name)
-            if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION\
+            if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION \
                     or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
                 save_dl_record = True
                 # check for "stacked" media file
                 head, base_file_name = os.path.split(file_name)
-                if common_string.STACK_CD.search(base_file_name) is not None\
-                        or common_string.STACK_PART.search(base_file_name) is not None\
-                        or common_string.STACK_DVD.search(base_file_name) is not None\
-                        or common_string.STACK_PT.search(base_file_name) is not None\
-                        or common_string.STACK_DISK.search(base_file_name) is not None\
+                if common_string.STACK_CD.search(base_file_name) is not None \
+                        or common_string.STACK_PART.search(base_file_name) is not None \
+                        or common_string.STACK_DVD.search(base_file_name) is not None \
+                        or common_string.STACK_PT.search(base_file_name) is not None \
+                        or common_string.STACK_DISK.search(base_file_name) is not None \
                         or common_string.STACK_DISC.search(base_file_name) is not None:
                     # check to see if it's part one or not
-                    if common_string.STACK_CD1.search(base_file_name) is None\
-                            and common_string.STACK_PART1.search(base_file_name) is None\
-                            and common_string.STACK_DVD1.search(base_file_name) is None\
-                            and common_string.STACK_PT1.search(base_file_name) is None\
-                            and common_string.STACK_DISK1.search(base_file_name) is None\
+                    if common_string.STACK_CD1.search(base_file_name) is None \
+                            and common_string.STACK_PART1.search(base_file_name) is None \
+                            and common_string.STACK_DVD1.search(base_file_name) is None \
+                            and common_string.STACK_PT1.search(base_file_name) is None \
+                            and common_string.STACK_DISK1.search(base_file_name) is None \
                             and common_string.STACK_DISC1.search(base_file_name) is None:
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
@@ -113,28 +111,29 @@ def worker(audit_directory):
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif file_extension.lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG\
+                elif file_extension.lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
                         or file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
                     media_ffprobe_json = None
                     if file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
                         new_class_type_uuid = class_text_dict['Subtitle']
                 else:
-                    if file_name.find('/trailers/') != -1\
-                            or file_name.find('\\trailers\\') != -1\
-                            or file_name.find('/theme.mp3') != -1\
-                            or file_name.find('\\theme.mp3') != -1\
-                            or file_name.find('/theme.mp4') != -1\
+                    if file_name.find('/trailers/') != -1 \
+                            or file_name.find('\\trailers\\') != -1 \
+                            or file_name.find('/theme.mp3') != -1 \
+                            or file_name.find('\\theme.mp3') != -1 \
+                            or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                        media_class_text = thread_db.db_media_class_by_uuid(
+                            new_class_type_uuid)
                         if media_class_text == 'Movie':
-                            if file_name.find('/trailers/') != -1\
+                            if file_name.find('/trailers/') != -1 \
                                     or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Trailer']
                             else:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
-                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode'\
+                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
                                 or media_class_text == 'TV Season':
-                            if file_name.find('/trailers/') != -1\
+                            if file_name.find('/trailers/') != -1 \
                                     or file_name.find('\\trailers\\') != -1:
                                 new_class_type_uuid = class_text_dict['TV Trailer']
                             else:
@@ -144,52 +143,62 @@ def worker(audit_directory):
                             new_class_type_uuid = class_text_dict['Movie Extras']
                         elif thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Show' \
                                 or thread_db.db_media_class_by_uuid(
-                                media_class_type_uuid) == 'TV Episode' \
+                            media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Extras']
-                    elif file_name.find('/backdrops/') != -1\
+                    elif file_name.find('/backdrops/') != -1 \
                             or file_name.find('\\backdrops\\') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                        media_class_text = thread_db.db_media_class_by_uuid(
+                            new_class_type_uuid)
                         if media_class_text == 'Movie':
-                            if file_name.find('/theme.mp3') != -1\
-                                    or file_name.find('\\theme.mp3') != -1\
-                                    or file_name.find('/theme.mp4') != -1\
+                            if file_name.find('/theme.mp3') != -1 \
+                                    or file_name.find('\\theme.mp3') != -1 \
+                                    or file_name.find('/theme.mp4') != -1 \
                                     or file_name.find('\\theme.mp4') != -1:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
                     # determine ffmpeg json data
                     if file_name[:1] == "\\":
-                        file_name\
+                        file_name \
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-                    media_ffprobe_json = None # common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    # common_ffmpeg.com_ffmpeg_media_attr(file_name)
+                    media_ffprobe_json = None
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),
-                    'ChapterScan': True})
+                                         'ChapterScan': True})
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,
-                    new_class_type_uuid, None, media_ffprobe_json, media_json)
+                                          new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # Send a message so ffprobe runs
                 channel.basic_publish(exchange='mkque_ex',
                                       routing_key='mkque',
-                                      body=json.dumps({'Type': 'FFMPEG', 'Data': media_id}),
+                                      body=json.dumps(
+                                          {'Type': 'FFMPEG', 'Data': media_id}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))
                 if save_dl_record:
                     # media id begin and download que insert
                     thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                        'Path': file_name, 'ClassID': new_class_type_uuid, 'Status': None,
-                        'MetaNewID': str(uuid.uuid4()), 'ProviderMetaID': None}))
+                                                                     'Path': file_name,
+                                                                     'ClassID': new_class_type_uuid,
+                                                                     'Status': None,
+                                                                     'MetaNewID': str(uuid.uuid4()),
+                                                                     'ProviderMetaID': None}))
         total_scanned += 1
         thread_db.db_audit_path_update_status(dir_guid,
-            json.dumps({'Status': 'File scan: ' \
-            + common_internationalization.com_inter_number_format(total_scanned)\
-            + ' / ' + common_internationalization.com_inter_number_format(total_file_in_dir),
-            'Pct': (total_scanned / total_file_in_dir) * 100}))
+                                              json.dumps({'Status': 'File scan: '
+                                                                    + common_internationalization.com_inter_number_format(
+                                                                        total_scanned)
+                                                          + ' / ' + common_internationalization.com_inter_number_format(
+                                                                        total_file_in_dir),
+                                                          'Pct': (
+                                                                        total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     logging.info("Scan dir done: %s %s", dir_path, media_class_type_uuid)
-    thread_db.db_audit_path_update_status(dir_guid, None) # set to none so it doesn't show up
+    # set to none so it doesn't show up
+    thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
         thread_db.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_files)\
+            common_internationalization.com_inter_number_format(total_files)
             + " file(s) added from " + dir_path, True)
     thread_db.db_commit()
     thread_db.db_close()
@@ -208,7 +217,8 @@ connection = pika.BlockingConnection()
 channel = connection.channel()
 
 # Declare the queue
-channel.queue_declare(queue="mkque", durable=True, exclusive=False, auto_delete=False)
+channel.queue_declare(queue="mkque", durable=True,
+                      exclusive=False, auto_delete=False)
 
 # Turn on delivery confirmations
 channel.confirm_delivery()
@@ -216,38 +226,37 @@ channel.confirm_delivery()
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server File Scan Start', None,
-    'System: Server File Scan Start', 'ServerFileScanStart', None, None, 'System')
-
+                                 'System: Server File Scan Start', 'ServerFileScanStart', None,
+                                 None, 'System')
 
 # load in all media from DB
-global_known_media = [] # pylint: disable=C0103
+global_known_media = []  # pylint: disable=C0103
 known_media = db_connection.db_known_media()
 # verify rows were returned
 if known_media is not None:
     for media_row in known_media:
         if media_row['mm_media_path'] is not None:
-            global_known_media.append(media_row['mm_media_path'].encode('utf-8'))
+            global_known_media.append(
+                media_row['mm_media_path'].encode('utf-8'))
 known_media = None
-
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
 for class_data in db_connection.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
+    class_text_dict[class_data['mm_media_class_type']
+                    ] = class_data['mm_media_class_guid']
 logging.info('class: %s', class_text_dict)
 
-
 # determine directories to audit
-audit_directories = [] # pylint: disable=C0103
+audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
     logging.info("Audit Path: %s", row_data)
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
-        addr, share, path\
+        addr, share, path \
             = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
         smb_stuff.com_cifs_connect(addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
@@ -255,30 +264,33 @@ for row_data in db_connection.db_audit_paths():
                     smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
                     "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],
-                    str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
+                                          str(row_data['mm_media_class_guid']),
+                                          row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
-                    json.dumps({'Status': 'Added to scan', 'Pct': 100}))
+                                                          json.dumps({'Status': 'Added to scan',
+                                                                      'Pct': 100}))
         else:
-            db_connection.db_notification_insert('UNC Library path not found: %s'\
-                % row_data['mm_media_dir_path'], True)
+            db_connection.db_notification_insert('UNC Library path not found: %s'
+                                                 % row_data['mm_media_dir_path'], True)
         smb_stuff.com_cifs_close()
     else:
-        if not os.path.isdir(row_data['mm_media_dir_path']): # make sure the path still exists
-            db_connection.db_notification_insert('Library path not found: %s'\
-                % row_data['mm_media_dir_path'], True)
+        # make sure the path still exists
+        if not os.path.isdir(row_data['mm_media_dir_path']):
+            db_connection.db_notification_insert('Library path not found: %s'
+                                                 % row_data['mm_media_dir_path'], True)
         else:
             # verify the directory inodes has changed
             if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),
-                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+                                 "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],
-                    str(row_data['mm_media_class_guid']), row_data['mm_media_dir_guid']))
+                                          str(row_data['mm_media_class_guid']),
+                                          row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
-                    json.dumps({'Status': 'Added to scan', 'Pct': 100}))
-
+                                                          json.dumps({'Status': 'Added to scan',
+                                                                      'Pct': 100}))
 
 # commit
 db_connection.db_commit()
-
 
 # start processing the directories
 if len(audit_directories) > 0:
@@ -288,20 +300,17 @@ if len(audit_directories) > 0:
         for future in futures:
             logging.info(future.result())
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server File Scan Stop', None,
-    'System: Server File Scan Stop', 'ServerFileScanStop', None, None, 'System')
-
+                                 'System: Server File Scan Stop', 'ServerFileScanStop', None, None,
+                                 'System')
 
 # commit
 db_connection.db_commit()
 
-
 # vaccum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_media')
 db_connection.db_pgsql_vacuum_table('mm_download_que')
-
 
 # close the database
 db_connection.db_close()

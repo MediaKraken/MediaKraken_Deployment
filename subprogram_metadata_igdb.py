@@ -17,17 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from common import common_config_ini
 from common import common_internationalization
 from common import common_signal
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 total_download_attempts = 0
+
+
 # main code
 def main(argv):
     global total_download_attempts
@@ -37,13 +36,13 @@ def main(argv):
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 if __name__ == "__main__":
     print('IGDB game info download attempts: %s' % total_download_attempts)
     # send notifications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(
-            common_internationalization.com_inter_number_format(total_download_attempts)
+            common_internationalization.com_inter_number_format(
+                total_download_attempts)
             + " IGDB game info downloaded.", True)
     # commit all changes
     db_connection.db_commit()

@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import telnetlib
+
 NEWLINE = "\n"
 
 
@@ -26,12 +26,9 @@ class CommonNetworkTelnet(object):
     """
     Class for interfacing with telnet protocol
     """
-    def __init__(self):
-        self.telnet_device = None
 
-
-    def com_net_telnet_open_device(self, telnet_host, telnet_port, telnet_user=None,
-            telnet_password=None):
+    def __init__(self, telnet_host, telnet_port, telnet_user=None,
+                 telnet_password=None):
         """
         Open device via telnet
         """
@@ -42,13 +39,11 @@ class CommonNetworkTelnet(object):
             self.telnet_device.read_until("Password: ")
             self.telnet_device.write(telnet_password + NEWLINE)
 
-
     def com_net_telnet_read_device(self):
         """
         Read data from telnet device
         """
         return self.telnet_device.read_very_eager()
-
 
     def com_net_telnet_write_device(self, telnet_message):
         """

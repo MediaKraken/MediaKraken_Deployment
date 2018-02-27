@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
 import subprocess
+
 sys.path.append("./common/radio_crawler")
 
 

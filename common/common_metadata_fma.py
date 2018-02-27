@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+
 
 # https://freemusicarchive.org/api
 
@@ -25,5 +25,6 @@ class CommonMetadataFMA(object):
     """
     Class for interfacing with free music archive
     """
+
     def __init__(self):
         pass

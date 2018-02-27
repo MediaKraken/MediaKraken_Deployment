@@ -16,35 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-# send serial command to arduino via USB
 from Arduino import Arduino
 
-# Arduino UNO R3
-ARDUINO_BOARD_NEOPIXEL = Arduino('9600', port="/dev/ttyACM0")   # Neo1
-ARDUINO_BOARD_STEPPER = Arduino('9600', port="/dev/ttyACM1")    # Stp1
-# Arduino Mega 2560
-ARDUINO_BOARD_LCD_CENTER = Arduino('9600', port="/dev/ttyACM2")
 
+class CommonHardwareArduino(object):
+    """
+    Class for interfacing with arduino device over usb
+    """
 
-def com_arduino_usb_serial_digitalwrite(board_type, pin_number, pin_high_low):
-    pass
+    def __init__(self, baud_rate='9600', device_port="/dev/ttyACM0"):
+        self.arduino_device = Arduino(baud_rate, port=device_port)
 
+    # 'LOW'
+    def com_arduino_usb_serial_digitalwrite(self, pin_number, pin_high_low='HIGH'):
+        self.arduino_device.digitalWrite(pin_number, pin_high_low)
 
-def com_arduino_usb_serial_writestring(board_type, serial_string):
-    if board_type == "Neo1":
-        ARDUINO_BOARD_NEOPIXEL.SoftwareSerial.write(serial_string)
-    else:
-        ARDUINO_BOARD_STEPPER.SoftwareSerial.write(serial_string)
+    def com_arduino_usb_serial_writestring(self, serial_string):
+        self.arduino_device.SoftwareSerial.write(serial_string)
 
-
-def com_arduino_usb_serial_receivestring():
-    pass
-
-
-#while True:
-#    ARDUINO_BOARD_NEOPIXEL.SoftwareSerial.write("test") #Send some data
-#    time.sleep(1)
-#    ARDUINO_BOARD_NEOPIXEL.digitalWrite(13, "HIGH")
-#    time.sleep(1)
-#    ARDUINO_BOARD_NEOPIXEL.digitalWrite(13, "LOW") #Set digital pin 13 voltage
-#    time.sleep(1)
+    def com_arduino_usb_serial_receivestring(self):
+        pass

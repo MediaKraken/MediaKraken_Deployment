@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import os
 import time
+
 # built into 3.5 so try first then fallback to py2.x lib
 try:
-    from os import walk # pylint: disable=C0412
+    from os import walk  # pylint: disable=C0412
 except ImportError:
     from scandir import walk
 try:
@@ -41,7 +41,7 @@ JUNK_FILES = [
     'full album',
     'full length',
     'deleted scene',
-    ]
+]
 
 
 def com_file_modification_timestamp(file_name):
@@ -61,7 +61,8 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     """
     file_handle = None
     if with_timestamp:
-        file_handle = open(file_name + '_' + time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
+        file_handle = open(file_name + '_' +
+                           time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
     else:
         file_handle = open(file_name, 'w+')
     if as_pickle:
@@ -101,11 +102,12 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                 for file_name in os.listdir(dir_name):
                     if directory_only:
                         if os.path.isdir(os.path.join(dir_name, file_name)):
-                            match_list.append(os.path.join(dir_name, file_name))
+                            match_list.append(
+                                os.path.join(dir_name, file_name))
                     else:
                         match_list.append(os.path.join(dir_name, file_name))
         else:
-            for root, dirs, files in walk(dir_name): # pylint: disable=W0612
+            for root, dirs, files in walk(dir_name):  # pylint: disable=W0612
                 for file_name in files:
                     if filter_text is not None:
                         if file_name.endswith(filter_text):
@@ -113,7 +115,8 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
                     else:
                         if directory_only:
                             if os.path.isdir(os.path.join(dir_name, file_name)):
-                                match_list.append(os.path.join(dir_name, file_name))
+                                match_list.append(
+                                    os.path.join(dir_name, file_name))
                         else:
                             match_list.append(os.path.join(root, file_name))
         if skip_junk and len(match_list) > 0:
@@ -122,7 +125,8 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
             match_list_size = []
             for row_data in match_list:
                 match_list_size.append((row_data,
-                    common_string.com_string_bytes2human(os.path.getsize(row_data))))
+                                        common_string.com_string_bytes2human(
+                                            os.path.getsize(row_data))))
             return match_list_size
         return match_list
     else:

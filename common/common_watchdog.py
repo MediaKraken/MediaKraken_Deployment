@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -27,12 +27,12 @@ class CommonWatchdogHandler(FileSystemEventHandler):
     """
     Class for handling watchdog events
     """
+
     def on_modified(self, event):
         """
         File modified notification
         """
         logging.info("Modifed: %s", event.src_path)
-
 
     def on_deleted(self, event):
         """
@@ -41,14 +41,12 @@ class CommonWatchdogHandler(FileSystemEventHandler):
         # TODO then could remove the media (if a media file) from the db automatically
         logging.info("Deleted: %s", event.src_path)
 
-
     def on_moved(self, event):
         """
         File moved notification
         """
         # TODO update media file path....if a media file
         logging.info("Moved: %s", event.src_path)
-
 
     def on_created(self, event):
         """
@@ -67,9 +65,9 @@ class CommonWatchdog(object):
     """
     Class for starting up watchdog
     """
+
     def __init__(self):
         self.observer = None
-
 
     def com_watchdog_start(self, paths_to_watch):
         """
@@ -81,9 +79,9 @@ class CommonWatchdog(object):
         for row_data in paths_to_watch:
             logging.info("path: %s", row_data[0])
             if os.path.isdir(row_data[0]) and not os.path.ismount(row_data[0]):
-                self.observer.schedule(event_handler, path=row_data[0], recursive=False)
+                self.observer.schedule(
+                    event_handler, path=row_data[0], recursive=False)
         self.observer.start()
-
 
     def com_watchdog_stop(self):
         """

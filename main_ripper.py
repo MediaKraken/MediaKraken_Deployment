@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_logging
 from common import common_signal
 import subprocess
@@ -28,17 +28,20 @@ from twisted.internet import reactor, protocol, stdio, defer, task
 from twisted.protocols import basic
 from network import network_base_line_ripper as network_base
 
+
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')
+        common_logging.com_logging_start(
+            './log/MediaKraken_Ripper_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
-        self.users = {} # maps user names to network instances
+        self.users = {}  # maps user names to network instances
         logging.info("Ready for connections!")
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)
+
 
 if __name__ == '__main__':
     # set signal exit breaks

@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_pagination
 
@@ -46,13 +46,12 @@ def test_show_single_page_or_not():
 
 
 @pytest.mark.parametrize(("client_items_per_page"), [
-    (None), # defualt to 30
+    (None),  # defualt to 30
     (50)])
 def test_get_page_items(client_items_per_page):
     """
     Test function
     """
     common_pagination.get_page_items(client_items_per_page)
-
 
 # def get_pagination(**kwargs):

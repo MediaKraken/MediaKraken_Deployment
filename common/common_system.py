@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import subprocess
 import sys
 import psutil
@@ -52,7 +52,7 @@ def com_system_virtual_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.info('%-10s : %7s', (name.capitalize(), value))
+            # logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -70,7 +70,7 @@ def com_system_swap_memory(attribute_list=None):
             value = getattr(nt_result, name)
             if name != 'percent':
                 value = common_string.com_string_bytes2human(value)
-            #logging.info('%-10s : %7s', (name.capitalize(), value))
+            # logging.info('%-10s : %7s', (name.capitalize(), value))
             return_list.append(value)
     return return_list
 
@@ -136,10 +136,12 @@ def com_system_disk_usage_all(human_readable=False):
                 if len(formatted_list) == 3:
                     formatted_list.append(space_value)
                 else:
-                    formatted_list.append(common_string.com_string_bytes2human(space_value))
+                    formatted_list.append(
+                        common_string.com_string_bytes2human(space_value))
             disk_usage_data.append((row_data[1], formatted_list))
         else:
-            disk_usage_data.append((row_data[1], com_system_disk_usage(row_data[1])))
+            disk_usage_data.append(
+                (row_data[1], com_system_disk_usage(row_data[1])))
     return disk_usage_data
 
 
@@ -155,8 +157,9 @@ def com_system_uptime():
     Get system uptime
     """
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        uptime_proc = subprocess.Popen(['net', 'statistics', 'server'], stdout=subprocess.PIPE)
-        out, err = uptime_proc.communicate() # pylint: disable=W0612
+        uptime_proc = subprocess.Popen(
+            ['net', 'statistics', 'server'], stdout=subprocess.PIPE)
+        out, err = uptime_proc.communicate()  # pylint: disable=W0612
         uptime_proc.wait()
         for out_line in out:
             if out_line.find('Statistics since') != -1:
@@ -166,7 +169,8 @@ def com_system_uptime():
         uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE)
         out, err = uptime_proc.communicate()
         uptime_proc.wait()
-        out = out.split(' up ', 1)[1].split(',', 2)[0] + out.split(' up ', 1)[1].split(',', 2)[1]
+        out = out.split(' up ', 1)[1].split(',', 2)[
+            0] + out.split(' up ', 1)[1].split(',', 2)[1]
     return out
 
 

@@ -17,17 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
-import sys
-import os
-import signal
 import subprocess
 from twisted.internet import reactor, protocol
 from twisted.protocols import basic
-from common import common_network
 from common import common_discid
-from common import common_metadata_musicbrainz
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -43,9 +38,6 @@ class NetworkEvents(basic.LineReceiver):
         self.users = users
         self.user_device_uuid = None
         self.user_ip_addy = None
-        # initing musicbrainz here since there will only be ONE client connect
-        self.mbrainz_inst = common_metadata_musicbrainz.CommonMetadataMusicbrainz(
-            {'MediaBrainz': {'Host': 'mediakraken', 'Port': 5000}})
 
     def connectionMade(self):
         """
@@ -73,8 +65,10 @@ class NetworkEvents(basic.LineReceiver):
 
         if json_message['Type'] == "Rip":
             if json_message['Data'] == "CD":
-                disc_id = common_discid.com_discid_spec_device(json_message['Target'])
-                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(disc_id)
+                disc_id = common_discid.com_discid_spec_device(
+                    json_message['Target'])
+                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(
+                    disc_id)
                 disc_id_found = False
                 # TODO if NOT in DB already
                 if disc_id_found is True:
@@ -91,7 +85,7 @@ class NetworkEvents(basic.LineReceiver):
                 # TODO id disc
                 # TODO see if in db already
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all',json_message['Location']])
+                                 'all', json_message['Location']])
             elif json_message['Data'] == "UHD":
                 # TODO id disc
                 # TODO see if in db already
@@ -109,7 +103,8 @@ class NetworkEvents(basic.LineReceiver):
             self.user_device_uuid = json_message['UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
             self.users[self.user_device_uuid] = self
-            logging.info("user: %s %s", self.user_device_uuid, self.user_ip_addy)
+            logging.info("user: %s %s", self.user_device_uuid,
+                         self.user_ip_addy)
         else:
             logging.error("UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"

@@ -17,8 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-#from pprint import pprint
+# from pprint import pprint
 from hdhomerun import Device
 
 
@@ -26,9 +25,9 @@ class CommonHardwareHDHomeRun(object):
     """
     Class for interfacing with hdhomerun
     """
+
     def __init__(self):
         self.devices = None
-
 
     def com_hdhomerun_discover(self):
         """
@@ -36,13 +35,11 @@ class CommonHardwareHDHomeRun(object):
         """
         self.devices = Device.discover()
 
-
     def com_hdhomerun_list(self):
         """
         List found devices
         """
         return self.devices
-
 
     def com_hdhomerun_detail(self, ndx):
         """
@@ -56,13 +53,11 @@ class CommonHardwareHDHomeRun(object):
         print('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo())
         print('Versions: %s %d' % self.devices[ndx].get_version())
 
-
     def com_hdhomerun_upgrade(self, ndx, firmware_file):
         """
         # firmware upgrade
         """
         self.devices[ndx].upgrade(filename=firmware_file, wait=True)
-
 
     def com_hdhomerun_lock_request(self, ndx):
         """
@@ -71,13 +66,11 @@ class CommonHardwareHDHomeRun(object):
         self.devices[ndx].tuner_lockkey_request()
         self.devices[ndx].wait_for_lock()
 
-
     def com_hdhomerun_lock_release(self, ndx):
         """
         # release lock
         """
         self.devices[ndx].tuner_lockkey_release()
-
 
     def com_hdhomerun_lock_owner(self, ndx):
         """
@@ -85,13 +78,11 @@ class CommonHardwareHDHomeRun(object):
         """
         return self.devices[ndx].get_tuner_lockkey_owner()
 
-
     def com_hdhomerun_set_tuner(self, ndx, tuner_no):
         """
         # set tuner
         """
         self.devices[ndx].set_tuner(tuner_no)
-
 
     def com_hdhomerun_get_tuner_status(self, ndx):
         """
@@ -99,20 +90,15 @@ class CommonHardwareHDHomeRun(object):
         """
         return self.devices[ndx].get_tuner_status()
 
-
-
-
-
     def stuff_to_code(self):
-        #self.devices[0].set_var(item='/tuner1/vchannel', value='702')
-        #pprint(self.devices[0].get_tuner_vstatus())
-        #print 'Tuner 2 vchannel: ' + self.devices[0].get_var(item='/tuner2/vchannel')
-        #print 'Tuner 2 channel: ' + self.devices[0].get_var(item='/tuner2/channel')
-        #print 'Tuner 2 channelmap: ' + self.devices[0].get_var(item='/tuner2/channelmap')
+        # self.devices[0].set_var(item='/tuner1/vchannel', value='702')
+        # pprint(self.devices[0].get_tuner_vstatus())
+        # print 'Tuner 2 vchannel: ' + self.devices[0].get_var(item='/tuner2/vchannel')
+        # print 'Tuner 2 channel: ' + self.devices[0].get_var(item='/tuner2/channel')
+        # print 'Tuner 2 channelmap: ' + self.devices[0].get_var(item='/tuner2/channelmap')
         print(self.devices[0].get_tuner_filter())
         print(self.devices[0].get_tuner_program())
         print(self.devices[0].get_tuner_target())
-        #print 'OOB status: ' + str(self.devices[0].get_oob_status())
-        #print 'Supported: %s' % self.devices[0].get_supported(prefix='tuner')
-        #print self.devices[0].get_tuner_plotsample()
-
+        # print 'OOB status: ' + str(self.devices[0].get_oob_status())
+        # print 'Supported: %s' % self.devices[0].get_supported(prefix='tuner')
+        # print self.devices[0].get_tuner_plotsample()

@@ -16,28 +16,28 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
-from common import common_discid
-
-
-# grab discid from default device
-def test_com_discid_default_device():
-    """
-    Test function
-    """
-    common_discid.com_discid_default_device()
-
-
-# calculate discid from directory
-@pytest.mark.parametrize(("dir_to_calculate"), [
-    ("./cache"),
-    ("./cache_fake")])
-def test_com_diskid_caclulate_dir(dir_to_calculate):
-    """
-    Test function
-    """
-    common_discid.com_diskid_caclulate_dir(dir_to_calculate)
+# from common import common_discid
+#
+#
+# # grab discid from default device
+# def test_com_discid_default_device():
+#     """
+#     Test function
+#     """
+#     common_discid.com_discid_default_device()
+#
+#
+# # calculate discid from directory
+# @pytest.mark.parametrize(("dir_to_calculate"), [
+#     ("./cache"),
+#     ("./cache_fake")])
+# def test_com_diskid_caclulate_dir(dir_to_calculate):
+#     """
+#     Test function
+#     """
+#     common_discid.com_diskid_caclulate_dir(dir_to_calculate)

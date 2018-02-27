@@ -16,30 +16,26 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_database_octmote
 
 
 class TestCommonDatabaseOctmote(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_database_octmote.com_db_open(None)
-
 
     @classmethod
     def teardown_class(self):
         self.db_connection.com_db_close()
 
-
-# insert new layout config into database
-#def com_db_Layout_Config_Insert(layout_record_name, layout_record_json):
-
+    # insert new layout config into database
+    # def com_db_Layout_Config_Insert(layout_record_name, layout_record_json):
 
     def test_com_db_layout_list(self):
         """
@@ -47,13 +43,10 @@ class TestCommonDatabaseOctmote(object):
         """
         self.db_connection.com_db_layout_list()
 
+    # def com_db_Layout_Detail(guid):
 
-#def com_db_Layout_Detail(guid):
-
-
-# insert new device type into database
-#def com_db_Device_Insert(device_record_name, device_record_description):
-
+    # insert new device type into database
+    # def com_db_Device_Insert(device_record_name, device_record_description):
 
     def test_com_db_device_list(self):
         """
@@ -61,13 +54,10 @@ class TestCommonDatabaseOctmote(object):
         """
         self.db_connection.com_db_device_list()
 
+    # def com_db_Device_Detail(guid):
 
-#def com_db_Device_Detail(guid):
-
-
-# insert new item into database
-#def com_db_Item_Insert(item_record_json):
-
+    # insert new item into database
+    # def com_db_Item_Insert(item_record_json):
 
     def test_com_db_item_list(self):
         """
@@ -75,20 +65,19 @@ class TestCommonDatabaseOctmote(object):
         """
         self.db_connection.com_db_item_list()
 
-
-#def com_db_Item_Detail(guid):
+# def com_db_Item_Detail(guid):
 
 
 # do general query
-#def com_db_General_Query(sql_command):
+# def com_db_General_Query(sql_command):
 
 
 # do general insert
-#def com_db_General_Insert(sql_command):
+# def com_db_General_Insert(sql_command):
 
 
 # insert new anidb entries into database
-#def com_db_anidb_Title_Insert(sql_params_list):
+# def com_db_anidb_Title_Insert(sql_params_list):
 
 
-#def com_db_anidb_Title_Search(title_to_search):
+# def com_db_anidb_Title_Search(title_to_search):

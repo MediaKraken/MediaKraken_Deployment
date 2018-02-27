@@ -16,38 +16,34 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseiradio(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     @pytest.mark.parametrize(("radio_channel"), [
         ('http://www.mediakraken.org'),
-        ('http://www.mediakraken.org')]) # so it dupes
+        ('http://www.mediakraken.org')])  # so it dupes
     def test_db_iradio_insert(self, radio_channel):
         """
         # insert iradio channel
         """
         self.db_connection.db_rollback()
         self.db_connection.db_iradio_insert(radio_channel)
-
 
     @pytest.mark.parametrize(("active_station"), [
         (True,),
@@ -59,17 +55,17 @@ class TestDatabaseiradio(object):
         self.db_connection.db_rollback()
         self.db_connection.db_iradio_list_count(active_station)
 
-
-    @pytest.mark.parametrize(("active_station", "offset", "records"), [
-        (True, None, None),
-        (True, 100, 100),
-        (True, 100000000, 1000),
-        (False, None, None),
-        (False, 100, 100),
-        (False, 100000000, 1000)])
-    def test_db_iradio_list(self, active_station, offset, records):
+    @pytest.mark.parametrize(("active_station", "search_value", "offset", "records"), [
+        (True, None, None, None),
+        (True, None, 100, 100),
+        (True, None, 100000000, 1000),
+        (False, None, None, None),
+        (False, None, 100, 100),
+        (False, None, 100000000, 1000)])
+    def test_db_iradio_list(self, active_station, search_value, offset, records):
         """
         # iradio list
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_iradio_list(active_station, offset, records)
+        self.db_connection.db_iradio_list(
+            offset, records, active_station, search_value)

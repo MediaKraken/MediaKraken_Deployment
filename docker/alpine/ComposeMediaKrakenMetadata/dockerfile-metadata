@@ -28,7 +28,6 @@ RUN apk add --update \
   && pip install pytest-runner \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \
-  && pip install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles \
   && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
   && rm requirements.txt \
   && apk add \
@@ -36,6 +35,7 @@ RUN apk add --update \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
+#  && pip install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

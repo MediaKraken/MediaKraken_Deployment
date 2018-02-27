@@ -16,21 +16,20 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_logging
 
 
 # def com_logging_start(log_name="./log/MediaKraken_Main"):
 @pytest.mark.parametrize(("log_name"), [
-    (None),
     ("./log/MediaKraken_Test"),
     ("./log_fake/MediaKraken_Test")])
 def test_common_logging_start(log_name):
     """
     Test function
     """
-    common_logging.common_logging_start(log_name)
+    common_logging.com_logging_start(log_name)

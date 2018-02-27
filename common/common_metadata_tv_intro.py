@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from bs4 import BeautifulSoup
 from . import common_network
 from . import common_string
@@ -39,5 +39,5 @@ def com_tvintro_download(media_name):
         logging.info('href: %s', data['href'])
         common_network.mk_network_fetch_from_url('http://www.tv-intros.com'
                                                  + data['href'], 'theme.mp3')
-        return True #success
-    return False # no match
+        return True  # success
+    return False  # no match

@@ -17,53 +17,61 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import db_base_brainz as database_base_brainz
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_musicbrainz_Sync')
-
+common_logging.com_logging_start(
+    './log/MediaKraken_Subprogram_musicbrainz_Sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # open the remote musicbrainz db
 db_brainz = database_base_brainz.db_Brainz()
 db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],
-    option_config_json['MediaBrainz']['BrainzDBPort'],
-    option_config_json['MediaBrainz']['BrainzDBName'],
-    option_config_json['MediaBrainz']['BrainzDBUser'],
-    option_config_json['MediaBrainz']['BrainzDBPass'])
+                  option_config_json['MediaBrainz']['BrainzDBPort'],
+                  option_config_json['MediaBrainz']['BrainzDBName'],
+                  option_config_json['MediaBrainz']['BrainzDBUser'],
+                  option_config_json['MediaBrainz']['BrainzDBPass'])
 
 # log start
 db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,
-    'System: Server musicbrainz Start', 'ServermusicbrainzStart', None, None, 'System')
+                                 'System: Server musicbrainz Start',
+                                 'ServermusicbrainzStart', None,
+                                 None, 'System')
 
 # fetch all the artists from brainz
 for row_data in db_brainz.db_brainz_all_artists():
     db_connection.db_meta_musician_add(row_data['name'],
-        json.dumps({'musicbrainz':row_data['gid']}), json.dumps({'Comment':row_data['comment'],
-        'Gender':row_data['gender'], 'Begin':(str(row_data['begin_date_year']) + ':'
-        + str(row_data['begin_date_month']) + ':' + str(row_data['begin_date_day'])),
-        'End':(str(row_data['end_date_year']) + ':' + str(row_data['end_date_month']) + ':'
-        + str(row_data['end_date_day']))}))
+                                       json.dumps(
+                                           {'musicbrainz': row_data['gid']}),
+                                       json.dumps({'Comment': row_data['comment'],
+                                                   'Gender': row_data['gender'],
+                                                   'Begin': (str(row_data['begin_date_year']) + ':'
+                                                             + str(row_data[
+                                                                 'begin_date_month']) + ':' + str(
+                                                       row_data['begin_date_day'])),
+                                                   'End': (str(
+                                                       row_data['end_date_year']) + ':' + str(
+                                                       row_data['end_date_month']) + ':'
+                                           + str(row_data['end_date_day']))}))
     logging.info(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],
-            json.dumps({'musicbrainz':row_data_album['gid']}),
-            json.dumps({'Commment':row_data_album['comment'],
-            'Language': row_data_album['language'], 'Barcode': row_data_album['barcode']}))
+                                        json.dumps(
+                                            {'musicbrainz': row_data_album['gid']}),
+                                        json.dumps({'Commment': row_data_album['comment'],
+                                                    'Language': row_data_album['language'],
+                                                    'Barcode': row_data_album['barcode']}))
         logging.info(row_data_album)
 '''
         # fetch all the songs from brainz
@@ -72,19 +80,16 @@ for row_data in db_brainz.db_brainz_all_artists():
             db_connection.db_meta_song_add(row_data[99],json.dumps({ 'musicbrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
 '''
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,
-    'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None, None, 'System')
-
+                                 'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None,
+                                 None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
 
-
 # vaccum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_taketable')
-
 
 # close DB
 db_brainz.db_close()

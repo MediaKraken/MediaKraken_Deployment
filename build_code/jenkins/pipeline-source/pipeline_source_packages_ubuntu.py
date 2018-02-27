@@ -16,9 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-
 
 PACKAGES_BASE_UBUNTU_1604 = [
     'autoconf',
@@ -50,14 +48,12 @@ PACKAGES_BASE_UBUNTU_1604 = [
     'texinfo',
     'yasm',
     'zlib1g-dev',
-    ]
-
+]
 
 PACKAGES_THEATER_UBUNTU_1604 = [
     'libdiscid-dev',
     'python-pip',
-    ]
-
+]
 
 PACKAGES_FFMPEG_UBUNTU_1604 = [
     'autoconf',
@@ -104,4 +100,4 @@ PACKAGES_FFMPEG_UBUNTU_1604 = [
     'texinfo',
     'wget',
     'zlib1g-dev',
-    ]
+]

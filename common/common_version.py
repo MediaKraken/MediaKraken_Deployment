@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 
+APP_VERSION = '0.7.11'
 
-APP_VERSION = '0.7.9'
+DB_VERSION = 15
 
-DB_VERSION = 14
+MAME_VERSION = '194'

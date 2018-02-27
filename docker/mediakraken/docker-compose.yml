@@ -83,15 +83,15 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-  # scan for new hardware devices
-  devicescan:
-    image: mediakraken/mkdevicescan:latest
-    container_name: mkdevicescan
-    entrypoint: python main_hardware_discover.py
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /var/opt/mediakraken/devices:/mediakraken/devices
-    network_mode: host
+#  # scan for new hardware devices
+#  devicescan:
+#    image: mediakraken/mkdevicescan:latest
+#    container_name: mkdevicescan
+#    entrypoint: python main_hardware_discover.py
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#      - /var/opt/mediakraken/devices:/mediakraken/devices
+#    network_mode: host
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -180,6 +180,8 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/webkey:/mediakraken/key
+      - /var/opt/mediakraken/uploads:/mediakraken/uploads
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network
@@ -202,16 +204,29 @@ services:
     networks:
       - mediakraken_network
 
-  # runs the phppgadmin
-  phppgadmin:
-    image: mediakraken/mkphppgadmin:latest
-    container_name: mkphppgadmin
-    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+  # pgadmin4
+  # https://github.com/Chorss/docker-pgAdmin4
+  pgadmin:
+    image: mediakraken/mkpgadmin:latest
+    container_name: mkpgadmin
     ports:
-      - "12345:80"
-    networks:
-      - mediakraken_dbnetwork
+      - "12345:5050"
+    volumes:
+      - /var/opt/mediakraken/pgadmin:/data
     restart: unless-stopped
+    networks:
+      - mediakraken_network
+
+#  # runs the phppgadmin
+#  phppgadmin:
+#    image: mediakraken/mkphppgadmin:latest
+#    container_name: mkphppgadmin
+#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
+#    ports:
+#      - "12345:80"
+#    networks:
+#      - mediakraken_dbnetwork
+#    restart: unless-stopped
 
   # runs portainer
   dockmanage:

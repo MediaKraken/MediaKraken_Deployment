@@ -16,52 +16,44 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataTV(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     # metadata guid by name
     # def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # metadata guid by imdb id
     # def db_metaTV_guid_by_imdb(self, imdb_uuid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # metadata guid by tv id
     # def db_metatv_guid_by_tvdb(self, thetvdb_uuid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # metadata guid by tvmaze id
     # def db_metaTV_guid_by_tvmaze(self, tvmaze_uuid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     # metadata guid by tvrage id
     # def db_metatv_guid_by_tvrage(self, tvrage_uuid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     def test_db_meta_tvshow_list_count(self):
         """
@@ -69,7 +61,6 @@ class TestDatabaseMetadataTV(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_tvshow_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -82,37 +73,36 @@ class TestDatabaseMetadataTV(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_tvshow_list(offset, records)
 
-
     # update image json
     # def db_meta_tvshow_update_image(self, image_json, metadata_uuid):
 #        self.db_connection.db_rollback()
 
 
-    # fetch tvmaze rows to update
-    # def db_meta_tvshow_images_to_update(self, image_type):
+# fetch tvmaze rows to update
+# def db_meta_tvshow_images_to_update(self, image_type):
 #        self.db_connection.db_rollback()
 #
 
-    # return metadata for tvshow
-    # def db_meta_tvshow_detail(self, guid):
+# return metadata for tvshow
+# def db_meta_tvshow_detail(self, guid):
 #        self.db_connection.db_rollback()
 
 
-    # read in the tv episodes metadata by guid
-    # def db_read_tvmeta_episodes(self, show_guid):
+# read in the tv episodes metadata by guid
+# def db_read_tvmeta_episodes(self, show_guid):
 #        self.db_connection.db_rollback()
 
 
-    # grab tvmaze ep data for eps per season
-    # def db_read_tvmeta_eps_season(self, show_guid):
+# grab tvmaze ep data for eps per season
+# def db_read_tvmeta_eps_season(self, show_guid):
 #        self.db_connection.db_rollback()
 
 
-    # grab episodes within the season
-    # def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
+# grab episodes within the season
+# def db_read_tvmeta_season_eps_list(self, show_guid, season_number):
 #        self.db_connection.db_rollback()
 
 
-    # grab episode detail
-    # def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
+# grab episode detail
+# def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
 #        self.db_connection.db_rollback()

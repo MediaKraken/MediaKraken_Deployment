@@ -17,12 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import uuid
-import json
 
 
-#class ServerDatabaseUsers(object):
+# class ServerDatabaseUsers(object):
 def db_user_list_name_count(self):
     """
     # return user count
@@ -37,11 +35,12 @@ def db_user_list_name(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
-            ' from mm_user order by LOWER(username)')
+                               ' from mm_user order by LOWER(username)')
     else:
         self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
-            ' from mm_user where id in (select id from mm_user order by LOWER(username)'
-            ' offset %s limit %s) order by LOWER(username)', (offset, records))
+                               ' from mm_user where id in (select id from mm_user'
+                               ' order by LOWER(username)'
+                               ' offset %s limit %s) order by LOWER(username)', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -66,10 +65,10 @@ def db_user_login(self, user_id, user_password):
     # verify user logon
     """
     self.db_cursor.execute('select id,password from mm_user where id = %s',
-        (user_id,))
+                           (user_id,))
     result = self.db_cursor.fetchone()
     if result is not None:
-        if user_password == result['password'] or True: # pass matches
+        if user_password == result['password'] or True:  # pass matches
             # TODO password validation
             return (str(uuid.uuid4()))
         else:
@@ -83,8 +82,10 @@ def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     insert user group
     """
     self.db_cursor.execute('insert into mm_user_group (mm_user_group_guid,'
-        ' mm_user_group_name, mm_user_group_description, mm_user_group_rights_json)'
-        ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), group_name, group_desc, group_rights_json))
+                           ' mm_user_group_name, mm_user_group_description,'
+                           ' mm_user_group_rights_json)'
+                           ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), group_name,
+                                                     group_desc, group_rights_json))
     self.db_commit()
 
 
@@ -93,6 +94,6 @@ def db_user_profile_insert(self, profile_name, profile_json):
     insert user profile
     """
     self.db_cursor.execute('insert into mm_user_profile (mm_user_profile_guid,'
-        ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)',
-        (str(uuid.uuid4()), profile_name, profile_json))
+                           ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)',
+                           (str(uuid.uuid4()), profile_name, profile_json))
     self.db_commit()

@@ -17,19 +17,22 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 
 
-def db_meta_movie_image_random(self, return_image_type='Poster'): # poster, backdrop, etc
+# poster, backdrop, etc
+def db_meta_movie_image_random(self, return_image_type='Poster'):
     """
     Find random movie image
     """
     self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-        + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_movie'\
-        ' where mm_media_metadata_guid = mm_metadata_guid'\
-        ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-        + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
+                           + return_image_type + '\' as image_json,mm_metadata_guid'
+                                                 ' from mm_media,mm_metadata_movie'
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
+                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                           + return_image_type + '\'' + ')::text != \'null\''
+                                                        ' order by random() limit 1')
     try:
         # then if no results.....a None will except which will then pass None, None
         image_json, metadata_id = self.db_cursor.fetchone()
@@ -44,16 +47,19 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     """
     logging.info('upt castcrew: %s', metadata_id)
     self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'
-        ' where mm_metadata_guid = %s', (metadata_id,))
+                           ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json_row = self.db_cursor.fetchone()[0]
     logging.info('castrow: %s', cast_crew_json_row)
     if 'cast' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update({'Cast': cast_crew_json['cast']})
+        cast_crew_json_row['Meta']['themoviedb'].update(
+            {'Cast': cast_crew_json['cast']})
     if 'crew' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update({'Crew': cast_crew_json['crew']})
+        cast_crew_json_row['Meta']['themoviedb'].update(
+            {'Crew': cast_crew_json['crew']})
     logging.info('upt: %s', cast_crew_json_row)
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
-        ' where mm_metadata_guid = %s', (json.dumps(cast_crew_json_row), metadata_id))
+                           ' where mm_metadata_guid = %s',
+                           (json.dumps(cast_crew_json_row), metadata_id))
     self.db_commit()
 
 
@@ -78,7 +84,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
         self.db_meta_movie_json_update(metadata_guid, json.dumps(json_data))
-        #self.db_commit() - since done in update below
+        # self.db_commit() - since done in update below
     except:
         self.db_rollback()
         return None

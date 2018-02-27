@@ -1,5 +1,4 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from threading import Timer
 import time
 
@@ -22,7 +21,7 @@ class InfiniteTimer():
         self._start_timer()
 
     def _start_timer(self):
-        if self._should_continue: # Code could have been running when cancel was called.
+        if self._should_continue:  # Code could have been running when cancel was called.
             self.thread = Timer(self.seconds, self._handle_target)
             self.thread.start()
 
@@ -35,11 +34,11 @@ class InfiniteTimer():
 
     def cancel(self):
         if self.thread is not None:
-            self._should_continue = False # Just in case thread is running and cancel fails.
+            # Just in case thread is running and cancel fails.
+            self._should_continue = False
             self.thread.cancel()
         else:
             print("Timer never started or failed to initialize.")
-
 
 # def tick():
 #     print('ipsem lorem')

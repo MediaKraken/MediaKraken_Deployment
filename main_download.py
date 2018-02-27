@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import pika
 import subprocess
@@ -34,16 +34,19 @@ def on_message(channel, method_frame, header_frame, body):
         if json_message['Type'] == 'youtube':
             dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
                                        '/mediakraken/archive.txt', json_message['Data']],
-                                       shell=False)
+                                      shell=False)
             dl_pid.wait()
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
+
 # pika rabbitmq connection
-parameters =  pika.ConnectionParameters('mkrabbitmq', credentials=pika.PlainCredentials('guest', 'guest'))
+parameters = pika.ConnectionParameters('mkrabbitmq',
+                                       credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct", durable=True)
+exchange = channel.exchange_declare(exchange="mkque_download_ex",
+                                    exchange_type="direct", durable=True)
 queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
@@ -53,8 +56,9 @@ channel.basic_qos(prefetch_count=1)
 while True:
     time.sleep(1)
     # grab message from rabbitmq if available
-    try: # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(queue='mkdownload', no_ack=False)
+    try:  # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(
+            queue='mkdownload', no_ack=False)
         on_message(channel, method_frame, header_frame, body)
     except:
         pass

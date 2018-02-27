@@ -16,13 +16,13 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hardware
 
@@ -52,13 +52,13 @@ def test_mk_hardware_vibration():
     """
     Test function
     """
-    common_hardware.mk_hardware_vibration(pattern_string)
+    common_hardware.mk_hardware_vibration(vibration_pattern)
 
 
 # vibration via time
 @pytest.mark.parametrize(("seconds_to_vibrate"), [
-    ("0.5"),
-    ("2")])
+    (0.5),
+    (2)])
 def test_mk_hardware_vibration_time(seconds_to_vibrate):
     """
     Test function
@@ -80,7 +80,6 @@ def test_mk_hardware_gps_on():
     Test function
     """
     common_hardware.mk_hardware_gps_on()
-
 
 # gps location
 # def on_location(self, **kwargs):

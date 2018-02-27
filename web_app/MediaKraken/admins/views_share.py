@@ -1,31 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
 import json
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect
 from flask_login import login_required
-from flask_paginate import Pagination
-blueprint = Blueprint("admins_share", __name__, url_prefix='/admin', static_folder="../static")
+
+blueprint = Blueprint("admins_share", __name__,
+                      url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
 from functools import wraps
-from functools import partial
 from MediaKraken.admins.forms import ShareAddEditForm
 
 from common import common_config_ini
-from common import common_internationalization
 from common import common_network_cifs
 from common import common_pagination
-from common import common_version
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -46,6 +42,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -53,6 +50,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -72,13 +70,14 @@ def admin_share():
                                                   record_name='share(s)',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template("admin/admin_share.html",
-                           media_dir=g.db_connection.db_audit_shares(offset, per_page),
+                           media_dir=g.db_connection.db_audit_shares(
+                               offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.route("/share_edit", methods=["GET", "POST"])
@@ -99,32 +98,32 @@ def admin_share_edit_page():
                 logging.info('type %s', request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
-#                    addr, share, path = common_string.com_string_unc_to_addr_path(\
-#                        request.form['storage_mount_path'])
-#                    if addr is None: # total junk path for UNC
-#                        flash("Invalid UNC path.", 'error')
-#                        return redirect(url_for('admins_share.admin_share_edit_page'))
-#                    logging.info('unc info: %s %s %s' % (addr, share, path))
+                    #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
+                    #                        request.form['storage_mount_path'])
+                    #                    if addr is None: # total junk path for UNC
+                    #                        flash("Invalid UNC path.", 'error')
+                    #                        return redirect(url_for('admins_share.admin_share_edit_page'))
+                    #                    logging.info('unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
-                        user_name=request.form['storage_mount_user'],
-                        user_password=request.form['storage_mount_password'])
-#                    if not smb_stuff.com_cifs_share_directory_check(\
-#                            request.form['storage_mount_server'], \
-#                            request.form['storage_mount_path']):
-#                        smb_stuff.com_cifs_close()
-#                        flash("Invalid UNC path.", 'error')
-#                        return redirect(url_for('admins_share.admin_share_edit_page'))
+                                               user_name=request.form['storage_mount_user'],
+                                               user_password=request.form['storage_mount_password'])
+                    #                    if not smb_stuff.com_cifs_share_directory_check(\
+                    #                            request.form['storage_mount_server'], \
+                    #                            request.form['storage_mount_path']):
+                    #                        smb_stuff.com_cifs_close()
+                    #                        flash("Invalid UNC path.", 'error')
+                    #                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
                 elif request.form['storage_mount_type'] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
-                        user_name=request.form['storage_mount_user'],
-                        user_password=request.form['storage_mount_password'])
+                                               user_name=request.form['storage_mount_user'],
+                                               user_password=request.form['storage_mount_password'])
                     smb_stuff.com_cifs_share_directory_check(share_name,
-                        request.form['storage_mount_path'])
+                                                             request.form['storage_mount_path'])
                     smb_stuff.com_cifs_close()
                 # nfs mount
                 elif request.form['storage_mount_type'] == "nfs":
@@ -171,7 +170,7 @@ def admin_share_delete_page():
 def getShareById():
     result = g.db_connection.db_audit_share_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_share_dir_guid'],
-        'Path': result['mm_share_dir_path']})
+                       'Path': result['mm_share_dir_path']})
 
 
 @blueprint.route('/updateShare', methods=['POST'])

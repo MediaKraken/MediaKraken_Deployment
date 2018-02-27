@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import smtplib
+
 
 # http://stackoverflow.com/users/547050/david-okwii
 # code from stackoverflow

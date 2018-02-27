@@ -28,13 +28,13 @@ class Role(SurrogatePK, Model):
 
 
 class User(UserMixin, SurrogatePK, Model):
-
     __tablename__ = 'mm_user'
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
     password = Column(db.String(128), nullable=True)
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    created_at = Column(db.DateTime, nullable=False,
+                        default=dt.datetime.utcnow)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
     user_json = Column(JSON, nullable=True, default=None)
@@ -53,9 +53,9 @@ class User(UserMixin, SurrogatePK, Model):
     def check_password(self, value):
         return bcrypt.check_password_hash(self.password, value)
 
-#    @property
-#    def full_name(self):
-#        return "{0} {1}".format(self.first_name, self.last_name)
+    #    @property
+    #    def full_name(self):
+    #        return "{0} {1}".format(self.first_name, self.last_name)
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)

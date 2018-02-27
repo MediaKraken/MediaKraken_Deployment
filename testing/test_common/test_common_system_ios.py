@@ -16,52 +16,47 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
-from common import common_system_ios
-
-
-class TestiOSHardwareInstance(object):
-
-
-    @classmethod
-    def setup_class(self):
-        self.ios_connection = common_system_ios.CommoniOSHardwareInstance()
-
-
-    @classmethod
-    def teardown_class(self):
-        pass
-
-
-    @pytest.mark.parametrize(("time_range"), [
-        (0.5),
-        (5)])
-    def test_com_ios_motion(self, time_range):
-        """
-        # return data from the motion controller
-        """
-        self.ios_connection.com_ios_motion(time_range)
-
-
-    @pytest.mark.parametrize(("time_range"), [
-        (0.5),
-        (5)])
-    def test_com_ios_gyro(self, time_range):
-        """
-        # return data from the gyro
-        """
-        self.ios_connection.com_ios_gyro(time_range)
-
-
-    @pytest.mark.parametrize(("time_range"), [
-        (0.5),
-        (5)])
-    def test_com_ios_magnetometer(self, time_range):
-        """
-        # return data from the magnetometer
-        """
-        self.ios_connection.com_ios_magnetometer(time_range)
+# from common import common_system_ios
+#
+#
+# class TestiOSHardwareInstance(object):
+#
+#     @classmethod
+#     def setup_class(self):
+#         self.ios_connection = common_system_ios.CommoniOSHardwareInstance()
+#
+#     @classmethod
+#     def teardown_class(self):
+#         pass
+#
+#     @pytest.mark.parametrize(("time_range"), [
+#         (0.5),
+#         (5)])
+#     def test_com_ios_motion(self, time_range):
+#         """
+#         # return data from the motion controller
+#         """
+#         self.ios_connection.com_ios_motion(time_range)
+#
+#     @pytest.mark.parametrize(("time_range"), [
+#         (0.5),
+#         (5)])
+#     def test_com_ios_gyro(self, time_range):
+#         """
+#         # return data from the gyro
+#         """
+#         self.ios_connection.com_ios_gyro(time_range)
+#
+#     @pytest.mark.parametrize(("time_range"), [
+#         (0.5),
+#         (5)])
+#     def test_com_ios_magnetometer(self, time_range):
+#         """
+#         # return data from the magnetometer
+#         """
+#         self.ios_connection.com_ios_magnetometer(time_range)

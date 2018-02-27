@@ -17,21 +17,23 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import xmltodict
 import requests
 import giantbomb
+
 
 class CommonMetadataGiantbomb(object):
     """
     Class for interfacing with Giantbomb
     """
+
     def __init__(self, api_key, user_agent):
         self.giantbomb_inst = giantbomb.Api(api_key, user_agent)
 
-
     def com_meta_gb_getplatforms(self, offset=0):
         return self.giantbomb_inst.getPlatforms(offset)
+
 
 '''
 search(str, offset)

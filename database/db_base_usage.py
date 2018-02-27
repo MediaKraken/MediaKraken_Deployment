@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 
 
 def db_usage_top10_alltime(self):
@@ -33,8 +32,9 @@ def db_usage_top10_movie(self):
     Top 10 movies
     """
     self.db_cursor.execute('select mm_metadata_user_json->\'Watched\'->\'Times\''
-        ' from mm_metadata_movie order by mm_metadata_user_json->\'Watched\'->\'Times\''
-        ' desc limit 10')
+                           ' from mm_metadata_movie'
+                           ' order by mm_metadata_user_json->\'Watched\'->\'Times\''
+                           ' desc limit 10')
     return self.db_cursor.fetchall()
 
 
@@ -43,8 +43,9 @@ def db_usage_top10_tv_show(self):
     Top 10 TV show
     """
     self.db_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''
-        ' from mm_metadata_tvshow order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''
-        ' desc limit 10')
+                           ' from mm_metadata_tvshow'
+                           ' order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''
+                           ' desc limit 10')
     return self.db_cursor.fetchall()
 
 

@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-
 MEDIA_EXTENSION = [
     'webm',
     'mkv',
@@ -54,7 +53,6 @@ MEDIA_EXTENSION = [
     'lrc',
 ]
 
-
 SUBTITLE_EXTENSION = [
     'srt',
     'smi',
@@ -64,7 +62,6 @@ SUBTITLE_EXTENSION = [
     'sub',
     'idx',
 ]
-
 
 MEDIA_EXTENSION_SKIP_FFMPEG = [
     'pdf',

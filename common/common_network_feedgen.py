@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from feedgen.feed import FeedGenerator
 
 
@@ -25,13 +24,17 @@ class CommonNetworkFeedgen(object):
     """
     For setting up rss feeds
     """
+
     def __init__(self):
         self.feedgen_connection = FeedGenerator()
         self.feedgen_connection.id('http://lernfunk.de/media/654321')
         self.feedgen_connection.title('Metaman Notification Feed')
-        self.feedgen_connection.author({'name':'John Doe', 'email':'john@example.de'})
-        self.feedgen_connection.link(href='http://example.com', rel='alternate')
+        self.feedgen_connection.author(
+            {'name': 'John Doe', 'email': 'john@example.de'})
+        self.feedgen_connection.link(
+            href='http://example.com', rel='alternate')
         self.feedgen_connection.logo('http://ex.com/logo.jpg')
         self.feedgen_connection.subtitle('This is a cool feed!')
-        self.feedgen_connection.link(href='http://larskiesow.de/test.atom', rel='self')
+        self.feedgen_connection.link(
+            href='http://larskiesow.de/test.atom', rel='self')
         self.feedgen_connection.language('en')

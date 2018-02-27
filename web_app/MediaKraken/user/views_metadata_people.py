@@ -3,26 +3,20 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
-    redirect, url_for, abort
+from flask import Blueprint, render_template, g, request
 from flask_login import login_required
-from flask_login import current_user
-from fractions import Fraction
+
 blueprint = Blueprint("user_metadata_people", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging # pylint: disable=W0611
-import subprocess
-import natsort
+import logging  # pylint: disable=W0611
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
-from common import common_internationalization
 from common import common_pagination
-from common import common_string
 import database as database_base
 from MediaKraken.public.forms import SearchForm
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -40,7 +34,8 @@ def metadata_person_detail(guid):
     # person image
     try:
         if json_imagedata['Images']['Poster'] is not None:
-            data_person_image = "/static/meta/images/" + json_imagedata['Images']['Poster']
+            data_person_image = "/static/meta/images/" + \
+                json_imagedata['Images']['Poster']
         else:
             data_person_image = "/static/images/person_missing.png"
     except:
@@ -51,7 +46,7 @@ def metadata_person_detail(guid):
                            json_metadata=json_metadata,
                            data_person_image=data_person_image,
                            data_also_media=meta_also_media,
-                          )
+                           )
 
 
 @blueprint.route('/meta_person_list', methods=['GET', 'POST'])
@@ -78,14 +73,16 @@ def metadata_person_list():
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:
-                    person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace('/mediakraken/web_app/MediaKraken','') + person_data['mmp_meta']
+                    person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace(
+                        '/mediakraken/web_app/MediaKraken', '') + person_data['mmp_meta']
                 except:
                     person_image = "/static/images/person_missing.png"
             else:
                 person_image = "/static/images/person_missing.png"
         else:
             person_image = "/static/images/person_missing.png"
-        person_list.append((person_data['mmp_id'], person_data['mmp_person_name'], person_image))
+        person_list.append(
+            (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -93,13 +90,13 @@ def metadata_person_list():
                                                   record_name='People',
                                                   format_total=True,
                                                   format_number=True,
-                                                 )
+                                                  )
     return render_template('users/metadata/meta_people_list.html', form=form,
                            media_person=person_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
-                          )
+                           )
 
 
 @blueprint.before_request
@@ -112,7 +109,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

@@ -17,28 +17,25 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_scudlee
 from common import common_signal
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Anime_Scudlee')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,
-    'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart', None, None, 'System')
+                                 'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart',
+                                 None, None, 'System')
 
 
 # same code in subprograb update create collections
@@ -68,26 +65,23 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
         else:
             # should be valid data, do the update
             db_connection.db_meta_update_media_id_from_scudlee(row_data[1],
-                row_data[2], row_data[0])
-
+                                                               row_data[2], row_data[0])
 
 # begin the collections match/create/update
 for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
-    #db_connection.db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
+    # db_connection.db_meta_update_Collection_Media_ID_From_Scudlee(row_data[0],row_data[1])
     if row_data[1] == "music video":
         pass
     else:
         store_update_record(db_connection, row_data[0], row_data[1])
 
-
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,
-    'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop', None, None, 'System')
-
+                                 'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop',
+                                 None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

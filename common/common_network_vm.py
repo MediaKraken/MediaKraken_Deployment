@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from . import common_network_vm_proxmox
 from . import common_network_vm_virtualbox
 from . import common_network_vm_vmware
@@ -27,5 +26,6 @@ class CommonNetworkVM(object):
     """
     Class for interfacing to vm's
     """
+
     def __init__(self, vm_host, vm_user_name, vm_user_password):
         pass

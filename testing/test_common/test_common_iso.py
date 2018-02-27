@@ -16,32 +16,29 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_iso
 
 
 class TestCommonISO(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = common_iso.CommonISO()
-
 
     @classmethod
     def teardown_class(self):
         pass
 
-
     # open the osi file for parsing (url or file)
     @pytest.mark.parametrize(("url_file"), [
-        ("./cache/cache.iso"),
-        ("./cache/cache_fake.iso")])
-    def test_com_iso_load(url_file):
+        ("./testing/cache/cache.iso"),
+        ("./testing/cache/cache_fake.iso")])
+    def test_com_iso_load(self, url_file):
         """
         Test function
         """

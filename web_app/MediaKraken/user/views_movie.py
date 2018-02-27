@@ -3,25 +3,26 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Blueprint, render_template, g, request, current_app, jsonify,\
-    redirect, url_for, abort
+from flask import Blueprint, render_template, g, request, \
+    redirect, url_for
 from flask_login import login_required
 from flask_login import current_user
 from fractions import Fraction
-blueprint = Blueprint("user_movie", __name__, url_prefix='/users', static_folder="../static")
-import logging # pylint: disable=W0611
+
+blueprint = Blueprint("user_movie", __name__,
+                      url_prefix='/users', static_folder="../static")
+import logging  # pylint: disable=W0611
 import subprocess
 import natsort
 import sys
+
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_internationalization
-from common import common_pagination
 from common import common_string
 import database as database_base
 from MediaKraken.public.forms import SearchForm
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -37,10 +38,12 @@ def movie_detail(guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), False)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), False)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_media_watched_status_update(guid, current_user.get_id(), True)
+            g.db_connection.db_media_watched_status_update(
+                guid, current_user.get_id(), True)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
             return redirect(url_for('user_sync.sync_edit', guid=guid))
@@ -52,8 +55,9 @@ def movie_detail(guid):
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
-                g.db_connection.db_media_path_by_uuid(media_guid_index)[0],
-                'http://localhost:8900/stream.ffm'], shell=False)
+                                              g.db_connection.db_media_path_by_uuid(
+                                                  media_guid_index)[0],
+                                              'http://localhost:8900/stream.ffm'], shell=False)
             logging.info("FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
@@ -64,20 +68,20 @@ def movie_detail(guid):
         json_imagedata = data['mm_metadata_localimage_json']
         json_metaid = data['mm_metadata_media_id']
         # vote count format
-        data_vote_count = common_internationalization.com_inter_number_format(\
+        data_vote_count = common_internationalization.com_inter_number_format(
             json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
         # build gen list
         genres_list = ''
         for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
             genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name']
-                + ', ')
+                            + ', ')
         # build production list
         production_list = ''
         for ndx in range(0,
-                len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
-            production_list\
+                         len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
+            production_list \
                 += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
-                + ', ')
+                    + ', ')
         # budget format
         budget = common_internationalization.com_inter_number_format(
             json_metadata['Meta']['themoviedb']['Meta']['budget'])
@@ -109,24 +113,27 @@ def movie_detail(guid):
             except:
                 bitrate = 'NA'
             # file size
-            file_size = common_string.com_string_bytes2human(float(json_ffmpeg['format']['size']))
+            file_size = common_string.com_string_bytes2human(
+                float(json_ffmpeg['format']['size']))
             # calculate a better runtime
             try:
-                minutes, seconds = divmod(float(json_ffmpeg['format']['duration']), 60)
+                minutes, seconds = divmod(
+                    float(json_ffmpeg['format']['duration']), 60)
                 hours, minutes = divmod(minutes, 60)
             except:
                 hours = 0
                 minutes = 0
                 seconds = 0
             try:
-                data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x'\
+                data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' \
                     + str(json_ffmpeg['streams'][0]['height'])
             except:
                 data_resolution = 'NA'
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
         # check to see if there are other version of this video file (dvd, hddvd, etc)
-        vid_versions = g.db_connection.db_media_by_metadata_guid(data[1])  # metadata guid
+        vid_versions = g.db_connection.db_media_by_metadata_guid(
+            data[1])  # metadata guid
         # audio and sub sreams
         audio_streams = []
         subtitle_streams = [(0, 'None')]
@@ -144,16 +151,17 @@ def movie_detail(guid):
                 except:
                     pass
                 try:
-                    stream_codec\
+                    stream_codec \
                         = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
                         + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
                     audio_streams.append((len(audio_streams), (stream_codec + stream_language
-                        + stream_title)[:-3]))
+                                                               + stream_title)[:-3]))
                 elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append((len(subtitle_streams), stream_language[:-2]))
+                    subtitle_streams.append(
+                        (len(subtitle_streams), stream_language[:-2]))
         # poster image
         try:
             if json_imagedata['Images']['themoviedb']['Poster'] is not None:
@@ -172,22 +180,25 @@ def movie_detail(guid):
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(
+            json_metaid['themoviedb'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
             for review_data in review_json[1]['themoviedb']['results']:
-                review.append((review_data['author'], review_data['url'], review_data['content']))
+                review.append(
+                    (review_data['author'], review_data['url'], review_data['content']))
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
         try:
             for chap_data in natsort.natsorted(json_media['ChapterImages']):
                 data_json_media_chapters.append((chap_data,
-                    json_media['ChapterImages'][chap_data]))
+                                                 json_media['ChapterImages'][chap_data]))
         except:
             pass
         # set watched and sync
         try:
-            watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
+            watched_status = json_media['UserStats'][current_user.get_id(
+            )]['Watched']
         except:
             watched_status = False
         try:
@@ -208,8 +219,8 @@ def movie_detail(guid):
                                data_file_size=file_size,
                                data_bitrate=bitrate,
                                data_guid=guid,
-                               data_playback_url='/users/playvideo_videojs/hls/'+guid,
-                               data_detail_url='/users/movie_detail/'+guid,
+                               data_playback_url='/users/playvideo_videojs/hls/' + guid,
+                               data_detail_url='/users/movie_detail/' + guid,
                                data_audio_track=audio_streams,
                                data_sub_track=subtitle_streams,
                                data_aspect=aspect_ratio,
@@ -222,8 +233,9 @@ def movie_detail(guid):
                                data_watched_status=watched_status,
                                data_sync_status=sync_status,
                                data_cast=True,
-                               data_runtime="%02dH:%02dM:%02dS" % (hours, minutes, seconds)
-                              )
+                               data_runtime="%02dH:%02dM:%02dS" % (
+                                   hours, minutes, seconds)
+                               )
 
 
 @blueprint.before_request
@@ -236,7 +248,7 @@ def before_request():
 
 
 @blueprint.teardown_request
-def teardown_request(exception): # pylint: disable=W0613
+def teardown_request(exception):  # pylint: disable=W0613
     """
     Executes after each request
     """

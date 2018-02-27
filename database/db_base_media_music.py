@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 
 
 def db_media_album_count(self, search_value=None):
@@ -26,12 +25,13 @@ def db_media_album_count(self, search_value=None):
     """
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
-            ' where mm_media_metadata_guid = mm_metadata_album_guid group'
-            ' and mm_metadata_album_name %% %s by mm_metadata_album_guid', (search_value,))
+                               ' where mm_media_metadata_guid = mm_metadata_album_guid group'
+                               ' and mm_metadata_album_name %% %s by mm_metadata_album_guid',
+                               (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
-            ' where mm_media_metadata_guid = mm_metadata_album_guid'
-            ' group by mm_metadata_album_guid')
+                               ' where mm_media_metadata_guid = mm_metadata_album_guid'
+                               ' group by mm_metadata_album_guid')
     sql_data = self.db_cursor.fetchall()
     if sql_data is None:
         return 0
@@ -46,28 +46,32 @@ def db_media_album_list(self, offset=None, per_page=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
-                'mm_metadata_album_json from mm_metadata_album, mm_media'
-                ' where mm_media_metadata_guid = mm_metadata_album_guid '
-                'and mm_metadata_album_name %% %s'
-                ' group by mm_metadata_album_guid order by mm_metadata_album_name',
-                (search_value,))
+                                   'mm_metadata_album_json from mm_metadata_album, mm_media'
+                                   ' where mm_media_metadata_guid = mm_metadata_album_guid '
+                                   'and mm_metadata_album_name %% %s'
+                                   ' group by mm_metadata_album_guid'
+                                   ' order by mm_metadata_album_name',
+                                   (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
-                'mm_metadata_album_json from mm_metadata_album, mm_media'
-                ' where mm_media_metadata_guid = mm_metadata_album_guid'
-                ' group by mm_metadata_album_guid order by mm_metadata_album_name')
+                                   'mm_metadata_album_json from mm_metadata_album, mm_media'
+                                   ' where mm_media_metadata_guid = mm_metadata_album_guid'
+                                   ' group by mm_metadata_album_guid'
+                                   ' order by mm_metadata_album_name')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
-                'mm_metadata_album_json from mm_metadata_album, mm_media'
-                ' where mm_media_metadata_guid = mm_metadata_album_guid'
-                ' and mm_metadata_album_name %% %s'
-                ' group by mm_metadata_album_guid order by mm_metadata_album_name'
-                ' offset %s limit %s', (search_value, offset, per_page))
+                                   'mm_metadata_album_json from mm_metadata_album, mm_media'
+                                   ' where mm_media_metadata_guid = mm_metadata_album_guid'
+                                   ' and mm_metadata_album_name %% %s'
+                                   ' group by mm_metadata_album_guid'
+                                   ' order by mm_metadata_album_name'
+                                   ' offset %s limit %s', (search_value, offset, per_page))
         else:
             self.db_cursor.execute('select mm_metadata_album_guid,mm_metadata_album_name,'
-                'mm_metadata_album_json from mm_metadata_album, mm_media'
-                ' where mm_media_metadata_guid = mm_metadata_album_guid'
-                ' group by mm_metadata_album_guid order by mm_metadata_album_name'
-                ' offset %s limit %s', (offset, per_page))
+                                   'mm_metadata_album_json from mm_metadata_album, mm_media'
+                                   ' where mm_media_metadata_guid = mm_metadata_album_guid'
+                                   ' group by mm_metadata_album_guid'
+                                   ' order by mm_metadata_album_name'
+                                   ' offset %s limit %s', (offset, per_page))
     return self.db_cursor.fetchall()

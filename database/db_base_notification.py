@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import uuid
 
 
@@ -27,9 +26,10 @@ def db_notification_insert(self, notification_data, notification_dismissable):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_notification (mm_notification_guid,'
-        'mm_notification_text,mm_notification_time,mm_notification_dismissable)'
-        ' values (%s,%s,CURRENT_TIMESTAMP,%s)', (new_guid, notification_data,
-        notification_dismissable))
+                           'mm_notification_text,mm_notification_time,'
+                           'mm_notification_dismissable)'
+                           ' values (%s,%s,CURRENT_TIMESTAMP,%s)', (new_guid, notification_data,
+                                                                    notification_dismissable))
     self.db_commit()
     return new_guid
 
@@ -40,12 +40,15 @@ def db_notification_read(self, offset=None, records=None):
     """
     if offset is None:
         self.db_cursor.execute('select mm_notification_guid, mm_notification_text,'
-            ' mm_notification_time, mm_notification_dismissable from mm_notification'
-            ' order by mm_notification_time desc')
+                               ' mm_notification_time, mm_notification_dismissable'
+                               ' from mm_notification'
+                               ' order by mm_notification_time desc')
     else:
         self.db_cursor.execute('select mm_notification_guid, mm_notification_text,'
-            ' mm_notification_time, mm_notification_dismissable from mm_notification'
-            ' order by mm_notification_time desc offset %s limit %s', (offset, records))
+                               ' mm_notification_time, mm_notification_dismissable'
+                               ' from mm_notification'
+                               ' order by mm_notification_time desc offset %s limit %s',
+                               (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -54,5 +57,5 @@ def db_notification_delete(self, notification_uuid):
     # remove noticications
     """
     self.db_cursor.execute('delete from mm_notification where mm_notification_guid = %s',
-        (notification_uuid,))
+                           (notification_uuid,))
     self.db_commit()

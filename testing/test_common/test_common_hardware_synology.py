@@ -16,30 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hardware_synology
 
 
 class TestCommonSynology(object):
 
-
     @classmethod
     def setup_class(self):
-        self.db_connection = common_hardware_synology.CommonSynology()
-
+        self.db_connection = common_hardware_synology.CommonHardwareSynology(addr, user_name,
+                                                                             user_password)
 
     @classmethod
     def teardown_class(self):
         pass
-
-
-# connect to synology    
-# def com_synology_connect(self, addr, user_name, user_password):
-
 
     # get nas info
     def test_com_Synology_Info(self):
@@ -47,7 +41,6 @@ class TestCommonSynology(object):
         Test function
         """
         self.db_connection.com_synology_info()
-
 
     # get share list
     def test_com_Synology_Shares_List(self):

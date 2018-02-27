@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import xmltodict
 import requests
 
@@ -26,74 +25,67 @@ class CommonMetadataGamesDB(object):
     """
     Class for interfacing with theGamesDB
     """
+
     def __init__(self):
         self.BASE_URL = 'http://thegamesdb.net/api/'
         self.httpheaders = {'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'}
-
+                            'Content-Type': 'application/x-www-form-urlencoded'}
 
     def com_meta_gamesdb_platform_list(self):
         """
         Get platform list
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformsList.php',
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_platform_by_id(self, platform_id):
         """
         Platform info by id
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatform.php?id=%s' % platform_id,
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_by_name(self, game_name):
         """
         # 'mega man'
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'\
-                               % game_name.replace(' ','%20'),
-                               verify=False, headers=self.httpheaders).text)
-
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'
+                                            % game_name.replace(' ', '%20'),
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_by_id(self, game_id):
         """
         # game by id
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?id=%s' % game_id,
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_art_by_id(self, game_id):
         """
         # game by id
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetArt.php?id=%s' % game_id,
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_by_platform_id(self, platform_id):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'
                                             % platform_id,
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_by_platform_name(self, platform_name):
         """
         Games by platform id
         """
-        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'\
+        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'
                                             % platform_name,
-                               verify=False, headers=self.httpheaders).text)
-
+                                            verify=False, headers=self.httpheaders).text)
 
     def com_meta_gamesdb_games_updated_seconds(self, update_time):
         """
         Games updated in last n seconds
         """
         return xmltodict.parse(requests.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,
-                               verify=False, headers=self.httpheaders).text)
+                                            verify=False, headers=self.httpheaders).text)

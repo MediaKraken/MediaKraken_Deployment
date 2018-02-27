@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataPeople(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_meta_person_list_count(self):
         """
@@ -44,7 +41,6 @@ class TestDatabaseMetadataPeople(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_meta_person_list_count()
-
 
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
@@ -57,10 +53,9 @@ class TestDatabaseMetadataPeople(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_person_list(offset, records)
 
-
     @pytest.mark.parametrize(("guid"), [
         ('b5dbb1f7-f172-4d04-897d-f925f2200f8f'),
-        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')]) # TODO real id
+        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')])  # TODO real id
     def test_db_meta_person_by_guid(self, guid):
         """
         # return person data
@@ -68,10 +63,9 @@ class TestDatabaseMetadataPeople(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_person_by_guid(guid)
 
-
     @pytest.mark.parametrize(("person_name"), [
         ('fakename'),
-        ('fakename2')]) # TODO real name
+        ('fakename2')])  # TODO real name
     def test_db_meta_person_by_name(self, person_name):
         """
         # return person data by name
@@ -79,31 +73,28 @@ class TestDatabaseMetadataPeople(object):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_person_by_name(person_name)
 
-
     @pytest.mark.parametrize(("host_type", "guid", "expected_result"), [
-        ('themoviedb', 169, 0), # TODO set back to 1 with real id
+        ('themoviedb', 169, 0),  # TODO set back to 1 with real id
         ('fake', 1000, 0)])
     def test_db_meta_person_id_count(self, host_type, guid, expected_result):
         """
         # does person exist already by host/id
         """
         self.db_connection.db_rollback()
-        assert self.db_connection.db_meta_person_id_count(host_type, guid) == expected_result
-
+        assert self.db_connection.db_meta_person_id_count(
+            host_type, guid) == expected_result
 
     # insert person
     # def db_metdata_person_insert(self, person_name, media_id_json, person_json, image_json=None):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     # batch insert from json of crew/cast
     # def db_meta_person_insert_cast_crew(self, meta_type, person_json):
-#         self.db_connection.db_rollback()
-
+    #         self.db_connection.db_rollback()
 
     @pytest.mark.parametrize(("person_guid"), [
         ('b5dbb1f7-f172-4d04-897d-f925f2200f8f'),
-        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')]) # TODO real id
+        ('7191eeb2-1dd6-4ed8-9558-ad18e8f9467c')])  # TODO real id
     def test_db_meta_person_as_seen_in(self, person_guid):
         """
         # find other media for person

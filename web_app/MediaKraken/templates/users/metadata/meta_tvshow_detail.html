@@ -36,7 +36,7 @@
             {% if data_genres_list %}
             <p>Genres: {{data_genres_list}}</p>
             {% endif %}
-            <p>Overview: {{data_overview}}</p>
+            <p>Overview: {{data_overview | safe}}</p>
             {% if data_production %}
             <p>Production Companies: {{data_production}}</p>
             {% endif %}

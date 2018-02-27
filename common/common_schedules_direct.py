@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import hashlib
 import json
 import requests
@@ -27,34 +27,35 @@ class CommonSchedulesDirect(object):
     """
     Class for interfacing with Schedules Direct
     """
+
     def __init__(self):
         self.headers = {'User-Agent': 'MediaKraken_0.1.6',
                         'Accept-Encoding': 'gzip, deflate'}
         self.BASE_API_URL = 'https://json.schedulesdirect.org/20141201'
-
 
     def com_schedules_direct_login(self, user_name, user_password):
         """
         Login to SD
         """
         resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers,
-            data=json.dumps({"password": hashlib.sha1(user_password.encode('utf-8')).hexdigest(),
-            "username": user_name})).json()
+                             data=json.dumps({"password": hashlib.sha1(
+                                 user_password.encode('utf-8')).hexdigest(),
+                                 "username": user_name})).json()
         if resp['code'] != 3000:
-            logging.info("SD login response: %s-%s", resp['code'], resp['token'])
+            logging.info("SD login response: %s-%s",
+                         resp['code'], resp['token'])
             self.headers['token'] = resp['token']
         else:
             logging.error("SD Connection failed")
-
 
     def com_schedules_direct_status(self):
         """
         Get status of SD server
         """
-        resp = requests.get(self.BASE_API_URL + "/status", headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/status",
+                            headers=self.headers)
         logging.info("SD Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
-
 
     def com_schedules_direct_client_version(self):
         """
@@ -63,7 +64,6 @@ class CommonSchedulesDirect(object):
         resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
         logging.info("SD Version: %s-%s", resp.status_code, resp.json())
         return resp.json()
-
 
     def com_schedules_direct_available(self, countries=None):
         """
@@ -76,7 +76,6 @@ class CommonSchedulesDirect(object):
         logging.info("SD Available: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_direct_headends(self, country_code, postal_code):
         """
         Get headends list
@@ -86,12 +85,12 @@ class CommonSchedulesDirect(object):
         logging.info("SD Headends: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_direct_lineup_add(self, lineup_id):
         """
         Add lineup
         """
-        resp = requests.put(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
+        resp = requests.put(self.BASE_API_URL + "/lineups/" +
+                            lineup_id, headers=self.headers)
         if resp.json()['response'] == 'INVALID_LINEUP':
             logging.error("SD Invalid lineup: %s", lineup_id)
         elif resp.json()['response'] == "DUPLICATE_LINEUP":
@@ -101,15 +100,14 @@ class CommonSchedulesDirect(object):
         logging.info("SD Lineup Add: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_direct_lineup_list(self):
         """
         Get user lineup list
         """
-        resp = requests.get(self.BASE_API_URL + "/lineups", headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/lineups",
+                            headers=self.headers)
         logging.info("SD Lineup: %s-%s", resp.status_code, resp.json())
         return resp.json()
-
 
     def com_schedules_direct_lineup_delete(self, lineup_id):
         """
@@ -126,17 +124,16 @@ class CommonSchedulesDirect(object):
         logging.info("SD Lineup Delete: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_direct_lineup_channel_map(self, lineup_id):
         """
         Return channel map for lineup
         """
-        resp = requests.get(self.BASE_API_URL + "/lineups/" + lineup_id, headers=self.headers)
+        resp = requests.get(self.BASE_API_URL + "/lineups/" +
+                            lineup_id, headers=self.headers)
         logging.info("SD Channel Map: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-# TODO automap lineup
-
+    # TODO automap lineup
 
     def com_schedules_direct_program_info(self, program_ids):
         """
@@ -149,7 +146,6 @@ class CommonSchedulesDirect(object):
         logging.info("SD Program Info: %s", resp.status_code)
         return resp.json()
 
-
     def com_schedules_direct_program_desc(self, program_ids):
         """
         # this one is only for EP types, not MV
@@ -161,7 +157,6 @@ class CommonSchedulesDirect(object):
         logging.info("SD Program Desc: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_direct_schedules_by_stationid(self, station_ids):
         """
         Get info by station
@@ -170,7 +165,6 @@ class CommonSchedulesDirect(object):
                              data=station_ids)
         logging.info("SD Station: %s-%s", resp.status_code, resp.json())
         return resp.json()
-
 
     def com_schedules_direct_md5(self, station_ids):
         """
@@ -181,7 +175,6 @@ class CommonSchedulesDirect(object):
         logging.info("SD MD5: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_still_running(self, program_id):
         """
         Check if program is still running (overtimes)
@@ -191,13 +184,12 @@ class CommonSchedulesDirect(object):
         logging.info("SD Running: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
-
     def com_schedules_program_metadata(self, program_ids):
         """
         Grab program metadata
         """
         resp = requests.post(self.BASE_API_URL + "/metadata/programs/", headers=self.headers,
-                data=program_ids)
+                             data=program_ids)
         logging.info("SD Program Meta: %s-%s", resp.status_code, resp.json())
         return resp.json()
 

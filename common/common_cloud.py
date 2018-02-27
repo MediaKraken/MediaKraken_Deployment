@@ -17,32 +17,35 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_cloud_aws_s3
 from . import common_cloud_dropbox
 from . import common_cloud_google_drive
 from . import common_cloud_onedrive
 from . import common_string
 
-
 CLOUD_BACKUP_CLASS = (('awss3', 'AWS S3'),
                       ('dropbox', 'Dropbox'),
                       ('google', 'Google Drive'),
                       ('local', 'Local Filesystem'),
                       ('onedrive', 'Microsoft OneDrive'),
-                     )
+                      )
 
 
 class CommonCloud(object):
     """
     Class for interfacing with aws s3
     """
-    def __init__(self, option_config_json):
-        self.cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
-        self.cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(option_config_json)
-        self.cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive(option_config_json)
-        self.cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive(option_config_json)
 
+    def __init__(self, option_config_json):
+        self.cloud_awss3 = common_cloud_aws_s3.CommonCloudAWSS3(
+            option_config_json)
+        self.cloud_dropbox = common_cloud_dropbox.CommonCloudDropbox(
+            option_config_json)
+        self.cloud_google = common_cloud_google_drive.CommonCloudGoogleDrive(
+            option_config_json)
+        self.cloud_onedrive = common_cloud_onedrive.CommonCloudOneDrive(
+            option_config_json)
 
     def com_cloud_backup_list(self):
         """
@@ -53,11 +56,11 @@ class CommonCloud(object):
             for backup_cloud in self.com_cloud_file_list(backup_class[0], None, True):
                 logging.info("cloud back: %s", backup_cloud)
                 backup_files.append((backup_cloud.name, backup_class[1],
-                    common_string.com_string_bytes2human(backup_cloud.size)))
+                                     common_string.com_string_bytes2human(backup_cloud.size)))
         return backup_files
 
-
-    def com_cloud_file_store(self, cloud_type, file_path_name, file_save_name, backup_bucket=False):
+    def com_cloud_file_store(self, cloud_type, file_path_name, file_save_name,
+                             backup_bucket=False):
         """
         Store file in cloud
         """
@@ -66,16 +69,18 @@ class CommonCloud(object):
                 pass
         elif cloud_type == "awss3":
             if self.cloud_awss3.active:
-                self.cloud_awss3.com_aws_s3_upload(file_path_name, file_save_name, backup_bucket)
+                self.cloud_awss3.com_aws_s3_upload(
+                    file_path_name, file_save_name, backup_bucket)
         elif cloud_type == "dropbox":
             if self.cloud_dropbox.active:
-                self.cloud_dropbox.com_cloud_dropbox_upload(file_path_name, file_save_name)
+                self.cloud_dropbox.com_cloud_dropbox_upload(
+                    file_path_name, file_save_name)
         elif cloud_type == "onedrive":
             if self.cloud_onedrive.active:
-                self.cloud_onedrive.com_cloud_onedrive_update(file_path_name, file_save_name)
+                self.cloud_onedrive.com_cloud_onedrive_update(
+                    file_path_name, file_save_name)
         else:
             return None
-
 
     def com_cloud_file_delete(self, cloud_type, file_name, backup_bucket=False):
         """
@@ -96,7 +101,6 @@ class CommonCloud(object):
         else:
             return None
 
-
     def com_cloud_file_list(self, cloud_type, file_path=None, backup_bucket=False):
         """
         List files in cloud
@@ -115,7 +119,6 @@ class CommonCloud(object):
                 pass
         return []
 
-
     def com_cloud_file_retrieve(self, cloud_type, file_name, file_location):
         """
         Fetch file from cloud
@@ -128,13 +131,14 @@ class CommonCloud(object):
                 self.cloud_awss3.com_aws_s3_download(file_name, file_location)
         elif cloud_type == "dropbox":
             if self.cloud_dropbox.active:
-                self.cloud_dropbox.com_cloud_dropbox_download(file_name, file_location)
+                self.cloud_dropbox.com_cloud_dropbox_download(
+                    file_name, file_location)
         elif cloud_type == "onedrive":
             if self.cloud_onedrive.active:
-                self.cloud_onedrive.com_cloud_onedrive_download(file_name, file_location)
+                self.cloud_onedrive.com_cloud_onedrive_download(
+                    file_name, file_location)
         else:
             return None
-
 
     def com_cloud_file_rename(self, cloud_type, file_from, file_to):
         """
@@ -154,7 +158,6 @@ class CommonCloud(object):
                 pass
         else:
             return None
-
 
     def com_cloud_create_folder(self, cloud_type, dir_name):
         """

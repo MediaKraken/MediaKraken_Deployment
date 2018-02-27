@@ -16,33 +16,29 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_thegamesdb
 
 
 class TestCommonMetadataGamesDB(object):
 
-
     @classmethod
     def setup_class(self):
         self.gamesdb_connection = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     def test_com_meta_gamesdb_platform_list(self):
         """
         Test function
         """
         self.gamesdb_connection.com_meta_gamesdb_platform_list()
-
 
     @pytest.mark.parametrize(("platform_id"), [
         ("1"),
@@ -53,7 +49,6 @@ class TestCommonMetadataGamesDB(object):
         """
         self.gamesdb_connection.com_meta_gamesdb_platform_by_id(platform_id)
 
-
     @pytest.mark.parametrize(("game_name"), [
         ("Halo"),
         ("Zjfwoij03478923")])
@@ -62,7 +57,6 @@ class TestCommonMetadataGamesDB(object):
         # 'mega man'
         """
         self.gamesdb_connection.com_meta_gamesdb_games_by_name(game_name)
-
 
     @pytest.mark.parametrize(("game_id"), [
         ("1"),
@@ -73,7 +67,6 @@ class TestCommonMetadataGamesDB(object):
         """
         self.gamesdb_connection.com_meta_gamesdb_games_by_id(game_id)
 
-
     @pytest.mark.parametrize(("game_id"), [
         ("1"),
         ("23425363452442354654")])
@@ -83,7 +76,6 @@ class TestCommonMetadataGamesDB(object):
         """
         self.gamesdb_connection.com_meta_gamesdb_games_art_by_id(game_id)
 
-
     @pytest.mark.parametrize(("platform_id"), [
         ("1"),
         ("9038489378934789548903478923")])
@@ -91,8 +83,8 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(platform_id)
-
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_id(
+            platform_id)
 
     @pytest.mark.parametrize(("platform_name"), [
         ("SNES"),
@@ -101,8 +93,8 @@ class TestCommonMetadataGamesDB(object):
         """
         Games by platform id
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(platform_name)
-
+        self.gamesdb_connection.com_meta_gamesdb_games_by_platform_name(
+            platform_name)
 
     @pytest.mark.parametrize(("update_time"), [
         ("234553")])
@@ -110,4 +102,5 @@ class TestCommonMetadataGamesDB(object):
         """
         Games updated in last n seconds
         """
-        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(update_time)
+        self.gamesdb_connection.com_meta_gamesdb_games_updated_seconds(
+            update_time)

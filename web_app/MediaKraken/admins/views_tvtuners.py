@@ -1,30 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
 import json
-import logging # pylint: disable=W0611
-import os
+import logging  # pylint: disable=W0611
 import sys
+
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, current_app, jsonify, flash,\
-     url_for, redirect, session, abort
+from flask import Blueprint, render_template, g, request, flash, \
+    url_for, redirect
 from flask_login import login_required
-from flask_paginate import Pagination
+
 blueprint = Blueprint("admins_tvtuners", __name__, url_prefix='/admin',
                       static_folder="../static")
 # need the following three items for admin check
 import flask
 from flask_login import current_user
 from functools import wraps
-from functools import partial
 from MediaKraken.admins.forms import TVTunerEditForm
 
 from common import common_config_ini
-from common import common_internationalization
-from common import common_version
 import database as database_base
-
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -45,6 +39,7 @@ def admin_required(fn):
     """
     Admin check
     """
+
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
@@ -52,6 +47,7 @@ def admin_required(fn):
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
+
     return decorated_view
 
 
@@ -65,9 +61,11 @@ def admin_tvtuners():
     """
     tv_tuners = []
     for row_data in g.db_connection.db_tuner_list():
-        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']\
-            + " (" + row_data['mm_tuner_json']['Model'] + ")", row_data['mm_tuner_json']['IP'],
-            row_data['mm_tuner_json']['Active'], len(row_data['mm_tuner_json']['Channels'])))
+        tv_tuners.append((row_data['mm_tuner_id'], row_data['mm_tuner_json']['HWModel']
+                          + " (" + row_data['mm_tuner_json']['Model'] + ")",
+                          row_data['mm_tuner_json']['IP'],
+                          row_data['mm_tuner_json']['Active'],
+                          len(row_data['mm_tuner_json']['Channels'])))
     return render_template("admin/admin_tvtuners.html", data_tuners=tv_tuners)
 
 
@@ -88,8 +86,8 @@ def admin_tvtuner_edit_page():
                                                    request.form['ipaddr']) == 0:
                     g.db_connection.db_device_insert('tvtuner',
                                                      json.dumps({'Name': request.form['name'],
-                                                                'Model': "NA",
-                                                                'IP': request.form['ipaddr']}))
+                                                                 'Model': "NA",
+                                                                 'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_tvtuners.admin_tvtuners'))
                 else:
@@ -118,7 +116,8 @@ def admin_tvtuner_delete_page():
 def getTVTunerById():
     result = g.db_connection.db_device_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
-        'Name': result['mm_device_json']['Name'], 'IP': result['mm_device_json']['IP']})
+                       'Name': result['mm_device_json']['Name'],
+                       'IP': result['mm_device_json']['IP']})
 
 
 @blueprint.route('/updateTVTuner', methods=['POST'])
@@ -126,7 +125,7 @@ def getTVTunerById():
 @admin_required
 def updateTVTuner():
     g.db_connection.db_device_update_by_uuid(request.form['name'],
-        request.form['ipaddr'], request.form['id'])
+                                             request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

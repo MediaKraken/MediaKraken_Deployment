@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 import pika
 import subprocess
@@ -35,7 +35,8 @@ connection = pika.BlockingConnection()
 channel = connection.channel()
 
 # Declare the queue
-channel.queue_declare(queue="mkque", durable=True, exclusive=False, auto_delete=False)
+channel.queue_declare(queue="mkque", durable=True,
+                      exclusive=False, auto_delete=False)
 
 # Turn on delivery confirmations
 channel.confirm_delivery()
@@ -50,13 +51,13 @@ for media in db_connection.db_read_media():
         # Send a message so ffprobe runs
         channel.basic_publish(exchange='mkque_ex',
                               routing_key='mkque',
-                              body=json.dumps({'Type': 'FFMPEG', 'Data': media['mm_media_guid']}),
+                              body=json.dumps(
+                                  {'Type': 'FFMPEG', 'Data': media['mm_media_guid']}),
                               properties=pika.BasicProperties(content_type='text/plain',
                                                               delivery_mode=1))
 
 # commit all changes
 db_connection.db_commit()
-
 
 # close DB
 db_connection.db_close()

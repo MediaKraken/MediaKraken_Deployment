@@ -17,13 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import sys
 import signal
 import os
 
 
-def com_signal_receive(signum, frame, pid_dict=None): # pylint: disable=W0613
+def com_signal_receive(signum, frame, pid_dict=None):  # pylint: disable=W0613
     """
     Handle signal interupt
     """
@@ -39,7 +39,8 @@ def com_signal_receive(signum, frame, pid_dict=None): # pylint: disable=W0613
 def com_signal_set_break():
     # set signal breaks
     if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        signal.signal(signal.SIGBREAK, com_signal_receive) # ctrl-c # pylint: disable=E1101
+        # ctrl-c # pylint: disable=E1101
+        signal.signal(signal.SIGBREAK, com_signal_receive)
     else:
-        signal.signal(signal.SIGTSTP, com_signal_receive) # ctrl-z
-        signal.signal(signal.SIGUSR1, com_signal_receive) # ctrl-c
+        signal.signal(signal.SIGTSTP, com_signal_receive)  # ctrl-z
+        signal.signal(signal.SIGUSR1, com_signal_receive)  # ctrl-c

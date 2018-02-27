@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_json
 
@@ -30,7 +30,6 @@ def test_com_json_find():
     Test function
     """
     common_json.com_json_find()
-
 
 # import new jsons into database or update them if found
 # def com_json_import(file_name):

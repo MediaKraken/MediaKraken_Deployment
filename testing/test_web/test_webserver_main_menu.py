@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 from .test_webserver_base import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -79,10 +79,11 @@ def test_main_menu_metadata_movies(driver):
     Click metadata movies on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_movies")))
+                                                                          "menu_metadata_movies")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -92,10 +93,11 @@ def test_main_menu_metadata_movie_collection(driver):
     Click metadata movies collection on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_movie_collection")))
+                                                                          "menu_metadata_movie_collection")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -105,10 +107,11 @@ def test_main_menu_metadata_tv_shows(driver):
     Click metadata tv shows on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_tv_shows")))
+                                                                          "menu_metadata_tv_shows")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -131,10 +134,11 @@ def test_main_menu_metadata_music_albums(driver):
     Click metadata music albums on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_music_albums")))
+                                                                          "menu_metadata_music_albums")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -144,10 +148,11 @@ def test_main_menu_metadata_music_videos(driver):
     Click metadata music videos on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_music_videos")))
+                                                                          "menu_metadata_music_videos")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -157,10 +162,11 @@ def test_main_menu_metadata_sports(driver):
     Click metadata sports on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_sports")))
+                                                                          "menu_metadata_sports")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -170,10 +176,11 @@ def test_main_menu_metadata_games(driver):
     Click metadata games on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_games")))
+                                                                          "menu_metadata_games")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -183,10 +190,11 @@ def test_main_menu_metadata_game_systems(driver):
     Click metadata game systems on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_game_systems")))
+                                                                          "menu_metadata_game_systems")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -196,10 +204,11 @@ def test_main_menu_metadata_people(driver):
     Click metadata people on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_people")))
+                                                                          "menu_metadata_people")))
     element.click()
     assert 'MediaKraken' in driver.title
 
@@ -209,10 +218,11 @@ def test_main_menu_metadata_metadata_class_list(driver):
     Click metadata class list on nav menu
     """
     driver.get(TEST_TARGET)
-    hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-        "menu_metadata_class_list")))
+                                                                          "menu_metadata_class_list")))
     element.click()
     assert 'MediaKraken' in driver.title
 

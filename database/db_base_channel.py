@@ -17,14 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 
 
 def db_channel_insert(self, channel_id, channel_name, channel_language,
-        channel_country, channel_logo_id):
+                      channel_country, channel_logo_id):
     """
     # insert channel
     """
-    self.db_cursor.execute('select count(*) from blah where blah = %s', (channel_id,))
+    self.db_cursor.execute(
+        'select count(*) from blah where blah = %s', (channel_id,))
     if self.db_cursor.fetchall()[0] == 0:
         self.db_cursor.execute('')

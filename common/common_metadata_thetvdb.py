@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import zipfile
 import StringIO
 import xmltodict
@@ -33,23 +33,24 @@ class CommonMetadataTheTVDB(object):
     """
     Class for interfacing with TheTVDB
     """
+
     def __init__(self, option_config_json):
         self.thetvdb_connection = option_config_json['API']['thetvdb']
-
 
     def com_meta_thetvdb_updates(self, frequency='day'):
         """
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         """
-        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network\
-            .mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection
-            + '/updates/updates_' + frequency + '.zip', None)))
+        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network
+                                                            .mk_network_fetch_from_url(
+                                                                'http://thetvdb.com/api/' + self.thetvdb_connection
+                                                                + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
-            xml_show_data = xmltodict.parse(updates_xml_zip.read(zippedshowFile))
+            xml_show_data = xmltodict.parse(
+                updates_xml_zip.read(zippedshowFile))
         return xml_show_data
-
 
     def com_meta_thetvdb_get_zip_by_id(self, tv_show_id, lang_code='en'):
         """
@@ -58,21 +59,22 @@ class CommonMetadataTheTVDB(object):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
-        logging.info("zip: %s %s %s", self.thetvdb_connection, tv_show_id, lang_code)
-        
+        logging.info("zip: %s %s %s", self.thetvdb_connection,
+                     tv_show_id, lang_code)
+
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
-                + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
+                                 + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
         if show_data.status_code == 200:
             show_zip = zipfile.ZipFile(StringIO.StringIO(show_data.content))
         else:
             return (None, None, None)
-#        try:
-#            # TODO catch errors
-#            show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
-#                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
-#                + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
-#        except:
-#            return (None, None, None)
+        #        try:
+        #            # TODO catch errors
+        #            show_zip = zipfile.ZipFile(StringIO.StringIO(common_network.\
+        #                mk_network_fetch_from_url('http://thetvdb.com/api/' + self.thetvdb_connection\
+        #                + '/zip/' + lang_code + '/' + tv_show_id + '.zip', None)))
+        #        except:
+        #            return (None, None, None)
 
         # for the individual show data
         for zippedshowFile in show_zip.namelist():
@@ -83,17 +85,16 @@ class CommonMetadataTheTVDB(object):
                 xml_actor_data = xmltodict.parse(show_zip.read(zippedshowFile))
                 logging.info("xml actor: %s", xml_actor_data)
             elif zippedshowFile == 'banners.xml':
-                xml_banners_data = xmltodict.parse(show_zip.read(zippedshowFile))
+                xml_banners_data = xmltodict.parse(
+                    show_zip.read(zippedshowFile))
                 logging.info("xml banner: %s", xml_banners_data)
         return (xml_show_data, xml_actor_data['Actors'], xml_banners_data['Banners'])
 
-
-#    # depreciated....they round-robin at their end
-#    def com_meta_TheTVDB_Get_Mirrors():
-#        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
-# + self.thetvdb_connection + '/mirrors.xml', None)
-#        return mirror_list_xml
-
+    #    # depreciated....they round-robin at their end
+    #    def com_meta_TheTVDB_Get_Mirrors():
+    #        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
+    # + self.thetvdb_connection + '/mirrors.xml', None)
+    #        return mirror_list_xml
 
     def com_meta_thetvdb_get_server_epoc_time(self):
         """
@@ -102,7 +103,6 @@ class CommonMetadataTheTVDB(object):
         return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
-
     def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
         """
         Get updates by epoc
@@ -110,21 +110,26 @@ class CommonMetadataTheTVDB(object):
         return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
-
     def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
         """
         Update series
         """
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
-            + self.thetvdb_connection + '/series/' + tv_show_id + '/' + lang_code + '.xml', None)
-
+                                                        + self.thetvdb_connection
+                                                        + '/series/' + tv_show_id
+                                                        + '/' + lang_code + '.xml',
+                                                        None)
 
     def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
         """
         Update episode
         """
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
-            + self.thetvdb_connection + '/episodes/' + tv_eps_id + '/' + lang_code + '.xml', None)
+                                                        + self.thetvdb_connection
+                                                        + '/episodes/' + tv_eps_id
+                                                        + '/' + lang_code + '.xml',
+                                                        None)
+
 
 '''
 xmltodict.parse(xml, False)

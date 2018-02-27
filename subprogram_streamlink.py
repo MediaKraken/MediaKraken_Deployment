@@ -17,46 +17,40 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from common import common_config_ini
 from common import common_logging
 from common import common_signal
 import subprocess
 import datetime
 
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Streamlink')
 
-
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-
 # log start
 db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,
-    'System: Server Streamlink Start', 'ServerStreamlinkStart', None, None, 'System')
-
+                                 'System: Server Streamlink Start', 'ServerStreamlinkStart',
+                                 None, None, 'System')
 
 # do the actual capture
-filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - "\
+filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - " \
     + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
-subprocess.call(["./bin/streamlink", "twitch.tv/" + user, quality, "-o", filename])
-
+subprocess.call(["./bin/streamlink", "twitch.tv/" +
+                 user, quality, "-o", filename])
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server Streamlink Stop', None,
-    'System: Server Streamlink Stop', 'ServerStreamlinkStop', None, None, 'System')
-
+                                 'System: Server Streamlink Stop', 'ServerStreamlinkStop',
+                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()
-
 
 # close the database
 db_connection.db_close()

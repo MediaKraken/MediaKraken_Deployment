@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from twisted.internet import reactor, protocol, stdio, defer, task
 from twisted.protocols import basic
 from twisted.internet import ssl
@@ -38,6 +38,7 @@ import base64
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
+
 
 @defer.inlineCallbacks
 def run(connection):
@@ -73,7 +74,7 @@ def read(queue_object):
 
     if body:
         logging.info("body %s", body)
-        #network_base.NetworkEvents.ampq_message_received(body)
+        # network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
         logging.info('cron json body %s', json_message)
         if json_message['Type'] == 'Cron Run':
@@ -84,7 +85,7 @@ def read(queue_object):
         elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
             name_container = ((json_message['User'] + '_'
-                               + str(uuid.uuid4()).replace('-',''))[-30:])
+                               + str(uuid.uuid4()).replace('-', ''))[-30:])
             logging.info('cont %s', name_container)
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
@@ -105,44 +106,48 @@ def read(queue_object):
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
-                    subtitle_command = ' -subtitles ' + json_message['Subtitle']\
-                                       + ' -subtitles_language ' + json_message['Language']
+                    subtitle_command = ' -subtitles ' + json_message['Subtitle'] \
+                                       + ' -subtitles_language ' + \
+                        json_message['Language']
                 else:
                     subtitle_command = ''
-                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py'\
-                    + ' -devicename ' + json_message['Target']\
-                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3'\
-                    + ' -movflags faststart+empty_moov\' -transcode \''\
-                    + json_message['Data'] + '\''
+                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py' \
+                                    + ' -devicename ' + json_message['Target'] \
+                                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3' \
+                                    + ' -movflags faststart+empty_moov\' -transcode \'' \
+                                    + json_message['Data'] + '\''
             elif json_message['Sub'] == 'Web':
                 # stream to web
-                container_command = shlex.split("ffmpeg -v fatal {ss_string}"\
-                    " -i ".format(**locals())) \
-                    + json_message['Data']\
+                container_command = shlex.split("ffmpeg -v fatal {ss_string}"
+                                                " -i ".format(**locals())) \
+                    + json_message['Data'] \
                     + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
-                                " -c:v libx264 -pix_fmt yuv420p -profile:v high -level 4.0 "
-                                "-preset ultrafast -trellis 0"
-                                " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
-                                " -shortest -f mpegts"
-                                " -output_ts_offset {output_ts_offset:.6f}"
-                                " -t {t:.6f} pipe:%d.ts".format(**locals()))
+                                  " -c:v libx264 -pix_fmt yuv420p"
+                                  " -profile:v high -level 4.0"
+                                  " -preset ultrafast -trellis 0"
+                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
+                                  " -shortest -f mpegts"
+                                  " -output_ts_offset {output_ts_offset:.6f}"
+                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
             elif json_message['Sub'] == 'HDHomerun':
                 # stream from homerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
-                                    + ":5004/auto/v" + json_message['Channel']\
-                                    + "?transcode=" + json_message['Quality'] + "-vcodec copy"\
-                                    + "./static/streams/" + json_message['Channel'] + ".m3u8"
+                                    + ":5004/auto/v" + json_message['Channel'] \
+                                    + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
+                                    + "./static/streams/" + \
+                    json_message['Channel'] + ".m3u8"
                 container_command = shlex.split(container_command)
             else:
                 pass
             logging.info('b4 docker run')
             hwaccel = True
             if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian'
+                image_name = 'mediakraken/mkslavenvidiadebian:latest'
             else:
-                image_name = 'mediakraken/mkslave'
+                image_name = 'mediakraken/mkslave:latest'
             docker_inst.com_docker_run_container(container_image_name=image_name,
-                 container_name=name_container, container_command=(container_command))
+                                                 container_name=name_container,
+                                                 container_command=(container_command))
             logging.info('after docker run')
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
@@ -152,17 +157,18 @@ def read(queue_object):
         elif json_message['Type'] == 'FFMPEG':
             # to address the 30 char name limit for container
             name_container = ((json_message['User'] + '_'
-                               + str(uuid.uuid4()).replace('-',''))[-30:])
+                               + str(uuid.uuid4()).replace('-', ''))[-30:])
             logging.info('ffmpegcont %s', name_container)
             hwaccel = True
             if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian'
+                image_name = 'mediakraken/mkslavenvidiadebian:latest'
             else:
-                image_name = 'mediakraken/mkslave'
+                image_name = 'mediakraken/mkslave:latest'
             docker_inst.com_docker_run_container(container_image_name=image_name,
-                 container_name=name_container,
-                 container_command=('python subprogram_ffprobe_metadata.py %s' %
-                                    json_message['Data']))
+                                                 container_name=name_container,
+                                                 container_command=(
+                                                     'python subprogram_ffprobe_metadata.py %s' %
+                                                     json_message['Data']))
             logging.info('after docker run')
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
@@ -170,13 +176,13 @@ def read(queue_object):
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Subprogram_Reactor_Line')
+        common_logging.com_logging_start(
+            './log/MediaKraken_Subprogram_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
-        self.users = {} # maps user names to network instances
+        self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         logging.info("Ready for connections!")
-
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)
@@ -192,11 +198,12 @@ if __name__ == '__main__':
     wait_pid.wait()
 
     # pika rabbitmq connection
-    parameters = pika.ConnectionParameters(credentials=pika.PlainCredentials('guest', 'guest'))
-    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection, parameters)
-    d = cc.connectTCP('mkrabbitmq', 5672)
-    d.addCallback(lambda protocol: protocol.ready)
-    d.addCallback(run)
+    cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,
+                                pika.ConnectionParameters(
+                                    credentials=pika.PlainCredentials('guest', 'guest')))
+    pika_instance = cc.connectTCP('mkrabbitmq', 5672)
+    pika_instance.addCallback(lambda protocol: protocol.ready)
+    pika_instance.addCallback(run)
 
     # setup for the ssl keys
     reactor.listenSSL(8903, MediaKrakenServerApp(),

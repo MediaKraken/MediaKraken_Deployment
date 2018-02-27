@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import uuid
 
 
@@ -26,7 +25,7 @@ def db_meta_game_system_by_guid(self, guid):
     # return game system data
     """
     self.db_cursor.execute('select * from mm_metadata_game_systems_info where gs_id = %s',
-        (guid,))
+                           (guid,))
     try:
         return self.db_cursor.fetchone()
     except:
@@ -39,11 +38,11 @@ def db_meta_game_system_list_count(self, search_value=None):
     """
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-            ' and gs_game_system_name %% %s', (search_value,))
+                               ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
+                               ' and gs_game_system_name %% %s', (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
+                               ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
     return self.db_cursor.fetchone()[0]
 
 
@@ -54,44 +53,59 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_name %% %s '
-                'order by gs_game_system_json->\'description\'', (search_value,))
+                                   'gs_game_system_json->\'description\','
+                                   'gs_game_system_json->\'year\''
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_game_system_json->\'@isdevice\''
+                                   ' ? \'yes\' and gs_game_system_name %% %s '
+                                   'order by gs_game_system_json->\'description\'',
+                                   (search_value,))
         else:
             self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' order by gs_game_system_json->\'description\'')
+                                   'gs_game_system_json->\'description\','
+                                   'gs_game_system_json->\'year\''
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_game_system_json->\'@isdevice\''
+                                   ' ? \'yes\' order by gs_game_system_json->\'description\'')
     else:
         if search_value is not None:
             self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' and gs_game_system_name %% %s '
-                'order by gs_game_system_json->\'description\' offset %s limit %s)'
-                ' order by gs_game_system_json->\'description\'', (search_value, offset, records))
+                                   'gs_game_system_json->\'description\','
+                                   'gs_game_system_json->\'year\''
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_id in (select gs_id'
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_game_system_json->\'@isdevice\''
+                                   ' ? \'yes\' and gs_game_system_name %% %s '
+                                   'order by gs_game_system_json->\'description\''
+                                   ' offset %s limit %s)'
+                                   ' order by gs_game_system_json->\'description\'',
+                                   (search_value, offset, records))
         else:
             self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                'gs_game_system_json->\'description\',gs_game_system_json->\'year\''
-                ' from mm_metadata_game_systems_info where gs_id in (select gs_id'
-                ' from mm_metadata_game_systems_info where gs_game_system_json->\'@isdevice\''
-                ' ? \'yes\' order by gs_game_system_json->\'description\' offset %s limit %s)'
-                ' order by gs_game_system_json->\'description\'', (offset, records))
+                                   'gs_game_system_json->\'description\','
+                                   'gs_game_system_json->\'year\''
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_id in (select gs_id'
+                                   ' from mm_metadata_game_systems_info'
+                                   ' where gs_game_system_json->\'@isdevice\''
+                                   ' ? \'yes\' order by gs_game_system_json->\'description\''
+                                   ' offset %s limit %s)'
+                                   ' order by gs_game_system_json->\'description\'',
+                                   (offset, records))
     return self.db_cursor.fetchall()
 
 
-def db_meta_games_system_insert(self, platform_id, platform_name,
-        platform_alias, platform_json=None):
+def db_meta_games_system_insert(self, platform_name,
+                                platform_alias, platform_json=None):
     """
     # insert game system
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'
-        ' gs_game_system_id, gs_game_system_name, gs_game_system_alias,'
-        ' gs_game_system_json) values (%s, %s, %s, %s, %s)',
-        (new_guid, platform_id, platform_name, platform_alias, platform_json))
+                           ' gs_game_system_name, gs_game_system_alias,'
+                           ' gs_game_system_json) values (%s, %s, %s, %s, %s)',
+                           (new_guid, platform_name, platform_alias, platform_json))
     self.db_commit()
     return new_guid
 

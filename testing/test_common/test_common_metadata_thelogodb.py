@@ -16,26 +16,28 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
+from common import common_config_ini
 from common import common_metadata_thelogodb
 
 
 class TestCommonthelogodb(object):
 
-
     @classmethod
     def setup_class(self):
-        self.db_connection = common_metadata_thelogodb.CommonMetadataTheLogoDB()
-
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read(
+            True)
+        self.db_connection = common_metadata_thelogodb.CommonMetadataTheLogoDB(
+            option_config_json)
 
     @classmethod
     def teardown_class(self):
         pass
-
 
     # grab newest releases
     def test_com_thelogodb_fetch_latest(self):

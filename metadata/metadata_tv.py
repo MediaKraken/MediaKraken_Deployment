@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import json
 from guessit import guessit
 from common import common_config_ini
@@ -37,15 +37,17 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 if option_config_json['API']['thetvdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
     # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
+    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(
+        option_config_json)
 else:
     THETVDB_CONNECTION = None
 
-
 # setup the tvmaze class
-#if option_config_json['API']['tvmaze'] is not None:
+# if option_config_json['API']['tvmaze'] is not None:
 TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
-#else:
+
+
+# else:
 #    TVMAZE_CONNECTION = None
 
 
@@ -60,15 +62,15 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     if TVMAZE_CONNECTION is not None:
         if 'year' in file_name:
             tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
-                file_name['year']))
+                                                                         file_name['year']))
         else:
             tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
-                None))
+                                                                         None))
         logging.info("response: %s", tvmaze_id)
         if tvmaze_id is not None:
-#            # since there has been NO match whatsoever.....can "wipe" out everything
-#            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
-#            logging.info("dbjson: %s", media_id_json)
+            #            # since there has been NO match whatsoever.....can "wipe" out everything
+            #            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
+            #            logging.info("dbjson: %s", media_id_json)
             # check to see if metadata exists for tvmaze id
             metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
             logging.info("db result: %s", metadata_uuid)
@@ -87,15 +89,15 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     if THETVDB_CONNECTION is not None:
         if 'year' in file_name:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
-                file_name['year'], lang_code, True))
+                                                                file_name['year'], lang_code, True))
         else:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
-                None, lang_code, True))
+                                                                None, lang_code, True))
         logging.info("response: %s", tvdb_id)
         if tvdb_id is not None:
-#            # since there has been NO match whatsoever.....can "wipe" out everything
-#            media_id_json = json.dumps({'thetvdb': tvdb_id})
-#            logging.info("dbjson: %s", media_id_json)
+            #            # since there has been NO match whatsoever.....can "wipe" out everything
+            #            media_id_json = json.dumps({'thetvdb': tvdb_id})
+            #            logging.info("dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
             metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
             logging.info("db result: %s", metadata_uuid)
@@ -110,25 +112,33 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
     logging.info("meta tv tvdb save fetch: %s", tvdb_id)
     metadata_uuid = None
     # fetch XML zip file
-    xml_show_data, xml_actor_data, xml_banners_data\
+    xml_show_data, xml_actor_data, xml_banners_data \
         = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
     logging.info('tv fetch save tvdb show %s', xml_show_data)
     if xml_show_data is not None:
         logging.info('insert')
         # insert
-        image_json = {'Images': {'thetvdb': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+        image_json = {'Images': {'thetvdb': {
+            'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
-            'thetvdb': str(tvdb_id), 'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
+                                     'thetvdb': str(tvdb_id),
+                                     'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         logging.info('insert 2')
         metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,
-            xml_show_data['Data']['Series']['SeriesName'], json.dumps({'Meta': {'thetvdb':\
-            {'Meta': xml_show_data['Data'], 'Cast': xml_actor_data,
-            'Banner': xml_banners_data}}}), json.dumps(image_json))
+                                                         xml_show_data['Data']['Series'][
+                                                             'SeriesName'],
+                                                         json.dumps({'Meta': {'thetvdb':
+                                                                              {'Meta':
+                                                                               xml_show_data[
+                                                                                   'Data'],
+                                                                               'Cast': xml_actor_data,
+                                                                               'Banner': xml_banners_data}}}),
+                                                         json.dumps(image_json))
         logging.info('insert 3')
         # insert cast info
         if xml_actor_data is not None:
             db_connection.db_meta_person_insert_cast_crew('thetvdb',
-                xml_actor_data['Actor'])
+                                                          xml_actor_data['Actor'])
         logging.info('insert 4')
         # save rows for episode image fetch
         if 'Episode' in xml_show_data['Data']:
@@ -136,28 +146,49 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             try:
                 print('len %s', len(xml_show_data['Data']['Episode'][0]['id']))
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
-                    for episode_info in xml_show_data['Data']['Episode']: # thetvdb is Episode
+                    # thetvdb is Episode
+                    for episode_info in xml_show_data['Data']['Episode']:
                         logging.info('eps info: %s', episode_info)
                         if episode_info['filename'] is not None:
                             db_connection.db_download_image_insert('thetvdb',
-                                json.dumps({'url': 'https://thetvdb.com/banners/'
-                                + episode_info['filename'],
-                                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                + episode_info['filename']}))
+                                                                   json.dumps({
+                                                                       'url': 'https://thetvdb.com/banners/'
+                                                                              +
+                                                                              episode_info[
+                                                                                  'filename'],
+                                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                                +
+                                                                                episode_info[
+                                                                                    'filename']}))
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         db_connection.db_download_image_insert('thetvdb',
-                            json.dumps({'url': 'https://thetvdb.com/banners/' +
-                            xml_show_data['Data']['Episode']['filename'],
-                            'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                            + xml_show_data['Data']['Episode']['filename']}))
+                                                               json.dumps({
+                                                                   'url': 'https://thetvdb.com/banners/' +
+                                                                          xml_show_data[
+                                                                              'Data'][
+                                                                              'Episode'][
+                                                                              'filename'],
+                                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                            +
+                                                                            xml_show_data[
+                                                                                'Data'][
+                                                                                'Episode'][
+                                                                                'filename']}))
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     db_connection.db_download_image_insert('thetvdb',
-                        json.dumps({'url': 'https://thetvdb.com/banners/'
-                        + xml_show_data['Data']['Episode']['filename'],
-                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                        + xml_show_data['Data']['Episode']['filename']}))
+                                                           json.dumps({
+                                                               'url': 'https://thetvdb.com/banners/'
+                                                                      + xml_show_data[
+                                                                          'Data'][
+                                                                          'Episode'][
+                                                                          'filename'],
+                                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                        + xml_show_data[
+                                                                            'Data'][
+                                                                            'Episode'][
+                                                                            'filename']}))
         db_connection.db_commit()
     return metadata_uuid
 
@@ -169,8 +200,8 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     logging.info("meta tv tvmaze save fetch: %s", tvmaze_id)
     metadata_uuid = None
     result_data = TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
-            tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
-            embed_info=True)
+        tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
+        embed_info=True)
     try:
         result_json = json.loads(result_data)
     except:
@@ -195,26 +226,33 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         except:
             imdb_id = None
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,
-            'imdb': imdb_id, 'thetvdb': thetvdb_id})
-        image_json = {'Images': {'tvmaze': {'Characters': {}, 'Episodes': {}, "Redo": True}}}
+                                     'imdb': imdb_id, 'thetvdb': thetvdb_id})
+        image_json = {'Images': {'tvmaze': {
+            'Characters': {}, 'Episodes': {}, "Redo": True}}}
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
-            json.dumps(show_full_json), json.dumps(image_json))
+                                                            json.dumps(
+                                                                show_full_json),
+                                                            json.dumps(image_json))
         # store person info
-        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded']\
+        if 'cast' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
-                show_full_json['Meta']['tvmaze']['_embedded']['cast'])
-        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded']\
+                                                          show_full_json['Meta']['tvmaze'][
+                                                              '_embedded']['cast'])
+        if 'crew' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['crew']) > 0:
             db_connection.db_meta_person_insert_cast_crew('tvmaze',
-                show_full_json['Meta']['tvmaze']['_embedded']['crew'])
+                                                          show_full_json['Meta']['tvmaze'][
+                                                              '_embedded']['crew'])
         # save rows for episode image fetch
         for episode_info in show_detail['_embedded']['episodes']:
             if episode_info['image'] is not None:
                 db_connection.db_download_image_insert('tvmaze',
-                    json.dumps({'url': episode_info['image']['original'],
-                    'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
-                    + str(episode_info['id']) + '.jpg'}))
+                                                       json.dumps({'url': episode_info['image'][
+                                                           'original'],
+                                                           'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                                                           + str(episode_info[
+                                                               'id']) + '.jpg'}))
         db_connection.db_commit()
     return metadata_uuid
 
@@ -226,32 +264,36 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     """
     # check for same show variables
     if not hasattr(metadata_tv_lookup, "metadata_last_id"):
-        metadata_tv_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        # it doesn't exist yet, so initialize it
+        metadata_tv_lookup.metadata_last_id = None
         metadata_tv_lookup.metadata_last_title = None
         metadata_tv_lookup.metadata_last_year = None
         metadata_tv_lookup.metadata_last_imdb = None
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_rt = None
-    metadata_uuid = None # so not found checks verify later
+    metadata_uuid = None  # so not found checks verify later
     logging.info('tvlook filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:
         logging.info('tv here 1')
-        if file_name['title'] == metadata_tv_lookup.metadata_last_title\
+        if file_name['title'] == metadata_tv_lookup.metadata_last_title \
                 and file_name['year'] == metadata_tv_lookup.metadata_last_year:
             logging.info('tv here 2')
             db_connection.db_download_delete(download_que_id)
-            logging.info('meta tv return 1 %s',  metadata_tv_lookup.metadata_last_id)
+            logging.info('meta tv return 1 %s',
+                         metadata_tv_lookup.metadata_last_id)
             return metadata_tv_lookup.metadata_last_id
     elif file_name['title'] == metadata_tv_lookup.metadata_last_title:
         logging.info('tv here 3')
         db_connection.db_download_delete(download_que_id)
-        logging.info('meta tv return 2 %s',  metadata_tv_lookup.metadata_last_id)
+        logging.info('meta tv return 2 %s',
+                     metadata_tv_lookup.metadata_last_id)
         return metadata_tv_lookup.metadata_last_id
     logging.info('tv before nfo/xml')
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
-    imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
+    imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(
+        nfo_data, xml_data)
     logging.info("tv look: %s %s %s", imdb_id, tvdb_id, rt_id)
     # if same as last, return last id and save lookup
     # check these dupes as the nfo/xml files might not exist to pull the metadata id from
@@ -287,24 +329,28 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                                                                'thetvdb', str(tvdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
+                    download_que_json.update(
+                        {'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
                     db_connection.db_download_update(json.dumps(download_que_json),
-                        download_que_id)
+                                                     download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('thetvdb', download_que_id)
+                    db_connection.db_download_update_provider(
+                        'thetvdb', download_que_id)
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
                 dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
-                    'thetvdb', imdb_id)
+                                                               'thetvdb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
+                    download_que_json.update(
+                        {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     db_connection.db_download_update(json.dumps(download_que_json),
-                        download_que_id)
+                                                     download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('thetvdb', download_que_id)
+                    db_connection.db_download_update_provider(
+                        'thetvdb', download_que_id)
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
@@ -315,9 +361,10 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
-                file_name['year'])
+                                                                        file_name['year'])
         else:
-            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'], None)
+            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(
+                file_name['title'], None)
         logging.info("tv db meta: %s", metadata_uuid)
         if metadata_uuid is not None:
             # match found by title/year on local db so purge dl record
@@ -328,9 +375,10 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
             download_que_json.update({'Status': 'Search'})
             # save the updated status
             db_connection.db_download_update(json.dumps(download_que_json),
-                download_que_id)
+                                             download_que_id)
             # set provider last so it's not picked up by the wrong thread
-            db_connection.db_download_update_provider('tvmaze', download_que_id)
+            db_connection.db_download_update_provider(
+                'tvmaze', download_que_id)
     # set last values to negate lookups for same show
     metadata_tv_lookup.metadata_last_id = metadata_uuid
     metadata_tv_lookup.metadata_last_title = file_name['title']

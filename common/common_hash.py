@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import hashlib
 import zlib
 import zipfile
@@ -28,6 +28,7 @@ from . import common_hash_c_code
 
 # import compression mods
 import pylzma
+
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
 
@@ -110,10 +111,10 @@ def com_hash_sha1_c(file_name):
         zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
         for zippedfile in zip_handle.namelist():
             # calculate sha1 hash
-#            SHA1.update(zip_handle.read(zippedfile))
+            #            SHA1.update(zip_handle.read(zippedfile))
             zip_file_data = zip_handle.read(zippedfile)
             R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],
-                support_code=common_hash_c_code.COM_SHA1_CODE)
+                       support_code=common_hash_c_code.COM_SHA1_CODE)
         num += 1
         if num > 5:
             break
@@ -124,11 +125,11 @@ def com_hash_crc32(file_name):
     Caclucate crc32 for file
     """
     file_pointer = open(file_name, 'rb')
-    CRC = zlib.crc32(file_pointer.read(1024*1024))
+    CRC = zlib.crc32(file_pointer.read(1024 * 1024))
     while True:
-        data = file_pointer.read(1024*1024)
+        data = file_pointer.read(1024 * 1024)
         if len(data) == 0:
-            break #Finished reading file
+            break  # Finished reading file
         CRC = zlib.crc32(data, CRC)
     file_pointer.close()
     return CRC
@@ -140,6 +141,7 @@ def com_hash_ed2k(filepath):
     Returns the ed2k hash of a given file.
     """
     md4 = hashlib.new('md4').copy
+
     def gen(f):
         while True:
             x = f.read(9728000)
@@ -184,20 +186,20 @@ def com_hash_opensubtitles(file_name):
     folling routine is provided by opensubtitles.org website for api calls
     """
     try:
-        longlongformat = '<q' # little-endian long long
+        longlongformat = '<q'  # little-endian long long
         bytesize = struct.calcsize(longlongformat)
         file_handle = open(file_name, "rb")
         filesize = os.path.getsize(file_name)
         hash = filesize
         if filesize < 65536 * 2:
             return "SizeError"
-        for ndx in range(65536 / bytesize): # pylint: disable=W0612
+        for ndx in range(65536 / bytesize):  # pylint: disable=W0612
             buffer = file_handle.read(bytesize)
             (l_value,) = struct.unpack(longlongformat, buffer)
             hash += l_value
-            hash = hash & 0xFFFFFFFFFFFFFFFF #to remain as 64bit number
+            hash = hash & 0xFFFFFFFFFFFFFFFF  # to remain as 64bit number
         file_handle.seek(max(0, filesize - 65536), 0)
-        for ndx in range(65536 / bytesize): # pylint: disable=W0612
+        for ndx in range(65536 / bytesize):  # pylint: disable=W0612
             buffer = file_handle.read(bytesize)
             (l_value,) = struct.unpack(longlongformat, buffer)
             hash += l_value
@@ -207,3 +209,11 @@ def com_hash_opensubtitles(file_name):
         return returnedhash
     except IOError:
         return "IOError"
+
+
+def com_hash_md5_by_filename(filename):
+    md5 = hashlib.md5()
+    with open(filename, 'rb') as f:
+        for chunk in iter(lambda: f.read(8192), b''):
+            md5.update(chunk)
+    return md5.digest()

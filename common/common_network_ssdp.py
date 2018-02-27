@@ -13,7 +13,6 @@
 #   limitations under the License.
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import socket
 import httplib
 import StringIO
@@ -23,10 +22,10 @@ class SSDPResponse(object):
     """
     Class for interfacing via SSDP
     """
+
     class _FakeSocket(StringIO.StringIO):
         def makefile(self, *args, **kw):
             return self
-
 
     def __init__(self, response):
         ssdp_response = httplib.HTTPResponse(self._FakeSocket(response))
@@ -53,7 +52,8 @@ def roku_discover(service, timeout=2, retries=1):
     socket.setdefaulttimeout(timeout)
     responses = {}
     for _ in range(retries):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        sock = socket.socket(
+            socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
         sock.sendto(message.format(*group, st=service), group)

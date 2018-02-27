@@ -16,11 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import subprocess
 import logging
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 
 
 class TestSubprogramTVMazeUpdate(object):
@@ -32,6 +31,7 @@ class TestSubprogramTVMazeUpdate(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_tvmaze_updates.py'], shell=False)
+        proc_info = subprocess.Popen(
+            ['python', './subprogram_tvmaze_updates.py'], shell=False)
         logging.info("PID: %s", proc_info.pid)
         proc_info.wait()

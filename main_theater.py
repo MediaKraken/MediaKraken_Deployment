@@ -17,13 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from common import common_emby_network
 from common import common_logging
 from common import common_network_mediakraken
 from common import common_network_mpv
 from common import common_signal
 from common import common_theater
-from common import common_version
 import platform
 import os
 import sys
@@ -31,11 +29,13 @@ import json
 import uuid
 import base64
 import subprocess
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
+
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
 from crochet import wait_for, run_in_reactor, setup
+
 setup()
 
 from kivy.lang import Builder
@@ -46,6 +46,7 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+
 kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -143,14 +144,14 @@ class MKEcho(basic.LineReceiver):
     def lineReceived(self, line):
         global mk_app
         logging.info('linereceived len: %s', len(line))
-        #logging.info('linereceived: %s', line)
-        #logging.info('app: %s', mk_app)
+        # logging.info('linereceived: %s', line)
+        # logging.info('app: %s', mk_app)
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
         logging.error("connection lost!")
-        #reactor.stop() # leave out so it doesn't try to stop a stopped reactor
+        # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
         logging.info('sending: %s', line)
@@ -209,13 +210,16 @@ class MediaKrakenApp(App):
 
     # notification dialog
     def mediakraken_notification_popup(self, header, message):
-        content = MediaKrakenNotificationScreen(ok_button=self.dismiss_notification_popup)
+        content = MediaKrakenNotificationScreen(
+            ok_button=self.dismiss_notification_popup)
         content.ids.message_text.text = message
-        self._notification_popup = Popup(title=header, content=content, size_hint=(0.9, 0.9))
+        self._notification_popup = Popup(
+            title=header, content=content, size_hint=(0.9, 0.9))
         self._notification_popup.open()
 
     def show_load(self):
-        content = MediaKrakenLoadDialog(load=self.load, cancel=self.dismiss_popup)
+        content = MediaKrakenLoadDialog(
+            load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Load media file", content=content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
@@ -230,60 +234,13 @@ class MediaKrakenApp(App):
         if self.server_list is not None:
             for found_server in self.server_list:
                 btn1 = ToggleButton(text=self.server_list[found_server][1],
-                    group='mediakraken_server',)
+                                    group='mediakraken_server', )
                 btn1.bind(on_press=partial(self.MediaKraken_Event_Button_Server_Select,
-                    found_server))
+                                           found_server))
                 self.root.ids.mediakraken_server_list_layout.add_widget(btn1)
         else:
             # go back to main menu
             self.root.ids._screen_manager.current = 'Main_Remote'
-
-    def emby_find_server_list(self):
-        self.server_list = common_emby_network.com_net_emby_find_server()
-        if self.server_list is not None:
-            for found_server in self.server_list:
-                btn1 = ToggleButton(text=self.server_list[found_server][1], group='emby_server',)
-                btn1.bind(on_press=partial(self.emby_event_button_server_select, found_server))
-                self.root.ids.server_list_layout.add_widget(btn1)
-        else:
-            # go back to main menu
-            self.root.ids._screen_manager.current = 'Main_Remote'
-
-    def emby_event_button_server_select(self, server_addr, *args):
-        self.server_user_list = common_emby_network.com_net_emby_find_users(server_addr)
-        self.root.ids.user_list_layout.clear_widgets()
-        self.root.ids.user_list_layout.add_widget(Label(text='Emby Users(s)'))
-        for found_user in self.server_user_list:
-            btn1 = ToggleButton(text=found_user, group='emby_user',)
-            btn1.bind(on_press=partial(self.emby_event_button_user_select, found_user))
-            self.root.ids.user_list_layout.add_widget(btn1)
-        self.global_selected_server_addr = server_addr
-
-    def emby_event_button_user_select(self, server_user, *args):
-        print("button server user %s", server_user)
-        self.global_selected_user_id = server_user
-        self.login_password = ''
-        content = MediaKrakenLoginScreen(login_password=self.login_password,
-                                     cancel=self.dismiss_popup)
-        self._popup = Popup(title="Emby Login", content=content,
-            size_hint=(None, None), size=(425, 250))
-        self._popup.open()
-
-    def emby_event_button_user_select_login(self, *args):
-        self.dismiss_popup()
-        self.emby_user_connection_json = common_emby_network.com_net_emby_user_login(
-            self.global_selected_server_addr, self.global_selected_user_id, self.login_password)
-        # build header parameters to url
-        user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
-        self.global_url_headers = {'User-Agent' : user_agent,
-                                   'Authorization' : 'MediaBrowser',
-                                   'UserId' : self.global_selected_user_id,
-                                   'Client' : "Android",
-                                   'Device' : "Samsung Galaxy SIII",
-                                   'DeviceId' : uniqueid.id,
-                                   'Version' : common_version.APP_VERSION}
-        # go back to main menu
-        self.root.ids._screen_manager.current = 'Main_Remote'
 
     def build(self):
         global mk_app
@@ -293,7 +250,8 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self.root)
+        self._keyboard = Window.request_keyboard(
+            self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.common_remote = common_theater.main_remote_control_event_process
@@ -311,15 +269,18 @@ class MediaKrakenApp(App):
                 logging.info('server list: %s', server_list)
                 host_ip = server_list[0]
                 # TODO allow pick from list and save it below
-                self.config.set('MediaKrakenServer', 'Host', host_ip.split(':')[0])
-                self.config.set('MediaKrakenServer', 'Port', host_ip.split(':')[1])
+                self.config.set('MediaKrakenServer', 'Host',
+                                host_ip.split(':')[0])
+                self.config.set('MediaKrakenServer', 'Port',
+                                host_ip.split(':')[1])
                 with open(r'mediakraken.ini', 'wb') as configfile:
                     self.config.write()
             else:
                 pass
             reactor.connectSSL(self.config.get('MediaKrakenServer', 'Host').strip(),
-                int(self.config.get('MediaKrakenServer', 'Port').strip()),
-                MKFactory(), ssl.ClientContextFactory())
+                               int(self.config.get(
+                                   'MediaKrakenServer', 'Port').strip()),
+                               MKFactory(), ssl.ClientContextFactory())
 
     @wait_for(timeout=5.0)
     def send_twisted_message(self, message):
@@ -367,20 +328,26 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_overview.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
                 genres_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx]['name'] + ', ')
+                for ndx in range(0,
+                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
+                    genres_list += (
+                        json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
+                            'name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 # "LocalImages": {"Banner": "", "Fanart": "",
                 # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
+                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
+                        'production_companies'])):
+                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
+                        'production_companies'][ndx]['name'] + ', ')
+                self.root.ids.theater_media_video_production_companies.text = production_list[
+                    :-2]
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
                 if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
-                        and 'streams' in json_message['Data2']['FFprobe']\
+                        and 'streams' in json_message['Data2']['FFprobe'] \
                         and json_message['Data2']['FFprobe']['streams'] is not None:
                     for stream_info in json_message['Data2']['FFprobe']['streams']:
                         logging.info("info: %s", stream_info)
@@ -409,10 +376,12 @@ class MediaKrakenApp(App):
                             subtitle_streams.append(stream_language)
                             logging.info('sub')
                 # populate the audio streams to select
-                self.root.ids.theater_media_video_audio_spinner.values = map(str, audio_streams)
+                self.root.ids.theater_media_video_audio_spinner.values = map(
+                    str, audio_streams)
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
-                self.root.ids.theater_media_video_subtitle_spinner.values = map(str, subtitle_streams)
+                self.root.ids.theater_media_video_subtitle_spinner.values = map(str,
+                                                                                subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
                 #            # populate the chapter grid
                 #            for chapter_info in json_message['FFprobe']['chapters']:
@@ -431,15 +400,17 @@ class MediaKrakenApp(App):
                     data.append({'text': video_list[0], 'uuid': video_list[1],
                                  'path': video_list[4]})
                 self.root.ids.theater_media_video_list_scrollview.data = data
-        elif json_message['Type'] == 'Play': # direct file play
+        elif json_message['Type'] == 'Play':  # direct file play
             # AttributeError: 'NoneType' object has no attribute
             # 'set_volume'  <- means can't find file
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
             video_source_dir = json_message['Data']
-            share_mapping = (('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+            share_mapping = (
+                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
                 for mapping in share_mapping.iteritems():
-                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+                    video_source_dir = video_source_dir.replace(
+                        mapping[0], mapping[1])
             self.root.ids.theater_media_video_videoplayer.source = video_source_dir
             self.root.ids.theater_media_video_videoplayer.volume = 1
             self.root.ids.theater_media_video_videoplayer.state = 'play'
@@ -453,9 +424,12 @@ class MediaKrakenApp(App):
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
                                     size_hint_y=None,
                                     width=self.root.ids.theater_media_genre_list_scrollview.width,
-                                    height=(self.root.ids.theater_media_genre_list_scrollview.height / 8))
-                btn1.bind(on_press=partial(self.Theater_Event_Button_Genre_Select, genre_list[0]))
-                self.root.ids.theater_media_genre_list_scrollview.add_widget(btn1)
+                                    height=(
+                    self.root.ids.theater_media_genre_list_scrollview.height / 8))
+                btn1.bind(on_press=partial(
+                    self.Theater_Event_Button_Genre_Select, genre_list[0]))
+                self.root.ids.theater_media_genre_list_scrollview.add_widget(
+                    btn1)
         elif json_message['Type'] == "Image":
             if json_message['Sub'] == "Movie":
                 logging.info("here for movie refresh")
@@ -474,21 +448,26 @@ class MediaKrakenApp(App):
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_movie = Loader.image(self.home_movie_file_name)
-                    proxy_image_movie.bind(on_load=self._image_loaded_home_movie)
+                    proxy_image_movie.bind(
+                        on_load=self._image_loaded_home_movie)
                 elif json_message['Sub2'] == "New Movie":
                     self.home_movie_new_file_name = str(uuid.uuid4())
                     f = open(self.home_movie_new_file_name, "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
-                    proxy_image_new_movie = Loader.image(self.home_movie_new_file_name)
-                    proxy_image_new_movie.bind(on_load=self._image_loaded_home_new_movie)
+                    proxy_image_new_movie = Loader.image(
+                        self.home_movie_new_file_name)
+                    proxy_image_new_movie.bind(
+                        on_load=self._image_loaded_home_new_movie)
                 elif json_message['Sub2'] == "In Progress":
                     self.home_movie_inprogress_file_name = str(uuid.uuid4())
                     f = open(self.home_movie_inprogress_file_name, "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
-                    proxy_image_prog_movie = Loader.image(self.home_movie_inprogress_file_name)
-                    proxy_image_prog_movie.bind(on_load=self._image_loaded_home_prog_movie)
+                    proxy_image_prog_movie = Loader.image(
+                        self.home_movie_inprogress_file_name)
+                    proxy_image_prog_movie.bind(
+                        on_load=self._image_loaded_home_prog_movie)
             # elif pickle_data[0] == "MOVIEDETAIL":
             #     logging.info("here for movie detail refresh: %s", pickle_data[1])
             #     proxy_image_detail_movie = Loader.image(pickle_data[1])
@@ -587,16 +566,16 @@ class MediaKrakenApp(App):
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
             elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List'\
-                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
-                    self.root.ids._screen_manager.current = 'Main_Theater_Home'
+            elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' \
+                    or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
+                self.root.ids._screen_manager.current = 'Main_Theater_Home'
             pass
         elif keycode[1] == 'enter':
             pass
@@ -649,7 +628,7 @@ class MediaKrakenApp(App):
                                                      '--audio-device=pulse', '--hwdec=auto',
                                                      '--input-ipc-server', './mk_mpv.sock',
                                                      '%s' % MediaKrakenApp.media_path],
-                                                     shell=False)
+                                                    shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()
@@ -671,7 +650,8 @@ class MediaKrakenApp(App):
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        logging.info("button server user login %s", self.global_selected_user_id)
+        logging.info("button server user login %s",
+                     self.global_selected_user_id)
         logging.info("login: %s", self.login_password)
         self.send_twisted_message(json.dumps({'Type': 'Login',
                                               'User': self.global_selected_user_id,
@@ -687,7 +667,7 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
         logging.info("home press: %s", args)
-        if args[0] == 'in_progress' or args[0] == 'recent_addition'\
+        if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
@@ -769,8 +749,8 @@ class MediaKrakenApp(App):
                                                   'Sub2': 'Video', 'Sub3': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
-            #self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
-            #self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
+            # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
+            # self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
 
     def _image_loaded_detail_movie(self, proxyImage):
         """
@@ -806,7 +786,6 @@ class MediaKrakenApp(App):
         # since it's loaded delete the image
         os.remove(self.home_movie_new_file_name)
 
-
     def _image_loaded_home_prog_movie(self, proxyImage):
         """
         Load in progress movie image
@@ -820,10 +799,11 @@ class MediaKrakenApp(App):
 if __name__ == '__main__':
     # for windows exe support
     from multiprocessing import freeze_support
+
     freeze_support()
     # begin logging
     common_logging.com_logging_start('./log/MediaKraken_Theater')
-    log.startLogging(sys.stdout) # for twisted
+    log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

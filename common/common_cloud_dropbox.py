@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import dropbox
 
 
@@ -25,6 +24,7 @@ class CommonCloudDropbox(object):
     """
     Class for interfacing with dropbox
     """
+
     def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
@@ -34,7 +34,6 @@ class CommonCloudDropbox(object):
                 option_config_json['Dropbox']['APISecret'])
             self.active = True
         self.client = None
-
 
     def com_cloud_dropbox_user_auth(self):
         """
@@ -46,10 +45,9 @@ class CommonCloudDropbox(object):
         print('3. Copy the authorization code.')
         code = raw_input("Enter the authorization code here: ").strip()
         # This will fail if the user enters an invalid authorization code
-        access_token, user_id = self.flow.finish(code) # pylint: disable=W0612
+        access_token, user_id = self.flow.finish(code)  # pylint: disable=W0612
         self.client = dropbox.client.DropboxClient(access_token)
         print('linked account: %s', self.client.account_info())
-
 
     def com_cloud_dropbox_upload(self, file_name, file_save_name):
         """
@@ -59,14 +57,12 @@ class CommonCloudDropbox(object):
         response = self.client.put_file(file_save_name, file_handle)
         print('uploaded: %s', response)
 
-
     def com_cloud_dropbox_list(self, dir_name='/'):
         """
         List files in folder
         """
         folder_metadata = self.client.metadata(dir_name)
         print('metadata: %s', folder_metadata)
-
 
     def com_cloud_dropbox_download(self, file_name, file_save_name):
         """

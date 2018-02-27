@@ -20,3 +20,5 @@ hyper
 googletrans
 mutagen
 discogs_client
+trakt
+flickrapi

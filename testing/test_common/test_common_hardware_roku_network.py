@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_hardware_roku_network
 
@@ -29,7 +29,6 @@ def test_com_roku_network_discovery():
     Test function
     """
     common_hardware_roku_network.com_roku_network_discovery()
-
 
 # def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
 

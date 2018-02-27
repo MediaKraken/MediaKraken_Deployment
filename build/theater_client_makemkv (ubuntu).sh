@@ -11,7 +11,7 @@ tar -vxf makemkv-oss-$VERSION.tar.gz
 
 cd makemkv-oss-$VERSION.tar.gz
 ./configure
-make -j8
+make -j`getconf _NPROCESSORS_ONLN`
 sudo make install
 
 cd ../makemkv-bin-$VERSION.tar.gz

@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 from twilio.rest import Client
 
 
@@ -25,12 +24,13 @@ class CommonNetworkTwilio(object):
     """
     Class for interfacing with twilio
     """
+
     def __init__(self, account, token):
         self.twilio_inst = Client(account, token)
 
     def com_net_twilio_call(self, to_num, from_num):
         return self.twilio_inst.calls.create(to=to_num, from_=from_num,
-            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+                                             url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
 
     def com_net_twilio_sms(self, to_num, from_num, sms_text):
         return self.twilio_inst.client.messages.create(to=to_num, from_=from_num, body=sms_text)

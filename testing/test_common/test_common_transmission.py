@@ -16,33 +16,34 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
+from common import common_config_ini
 from common import common_transmission
 
 
 class TestCommonTransmission(object):
 
-
     @classmethod
     def setup_class(self):
-        self.transmission_connection = common_transmission.CommonTransmission()
-
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read(
+            True)
+        self.transmission_connection = common_transmission.CommonTransmission(
+            option_config_json)
 
     @classmethod
     def teardown_class(self):
         pass
-
 
     def test_com_trans_get_torrent_list(self):
         """
         Test function
         """
         self.transmission_connection.com_trans_get_torrent_list()
-
 
 #    def com_trans_add_torrent(self, torrent_path):
 

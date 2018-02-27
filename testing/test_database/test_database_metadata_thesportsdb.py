@@ -16,38 +16,35 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadataThesportsdb(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     # select
     # def db_metathesportsdb_select_guid(self, guid):
 #         self.db_connection.db_rollback()
 
 
-    # insert
-    # def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail, image_json):
+# insert
+# def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail, image_json):
 #         self.db_connection.db_rollback()
 
 
-    # updated
-    # def db_metathesports_update(self, series_id_json, event_name, show_detail, sportsdb_id):
+# updated
+# def db_metathesports_update(self, series_id_json, event_name, show_detail, sportsdb_id):
 #         self.db_connection.db_rollback()

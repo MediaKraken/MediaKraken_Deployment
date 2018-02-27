@@ -40,5 +40,6 @@ def com_image_resizeimage(file_name, image_size):
     Resize and save image
     """
     im_data = Image.open(file_name)
-    im_data.thumbnail(com_image_resizeimagecalc(im_data.size, image_size), Image.BICUBIC)
+    im_data.thumbnail(com_image_resizeimagecalc(
+        im_data.size, image_size), Image.BICUBIC)
     im_data.save(file_name + 'thumb', "PNG")

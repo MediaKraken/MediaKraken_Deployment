@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import omdb
 
 
@@ -25,14 +24,13 @@ class CommonMetadataOMDB(object):
     """
     Class for interfacing with omdb
     """
+
     def __init__(self):
         pass
 
-
     def com_omdb_get(self, media_title, media_year, media_fullplot, media_tomatoes):
         omdb.get(title=media_title, year=media_year, fullplot=media_fullplot,
-            tomatoes=media_tomatoes)
-
+                 tomatoes=media_tomatoes)
 
     def com_omdb_search(self, media_title):
         """
@@ -40,13 +38,11 @@ class CommonMetadataOMDB(object):
         """
         omdb.search(media_title)
 
-
     def com_omdb_search_movie(self, media_title):
         """
         Search movie
         """
         omdb.search_movie(media_title)
-
 
     def com_omdb_search_episode(self, media_title):
         """
@@ -54,13 +50,11 @@ class CommonMetadataOMDB(object):
         """
         omdb.search_episode(media_title)
 
-
     def com_omdb_search_series(self, media_title):
         """
         Search series
         """
         omdb.search_series(media_title)
-
 
     def com_omdb_imdb(self, imdbid):
         """
@@ -68,20 +62,17 @@ class CommonMetadataOMDB(object):
         """
         omdb.imdbid(imdbid)
 
-
     def com_omdb_title(self, media_title):
         """
         Grab by title
         """
         omdb.title(media_title)
 
-
     def com_omdb_default(self):
         """
         Set defaults for data returned
         """
         omdb.set_default('tomatoes', True)
-
 
     def com_omdb_request(self, media_title, media_year, media_fullplot, media_tomatoes):
         omdb.request(media_title, media_year, media_fullplot, media_tomatoes)

@@ -16,26 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_metadata_imdb
 
 
 class TestCommonimdb(object):
 
-
     @classmethod
     def setup_class(self):
         self.imdb_connection = common_metadata_imdb.CommonMetadataIMDB()
 
-
     @classmethod
     def teardown_class(self):
         pass
-
 
     # fetch info from title
     def test_com_imdb_title_search(self):
@@ -44,18 +41,14 @@ class TestCommonimdb(object):
         """
         self.imdb_connection.com_imdb_title_search("Robocop")
 
+    # fetch info by ttid
+    # def com_imdb_ID_Search(self, media_id):
 
-# fetch info by ttid
-# def com_imdb_ID_Search(self, media_id):
+    # fetch person info by id
+    # def com_imdb_Person_by_ID(self, person_id):
 
+    # fetch person images by id
+    # def com_imdb_Person_Images_by_Id(self, person_id):
 
-# fetch person info by id
-# def com_imdb_Person_by_ID(self, person_id):
-
-
-# fetch person images by id
-# def com_imdb_Person_Images_by_Id(self, person_id):
-
-
-# fetch the title review
-# def com_imdb_Title_Review_by_ID(self, media_id):
+    # fetch the title review
+    # def com_imdb_Title_Review_by_ID(self, media_id):

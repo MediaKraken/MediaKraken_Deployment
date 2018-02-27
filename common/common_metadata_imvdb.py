@@ -17,8 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
-#import json
+import logging  # pylint: disable=W0611
 import requests
 
 
@@ -26,40 +25,41 @@ class CommonMetadataIMVdb(object):
     """
     Class for interfacing with imvdb
     """
+
     def __init__(self, option_config_json):
         self.headers = {'User-Agent': 'MediaKraken_0.1.6',
                         'IMVDB-APP-KEY': option_config_json['API']['imvdb'],
                         'Accept': 'application/json'}
         self.base_api_url = 'http://imvdb.com/api/v1'
 
-
     def com_imvdb_video_info(self, video_id):
         """
         Video info
         """
-        resp = requests.post(self.base_api_url + "/video/" + video_id\
-            + "?include=sources,credits,bts,featured,popularity,countries,",
-            headers=self.headers)
+        resp = requests.post(self.base_api_url + "/video/" + video_id
+                             + "?include=sources,credits,bts,featured,popularity,countries,",
+                             headers=self.headers)
         logging.info("imvdb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
-
 
     def com_imvdb_search_video(self, artist_name, song_title):
         """
         Search for video by band name and song title
         """
         resp = requests.post(self.base_api_url + "/search/videos?q="
-            + (artist_name.replace(' ', '+') + '+' + song_title.replace(' ', '+')),
-            headers=self.headers)
-        logging.info("imvdb Video Status: %s-%s", resp.status_code, resp.json())
+                             + (artist_name.replace(' ', '+') + '+'
+                                + song_title.replace(' ', '+')),
+                             headers=self.headers)
+        logging.info("imvdb Video Status: %s-%s",
+                     resp.status_code, resp.json())
         return resp.json()
-
 
     def com_imvdb_search_entities(self, artist_name):
         """
         Search by band name
         """
         resp = requests.post(self.base_api_url + "/search/entities?q="
-            + artist_name.replace(' ', '+'), headers=self.headers)
-        logging.info("imvdb Entities Status: %s-%s", resp.status_code, resp.json())
+                             + artist_name.replace(' ', '+'), headers=self.headers)
+        logging.info("imvdb Entities Status: %s-%s",
+                     resp.status_code, resp.json())
         return resp.json()

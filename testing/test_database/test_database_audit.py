@@ -16,28 +16,25 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseAudit(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open(True)
         self.new_guid = None
-
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_audit_path_status(self):
         """
@@ -46,35 +43,24 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_status()
 
+    # update status
+    # def db_audit_path_update_status(self, lib_guid, status_json):
+    #        self.db_connection.db_rollback()
 
-    ## update status
-    #def db_audit_path_update_status(self, lib_guid, status_json):
-#        self.db_connection.db_rollback()
+    # update audit path
+    # def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
+    #        self.db_connection.db_rollback()
 
-
-    def test_db_audit_paths_count(self):
-        """
-        # read the paths to audit
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_audit_paths_count()
-
-
-    ## update audit path
-    #def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
-#        self.db_connection.db_rollback()
-
-
-    @pytest.mark.parametrize(("dir_path", "class_guid"), [
-        ('/home/spoot/fakedirzz', 'b3420d91-999b-4d10-a582-3cddef2ce278'),
-        ('/home/spoot', '18479e1a-68a4-4137-8c96-b7d7dab5c66f')])
-    def test_db_audit_path_add(self, dir_path, class_guid):
+    @pytest.mark.parametrize(("dir_path", "class_guid", "share_guid"), [
+        ('/home/spoot/fakedirzz', 'b3420d91-999b-4d10-a582-3cddef2ce278', None),
+        ('/home/spoot', '18479e1a-68a4-4137-8c96-b7d7dab5c66f', None)])
+    def test_db_audit_path_add(self, dir_path, class_guid, share_guid):
         """
         ## add media path
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_audit_path_add(dir_path, class_guid)
-
+        self.new_guid = self.db_connection.db_audit_path_add(
+            dir_path, class_guid, share_guid)
 
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
@@ -86,7 +72,6 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_check(dir_path)
 
-
     @pytest.mark.parametrize(("dir_path"), [
         ('/home/spoot'),
         ('/home/spoot/fakedirzz')])
@@ -97,8 +82,7 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_dir_timestamp_update(dir_path)
 
-
-    ## read the paths to audit
+    # read the paths to audit
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
         (100, 100),
@@ -110,14 +94,12 @@ class TestDatabaseAudit(object):
         self.db_connection.db_rollback()
         self.db_connection.db_audit_paths(offset, records)
 
-
     def test_db_audit_path_by_uuid(self):
         """
         ## lib data per id
         """
         self.db_connection.db_rollback()
         self.db_connection.db_audit_path_by_uuid(self.new_guid)
-
 
     def test_db_audit_path_delete(self):
         """

@@ -17,32 +17,28 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from synolopy import NasApi
 
 
-class CommonSynology(object):
+class CommonHardwareSynology(object):
     """
     Class for interfacing with synology nas
     """
-    def __init__(self):
-        self.synology_nas = None
 
-
-    def com_synology_connect(self, addr, user_name, user_password):
+    def __init__(self, addr, user_name, user_password):
         """
         Connect to synology
         """
         logging.info("syn connect: %s", addr)
-        self.synology_nas = NasApi('http://%s:5000/webapi/' % addr, user_name, user_password)
-
+        self.synology_nas = NasApi(
+            'http://%s:5000/webapi/' % addr, user_name, user_password)
 
     def com_synology_info(self):
         """
         Get nas info
         """
         return self.synology_nas.downloadstation.info.request('getinfo')
-
 
     def com_synology_shares_list(self):
         """

@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import time
 import os
 from xml.dom import minidom
@@ -31,14 +31,14 @@ def mk_scudlee_fetch_xml():
     Fetch the anime list by scudlee for thetvdb crossreference
     """
     # grab from github via direct raw link
-    if not os.path.isfile('./cache/anime-list.xml')\
-            or common_file.com_file_modification_timestamp('./cache/anime-list.xml')\
+    if not os.path.isfile('./cache/anime-list.xml') \
+            or common_file.com_file_modification_timestamp('./cache/anime-list.xml') \
             < (time.time() - (7 * 86400)):
         common_network.mk_network_fetch_from_url(
             'https://github.com/ScudLee/anime-lists/raw/master/anime-list.xml',
             './cache/anime-list.xml')
-    if not os.path.isfile('./cache/anime-movieset-list.xml')\
-            or common_file.com_file_modification_timestamp('./cache/anime-movieset-list.xml')\
+    if not os.path.isfile('./cache/anime-movieset-list.xml') \
+            or common_file.com_file_modification_timestamp('./cache/anime-movieset-list.xml') \
             < (time.time() - (7 * 86400)):
         common_network.mk_network_fetch_from_url(
             'https://github.com/ScudLee/anime-lists/raw/master/anime-movieset-list.xml',
@@ -57,7 +57,8 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
         logging.info('data %s:', anime_data)
         logging.info('key %s', anime_data.keys())
         try:
-            tvdbid = str(int(anime_data['@tvdbid'])) # to make sure not web, etc
+            # to make sure not web, etc
+            tvdbid = str(int(anime_data['@tvdbid']))
         except:
             tvdbid = None
         try:
@@ -92,7 +93,8 @@ def mk_scudlee_anime_set_parse(file_name='./cache/anime-movieset-list.xml'):
     for set_data in itemlist:
         indiv_collection_list = []
         for anime_data in set_data.getElementsByTagName('anime'):
-            indiv_collection_list.append(anime_data.attributes['anidbid'].value)
+            indiv_collection_list.append(
+                anime_data.attributes['anidbid'].value)
         indiv_titles_list = []
         for anime_data in set_data.getElementsByTagName('title'):
             indiv_titles_list.append(anime_data.firstChild.nodeValue)

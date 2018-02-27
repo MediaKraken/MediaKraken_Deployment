@@ -16,27 +16,27 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_cloud_aws_s3
+from common import common_config_ini
 
 
 class TestCommonCloudAWSS3(object):
 
-
     @classmethod
     def setup_class(self):
-        self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3()
-
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read()
+        self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
 
     @classmethod
     def teardown_class(self):
         pass
-
 
     # upload file to S3
     @pytest.mark.parametrize(("source_path", "destination_filename", "backup_bucket"), [
@@ -45,12 +45,12 @@ class TestCommonCloudAWSS3(object):
         ("./cache/HashCalcfake.txt", "HashCalc.txt", False),
         ("./cache/HashCalcfake.txt", "HashCalc.txt", True)])
     def test_com_aws_s3_upload(self, source_path, destination_filename,
-            backup_bucket = False):
+                               backup_bucket):
         """
         Test function
         """
-        self.awss3.com_aws_s3_upload(source_path, destination_filename, backup_bucket)
-
+        self.awss3.com_aws_s3_upload(
+            source_path, destination_filename, backup_bucket)
 
     # download from s3
     # def com_AWS_S3_Download(self, source_key, destination_filename, backup_bucket = False):
@@ -61,10 +61,10 @@ class TestCommonCloudAWSS3(object):
         """
         Test function
         """
-        self.awss3.com_aws_s3_download(source_key, destination_filename, backup_bucket = False)
+        self.awss3.com_aws_s3_download(
+            source_key, destination_filename, backup_bucket)
         os.remove("./cache/HashCalcDown.txt")
         os.remove("./cache/HashCalcDown2.txt")
-
 
     # delete
     @pytest.mark.parametrize(("key", "backup_bucket"), [
@@ -76,7 +76,6 @@ class TestCommonCloudAWSS3(object):
         """
         self.awss3.com_aws_s3_delete(key, backup_bucket)
 
-
     # remove old database backups
     @pytest.mark.parametrize(("days_to_keep"), [
         (7),
@@ -86,7 +85,6 @@ class TestCommonCloudAWSS3(object):
         Test function
         """
         self.awss3.com_aws_s3_backup_purge(days_to_keep)
-
 
     # bucket list (ha)
     @pytest.mark.parametrize(("backup_bucket"), [

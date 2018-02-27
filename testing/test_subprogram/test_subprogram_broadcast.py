@@ -16,14 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import subprocess
 import logging
 import os
 import signal
 import sys
+
 sys.path.append('.')
 from common import common_network_mediakraken
 
@@ -32,25 +32,23 @@ class TestSubprogramBroadcast(object):
     """
     Test broadcast
     """
+
     def __init__(self):
         """
         Class init
         """
         self.proc_broadcast = None
 
-
     @classmethod
     def setup_class(self):
         # fire up broadcast server
         self.proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'],
-            shell=False)
+                                               shell=False)
         logging.info("PID: %s", self.proc_broadcast.pid)
-
 
     @classmethod
     def teardown_class(self):
-        os.kill(self.proc_broadcast, signal.SIGTERM)
-
+        os.kill(self.proc_broadcast.pid, signal.SIGTERM)
 
     def test_sub_broadcast(self):
         """

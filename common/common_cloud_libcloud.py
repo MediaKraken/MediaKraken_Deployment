@@ -17,8 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 from . import common_string
 from libcloud.compute.types import Provider
 from libcloud.compute.providers import get_driver
-

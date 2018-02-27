@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import socket
 import json
 import os
 import time
 import subprocess
+
 
 # https://mpv.io/manual/master/#json-ipc
 class CommonNetMPVSocat(object):
@@ -31,7 +32,8 @@ class CommonNetMPVSocat(object):
         while True:
             time.sleep(0.1)
             try:
-                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.socket_stream = socket.socket(
+                    socket.AF_UNIX, socket.SOCK_STREAM)
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
@@ -64,7 +66,8 @@ class CommonNetMPV(object):
         while True:
             time.sleep(0.1)
             try:
-                self.socket_stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.socket_stream = socket.socket(
+                    socket.AF_UNIX, socket.SOCK_STREAM)
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
@@ -77,7 +80,7 @@ class CommonNetMPV(object):
                 continue
             else:
                 break
-        #self.sockfile = sockfile
+        # self.sockfile = sockfile
 
     def execute(self, command):
         self.socket_stream.sendall(command.encode('utf-8'))
@@ -88,4 +91,4 @@ class CommonNetMPV(object):
 
     def close(self):
         self.socket_stream.close()
-        #os.remove(self.sockfile)
+        # os.remove(self.sockfile)

@@ -16,27 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMediaClass(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
-
+        self.db_connection.db_open(True)
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
-
 
     def test_db_media_class_list_count(self):
         """
@@ -45,11 +42,10 @@ class TestDatabaseMediaClass(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_class_list_count()
 
-
     @pytest.mark.parametrize(("offset", "records"), [
         (None, None),
-        (100,100),
-        (100000000,1000)])
+        (100, 100),
+        (100000000, 1000)])
     def test_db_media_class_list(self, offset, records):
         """
         # list media class
@@ -57,9 +53,8 @@ class TestDatabaseMediaClass(object):
         self.db_connection.db_rollback()
         self.db_connection.db_media_class_list(offset, records)
 
-
     @pytest.mark.parametrize(("class_uuid"), [
-        ('928c56c3-253d-4e30-924e-5698be6d3d39'),   # exist
+        ('928c56c3-253d-4e30-924e-5698be6d3d39'),  # exist
         ('928c56c3-253d-4e30-924e-5698be6d3d37')])  # not exist
     def test_db_media_class_by_uuid(self, class_uuid):
         """
@@ -67,7 +62,6 @@ class TestDatabaseMediaClass(object):
         """
         self.db_connection.db_rollback()
         self.db_connection.db_media_class_by_uuid(class_uuid)
-
 
     @pytest.mark.parametrize(("class_text"), [
         ('Movie'),

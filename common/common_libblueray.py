@@ -16,9 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import bluread
-#help(bluread)
+
+
+# help(bluread)
 
 # https://github.com/cmlburnett/PyBluRead/blob/master/setup.py
 # sudo apt-get install libbluray-dev
@@ -31,5 +33,6 @@ def com_bray_read_titles(drive_name):
         print("Org ID: %s" % b.OrgId)
         for i in range(b.NumberOfTitles):
             t = b.GetTitle(i)
-            track_data.append((i, t.NumberOfAngles, t.NumberOfChapters, t.NumberOfClips, t.LengthFancy))
+            track_data.append((i, t.NumberOfAngles, t.NumberOfChapters,
+                               t.NumberOfClips, t.LengthFancy))
     return track_data

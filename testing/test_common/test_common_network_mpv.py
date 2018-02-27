@@ -16,23 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 import time
 import subprocess
-from common import common_network_mpv
-
-mpv_pid = subprocess.Popen(['mpv', '--hwdec=auto', '--input-ipc-server', './mk_mpv.sock',
-    '/home/spoot/mnt/HTPC_MediaBrowser/BluRay_Dir_Cut/Underworld (2003)/Underworld (2003).mkv'])
-#mpv_ipc = common_network_mpv.CommonNetMPV()
-mpv_ipc = common_network_mpv.CommonNetMPVSocat()
-time.sleep(5)
-mpv_ipc.execute('{"command": ["get_property", "playback-time"]}')
-time.sleep(5)
-mpv_ipc.execute('{"command": ["set_property", "pause", true]}')
-time.sleep(5)
-mpv_ipc.execute('{"command": ["quit"]})')
-mpv_ipc.close()
+# from common import common_network_mpv
+#
+# mpv_pid = subprocess.Popen(['mpv', '--hwdec=auto', '--input-ipc-server', './mk_mpv.sock',
+#                             '/home/spoot/mnt/HTPC_MediaBrowser/BluRay_Dir_Cut/Underworld (2003)/Underworld (2003).mkv'])
+# # mpv_ipc = common_network_mpv.CommonNetMPV()
+# mpv_ipc = common_network_mpv.CommonNetMPVSocat()
+# time.sleep(5)
+# mpv_ipc.execute('{"command": ["get_property", "playback-time"]}')
+# time.sleep(5)
+# mpv_ipc.execute('{"command": ["set_property", "pause", true]}')
+# time.sleep(5)
+# mpv_ipc.execute('{"command": ["quit"]})')
+# mpv_ipc.close()

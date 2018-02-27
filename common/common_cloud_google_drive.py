@@ -17,15 +17,17 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import logging  # pylint: disable=W0611
 import os
 import httplib2
 from apiclient import discovery
 import oauth2client
 from oauth2client import client
 from oauth2client import tools
+
 try:
     import argparse
+
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
@@ -35,20 +37,19 @@ class CommonCloudGoogleDrive(object):
     """
     Class for interfacing with google drive
     """
+
     def __init__(self, option_config_json):
         # set active false so if following falls
         self.active = False
         # pull in the ini file config
         if option_config_json['GoogleDrive']['SecretFile'] is not None:
-  #flow = dropbox.client.DropboxOAuth2FlowNoRedirect
-        #(option_config_json.get('GoogleDrive', 'SecretFile').strip())
+            # flow = dropbox.client.DropboxOAuth2FlowNoRedirect
+            # (option_config_json.get('GoogleDrive', 'SecretFile').strip())
             self.active = True
-
 
     SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'
     CLIENT_SECRET_FILE = 'client_secret.json'
     APPLICATION_NAME = 'Drive API Python Quickstart'
-
 
     def get_credentials(self):
         """Gets valid user credentials from storage.
@@ -63,7 +64,8 @@ class CommonCloudGoogleDrive(object):
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
             os.makedirs(credential_dir)
-        credential_path = os.path.join(credential_dir, 'drive-python-quickstart.json')
+        credential_path = os.path.join(
+            credential_dir, 'drive-python-quickstart.json')
         store = oauth2client.file.Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
@@ -71,11 +73,10 @@ class CommonCloudGoogleDrive(object):
             flow.user_agent = APPLICATION_NAME
             if flags:
                 credentials = tools.run_flow(flow, store, flags)
-            else: # Needed only for compatability with Python 2.6
+            else:  # Needed only for compatability with Python 2.6
                 credentials = tools.run(flow, store)
             print('Storing credentials to %s', credential_path)
         return credentials
-
 
     def main():
         """Shows basic usage of the Google Drive API.
@@ -93,7 +94,6 @@ class CommonCloudGoogleDrive(object):
         else:
             for item in items:
                 print('{0} ({1})'.format(item['title'], item['id']))
-
 
     if __name__ == '__main__':
         main()

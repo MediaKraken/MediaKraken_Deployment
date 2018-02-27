@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   cifs-utils \
+  curl-dev \
   nfs-utils \
   postgresql-client \
   openssl \
@@ -60,7 +61,7 @@ RUN cd ip2country \
   && cd .. \
   && rm -R ./ip2country
 ADD np_inline-0.3 /mediakraken/np_inline
-RUN cd /mediakraken/np_inline
+RUN cd /mediakraken/np_inline \
   && python setup.py install \
   && cd .. \
   && rm -R ./np_inline

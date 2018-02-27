@@ -17,4 +17,26 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
+import MythTV
+
+
+class CommonNetMythTV(object):
+    """
+    Class for interfacing with mythtv
+    """
+
+    def __init__(self, option_config_json):
+        self.mythTV = MythTV.MythBE()
+
+    def com_net_mythtv_programlist(self):
+        self.programList = self.mythTV.getRecordings()
+
+    def com_net_mythtv_delete_recording(self, program, forget):
+        self.mythTV.deleteRecording(program, forget)
+
+
+'''
+str(program.title))
+str(program.subtitle))
+str(program.starttime))
+'''

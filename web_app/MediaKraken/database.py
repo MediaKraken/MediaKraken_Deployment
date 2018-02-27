@@ -43,6 +43,7 @@ class CRUDMixin(object):
         db.session.delete(self)
         return commit and db.session.commit()
 
+
 class Model(CRUDMixin, db.Model):
     """Base model class that includes CRUD convenience methods."""
     __abstract__ = True
@@ -61,8 +62,8 @@ class SurrogatePK(object):
     @classmethod
     def get_by_id(cls, id):
         if any(
-            (isinstance(id, basestring) and id.isdigit(),
-             isinstance(id, (int, float))),
+                (isinstance(id, basestring) and id.isdigit(),
+                 isinstance(id, (int, float))),
         ):
             return cls.query.get(int(id))
         return None

@@ -16,37 +16,34 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
 import json
 import sys
+import pytest  # pylint: disable=W0611
+
 sys.path.append('.')
 import database as database_base
 
 
 class TestDatabaseMetadatatvmaze(object):
 
-
     @classmethod
     def setup_class(self):
         self.db_connection = database_base.MKServerDatabase()
-        self.db_connection.db_open('127.0.0.1', 5432, 'metamandb', 'metamanpg', 'metamanpg')
+        self.db_connection.db_open(True)
         self.new_guid = None
-
 
     @classmethod
     def teardown_class(self):
         self.db_connection.db_close()
 
-
     # metadata changed date by uuid
     # def db_metatvmaze_changed_uuid(self, maze_uuid):
-#        self.db_connection.db_rollback()
-
+    #        self.db_connection.db_rollback()
 
     @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "image_json"), [
-        (json.dumps({'tvmaze': 34}), "Test", json.dumps({'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
+        (json.dumps({'tvmaze': 34}), "Test", json.dumps(
+            {'Test': 'Moo'}), json.dumps({'Tt': 'M'})),
         (json.dumps({'tvmaze': 3}), "Tst", json.dumps({'Tst': 'Moo'}), json.dumps({'T': 'M'}))])
     def test_db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail, image_json):
         """
@@ -54,8 +51,7 @@ class TestDatabaseMetadatatvmaze(object):
         """
         self.db_connection.db_rollback()
         self.new_guid = self.db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
-            show_detail, image_json)
-
+                                                                 show_detail, image_json)
 
     # updated
     @pytest.mark.parametrize(("series_id_json", "tvmaze_name", "show_detail", "tvmaze_id"), [
@@ -64,4 +60,4 @@ class TestDatabaseMetadatatvmaze(object):
     def test_db_meta_tvmaze_update(self, series_id_json, tvmaze_name, show_detail, tvmaze_id):
         self.db_connection.db_rollback()
         self.db_connection.db_meta_tvmaze_update(series_id_json, tvmaze_name,
-            show_detail, tvmaze_id)
+                                                 show_detail, tvmaze_id)

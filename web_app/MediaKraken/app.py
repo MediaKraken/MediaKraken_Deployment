@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask, render_template, g
+from flask import Flask, render_template
 from flask_moment import Moment
+from flask_uwsgi_websocket import GeventWebSocket
 import redis
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
@@ -27,6 +28,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     moment = Moment(app)
+    websocket = GeventWebSocket(app)
     return app
 
 
@@ -93,6 +95,7 @@ def register_errorhandlers(app):
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, 'code', 500)
         return render_template("{0}.html".format(error_code)), error_code
+
     for errcode in [401, 403, 404, 500]:
         app.errorhandler(errcode)(render_error)
     return None

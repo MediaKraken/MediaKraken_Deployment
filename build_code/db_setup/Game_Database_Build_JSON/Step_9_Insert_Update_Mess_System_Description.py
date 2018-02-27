@@ -19,10 +19,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import uuid
 import psycopg2
+
 # setup for unicode
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-conn = psycopg2.connect("dbname='metamandb' user='metamanpg' host='localhost' password='metamanpg'")
+conn = psycopg2.connect(
+    "dbname='metamandb' user='metamanpg' host='localhost' password='metamanpg'")
 curs = conn.cursor()
 
 infile = open("messinfo.dat", "r")
@@ -46,7 +48,6 @@ sys_save_state = None
 sys_wip = ""
 sys_romset = None
 
-
 sql_string = ""
 line_count = 0
 while 1:
@@ -60,7 +61,8 @@ while 1:
         if line.find("DRIVERS INFO") != -1:  # stop at drivers
             break
         line = line.replace("    ", "")
-        if line[0] == "#" or len(line) < 4 or line.find("$mame") == 0:  # skip comments and blank lines
+        if line[0] == "#" or len(line) < 4 or line.find(
+                "$mame") == 0:  # skip comments and blank lines
             if line.find("$mame") == 0:
                 skip_next_line = True
                 long_name_next = True
@@ -100,7 +102,8 @@ while 1:
                 try:
                     sys_longname, sys_manufacturer, sys_year = line.split(',')
                 except:
-                    sys_longname, msys_manufacturer, sys_year = line.rsplit(',', 2)
+                    sys_longname, msys_manufacturer, sys_year = line.rsplit(
+                        ',', 2)
                 long_name_next = False
                 desc_next = True
             if line.find("$end") == 0:  # end of system info so store system into db
@@ -116,21 +119,21 @@ while 1:
                 sys_sound = Status_Lookup_Add(sys_sound[:-1])
                 sys_graphics = Status_Lookup_Add(sys_graphics[:-1])
                 # build query
-                sql_args = str(uuid.uuid4()), sys_short_name[:-1], sys_longname, sys_desc,\
-                    sys_year[:-1], sys_manufacturer, sys_emulation, sys_color, sys_sound,\
+                sql_args = str(uuid.uuid4()), sys_short_name[:-1], sys_longname, sys_desc, \
+                    sys_year[:-1], sys_manufacturer, sys_emulation, sys_color, sys_sound, \
                     sys_graphics, sys_save_state
                 print(sql_args)
                 quick_sql_args = sys_short_name[:-1],
-                curs.execute('select count(*) from mm_game_systems_info'\
-                    ' where gs_game_system_json->\'@name\' ? %s', quick_sql_args)
+                curs.execute('select count(*) from mm_game_systems_info'
+                             ' where gs_game_system_json->\'@name\' ? %s', quick_sql_args)
                 if int(curs.fetchone()[0]) > 0:
                     quick_sql_args = sys_desc, sys_short_name[:-1]
-                    curs.execute('update mm_game_systems_info set gs_system_description = %s'\
-                        ' where gs_game_system_json->\'@name\' ? %s', quick_sql_args)
+                    curs.execute('update mm_game_systems_info set gs_system_description = %s'
+                                 ' where gs_game_system_json->\'@name\' ? %s', quick_sql_args)
                 else:
                     str(uuid.uuid4())
-                    curs.execute('insert into mm_game_systems_info (gs_id,gs_game_system_json)'\
-                        ' values (%s,%s)', sql_args)
+                    curs.execute('insert into mm_game_systems_info (gs_id,gs_game_system_json)'
+                                 ' values (%s,%s)', sql_args)
                 sys_wip = None
                 sys_romset = None
 conn.commit()

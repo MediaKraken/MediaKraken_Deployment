@@ -16,33 +16,33 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
+from common import common_config_ini
 from common import common_metadata_musicbrainz
 
 
 class TestCommonMusicbrainz(object):
 
-
     @classmethod
     def setup_class(self):
-        self.musicbrainz_connection = common_metadata_musicbrainz.CommonMetadataMusicbrainz()
-
+        # open the database
+        option_config_json, db_connection = common_config_ini.com_config_read(
+            True)
+        self.musicbrainz_connection = common_metadata_musicbrainz.CommonMetadataMusicbrainz(
+            option_config_json)
 
     @classmethod
     def teardown_class(self):
         pass
 
+    # def show_release_details(self, rel):
 
-# def show_release_details(self, rel):
+    # search by artist and album name
+    # def com_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None, artist_recording=None, return_limit=5, strict_flag=False):
 
-
-# search by artist and album name
-# def com_Mediabrainz_Get_Releases(self, disc_id=None, artist_name=None, artist_recording=None, return_limit=5, strict_flag=False):
-
-
-# search by artist and song name
-# def com_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None, song_name=None, return_limit=5, strict_flag=False):
+    # search by artist and song name
+    # def com_Mediabrainz_Get_Recordings(self, artist_name=None, release_name=None, song_name=None, return_limit=5, strict_flag=False):

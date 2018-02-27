@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging # pylint: disable=W0611
 import subprocess
 import platform
 
@@ -49,7 +48,8 @@ def com_zfs_zpool_status(zpool=None):
     Get zpool status
     """
     if zpool is not None:
-        proc = subprocess.Popen(['zpool', 'status', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zpool', 'status', zpool], stdout=subprocess.PIPE)
     else:
         proc = subprocess.Popen(['zpool', 'status'], stdout=subprocess.PIPE)
     return proc.stdout.read()
@@ -61,9 +61,10 @@ def com_zfs_snapshot_list(zpool=None):
     """
     if zpool is not None:
         proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot', zpool],
-            stdout=subprocess.PIPE)
+                                stdout=subprocess.PIPE)
     else:
-        proc = subprocess.Popen(['zfs', 'list', '-H', '-t', 'snapshot'], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zfs', 'list', '-H', '-t', 'snapshot'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -71,7 +72,8 @@ def com_zfs_snapshot_delete(snapshot):
     """
     Delete snapshot
     """
-    proc = subprocess.Popen(['zfs', 'destroy', snapshot], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zfs', 'destroy', snapshot], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -79,7 +81,8 @@ def com_zfs_zpool_delete(zpool):
     """
     Delete pool
     """
-    proc = subprocess.Popen(['zpool', 'destroy', zpool], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zpool', 'destroy', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -88,7 +91,8 @@ def com_zfs_zpool_scrub(zpool=None):
     Scrub pool
     """
     if zpool is not None:
-        proc = subprocess.Popen(['zpool', 'scrub', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zpool', 'scrub', zpool], stdout=subprocess.PIPE)
     else:
         proc = subprocess.Popen(['zpool', 'scrub'], stdout=subprocess.PIPE)
     return proc.stdout.read()
@@ -99,7 +103,7 @@ def com_zfs_zpool_replace_drive(zpool, target_drive, replacement_drive):
     Replace drive in pool
     """
     proc = subprocess.Popen(['zpool', 'replace', zpool, target_drive, replacement_drive],
-        stdout=subprocess.PIPE)
+                            stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -108,7 +112,7 @@ def com_zfs_zpool_create(zpool, zpool_type, zpool_drives):
     Create pool
     """
     proc = subprocess.Popen(['zpool', 'create', zpool, zpool_type, zpool_drives],
-        stdout=subprocess.PIPE)
+                            stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -118,9 +122,10 @@ def com_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     """
     Set compression
     """
-    proc = subprocess.Popen(['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE)
     proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool],
-        stdout=subprocess.PIPE)
+                            stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -128,7 +133,8 @@ def com_zfs_zpool_compression_ratio(zpool):
     """
     Get compression ratio
     """
-    proc = subprocess.Popen(['zfs', 'get', 'compressratio', zpool], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zfs', 'get', 'compressratio', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -137,9 +143,11 @@ def com_zfs_zpool_deduplication(zpool, zpool_dedup):
     Set deduplication
     """
     if zpool_dedup:
-        proc = subprocess.Popen(['zfs', 'set', 'dedup=on', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zfs', 'set', 'dedup=on', zpool], stdout=subprocess.PIPE)
     else:
-        proc = subprocess.Popen(['zfs', 'set', 'dedup=off', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zfs', 'set', 'dedup=off', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -148,7 +156,7 @@ def com_zfs_zpool_snapshot_send(snapshot_begin, snapshot_end, receive_ip, port_n
     Send snapshot
     """
     proc = subprocess.Popen(['zfs send -R -i storage_pool@-2015-11-11 storage_pool@-2015-11-21'
-        ' | mbuffer -s 128k -m 1G -O 10.1.0.7:9191'], stdout=subprocess.PIPE)
+                             ' | mbuffer -s 128k -m 1G -O 10.1.0.7:9191'], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -157,7 +165,7 @@ def com_zfs_zpool_snapshot_receive(zpool_location, port_no):
     Receive snapshot
     """
     proc = subprocess.Popen(['mbuffer', '-s', '128k', '-m', '1G', '-I', port_no, '|', 'zfs',
-        'receive', '-Fudv', zpool_location], stdout=subprocess.PIPE)
+                             'receive', '-Fudv', zpool_location], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -179,10 +187,11 @@ def com_zfs_zpool_quota(zpool, quota_level):
     """
     Quota set for pool
     """
-# TODO by user and groups?
-# zfs create students/compsci
-# zfs set userquota@student1=10G students/compsci
-    proc = subprocess.Popen(['zfs', 'set', 'quota=' + quota_level, zpool], stdout=subprocess.PIPE)
+    # TODO by user and groups?
+    # zfs create students/compsci
+    # zfs set userquota@student1=10G students/compsci
+    proc = subprocess.Popen(
+        ['zfs', 'set', 'quota=' + quota_level, zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -190,7 +199,8 @@ def com_zfs_zpool_iostat(zpool, interval):
     """
     iostat, pool and interval
     """
-    proc = subprocess.Popen(['zpool', 'iostat', zpool, interval], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zpool', 'iostat', zpool, interval], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -207,9 +217,11 @@ def com_zfs_zpool_import(zpool, zpool_new_name=None):
     Import pool
     """
     if zpool_new_name is not None:
-        proc = subprocess.Popen(['zpool', 'import', zpool, zpool_new_name], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zpool', 'import', zpool, zpool_new_name], stdout=subprocess.PIPE)
     else:
-        proc = subprocess.Popen(['zpool', 'import', zpool], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zpool', 'import', zpool], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -217,7 +229,8 @@ def com_zfs_rename(zpool, zpool_new_name):
     """
     Rename zfs
     """
-    proc = subprocess.Popen(['zfs', 'rename', zpool, zpool_new_name], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zfs', 'rename', zpool, zpool_new_name], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -225,7 +238,8 @@ def com_zfs_clone(zpool_snap, zpool_clone):
     """
     Clone pool
     """
-    proc = subprocess.Popen(['zfs', 'clone', zpool_snap, zpool_clone], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ['zfs', 'clone', zpool_snap, zpool_clone], stdout=subprocess.PIPE)
     return proc.stdout.read()
 
 
@@ -234,7 +248,8 @@ def com_zfs_health_check():
     Health check
     """
     try:
-        proc = subprocess.Popen(['zpool', 'list', '-H', '-o', 'health'], stdout=subprocess.PIPE)
+        proc = subprocess.Popen(
+            ['zpool', 'list', '-H', '-o', 'health'], stdout=subprocess.PIPE)
         return proc.stdout.read()
-    except OSError as err_code: # typically program doesn't exist
+    except OSError as err_code:  # typically program doesn't exist
         return None

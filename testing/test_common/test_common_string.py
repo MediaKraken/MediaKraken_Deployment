@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest # pylint: disable=W0611
+import pytest  # pylint: disable=W0611
 import sys
+
 sys.path.append('.')
 from common import common_string
 
@@ -49,16 +49,16 @@ def test_com_string_bytes2human(n, expected_result):
 
 
 @pytest.mark.parametrize(("password_text", "expected_result"), [
-    ("password", "500B"),
-    ("Password", "1.5K"),
-    ("sRji#234", "1.4M"),
-    ("jfioj23$29#DFWEWFWE454938", "1.2Y")])
+    ("password", 0.11086303015729373),
+    ("Password", 0.1673790562956108),
+    ("sRji#234", 0.9061487395320603),
+    ("jfioj23$29#DFWEWFWE454938", 0.9169341505208981)])
 def test_com_string_password_test(password_text, expected_result):
     """
     # test password
     """
-    assert common_string.com_string_password_test(password_text) == expected_result
-
+    assert common_string.com_string_password_test(
+        password_text)[0] == expected_result
 
 # def ip_ascii_to_int(ip):
 
