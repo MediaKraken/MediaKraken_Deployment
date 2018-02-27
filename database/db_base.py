@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging  # pylint: disable=W0611
 import os
+import sys
 from common import common_system
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
@@ -49,6 +50,11 @@ def db_open(self, db_build=False):
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            common_system.com_system_cpu_count())
+    # verify the trigram extension is enablled for the database
+    self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
+    if self.db_cursor.fetchone()[0] == 0:
+        logging.critical('pg_trgm extension needs to be enabled for database!!!!  Exiting!!!')
+        sys.exit(1)
 
 
 def db_close(self):
