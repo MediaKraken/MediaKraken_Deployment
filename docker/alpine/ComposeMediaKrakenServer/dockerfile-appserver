@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   cifs-utils \
+  curl-dev \
   nfs-utils \
   postgresql-client \
   openssl \

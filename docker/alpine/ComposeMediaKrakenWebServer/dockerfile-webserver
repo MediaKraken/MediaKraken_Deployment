@@ -13,6 +13,7 @@ WORKDIR /mediakraken
 RUN apk add --update \
   postgresql-client \
   ack \
+  curl-dev \
   git \
   gcc \
   jpeg-dev \
