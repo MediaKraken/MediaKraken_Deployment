@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-APP_VERSION = '0.7.10'
+APP_VERSION = '0.7.11'
 
 DB_VERSION = 15
 
