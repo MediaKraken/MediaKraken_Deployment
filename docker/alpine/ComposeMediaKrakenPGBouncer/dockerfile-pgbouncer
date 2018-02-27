@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 MAINTAINER brainsam@yandex.ru
 
-RUN apk --update add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py2-docutils && \
+RUN apk --update add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py-docutils && \
 	git clone https://github.com/pgbouncer/pgbouncer.git && \
 	cd pgbouncer         && \
 	git submodule init   && \
