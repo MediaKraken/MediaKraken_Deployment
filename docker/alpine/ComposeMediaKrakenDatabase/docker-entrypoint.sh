@@ -15,7 +15,7 @@ if [ "$1" = 'postgres' ]; then
     chown -R postgres /run/postgresql
 
     if [ -z "$(ls -A "$PGDATA")" ]; then
-        gosu postgres initdb
+        su-exec postgres initdb
 
         if [ "$POSTGRES_PASSWORD" ]; then
             pass="PASSWORD '$POSTGRES_PASSWORD'"
@@ -39,7 +39,7 @@ EOWARN
 
         { echo; echo "host all all 0.0.0.0/0 $authMethod"; } >> "$PGDATA/pg_hba.conf"
 
-        gosu postgres pg_ctl -D "$PGDATA" \
+        su-exec postgres pg_ctl -D "$PGDATA" \
             -o "-c listen_addresses=''" \
             -w start
         : ${POSTGRES_USER:=postgres}
@@ -73,7 +73,7 @@ EOSQL
             esac
         done
 
-        gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop
+        su-exec postgres pg_ctl -D "$PGDATA" -m fast -w stop
         set_listen_addresses '*'
 
         echo
@@ -81,7 +81,7 @@ EOSQL
         echo
     fi
 
-    exec gosu postgres "$@"
+    exec su-exec postgres "$@"
 fi
 
 exec "$@"
