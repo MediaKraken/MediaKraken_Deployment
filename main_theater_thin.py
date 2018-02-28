@@ -273,7 +273,7 @@ class MediaKrakenApp(App):
             share_mapping = (
                 ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
-                for mapping in share_mapping.iteritems():
+                for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(
                         mapping[0], mapping[1])
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
