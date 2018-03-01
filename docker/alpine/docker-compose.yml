@@ -213,20 +213,19 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-  # pgadmin4
-  # https://github.com/Chorss/docker-pgAdmin4
   pgadmin:
-    build:
-      context: ./ComposeMediaKrakenPGAdmin4
-      dockerfile: Dockerfile
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=spootdev@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=metaman
     container_name: mkpgadmin
     ports:
-      - "12345:5050"
-    volumes:
-      - /var/opt/mediakraken/pgadmin:/data
-    restart: unless-stopped
+      - "12345:80"
+    depends_on:
+      - pgbounce
     networks:
-      - mediakraken_network
+      - mediakraken_dbnetwork
+    restart: unless-stopped
 
 #  # runs the phppgadmin
 #  phppgadmin:
