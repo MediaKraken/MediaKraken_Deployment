@@ -465,6 +465,10 @@ services:
       - "9200:9200"
       - "5044:5044"
     container_name: mkelk
+    environment:
+      - ELASTICSEARCH_START=1
+      - LOGSTASH_START=0
+      - KIBANA_START=1
     networks:
       - mediakraken_network
     restart: unless-stopped
