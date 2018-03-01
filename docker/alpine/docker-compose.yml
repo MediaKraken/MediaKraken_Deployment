@@ -371,7 +371,7 @@ services:
       - /var/opt/mediakraken/mail:/var/vmail
     networks:
       - mediakraken_network
-    restart: always
+    restart: unless-stopped
 
   # runs calibre server
   calibre:
@@ -389,7 +389,7 @@ services:
       - /var/opt/mediakraken/calibre/downloads:/downloads
     networks:
       - mediakraken_network
-    restart: always
+    restart: unless-stopped
 
   # runs ripper
   ripper:
@@ -397,7 +397,7 @@ services:
       context: ./ComposeMediaKrakenRipper
       dockerfile: dockerfile-ripper
     container_name: mkripper
-    restart: always
+    restart: unless-stopped
 
 #  mail:
 #    build:
@@ -425,7 +425,7 @@ services:
 #    - NET_ADMIN
 #    networks:
 #      - mediakraken_network
-#    restart: always
+#    restart: unless-stopped
 
   # runs downloader
   download:
@@ -440,7 +440,7 @@ services:
       - /var/opt/mediakraken/downloads:/mediakraken/downloads
     networks:
       - mediakraken_network
-    restart: always
+    restart: unless-stopped
 
   # runs filebeat
   filebeat:
@@ -448,11 +448,13 @@ services:
       context: ./ComposeMediaKrakenFilebeat
       dockerfile: Dockerfile
     container_name: mkfilebeat
+    depends_on: mkelk
+    entrypoint: ./wait-for-it-ash.sh -h elk -p 9200 -t 30 -- filebeat -e
     volumes:
       - /var/log/mediakraken:/mediakraken/log
     networks:
       - mediakraken_network
-    restart: always
+    restart: unless-stopped
 
   elk:
     build:
@@ -465,6 +467,7 @@ services:
     container_name: mkelk
     networks:
       - mediakraken_network
+    restart: unless-stopped
 
 # Docker private networks
 networks:
