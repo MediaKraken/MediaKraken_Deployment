@@ -61,7 +61,7 @@ base_media_classes = (
 )
 
 # open the database
-db_connection = common_config_ini.com_config_read(True)
+db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
 
 # activate extention pg_trgm
 db_connection.db_query('create extension if not exists pg_trgm')
@@ -855,7 +855,7 @@ if db_connection.db_table_index_check('mm_tv_stations_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_tv_stations_idx_name'
                            ' ON mm_tv_stations(mm_tv_station_name)')
 
-# tv shedules
+# tv schedules
 db_connection.db_query('create table IF NOT EXISTS mm_tv_schedule (mm_tv_schedule_id uuid'
                        ' CONSTRAINT mm_tv_schedule_id_pk primary key,'
                        ' mm_tv_schedule_station_id text,'

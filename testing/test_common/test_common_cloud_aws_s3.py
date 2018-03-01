@@ -31,7 +31,7 @@ class TestCommonCloudAWSS3(object):
     @classmethod
     def setup_class(self):
         # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read()
+        option_config_json, db_connection = common_config_ini.com_config_read(db_prod=False)
         self.awss3 = common_cloud_aws_s3.CommonCloudAWSS3(option_config_json)
 
     @classmethod
