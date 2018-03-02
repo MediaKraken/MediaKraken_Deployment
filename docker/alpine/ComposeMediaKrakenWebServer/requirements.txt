@@ -1,4 +1,3 @@
-pycurl --global-option="--with-openssl"
 simplekv>=0.11.2
 cython
 Flask

@@ -1,4 +1,3 @@
-pycurl --global-option="--with-openssl"
 pysmb
 dropbox
 boto
