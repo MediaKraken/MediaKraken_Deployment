@@ -29,7 +29,7 @@ import json
 import xmltodict
 
 # open the database
-option_config_json, db_connection = common_config_ini.com_config_read(True)
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')

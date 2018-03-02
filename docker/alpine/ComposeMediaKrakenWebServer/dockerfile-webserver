@@ -33,6 +33,8 @@ RUN apk add --update \
   openssl \
   nginx \
   && pip install --upgrade pip \
+  && export PYCURL_SSL_LIBRARY=openssl \
+  && pip install pycurl \
   && pip install -r requirements.txt \
   && pip install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \

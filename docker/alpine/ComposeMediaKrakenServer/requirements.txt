@@ -47,6 +47,5 @@ ipgetter
 apache-libcloud
 titlecase
 pika
-kodipydent
-docker
+docker==2.7
 Babel

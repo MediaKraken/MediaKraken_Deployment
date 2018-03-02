@@ -34,6 +34,8 @@ RUN apk add --update \
   python-dev \
   openrc \
   && pip install --upgrade pip \
+  && export PYCURL_SSL_LIBRARY=openssl \
+  && pip install pycurl \
   && pip install -r requirements.txt \
   && apk del \
   alpine-sdk \

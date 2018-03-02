@@ -6,6 +6,10 @@ cp -R /home/metaman/MediaKraken_Deployment/common /home/metaman/MediaKraken_Depl
 cp -R /home/metaman/MediaKraken_Deployment/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
 cp /home/metaman/MediaKraken_Deployment/main_hardware_discover.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
 
+# download
+cp -R /home/metaman/MediaKraken_Deployment/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
+cp /home/metaman/MediaKraken_Deployment/main_download.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
+
 # metadata
 cp -R /home/metaman/MediaKraken_Deployment/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp -R /home/metaman/MediaKraken_Deployment/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
