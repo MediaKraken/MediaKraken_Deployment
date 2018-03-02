@@ -449,7 +449,7 @@ services:
       dockerfile: Dockerfile
     container_name: mkfilebeat
     depends_on:
-      - mkelk
+      - elk
     entrypoint: ./wait-for-it-ash.sh -h elk -p 9200 -t 30 -- filebeat -e
     volumes:
       - /var/log/mediakraken:/mediakraken/log
