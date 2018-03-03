@@ -1,16 +1,16 @@
 FROM lsiobase/alpine:3.6
-MAINTAINER sparklyballs
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="sparklyballs"
 
 # copy files required in build stage
 COPY prebuilds/ /defaults/
 
 # package versions
-ARG BRAINZ_VER="v-2017-09-18"
+ARG BRAINZ_VER="v-2018-02-09"
 
 # global environment settings
 ENV BABEL_DISABLE_CACHE="1" \
@@ -22,8 +22,8 @@ PGDATA="/data/dbase" \
 UPDATE_SLAVE_LOGDIR="/config/log/musicbrainz" \
 URL_ROOT="ftp://ftp.musicbrainz.org/pub/musicbrainz/data/fullexport"
 
-# install build packages
 RUN \
+ echo "**** install build packages ****" && \
  apk add --no-cache --virtual=build-dependencies \
 	db-dev \
 	expat-dev \
@@ -33,8 +33,7 @@ RUN \
 	libxml2-dev \
 	make \
 	perl-dev && \
-
-# install runtime packages
+ echo "**** install runtime packages ****" && \
  apk add --no-cache \
 	bzip2 \
 	curl \
@@ -58,8 +57,7 @@ RUN \
 	redis \
 	tar \
 	wget && \
-
-# fetch musicbrainz and install perl and node packages
+ echo "**** fetch musicbrainz and install perl and node packages ****" && \
  mkdir -p \
 	/app/musicbrainz && \
  curl -o \
@@ -89,25 +87,22 @@ RUN \
 	Term::Size::Any && \
  npm install && \
  ./script/compile_resources.sh && \
-
-# compile musicbrainz postgresql addons
+ echo "**** compile musicbrainz postgresql addons ****" && \
  git clone git://github.com/metabrainz/postgresql-musicbrainz-unaccent \
 	/tmp/postgresql-musicbrainz-unaccent && \
  cd /tmp/postgresql-musicbrainz-unaccent && \
-	make -j`getconf _NPROCESSORS_ONLN` && \
+	make && \
 	make install && \
  git clone git://github.com/metabrainz/postgresql-musicbrainz-collate.git \
 	/tmp/postgresql-musicbrainz-collate && \
  cd /tmp/postgresql-musicbrainz-collate && \
-	make -j`getconf _NPROCESSORS_ONLN` && \
+	make && \
 	make install && \
-
-# configure nginx
+ echo "**** configure nginx ****" && \
  echo 'fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;' >> \
 	/etc/nginx/fastcgi_params && \
  rm -f /etc/nginx/conf.d/default.conf && \
-
-# cleanup
+ echo "**** cleanup ****" && \
  apk del --purge \
 	build-dependencies && \
  rm -rf \
