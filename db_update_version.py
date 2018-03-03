@@ -207,5 +207,16 @@ if db_connection.db_version_check() == 14:
     db_connection.db_version_update(15)
     db_connection.db_commit()
 
+
+if db_connection.db_version_check() == 15:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update(
+        {'API': {'shoutcast': None}})
+    db_connection.db_opt_update(options_json)
+    db_connection.db_version_update(16)
+    db_connection.db_commit()
+
+
+
 # close the database
 db_connection.db_close()
