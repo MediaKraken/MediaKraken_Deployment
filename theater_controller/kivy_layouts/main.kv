@@ -337,10 +337,10 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     RecycleView:
-                        bar_width: 10
                         size: self.parent.width * 0.5, self.parent.height
                         id: theater_media_video_list_scrollview
                         viewclass: 'SelectableLabel'
+                        bar_width: 10
                         SelectableRecycleBoxLayout:
                             default_size: None, dp(56)
                             default_size_hint: 1, None
@@ -349,7 +349,6 @@
                             orientation: 'vertical'
                             multiselect: False
                             touch_multiselect: False
-                            bar_width: root.bar_width
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint: None, None
