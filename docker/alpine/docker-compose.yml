@@ -349,19 +349,19 @@ services:
       - /var/opt/mediakraken/teamspeak:/teamspeak/data
       - /var/opt/mediakraken/teamspeak:/teamspeak/logs
 
-  # runs mail server
-  smtp:
-    build:
-      context: ./ComposeMediaKrakenOpenSMTP
-      dockerfile: Dockerfile
-    container_name: mkopensmtp
-    ports:
-      - "25:25"
-    volumes:
-      - /var/opt/mediakraken/mail:/var/vmail
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
+#  # runs mail server
+#  smtp:
+#    build:
+#      context: ./ComposeMediaKrakenOpenSMTP
+#      dockerfile: Dockerfile
+#    container_name: mkopensmtp
+#    ports:
+#      - "25:25"
+#    volumes:
+#      - /var/opt/mediakraken/mail:/var/vmail
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
 
   # runs calibre server
   calibre:
@@ -425,20 +425,20 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # runs filebeat
-  filebeat:
-    build:
-      context: ./ComposeMediaKrakenFilebeat
-      dockerfile: Dockerfile
-    container_name: mkfilebeat
-    depends_on:
-      - elk
-    entrypoint: ./wait-for-it-ash.sh -h elk -p 9200 -t 30 -- filebeat -e
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
+#  # runs filebeat
+#  filebeat:
+#    build:
+#      context: ./ComposeMediaKrakenFilebeat
+#      dockerfile: Dockerfile
+#    container_name: mkfilebeat
+#    depends_on:
+#      - elk
+#    entrypoint: ./wait-for-it-bash.sh -h elk -p 9200 -t 30 -- filebeat -e
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
 
   elk:
     build:

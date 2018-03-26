@@ -23,5 +23,6 @@ RUN set -x && \
 COPY filebeat.yml /
 COPY filebeat.template.json /
 COPY docker-entrypoint.sh /
+ADD wait-for-it-bash.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD [ "filebeat", "-e" ]
