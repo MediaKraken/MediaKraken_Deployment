@@ -26,15 +26,15 @@ class CommonElasticsearch(object):
     Class for interfacing with Elasticsearch
     """
 
-    def __init__(self, option_config_json):
-        # by default we connect to localhost:9200
-        self.es_inst = Elasticsearch()
+    def __init__(self, index_type='MediaKraken'):
+        self.es_inst = Elasticsearch([{'host': 'mkelk', 'port': 9200}])
+        self.es_index = index_type
         self.id = 0
 
-    def com_elastic_index(self, doc_type, body_data, index='MediaKraken'):
+    def com_elastic_index(self, doc_type, body_data):
         self.id += 1
-        self.es_inst.index(index=index, doc_type=doc_type, id=self.id,
+        self.es_inst.index(index=self.es_index, doc_type=doc_type, id=self.id,
                            body={"log": body_data, "timestamp": datetime.now()})
 
-    def com_elastic_get(self, doc_type, id, index='MediaKraken'):
-        self.es_inst.get(index=index, doc_type=doc_type, id=id)
+    def com_elastic_get(self, doc_type, id):
+        self.es_inst.get(index=self.es_index, doc_type=doc_type, id=id)
