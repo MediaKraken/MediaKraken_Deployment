@@ -17,14 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import datetime
+import subprocess
+
 from common import common_config_ini
 from common import common_logging
-from common import common_signal
-import subprocess
-import datetime
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Streamlink')
@@ -39,7 +37,7 @@ db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,
 
 # do the actual capture
 filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - " \
-    + (info['stream']).get("channel").get("status") + ".flv"
+           + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
 subprocess.call(["./bin/streamlink", "twitch.tv/" +
                  user, quality, "-o", filename])

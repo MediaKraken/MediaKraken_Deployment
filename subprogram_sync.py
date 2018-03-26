@@ -17,15 +17,17 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import logging  # pylint: disable=W0611
+import subprocess
+from datetime import timedelta
+
+from concurrent import futures
+
 from common import common_cloud
 from common import common_config_ini
 from common import common_logging
-from common import common_signal
 from common import common_xfer
-from concurrent import futures
-import subprocess
-from datetime import timedelta
 
 
 def worker(row_data):
@@ -107,9 +109,6 @@ def worker(row_data):
     thread_db.db_close()
     return
 
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')

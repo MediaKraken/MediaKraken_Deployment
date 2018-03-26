@@ -32,11 +32,7 @@ from common import common_file
 from common import common_file_extentions
 from common import common_logging
 from common import common_network_cifs
-from common import common_signal
 from common import common_string
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_File_Scan')

@@ -17,19 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import json
-import xmltodict
-import zipfile
-import zlib
+import logging  # pylint: disable=W0611
 import time
+
+import xmltodict
+
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_thetvdb
-from common import common_signal
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start(
@@ -68,9 +65,9 @@ for row_data in update_item['Data']['Series']:
         db_connection.db_metatvdb_insert(series_id_json,
                                          xml_show_data['Data']['Series']['SeriesName'],
                                          json.dumps({'Meta':
-                                                     {'thetvdb': {'Meta': xml_show_data['Data'],
-                                                                  'Cast': xml_actor_data,
-                                                                  'Banner': xml_banners_data}}}),
+                                                         {'thetvdb': {'Meta': xml_show_data['Data'],
+                                                                      'Cast': xml_actor_data,
+                                                                      'Banner': xml_banners_data}}}),
                                          json.dumps(image_json))
         # insert cast info
         if xml_actor_data is not None:

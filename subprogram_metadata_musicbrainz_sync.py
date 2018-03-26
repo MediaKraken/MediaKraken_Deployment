@@ -17,15 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import json
-from common import common_config_ini
-from common import common_logging
-from common import common_signal
+import logging  # pylint: disable=W0611
+
 import db_base_brainz as database_base_brainz
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
+from common import common_config_ini
+from common import common_logging
 
 # start logging
 common_logging.com_logging_start(
@@ -57,12 +56,12 @@ for row_data in db_brainz.db_brainz_all_artists():
                                                    'Gender': row_data['gender'],
                                                    'Begin': (str(row_data['begin_date_year']) + ':'
                                                              + str(row_data[
-                                                                 'begin_date_month']) + ':' + str(
-                                                       row_data['begin_date_day'])),
+                                                                       'begin_date_month']) + ':' + str(
+                                                               row_data['begin_date_day'])),
                                                    'End': (str(
                                                        row_data['end_date_year']) + ':' + str(
                                                        row_data['end_date_month']) + ':'
-                                           + str(row_data['end_date_day']))}))
+                                                           + str(row_data['end_date_day']))}))
     logging.info(row_data)
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):

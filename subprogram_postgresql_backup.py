@@ -17,15 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import time
-import os
-from common import common_config_ini
-from common import common_cloud
-from common import common_logging
-from common import common_signal
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
+import os
+import time
+
+from common import common_cloud
+from common import common_config_ini
+from common import common_logging
 
 # start logging
 common_logging.com_logging_start(
@@ -41,7 +39,7 @@ db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', N
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + \
-    time.strftime("%Y%m%d%H%M%S") + '.dump'
+                   time.strftime("%Y%m%d%H%M%S") + '.dump'
 
 os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD']
           + ' pg_dump -h ' + os.environ['POSTGRES_DB_HOST']

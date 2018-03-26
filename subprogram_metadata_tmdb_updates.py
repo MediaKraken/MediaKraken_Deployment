@@ -17,16 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import json
+import logging  # pylint: disable=W0611
 import uuid
+
 from common import common_config_ini
 from common import common_logging
 from common import common_metadata_tmdb
-from common import common_signal
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_TMDB_Updates')
