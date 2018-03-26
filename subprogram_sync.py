@@ -93,7 +93,7 @@ def worker(row_data):
                                                        'VContainer'],
                                                    row_data['mm_sync_path_to'])
     else:  # cloud item
-        CLOUD_HANDLE = common_cloud.CommonCloud()
+        CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
         CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],
                                           row_data['mm_sync_path_to'],
                                           row_data['mm_sync_path_to'] + "."
