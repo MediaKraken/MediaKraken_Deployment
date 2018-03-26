@@ -37,11 +37,12 @@
 # rm blacks.txt
 # ffmpeg -f concat -i ace-files.txt -c copy ace.tvshow
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
+import getopt
 import subprocess
 import sys
-import getopt
-from common import common_logging
+
+from common import common_logging_elasticsearch
 
 
 def main(argv):
@@ -49,20 +50,19 @@ def main(argv):
     Main commercial strip
     """
     # start logging
-    common_logging.com_logging_start(
-        './log/MediaKraken_Subprogram_Commercial_Strip')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        logging.info(
-            'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+        es_inst.com_elastic_index('error',
+                                  'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            logging.info(
-                'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+            es_inst.com_elastic_index('error',
+                                      'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -70,7 +70,7 @@ def main(argv):
             outputfile = arg
     # kick off ffmpeg process
     proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
-    logging.info("FFMpeg PID %s:", proc.pid)
+    es_inst.com_elastic_index('info', {"pid": proc.pid, "input": inputfile, "output": outputfile})
     proc.wait()
 
 

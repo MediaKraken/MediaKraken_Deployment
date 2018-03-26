@@ -17,20 +17,18 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
-import datetime
-import time
-import psutil
-import subprocess
-from common import common_config_ini
-from common import common_logging
-from common import common_signal
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
+import datetime
+import subprocess
+import time
+
+import psutil
+
+from common import common_config_ini
+from common import common_logging_elasticsearch
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Cron')
+es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Cron')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -67,13 +65,12 @@ while 1:
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
-                logging.info("Cron %s PID %s:",
-                             row_data['mm_cron_name'], proc.pid)
+                    es_inst.es_index('info', {'cron': row_data['mm_cron_name'], 'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
             db_connection.db_commit()
-        logging.info(row_data)
+            es_inst.es_index('info', {'row': row_data})
     time.sleep(60)  # sleep for 60 seconds
 
 # close the database

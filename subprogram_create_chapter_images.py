@@ -17,16 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import json
 import uuid
 import subprocess
 import os
 from common import common_config_ini
 from common import common_internationalization
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata
-from common import common_signal
 from concurrent import futures
 
 # set before everything else
@@ -92,21 +90,11 @@ def worker(worker_file_list):
     thread_db.db_close()
     return
 
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
-
 # start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Create_Chapter_Images')
+es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Create_Chapter_Images')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Create Chapter Start', None,
-                                 'System: Server Create Chapter Start',
-                                 'ServerCreateChapterStart', None, None, 'System')
 
 # begin the media match on NULL matches
 file_list = []
@@ -121,7 +109,7 @@ if len(file_list) > 0:
     with futures.ThreadPoolExecutor(len(file_list)) as executor:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
-            logging.info(future.result())
+            es_inst.es_index('info', future.result())
 
 # send notications
 if total_images_created > 0:
@@ -129,11 +117,6 @@ if total_images_created > 0:
         common_internationalization.com_inter_number_format(
             total_images_created)
         + " chapter image(s) generated.", True)
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Create Chapter Stop', None,
-                                 'System: Server Create Chapter Stop',
-                                 'ServerCreateChapterStop', None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()
