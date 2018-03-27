@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.5
+FROM mediakraken/mkbase35
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image downloads and maintains all metadata"
@@ -20,11 +20,9 @@ RUN apk add --update \
   musl-dev \
   postgresql-dev \
   python-dev \
-  py-pip \
   libffi-dev \
   python \
   openrc \
-  && pip install --upgrade pip \
   && pip install pytest-runner \
   && pip install -r requirements.txt \
   && pip uninstall -y pytest_runner \
