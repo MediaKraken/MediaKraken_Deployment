@@ -19,28 +19,29 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging
 import time
 
 import pika
 
 from common import common_config_ini
 from common import common_ffmpeg
+from common import common_logging_elasticsearch
 
+# start logging
+es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_FFProbe')
 
 def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
     if body is not None:
-        logging.info("Message body %s", body)
         json_message = json.loads(body)
-        if json_message['Type'] == 'FFProbe':
-            db_connection.db_media_ffmeg_update(json_message['Data'],
-                                                json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
-                                                    db_connection.db_read_media(
-                                                        json_message['Data'])[
-                                                        'mm_media_path'])))
+        es_inst.es_index('info', {'ffprobe': json_message})
+        db_connection.db_media_ffmeg_update(json_message['Data'],
+                                            json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
+                                                db_connection.db_read_media(
+                                                    json_message['Data'])[
+                                                    'mm_media_path'])))
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
