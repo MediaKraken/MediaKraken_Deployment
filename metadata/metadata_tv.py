@@ -17,18 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import json
+import logging  # pylint: disable=W0611
+
 from guessit import guessit
+
 from common import common_config_ini
-from common import common_thetvdb
-from common import common_metadata_anidb
-from common import common_metadata_imdb
-from common import common_metadata_netflixroulette
 from common import common_metadata_thetvdb
-from common import common_metadata_tv_intro
-from common import common_metadata_tv_theme
 from common import common_metadata_tvmaze
+from common import common_thetvdb
 from . import metadata_nfo_xml
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -128,11 +126,11 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
                                                          json.dumps({'Meta': {'thetvdb':
-                                                                              {'Meta':
-                                                                               xml_show_data[
-                                                                                   'Data'],
-                                                                               'Cast': xml_actor_data,
-                                                                               'Banner': xml_banners_data}}}),
+                                                                                  {'Meta':
+                                                                                       xml_show_data[
+                                                                                           'Data'],
+                                                                                   'Cast': xml_actor_data,
+                                                                                   'Banner': xml_banners_data}}}),
                                                          json.dumps(image_json))
         logging.info('insert 3')
         # insert cast info
@@ -150,45 +148,49 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                     for episode_info in xml_show_data['Data']['Episode']:
                         logging.info('eps info: %s', episode_info)
                         if episode_info['filename'] is not None:
-                            db_connection.db_download_image_insert('thetvdb',
-                                                                   json.dumps({
-                                                                       'url': 'https://thetvdb.com/banners/'
-                                                                              +
-                                                                              episode_info[
-                                                                                  'filename'],
-                                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                                +
-                                                                                episode_info[
-                                                                                    'filename']}))
+                            # thetvdb
+                            channel.basic_publish(exchange='mkque_download_ex',
+                                                  routing_key='mkdownload',
+                                                  body=json.dumps(
+                                                      {'Type': 'image',
+                                                       'url': 'https://thetvdb.com/banners/'
+                                                              + episode_info['filename'],
+                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                                + episode_info['filename']}),
+                                                  properties=pika.BasicProperties(
+                                                      content_type='text/plain',
+                                                      delivery_mode=1))
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
-                        db_connection.db_download_image_insert('thetvdb',
-                                                               json.dumps({
-                                                                   'url': 'https://thetvdb.com/banners/' +
-                                                                          xml_show_data[
-                                                                              'Data'][
-                                                                              'Episode'][
-                                                                              'filename'],
-                                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                            +
-                                                                            xml_show_data[
-                                                                                'Data'][
-                                                                                'Episode'][
-                                                                                'filename']}))
+                        # thetvdb
+                        channel.basic_publish(exchange='mkque_download_ex',
+                                              routing_key='mkdownload',
+                                              body=json.dumps(
+                                                  {'Type': 'image',
+                                                   'url': 'https://thetvdb.com/banners/'
+                                                          + xml_show_data['Data']['Episode'][
+                                                              'filename'],
+                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                            + xml_show_data['Data']
+                                                            ['Episode']['filename']}),
+                                              properties=pika.BasicProperties(
+                                                  content_type='text/plain',
+                                                  delivery_mode=1))
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
-                    db_connection.db_download_image_insert('thetvdb',
-                                                           json.dumps({
-                                                               'url': 'https://thetvdb.com/banners/'
-                                                                      + xml_show_data[
-                                                                          'Data'][
-                                                                          'Episode'][
-                                                                          'filename'],
-                                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
-                                                                        + xml_show_data[
-                                                                            'Data'][
-                                                                            'Episode'][
-                                                                            'filename']}))
+                    # thetvdb
+                    channel.basic_publish(exchange='mkque_download_ex',
+                                          routing_key='mkdownload',
+                                          body=json.dumps(
+                                              {'Type': 'image',
+                                               'url': 'https://thetvdb.com/banners/'
+                                                      + xml_show_data['Data'][
+                                                          'Episode']['filename'],
+                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                        + xml_show_data['Data']
+                                                        ['Episode']['filename']}),
+                                          properties=pika.BasicProperties(content_type='text/plain',
+                                                                          delivery_mode=1))
         db_connection.db_commit()
     return metadata_uuid
 
@@ -247,12 +249,16 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         # save rows for episode image fetch
         for episode_info in show_detail['_embedded']['episodes']:
             if episode_info['image'] is not None:
-                db_connection.db_download_image_insert('tvmaze',
-                                                       json.dumps({'url': episode_info['image'][
-                                                           'original'],
-                                                           'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
-                                                           + str(episode_info[
-                                                               'id']) + '.jpg'}))
+                # tvmaze image
+                channel.basic_publish(exchange='mkque_download_ex',
+                                      routing_key='mkdownload',
+                                      body=json.dumps(
+                                          {'Type': 'image',
+                                           'url': episode_info['image']['original'],
+                                           'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
+                                                    + str(episode_info['id']) + '.jpg'}),
+                                      properties=pika.BasicProperties(content_type='text/plain',
+                                                                      delivery_mode=1))
         db_connection.db_commit()
     return metadata_uuid
 

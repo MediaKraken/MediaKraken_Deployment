@@ -17,11 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import json
-import pika
+import logging  # pylint: disable=W0611
 import subprocess
 import time
+
+import pika
+
 from common import common_network
 
 
@@ -38,12 +41,8 @@ def on_message(channel, method_frame, header_frame, body):
                                       shell=False)
             dl_pid.wait()
         if json_message['Type'] == 'image':
-            for row_data in thread_db.db_download_image_read():
-                common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'],
-                                                         row_data['mdq_image_download_json'][
-                                                             'local'])
-                thread_db.db_download_image_delete(row_data['mdq_image_id'])
-                # thread_db.db_commit() - commit done in delete function above
+            common_network.mk_network_fetch_from_url(json_message['URL'],
+                                                     json_message['Local'])
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
