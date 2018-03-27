@@ -165,10 +165,10 @@ def worker(audit_directory):
                 thread_db.db_insert_media(media_id, file_name,
                                           new_class_type_uuid, None, media_ffprobe_json, media_json)
                 # Send a message so ffprobe runs
-                channel.basic_publish(exchange='mkque_ex',
-                                      routing_key='mkque',
+                channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                                      routing_key='mkffmpeg',
                                       body=json.dumps(
-                                          {'Type': 'FFMPEG', 'Data': media_id}),
+                                          {'Type': 'FFProbe', 'Data': media_id}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))
                 if save_dl_record:
@@ -213,7 +213,7 @@ connection = pika.BlockingConnection()
 channel = connection.channel()
 
 # Declare the queue
-channel.queue_declare(queue="mkque", durable=True,
+channel.queue_declare(queue="mkffmpeg", durable=True,
                       exclusive=False, auto_delete=False)
 
 # Turn on delivery confirmations

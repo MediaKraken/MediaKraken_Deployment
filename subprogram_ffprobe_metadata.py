@@ -17,17 +17,59 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
-import sys
+import logging
+import time
+
+import pika
+
 from common import common_config_ini
 from common import common_ffmpeg
+
+
+def on_message(channel, method_frame, header_frame, body):
+    """
+    Process pika message
+    """
+    if body is not None:
+        logging.info("Message body %s", body)
+        json_message = json.loads(body)
+        if json_message['Type'] == 'FFProbe':
+            db_connection.db_media_ffmeg_update(json_message['Data'],
+                                                json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
+                                                    db_connection.db_read_media(
+                                                        json_message['Data'])[
+                                                        'mm_media_path'])))
+        channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-db_connection.db_media_ffmeg_update(sys.argv[1],
-                                    json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
-                                        db_connection.db_read_media(sys.argv[1])['mm_media_path'])))
+# pika rabbitmq connection
+parameters = pika.ConnectionParameters('mkrabbitmq',
+                                       credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
+# setup channels and queue
+channel = connection.channel()
+exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex",
+                                    exchange_type="direct", durable=True)
+queue = channel.queue_declare(queue='mkffmpeg', durable=True)
+channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg')
+channel.basic_qos(prefetch_count=1)
+# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
+# channel.start_consuming(inactivity_timeout=1)
+
+while True:
+    time.sleep(1)
+    # grab message from rabbitmq if available
+    try:  # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(
+            queue='mkffmpeg', no_ack=False)
+        on_message(channel, method_frame, header_frame, body)
+    except:
+        pass
 
 # commit
 db_connection.db_commit()
