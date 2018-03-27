@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.4
+FROM mediakraken/mkbase34
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
@@ -30,10 +30,8 @@ RUN apk add --update \
   openldap-dev \
   portaudio-dev \
   postgresql-dev \
-  py-pip \
   python-dev \
   openrc \
-  && pip install --upgrade pip \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip install pycurl \
   && pip install -r requirements.txt \
