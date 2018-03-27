@@ -24,7 +24,6 @@ import os
 import pika
 from common import common_logging
 from common import common_network_share
-from common import common_signal
 from common import common_system
 
 
@@ -434,8 +433,6 @@ class MKConsumer(object):
 def main():
     # start logging
     common_logging.com_logging_start('./log/MediaKraken_Slave')
-    # set signal exit breaks
-    common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(

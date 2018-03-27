@@ -17,51 +17,22 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import datetime
+import json
 import logging  # pylint: disable=W0611
 import subprocess
-import json
 import sys
-import datetime
+
 import pika
-from build_image_directory import build_image_dirs
 from guessit import guessit
-from metadata import metadata_anime
-from metadata import metadata_game
+
+from common import common_config_ini
+from common import common_logging
+from common import common_metadata_limiter
+from common.common_metadata_limiter import *
 from metadata import metadata_general
 from metadata import metadata_identification
-from metadata import metadata_movie
-from metadata import metadata_music_video
-from metadata import metadata_music
-from metadata import metadata_periodicals
-from metadata import metadata_person
-from metadata import metadata_sports
-from metadata import metadata_tv
-from common import common_config_ini
-from common.common_metadata_limiter import *
-from common import common_logging
-from common import common_metadata
-from common import common_metadata_imvdb
-from common import common_metadata_isbndb
-from common import common_metadata_limiter
-from common import common_metadata_musicbrainz
-from common import common_metadata_netflixroulette
-from common import common_metadata_omdb
-from common import common_metadata_open_library
-from common import common_metadata_pitchfork
-from common import common_metadata_theaudiodb
-from common import common_metadata_thegamesdb
-from common import common_metadata_thelogodb
-from common import common_metadata_thesportsdb
-from common import common_metadata_thetvdb
-from common import common_metadata_tmdb
-from common import common_metadata_tv_intro
-from common import common_metadata_tv_theme
-from common import common_metadata_tvmaze
-from common import common_signal
-from common import common_thetvdb
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
@@ -348,7 +319,7 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']
-                    ] = class_data['mm_media_class_type']
+    ] = class_data['mm_media_class_type']
 
 # pika rabbitmq connection
 parameters = pika.ConnectionParameters('mkrabbitmq',
@@ -416,7 +387,7 @@ while True:
         elif content_providers == 'Z':
             logging.info('worker Z meta api: class: %s rowid: %s json: %s',
                          class_text_dict[row_data['mdq_download_json']
-                                         ['ClassID']],
+                         ['ClassID']],
                          row_data['mdq_id'], row_data['mdq_download_json'])
             metadata_uuid = None
             # check for book/etc

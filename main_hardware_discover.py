@@ -24,10 +24,6 @@ from common import common_hardware_roku_network
 from common import common_file
 from common import common_logging
 from common import common_string
-from common import common_signal
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Hardware_Discovery')
