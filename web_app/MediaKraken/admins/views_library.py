@@ -16,6 +16,9 @@ blueprint = Blueprint("admins_library", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
+from MediaKraken.extensions import (
+    fpika,
+)
 from MediaKraken.admins.forms import LibraryAddEditForm
 
 from common import common_config_ini
@@ -64,8 +67,11 @@ def admin_library():
     List all media libraries
     """
     if request.method == 'POST':
-        g.db_connection.db_trigger_insert(
-            ('python', './subprogram_file_scan.py'))
+        # submit the message
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'Type': 'Library Scan'}))
+        fpika.return_channel(ch)
         flash("Scheduled media scan.")
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
