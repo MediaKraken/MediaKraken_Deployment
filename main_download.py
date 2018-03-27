@@ -22,6 +22,7 @@ import json
 import pika
 import subprocess
 import time
+from common import common_network
 
 
 def on_message(channel, method_frame, header_frame, body):
@@ -36,6 +37,13 @@ def on_message(channel, method_frame, header_frame, body):
                                        '/mediakraken/archive.txt', json_message['Data']],
                                       shell=False)
             dl_pid.wait()
+        if json_message['Type'] == 'image':
+            for row_data in thread_db.db_download_image_read():
+                common_network.mk_network_fetch_from_url(row_data['mdq_image_download_json']['url'],
+                                                         row_data['mdq_image_download_json'][
+                                                             'local'])
+                thread_db.db_download_image_delete(row_data['mdq_image_id'])
+                # thread_db.db_commit() - commit done in delete function above
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 

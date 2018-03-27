@@ -824,15 +824,6 @@ if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
 # 3 - person
 # 4 - trailer
 
-
-# download image que
-db_connection.db_query('create table IF NOT EXISTS mm_download_image_que (mdq_image_id uuid'
-                       ' CONSTRAINT mdq_image_id_pk primary key, mdq_image_provider text,'
-                       'mdq_image_download_json jsonb)')
-if db_connection.db_table_index_check('mm_image_download_idx_provider') is None:
-    db_connection.db_query('CREATE INDEX mm_image_download_idx_provider'
-                           ' ON mm_download_image_que(mdq_image_provider)')
-
 # hardware device
 db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
                        ' CONSTRAINT mm_device_id_pk primary key, mm_device_type text,'

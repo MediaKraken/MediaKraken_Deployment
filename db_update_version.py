@@ -214,5 +214,10 @@ if db_connection.db_version_check() == 15:
     db_connection.db_version_update(16)
     db_connection.db_commit()
 
+if db_connection.db_version_check() == 16:
+    db_connection.db_query('drop table mm_download_image_que')
+    db_connection.db_version_update(17)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

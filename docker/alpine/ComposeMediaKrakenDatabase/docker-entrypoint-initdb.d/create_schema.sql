@@ -94,19 +94,6 @@ CREATE TABLE mm_device (
 ALTER TABLE mm_device OWNER TO metamanpg;
 
 --
--- Name: mm_download_image_que; Type: TABLE; Schema: public; Owner: metamanpg
---
-
-CREATE TABLE mm_download_image_que (
-    mdq_image_id uuid NOT NULL,
-    mdq_image_provider text,
-    mdq_image_download_json jsonb
-);
-
-
-ALTER TABLE mm_download_image_que OWNER TO metamanpg;
-
---
 -- Name: mm_download_que; Type: TABLE; Schema: public; Owner: metamanpg
 --
 

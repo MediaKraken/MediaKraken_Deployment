@@ -55,9 +55,6 @@ class MKServerDatabase(object):
         db_download_update_provider, \
         db_download_update, \
         db_download_que_exists
-    from database.db_base_download_images import db_download_image_insert, \
-        db_download_image_read, \
-        db_download_image_delete
     from database.db_base_extensions import db_extension_available, \
         db_extension_installed
     from database.db_base_iradio import db_iradio_insert, \
