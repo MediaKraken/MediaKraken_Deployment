@@ -17,24 +17,28 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from datetime import datetime  # to handle threading
-import os
-import uuid
-import time
+
 import json
-import pika
+import os
 import subprocess
+import time
+import uuid
+from datetime import datetime  # to handle threading
+
+import pika
 from concurrent import futures
+
 from common import common_config_ini
-from common import common_internationalization
 from common import common_file
 from common import common_file_extentions
+from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_cifs
 from common import common_string
 
 # start logging
-es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_File_Scan')
+if os.environ['DEBUG']:
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_File_Scan')
 
 
 def worker(audit_directory):
@@ -44,7 +48,8 @@ def worker(audit_directory):
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
-    es_inst.com_elastic_index('info', {'worker dir': dir_path})
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'worker dir': dir_path})
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,
@@ -182,13 +187,15 @@ def worker(audit_directory):
         thread_db.db_audit_path_update_status(dir_guid,
                                               json.dumps({'Status': 'File scan: '
                                                                     + common_internationalization.com_inter_number_format(
-                                                                        total_scanned)
-                                                          + ' / ' + common_internationalization.com_inter_number_format(
-                                                                        total_file_in_dir),
+                                                  total_scanned)
+                                                                    + ' / ' + common_internationalization.com_inter_number_format(
+                                                  total_file_in_dir),
                                                           'Pct': (
-                                                                        total_scanned / total_file_in_dir) * 100}))
+                                                                         total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
-    es_inst.com_elastic_index('info', {'worker dir done': dir_path, 'media class': media_class_type_uuid})
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info',
+                              {'worker dir done': dir_path, 'media class': media_class_type_uuid})
     # set to none so it doesn't show up
     thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
@@ -241,12 +248,13 @@ known_media = None
 class_text_dict = {}
 for class_data in db_connection.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_type']
-                    ] = class_data['mm_media_class_guid']
+    ] = class_data['mm_media_class_guid']
 
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
-    es_inst.com_elastic_index('info', {"Audit Path": row_data})
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {"Audit Path": row_data})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
@@ -292,7 +300,8 @@ if len(audit_directories) > 0:
     with futures.ThreadPoolExecutor(len(audit_directories)) as executor:
         futures = [executor.submit(worker, n) for n in audit_directories]
         for future in futures:
-            es_inst.com_elastic_index('info', {'future': future.result()})
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('info', {'future': future.result()})
 
 # log end
 db_connection.db_activity_insert('MediaKraken_Server File Scan Stop', None,

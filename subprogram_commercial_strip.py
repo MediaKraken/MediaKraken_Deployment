@@ -39,6 +39,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import getopt
+import os
 import subprocess
 import sys
 
@@ -49,20 +50,25 @@ def main(argv):
     """
     Main commercial strip
     """
-    # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Commercial_Strip')
+    if os.environ['DEBUG']:
+        # start logging
+        es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Commercial_Strip')
     inputfile = None
     outputfile = None
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        es_inst.com_elastic_index('error',
-                                  'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('error',
+                                      'subprogram_commercial_strip'
+                                      ' -i <inputfile> -o <outputfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            es_inst.com_elastic_index('error',
-                                      'subprogram_commercial_strip -i <inputfile> -o <outputfile>')
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('error',
+                                          'subprogram_commercial_strip'
+                                          ' -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -70,7 +76,9 @@ def main(argv):
             outputfile = arg
     # kick off ffmpeg process
     proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
-    es_inst.com_elastic_index('info', {"pid": proc.pid, "input": inputfile, "output": outputfile})
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {"pid": proc.pid,
+                                           "input": inputfile, "output": outputfile})
     proc.wait()
 
 

@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
+import os
 import time
 
 import pika
@@ -28,7 +29,8 @@ from common import common_ffmpeg
 from common import common_logging_elasticsearch
 
 # start logging
-es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_FFProbe')
+if os.environ['DEBUG']:
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_FFProbe')
 
 def on_message(channel, method_frame, header_frame, body):
     """
@@ -36,7 +38,8 @@ def on_message(channel, method_frame, header_frame, body):
     """
     if body is not None:
         json_message = json.loads(body)
-        es_inst.es_index('info', {'ffprobe': json_message})
+        if os.environ['DEBUG']:
+            es_inst.es_index('info', {'ffprobe': json_message})
         db_connection.db_media_ffmeg_update(json_message['Data'],
                                             json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
                                                 db_connection.db_read_media(
