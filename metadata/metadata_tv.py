@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import json
 import logging  # pylint: disable=W0611
+import pika
 
 from guessit import guessit
 
@@ -30,6 +31,18 @@ from common import common_thetvdb
 from . import metadata_nfo_xml
 
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+# pika rabbitmq connection
+parameters = pika.ConnectionParameters('mkrabbitmq',
+                                       credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
+# setup channels and queue
+channel = connection.channel()
+exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
+                                    durable=True)
+queue = channel.queue_declare(queue='mkdownload', durable=True)
+channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
+channel.basic_qos(prefetch_count=1)
 
 # verify thetvdb key exists for search
 if option_config_json['API']['thetvdb'] is not None:
