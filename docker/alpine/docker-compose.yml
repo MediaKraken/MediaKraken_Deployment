@@ -453,6 +453,8 @@ services:
       - ELASTICSEARCH_START=1
       - LOGSTASH_START=0
       - KIBANA_START=1
+    volumes:
+      - /var/log/mediakraken/elk:/var/lib/elasticsearch
     networks:
       - mediakraken_network
     restart: unless-stopped
