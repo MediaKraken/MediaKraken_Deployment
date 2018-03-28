@@ -30,9 +30,10 @@ class CommonElasticsearch(object):
         self.es_inst = Elasticsearch([{'host': es_host, 'port': 9200}])
         self.es_index = index_type
 
-    def com_elastic_index(self, doc_type, body_data):
-        self.es_inst.index(index=self.es_index, doc_type=doc_type,
-                           body={"text": body_data, "timestamp": datetime.now()})
+    def com_elastic_index(self, log_type, body_data):
+        self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
+                           body={"text": {"type": log_type, "data": body_data, "timestamp":
+                               datetime.now()}})
 
-    def com_elastic_get(self, doc_type, id):
-        self.es_inst.get(index=self.es_index, doc_type=doc_type, id=id)
+    def com_elastic_get(self, id):
+        self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
