@@ -26,13 +26,13 @@ class CommonElasticsearch(object):
     Class for interfacing with Elasticsearch
     """
 
-    def __init__(self, index_type='MediaKraken'):
-        self.es_inst = Elasticsearch([{'host': 'mkelk', 'port': 9200}])
+    def __init__(self, index_type='MediaKraken', es_host='mkelk'):
+        self.es_inst = Elasticsearch([{'host': es_host, 'port': 9200}])
         self.es_index = index_type
 
     def com_elastic_index(self, doc_type, body_data):
         self.es_inst.index(index=self.es_index, doc_type=doc_type,
-                           body={"log": body_data, "timestamp": datetime.now()})
+                           body={"text": body_data, "timestamp": datetime.now()})
 
     def com_elastic_get(self, doc_type, id):
         self.es_inst.get(index=self.es_index, doc_type=doc_type, id=id)
