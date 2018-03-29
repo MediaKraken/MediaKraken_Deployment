@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import sys
 import subprocess
 import os
@@ -27,8 +26,9 @@ from common import common_logging_elasticsearch
 from common import common_network_share
 from common import common_version
 
-# start logging
-common_logging.com_logging_start()
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Server')
 
 logging.info('PATH: %s' % os.environ['PATH'])
 
@@ -46,9 +46,6 @@ if not os.path.isfile('./key/cacert.pem'):
 logging.info("Open DB")
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-db_connection.db_activity_insert('MediaKraken_Server Start', None, 'System: Server Start',
-                                 'ServerStart', None, None, 'System')
 
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
@@ -101,10 +98,6 @@ for link_data in db_connection.db_link_list():
 # hold here
 # this will key off the twisted reactor...only reason is so watchdog doesn't shut down
 proc.wait()
-
-# log stop
-db_connection.db_activity_insert('MediaKraken_Server Stop', None, 'System: Server Stop',
-                                 'ServerStop', None, None, 'System')
 
 # commit
 db_connection.db_commit()

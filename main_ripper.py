@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 from common import common_logging_elasticsearch
 from common import common_signal
+import os
 import subprocess
 import time
 from multiprocessing import Process
@@ -32,12 +32,15 @@ from network import network_base_line_ripper as network_base
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_logging.com_logging_start(
-            './log/MediaKraken_Ripper_Reactor_Line')
+        if os.environ['DEBUG']:
+            # start logging
+            es_inst = common_logging_elasticsearch.CommonElasticsearch(
+                'Main_Ripper_Reactor_Line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
-        logging.info("Ready for connections!")
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Ready for connections!': False})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

@@ -19,21 +19,26 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
+import os
 import subprocess
 import time
 
 import pika
 
+from common import common_logging_elasticsearch
 from common import common_network
 
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Download')
 
 def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
     if body is not None:
-        logging.info("Message body %s", body)
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'msg body': body})
         json_message = json.loads(body)
         if json_message['Type'] == 'youtube':
             dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',

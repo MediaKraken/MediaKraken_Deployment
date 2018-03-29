@@ -31,6 +31,7 @@ from common import common_logging_elasticsearch
 import time
 import subprocess
 import json
+import os
 import uuid
 import base64
 

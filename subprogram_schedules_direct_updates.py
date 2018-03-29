@@ -23,6 +23,7 @@ from common import common_config_ini
 from common import common_logging_elasticsearch
 from common import common_schedules_direct
 
+
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     logging.info("array: %s", meta_program_fetch)
     meta_program_json = sd.com_schedules_direct_program_info(
@@ -41,11 +42,6 @@ common_logging.com_logging_start(
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Start', None,
-                                 'System: Server Schedules Direct Start',
-                                 'ServerSchedulesDirectStart', None, None, 'System')
 
 sd = common_schedules_direct.CommonSchedulesDirect()
 sd.com_schedules_direct_login(option_config_json['SD']['User'],
@@ -132,11 +128,6 @@ if len(meta_program_fetch) > 0:
     mk_schedules_direct_program_info_fetch(meta_program_fetch)
 
 # TODO, go grab images for blank logos
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Schedules Direct Update Stop', None,
-                                 'System: Server Schedules Direct Stop',
-                                 'ServerSchedulesDirectStop', None, None, 'System')
 
 # vaccum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_tv_stations')

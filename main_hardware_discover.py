@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import subprocess
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
@@ -25,8 +25,9 @@ from common import common_file
 from common import common_logging_elasticsearch
 from common import common_string
 
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Hardware_Discovery')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Hardware_Discover')
 
 media_devices = []
 
@@ -49,7 +50,8 @@ chrome_pid = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.
 while True:
     line = chrome_pid.stdout.readline()
     if line != '':
-        logging.info('chromescan out: %s' % line.rstrip())
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'chromescan out': line.rstrip()})
         if line.find(":") != -1:
             media_devices.append({'Chrome IP': line.split(':')[0].strip(),
                                   'Chrome Name': line.split(':')[1].strip()})

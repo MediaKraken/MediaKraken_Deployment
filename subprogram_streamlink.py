@@ -19,13 +19,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
+import os
 import subprocess
 
 from common import common_config_ini
 from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Streamlink')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Streamlink')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
