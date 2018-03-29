@@ -100,8 +100,6 @@ def worker(row_data):
                                           row_data['mm_sync_path_to'] + "."
                                           + row_data['mm_sync_options_json']['Options'][
                                               'VContainer'].split('/', 1)[1], False)
-    thread_db.db_activity_insert('MediaKraken_Server Sync', None,
-                                 'System: Server Sync', 'ServerSync', None, None, 'System')
     thread_db.db_sync_delete(row_data[0])  # guid of sync record
     # thread_db.store record in activity table
     thread_db.db_commit()
@@ -115,22 +113,12 @@ common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Sync Start', None,
-                                 'System: Server Sync Start', 'ServerSyncStart',
-                                 None, None, 'System')
-
 # switched to this since tracebacks work this method
 sync_data = db_connection.db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
         logging.info(future.result())
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Sync Stop', None,
-                                 'System: Server Sync Stop', 'ServerSyncStop',
-                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

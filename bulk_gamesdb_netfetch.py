@@ -29,11 +29,6 @@ total_games = 0
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# log start
-db_connection.db_activity_insert('theGamesDB Batch Start', None,
-                                 'System: Server theGamesDB Start', 'ServerthegamesDBStart', None,
-                                 None, 'System')
-
 GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 # grab and insert all platforms
@@ -57,11 +52,6 @@ for platform \
                                                           system_alias,
                                                           json.dumps(platform_json))
                 db_connection.db_commit()
-
-# log end
-db_connection.db_activity_insert('theGamesDB Batch Stop', None,
-                                 'System: Server theGamesDB Stop', 'ServerthegamesDBStop', None,
-                                 None, 'System')
 
 # send notications
 if total_games > 0:

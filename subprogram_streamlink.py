@@ -32,22 +32,12 @@ if os.environ['DEBUG']:
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Streamlink Start', None,
-                                 'System: Server Streamlink Start', 'ServerStreamlinkStart',
-                                 None, None, 'System')
-
 # do the actual capture
 filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - " \
            + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
 subprocess.call(["./bin/streamlink", "twitch.tv/" +
                  user, quality, "-o", filename])
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Streamlink Stop', None,
-                                 'System: Server Streamlink Stop', 'ServerStreamlinkStop',
-                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()
