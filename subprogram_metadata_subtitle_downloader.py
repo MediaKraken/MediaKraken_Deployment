@@ -18,15 +18,14 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import logging  # pylint: disable=W0611
 import os
 
 from common import common_file
-from common import common_logging
+from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Subtitle_Downloader')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Subtitle_Downloader')
 
 total_download_attempts = 0
 
@@ -36,8 +35,9 @@ sub_lang = "en"
 for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
                                                ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
-    logging.info("title check: %s", media_row.rsplit(
-        '.', 1)[0] + "." + sub_lang + ".srt")
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
+            '.', 1)[0] + "." + sub_lang + ".srt"})
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
     # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
     if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
@@ -47,6 +47,8 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         file_handle = os.popen(
             "subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
         cmd_output = file_handle.read()
-        logging.info("Download Status: %s", cmd_output)
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 
+# TODO put in the notifications
 print('Total subtitle download attempts: %s' % total_download_attempts)

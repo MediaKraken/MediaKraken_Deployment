@@ -19,24 +19,21 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
+import os
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_anidb
 from common import common_metadata_scudlee
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_AniDB_Updates')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_AniDB_Updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server AniDB Update Start', None,
-                                 'System: Server AniDB Start', 'ServertheAniDBStart', None, None,
-                                 'System')
 
 # stage totals
 anime_added = 0
@@ -51,8 +48,10 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    logging.info('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
-                 tvdbid, imdbid, default_tvseason, mapping_data, before_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {
+            'stuff': str(('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
+                          tvdbid, imdbid, default_tvseason, mapping_data, before_data))})
     db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,
                                                            'thetvdb': tvdbid, 'imdb': imdbid}),
                                                json.dumps({'Default': default_tvseason,
@@ -61,11 +60,6 @@ for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
 # store the xref collection data
 for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     pass
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server AniDB Update Stop', None,
-                                 'System: Server AniDB Stop', 'ServertheAniDBStop', None, None,
-                                 'System')
 
 # send notications
 if anime_added > 0:

@@ -18,22 +18,18 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import logging  # pylint: disable=W0611
-
+import os
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_scudlee
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Anime_Scudlee')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Anime_Scudlee')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Start', None,
-                                 'System: Server Anime Scudlee Start', 'ServerAnimeScudleeStart',
-                                 None, None, 'System')
 
 
 # same code in subprograb update create collections
@@ -54,7 +50,8 @@ def store_update_record(db_connection, collection_name, guid_list):
 common_metadata_scudlee.mk_scudlee_fetch_xml()
 # begin the media match on NULL matches
 for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    logging.info("row: %s", row_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'row': 'row_data'})
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
         # just check for non int then it's a non tvdb id
@@ -72,11 +69,6 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():
         pass
     else:
         store_update_record(db_connection, row_data[0], row_data[1])
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Anime Scudlee Stop', None,
-                                 'System: Server Anime Scudlee Stop', 'ServerAnimeScudleeStop',
-                                 None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()

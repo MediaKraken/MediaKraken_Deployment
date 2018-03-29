@@ -22,7 +22,7 @@ import datetime
 import subprocess
 
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 
 # start logging
 common_logging.com_logging_start('./log/MediaKraken_Subprogram_Streamlink')

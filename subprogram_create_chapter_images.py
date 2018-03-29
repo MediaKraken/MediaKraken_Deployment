@@ -35,7 +35,6 @@ def worker(worker_file_list):
     global total_images_created
     chapter_image_list = {}
     json_id, json_data, json_obj, media_path = worker_file_list
-    # logging.info('value=%s', json_id)
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     # begin image generation
@@ -111,7 +110,7 @@ if len(file_list) > 0:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
             if os.environ['DEBUG']:
-                es_inst.es_index('info', future.result())
+                es_inst.es_index('info', {'data': future.result()})
 
 # send notications
 if total_images_created > 0:

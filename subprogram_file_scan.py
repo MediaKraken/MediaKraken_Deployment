@@ -195,7 +195,8 @@ def worker(audit_directory):
         thread_db.db_commit()
     if os.environ['DEBUG']:
         es_inst.com_elastic_index('info',
-                              {'worker dir done': dir_path, 'media class': media_class_type_uuid})
+                                  {'worker dir done': dir_path,
+                                   'media class': media_class_type_uuid})
     # set to none so it doesn't show up
     thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
@@ -227,11 +228,6 @@ channel.confirm_delivery()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server File Scan Start', None,
-                                 'System: Server File Scan Start', 'ServerFileScanStart', None,
-                                 None, 'System')
 
 # load in all media from DB
 global_known_media = []  # pylint: disable=C0103
@@ -302,11 +298,6 @@ if len(audit_directories) > 0:
         for future in futures:
             if os.environ['DEBUG']:
                 es_inst.com_elastic_index('info', {'future': future.result()})
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server File Scan Stop', None,
-                                 'System: Server File Scan Stop', 'ServerFileScanStop', None, None,
-                                 'System')
 
 # commit
 db_connection.db_commit()

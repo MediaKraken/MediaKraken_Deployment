@@ -23,7 +23,7 @@ import subprocess
 import os
 from common import common_config_ini
 from common import common_docker
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network_share
 from common import common_version
 

@@ -22,7 +22,7 @@ import subprocess
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
 from common import common_file
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_string
 
 # start logging

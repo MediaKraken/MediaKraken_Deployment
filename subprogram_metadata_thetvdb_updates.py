@@ -19,26 +19,21 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
+import os
 import time
 
 import xmltodict
 
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_thetvdb
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_thetvdb_Updates')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_TheTVDB_Updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Start', None,
-                                 'System: Server thetvdb Start', 'ServerthetvdbStart',
-                                 None, None, 'System')
 
 # grab the data
 thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(
@@ -49,7 +44,8 @@ option_json, status_json = db_connection.db_opt_status_read()
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
-    logging.info(row_data['id'])
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'id': row_data['id']})
     # look for previous data
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
@@ -84,16 +80,13 @@ for row_data in update_item['Data']['Series']:
     db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
-    logging.info(row_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'banner': row_data})
 
 # set the epoc date
 # TODO update the epoc in status from the udpate xml
 # db_connection.db_Option_Status_Update(row_data[0], status_json)
 
-# log end
-db_connection.db_activity_insert('MediaKraken_Server thetvdb Update Stop', None,
-                                 'System: Server thetvdb Stop', 'ServerthetvdbStop',
-                                 None, None, 'System')
 
 # commit all changes
 db_connection.db_commit()

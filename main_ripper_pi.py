@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging  # pylint: disable=W0611
 from concurrent import futures
 from common import common_hardware_arduino_usb_serial
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_signal
 import sys
 import time

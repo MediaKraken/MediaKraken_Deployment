@@ -17,24 +17,20 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-
-import logging  # pylint: disable=W0611
+import os
 
 from common import common_config_ini
 from common import common_file
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network_radio
 
 # start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_IRadio')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_IRadio')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server iRadio Start', None,
-                                 'System: Server iRadio Start', 'ServeriRadioStart', None, None,
-                                 'System')
 
 # start code for updating iradio database
 common_network_radio.com_net_radio()
@@ -42,15 +38,12 @@ common_network_radio.com_net_radio()
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
-    logging.info('radio cache: %s', row_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'radio cache': row_data})
     db_connection.db_iradio_insert(row_data)
 
 # radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
-# log end
-db_connection.db_activity_insert('MediaKraken_Server iRadio Stop', None,
-                                 'System: Server iRadio Stop', 'ServeriRadioStop', None, None,
-                                 'System')
 
 # commit
 db_connection.db_commit()

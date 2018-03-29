@@ -22,7 +22,7 @@ import subprocess
 import json
 import os
 import pika
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network_share
 from common import common_system
 

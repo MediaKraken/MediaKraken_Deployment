@@ -19,16 +19,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
-
+import os
 import db_base_brainz as database_base_brainz
 
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_musicbrainz_Sync')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_MusicBrainz_Sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -40,12 +39,6 @@ db_brainz.db_open(option_config_json['MediaBrainz']['BrainzDBHost'],
                   option_config_json['MediaBrainz']['BrainzDBName'],
                   option_config_json['MediaBrainz']['BrainzDBUser'],
                   option_config_json['MediaBrainz']['BrainzDBPass'])
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server musicbrainz Start', None,
-                                 'System: Server musicbrainz Start',
-                                 'ServermusicbrainzStart', None,
-                                 None, 'System')
 
 # fetch all the artists from brainz
 for row_data in db_brainz.db_brainz_all_artists():
@@ -62,7 +55,8 @@ for row_data in db_brainz.db_brainz_all_artists():
                                                        row_data['end_date_year']) + ':' + str(
                                                        row_data['end_date_month']) + ':'
                                                            + str(row_data['end_date_day']))}))
-    logging.info(row_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'row': row_data})
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],
@@ -71,18 +65,14 @@ for row_data in db_brainz.db_brainz_all_artists():
                                         json.dumps({'Commment': row_data_album['comment'],
                                                     'Language': row_data_album['language'],
                                                     'Barcode': row_data_album['barcode']}))
-        logging.info(row_data_album)
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'row data album': row_data_album})
 '''
         # fetch all the songs from brainz
         for row_data in db_brainz.db_Brainz_All_Songs():
             # 0 gid, 1 name, 2 recording, 3 position, 4 id
             db_connection.db_meta_song_add(row_data[99],json.dumps({ 'musicbrainz':row_data[0] }),json.dumps({'':rowdata[99]}))
 '''
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server musicbrainz Stop', None,
-                                 'System: Server musicbrainz Stop', 'ServermusicbrainzStop', None,
-                                 None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()

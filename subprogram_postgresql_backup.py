@@ -23,19 +23,14 @@ import time
 
 from common import common_cloud
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Postgresql_Backup')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Postgresql_Backup')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Start', None,
-                                 'System: Server DB Backup Start', 'ServerBackupStart',
-                                 None, None, 'System')
 
 # generate dump file
 backup_file_name = 'MediaKraken_Backup_' + \
@@ -55,11 +50,6 @@ if option_json['Backup']['BackupType'] != 'local':
                                       os.path.join(
                                           option_config_json['MediaKrakenServer']['BackupLocal'],
                                           backup_file_name), backup_file_name, True)
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Backup Stop', None,
-                                 'System: Server DB Backup Stop', 'ServerBackupStop',
-                                 None, None, 'System')
 
 # commit records
 db_connection.db_commit()

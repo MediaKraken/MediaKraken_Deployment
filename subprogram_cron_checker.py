@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
+import json
 import os
 import subprocess
 import time
@@ -30,7 +31,7 @@ from common import common_logging_elasticsearch
 
 # start logging
 if os.environ['DEBUG']:
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Cron')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Cron_Checker')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -69,13 +70,14 @@ while 1:
                                             shell=False)
                     if os.environ['DEBUG']:
                         es_inst.es_index('info',
-                                         {'cron': row_data['mm_cron_name'], 'pid': proc.pid})
+                                         {'cron': row_data['mm_cron_name'],
+                                                  'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
             db_connection.db_commit()
             if os.environ['DEBUG']:
-                es_inst.es_index('info', {'row': row_data})
+                es_inst.es_index('info', {'data': row_data})
     time.sleep(60)  # sleep for 60 seconds
 
 # close the database

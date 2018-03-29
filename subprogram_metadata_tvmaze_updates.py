@@ -19,42 +19,39 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
+import os
 import uuid
 
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_tvmaze
 
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_tvmaze_Updates')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_TVMaze_Updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# log start
-db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Start', None,
-                                 'System: Server tvmaze Start', 'ServerthetvmazeStart',
-                                 None, None, 'System')
-
 # grab updated show list with epoc data
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
-logging.info('tvmaze update: %s', result)
+if os.environ['DEBUG']:
+    es_inst.com_elastic_index('info', {'result': result})
 # for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
-    logging.info("id: %s %s", tvmaze_id, tvmaze_time)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
-        # if show was updated since db record
-        # TODO if results['updated'] < tvmaze_time:
-        # update_insert_show(tvmaze_id, results[0]) # update the guid
-        logging.info("update")
+    # if show was updated since db record
+    # TODO if results['updated'] < tvmaze_time:
+    # update_insert_show(tvmaze_id, results[0]) # update the guid
+        pass
     else:
         if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
-            logging.info("new")
             # insert new record as it's a new show
             db_connection.db_download_insert('tvmaze', 2, json.dumps({'MediaID': None,
                                                                       'Path': None, 'ClassID': None,
@@ -62,11 +59,6 @@ for tvmaze_id, tvmaze_time in result.items():
                                                                       'MetaNewID': str(
                                                                           uuid.uuid4()),
                                                                       'ProviderMetaID': tvmaze_id}))
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server tvmaze Update Stop', None,
-                                 'System: Server tvmaze Stop', 'ServerthetvmazeStop',
-                                 None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()

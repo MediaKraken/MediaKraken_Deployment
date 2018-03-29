@@ -28,7 +28,7 @@ import pika
 from guessit import guessit
 
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_limiter
 from common.common_metadata_limiter import *
 from metadata import metadata_general

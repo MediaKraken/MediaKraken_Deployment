@@ -22,7 +22,7 @@ import logging
 import subprocess
 from build_image_directory import build_image_dirs
 from build_trailer_directory import build_trailer_dirs
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_metadata_limiter
 
 # TODO should be using env variables

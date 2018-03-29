@@ -59,16 +59,15 @@ def main(argv):
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('error',
-                                      'subprogram_commercial_strip'
-                                      ' -i <inputfile> -o <outputfile>')
+            es_inst.com_elastic_index('error', {
+                'data': 'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
             if os.environ['DEBUG']:
-                es_inst.com_elastic_index('error',
-                                          'subprogram_commercial_strip'
-                                          ' -i <inputfile> -o <outputfile>')
+                es_inst.com_elastic_index('error', {
+                    'data':
+                        'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg

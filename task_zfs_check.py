@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network_ssh
 
 # start logging

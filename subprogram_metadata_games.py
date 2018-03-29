@@ -17,10 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 from common import common_config_ini
 from common import common_internationalization
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network
 from common import common_version
 import zipfile
@@ -31,8 +30,9 @@ import xmltodict
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_MAME_XML')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_MAME_XML')
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
@@ -55,8 +55,9 @@ if False:
     for zippedfile in zip_handle.namelist():
         json_data = xmltodict.parse(zip_handle.read(zippedfile))
         for child_of_root in json_data['mame']['machine']:
-            logging.info("child: %s", child_of_root)
-            logging.info("childname: %s", child_of_root['@name'])
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('info', {'child': child_of_root,
+                                                   'childname': child_of_root['@name']})
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
                 # TODO handle shortname properly
@@ -108,7 +109,7 @@ if False:
                 print('sys: %s', file_name.split('/', 1)[1])
                 game_short_name_guid \
                     = db_connection.db_meta_games_system_guid_by_short_name(
-                        file_name.split('/', 1)[1])
+                    file_name.split('/', 1)[1])
                 print('wh %s', game_short_name_guid)
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
@@ -173,7 +174,6 @@ if False:
 file_name = ('/mediakraken/emulation/history%s.zip' %
              common_version.MAME_VERSION)
 if not os.path.exists(file_name):
-    print('tacos')
     common_network.mk_network_fetch_from_url(
         ('https://www.arcade-history.com/dats/history%s.zip' %
          common_version.MAME_VERSION),
@@ -218,7 +218,7 @@ if True:
                         print(game_data['gi_id'])
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
-                                                                      'gi_game_info_json']))
+                                                                                 'gi_game_info_json']))
                         total_software_update += 1
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info

@@ -6,32 +6,22 @@ Vacuum tables
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import logging  # pylint: disable=W0611
-
+import os
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Postgresql_Vacuum')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Postgresql_Vacuum')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Start', None,
-                                 'System: Server DB Vacuum Start', 'ServerVacuumStart',
-                                 None, None, 'System')
-
 # vacuum all the tables
 for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
-    logging.info(row)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'row': row})
     db_connection.db_pgsql_vacuum_table(row['relname'])
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Postgresql Vacuum Stop', None,
-                                 'System: Server DB Vacuum Stop', 'ServerVacuumStop',
-                                 None, None, 'System')
 
 # commit records
 db_connection.db_commit()

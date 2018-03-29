@@ -17,11 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import sys
 import json
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_schedules_direct
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):

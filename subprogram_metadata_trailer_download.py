@@ -18,27 +18,20 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-
-import logging  # pylint: disable=W0611
-
+import os
 import xmltodict
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_network
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Trailer_Download')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Trailer_Download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Trailer Download Start', None,
-                                 'System: Server Trailer Download Start',
-                                 'ServerTrailerDownloadStart', None, None, 'System')
 
 total_trailers_downloaded = 0
 
@@ -46,7 +39,8 @@ data = xmltodict.parse(common_network.mk_network_fetch_from_url(
     "http://feeds.hd-trailers.net/hd-trailers", None))
 if data is not None:
     for item in data['item']:
-        logging.info('item: %s', item)
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'item': item})
         download_link = None
         if ('(Trailer' in data['item']['title']
             and option_config_json['Trailer']['Trailer'] is True) \
@@ -74,11 +68,6 @@ if total_trailers_downloaded > 0:
         common_internationalization.com_inter_number_format(
             total_trailers_downloaded)
         + " trailers(s) flagged for download.", True)
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Trailer Download Stop', None,
-                                 'System: Server Trailer Download Stop',
-                                 'ServerTrailerDownloadStop', None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()

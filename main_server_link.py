@@ -26,7 +26,7 @@ except:
     import pickle
 import sys
 from common import common_config_ini
-from common import common_logging
+from common import common_logging_elasticsearch
 from common import common_signal
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory

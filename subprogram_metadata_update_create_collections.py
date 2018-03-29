@@ -20,23 +20,18 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-
+import os
 from common import common_config_ini
 from common import common_internationalization
-from common import common_logging
+from common import common_logging_elasticsearch
 
-# start logging
-common_logging.com_logging_start(
-    './log/MediaKraken_Subprogram_Update_Create_Collections')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch(
+        'Subprogram_Update_Create_Collections')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-# log start
-db_connection.db_activity_insert('MediaKraken_Server Create Collection Start', None,
-                                 'System: Server Create Collection Start',
-                                 'ServerCreateCollectionStart', None, None,
-                                 'System')
 
 # pull in all metadata with part of collection in metadata
 old_collection_name = ''
@@ -61,14 +56,16 @@ for row_data in db_connection.db_media_collection_scan():
                                                          'ProviderMetaID': str(old_id)}))
             total_collections_downloaded += 1
         old_collection_name = \
-        row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection']['name']
+            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+                'name']
         old_poster_path = \
-        row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
-            'poster_path']
+            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+                'poster_path']
         old_backdrop_path = row_data['mm_metadata_json']['Meta'][
             'themoviedb']['Meta']['belongs_to_collection']['backdrop_path']
         old_id = \
-        row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection']['id']
+            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+                'id']
         guid_list = []
         first_record = False
     guid_list.append(row_data['mm_metadata_guid'])
@@ -88,11 +85,6 @@ if total_collections_downloaded > 0:
         common_internationalization.com_inter_number_format(
             total_collections_downloaded)
         + " collection(s) metadata downloaded.", True)
-
-# log end
-db_connection.db_activity_insert('MediaKraken_Server Create Collection Stop', None,
-                                 'System: Server Create Collection Stop',
-                                 'ServerCreateCollectionStop', None, None, 'System')
 
 # commit all changes to db
 db_connection.db_commit()
