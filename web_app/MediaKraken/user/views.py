@@ -10,7 +10,6 @@ from flask_login import current_user
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
 import uuid
 import json
 import subprocess
@@ -19,6 +18,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 from MediaKraken.public.forms import SearchForm
@@ -103,7 +103,7 @@ def user_video_player(guid):
                                       g.db_connection.db_media_path_by_uuid(
                                           media_guid_index)[0],
                                       'http://localhost:8900/stream.ffm'], shell=False)
-    common_global.es_inst.com_elastic_index('info', {'stuff':"FFServer PID: %s", proc_ffserver.pid)
+    common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
     return render_template("users/user_playback.html", data_desc=('Movie title'))
 
 
@@ -114,7 +114,7 @@ def user_video_player_videojs(mtype, guid):
     """
     Display video playback page
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"videojs: %s %s", mtype, guid)
+    common_global.es_inst.com_elastic_index('info', {"videojs": mtype, 'guid': guid})
     # grab the guid from the comboindex
     # use try since people can go here "by-hand"
     try:
@@ -126,11 +126,11 @@ def user_video_player_videojs(mtype, guid):
         abort(404)
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
-    common_global.es_inst.com_elastic_index('info', {'stuff':"aud: %s", audio_track_index)
+    common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
     # 0:0 as example # pylint: disable=C0326
     atracks = ['-map ' + audio_track_index]
     subtitle_track_index = request.form["Video_Play_Subtitles"]
-    common_global.es_inst.com_elastic_index('info', {'stuff':"sub: %s", subtitle_track_index)
+    common_global.es_inst.com_elastic_index('info', {"sub": subtitle_track_index})
     if subtitle_track_index is not None:
         subtracks = ['subtitles=' + media_path,
                      'language=' + subtitle_track_index]
@@ -145,7 +145,7 @@ def user_video_player_videojs(mtype, guid):
                                  "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks
                                 + ["-vf"] + subtracks
                                 + ["yadif=0:0:0", vid_name], shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"FFMPEG Pid: %s", proc.pid)
+        common_global.es_inst.com_elastic_index('info', {"FFMPEG Pid": proc.pid})
 
         # ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
         # -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
@@ -154,7 +154,7 @@ def user_video_player_videojs(mtype, guid):
         # pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
     else:
         pass_guid = guid
-    common_global.es_inst.com_elastic_index('info', {'stuff':"hls path: %s", pass_guid)
+    common_global.es_inst.com_elastic_index('info', {"hls path": pass_guid})
     return render_template("users/user_playback_videojs.html", data_desc=('Movie title'),
                            data_guid=pass_guid,
                            data_mtype=mtype)
@@ -190,7 +190,7 @@ def movie_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'movie status: %s %s', guid, event_type)
+    common_global.es_inst.com_elastic_index('info', {'movie status': guid, 'event': event_type})
     if event_type == "sync":
         return redirect(url_for('user.sync_edit', guid=guid))
     else:
@@ -206,7 +206,8 @@ def movie_metadata_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'movie metadata status: %s %s', guid, event_type)
+    common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
+                                                     'event': event_type})
     g.db_connection.db_meta_movie_status_update(
         guid, current_user.get_id(), event_type)
     return json.dumps({'status': 'OK'})
@@ -219,7 +220,7 @@ def tv_status(guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'tv status: %s %s', guid, event_type)
+    common_global.es_inst.com_elastic_index('info', {'tv status': guid, 'event': event_type})
     if event_type == "watched":
         pass
     elif event_type == "sync":

@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import requests
-
+from . import common_global
 '''
 https://api.thetvdb.com/swagger#/
 '''
@@ -39,13 +39,13 @@ class CommonMetadataTheTVDBv2(object):
     def com_meta_thetvdbv2_login(self):
         print('header %s', self.headers)
         resp = requests.post(self.base_api_url + "login", headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"thetvdbv2_login Info Status: %s-%s",
-                     resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"thetvdbv2_login Info Status":
+                     resp.status_code, 'json': resp.json()})
         return resp.json()
 
     def com_meta_thetvdbv2_language(self):
         resp = requests.post(self.base_api_url +
                              "languages", headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"thetvdbv2_lang Info Status: %s-%s",
-                     resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"thetvdbv2_lang Info Status":
+                     resp.status_code, 'json': resp.json()})
         return resp.json()

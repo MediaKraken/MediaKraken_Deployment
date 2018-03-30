@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import requests
+
+from . import common_global
 
 
 class CommonMetadataIMVdb(object):
@@ -39,7 +41,8 @@ class CommonMetadataIMVdb(object):
         resp = requests.post(self.base_api_url + "/video/" + video_id
                              + "?include=sources,credits,bts,featured,popularity,countries,",
                              headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Info Status: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"imvdb Info Status":
+                                                             resp.status_code, 'json': resp.json()})
         return resp.json()
 
     def com_imvdb_search_video(self, artist_name, song_title):
@@ -50,8 +53,8 @@ class CommonMetadataIMVdb(object):
                              + (artist_name.replace(' ', '+') + '+'
                                 + song_title.replace(' ', '+')),
                              headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Video Status: %s-%s",
-                     resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"imvdb Video Status":
+                                                         resp.status_code, 'json': resp.json()})
         return resp.json()
 
     def com_imvdb_search_entities(self, artist_name):
@@ -60,6 +63,6 @@ class CommonMetadataIMVdb(object):
         """
         resp = requests.post(self.base_api_url + "/search/entities?q="
                              + artist_name.replace(' ', '+'), headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Entities Status: %s-%s",
-                     resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"imvdb Entities Status":
+                                                             resp.status_code, 'json': resp.json()})
         return resp.json()

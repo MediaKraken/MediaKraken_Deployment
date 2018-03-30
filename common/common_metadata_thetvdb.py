@@ -17,11 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import zipfile
 import StringIO
 import xmltodict
 import requests
+from . import common_global
 from . import common_network
 
 '''
@@ -59,8 +60,8 @@ class CommonMetadataTheTVDB(object):
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
-        common_global.es_inst.com_elastic_index('info', {'stuff':"zip: %s %s %s", self.thetvdb_connection,
-                     tv_show_id, lang_code)
+        common_global.es_inst.com_elastic_index('info', {"zip": self.thetvdb_connection,
+                     'showid': tv_show_id, 'lang': lang_code})
 
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
                                  + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
@@ -80,14 +81,14 @@ class CommonMetadataTheTVDB(object):
         for zippedshowFile in show_zip.namelist():
             if zippedshowFile == 'en.xml':
                 xml_show_data = xmltodict.parse(show_zip.read(zippedshowFile))
-                common_global.es_inst.com_elastic_index('info', {'stuff':"xml show: %s", xml_show_data)
+                common_global.es_inst.com_elastic_index('info', {"xml show": xml_show_data})
             elif zippedshowFile == 'actors.xml':
                 xml_actor_data = xmltodict.parse(show_zip.read(zippedshowFile))
-                common_global.es_inst.com_elastic_index('info', {'stuff':"xml actor: %s", xml_actor_data)
+                common_global.es_inst.com_elastic_index('info', {"xml actor": xml_actor_data})
             elif zippedshowFile == 'banners.xml':
                 xml_banners_data = xmltodict.parse(
                     show_zip.read(zippedshowFile))
-                common_global.es_inst.com_elastic_index('info', {'stuff':"xml banner: %s", xml_banners_data)
+                common_global.es_inst.com_elastic_index('info', {"xml banner": xml_banners_data})
         return (xml_show_data, xml_actor_data['Actors'], xml_banners_data['Banners'])
 
     #    # depreciated....they round-robin at their end

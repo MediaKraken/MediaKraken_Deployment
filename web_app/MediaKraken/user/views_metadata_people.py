@@ -8,12 +8,13 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_people", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 from MediaKraken.public.forms import SearchForm
@@ -67,9 +68,9 @@ def metadata_person_list():
     else:
         mediadata = g.db_connection.db_meta_person_list(offset, per_page)
     for person_data in mediadata:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'person data: %s', person_data)
-        common_global.es_inst.com_elastic_index('info', {'stuff':'im: %s', person_data['mmp_person_image'])
-        common_global.es_inst.com_elastic_index('info', {'stuff':'stuff %s', person_data['mmp_meta'])
+        common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
+                                                person_data['mmp_person_image'], 'meta':
+            person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:

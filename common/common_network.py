@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import os
 import re
 from threading import Thread
@@ -27,13 +26,14 @@ import socket
 import sys
 from . import wol
 from . import common_file
+from . import common_global
 
 
 def mk_network_fetch_from_url(url, directory=None):
     """
     Download data from specified url to save in specific directory
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'dl %s url %s' % (url, directory))
+    common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
     try:
         if sys.version_info < (2, 9, 0):
             datafile = urllib2.urlopen(url)
@@ -51,7 +51,8 @@ def mk_network_fetch_from_url(url, directory=None):
             datafile.close()
             localfile.close()
     except urllib2.URLError, err_code:
-        common_global.es_inst.com_elastic_index('error', {'stuff':'you got an error with the code %s', err_code)
+        common_global.es_inst.com_elastic_index('error', {'you got an error with the code':
+                                                              err_code})
         return None
     if directory is None:
         return datafile.read()
@@ -135,8 +136,8 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Status from %s is %s",
-                     pingle.ip_addr, report[pingle.status])
+        common_global.es_inst.com_elastic_index('info', {"Status from":
+                     pingle.ip_addr, 'report': report[pingle.status]})
 
 
 def mk_network_io_counter(show_nic=False):

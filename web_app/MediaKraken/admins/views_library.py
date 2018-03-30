@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
-import logging  # pylint: disable=W0611
 import os
 import sys
 
@@ -22,6 +21,7 @@ from MediaKraken.extensions import (
 from MediaKraken.admins.forms import LibraryAddEditForm
 
 from common import common_config_ini
+from common import common_global
 from common import common_network_cifs
 from common import common_pagination
 from common import common_string
@@ -50,7 +50,8 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
+                                                current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -107,7 +108,7 @@ def admin_library_edit_page():
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    common_global.es_inst.com_elastic_index('info', {'stuff':'smb info: %s %s %s' % (addr, share, path))
+                    common_global.es_inst.com_elastic_index('info', {'smb info': addr, 'share': share, 'path': path})
                     if addr is None:  # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))

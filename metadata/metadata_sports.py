@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import os
 import json
 from common import common_config_ini
+from common import common_global
 from common import common_metadata_thesportsdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -42,11 +42,11 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(
         stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
-        common_global.es_inst.com_elastic_index('info', {'stuff':"searching: %s", stripped_name)
+        common_global.es_inst.com_elastic_index('info', {"searching": stripped_name})
         thesportsdb_data = \
             THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(
                 stripped_name)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"sports return: %s", thesportsdb_data)
+        common_global.es_inst.com_elastic_index('info', {"sports return": thesportsdb_data})
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)

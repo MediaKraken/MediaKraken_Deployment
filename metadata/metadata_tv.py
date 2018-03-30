@@ -19,12 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import logging  # pylint: disable=W0611
+import os
 import pika
 
 from guessit import guessit
 
 from common import common_config_ini
+from common import common_global
 from common import common_metadata_thetvdb
 from common import common_metadata_tvmaze
 from common import common_thetvdb
@@ -66,7 +67,7 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     """
     # tvmaze search
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv search tvmaze: %s", file_name)
+    common_global.es_inst.com_elastic_index('info', {"meta tv search tvmaze": file_name})
     file_name = guessit(file_name)
     metadata_uuid = None
     tvmaze_id = None
@@ -77,15 +78,16 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
         else:
             tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
                                                                          None))
-        common_global.es_inst.com_elastic_index('info', {'stuff':"response: %s", tvmaze_id)
+        common_global.es_inst.com_elastic_index('info', {'response': tvmaze_id})
         if tvmaze_id is not None:
             #            # since there has been NO match whatsoever.....can "wipe" out everything
             #            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
             #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for tvmaze id
             metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
-            common_global.es_inst.com_elastic_index('info', {'stuff':"db result: %s", metadata_uuid)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'meta tv uuid %s prov id: %s', metadata_uuid, tvmaze_id)
+            common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
+    common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
+                                                     'tvbmaze': tvmaze_id})
     return metadata_uuid, tvmaze_id
 
 
@@ -93,7 +95,7 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv search tvdb: %s", file_name)
+    common_global.es_inst.com_elastic_index('info', {"meta tv search tvdb": file_name})
     file_name = guessit(file_name)
     metadata_uuid = None
     tvdb_id = None
@@ -104,15 +106,16 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
         else:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
                                                                 None, lang_code, True))
-        common_global.es_inst.com_elastic_index('info', {'stuff':"response: %s", tvdb_id)
+        common_global.es_inst.com_elastic_index('info', {"response": tvdb_id})
         if tvdb_id is not None:
             #            # since there has been NO match whatsoever.....can "wipe" out everything
             #            media_id_json = json.dumps({'thetvdb': tvdb_id})
             #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
             metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
-            common_global.es_inst.com_elastic_index('info', {'stuff':"db result: %s", metadata_uuid)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'meta tv uuid %s prov id: %s', metadata_uuid, tvdb_id)
+            common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
+    common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
+                                                     'tvdb': tvdb_id})
     return metadata_uuid, tvdb_id
 
 
@@ -120,21 +123,21 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
     """
     # tvdb data fetch
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv tvdb save fetch: %s", tvdb_id)
+    common_global.es_inst.com_elastic_index('info', {"meta tv tvdb save fetch": tvdb_id})
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data \
         = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'tv fetch save tvdb show %s', xml_show_data)
+    common_global.es_inst.com_elastic_index('info', {'tv fetch save tvdb show': xml_show_data})
     if xml_show_data is not None:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'insert')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'insert'})
         # insert
         image_json = {'Images': {'thetvdb': {
             'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
                                      'thetvdb': str(tvdb_id),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 2')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 2'})
         metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
@@ -145,12 +148,12 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                                                    'Cast': xml_actor_data,
                                                                                    'Banner': xml_banners_data}}}),
                                                          json.dumps(image_json))
-        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 3')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 3'})
         # insert cast info
         if xml_actor_data is not None:
             db_connection.db_meta_person_insert_cast_crew('thetvdb',
                                                           xml_actor_data['Actor'])
-        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 4')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'insert 4'})
         # save rows for episode image fetch
         if 'Episode' in xml_show_data['Data']:
             # checking id instead of filename as id should always exist
@@ -159,7 +162,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
                     # thetvdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:
-                        common_global.es_inst.com_elastic_index('info', {'stuff':'eps info: %s', episode_info)
+                        common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
                             # thetvdb
                             channel.basic_publish(exchange='mkque_download_ex',
@@ -212,7 +215,7 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     Fetch show data from tvmaze
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv tvmaze save fetch: %s", tvmaze_id)
+    common_global.es_inst.com_elastic_index('info', {"meta tv tvmaze save fetch": tvmaze_id})
     metadata_uuid = None
     result_data = TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
         tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
@@ -221,13 +224,13 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         result_json = json.loads(result_data)
     except:
         result_json = None
-    common_global.es_inst.com_elastic_index('info', {'stuff':"tvmaze full: %s", result_json)
+    common_global.es_inst.com_elastic_index('info', {"tvmaze full": result_json})
     if result_json is not None and result_json['status'] != 404:
         show_full_json = ({'Meta': {'tvmaze': result_json}})
         show_detail = show_full_json['Meta']['tvmaze']
-        common_global.es_inst.com_elastic_index('info', {'stuff':"detail: %s", show_detail)
+        common_global.es_inst.com_elastic_index('info', {"detail": show_detail})
         tvmaze_name = show_detail['name']
-        common_global.es_inst.com_elastic_index('info', {'stuff':"name: %s", tvmaze_name)
+        common_global.es_inst.com_elastic_index('info', {"name": tvmaze_name})
         try:
             tvrage_id = str(show_detail['externals']['tvrage'])
         except:
@@ -291,29 +294,30 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'stuff':'tvlook filename: %s', file_name)
+    common_global.es_inst.com_elastic_index('info', {'tvlook filename': file_name})
     # check for dupes by name/year
     if 'year' in file_name:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 1')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 1'})
         if file_name['title'] == metadata_tv_lookup.metadata_last_title \
                 and file_name['year'] == metadata_tv_lookup.metadata_last_year:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 2')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 2'})
             db_connection.db_download_delete(download_que_id)
-            common_global.es_inst.com_elastic_index('info', {'stuff':'meta tv return 1 %s',
-                         metadata_tv_lookup.metadata_last_id)
+            common_global.es_inst.com_elastic_index('info', {'meta tv return 1':
+                         metadata_tv_lookup.metadata_last_id})
             return metadata_tv_lookup.metadata_last_id
     elif file_name['title'] == metadata_tv_lookup.metadata_last_title:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 3')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'tv here 3'})
         db_connection.db_download_delete(download_que_id)
-        common_global.es_inst.com_elastic_index('info', {'stuff':'meta tv return 2 %s',
-                     metadata_tv_lookup.metadata_last_id)
+        common_global.es_inst.com_elastic_index('info', {'meta tv return 2':
+                     metadata_tv_lookup.metadata_last_id})
         return metadata_tv_lookup.metadata_last_id
-    common_global.es_inst.com_elastic_index('info', {'stuff':'tv before nfo/xml')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'tv before nfo/xml'})
     # grab by nfo/xml data
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
     imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(
         nfo_data, xml_data)
-    common_global.es_inst.com_elastic_index('info', {'stuff':"tv look: %s %s %s", imdb_id, tvdb_id, rt_id)
+    common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id, 'tbdb': tvdb_id,
+                                                     'rtid': rt_id})
     # if same as last, return last id and save lookup
     # check these dupes as the nfo/xml files might not exist to pull the metadata id from
     if imdb_id is not None and imdb_id == metadata_tv_lookup.metadata_last_imdb:
@@ -336,7 +340,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     if rt_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_metatv_guid_by_rt(rt_id)
     # if ids from nfo/xml on local db
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv metadata_uuid A: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid A": metadata_uuid})
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
         # fall through here to set last name/year id's
@@ -373,10 +377,10 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta tv metadata_uuid B: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info', {'stuff':"tv db lookup")
+        common_global.es_inst.com_elastic_index('info', {'stuff':"tv db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
@@ -384,7 +388,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         else:
             metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(
                 file_name['title'], None)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"tv db meta: %s", metadata_uuid)
+        common_global.es_inst.com_elastic_index('info', {"tv db meta": metadata_uuid})
         if metadata_uuid is not None:
             # match found by title/year on local db so purge dl record
             db_connection.db_download_delete(download_que_id)

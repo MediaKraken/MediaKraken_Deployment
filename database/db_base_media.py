@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import json
 import datetime
-
+import os
+from common import common_global
 
 def db_insert_media(self, media_uuid, media_path, media_class_uuid,
                     media_metadata_uuid, media_ffprobe_json, media_json):
@@ -296,7 +296,7 @@ def db_read_media_path_like(self, media_path):
     # do a like class path match for trailers and extras
     """
     # use like since I won't be using the "root" directory but media within it
-    common_global.es_inst.com_elastic_index('info', {'stuff':'path like: %s', media_path)
+    common_global.es_inst.com_elastic_index('info', {'path like': media_path})
     self.db_cursor.execute('select mm_media_metadata_guid from mm_media'
                            ' where mm_media_path LIKE %s'
                            ' and mm_media_metadata_guid IS NOT NULL limit 1',

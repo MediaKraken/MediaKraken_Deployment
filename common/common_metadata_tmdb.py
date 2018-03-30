@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import os
 import json
 import requests
+from . import common_global
 from . import common_metadata
 from . import common_network
 import tmdbsimple as tmdb
@@ -39,12 +39,13 @@ class CommonMetadataTMDB(object):
         """
         # search for movie title and year
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':"tmdb search %s %s", movie_title, movie_year)
+        common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
+                                                         'year': movie_year})
         search = tmdb.Search()
         response = search.movie(query=movie_title)
         for s in search.results:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"result: %s %s %s", s['title'], s['id'],
-                         s['release_date'].split('-', 1)[0])
+            common_global.es_inst.com_elastic_index('info', {"result": s['title'], 'id': s['id'],
+                         'date': s['release_date'].split('-', 1)[0]})
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                                            or str(int(movie_year) - 1) ==
                                            s['release_date'].split('-', 1)[0]
@@ -76,11 +77,11 @@ class CommonMetadataTMDB(object):
         """
         # download info and set data to be ready for insert into database
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tmdb bio build: %s', result_json)
+        common_global.es_inst.com_elastic_index('info', {'tmdb bio build': result_json})
         # create file path for poster
         image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                    'person')
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tmdb bio image path: %s', image_file_path)
+        common_global.es_inst.com_elastic_index('info', {'tmdb bio image path': image_file_path})
         if 'profile_path' in result_json and result_json['profile_path'] is not None:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
                 thread_db.db_download_image_insert('themoviedb',
@@ -125,7 +126,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -137,7 +138,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.credits()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch Credits Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Credits Error":
+                                                    str(err_code)})
             metadata = None
         return metadata
 
@@ -149,7 +151,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.reviews()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch Review Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Review Error": str(
+                err_code)})
             metadata = None
         return metadata
 
@@ -161,7 +164,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.releases()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch Releases Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Releases Error": str(
+                err_code)})
             metadata = None
         return metadata
 
@@ -181,7 +185,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info(external_source='imdb_id')
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch imdb Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch imdb Error": str(
+                err_code)})
             metadata = None
         return metadata
 
@@ -217,7 +222,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie_collection.info()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"TMDB Fetch Collection Error: %s", str(err_code))
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Collection Error": str(
+                err_code)})
             metadata = None
         return metadata
 
@@ -225,11 +231,11 @@ class CommonMetadataTMDB(object):
         """
         # download info and set data to be ready for insert into database
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tmdb info build: %s', result_json)
+        common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
         # create file path for poster
         image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
                                                                    'poster')
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tmdb image path: %s', image_file_path)
+        common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']

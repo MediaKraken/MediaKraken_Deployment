@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 from bs4 import BeautifulSoup
+from . import common_global
 from . import common_network
 from . import common_string
 
@@ -32,7 +33,7 @@ def com_tvtheme_download(media_name):
         + common_string.com_string_title(media_name).replace(' ', '_')
         + ".html", None)).find(id="download_song")
     if data is not None:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'href: %s', data['href'])
+        common_global.es_inst.com_elastic_index('info', {'href': data['href']})
         common_network.mk_network_fetch_from_url("http://www.televisiontunes.com"
                                                  + data['href'], 'theme.mp3')
         return True  # success

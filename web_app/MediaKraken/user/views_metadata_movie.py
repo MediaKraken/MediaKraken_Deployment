@@ -9,12 +9,13 @@ from flask_login import current_user
 
 blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
@@ -129,8 +130,8 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
-        common_global.es_inst.com_elastic_index('info', {'stuff':"status: %s %s %s", watched_status,
-                     rating_status, request_status)
+        common_global.es_inst.com_elastic_index('info', {"status": watched_status,
+                     'rating': rating_status, 'request': request_status})
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status))

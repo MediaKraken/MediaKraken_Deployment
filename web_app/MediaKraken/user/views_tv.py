@@ -16,6 +16,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
@@ -259,9 +260,9 @@ def user_tv_season_detail_page(guid, season):
 
     data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
         guid, int(season))
-    common_global.es_inst.com_elastic_index('info', {'stuff':'dataeps: %s', data_episode_count)
+    common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'dataepskeys: %s', data_episode_keys)
+    common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
     # poster image
     try:
         data_poster_image = data_metadata[3]

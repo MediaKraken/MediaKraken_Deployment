@@ -15,11 +15,13 @@ blueprint = Blueprint("user_chromecast", __name__, url_prefix='/users',
                       static_folder="../static")
 import logging  # pylint: disable=W0611
 import json
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 
@@ -33,8 +35,8 @@ def user_cast(action, guid):
     """
     Display chromecast actions page
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'cast action: %s', action)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'case user: %s', current_user.get_id())
+    common_global.es_inst.com_elastic_index('info', {'cast action': action, 'case user':
+        current_user.get_id()})
     if action == 'base':
         pass
     elif action == 'back':

@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import base64
 import json
+import os
 import sys
 sys.path.append("./vault/lib")
 import subprocess
@@ -28,6 +28,7 @@ from twisted.protocols import basic
 from twisted.internet import ssl
 import ip2country
 from common import common_docker
+from common import common_global
 from common import common_network
 
 
@@ -61,14 +62,14 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Got Connection')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'Got Connection'})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Lost Connection')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'Lost Connection'})
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
 
@@ -77,9 +78,9 @@ class NetworkEvents(basic.LineReceiver):
         Message received from client
         """
         msg = None
-        common_global.es_inst.com_elastic_index('info', {'stuff':'GOT Data: %s', data)
+        common_global.es_inst.com_elastic_index('info', {'GOT Data': data})
         json_message = json.loads(data)
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Message: %s', json_message)
+        common_global.es_inst.com_elastic_index('info', {'Message': json_message})
 
         if json_message['Type'] == "CPU Usage":
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
@@ -103,8 +104,8 @@ class NetworkEvents(basic.LineReceiver):
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
-            common_global.es_inst.com_elastic_index('info', {'stuff':"user: %s %s", self.user_device_uuid,
-                         self.user_ip_addy)
+            common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
+                         'ip': self.user_ip_addy})
             if self.user_user_name == 'Link':
                 pass
             else:
@@ -212,10 +213,11 @@ class NetworkEvents(basic.LineReceiver):
             self.send_all_users(json_message['Data'])
 
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"UNKNOWN TYPE: %s", json_message['Type'])
+            common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"should be sending data len: %s", len(msg))
+            common_global.es_inst.com_elastic_index('info', {"should be sending data len": len(
+                msg)})
             self.sendLine(msg.encode("utf8"))
 
     def send_single_user(self, message):
@@ -224,7 +226,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'send single: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'send single': message})
                 protocol.transport.write(message.encode("utf8"))
                 break
 
@@ -234,7 +236,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_verified == 1:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'send all: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'send all': message})
                 protocol.transport.write(message.encode("utf8"))
 
     def send_all_links(self, message):
@@ -243,5 +245,5 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_link:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'send all link: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'send all links': message})
                 protocol.transport.write(message.encode("utf8"))

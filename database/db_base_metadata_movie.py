@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import json
-
+from common import common_global
 
 # poster, backdrop, etc
 def db_meta_movie_image_random(self, return_image_type='Poster'):
@@ -45,18 +45,18 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     """
     Update the cast/crew for selected media
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'upt castcrew: %s', metadata_id)
+    common_global.es_inst.com_elastic_index('info', {'upt castcrew': metadata_id})
     self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'
                            ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json_row = self.db_cursor.fetchone()[0]
-    common_global.es_inst.com_elastic_index('info', {'stuff':'castrow: %s', cast_crew_json_row)
+    common_global.es_inst.com_elastic_index('info', {'castrow': cast_crew_json_row})
     if 'cast' in cast_crew_json:
         cast_crew_json_row['Meta']['themoviedb'].update(
             {'Cast': cast_crew_json['cast']})
     if 'crew' in cast_crew_json:
         cast_crew_json_row['Meta']['themoviedb'].update(
             {'Crew': cast_crew_json['crew']})
-    common_global.es_inst.com_elastic_index('info', {'stuff':'upt: %s', cast_crew_json_row)
+    common_global.es_inst.com_elastic_index('info', {'upt': cast_crew_json_row})
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
                            ' where mm_metadata_guid = %s',
                            (json.dumps(cast_crew_json_row), metadata_id))

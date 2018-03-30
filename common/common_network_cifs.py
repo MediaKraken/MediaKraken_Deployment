@@ -17,9 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function  # , unicode_literals
-import logging  # pylint: disable=W0611
 import urllib2
 import os
+from . import common_global
 from smb.SMBHandler import SMBHandler
 from smb.SMBConnection import SMBConnection
 
@@ -91,7 +91,7 @@ class CommonCIFSShare(object):
         """
         file_names = []
         for row_data in self.smb_conn.listPath(share_name, path_text):
-            common_global.es_inst.com_elastic_index('info', {'stuff':row_data.filename)
+            common_global.es_inst.com_elastic_index('info', {'stuff':row_data.filename})
             file_names.append(row_data.filename)
         return file_names
 

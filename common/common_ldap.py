@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import ldap
+import os
+from . import common_global
 
 
 class CommonLDAP(object):
@@ -45,7 +46,7 @@ class CommonLDAP(object):
         """
         Ldap logon check
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':"ldap login: %s", user_name)
+        common_global.es_inst.com_elastic_index('info', {"ldap login": user_name})
         try:
             dn_name = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
             self.con.simple_bind_s(dn_name, user_password)

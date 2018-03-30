@@ -9,12 +9,13 @@ from flask_login import current_user
 
 blueprint = Blueprint("user_movie_genre", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
@@ -55,7 +56,7 @@ def user_movie_page(genre):
             offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json,
         # 3 - mm_metadata_localimage_json
-        common_global.es_inst.com_elastic_index('info', {'stuff':"row2: %s", row_data['mm_media_json'])
+        common_global.es_inst.com_elastic_index('info', {"row2": row_data['mm_media_json']})
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
@@ -90,8 +91,10 @@ def user_movie_page(genre):
             match_status = row_data['mismatch']
         except:
             match_status = False
-        common_global.es_inst.com_elastic_index('info', {'stuff':"status: %s %s %s %s", watched_status, sync_status, rating_status,
-                     match_status)
+        common_global.es_inst.com_elastic_index('info', {"status": watched_status,
+                                                         'sync': sync_status,
+                                                'rating': rating_status,
+                     'match': match_status})
         if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb'] \
                 and json_image['Images']['themoviedb']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],

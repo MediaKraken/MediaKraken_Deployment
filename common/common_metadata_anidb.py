@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import gzip
+import os
 import time
 import sys
 import json
 from . import common_file
+from . import common_global
 from . import common_network
 
 sys.path.append("./vault/lib")
@@ -54,7 +55,7 @@ class CommonMetadataANIdb(object):
         """
         Save anidb title data to database
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'start')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'start'})
         file_handle = gzip.open(title_file, 'rb')
         # file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
         anime_aid = None
@@ -85,7 +86,7 @@ class CommonMetadataANIdb(object):
                 anime_title = None
                 # common_global.es_inst.com_elastic_index('info', {'stuff':'end insert')
         file_handle.close()
-        common_global.es_inst.com_elastic_index('info', {'stuff':'end')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'end'})
 
     def com_net_anidb_aid_by_title(self, title_to_search):
         """
@@ -112,7 +113,8 @@ class CommonMetadataANIdb(object):
         try:
             self.adba_connection.auth(user_name, user_password)
         except Exception, err_code:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"exception msg: %s", err_code)
+            common_global.es_inst.com_elastic_index('error', {"exception msg":
+                                                              err_code})
         return self.adba_connection
 
     def com_net_anidb_logout(self):

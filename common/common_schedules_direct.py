@@ -17,11 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import hashlib
 import json
+import os
 import requests
-
+from . import common_global
 
 class CommonSchedulesDirect(object):
     """
@@ -42,11 +42,11 @@ class CommonSchedulesDirect(object):
                                  user_password.encode('utf-8')).hexdigest(),
                                  "username": user_name})).json()
         if resp['code'] != 3000:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"SD login response: %s-%s",
-                         resp['code'], resp['token'])
+            common_global.es_inst.com_elastic_index('info', {"SD login response":
+                         resp['code'], 'token': resp['token']})
             self.headers['token'] = resp['token']
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD Connection failed")
+            common_global.es_inst.com_elastic_index('error', {'stuff':"SD Connection failed"})
 
     def com_schedules_direct_status(self):
         """
@@ -54,7 +54,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.get(self.BASE_API_URL + "/status",
                             headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Status: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Status": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_client_version(self):
@@ -62,7 +63,8 @@ class CommonSchedulesDirect(object):
         Get client version
         """
         resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Version: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Version": resp.status_code, 'json':
+                                                         resp.json()})
         return resp.json()
 
     def com_schedules_direct_available(self, countries=None):
@@ -73,7 +75,8 @@ class CommonSchedulesDirect(object):
             resp = requests.get(self.BASE_API_URL + "/available")
         else:
             resp = requests.get(self.BASE_API_URL + "/available/countries")
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Available: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Available": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_headends(self, country_code, postal_code):
@@ -82,7 +85,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code
                             + "&postalcode=" + postal_code, headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Headends: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Headends": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_lineup_add(self, lineup_id):
@@ -92,12 +96,13 @@ class CommonSchedulesDirect(object):
         resp = requests.put(self.BASE_API_URL + "/lineups/" +
                             lineup_id, headers=self.headers)
         if resp.json()['response'] == 'INVALID_LINEUP':
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD Invalid lineup: %s", lineup_id)
+            common_global.es_inst.com_elastic_index('error', {"SD Invalid lineup": lineup_id})
         elif resp.json()['response'] == "DUPLICATE_LINEUP":
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD lineup duplicate: %s", lineup_id)
+            common_global.es_inst.com_elastic_index('error', {"SD lineup duplicate": lineup_id})
         else:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"SD lineup added: %s", lineup_id)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Lineup Add: %s-%s", resp.status_code, resp.json())
+            common_global.es_inst.com_elastic_index('info', {"SD lineup added": lineup_id})
+        common_global.es_inst.com_elastic_index('info', {"SD Lineup Add": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_lineup_list(self):
@@ -106,7 +111,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.get(self.BASE_API_URL + "/lineups",
                             headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Lineup: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Lineup": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_lineup_delete(self, lineup_id):
@@ -116,12 +122,15 @@ class CommonSchedulesDirect(object):
         resp = requests.delete(self.BASE_API_URL + "/lineups/" + lineup_id,
                                headers=self.headers)
         if resp.json()['response'] != 'OK':
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD Invalid lineup delete: %s", lineup_id)
+            common_global.es_inst.com_elastic_index('error', {"SD Invalid lineup delete":
+                                                    lineup_id})
         elif resp.json()['code'] == 2103:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD lineup not in account: %s", lineup_id)
+            common_global.es_inst.com_elastic_index('error', {"SD lineup not in account":
+                                                                  lineup_id})
         else:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"SD lineup deleted: %s", lineup_id)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Lineup Delete: %s-%s", resp.status_code, resp.json())
+            common_global.es_inst.com_elastic_index('info', {"SD lineup deleted": lineup_id})
+        common_global.es_inst.com_elastic_index('info', {"SD Lineup Delete": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_lineup_channel_map(self, lineup_id):
@@ -130,7 +139,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.get(self.BASE_API_URL + "/lineups/" +
                             lineup_id, headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Channel Map: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Channel Map": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     # TODO automap lineup
@@ -141,9 +151,9 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + "/programs", headers=self.headers,
                              data=program_ids)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Header: %s", resp.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Text: %s", resp.text)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Program Info: %s", resp.status_code)
+        common_global.es_inst.com_elastic_index('info', {"Header": resp.headers})
+        common_global.es_inst.com_elastic_index('info', {"Text": resp.text})
+        common_global.es_inst.com_elastic_index('info', {"SD Program Info": resp.status_code})
         return resp.json()
 
     def com_schedules_direct_program_desc(self, program_ids):
@@ -152,9 +162,10 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + "/metadata/description",
                              headers=self.headers, data=program_ids)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Header: %s", resp.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Text: %s", resp.text)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Program Desc: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"Header": resp.headers})
+        common_global.es_inst.com_elastic_index('info', {"Text": resp.text})
+        common_global.es_inst.com_elastic_index('info', {"SD Program Desc": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_schedules_by_stationid(self, station_ids):
@@ -163,7 +174,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + "/schedules", headers=self.headers,
                              data=station_ids)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Station: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Station": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_direct_md5(self, station_ids):
@@ -172,7 +184,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + "/schedules/mkd5", headers=self.headers,
                              data=station_ids)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD MD5: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD MD5": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_still_running(self, program_id):
@@ -181,7 +194,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id),
                              headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Running: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Running": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
     def com_schedules_program_metadata(self, program_ids):
@@ -190,7 +204,8 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.post(self.BASE_API_URL + "/metadata/programs/", headers=self.headers,
                              data=program_ids)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"SD Program Meta: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {"SD Program Meta": resp.status_code,
+                                                         'json': resp.json()})
         return resp.json()
 
 # TODO retrieve image

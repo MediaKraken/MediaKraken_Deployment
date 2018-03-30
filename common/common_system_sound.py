@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 from plyer import tts
 from kivy.core.audio import SoundLoader
+from . import common_global
 
 
 def com_sound_text_to_speech(message_to_speak):
@@ -41,8 +42,9 @@ def com_sound_play_file(file_name):
     except GstPlayerException:
         pass
     if sound_data:
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Sound found at %s", sound_data.source)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"Sound is %.3f seconds", sound_data.length)
+        common_global.es_inst.com_elastic_index('info', {"Sound found at": sound_data.source})
+        common_global.es_inst.com_elastic_index('info', {"Sound is %.3f seconds",
+                                                         sound_data.length})
         sound_data.play()
 
 

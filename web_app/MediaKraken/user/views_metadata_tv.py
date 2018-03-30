@@ -8,13 +8,14 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_tv", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
 import natsort
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 from MediaKraken.public.forms import SearchForm
@@ -31,7 +32,7 @@ def metadata_tvshow_detail(guid):
     """
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
-    common_global.es_inst.com_elastic_index('info', {'stuff':'meta tvshow json: %s', json_metadata)
+    common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
@@ -173,9 +174,9 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
         guid, int(season))
-    common_global.es_inst.com_elastic_index('info', {'stuff':'dataeps: %s', data_episode_count)
+    common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'dataepskeys: %s', data_episode_keys)
+    common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
 
     # poster image
     try:

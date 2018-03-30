@@ -3,7 +3,7 @@
 # https://github.com/youtube/api-samples/tree/master/python
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+from . import common_global
 from . import common_network
 
 # import google api modules
@@ -40,7 +40,7 @@ class CommonGoogle(object):
         channels = []
         playlists = []
         for search_result in search_response.get("items", []):
-            common_global.es_inst.com_elastic_index('info', {'stuff':'ytsearch: %s', search_result)
+            common_global.es_inst.com_elastic_index('info', {'ytsearch': search_result})
             if search_result["id"]["kind"] == "youtube#video":
                 videos.append(search_result["id"]["videoId"])
             elif search_result["id"]["kind"] == "youtube#channel":
@@ -107,7 +107,8 @@ class CommonGoogle(object):
             comment = item["snippet"]["topLevelComment"]
             author = comment["snippet"]["authorDisplayName"]
             text = comment["snippet"]["textDisplay"]
-            common_global.es_inst.com_elastic_index('info', {'stuff':"Comment by %s: %s" % (author, text))
+            common_global.es_inst.com_elastic_index('info', {"Comment by": (
+                author, text)})
         return results["items"]
 
     def com_google_youtube_insert_comment(self, channel_id, video_id, text):

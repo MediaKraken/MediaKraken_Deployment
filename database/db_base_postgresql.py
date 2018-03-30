@@ -17,7 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
+from .. import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 
@@ -80,7 +81,7 @@ def db_pgsql_vacuum_table(self, table_name):
         self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
         # self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
     else:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Vacuum table missing: %s', table_name)
+        common_global.es_inst.com_elastic_index('info', {'Vacuum table missing': table_name})
 
 
 def db_pgsql_set_iso_level(self, isolation_level):

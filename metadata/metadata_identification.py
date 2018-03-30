@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import uuid
 import sys
 import os
+from common import common_global
 from common import common_hash
 from . import metadata_anime
 from . import metadata_game
@@ -38,8 +38,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
     """
     Determine which provider to start lookup via class text
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"Ident: %s %s %s %s", class_text, download_que_json['Path'], download_que_json,
-                 download_que_id)
+    common_global.es_inst.com_elastic_index('info', {"Ident": class_text, 'dl': download_que_json[
+        'Path'], 'json': download_que_json, 'quiid':                 download_que_id})
     metadata_uuid = None
     # find data by class type
     if class_text == "Adult":
@@ -109,7 +109,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
                 download_que_json['Path'].replace(
                     '/theme/', '/').replace('/backdrops/', '/')
                 .rsplit('/', 1)[0]))
-        common_global.es_inst.com_elastic_index('info', {'stuff':'mtheme guid: %s', metadata_uuid)
+        common_global.es_inst.com_elastic_index('info', {'mtheme guid': metadata_uuid})
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
@@ -125,7 +125,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
         else:
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
                 download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
-        common_global.es_inst.com_elastic_index('info', {'stuff':'mtrailer guid: %s', metadata_uuid)
+        common_global.es_inst.com_elastic_index('info', {'mtrailer guid': metadata_uuid})
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
         else:
@@ -174,31 +174,31 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                        download_que_json['Path'], download_que_json,
                                                        download_que_id, guessit_file_name)
     elif class_text == "TV Theme":
-        common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident'})
         # include end slash so theme.mp3 doesn't get chopped up
         if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
                 download_que_json['Path'].replace('\\theme\\', '\\')
                 .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
         else:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 2')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 2'})
             metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
                 download_que_json['Path'].replace(
                     '/theme/', '/').replace('/backdrops/', '/')
                 .rsplit('/', 1)[0]))
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 3')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 3'})
         if metadata_uuid is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 4')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 4'})
             db_connection.db_download_delete(download_que_id)
         else:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 5')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 5'})
             metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
                                                            download_que_json['Path'],
                                                            download_que_json, download_que_id,
                                                            guessit_file_name)
-            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 6')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 6'})
             if metadata_uuid is None:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 7')
+                common_global.es_inst.com_elastic_index('info', {'stuff':'tv theme ident 7'})
                 # TODO so, the show hasn't been fetched yet.....so, no path match
                 db_connection.db_download_update_provider(
                     'ZZ', download_que_id)
@@ -225,5 +225,5 @@ def metadata_identification(db_connection, class_text, download_que_json,
         pass
     elif class_text == "Video Game Superplay":
         pass
-    common_global.es_inst.com_elastic_index('info', {'stuff':"Meta id ident return: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {"Meta id ident return": metadata_uuid})
     return metadata_uuid

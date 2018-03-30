@@ -8,12 +8,12 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_periodical", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 from MediaKraken.public.forms import SearchForm
@@ -39,7 +39,7 @@ def metadata_periodical_list():
     else:
         mediadata = g.db_connection.db_meta_book_list(offset, per_page)
     for item_data in mediadata:
-        common_global.es_inst.com_elastic_index('info', {'stuff':'person data: %s', item_data)
+        common_global.es_inst.com_elastic_index('info', {'person data': item_data})
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))

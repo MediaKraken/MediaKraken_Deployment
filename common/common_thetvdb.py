@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 # from xml.dom import minidom
+from . import common_global
 from . import common_metadata
 from pytvdbapi import api
 
@@ -45,12 +45,13 @@ class CommonTheTVDB(object):
         """
         # TODO deal with year portion of match
         if show_year is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"bah2 %s", show_title + ' ' + str(show_year))
+            common_global.es_inst.com_elastic_index('info', {"bah2": show_title + ' ' + str(
+                show_year)})
             # this generally fails if I include year....
             show_data = self.tvdb_connection.search(show_title, show_language)
         else:
             show_data = self.tvdb_connection.search(show_title, show_language)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"tvdb search: %s", show_data)
+        common_global.es_inst.com_elastic_index('info', {"tvdb search": show_data})
         if len(show_data) > 0:
             show = show_data[0]
             return show.SeriesID
@@ -150,6 +151,6 @@ class CommonTheTVDB(object):
             # loop through the episodes
             for ep_ndx in range(0, show_number_episodes):
                 episode = season[ep_ndx]
-                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeNumber)
-                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeName)
+                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeNumber})
+                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeName})
         return show_dict

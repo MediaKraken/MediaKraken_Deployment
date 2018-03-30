@@ -17,7 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+from . import common_global
+import os
 import isoparser
 
 
@@ -33,5 +34,5 @@ class CommonISO(object):
         """
         Open the iso file for parsing (url or file)
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':"iso url/file: %s", url_file)
+        common_global.es_inst.com_elastic_index('info', {"iso url/file": url_file})
         self.iso = isoparser.parse(url_file)

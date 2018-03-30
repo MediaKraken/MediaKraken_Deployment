@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import os
 import json
 from common import common_config_ini
+from common import common_global
 from common import common_network
 from common import common_metadata_isbndb
 
@@ -38,22 +38,23 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     search isbndb
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"meta book search isbndb: %s", lookup_name)
+    common_global.es_inst.com_elastic_index('info', {"meta book search isbndb": lookup_name})
     metadata_uuid = None
     match_result = None
-    common_global.es_inst.com_elastic_index('info', {'stuff':'wh %s', ISBNDB_CONNECTION)
+    common_global.es_inst.com_elastic_index('info', {'wh': ISBNDB_CONNECTION})
     if ISBNDB_CONNECTION is not None:
         api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
-        common_global.es_inst.com_elastic_index('info', {'stuff':'response %s', api_response)
+        common_global.es_inst.com_elastic_index('info', {'response': api_response})
         if api_response.status_code == 200:
             # TODO verify decent results before insert
-            common_global.es_inst.com_elastic_index('info', {'stuff':'resp json %s', api_response.json())
+            common_global.es_inst.com_elastic_index('info', {'resp json': api_response.json()})
             if 'error' in api_response.json():
-                common_global.es_inst.com_elastic_index('info', {'stuff':'error skipp')
+                common_global.es_inst.com_elastic_index('info', {'stuff':'error skipp'})
             else:
                 metadata_uuid = db_connection.db_meta_book_insert(
                     api_response.json())
-    common_global.es_inst.com_elastic_index('info', {'stuff':'meta book uuid %s, result %s', metadata_uuid, match_result)
+    common_global.es_inst.com_elastic_index('info', {'meta book uuid': metadata_uuid,
+                                                     'result': match_result})
     return metadata_uuid, match_result
 
 

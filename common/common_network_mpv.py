@@ -17,13 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import socket
 import json
 import os
 import time
 import subprocess
-
+from . import common_global
 
 # https://mpv.io/manual/master/#json-ipc
 class CommonNetMPVSocat(object):
@@ -85,7 +84,7 @@ class CommonNetMPV(object):
     def execute(self, command):
         self.socket_stream.sendall(command.encode('utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
-        common_global.es_inst.com_elastic_index('info', {'stuff':'mpv result: ', result)
+        common_global.es_inst.com_elastic_index('info', {'mpv result': result})
         if result['error'] == 'success':
             return result
 

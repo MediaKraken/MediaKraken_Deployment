@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import urllib
+from . import common_global
 
 
 def com_meta_chart_lyrics(artist_name, song_name):
@@ -28,7 +29,7 @@ def com_meta_chart_lyrics(artist_name, song_name):
     lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'
                                 % urllib.urlencode(
                                     {'artist': artist_name, 'song': song_name})).read()
-    common_global.es_inst.com_elastic_index('info', {'stuff':lyric_text)
+    common_global.es_inst.com_elastic_index('info', {'stuff':lyric_text})
     return lyric_text
 
 # com_meta_chart_lyrics('Megadeath','Peace Sells')

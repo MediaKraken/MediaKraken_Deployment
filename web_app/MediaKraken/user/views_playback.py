@@ -9,12 +9,13 @@ from flask_login import current_user
 
 blueprint = Blueprint("user_playback", __name__,
                       url_prefix='/users', static_folder="../static")
-import logging  # pylint: disable=W0611
+import os
 import sys
 
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -27,8 +28,8 @@ def user_playback(vid_type, guid):
     """
     Display playback actions page
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'playback action: %s', vid_type)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'playback user: %s', current_user.get_id())
+    common_global.es_inst.com_elastic_index('info', {'playback action': vid_type})
+    common_global.es_inst.com_elastic_index('info', {'playback user': current_user.get_id()})
     return render_template("users/user_playback_videojs.html",
                            data_mtype=vid_type,
                            data_uuid=guid)

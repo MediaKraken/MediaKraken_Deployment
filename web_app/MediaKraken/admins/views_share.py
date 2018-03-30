@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
-import logging  # pylint: disable=W0611
 import os
 import sys
 
@@ -19,6 +18,7 @@ from functools import wraps
 from MediaKraken.admins.forms import ShareAddEditForm
 
 from common import common_config_ini
+from common import common_global
 from common import common_network_cifs
 from common import common_pagination
 import database as database_base
@@ -46,7 +46,8 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
+                                                current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -89,13 +90,15 @@ def admin_share_edit_page():
     allow user to edit share
     """
     form = ShareAddEditForm(request.form)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'hereeditshare')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'hereeditshare'})
     if request.method == 'POST':
-        common_global.es_inst.com_elastic_index('info', {'stuff':'herepost')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'herepost'})
         if form.validate_on_submit():
-            common_global.es_inst.com_elastic_index('info', {'stuff':'action %s', request.form['action_type'])
+            common_global.es_inst.com_elastic_index('info', {'action': request.form[
+                'action_type']})
             if request.form['action_type'] == 'Add':
-                common_global.es_inst.com_elastic_index('info', {'stuff':'type %s', request.form['storage_mount_type'])
+                common_global.es_inst.com_elastic_index('info', {'type': request.form[
+                    'storage_mount_type']})
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\

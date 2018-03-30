@@ -15,6 +15,7 @@ sys.path.append('..')
 sys.path.append('../..')
 import pdfkit
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 from common import common_string
 import database as database_base
@@ -56,7 +57,8 @@ def report_display_all_duplicates_detail(guid):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"media: %s", media_data['mm_media_ffprobe_json'])
+        common_global.es_inst.com_elastic_index('info', {"media": media_data[
+            'mm_media_ffprobe_json']})
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
                 media.append((media_data['mm_media_guid'], media_data['mm_media_path'],

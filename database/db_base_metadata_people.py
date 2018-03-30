@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import uuid
 import json
-
+from common import common_global
 
 def db_meta_person_list_count(self, search_value=None):
     """
@@ -112,8 +112,8 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
     """
     # insert person
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'db pers insert %s %s %s %s', person_name, media_id_json,
-                 person_json, image_json)
+    common_global.es_inst.com_elastic_index('info', {'db pers insert %s %s %s %s', person_name, media_id_json,
+                 person_json, image_json})
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                            ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image)'
@@ -139,7 +139,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     # batch insert from json of crew/cast
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'db person insert cast crew: %s %s', meta_type, person_json)
+    common_global.es_inst.com_elastic_index('info', {'db person insert cast crew: %s %s',
+                                                     meta_type, person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
@@ -149,7 +150,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
         pass
     if multiple_person:
         for person_data in person_json:
-            common_global.es_inst.com_elastic_index('info', {'stuff':"person data: %s", person_data)
+            common_global.es_inst.com_elastic_index('info', {"person data: %s", person_data})
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
                 person_name = person_data['person']['name']
@@ -169,7 +170,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                    common_global.es_inst.com_elastic_index('info', {'stuff':"skippy")
+                    common_global.es_inst.com_elastic_index('info', {'stuff':"skippy"})
                 else:
                     # insert download record for bio/info
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
@@ -199,7 +200,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             # person_name = None # not used later so don't set
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                common_global.es_inst.com_elastic_index('info', {'stuff':"skippy")
+                common_global.es_inst.com_elastic_index('info', {'stuff':"skippy"})
             else:
                 # insert download record for bio/info
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
@@ -219,7 +220,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     row_data = self.db_meta_person_by_guid(person_guid)
     if row_data is None:  # exit on not found person
         return None
-    common_global.es_inst.com_elastic_index('info', {'stuff':"row_data: %s", row_data)
+    common_global.es_inst.com_elastic_index('info', {"row_data: %s", row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
@@ -228,7 +229,7 @@ def db_meta_person_as_seen_in(self, person_guid):
                                ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
-        common_global.es_inst.com_elastic_index('info', {'stuff':'sql paramts: %s' % sql_params)
+        common_global.es_inst.com_elastic_index('info', {'sql paramts: %s' % sql_params})
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
                                ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''

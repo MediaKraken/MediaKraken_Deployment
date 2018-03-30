@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import sys
 
 sys.path.append('..')
@@ -17,6 +17,7 @@ from MediaKraken.admins.forms import AdminSettingsForm
 
 from common import common_config_ini
 from common import common_docker
+from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -42,7 +43,8 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
+                                                current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -61,7 +63,7 @@ def docker_stat():
     docker_inst = common_docker.CommonDocker()
     # it returns a dict, not a json
     docker_info = docker_inst.com_docker_info()
-    common_global.es_inst.com_elastic_index('info', {'stuff':'Docker info: %s', docker_info)
+    common_global.es_inst.com_elastic_index('info', {'Docker info': docker_info})
     if 'Managers' not in docker_info['Swarm'] or docker_info['Swarm']['Managers'] == 0:
         docker_swarm = "Cluster not active"
     else:

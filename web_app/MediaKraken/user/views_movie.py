@@ -11,7 +11,7 @@ from fractions import Fraction
 
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
-import logging  # pylint: disable=W0611
+import os
 import subprocess
 import natsort
 import sys
@@ -19,6 +19,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_string
 import database as database_base
@@ -58,7 +59,7 @@ def movie_detail(guid):
                                               g.db_connection.db_media_path_by_uuid(
                                                   media_guid_index)[0],
                                               'http://localhost:8900/stream.ffm'], shell=False)
-            common_global.es_inst.com_elastic_index('info', {'stuff':"FFServer PID: %s", proc_ffserver.pid)
+            common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)

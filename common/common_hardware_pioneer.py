@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import socket
+from . import common_global
 
 
 class CommonHardwarePioneer(object):
@@ -43,12 +44,12 @@ class CommonHardwarePioneer(object):
         try:
             msg = self.pioneer_inst.recv(4096)
         except socket.error as e:
-            common_global.es_inst.com_elastic_index('error', {'stuff':'Pioneer socket error %s', e)
+            common_global.es_inst.com_elastic_index('error', {'Pioneer socket error': e})
         else:
             if len(msg) == 0:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'pioneer shutdown on server end')
+                common_global.es_inst.com_elastic_index('info', {'pioneer shutdown on server end'})
             else:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'pioneer data %s', msg)
+                common_global.es_inst.com_elastic_index('info', {'pioneer data': msg})
                 while 1:
                     rxbuf = self.pioneer_inst.recv(1024)
                     if rxbuf:

@@ -17,7 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
+from . import common_global
 import nest
 from nest import utils as nest_utils
 
@@ -38,12 +39,12 @@ class CommonHardwareNest(object):
         # grab structures and the devices
         """
         for structure in self.nest_device.structures:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'Structure %s', structure.name)
-            common_global.es_inst.com_elastic_index('info', {'stuff':'Away: %s', structure.away)
-            common_global.es_inst.com_elastic_index('info', {'stuff':'Devices:')
+            common_global.es_inst.com_elastic_index('info', {'Structure':
+                                                             structure.name, 'Away':
+                                                    structure.away})
             for device in structure.devices:
-                common_global.es_inst.com_elastic_index('info', {'stuff':'Device: %s', device.name)
-                common_global.es_inst.com_elastic_index('info', {'stuff':'Temp: %0.1f', device.temperature)
+                common_global.es_inst.com_elastic_index('info', {'Device': device.name})
+                common_global.es_inst.com_elastic_index('info', {'Temp': device.temperature})
 
 
 def com_nest_c_to_f(temp_data):

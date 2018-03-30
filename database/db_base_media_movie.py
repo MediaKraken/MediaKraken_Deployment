@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import datetime
+import os
+from common import common_global
 
 
 # TODO subselect speed
@@ -60,8 +61,8 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
     """
     # web media count
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"classuid counter: %s %s %s",
-                 class_guid, list_type, list_genre)
+    common_global.es_inst.com_elastic_index('info', {"classuid counter":
+                 class_guid, 'type': list_type, 'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -187,9 +188,12 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
     """
     # web media return
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"classuid: %s %s %s", class_guid, list_type, list_genre)
-    common_global.es_inst.com_elastic_index('info', {'stuff':"group and remote: %s %s", group_collection, include_remote)
-    common_global.es_inst.com_elastic_index('info', {'stuff':"list, offset: %s %s", list_limit, offset)
+    common_global.es_inst.com_elastic_index('info', {"classuid": class_guid, 'type': list_type,
+                                                     'genre':
+                                                         list_genre})
+    common_global.es_inst.com_elastic_index('info', {"group and remote": group_collection,
+                                                     'remote': include_remote})
+    common_global.es_inst.com_elastic_index('info', {"list, offset": list_limit, 'offset': offset})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":

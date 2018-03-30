@@ -17,10 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+import os
 import uuid
 import json
-
+from common import common_global
 
 def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
@@ -77,8 +77,8 @@ def db_meta_book_insert(self, json_data):
     # insert metadata json from isbndb
     """
     # json_data = json.dumps(json_data)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'book insert %s', json_data)
-    common_global.es_inst.com_elastic_index('info', {'stuff':'book insert data %s', json_data['data'])
+    common_global.es_inst.com_elastic_index('info', {'book insert': json_data})
+    common_global.es_inst.com_elastic_index('info', {'book insert data %s', json_data['data']})
     insert_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'
                            ' mm_metadata_book_isbn, mm_metadata_book_isbn13,'

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
-import logging  # pylint: disable=W0611
 import sys
 
 sys.path.append('..')
@@ -16,6 +15,7 @@ from flask_login import current_user
 from functools import wraps
 
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 
@@ -42,7 +42,8 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
+                                                             current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
