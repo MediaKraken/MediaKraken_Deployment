@@ -17,14 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import os
 import sys
-from common import common_system
+
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
-from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 from psycopg2.extras import DictCursor  # pylint: disable=W0611
+
+from common import common_global
+from common import common_system
 
 
 def db_open(self, db_prod=True):
@@ -53,7 +55,8 @@ def db_open(self, db_prod=True):
     # verify the trigram extension is enablled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
     if self.db_cursor.fetchone()[0] == 0:
-        common_global.es_inst.com_elastic_index('critical', {'stuff':'pg_trgm extension needs to be enabled for database!!!!  Exiting!!!')
+        common_global.es_inst.com_elastic_index('critical', {'stuff': 'pg_trgm extension needs to '
+                                                                      'be enabled for database!!!!  Exiting!!!'})
         sys.exit(1)
 
 
@@ -61,7 +64,7 @@ def db_close(self):
     """
     # close main db file
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'db close')
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
 
 
@@ -69,7 +72,7 @@ def db_commit(self):
     """
     # commit changes to media database
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'db commit')
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
     self.sql3_conn.commit()
 
 
@@ -77,7 +80,7 @@ def db_rollback(self):
     """
     # rollback
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':'db rollback')
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
     self.sql3_conn.rollback()
 
 
@@ -114,7 +117,7 @@ def db_query(self, query_string):
     """
     # general run anything
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff':"query: %s", query_string)
+    common_global.es_inst.com_elastic_index('info', {"query": query_string})
     self.db_cursor.execute(query_string)
     try:
         return self.db_cursor.fetchall()
