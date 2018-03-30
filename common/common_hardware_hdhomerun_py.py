@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 from pyhdhomerun.adapter import HdhrUtility, HdhrDeviceQuery
 from pyhdhomerun.constants import MAP_US_BCAST
 

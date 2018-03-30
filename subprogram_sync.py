@@ -17,7 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-
+import os
 import subprocess
 from datetime import timedelta
 
@@ -33,7 +33,8 @@ def worker(row_data):
     """
     Worker ffmpeg thread for each sync job
     """
-    logging.info("row: %s", row_data)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'row': row_data})
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
@@ -58,7 +59,8 @@ def worker(row_data):
             ('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
-    logging.info("ffmpeg: %s", ffmpeg_params)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
     ffmpeg_pid = subprocess.Popen(
         ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
@@ -69,7 +71,8 @@ def worker(row_data):
     while True:
         line = ffmpeg_pid.stdout.readline()
         if line != '':
-            logging.info('ffmpeg out: %' % line.rstrip())
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
             if line.find("Duration:") != -1:
                 media_duration = timedelta(
                     line.split(': ', 1)[1].split(',', 1)[0])
@@ -107,8 +110,9 @@ def worker(row_data):
     return
 
 
-# start logging
-common_logging.com_logging_start('./log/MediaKraken_Subprogram_Sync')
+if os.environ['DEBUG']:
+    # start logging
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -118,7 +122,8 @@ sync_data = db_connection.db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
-        logging.info(future.result())
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'future': future.result()})
 
 # commit all changes
 db_connection.db_commit()

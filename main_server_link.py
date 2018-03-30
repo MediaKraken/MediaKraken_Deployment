@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import platform
+import os
 
 try:
     import cPickle as pickle
@@ -65,16 +65,20 @@ class TheaterFactory(ClientFactory):
         self.protocol = None
 
     def startedConnecting(self, connector):
-        logging.info('Started to connect to %s', connector.getDestination())
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Started to connect to': connector.getDestination()})
 
     def clientConnectionLost(self, conn, reason):
-        logging.info("Connection Lost")
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Connection Lost': 'gergegerg'})
 
     def clientConnectionFailed(self, conn, reason):
-        logging.info("Connection Failed")
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Connection Failed': 'gergegerg'})
 
     def buildProtocol(self, addr):
-        logging.info('Connected to %s', str(addr))
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'Connected to': str(addr)})
         self.protocol = TheaterClient()
         return self.protocol
 
@@ -90,8 +94,10 @@ class MediaKrakenApp(object):
         global metaapp
         root = MediaKrakenApp()
         metaapp = self
-        # start logging
-        common_logging.com_logging_start('./log/MediaKraken_Link')
+        if os.environ['DEBUG']:
+            # start logging
+            es_inst = common_logging_elasticsearch.CommonElasticsearch(
+                'Main_Link')
         # open the database
         option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()
@@ -111,9 +117,9 @@ class MediaKrakenApp(object):
         """
         # otherwise the pickle can end up in thousands of chunks
         messageWords = server_msg.split(' ', 1)
-        logging.info('message: %s', messageWords[0])
-        logging.info("len: %s", len(server_msg))
-        logging.info("chunks: %s", len(messageWords))
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('info', {'message': messageWords[0], "len": len(
+                server_msg), "chunks": len(messageWords)})
         msg = None
         try:
             pickle_data = pickle.loads(messageWords[1])
@@ -123,7 +129,8 @@ class MediaKrakenApp(object):
             msg = "VALIDATE " + "link" + " " + "password" + " " + platform.node()
         elif messageWords[0] == "RECEIVENEWMEDIA":
             for new_media in pickle.loads(messageWords[1]):
-                logging.info("new media: %s", new_media)
+                if os.environ['DEBUG']:
+                    es_inst.com_elastic_index('info', {'new_media': new_media})
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
@@ -165,9 +172,11 @@ class MediaKrakenApp(object):
                                                           new_media[2], metadata_guid)
             self.db_connection.db_commit()
         else:
-            logging.info("unknown message type")
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('info', {'stuff': 'unknown message type'})
         if msg is not None:
-            logging.info("should be sending data")
+            if os.environ['DEBUG']:
+                es_inst.com_elastic_index('info', {'stuff': 'should be sending data'})
             networkProtocol.sendString(msg)
 
 
