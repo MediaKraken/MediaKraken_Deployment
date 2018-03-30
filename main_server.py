@@ -30,30 +30,34 @@ if os.environ['DEBUG']:
     # start logging
     es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Server')
 
-logging.info('PATH: %s' % os.environ['PATH'])
+if os.environ['DEBUG']:
+    es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 
-logging.info('Check Certs')
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    logging.info('Cert not found, generating.')
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
     proc_ssl = subprocess.Popen(
         ['python', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
-        logging.critical("Cannot generate SSL certificate. Exiting.....")
+        if os.environ['DEBUG']:
+            es_inst.com_elastic_index('critical',
+                                      {'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
-logging.info("Open DB")
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
-    logging.info('Database upgrade in progress...')
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(
         ['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
-    logging.info('Database upgrade complete.')
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
 
 # setup the docker environment
 docker_inst = common_docker.CommonDocker()
@@ -61,38 +65,45 @@ docker_inst = common_docker.CommonDocker()
 docker_info = docker_inst.com_docker_info()
 if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
         or 'Managers' not in docker_info['Swarm']:
-    logging.info('attempting to init swarm as manager')
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'stuff': 'attempting to init swarm as manager'})
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
 
 # mount all the shares first so paths exist for validation
 common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
-logging.info("Validate Paths")
+if os.environ['DEBUG']:
+    es_inst.com_elastic_index('info', {'stuff': 'Validate Paths'})
 # validate paths in ini file
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
-    logging.critical(
-        "MediaKrakenServer/BackupLocal is not a valid directory!  Exiting...")
-    logging.critical("Invalid Path: %s" %
-                     option_config_json['MediaKrakenServer']['BackupLocal'])
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('critical', {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
+                                                             'not a valid directory!  Exiting...'})
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('critical', {
+            'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
     sys.exit()
 
 # startup the other reactor via popen as it's non-blocking
 proc = subprocess.Popen(
     ['python', './subprogram_reactor_line.py'], shell=False)
-logging.info("Reactor PID: %s", proc.pid)
+if os.environ['DEBUG']:
+    es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
 # fire up cron service
 proc_cron = subprocess.Popen(
     ['python', './subprogram_cron_checker.py'], shell=False)
-logging.info("Cron PID: %s", proc_cron.pid)
+if os.environ['DEBUG']:
+    es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
 
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
     proc_link = subprocess.Popen(['python', './main_server_link.py', link_data[2]['IP'],
                                   str(link_data[2]['Port'])], shell=False)
-    logging.info("Link PID: %s", proc_link.pid)
+    if os.environ['DEBUG']:
+        es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid
 
 # hold here
