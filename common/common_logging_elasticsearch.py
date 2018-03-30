@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from datetime import datetime
+
 import json
+from datetime import datetime
+
 from elasticsearch import Elasticsearch
 
 
