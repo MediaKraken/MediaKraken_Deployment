@@ -53,7 +53,7 @@ def db_open(self, db_prod=True):
     # verify the trigram extension is enablled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
     if self.db_cursor.fetchone()[0] == 0:
-        logging.critical('pg_trgm extension needs to be enabled for database!!!!  Exiting!!!')
+        common_global.es_inst.com_elastic_index('critical', {'stuff':'pg_trgm extension needs to be enabled for database!!!!  Exiting!!!')
         sys.exit(1)
 
 
@@ -61,7 +61,7 @@ def db_close(self):
     """
     # close main db file
     """
-    logging.info('db close')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'db close')
     self.sql3_conn.close()
 
 
@@ -69,7 +69,7 @@ def db_commit(self):
     """
     # commit changes to media database
     """
-    logging.info('db commit')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'db commit')
     self.sql3_conn.commit()
 
 
@@ -77,7 +77,7 @@ def db_rollback(self):
     """
     # rollback
     """
-    logging.info('db rollback')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'db rollback')
     self.sql3_conn.rollback()
 
 
@@ -114,7 +114,7 @@ def db_query(self, query_string):
     """
     # general run anything
     """
-    logging.info("query: %s", query_string)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"query: %s", query_string)
     self.db_cursor.execute(query_string)
     try:
         return self.db_cursor.fetchall()

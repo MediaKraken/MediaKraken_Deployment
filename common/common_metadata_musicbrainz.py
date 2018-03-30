@@ -63,7 +63,7 @@ class CommonMetadataMusicbrainz(object):
         # print "{}, by {}".format(rel['title'], rel["artist-credit-phrase"])
         if 'date' in rel:
             pass
-        logging.info("musicbrainz ID: {}".format(rel['id']))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"musicbrainz ID: {}".format(rel['id']))
 
     def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,
                                      artist_recording=None, return_limit=5, strict_flag=False):
@@ -77,11 +77,11 @@ class CommonMetadataMusicbrainz(object):
             result = musicbrainzngs.search_releases(artist=artist_name, release=artist_recording,
                                                     limit=return_limit, strict=strict_flag)
         if not result['release-list']:
-            logging.error("no release found")
+            common_global.es_inst.com_elastic_index('error', {'stuff':"no release found")
             return None
         else:
             for (idx, release) in enumerate(result['release-list']):
-                logging.info("match #{}:".format(idx + 1))
+                common_global.es_inst.com_elastic_index('info', {'stuff':"match #{}:".format(idx + 1))
                 self.show_release_details(release)
             return release['id']
 
@@ -94,10 +94,10 @@ class CommonMetadataMusicbrainz(object):
                                                   recording=song_name, limit=return_limit,
                                                   strict=strict_flag)
         if not result['recording-list']:
-            logging.error("no recording found")
+            common_global.es_inst.com_elastic_index('error', {'stuff':"no recording found")
             return None
         else:
             for (idx, release) in enumerate(result['recording-list']):
-                logging.info("match #{}:".format(idx + 1))
+                common_global.es_inst.com_elastic_index('info', {'stuff':"match #{}:".format(idx + 1))
                 self.show_release_details(release)
             return release['id']

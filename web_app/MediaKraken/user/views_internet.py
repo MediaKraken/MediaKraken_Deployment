@@ -61,10 +61,10 @@ def user_internet_youtube():
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
-            logging.info('urllink: %s', url_link)
+            common_global.es_inst.com_elastic_index('info', {'stuff':'urllink: %s', url_link)
             youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
                                                                                      'snippet')))
-    logging.info('temphold: %s', youtube_videos)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'temphold: %s', youtube_videos)
     return render_template("users/user_internet_youtube.html", form=form,
                            media=youtube_videos)
 
@@ -106,7 +106,7 @@ def user_internet_twitch():
     twitch_api = common_network_twitch.CommonNetworkTwitch()
     twitch_media = []
     for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
-        logging.info("stream: %s", stream_data)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"stream: %s", stream_data)
         try:
             if stream_data['stream']['game'] is None:
                 twitch_media.append((stream_data['stream']['name'],
@@ -137,7 +137,7 @@ def user_internet_twitch_stream_detail(stream_name):
     """
     # twitch_api = common_network_Twitch.com_Twitch_API()
     # media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
-    # logging.info("str detail: %s", media)
+    # common_global.es_inst.com_elastic_index('info', {'stuff':"str detail: %s", media)
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
 

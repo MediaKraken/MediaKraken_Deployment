@@ -85,7 +85,7 @@ class CommonNetMPV(object):
     def execute(self, command):
         self.socket_stream.sendall(command.encode('utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
-        logging.info('mpv result: ', result)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'mpv result: ', result)
         if result['error'] == 'success':
             return result
 

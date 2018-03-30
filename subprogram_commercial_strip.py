@@ -42,7 +42,7 @@ import getopt
 import os
 import subprocess
 import sys
-
+from common import common_global
 from common import common_logging_elasticsearch
 
 
@@ -52,20 +52,20 @@ def main(argv):
     """
     if os.environ['DEBUG']:
         # start logging
-        es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_commercial_strip')
+        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_commercial_strip')
     inputfile = None
     outputfile = None
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('error', {
+            common_global.es_inst.com_elastic_index('error', {
                 'data': 'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
             if os.environ['DEBUG']:
-                es_inst.com_elastic_index('error', {
+                common_global.es_inst.com_elastic_index('error', {
                     'data':
                         'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
             sys.exit()
@@ -76,7 +76,7 @@ def main(argv):
     # kick off ffmpeg process
     proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {"pid": proc.pid,
+        common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
                                            "input": inputfile, "output": outputfile})
     proc.wait()
 

@@ -46,7 +46,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        logging.info("admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -89,13 +89,13 @@ def admin_share_edit_page():
     allow user to edit share
     """
     form = ShareAddEditForm(request.form)
-    logging.info('hereeditshare')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'hereeditshare')
     if request.method == 'POST':
-        logging.info('herepost')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'herepost')
         if form.validate_on_submit():
-            logging.info('action %s', request.form['action_type'])
+            common_global.es_inst.com_elastic_index('info', {'stuff':'action %s', request.form['action_type'])
             if request.form['action_type'] == 'Add':
-                logging.info('type %s', request.form['storage_mount_type'])
+                common_global.es_inst.com_elastic_index('info', {'stuff':'type %s', request.form['storage_mount_type'])
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
@@ -103,7 +103,7 @@ def admin_share_edit_page():
                     #                    if addr is None: # total junk path for UNC
                     #                        flash("Invalid UNC path.", 'error')
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
-                    #                    logging.info('unc info: %s %s %s' % (addr, share, path))
+                    #                    common_global.es_inst.com_elastic_index('info', {'stuff':'unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
                                                user_name=request.form['storage_mount_user'],

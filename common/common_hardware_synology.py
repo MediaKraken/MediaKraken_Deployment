@@ -30,7 +30,7 @@ class CommonHardwareSynology(object):
         """
         Connect to synology
         """
-        logging.info("syn connect: %s", addr)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"syn connect: %s", addr)
         self.synology_nas = NasApi(
             'http://%s:5000/webapi/' % addr, user_name, user_password)
 

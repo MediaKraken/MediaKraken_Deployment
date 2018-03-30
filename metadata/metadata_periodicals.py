@@ -38,22 +38,22 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     search isbndb
     """
-    logging.info("meta book search isbndb: %s", lookup_name)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"meta book search isbndb: %s", lookup_name)
     metadata_uuid = None
     match_result = None
-    logging.info('wh %s', ISBNDB_CONNECTION)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'wh %s', ISBNDB_CONNECTION)
     if ISBNDB_CONNECTION is not None:
         api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
-        logging.info('response %s', api_response)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'response %s', api_response)
         if api_response.status_code == 200:
             # TODO verify decent results before insert
-            logging.info('resp json %s', api_response.json())
+            common_global.es_inst.com_elastic_index('info', {'stuff':'resp json %s', api_response.json())
             if 'error' in api_response.json():
-                logging.info('error skipp')
+                common_global.es_inst.com_elastic_index('info', {'stuff':'error skipp')
             else:
                 metadata_uuid = db_connection.db_meta_book_insert(
                     api_response.json())
-    logging.info('meta book uuid %s, result %s', metadata_uuid, match_result)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'meta book uuid %s, result %s', metadata_uuid, match_result)
     return metadata_uuid, match_result
 
 

@@ -61,14 +61,14 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        logging.info('Got Connection')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'Got Connection')
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        logging.info('Lost Connection')
+        common_global.es_inst.com_elastic_index('info', {'stuff':'Lost Connection')
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
 
@@ -77,9 +77,9 @@ class NetworkEvents(basic.LineReceiver):
         Message received from client
         """
         msg = None
-        logging.info('GOT Data: %s', data)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'GOT Data: %s', data)
         json_message = json.loads(data)
-        logging.info('Message: %s', json_message)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'Message: %s', json_message)
 
         if json_message['Type'] == "CPU Usage":
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
@@ -103,7 +103,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
-            logging.info("user: %s %s", self.user_device_uuid,
+            common_global.es_inst.com_elastic_index('info', {'stuff':"user: %s %s", self.user_device_uuid,
                          self.user_ip_addy)
             if self.user_user_name == 'Link':
                 pass
@@ -212,10 +212,10 @@ class NetworkEvents(basic.LineReceiver):
             self.send_all_users(json_message['Data'])
 
         else:
-            logging.error("UNKNOWN TYPE: %s", json_message['Type'])
+            common_global.es_inst.com_elastic_index('error', {'stuff':"UNKNOWN TYPE: %s", json_message['Type'])
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            logging.info("should be sending data len: %s", len(msg))
+            common_global.es_inst.com_elastic_index('info', {'stuff':"should be sending data len: %s", len(msg))
             self.sendLine(msg.encode("utf8"))
 
     def send_single_user(self, message):
@@ -224,7 +224,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
-                logging.info('send single: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'stuff':'send single: %s', message)
                 protocol.transport.write(message.encode("utf8"))
                 break
 
@@ -234,7 +234,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_verified == 1:
-                logging.info('send all: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'stuff':'send all: %s', message)
                 protocol.transport.write(message.encode("utf8"))
 
     def send_all_links(self, message):
@@ -243,5 +243,5 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_link:
-                logging.info('send all link: %s', message)
+                common_global.es_inst.com_elastic_index('info', {'stuff':'send all link: %s', message)
                 protocol.transport.write(message.encode("utf8"))

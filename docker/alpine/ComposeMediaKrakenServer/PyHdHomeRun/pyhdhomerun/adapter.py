@@ -31,7 +31,7 @@ class HdhrUtility(object):
             logging.exception("Could not convert IP [%s] to integer." % (ip))
             raise
 
-        logging.info("Discovering devices.  MAX= (%d)  IP= [%s]" % 
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Discovering devices.  MAX= (%d)  IP= [%s]" % 
                      (MAX_DEVICES, ip if ip_int else 0))
 
         devices = (TYPE_hdhomerun_discover_device_t * MAX_DEVICES)()
@@ -55,7 +55,7 @@ class HdhrUtility(object):
             logging.warn(message)
             return []
 
-        logging.info("(%d) devices found." % (num_found))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"(%d) devices found." % (num_found))
 
         return devices[0:num_found]
 
@@ -63,7 +63,7 @@ class HdhrUtility(object):
     def device_create_from_str(device_str):
         """Create a device-object to manipulate a specific device with."""
 
-        logging.info("Creating device-entity for device [%s]." % (device_str))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Creating device-entity for device [%s]." % (device_str))
     
         try:
             device = CFUNC_hdhomerun_device_create_from_str(device_str, 
@@ -85,7 +85,7 @@ class HdhrUtility(object):
     def get_channels_in_range(channel_map):
         """Determine the maximum number of channels available."""
 
-        logging.info("Calculating channels count.")
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Calculating channels count.")
     
         try:
             channel_list = CFUNC_hdhomerun_channel_list_create(channel_map)
@@ -97,7 +97,7 @@ class HdhrUtility(object):
         if not channel_list:
             message = "Could not build channel-list."
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
         try:
@@ -134,7 +134,7 @@ class HdhrDeviceQuery(object):
         channel number).
         """
 
-        logging.info("Doing device_get_tuner_vstatus call for device [%s]." % 
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Doing device_get_tuner_vstatus call for device [%s]." % 
                      (self.hd))
 
         raw_data = c_char_p()
@@ -153,7 +153,7 @@ class HdhrDeviceQuery(object):
         if result != 1:
             message = ("Could not get tuner vstatus (%d)." % (result))
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
         return (vstatus, raw_data.value)
@@ -163,7 +163,7 @@ class HdhrDeviceQuery(object):
         
         vchannel = str(vchannel)
         
-        logging.info("Doing device_set_tuner_vchannel call for device [%s] with"
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Doing device_set_tuner_vchannel call for device [%s] with"
                      " vchannel [%s]." % (self.hd, vchannel))
         
         try:
@@ -176,7 +176,7 @@ class HdhrDeviceQuery(object):
         if result != 1:
             message = "Failed to set vchannel."
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
         
     def get_supported(self, prefix=None):
@@ -184,7 +184,7 @@ class HdhrDeviceQuery(object):
     
         raw_str = c_char_p()
 
-        logging.info("Doing device_get_supported call for device [%s]." % 
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Doing device_get_supported call for device [%s]." % 
                      (self.hd))
 
         try:
@@ -200,7 +200,7 @@ class HdhrDeviceQuery(object):
         if result != 1:
             message = ("Could not get supported features (%d)." % (result))
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
         raw_rows = raw_str.value.strip().split("\n")
@@ -218,7 +218,7 @@ class HdhrDeviceQuery(object):
         in the future.
         """
     
-        logging.info("Doing channel scan with map [%s]." % (channel_map))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Doing channel scan with map [%s]." % (channel_map))
 
         logging.debug("Determining range of channel scan.")
 
@@ -240,7 +240,7 @@ class HdhrDeviceQuery(object):
         if not scan:
             message = "Could not build channel-scan object."
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
         return { 'scan':    scan, 
@@ -290,7 +290,7 @@ class HdhrDeviceQuery(object):
         and indicates whether it could be locked, current progress, . If so, it 
         """
 
-        logging.info("Doing channel scan with map [%s]." % (channel_map))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Doing channel scan with map [%s]." % (channel_map))
 
         logging.debug("Determining range of channel scan.")
 
@@ -312,7 +312,7 @@ class HdhrDeviceQuery(object):
         if not scan:
             message = "Could not build channel-scan object."
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
         logging.debug("Doing actual scan.")
@@ -323,7 +323,7 @@ class HdhrDeviceQuery(object):
             logging.exception("Could not do actual channel scan.")
             raise
         else:
-            logging.info("Found programs on (%d) channels." % (len(found)))
+            common_global.es_inst.com_elastic_index('info', {'stuff':"Found programs on (%d) channels." % (len(found)))
             return found
         finally:
             try:
@@ -365,7 +365,7 @@ class HdhrDeviceQuery(object):
         if target_uri is None:
             target_uri = 'none'
 
-        logging.info("Setting target to [%s]." % (target_uri))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Setting target to [%s]." % (target_uri))
 
         try:
             result = CFUNC_hdhomerun_device_set_tuner_target(self.hd, 
@@ -378,7 +378,7 @@ class HdhrDeviceQuery(object):
         if result != 1:
             message = ("Could not set tuner target to [%s]." % (target))
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
 
 class HdhrVideoPrimitives(object):
@@ -402,7 +402,7 @@ class HdhrVideoPrimitives(object):
         if result != 1:
             message = "Stream-start failed."
             
-            logging.error(message)
+            common_global.es_inst.com_elastic_index('error', {'stuff':message)
             raise Exception(message)
     
     def stop_video(self):
@@ -476,7 +476,7 @@ class HdhrVideo(object):
 
     def stream_video(self, frame_cb):
 
-        logging.info("Starting video feed: %s" % (self.hd))
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Starting video feed: %s" % (self.hd))
         
         try:
             self.vprim.start_video()
@@ -491,7 +491,7 @@ class HdhrVideo(object):
                               "%s" % (e))
             raise
         finally:
-            logging.info("Stopping video feed: %s" % (self.hd))
+            common_global.es_inst.com_elastic_index('info', {'stuff':"Stopping video feed: %s" % (self.hd))
         
             try:
                 self.vprim.stop_video()

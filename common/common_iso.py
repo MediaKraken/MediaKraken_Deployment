@@ -33,5 +33,5 @@ class CommonISO(object):
         """
         Open the iso file for parsing (url or file)
         """
-        logging.info("iso url/file: %s", url_file)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"iso url/file: %s", url_file)
         self.iso = isoparser.parse(url_file)

@@ -33,5 +33,5 @@ class TestSubprogramRokuThumbGen(object):
         """
         proc_info = subprocess.Popen(['python', './subprogram_roku_thumbnail_generate.py'],
                                      shell=False)
-        logging.info("PID: %s", proc_info.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
         proc_info.wait()

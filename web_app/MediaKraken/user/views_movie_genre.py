@@ -55,7 +55,7 @@ def user_movie_page(genre):
             offset=offset, include_remote=True):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_media_json,
         # 3 - mm_metadata_localimage_json
-        logging.info("row2: %s", row_data['mm_media_json'])
+        common_global.es_inst.com_elastic_index('info', {'stuff':"row2: %s", row_data['mm_media_json'])
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
@@ -90,7 +90,7 @@ def user_movie_page(genre):
             match_status = row_data['mismatch']
         except:
             match_status = False
-        logging.info("status: %s %s %s %s", watched_status, sync_status, rating_status,
+        common_global.es_inst.com_elastic_index('info', {'stuff':"status: %s %s %s %s", watched_status, sync_status, rating_status,
                      match_status)
         if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb'] \
                 and json_image['Images']['themoviedb']['Poster'] is not None:

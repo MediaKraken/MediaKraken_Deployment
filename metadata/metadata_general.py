@@ -33,26 +33,26 @@ from . import metadata_tv
 
 
 def metadata_process(thread_db, provider_name, download_data):
-    logging.info('full downloaddata record: %s', download_data)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'full downloaddata record: %s', download_data)
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        logging.info('%s search', provider_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s search', provider_name)
         metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        logging.info('%s fetch %s', provider_name,
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetch %s', provider_name,
                      download_data['mdq_download_json']['ProviderMetaID'])
         metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        logging.info('%s fetchcastcrew', provider_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetchcastcrew', provider_name)
         metadata_castcrew(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        logging.info('%s fetchreview', provider_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetchreview', provider_name)
         metadata_review(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchImage":
-        logging.info('%s fetchimage', provider_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetchimage', provider_name)
         metadata_image(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
-        logging.info('%s fetchcollection', provider_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetchcollection', provider_name)
         metadata_collection(thread_db, provider_name, download_data)
 
 
@@ -95,7 +95,7 @@ def metadata_search(thread_db, provider_name, download_data):
                                                                        download_data[
                                                                            'mdq_download_json'][
                                                                            'Path'])
-        logging.info('metadata_uuid %s, match_result %s',
+        common_global.es_inst.com_elastic_index('info', {'stuff':'metadata_uuid %s, match_result %s',
                      metadata_uuid, match_result)
         # if match_result is an int, that means the lookup found a match but isn't in db
         if metadata_uuid is None and type(match_result) != int:
@@ -138,7 +138,7 @@ def metadata_search(thread_db, provider_name, download_data):
         # first verify a download que record doesn't exist for this id
         metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'], 0,
                                                          provider_name, str(match_result))
-        logging.info('metaquelook: %s', metadata_uuid)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'metaquelook: %s', metadata_uuid)
         if metadata_uuid is not None:
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          metadata_uuid)
@@ -146,17 +146,17 @@ def metadata_search(thread_db, provider_name, download_data):
             thread_db.db_download_delete(download_data['mdq_id'])
         else:
             metadata_uuid = download_data['mdq_download_json']['MetaNewID']
-            logging.info('meta: %s', metadata_uuid)
+            common_global.es_inst.com_elastic_index('info', {'stuff':'meta: %s', metadata_uuid)
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          download_data['mdq_download_json']['MetaNewID'])
-            logging.info('after media id')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'after media id')
             download_data['mdq_download_json'].update(
                 {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            logging.info('after json update')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'after json update')
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                          download_data['mdq_id'])
-            logging.info('after update')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'after update')
         return  # no need to continue with checks
     # uuid found on local db
     if metadata_uuid is not None:
@@ -172,10 +172,10 @@ def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
-    logging.info('metadata_fetch: %s %s', provider_name, download_data)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'metadata_fetch: %s %s', provider_name, download_data)
     if provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == 3:  # person info
-            logging.info('%s fetch person bio', provider_name)
+            common_global.es_inst.com_elastic_index('info', {'stuff':'%s fetch person bio', provider_name)
             metadata_person.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie

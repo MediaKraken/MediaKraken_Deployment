@@ -27,8 +27,8 @@ def user_playback(vid_type, guid):
     """
     Display playback actions page
     """
-    logging.info('playback action: %s', vid_type)
-    logging.info('playback user: %s', current_user.get_id())
+    common_global.es_inst.com_elastic_index('info', {'stuff':'playback action: %s', vid_type)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'playback user: %s', current_user.get_id())
     return render_template("users/user_playback_videojs.html",
                            data_mtype=vid_type,
                            data_uuid=guid)

@@ -40,6 +40,6 @@
 #        movie = rt.Movies()
 #        response = movie.search(q=movie_title)
 #        for movie_data in movie.movies:
-#            logging.info("rt: %s %s %s", movie_data['title'], movie_data['id'],
+#            common_global.es_inst.com_elastic_index('info', {'stuff':"rt: %s %s %s", movie_data['title'], movie_data['id'],
 #                movie_data['alternate_ids'])
 #        return movie

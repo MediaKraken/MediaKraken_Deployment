@@ -56,7 +56,7 @@ def report_display_all_duplicates_detail(guid):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
-        logging.info("media: %s", media_data['mm_media_ffprobe_json'])
+        common_global.es_inst.com_elastic_index('info', {'stuff':"media: %s", media_data['mm_media_ffprobe_json'])
         for stream_data in media_data['mm_media_ffprobe_json']['streams']:
             if stream_data['codec_type'] == 'video':
                 media.append((media_data['mm_media_guid'], media_data['mm_media_path'],

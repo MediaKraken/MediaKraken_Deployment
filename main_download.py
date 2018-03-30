@@ -24,13 +24,13 @@ import subprocess
 import time
 
 import pika
-
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
 def on_message(channel, method_frame, header_frame, body):
     """
@@ -38,7 +38,7 @@ def on_message(channel, method_frame, header_frame, body):
     """
     if body is not None:
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'msg body': body})
+            common_global.es_inst.com_elastic_index('info', {'msg body': body})
         json_message = json.loads(body)
         if json_message['Type'] == 'youtube':
             dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',

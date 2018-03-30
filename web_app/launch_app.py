@@ -14,5 +14,5 @@ from common import common_logging_elasticsearch
 
 # start logging
 common_logging.com_logging_start('../log/MediaKraken_WebApp')
-logging.info('Creating webapp instance')
+common_global.es_inst.com_elastic_index('info', {'stuff':'Creating webapp instance')
 application = create_app()

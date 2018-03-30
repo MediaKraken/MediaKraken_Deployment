@@ -39,7 +39,7 @@ class CommonMetadataIMVdb(object):
         resp = requests.post(self.base_api_url + "/video/" + video_id
                              + "?include=sources,credits,bts,featured,popularity,countries,",
                              headers=self.headers)
-        logging.info("imvdb Info Status: %s-%s", resp.status_code, resp.json())
+        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Info Status: %s-%s", resp.status_code, resp.json())
         return resp.json()
 
     def com_imvdb_search_video(self, artist_name, song_title):
@@ -50,7 +50,7 @@ class CommonMetadataIMVdb(object):
                              + (artist_name.replace(' ', '+') + '+'
                                 + song_title.replace(' ', '+')),
                              headers=self.headers)
-        logging.info("imvdb Video Status: %s-%s",
+        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Video Status: %s-%s",
                      resp.status_code, resp.json())
         return resp.json()
 
@@ -60,6 +60,6 @@ class CommonMetadataIMVdb(object):
         """
         resp = requests.post(self.base_api_url + "/search/entities?q="
                              + artist_name.replace(' ', '+'), headers=self.headers)
-        logging.info("imvdb Entities Status: %s-%s",
+        common_global.es_inst.com_elastic_index('info', {'stuff':"imvdb Entities Status: %s-%s",
                      resp.status_code, resp.json())
         return resp.json()

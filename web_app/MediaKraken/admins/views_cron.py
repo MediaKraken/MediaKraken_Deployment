@@ -48,7 +48,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        logging.info("admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -90,7 +90,7 @@ def admin_cron_run(guid):
     """
     Run cron jobs
     """
-    logging.info('admin cron run %s', guid)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'admin cron run %s', guid)
     cron_file_path = g.db_connection.db_cron_info(guid)['mm_cron_file_path']
     route_key = 'mkque'
     exchange_key = 'mkque_ex'
@@ -158,7 +158,7 @@ def admin_cron_edit(guid):
             # request.form['interval']
             # request.form['time']
             # request.form['script_path']
-            # logging.info('cron edit info: %s %s %s', (addr, share, path))
+            # common_global.es_inst.com_elastic_index('info', {'stuff':'cron edit info: %s %s %s', (addr, share, path))
             pass
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 

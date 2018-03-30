@@ -37,7 +37,7 @@ from common import common_watchdog
 
 
 #    def on_any_event(self, event):
-#        logging.info("Any!", event.src_path)
+#        common_global.es_inst.com_elastic_index('info', {'stuff':"Any!", event.src_path)
 #        pass
 
 

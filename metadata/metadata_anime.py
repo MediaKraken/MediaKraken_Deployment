@@ -50,19 +50,19 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_anime_lookup.metadata_last_rt = None
         metadata_anime_lookup.metadata_last_anidb = None
     metadata_uuid = None  # so not found checks verify later
-    logging.info('meta anime look filename: %s', file_name)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'meta anime look filename: %s', file_name)
     # check for dupes by name/year
     if 'year' in file_name:
         if file_name['title'] == metadata_anime_lookup.metadata_last_title \
                 and file_name['year'] == metadata_anime_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
-            logging.info('meta anime return 1 %s',
+            common_global.es_inst.com_elastic_index('info', {'stuff':'meta anime return 1 %s',
                          metadata_anime_lookup.metadata_last_id)
             # don't need to set last......since they are equal
             return metadata_anime_lookup.metadata_last_id
     elif file_name['title'] == metadata_anime_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
-        logging.info('meta anime return 2 %s',
+        common_global.es_inst.com_elastic_index('info', {'stuff':'meta anime return 2 %s',
                      metadata_anime_lookup.metadata_last_id)
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
@@ -70,7 +70,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     imdb_id, tmdb_id, rt_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
         nfo_data, xml_data)
-    logging.info("meta anime look: %s %s %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id, anidb_id,
+    common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime look: %s %s %s %s %s %s %s %s", imdb_id, tmdb_id, rt_id, anidb_id,
                  metadata_anime_lookup.metadata_last_imdb, metadata_anime_lookup.metadata_last_tmdb,
                  metadata_anime_lookup.metadata_last_rt, metadata_anime_lookup.metadata_last_anidb)
     # if same as last, return last id and save lookup
@@ -100,7 +100,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
     if anidb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_anidb(anidb_id)
     # if ids from nfo/xml on local db
-    logging.info("meta anime metadata_uuid A: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime metadata_uuid A: %s", metadata_uuid)
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
         # fall through here to set last name/year id's
@@ -178,10 +178,10 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
             else:
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
-    logging.info("meta anime metadata_uuid B: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime metadata_uuid B: %s", metadata_uuid)
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        logging.info("meta anime db lookup")
+        common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime db lookup")
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
@@ -189,7 +189,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(
                 file_name['title'], None)
-        logging.info("meta movie db meta: %s", metadata_uuid)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"meta movie db meta: %s", metadata_uuid)
         if metadata_uuid is not None:
             # match found by title/year on local db so purge dl record
             db_connection.db_download_delete(download_que_id)
@@ -203,7 +203,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider(
                 'themoviedb', download_que_id)
-    logging.info("meta anime metadata_uuid c: %s", metadata_uuid)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime metadata_uuid c: %s", metadata_uuid)
     # set last values to negate lookups for same title/show
     metadata_anime_lookup.metadata_last_id = metadata_uuid
     metadata_anime_lookup.metadata_last_title = file_name['title']

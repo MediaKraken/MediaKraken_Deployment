@@ -32,31 +32,31 @@ class CommonWatchdogHandler(FileSystemEventHandler):
         """
         File modified notification
         """
-        logging.info("Modifed: %s", event.src_path)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Modifed: %s", event.src_path)
 
     def on_deleted(self, event):
         """
         File deleted notification
         """
         # TODO then could remove the media (if a media file) from the db automatically
-        logging.info("Deleted: %s", event.src_path)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Deleted: %s", event.src_path)
 
     def on_moved(self, event):
         """
         File moved notification
         """
         # TODO update media file path....if a media file
-        logging.info("Moved: %s", event.src_path)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Moved: %s", event.src_path)
 
     def on_created(self, event):
         """
         File created notification
         """
-        logging.info("Created: %s", event.src_path)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Created: %s", event.src_path)
 
 
 #    def on_any_event(self, event):
-#        logging.info("Any!", event.src_path)
+#        common_global.es_inst.com_elastic_index('info', {'stuff':"Any!", event.src_path)
 #        pass
 
 
@@ -77,7 +77,7 @@ class CommonWatchdog(object):
         self.observer = Observer()
         # pull in all the audit dirs
         for row_data in paths_to_watch:
-            logging.info("path: %s", row_data[0])
+            common_global.es_inst.com_elastic_index('info', {'stuff':"path: %s", row_data[0])
             if os.path.isdir(row_data[0]) and not os.path.ismount(row_data[0]):
                 self.observer.schedule(
                     event_handler, path=row_data[0], recursive=False)

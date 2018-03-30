@@ -54,7 +54,6 @@ class CommonCloud(object):
         backup_files = []
         for backup_class in CLOUD_BACKUP_CLASS:
             for backup_cloud in self.com_cloud_file_list(backup_class[0], None, True):
-                logging.info("cloud back: %s", backup_cloud)
                 backup_files.append((backup_cloud.name, backup_class[1],
                                      common_string.com_string_bytes2human(backup_cloud.size)))
         return backup_files

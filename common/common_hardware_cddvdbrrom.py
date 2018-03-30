@@ -9,15 +9,15 @@ def com_hard_cddvdbrrom():
     drives = []
     for device in client.query_by_subsystem("block"):
         if device.has_property("ID_CDROM"):
-            logging.info("Found CD/DVD drive at %s" % device.get_device_file())
+            common_global.es_inst.com_elastic_index('info', {'stuff':"Found CD/DVD drive at %s" % device.get_device_file())
             if device.has_property("ID_FS_LABEL"):
-                logging.info("Found disc: %s" %
+                common_global.es_inst.com_elastic_index('info', {'stuff':"Found disc: %s" %
                              device.get_property("ID_FS_LABEL"))
                 drives[device.get_device_file()] = (
                     True, device.get_property("ID_FS_LABEL"))
             elif device.has_property("ID_FS_TYPE"):
                 drives[device.get_device_file()] = (True, None)
-                logging.info("Found disc")
+                common_global.es_inst.com_elastic_index('info', {'stuff':"Found disc")
             else:
                 drives[device.get_device_file()] = (False, None)
     return drives

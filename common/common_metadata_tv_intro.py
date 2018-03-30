@@ -36,7 +36,7 @@ def com_tvintro_download(media_name):
         + common_string.com_string_title(media_name).replace(' ', '_')
         + ".html", None)).find(id="download_song")
     if data is not None:
-        logging.info('href: %s', data['href'])
+        common_global.es_inst.com_elastic_index('info', {'stuff':'href: %s', data['href'])
         common_network.mk_network_fetch_from_url('http://www.tv-intros.com'
                                                  + data['href'], 'theme.mp3')
         return True  # success

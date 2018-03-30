@@ -41,8 +41,8 @@ def com_sound_play_file(file_name):
     except GstPlayerException:
         pass
     if sound_data:
-        logging.info("Sound found at %s", sound_data.source)
-        logging.info("Sound is %.3f seconds", sound_data.length)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Sound found at %s", sound_data.source)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"Sound is %.3f seconds", sound_data.length)
         sound_data.play()
 
 
@@ -53,4 +53,4 @@ def com_audio_pyaudio_list_devices():
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):
-        logging.info(audio_instance.get_device_info_by_index(ndx))
+        common_global.es_inst.com_elastic_index('info', {'stuff':audio_instance.get_device_info_by_index(ndx))

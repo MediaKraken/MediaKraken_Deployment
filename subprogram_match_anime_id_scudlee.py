@@ -20,13 +20,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_scudlee
 
 # start logging
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anime_scudlee')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anime_scudlee')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -51,7 +52,7 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # begin the media match on NULL matches
 for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'row': 'row_data'})
+        common_global.es_inst.com_elastic_index('info', {'row': 'row_data'})
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
         # just check for non int then it's a non tvdb id

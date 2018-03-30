@@ -17,6 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
 import os
@@ -34,13 +35,13 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         # start logging
         if os.environ['DEBUG']:
             # start logging
-            es_inst = common_logging_elasticsearch.CommonElasticsearch(
+            common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
                 'main_ripper_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'Ready for connections!': False})
+            common_global.es_inst.com_elastic_index('info', {'Ready for connections!': False})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

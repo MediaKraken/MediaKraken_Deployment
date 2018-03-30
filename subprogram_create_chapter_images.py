@@ -22,6 +22,7 @@ import uuid
 import subprocess
 import os
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_metadata
@@ -91,7 +92,7 @@ def worker(worker_file_list):
 
 # start logging
 if os.environ['DEBUG']:
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_create_chapter_images')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_create_chapter_images')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

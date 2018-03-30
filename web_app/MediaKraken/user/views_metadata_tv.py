@@ -31,7 +31,7 @@ def metadata_tvshow_detail(guid):
     """
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
-    logging.info('meta tvshow json: %s', json_metadata)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'meta tvshow json: %s', json_metadata)
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
@@ -173,9 +173,9 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
         guid, int(season))
-    logging.info('dataeps: %s', data_episode_count)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'dataeps: %s', data_episode_count)
     data_episode_keys = natsort.natsorted(data_episode_count)
-    logging.info('dataepskeys: %s', data_episode_keys)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'dataepskeys: %s', data_episode_keys)
 
     # poster image
     try:

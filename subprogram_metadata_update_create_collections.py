@@ -22,12 +22,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import os
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'subprogram_update_create_collections')
 
 # open the database

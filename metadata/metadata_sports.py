@@ -42,11 +42,11 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(
         stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
-        logging.info("searching: %s", stripped_name)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"searching: %s", stripped_name)
         thesportsdb_data = \
             THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(
                 stripped_name)
-        logging.info("sports return: %s", thesportsdb_data)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"sports return: %s", thesportsdb_data)
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)

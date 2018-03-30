@@ -48,7 +48,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        logging.info("admin access attempt by %s" % current_user.get_id())
+        common_global.es_inst.com_elastic_index('info', {'stuff':"admin access attempt by %s" % current_user.get_id())
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -90,8 +90,8 @@ def admin_task_run(guid):
     """
     Run task jobs
     """
-    logging.info('admin task run %s', guid)
-    logging.info('info: %s' % g.db_connection.db_task_info(guid))
+    common_global.es_inst.com_elastic_index('info', {'stuff':'admin task run %s', guid)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'info: %s' % g.db_connection.db_task_info(guid))
     task_info = g.db_connection.db_task_info(guid)['mm_task_json']
     # submit the message
     ch = fpika.channel()
@@ -120,7 +120,7 @@ def admin_task_edit(guid):
             # request.form['interval']
             # request.form['time']
             # request.form['script_path']
-            # logging.info('task edit info: %s %s %s', (addr, share, path))
+            # common_global.es_inst.com_elastic_index('info', {'stuff':'task edit info: %s %s %s', (addr, share, path))
             pass
     return render_template('admin/admin_task_edit.html', guid=guid, form=form)
 

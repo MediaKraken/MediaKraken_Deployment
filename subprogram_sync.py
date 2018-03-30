@@ -25,6 +25,7 @@ from concurrent import futures
 
 from common import common_cloud
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_xfer
 
@@ -34,7 +35,7 @@ def worker(row_data):
     Worker ffmpeg thread for each sync job
     """
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'row': row_data})
+        common_global.es_inst.com_elastic_index('info', {'row': row_data})
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
@@ -60,7 +61,7 @@ def worker(row_data):
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
+        common_global.es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
     ffmpeg_pid = subprocess.Popen(
         ffmpeg_params, shell=False, stdout=subprocess.PIPE)
     # output after it gets started
@@ -72,7 +73,7 @@ def worker(row_data):
         line = ffmpeg_pid.stdout.readline()
         if line != '':
             if os.environ['DEBUG']:
-                es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
+                common_global.es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
             if line.find("Duration:") != -1:
                 media_duration = timedelta(
                     line.split(': ', 1)[1].split(',', 1)[0])
@@ -112,7 +113,7 @@ def worker(row_data):
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -123,7 +124,7 @@ with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'future': future.result()})
+            common_global.es_inst.com_elastic_index('info', {'future': future.result()})
 
 # commit all changes
 db_connection.db_commit()

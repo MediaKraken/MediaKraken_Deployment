@@ -19,12 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 from common import common_config_ini
+from common import common_global
 from common import common_hardware_roku
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_roku_thumb_generate')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_roku_thumb_generate')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -35,7 +36,7 @@ for row_data in db_connection.db_known_media():
     # TODO  actually, this should probably be the metadata
     # TODO the common roku code has the bif/thumb gen
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'row': row_data})
+        common_global.es_inst.com_elastic_index('info', {'row': row_data})
 
 # commit all changes
 db_connection.db_commit()

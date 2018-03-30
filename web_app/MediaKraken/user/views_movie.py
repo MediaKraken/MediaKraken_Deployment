@@ -58,7 +58,7 @@ def movie_detail(guid):
                                               g.db_connection.db_media_path_by_uuid(
                                                   media_guid_index)[0],
                                               'http://localhost:8900/stream.ffm'], shell=False)
-            logging.info("FFServer PID: %s", proc_ffserver.pid)
+            common_global.es_inst.com_elastic_index('info', {'stuff':"FFServer PID: %s", proc_ffserver.pid)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)

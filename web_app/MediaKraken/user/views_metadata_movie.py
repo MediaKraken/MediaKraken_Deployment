@@ -129,7 +129,7 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
-        logging.info("status: %s %s %s", watched_status,
+        common_global.es_inst.com_elastic_index('info', {'stuff':"status: %s %s %s", watched_status,
                      rating_status, request_status)
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,

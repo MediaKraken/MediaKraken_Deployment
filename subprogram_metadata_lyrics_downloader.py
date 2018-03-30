@@ -22,12 +22,13 @@ import os
 
 from common import common_config_ini
 from common import common_file
+from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_lyrics_download')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_lyrics_download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -39,7 +40,7 @@ sub_lang = "en"
 # search the directory for filter files
 for media_row in common_file.com_file_dir_list():
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'media': media_row})
+        common_global.es_inst.com_elastic_index('info', {'media': media_row})
 
 print('Total lyrics download attempts: %s' % total_download_attempts)
 # send notifications

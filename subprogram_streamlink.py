@@ -23,11 +23,12 @@ import os
 import subprocess
 
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_streamlink')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_streamlink')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

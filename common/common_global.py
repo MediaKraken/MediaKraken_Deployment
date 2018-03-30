@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -16,22 +16,5 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import subprocess
-import logging
-import pytest  # pylint: disable=W0611
-
-
-class TestSubprogramScudlee(object):
-    """
-    Test scudlee
-    """
-
-    def test_sub_scudlee_match(self):
-        """
-        Test function
-        """
-        proc_info = subprocess.Popen(['python', './subprogram_match_anime_id_scudlee.py'],
-                                     shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
-        proc_info.wait()
+# instance for elastisearch
+es_inst = None

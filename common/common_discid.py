@@ -31,8 +31,8 @@ def com_discid_default_device():
     """
     discid.get_default_device()
     disc = discid.read()
-    logging.info("id: %s", disc.id)
-    logging.info("submission url:\n%s", disc.submission_url)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"id: %s", disc.id)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"submission url:\n%s", disc.submission_url)
     return discid
 
 
@@ -44,9 +44,9 @@ def com_discid_caclulate_dir(dir_to_calculate):
     sectors = 258725
     offsets = [150, 17510, 235590]
     disc = discid.put(1, last, sectors, offsets)
-    logging.info("id: %s", disc.id)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"id: %s", disc.id)
     last_track = disc.tracks[disc.last_track_num - 1]
-    logging.info("last track length: %s seconds", last_track.seconds)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"last track length: %s seconds", last_track.seconds)
     return disc
 
 

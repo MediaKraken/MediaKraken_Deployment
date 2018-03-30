@@ -19,12 +19,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_ssh
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('task_zfs_check')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('task_zfs_check')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

@@ -41,7 +41,7 @@ class FileSenderThread(threading.Thread):
             clientsocket.connect((self.host, self.port))
             for fileindex in xrange(0, len(self.filenames)):
                 data = open(self.filelocations[fileindex], 'rb').read()
-                logging.info("fn: %s %s", self.filenames[fileindex],
+                common_global.es_inst.com_elastic_index('info', {'stuff':"fn: %s %s", self.filenames[fileindex],
                              type(self.filenames[fileindex]))
                 clientsocket.sendall("FILE" + struct.pack("<i256s", len(data),
                                                           str(self.filenames[fileindex])))
@@ -51,7 +51,7 @@ class FileSenderThread(threading.Thread):
             clientsocket.sendall('FEND')
             clientsocket.close()
         except socket.error, msg:
-            logging.error('Sending files failed. %s', str(msg))
+            common_global.es_inst.com_elastic_index('error', {'stuff':'Sending files failed. %s', str(msg))
 
 
 class FileReceiverThread(threading.Thread):
@@ -67,14 +67,14 @@ class FileReceiverThread(threading.Thread):
 
     def run(self):
         try:
-            logging.info('Listening for response on port %s',
+            common_global.es_inst.com_elastic_index('info', {'stuff':'Listening for response on port %s',
                          self.receive_port)
             localsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             localsocket.settimeout(60.0)
             localsocket.bind(('', self.receive_port))
             localsocket.listen(1)
             con, addr = localsocket.accept()
-            logging.info('Connection address: %s', addr)
+            common_global.es_inst.com_elastic_index('info', {'stuff':'Connection address: %s', addr)
             con.settimeout(60.0)
             while True:
                 data = getallbytes(con, 4)
@@ -86,23 +86,23 @@ class FileReceiverThread(threading.Thread):
                     data = getallbytes(con, 260)
                     self.filesize, filename = struct.unpack("<i256s", data)
                     filename = filename.replace('\0', '')
-                    logging.info("%s %s", self.filesize, filename)
+                    common_global.es_inst.com_elastic_index('info', {'stuff':"%s %s", self.filesize, filename)
                     filename = str(filename)
-                    logging.info('filename %s', filename)
+                    common_global.es_inst.com_elastic_index('info', {'stuff':'filename %s', filename)
                     file_handle = open('../roms/' + filename, 'wb')
                     fileleft = self.filesize
                     while fileleft:
                         data = con.recv(min(fileleft, 1024))
                         fileleft = max(0, fileleft - len(data))
                         self.filedone = self.filesize - fileleft
-                        logging.info('percent done %s',
+                        common_global.es_inst.com_elastic_index('info', {'stuff':'percent done %s',
                                      self.filedone * 100 / self.filesize)
                         file_handle.write(data)
                     file_handle.close()
-                    logging.info('file finished')
+                    common_global.es_inst.com_elastic_index('info', {'stuff':'file finished')
                 else:
                     raise Exception('ERROR GETTING FILES (NO FILE OR FEND)')
-            logging.info('Finished getting all files!')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'Finished getting all files!')
             del localsocket
         except socket.error as msg:
-            logging.error("Transfer Failed: %s", str(msg))
+            common_global.es_inst.com_elastic_index('error', {'stuff':"Transfer Failed: %s", str(msg))

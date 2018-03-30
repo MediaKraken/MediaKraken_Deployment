@@ -21,11 +21,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 
 from common import common_file
+from common import common_global
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_subtitle_downloader')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_subtitle_downloader')
 
 total_download_attempts = 0
 
@@ -36,7 +37,7 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
                                                ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
+        common_global.es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
             '.', 1)[0] + "." + sub_lang + ".srt"})
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
     # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
@@ -48,7 +49,7 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
             "subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
         cmd_output = file_handle.read()
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'Download Status': cmd_output})
+            common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 
 # TODO put in the notifications
 print('Total subtitle download attempts: %s' % total_download_attempts)

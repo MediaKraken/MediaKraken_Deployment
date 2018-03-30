@@ -39,7 +39,7 @@ def metadata_periodical_list():
     else:
         mediadata = g.db_connection.db_meta_book_list(offset, per_page)
     for item_data in mediadata:
-        logging.info('person data: %s', item_data)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'person data: %s', item_data)
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))

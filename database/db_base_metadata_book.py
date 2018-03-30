@@ -77,8 +77,8 @@ def db_meta_book_insert(self, json_data):
     # insert metadata json from isbndb
     """
     # json_data = json.dumps(json_data)
-    logging.info('book insert %s', json_data)
-    logging.info('book insert data %s', json_data['data'])
+    common_global.es_inst.com_elastic_index('info', {'stuff':'book insert %s', json_data)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'book insert data %s', json_data['data'])
     insert_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'
                            ' mm_metadata_book_isbn, mm_metadata_book_isbn13,'

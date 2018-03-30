@@ -67,9 +67,9 @@ def metadata_person_list():
     else:
         mediadata = g.db_connection.db_meta_person_list(offset, per_page)
     for person_data in mediadata:
-        logging.info('person data: %s', person_data)
-        logging.info('im: %s', person_data['mmp_person_image'])
-        logging.info('stuff %s', person_data['mmp_meta'])
+        common_global.es_inst.com_elastic_index('info', {'stuff':'person data: %s', person_data)
+        common_global.es_inst.com_elastic_index('info', {'stuff':'im: %s', person_data['mmp_person_image'])
+        common_global.es_inst.com_elastic_index('info', {'stuff':'stuff %s', person_data['mmp_meta'])
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:

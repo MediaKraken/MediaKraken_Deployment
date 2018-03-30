@@ -23,12 +23,13 @@ import os
 import uuid
 
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_tvmaze
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tvmaze_updates')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tvmaze_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -37,12 +38,12 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
 if os.environ['DEBUG']:
-    es_inst.com_elastic_index('info', {'result': result})
+    common_global.es_inst.com_elastic_index('info', {'result': result})
 # for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
+        common_global.es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:

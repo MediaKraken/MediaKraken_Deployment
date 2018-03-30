@@ -44,7 +44,7 @@ class TestSubprogramBroadcast(object):
         # fire up broadcast server
         self.proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'],
                                                shell=False)
-        logging.info("PID: %s", self.proc_broadcast.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", self.proc_broadcast.pid)
 
     @classmethod
     def teardown_class(self):

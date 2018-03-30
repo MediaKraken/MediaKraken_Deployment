@@ -43,12 +43,12 @@ class CommonHardwarePioneer(object):
         try:
             msg = self.pioneer_inst.recv(4096)
         except socket.error as e:
-            logging.error('Pioneer socket error %s', e)
+            common_global.es_inst.com_elastic_index('error', {'stuff':'Pioneer socket error %s', e)
         else:
             if len(msg) == 0:
-                logging.info('pioneer shutdown on server end')
+                common_global.es_inst.com_elastic_index('info', {'stuff':'pioneer shutdown on server end')
             else:
-                logging.info('pioneer data %s', msg)
+                common_global.es_inst.com_elastic_index('info', {'stuff':'pioneer data %s', msg)
                 while 1:
                     rxbuf = self.pioneer_inst.recv(1024)
                     if rxbuf:

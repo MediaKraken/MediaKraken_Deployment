@@ -23,11 +23,12 @@ import os
 import db_base_brainz as database_base_brainz
 
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_musicbrainz_sync')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_musicbrainz_sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -56,7 +57,7 @@ for row_data in db_brainz.db_brainz_all_artists():
                                                        row_data['end_date_month']) + ':'
                                                            + str(row_data['end_date_day']))}))
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'row': row_data})
+        common_global.es_inst.com_elastic_index('info', {'row': row_data})
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],
@@ -66,7 +67,7 @@ for row_data in db_brainz.db_brainz_all_artists():
                                                     'Language': row_data_album['language'],
                                                     'Barcode': row_data_album['barcode']}))
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'row data album': row_data_album})
+            common_global.es_inst.com_elastic_index('info', {'row data album': row_data_album})
 '''
         # fetch all the songs from brainz
         for row_data in db_brainz.db_Brainz_All_Songs():

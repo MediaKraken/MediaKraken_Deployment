@@ -44,7 +44,7 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                 str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
-        logging.info("db find metadata tv guid: %s", metadata_guid)
+        common_global.es_inst.com_elastic_index('info', {'stuff':"db find metadata tv guid: %s", metadata_guid)
         break
     return metadata_guid
 
@@ -301,7 +301,7 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    logging.info("huh: %s %s %s", show_guid, season_number, episode_number)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"huh: %s %s %s", show_guid, season_number, episode_number)
     # self.db_cursor.execute('(select
     #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'name\','

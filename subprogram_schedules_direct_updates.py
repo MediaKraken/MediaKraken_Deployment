@@ -21,17 +21,18 @@ import os
 import sys
 import json
 from common import common_config_ini
+from common import common_global
 from common import common_logging_elasticsearch
 from common import common_schedules_direct
 
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'array': meta_program_fetch})
+        common_global.es_inst.com_elastic_index('info', {'array': meta_program_fetch})
     meta_program_json = sd.com_schedules_direct_program_info(
         json.dumps(meta_program_fetch))
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('info', {'result': meta_program_json})
+        common_global.es_inst.com_elastic_index('info', {'result': meta_program_json})
     #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(
     # json.dumps([{'programID': program_json['programID']}]))
     for program_data in meta_program_json:
@@ -41,7 +42,7 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'subprogram_schedules_direct_updates')
 
 # open the database
@@ -55,36 +56,36 @@ if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('critical', {'stuff': 'SD is unavailable'})
+        common_global.es_inst.com_elastic_index('critical', {'stuff': 'SD is unavailable'})
     sys.exit(0)
 # version check
 # version_json = sd.com_Schedules_Direct_Client_Version()
 # TODO
 # if version_json != "MediaKraken_0.1.0":
-#    logging.critical("Outdated Client Version! Upgrade MediaKraken_")
+#    common_global.es_inst.com_elastic_index('critical', {'stuff':"Outdated Client Version! Upgrade MediaKraken_")
 #    sys.exit(0)
 
 # get headends
 # headends_json = sd.com_Schedules_Direct_Headends('USA', '58701')
 
 # add to lineup
-# logging.info(sd.com_Schedules_Direct_Lineup_Add('USA-ND33420-DEFAULT'))
+# common_global.es_inst.com_elastic_index('info', {'stuff':sd.com_Schedules_Direct_Lineup_Add('USA-ND33420-DEFAULT'))
 
 # remove from lineup
-# logging.info(sd.com_Schedules_Direct_Lineup_Delete('USA-DISH687-DEFAULT'))
+# common_global.es_inst.com_elastic_index('info', {'stuff':sd.com_Schedules_Direct_Lineup_Delete('USA-DISH687-DEFAULT'))
 
 
 # list lineups and channels for them
 # for line_name in sd.com_Schedules_Direct_Lineup_List()['lineups']:
 #    # channel map
 #    channel_map = sd.com_Schedules_Direct_Lineup_Channel_Map(line_name['lineup'])
-#    logging.info("Map: %s", channel_map['map'])
+#    common_global.es_inst.com_elastic_index('info', {'stuff':"Map: %s", channel_map['map'])
 #    for channel_id in channel_map['map']:
-#        logging.info("mapchannel: %s", channel_id)
+#        common_global.es_inst.com_elastic_index('info', {'stuff':"mapchannel: %s", channel_id)
 #        db_connection.db_tv_station_insert(channel_id['stationID'], channel_id['channel'])
-#    logging.info("Stations: %s", channel_map['stations'])
+#    common_global.es_inst.com_elastic_index('info', {'stuff':"Stations: %s", channel_map['stations'])
 #    for channel_meta in channel_map['stations']:
-#        logging.info("stationschannel: %s", channel_meta)
+#        common_global.es_inst.com_elastic_index('info', {'stuff':"stationschannel: %s", channel_meta)
 #        db_connection.db_tv_station_update(channel_meta['name'], channel_meta['stationID'],\
 # json.dumps(channel_meta))
 
@@ -94,7 +95,7 @@ else:
 
 station_fetch = []
 if os.environ['DEBUG']:
-    es_inst.com_elastic_index('info', {'list': db_connection.db_tv_stations_read_stationid_list()})
+    common_global.es_inst.com_elastic_index('info', {'list': db_connection.db_tv_stations_read_stationid_list()})
 # grab all stations in DB
 for station_id in db_connection.db_tv_stations_read_stationid_list():
     # fetch all schedules for station
@@ -105,7 +106,7 @@ meta_program_fetch = []
 # grab station info from SD
 if len(station_fetch) > 5000:
     if os.environ['DEBUG']:
-        es_inst.com_elastic_index('critical', {'stuff': 'Too many channels!!!!  Exiting...'})
+        common_global.es_inst.com_elastic_index('critical', {'stuff': 'Too many channels!!!!  Exiting...'})
 elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(
         json.dumps(station_fetch))
@@ -124,7 +125,7 @@ elif len(station_fetch) > 0:
                                                 program_json['airDateTime'],
                                                 json.dumps(program_json))
             if os.environ['DEBUG']:
-                es_inst.com_elastic_index('info', {'programid': program_json['programID']})
+                common_global.es_inst.com_elastic_index('info', {'programid': program_json['programID']})
             # if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])
             if len(meta_program_fetch) >= 500:

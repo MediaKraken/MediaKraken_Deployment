@@ -90,7 +90,7 @@ class CommonCloudGoogleDrive(object):
         results = service.files().list(maxResults=10).execute()
         items = results.get('items', [])
         if not items:
-            logging.error('No files found.')
+            common_global.es_inst.com_elastic_index('error', {'stuff':'No files found.')
         else:
             for item in items:
                 print('{0} ({1})'.format(item['title'], item['id']))

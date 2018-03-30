@@ -81,7 +81,7 @@ def com_string_password_test(password_text):
         'Very strong',
     )
     strength, improvements = passwordmeter.test(password_text)
-    logging.info('Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,
+    common_global.es_inst.com_elastic_index('info', {'stuff':'Password strength: {} ({})'.format(strength, (ratings[min(len(ratings) - 1,
                                                                             int(strength * len(
                                                                                 ratings)))])))
     return (strength, improvements)

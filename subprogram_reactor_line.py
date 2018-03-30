@@ -27,6 +27,7 @@ from pika.adapters import twisted_connection
 from network import network_base_line as network_base
 from common import common_config_ini
 from common import common_docker
+from common import common_global
 from common import common_logging_elasticsearch
 import time
 import subprocess
@@ -54,7 +55,7 @@ def run(connection):
 @defer.inlineCallbacks
 def read(queue_object):
     global mk_containers
-    logging.info('here I am in consume - read')
+    common_global.es_inst.com_elastic_index('info', {'stuff':'here I am in consume - read'})
     ch, method, properties, body = yield queue_object.get()
 
     """
@@ -72,10 +73,10 @@ def read(queue_object):
     """
 
     if body:
-        logging.info("body %s", body)
+        common_global.es_inst.com_elastic_index('info', {"body": body})
         # network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
-        logging.info('cron json body %s', json_message)
+        common_global.es_inst.com_elastic_index('info', {'cron json body': json_message})
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(['python', json_message['Data']])
         elif json_message['Type'] == 'Pause':
@@ -85,7 +86,7 @@ def read(queue_object):
             # to address the 30 char name limit for container
             name_container = ((json_message['User'] + '_'
                                + str(uuid.uuid4()).replace('-', ''))[-30:])
-            logging.info('cont %s', name_container)
+            common_global.es_inst.com_elastic_index('info', {'cont': name_container})
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
                 define_new_container = (name_container, json_message['Device'],
@@ -93,7 +94,7 @@ def read(queue_object):
             else:
                 define_new_container = (name_container, None,
                                         json_message['Target'], json_message['Data'])
-            logging.info('def %s', define_new_container)
+            common_global.es_inst.com_elastic_index('info', {'def': define_new_container})
             if json_message['User'] in mk_containers:
                 user_activity_list = mk_containers[json_message['User']]
                 user_activity_list.append(define_new_container)
@@ -101,7 +102,7 @@ def read(queue_object):
             else:
                 # "double list" so each one is it's own instance
                 mk_containers[json_message['User']] = (define_new_container)
-            logging.info('dict %s', mk_containers)
+            common_global.es_inst.com_elastic_index('info', {'dict': mk_containers})
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
@@ -138,7 +139,7 @@ def read(queue_object):
                 container_command = shlex.split(container_command)
             else:
                 pass
-            logging.info('b4 docker run')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'b4 docker run'})
             hwaccel = True
             if hwaccel == True:
                 image_name = 'mediakraken/mkslavenvidiadebian:latest'
@@ -147,17 +148,18 @@ def read(queue_object):
             docker_inst.com_docker_run_container(container_image_name=image_name,
                                                  container_name=name_container,
                                                  container_command=(container_command))
-            logging.info('after docker run')
+            common_global.es_inst.com_elastic_index('info', {'stuff':'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
-            logging.info('user stop: %s', mk_containers[json_message['User']])
+            common_global.es_inst.com_elastic_index('info', {'user stop':
+                                                             mk_containers[json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
         elif json_message['Type'] == 'FFMPEG':
             # to address the 30 char name limit for container
             name_container = ((json_message['User'] + '_'
                                + str(uuid.uuid4()).replace('-', ''))[-30:])
-            logging.info('ffmpegcont %s', name_container)
+            common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
             hwaccel = True
             if hwaccel == True:
                 image_name = 'mediakraken/mkslavenvidiadebian:latest'
@@ -169,7 +171,7 @@ def read(queue_object):
                                                      'python subprogram_ffprobe_metadata.py %s' %
                                                      json_message['Data']))
             if os.environ['DEBUG']:
-                es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
+                common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
@@ -177,14 +179,14 @@ class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         if os.environ['DEBUG']:
             # start logging
-            es_inst = common_logging_elasticsearch.CommonElasticsearch(
+            common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
                 'subprogram_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'stuff': 'Ready for connections!'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for connections!'})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

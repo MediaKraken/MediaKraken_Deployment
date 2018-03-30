@@ -91,7 +91,7 @@ def db_known_remote_media_count(self):
 #        elif row_data[1] == 'Book':
 #            pass
 #        else:
-#            logging.error('Link bad data type: %s', row_data[1])
+#            common_global.es_inst.com_elastic_index('error', {'stuff':'Link bad data type: %s', row_data[1])
 #            return None
 #        if metadata_guid is not None:
 #            self.db_insert_remote_media(link_uuid, row_data[0], \

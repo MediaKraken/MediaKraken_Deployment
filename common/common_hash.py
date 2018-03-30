@@ -96,7 +96,7 @@ def com_hash_sha1_by_filename(file_name):
                 SHA1.update(chunk)
                 sha1_hash_data = SHA1.hexdigest()
         except:
-            logging.error("hash sha1 fail: %s", file_name)
+            common_global.es_inst.com_elastic_index('error', {'stuff':"hash sha1 fail: %s", file_name)
         file_pointer.close()
         return sha1_hash_data
 

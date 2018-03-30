@@ -41,7 +41,6 @@ class CommonBackupBackblaze(object):
         """
         response = self.b2_blaze.create_bucket(
             bucket_name, bucket_type='allPrivate')
-        logging.info("b2 create: %s", response)
 
     def com_backblaze_upload_file(self, file_name, bucket_name, file_password=None):
         """
@@ -74,4 +73,3 @@ class CommonBackupBackblaze(object):
         else:
             response = self.b2_blaze.download_file_by_name(file_name, local_file_name,
                                                            password=file_password)
-        logging.info("b2 down: %s", response)

@@ -56,7 +56,7 @@ def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
-    logging.info("filename: %s", media_name)
+    common_global.es_inst.com_elastic_index('info', {'stuff':"filename: %s", media_name)
     pattern = r'[^\.a-zA-Z]'
     try:
         # first char of filename
@@ -70,7 +70,7 @@ def com_meta_image_file_path(media_name, media_type):
         file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
                                  media_type, random.choice(string.ascii_lowercase))
     # os.path.join should be adding the terminating slash
-    logging.info('file image path: %s', file_path)
+    common_global.es_inst.com_elastic_index('info', {'stuff':'file image path: %s', file_path)
     return file_path
 
 

@@ -22,13 +22,14 @@ import os
 import xmltodict
 
 from common import common_config_ini
+from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_trailer_download')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_trailer_download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -40,7 +41,7 @@ data = xmltodict.parse(common_network.mk_network_fetch_from_url(
 if data is not None:
     for item in data['item']:
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'item': item})
+            common_global.es_inst.com_elastic_index('info', {'item': item})
         download_link = None
         if ('(Trailer' in data['item']['title']
             and option_config_json['Trailer']['Trailer'] is True) \

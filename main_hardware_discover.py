@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 import subprocess
+from common import common_global
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
 from common import common_file
@@ -27,7 +28,7 @@ from common import common_string
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
 
 media_devices = []
 
@@ -51,7 +52,7 @@ while True:
     line = chrome_pid.stdout.readline()
     if line != '':
         if os.environ['DEBUG']:
-            es_inst.com_elastic_index('info', {'chromescan out': line.rstrip()})
+            common_global.es_inst.com_elastic_index('info', {'chromescan out': line.rstrip()})
         if line.find(":") != -1:
             media_devices.append({'Chrome IP': line.split(':')[0].strip(),
                                   'Chrome Name': line.split(':')[1].strip()})
