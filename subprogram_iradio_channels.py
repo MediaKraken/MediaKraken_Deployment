@@ -27,7 +27,7 @@ from common import common_network_radio
 # start logging
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_IRadio')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_iradio')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

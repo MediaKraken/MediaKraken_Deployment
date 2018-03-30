@@ -40,7 +40,7 @@ else:
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Metadata_API')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
 
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times

@@ -27,7 +27,7 @@ from common import common_string
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Hardware_Discover')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
 
 media_devices = []
 

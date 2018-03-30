@@ -28,7 +28,7 @@ from common import common_version
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Server')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
 
 if os.environ['DEBUG']:
     es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})

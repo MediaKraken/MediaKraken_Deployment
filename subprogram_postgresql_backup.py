@@ -27,7 +27,7 @@ from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Postgresql_Backup')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_postgresql_backup')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

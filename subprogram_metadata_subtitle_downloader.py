@@ -25,7 +25,7 @@ from common import common_logging_elasticsearch
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Subtitle_Downloader')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_subtitle_downloader')
 
 total_download_attempts = 0
 

@@ -30,7 +30,7 @@ from common import common_network
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Main_Download')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
 def on_message(channel, method_frame, header_frame, body):
     """

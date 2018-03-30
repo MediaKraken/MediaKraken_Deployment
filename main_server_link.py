@@ -97,7 +97,7 @@ class MediaKrakenApp(object):
         if os.environ['DEBUG']:
             # start logging
             es_inst = common_logging_elasticsearch.CommonElasticsearch(
-                'Main_Link')
+                'main_link')
         # open the database
         option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()

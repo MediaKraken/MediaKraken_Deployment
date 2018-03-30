@@ -35,7 +35,7 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         if os.environ['DEBUG']:
             # start logging
             es_inst = common_logging_elasticsearch.CommonElasticsearch(
-                'Main_Ripper_Reactor_Line')
+                'main_ripper_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances

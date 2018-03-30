@@ -30,7 +30,7 @@ from common import common_logging_elasticsearch
 
 # start logging
 if os.environ['DEBUG']:
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_FFProbe')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_ffprobe')
 
 def on_message(channel, method_frame, header_frame, body):
     """

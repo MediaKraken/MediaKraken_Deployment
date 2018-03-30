@@ -30,7 +30,7 @@ from common import common_metadata_scudlee
 # start logging
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_AniDB_Updates')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anidb_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

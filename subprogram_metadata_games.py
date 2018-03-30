@@ -32,7 +32,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 if os.environ['DEBUG']:
     # start logging
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_MAME_XML')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_mame_xml')
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does

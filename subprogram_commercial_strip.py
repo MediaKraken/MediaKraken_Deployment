@@ -52,7 +52,7 @@ def main(argv):
     """
     if os.environ['DEBUG']:
         # start logging
-        es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Commercial_Strip')
+        es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_commercial_strip')
     inputfile = None
     outputfile = None
     try:

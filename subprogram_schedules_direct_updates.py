@@ -42,7 +42,7 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
 if os.environ['DEBUG']:
     # start logging
     es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'Subprogram_Schedules_Direct_Updates')
+        'subprogram_schedules_direct_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

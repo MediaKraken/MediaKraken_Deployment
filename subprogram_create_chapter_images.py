@@ -91,7 +91,7 @@ def worker(worker_file_list):
 
 # start logging
 if os.environ['DEBUG']:
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_Create_Chapter_Images')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_create_chapter_images')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

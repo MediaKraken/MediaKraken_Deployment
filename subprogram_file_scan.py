@@ -38,7 +38,7 @@ from common import common_string
 
 # start logging
 if os.environ['DEBUG']:
-    es_inst = common_logging_elasticsearch.CommonElasticsearch('Subprogram_File_Scan')
+    es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
 
 
 def worker(audit_directory):
