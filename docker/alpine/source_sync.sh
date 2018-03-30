@@ -16,7 +16,6 @@ cp -R /home/metaman/MediaKraken_Deployment/database /home/metaman/MediaKraken_De
 cp -R /home/metaman/MediaKraken_Deployment/metadata /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/main_server_metadata_api.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/main_server_metadata_api_worker.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp /home/metaman/MediaKraken_Deployment/main_server_metadata_api_worker_image.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/build_image_directory.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/build_trailer_directory.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/subprogram*.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
