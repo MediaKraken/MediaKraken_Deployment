@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-from .. import common_global
+from common import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 
