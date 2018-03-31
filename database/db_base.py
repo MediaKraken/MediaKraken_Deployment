@@ -64,7 +64,7 @@ def db_close(self):
     """
     # close main db file
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+    #common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
 
 
