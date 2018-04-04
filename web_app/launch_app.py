@@ -12,9 +12,8 @@ from MediaKraken.app import create_app
 from common import common_global
 from common import common_logging_elasticsearch
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'main_webapp')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'main_webapp')
 common_global.es_inst.com_elastic_index('info', {'stuff':'Creating webapp instance'})
 application = create_app()

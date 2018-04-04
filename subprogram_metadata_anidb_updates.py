@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import os
 
 from common import common_config_ini
 from common import common_global
@@ -29,9 +28,7 @@ from common import common_metadata_anidb
 from common import common_metadata_scudlee
 
 # start logging
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anidb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anidb_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -49,7 +46,7 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {
             'stuff': str(('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
                           tvdbid, imdbid, default_tvseason, mapping_data, before_data))})

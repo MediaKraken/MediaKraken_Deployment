@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import os
 import uuid
 
 from common import common_config_ini
@@ -27,9 +26,8 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_tmdb
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tmdb_updates')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tmdb_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -39,14 +37,14 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'mov': movie_change['id']})
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'here': '1'})
         dl_meta = db_connection.db_download_que_exists(None, 1, 'themoviedb',
                                                        str(movie_change['id']))
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'dl_meta': dl_meta})
         if dl_meta is None:
             db_connection.db_download_insert('themoviedb', 1, json.dumps({'MediaID': None,

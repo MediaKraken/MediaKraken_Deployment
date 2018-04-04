@@ -39,9 +39,8 @@ if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/
 else:
     build_trailer_dirs()
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
 
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
@@ -51,7 +50,7 @@ wait_pid.wait()
 
 # fire up the workers for each provider
 for meta_provider in common_metadata_limiter.API_LIMIT.keys():
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'meta_provider': meta_provider})
     proc_api_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker.py',
                                        meta_provider], shell=False)

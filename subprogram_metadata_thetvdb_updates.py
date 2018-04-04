@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import os
 import time
 
 import xmltodict
@@ -29,9 +28,8 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_thetvdb
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_thetvdb_updates')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_thetvdb_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -45,7 +43,7 @@ option_json, status_json = db_connection.db_opt_status_read()
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'id': row_data['id']})
     # look for previous data
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
@@ -81,7 +79,7 @@ for row_data in update_item['Data']['Series']:
     db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'banner': row_data})
 
 # set the epoc date

@@ -18,7 +18,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
 import xmltodict
 
 from common import common_config_ini
@@ -27,9 +26,8 @@ from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_trailer_download')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_trailer_download')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -40,7 +38,7 @@ data = xmltodict.parse(common_network.mk_network_fetch_from_url(
     "http://feeds.hd-trailers.net/hd-trailers", None))
 if data is not None:
     for item in data['item']:
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'item': item})
         download_link = None
         if ('(Trailer' in data['item']['title']

@@ -20,16 +20,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import os
 from common import common_config_ini
 from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'subprogram_update_create_collections')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_update_create_collections')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

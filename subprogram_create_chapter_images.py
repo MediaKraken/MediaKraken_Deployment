@@ -91,8 +91,7 @@ def worker(worker_file_list):
     return
 
 # start logging
-if os.environ['DEBUG']:
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_create_chapter_images')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_create_chapter_images')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -110,8 +109,8 @@ if len(file_list) > 0:
     with futures.ThreadPoolExecutor(len(file_list)) as executor:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
-            if os.environ['DEBUG']:
-                es_inst.es_index('info', {'data': future.result()})
+            if common_global.es_inst.debug:
+                common_global.es_inst.es_index('info', {'data': future.result()})
 
 # send notications
 if total_images_created > 0:

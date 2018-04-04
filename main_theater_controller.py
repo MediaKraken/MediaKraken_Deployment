@@ -895,10 +895,9 @@ class MediaKrakenApp(App):
 
 
 if __name__ == '__main__':
-    if os.environ['DEBUG']:
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-            'main_theater_controller')
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+        'main_theater_controller')
 
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks

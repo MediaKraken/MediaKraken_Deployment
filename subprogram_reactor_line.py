@@ -170,22 +170,21 @@ def read(queue_object):
                                                  container_command=(
                                                      'python subprogram_ffprobe_metadata.py %s' %
                                                      json_message['Data']))
-            if os.environ['DEBUG']:
+            if common_global.es_inst.debug:
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
-        if os.environ['DEBUG']:
-            # start logging
-            common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-                'subprogram_reactor_line')
+        # start logging
+        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+            'subprogram_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for connections!'})
 
     def buildProtocol(self, addr):

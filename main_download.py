@@ -19,7 +19,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
-import os
 import subprocess
 import time
 
@@ -28,16 +27,15 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
 def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
     if body is not None:
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
         json_message = json.loads(body)
         if json_message['Type'] == 'youtube':

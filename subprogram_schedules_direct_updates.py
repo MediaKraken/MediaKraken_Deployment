@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
 import sys
 import json
 from common import common_config_ini
@@ -27,11 +26,11 @@ from common import common_schedules_direct
 
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'array': meta_program_fetch})
     meta_program_json = sd.com_schedules_direct_program_info(
         json.dumps(meta_program_fetch))
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'result': meta_program_json})
     #   meta_program_json = sd.com_Schedules_Direct_Program_Desc(
     # json.dumps([{'programID': program_json['programID']}]))
@@ -40,10 +39,9 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
             program_json['programID'], json.dumps(program_data))
 
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'subprogram_schedules_direct_updates')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_schedules_direct_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -55,7 +53,7 @@ status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('critical', {'stuff': 'SD is unavailable'})
     sys.exit(0)
 # version check
@@ -94,7 +92,7 @@ else:
 # - good for what the show is......not an episode itself
 
 station_fetch = []
-if os.environ['DEBUG']:
+if common_global.es_inst.debug:
     common_global.es_inst.com_elastic_index('info', {'list': db_connection.db_tv_stations_read_stationid_list()})
 # grab all stations in DB
 for station_id in db_connection.db_tv_stations_read_stationid_list():
@@ -105,7 +103,7 @@ for station_id in db_connection.db_tv_stations_read_stationid_list():
 meta_program_fetch = []
 # grab station info from SD
 if len(station_fetch) > 5000:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('critical', {'stuff': 'Too many channels!!!!  Exiting...'})
 elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(
@@ -124,7 +122,7 @@ elif len(station_fetch) > 0:
             db_connection.db_tv_schedule_insert(station_json['stationID'],
                                                 program_json['airDateTime'],
                                                 json.dumps(program_json))
-            if os.environ['DEBUG']:
+            if common_global.es_inst.debug:
                 common_global.es_inst.com_elastic_index('info', {'programid': program_json['programID']})
             # if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])

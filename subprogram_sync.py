@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
 import subprocess
 from datetime import timedelta
 
@@ -34,7 +33,7 @@ def worker(row_data):
     """
     Worker ffmpeg thread for each sync job
     """
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'row': row_data})
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
@@ -60,7 +59,7 @@ def worker(row_data):
             ('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
     ffmpeg_pid = subprocess.Popen(
         ffmpeg_params, shell=False, stdout=subprocess.PIPE)
@@ -72,7 +71,7 @@ def worker(row_data):
     while True:
         line = ffmpeg_pid.stdout.readline()
         if line != '':
-            if os.environ['DEBUG']:
+            if common_global.es_inst.debug:
                 common_global.es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
             if line.find("Duration:") != -1:
                 media_duration = timedelta(
@@ -111,9 +110,8 @@ def worker(row_data):
     return
 
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -123,7 +121,7 @@ sync_data = db_connection.db_sync_list()
 with futures.ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'future': future.result()})
 
 # commit all changes

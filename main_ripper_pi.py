@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 from concurrent import futures
 from common import common_global
 from common import common_hardware_arduino_usb_serial
@@ -355,9 +354,8 @@ class MediaKrakenApp(App):
 
 
 if __name__ == '__main__':
-    if os.environ['DEBUG']:
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('ripper_pi')
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('ripper_pi')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

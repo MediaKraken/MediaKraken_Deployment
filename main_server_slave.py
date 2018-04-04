@@ -66,7 +66,7 @@ class MKConsumer(object):
         :rtype: pika.SelectConnection
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'Connecting to': self._url})
         return pika.SelectConnection(pika.URLParameters(self._url),
                                      self.on_connection_open,
@@ -80,7 +80,7 @@ class MKConsumer(object):
         :type unused_connection: pika.SelectConnection
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Connection opened'})
         self.add_on_connection_close_callback()
         self.open_channel()
@@ -90,7 +90,7 @@ class MKConsumer(object):
         when RabbitMQ closes the connection to the publisher unexpectedly.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding connection close callback'})
         self._connection.add_on_close_callback(self.on_connection_closed)
 
@@ -108,7 +108,7 @@ class MKConsumer(object):
         if self._closing:
             self._connection.ioloop.stop()
         else:
-            if os.environ['DEBUG']:
+            if common_global.es_inst.debug:
                 common_global.es_inst.com_elastic_index('info', {'code': reply_code, 'reply': reply_text})
             self._connection.add_timeout(5, self.reconnect)
 
@@ -133,7 +133,7 @@ class MKConsumer(object):
         on_channel_open callback will be invoked by pika.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating a new channel'})
         self._connection.channel(on_open_callback=self.on_channel_open)
 
@@ -146,7 +146,7 @@ class MKConsumer(object):
         :param pika.channel.Channel channel: The channel object
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
@@ -157,7 +157,7 @@ class MKConsumer(object):
         RabbitMQ unexpectedly closes the channel.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
@@ -227,7 +227,7 @@ class MKConsumer(object):
         :param pika.frame.Method unused_frame: The Queue.BindOk response frame
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Queue bound'})
         self.start_consuming()
 
@@ -241,7 +241,7 @@ class MKConsumer(object):
         will invoke when a message is fully received.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(self.on_message,
@@ -253,7 +253,7 @@ class MKConsumer(object):
         on_consumer_cancelled will be invoked by pika.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
@@ -281,14 +281,14 @@ class MKConsumer(object):
         :param str|unicode body: The message body
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'message': basic_deliver.delivery_tag,
                                                'from': properties.app_id})
         json_message = json.loads(body)
         if json_message['Type'] != "IMAGE":
-            if os.environ['DEBUG']:
+            if common_global.es_inst.debug:
                 common_global.es_inst.com_elastic_index('info', {'Got Message': body})
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'len total': len(body)})
 
         msg = None
@@ -369,7 +369,7 @@ class MKConsumer(object):
         :param int delivery_tag: The delivery tag from the Basic.Deliver frame
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'Acknowledging message': delivery_tag})
         self._channel.basic_ack(delivery_tag)
 
@@ -390,7 +390,7 @@ class MKConsumer(object):
         :param pika.frame.Method unused_frame: The Basic.CancelOk frame
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {
                 'stuff': 'RabbitMQ acknowledged the cancellation of the consumer'})
         self.close_channel()
@@ -400,7 +400,7 @@ class MKConsumer(object):
         Channel.Close RPC command.
 
         """
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Closing the channel'})
         self._channel.close()
 
@@ -429,15 +429,14 @@ class MKConsumer(object):
 
     def close_connection(self):
         """This method closes the connection to RabbitMQ."""
-        if os.environ['DEBUG']:
+        if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'Closing connection'})
         self._connection.close()
 
 
 def main():
-    if os.environ['DEBUG']:
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_slave')
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_slave')
 
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(

@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
 
 from common import common_config_ini
 from common import common_file
@@ -26,9 +25,7 @@ from common import common_logging_elasticsearch
 from common import common_network_radio
 
 # start logging
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_iradio')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_iradio')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -39,7 +36,7 @@ common_network_radio.com_net_radio()
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
-    if os.environ['DEBUG']:
+    if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
     db_connection.db_iradio_insert(row_data)
 

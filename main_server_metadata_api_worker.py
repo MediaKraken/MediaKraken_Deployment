@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import datetime
 import json
-import os
 import subprocess
 import sys
 
@@ -308,10 +307,9 @@ def on_message(channel, method_frame, header_frame, body):
         # TODO add record for activity/etc for the user who ran this
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
-if os.environ['DEBUG']:
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'meta_api_worker_%s' % str(sys.argv[1]))
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'meta_api_worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
 common_global.es_inst.com_elastic_index('info', {"worker meta api name":
                                                  content_providers})

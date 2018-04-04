@@ -802,9 +802,8 @@ if __name__ == '__main__':
     from multiprocessing import freeze_support
 
     freeze_support()
-    if os.environ['DEBUG']:
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater')
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater')
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
