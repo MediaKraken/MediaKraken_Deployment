@@ -57,6 +57,7 @@ def user_internet_youtube():
         videos, channels, playlists = google_instance.com_google_youtube_search(
             request.form['search_text'])
         for url_link in videos:
+            common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(
                 json.loads(google_instance.com_google_youtube_info(url_link, 'snippet')))
     else:
