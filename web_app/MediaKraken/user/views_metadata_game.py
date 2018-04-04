@@ -48,8 +48,7 @@ def metadata_game_list():
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_game_list.html', form=form,
-                           media_game=g.db_connection.db_meta_game_list(
-                               offset, per_page),
+                           media_game=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
