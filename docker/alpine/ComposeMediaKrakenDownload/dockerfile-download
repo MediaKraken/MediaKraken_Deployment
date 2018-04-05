@@ -5,7 +5,6 @@ LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the downloader app"
 
 # create work dir
-RUN mkdir /mediakraken
 RUN mkdir /mediakraken/downloads
 
 # copy PIP requirements
