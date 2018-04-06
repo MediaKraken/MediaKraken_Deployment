@@ -1,0 +1,5 @@
+5601 - Kibana
+8900 - Main web app
+9000 - Portainer
+9091 - Transmission
+12345 - PgAdmin4
