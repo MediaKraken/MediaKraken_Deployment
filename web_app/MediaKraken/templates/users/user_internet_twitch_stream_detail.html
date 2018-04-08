@@ -7,18 +7,17 @@
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
-    <!-- Add a placeholder for the Twitch embed -->
-    <div id="twitch-embed"></div>
-    <!-- Load the Twitch embed script -->
-    <script src="https://embed.twitch.tv/embed/v1.js"></script>
-    <!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
+    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
+    <div id="twitch_stream"></div>
     <script type="text/javascript">
-      new Twitch.Embed("twitch-embed", {
-        width: 1280,
-        height: 720,
-        video: {{media}},
-        allowfullscreen: True
-      });
+        var options = {
+            width: 1280,
+            height: 720,
+            video: {{media}},
+            allowfullscreen: True
+        };
+        var player = new Twitch.Player("twitch_stream", options);
+        player.setVolume(0.9);
     </script>
     <script src="/static/js/jquery.min.js"></script>
 </body>
