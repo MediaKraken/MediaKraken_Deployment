@@ -27,9 +27,8 @@ import os
 # 3 - container_detach=True,
 # 4 - container_port={'5050/tcp': 5050, '5060/tcp': 5060},
 # 5 - container_network='mk_mediakraken_network',
-# 6 - container_volumes=['/var/log/mediakraken:/mediakraken/log',
-#     '/home/mediakraken:/mediakraken/mnt',
-#     '/var/run/docker.sock:/var/run/docker.sock'],
+# 6 - container_volumes= {'/home/user1/': {'bind': '/mnt/vol2', 'mode': 'rw'},
+#           '/var/www': {'bind': '/mnt/vol1', 'mode': 'ro'}}
 # 7 - container_remove=True,
 # 8 - container_environment=None
 
@@ -49,12 +48,17 @@ DOCKER_SMTP = ()
 
 DOCKER_TEAMSPEAK = ()
 
-DOCKER_TRANSMISSION = ('/start-transmission.sh', 'mktransmission',
-                       'mediakraken/mktransmission', True,
+DOCKER_TRANSMISSION = ('/start-transmission.sh',
+                       'mktransmission',
+                       'mediakraken/mktransmission',
+                       True,
                        {"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
                        'mk_mediakraken_network',
-                       ['/var/opt/mediakraken/transmission/downloads:/transmission/downloads',
-                        '/var/opt/mediakraken/transmission/incomplete:/transmission/incomplete'],
+                       {'/var/opt/mediakraken/transmission/downloads':
+                            {'bind': '/transmission/downloads', 'mode': 'rw'},
+                        '/var/opt/mediakraken/transmission/incomplete':
+                            {'bind': '/transmission/incomplete', 'mode': 'rw'}
+                        },
                        True,
                        {'USERNAME': os.environ['TRANSUSER'],
                         'PASSWORD': os.environ['TRANSPASSWORD']}
