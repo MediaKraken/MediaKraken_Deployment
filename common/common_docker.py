@@ -113,23 +113,25 @@ class CommonDocker(object):
         """
         return self.cli.exec_run(cmd=docker_command)
 
+    # https://docker-py.readthedocs.io/en/stable/containers.html
     def com_docker_run_container(self, container_command, container_name,
                                  container_image_name='mediakraken/mkslave',
                                  container_detach=True,
                                  container_port={
-                                     '5050/tcp': None, '5060/tcp': None},
+                                     '5050/tcp': 5050, '5060/tcp': 5060},
                                  container_network='mk_mediakraken_network',
                                  container_volumes=['/var/log/mediakraken:/mediakraken/log',
                                                     '/home/mediakraken:/mediakraken/mnt',
                                                     '/var/run/docker.sock:/var/run/docker.sock'],
-                                 container_remove=True):
+                                 container_remove=True,
+                                 container_environment=None):
         """
         Launch container (usually for slave play)
         """
         return self.cli.containers.run(image=container_image_name, network=container_network,
                                        detach=container_detach, ports=container_port,
                                        command=container_command, volumes=container_volumes,
-                                       name=container_name)
+                                       name=container_name, environment=container_environment)
         # auto_remove=container_remove)
 
     def com_docker_delete_container(self, container_image_name, container_force=True):
