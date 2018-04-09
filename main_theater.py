@@ -419,7 +419,7 @@ class MediaKrakenApp(App):
                 proxy_image_demo = Loader.image(self.home_demo_file_name)
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
                 pass
-                elif json_message['Sub2'] == "Movie":
+            elif json_message['Sub2'] == "Movie":
                 self.home_movie_file_name = str(uuid.uuid4())
                 f = open(self.home_movie_file_name, "w")
                 f.write(base64.b64decode(json_message['Data']))
@@ -427,7 +427,7 @@ class MediaKrakenApp(App):
                 proxy_image_movie = Loader.image(self.home_movie_file_name)
                 proxy_image_movie.bind(
                     on_load=self._image_loaded_home_movie)
-                elif json_message['Sub2'] == "New Movie":
+            elif json_message['Sub2'] == "New Movie":
                 self.home_movie_new_file_name = str(uuid.uuid4())
                 f = open(self.home_movie_new_file_name, "w")
                 f.write(base64.b64decode(json_message['Data']))
@@ -436,7 +436,7 @@ class MediaKrakenApp(App):
                     self.home_movie_new_file_name)
                 proxy_image_new_movie.bind(
                     on_load=self._image_loaded_home_new_movie)
-                elif json_message['Sub2'] == "In Progress":
+            elif json_message['Sub2'] == "In Progress":
                 self.home_movie_inprogress_file_name = str(uuid.uuid4())
                 f = open(self.home_movie_inprogress_file_name, "w")
                 f.write(base64.b64decode(json_message['Data']))
@@ -449,7 +449,7 @@ class MediaKrakenApp(App):
                 #     common_global.es_inst.com_elastic_index('info', {'stuff':"here for movie detail refresh: %s", pickle_data[1])
                 #     proxy_image_detail_movie = Loader.image(pickle_data[1])
                 #     proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
-                else:
+            else:
                 common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
 
 
@@ -505,8 +505,8 @@ def build_settings(self, settings):
 
 
 def on_config_change(self, config, section, key, value):
-    common_global.es_inst.com_elastic_index('info', {'stuff': "%s %s %s %s", config, section,
-                                            key, value)
+    common_global.es_inst.com_elastic_index('info', {'stuff': "%s %s %s %s" % (config, section,
+                                            key, value)})
 
 
 def _keyboard_closed(self):
@@ -518,86 +518,85 @@ def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
     common_global.es_inst.com_elastic_index('info', {"keycode received": keycode})
     if keycode[1] == 'i' or keycode[1] == 'I':
         if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
-    # show media information overlay
-    pass
+            # show media information overlay
+            pass
     elif keycode[1] == 'up':
-    if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-        # scroll up a page of media
-        pass
-    elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
-        # scroll up an icon
-        pass
+        if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
+            # scroll up a page of media
+            pass
+        elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
+            # scroll up an icon
+            pass
     elif keycode[1] == 'down':
         if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-    # scroll down a page of media
-    pass
-    elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
-    # scroll down an icon
-    pass
+            # scroll down a page of media
+            pass
+        elif self.root.ids._screen_manager.current == 'Main_Theater_Home':
+            # scroll down an icon
+            pass
     elif keycode[1] == 'left':
-    if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-        # scroll left an icon
-        pass
+        if self.root.ids._screen_manager.current == 'Main_Theater_Home':
+            # scroll left an icon
+            pass
     elif keycode[1] == 'right':
-        if
-    self.root.ids._screen_manager.current == 'Main_Theater_Home':
-    # scroll left an icon
-    pass
+        if self.root.ids._screen_manager.current == 'Main_Theater_Home':
+            # scroll left an icon
+            pass
     elif keycode[1] == 'backspace':
-    if self.root.ids._screen_manager.current == 'Main_Theater_Home':
+        if self.root.ids._screen_manager.current == 'Main_Theater_Home':
+            pass
+        elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_Detail':
+            self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
+        elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
+            self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
+        elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' \
+                or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
+            self.root.ids._screen_manager.current = 'Main_Theater_Home'
         pass
-    elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_Detail':
-        self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
-    elif self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
-        self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_Detail'
-    elif self.root.ids._screen_manager.current == 'Main_Theater_Media_TV_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_LIVE_TV_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Images_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Game_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Books_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Radio_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' \
-            or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
-        self.root.ids._screen_manager.current = 'Main_Theater_Home'
-    pass
     elif keycode[1] == 'enter':
-    pass
+        pass
     elif keycode[1] == 'shift':
-    pass
+        pass
     elif keycode[1] == 'rshift':
-    pass
+        pass
     elif keycode[1] == 'lctrl':
-    pass
+        pass
     elif keycode[1] == 'rctrl':
-    pass
+        pass
     elif keycode[1] == 'alt':
-    pass
+        pass
     elif keycode[1] == 'alt-gr':
-    pass
+        pass
     elif keycode[1] == 'tab':
-    pass
+        pass
     elif keycode[1] == 'escape':
-    sys.exit()
+        sys.exit()
     elif keycode[1] == 'home':
-    self.root.ids._screen_manager.current = 'Main_Theater_Home'
+        self.root.ids._screen_manager.current = 'Main_Theater_Home'
     elif keycode[1] == 'end':
-    pass
+        pass
     elif keycode[1] == 'pageup':
-    if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-        # scroll up a page of media
-        self.root.ids.theater_media_video_list_scrollview.scroll_y = 0
+        if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
+            # scroll up a page of media
+            self.root.ids.theater_media_video_list_scrollview.scroll_y = 0
     elif keycode[1] == 'pagedown':
         if self.root.ids._screen_manager.current == 'Main_Theater_Media_Video_List':
-    # scroll down a page of media
-    self.root.ids.theater_media_video_list_scrollview.scroll_y = 1
+            # scroll down a page of media
+            self.root.ids.theater_media_video_list_scrollview.scroll_y = 1
     elif keycode[1] == 'insert':
-    pass
+        pass
     elif keycode[1] == 'delete':
-    pass
+        pass
     elif keycode[1] == 'f1':
-    # display help
-    pass
+        # display help
+        pass
     return True
 
 
@@ -606,7 +605,7 @@ def main_mediakraken_event_play_media_mpv(self, *args):
     common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
     if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
         if os.path.isfile(MediaKrakenApp.media_path):
-    self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
+            self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
                                          '--ontop', '--no-osc', '--no-osd-bar',
                                          '--aid=2',
                                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
@@ -614,12 +613,12 @@ def main_mediakraken_event_play_media_mpv(self, *args):
                                          '--input-ipc-server', './mk_mpv.sock',
                                          '%s' % MediaKrakenApp.media_path],
                                         shell=False)
-    self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
+            self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
+        else:
+            self.theater_play_server()
     else:
-    self.theater_play_server()
-    else:
-    self.theater_play_server()
-    self.root.ids._screen_manager.current = 'Main_Theater_Remote'
+        self.theater_play_server()
+        self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
 
 def theater_play_server(self):
@@ -656,7 +655,7 @@ def main_mediakraken_event_button_video_play(self, *args):
 
 def main_mediakraken_event_button_home(self, *args):
     msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
-    common_global.es_inst.com_elastic_index('info', {'stuff': "home press: %s", args)
+    common_global.es_inst.com_elastic_index('info', {'stuff': "home press: %s" % args})
     if args[0] == 'in_progress' or args[0] == 'recent_addition' \
             or args[0] == 'Movie' or args[0] == 'video':
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
@@ -674,26 +673,24 @@ def main_mediakraken_event_button_home(self, *args):
         except:
             msg = None
     elif args[0] == 'pictures':
-    self.root.ids._screen_manager.current = 'Main_Theater_Media_Images_List'
-
-elif args[0] == 'radio':
-self.root.ids._screen_manager.current = 'Main_Theater_Media_Radio_List'
-
-elif args[0] == 'periodicals':
-self.root.ids._screen_manager.current = 'Main_Theater_Media_Books_List'
-elif args[0] == 'music':
-self.root.ids._screen_manager.current = 'Main_Theater_Media_Music_List'
-elif args[0] == 'live':
-self.root.ids._screen_manager.current = 'Main_Theater_Media_LIVE_TV_List'
-else:
-common_global.es_inst.com_elastic_index('error', {'stuff': "unknown button event")
-if msg is not None:
-    self.send_twisted_message(msg)
+        self.root.ids._screen_manager.current = 'Main_Theater_Media_Images_List'
+    elif args[0] == 'radio':
+        self.root.ids._screen_manager.current = 'Main_Theater_Media_Radio_List'
+    elif args[0] == 'periodicals':
+        self.root.ids._screen_manager.current = 'Main_Theater_Media_Books_List'
+    elif args[0] == 'music':
+        self.root.ids._screen_manager.current = 'Main_Theater_Media_Music_List'
+    elif args[0] == 'live':
+        self.root.ids._screen_manager.current = 'Main_Theater_Media_LIVE_TV_List'
+    else:
+        common_global.es_inst.com_elastic_index('error', {'stuff': "unknown button event"})
+        if msg is not None:
+            self.send_twisted_message(msg)
 
 
 def theater_event_button_option_select(self, option_text, *args):
     common_global.es_inst.com_elastic_index('info',
-                                            {'stuff': "button server options %s", option_text)
+                                            {'stuff': "button server options %s" % option_text})
     if option_text == 'Audio Settings':
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Settings_Audio'
     elif option_text == 'Playback Settings':
@@ -705,11 +702,11 @@ def theater_event_button_option_select(self, option_text, *args):
 
 
 def main_image_refresh(self, *largs):
-    common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh")
+    common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh"})
     # if main page refresh all images
     if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-    # refreshs for movie stuff
-    # request main screen background refresh
+        # refreshs for movie stuff
+        # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
                                               'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
     # request main screen background refresh
