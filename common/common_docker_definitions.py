@@ -22,7 +22,7 @@ import os
 
 DOCKER_TRANSMISSION = ('/start-transmission.sh', 'mktransmission',
                        'mediakraken/mktransmission', True,
-                       {"9091": None, "51413/tcp": None, "51413/udp": None},
+                       {"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
                        'mk_mediakraken_network',
                        ['/var/opt/mediakraken/transmission/downloads:/transmission/downloads',
                         '/var/opt/mediakraken/transmission/incomplete:/transmission/incomplete'],
