@@ -134,14 +134,14 @@ class CommonDocker(object):
         """
         Launch container (usually for slave play)
         """
-        return self.cli.containers.run(image=container_data_list(2),
-                                       network=container_data_list(5),
-                                       detach=container_data_list(3),
-                                       ports=container_data_list(4),
-                                       command=container_data_list(0),
-                                       volumes=container_data_list(6),
-                                       name=container_data_list(1),
-                                       environment=container_data_list(8))
+        return self.cli.containers.run(image=container_data_list[2],
+                                       network=container_data_list[5],
+                                       detach=container_data_list[3],
+                                       ports=container_data_list[4],
+                                       command=container_data_list[0],
+                                       volumes=container_data_list[6],
+                                       name=container_data_list[1],
+                                       environment=container_data_list[8])
         # auto_remove=container_remove)
 
     def com_docker_delete_container(self, container_image_name, container_force=True):
