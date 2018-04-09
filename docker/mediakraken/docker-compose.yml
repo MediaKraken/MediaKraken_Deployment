@@ -280,4 +280,3 @@ networks:
   # Database communications network
   mediakraken_dbnetwork:
     driver: bridge
-
