@@ -150,3 +150,9 @@ class CommonDocker(object):
         unpause container
         """
         return self.cli_api.unpause(container=container_image_name)
+
+    def com_docker_network_create(self, network_name):
+        """
+        create network
+        """
+        return self.cli_api.networks.create(name=network_name, driver="bridge")

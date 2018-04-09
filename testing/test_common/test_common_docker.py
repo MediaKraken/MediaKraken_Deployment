@@ -99,6 +99,12 @@ class TestCommonDocker(object):
         """
         self.docker_handle.com_docker_volume_list()
 
+    def test_com_docker_create_network(self):
+        """
+        create network test
+        """
+        self.docker_handle.com_docker_network_create('mk_mediakraken_network')
+
     @pytest.mark.parametrize(("docker_inst_name"), [
         # (common_docker_definitions.DOCKER_ELK,
         #  common_docker_definitions.DOCKER_MUMBLE,
