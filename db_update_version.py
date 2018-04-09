@@ -17,9 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import subprocess
-import psycopg2
+
 import json
+import subprocess
+
+import psycopg2
+
 from common import common_config_ini
 
 # open the database
@@ -217,6 +220,15 @@ if db_connection.db_version_check() == 15:
 if db_connection.db_version_check() == 16:
     db_connection.db_query('drop table mm_download_image_que')
     db_connection.db_version_update(17)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() == 17:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'Docker Instances': {'elk': False, 'mumble': False, 'musicbrainz': False,
+                                              'portainer': False, 'smtp': False,
+                                              'teamspeak': False, 'transmission': False}})
+    db_connection.db_opt_update(options_json)
+    db_connection.db_version_update(18)
     db_connection.db_commit()
 
 # close the database

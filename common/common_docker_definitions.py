@@ -20,6 +20,18 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 
+DOCKER_ELK = ()
+
+DOCKER_MUMBLE = ()
+
+DOCKER_MUSICBRAINZ = ()
+
+DOCKER_PORTAINER = ()
+
+DOCKER_SMTP = ()
+
+DOCKER_TEAMSPEAK = ()
+
 DOCKER_TRANSMISSION = ('/start-transmission.sh', 'mktransmission',
                        'mediakraken/mktransmission', True,
                        {"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
