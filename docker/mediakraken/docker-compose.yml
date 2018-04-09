@@ -84,16 +84,6 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-#  # scan for new hardware devices
-#  devicescan:
-#    image: mediakraken/mkdevicescan:latest
-#    container_name: mkdevicescan
-#    entrypoint: python main_hardware_discover.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /var/opt/mediakraken/devices:/mediakraken/devices
-#    network_mode: host
-
   # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
@@ -177,6 +167,7 @@ services:
       - rabbit
       - redis
       - elk
+      - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
 #    ports:
 #      - "8900:8080"
@@ -233,7 +224,7 @@ services:
       - /var/opt/mediakraken/data:/data
     restart: unless-stopped
 
-  # runs transmissions
+  # runs transmission
   transmission:
     image: mediakraken/mktransmission:latest
     container_name: mktransmission
