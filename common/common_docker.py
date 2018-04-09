@@ -17,10 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
-import docker
 import socket
+
+import docker
+
 from . import common_global
+
 
 class CommonDocker(object):
     """
@@ -61,7 +65,7 @@ class CommonDocker(object):
                 return self.cli_api.init_swarm()
             except:
                 common_global.es_inst.com_elastic_index('critical', {'stuff':
-                    'Must define Docker Swarm IP in ENV file since multiple IP'})
+                                                                         'Must define Docker Swarm IP in ENV file since multiple IP'})
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
@@ -114,24 +118,30 @@ class CommonDocker(object):
         return self.cli.exec_run(cmd=docker_command)
 
     # https://docker-py.readthedocs.io/en/stable/containers.html
-    def com_docker_run_container(self, container_command, container_name,
-                                 container_image_name='mediakraken/mkslave',
-                                 container_detach=True,
-                                 container_port={
-                                     '5050/tcp': 5050, '5060/tcp': 5060},
-                                 container_network='mk_mediakraken_network',
-                                 container_volumes=['/var/log/mediakraken:/mediakraken/log',
-                                                    '/home/mediakraken:/mediakraken/mnt',
-                                                    '/var/run/docker.sock:/var/run/docker.sock'],
-                                 container_remove=True,
-                                 container_environment=None):
+    # data order
+    # 0 - container_command,
+    # 1 - container_name,
+    # 2 - container_image_name='mediakraken/mkslave',
+    # 3 - container_detach=True,
+    # 4 - container_port={'5050/tcp': 5050, '5060/tcp': 5060},
+    # 5 - container_network='mk_mediakraken_network',
+    # 6 - container_volumes=['/var/log/mediakraken:/mediakraken/log',
+    #     '/home/mediakraken:/mediakraken/mnt',
+    #     '/var/run/docker.sock:/var/run/docker.sock'],
+    # 7 - container_remove=True,
+    # 8 - container_environment=None
+    def com_docker_run_container(self, container_data_list):
         """
         Launch container (usually for slave play)
         """
-        return self.cli.containers.run(image=container_image_name, network=container_network,
-                                       detach=container_detach, ports=container_port,
-                                       command=container_command, volumes=container_volumes,
-                                       name=container_name, environment=container_environment)
+        return self.cli.containers.run(image=container_data_list(2),
+                                       network=container_data_list(5),
+                                       detach=container_data_list(3),
+                                       ports=container_data_list(4),
+                                       command=container_data_list(0),
+                                       volumes=container_data_list(6),
+                                       name=container_data_list(1),
+                                       environment=container_data_list(8))
         # auto_remove=container_remove)
 
     def com_docker_delete_container(self, container_image_name, container_force=True):
