@@ -23,7 +23,7 @@ import sys
 
 sys.path.append('.')
 from common import common_docker
-
+from common import common_docker_definitions
 
 class TestCommonDocker(object):
 
@@ -98,3 +98,18 @@ class TestCommonDocker(object):
         list docker volumes
         """
         self.docker_handle.com_docker_volume_list()
+
+    @pytest.mark.parametrize(("docker_inst_name"), [
+        (common_docker_definitions.DOCKER_ELK,
+         common_docker_definitions.DOCKER_MUMBLE,
+         common_docker_definitions.DOCKER_MUSICBRAINZ,
+         common_docker_definitions.DOCKER_PORTAINER,
+         common_docker_definitions.DOCKER_PGADMIN,
+         common_docker_definitions.DOCKER_SMTP,
+         common_docker_definitions.DOCKER_TEAMSPEAK,
+         common_docker_definitions.DOCKER_TRANSMISSION)])
+    def test_com_docker_run_container(self, docker_inst_name):
+        """
+        run container
+        """
+        self.docker_handle.com_docker_run_container(docker_inst_name)
