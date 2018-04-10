@@ -166,8 +166,8 @@ class CommonDocker(object):
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        detach=True,
-                                       ports={"9987/upd": 9987, "10011": 10011, "30033":
-                                           30033},
+                                       ports={"9987/upd": 9987, "10011": 10011,
+                                              "30033": 30033},
                                        volumes={'/var/opt/mediakraken/teamspeak/data':
                                                     {'bind': '/teamspeak/data',
                                                      'mode': 'rw'},
