@@ -185,6 +185,15 @@ class CommonDocker(object):
                                        ports={"389": 389, "636": 636},
                                        network_mode='mediakraken_network')
 
+    def com_docker_run_pgadmin(self, user_email, user_password):
+        return self.cli.containers.run(image='dpage/pgadmin4',
+                                       detach=True,
+                                       name='mkpgadmin',
+                                       ports={"12345": 80},
+                                       network_mode='mediakraken_network',
+                                       environment={'PGADMIN_DEFAULT_EMAIL': user_email,
+                                                    'PGADMIN_DEFAULT_PASSWORD': user_password})
+
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        detach=True,

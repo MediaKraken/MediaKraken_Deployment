@@ -36,6 +36,4 @@ DOCKER_PORTAINER = (None,
                     None
                     )
 
-DOCKER_PGADMIN = ()
-
 DOCKER_SMTP = ()
