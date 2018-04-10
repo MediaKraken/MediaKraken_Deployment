@@ -17,24 +17,23 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from twisted.internet import reactor, protocol, stdio, defer, task
-from twisted.protocols import basic
-from twisted.internet import ssl
-import pika
+
+import json
 import shlex
-from pika import exceptions
+import subprocess
+import time
+import uuid
+
+import pika
 from pika.adapters import twisted_connection
-from network import network_base_line as network_base
+from twisted.internet import reactor, protocol, defer, task
+from twisted.internet import ssl
+
 from common import common_config_ini
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
-import time
-import subprocess
-import json
-import os
-import uuid
-import base64
+from network import network_base_line as network_base
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
@@ -55,7 +54,7 @@ def run(connection):
 @defer.inlineCallbacks
 def read(queue_object):
     global mk_containers
-    common_global.es_inst.com_elastic_index('info', {'stuff':'here I am in consume - read'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'here I am in consume - read'})
     ch, method, properties, body = yield queue_object.get()
 
     """
@@ -108,7 +107,7 @@ def read(queue_object):
                 if 'Subtitle' in json_message:
                     subtitle_command = ' -subtitles ' + json_message['Subtitle'] \
                                        + ' -subtitles_language ' + \
-                        json_message['Language']
+                                       json_message['Language']
                 else:
                     subtitle_command = ''
                 container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py' \
@@ -120,39 +119,36 @@ def read(queue_object):
                 # stream to web
                 container_command = shlex.split("ffmpeg -v fatal {ss_string}"
                                                 " -i ".format(**locals())) \
-                    + json_message['Data'] \
-                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
-                                  " -c:v libx264 -pix_fmt yuv420p"
-                                  " -profile:v high -level 4.0"
-                                  " -preset ultrafast -trellis 0"
-                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
-                                  " -shortest -f mpegts"
-                                  " -output_ts_offset {output_ts_offset:.6f}"
-                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
+                                    + json_message['Data'] \
+                                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
+                                                  " -c:v libx264 -pix_fmt yuv420p"
+                                                  " -profile:v high -level 4.0"
+                                                  " -preset ultrafast -trellis 0"
+                                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
+                                                  " -shortest -f mpegts"
+                                                  " -output_ts_offset {output_ts_offset:.6f}"
+                                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
             elif json_message['Sub'] == 'HDHomerun':
                 # stream from homerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
                                     + ":5004/auto/v" + json_message['Channel'] \
                                     + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
                                     + "./static/streams/" + \
-                    json_message['Channel'] + ".m3u8"
+                                    json_message['Channel'] + ".m3u8"
                 container_command = shlex.split(container_command)
             else:
                 pass
-            common_global.es_inst.com_elastic_index('info', {'stuff':'b4 docker run'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'b4 docker run'})
             hwaccel = True
-            if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian:latest'
-            else:
-                image_name = 'mediakraken/mkslave:latest'
-            docker_inst.com_docker_run_container(container_image_name=image_name,
-                                                 container_name=name_container,
-                                                 container_command=(container_command))
-            common_global.es_inst.com_elastic_index('info', {'stuff':'after docker run'})
+            docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+                                             name_container=name_container,
+                                             container_command=container_command)
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
             common_global.es_inst.com_elastic_index('info', {'user stop':
-                                                             mk_containers[json_message['User']]})
+                                                                 mk_containers[
+                                                                     json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
         elif json_message['Type'] == 'FFMPEG':
@@ -161,13 +157,9 @@ def read(queue_object):
                                + str(uuid.uuid4()).replace('-', ''))[-30:])
             common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
             hwaccel = True
-            if hwaccel == True:
-                image_name = 'mediakraken/mkslavenvidiadebian:latest'
-            else:
-                image_name = 'mediakraken/mkslave:latest'
-            docker_inst.com_docker_run_container(container_image_name=image_name,
-                                                 container_name=name_container,
-                                                 container_command=(
+            docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+                                             name_container=name_container,
+                                             container_command=(
                                                      'python subprogram_ffprobe_metadata.py %s' %
                                                      json_message['Data']))
             if common_global.es_inst.debug:

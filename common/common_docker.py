@@ -231,6 +231,18 @@ class CommonDocker(object):
                                                     '/var/opt/mediakraken/data':
                                                         {'bind': '/ data', 'mode': 'rw'}})
 
+    def com_docker_run_slave(self, hwaccel, name_container, container_command):
+        """
+        Launch container for slave play
+        """
+        if hwaccel:
+            image_name = 'mediakraken/mkslavenvidiadebian:latest'
+        else:
+            image_name = 'mediakraken/mkslave:latest'
+        return self.cli.containers.run(container_image_name=image_name,
+                                       container_name=name_container,
+                                       container_command=container_command)
+
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        detach=True,
