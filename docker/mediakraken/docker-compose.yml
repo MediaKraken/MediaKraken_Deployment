@@ -213,17 +213,6 @@ services:
     networks:
       - mediakraken_network
 
-  # runs portainer
-  dockmanage:
-    image: portainer/portainer:latest
-    container_name: mkportainer
-    ports: 
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/opt/mediakraken/data:/data
-    restart: unless-stopped
-
   # runs downloader
   download:
     image: mediakraken/mkdownload:latest

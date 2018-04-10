@@ -34,13 +34,27 @@ import os
 
 DOCKER_DEFAULT = ()
 
+DOCKER_DEVICE_SCAN = ()
+
 DOCKER_ELK = ()
 
 DOCKER_MUMBLE = ()
 
 DOCKER_MUSICBRAINZ = ()
 
-DOCKER_PORTAINER = ()
+DOCKER_PORTAINER = (None,
+                    'mkportainer',
+                    'portainer/portainer',
+                    True,
+                    {"9000": 9000},
+                    {'/var/run/docker.sock':
+                         {'bind': '/var/run/docker.sock', 'mode': 'ro'},
+                     '/var/opt/mediakraken/data':
+                         {'bind': '/ data', 'mode': 'rw'}
+                     },
+                    True,
+                    None
+                    )
 
 DOCKER_PGADMIN = ()
 

@@ -108,23 +108,23 @@ for link_data in db_connection.db_link_list():
     link_pid[link_data[0]] = proc_link.pid
 
 # start up other docker containers if needed
-if option_config_json['docker']['elk']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_ELK)
-
-if option_config_json['docker']['mumble']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUMBLE)
-
-if option_config_json['docker']['musicbrainz']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUSICBRAINZ)
-
+# if option_config_json['docker']['elk']:
+#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_ELK)
+#
+# if option_config_json['docker']['mumble']:
+#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUMBLE)
+#
+# if option_config_json['docker']['musicbrainz']:
+#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUSICBRAINZ)
+#
 if option_config_json['docker']['portainer']:
     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_PORTAINER)
-
-if option_config_json['docker']['smtp']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_SMTP)
-
-if option_config_json['docker']['teamspeak']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
+#
+# if option_config_json['docker']['smtp']:
+#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_SMTP)
+#
+# if option_config_json['docker']['teamspeak']:
+#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
 
 if option_config_json['docker']['transmission']:
     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TRANSMISSION)

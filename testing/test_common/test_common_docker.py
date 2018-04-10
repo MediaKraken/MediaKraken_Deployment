@@ -111,11 +111,11 @@ class TestCommonDocker(object):
         # (common_docker_definitions.DOCKER_ELK,
         #  common_docker_definitions.DOCKER_MUMBLE,
         #  common_docker_definitions.DOCKER_MUSICBRAINZ,
-        #  common_docker_definitions.DOCKER_PORTAINER,
+        (common_docker_definitions.DOCKER_PORTAINER,
         #  common_docker_definitions.DOCKER_PGADMIN,
         #  common_docker_definitions.DOCKER_SMTP,
         #  common_docker_definitions.DOCKER_TEAMSPEAK,
-        common_docker_definitions.DOCKER_TRANSMISSION])
+        common_docker_definitions.DOCKER_TRANSMISSION)])
     def test_com_docker_run_container(self, docker_inst_name):
         """
         run container
