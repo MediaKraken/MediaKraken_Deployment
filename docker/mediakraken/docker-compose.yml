@@ -18,7 +18,6 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-      - elk
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
     ports:
       - "8903:8903"
@@ -95,7 +94,6 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-      - elk
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
@@ -166,7 +164,6 @@ services:
       - pgbounce
       - rabbit
       - redis
-      - elk
       - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
@@ -201,10 +198,7 @@ services:
     image: mediakraken/mkrabbitmq:latest
     container_name: mkrabbitmq
     ports:
-#      - "5671:5671"
       - "5672:5672"
-#      - "15671:15671"
-#      - "15672:15672"
     volumes:
       - /var/opt/mediakraken/rabbit:/var/lib/rabbitmq
     restart: unless-stopped
@@ -219,7 +213,6 @@ services:
     container_name: mkdownload
     depends_on:
       - rabbit
-      - elk
     entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_download.py
     volumes:
       - /var/opt/mediakraken/downloads:/mediakraken/downloads
