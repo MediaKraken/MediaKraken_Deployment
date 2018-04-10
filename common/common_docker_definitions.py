@@ -20,8 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 DOCKER_ELK = ()
 
-DOCKER_MUMBLE = ()
-
 DOCKER_PORTAINER = (None,
                     'mkportainer',
                     'portainer/portainer',
