@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import sys
-import subprocess
+
 import os
+import subprocess
+import sys
+
 from common import common_config_ini
 from common import common_docker
 from common import common_global
@@ -43,7 +45,8 @@ if not os.path.isfile('./key/cacert.pem'):
     if not os.path.isfile('./key/cacert.pem'):
         if common_global.es_inst.debug:
             common_global.es_inst.com_elastic_index('critical',
-                                      {'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+                                                    {
+                                                        'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
 # open the database
@@ -52,7 +55,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
     if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade in progress...'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(
         ['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
@@ -66,7 +70,8 @@ docker_info = docker_inst.com_docker_info()
 if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
         or 'Managers' not in docker_info['Swarm']:
     if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'attempting to init swarm as manager'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': 'attempting to init swarm as manager'})
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
 
@@ -78,8 +83,9 @@ if common_global.es_inst.debug:
 # validate paths in ini file
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('critical', {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
-                                                             'not a valid directory!  Exiting...'})
+        common_global.es_inst.com_elastic_index('critical',
+                                                {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
+                                                               'not a valid directory!  Exiting...'})
     if common_global.es_inst.debug:
         common_global.es_inst.com_elastic_index('critical', {
             'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
@@ -107,26 +113,27 @@ for link_data in db_connection.db_link_list():
     link_pid[link_data[0]] = proc_link.pid
 
 # start up other docker containers if needed
-# if option_config_json['docker']['elk']:
-#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_ELK)
-#
-# if option_config_json['docker']['mumble']:
-#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUMBLE)
-#
-# if option_config_json['docker']['musicbrainz']:
-#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUSICBRAINZ)
-#
-#if option_config_json['docker']['portainer']:
-#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_PORTAINER)
-#
-# if option_config_json['docker']['smtp']:
-#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_SMTP)
-#
-#if option_config_json['docker']['teamspeak']:
-#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
+if option_config_json['Docker Instances']['elk']:
+    docker_inst.com_docker_run_elk()
 
-#if option_config_json['docker']['transmission']:
-#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TRANSMISSION)
+if option_config_json['Docker Instances']['mumble']:
+    docker_inst.com_docker_run_mumble()
+
+if option_config_json['Docker Instances']['musicbrainz']:
+    docker_inst.com_docker_run_musicbrainz(option_config_json['API']['mediabrainz'])
+
+if option_config_json['Docker Instances']['portainer']:
+    docker_inst.com_docker_run_portainer()
+
+# if option_config_json['Docker Instances']['smtp']:
+#     docker_inst.com_docker_run_container()
+
+if option_config_json['Docker Instances']['teamspeak']:
+    docker_inst.com_docker_run_teamspeak()
+
+if option_config_json['Docker Instances']['transmission']:
+    docker_inst.com_docker_run_transmission(option_config_json['Transmission']['Username'],
+                                            option_config_json['Transmission']['Password'])
 
 # hold here
 # this will key off the twisted reactor...only reason is so watchdog doesn't shut down

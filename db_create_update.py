@@ -17,8 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import psycopg2
+
 import json
+
+import psycopg2
+
 from common import common_config_ini
 from common import common_version
 
@@ -748,9 +751,19 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
                                                            'Clip': False,
                                                            'Featurette': False,
                                                            'Carpool': False},
-                                               'Transmission': {'Host': None, 'Port': 9091},
+                                               'Transmission': {'Host': None, 'Port': 9091,
+                                                                'Username': 'spootdev',
+                                                                'Password': 'metaman'
+                                                                },
                                                'Docker': {'Nodes': 0, 'SwarmID': None,
                                                           'Instances': 0},
+                                               'Docker Instances': {'elk': False,
+                                                                    'mumble': False,
+                                                                    'musicbrainz': False,
+                                                                    'portainer': False,
+                                                                    'smtp': False,
+                                                                    'teamspeak': False,
+                                                                    'transmission': False},
                                                'Dropbox': {'APIKey': None, 'APISecret': None},
                                                'AWSS3': {'AccessKey': None, 'SecretAccessKey': None,
                                                          'Bucket': 'mediakraken',
