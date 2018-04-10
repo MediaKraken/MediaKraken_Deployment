@@ -18,27 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os
-
-# data order
-# 0 - container_command,
-# 1 - container_name,
-# 2 - container_image_name='mediakraken/mkslave',
-# 3 - container_detach=True,
-# 4 - container_port={'5050/tcp': 5050, '5060/tcp': 5060},
-# 5 - container_network='mk_mediakraken_network',
-# 6 - container_volumes= {'/home/user1/': {'bind': '/mnt/vol2', 'mode': 'rw'},
-#           '/var/www': {'bind': '/mnt/vol1', 'mode': 'ro'}}
-# 7 - container_remove=True,
-# 8 - container_environment=None
-
-DOCKER_DEVICE_SCAN = ()
-
 DOCKER_ELK = ()
 
 DOCKER_MUMBLE = ()
-
-DOCKER_MUSICBRAINZ = ()
 
 DOCKER_PORTAINER = (None,
                     'mkportainer',
@@ -57,5 +39,3 @@ DOCKER_PORTAINER = (None,
 DOCKER_PGADMIN = ()
 
 DOCKER_SMTP = ()
-
-DOCKER_TEAMSPEAK = ()

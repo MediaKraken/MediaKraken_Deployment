@@ -170,6 +170,20 @@ class CommonDocker(object):
                                        name='mkdevicescan',
                                        network_mode='host')
 
+    def com_docker_run_musicbrainz(self, brainzcode):
+        return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
+                                       detach=True,
+                                       name='mkmusicbrainz',
+                                       network_mode='mediakraken_network',
+                                       environment={'BRAINZCODE': brainzcode}
+                                       )
+
+    def com_docker_run_openldap(self):
+        return self.cli.containers.run(image='mediakraken/mkopenldap',
+                                       detach=True,
+                                       name='mkopenldap',
+                                       ports={"389": 389, "636": 636},
+                                       network_mode='mediakraken_network')
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',

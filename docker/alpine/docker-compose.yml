@@ -121,18 +121,6 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
-#  # musicbrainz replicator
-#  musicbrainz:
-#    build:
-#      context: ./ComposeMediaKrakenMusicBrainz
-#      dockerfile: Dockerfile
-#    environment:
-#      - BRAINZCODE=${BRAINZCODE}
-#    container_name: mkmusicbrainz
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-
   # runs the nginx proxy service
   nginx:
     build:
@@ -148,19 +136,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-  # runs the openldap
-#  openldap:
-#    build:
-#      context: ./ComposeMediaKrakenOpenLDAP
-#      dockerfile: dockerfile-openldap
-#    container_name: mkopenldap
-#    ports:
-#      - "389:389"
-#      - "636:636"
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
