@@ -224,7 +224,7 @@ if db_connection.db_version_check() == 16:
 
 if db_connection.db_version_check() == 17:
     options_json, status_json = db_connection.db_opt_status_read()
-    options_json.update({'Docker Instances': {'elk': False, 'mumble': False, 'musicbrainz': False,
+    options_json.update({'Docker Instances': {'mumble': False, 'musicbrainz': False,
                                               'portainer': False, 'smtp': False,
                                               'teamspeak': False, 'transmission': False}})
     db_connection.db_opt_update(options_json)
