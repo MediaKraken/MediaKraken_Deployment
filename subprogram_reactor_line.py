@@ -75,7 +75,7 @@ def read(queue_object):
         common_global.es_inst.com_elastic_index('info', {"body": body})
         # network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(body)
-        common_global.es_inst.com_elastic_index('info', {'cron json body': json_message})
+        common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(['python', json_message['Data']])
         elif json_message['Type'] == 'Pause':
@@ -83,8 +83,8 @@ def read(queue_object):
                 pass
         elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
-            name_container = ((json_message['User'] + '_'
-                               + str(uuid.uuid4()).replace('-', ''))[-30:])
+            name_container = (json_message['User'] + '_'
+                              + str(uuid.uuid4()).replace('-', ''))[-30:]
             common_global.es_inst.com_elastic_index('info', {'cont': name_container})
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
@@ -137,8 +137,9 @@ def read(queue_object):
                                     json_message['Channel'] + ".m3u8"
                 container_command = shlex.split(container_command)
             else:
-                pass
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'b4 docker run'})
+                common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'container_command': container_command})
             hwaccel = True
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
