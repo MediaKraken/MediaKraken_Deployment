@@ -91,17 +91,6 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-#  # scan for new hardware devices
-#  devicescan:
-#    build:
-#      context: ./ComposeMediaKrakenDevicescan
-#      dockerfile: dockerfile-devicescan
-#    container_name: mkdevicescan
-#    entrypoint: python main_hardware_discover.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#    network_mode: host
-
   # runs the server to fetch/process all metadata
   metadata:
     build:

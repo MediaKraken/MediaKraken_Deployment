@@ -163,6 +163,14 @@ class CommonDocker(object):
         """
         return self.cli.networks.prune()
 
+    def com_docker_run_device_scan(self):
+        return self.cli.containers.run(image='mediakraken/mkdevicescan',
+                                       detach=True,
+                                       command='python main_hardware_discover.py',
+                                       name='mkdevicescan',
+                                       network_mode='host')
+
+
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        detach=True,
