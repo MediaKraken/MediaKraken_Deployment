@@ -224,21 +224,6 @@ services:
       - /var/opt/mediakraken/data:/data
     restart: unless-stopped
 
-  # runs transmission
-  transmission:
-    image: mediakraken/mktransmission:latest
-    container_name: mktransmission
-    ports:
-      - "9091:9091"
-      - "51413:51413/tcp"
-      - "51413:51413/udp"
-    volumes:
-      - /var/opt/mediakraken/transmission/downloads:/transmission/downloads
-      - /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
-    environment:
-      - USERNAME=${TRANSUSER}
-      - PASSWORD=${TRANSPASSWORD}
-
   # runs downloader
   download:
     image: mediakraken/mkdownload:latest
