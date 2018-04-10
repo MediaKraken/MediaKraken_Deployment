@@ -17,13 +17,15 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import pytest  # pylint: disable=W0611
+
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 from common import common_docker
 from common import common_docker_definitions
+
 
 class TestCommonDocker(object):
 
@@ -113,9 +115,15 @@ class TestCommonDocker(object):
         #  common_docker_definitions.DOCKER_PGADMIN,
         #  common_docker_definitions.DOCKER_SMTP,
         #  common_docker_definitions.DOCKER_TEAMSPEAK,
-         common_docker_definitions.DOCKER_TRANSMISSION])
+        common_docker_definitions.DOCKER_TRANSMISSION])
     def test_com_docker_run_container(self, docker_inst_name):
         """
         run container
         """
         self.docker_handle.com_docker_run_container(docker_inst_name)
+
+    def test_com_docker_prune_network(self):
+        """
+        prune network test
+        """
+        self.docker_handle.com_docker_network_prune()

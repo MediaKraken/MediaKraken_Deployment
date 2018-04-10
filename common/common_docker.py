@@ -156,3 +156,9 @@ class CommonDocker(object):
         create network
         """
         return self.cli.networks.create(name=network_name, driver="bridge")
+
+    def com_docker_network_prune(self):
+        """
+        prune network
+        """
+        return self.cli.networks.prune()
