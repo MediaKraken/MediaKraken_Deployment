@@ -18,20 +18,4 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-DOCKER_ELK = ()
-
-DOCKER_PORTAINER = (None,
-                    'mkportainer',
-                    'portainer/portainer',
-                    True,
-                    {"9000": 9000},
-                    {'/var/run/docker.sock':
-                         {'bind': '/var/run/docker.sock', 'mode': 'ro'},
-                     '/var/opt/mediakraken/data':
-                         {'bind': '/ data', 'mode': 'rw'}
-                     },
-                    True,
-                    None
-                    )
-
 DOCKER_SMTP = ()

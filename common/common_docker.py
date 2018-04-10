@@ -170,11 +170,26 @@ class CommonDocker(object):
                                        name='mkdevicescan',
                                        network_mode='host')
 
+    def com_docker_run_elk(self):
+        return self.cli.containers.run(image='mediakraken/mkelk',
+                                       detach=True,
+                                       ports={"5044": 5044, "5601": 5601, "9200": 9200},
+                                       name='mkelk',
+                                       network='mediakraken_network',
+                                       volumes={'/var/log/mediakraken/elk':
+                                                    {'bind': '/var/lib/elasticsearch',
+                                                     'mode': 'rw'}
+                                                },
+                                       environment={'ELASTICSEARCH_START': 1,
+                                                    'LOGSTASH_START': 0,
+                                                    'KIBANA_START': 1}
+                                       )
+
     def com_docker_run_musicbrainz(self, brainzcode):
         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
                                        detach=True,
                                        name='mkmusicbrainz',
-                                       network_mode='mediakraken_network',
+                                       network='mediakraken_network',
                                        environment={'BRAINZCODE': brainzcode}
                                        )
 
@@ -194,16 +209,27 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
-                                       network_mode='mediakraken_network')
+                                       network='mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email, user_password):
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"12345": 80},
-                                       network_mode='mediakraken_network',
+                                       network='mediakraken_network',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
+
+    def com_docker_run_portainer(self):
+        return self.cli.containers.run(image='portainer/portainer',
+                                       detach=True,
+                                       name='mkportainer',
+                                       ports={"9000": 9000},
+                                       environment={'/var/run/docker.sock':
+                                                        {'bind': '/var/run/docker.sock',
+                                                         'mode': 'ro'},
+                                                    '/var/opt/mediakraken/data':
+                                                        {'bind': '/ data', 'mode': 'rw'}})
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
