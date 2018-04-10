@@ -22,7 +22,6 @@ import subprocess
 import os
 from common import common_config_ini
 from common import common_docker
-from common import common_docker_definitions
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_share
@@ -117,17 +116,17 @@ for link_data in db_connection.db_link_list():
 # if option_config_json['docker']['musicbrainz']:
 #     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_MUSICBRAINZ)
 #
-if option_config_json['docker']['portainer']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_PORTAINER)
+#if option_config_json['docker']['portainer']:
+#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_PORTAINER)
 #
 # if option_config_json['docker']['smtp']:
 #     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_SMTP)
 #
-if option_config_json['docker']['teamspeak']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
+#if option_config_json['docker']['teamspeak']:
+#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
 
-if option_config_json['docker']['transmission']:
-    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TRANSMISSION)
+#if option_config_json['docker']['transmission']:
+#    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TRANSMISSION)
 
 # hold here
 # this will key off the twisted reactor...only reason is so watchdog doesn't shut down

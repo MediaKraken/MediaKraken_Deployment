@@ -24,7 +24,6 @@ import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 from common import common_docker
-from common import common_docker_definitions
 
 
 class TestCommonDocker(object):
