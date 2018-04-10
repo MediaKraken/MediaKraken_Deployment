@@ -155,4 +155,4 @@ class CommonDocker(object):
         """
         create network
         """
-        return self.cli_api.networks.create(name=network_name, driver="bridge")
+        return self.cli.networks.create(name=network_name, driver="bridge")
