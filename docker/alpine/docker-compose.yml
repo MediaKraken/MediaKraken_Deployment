@@ -217,17 +217,6 @@ services:
     networks:
       - mediakraken_network
 
-#  # runs beets
-#  beets:
-#    build:
-#      context: ./ComposeMediaKrakenBeets
-#      dockerfile: dockerfile-beets
-#    container_name: mkbeets
-#    volumes:
-#      - /var/opt/mediakraken/beets/config:/config
-#      - /var/opt/mediakraken/beets/music:/music
-#      - /var/opt/mediakraken/beets/downloads:/downloads
-
   # runs mumble
   mumble:
     build:
