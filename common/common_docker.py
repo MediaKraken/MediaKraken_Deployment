@@ -162,3 +162,37 @@ class CommonDocker(object):
         prune network
         """
         return self.cli.networks.prune()
+
+    def com_docker_run_teamspeak(self):
+        return self.cli.containers.run(image='mediakraken/mkteamspeak',
+                                       detach=True,
+                                       ports={"9987/upd": 9987, "10011": 10011, "30033":
+                                           30033},
+                                       volumes={'/var/opt/mediakraken/teamspeak/data':
+                                                    {'bind': '/teamspeak/data',
+                                                     'mode': 'rw'},
+                                                '/var/opt/mediakraken/teamspeak/logs':
+                                                    {'bind': '/teamspeak/logs',
+                                                     'mode': 'rw'}
+                                                },
+                                       name='mkteamspeak')
+
+    def com_docker_run_transmission(self, username, password):
+        """
+        run transmission daemon
+        """
+        return self.cli.containers.run(image='mediakraken/mktransmission',
+                                       network='mk_mediakraken_network',
+                                       detach=True,
+                                       ports={"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
+                                       command='/start-transmission.sh',
+                                       volumes={'/var/opt/mediakraken/transmission/downloads':
+                                                    {'bind': '/transmission/downloads',
+                                                     'mode': 'rw'},
+                                                '/var/opt/mediakraken/transmission/incomplete':
+                                                    {'bind': '/transmission/incomplete',
+                                                     'mode': 'rw'}
+                                                },
+                                       name='mktransmission',
+                                       environment={'USERNAME': username,
+                                                    'PASSWORD': password})

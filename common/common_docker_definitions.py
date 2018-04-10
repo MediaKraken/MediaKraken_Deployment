@@ -32,8 +32,6 @@ import os
 # 7 - container_remove=True,
 # 8 - container_environment=None
 
-DOCKER_DEFAULT = ()
-
 DOCKER_DEVICE_SCAN = ()
 
 DOCKER_ELK = ()
@@ -61,19 +59,3 @@ DOCKER_PGADMIN = ()
 DOCKER_SMTP = ()
 
 DOCKER_TEAMSPEAK = ()
-
-DOCKER_TRANSMISSION = ('/start-transmission.sh',
-                       'mktransmission',
-                       'mediakraken/mktransmission',
-                       True,
-                       {"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
-                       'mk_mediakraken_network',
-                       {'/var/opt/mediakraken/transmission/downloads':
-                            {'bind': '/transmission/downloads', 'mode': 'rw'},
-                        '/var/opt/mediakraken/transmission/incomplete':
-                            {'bind': '/transmission/incomplete', 'mode': 'rw'}
-                        },
-                       True,
-                       {'USERNAME': os.environ['TRANSUSER'],
-                        'PASSWORD': os.environ['TRANSPASSWORD']}
-                       )

@@ -123,8 +123,8 @@ if option_config_json['docker']['portainer']:
 # if option_config_json['docker']['smtp']:
 #     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_SMTP)
 #
-# if option_config_json['docker']['teamspeak']:
-#     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
+if option_config_json['docker']['teamspeak']:
+    docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TEAMSPEAK)
 
 if option_config_json['docker']['transmission']:
     docker_inst.com_docker_run_container(common_docker_definitions.DOCKER_TRANSMISSION)
