@@ -178,6 +178,17 @@ class CommonDocker(object):
                                        environment={'BRAINZCODE': brainzcode}
                                        )
 
+    def com_docker_run_mumble(self):
+        return self.cli.containers.run(image='mediakraken/mkmumble',
+                                       detach=True,
+                                       ports={"64738": 64738},
+                                       name='mkmumble',
+                                       volumes={'/var/opt/mediakraken/mumble':
+                                                    {'bind': '/etc/mumble',
+                                                     'mode': 'rw'}
+                                                }
+                                       )
+
     def com_docker_run_openldap(self):
         return self.cli.containers.run(image='mediakraken/mkopenldap',
                                        detach=True,

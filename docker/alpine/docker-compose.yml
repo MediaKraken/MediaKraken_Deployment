@@ -217,18 +217,6 @@ services:
     networks:
       - mediakraken_network
 
-  # runs mumble
-  mumble:
-    build:
-      context: ./ComposeMediaKrakenMumble
-      dockerfile: Dockerfile
-    container_name: mkmumble
-    ports:
-      - "64738:64738/tcp"
-      - "64738:64738/udp"
-    volumes:
-      - /var/opt/mediakraken/mumble:/etc/mumble
-
 #  # runs mail server
 #  smtp:
 #    build:
