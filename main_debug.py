@@ -27,6 +27,7 @@ from common import common_docker
 docker_inst = common_docker.CommonDocker()
 
 # startup the elk
+docker_inst.com_docker_network_create('mediakraken_network')
 docker_inst.com_docker_run_elk()
 time.sleep(30)
 
