@@ -31,4 +31,5 @@ docker_inst.com_docker_run_elk()
 time.sleep(30)
 
 # startup the app
-subprocess.Popen(['docker-compose', 'up', '-d'], shell=False)
+subprocess.Popen(['docker-compose', '-f', './docker/alpine/docker-compose.yml', 'up', '-d'],
+                 shell=False)
