@@ -30,12 +30,16 @@ class CommonElasticsearch(object):
     Class for interfacing with Elasticsearch
     """
 
-    def __init__(self, index_type='MediaKraken', es_host='mkelk', es_port=9200):
-        if os.environ['DEBUG'] == 'True':
-            self.debug = True
-            self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
-            self.es_index = index_type
-        else:
+    def __init__(self, index_type='mediakraken', es_host='mkelk', es_port=9200):
+        try:
+            # doing the try as the environment not set if run from command line
+            if os.environ['DEBUG'] == 'True':
+                self.debug = True
+                self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
+                self.es_index = index_type
+            else:
+                self.debug = False
+        except:
             self.debug = False
 
     def com_elastic_index(self, log_type, body_data):
