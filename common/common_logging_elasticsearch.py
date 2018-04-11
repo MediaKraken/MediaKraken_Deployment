@@ -31,7 +31,7 @@ class CommonElasticsearch(object):
     """
 
     def __init__(self, index_type='MediaKraken', es_host='mkelk', es_port=9200):
-        if os.environ['DEBUG']:
+        if os.environ['DEBUG'] == 'True':
             self.debug = True
             self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
             self.es_index = index_type
