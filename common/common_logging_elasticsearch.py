@@ -39,9 +39,10 @@ class CommonElasticsearch(object):
             self.debug = False
 
     def com_elastic_index(self, log_type, body_data):
-        self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
-                           body={"text": {"type": log_type, "data": json.dumps(body_data),
-                                          "timestamp": datetime.now()}})
+        if self.debug:
+            self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
+                               body={"text": {"type": log_type, "data": json.dumps(body_data),
+                                              "timestamp": datetime.now()}})
 
     def com_elastic_get(self, id):
         self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)

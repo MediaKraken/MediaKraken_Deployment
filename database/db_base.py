@@ -44,7 +44,7 @@ def db_open(self, db_prod=True):
                                              'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
-                                          " host='10.0.0.181' port=5432 password='metamanpg'")
+                                          " host='10.0.0.204' port=5432 password='metamanpg'")
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(
@@ -55,8 +55,10 @@ def db_open(self, db_prod=True):
     # verify the trigram extension is enablled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
     if self.db_cursor.fetchone()[0] == 0:
-        common_global.es_inst.com_elastic_index('critical', {'stuff': 'pg_trgm extension needs to '
-                                                                      'be enabled for database!!!!  Exiting!!!'})
+        if common_global.es_inst.debug:
+            common_global.es_inst.com_elastic_index('critical',
+                                                    {'stuff': 'pg_trgm extension needs to '
+                                                              'be enabled for database!!!!  Exiting!!!'})
         sys.exit(1)
 
 
@@ -64,7 +66,7 @@ def db_close(self):
     """
     # close main db file
     """
-    #common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+    # common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
 
 
@@ -72,7 +74,8 @@ def db_commit(self):
     """
     # commit changes to media database
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+    if common_global.es_inst.debug:
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
     self.sql3_conn.commit()
 
 
@@ -80,7 +83,8 @@ def db_rollback(self):
     """
     # rollback
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
+    if common_global.es_inst.debug:
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
     self.sql3_conn.rollback()
 
 
