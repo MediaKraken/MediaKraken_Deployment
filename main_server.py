@@ -113,9 +113,6 @@ for link_data in db_connection.db_link_list():
     link_pid[link_data[0]] = proc_link.pid
 
 # start up other docker containers if needed
-if option_config_json['Docker Instances']['elk']:
-    docker_inst.com_docker_run_elk()
-
 if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble()
 
