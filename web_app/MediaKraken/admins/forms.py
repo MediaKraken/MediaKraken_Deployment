@@ -191,6 +191,12 @@ class AdminSettingsForm(Form):
     metadata_source_down_netflixroulette = BooleanField('netflixroulette')
     metadata_sync_path = TextField('Metadata Sync Path',
                                    validators=[DataRequired(), Length(min=1, max=250)])
+    docker_musicbrainz = BooleanField('docker_mbrainz')
+    docker_mumble = BooleanField('docker_mumble')
+    docker_pgadmin = BooleanField('docker_pgadmin')
+    docker_portainer = BooleanField('docker_portainer')
+    docker_teamspeak = BooleanField('docker_teamspeak')
+    docker_transmission = BooleanField('docker_transmission')
 
     def __init__(self, *args, **kwargs):
         super(AdminSettingsForm, self).__init__(*args, **kwargs)
