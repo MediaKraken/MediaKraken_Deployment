@@ -33,15 +33,12 @@ from network import network_base_line_ripper as network_base
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        if common_global.es_inst.debug:
-            # start logging
-            common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-                'main_ripper_reactor_line')
+        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+            'main_ripper_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'Ready for connections!': False})
+        common_global.es_inst.com_elastic_index('info', {'Ready for connections!': False})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

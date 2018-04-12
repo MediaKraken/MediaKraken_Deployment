@@ -18,8 +18,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # vacuum all the tables
 for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'row': row})
+    common_global.es_inst.com_elastic_index('info', {'row': row})
     db_connection.db_pgsql_vacuum_table(row['relname'])
 
 # commit records

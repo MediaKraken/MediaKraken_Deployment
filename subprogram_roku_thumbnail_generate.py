@@ -33,8 +33,7 @@ thumbnails_generated = 0
 for row_data in db_connection.db_known_media():
     # TODO  actually, this should probably be the metadata
     # TODO the common roku code has the bif/thumb gen
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'row': row_data})
+    common_global.es_inst.com_elastic_index('info', {'row': row_data})
 
 # commit all changes
 db_connection.db_commit()

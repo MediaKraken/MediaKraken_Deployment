@@ -35,8 +35,7 @@ def on_message(channel, method_frame, header_frame, body):
     Process pika message
     """
     if body is not None:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'msg body': body})
+        common_global.es_inst.com_elastic_index('info', {'msg body': body})
         json_message = json.loads(body)
         if json_message['Type'] == 'youtube':
             dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',

@@ -56,14 +56,12 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('error', {
+        common_global.es_inst.com_elastic_index('error', {
                 'data': 'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            if common_global.es_inst.debug:
-                common_global.es_inst.com_elastic_index('error', {
+            common_global.es_inst.com_elastic_index('error', {
                     'data':
                         'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
             sys.exit()
@@ -73,8 +71,7 @@ def main(argv):
             outputfile = arg
     # kick off ffmpeg process
     proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
+    common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
                                            "input": inputfile, "output": outputfile})
     proc.wait()
 

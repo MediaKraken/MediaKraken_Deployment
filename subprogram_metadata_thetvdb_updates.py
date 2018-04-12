@@ -43,8 +43,7 @@ option_json, status_json = db_connection.db_opt_status_read()
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'id': row_data['id']})
+    common_global.es_inst.com_elastic_index('info', {'id': row_data['id']})
     # look for previous data
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
@@ -79,8 +78,7 @@ for row_data in update_item['Data']['Series']:
     db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'banner': row_data})
+    common_global.es_inst.com_elastic_index('info', {'banner': row_data})
 
 # set the epoc date
 # TODO update the epoc in status from the udpate xml

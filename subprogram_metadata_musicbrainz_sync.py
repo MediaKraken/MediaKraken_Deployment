@@ -54,8 +54,7 @@ for row_data in db_brainz.db_brainz_all_artists():
                                                        row_data['end_date_year']) + ':' + str(
                                                        row_data['end_date_month']) + ':'
                                                            + str(row_data['end_date_day']))}))
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'row': row_data})
+    common_global.es_inst.com_elastic_index('info', {'row': row_data})
     # fetch all the albums from brainz by artist
     for row_data_album in db_brainz.db_brainz_all_albums_by_artist(row_data['id']):
         db_connection.db_meta_album_add(row_data_album['name'],
@@ -64,8 +63,7 @@ for row_data in db_brainz.db_brainz_all_artists():
                                         json.dumps({'Commment': row_data_album['comment'],
                                                     'Language': row_data_album['language'],
                                                     'Barcode': row_data_album['barcode']}))
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'row data album': row_data_album})
+        common_global.es_inst.com_elastic_index('info', {'row data album': row_data_album})
 '''
         # fetch all the songs from brainz
         for row_data in db_brainz.db_Brainz_All_Songs():

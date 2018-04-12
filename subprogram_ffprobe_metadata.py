@@ -37,8 +37,7 @@ def on_message(channel, method_frame, header_frame, body):
     """
     if body is not None:
         json_message = json.loads(body)
-        if common_global.es_inst.debug:
-            common_global.es_inst.es_index('info', {'ffprobe': json_message})
+        common_global.es_inst.es_index('info', {'ffprobe': json_message})
         db_connection.db_media_ffmeg_update(json_message['Data'],
                                             json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
                                                 db_connection.db_read_media(

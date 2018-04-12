@@ -41,8 +41,7 @@ def anidb(thread_db, download_data):
     """
     Rate limiter for AniDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in anidb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in anidb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'anidb', download_data)
@@ -54,8 +53,7 @@ def chart_lyrics(thread_db, download_data):
     """
     Rate limiter for Chart Lyrics
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in chart_lyrics rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in chart_lyrics rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'chart_lyrics', download_data)
@@ -67,8 +65,7 @@ def comicvine(thread_db, download_data):
     """
     Rate limiter for ComicVine
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in comicvine rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in comicvine rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'comicvine', download_data)
@@ -80,8 +77,7 @@ def giantbomb(thread_db, download_data):
     """
     Rate limiter for GiantBomb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in giantbomb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in giantbomb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'giantbomb', download_data)
@@ -93,8 +89,7 @@ def imdb(thread_db, download_data):
     """
     Rate limiter for IMDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in imdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in imdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'imdb', download_data)
@@ -106,8 +101,7 @@ def imvdb(thread_db, download_data):
     """
     Rate limiter for IMVdb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in imvdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in imvdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'imvdb', download_data)
@@ -119,8 +113,7 @@ def isbndb(thread_db, download_data):
     """
     Rate limiter for isbndb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in isbndb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in isbndb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'isbndb', download_data)
@@ -132,8 +125,7 @@ def musicbrainz(thread_db, download_data):
     """
     Rate limiter for MusicBrainz
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in musicbrainz rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in musicbrainz rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
@@ -145,8 +137,7 @@ def netflixroulette(thread_db, download_data):
     """
     Rate limiter for NetflixRoulette
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in netflixroulette rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in netflixroulette rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(
@@ -159,8 +150,7 @@ def omdb(thread_db, download_data):
     """
     Rate limiter for OMDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in omdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in omdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
@@ -172,8 +162,7 @@ def openlibrary(thread_db, download_data):
     """
     Rate limiter for openlibrary
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in openlib rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in openlib rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'openlibrary', download_data)
@@ -185,8 +174,7 @@ def pitchfork(thread_db, download_data):
     """
     Rate limiter for Pitchfork
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in pitchfork rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in pitchfork rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
@@ -198,8 +186,7 @@ def televisiontunes(thread_db, download_data):
     """
     Rate limiter for Television Tunes
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in televisiontunes rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in televisiontunes rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(
@@ -212,8 +199,7 @@ def theaudiodb(thread_db, download_data):
     """
     Rate limiter for TheAudioDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in theaudiodb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in theaudiodb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'theaudiodb', download_data)
@@ -225,8 +211,7 @@ def thegamesdb(thread_db, download_data):
     """
     Rate limiter for thegamesdb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in thegamesdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in thegamesdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
@@ -238,8 +223,7 @@ def thelogodb(thread_db, download_data):
     """
     Rate limiter for thelogodb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in thelogodb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in thelogodb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'thelogodb', download_data)
@@ -251,8 +235,7 @@ def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
@@ -264,8 +247,7 @@ def thesportsdb(thread_db, download_data):
     """
     Rate limiter for TheSportsDB
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in thesportsdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in thesportsdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
@@ -277,8 +259,7 @@ def thetvdb(thread_db, download_data):
     """
     Rate limiter for theTVdb
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
@@ -290,8 +271,7 @@ def tvmaze(thread_db, download_data):
     """
     Rate limiter for TVMaze
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
@@ -303,8 +283,7 @@ def tv_intros(thread_db, download_data):
     """
     Rate limiter for TV Intros
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in tv_intros rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in tv_intros rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
@@ -316,8 +295,7 @@ def tvshowtime(thread_db, download_data):
     """
     Rate limiter for TVShowTime
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"here i am in tvshowtime rate":
+    common_global.es_inst.com_elastic_index('info', {"here i am in tvshowtime rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
@@ -328,8 +306,7 @@ def on_message(channel, method_frame, header_frame, body):
     Process pika message
     """
     if body is not None:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {"Message body", body})
+        common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
         if json_message['Type'] == 'update':
             if content_providers == 'themoviedb':
@@ -357,8 +334,7 @@ def on_message(channel, method_frame, header_frame, body):
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'meta_api_worker_%s' % str(sys.argv[1]))
 content_providers = str(sys.argv[1])
-if common_global.es_inst.debug:
-    common_global.es_inst.com_elastic_index('info', {"worker meta api name":
+common_global.es_inst.com_elastic_index('info', {"worker meta api name":
                                                          content_providers})
 # open the database
 option_config_json, thread_db = common_config_ini.com_config_read()
@@ -389,8 +365,7 @@ metadata_last_year = None
 while True:
     # common_global.es_inst.com_elastic_index('info', {'stuff':'worker thread before read provider %s', content_providers)
     for row_data in thread_db.db_download_read_provider(content_providers):
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {"worker meta api row":
+        common_global.es_inst.com_elastic_index('info', {"worker meta api row":
                                                                  row_data})
         # mdq_id,mdq_download_json
         if content_providers == 'anidb':
@@ -434,8 +409,7 @@ while True:
         elif content_providers == 'tvshowtime':
             tvshowtime(thread_db, row_data)
         elif content_providers == 'Z':
-            if common_global.es_inst.debug:
-                common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
+            common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
                                                                      class_text_dict[row_data[
                                                                          'mdq_download_json'][
                                                                          'ClassID']],
@@ -458,8 +432,7 @@ while True:
             else:
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
-                if common_global.es_inst.debug:
-                    common_global.es_inst.com_elastic_index('info', {'worker Z filename':
+                common_global.es_inst.com_elastic_index('info', {'worker Z filename':
                                                                          file_name})
                 if 'title' in file_name:
                     if 'year' in file_name:
@@ -470,8 +443,7 @@ while True:
                     elif file_name['title'] == metadata_last_title:
                         thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
-                    if common_global.es_inst.debug:
-                        common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid":
+                    common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid":
                                                                              metadata_uuid,
                                                                          'filename': file_name})
                     if metadata_uuid is None:
@@ -498,8 +470,7 @@ while True:
                         'ZZ', row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
-                if common_global.es_inst.debug:
-                    common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
+                common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
                                                                          metadata_uuid, 'row':
                                                                          row_data[
                                                                              'mdq_download_json'][

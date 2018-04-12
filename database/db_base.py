@@ -23,7 +23,6 @@ import sys
 
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
-from psycopg2.extras import DictCursor  # pylint: disable=W0611
 
 from common import common_global
 from common import common_system
@@ -55,10 +54,9 @@ def db_open(self, db_prod=True):
     # verify the trigram extension is enablled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
     if self.db_cursor.fetchone()[0] == 0:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('critical',
-                                                    {'stuff': 'pg_trgm extension needs to '
-                                                              'be enabled for database!!!!  Exiting!!!'})
+        common_global.es_inst.com_elastic_index('critical',
+                                                {'stuff': 'pg_trgm extension needs to '
+                                                          'be enabled for database!!!!  Exiting!!!'})
         sys.exit(1)
 
 
@@ -74,8 +72,7 @@ def db_commit(self):
     """
     # commit changes to media database
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
     self.sql3_conn.commit()
 
 
@@ -83,8 +80,7 @@ def db_rollback(self):
     """
     # rollback
     """
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
     self.sql3_conn.rollback()
 
 

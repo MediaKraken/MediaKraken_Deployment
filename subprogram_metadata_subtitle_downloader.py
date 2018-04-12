@@ -35,8 +35,7 @@ sub_lang = "en"
 for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
                                                ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
+    common_global.es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
             '.', 1)[0] + "." + sub_lang + ".srt"})
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
     # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
@@ -47,8 +46,7 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         file_handle = os.popen(
             "subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
         cmd_output = file_handle.read()
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
+        common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 
 # TODO put in the notifications
 print('Total subtitle download attempts: %s' % total_download_attempts)

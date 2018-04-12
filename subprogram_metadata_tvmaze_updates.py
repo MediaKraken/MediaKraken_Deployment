@@ -35,13 +35,11 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # grab updated show list with epoc data
 tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
-if common_global.es_inst.debug:
-    common_global.es_inst.com_elastic_index('info', {'result': result})
+common_global.es_inst.com_elastic_index('info', {'result': result})
 # for show_list_json in result:
 result = json.loads(result)
 for tvmaze_id, tvmaze_time in result.items():
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
+    common_global.es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:

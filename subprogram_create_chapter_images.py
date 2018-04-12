@@ -109,8 +109,7 @@ if len(file_list) > 0:
     with futures.ThreadPoolExecutor(len(file_list)) as executor:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
-            if common_global.es_inst.debug:
-                common_global.es_inst.es_index('info', {'data': future.result()})
+            common_global.es_inst.es_index('info', {'data': future.result()})
 
 # send notications
 if total_images_created > 0:

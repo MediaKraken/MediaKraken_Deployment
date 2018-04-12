@@ -36,8 +36,7 @@ common_network_radio.com_net_radio()
 # load the cache files and compare to db
 radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 for row_data in radio_cache:
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
+    common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
     db_connection.db_iradio_insert(row_data)
 
 # radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)

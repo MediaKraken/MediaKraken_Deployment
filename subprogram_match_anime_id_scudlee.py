@@ -48,8 +48,7 @@ def store_update_record(db_connection, collection_name, guid_list):
 common_metadata_scudlee.mk_scudlee_fetch_xml()
 # begin the media match on NULL matches
 for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'row': 'row_data'})
+    common_global.es_inst.com_elastic_index('info', {'row': 'row_data'})
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
         # just check for non int then it's a non tvdb id

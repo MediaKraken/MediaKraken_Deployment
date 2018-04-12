@@ -55,8 +55,7 @@ if False:
     for zippedfile in zip_handle.namelist():
         json_data = xmltodict.parse(zip_handle.read(zippedfile))
         for child_of_root in json_data['mame']['machine']:
-            if common_global.es_inst.debug:
-                common_global.es_inst.com_elastic_index('info', {'child': child_of_root,
+            common_global.es_inst.com_elastic_index('info', {'child': child_of_root,
                                                    'childname': child_of_root['@name']})
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:

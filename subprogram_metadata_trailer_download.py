@@ -38,8 +38,7 @@ data = xmltodict.parse(common_network.mk_network_fetch_from_url(
     "http://feeds.hd-trailers.net/hd-trailers", None))
 if data is not None:
     for item in data['item']:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'item': item})
+        common_global.es_inst.com_elastic_index('info', {'item': item})
         download_link = None
         if ('(Trailer' in data['item']['title']
             and option_config_json['Trailer']['Trailer'] is True) \

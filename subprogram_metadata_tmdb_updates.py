@@ -37,15 +37,12 @@ tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {'mov': movie_change['id']})
+    common_global.es_inst.com_elastic_index('info', {'mov': movie_change['id']})
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'here': '1'})
+        common_global.es_inst.com_elastic_index('info', {'here': '1'})
         dl_meta = db_connection.db_download_que_exists(None, 1, 'themoviedb',
                                                        str(movie_change['id']))
-        if common_global.es_inst.debug:
-            common_global.es_inst.com_elastic_index('info', {'dl_meta': dl_meta})
+        common_global.es_inst.com_elastic_index('info', {'dl_meta': dl_meta})
         if dl_meta is None:
             db_connection.db_download_insert('themoviedb', 1, json.dumps({'MediaID': None,
                                                                           'Path': None,

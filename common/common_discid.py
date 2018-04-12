@@ -35,8 +35,7 @@ def com_discid_default_device():
     """
     discid.get_default_device()
     disc = discid.read()
-    if common_global.es_inst.debug:
-        common_global.es_inst.com_elastic_index('info', {"id": disc.id,
+    common_global.es_inst.com_elastic_index('info', {"id": disc.id,
                                                          "submission url": disc.submission_url})
     return discid
 
