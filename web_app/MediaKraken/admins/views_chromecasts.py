@@ -67,7 +67,7 @@ def admin_chromecast():
     """
     if request.method == 'POST':
         docker_inst = common_docker.CommonDocker()
-        docker_inst.com_docker_run_container()
+        docker_inst.com_docker_run_device_scan()
         flash("Scheduled Chromecast scan.")
     device_list = []
     for row_data in g.db_connection.db_device_list('cast'):
