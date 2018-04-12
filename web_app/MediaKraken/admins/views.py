@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
+
 import json
 import os
 import sys
+import uuid
+
+import pygal
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -20,7 +22,6 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 from functools import partial
 from MediaKraken.admins.forms import AdminSettingsForm
-from MediaKraken.admins.forms import BackupEditForm
 from MediaKraken.admins.forms import BookAddForm
 
 from common import common_config_ini
@@ -63,7 +64,7 @@ def admin_required(fn):
     @login_required
     def decorated_view(*args, **kwargs):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                current_user.get_id()})
+                                                             current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -227,15 +228,38 @@ def admin_server_settings():
     """
     Display server settings page
     """
+    settings_json = g.db_connection.db_opt_status_read[0]
     if request.method == 'POST':
-        pass
+        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
+        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
 
-    # request.form['library_path']
+        settings_json['Metadata']['Source']['tvmaze'] = request.form['metadata_source_down_tvmaze']
+        settings_json['Metadata']['Source']['tmdb'] = request.form['metadata_source_down_tmdb']
+        settings_json['Metadata']['Source']['tvdb'] = request.form['metadata_source_down_tvdb']
+        settings_json['Metadata']['Source']['musicbrainz'] = request.form[
+            'metadata_source_down_mbrainz']
+        settings_json['Metadata']['Source']['anidb'] = request.form['metadata_source_down_anidb']
+        settings_json['Metadata']['Source']['chartlyrics'] = request.form[
+            'metadata_source_down_chartlyrics']
+        settings_json['Metadata']['Source'][''] = request.form['metadata_source_down_opensub']
+        settings_json['Metadata']['Source']['pitchfork'] = request.form[
+            'metadata_source_down_pitchfork']
+        settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
+        settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
+        settings_json['Metadata']['Source'][''] = request.form[
+            'metadata_source_down_netflixroulette']
+
+        settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
+        settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
+        settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
+        settings_json['Docker Instances']['portainer'] = request.form['docker_portainer']
+        settings_json['Docker Instances']['smtp'] = request.form['']
+        settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
+        settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
+
+        g.db_connection.db_opt_update(settings_json)
 
     '''
-        servername = TextField('Server Name', validators=[
-        DataRequired(), Length(min=3, max=250)])
-    servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
     server_bind_addr = TextField('Bind Addr', validators=[
         Length(min=7, max=15)])
     server_bind_port = TextField(
@@ -266,35 +290,17 @@ def admin_server_settings():
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField(
         'Skip subtitle if lang in audio track')
-    metadata_source_down_tvmaze = BooleanField('tvmaze')
-    metadata_source_down_tmdb = BooleanField('themoviedb')
-    metadata_source_down_tvdb = BooleanField('thetvdb')
-    metadata_source_down_freedb = BooleanField('FreeDB')
-    metadata_source_down_mbrainz = BooleanField('Music Brainz')
-    metadata_source_down_anidb = BooleanField('AnimeDB')
-    metadata_source_down_chartlyrics = BooleanField('Chart Lyrics')
-    metadata_source_down_opensub = BooleanField('OpenSubtitles')
-    metadata_source_down_pitchfork = BooleanField('pitchfork')
-    metadata_source_down_imvdb = BooleanField('imvdb')
-    metadata_source_down_omdb = BooleanField('omdb')
-    metadata_source_down_netflixroulette = BooleanField('netflixroulette')
+
     metadata_sync_path = TextField('Metadata Sync Path',
                                    validators=[DataRequired(), Length(min=1, max=250)])
-    docker_musicbrainz = BooleanField(
-        'Start MusicBrainz (brainzcode required https://lime-technology.com/forums/topic/42909-support-linuxserverio-musicbrainz/)')
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
 
-    docker_mumble = BooleanField('Start Mumble (chat server)')
-    docker_pgadmin = BooleanField('Start PgAdmin (database webgui)')
-    docker_portainer = BooleanField('Start Portainer (Docker monitor)')
-    docker_teamspeak = BooleanField('Start Teamspeak 3 (chat server)')
-    docker_transmission = BooleanField('Start Transmission (bittorrent webgui)')
 '''
 
     return render_template("admin/admin_server_settings.html",
                            form=AdminSettingsForm(request.form),
-                           settings_json=g.db_connection.db_opt_status_read[0])
+                           settings_json=settings_json)
 
 
 @blueprint.route("/zfs")
@@ -441,7 +447,8 @@ def admin_listdir(path):
             map(partial(gather_fileinfo, path, ospath), os.listdir(ospath)))
         files = list(filter(lambda file: file is not None, files))
         files.sort(key=lambda i: (
-            i['type'] == 'file' and '1' or '0') + i['filename'].lower())
+                                         i['type'] == 'file' and '1' or '0') + i[
+                                     'filename'].lower())
         return render_template('admin/admin_fs_browse.html',
                                files=files,
                                parent=os.path.dirname(path),
