@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
 import sys
 
@@ -14,7 +15,6 @@ blueprint = Blueprint("admins_task", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
-from functools import partial
 from MediaKraken.extensions import (
     fpika,
 )
@@ -49,7 +49,7 @@ def admin_required(fn):
     @login_required
     def decorated_view(*args, **kwargs):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                current_user.get_id()})
+                                                             current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -91,8 +91,8 @@ def admin_task_run(guid):
     """
     Run task jobs
     """
-    common_global.es_inst.com_elastic_index('info', {'admin task run': guid})
-    common_global.es_inst.com_elastic_index('info', {'info': g.db_connection.db_task_info(guid)})
+    common_global.es_inst.com_elastic_index('info', {'admin task guid': guid,
+                                                     'info': g.db_connection.db_task_info(guid)})
     task_info = g.db_connection.db_task_info(guid)['mm_task_json']
     # submit the message
     ch = fpika.channel()

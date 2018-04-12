@@ -41,7 +41,6 @@ def admin_required(fn):
     """
     Admin check
     """
-
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):

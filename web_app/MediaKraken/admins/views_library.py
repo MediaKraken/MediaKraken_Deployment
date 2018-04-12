@@ -135,7 +135,7 @@ def admin_library_edit_page():
                 elif not os.path.isdir(request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins_library.admin_library_edit_page'))
-                # verify it doesn't exit and add
+                # verify it doesn't exist and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
