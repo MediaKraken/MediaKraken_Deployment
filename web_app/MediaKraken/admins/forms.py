@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from decimal import ROUND_UP
+
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
@@ -145,10 +147,10 @@ class AdminSettingsForm(Form):
     for editing user
     """
     servername = TextField('Server Name', validators=[
-                           DataRequired(), Length(min=3, max=250)])
+        DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
     server_bind_addr = TextField('Bind Addr', validators=[
-                                 Length(min=7, max=15)])
+        Length(min=7, max=15)])
     server_bind_port = TextField(
         'Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
@@ -191,12 +193,16 @@ class AdminSettingsForm(Form):
     metadata_source_down_netflixroulette = BooleanField('netflixroulette')
     metadata_sync_path = TextField('Metadata Sync Path',
                                    validators=[DataRequired(), Length(min=1, max=250)])
-    docker_musicbrainz = BooleanField('docker_mbrainz')
-    docker_mumble = BooleanField('docker_mumble')
-    docker_pgadmin = BooleanField('docker_pgadmin')
-    docker_portainer = BooleanField('docker_portainer')
-    docker_teamspeak = BooleanField('docker_teamspeak')
-    docker_transmission = BooleanField('docker_transmission')
+    docker_musicbrainz = BooleanField(
+        'Start MusicBrainz (brainzcode required https://lime-technology.com/forums/topic/42909-support-linuxserverio-musicbrainz/)')
+    docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
+                                                                  Length(min=1, max=250)])
+
+    docker_mumble = BooleanField('Start Mumble (chat server)')
+    docker_pgadmin = BooleanField('Start PgAdmin (database webgui)')
+    docker_portainer = BooleanField('Start Portainer (Docker monitor)')
+    docker_teamspeak = BooleanField('Start Teamspeak 3 (chat server)')
+    docker_transmission = BooleanField('Start Transmission (bittorrent webgui)')
 
     def __init__(self, *args, **kwargs):
         super(AdminSettingsForm, self).__init__(*args, **kwargs)
@@ -219,7 +225,7 @@ class CronEditForm(Form):
                                                 ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places=2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[
-                            DataRequired(), Length(min=1, max=255)])
+        DataRequired(), Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
         super(CronEditForm, self).__init__(*args, **kwargs)
@@ -278,7 +284,7 @@ class TaskEditForm(Form):
                                                 ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places=2, rounding=ROUND_UP)
     script_path = TextField('Script Path', validators=[
-                            DataRequired(), Length(min=1, max=255)])
+        DataRequired(), Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
         super(TaskEditForm, self).__init__(*args, **kwargs)
