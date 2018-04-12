@@ -306,11 +306,12 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_class (mm_media_clas
 if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
     db_connection.db_query('CREATE INDEX mm_media_class_idx_type'
                            ' ON mm_media_class(mm_media_class_type)')
+
 # add media classes
-db_connection.db_query('select count(*) from mm_media_class')
-for media_class in base_media_classes:
-    db_connection.db_media_class_insert(
-        media_class[0], media_class[1], media_class[2])
+if db_connection.db_table_count('mm_media_class') == 0:
+    for media_class in base_media_classes:
+        db_connection.db_media_class_insert(
+            media_class[0], media_class[1], media_class[2])
 
 # create table for anime metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'
