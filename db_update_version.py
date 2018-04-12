@@ -231,5 +231,7 @@ if db_connection.db_version_check() == 17:
     db_connection.db_version_update(18)
     db_connection.db_commit()
 
+########### all before this are historical at this point
+
 # close the database
 db_connection.db_close()
