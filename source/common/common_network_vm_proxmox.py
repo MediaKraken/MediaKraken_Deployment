@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import requests
+import time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -669,3 +670,41 @@ class CommonNetworkProxMox(object):
         # grab version of api from node
         """
         return self.com_net_prox_api_call('get', 'version')
+
+
+def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, image_path):
+    # build the container if doesn't already exist
+    lxc_dict = {}
+    for lxc_server in PROX_CONNECTION.com_net_prox_node_lxc_list('pve')['data']:
+        lxc_dict[lxc_server['name']] = (lxc_server['vmid'], lxc_server['status'])
+    print('lxc: %s' % lxc_dict)
+    if JENKINS_BUILD_VIM in lxc_dict:
+        # container exists, make sure it's running
+        print('status: %s' % str(lxc_dict[JENKINS_BUILD_VIM][1]))
+        # make sure it's started
+        if lxc_dict[JENKINS_BUILD_VIM] != 'running':
+            # start up the vm
+            print('start vim: %s' % lxc_dict[JENKINS_BUILD_VIM][0])
+            print(PROX_CONNECTION.com_net_prox_node_lxc_start(
+                'pve', lxc_dict[JENKINS_BUILD_VIM][0]))
+    else:
+        # create the container
+        print('create JENKINS_BUILD_VIM')
+        print(PROX_CONNECTION.com_net_prox_node_lxc_create('pve', JENKINS_BUILD_VIM, 4096,
+                                                           image_path,
+                                                           'ZFS_VM', 'alpine', 8, 'metaman'))
+        # keep an eye on task and see when its completed
+        # while node.tasks(taskid).status()['status'] == 'running':
+        #        time.sleep(1)
+
+
+
+# this is for VM!!!  not container
+#     # check status of vm
+#     for vm_server in PROX_CONNECTION.com_net_prox_node_qemu_list('pve')['data']:
+#         if vm_server['name'] == JENKINS_BUILD_VIM:
+#             if vm_server['status'] == 'stopped':
+#                 # start up the vm
+#                 PROX_CONNECTION.com_net_prox_node_qemu_start('pve', vm_server['vmid'])
+#                 time.sleep(60)  # wait for box to boot
+#             break
