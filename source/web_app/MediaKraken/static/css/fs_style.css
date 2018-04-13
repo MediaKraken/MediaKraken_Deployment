@@ -1,0 +1,70 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: sans;
+}
+
+
+a {
+    color: #fefefe;
+    text-decoration: none;
+}
+
+a:visited {
+    color: gray;
+}
+
+body.watch {
+    text-align: center;
+}
+
+body.watch #infos {
+    width: 300px;
+    height: 80px;
+    margin: auto;
+    border: 1px dotted gray;
+    visibility: hidden;
+}
+body.watch #infos a {
+    float: left;
+}
+body.watch #logging {
+    height: 200px;
+    font-family: monospace;
+    color: white;
+    text-align: left;
+    font-size: 12px;
+    visibility: hidden;
+    overflow-y: scroll;
+}
+
+body.watch #trigger:hover #logging {
+    visibility: visible;
+}
+
+body.watch #trigger:hover #infos {
+    visibility: visible;
+}
+
+body.list {
+    font-size: 36px;
+}
+
+body.list a {
+    vertical-align: super;
+}
+
+body.list video {
+    display: inline;
+}
+
+body.list > div {
+    overflow: hidden;
+    height: 60px;
+    white-space: nowrap;
+}
+
+body.list > div:hover {
+    background-color: #1a1a1a;
+}
+

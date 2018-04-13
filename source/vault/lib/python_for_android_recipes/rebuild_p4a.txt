@@ -1,0 +1,34 @@
+apt-get install build-essential patch git-core ccache ant python-pip python-dev lib32z1 lib32ncurses5
+
+pip install --upgrade cython
+pip uninstall cython 
+pip install cython 0.20
+pip install cython 0.21
+
+
+after install of sdk/ndk
+export ANDROIDSDK="/home/spoot/Downloads/android-sdk-linux"
+export ANDROIDNDK="/home/spoot/Downloads/android-ndk-r10d"
+export ANDROIDNDKVER=r10d
+export ANDROIDAPI=21
+
+export ANDROIDAPI=19     <- due to time.h issue
+export PATH=$ANDROIDNDK:$ANDROIDSDK/platform-tools:$ANDROIDSDK/tools:$PATH
+
+
+
+
+http://developer.android.com/tools/sdk/ndk/index.html#Installing
+grab the newest ndk/sdk
+chmod a+x android-ndk-r10d-linux-x86_64.bin
+./android-ndk-r10d-linux-x86_64.bin
+cd android-ndk-r10d
+
+bash ndk-build NDK_PROJECT_PATH=/home/spoot/github/python-for-android/src
+
+
+
+# in python for android dir
+./distribute.sh -m "kivy==master openssl pyopenssl twisted pil android jpeg plyer png sqlite3 ffmpeg lirc"
+
+
