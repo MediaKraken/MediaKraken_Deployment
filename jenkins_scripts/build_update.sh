@@ -1,5 +1,9 @@
 git pull
 ./source_sync.sh
+
+# must move base dir so the docker-compose commands work
+cd /home/metaman/MediaKraken_Deployment/docker/alpine
+
 docker-compose down
 docker-compose build
 
