@@ -71,8 +71,9 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_cre
 # open the database
 db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
 
+# need superuser rights for following
 # activate extention pg_trgm
-db_connection.db_query('create extension if not exists pg_trgm')
+#db_connection.db_query('create extension if not exists pg_trgm')
 
 # create table for version
 db_connection.db_query(
