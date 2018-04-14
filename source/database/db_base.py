@@ -22,6 +22,7 @@ import os
 import sys
 
 import psycopg2
+import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 
 from common import common_global
