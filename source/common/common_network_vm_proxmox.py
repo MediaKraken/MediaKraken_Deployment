@@ -17,8 +17,8 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import requests
-import time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -252,20 +252,22 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('get', 'nodes/%s/lxc' % node_name)
 
     def com_net_prox_node_lxc_create(self, node_name, host_name, memory_size,
-                                     template_name, storage_id, os_type):
+                                     template_name, storage_id, os_type, cpu_limit, password):
         """
         create lxc on code
         """
         post_data = {'vmid': self.com_net_prox_cluster_nextid()['data'],
-                     'ostemplate': template_name}
-        # 'hostname': host_name,
-        # 'storage': storage_id,
-        # 'cpulimit': 8,
-        # 'memory': memory_size, 'ostype': os_type,
-        # 'password': 'metaman',
-        # #'net': 'name=eth0'}
-        # 'rootfs': '32'}
-        # #'rootfs': 'vm-118-disk-1a, size=32G'}
+                     'ostemplate': template_name,
+                     'hostname': host_name,
+                     'storage': storage_id,
+                     'cpulimit': cpu_limit,
+                     'memory': memory_size,
+                     'ostype': os_type,
+                     'password': password,
+                     # 'net': 'name=eth0',
+                     # 'rootfs': '32',
+                     # 'rootfs': 'vm-118-disk-1a, size=32G',
+                     }
         print('post %s' % post_data)
         return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name, post_data)
 
@@ -696,8 +698,6 @@ def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, imag
         # keep an eye on task and see when its completed
         # while node.tasks(taskid).status()['status'] == 'running':
         #        time.sleep(1)
-
-
 
 # this is for VM!!!  not container
 #     # check status of vm
