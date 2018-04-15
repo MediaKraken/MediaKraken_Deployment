@@ -1,5 +1,5 @@
-5601 - Kibana
+5601 - Kibana (debug info)
 8900 - Main web app
-9000 - Portainer
-9091 - Transmission
-12345 - PgAdmin4
+9000 - Portainer (docker monitor)
+9091 - Transmission (bittorrent)
+12345 - PgAdmin4 (postgresql gui)

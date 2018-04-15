@@ -12,6 +12,7 @@ docker push mediakraken/mkbaseffmpegnvidiadebian:latest
 docker push mediakraken/mkbasenvidiadebain:latest
 docker push mediakraken/mkbroadcast:latest
 docker push mediakraken/mkdatabase:latest
+docker push mediakraken/mkdebug:latest
 docker push mediakraken/mkdevicescan:latest
 docker push mediakraken/mkdocker:latest
 docker push mediakraken/mkdownload:latest

@@ -26,6 +26,9 @@ docker build -t mediakraken/mkbase35 .
 cd ../ComposeMediaKrakenBase36
 docker build -t mediakraken/mkbase36 .
 
+cd ../ComposeMediaKrakenBase37
+docker build -t mediakraken/mkbase37 .
+
 # base python 3 images
 cd ../ComposeMediaKrakenBase34Py3
 docker build -t mediakraken/mkbase34py3 .
@@ -35,6 +38,9 @@ docker build -t mediakraken/mkbase35py3 .
 
 cd ../ComposeMediaKrakenBase36Py3
 docker build -t mediakraken/mkbase36py3 .
+
+cd ../ComposeMediaKrakenBase37Py3
+docker build -t mediakraken/mkbase37py3 .
 
 # Build the base cuba from alpine
 cd ../ComposeMediaKrakenBaseCuda
@@ -102,6 +108,10 @@ docker build -t mediakraken/mkmumble .
 # build the elk
 cd ../ComposeMediaKrakenELK
 docker build -t mediakraken/mkelk .
+
+# build the debug
+cd ../ComposeMediaKrakenDebug
+docker build -t mediakraken/mkdebug .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
