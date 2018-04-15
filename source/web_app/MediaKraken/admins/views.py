@@ -143,8 +143,6 @@ def admins():
                            data_messages=data_messages,
                            data_count_meta_fetch=common_internationalization.com_inter_number_format(
                                g.db_connection.db_table_count('mm_download_que')),
-                           data_count_images_fetch=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_table_count('mm_download_image_que'))
                            )
 
 
