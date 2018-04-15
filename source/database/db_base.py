@@ -41,13 +41,6 @@ def db_open(self, db_prod=True):
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
                                           % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
                                              'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
-        # verify the trigram extension is enabled for the database
-        self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
-        if self.db_cursor.fetchone()[0] == 0:
-            common_global.es_inst.com_elastic_index('critical',
-                                                    {'stuff': 'pg_trgm extension needs to '
-                                                              'be enabled for database!!!!  Exiting!!!'})
-            sys.exit(1)
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
                                           " host='th-postgresql-1' port=5432 password='metamanpg'")
@@ -58,6 +51,15 @@ def db_open(self, db_prod=True):
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            common_system.com_system_cpu_count())
+    # do here since the db cursor is created now
+    if db_prod == True:
+        # verify the trigram extension is enabled for the database
+        self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
+        if self.db_cursor.fetchone()[0] == 0:
+            common_global.es_inst.com_elastic_index('critical',
+                                                    {'stuff': 'pg_trgm extension needs to '
+                                                              'be enabled for database!!!!  Exiting!!!'})
+            sys.exit(1)
 
 
 def db_close(self):
