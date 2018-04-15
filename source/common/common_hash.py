@@ -17,17 +17,18 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import hashlib
-import zlib
-import zipfile
 import os
 import struct
 import sys
+import zipfile
+import zlib
+
 from . import common_global
 from . import common_hash_c_code
 
 # import compression mods
-import pylzma
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
@@ -96,8 +97,8 @@ def com_hash_sha1_by_filename(file_name):
                 SHA1.update(chunk)
                 sha1_hash_data = SHA1.hexdigest()
         except:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"hash sha1 fail: %s",
-                                                              file_name})
+            common_global.es_inst.com_elastic_index('error', {'stuff': "hash sha1 fail: %s" %
+                                                                       file_name})
         file_pointer.close()
         return sha1_hash_data
 
