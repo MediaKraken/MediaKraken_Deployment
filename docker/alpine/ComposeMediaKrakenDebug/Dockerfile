@@ -17,7 +17,7 @@ RUN apk add --update \
 # Copy the source files for the app
 ADD src /mediakraken
 
-CMD ["python /mediakraken/main_debug.py"]
+CMD ["/bin/ash"]
 
 
 
