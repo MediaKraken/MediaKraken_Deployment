@@ -33,5 +33,6 @@ docker push mediakraken/mkslave:latest
 docker push mediakraken/mkslavenvidia:latest
 docker push mediakraken/mkslavenvidiadebian:latest
 docker push mediakraken/mksmtp:latest
+docker push mediakraken/mkteamspeak:latest
 docker push mediakraken/mktransmission:latest
 docker push mediakraken/mkwebapp:latest
