@@ -18,9 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import json
-import os
 import subprocess
-from twisted.internet import reactor, protocol
 from twisted.protocols import basic
 from common import common_discid
 from common import common_global
@@ -44,14 +42,14 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Got Connection'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection'})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Lost Connection'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
 
@@ -105,7 +103,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
             self.users[self.user_device_uuid] = self
             common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
-                         'ip': self.user_ip_addy})
+                                                             'ip': self.user_ip_addy})
         else:
             common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"

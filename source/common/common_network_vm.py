@@ -17,9 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from . import common_network_vm_proxmox
-from . import common_network_vm_virtualbox
-from . import common_network_vm_vmware
 
 
 class CommonNetworkVM(object):

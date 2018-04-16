@@ -17,12 +17,15 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import socket
+
 import json
 import os
-import time
+import socket
 import subprocess
+import time
+
 from . import common_global
+
 
 # https://mpv.io/manual/master/#json-ipc
 class CommonNetMPVSocat(object):

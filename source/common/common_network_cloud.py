@@ -17,14 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from . import common_string
+
 import os
+
 import libcloud
-from libcloud.storage.types import Provider, ContainerDoesNotExistError
-from libcloud.container.base import ContainerImage
-from libcloud.storage.providers import get_driver
 from gevent import monkey
-from gevent.pool import Pool
 
 monkey.patch_all()
 

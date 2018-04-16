@@ -17,10 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import re
-import os
-from . import common_global
 from socket import inet_ntoa
+
+from . import common_global
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
 STACK_CD1 = re.compile('-cd1(?!\d)', re.IGNORECASE)

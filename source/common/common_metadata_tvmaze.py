@@ -17,6 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from . import common_network
 
 
@@ -68,7 +69,7 @@ class CommonMetadatatvmaze(object):
         else:
             url_opts = (show_name + ' ' + show_year),
         return common_network.mk_network_fetch_from_url((
-            self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
+                self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
 
     def com_meta_tvmaze_show_by_id(self, tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
                                    embed_info=True):
@@ -81,25 +82,25 @@ class CommonMetadatatvmaze(object):
             url_opts = tvmaze_id,
             if embed_info:
                 result_json = common_network.mk_network_fetch_from_url((
-                    self.API_BASE_URL + 'shows/%s?embed[]=episodes&embed[]=cast'
-                    % url_opts), None)
+                        self.API_BASE_URL + 'shows/%s?embed[]=episodes&embed[]=cast'
+                        % url_opts), None)
             else:
                 result_json = common_network.mk_network_fetch_from_url((
-                    self.API_BASE_URL + 'shows/%s' % url_opts), None)
+                        self.API_BASE_URL + 'shows/%s' % url_opts), None)
         else:
             # currently embed options don't work on the lookup calls
             if tvrage_id is not None and result_json is None:
                 url_opts = tvrage_id,
                 result_json = common_network.mk_network_fetch_from_url((
-                    self.API_BASE_URL + 'lookup/shows?tvrage=%s' % url_opts), None)
+                        self.API_BASE_URL + 'lookup/shows?tvrage=%s' % url_opts), None)
             elif imdb_id is not None and result_json is None:
                 url_opts = imdb_id,
                 result_json = common_network.mk_network_fetch_from_url((
-                    self.API_BASE_URL + 'lookup/shows?imdb=%s' % url_opts), None)
+                        self.API_BASE_URL + 'lookup/shows?imdb=%s' % url_opts), None)
             elif tvdb_id is not None and result_json is None:
                 url_opts = tvdb_id,
                 result_json = common_network.mk_network_fetch_from_url((
-                    self.API_BASE_URL + 'lookup/shows?thetvdb=%s' % url_opts), None)
+                        self.API_BASE_URL + 'lookup/shows?thetvdb=%s' % url_opts), None)
             if embed_info and result_json is not None:
                 result_json = self.com_meta_tvmaze_show_by_id(self, result_json['id'], None,
                                                               None, None, True)

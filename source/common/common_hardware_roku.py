@@ -14,12 +14,13 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       They don't look right for me when I set the video height to 480
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import array
 import os
+import shutil
+import struct
 import tempfile
 from subprocess import Popen, PIPE
-import struct
-import array
-import shutil
 
 # for mode 0, 1, 2, 3
 VIDEOSIZES = [(240, 180), (320, 240), (240, 136), (320, 180)]

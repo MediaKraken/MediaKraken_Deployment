@@ -17,10 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+from pytvdbapi import api
+
 # from xml.dom import minidom
 from . import common_global
-from . import common_metadata
-from pytvdbapi import api
 
 
 class CommonTheTVDB(object):
@@ -151,6 +152,6 @@ class CommonTheTVDB(object):
             # loop through the episodes
             for ep_ndx in range(0, show_number_episodes):
                 episode = season[ep_ndx]
-                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeNumber})
-                common_global.es_inst.com_elastic_index('info', {'stuff':episode.EpisodeName})
+                common_global.es_inst.com_elastic_index('info', {'stuff': episode.EpisodeNumber})
+                common_global.es_inst.com_elastic_index('info', {'stuff': episode.EpisodeName})
         return show_dict

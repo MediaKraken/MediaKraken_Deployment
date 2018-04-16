@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask, render_template
-from flask_moment import Moment
-from flask_uwsgi_websocket import GeventWebSocket
+
 import redis
-from flask_kvsession import KVSessionExtension
-from simplekv.memory.redisstore import RedisStore
-from MediaKraken.settings import ProdConfig
+from MediaKraken import public, user, admins
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (
     bcrypt,
@@ -15,7 +11,12 @@ from MediaKraken.extensions import (
     login_manager,
     fpika,
 )
-from MediaKraken import public, user, admins
+from MediaKraken.settings import ProdConfig
+from flask import Flask, render_template
+from flask_kvsession import KVSessionExtension
+from flask_moment import Moment
+from flask_uwsgi_websocket import GeventWebSocket
+from simplekv.memory.redisstore import RedisStore
 
 
 def create_app(config_object=ProdConfig):

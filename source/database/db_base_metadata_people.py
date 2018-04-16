@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import uuid
+
 import json
+import uuid
+
 from common import common_global
+
 
 def db_meta_person_list_count(self, search_value=None):
     """
@@ -112,8 +114,9 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
     """
     # insert person
     """
-    common_global.es_inst.com_elastic_index('info', {'db pers insert %s %s %s %s', person_name, media_id_json,
-                 person_json, image_json})
+    common_global.es_inst.com_elastic_index('info', {'db pers insert %s %s %s %s', person_name,
+                                                     media_id_json,
+                                                     person_json, image_json})
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                            ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image)'
@@ -170,7 +173,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                    common_global.es_inst.com_elastic_index('info', {'stuff':"skippy"})
+                    common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
                 else:
                     # insert download record for bio/info
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
@@ -200,7 +203,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             # person_name = None # not used later so don't set
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                common_global.es_inst.com_elastic_index('info', {'stuff':"skippy"})
+                common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
             else:
                 # insert download record for bio/info
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",

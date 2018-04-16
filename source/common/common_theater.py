@@ -17,7 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
+
 from common import common_network_telnet
 from common import common_serial
 
@@ -48,7 +50,7 @@ def main_remote_control_event_process(self, action_type_list):
         # check to see if lan device already open
         elif json_data["Protocol"]["Method"].lower() == "lan":
             if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) \
-                    in self.lan_devices_dict:
+                   in self.lan_devices_dict:
                 pass
         elif json_data["Protocol"]["Method"].lower() == "telnet":
             # check to see if telnet device already opened
@@ -64,7 +66,7 @@ def main_remote_control_event_process(self, action_type_list):
         elif json_data["Protocol"]["Method"].lower() == "serial":
             # check to see if serial device already opened
             if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) \
-                    in self.serial_devices_dict:
+                   in self.serial_devices_dict:
                 com_net_serial_device = common_serial.CommonSerial()
                 self.serial_devices_dict[(json_data["Protocol"]["Host IP"],
                                           json_data["Protocol"]["Hardware Port"])] \
@@ -80,7 +82,7 @@ def main_remote_control_event_process(self, action_type_list):
                 pass
         elif json_data["Protocol"]["Method"].lower() == "kivy":
             if not (json_data["Protocol"]["Host IP"], json_data["Protocol"]["Hardware Port"]) \
-                    in self.kivy_lan_devices_dict:
+                   in self.kivy_lan_devices_dict:
                 self.kivy_lan_devices_dict[(json_data["Protocol"]["Host IP"],
                                             json_data["Protocol"]["Hardware Port"])] \
                     = (json_data["Protocol"]["Host IP"],

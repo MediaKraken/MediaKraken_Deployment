@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
-from flask_script import Manager, Shell, Server
-from flask_script.commands import Clean, ShowUrls
 
 from MediaKraken.app import create_app
-from MediaKraken.user.models import User
-from MediaKraken.settings import ProdConfig
 from MediaKraken.database import db
+from MediaKraken.settings import ProdConfig
+from MediaKraken.user.models import User
+from flask_script import Manager, Shell, Server
+from flask_script.commands import Clean, ShowUrls
 
 app = create_app(ProdConfig)
 

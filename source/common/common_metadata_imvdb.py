@@ -54,7 +54,7 @@ class CommonMetadataIMVdb(object):
                                 + song_title.replace(' ', '+')),
                              headers=self.headers)
         common_global.es_inst.com_elastic_index('info', {"imvdb Video Status":
-                                                         resp.status_code, 'json': resp.json()})
+                                                             resp.status_code, 'json': resp.json()})
         return resp.json()
 
     def com_imvdb_search_entities(self, artist_name):

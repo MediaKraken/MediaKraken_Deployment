@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import json
+
 import datetime
-import os
+import json
+
 from common import common_global
+
 
 def db_insert_media(self, media_uuid, media_path, media_class_uuid,
                     media_metadata_uuid, media_ffprobe_json, media_json):

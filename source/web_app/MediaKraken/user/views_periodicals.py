@@ -3,14 +3,13 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
 blueprint = Blueprint("user_periodicals", __name__, url_prefix='/users',
                       static_folder="../static")
-import logging  # pylint: disable=W0611
 import sys
-from stdnum import isbn
 
 sys.path.append('..')
 sys.path.append('../..')

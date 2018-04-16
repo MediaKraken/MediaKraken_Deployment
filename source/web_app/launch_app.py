@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import sys
+
 import os
+import sys
 
 BASE_DIR = os.path.join(os.path.dirname(__file__))
 
@@ -15,5 +16,5 @@ from common import common_logging_elasticsearch
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'main_webapp')
-common_global.es_inst.com_elastic_index('info', {'stuff':'Creating webapp instance'})
+common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating webapp instance'})
 application = create_app()

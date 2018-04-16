@@ -17,11 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import hashlib
 import json
-import os
+
 import requests
+
 from . import common_global
+
 
 class CommonSchedulesDirect(object):
     """
@@ -40,13 +43,14 @@ class CommonSchedulesDirect(object):
         resp = requests.post(self.BASE_API_URL + "/token", headers=self.headers,
                              data=json.dumps({"password": hashlib.sha1(
                                  user_password.encode('utf-8')).hexdigest(),
-                                 "username": user_name})).json()
+                                              "username": user_name})).json()
         if resp['code'] != 3000:
             common_global.es_inst.com_elastic_index('info', {"SD login response":
-                         resp['code'], 'token': resp['token']})
+                                                                 resp['code'],
+                                                             'token': resp['token']})
             self.headers['token'] = resp['token']
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"SD Connection failed"})
+            common_global.es_inst.com_elastic_index('error', {'stuff': "SD Connection failed"})
 
     def com_schedules_direct_status(self):
         """
@@ -64,7 +68,7 @@ class CommonSchedulesDirect(object):
         """
         resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
         common_global.es_inst.com_elastic_index('info', {"SD Version": resp.status_code, 'json':
-                                                         resp.json()})
+            resp.json()})
         return resp.json()
 
     def com_schedules_direct_available(self, countries=None):
@@ -123,7 +127,7 @@ class CommonSchedulesDirect(object):
                                headers=self.headers)
         if resp.json()['response'] != 'OK':
             common_global.es_inst.com_elastic_index('error', {"SD Invalid lineup delete":
-                                                    lineup_id})
+                                                                  lineup_id})
         elif resp.json()['code'] == 2103:
             common_global.es_inst.com_elastic_index('error', {"SD lineup not in account":
                                                                   lineup_id})

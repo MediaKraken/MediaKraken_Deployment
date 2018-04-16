@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import json
+
 from common import common_global
+
 
 # poster, backdrop, etc
 def db_meta_movie_image_random(self, return_image_type='Poster'):

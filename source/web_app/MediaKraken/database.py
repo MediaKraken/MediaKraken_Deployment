@@ -6,8 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from sqlalchemy.orm import relationship
 
-from .extensions import db
 from .compat import basestring
+from .extensions import db
 
 # Alias common SQLAlchemy names
 Column = db.Column

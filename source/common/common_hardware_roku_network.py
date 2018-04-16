@@ -19,8 +19,10 @@
 # the Roku api docs
 # http://sdkdocs.roku.com/display/sdkdoc/External+Control+Guide
 from __future__ import absolute_import, division, print_function, unicode_literals
-import urllib2
+
 import time
+import urllib2
+
 from . import common_network_ssdp
 
 

@@ -17,6 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import platform
 
 try:
@@ -64,7 +65,8 @@ class TheaterFactory(ClientFactory):
         self.protocol = None
 
     def startedConnecting(self, connector):
-        common_global.es_inst.com_elastic_index('info', {'Started to connect to': connector.getDestination()})
+        common_global.es_inst.com_elastic_index('info', {
+            'Started to connect to': connector.getDestination()})
 
     def clientConnectionLost(self, conn, reason):
         common_global.es_inst.com_elastic_index('info', {'Connection Lost': 'gergegerg'})
@@ -112,7 +114,7 @@ class MediaKrakenApp(object):
         # otherwise the pickle can end up in thousands of chunks
         messageWords = server_msg.split(' ', 1)
         common_global.es_inst.com_elastic_index('info', {'message': messageWords[0], "len": len(
-                server_msg), "chunks": len(messageWords)})
+            server_msg), "chunks": len(messageWords)})
         msg = None
         try:
             pickle_data = pickle.loads(messageWords[1])

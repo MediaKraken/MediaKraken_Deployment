@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-from plyer import tts
+
 from kivy.core.audio import SoundLoader
+from plyer import tts
+
 from . import common_global
 
 
@@ -55,4 +56,5 @@ def com_audio_pyaudio_list_devices():
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):
-        common_global.es_inst.com_elastic_index('info', {'stuff':audio_instance.get_device_info_by_index(ndx))
+        common_global.es_inst.com_elastic_index('info', {
+            'stuff': audio_instance.get_device_info_by_index(ndx))

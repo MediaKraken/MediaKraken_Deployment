@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import json
+import os
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_thesportsdb
@@ -59,7 +61,7 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
                                                              'Poster': None, 'Backdrop': None,
                                                              "Redo": True}}}
                     media_id_json = json.dumps({'thesportsdb':
-                                                str(thesportsdb_data['event'][0]['idEvent'])})
+                                                    str(thesportsdb_data['event'][0]['idEvent'])})
                     db_connection.db_metathesportsdb_insert(media_id_json,
                                                             thesportsdb_data['event'][0][
                                                                 'strFilename'],

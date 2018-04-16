@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import sys
+
 import json
+import sys
+
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -89,7 +91,8 @@ else:
 # - good for what the show is......not an episode itself
 
 station_fetch = []
-common_global.es_inst.com_elastic_index('info', {'list': db_connection.db_tv_stations_read_stationid_list()})
+common_global.es_inst.com_elastic_index('info', {
+    'list': db_connection.db_tv_stations_read_stationid_list()})
 # grab all stations in DB
 for station_id in db_connection.db_tv_stations_read_stationid_list():
     # fetch all schedules for station
@@ -99,7 +102,8 @@ for station_id in db_connection.db_tv_stations_read_stationid_list():
 meta_program_fetch = []
 # grab station info from SD
 if len(station_fetch) > 5000:
-    common_global.es_inst.com_elastic_index('critical', {'stuff': 'Too many channels!!!!  Exiting...'})
+    common_global.es_inst.com_elastic_index('critical',
+                                            {'stuff': 'Too many channels!!!!  Exiting...'})
 elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(
         json.dumps(station_fetch))
@@ -117,7 +121,8 @@ elif len(station_fetch) > 0:
             db_connection.db_tv_schedule_insert(station_json['stationID'],
                                                 program_json['airDateTime'],
                                                 json.dumps(program_json))
-            common_global.es_inst.com_elastic_index('info', {'programid': program_json['programID']})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'programid': program_json['programID']})
             # if program_json['programID'][0:2] != "MV":
             meta_program_fetch.append(program_json['programID'])
             if len(meta_program_fetch) >= 500:

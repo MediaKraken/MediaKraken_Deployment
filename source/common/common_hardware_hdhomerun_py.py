@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from . import common_global
-from pyhdhomerun.adapter import HdhrUtility, HdhrDeviceQuery
+
+from pyhdhomerun.adapter import HdhrUtility
 from pyhdhomerun.constants import MAP_US_BCAST
+
+from . import common_global
 
 
 # https://github.com/dsoprea/PyHdHomeRun - forked to MK
@@ -49,7 +51,7 @@ class CommonHardwareHDHomeRunPY(object):
         Get tuner status
         """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_global.es_inst.com_elastic_index('info', {'stuff':vstatus})
+        common_global.es_inst.com_elastic_index('info', {'stuff': vstatus})
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
         """
@@ -57,7 +59,7 @@ class CommonHardwareHDHomeRunPY(object):
         """
         device_adapter.set_tuner_vchannel(vchannel)
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_global.es_inst.com_elastic_index('info', {'stuff':vstatus})
+        common_global.es_inst.com_elastic_index('info', {'stuff': vstatus})
 
     def set_stream(self, device_adapter, vchannel, target_uri):
         """
@@ -70,7 +72,7 @@ class CommonHardwareHDHomeRunPY(object):
         """
         Get supported info
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':device_adapter.get_supported()})
+        common_global.es_inst.com_elastic_index('info', {'stuff': device_adapter.get_supported()})
 
     def scan(self, device_adapter):
         """

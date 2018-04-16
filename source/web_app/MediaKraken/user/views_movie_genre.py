@@ -3,13 +3,13 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g
-from flask_login import login_required
 from flask_login import current_user
+from flask_login import login_required
 
 blueprint = Blueprint("user_movie_genre", __name__, url_prefix='/users',
                       static_folder="../static")
-import os
 import sys
 
 sys.path.append('..')
@@ -19,7 +19,6 @@ from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
-from MediaKraken.public.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -93,8 +92,8 @@ def user_movie_page(genre):
             match_status = False
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
                                                          'sync': sync_status,
-                                                'rating': rating_status,
-                     'match': match_status})
+                                                         'rating': rating_status,
+                                                         'match': match_status})
         if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb'] \
                 and json_image['Images']['themoviedb']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],

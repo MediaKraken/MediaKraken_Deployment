@@ -17,11 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
-from guessit import guessit
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_anidb
+
 from . import metadata_nfo_xml
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -57,13 +59,13 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
                 and file_name['year'] == metadata_anime_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
             common_global.es_inst.com_elastic_index('info', {'meta anime return 1':
-                         metadata_anime_lookup.metadata_last_id})
+                                                                 metadata_anime_lookup.metadata_last_id})
             # don't need to set last......since they are equal
             return metadata_anime_lookup.metadata_last_id
     elif file_name['title'] == metadata_anime_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
         common_global.es_inst.com_elastic_index('info', {'meta anime return 2':
-                     metadata_anime_lookup.metadata_last_id})
+                                                             metadata_anime_lookup.metadata_last_id})
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
@@ -180,7 +182,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
     common_global.es_inst.com_elastic_index('info', {"meta anime metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info', {'stuff':"meta anime db lookup"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "meta anime db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],

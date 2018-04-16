@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import string  # pylint: disable=W0402
+
 import os
-import re
 import random
+import re
+import string  # pylint: disable=W0402
+
 from . import common_global
 from . import common_network
 

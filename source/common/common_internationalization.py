@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from babel.dates import format_date, format_datetime, format_time
-from babel.numbers import format_number, format_decimal, format_percent
+
+from babel.dates import format_date
+from babel.numbers import format_decimal
 
 
 def com_inter_date_format(date_to_format, country_code='en_US'):

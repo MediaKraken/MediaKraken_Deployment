@@ -17,10 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import time
+
 import os
+import time
 from xml.dom import minidom
+
 import xmltodict
+
 from . import common_file
 from . import common_global
 from . import common_network

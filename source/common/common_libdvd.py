@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import logging  # pylint: disable=W0611
-
 import dvdread
 
 

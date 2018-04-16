@@ -3,6 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
@@ -10,7 +11,6 @@ blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
                       static_folder="../static")
 import locale
 import json
-import os
 import sys
 
 sys.path.append('..')
@@ -19,7 +19,6 @@ from common import common_config_ini
 from common import common_global
 from common import common_google
 from common import common_network_twitch
-from common import common_network_vimeo
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base

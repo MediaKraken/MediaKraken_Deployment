@@ -17,7 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import virtualbox
 
 
 # https://github.com/mjdorma/pyvbox

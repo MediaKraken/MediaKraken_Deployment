@@ -17,24 +17,22 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import copy
+import hashlib
+import multiprocessing
+import os
 import sys
 import threading
-import os
-import copy
-import zipfile
 import time
-from StringIO import StringIO
-import multiprocessing
-from threading import Thread
+import zipfile
 from Queue import Queue
-import hashlib
+from threading import Thread
 
 SHA1 = hashlib.sha1()
 import os.path
 from common import common_config_ini
-from common import common_file
 from common import common_signal
-import pylzma
 
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     from py7zlib import Archive7z
@@ -356,7 +354,7 @@ class GameAuditer(threading.Thread):
     def load_hash_map_from_database(self):
         if '-nolist' in sys.argv:
             return True
-        common_global.es_inst.com_elastic_index('info', {'stuff':"loading roms from db"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "loading roms from db"})
         # open the database
         option_config_json, db_connection = common_config_ini.com_config_read()
         # read all the audited games
@@ -422,7 +420,7 @@ class GameAuditer(threading.Thread):
                 old_system_long_name = sql_row[0]
                 game_info = {}
             game_info[game_name] = game_times_played, game_time_played, game_monitor, \
-                game_players, str(sql_row[3]), game_category
+                                   game_players, str(sql_row[3]), game_category
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
             Client_GlobalData.audit_gameList[old_system_long_name] \
@@ -455,7 +453,7 @@ class GameAuditer(threading.Thread):
                         Client_GlobalData.app.mainFrame.monitor_type_combo.GetValue() == "Vertical"
                         and gameData[1][2] != "Vertical") \
                         or (int(gameData[1][
-                            3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (
+                                    3]) < Client_GlobalData.app.mainFrame.filter_player_count_spinner.GetValue()) or (
                         Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() != "All" and Client_GlobalData.app.mainFrame.filterjoincategorychoice.GetStringSelection() !=
                         gameData[1][5]):
                     pass
@@ -467,8 +465,8 @@ class GameAuditer(threading.Thread):
                         if gameSystem[0] not in gameList:
                             gameList[gameSystem[0]] = []
                         game_info[gameData[0]] = gameData[1][0], gameData[1][1], \
-                            gameData[1][2], gameData[1][3], gameData[1][4], \
-                            gameData[1][5]
+                                                 gameData[1][2], gameData[1][3], gameData[1][4], \
+                                                 gameData[1][5]
                     if old_system_long_name != gameSystem[0]:
                         if len(game_info) > 0:
                             gameList[old_system_long_name] = copy.deepcopy(

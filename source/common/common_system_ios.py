@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 from pyobjus import autoclass
+
 from . import common_global
+
 
 class CommoniOSHardwareInstance(object):
     """

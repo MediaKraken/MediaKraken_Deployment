@@ -17,7 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import time
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_tmdb
@@ -46,7 +48,7 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
         common_global.es_inst.com_elastic_index('info', {"meta person code":
                                                              result_json.status_code})
         common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
-                                                result_json.json()})
+                                                             result_json.json()})
         if result_json.status_code == 200:
             thread_db.db_meta_person_update(provider_name,
                                             download_data['mdq_download_json']['ProviderMetaID'],

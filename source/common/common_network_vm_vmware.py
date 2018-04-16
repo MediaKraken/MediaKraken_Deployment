@@ -17,8 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from pyVim.connect import SmartConnect, Disconnect
-from pyVmomi import vim, vmodl
 
 
 class CommonNetworkVMWare(object):

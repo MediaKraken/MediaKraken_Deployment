@@ -17,24 +17,25 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import base64
+import json
+import logging  # pylint: disable=W0611
+import os
+import platform
+import subprocess
+import sys
+import uuid
+
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
 from common import common_signal
-import platform
-import os
-import sys
-import json
-import uuid
-import base64
-import subprocess
-import logging  # pylint: disable=W0611
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
-from functools import partial
 
-from crochet import wait_for, run_in_reactor, setup
+from crochet import wait_for, setup
 
 setup()
 
@@ -48,44 +49,15 @@ import kivy
 from kivy.app import App
 
 kivy.require('1.10.0')
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.clock import Clock
 from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty, \
-    StringProperty, ObjectProperty
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import Spinner
-from kivy.uix.widget import Widget
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.image import Image, AsyncImage
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.stacklayout import StackLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.filechooser import FileChooserListView
-from kivy.base import EventLoop
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.network.urlrequest import UrlRequest
-from kivy.graphics.instructions import Canvas
-from kivy.graphics import Color, Rectangle
-from kivy.cache import Cache
-from kivy.animation import Animation
-from kivy.metrics import sp
+from kivy.properties import ObjectProperty
 from kivy.graphics import *
-from kivy.graphics.texture import Texture
-from kivy.graphics.transformation import Matrix
 from kivy.graphics.opengl import *
 from kivy.graphics import *
 from theater import MediaKrakenSettings
@@ -100,7 +72,7 @@ class MKEcho(basic.LineReceiver):
     def connectionMade(self):
         global twisted_connection
         twisted_connection = self
-        common_global.es_inst.com_elastic_index('info', {'stuff':"connected successfully (echo)!"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "connected successfully (echo)!"})
 
     def lineReceived(self, line):
         global mk_app
@@ -111,7 +83,7 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
-        common_global.es_inst.com_elastic_index('error', {'stuff':"connection lost!"})
+        common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
@@ -188,9 +160,9 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def connect_to_server(self):
-        common_global.es_inst.com_elastic_index('info', {'stuff':'conn server'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'conn server'})
         if self.config is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'here in connect to server'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'here in connect to server'})
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
@@ -234,7 +206,7 @@ class MediaKrakenApp(App):
             else:
                 common_global.es_inst.com_elastic_index('info', {"Got Image Message":
                                                                      json_message['Sub'], 'uuid':
-                             json_message['UUID']})
+                                                                     json_message['UUID']})
         except:
             common_global.es_inst.com_elastic_index('info', {"full record": server_msg})
         common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
@@ -260,16 +232,16 @@ class MediaKrakenApp(App):
                 for ndx in range(0,
                                  len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
                     genres_list += (
-                        json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
-                            'name'] + ', ')
+                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
+                                'name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 production_list = ''
                 for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
-                        'production_companies'])):
+                                            'production_companies'])):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
-                        'production_companies'][ndx]['name'] + ', ')
+                                            'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[
-                    :-2]
+                                                                              :-2]
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
             share_mapping = (
@@ -288,7 +260,7 @@ class MediaKrakenApp(App):
                                                     shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
-            common_global.es_inst.com_elastic_index('info', {'stuff':"here for movie refresh"})
+            common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
             if json_message['Sub2'] == "Demo":
                 self.home_demo_file_name = str(uuid.uuid4())
                 f = open(self.home_demo_file_name, "w")
@@ -300,7 +272,7 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "MPV":
             self.mpv_connection.execute(json_message['Data'])
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"unknown message type"})
+            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
 
     def build_config(self, config):
         """
@@ -354,7 +326,7 @@ class MediaKrakenApp(App):
     def on_config_change(self, config, section, key, value):
         common_global.es_inst.com_elastic_index('info', {'config': config, 'section': section,
                                                          'key': key, 'value':
-                                                                           value})
+                                                             value})
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -375,7 +347,7 @@ class MediaKrakenApp(App):
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
         common_global.es_inst.com_elastic_index('info', {"button server user login":
-                     self.global_selected_user_id})
+                                                             self.global_selected_user_id})
         common_global.es_inst.com_elastic_index('info', {"login": self.login_password})
         self.send_twisted_message(json.dumps({'Type': 'Login',
                                               'User': self.global_selected_user_id,
@@ -396,7 +368,7 @@ class MediaKrakenApp(App):
             except:
                 msg = None
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"unknown button event"})
+            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown button event"})
         if msg is not None:
             self.send_twisted_message(msg)
 
@@ -411,7 +383,7 @@ class MediaKrakenApp(App):
 
     # send refresh for images
     def main_image_refresh(self, *largs):
-        common_global.es_inst.com_elastic_index('info', {'stuff':"image refresh"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh"})
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff

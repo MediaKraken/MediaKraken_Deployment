@@ -17,10 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-from . import common_global
+
 import nest
 from nest import utils as nest_utils
+
+from . import common_global
 
 
 class CommonHardwareNest(object):
@@ -40,8 +41,8 @@ class CommonHardwareNest(object):
         """
         for structure in self.nest_device.structures:
             common_global.es_inst.com_elastic_index('info', {'Structure':
-                                                             structure.name, 'Away':
-                                                    structure.away})
+                                                                 structure.name, 'Away':
+                                                                 structure.away})
             for device in structure.devices:
                 common_global.es_inst.com_elastic_index('info', {'Device': device.name})
                 common_global.es_inst.com_elastic_index('info', {'Temp': device.temperature})

@@ -17,11 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import socket
 import sys
 import time
+
 from . import common_global
+
 
 def com_net_mediakraken_find_server(server_seconds=1):
     """
@@ -52,7 +54,7 @@ def com_net_mediakraken_find_server(server_seconds=1):
         except socket.error, msg:
             common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server Error '
                                                                  'Code': str(msg[0])
-                             + ' Message ' + msg[1]})
+                                                                         + ' Message ' + msg[1]})
             sys.exit()
     common_global.es_inst.com_elastic_index('info', {"hosts found": server_hosts_found})
     return server_hosts_found

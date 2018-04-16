@@ -22,7 +22,6 @@ import json
 import time
 
 import pika
-
 from common import common_config_ini
 from common import common_ffmpeg
 from common import common_global
@@ -30,6 +29,7 @@ from common import common_logging_elasticsearch
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_ffprobe')
+
 
 def on_message(channel, method_frame, header_frame, body):
     """

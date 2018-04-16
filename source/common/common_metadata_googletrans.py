@@ -17,10 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
-import json
-from . import common_file
-from . import common_network
+
 from googletrans import Translator
 
 

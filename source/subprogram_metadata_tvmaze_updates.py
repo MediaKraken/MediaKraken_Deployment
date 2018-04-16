@@ -27,7 +27,8 @@ from common import common_logging_elasticsearch
 from common import common_metadata_tvmaze
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tvmaze_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_tvmaze_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -43,9 +44,9 @@ for tvmaze_id, tvmaze_time in result.items():
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))
     if results is not None:
-    # if show was updated since db record
-    # TODO if results['updated'] < tvmaze_time:
-    # update_insert_show(tvmaze_id, results[0]) # update the guid
+        # if show was updated since db record
+        # TODO if results['updated'] < tvmaze_time:
+        # update_insert_show(tvmaze_id, results[0]) # update the guid
         pass
     else:
         if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:

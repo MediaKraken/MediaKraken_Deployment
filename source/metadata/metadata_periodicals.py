@@ -17,11 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import json
+import os
+
 from common import common_config_ini
 from common import common_global
-from common import common_network
 from common import common_metadata_isbndb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -49,7 +50,7 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
             # TODO verify decent results before insert
             common_global.es_inst.com_elastic_index('info', {'resp json': api_response.json()})
             if 'error' in api_response.json():
-                common_global.es_inst.com_elastic_index('info', {'stuff':'error skipp'})
+                common_global.es_inst.com_elastic_index('info', {'stuff': 'error skipp'})
             else:
                 metadata_uuid = db_connection.db_meta_book_insert(
                     api_response.json())

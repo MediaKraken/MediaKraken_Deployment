@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import datetime
-import os
+
 from common import common_global
 
 
@@ -62,7 +63,8 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
     # web media count
     """
     common_global.es_inst.com_elastic_index('info', {"classuid counter":
-                 class_guid, 'type': list_type, 'genre': list_genre})
+                                                         class_guid, 'type': list_type,
+                                                     'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -76,7 +78,7 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
                                            ' and mm_media_json->>\'DateAdded\' >= %s)'
                                            ' as temp', (class_guid, (datetime.datetime.now()
                                                                      - datetime.timedelta(
-                                               days=7)).strftime("%Y-%m-%d"),))
+                                days=7)).strftime("%Y-%m-%d"),))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
                                            ' mm_metadata_guid from mm_media, mm_metadata_movie'

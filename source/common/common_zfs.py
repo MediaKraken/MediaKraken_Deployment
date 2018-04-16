@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import subprocess
+
 import platform
+import subprocess
 
 
 def com_zfs_available():

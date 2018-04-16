@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from subprocess import Popen
+
 import os
+from subprocess import Popen
 
 # generate key
 PROC = Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',

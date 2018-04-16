@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-from . import common_global
+
 from synolopy import NasApi
+
+from . import common_global
 
 
 class CommonHardwareSynology(object):

@@ -17,13 +17,14 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import rdma
-import rdma.vmad
+import rdma.path
 # import rdma.IBA as IBA
 # import rdma.ibverbs as ibv
 import rdma.satransactor
-import rdma.path
+import rdma.vmad
+
 from . import common_global
 
 
@@ -44,5 +45,5 @@ def com_rdma_get_devices():
             for rdma_attr in ['lid', 'lmc', 'phys_state', 'state', 'sm_lid', 'sm_sl', 'gids',
                               'pkeys']:
                 common_global.es_inst.com_elastic_index('info', {'attr': rdma_attr, 'rep':
-                             repr(getattr(rdma_device_end_port, rdma_attr))})
+                    repr(getattr(rdma_device_end_port, rdma_attr))})
     return rdma_device_list

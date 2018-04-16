@@ -17,13 +17,15 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from . import common_google
-from . import youtubeapi
+
+import urllib
+
+import requests
 import youtube_dl
 from bs4 import BeautifulSoup
-import requests
-import urllib
-from apiclient.discovery import build
+
+from . import common_google
+from . import youtubeapi
 
 
 def com_net_yt_fetch_video_by_url(url_location, file_name):

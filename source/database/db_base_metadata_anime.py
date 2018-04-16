@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import uuid
+
 import json
+import uuid
+
 from common import common_global
+
 
 def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,
                                ani_image_local, ani_user_json, mapping_data, before_data):

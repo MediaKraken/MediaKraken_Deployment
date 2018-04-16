@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from beautifulhue.api import Bridge
+
 import sys
+
+from beautifulhue.api import Bridge
 
 
 class CommonHardwareBeatifulHue(object):

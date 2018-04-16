@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import subprocess
+
 from build_image_directory import build_image_dirs
 from build_trailer_directory import build_trailer_dirs
 from common import common_global

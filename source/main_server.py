@@ -42,8 +42,8 @@ if not os.path.isfile('./key/cacert.pem'):
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
-                                                    {
-                                                        'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+                                                {
+                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
 # open the database
@@ -52,7 +52,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # check db version
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': 'Database upgrade in progress...'})
+                                            {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(
         ['python', './db_update_version.py'], shell=False)
     db_create_pid.wait()
@@ -65,7 +65,7 @@ docker_info = docker_inst.com_docker_info()
 if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
         or 'Managers' not in docker_info['Swarm']:
     common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': 'attempting to init swarm as manager'})
+                                            {'stuff': 'attempting to init swarm as manager'})
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
 
@@ -76,10 +76,10 @@ common_global.es_inst.com_elastic_index('info', {'stuff': 'Validate Paths'})
 # validate paths in ini file
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     common_global.es_inst.com_elastic_index('critical',
-                                                {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
-                                                               'not a valid directory!  Exiting...'})
+                                            {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
+                                                           'not a valid directory!  Exiting...'})
     common_global.es_inst.com_elastic_index('critical', {
-            'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
+        'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
     sys.exit()
 
 # startup the other reactor via popen as it's non-blocking

@@ -3,15 +3,16 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+from fractions import Fraction
+
 from flask import Blueprint, render_template, g, request, \
     redirect, url_for
-from flask_login import login_required
 from flask_login import current_user
-from fractions import Fraction
+from flask_login import login_required
 
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
-import os
 import subprocess
 import natsort
 import sys
@@ -23,7 +24,6 @@ from common import common_global
 from common import common_internationalization
 from common import common_string
 import database as database_base
-from MediaKraken.public.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -127,7 +127,7 @@ def movie_detail(guid):
                 seconds = 0
             try:
                 data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' \
-                    + str(json_ffmpeg['streams'][0]['height'])
+                                  + str(json_ffmpeg['streams'][0]['height'])
             except:
                 data_resolution = 'NA'
             data_codec = json_ffmpeg['streams'][0]['codec_name']
@@ -154,7 +154,7 @@ def movie_detail(guid):
                 try:
                     stream_codec \
                         = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                        + ' - '
+                          + ' - '
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':

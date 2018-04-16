@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
+
 import os
+
+import xmltodict
 from common import common_file
 from common import common_file_extentions
 from common import common_global
-import xmltodict
 
 
 def nfo_xml_file(media_file_path):

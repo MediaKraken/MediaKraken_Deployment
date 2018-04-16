@@ -17,14 +17,15 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import subprocess
+
 import json
 import os
 import signal
+import subprocess
+
 import pika
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_network_share
 from common import common_system
 
 
@@ -89,7 +90,8 @@ class MKConsumer(object):
         when RabbitMQ closes the connection to the publisher unexpectedly.
 
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding connection close callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': 'Adding connection close callback'})
         self._connection.add_on_close_callback(self.on_connection_closed)
 
     def on_connection_closed(self, connection, reply_code, reply_text):
@@ -106,7 +108,8 @@ class MKConsumer(object):
         if self._closing:
             self._connection.ioloop.stop()
         else:
-            common_global.es_inst.com_elastic_index('info', {'code': reply_code, 'reply': reply_text})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'code': reply_code, 'reply': reply_text})
             self._connection.add_timeout(5, self.reconnect)
 
     def reconnect(self):
@@ -234,7 +237,8 @@ class MKConsumer(object):
         will invoke when a message is fully received.
 
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Issuing consumer related RPC commands'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(self.on_message,
                                                          self.QUEUE)
@@ -245,7 +249,8 @@ class MKConsumer(object):
         on_consumer_cancelled will be invoked by pika.
 
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding consumer cancellation callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
@@ -273,7 +278,7 @@ class MKConsumer(object):
 
         """
         common_global.es_inst.com_elastic_index('info', {'message': basic_deliver.delivery_tag,
-                                               'from': properties.app_id})
+                                                         'from': properties.app_id})
         json_message = json.loads(body)
         if json_message['Type'] != "IMAGE":
             common_global.es_inst.com_elastic_index('info', {'Got Message': body})
@@ -378,7 +383,7 @@ class MKConsumer(object):
 
         """
         common_global.es_inst.com_elastic_index('info', {
-                'stuff': 'RabbitMQ acknowledged the cancellation of the consumer'})
+            'stuff': 'RabbitMQ acknowledged the cancellation of the consumer'})
         self.close_channel()
 
     def close_channel(self):

@@ -17,12 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import mutagen
-from mutagen.flac import FLAC
-from mutagen.mp3 import MP3
-from mutagen.id3 import ID3
-from mutagen.oggvorbis import OggVorbis
 from mutagen.easyid3 import EasyID3
+from mutagen.flac import FLAC
+from mutagen.id3 import ID3
+from mutagen.mp3 import MP3
 
 
 def com_meta_mutagen_file_type(file_name):

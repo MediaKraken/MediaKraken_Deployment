@@ -22,7 +22,6 @@ import json
 import subprocess
 
 import psycopg2
-
 from common import common_config_ini
 
 # open the database

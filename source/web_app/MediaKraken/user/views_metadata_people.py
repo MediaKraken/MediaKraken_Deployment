@@ -3,12 +3,12 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_people", __name__, url_prefix='/users',
                       static_folder="../static")
-import os
 import sys
 
 sys.path.append('..')
@@ -36,7 +36,7 @@ def metadata_person_detail(guid):
     try:
         if json_imagedata['Images']['Poster'] is not None:
             data_person_image = "/static/meta/images/" + \
-                json_imagedata['Images']['Poster']
+                                json_imagedata['Images']['Poster']
         else:
             data_person_image = "/static/images/person_missing.png"
     except:
@@ -69,8 +69,8 @@ def metadata_person_list():
         mediadata = g.db_connection.db_meta_person_list(offset, per_page)
     for person_data in mediadata:
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
-                                                person_data['mmp_person_image'], 'meta':
-            person_data['mmp_meta']})
+            person_data['mmp_person_image'], 'meta':
+                                                             person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:

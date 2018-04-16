@@ -17,20 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
-import os
 import time
-from guessit import guessit
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
-from common import common_metadata_anidb
-from common import common_metadata_imdb
-from common import common_metadata_movie_theme
-from common import common_metadata_movie_trailer
-from common import common_metadata_netflixroulette
-from common import common_metadata_omdb
 from common import common_metadata_tmdb
+from guessit import guessit
+
 from . import metadata_nfo_xml
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -61,7 +57,7 @@ def movie_search_tmdb(db_connection, file_name):
             match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
                 file_name['title'], None, True)
         common_global.es_inst.com_elastic_index('info', {"meta movie response":
-                     match_response, 'res': match_result})
+                                                             match_response, 'res': match_result})
         if match_response == 'idonly':
             # check to see if metadata exists for TMDB id
             metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
@@ -98,7 +94,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
                                           result_json['title'], json.dumps(
-                                              meta_json),
+                meta_json),
                                           json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
@@ -117,7 +113,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     else:  # is this is None....
         metadata_uuid = None
     common_global.es_inst.com_elastic_index('info', {'meta movie save fetch uuid':
-                                                     metadata_uuid})
+                                                         metadata_uuid})
     return metadata_uuid
 
 
@@ -228,13 +224,13 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 and file_name['year'] == metadata_movie_lookup.metadata_last_year:
             db_connection.db_download_delete(download_que_id)
             common_global.es_inst.com_elastic_index('info', {'meta movie return 1':
-                         metadata_movie_lookup.metadata_last_id})
+                                                                 metadata_movie_lookup.metadata_last_id})
             # don't need to set last......since they are equal
             return metadata_movie_lookup.metadata_last_id
     elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
         db_connection.db_download_delete(download_que_id)
         common_global.es_inst.com_elastic_index('info', {'meta movie return 2':
-                     metadata_movie_lookup.metadata_last_id})
+                                                             metadata_movie_lookup.metadata_last_id})
         # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
@@ -304,7 +300,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info', {'stuff':"meta movie db lookup"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "meta movie db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],

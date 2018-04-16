@@ -506,7 +506,7 @@ def build_settings(self, settings):
 
 def on_config_change(self, config, section, key, value):
     common_global.es_inst.com_elastic_index('info', {'stuff': "%s %s %s %s" % (config, section,
-                                            key, value)})
+                                                                               key, value)})
 
 
 def _keyboard_closed(self):
@@ -606,13 +606,13 @@ def main_mediakraken_event_play_media_mpv(self, *args):
     if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
         if os.path.isfile(MediaKrakenApp.media_path):
             self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
-                                         '--ontop', '--no-osc', '--no-osd-bar',
-                                         '--aid=2',
-                                         '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                                         '--audio-device=pulse', '--hwdec=auto',
-                                         '--input-ipc-server', './mk_mpv.sock',
-                                         '%s' % MediaKrakenApp.media_path],
-                                        shell=False)
+                                                 '--ontop', '--no-osc', '--no-osd-bar',
+                                                 '--aid=2',
+                                                 '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
+                                                 '--audio-device=pulse', '--hwdec=auto',
+                                                 '--input-ipc-server', './mk_mpv.sock',
+                                                 '%s' % MediaKrakenApp.media_path],
+                                                shell=False)
             self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         else:
             self.theater_play_server()
@@ -666,7 +666,7 @@ def main_mediakraken_event_button_home(self, *args):
     elif args[0] == 'music_vid':
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Music_Video_List'
     elif args[0] == 'demo':
-    # add movie id to stream
+        # add movie id to stream
         try:
             msg += " " + self.demo_media_id
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'

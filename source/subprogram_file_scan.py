@@ -26,8 +26,6 @@ import uuid
 from datetime import datetime  # to handle threading
 
 import pika
-from concurrent import futures
-
 from common import common_config_ini
 from common import common_file
 from common import common_file_extentions
@@ -36,6 +34,7 @@ from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_cifs
 from common import common_string
+from concurrent import futures
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
@@ -193,8 +192,8 @@ def worker(audit_directory):
                                                                          total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     common_global.es_inst.com_elastic_index('info',
-                                  {'worker dir done': dir_path,
-                                   'media class': media_class_type_uuid})
+                                            {'worker dir done': dir_path,
+                                             'media class': media_class_type_uuid})
     # set to none so it doesn't show up
     thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:

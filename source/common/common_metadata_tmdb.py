@@ -17,13 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import json
+import os
+
 import requests
+import tmdbsimple as tmdb
+
 from . import common_global
 from . import common_metadata
 from . import common_network
-import tmdbsimple as tmdb
 
 
 class CommonMetadataTMDB(object):
@@ -45,7 +48,9 @@ class CommonMetadataTMDB(object):
         response = search.movie(query=movie_title)
         for s in search.results:
             common_global.es_inst.com_elastic_index('info', {"result": s['title'], 'id': s['id'],
-                         'date': s['release_date'].split('-', 1)[0]})
+                                                             'date':
+                                                                 s['release_date'].split('-', 1)[
+                                                                     0]})
             if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
                                            or str(int(movie_year) - 1) ==
                                            s['release_date'].split('-', 1)[0]
@@ -139,7 +144,7 @@ class CommonMetadataTMDB(object):
             metadata = movie.credits()
         except Exception as err_code:
             common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Credits Error":
-                                                    str(err_code)})
+                                                                  str(err_code)})
             metadata = None
         return metadata
 

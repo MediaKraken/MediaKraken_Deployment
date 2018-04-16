@@ -17,19 +17,17 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
-import os
-from guessit import guessit
+
 from common import common_global
 from common import common_metadata_tv_theme
-from . import metadata_anime
-from . import metadata_game
+from guessit import guessit
+
 from . import metadata_movie
-from . import metadata_music
 from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
-from . import metadata_sports
 from . import metadata_tv
 
 
@@ -41,7 +39,8 @@ def metadata_process(thread_db, provider_name, download_data):
         metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         common_global.es_inst.com_elastic_index('info', {'fetch': provider_name,
-                     'meta': download_data['mdq_download_json']['ProviderMetaID']})
+                                                         'meta': download_data['mdq_download_json'][
+                                                             'ProviderMetaID']})
         metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
         common_global.es_inst.com_elastic_index('info', {'fetchcastcrew': provider_name})
@@ -150,14 +149,14 @@ def metadata_search(thread_db, provider_name, download_data):
             common_global.es_inst.com_elastic_index('info', {'meta': metadata_uuid})
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          download_data['mdq_download_json']['MetaNewID'])
-            common_global.es_inst.com_elastic_index('info', {'stuff':'after media id'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'after media id'})
             download_data['mdq_download_json'].update(
                 {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            common_global.es_inst.com_elastic_index('info', {'stuff':'after json update'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'after json update'})
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                          download_data['mdq_id'])
-            common_global.es_inst.com_elastic_index('info', {'stuff':'after update'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'after update'})
         return  # no need to continue with checks
     # uuid found on local db
     if metadata_uuid is not None:
@@ -174,7 +173,7 @@ def metadata_fetch(thread_db, provider_name, download_data):
     Fetch main metadata for specified provider
     """
     common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name, 'dldata':
-                                            download_data})
+        download_data})
     if provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == 3:  # person info
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})

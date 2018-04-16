@@ -17,9 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import subprocess
 import sys
 import uuid
-import subprocess
 from sys import version_info
 
 if sys.platform.startswith('linux'):

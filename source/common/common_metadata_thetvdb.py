@@ -17,11 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import zipfile
+
 import StringIO
-import xmltodict
+import zipfile
+
 import requests
+import xmltodict
+
 from . import common_global
 from . import common_network
 
@@ -44,9 +46,9 @@ class CommonMetadataTheTVDB(object):
         # frequency = all, day, month, week
         """
         updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network
-                                                            .mk_network_fetch_from_url(
-                                                                'http://thetvdb.com/api/' + self.thetvdb_connection
-                                                                + '/updates/updates_' + frequency + '.zip', None)))
+            .mk_network_fetch_from_url(
+            'http://thetvdb.com/api/' + self.thetvdb_connection
+            + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
         for zippedshowFile in updates_xml_zip.namelist():
             xml_show_data = xmltodict.parse(
@@ -61,7 +63,7 @@ class CommonMetadataTheTVDB(object):
         xml_actor_data = None
         xml_banners_data = None
         common_global.es_inst.com_elastic_index('info', {"zip": self.thetvdb_connection,
-                     'showid': tv_show_id, 'lang': lang_code})
+                                                         'showid': tv_show_id, 'lang': lang_code})
 
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
                                  + '/zip/' + lang_code + '/' + tv_show_id + '.zip')

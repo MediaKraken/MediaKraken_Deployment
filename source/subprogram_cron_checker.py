@@ -19,12 +19,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
-import json
 import subprocess
 import time
 
 import psutil
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -68,8 +66,8 @@ while 1:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
                     common_global.es_inst.es_index('info',
-                                         {'cron': row_data['mm_cron_name'],
-                                                  'pid': proc.pid})
+                                                   {'cron': row_data['mm_cron_name'],
+                                                    'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match

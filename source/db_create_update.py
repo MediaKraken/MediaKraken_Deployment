@@ -21,7 +21,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 
 import psycopg2
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -73,7 +72,7 @@ db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
 
 # need superuser rights for following
 # activate extention pg_trgm
-#db_connection.db_query('create extension if not exists pg_trgm')
+# db_connection.db_query('create extension if not exists pg_trgm')
 
 # create table for version
 db_connection.db_query(

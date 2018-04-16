@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import sys
 
 sys.path.append('..')
@@ -13,7 +13,6 @@ blueprint = Blueprint("admins_docker", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
-from MediaKraken.admins.forms import AdminSettingsForm
 
 from common import common_config_ini
 from common import common_docker
@@ -44,7 +43,7 @@ def admin_required(fn):
     @login_required
     def decorated_view(*args, **kwargs):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                current_user.get_id()})
+                                                             current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)

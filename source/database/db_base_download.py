@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import uuid
+
 from common import common_global
 
 
@@ -89,7 +90,7 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
     common_global.es_inst.com_elastic_index('info', {'db que exits: %s %s %s', download_que_uuid,
-                 provider_name, provider_id})
+                                                     provider_name, provider_id})
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
                                ' where mdq_provider = %s and mdq_que_type = %s'

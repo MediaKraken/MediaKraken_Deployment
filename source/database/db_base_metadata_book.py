@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import uuid
+
 import json
+import uuid
+
 from common import common_global
+
 
 def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """

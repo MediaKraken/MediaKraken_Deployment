@@ -17,10 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
-from . import common_global
-from watchdog.observers import Observer
+
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+
+from . import common_global
 
 
 class CommonWatchdogHandler(FileSystemEventHandler):

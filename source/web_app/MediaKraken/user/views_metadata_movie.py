@@ -3,13 +3,13 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 from flask import Blueprint, render_template, g, request
-from flask_login import login_required
 from flask_login import current_user
+from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users',
                       static_folder="../static")
-import os
 import sys
 
 sys.path.append('..')
@@ -108,10 +108,10 @@ def metadata_movie_list():
             watched_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
-            and 'UserStats' in row_data['mm_metadata_user_json'] \
-            and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
-            and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-                current_user.get_id()]:
+                and 'UserStats' in row_data['mm_metadata_user_json'] \
+                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
+            current_user.get_id()]:
             rating_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
             if rating_status == 'favorite':
@@ -131,7 +131,8 @@ def metadata_movie_list():
         except:
             request_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
-                     'rating': rating_status, 'request': request_status})
+                                                         'rating': rating_status,
+                                                         'request': request_status})
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status))

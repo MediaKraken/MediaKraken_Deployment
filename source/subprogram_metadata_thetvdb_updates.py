@@ -22,14 +22,14 @@ import json
 import time
 
 import xmltodict
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_thetvdb
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_thetvdb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_thetvdb_updates')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

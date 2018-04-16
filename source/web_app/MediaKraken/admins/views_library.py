@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import json
 import os
 import sys
@@ -51,7 +52,7 @@ def admin_required(fn):
     @login_required
     def decorated_view(*args, **kwargs):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                current_user.get_id()})
+                                                             current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -108,7 +109,9 @@ def admin_library_edit_page():
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    common_global.es_inst.com_elastic_index('info', {'smb info': addr, 'share': share, 'path': path})
+                    common_global.es_inst.com_elastic_index('info',
+                                                            {'smb info': addr, 'share': share,
+                                                             'path': path})
                     if addr is None:  # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))
@@ -163,7 +166,7 @@ def admin_library_edit_page():
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + \
-            ":" + row_data['mm_media_share_path']
+                     ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
 
     return render_template("admin/admin_library_edit.html", form=form,

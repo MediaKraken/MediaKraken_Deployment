@@ -17,16 +17,20 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import subprocess
+
 import os
+import subprocess
+
 from . import common_global
+
 
 def com_net_share_mount(share_list):
     # mount the share/dirs
     for share in share_list:
         common_global.es_inst.com_elastic_index('info', {'Attempting mount': share[
             'mm_media_share_type'], 'server':
-                     share['mm_media_share_server'], 'path': share['mm_media_share_path']})
+                                                             share['mm_media_share_server'],
+                                                         'path': share['mm_media_share_path']})
         # check for and create mount point
         if os.path.isdir('./mnt/' + share['mm_media_share_guid']):
             pass

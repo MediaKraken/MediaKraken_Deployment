@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import urllib2
-import json
+
 import gzip
+import json
+import urllib2
+
 from . import common_network
 
 

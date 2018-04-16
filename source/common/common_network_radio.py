@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
-import sys
+
 import subprocess
+import sys
 
 sys.path.append("./common/radio_crawler")
 from . import common_global
+
 
 def com_net_radio():
     """

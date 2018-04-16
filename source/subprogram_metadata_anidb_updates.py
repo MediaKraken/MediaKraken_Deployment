@@ -47,8 +47,8 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
     common_global.es_inst.com_elastic_index('info', {
-            'stuff': str(('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
-                          tvdbid, imdbid, default_tvseason, mapping_data, before_data))})
+        'stuff': str(('ani %s, tv %s, imdb %s, default %s, map %s, before %s:', anidbid,
+                      tvdbid, imdbid, default_tvseason, mapping_data, before_data))})
     db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,
                                                            'thetvdb': tvdbid, 'imdb': imdbid}),
                                                json.dumps({'Default': default_tvseason,

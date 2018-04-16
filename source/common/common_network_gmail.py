@@ -17,9 +17,11 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import smtplib
+
 from . import common_global
+
 
 # http://stackoverflow.com/users/547050/david-okwii
 # code from stackoverflow
@@ -37,8 +39,8 @@ def com_net_send_email(user, pwd, recipient, subject, body):
         server.login(user, pwd)
         server.sendmail(user, TO, message)
         server.close()
-        common_global.es_inst.com_elastic_index('info', {'stuff':'successfully sent the mail'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'successfully sent the mail'})
         return True
     except:
-        common_global.es_inst.com_elastic_index('info', {'stuff':"failed to send mail"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "failed to send mail"})
         return False

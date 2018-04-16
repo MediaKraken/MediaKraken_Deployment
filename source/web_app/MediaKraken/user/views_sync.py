@@ -3,14 +3,14 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+from MediaKraken.user.forms import SyncEditForm
 from flask import Blueprint, render_template, g, request, \
     redirect, url_for
 from flask_login import login_required
-from MediaKraken.user.forms import SyncEditForm
 
 blueprint = Blueprint("user_sync", __name__,
                       url_prefix='/users', static_folder="../static")
-import logging  # pylint: disable=W0611
 import json
 import sys
 

@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
-import pygal
+
 import json
-import os
 import sys
 
 sys.path.append('..')
@@ -16,7 +14,6 @@ blueprint = Blueprint("admins_users", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
-from MediaKraken.admins.forms import UserEditForm
 
 from common import common_config_ini
 from common import common_global

@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import (Blueprint, request, render_template,
-                   flash, url_for, redirect, session)
-from flask_login import login_user, login_required, logout_user
-from flask_login import current_user
 
+import database as database_base
 from MediaKraken.extensions import login_manager
-from MediaKraken.user.models import User
 from MediaKraken.public.forms import LoginForm
 from MediaKraken.user.forms import RegisterForm
+from MediaKraken.user.models import User
 from MediaKraken.utils import flash_errors
-import logging  # pylint: disable=W0611
-import database as database_base
+from flask import (Blueprint, request, render_template,
+                   flash, url_for, redirect, session)
+from flask_login import current_user
+from flask_login import login_user, login_required, logout_user
 
 # this fixes the login issue!!!!!!!!!!!!!!!!!!!!!!!!!
 # blueprint = Blueprint('public', __name__, url_prefix='/public', static_folder="../static")

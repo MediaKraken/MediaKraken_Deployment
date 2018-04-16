@@ -69,10 +69,10 @@
 """
 
 import os
-import sys
+import select
 import socket
 import struct
-import select
+import sys
 import time
 
 if sys.platform == "win32":
@@ -96,7 +96,7 @@ def checksum(source_string):
     count = 0
     while count < countTo:
         thisVal = ord(source_string[count + 1]) * \
-            256 + ord(source_string[count])
+                  256 + ord(source_string[count])
         sum = sum + thisVal
         sum = sum & 0xffffffff  # Necessary?
         count = count + 2

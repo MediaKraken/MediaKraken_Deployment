@@ -17,16 +17,18 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import json
+import os
+import zipfile
+
+import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network
 from common import common_version
-import zipfile
-import os
-import json
-import xmltodict
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -56,7 +58,7 @@ if False:
         json_data = xmltodict.parse(zip_handle.read(zippedfile))
         for child_of_root in json_data['mame']['machine']:
             common_global.es_inst.com_elastic_index('info', {'child': child_of_root,
-                                                   'childname': child_of_root['@name']})
+                                                             'childname': child_of_root['@name']})
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
                 # TODO handle shortname properly

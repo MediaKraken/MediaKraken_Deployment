@@ -17,16 +17,18 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import re
-from threading import Thread
-import urllib2
-import ssl
 import socket
+import ssl
 import sys
-from . import wol
+import urllib2
+from threading import Thread
+
 from . import common_file
 from . import common_global
+from . import wol
 
 
 def mk_network_fetch_from_url(url, directory=None):
@@ -137,7 +139,8 @@ def mk_network_ping_list(host_list):
     for pingle in pinglist:
         pingle.join()
         common_global.es_inst.com_elastic_index('info', {"Status from":
-                     pingle.ip_addr, 'report': report[pingle.status]})
+                                                             pingle.ip_addr,
+                                                         'report': report[pingle.status]})
 
 
 def mk_network_io_counter(show_nic=False):

@@ -3,12 +3,13 @@
 # https://github.com/youtube/api-samples/tree/master/python
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from . import common_global
-from . import common_network
 
 # import google api modules
 import httplib2
 from googleapiclient.discovery import build
+
+from . import common_global
+from . import common_network
 
 
 # from googleapiclient.errors import HttpError
@@ -59,8 +60,8 @@ class CommonGoogle(object):
                                                          + self.YOUTUBE_API_VERSION
                                                          + '/videos?id='
                                                          + video_url.replace(
-                                                             'www.youtube.com/watch?v=',
-                                                             '') + '&key='
+                    'www.youtube.com/watch?v=',
+                    '') + '&key='
                                                          + self.DEVELOPER_KEY
                                                          + '&part=' + video_data), None)
 

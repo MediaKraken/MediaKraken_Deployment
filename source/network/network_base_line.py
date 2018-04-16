@@ -19,15 +19,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import base64
 import json
-import os
 import sys
+
 sys.path.append("./vault/lib")
 import subprocess
-from twisted.internet import reactor, protocol
 from twisted.protocols import basic
-from twisted.internet import ssl
 import ip2country
-from common import common_docker
 from common import common_global
 from common import common_network
 
@@ -62,14 +59,14 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Got Connection'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection'})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff':'Lost Connection'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
         if self.users.has_key(self.user_user_name):
             del self.users[self.user_user_name]
 
@@ -105,7 +102,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
             common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
-                         'ip': self.user_ip_addy})
+                                                             'ip': self.user_ip_addy})
             if self.user_user_name == 'Link':
                 pass
             else:
@@ -170,11 +167,11 @@ class NetworkEvents(basic.LineReceiver):
                 if json_message['Data'] == 'Movie':
                     if 'Offset' in json_message:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
-                                          self.db_connection.db_web_media_list(
-                                              self.db_connection.db_media_uuid_by_class(
-                                                  json_message['Data']),
-                                              json_message['Type'], offset=json_message['Offset'],
-                                              list_limit=json_message['Limit'])})
+                            self.db_connection.db_web_media_list(
+                                self.db_connection.db_media_uuid_by_class(
+                                    json_message['Data']),
+                                json_message['Type'], offset=json_message['Offset'],
+                                list_limit=json_message['Limit'])})
                     else:
                         msg = json.dumps({'Type': 'Media', 'Sub': 'List',
                                           'Data': self.db_connection.db_web_media_list(

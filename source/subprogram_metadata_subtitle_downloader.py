@@ -25,7 +25,8 @@ from common import common_global
 from common import common_logging_elasticsearch
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_subtitle_downloader')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_subtitle_downloader')
 
 total_download_attempts = 0
 
@@ -36,7 +37,7 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
                                                ('avi', 'mkv', 'mp4', 'm4v'), True):
     # run the subliminal fetch for episode
     common_global.es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
-            '.', 1)[0] + "." + sub_lang + ".srt"})
+        '.', 1)[0] + "." + sub_lang + ".srt"})
     # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
     # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
     if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):

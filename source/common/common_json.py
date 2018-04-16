@@ -17,12 +17,15 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import glob
 import json
-import os
+
 from kivy import platform
+
 from . import common_database_octmote
 from . import common_global
+
 
 def com_json_find():
     """
@@ -33,7 +36,7 @@ def com_json_find():
     else:
         file_path = './OctMote_Json/'
     for file_name in glob.glob(file_path + "*.txt"):
-        common_global.es_inst.com_elastic_index('info', {'stuff':file_name})
+        common_global.es_inst.com_elastic_index('info', {'stuff': file_name})
         com_json_import(file_name)
 
 

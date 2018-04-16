@@ -17,68 +17,37 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from concurrent import futures
+
+import json
+import os
+import sys
+import time
+import uuid
+
 from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
-import sys
-import time
-import os
-import json
-import uuid
-from crochet import wait_for, run_in_reactor, setup
+from concurrent import futures
+from crochet import wait_for, setup
 
 setup()
 
 from kivy.lang import Builder
 from twisted.internet import reactor, protocol
 from twisted.protocols import basic
-from twisted.internet import ssl
-from twisted.python import log
 
 import kivy
 from kivy.app import App
 
 kivy.require('1.10.0')
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
-from kivy.clock import Clock
-from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import NumericProperty, BooleanProperty, ListProperty, \
-    StringProperty, ObjectProperty
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import Spinner
-from kivy.uix.widget import Widget
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.image import Image, AsyncImage
-from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.stacklayout import StackLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.filechooser import FileChooserListView
-from kivy.base import EventLoop
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.network.urlrequest import UrlRequest
-from kivy.graphics.instructions import Canvas
-from kivy.graphics import Color, Rectangle
-from kivy.cache import Cache
-from kivy.animation import Animation
-from kivy.metrics import sp
+from kivy.properties import ObjectProperty
 from kivy.graphics import *
-from kivy.graphics.texture import Texture
-from kivy.graphics.transformation import Matrix
 from kivy.graphics.opengl import *
 from kivy.graphics import *
 
@@ -93,7 +62,7 @@ class MKEcho(basic.LineReceiver):
     def connectionMade(self):
         global twisted_connection
         twisted_connection = self
-        common_global.es_inst.com_elastic_index('info', {'stuff':"connected successfully (echo)!"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "connected successfully (echo)!"})
 
     def lineReceived(self, line):
         global mk_app
@@ -189,7 +158,7 @@ class MediaKrakenApp(App):
         for drive_status in self.rom_drives:
             if drive_status['Status'] is None and (drive_status['Type'] == spinner_text
                                                    or (drive_status[
-                                                       'Type'] == 'DVD' and spinner_text == 'Audio CD')):
+                                                           'Type'] == 'DVD' and spinner_text == 'Audio CD')):
                 # load this one
                 self.track_arduino.com_arduino_usb_serial_writestring(
                     'track|%s' % self.spindles_media_to_process[spinner_no]['Pos'])
@@ -288,9 +257,9 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def connect_to_server(self):
-        common_global.es_inst.com_elastic_index('info', {'stuff':'conn server'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'conn server'})
         if self.config is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff':'here in connect to server'})
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'here in connect to server'})
             reactor.connectTCP('10.1.0.1', 7000, MKFactory())
 
     @wait_for(timeout=5.0)
@@ -318,7 +287,7 @@ class MediaKrakenApp(App):
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
                                                          'UUID': str(uuid.uuid4())}))
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff':"unknown message type"})
+            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
 
     def main_mediakraken_event_button_start(self, *args):
         global thread_status
@@ -328,7 +297,7 @@ class MediaKrakenApp(App):
                                      self.root.ids.spinner_two.text,
                                      self.root.ids.spinner_three.text,
                                      self.root.ids.spinner_four.text)
-            common_global.es_inst.com_elastic_index('info', {'stuff':future.result()})
+            common_global.es_inst.com_elastic_index('info', {'stuff': future.result()})
         thread_status = True
 
     def main_mediakraken_event_button_stop(self, *args):

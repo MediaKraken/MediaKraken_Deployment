@@ -17,10 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+import urllib
+
+import requests
 from common import common_hash
 from common import common_version
-import requests
-import urllib
 
 
 class CommonMetadataTheSubDB(object):

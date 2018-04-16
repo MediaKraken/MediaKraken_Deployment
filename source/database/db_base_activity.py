@@ -17,8 +17,9 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import uuid
+
 import datetime
+import uuid
 
 
 def db_activity_insert(self, activity_name, activity_overview,

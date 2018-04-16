@@ -17,9 +17,12 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import subprocess
 import sys
+
 import psutil
+
 from . import common_global
 from . import common_string
 
@@ -171,7 +174,7 @@ def com_system_uptime():
         out, err = uptime_proc.communicate()
         uptime_proc.wait()
         out = out.split(' up ', 1)[1].split(',', 2)[
-            0] + out.split(' up ', 1)[1].split(',', 2)[1]
+                  0] + out.split(' up ', 1)[1].split(',', 2)[1]
     return out
 
 

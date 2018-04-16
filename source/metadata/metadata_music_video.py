@@ -17,8 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import json
+import os
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_imvdb
@@ -53,7 +55,7 @@ def imvdb_lookup(db_connection, file_name):
     # set name for lookups
     band_name = band_name.replace(' ', '-')
     song_name = song_name.replace(' ', '-')
-    common_global.es_inst.com_elastic_index('info', {'mv title': band_name, 'song':song_name})
+    common_global.es_inst.com_elastic_index('info', {'mv title': band_name, 'song': song_name})
     # if same as last, return last id and save lookup
     if band_name == imvdb_lookup.metadata_last_band \
             and song_name == imvdb_lookup.metadata_last_song:
@@ -74,9 +76,9 @@ def imvdb_lookup(db_connection, file_name):
                 if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                     db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
                                                           video_data['song_slug'], json.dumps(
-                        {'imvdb': str(video_data['id'])}),
-                        json.dumps(video_data),
-                        json.dumps({'Images': {'imvdb': None}}))
+                            {'imvdb': str(video_data['id'])}),
+                                                          json.dumps(video_data),
+                                                          json.dumps({'Images': {'imvdb': None}}))
             # try after inserting new records
             metadata_uuid = db_connection.db_meta_music_video_lookup(
                 band_name, song_name)

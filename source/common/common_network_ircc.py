@@ -17,12 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import os
+
 import sys
 
 sys.path.append("./vault/lib")
 
 from . import common_global
+
 
 def com_net_ircc_discover():
     """
@@ -54,7 +55,7 @@ def com_net_ircc_register_device(ircc_device, ircc_service):
     # register device for control
     """
     if ircc_device.register("My IRCC Controller") != unr.UNR_REGISTER_RESULT_OK:
-        common_global.es_inst.com_elastic_index('error', {'stuff':"Registration Failed"})
+        common_global.es_inst.com_elastic_index('error', {'stuff': "Registration Failed"})
 
 
 def com_net_ircc_send_command(ircc_device, ircc_service, command_text):

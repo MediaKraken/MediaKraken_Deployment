@@ -17,13 +17,16 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
+
 import httplib2
-from . import common_global
-from apiclient import discovery
 import oauth2client
+from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
+
+from . import common_global
 
 try:
     import argparse
@@ -90,7 +93,7 @@ class CommonCloudGoogleDrive(object):
         results = service.files().list(maxResults=10).execute()
         items = results.get('items', [])
         if not items:
-            common_global.es_inst.com_elastic_index('error', {'stuff':'No files found.'})
+            common_global.es_inst.com_elastic_index('error', {'stuff': 'No files found.'})
         else:
             for item in items:
                 print('{0} ({1})'.format(item['title'], item['id']))

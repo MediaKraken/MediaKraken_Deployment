@@ -18,10 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os
-from libdiscid import read
-
 import discid
+from libdiscid import read
 
 from . import common_global
 
@@ -36,7 +34,7 @@ def com_discid_default_device():
     discid.get_default_device()
     disc = discid.read()
     common_global.es_inst.com_elastic_index('info', {"id": disc.id,
-                                                         "submission url": disc.submission_url})
+                                                     "submission url": disc.submission_url})
     return discid
 
 
