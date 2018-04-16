@@ -1,12 +1,12 @@
-FROM alpine:3.6 as builder
+FROM alpine:3.7 as builder
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20171104-2245-stable
-ARG X265_VERSION=2.5
-ARG FFMPEG_VERSION="3.4"
+ARG X264_VERSION=20180415-2245-stable
+ARG X265_VERSION=2.7
+ARG FFMPEG_VERSION="3.4.2"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 ADD scripts /mediakraken
@@ -145,7 +145,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.6
+FROM alpine:3.7
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
