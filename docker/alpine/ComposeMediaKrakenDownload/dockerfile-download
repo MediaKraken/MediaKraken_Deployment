@@ -1,22 +1,17 @@
 # Download base image
-FROM alpine:3.6
+FROM mediakraken/mkbase36
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the downloader app"
 
 # create work dir
-RUN mkdir /mediakraken
 RUN mkdir /mediakraken/downloads
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
-  py-pip \
-  python \
-  && pip install --upgrade pip \
-  && pip install -r requirements.txt \
+RUN pip install -r requirements.txt \
   && apk del \
   py-pip \
   && rm -rf /var/cache/apk/* \

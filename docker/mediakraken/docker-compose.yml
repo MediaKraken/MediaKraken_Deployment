@@ -13,6 +13,7 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - SWARMIP=${SWARMIP}
+      - DEBUG=${DEBUG}
     container_name: mkserver
     depends_on:
       - pgbounce
@@ -22,7 +23,6 @@ services:
       - "8903:8903"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
-      - /var/opt/mediakraken/devices:/mediakraken/devices
       - /var/opt/mediakraken/certs:/mediakraken/key
       - /var/opt/mediakraken/backup:/mediakraken/backup
       - /home/mediakraken:/mediakraken/mnt
@@ -83,16 +83,6 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-#  # scan for new hardware devices
-#  devicescan:
-#    image: mediakraken/mkdevicescan:latest
-#    container_name: mkdevicescan
-#    entrypoint: python main_hardware_discover.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /var/opt/mediakraken/devices:/mediakraken/devices
-#    network_mode: host
-
   # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
@@ -100,6 +90,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
     container_name: mkmetadata
     depends_on:
       - pgbounce
@@ -109,22 +100,12 @@ services:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
     restart: unless-stopped
-
-  # musicbrainz replicator
-#  brainz:
-#    image: mediakraken/mkbrainz:latest
-
-#    environment:
-#      - BRAINZCODE=${BRAINZCODE}
-#    container_name: mkbrainz
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
 
   # runs the nginx proxy service
   nginx:
@@ -139,17 +120,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-  # runs the openldap
-#  openldap:
-#    image: mediakraken/mkopenldap:latest
-#    container_name: mkopenldap
-#    ports:
-#      - "389:389"
-#      - "636:636"
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
@@ -168,14 +138,14 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
     container_name: mkwebapp
     depends_on:
       - pgbounce
       - rabbit
       - redis
+      - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
-#    ports:
-#      - "8900:8080"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -194,50 +164,26 @@ services:
     image: mediakraken/mkrabbitmq:latest
     container_name: mkrabbitmq
     ports:
-#      - "5671:5671"
       - "5672:5672"
-#      - "15671:15671"
-#      - "15672:15672"
     volumes:
       - /var/opt/mediakraken/rabbit:/var/lib/rabbitmq
     restart: unless-stopped
     networks:
       - mediakraken_network
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
+  # runs downloader
+  download:
+    image: mediakraken/mkdownload:latest
     environment:
-      - PGADMIN_DEFAULT_EMAIL=spootdev@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=metaman
-    container_name: mkpgadmin
-    ports:
-      - "12345:80"
+      - DEBUG=${DEBUG}
+    container_name: mkdownload
     depends_on:
-      - pgbounce
-    networks:
-      - mediakraken_dbnetwork
-    restart: unless-stopped
-
-#  # runs the phppgadmin
-#  phppgadmin:
-#    image: mediakraken/mkphppgadmin:latest
-#    container_name: mkphppgadmin
-#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
-#    ports:
-#      - "12345:80"
-#    networks:
-#      - mediakraken_dbnetwork
-#    restart: unless-stopped
-
-  # runs portainer
-  dockmanage:
-    image: portainer/portainer:latest
-    container_name: mkportainer
-    ports: 
-      - "9000:9000"
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_download.py
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/opt/mediakraken/data:/data
+      - /var/opt/mediakraken/downloads:/mediakraken/downloads
+    networks:
+      - mediakraken_network
     restart: unless-stopped
 
 # Docker private networks
@@ -248,4 +194,3 @@ networks:
   # Database communications network
   mediakraken_dbnetwork:
     driver: bridge
-

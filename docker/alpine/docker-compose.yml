@@ -15,6 +15,7 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - SWARMIP=${SWARMIP}
+      - DEBUG=${DEBUG}
     container_name: mkserver
     depends_on:
       - pgbounce
@@ -90,18 +91,6 @@ services:
       - mediakraken_dbnetwork
     restart: unless-stopped
 
-#  # scan for new hardware devices
-#  devicescan:
-#    build:
-#      context: ./ComposeMediaKrakenDevicescan
-#      dockerfile: dockerfile-devicescan
-#    container_name: mkdevicescan
-#    entrypoint: python main_hardware_discover.py
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#      - /var/opt/mediakraken/devices:/mediakraken/devices
-#    network_mode: host
-
   # runs the server to fetch/process all metadata
   metadata:
     build:
@@ -111,6 +100,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
     container_name: mkmetadata
     depends_on:
       - pgbounce
@@ -131,18 +121,6 @@ services:
       - SYS_ADMIN
       - DAC_READ_SEARCH
 
-#  # musicbrainz replicator
-#  musicbrainz:
-#    build:
-#      context: ./ComposeMediaKrakenMusicBrainz
-#      dockerfile: Dockerfile
-#    environment:
-#      - BRAINZCODE=${BRAINZCODE}
-#    container_name: mkmusicbrainz
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-
   # runs the nginx proxy service
   nginx:
     build:
@@ -158,19 +136,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-  # runs the openldap
-#  openldap:
-#    build:
-#      context: ./ComposeMediaKrakenOpenLDAP
-#      dockerfile: dockerfile-openldap
-#    container_name: mkopenldap
-#    ports:
-#      - "389:389"
-#      - "636:636"
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
 
   # runs the redis service for flask
   redis:
@@ -193,14 +158,14 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
     container_name: mkwebapp
     depends_on:
       - pgbounce
       - rabbit
       - redis
+      - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
-#    ports:
-#      - "8900:8080"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -212,48 +177,6 @@ services:
       - mediakraken_network
       - mediakraken_dbnetwork
     restart: unless-stopped
-
-#  # pgadmin4
-#  # https://github.com/Chorss/docker-pgAdmin4
-#  pgadmin:
-#    build:
-#      context: ./ComposeMediaKrakenPGAdmin4
-#      dockerfile: Dockerfile
-#    container_name: mkpgadmin
-#    ports:
-#      - "12345:5050"
-#    volumes:
-#      - /var/opt/mediakraken/pgadmin:/data
-#    restart: unless-stopped
-#    networks:
-#      - mediakraken_network
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=spootdev@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=metaman
-    container_name: mkpgadmin
-    ports:
-      - "12345:80"
-    depends_on:
-      - pgbounce
-    networks:
-      - mediakraken_dbnetwork
-    restart: unless-stopped
-
-#  # runs the phppgadmin
-#  phppgadmin:
-#    build:
-#      context: ./ComposeMediaKrakenPHPPGAdmin
-#      dockerfile: dockerfile-phppgadmin
-#    container_name: mkphppgadmin
-#    entrypoint: lighttpd -D -f /etc/lighttpd/lighttpd.conf
-#    ports:
-#      - "12345:80"
-#    networks:
-#      - mediakraken_dbnetwork
-#    restart: unless-stopped
 
 #  nginxrtmp:
 #    build:
@@ -294,84 +217,19 @@ services:
     networks:
       - mediakraken_network
 
-  # runs portainer
-  dockmanage:
-    image: portainer/portainer:latest
-    container_name: mkportainer
-    ports: 
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/opt/mediakraken/data:/data
-    restart: unless-stopped
-
-  # runs transmissions
-  transmission:
-    build:
-      context: ./ComposeMediaKrakenTransmission
-      dockerfile: Dockerfile
-    container_name: mktransmission
-    ports:
-      - "9091:9091"
-      - "51413:51413/tcp"
-      - "51413:51413/udp"
-    volumes:
-      - /var/opt/mediakraken/transmission/downloads:/transmission/downloads
-      - /var/opt/mediakraken/transmission/incomplete:/transmission/incomplete
-    environment:
-      - USERNAME=${TRANSUSER}
-      - PASSWORD=${TRANSPASSWORD}
-
-#  # runs beets
-#  beets:
+#  # runs mail server
+#  smtp:
 #    build:
-#      context: ./ComposeMediaKrakenBeets
-#      dockerfile: dockerfile-beets
-#    container_name: mkbeets
+#      context: ./ComposeMediaKrakenOpenSMTP
+#      dockerfile: Dockerfile
+#    container_name: mkopensmtp
+#    ports:
+#      - "25:25"
 #    volumes:
-#      - /var/opt/mediakraken/beets/config:/config
-#      - /var/opt/mediakraken/beets/music:/music
-#      - /var/opt/mediakraken/beets/downloads:/downloads
-
-  # runs mumble
-  mumble:
-    build:
-      context: ./ComposeMediaKrakenMumble
-      dockerfile: Dockerfile
-    container_name: mkmumble
-    ports:
-      - "64738:64738/tcp"
-      - "64738:64738/udp"
-    volumes:
-      - /var/opt/mediakraken/mumble:/etc/mumble
-
-  # runs teamspeak
-  teamspeak:
-    build:
-      context: ./ComposeMediaKrakenTeamspeak
-      dockerfile: Dockerfile
-    container_name: mkteamspeak
-    ports:
-      - "9987:9987/udp"
-      - "10011:10011"
-      - "30033:30033"
-    volumes:
-      - /var/opt/mediakraken/teamspeak:/teamspeak/data
-      - /var/opt/mediakraken/teamspeak:/teamspeak/logs
-
-  # runs mail server
-  smtp:
-    build:
-      context: ./ComposeMediaKrakenOpenSMTP
-      dockerfile: Dockerfile
-    container_name: mkopensmtp
-    ports:
-      - "25:25"
-    volumes:
-      - /var/opt/mediakraken/mail:/var/vmail
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
+#      - /var/opt/mediakraken/mail:/var/vmail
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
 
   # runs calibre server
   calibre:
@@ -389,14 +247,6 @@ services:
       - /var/opt/mediakraken/calibre/downloads:/downloads
     networks:
       - mediakraken_network
-    restart: unless-stopped
-
-  # runs ripper
-  ripper:
-    build:
-      context: ./ComposeMediaKrakenRipper
-      dockerfile: dockerfile-ripper
-    container_name: mkripper
     restart: unless-stopped
 
 #  mail:
@@ -432,6 +282,8 @@ services:
     build:
       context: ./ComposeMediaKrakenDownload
       dockerfile: dockerfile-download
+    environment:
+      - DEBUG=${DEBUG}
     container_name: mkdownload
     depends_on:
       - rabbit
@@ -442,36 +294,20 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # runs filebeat
-  filebeat:
-    build:
-      context: ./ComposeMediaKrakenFilebeat
-      dockerfile: Dockerfile
-    container_name: mkfilebeat
-    depends_on: mkelk
-    entrypoint: ./wait-for-it-ash.sh -h elk -p 9200 -t 30 -- filebeat -e
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
-  elk:
-    build:
-      context: ./ComposeMediaKrakenELK
-      dockerfile: Dockerfile
-    ports:
-      - "5601:5601"
-      - "9200:9200"
-      - "5044:5044"
-    container_name: mkelk
-    environment:
-      - ELASTICSEARCH_START=1
-      - LOGSTASH_START=0
-      - KIBANA_START=1
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
+#  # runs filebeat
+#  filebeat:
+#    build:
+#      context: ./ComposeMediaKrakenFilebeat
+#      dockerfile: Dockerfile
+#    container_name: mkfilebeat
+#    depends_on:
+#      - elk
+#    entrypoint: ./wait-for-it-bash.sh -h elk -p 9200 -t 30 -- filebeat -e
+#    volumes:
+#      - /var/log/mediakraken:/mediakraken/log
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
 
 # Docker private networks
 networks:
@@ -481,4 +317,3 @@ networks:
   # Database communications network
   mediakraken_dbnetwork:
     driver: bridge
-

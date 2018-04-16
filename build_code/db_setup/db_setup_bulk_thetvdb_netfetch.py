@@ -47,10 +47,6 @@ db.db_open(Config.get('DB Connections', 'PostDBHost').strip(),
            Config.get('DB Connections', 'PostDBUser').strip(),
            Config.get('DB Connections', 'PostDBPass').strip())
 
-# log start
-db.db_activity_insert('MediaKraken_Server thetvdb Batch Start', None,
-                      'System: Server thetvdb Start', 'ServerthetvdbStart', None, None, 'System')
-
 # pull in the zip file
 tvshow_updated = 0
 tvshow_inserted = 0
@@ -93,10 +89,6 @@ for zippedFile in zip.namelist():
     for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
         print(row_data)
 zip.close()
-
-# log end
-db.db_activity_insert('MediaKraken_Server thetvdb Batch Stop', None,
-                      'System: Server thetvdb Stop', 'ServerthetvdbStop', None, None, 'System')
 
 # send notications
 if tvshow_updated > 0:
