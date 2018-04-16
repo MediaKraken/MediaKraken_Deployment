@@ -155,7 +155,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --update libssl1.0 samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx && \
+    soxr fontconfig libvpx ladspa && \
     ffmpeg -buildconf
 
 CMD ["--help"]
