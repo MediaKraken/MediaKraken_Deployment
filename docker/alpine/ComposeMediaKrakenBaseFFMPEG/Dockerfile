@@ -30,6 +30,7 @@ RUN buildDeps="autoconf \
         libass-dev \
         libmodplug-dev \
         libogg-dev \
+        libressl-dev \
         rtmpdump-dev \
         libtheora-dev \
         libtool \
@@ -38,10 +39,8 @@ RUN buildDeps="autoconf \
         libwebp-dev \
         make \
         openjpeg-dev \
-        openssl-dev \
         opus-dev \
         python-dev \
-        openssl-dev \
         samba-dev \
         speex-dev \
         soxr-dev \
