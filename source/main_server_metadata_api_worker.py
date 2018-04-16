@@ -22,6 +22,7 @@ import datetime
 import json
 import subprocess
 import sys
+import time
 
 import pika
 from guessit import guessit
@@ -332,7 +333,7 @@ def on_message(channel, method_frame, header_frame, body):
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'meta_api_worker_%s' % str(sys.argv[1]))
+    'meta_api_worker_%s' % str(sys.argv[1]).lower())
 content_providers = str(sys.argv[1])
 common_global.es_inst.com_elastic_index('info', {"worker meta api name":
                                                          content_providers})
