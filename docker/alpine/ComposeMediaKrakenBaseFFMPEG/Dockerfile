@@ -27,7 +27,6 @@ RUN buildDeps="autoconf \
         gnutls-dev \
         fontconfig-dev \
         freetype-dev \
-        ladspa-dev \
         lame-dev \
         libass-dev \
         libmodplug-dev \
@@ -105,7 +104,6 @@ RUN buildDeps="autoconf \
         --enable-avresample \
         --enable-fontconfig \
         --enable-gpl \
-        --enable-ladspa \
         --enable-libass \
         --enable-libfdk_aac \
         --enable-fontconfig \
