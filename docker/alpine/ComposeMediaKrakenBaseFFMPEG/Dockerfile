@@ -38,6 +38,7 @@ RUN buildDeps="autoconf \
         libvpx-dev \
         libwebp-dev \
         make \
+        nasm \
         openjpeg-dev \
         opus-dev \
         python-dev \
