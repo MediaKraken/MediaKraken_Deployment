@@ -83,9 +83,9 @@ RUN buildDeps="autoconf \
     make EXAMPLES=0 && \
     make install && \
 
-    ./mediakraken/kvazaar.sh \
-    ./mediakraken/openh264.sh \
-    ./mediakraken/vidstab.sh \
+    ./scripts/kvazaar.sh \
+    ./scripts/openh264.sh \
+    ./scripts/vidstab.sh \
                 
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
