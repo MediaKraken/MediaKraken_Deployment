@@ -4,3 +4,4 @@
 9000 - Portainer (docker monitor) - Optional
 9091 - Transmission (bittorrent) - Optional
 12345 - PgAdmin4 (postgresql gui) - Optional
+15672 - Web interface to rabbitmq - Optional
