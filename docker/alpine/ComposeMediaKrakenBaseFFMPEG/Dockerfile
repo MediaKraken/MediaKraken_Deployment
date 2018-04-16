@@ -27,6 +27,7 @@ RUN buildDeps="autoconf \
         gnutls-dev \
         fontconfig-dev \
         freetype-dev \
+        ladspa-dev \
         lame-dev \
         libass-dev \
         libmodplug-dev \
