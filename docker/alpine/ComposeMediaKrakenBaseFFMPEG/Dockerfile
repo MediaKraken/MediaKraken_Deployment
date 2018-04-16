@@ -118,7 +118,6 @@ RUN buildDeps="autoconf \
         --enable-libopus \
         --enable-libpulse \
         --enable-librtmp \
-        --enable-libschroedinger \
         --enable-libsoxr \
         --enable-libsmbclient \
         --enable-libspeex \
