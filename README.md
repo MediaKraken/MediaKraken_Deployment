@@ -5,7 +5,7 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>dev - Current Dev branch</b>
+        <li><b>dev - Redis 4.0.9, FFMPEG version bumps - Current Dev branch</b>
         <li><i>0.7.11 - PostgreSQL 10.3, ELK cleanup, more Jenkins build, redid how docker compose and "one-off" containers are built/launched
         <li>0.7.10 - pyspeedtest, better automated testing, Jenkins CI, PGAdmin4, PostgreSQL 9.6.7
         <li>0.7.9/elk - Clean up disc read, basic videojs resume, base SoundCloud videojs, base Frame by Frame videojs, background videojs, base chapter videojs, libnfs support, scanning support via Sane, WebOS control, basic Samsung TV control via SOAP, basic pioneer control, basic Discogs support, basic TheSubDB support
