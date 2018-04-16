@@ -83,6 +83,7 @@ RUN buildDeps="autoconf \
     make EXAMPLES=0 && \
     make install && \
 
+    mkdir /mediakraken/install && \
     chmod +x /mediakraken/*.sh && \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
