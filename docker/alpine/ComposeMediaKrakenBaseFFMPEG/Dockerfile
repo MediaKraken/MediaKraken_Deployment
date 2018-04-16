@@ -115,7 +115,6 @@ RUN buildDeps="autoconf \
         --enable-libopenh264 \
         --enable-libopenjpeg \
         --enable-libopenmpt \
-        --enable-libopenssl \
         --enable-libopus \
         --enable-libpulse \
         --enable-librtmp \
