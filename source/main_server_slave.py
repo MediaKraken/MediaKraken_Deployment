@@ -20,6 +20,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import subprocess
 import json
 import os
+import signal
 import pika
 from common import common_global
 from common import common_logging_elasticsearch
@@ -331,7 +332,7 @@ class MKConsumer(object):
                 elif json_message['Command'] == "Rewind":
                     pass
                 elif json_message['Command'] == 'Stop':
-                    os.killpg(self.proc_ffmpeg_stream)
+                    os.killpg(self.proc_ffmpeg_stream.pid, signal.SIGTERM)
         elif json_message['Type'] == "System":
             if json_message['Sub'] == 'CPU':
                 msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
