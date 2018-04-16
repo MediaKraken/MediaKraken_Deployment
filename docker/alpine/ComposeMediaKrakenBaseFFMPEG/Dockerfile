@@ -40,7 +40,6 @@ RUN buildDeps="autoconf \
         make \
         nasm \
         openjpeg-dev \
-        openssl-dev \
         opus-dev \
         python-dev \
         samba-dev \
@@ -128,7 +127,6 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
-        --enable-openssl \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
@@ -150,7 +148,7 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update libssl1.0 samba-client lame libass libmodplug libogg \
+RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx && \
     ffmpeg -buildconf
