@@ -115,7 +115,6 @@ RUN buildDeps="autoconf \
         --enable-libopenjpeg \
         --enable-libopenmpt \
         --enable-libopus \
-        --enable-libpulse \
         --enable-librtmp \
         --enable-libsoxr \
         --enable-libsmbclient \
