@@ -97,10 +97,6 @@ docker build -t mediakraken/mkdevicescan .
 cd ../ComposeMediaKrakenOpenLDAP
 docker build -t mediakraken/mkopenldap .
 
-# build the musicbrainz
-cd ../ComposeMediaKrakenMusicBrainz
-docker build -t mediakraken/mkmusicbrainz .
-
 # build the mumble
 cd ../ComposeMediaKrakenMumble
 docker build -t mediakraken/mkmumble .
