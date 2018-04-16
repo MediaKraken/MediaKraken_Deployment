@@ -22,6 +22,7 @@ RUN buildDeps="autoconf \
         fontconfig-dev \
         g++ \
         gcc \
+        git \
         gnupg \
         gnutls-dev \
         fontconfig-dev \
