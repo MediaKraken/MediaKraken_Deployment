@@ -1,5 +1,6 @@
-5601 - Kibana (debug info)
+5000 - Musicbrainz - Optional
+5601 - Kibana (debug info) - Optional
 8900 - Main web app
-9000 - Portainer (docker monitor)
-9091 - Transmission (bittorrent)
-12345 - PgAdmin4 (postgresql gui)
+9000 - Portainer (docker monitor) - Optional
+9091 - Transmission (bittorrent) - Optional
+12345 - PgAdmin4 (postgresql gui) - Optional
