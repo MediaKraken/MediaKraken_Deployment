@@ -25,15 +25,14 @@ import time
 import uuid
 
 import pika
-from pika.adapters import twisted_connection
-from twisted.internet import reactor, protocol, defer, task
-from twisted.internet import ssl
-
 from common import common_config_ini
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from network import network_base_line as network_base
+from pika.adapters import twisted_connection
+from twisted.internet import reactor, protocol, defer, task
+from twisted.internet import ssl
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
@@ -78,6 +77,8 @@ def read(queue_object):
         common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(['python', json_message['Data']])
+        elif json_message['Type'] == 'Library Scan':
+            scan_pid = subprocess.Popen(['python', './subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Sub'] == 'Cast':
                 pass
