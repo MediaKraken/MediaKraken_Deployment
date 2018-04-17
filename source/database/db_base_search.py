@@ -56,6 +56,12 @@ def db_search(self, search_string, search_type='Local', search_movie=True, searc
             # TODO image search
             pass
         if search_publication:
-            # TODO publication search
+            # publication section
+            self.db_cursor.execute('SELECT mm_metadata_book_guid, mm_metadata_book_name,'
+                                   ' similarity(mm_metadata_book_name, %s) AS sml'
+                                   ' FROM mm_metadata_book WHERE mm_metadata_book_name % %s'
+                                   ' ORDER BY sml DESC, mm_metadata_book_name;',
+                                   (search_string, search_string))
+            json_return_data['Publication': json.dumps(self.db_cursor.fetchall())]
             pass
     return json_return_data

@@ -79,6 +79,8 @@ def search_media():
         elif request.form['action_type'] == 'Search Metadata Providers':
             pass
         # TODO
+        #search_primary_language
+        #search_secondary_language
         #search_resolution
         #search_audio_channels
         #search_audio_codec
