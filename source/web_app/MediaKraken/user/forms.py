@@ -122,6 +122,16 @@ class SearchEditForm(Form):
                                                            ('image', 'Image'),
                                                            ('publication', 'Publication'),
                                                            ('game', 'Game')])
+    # TODO populate from all lang found on media?
+    search_primary_language = SelectField("Language", choices=[('any', 'Any'),
+                                                           ('sd', 'SD'),
+                                                           ('hd', 'HD'),
+                                                           ('uhd', 'UHD')])
+    # TODO populate from all subtitle lang found on media?
+    search_secondary_language = SelectField("Subtitle", choices=[('any', 'Any'),
+                                                           ('sd', 'SD'),
+                                                           ('hd', 'HD'),
+                                                           ('uhd', 'UHD')])
     search_resolution = SelectField("Resolution", choices=[('any', 'Any'),
                                                            ('sd', 'SD'),
                                                            ('hd', 'HD'),
