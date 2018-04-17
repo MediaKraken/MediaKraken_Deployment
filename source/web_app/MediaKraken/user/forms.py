@@ -153,3 +153,20 @@ class SearchEditForm(Form):
         if not initial_validation:
             return False
         return True
+
+
+class SearchForm(Form):
+    """
+    for searching media
+    """
+    search_text = TextField(
+        'Search For')  # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(SearchForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

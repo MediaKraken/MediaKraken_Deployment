@@ -22,7 +22,8 @@ from common import common_config_ini
 from common import common_global
 from common import common_pagination
 import database as database_base
-from MediaKraken.public.forms import SearchForm
+from MediaKraken.user.forms import SearchForm
+from MediaKraken.user.forms import SearchEditForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -83,7 +84,6 @@ def user_home_media_list():
                                                       request.form['search_text'])
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-
     return render_template("users/user_home_media_list.html", form=form)
 
 
