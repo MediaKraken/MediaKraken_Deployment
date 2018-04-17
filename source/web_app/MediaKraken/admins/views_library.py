@@ -75,6 +75,7 @@ def admin_library():
                          body=json.dumps({'Type': 'Library Scan'}))
         fpika.return_channel(ch)
         flash("Scheduled media scan.")
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
