@@ -10,7 +10,7 @@ from flask_login import login_required
 blueprint = Blueprint("user_search", __name__,
                       url_prefix='/users', static_folder="../static")
 import json
-from MediaKraken.user.forms import SearchForm
+from MediaKraken.user.forms import SearchEditForm
 import sys
 
 sys.path.append('..')
@@ -28,20 +28,22 @@ def search_media():
     """
     Display search page
     """
-    form = SearchForm(request.form)
+    form = SearchEditForm(request.form)
     movie = []
     tvshow = []
     album = []
     if request.method == 'POST':
         if request.form['action_type'] == 'Search Local':
             json_data = json.loads(
-                db_connection.db_search(request.form['search_item']))
+                db_connection.db_search(request.form['search_string']))
             for search_item in json_data['Movie']:
                 movie.append(search_item)
             for search_item in json_data['TVShow']:
                 tvshow.append(search_item)
             for search_item in json_data['Album']:
                 album.append(search_item)
+        elif request.form['action_type'] == 'Search Metadata Providers':
+            pass
     return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
                            media_album=album, form=form)
 
