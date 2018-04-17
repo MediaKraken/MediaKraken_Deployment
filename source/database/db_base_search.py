@@ -22,7 +22,7 @@ import json
 
 
 def db_search(self, search_string, search_type='Local', search_movie=True, search_tvshow=True,
-              search_album=True, search_image=True, search_publication=True):
+              search_album=True, search_image=True, search_publication=True, search_game=True):
     """
     search media local, remote and metadata providers
     """
@@ -63,5 +63,13 @@ def db_search(self, search_string, search_type='Local', search_movie=True, searc
                                    ' ORDER BY sml DESC, mm_metadata_book_name;',
                                    (search_string, search_string))
             json_return_data['Publication': json.dumps(self.db_cursor.fetchall())]
-            pass
+        if search_game:
+            # game section
+            self.db_cursor.execute('SELECT gi_id, gi_game_info_name,'
+                                   ' similarity(gi_game_info_name, %s) AS sml'
+                                   ' FROM mm_metadata_game_software_info'
+                                   ' WHERE gi_game_info_name % %s'
+                                   ' ORDER BY sml DESC, gi_game_info_name;',
+                                   (search_string, search_string))
+            json_return_data['Game': json.dumps(self.db_cursor.fetchall())]
     return json_return_data
