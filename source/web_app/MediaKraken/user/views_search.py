@@ -32,18 +32,56 @@ def search_media():
     movie = []
     tvshow = []
     album = []
+    image = []
+    publication = []
+    movie_search = False
+    tvshow_search = False
+    album_search = False
+    image_search = False
+    publication_search = False
     if request.method == 'POST':
         if request.form['action_type'] == 'Search Local':
+            if request.form['search_media_type'] == 'any':
+                movie_search = True
+                tvshow_search = True
+                album_search = True
+                image_search = True
+                publication_search = True
+            elif request.form['search_media_type'] == 'video':
+                movie_search = True
+                tvshow_search = True
+            elif request.form['search_media_type'] == 'audio':
+                album_search = True
+            elif request.form['search_media_type'] == 'image':
+                image_search = True
+            elif request.form['search_media_type'] == 'publication':
+                publication_search = True
             json_data = json.loads(
-                db_connection.db_search(request.form['search_string']))
-            for search_item in json_data['Movie']:
-                movie.append(search_item)
-            for search_item in json_data['TVShow']:
-                tvshow.append(search_item)
-            for search_item in json_data['Album']:
-                album.append(search_item)
+                db_connection.db_search(request.form['search_string'], search_type='Local',
+                                        search_movie=movie_search, search_tvshow=tvshow_search,
+                                        search_album=album_search, search_image=image_search,
+                                        search_publication=publication_search))
+            if 'Movie' in json_data:
+                for search_item in json_data['Movie']:
+                    movie.append(search_item)
+            if 'TVShow' in json_data:
+                for search_item in json_data['TVShow']:
+                    tvshow.append(search_item)
+            if 'Album' in json_data:
+                for search_item in json_data['Album']:
+                    album.append(search_item)
+            if 'Image' in json_data:
+                for search_item in json_data['Image']:
+                    image.append(search_item)
+            if 'Publication' in json_data:
+                for search_item in json_data['Publication']:
+                    publication.append(search_item)
         elif request.form['action_type'] == 'Search Metadata Providers':
             pass
+        # TODO
+        #search_resolution
+        #search_audio_channels
+        #search_audio_codec
     return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
                            media_album=album, form=form)
 

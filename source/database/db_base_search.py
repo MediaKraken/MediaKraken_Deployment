@@ -21,31 +21,41 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 
 
-def db_search(self, search_string, search_type='Local'):
+def db_search(self, search_string, search_type='Local', search_movie=True, search_tvshow=True,
+              search_album=True, search_image=True, search_publication=True):
     """
     search media local, remote and metadata providers
     """
     json_return_data = {}
     if search_type == 'Local':
-        # movie section
-        self.db_cursor.execute('SELECT mm_metadata_guid, mm_media_name, '
-                               'similarity(mm_media_name, %s) AS sml'
-                               ' FROM mm_metadata_movie WHERE mm_media_name % %s'
-                               ' ORDER BY sml DESC, mm_media_name;',
-                               (search_string, search_string))
-        json_return_data['Movie': json.dumps(self.db_cursor.fetchall())]
-        # tv show section
-        self.db_cursor.execute('SELECT mm_metadata_tvshow_guid, mm_metadata_tvshow_name,'
-                               ' similarity(mm_metadata_tvshow_name, %s) AS sml'
-                               ' FROM mm_metadata_tvshow WHERE mm_metadata_tvshow_name % %s'
-                               ' ORDER BY sml DESC, mm_metadata_tvshow_name;',
-                               (search_string, search_string))
-        json_return_data['TVShow': json.dumps(self.db_cursor.fetchall())]
-        # album section
-        self.db_cursor.execute('SELECT mm_metadata_album_guid, mm_metadata_album_name,'
-                               ' similarity(mm_metadata_album_name, %s) AS sml'
-                               ' FROM mm_metadata_album WHERE mm_metadata_album_name % %s'
-                               ' ORDER BY sml DESC, mm_metadata_album_name;',
-                               (search_string, search_string))
-        json_return_data['Album': json.dumps(self.db_cursor.fetchall())]
+        if search_movie:
+            # movie section
+            self.db_cursor.execute('SELECT mm_metadata_guid, mm_media_name, '
+                                   'similarity(mm_media_name, %s) AS sml'
+                                   ' FROM mm_metadata_movie WHERE mm_media_name % %s'
+                                   ' ORDER BY sml DESC, mm_media_name;',
+                                   (search_string, search_string))
+            json_return_data['Movie': json.dumps(self.db_cursor.fetchall())]
+        if search_tvshow:
+            # tv show section
+            self.db_cursor.execute('SELECT mm_metadata_tvshow_guid, mm_metadata_tvshow_name,'
+                                   ' similarity(mm_metadata_tvshow_name, %s) AS sml'
+                                   ' FROM mm_metadata_tvshow WHERE mm_metadata_tvshow_name % %s'
+                                   ' ORDER BY sml DESC, mm_metadata_tvshow_name;',
+                                   (search_string, search_string))
+            json_return_data['TVShow': json.dumps(self.db_cursor.fetchall())]
+        if search_album:
+            # album section
+            self.db_cursor.execute('SELECT mm_metadata_album_guid, mm_metadata_album_name,'
+                                   ' similarity(mm_metadata_album_name, %s) AS sml'
+                                   ' FROM mm_metadata_album WHERE mm_metadata_album_name % %s'
+                                   ' ORDER BY sml DESC, mm_metadata_album_name;',
+                                   (search_string, search_string))
+            json_return_data['Album': json.dumps(self.db_cursor.fetchall())]
+        if search_image:
+            # TODO image search
+            pass
+        if search_publication:
+            # TODO publication search
+            pass
     return json_return_data
