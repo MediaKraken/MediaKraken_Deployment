@@ -206,6 +206,9 @@ services:
       context: ./ComposeMediaKrakenRabbitMQ
       dockerfile: Dockerfile
     container_name: mkrabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
 #      - "5671:5671"
       - "5672:5672"
