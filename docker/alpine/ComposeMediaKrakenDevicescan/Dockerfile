@@ -1,10 +1,9 @@
 # Download base image
-FROM alpine:3.5
+FROM mediakraken/mkbase37
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image scans for new hardware devices"
 
-RUN mkdir /mediakraken
 WORKDIR /mediakraken
 
 # add hdhomerun lib to install
@@ -14,7 +13,6 @@ ADD libhdhomerun_python /mediakraken/libhdhomerun_python
 
 # Update repository and install packages
 RUN apk add --update \
-  python \
   alpine-sdk \
   py-setuptools \
   python-dev \
