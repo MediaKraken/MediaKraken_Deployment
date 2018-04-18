@@ -40,16 +40,19 @@ docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
 def run(connection):
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 1'})
     channel = yield connection.channel()
     exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 2'})
     queue = yield channel.queue_declare(queue='mkque', durable=True)
     yield channel.queue_bind(exchange='mkque_ex', queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 3'})
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 4'})
     l.start(0.01)
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run end'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 5'})
 
 
 @defer.inlineCallbacks
