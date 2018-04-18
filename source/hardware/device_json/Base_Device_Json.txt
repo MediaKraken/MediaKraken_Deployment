@@ -582,7 +582,8 @@
 			"Dynamic Multi EQ Mem 4": "Null",
 			"Dynamic Multi EQ Mem 5": "Null",
 			"Dynamic Multi EQ Off": "Null",
-			"Dynamic Multi EQ Up": "Null"						},
+			"Dynamic Multi EQ Up": "Null"
+			},
 		"Mute": "Null",
 		"Surround":
 			{
@@ -764,6 +765,7 @@
 	"AUX2": "Null",
 	"AUX3": "Null",
 	"BluRay": "Null",
+	"BluRay UHD": "Null",
 	"Cable/TV": "Null",
 	"Coax1": "Null",
 	"Coax2": "Null",
@@ -796,6 +798,9 @@
 	"HDMI6": "Null",
 	"HDMI7": "Null",
 	"HDMI8": "Null",
+	"HDDVD": "Null",
+	"HDDVD1": "Null",
+	"HDDVD2": "Null",
 	"Input": "Null",
 	"Ipod": "Null",
 	"IRadio": "Null",
