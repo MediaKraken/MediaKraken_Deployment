@@ -30,8 +30,8 @@ from . import common_hash_c_code
 
 # import compression mods
 
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    from py7zlib import Archive7z
+# if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+#     from py7zlib import Archive7z
 
 
 def com_hash_sha1_by_filename(file_name):

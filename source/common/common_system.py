@@ -160,21 +160,21 @@ def com_system_uptime():
     """
     Get system uptime
     """
-    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        uptime_proc = subprocess.Popen(
-            ['net', 'statistics', 'server'], stdout=subprocess.PIPE)
-        out, err = uptime_proc.communicate()  # pylint: disable=W0612
-        uptime_proc.wait()
-        for out_line in out:
-            if out_line.find('Statistics since') != -1:
-                out = out_line.replace('Statistics since ', '')
-                break
-    else:
-        uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE)
-        out, err = uptime_proc.communicate()
-        uptime_proc.wait()
-        out = out.split(' up ', 1)[1].split(',', 2)[
-                  0] + out.split(' up ', 1)[1].split(',', 2)[1]
+    # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+    #     uptime_proc = subprocess.Popen(
+    #         ['net', 'statistics', 'server'], stdout=subprocess.PIPE)
+    #     out, err = uptime_proc.communicate()  # pylint: disable=W0612
+    #     uptime_proc.wait()
+    #     for out_line in out:
+    #         if out_line.find('Statistics since') != -1:
+    #             out = out_line.replace('Statistics since ', '')
+    #             break
+    # else:
+    uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE)
+    out, err = uptime_proc.communicate()
+    uptime_proc.wait()
+    out = out.split(' up ', 1)[1].split(',', 2)[
+              0] + out.split(' up ', 1)[1].split(',', 2)[1]
     return out
 
 
