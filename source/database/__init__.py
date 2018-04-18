@@ -57,6 +57,9 @@ class MKServerDatabase(object):
         db_download_que_exists
     from database.db_base_extensions import db_extension_available, \
         db_extension_installed
+    from database.db_base_hardware import db_hardware_json_read, \
+        db_hardware_insert, \
+        db_hardware_delete
     from database.db_base_iradio import db_iradio_insert, \
         db_iradio_list_count, \
         db_iradio_list
