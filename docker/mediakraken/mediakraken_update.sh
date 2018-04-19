@@ -12,6 +12,7 @@ docker pull mediakraken/mkopenldap
 docker pull mediakraken/mkslave
 docker pull mediakraken/mkteamspeak
 docker pull mediakraken/mktransmission
+docker pull mediakraken/mkwireshark
 docker pull dpage/pgadmin4
 docker pull portainer/portainer
 ./purge_images_none.sh

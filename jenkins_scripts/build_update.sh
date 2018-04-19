@@ -109,5 +109,9 @@ docker build -t mediakraken/mkelk .
 cd ../ComposeMediaKrakenDebug
 docker build -t mediakraken/mkdebug .
 
+# build the wireshark
+cd ../ComposeMediaKrakenWireshark
+docker build -t mediakraken/mkwireshark .
+
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

@@ -36,3 +36,4 @@ docker push mediakraken/mksmtp:latest
 docker push mediakraken/mkteamspeak:latest
 docker push mediakraken/mktransmission:latest
 docker push mediakraken/mkwebapp:latest
+docker push mediakraken/mkwireshark:latest
