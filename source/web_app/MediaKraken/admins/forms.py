@@ -203,6 +203,7 @@ class AdminSettingsForm(Form):
     docker_portainer = BooleanField('Start Portainer (Docker monitor)')
     docker_teamspeak = BooleanField('Start Teamspeak 3 (chat server)')
     docker_transmission = BooleanField('Start Transmission (bittorrent webgui)')
+    docker_wireshark = BooleanField('Start Wireshark (network sniffer)')
 
     def __init__(self, *args, **kwargs):
         super(AdminSettingsForm, self).__init__(*args, **kwargs)
