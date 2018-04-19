@@ -159,7 +159,6 @@ services:
     restart: unless-stopped
 
   # rabbit
-  # https://github.com/maryvilledev/alpine-rmq
   rabbit:
     image: mediakraken/mkrabbitmq:latest
     container_name: mkrabbitmq
