@@ -30,6 +30,7 @@ from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from network import network_base_line as network_base
+from pika import exceptions
 from pika.adapters import twisted_connection
 from twisted.internet import reactor, protocol, defer, task
 from twisted.internet import ssl
