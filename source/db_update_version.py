@@ -239,15 +239,15 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 if db_connection.db_version_check() == 19:
     # hardware device (receivers, etc, for remote control)
-    db_connection.db_query('create table IF NOT EXISTS mm_hardware_json (mm_hardware_id uuid'
+    db_connection.db_query('create table IF NOT EXISTS mm_hardware (mm_hardware_id uuid'
                            ' CONSTRAINT mm_hardware_id primary key, mm_hardware_manufacturer text,'
                            ' mm_hardware_model text, mm_hardware_json jsonb)')
     if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
         db_connection.db_query(
-            'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware_json(mm_hardware_manufacturer)')
+            'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
     if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
         db_connection.db_query(
-            'CREATE INDEX mm_hardware_idx_model ON mm_hardware_json(mm_hardware_model)')
+            'CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
     db_connection.db_version_update(20)
     db_connection.db_commit()
 
