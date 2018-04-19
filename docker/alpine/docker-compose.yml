@@ -202,7 +202,7 @@ services:
   # rabbit
   rabbit:
     build:
-      context: ./ComposeMediaKrakenRabbitMQ
+      context: ./ComposeMediaKrakenRabbitMQ/management
       dockerfile: Dockerfile
     container_name: mkrabbitmq
     environment:
