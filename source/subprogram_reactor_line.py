@@ -30,7 +30,6 @@ from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from network import network_base_line as network_base
-from pika import exceptions
 from pika.adapters import twisted_connection
 from twisted.internet import reactor, protocol, defer, task
 from twisted.internet import ssl
@@ -43,7 +42,9 @@ docker_inst = common_docker.CommonDocker()
 def run(connection):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 1'})
     channel = yield connection.channel()
-    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 1.5'})
+    exchange = yield channel.exchange_declare(exchange='mkque_ex', exchange_type='direct',
+                                              durable=True)
     common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 2'})
     queue = yield channel.queue_declare(queue='mkque', durable=True)
     yield channel.queue_bind(exchange='mkque_ex', queue='mkque')
