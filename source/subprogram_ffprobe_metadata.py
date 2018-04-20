@@ -19,6 +19,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
+import subprocess
 import time
 
 import pika
@@ -48,6 +49,11 @@ def on_message(channel, method_frame, header_frame, body):
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
 
 # pika rabbitmq connection
 parameters = pika.ConnectionParameters('mkrabbitmq',
