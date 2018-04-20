@@ -44,7 +44,10 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
                                                          'year': movie_year})
         search = tmdb.Search()
+        common_global.es_inst.com_elastic_index('info', {'search': search})
         response = search.movie(query=movie_title)
+        common_global.es_inst.com_elastic_index('info', {'response': response})
+        common_global.es_inst.com_elastic_index('info', {'search results': search})
         for s in search.results:
             common_global.es_inst.com_elastic_index('info', {"result": s['title'], 'id': s['id'],
                                                              'date':
