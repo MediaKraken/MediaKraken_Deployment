@@ -88,12 +88,17 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {'tmdb bio image path': image_file_path})
         if 'profile_path' in result_json and result_json['profile_path'] is not None:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
-                thread_db.db_download_image_insert('themoviedb',
-                                                   json.dumps(
-                                                       {'url': 'https://image.tmdb.org/t/p/original'
-                                                               + result_json['profile_path'],
-                                                        'local': image_file_path + result_json[
-                                                            'profile_path']}))
+                if result_json['profile_path'] is not None:
+                    if not os.path.isfile(image_file_path):
+                        common_network.mk_network_fetch_from_url(
+                            'https://image.tmdb.org/t/p/original' + result_json['profile_path'],
+                            image_file_path + result_json['profile_path'])
+                # thread_db.db_download_image_insert('themoviedb',
+                #                                    json.dumps(
+                #                                        {'url': 'https://image.tmdb.org/t/p/original'
+                #                                                + result_json['profile_path'],
+                #                                         'local': image_file_path + result_json[
+                #                                             'profile_path']}))
         # TODO loop through cast to store new movies to fetch
         # set local image json
         return ({'Images': {'themoviedb': image_file_path}})
