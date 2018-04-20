@@ -251,12 +251,12 @@ if db_connection.db_version_check() == 19:
     db_connection.db_version_update(20)
     db_connection.db_commit()
 
-if db_connection.db_version_check() == 20:
-    options_json, status_json = db_connection.db_opt_status_read()
-    options_json.update({'Docker Instances': {'wireshark': False}})
-    db_connection.db_opt_update(options_json)
-    db_connection.db_version_update(21)
-    db_connection.db_commit()
+# if db_connection.db_version_check() == 20:
+#     options_json, status_json = db_connection.db_opt_status_read()
+#     options_json.update({'Docker Instances': {'wireshark': False}})
+#     db_connection.db_opt_update(options_json)
+#     db_connection.db_version_update(21)
+#     db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
