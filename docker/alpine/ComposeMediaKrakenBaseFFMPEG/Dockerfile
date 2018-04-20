@@ -1,12 +1,12 @@
-FROM alpine:3.6 as builder
+FROM alpine:3.7 as builder
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20171104-2245-stable
-ARG X265_VERSION=2.5
-ARG FFMPEG_VERSION="3.4"
+ARG X264_VERSION=20180415-2245-stable
+ARG X265_VERSION=2.7
+ARG FFMPEG_VERSION="3.4.2"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 ADD scripts /mediakraken
@@ -22,6 +22,7 @@ RUN buildDeps="autoconf \
         fontconfig-dev \
         g++ \
         gcc \
+        git \
         gnupg \
         gnutls-dev \
         fontconfig-dev \
@@ -37,11 +38,10 @@ RUN buildDeps="autoconf \
         libvpx-dev \
         libwebp-dev \
         make \
+        nasm \
         openjpeg-dev \
-        openssl-dev \
         opus-dev \
         python-dev \
-        openssl-dev \
         samba-dev \
         speex-dev \
         soxr-dev \
@@ -83,10 +83,12 @@ RUN buildDeps="autoconf \
     make EXAMPLES=0 && \
     make install && \
 
-    ./mediakraken/kvazaar.sh \
-    ./mediakraken/openh264.sh \
-    ./mediakraken/vidstab.sh \
-                
+    mkdir /mediakraken/install && \
+    chmod +x /mediakraken/*.sh && \
+    /mediakraken/kvazaar.sh && \
+    /mediakraken/openh264.sh && \
+    /mediakraken/vidstab.sh && \
+
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -101,7 +103,6 @@ RUN buildDeps="autoconf \
         --enable-avresample \
         --enable-fontconfig \
         --enable-gpl \
-        --enable-ladspa \
         --enable-libass \
         --enable-libfdk_aac \
         --enable-fontconfig \
@@ -112,11 +113,8 @@ RUN buildDeps="autoconf \
         --enable-libopenh264 \
         --enable-libopenjpeg \
         --enable-libopenmpt \
-        --enable-libopenssl \
         --enable-libopus \
-        --enable-libpulse \
         --enable-librtmp \
-        --enable-libschroedinger \
         --enable-libsoxr \
         --enable-libsmbclient \
         --enable-libspeex \
@@ -129,7 +127,6 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
-        --enable-openssl \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
@@ -145,15 +142,15 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.6
+FROM alpine:3.7
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update libssl1.0 samba-client lame libass libmodplug libogg \
+RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx && \
+    soxr fontconfig libvpx librtmp && \
     ffmpeg -buildconf
 
 CMD ["--help"]

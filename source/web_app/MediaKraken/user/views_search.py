@@ -10,7 +10,7 @@ from flask_login import login_required
 blueprint = Blueprint("user_search", __name__,
                       url_prefix='/users', static_folder="../static")
 import json
-from MediaKraken.public.forms import SearchForm
+from MediaKraken.user.forms import SearchEditForm
 import sys
 
 sys.path.append('..')
@@ -28,23 +28,74 @@ def search_media():
     """
     Display search page
     """
-    form = SearchForm(request.form)
+    form = SearchEditForm(request.form)
     movie = []
     tvshow = []
     album = []
+    image = []
+    publication = []
+    game = []
+    movie_search = False
+    tvshow_search = False
+    album_search = False
+    image_search = False
+    publication_search = False
+    game_search = False
     if request.method == 'POST':
         if request.form['action_type'] == 'Search Local':
+            if request.form['search_media_type'] == 'any':
+                movie_search = True
+                tvshow_search = True
+                album_search = True
+                image_search = True
+                publication_search = True
+                game_search = True
+            elif request.form['search_media_type'] == 'video':
+                movie_search = True
+                tvshow_search = True
+            elif request.form['search_media_type'] == 'audio':
+                album_search = True
+            elif request.form['search_media_type'] == 'image':
+                image_search = True
+            elif request.form['search_media_type'] == 'publication':
+                publication_search = True
+            elif request.form['search_media_type'] == 'game':
+                game_search = True
             json_data = json.loads(
-                db_connection.db_search(request.form['search_item']))
-            for search_item in json_data['Movie']:
-                movie.append(search_item)
-            for search_item in json_data['TVShow']:
-                tvshow.append(search_item)
-            for search_item in json_data['Album']:
-                album.append(search_item)
+                db_connection.db_search(request.form['search_string'], search_type='Local',
+                                        search_movie=movie_search, search_tvshow=tvshow_search,
+                                        search_album=album_search, search_image=image_search,
+                                        search_publication=publication_search,
+                                        search_game=game_search))
+            if 'Movie' in json_data:
+                for search_item in json_data['Movie']:
+                    movie.append(search_item)
+            if 'TVShow' in json_data:
+                for search_item in json_data['TVShow']:
+                    tvshow.append(search_item)
+            if 'Album' in json_data:
+                for search_item in json_data['Album']:
+                    album.append(search_item)
+            if 'Image' in json_data:
+                for search_item in json_data['Image']:
+                    image.append(search_item)
+            if 'Publication' in json_data:
+                for search_item in json_data['Publication']:
+                    publication.append(search_item)
+            if 'Game' in json_data:
+                for search_item in json_data['Game']:
+                    game.append(search_item)
+        elif request.form['action_type'] == 'Search Metadata Providers':
+            pass
+        # TODO
+        # search_primary_language
+        # search_secondary_language
+        # search_resolution
+        # search_audio_channels
+        # search_audio_codec
     return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
-                           media_album=album, form=form)
-
+                           media_album=album, media_image=image, media_book=publication,
+                           media_game=game, form=form)
 
 @blueprint.before_request
 def before_request():
@@ -53,7 +104,6 @@ def before_request():
     """
     g.db_connection = database_base.MKServerDatabase()
     g.db_connection.db_open()
-
 
 @blueprint.teardown_request
 def teardown_request(exception):  # pylint: disable=W0613

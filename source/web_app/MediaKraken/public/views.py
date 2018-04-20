@@ -2,6 +2,9 @@
 """Public section, including homepage and signup."""
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+
+sys.path.append('..')
 import database as database_base
 from MediaKraken.extensions import login_manager
 from MediaKraken.public.forms import LoginForm

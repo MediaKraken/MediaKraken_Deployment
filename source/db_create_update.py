@@ -787,7 +787,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
                                                                     'portainer': False,
                                                                     'smtp': False,
                                                                     'teamspeak': False,
-                                                                    'transmission': False},
+                                                                    'transmission': False,
+                                                                    'wireshark': False},
                                                'Dropbox': {'APIKey': None, 'APISecret': None},
                                                'AWSS3': {'AccessKey': None, 'SecretAccessKey': None,
                                                          'Bucket': 'mediakraken',
@@ -904,6 +905,17 @@ db_connection.db_query('create table IF NOT EXISTS mm_tv_schedule_program'
 if db_connection.db_table_index_check('mm_tv_schedule_idx_program') is None:
     db_connection.db_query('CREATE INDEX mm_tv_schedule_idx_program'
                            ' ON mm_tv_schedule_program(mm_tv_schedule_program_id)')
+
+# hardware device (receivers, etc, for remote control)
+db_connection.db_query('create table IF NOT EXISTS mm_hardware (mm_hardware_id uuid'
+                       ' CONSTRAINT mm_hardware_id primary key, mm_hardware_manufacturer text,'
+                       ' mm_hardware_model text, mm_hardware_json jsonb)')
+if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
+if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
 
 # create indexes for pg_trgm
 if db_connection.db_table_index_check('mm_metadata_tvshow_name_trigram_idx') is None:

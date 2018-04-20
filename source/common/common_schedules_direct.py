@@ -196,7 +196,7 @@ class CommonSchedulesDirect(object):
         """
         Check if program is still running (overtimes)
         """
-        resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s", program_id),
+        resp = requests.post(self.BASE_API_URL + ("/metadata/stillRunning/%s" % program_id),
                              headers=self.headers)
         common_global.es_inst.com_elastic_index('info', {"SD Running": resp.status_code,
                                                          'json': resp.json()})

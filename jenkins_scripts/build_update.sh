@@ -97,10 +97,6 @@ docker build -t mediakraken/mkdevicescan .
 cd ../ComposeMediaKrakenOpenLDAP
 docker build -t mediakraken/mkopenldap .
 
-# build the musicbrainz
-cd ../ComposeMediaKrakenMusicBrainz
-docker build -t mediakraken/mkmusicbrainz .
-
 # build the mumble
 cd ../ComposeMediaKrakenMumble
 docker build -t mediakraken/mkmumble .
@@ -112,6 +108,10 @@ docker build -t mediakraken/mkelk .
 # build the debug
 cd ../ComposeMediaKrakenDebug
 docker build -t mediakraken/mkdebug .
+
+# build the wireshark
+cd ../ComposeMediaKrakenWireshark
+docker build -t mediakraken/mkwireshark .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

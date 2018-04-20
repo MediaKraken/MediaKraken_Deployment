@@ -226,7 +226,7 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkportainer',
                                        ports={"9000": 9000},
-                                       environment={'/var/run/docker.sock':
+                                       volumes={'/var/run/docker.sock':
                                                         {'bind': '/var/run/docker.sock',
                                                          'mode': 'ro'},
                                                     '/var/opt/mediakraken/data':
@@ -277,3 +277,14 @@ class CommonDocker(object):
                                        name='mktransmission',
                                        environment={'USERNAME': username,
                                                     'PASSWORD': password})
+
+    def com_docker_run_wireshark(self):
+        """
+        run wireshark
+        """
+        return self.cli.containers.run(image='mediakraken/mkwireshark',
+                                       detach=True,
+                                       name='mkwireshark',
+                                       ports={"14500": 14500},
+                                       cap_add=('NET_ADMIN'),
+                                       environment={'XPRA_PW': 'wireshark'})

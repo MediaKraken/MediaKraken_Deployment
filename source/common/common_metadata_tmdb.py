@@ -35,7 +35,6 @@ class CommonMetadataTMDB(object):
     """
 
     def __init__(self, option_config_json):
-        tmdb.API_KEY = option_config_json['API']['themoviedb']
         self.API_KEY = option_config_json['API']['themoviedb']
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):

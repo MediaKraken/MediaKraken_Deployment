@@ -112,10 +112,10 @@ class PingIt(Thread):
         run the pings
         """
         pingaling = None
-        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-            pingaling = os.popen("ping -n 2 " + self.ip_addr, "r")
-        else:
-            pingaling = os.popen("ping -q -c2 " + self.ip_addr, "r")
+        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+        #     pingaling = os.popen("ping -n 2 " + self.ip_addr, "r")
+        # else:
+        pingaling = os.popen("ping -q -c2 " + self.ip_addr, "r")
         while 1:
             line = pingaling.readline()
             if not line:

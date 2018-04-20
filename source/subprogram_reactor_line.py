@@ -40,14 +40,21 @@ docker_inst = common_docker.CommonDocker()
 
 @defer.inlineCallbacks
 def run(connection):
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 1'})
     channel = yield connection.channel()
-    exchange = yield channel.exchange_declare(exchange='mkque_ex', type='direct', durable=True)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 1.5'})
+    exchange = yield channel.exchange_declare(exchange='mkque_ex', exchange_type='direct',
+                                              durable=True)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 2'})
     queue = yield channel.queue_declare(queue='mkque', durable=True)
     yield channel.queue_bind(exchange='mkque_ex', queue='mkque')
     yield channel.basic_qos(prefetch_count=1)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 3'})
     queue_object, consumer_tag = yield channel.basic_consume(queue='mkque', no_ack=False)
     l = task.LoopingCall(read, queue_object)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 4'})
     l.start(0.01)
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'begin run 5'})
 
 
 @defer.inlineCallbacks
@@ -170,14 +177,11 @@ def read(queue_object):
 
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-            'subprogram_reactor_line')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for connections!'})
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)
@@ -188,6 +192,10 @@ if __name__ == '__main__':
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                                  'mkrabbitmq', '-p', ' 5672'], shell=False)
     wait_pid.wait()
+
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+        'subprogram_reactor_line')
 
     # pika rabbitmq connection
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,

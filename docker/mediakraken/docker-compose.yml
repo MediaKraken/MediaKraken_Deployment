@@ -159,10 +159,12 @@ services:
     restart: unless-stopped
 
   # rabbit
-  # https://github.com/maryvilledev/alpine-rmq
   rabbit:
     image: mediakraken/mkrabbitmq:latest
     container_name: mkrabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - "5672:5672"
     volumes:

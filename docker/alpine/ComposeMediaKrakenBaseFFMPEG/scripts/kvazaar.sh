@@ -1,6 +1,6 @@
-cd $HOME/install
+cd /mediakraken/install
 git clone https://github.com/ultravideo/kvazaar.git
-cd $HOME/install/kvazaar
+cd /mediakraken/install/kvazaar
 ./autogen.sh
 ./configure --enable-static
 make -j`getconf _NPROCESSORS_ONLN`

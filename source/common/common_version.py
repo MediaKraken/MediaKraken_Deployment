@@ -18,8 +18,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-APP_VERSION = '0.7.11'
+APP_VERSION = 'dev37'
 
-DB_VERSION = 19
+DB_VERSION = 21
 
-MAME_VERSION = '194'
+MAME_VERSION = '196'

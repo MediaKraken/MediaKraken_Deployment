@@ -427,10 +427,10 @@ class CommonHardwareMarantz(object):
         return self.com_hardware_marantz_command(('VSSCH ?'), 1)
 
     # Vertical Stretch
-    def com_hardware_marantz_vertical_stretch_status(self):
+    def com_hardware_marantz_vertical_stretch_on(self):
         return self.com_hardware_marantz_command(('VSVST ON'), 1)
 
-    def com_hardware_marantz_vertical_stretch_status(self):
+    def com_hardware_marantz_vertical_stretch_off(self):
         return self.com_hardware_marantz_command(('VSVST OFF'), 1)
 
     def com_hardware_marantz_vertical_stretch_status(self):

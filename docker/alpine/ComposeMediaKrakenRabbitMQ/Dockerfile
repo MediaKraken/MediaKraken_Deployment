@@ -1,40 +1,93 @@
-FROM        alpine:3.4
-MAINTAINER  Maryville Technologies <github.com/maryvilledev>
+FROM alpine:3.7
 
-ENV         RABBITMQ_VERSION=3.6.11 \
-            RABBITMQ_AUTOCLUSTER_PLUGIN_VERSION=0.6.1
-ENV         RABBITMQ_HOME=/srv/rabbitmq_server-${RABBITMQ_VERSION} \
-            PLUGINS_DIR=/srv/rabbitmq_server-${RABBITMQ_VERSION}/plugins \
-            ENABLED_PLUGINS_FILE=/srv/rabbitmq_server-${RABBITMQ_VERSION}/etc/rabbitmq/enabled_plugins \
-            RABBITMQ_MNESIA_BASE=/var/lib/rabbitmq \
-            ERLANG_VERSION=18.3.2-r0
-ENV         PATH=$PATH:$RABBITMQ_HOME/sbin
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN addgroup -S rabbitmq && adduser -S -h /var/lib/rabbitmq -G rabbitmq rabbitmq
 
-COPY        ssl.config /srv/rabbitmq_server-${RABBITMQ_VERSION}/etc/rabbitmq/
-COPY        standard.config /srv/rabbitmq_server-${RABBITMQ_VERSION}/etc/rabbitmq/
-COPY        wrapper.sh /usr/bin/wrapper
+# grab su-exec for easy step-down from root
+RUN apk add --no-cache 'su-exec>=0.2'
 
-EXPOSE      5671/tcp 5672/tcp 15672/tcp 15671/tcp
-VOLUME      /var/lib/rabbitmq
-CMD         ["/usr/bin/wrapper"]
+RUN apk add --no-cache \
+# Bash for docker-entrypoint
+		bash \
+# Procps for rabbitmqctl
+		procps \
+# Erlang for RabbitMQ
+		erlang-asn1 \
+		erlang-hipe \
+		erlang-crypto \
+		erlang-eldap \
+		erlang-inets \
+		erlang-mnesia \
+		erlang \
+		erlang-os-mon \
+		erlang-public-key \
+		erlang-sasl \
+		erlang-ssl \
+		erlang-syntax-tools \
+		erlang-xmerl
 
-RUN         for p in erlang erlang-mnesia erlang-public-key erlang-crypto erlang-ssl erlang-sasl \
-                erlang-asn1 erlang-inets erlang-os-mon erlang-xmerl erlang-eldap erlang-syntax-tools;do \
-                ERLS="$ERLS $p=$ERLANG_VERSION"; done && \
-            chmod a+x /usr/bin/wrapper && \
-            apk add --update curl bash $ERLS && \
-            cd /srv && \
-            rmq_zip_url=https://github.com/rabbitmq/rabbitmq-server/releases/download && \
-                rmq_zip_url=${rmq_zip_url}/rabbitmq_v$(echo $RABBITMQ_VERSION | tr '.' '_') && \
-                rmq_zip_url=${rmq_zip_url}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz && \
-            curl -L -o /srv/rmq.tar.xz $rmq_zip_url && \
-            tar -x -f rmq.tar.xz && rm -f rmq.tar.xz && \
-            touch /srv/rabbitmq_server-${RABBITMQ_VERSION}/etc/rabbitmq/enabled_plugins && \
-            rabbitmq-plugins enable --offline rabbitmq_management && \
-            rmq_ac_url=https://github.com/aweber/rabbitmq-autocluster/releases/download && \
-                rmq_ac_url=${rmq_ac_url}/${RABBITMQ_AUTOCLUSTER_PLUGIN_VERSION} && \
-                rmq_ac_url=${rmq_ac_url}/autocluster-${RABBITMQ_AUTOCLUSTER_PLUGIN_VERSION}.tgz && \
-            curl -L -o /tmp/autocluster-${RABBITMQ_AUTOCLUSTER_PLUGIN_VERSION}.tgz $rmq_ac_url && \
-            tar -x -C ${RABBITMQ_HOME} -f /tmp/autocluster-${RABBITMQ_AUTOCLUSTER_PLUGIN_VERSION}.tgz && \
-            rm -Rf /var/cache/apk/*  /tmp/* && \
-            ln -sf $RABBITMQ_HOME /rabbitmq
+# get logs to stdout (thanks @dumbbell for pushing this upstream! :D)
+ENV RABBITMQ_LOGS=- RABBITMQ_SASL_LOGS=-
+# https://github.com/rabbitmq/rabbitmq-server/commit/53af45bf9a162dec849407d114041aad3d84feaf
+
+ENV RABBITMQ_HOME /opt/rabbitmq
+ENV PATH $RABBITMQ_HOME/sbin:$PATH
+
+# gpg: key 6026DFCA: public key "RabbitMQ Release Signing Key <info@rabbitmq.com>" imported
+ENV RABBITMQ_GPG_KEY 0A9AF2115F4687BD29803A206B73A36E6026DFCA
+
+ENV RABBITMQ_VERSION 3.7.4
+ENV RABBITMQ_GITHUB_TAG v3.7.4
+
+RUN set -ex; \
+	\
+	apk add --no-cache --virtual .build-deps \
+		ca-certificates \
+		gnupg \
+		libressl \
+		xz \
+	; \
+	\
+	wget -O rabbitmq-server.tar.xz.asc "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc"; \
+	wget -O rabbitmq-server.tar.xz     "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz"; \
+	\
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$RABBITMQ_GPG_KEY"; \
+	gpg --batch --verify rabbitmq-server.tar.xz.asc rabbitmq-server.tar.xz; \
+	rm -rf "$GNUPGHOME"; \
+	\
+	mkdir -p "$RABBITMQ_HOME"; \
+	tar \
+		--extract \
+		--verbose \
+		--file rabbitmq-server.tar.xz \
+		--directory "$RABBITMQ_HOME" \
+		--strip-components 1 \
+	; \
+	rm -f rabbitmq-server.tar.xz*; \
+	\
+# update SYS_PREFIX (first making sure it's set to what we expect it to be)
+	grep -qE '^SYS_PREFIX=\$\{RABBITMQ_HOME\}$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"; \
+	sed -ri 's!^(SYS_PREFIX=).*$!\1!g' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"; \
+	grep -qE '^SYS_PREFIX=$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"; \
+	\
+	apk del .build-deps
+
+# set home so that any `--user` knows where to put the erlang cookie
+ENV HOME /var/lib/rabbitmq
+
+RUN mkdir -p /var/lib/rabbitmq /etc/rabbitmq /var/log/rabbitmq \
+	&& chown -R rabbitmq:rabbitmq /var/lib/rabbitmq /etc/rabbitmq /var/log/rabbitmq \
+	&& chmod -R 777 /var/lib/rabbitmq /etc/rabbitmq /var/log/rabbitmq
+VOLUME /var/lib/rabbitmq
+
+# add a symlink to the .erlang.cookie in /root so we can "docker exec rabbitmqctl ..." without gosu
+RUN ln -sf /var/lib/rabbitmq/.erlang.cookie /root/
+
+RUN ln -sf "$RABBITMQ_HOME/plugins" /plugins
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+EXPOSE 4369 5671 5672 25672
+CMD ["rabbitmq-server"]

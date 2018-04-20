@@ -43,8 +43,9 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    # load up user bps
+    # load up public bps
     app.register_blueprint(public.views.blueprint)
+    # load up user bps
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(user.views_3d.blueprint)
     app.register_blueprint(user.views_cctv.blueprint)
