@@ -87,6 +87,11 @@ proc = subprocess.Popen(
     ['python', './subprogram_reactor_line.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
+# startup the ffprobe here atm
+proc_ffprobe = subprocess.Popen(
+    ['python', './subprogram_ffprobe_metadata.py'], shell=False)
+common_global.es_inst.com_elastic_index('info', {'FFprobe PID': proc_ffprobe.pid})
+
 # fire up cron service
 proc_cron = subprocess.Popen(
     ['python', './subprogram_cron_checker.py'], shell=False)
