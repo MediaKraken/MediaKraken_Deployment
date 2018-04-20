@@ -210,8 +210,10 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672'], shell=False)
 wait_pid.wait()
 
-# Open a connection to RabbitMQ on localhost using all default parameters
-connection = pika.BlockingConnection()
+# Open a connection to RabbitMQ
+parameters = pika.ConnectionParameters('mkrabbitmq',
+                                       credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
 
 # Open the channel
 channel = connection.channel()
