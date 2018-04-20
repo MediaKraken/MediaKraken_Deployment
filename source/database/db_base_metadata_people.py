@@ -142,8 +142,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     # batch insert from json of crew/cast
     """
-    common_global.es_inst.com_elastic_index('info', {'db person insert cast crew: %s %s',
-                                                     meta_type, person_json})
+    common_global.es_inst.com_elastic_index('info', {
+        'db person insert cast crew': str(meta_type, person_json)})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
@@ -153,7 +153,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
         pass
     if multiple_person:
         for person_data in person_json:
-            common_global.es_inst.com_elastic_index('info', {"person data: %s", person_data})
+            common_global.es_inst.com_elastic_index('info', {"person data": person_data})
             if meta_type == "tvmaze":
                 person_id = person_data['person']['id']
                 person_name = person_data['person']['name']
