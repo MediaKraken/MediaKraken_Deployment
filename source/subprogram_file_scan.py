@@ -248,7 +248,7 @@ for class_data in db_connection.db_media_class_list(None, None):
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
-    common_global.es_inst.com_elastic_index('info', {"Audit Path": row_data})
+    common_global.es_inst.com_elastic_index('info', {"Audit Path": str(row_data)})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
