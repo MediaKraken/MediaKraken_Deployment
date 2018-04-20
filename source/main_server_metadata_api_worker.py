@@ -445,7 +445,7 @@ while True:
                         metadata_uuid = metadata_last_id
                     common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid":
                                                                          metadata_uuid,
-                                                                     'filename': file_name})
+                                                                     'filename': str(file_name)})
                     if metadata_uuid is None:
                         # begin id process
                         metadata_uuid = metadata_identification.metadata_identification(thread_db,
