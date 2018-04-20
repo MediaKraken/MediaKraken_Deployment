@@ -280,8 +280,9 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id: %s %s %s", media_tvid,
-                                                         media_imdbid, media_aniid})
+        common_global.es_inst.com_elastic_index('info', {"id": media_tvid,
+                                                         'imdb': media_imdbid,
+                                                         'ani': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})
@@ -297,8 +298,9 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id2: %s %s %s", media_tvid,
-                                                         media_imdbid, media_aniid})
+        common_global.es_inst.com_elastic_index('info', {"id2": media_tvid,
+                                                         'imdb': media_imdbid,
+                                                         'anidb': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})
