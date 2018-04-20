@@ -144,7 +144,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     # batch insert from json of crew/cast
     """
     common_global.es_inst.com_elastic_index('info', {
-        'db person insert cast crew': str(meta_type, person_json)})
+        'db person insert cast crew': meta_type, 'person': person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
