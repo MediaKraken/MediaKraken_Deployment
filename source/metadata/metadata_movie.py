@@ -44,7 +44,7 @@ def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
-    common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": file_name})
+    common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
     file_name = guessit(file_name)
     metadata_uuid = None
     match_result = None
@@ -217,7 +217,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         metadata_movie_lookup.metadata_last_tmdb = None
         metadata_movie_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'meta movie look filename': file_name})
+    common_global.es_inst.com_elastic_index('info', {'meta movie look filename': str(file_name)})
     # check for dupes by name/year
     if 'year' in file_name:
         if file_name['title'] == metadata_movie_lookup.metadata_last_title \

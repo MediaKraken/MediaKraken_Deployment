@@ -66,8 +66,8 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     """
     # tvmaze search
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv search tvmaze": file_name})
     file_name = guessit(file_name)
+    common_global.es_inst.com_elastic_index('info', {"meta tv search tvmaze": str(file_name)})
     metadata_uuid = None
     tvmaze_id = None
     if TVMAZE_CONNECTION is not None:
@@ -94,8 +94,8 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv search tvdb": file_name})
     file_name = guessit(file_name)
+    common_global.es_inst.com_elastic_index('info', {"meta tv search tvdb": str(file_name)})
     metadata_uuid = None
     tvdb_id = None
     if THETVDB_CONNECTION is not None:
@@ -293,7 +293,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'tvlook filename': file_name})
+    common_global.es_inst.com_elastic_index('info', {'tvlook filename': str(file_name)})
     # check for dupes by name/year
     if 'year' in file_name:
         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv here 1'})
