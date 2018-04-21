@@ -294,7 +294,11 @@ if len(audit_directories) > 0:
     with futures.ThreadPoolExecutor(len(audit_directories)) as executor:
         futures = [executor.submit(worker, n) for n in audit_directories]
         for future in futures:
-            common_global.es_inst.com_elastic_index('info', {'future': future.result()})
+            pass
+            # try:
+            #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
+            # except:
+            #     pass
 
 # commit
 db_connection.db_commit()
