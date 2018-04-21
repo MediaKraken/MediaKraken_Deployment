@@ -49,26 +49,29 @@ class CommonMetadataTMDB(object):
                                                          'year': movie_year})
         search = self.movie.search(movie_title)
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
-        for res in search:
-            # print(res.id)
-            # print(res.title)
-            # print(res.overview)
-            # print(res.poster_path)
-            # print(res.vote_average)
-            common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
-                                                             'date':
-                                                                 res.release_date.split('-', 1)[
-                                                                     0]})
-            if movie_year is not None and (str(movie_year) == res.release_date.split('-', 1)[0]
-                                           or str(int(movie_year) - 1) ==
-                                           res.release_date.split('-', 1)[0]
-                                           or str(int(movie_year) + 1) ==
-                                           res.release_date.split('-', 1)[0]):
-                if not id_only:
-                    return 'info', self.com_tmdb_meta_by_id(res.id)
-                else:
-                    return 'idonly', res.id  # , s['title']
-        return 're', search.results
+        if type(search) != list:
+            for res in search:
+                # print(res.id)
+                # print(res.title)
+                # print(res.overview)
+                # print(res.poster_path)
+                # print(res.vote_average)
+                common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
+                                                                 'date':
+                                                                     res.release_date.split('-', 1)[
+                                                                         0]})
+                if movie_year is not None and (str(movie_year) == res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) - 1) ==
+                                               res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) + 1) ==
+                                               res.release_date.split('-', 1)[0]):
+                    if not id_only:
+                        return 'info', self.com_tmdb_meta_by_id(res.id)
+                    else:
+                        return 'idonly', res.id  # , s['title']
+            return 're', search.results
+        else:
+            return None, None
 
         # search = tmdb.Search()
         # common_global.es_inst.com_elastic_index('info', {'search': search})
