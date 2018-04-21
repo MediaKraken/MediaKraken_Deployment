@@ -48,6 +48,10 @@ def on_message(channel, method_frame, header_frame, body):
                                                      json_message['Local'])
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
 
 # pika rabbitmq connection
 parameters = pika.ConnectionParameters('mkrabbitmq',

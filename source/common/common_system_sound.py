@@ -44,7 +44,7 @@ def com_sound_play_file(file_name):
         pass
     if sound_data:
         common_global.es_inst.com_elastic_index('info', {"Sound found at": sound_data.source})
-        common_global.es_inst.com_elastic_index('info', {"Sound is %.3f seconds",
+        common_global.es_inst.com_elastic_index('info', {"Sound is %.3f seconds" %
                                                          sound_data.length})
         sound_data.play()
 

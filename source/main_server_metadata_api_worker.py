@@ -433,7 +433,7 @@ while True:
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
                 common_global.es_inst.com_elastic_index('info', {'worker Z filename':
-                                                                     file_name})
+                                                                     str(file_name)})
                 if 'title' in file_name:
                     if 'year' in file_name:
                         if file_name['title'] == metadata_last_title \
@@ -445,7 +445,7 @@ while True:
                         metadata_uuid = metadata_last_id
                     common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid":
                                                                          metadata_uuid,
-                                                                     'filename': file_name})
+                                                                     'filename': str(file_name)})
                     if metadata_uuid is None:
                         # begin id process
                         metadata_uuid = metadata_identification.metadata_identification(thread_db,

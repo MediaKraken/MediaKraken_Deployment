@@ -103,7 +103,7 @@ def user_video_player(guid):
     proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
                                       g.db_connection.db_media_path_by_uuid(
                                           media_guid_index)[0],
-                                      'http://localhost:8900/stream.ffm'], shell=False)
+                                      'http://localhost/stream.ffm'], shell=False)
     common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
     return render_template("users/user_playback.html", data_desc=('Movie title'))
 

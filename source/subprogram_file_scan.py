@@ -210,8 +210,10 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672'], shell=False)
 wait_pid.wait()
 
-# Open a connection to RabbitMQ on localhost using all default parameters
-connection = pika.BlockingConnection()
+# Open a connection to RabbitMQ
+parameters = pika.ConnectionParameters('mkrabbitmq',
+                                       credentials=pika.PlainCredentials('guest', 'guest'))
+connection = pika.BlockingConnection(parameters)
 
 # Open the channel
 channel = connection.channel()
@@ -246,7 +248,7 @@ for class_data in db_connection.db_media_class_list(None, None):
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
-    common_global.es_inst.com_elastic_index('info', {"Audit Path": row_data})
+    common_global.es_inst.com_elastic_index('info', {"Audit Path": str(row_data)})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
