@@ -10,6 +10,7 @@ pitchfork
 psycopg2
 pytvdbapi
 pytvmaze
+tmdbv3api
 tmdbsimple
 xmltodict
 subliminal
