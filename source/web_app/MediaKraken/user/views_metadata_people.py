@@ -31,21 +31,22 @@ def metadata_person_detail(guid):
     """
     meta_data = g.db_connection.db_meta_person_by_guid(guid)
     json_metadata = meta_data['mmp_person_meta_json']
-    json_imagedata = meta_data['mmp_person_image']
-    # person image
-    try:
-        if json_imagedata['Images']['Poster'] is not None:
-            data_person_image = "/static/meta/images/" + \
-                                json_imagedata['Images']['Poster']
+    if meta_data['mmp_person_image'] is not None:
+        if 'themoviedb' in meta_data['mmp_person_image']['Images']:
+            try:
+                person_image = meta_data['mmp_person_image']['Images']['themoviedb'].replace(
+                    '/mediakraken/web_app/MediaKraken', '') + meta_data['mmp_meta']
+            except:
+                person_image = "/static/images/person_missing.png"
         else:
-            data_person_image = "/static/images/person_missing.png"
-    except:
-        data_person_image = "/static/images/person_missing.png"
+            person_image = "/static/images/person_missing.png"
+    else:
+        person_image = "/static/images/person_missing.png"
     # also appears in
     meta_also_media = g.db_connection.db_meta_person_as_seen_in(meta_data[0])
     return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=json_metadata,
-                           data_person_image=data_person_image,
+                           data_person_image=person_image,
                            data_also_media=meta_also_media,
                            )
 
