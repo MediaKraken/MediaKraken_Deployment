@@ -70,10 +70,14 @@ def worker(audit_directory):
     total_scanned = 0
     total_files = 0
     for file_name in file_data:
-        # TODO whined about converting both to utf8
-        if file_name in global_known_media:
-            pass  # already scanned, skip
-        else:
+        # whined about converting both to utf8
+        skip_rec = False
+        try:
+            if file_name in global_known_media:
+                skip_rec = True  # already scanned, skip
+        except:
+            pass
+        if skip_rec == False:
             filename_base, file_extension = os.path.splitext(file_name)
             if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION \
                     or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
