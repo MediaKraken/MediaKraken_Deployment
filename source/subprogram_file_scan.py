@@ -70,14 +70,9 @@ def worker(audit_directory):
     total_scanned = 0
     total_files = 0
     for file_name in file_data:
-        # whined about converting both to utf8
-        skip_rec = False
-        try:
-            if file_name in global_known_media:
-                skip_rec = True  # already scanned, skip
-        except:
+        if file_name in global_known_media:
             pass
-        if skip_rec == False:
+        else:
             filename_base, file_extension = os.path.splitext(file_name)
             if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION \
                     or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
@@ -239,8 +234,7 @@ known_media = db_connection.db_known_media()
 if known_media is not None:
     for media_row in known_media:
         if media_row['mm_media_path'] is not None:
-            global_known_media.append(
-                media_row['mm_media_path'].encode('utf-8'))
+            global_known_media.append(media_row['mm_media_path'])
 known_media = None
 
 # table the class_text into a dict...will lessen the db calls
