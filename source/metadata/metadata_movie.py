@@ -44,7 +44,10 @@ def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
-    common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
+    try:
+        common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
+    except:
+        pass
     file_name = guessit(file_name)
     metadata_uuid = None
     match_result = None
