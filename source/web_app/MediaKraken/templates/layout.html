@@ -13,6 +13,9 @@
             <html class="no-js" lang="en">
                 <!--<![endif]-->
                 <head>
+                    {{ moment.include_jquery() }}
+                    {{ moment.include_moment() }}
+                    {{ moment.lang("en") }}
                     <meta charset="utf-8">
                     <title>{% block page_title %}
                         MediaKraken

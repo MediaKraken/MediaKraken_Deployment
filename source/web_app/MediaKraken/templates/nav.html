@@ -52,7 +52,7 @@
                 {% endif %}
                 <li><a href="{{ url_for('public.about') }}" id="menu_about">About</a></li>
                 <li>
-                    <!-- <p class="navbar-text">{{ moment().format('LLL') }}  {{ moment().fromNow(refresh=True) }}</p> -->
+                    <p class="navbar-text">{{ moment().format('LLL') }}  {{ moment().fromNow(refresh = True) }}</p>
                 </li>
             </ul>
             {% if current_user and current_user.is_authenticated %}
