@@ -5,7 +5,8 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>dev - Redis 4.0.9, FFMPEG version bumps, base images on 3.7 Alpine, RabbitMQ 3.7.4, Lightgallery 1.6.9, JQuery 3.3.1, Bootstrap 4.1
+        <li><b>dev - Redis 4.0.9, FFMPEG version bumps, base images on 3.7 Alpine, RabbitMQ 3.7.4,
+        Lightgallery 1.6.9, JQuery 3.3.1, Bootstrap 4.1, Wireshark container
          - Current Dev branch</b>
         <li><i>0.7.11 - PostgreSQL 10.3, ELK cleanup, more Jenkins build, redid how docker compose and "one-off" containers are built/launched
         <li>0.7.10 - pyspeedtest, better automated testing, Jenkins CI, PGAdmin4, PostgreSQL 9.6.7
