@@ -40,8 +40,8 @@ def user_movie_genre_page():
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
 
-@blueprint.route("/movie/<genre>")
-@blueprint.route("/movie/<genre>/")
+@blueprint.route("/movie/<genre>", methods=['GET', 'POST'])
+@blueprint.route("/movie/<genre>/", methods=['GET', 'POST'])
 @login_required
 def user_movie_page(genre):
     """
