@@ -52,7 +52,7 @@
                 {% endif %}
                 <li><a href="{{ url_for('public.about') }}" id="menu_about">About</a></li>
                 <li>
-                    <!-- <p class="navbar-text">{{ moment().format('LLL') }}  {{ moment().fromNow(refresh=True) }}</p> -->
+                    <p><span id="timestamp"></span></p>
                 </li>
             </ul>
             {% if current_user and current_user.is_authenticated %}
@@ -79,4 +79,14 @@
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- the script for refresh current time -->
+    <script>
+    var update = function () {
+    $("#timestamp").html(moment().format('MMMM Do YYYY, h:mm:ss a'));
+    };
+    $(document).ready(function(){
+    setInterval(update, 100);
+    });
+    </script>
 </nav>
