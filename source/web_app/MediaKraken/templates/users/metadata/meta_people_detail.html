@@ -16,12 +16,12 @@
             <table class="table table-hover">
                 <tbody>
                     <tr>
-                        <p>Name: {{json_metadata['Name']}}</p>
+                        <p>Name: {{json_metadata['name']}}</p>
                         {% if json_metadata['homepage'] %}
                         <p>Homepage: <a href = {{json_metadata['homepage']}}>{{json_metadata['homepage']}}</a></p>
                         {% endif %}
-                        {% if json_metadata['Bio'] %}
-                        <p>Biography: {{json_metadata['Bio']}}</p>
+                        {% if json_metadata['bio'] %}
+                        <p>Biography: {{json_metadata['bio']}}</p>
                         {% endif %}
                     </tr>
                 </tbody>
