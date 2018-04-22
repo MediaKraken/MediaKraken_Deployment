@@ -33,7 +33,7 @@ def user_livetv_page(schedule_date, schedule_time):
     grid_data += '</tr>'
     channel_data = ""
     md_used = 2
-    last_station = None
+    last_station = ""
     for row_data in g.db_connection.db_tv_schedule_by_date(schedule_date):
         if row_data[0] != last_station and last_station is not None:
             grid_data += '<tr><td>' + last_station + '</td><td>' + row_data[1] + '</td>' \
