@@ -7,7 +7,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from flask import Blueprint, render_template, g, request
 from flask_login import current_user
 from flask_login import login_required
-# from flask_paginate import Pagination, get_page_parameter
 
 blueprint = Blueprint("user_metadata_movie", __name__, url_prefix='/users',
                       static_folder="../static")
@@ -90,9 +89,6 @@ def metadata_movie_list():
     """
     Display list of movie metadata
     """
-    # page = request.args.get(get_page_parameter(), type=int, default=1)
-    # pagination = Pagination(page=page, total=g.db_connection.db_table_count('mm_metadata_movie'),
-    #                         search=False, record_name='Movies')
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     form = SearchForm(request.form)
