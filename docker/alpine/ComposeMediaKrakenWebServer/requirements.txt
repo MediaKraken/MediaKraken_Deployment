@@ -8,7 +8,7 @@ Flask-WTF
 Flask-Babel
 Flask-Mail
 Flask-Openid
-Flask-Paginate
+Flask-Paginate>=0.5.1
 Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
