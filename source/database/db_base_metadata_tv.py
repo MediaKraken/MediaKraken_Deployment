@@ -25,6 +25,9 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     # metadata guid by name
     """
+    common_global.es_inst.com_elastic_index('info',
+                                            {'db_metatv_guid_by_tvshow_name': str(tvshow_name),
+                                             'year': tvshow_year})
     metadata_guid = None
     if tvshow_year is None:
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
