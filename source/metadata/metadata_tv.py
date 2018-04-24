@@ -25,6 +25,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_metadata_thetvdb
 from common import common_metadata_tvmaze
+from common import common_string
 from common import common_thetvdb
 from guessit import guessit
 
@@ -67,6 +68,8 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     # tvmaze search
     """
     file_name = guessit(file_name)
+    if type(file_name['title']) == list:
+        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     common_global.es_inst.com_elastic_index('info', {"meta tv search tvmaze": str(file_name)})
     metadata_uuid = None
     tvmaze_id = None
@@ -95,6 +98,8 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     # tvdb search
     """
     file_name = guessit(file_name)
+    if type(file_name['title']) == list:
+        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     common_global.es_inst.com_elastic_index('info', {"meta tv search tvdb": str(file_name)})
     metadata_uuid = None
     tvdb_id = None

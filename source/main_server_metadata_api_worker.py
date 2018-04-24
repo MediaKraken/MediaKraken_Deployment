@@ -29,6 +29,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_string
 from common.common_metadata_limiter import *
 from guessit import guessit
 from metadata import metadata_general
@@ -432,6 +433,8 @@ while True:
             else:
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
+                if type(file_name['title']) == list:
+                    file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
                 common_global.es_inst.com_elastic_index('info', {'worker Z filename':
                                                                      str(file_name)})
                 if 'title' in file_name:

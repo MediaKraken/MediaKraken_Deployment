@@ -25,6 +25,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_metadata
 from common import common_metadata_tmdb
+from common import common_string
 from guessit import guessit
 
 from . import metadata_nfo_xml
@@ -49,6 +50,8 @@ def movie_search_tmdb(db_connection, file_name):
     except:
         pass
     file_name = guessit(file_name)
+    if type(file_name['title']) == list:
+        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     metadata_uuid = None
     match_result = None
     if TMDB_CONNECTION is not None:

@@ -22,6 +22,7 @@ import json
 
 from common import common_global
 from common import common_metadata_tv_theme
+from common import common_string
 from guessit import guessit
 
 from . import metadata_movie
@@ -82,6 +83,7 @@ def metadata_search(thread_db, provider_name, download_data):
             lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
+        # TODO....handle list return for title?
         metadata_uuid = common_metadata_tv_theme.com_tvtheme_download(
             guessit(download_data['Path'])['title'])
         if metadata_uuid is not None:

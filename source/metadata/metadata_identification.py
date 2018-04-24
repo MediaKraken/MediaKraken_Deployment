@@ -24,6 +24,7 @@ import uuid
 
 from common import common_global
 from common import common_hash
+from common import common_string
 
 from . import metadata_anime
 from . import metadata_movie
