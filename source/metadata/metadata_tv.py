@@ -379,7 +379,8 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info', {'stuff': "tv db lookup"})
+        common_global.es_inst.com_elastic_index('info', {'stuff': "tv db lookup", 'file': str(
+            file_name)})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
