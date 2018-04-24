@@ -45,6 +45,13 @@
     <p id="general_text">No game system metadata found.</p>
     {% endif %}
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
     <script src="/static/js/jquery-listnav.min.js"></script>
     <script>
         $("#mkmediaList").listnav({
