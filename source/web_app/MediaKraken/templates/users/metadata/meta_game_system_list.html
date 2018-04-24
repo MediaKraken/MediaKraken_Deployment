@@ -45,5 +45,15 @@
     <p id="general_text">No game system metadata found.</p>
     {% endif %}
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery-listnav.min.js"></script>
+    <script>
+        $("#mkmediaList").listnav({
+            includeAll: true,
+            includeOther: true,
+            includeNums: true,
+            flagDisabled: true,
+            removeDisabled: true,
+            showCounts: true,});
+    </script>
 </body>
 {% endblock %}
