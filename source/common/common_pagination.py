@@ -12,7 +12,7 @@ def get_css_framework():
     """
     Determine framework
     """
-    return current_app.config.get('CSS_FRAMEWORK', 'bootstrap3')
+    return current_app.config.get('CSS_FRAMEWORK', 'bootstrap4')
 
 
 def get_link_size():
