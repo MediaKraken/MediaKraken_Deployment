@@ -439,6 +439,8 @@ while True:
                                                                      str(file_name)})
                 if 'title' in file_name:
                     if 'year' in file_name:
+                        if type(file_name['year']) == list:
+                            file_name['year'] = file_name['year'][0]
                         if file_name['title'] == metadata_last_title \
                                 and file_name['year'] == metadata_last_year:
                             thread_db.db_download_delete(row_data['mdq_id'])
