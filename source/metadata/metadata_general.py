@@ -22,7 +22,6 @@ import json
 
 from common import common_global
 from common import common_metadata_tv_theme
-from common import common_string
 from guessit import guessit
 
 from . import metadata_movie
@@ -66,7 +65,19 @@ def metadata_search(thread_db, provider_name, download_data):
     set_fetch = False
     lookup_halt = False
     update_provider = None
-    if provider_name == 'imvdb':
+    if provider_name == 'anidb':
+        lookup_halt = True
+    elif provider_name == 'chart_lyrics':
+        lookup_halt = True
+    elif provider_name == 'comicvine':
+        lookup_halt = True
+    elif provider_name == 'discogs':
+        lookup_halt = True
+    elif provider_name == 'giantbomb':
+        lookup_halt = True
+    elif provider_name == 'imdb':
+        lookup_halt = True
+    elif provider_name == 'imvdb':
         metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup(thread_db,
                                                                                        download_data[
                                                                                            'mdq_download_json'][
@@ -81,6 +92,18 @@ def metadata_search(thread_db, provider_name, download_data):
             thread_db, download_data['mdq_download_json']['ProviderMetaID'])
         if metadata_uuid is None:
             lookup_halt = True
+    elif provider_name == 'lastfm':
+        lookup_halt = True
+    elif provider_name == 'musicbrainz':
+        lookup_halt = True
+    elif provider_name == 'netflixroulette':
+        lookup_halt = True
+    elif provider_name == 'omdb':
+        lookup_halt = True
+    elif provider_name == 'openlibrary':
+        lookup_halt = True
+    elif provider_name == 'pitchfork':
+        lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
         # TODO....handle list return for title?
@@ -92,6 +115,12 @@ def metadata_search(thread_db, provider_name, download_data):
             return  # since it's a search/fetch/insert in one shot
         else:
             lookup_halt = True
+    elif provider_name == 'theaudiodb':
+        lookup_halt = True
+    elif provider_name == 'thegamesdb':
+        lookup_halt = True
+    elif provider_name == 'thelogodb':
+        lookup_halt = True
     elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,
                                                                        download_data[
@@ -105,6 +134,8 @@ def metadata_search(thread_db, provider_name, download_data):
         else:
             if metadata_uuid is None:
                 set_fetch = True
+    elif provider_name == 'thesportsdb':
+        lookup_halt = True
     elif provider_name == 'thetvdb':
         metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
                                                                  download_data['mdq_download_json'][
@@ -114,6 +145,8 @@ def metadata_search(thread_db, provider_name, download_data):
                 lookup_halt = True
             else:
                 set_fetch = True
+    elif provider_name == 'tv_intros':
+        lookup_halt = True
     elif provider_name == 'tvmaze':
         metadata_uuid, match_result = metadata_tv.tv_search_tvmaze(thread_db,
                                                                    download_data[
@@ -123,8 +156,12 @@ def metadata_search(thread_db, provider_name, download_data):
                 update_provider = 'thetvdb'
             else:
                 set_fetch = True
-    elif provider_name == 'omdb':
+    elif provider_name == 'tvshowtime':
         lookup_halt = True
+    elif provider_name == 'twitch':
+        lookup_halt = True
+
+
 
     # if search is being updated to new provider
     if update_provider is not None:
