@@ -161,8 +161,6 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'twitch':
         lookup_halt = True
 
-
-
     # if search is being updated to new provider
     if update_provider is not None:
         thread_db.db_download_update_provider(
@@ -243,13 +241,13 @@ def metadata_fetch(thread_db, provider_name, download_data):
         #                download_data['mdq_id'])
         else:  # tv
             pass
-    elif provider_name == 'tvmaze':
-        metadata_tv.tv_fetch_save_tvmaze(thread_db,
-                                         download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_tv.tv_fetch_save_tvdb(thread_db,
                                        download_data['mdq_download_json']['ProviderMetaID'])
+        thread_db.db_download_delete(download_data['mdq_id'])
+    elif provider_name == 'tvmaze':
+        metadata_tv.tv_fetch_save_tvmaze(thread_db,
+                                         download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
 
 
