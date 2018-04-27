@@ -27,6 +27,7 @@ from common import common_hash
 from common import common_string
 
 from . import metadata_anime
+from . import metadata_game
 from . import metadata_movie
 from . import metadata_music
 from . import metadata_music_video
@@ -220,7 +221,9 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                            download_que_json, download_que_id,
                                                            guessit_file_name)
     elif class_text == "Video Game":
-        pass
+        metadata_uuid = metadata_game.metadata_game_lookup(db_connection,
+                                                             download_que_json['Path'],
+                                                             download_que_json, download_que_id)
     elif class_text == "Video Game Intro":
         pass
     elif class_text == "Video Game Speedrun":
