@@ -113,5 +113,9 @@ docker build -t mediakraken/mkdebug .
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark .
 
+# build the tmdb prefetch
+cd ../ComposeMediaKrakenPrefetchTMDB
+docker build -t mediakraken/mkprefetchtmdb .
+
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

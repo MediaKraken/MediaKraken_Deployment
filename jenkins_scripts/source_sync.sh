@@ -25,6 +25,11 @@ cp /home/metaman/MediaKraken_Deployment/source/build_trailer_directory.py /home/
 cp /home/metaman/MediaKraken_Deployment/source/subprogram*.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp /home/metaman/MediaKraken_Deployment/source/bulk_themoviedb_netfetch.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
 
+# prefetch tmdb
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
+cp /home/metaman/MediaKraken_Deployment/source/bulk_themoviedb_netfetch.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
+
 # ripper
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
 cp /home/metaman/MediaKraken_Deployment/source/main_ripper.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
