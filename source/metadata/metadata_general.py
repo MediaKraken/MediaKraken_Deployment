@@ -24,10 +24,12 @@ from common import common_global
 from common import common_metadata_tv_theme
 from guessit import guessit
 
+from . import metadata_anime
 from . import metadata_movie
 from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
+from . import metadata_sports
 from . import metadata_tv
 
 
@@ -66,7 +68,14 @@ def metadata_search(thread_db, provider_name, download_data):
     lookup_halt = False
     update_provider = None
     if provider_name == 'anidb':
-        lookup_halt = True
+        metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
+                                                             download_data[
+                                                                 'mdq_download_json'][
+                                                                 'Path'], download_data,
+                                                             download_data[
+                                                                 'mdq_id'],
+                                                             guessit(download_data['Path'])[
+                                                                 'title'])
     elif provider_name == 'chart_lyrics':
         lookup_halt = True
     elif provider_name == 'comicvine':
@@ -81,7 +90,9 @@ def metadata_search(thread_db, provider_name, download_data):
         metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup(thread_db,
                                                                                        download_data[
                                                                                            'mdq_download_json'][
-                                                                                           'Path'])
+                                                                                           'Path'],
+                                                                                       download_data[
+                                                                                           'mdq_id'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'theaudiodb'
@@ -135,7 +146,11 @@ def metadata_search(thread_db, provider_name, download_data):
             if metadata_uuid is None:
                 set_fetch = True
     elif provider_name == 'thesportsdb':
-        lookup_halt = True
+        metadata_uuid = metadata_sports.metadata_sports_lookup(thread_db,
+                                                               download_data['mdq_download_json'][
+                                                                   'Path'], download_data,
+                                                               download_data[
+                                                                   'mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
                                                                  download_data['mdq_download_json'][
