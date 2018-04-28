@@ -34,6 +34,7 @@ RUN apk add --update \
   && rc-update add rpcbind
 #  && pip install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
+RUN mkdir /mediakraken/cache
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken

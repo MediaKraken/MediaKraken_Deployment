@@ -112,6 +112,7 @@ services:
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
       - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
+      - /var/opt/mediakraken/cache:/mediakraken/cache
     networks:
       - mediakraken_network
       - mediakraken_dbnetwork
