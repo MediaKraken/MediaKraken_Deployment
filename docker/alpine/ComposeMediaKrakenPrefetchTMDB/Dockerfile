@@ -25,6 +25,7 @@ RUN apk add --update \
   && rm requirements.txt \
   && apk add \
   py-setuptools \
+  python \
   && rm -rf /var/cache/apk/*
 
 ADD wait-for-it-ash.sh /mediakraken
