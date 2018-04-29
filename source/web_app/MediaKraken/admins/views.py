@@ -226,7 +226,7 @@ def admin_server_settings():
     """
     Display server settings page
     """
-    settings_json = g.db_connection.db_opt_status_read[0]
+    settings_json = g.db_connection.db_opt_status_read()[0]
     if request.method == 'POST':
         settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
         settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
