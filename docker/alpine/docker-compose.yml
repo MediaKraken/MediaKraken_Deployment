@@ -33,7 +33,6 @@ services:
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -67,7 +66,7 @@ services:
     volumes:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
-      - mediakraken_dbnetwork
+      - mediakraken_network
     restart: unless-stopped
 
   # pgbouncer
@@ -88,7 +87,7 @@ services:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
-      - mediakraken_dbnetwork
+      - mediakraken_network
     restart: unless-stopped
 
   # runs the server to fetch/process all metadata
@@ -115,7 +114,6 @@ services:
       - /var/opt/mediakraken/cache:/mediakraken/cache
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -176,7 +174,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
 
 #  nginxrtmp:
@@ -314,9 +311,6 @@ services:
 
 # Docker private networks
 networks:
-  # Twisted and AMQP communications network
+  # Twisted, Database and AMQP communications network
   mediakraken_network:
-    driver: bridge
-  # Database communications network
-  mediakraken_dbnetwork:
     driver: bridge
