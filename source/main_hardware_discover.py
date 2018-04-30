@@ -48,7 +48,7 @@ for row_tuner in tuner_api.com_hdhomerun_list():
                           'Channels': {}})
 
 # chromecast discover
-chrome_pid = subprocess.Popen(['python', './stream2chromecast/stream2chromecast.py',
+chrome_pid = subprocess.Popen(['python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                                '-devicelist'], shell=False, stdout=subprocess.PIPE)
 while True:
     line = chrome_pid.stdout.readline()
