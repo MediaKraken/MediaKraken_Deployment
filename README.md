@@ -5,7 +5,8 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>videojs - 6.8 and update other plugins, letter navigation start - Current Dev
+        <li><b>videojs - 6.8 and update other plugins, letter navigation start, alot of misc fixes -
+         Current Dev
         branch</b>
         <li>dev - Redis 4.0.9, FFMPEG version bumps, base images on 3.7 Alpine, RabbitMQ 3.7.4, Lightgallery 1.6.9, JQuery 3.3.1, Bootstrap 4.1, Wireshark container
         <li><i>0.7.11 - PostgreSQL 10.3, ELK cleanup, more Jenkins build, redid how docker compose and "one-off" containers are built/launched
