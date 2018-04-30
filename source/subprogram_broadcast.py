@@ -17,6 +17,6 @@ webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 # begin loop to respond to all broadcast messages
 while True:
     recv_data, addr = server_socket.recvfrom(2048)
-    common_global.es_inst.com_elastic_index('info', {'addr': str(addr), 'data': recv_data})
     if recv_data == "who is MediaKrakenServer?":
+        common_global.es_inst.com_elastic_index('info', {'addr': str(addr), 'data': str(recv_data)})
         server_socket.sendto(webserver_ip + ":" + '8903', addr)
