@@ -303,6 +303,7 @@ class MediaKrakenApp(App):
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
+
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
@@ -369,6 +370,7 @@ class MediaKrakenApp(App):
                     = map(str, subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Sub'] == "List":
+                self.send_twisted_message(json.dumps({'Type': 'Device Cast List'}))
                 data = []
                 for video_list in json_message['Data']:
                     data.append({'text': video_list[0], 'uuid': video_list[1],
