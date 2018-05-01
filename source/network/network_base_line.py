@@ -82,6 +82,10 @@ class NetworkEvents(basic.LineReceiver):
         if json_message['Type'] == "CPU Usage":
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
 
+        elif json_message['Type'] == 'Device Cast List':
+            msg = json.dumps({'Type': 'Device Cast List',
+                              'Data': self.db_connection.db_device_list(device_type='cast')})
+
         elif json_message['Type'] == "Genre List":
             msg = json.dumps({'Type': 'Genre List',
                               'Data': self.db_connection.db_meta_genre_list()})

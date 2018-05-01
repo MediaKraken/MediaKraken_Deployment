@@ -392,6 +392,13 @@ class MediaKrakenApp(App):
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
+
+        elif json_message['Type'] == "Device Cast List":
+            cast_list = ['This Device']
+            for cast_device in json_message['Data']:
+                cast_list.append(cast_device['Name'])
+            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
+
         elif json_message['Type'] == "Genre List":
             common_global.es_inst.com_elastic_index('info', {'stuff': "gen"})
             for genre_list in json_message:
