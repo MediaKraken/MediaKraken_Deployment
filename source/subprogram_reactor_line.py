@@ -182,6 +182,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
+        for cast_devices in self.db_connection.db_device_list(device_type='cast'):
+            common_global.client_devices.append(('cast', cast_devices))
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

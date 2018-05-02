@@ -18,3 +18,6 @@
 
 # instance for elastisearch
 es_inst = None
+
+# clients connected to server available for playback
+client_devices = []

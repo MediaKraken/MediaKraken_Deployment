@@ -17,6 +17,7 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import base64
 import json
 import sys
@@ -25,6 +26,7 @@ sys.path.append("./vault/lib")
 import subprocess
 from twisted.protocols import basic
 import ip2country
+from common import common_docker
 from common import common_global
 from common import common_network
 
@@ -196,6 +198,19 @@ class NetworkEvents(basic.LineReceiver):
 
         elif json_message['Type'] == "Play":
             if json_message['Sub'] == 'Client':
+                for client in common_global.client_devices:
+                    if json_message['Target'] == client[1]:
+                        if client[0] == 'cast':
+                            cast_docker_inst = common_docker.CommonDocker()
+                            cast_docker_inst.com_docker_run_slave(hwaccel=False,
+                                                                  name_container='TODO',
+                                                                  container_command=("python "
+                                                                                     "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
+                                                                                     json_message[
+                                                                                         'Target'],
+                                                                                     self.db_connection.db_media_path_by_uuid(
+                                                                                         json_message[
+                                                                                             'UUID']))))
                 # TODO obviously send to the proper client
                 self.send_all_users(json_message)
             else:
