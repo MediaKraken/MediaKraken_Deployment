@@ -21,6 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import base64
 import json
 import sys
+import uuid
 
 sys.path.append("./vault/lib")
 import subprocess
@@ -197,15 +198,18 @@ class NetworkEvents(basic.LineReceiver):
                 pass
 
         elif json_message['Type'] == "Play":
-            if json_message['Sub'] == 'Client':
+            # TODO send this to pika so only have to code once and will be in the current running
+            if json_message['Sub'] == 'Cast':
                 for client in common_global.client_devices:
                     if json_message['Target'] == client[1]:
-                        if client[0] == 'cast':
-                            cast_docker_inst = common_docker.CommonDocker()
-                            cast_docker_inst.com_docker_run_slave(hwaccel=False,
-                                                                  name_container='TODO',
-                                                                  container_command=("python "
-                                                                                     "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
+                        # to address the 30 char name limit for container
+                        name_container = ((json_message['User'] + '_'
+                                           + str(uuid.uuid4()).replace('-', ''))[-30:])
+                        cast_docker_inst = common_docker.CommonDocker()
+                        cast_docker_inst.com_docker_run_slave(hwaccel=False,
+                                                              name_container=name_container,
+                                                              container_command=("python "
+                                                                                 "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
                                                                                      json_message[
                                                                                          'Target'],
                                                                                      self.db_connection.db_media_path_by_uuid(
