@@ -89,9 +89,9 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code})
-    common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
-                                                         result_json.json()})
     if result_json.status_code == 200:
+        common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
+                                                             result_json.json()})
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
         # set and insert the record
@@ -110,7 +110,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
     elif result_json.status_code == 502:
-        time.sleep(30)
+        time.sleep(300)
         # redo fetch due to 502
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
