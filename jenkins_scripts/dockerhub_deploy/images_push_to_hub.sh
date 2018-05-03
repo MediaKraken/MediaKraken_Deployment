@@ -26,6 +26,7 @@ docker push mediakraken/mkopenldap:latest
 #docker push mediakraken/mkpgadmin:latest
 docker push mediakraken/mkpgbounce:latest
 docker push mediakraken/mkprefetchtmdb:latest
+docker push mediakraken/mkprefetchtvmaze:latest
 docker push mediakraken/mkrabbitmq:latest
 docker push mediakraken/mkredis:latest
 #docker push mediakraken/mkripper:latest

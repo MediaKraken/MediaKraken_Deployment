@@ -117,5 +117,9 @@ docker build -t mediakraken/mkwireshark .
 cd ../ComposeMediaKrakenPrefetchTMDB
 docker build -t mediakraken/mkprefetchtmdb .
 
+# build the tvamze prefetch
+cd ../ComposeMediaKrakenPrefetchTVMaze
+docker build -t mediakraken/mkprefetchtvmaze .
+
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

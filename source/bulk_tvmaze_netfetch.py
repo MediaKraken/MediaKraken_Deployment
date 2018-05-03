@@ -33,7 +33,7 @@ if option_config_json['API']['tvmaze'] is not None:
 else:
     TVMAZE_CONNECTION = None
 
-for page_ndx in range(1, 75):
+for page_ndx in range(1, 100):
     result = TVMAZE_CONNECTION.com_meta_tvmaze_show_list(page_ndx)
     show_list_json = json.loads(result)
     for show_ndx in range(0, len(show_list_json)):
