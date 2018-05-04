@@ -23,8 +23,8 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route("/movie_genre")
-@blueprint.route("/movie_genre/")
+@blueprint.route("/movie_genre", methods=['GET', 'POST'])
+@blueprint.route("/movie_genre/", methods=['GET', 'POST'])
 @login_required
 def user_movie_genre_page():
     """
