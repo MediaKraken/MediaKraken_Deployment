@@ -6,3 +6,4 @@ docker
 pika
 apache-libcloud
 elasticsearch
+psutil
