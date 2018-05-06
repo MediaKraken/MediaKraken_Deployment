@@ -459,7 +459,8 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
             thread2.start()
 
             sub = "http://%s:%s?%s" % (
-            webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0]['HostPort'],
+            webserver_ip, docker_inst.com_docker_port(container_id=None, mapped_port='5060')[0][
+                'HostPort'],
             urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
