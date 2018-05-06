@@ -8,7 +8,6 @@ version: 0.6.3
 
 """
 
-
 # Copyright (C) 2014-2016 Pat Carter
 #
 # This file is part of Stream2chromecast.
@@ -29,29 +28,24 @@ version: 0.6.3
 
 VERSION = "0.6.3"
 
-
-import sys, os, errno
-import signal
-import re
-
-from cc_media_controller import CCMediaController
-import cc_device_finder
-import time
-
 import BaseHTTPServer
-import urllib
+import errno
+import httplib
 import mimetypes
+import os
+import re
+import signal
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+import urllib
+import urlparse
 from threading import Thread
 
-import subprocess
-
-import httplib
-import urlparse
-
-import socket
-
-import tempfile
-
+import cc_device_finder
+from cc_media_controller import CCMediaController
 from common import common_docker
 
 script_name = (sys.argv[0].split(os.sep))[-1]
@@ -140,14 +134,10 @@ Additional option to specify the buffer size of the data returned from the trans
 
 """ % ((script_name,) * 19)
 
-
-
-
 PIDFILE = os.path.join(tempfile.gettempdir(), "stream2chromecast_%s.pid")
 
 FFMPEG = 'ffmpeg %s -i "%s" -preset ultrafast -f mp4 -frag_duration 3000 -b:v 2000k -loglevel error %s -'
 AVCONV = 'avconv %s -i "%s" -preset ultrafast -f mp4 -frag_duration 3000 -b:v 2000k -loglevel error %s -'
-
 
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -157,7 +147,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        query = self.path.split("?",1)[-1]
+        query = self.path.split("?", 1)[-1]
         filepath = urllib.unquote_plus(query)
 
         self.suppress_socket_error_report = None
@@ -170,12 +160,11 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         except socket.error, e:
             if isinstance(e.args, tuple):
                 if e[0] in (errno.EPIPE, errno.ECONNRESET):
-                   print "disconnected"
-                   self.suppress_socket_error_report = True
-                   return
+                    print "disconnected"
+                    self.suppress_socket_error_report = True
+                    return
 
             raise
-
 
     def handle_one_request(self):
         try:
@@ -184,14 +173,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             if not self.suppress_socket_error_report:
                 raise
 
-
     def finish(self):
         try:
             return BaseHTTPServer.BaseHTTPRequestHandler.finish(self)
         except socket.error:
             if not self.suppress_socket_error_report:
                 raise
-
 
     def send_headers(self, filepath):
         self.protocol_version = "HTTP/1.1"
@@ -200,7 +187,6 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header("Transfer-Encoding", "chunked")
         self.end_headers()
-
 
     def write_response(self, filepath):
         with open(filepath, "rb") as f:
@@ -219,7 +205,6 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.wfile.write("\r\n\r\n")
 
 
-
 class TranscodingRequestHandler(RequestHandler):
     """ Handle HTTP requests for files which require realtime transcoding with ffmpeg """
     transcoder_command = FFMPEG
@@ -231,9 +216,11 @@ class TranscodingRequestHandler(RequestHandler):
         if self.bufsize != 0:
             print "transcode buffer size:", self.bufsize
 
-        ffmpeg_command = self.transcoder_command % (self.transcode_input_options, filepath, self.transcode_options)
+        ffmpeg_command = self.transcoder_command % (
+        self.transcode_input_options, filepath, self.transcode_options)
 
-        ffmpeg_process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, shell=True, bufsize=self.bufsize)
+        ffmpeg_process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, shell=True,
+                                          bufsize=self.bufsize)
 
         for line in ffmpeg_process.stdout:
             chunk_size = "%0.2X" % len(line)
@@ -246,12 +233,9 @@ class TranscodingRequestHandler(RequestHandler):
         self.wfile.write("\r\n\r\n")
 
 
-
 class SubRequestHandler(RequestHandler):
     """ Handle HTTP requests for subtitles files """
     content_type = "text/vtt;charset=utf-8"
-
-
 
 
 def get_transcoder_cmds(preferred_transcoder=None):
@@ -285,8 +269,6 @@ def get_transcoder_cmds(preferred_transcoder=None):
     return transcoder_cmd, probe_cmd
 
 
-
-
 def is_transcoder_installed(transcoder_application):
     """ check for an installation of either ffmpeg or avconv """
     try:
@@ -294,8 +276,6 @@ def is_transcoder_installed(transcoder_application):
         return True
     except OSError:
         return False
-
-
 
 
 def kill_old_pid(device_ip):
@@ -309,14 +289,11 @@ def kill_old_pid(device_ip):
         pass
 
 
-
 def save_pid(device_ip):
     """ saves the process id of this application casting to the specified device in a pid file. """
     pid_file = PIDFILE % device_ip
     with open(pid_file, "w") as pidfile:
-        pidfile.write("%d" %  os.getpid())
-
-
+        pidfile.write("%d" % os.getpid())
 
 
 def get_mimetype(filename, ffprobe_cmd=None):
@@ -324,13 +301,11 @@ def get_mimetype(filename, ffprobe_cmd=None):
     # default value
     mimetype = "video/mp4"
 
-
     # guess based on filename extension
     guess = mimetypes.guess_type(filename)[0]
     if guess is not None:
         if guess.lower().startswith("video/") or guess.lower().startswith("audio/"):
             mimetype = guess
-
 
     # use the OS file command...
     try:
@@ -344,7 +319,6 @@ def get_mimetype(filename, ffprobe_cmd=None):
             return mimetype
     except:
         pass
-
 
     # use ffmpeg/avconv if installed
     if ffprobe_cmd is None:
@@ -367,11 +341,9 @@ def get_mimetype(filename, ffprobe_cmd=None):
             name, value = line.split("=")
             format_name = value.strip().lower().split(",")
 
-
     # use the default if it isn't possible to identify the format type
     if format_name is None:
         return mimetype
-
 
     if has_video:
         mimetype = "video/"
@@ -394,19 +366,17 @@ def get_mimetype(filename, ffprobe_cmd=None):
     return mimetype
 
 
-
-def play(filename, transcode=False, transcoder=None, transcode_options=None, transcode_input_options=None,
+def play(filename, transcode=False, transcoder=None, transcode_options=None,
+         transcode_input_options=None,
          transcode_bufsize=0, device_name=None, subtitles=None, subtitles_language=None):
     """ play a local file or transcode from a file or URL and stream to the chromecast """
 
     print_ident()
 
-
     cast = CCMediaController(device_name=device_name)
 
     kill_old_pid(cast.host)
     save_pid(cast.host)
-
 
     if os.path.isfile(filename):
         filename = os.path.abspath(filename)
@@ -419,16 +389,12 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         else:
             sys.exit("media file %s not found" % filename)
 
-
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
-
 
     status = cast.get_status()
     webserver_ip = status['client'][0]
 
-
     print "local ip address:", webserver_ip
-
 
     req_handler = RequestHandler
 
@@ -451,11 +417,8 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         else:
             print "No transcoder is installed. Attempting standard playback"
 
-
-
     if req_handler == RequestHandler:
         req_handler.content_type = get_mimetype(filename, probe_cmd)
-
 
     # create a webserver to handle a single request for the media file
     server = BaseHTTPServer.HTTPServer((webserver_ip, 5050), req_handler)
@@ -467,11 +430,12 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
     # it returns a dict, not a json
     webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
-    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5050')[0]['HostPort'],
+    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(container_id=None,
+                                                                         mapped_port='5050')[0][
+        'HostPort'],
                                urllib.quote_plus(filename, "/"))
 
     print "URL & content-type: ", url, req_handler.content_type
-
 
     # create another webserver to handle a request for the subtitles file, if specified in the subtitles parameter
     sub = None
@@ -480,30 +444,28 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None, tra
         if os.path.isfile(subtitles):
             sub_port = 0
 
-            #convert srt to vtt
+            # convert srt to vtt
             if subtitles[-3:].lower() == 'srt':
                 print "Converting subtitle to WebVTT"
                 with open(subtitles, 'r') as srtfile:
-                   content = srtfile.read()
-                   content = re.sub(r'([\d]+)\,([\d]+)', r'\1.\2', content)
-                   subtitles = subtitles[:-3] + '.vtt'
-                   with open(subtitles, 'w') as vttfile:
-                       vttfile.write("WEBVTT\n\n" + content)
+                    content = srtfile.read()
+                    content = re.sub(r'([\d]+)\,([\d]+)', r'\1.\2', content)
+                    subtitles = subtitles[:-3] + '.vtt'
+                    with open(subtitles, 'w') as vttfile:
+                        vttfile.write("WEBVTT\n\n" + content)
 
             sub_server = BaseHTTPServer.HTTPServer((webserver_ip, 5060), SubRequestHandler)
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
-            sub = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0]['HostPort'],
-                                       urllib.quote_plus(subtitles, "/"))
+            sub = "http://%s:%s?%s" % (
+            webserver_ip, docker_inst.com_docker_port(mapped_port='5060')[0]['HostPort'],
+            urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
             print "Subtitles file %s not found" % subtitles
 
-
     load(cast, url, req_handler.content_type, sub, subtitles_language)
-
-
 
 
 def load(cast, url, mimetype, sub=None, sub_language=None):
@@ -530,7 +492,6 @@ def load(cast, url, mimetype, sub=None, sub_language=None):
         print "done"
 
 
-
 def playurl(url, device_name=None):
     """ play a remote HTTP resource on the chromecast """
 
@@ -554,7 +515,6 @@ def playurl(url, device_name=None):
         resp = conn.getresponse()
         return resp
 
-
     def get_full_url(url, location):
         url_parsed = urlparse.urlparse(url)
 
@@ -573,11 +533,10 @@ def playurl(url, device_name=None):
 
         return full_url
 
-
     resp = get_resp(url)
 
     if resp.status != 200:
-        redirect_codes = [ 301, 302, 303, 307, 308 ]
+        redirect_codes = [301, 302, 303, 307, 308]
         if resp.status in redirect_codes:
             redirects = 0
             while resp.status in redirect_codes:
@@ -619,8 +578,6 @@ def playurl(url, device_name=None):
     load(cast, url, mimetype)
 
 
-
-
 def pause(device_name=None):
     """ pause playback """
     CCMediaController(device_name=device_name).pause()
@@ -639,6 +596,7 @@ def stop(device_name=None):
 def get_status(device_name=None):
     """ print the status of the chromecast device """
     print CCMediaController(device_name=device_name).get_status()
+
 
 def volume_up(device_name=None):
     """ raise the volume by 0.1 """
@@ -689,7 +647,6 @@ def validate_args(args):
         sys.exit(USAGETEXT)
 
 
-
 def get_named_arg_value(arg_name, args, integer=False):
     """ get a argument value by name """
     arg_val = None
@@ -712,7 +669,6 @@ def get_named_arg_value(arg_name, args, integer=False):
         arg_val = int_arg_val
 
     return arg_val
-
 
 
 def run():
@@ -739,7 +695,6 @@ def run():
 
     # optional subtitle_language parm. if not specified en-US will be used.
     subtitles_language = get_named_arg_value("-subtitles_language", args)
-
 
     validate_args(args)
 
