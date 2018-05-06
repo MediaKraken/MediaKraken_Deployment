@@ -246,7 +246,10 @@ class CommonDocker(object):
         return self.cli.containers.run(container_image_name=image_name,
                                        container_name=name_container,
                                        container_command=container_command,
-                                       volumes={'/mediakraken/nfsmount':
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
                                                     {'bind': '/mediakraken/mnt',
                                                      'mode': 'ro'}}
                                        )
