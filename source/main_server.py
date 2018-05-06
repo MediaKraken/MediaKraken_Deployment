@@ -110,7 +110,8 @@ if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble()
 
 if option_config_json['Docker Instances']['musicbrainz']:
-    docker_inst.com_docker_run_musicbrainz(option_config_json['API']['mediabrainz'])
+    if option_config_json['API']['musicbrainz'] is not None:
+        docker_inst.com_docker_run_musicbrainz(option_config_json['API']['musicbrainz'])
 
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer()
