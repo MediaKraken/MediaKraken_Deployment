@@ -116,8 +116,8 @@ if option_config_json['Docker Instances']['musicbrainz']:
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer()
 
-# if option_config_json['Docker Instances']['smtp']:
-#     docker_inst.com_docker_run_container()
+if option_config_json['Docker Instances']['smtp']:
+    docker_inst.com_docker_run_container()
 
 if option_config_json['Docker Instances']['teamspeak']:
     docker_inst.com_docker_run_teamspeak()
@@ -126,8 +126,8 @@ if option_config_json['Docker Instances']['transmission']:
     docker_inst.com_docker_run_transmission(option_config_json['Transmission']['Username'],
                                             option_config_json['Transmission']['Password'])
 
-# if option_config_json['Docker Instances']['wireshark']:
-#     docker_inst.com_docker_run_wireshark()
+if option_config_json['Docker Instances']['wireshark']:
+    docker_inst.com_docker_run_wireshark()
 
 # hold here
 # this will key off the twisted reactor...only reason is so watchdog doesn't shut down
