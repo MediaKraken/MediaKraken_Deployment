@@ -245,7 +245,11 @@ class CommonDocker(object):
             image_name = 'mediakraken/mkslave:latest'
         return self.cli.containers.run(container_image_name=image_name,
                                        container_name=name_container,
-                                       container_command=container_command)
+                                       container_command=container_command,
+                                       volumes={'/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}}
+                                       )
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
