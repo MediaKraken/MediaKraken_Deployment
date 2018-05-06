@@ -154,5 +154,4 @@ RUN apk add --update samba-client lame libass libmodplug libogg \
     ffmpeg -buildconf
 
 CMD ["--help"]
-ENTRYPOINT  ["ffmpeg"]
 WORKDIR /tmp/ffmpeg
