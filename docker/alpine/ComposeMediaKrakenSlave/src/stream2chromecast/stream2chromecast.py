@@ -429,7 +429,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     docker_inst = common_docker.CommonDocker()
     # it returns a dict, not a json
     webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
-
+    # port code pulls MAPPED ports.....so, -p
     url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(container_id=None,
                                                                          mapped_port='5050')[0][
         'HostPort'],
@@ -458,6 +458,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
+            # port code pulls MAPPED ports.....so, -p
             sub = "http://%s:%s?%s" % (
             webserver_ip, docker_inst.com_docker_port(container_id=None, mapped_port='5060')[0][
                 'HostPort'],
