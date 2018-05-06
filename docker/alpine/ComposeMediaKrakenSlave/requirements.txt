@@ -5,3 +5,4 @@ streamlink
 docker
 pika
 apache-libcloud
+elasticsearch
