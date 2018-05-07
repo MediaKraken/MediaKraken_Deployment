@@ -46,7 +46,6 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     devices_found = {}
     for _ in range(retries):
         ssdp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        ssdp_sock.setblocking(0)
         ssdp_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         ssdp_sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
         ssdp_sock.sendto(message, ("239.255.255.250", 1900))
