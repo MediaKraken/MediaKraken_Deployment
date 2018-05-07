@@ -217,7 +217,7 @@ class TranscodingRequestHandler(RequestHandler):
             print "transcode buffer size:", self.bufsize
 
         ffmpeg_command = self.transcoder_command % (
-        self.transcode_input_options, filepath, self.transcode_options)
+            self.transcode_input_options, filepath, self.transcode_options)
 
         ffmpeg_process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, shell=True,
                                           bufsize=self.bufsize)
@@ -392,10 +392,17 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
 
     status = cast.get_status()
-    webserver_ip = status['client'][0]
+    # webserver_ip = status['client'][0]
+    # print "local ip address:", webserver_ip
 
-    print "local ip address:", webserver_ip
-
+    docker_inst = common_docker.CommonDocker()
+    # it returns a dict, not a json
+    webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
+    # port code pulls MAPPED ports.....so, -p
+    webserver_port = docker_inst.com_docker_port(container_id=None,
+                                                 mapped_port='5050')[0]['HostPort']
+    webserver_port_subtitle = docker_inst.com_docker_port(container_id=None,
+                                                 mapped_port='5060')[0]['HostPort']
     req_handler = RequestHandler
 
     if transcode:
@@ -421,29 +428,19 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
         req_handler.content_type = get_mimetype(filename, probe_cmd)
 
     # create a webserver to handle a single request for the media file
-    server = BaseHTTPServer.HTTPServer((webserver_ip, 5050), req_handler)
+    server = BaseHTTPServer.HTTPServer((webserver_ip, webserver_port), req_handler)
 
     thread = Thread(target=server.handle_request)
     thread.start()
 
-    docker_inst = common_docker.CommonDocker()
-    # it returns a dict, not a json
-    webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
-    # port code pulls MAPPED ports.....so, -p
-    url = "http://%s:%s?%s" % (webserver_ip, docker_inst.com_docker_port(container_id=None,
-                                                                         mapped_port='5050')[0][
-        'HostPort'],
+    url = "http://%s:%s?%s" % (webserver_ip, webserver_port,
                                urllib.quote_plus(filename, "/"))
-
     print "URL & content-type: ", url, req_handler.content_type
 
     # create another webserver to handle a request for the subtitles file, if specified in the subtitles parameter
     sub = None
-
     if subtitles:
         if os.path.isfile(subtitles):
-            sub_port = 0
-
             # convert srt to vtt
             if subtitles[-3:].lower() == 'srt':
                 print "Converting subtitle to WebVTT"
@@ -454,15 +451,13 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
                     with open(subtitles, 'w') as vttfile:
                         vttfile.write("WEBVTT\n\n" + content)
 
-            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, 5060), SubRequestHandler)
+            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, webserver_port_subtitle), SubRequestHandler)
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
-            # port code pulls MAPPED ports.....so, -p
             sub = "http://%s:%s?%s" % (
-            webserver_ip, docker_inst.com_docker_port(container_id=None, mapped_port='5060')[0][
-                'HostPort'],
-            urllib.quote_plus(subtitles, "/"))
+                webserver_ip, webserver_port_subtitle,
+                urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
             print "Subtitles file %s not found" % subtitles
