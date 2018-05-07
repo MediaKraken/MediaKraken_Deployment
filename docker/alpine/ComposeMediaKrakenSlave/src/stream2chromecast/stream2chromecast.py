@@ -47,6 +47,8 @@ from threading import Thread
 import cc_device_finder
 from cc_media_controller import CCMediaController
 from common import common_docker
+from common import common_global
+from common import common_logging_elasticsearch
 
 script_name = (sys.argv[0].split(os.sep))[-1]
 
@@ -401,6 +403,7 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     # port code pulls MAPPED ports.....so, -p
     webserver_port = int(docker_inst.com_docker_port(container_id=None,
                                                  mapped_port='5050')[0]['HostPort'])
+    common_global.es_inst.com_elastic_index('info', {'ip': webserver_ip, 'Port': webserver_port})
     req_handler = RequestHandler
 
     if transcode:
@@ -671,6 +674,10 @@ def get_named_arg_value(arg_name, args, integer=False):
 
 def run():
     """ main execution """
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+        'main_slave_stream2cromecast')
+
     args = sys.argv[1:]
 
     # optional device name parm. if not specified, device_name = None (the first device found will be used).
