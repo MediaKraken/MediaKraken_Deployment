@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -16,78 +16,58 @@
   MA 02110-1301, USA.
 '''
 
-# supported formats list
-# https://developers.google.com/cast/docs/media#subtitles--closed-captions
+import httplib
+import socket
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+import xmltodict
 
-import pychromecast
-import pychromecast.controllers.youtube as youtube
+from . import common_global
 
+CAST_PLAYER_APPID = "CC1AD845"
 
-# from pychromecast.controllers import BaseController
+# hardware stats for supported images/etc
+# https://developers.google.com/cast/docs/media
 
-
-class CommonHardwareChromecast(object):
+def com_hard_chrome_discover(timeout=5, retries=1):
     """
-    Class for interfacing with chromecast
+    Discover chromecast devices
     """
+    message = "\r\n".join(['M-SEARCH * HTTP/1.1',
+                           'HOST: 239.255.255.250:1900',
+                           'MAN: "ssdp:discover"',
+                           'MX: 1',
+                           'ST: urn:dial-multiscreen-org:service:dial:1',
+                           '', ''])
+    socket.setdefaulttimeout(timeout)
+    # do the actual ssdp calls
+    devices_found = {}
+    for _ in range(retries):
+        ssdp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        ssdp_sock.setblocking(0)
+        #     ssdp_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        #     ssdp_sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+        ssdp_sock.sendto(message, ("239.255.255.250", 1900))
+        while True:
+            try:
+                response = ssdp_sock.recv(1024)
+                common_global.es_inst.com_elastic_index('info', {'response body': response})
+            except socket.timeout:
+                common_global.es_inst.com_elastic_index('error', {'socket timeout'})
+                break
+        ssdp_sock.close()
+    return devices_found
 
-    def __init__(self):
-        self.chromecast_dev = None
-        self.cast = None
-        self.chromecast_device = None
 
-    def com_chromecast_discover(self):
-        """
-        # find chromecast as dict
-        """
-        self.chromecast_dev = pychromecast.get_chromecasts()
-        return self.chromecast_dev
-
-    def com_chromecast_info(self):
-        """
-        # get detail by name
-        """
-        return self.cast.device
-
-    def com_chromecast_status(self):
-        """
-        # get status by name
-        """
-        return self.cast.status
-
-    def com_chromecast_connect_by_name(self, key_name):
-        """
-        # connect to device
-        """
-        self.cast = next(
-            cc for cc in self.chromecast_dev if cc.device.friendly_name == key_name)
-        # Wait for cast device to be ready
-        self.cast.wait()
-        self.chromecast_device = self.cast.media_controller
-
-    def com_chromecast_play_yt(self, yt_id):
-        """
-        # play youtube video
-        """
-        yt_controller = youtube.YouTubeController()
-        self.chromecast_device.register_handler(yt_controller)
-        yt_controller.play_video(yt_id)
-
-    def com_chromecast_play_media(self, media_file, media_type):
-        """
-        # play media file
-        """
-        self.chromecast_device.play_media(media_file, media_type)
-
-    def com_chromecast_device_command(self, command):
-        """
-        # send chromecast commands
-        """
-        if command == "Pause":
-            self.chromecast_device.pause()
-        elif command == "Play":
-            self.chromecast_device.play()
-        elif command == "Stop":
-            self.chromecast_device.stop()
+def com_hard_chrome_name(ip_addr):
+    """
+    get name of chromecast
+    """
+    http_conn = httplib.HTTPConnection(ip_addr + ":8008")
+    http_conn.request("GET", "/ssdp/device-desc.xml")
+    http_resp = http_conn.getresponse()
+    if http_resp.status == 200:
+        status_doc = http_resp.read()
+        common_global.es_inst.com_elastic_index('info', {'name data': status_doc})
+        return xmltodict.parse(status_doc)
+    else:
+        return None
