@@ -408,7 +408,8 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     print 'ip', webserver_ext_ip
     print 'port', webserver_ext_port
     common_global.es_inst.com_elastic_index('info',
-                                            {'ip': webserver_ext_ip, 'Port': webserver_ext_ip})
+                                            {'exip': webserver_ext_ip, 'exPort':
+                                                webserver_ext_port})
     req_handler = RequestHandler
 
     if transcode:
