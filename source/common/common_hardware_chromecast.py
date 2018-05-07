@@ -53,6 +53,17 @@ def com_hard_chrome_discover(timeout=5, retries=1):
             try:
                 response = ssdp_sock.recv(1024)
                 common_global.es_inst.com_elastic_index('info', {'response body': response})
+                for line in response.split("\r\n"):
+                    if line.find('LOCATION') == 0:
+                        # pull out the ip
+                        device_location = line.split(':', 1)[1].strip()[7:].split(':', 1)[0]
+                    elif line.find('ST') == 0 and line.find(
+                            'urn:dial-multiscreen-org:service:dial:1') != -1:
+                        # this is a chromecast device so grab the model and name
+                        chrome_info = com_hard_chrome_info(device_location)
+                        devices_found[device_location] = (
+                            chrome_info['root']['device']['modelName'],
+                            chrome_info['root']['device']['friendlyName'])
             except socket.timeout:
                 common_global.es_inst.com_elastic_index('error', {'socket timeout'})
                 break
@@ -60,9 +71,9 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     return devices_found
 
 
-def com_hard_chrome_name(ip_addr):
+def com_hard_chrome_info(ip_addr):
     """
-    get name of chromecast
+    get info of chromecast
     """
     http_conn = httplib.HTTPConnection(ip_addr + ":8008")
     http_conn.request("GET", "/ssdp/device-desc.xml")
