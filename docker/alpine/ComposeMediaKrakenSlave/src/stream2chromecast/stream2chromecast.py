@@ -394,18 +394,21 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     transcoder_cmd, probe_cmd = get_transcoder_cmds(preferred_transcoder=transcoder)
 
     status = cast.get_status()
-    # webserver_ip = status['client'][0]
-    # print "local ip address:", webserver_ip
+    webserver_ip = status['client'][0]
+    print "local ip address:", webserver_ip
+    common_global.es_inst.com_elastic_index('info',
+                                            {'webserver_ip': webserver_ip})
 
     docker_inst = common_docker.CommonDocker()
     # it returns a dict, not a json
-    webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
+    webserver_ext_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
     # port code pulls MAPPED ports.....so, -p
-    webserver_port = int(docker_inst.com_docker_port(container_id=None,
-                                                 mapped_port='5050')[0]['HostPort'])
-    print 'ip', webserver_ip
-    print 'port', webserver_port
-    common_global.es_inst.com_elastic_index('info', {'ip': webserver_ip, 'Port': webserver_port})
+    webserver_ext_port = int(docker_inst.com_docker_port(container_id=None,
+                                                         mapped_port='5050')[0]['HostPort'])
+    print 'ip', webserver_ext_ip
+    print 'port', webserver_ext_port
+    common_global.es_inst.com_elastic_index('info',
+                                            {'ip': webserver_ext_ip, 'Port': webserver_ext_ip})
     req_handler = RequestHandler
 
     if transcode:
@@ -430,17 +433,21 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     if req_handler == RequestHandler:
         req_handler.content_type = get_mimetype(filename, probe_cmd)
 
+    # must start the webservers on the LOCAL docker ips
+    # then let the external ones map to internal ports
+
     # create a webserver to handle a single request for the media file
-    server = BaseHTTPServer.HTTPServer((webserver_ip, webserver_port), req_handler)
+    server = BaseHTTPServer.HTTPServer((webserver_ip, 5050), req_handler)
 
     thread = Thread(target=server.handle_request)
     thread.start()
 
-    url = "http://%s:%s?%s" % (webserver_ip, webserver_port,
+    url = "http://%s:%s?%s" % (webserver_ext_ip, webserver_ext_port,
                                urllib.quote_plus(filename, "/"))
     print "URL & content-type: ", url, req_handler.content_type
 
-    # create another webserver to handle a request for the subtitles file, if specified in the subtitles parameter
+    # create another webserver to handle a request for the subtitles file,
+    # if specified in the subtitles parameter
     sub = None
     if subtitles:
         if os.path.isfile(subtitles):
@@ -455,14 +462,15 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
                         vttfile.write("WEBVTT\n\n" + content)
 
             webserver_port_subtitle = int(docker_inst.com_docker_port(container_id=None,
-                                        mapped_port='5060')[0]['HostPort'])
-
-            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, webserver_port_subtitle), SubRequestHandler)
+                                                                      mapped_port='5060')[0][
+                                              'HostPort'])
+            print 'sub port', webserver_port_subtitle
+            sub_server = BaseHTTPServer.HTTPServer((webserver_ip, 5060), SubRequestHandler)
             thread2 = Thread(target=sub_server.handle_request)
             thread2.start()
 
             sub = "http://%s:%s?%s" % (
-                webserver_ip, webserver_port_subtitle,
+                webserver_ext_ip, webserver_port_subtitle,
                 urllib.quote_plus(subtitles, "/"))
             print "sub URL: ", sub
         else:
