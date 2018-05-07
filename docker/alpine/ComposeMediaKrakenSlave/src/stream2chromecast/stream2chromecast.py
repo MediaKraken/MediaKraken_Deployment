@@ -399,10 +399,8 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     # it returns a dict, not a json
     webserver_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
     # port code pulls MAPPED ports.....so, -p
-    webserver_port = docker_inst.com_docker_port(container_id=None,
-                                                 mapped_port='5050')[0]['HostPort']
-    webserver_port_subtitle = docker_inst.com_docker_port(container_id=None,
-                                                 mapped_port='5060')[0]['HostPort']
+    webserver_port = int(docker_inst.com_docker_port(container_id=None,
+                                                 mapped_port='5050')[0]['HostPort'])
     req_handler = RequestHandler
 
     if transcode:
@@ -450,6 +448,9 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
                     subtitles = subtitles[:-3] + '.vtt'
                     with open(subtitles, 'w') as vttfile:
                         vttfile.write("WEBVTT\n\n" + content)
+
+            webserver_port_subtitle = int(docker_inst.com_docker_port(container_id=None,
+                                        mapped_port='5060')[0]['HostPort'])
 
             sub_server = BaseHTTPServer.HTTPServer((webserver_ip, webserver_port_subtitle), SubRequestHandler)
             thread2 = Thread(target=sub_server.handle_request)
