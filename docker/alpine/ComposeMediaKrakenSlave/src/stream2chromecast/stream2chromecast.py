@@ -403,6 +403,8 @@ def play(filename, transcode=False, transcoder=None, transcode_options=None,
     # port code pulls MAPPED ports.....so, -p
     webserver_port = int(docker_inst.com_docker_port(container_id=None,
                                                  mapped_port='5050')[0]['HostPort'])
+    print 'ip', webserver_ip
+    print 'port', webserver_port
     common_global.es_inst.com_elastic_index('info', {'ip': webserver_ip, 'Port': webserver_port})
     req_handler = RequestHandler
 
