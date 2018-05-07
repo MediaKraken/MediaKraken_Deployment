@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 '''
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import httplib
 import socket
 
@@ -24,6 +26,7 @@ import xmltodict
 from . import common_global
 
 CAST_PLAYER_APPID = "CC1AD845"
+
 
 # hardware stats for supported images/etc
 # https://developers.google.com/cast/docs/media
