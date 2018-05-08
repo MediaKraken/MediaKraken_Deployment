@@ -69,10 +69,10 @@ class TheaterFactory(ClientFactory):
             'Started to connect to': connector.getDestination()})
 
     def clientConnectionLost(self, conn, reason):
-        common_global.es_inst.com_elastic_index('info', {'Connection Lost': 'gergegerg'})
+        common_global.es_inst.com_elastic_index('info', {'Connection Lost'})
 
     def clientConnectionFailed(self, conn, reason):
-        common_global.es_inst.com_elastic_index('info', {'Connection Failed': 'gergegerg'})
+        common_global.es_inst.com_elastic_index('info', {'Connection Failed'})
 
     def buildProtocol(self, addr):
         common_global.es_inst.com_elastic_index('info', {'Connected to': str(addr)})
@@ -113,8 +113,9 @@ class MediaKrakenApp(object):
         """
         # otherwise the pickle can end up in thousands of chunks
         messageWords = server_msg.split(' ', 1)
-        common_global.es_inst.com_elastic_index('info', {'message': messageWords[0], "len": len(
-            server_msg), "chunks": len(messageWords)})
+        common_global.es_inst.com_elastic_index('info', {'message': messageWords[0],
+                                                         "len": len(server_msg),
+                                                         "chunks": len(messageWords)})
         msg = None
         try:
             pickle_data = pickle.loads(messageWords[1])
