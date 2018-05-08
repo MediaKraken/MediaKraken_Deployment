@@ -49,8 +49,6 @@ from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 
-script_name = (sys.argv[0].split(os.sep))[-1]
-
 PIDFILE = os.path.join(tempfile.gettempdir(), "stream2chromecast_%s.pid")
 
 FFMPEG = 'ffmpeg %s -i "%s" -preset ultrafast -f mp4 -frag_duration 3000 -b:v 2000k -loglevel error %s -'
@@ -239,7 +237,7 @@ def get_mimetype(filename, ffprobe_cmd=None):
     return mimetype
 
 
-def play(filename, transcode=False, transcoder=None, transcode_options=None,
+def play(filename, transcode=False, transcode_options=None,
          transcode_input_options=None,
          transcode_bufsize=0, device_name=None, subtitles=None, subtitles_language=None):
     """ play a local file or transcode from a file or URL and stream to the chromecast """
@@ -359,7 +357,6 @@ def load(cast, url, mimetype, sub=None, sub_language=None):
             idle = cast.is_idle()
 
     except KeyboardInterrupt:
-        print
         print "stopping..."
         cast.stop()
 
