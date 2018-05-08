@@ -21,6 +21,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import httplib
 import socket
 
+import requests
 import xmltodict
 
 from . import common_global
@@ -84,3 +85,16 @@ def com_hard_chrome_info(ip_addr):
         return xmltodict.parse(status_doc)
     else:
         return None
+
+
+def com_hard_chrome_play_youtube(youtube_video_guid, ip_addr, port=8008):
+    response = requests.post(('http://%s:%s/apps/YouTube' % (ip_addr, port)),
+                             data={'v': youtube_video_guid})
+    if response.status_code != 200:
+        common_global.es_inst.com_elastic_index('info', {'yt play guid': youtube_video_guid})
+
+
+def com_hard_chrome_youtube_stop(ip_addr, port=8008):
+    response = requests.delete('http://%s:%s/apps/YouTube' % (ip_addr, port))
+    if response.status_code != 200:
+        common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
