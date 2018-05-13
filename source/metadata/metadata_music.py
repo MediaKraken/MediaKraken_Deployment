@@ -23,7 +23,7 @@ from common import common_metadata_musicbrainz
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-if option_config_json['API']['mediabrainz'] is not None:
+if option_config_json['API']['musicbrainz'] is not None:
     # setup the mediabrainz class
     mbrainz_api_connection \
         = common_metadata_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
