@@ -262,13 +262,20 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
             if json_message['Sub2'] == "Demo":
-                self.home_demo_file_name = str(uuid.uuid4())
-                f = open(self.home_demo_file_name, "w")
+                f = open("./image_demo", "w")
                 f.write(base64.b64decode(json_message['Data']))
                 f.close()
                 self.demo_media_id = json_message['UUID']
-                proxy_image_demo = Loader.image(self.home_demo_file_name)
-                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                if self.first_image_demo == False:
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
+                    # self.root.ids.main_home_demo_image.reload()
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
+                else:
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'wha2'})
+                    proxy_image_demo = Loader.image("./image_demo")
+                    proxy_image_demo.bind(
+                        on_load=self._image_loaded_home_demo)
+                    self.first_image_demo = False
         elif json_message['Type'] == "MPV":
             self.mpv_connection.execute(json_message['Data'])
         else:
@@ -398,7 +405,7 @@ class MediaKrakenApp(App):
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
-        os.remove(self.home_demo_file_name)
+        os.remove('./image_demo')
 
 
 if __name__ == '__main__':
