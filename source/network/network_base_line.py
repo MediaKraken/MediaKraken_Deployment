@@ -89,6 +89,14 @@ class NetworkEvents(basic.LineReceiver):
             msg = json.dumps({'Type': 'Device Cast List',
                               'Data': self.db_connection.db_device_list(device_type='cast')})
 
+        elif json_message['Type'] == 'Device Play List':
+            play_device = []
+            play_device.append(self.db_connection.db_device_list(device_type='cast'))
+            for user_device_uuid, protocol in self.users.iteritems():
+                play_device.append((user_device_uuid, 'User Client',
+                                   self.users[user_device_uuid].user_user_name))
+            msg = json.dumps({'Type': 'Device Play List', 'Data': play_device})
+
         elif json_message['Type'] == "Genre List":
             msg = json.dumps({'Type': 'Genre List',
                               'Data': self.db_connection.db_meta_genre_list()})
