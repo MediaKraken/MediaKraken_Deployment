@@ -269,7 +269,7 @@ class MediaKrakenApp(App):
                 self.demo_media_id = json_message['UUID']
                 if self.first_image_demo == False:
                     common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
-                    # self.root.ids.main_home_demo_image.reload()
+                    self.root.ids.main_home_demo_image.reload()
                     common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
                 else:
                     common_global.es_inst.com_elastic_index('info', {'stuff': 'wha2'})
