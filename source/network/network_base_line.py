@@ -232,8 +232,7 @@ class NetworkEvents(basic.LineReceiver):
                 # TODO obviously send to the proper client
                 self.send_all_users(json_message)
             else:
-                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[
-                    0]
+                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
                 if media_path is not None:
                     # launch and attach to local running ffserver
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
