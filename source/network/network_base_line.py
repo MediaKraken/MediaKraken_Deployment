@@ -98,7 +98,9 @@ class NetworkEvents(basic.LineReceiver):
             # load user clients
             for user_device_uuid, protocol in self.users.iteritems():
                 play_device.append((user_device_uuid, 'Client',
-                                   self.users[user_device_uuid].user_user_name))
+                                   self.users[user_device_uuid].user_ip_addy))
+# TODO ip addy for now on above
+#                                   self.users[user_device_uuid].user_user_name))
             msg = json.dumps({'Type': 'Device Play List', 'Data': play_device})
 
         elif json_message['Type'] == "Genre List":
