@@ -404,7 +404,7 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Device Play List":
             cast_list = ['This Device']
             for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2]['Name'])
+                cast_list.append(cast_device[2]) # name of device
             self.root.ids.theater_media_video_play_local_spinner.values = cast_list
 
         elif json_message['Type'] == "Genre List":
