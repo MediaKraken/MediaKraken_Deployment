@@ -235,6 +235,7 @@ class NetworkEvents(basic.LineReceiver):
                 media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
                 if media_path is not None:
                     # launch and attach to local running ffserver
+                    # TODO set server port for ffmpeg
                     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
                     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
                                                                 media_path, http_link], shell=False)
