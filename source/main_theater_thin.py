@@ -278,6 +278,7 @@ class MediaKrakenApp(App):
                         on_load=self._image_loaded_home_demo)
                     self.first_image_demo = False
         elif json_message['Type'] == "MPV":
+            # sends the data message direct as a command
             self.mpv_connection.execute(json_message['Data'])
         else:
             common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})

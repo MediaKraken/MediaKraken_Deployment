@@ -377,20 +377,19 @@ class MediaKrakenApp(App):
                                  'path': video_list[4]})
                 self.root.ids.theater_media_video_list_scrollview.data = data
                 # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
-        elif json_message['Type'] == 'Play':  # direct file play
-            # AttributeError: 'NoneType' object has no attribute
-            # 'set_volume'  <- means can't find file
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-            video_source_dir = json_message['Data']
-            share_mapping = (
-                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
-            if share_mapping is not None:
-                for mapping in share_mapping:
-                    video_source_dir = video_source_dir.replace(
-                        mapping[0], mapping[1])
-            self.root.ids.theater_media_video_videoplayer.source = video_source_dir
-            self.root.ids.theater_media_video_videoplayer.volume = 1
-            self.root.ids.theater_media_video_videoplayer.state = 'play'
+        # elif json_message['Type'] == 'Play':  # direct file play
+        #     # AttributeError: 'NoneType' object has no attribute
+        #     # 'set_volume'  <- means can't find file
+        #     self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
+        #     video_source_dir = json_message['Data']
+        #     share_mapping = (
+        #         ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+        #     if share_mapping is not None:
+        #         for mapping in share_mapping:
+        #             video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+        #     self.root.ids.theater_media_video_videoplayer.source = video_source_dir
+        #     self.root.ids.theater_media_video_videoplayer.volume = 1
+        #     self.root.ids.theater_media_video_videoplayer.state = 'play'
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
