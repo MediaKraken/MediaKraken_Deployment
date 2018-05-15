@@ -67,8 +67,9 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
         ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
+                                                         'ip': ip_addr})
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 del self.users[user_device_uuid]
