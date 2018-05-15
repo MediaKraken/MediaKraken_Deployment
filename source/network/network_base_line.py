@@ -230,7 +230,7 @@ class NetworkEvents(basic.LineReceiver):
                 # TODO obviously send to the proper client
                 self.send_all_users(json_message)
             else:
-                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
+                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])
                 common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
                 if media_path is not None:
                     if json_message['Sub'] == 'Client':
