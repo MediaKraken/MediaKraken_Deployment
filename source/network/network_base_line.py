@@ -231,6 +231,7 @@ class NetworkEvents(basic.LineReceiver):
                 self.send_all_users(json_message)
             else:
                 media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
+                common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
                 if media_path is not None:
                     if json_message['Sub'] == 'Client':
                         self.send_single_ip(json.dumps({'Target': 'Play', 'Data': media_path}),
@@ -260,6 +261,10 @@ class NetworkEvents(basic.LineReceiver):
         Send message to ip addr
         """
         for user_device_uuid, protocol in self.users.iteritems():
+            common_global.es_inst.com_elastic_index('info',
+                                                    {"user_ip_addy": self.users[
+                                                        user_device_uuid].user_ip_addy,
+                                                     'ip': ip_addr})
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
                                                                  'message': message})
