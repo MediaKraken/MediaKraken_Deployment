@@ -157,18 +157,17 @@ class NetworkEvents(basic.LineReceiver):
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
                     = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
-            if metadata_id is not None:
-                if image_json is not None:
-                    image_handle = open(image_json, "rb")
-                    image_data = image_handle.read()
-                    image_data = base64.b64encode(image_data)
-                    image_handle.close()
-                    # im = Image.open(image_json)
-                    # im.convert("RGB", im)
-                    # image_data = base64.b64encode(im)
+            if metadata_id is not None and image_json is not None:
+                image_handle = open(image_json, "rb")
+                image_data = image_handle.read()
+                image_data = base64.b64encode(image_data)
+                image_handle.close()
+                # im = Image.open(image_json)
+                # im.convert("RGB", im)
+                # image_data = base64.b64encode(im)
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
-                                  "Sub2": json_message['Sub2'],
-                                  "Data": image_data, "UUID": metadata_id})
+                              "Sub2": json_message['Sub2'],
+                              "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
             self.db_connection.db_user_login(
