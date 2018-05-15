@@ -406,8 +406,9 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
+        # don't bother now.....as it's always the same name and will be reloaded
         # since it's loaded delete the image
-        os.remove('./image_demo')
+        #os.remove('./image_demo')
 
 
 if __name__ == '__main__':
