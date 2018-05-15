@@ -24,12 +24,10 @@ import sys
 import uuid
 
 sys.path.append("./vault/lib")
-import subprocess
 from twisted.protocols import basic
 import ip2country
 from common import common_docker
 from common import common_global
-from common import common_network
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -98,9 +96,9 @@ class NetworkEvents(basic.LineReceiver):
             # load user clients
             for user_device_uuid, protocol in self.users.iteritems():
                 play_device.append((user_device_uuid, 'Client',
-                                   self.users[user_device_uuid].user_ip_addy))
-# TODO ip addy for now on above
-#                                   self.users[user_device_uuid].user_user_name))
+                                    self.users[user_device_uuid].user_ip_addy))
+            # TODO ip addy for now on above
+            #                                   self.users[user_device_uuid].user_user_name))
             msg = json.dumps({'Type': 'Device Play List', 'Data': play_device})
 
         elif json_message['Type'] == "Genre List":
@@ -234,14 +232,17 @@ class NetworkEvents(basic.LineReceiver):
             else:
                 media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[0]
                 if media_path is not None:
-                    # launch and attach to local running ffserver
-                    # TODO set server port for ffmpeg
-                    http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                                                                media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
-                                + self.server_port_ffmpeg + '/stream.ffm'
-                msg = json.dumps({"Type": 'Play', 'Data': http_link})
+                    if json_message['Sub'] == 'Client':
+                        self.send_single_ip(json.dumps({'Target': 'Play', 'Data': media_path}),
+                                            json_message['Target'])
+                #     # launch and attach to local running ffserver
+                #     # TODO set server port for ffmpeg
+                #     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
+                #     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
+                #                                                 media_path, http_link], shell=False)
+                #     http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
+                #                 + self.server_port_ffmpeg + '/stream.ffm'
+                # msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         elif json_message['Type'] == "MPV":
             self.send_all_users(json_message['Data'])
@@ -253,6 +254,17 @@ class NetworkEvents(basic.LineReceiver):
             common_global.es_inst.com_elastic_index('info', {"should be sending data len": len(
                 msg)})
             self.sendLine(msg.encode("utf8"))
+
+    def send_single_ip(self, message, ip_addr):
+        """
+        Send message to ip addr
+        """
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_ip_addy == ip_addr:
+                common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
+                                                                 'message': message})
+                protocol.transport.write(message.encode("utf8"))
+                break
 
     def send_single_user(self, message):
         """
