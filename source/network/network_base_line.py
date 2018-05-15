@@ -68,8 +68,11 @@ class NetworkEvents(basic.LineReceiver):
         Network connection dropped so remove client
         """
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
-        if self.users.has_key(self.user_user_name):
-            del self.users[self.user_user_name]
+        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_ip_addy == ip_addr:
+                del self.users[user_device_uuid]
+                break
 
     def lineReceived(self, data):
         """
@@ -115,8 +118,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
-            country_data = ip2country.IP2Country(
-                verbose=1).lookup(self.user_ip_addy)
+            country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
@@ -162,9 +164,6 @@ class NetworkEvents(basic.LineReceiver):
                 image_data = image_handle.read()
                 image_data = base64.b64encode(image_data)
                 image_handle.close()
-                # im = Image.open(image_json)
-                # im.convert("RGB", im)
-                # image_data = base64.b64encode(im)
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
                               "Sub2": json_message['Sub2'],
                               "Data": image_data, "UUID": metadata_id})
