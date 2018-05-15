@@ -234,8 +234,9 @@ class NetworkEvents(basic.LineReceiver):
                 common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
                 if media_path is not None:
                     if json_message['Sub'] == 'Client':
-                        self.send_single_ip(json.dumps({'Target': 'Play', 'Data': media_path}),
-                                            json_message['Target'])
+                        self.send_single_ip(
+                            json.dumps({'Target': 'Play', 'Data': media_path}).encode("utf8"),
+                            json_message['Target'])
                 #     # launch and attach to local running ffserver
                 #     # TODO set server port for ffmpeg
                 #     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
