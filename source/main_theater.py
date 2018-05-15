@@ -418,7 +418,6 @@ class MediaKrakenApp(App):
                 self.demo_media_id = json_message['UUID']
                 proxy_image_demo = Loader.image(self.home_demo_file_name)
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
-                pass
             elif json_message['Sub2'] == "Movie":
                 self.home_movie_file_name = str(uuid.uuid4())
                 f = open(self.home_movie_file_name, "w")
