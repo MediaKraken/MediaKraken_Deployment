@@ -327,8 +327,11 @@ class MediaKrakenApp(App):
                                             'production_companies'])):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
                                             'production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[
-                                                                              :-2]
+                self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
+            elif json_message['Sub'] == 'FFprobe Detail':
+                # TODO need to list the actual video files
+                # TODO have the below refresh for the select video file
+                # TODO will need to display SD/HD/UHD and length of video
                 # go through streams
                 audio_streams = []
                 subtitle_streams = ['None']
