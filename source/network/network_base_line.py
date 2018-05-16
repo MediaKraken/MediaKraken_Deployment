@@ -60,7 +60,8 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection'})
+        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
@@ -166,8 +167,8 @@ class NetworkEvents(basic.LineReceiver):
                 image_data = base64.b64encode(image_data)
                 image_handle.close()
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
-                              "Sub2": json_message['Sub2'],
-                              "Data": image_data, "UUID": metadata_id})
+                                  "Sub2": json_message['Sub2'],
+                                  "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
             self.db_connection.db_user_login(
