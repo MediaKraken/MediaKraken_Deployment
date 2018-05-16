@@ -234,7 +234,7 @@ class NetworkEvents(basic.LineReceiver):
                 if media_path is not None:
                     if json_message['Sub'] == 'Client':
                         self.send_single_ip(
-                            json.dumps({'Target': 'Play', 'Data': media_path}),
+                            json.dumps({'Type': 'Play', 'Data': media_path}),
                             json_message['Target'])
                 #     # launch and attach to local running ffserver
                 #     # TODO set server port for ffmpeg
