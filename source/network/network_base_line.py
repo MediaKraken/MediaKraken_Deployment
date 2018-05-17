@@ -175,7 +175,9 @@ class NetworkEvents(basic.LineReceiver):
                 json_message['User'], json_message['Password'])
 
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == 'Detail':
+            if json_message['Sub'] == 'Controller':
+                pass
+            elif json_message['Sub'] == 'Detail':
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
