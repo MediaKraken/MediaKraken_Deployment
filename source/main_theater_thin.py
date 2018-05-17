@@ -218,31 +218,7 @@ class MediaKrakenApp(App):
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-        elif json_message['Type'] == "Media":
-            if json_message['Sub'] == "Detail":
-                self.root.ids.theater_media_video_title.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['title']
-                self.root.ids.theater_media_video_subtitle.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
-                # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text \
-                    = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
-                self.root.ids.theater_media_video_overview.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
-                genres_list = ''
-                for ndx in range(0,
-                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (
-                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
-                                'name'] + ', ')
-                self.root.ids.theater_media_video_genres.text = genres_list[:-2]
-                production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[
-                                                                              :-2]
+
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
             share_mapping = (
