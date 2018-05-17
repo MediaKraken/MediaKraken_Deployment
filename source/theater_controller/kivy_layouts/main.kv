@@ -479,17 +479,21 @@
                                     size_hint: None, None
                                     size: self.parent.width * 0.5, self.parent.height
                             Spinner:
+                                id: theater_media_video_spinner
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.75
+                            Spinner:
                                 id: theater_media_video_audio_spinner
                                 text: "Audio First thing"
                                 values: ["Audio First thing", "Audio Second thing", "Audio Third thing"]
                                 size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
+                                size: self.parent.width, self.parent.height * 0.75
                             Spinner:
                                 id: theater_media_video_subtitle_spinner
                                 text: "Sub First thing"
                                 values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
                                 size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
+                                size: self.parent.width, self.parent.height * 0.75
             Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:
