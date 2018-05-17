@@ -584,3 +584,42 @@ def db_read_media_metadata_movie_both(self, media_guid):
         return self.db_cursor.fetchone()
     except:
         return None
+
+
+def db_read_media_list_by_uuid(self, media_guid):
+    self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
+                           ' where mm_media_metadata_guid in (select mm_metadata_guid from '
+                           'mm_media where mm_media_guild = %s)', (media_guid,))
+    video_data = []
+    for file_data in self.db_cursor.fetchall():
+        # go through streams
+        audio_streams = []
+        subtitle_streams = ['None']
+        if 'streams' in file_data['FFprobe'] and file_data['FFprobe']['streams'] is not None:
+            for stream_info in file_data['FFprobe']['streams']:
+                common_global.es_inst.com_elastic_index('info', {"info": stream_info})
+                stream_language = ''
+                stream_title = ''
+                stream_codec = ''
+                try:
+                    stream_language = stream_info['tags']['language'] + ' - '
+                except:
+                    pass
+                try:
+                    stream_title = stream_info['tags']['title'] + ' - '
+                except:
+                    pass
+                try:
+                    stream_codec \
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
+                          + ' - '
+                except:
+                    pass
+                if stream_info['codec_type'] == 'audio':
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'audio'})
+                    audio_streams.append((stream_codec + stream_language
+                                          + stream_title)[:-3])
+                elif stream_info['codec_type'] == 'subtitle':
+                    subtitle_streams.append(stream_language)
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
+    return video_data
