@@ -281,7 +281,7 @@ services:
   ffprobe:
     build:
       context: ./ComposeMediaKrakenFFProbe
-      dockerfile: dockerfile-ffprobe
+      dockerfile: Dockerfile
     environment:
       - DEBUG=${DEBUG}
     container_name: mkffprobe
