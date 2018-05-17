@@ -17,6 +17,7 @@ docker push mediakraken/mkdevicescan:latest
 docker push mediakraken/mkdocker:latest
 docker push mediakraken/mkdownload:latest
 docker push mediakraken/mkelk:latest
+docker push mediakraken/mkffprobe:latest
 docker push mediakraken/mkmetadata:latest
 docker push mediakraken/mkmumble:latest
 docker push mediakraken/mkmusicbrainz:latest
