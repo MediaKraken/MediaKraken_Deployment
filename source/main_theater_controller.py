@@ -305,7 +305,12 @@ class MediaKrakenApp(App):
             Clock.schedule_interval(self.main_image_refresh, 5.0)
 
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == "Detail":
+            if json_message['Sub'] == "Controller":
+                # populate the video file list
+                self.root.ids.theater_media_video_spinner.values = map(
+                    str, json_message['Video File List'])
+
+            elif json_message['Sub'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['title']
                 self.root.ids.theater_media_video_subtitle.text \
@@ -328,46 +333,11 @@ class MediaKrakenApp(App):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
                                             'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
-                # populate the video file list
-                self.root.ids.theater_media_video_spinner.values = map(
-                    str, json_message['Video File List'])
 
             elif json_message['Sub'] == 'FFprobe Detail':
                 # TODO need to list the actual video files
                 # TODO have the below refresh for the select video file
                 # TODO will need to display SD/HD/UHD and length of video
-                # go through streams
-                audio_streams = []
-                subtitle_streams = ['None']
-                if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
-                        and 'streams' in json_message['Data2']['FFprobe'] \
-                        and json_message['Data2']['FFprobe']['streams'] is not None:
-                    for stream_info in json_message['Data2']['FFprobe']['streams']:
-                        common_global.es_inst.com_elastic_index('info', {"info": stream_info})
-                        stream_language = ''
-                        stream_title = ''
-                        stream_codec = ''
-                        try:
-                            stream_language = stream_info['tags']['language'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_title = stream_info['tags']['title'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_codec \
-                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                                  + ' - '
-                        except:
-                            pass
-                        if stream_info['codec_type'] == 'audio':
-                            common_global.es_inst.com_elastic_index('info', {'stuff': 'audio'})
-                            audio_streams.append((stream_codec + stream_language
-                                                  + stream_title)[:-3])
-                        elif stream_info['codec_type'] == 'subtitle':
-                            subtitle_streams.append(stream_language)
-                            common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = map(
                     str, audio_streams)
