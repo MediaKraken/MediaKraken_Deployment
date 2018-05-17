@@ -253,8 +253,8 @@ class NetworkEvents(basic.LineReceiver):
             common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info', {"should be sending data len": len(
-                msg)})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {"should be sending data len": len(msg)})
             self.sendLine(msg.encode("utf8"))
 
     def send_single_ip(self, message, ip_addr):
@@ -269,7 +269,7 @@ class NetworkEvents(basic.LineReceiver):
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
                                                                  'message': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendString(message.encode("utf8"))
                 break
 
     def send_single_user(self, message):
@@ -279,7 +279,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
                 common_global.es_inst.com_elastic_index('info', {'send single': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendString(message.encode("utf8"))
                 break
 
     def send_all_users(self, message):
@@ -289,7 +289,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_verified == 1:
                 common_global.es_inst.com_elastic_index('info', {'send all': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendString(message.encode("utf8"))
 
     def send_all_links(self, message):
         """
@@ -298,4 +298,4 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_link:
                 common_global.es_inst.com_elastic_index('info', {'send all links': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendString(message.encode("utf8"))
