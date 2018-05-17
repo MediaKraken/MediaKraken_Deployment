@@ -175,6 +175,10 @@ services:
   ffprobe:
     image: mediakraken/mkffprobe:latest
     environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkffprobe
     depends_on:
