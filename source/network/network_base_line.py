@@ -269,7 +269,7 @@ class NetworkEvents(basic.LineReceiver):
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
                                                                  'message': message})
-                protocol.sendString(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
                 break
 
     def send_single_user(self, message):
@@ -279,7 +279,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
                 common_global.es_inst.com_elastic_index('info', {'send single': message})
-                protocol.sendString(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
                 break
 
     def send_all_users(self, message):
@@ -289,7 +289,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_verified == 1:
                 common_global.es_inst.com_elastic_index('info', {'send all': message})
-                protocol.sendString(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
 
     def send_all_links(self, message):
         """
@@ -298,4 +298,4 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_link:
                 common_global.es_inst.com_elastic_index('info', {'send all links': message})
-                protocol.sendString(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
