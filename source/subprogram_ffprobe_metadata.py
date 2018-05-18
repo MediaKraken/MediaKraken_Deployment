@@ -68,7 +68,7 @@ channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg', routing_key='mk
 channel.basic_qos(prefetch_count=1)
 
 on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
-channel.basic_consume('standard', on_message_callback)
+channel.basic_consume('mkffmpeg', on_message_callback)
 try:
     channel.start_consuming()
 except KeyboardInterrupt:

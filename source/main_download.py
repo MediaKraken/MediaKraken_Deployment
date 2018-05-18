@@ -67,7 +67,7 @@ channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload', routing_key
 channel.basic_qos(prefetch_count=1)
 
 on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
-channel.basic_consume('standard', on_message_callback)
+channel.basic_consume('mkdownload', on_message_callback)
 try:
     channel.start_consuming()
 except KeyboardInterrupt:
