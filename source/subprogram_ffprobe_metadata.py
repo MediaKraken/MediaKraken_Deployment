@@ -18,9 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import functools
 import json
 import subprocess
-import time
 
 import pika
 from common import common_config_ini
@@ -32,7 +32,7 @@ from common import common_logging_elasticsearch
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_ffprobe')
 
 
-def on_message(channel, method_frame, header_frame, body):
+def on_message(channel, method_frame, header_frame, body, userdata=None):
     """
     Process pika message
     """
@@ -58,6 +58,7 @@ wait_pid.wait()
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
 exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex",
@@ -65,21 +66,16 @@ exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex",
 queue = channel.queue_declare(queue='mkffmpeg', durable=True)
 channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg')
 channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
 
-while True:
-    time.sleep(1)
-    # grab message from rabbitmq if available
-    try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(
-            queue='mkffmpeg', no_ack=False)
-        on_message(channel, method_frame, header_frame, body)
-    except:
-        pass
+on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
+channel.basic_consume('standard', on_message_callback)
+try:
+    channel.start_consuming()
+except KeyboardInterrupt:
+    channel.stop_consuming()
+connection.close()
 
 # commit
 db_connection.db_commit()
-
 # close the database
 db_connection.db_close()

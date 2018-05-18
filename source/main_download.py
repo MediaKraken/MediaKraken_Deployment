@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import functools
 import json
 import subprocess
 import time
@@ -31,7 +32,7 @@ from common import common_network
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
 
-def on_message(channel, method_frame, header_frame, body):
+def on_message(channel, method_frame, header_frame, body, userdata=None):
     """
     Process pika message
     """
@@ -64,15 +65,11 @@ exchange = channel.exchange_declare(exchange="mkque_download_ex",
 queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
 
-while True:
-    time.sleep(1)
-    # grab message from rabbitmq if available
-    try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(
-            queue='mkdownload', no_ack=False)
-        on_message(channel, method_frame, header_frame, body)
-    except:
-        pass
+on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
+channel.basic_consume('standard', on_message_callback)
+try:
+    channel.start_consuming()
+except KeyboardInterrupt:
+    channel.stop_consuming()
+connection.close()
