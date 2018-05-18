@@ -349,6 +349,7 @@ for class_data in thread_db.db_media_class_list(None, None):
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
 exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct",

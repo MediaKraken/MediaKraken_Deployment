@@ -18,7 +18,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import functools
 import json
 import subprocess
 import time
@@ -32,7 +31,7 @@ from common import common_network
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
 
-def on_message(channel, method_frame, header_frame, body, userdata=None):
+def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
     """
@@ -58,18 +57,24 @@ wait_pid.wait()
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex",
-                                    exchange_type="direct", durable=True)
+exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
+                                    durable=True)
 queue = channel.queue_declare(queue='mkdownload', durable=True)
-channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload', routing_key='mkdownload')
+channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
-channel.basic_consume('mkdownload', on_message_callback, no_ack=False)
-try:
-    channel.start_consuming()
-except KeyboardInterrupt:
-    channel.stop_consuming()
-connection.close()
+while True:
+    time.sleep(1)
+    # grab message from rabbitmq if available
+    try:  # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(
+            queue='mkdownload', no_ack=False)
+        on_message(channel, method_frame, header_frame, body)
+    except:
+        pass
+
+# close the pika connection
+connection.cancel()
