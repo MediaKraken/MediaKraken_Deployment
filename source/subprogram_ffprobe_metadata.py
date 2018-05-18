@@ -64,7 +64,7 @@ channel = connection.channel()
 exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex",
                                     exchange_type="direct", durable=True)
 queue = channel.queue_declare(queue='mkffmpeg', durable=True)
-channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg')
+channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg', routing_key='mkffmpeg')
 channel.basic_qos(prefetch_count=1)
 
 on_message_callback = functools.partial(on_message, userdata='on_message_userdata')

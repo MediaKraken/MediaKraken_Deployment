@@ -63,7 +63,7 @@ channel = connection.channel()
 exchange = channel.exchange_declare(exchange="mkque_download_ex",
                                     exchange_type="direct", durable=True)
 queue = channel.queue_declare(queue='mkdownload', durable=True)
-channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
+channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload', routing_key='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
 on_message_callback = functools.partial(on_message, userdata='on_message_userdata')
