@@ -26,6 +26,7 @@ import uuid
 
 import pika
 from common import common_config_ini
+from common import common_device_capability
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
@@ -116,6 +117,14 @@ def read(queue_object):
                     subtitle_command = ' -subtitles ' + json_message['Subtitle']
                 else:
                     subtitle_command = ''
+                return_video_container, return_video_codec, return_audio_codec, return_audio_channels \
+                    = common_device_capability.com_device_compat_best_fit(
+                    device_type='Chromecast',
+                    device_model=None,
+                    video_container=None,
+                    video_codec=None,
+                    audio_codec=None,
+                    audio_channels=None)
                 container_command = 'castnow --address ' + json_message['Target'] \
                                     + ' --myip 192.168.1.8 ' + subtitle_command \
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
