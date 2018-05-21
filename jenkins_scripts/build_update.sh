@@ -122,8 +122,8 @@ cd ../ComposeMediaKrakenPrefetchTVMaze
 docker build -t mediakraken/mkprefetchtvmaze .
 
 # build the base node
-cd ../ComposeMediaKrakenBaseNode
-docker build -t mediakraken/mkbasenode .
+cd ../ComposeMediaKrakenBaseNodeFFMPEG
+docker build -t mediakraken/mkbasenodeffmpeg .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
