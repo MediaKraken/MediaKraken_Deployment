@@ -33,17 +33,17 @@ DEVICE_COMPATIBILITY = {
                'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
                'AudioChannel': ['6.1'],
                'AudioPass': ['ac3', 'eac3'],
-               'ImageFormat': ['BMP', 'GIF', 'JPEG', 'PNG', 'WEBP'],
+               'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
                'MaxImageRes': '1280x720',
-               'MaxRes': ['720/60', '1080/30']},
+               'MaxVideoRes': ['720/60', '1080/30']},
         'Ultra': {'VidContainer': ['mp4', 'webm'],
                'VidCodec': ['x264', 'x265', 'vp8', 'vp9'],
                'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
                'AudioChannel': ['6.1'],
                'AudioPass': ['ac3', 'eac3'],
-               'ImageFormat': ['BMP', 'GIF', 'JPEG', 'PNG', 'WEBP'],
+               'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
                'MaxImageRes': '1280x720',
-               'MaxRes': '2160/60'}
+               'MaxVideoRes': '2160/60'}
     },
     'Fire': {
         'Stick': {},
