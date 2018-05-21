@@ -66,3 +66,4 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && apk del .build-deps-yarn
 
 CMD [ "node" ]
+
