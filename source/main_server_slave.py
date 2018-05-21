@@ -218,12 +218,13 @@ class MKConsumer(object):
         msg = None
         if json_message['Type'] == "Play":
             if json_message['Sub'] == 'Cast':
-                if json_message['Command'] == "Chapter Back":
-                    pass
-                elif json_message['Command'] == "Chapter Forward":
-                    pass
-                elif json_message['Command'] == "Fast Forward":
-                    pass
+                pass
+                # if json_message['Command'] == "Chapter Back":
+                #     pass
+                # elif json_message['Command'] == "Chapter Forward":
+                #     pass
+                # elif json_message['Command'] == "Fast Forward":
+                #     pass
                 # elif json_message['Command'] == "Mute":
                 #     subprocess.Popen(
                 #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
