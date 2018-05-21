@@ -113,16 +113,14 @@ def read(queue_object):
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
-                    subtitle_command = ' -subtitles ' + json_message['Subtitle'] \
-                                       + ' -subtitles_language ' + \
-                                       json_message['Language']
+                    subtitle_command = ' -subtitles ' + json_message['Subtitle']
                 else:
                     subtitle_command = ''
-                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py' \
-                                    + ' -devicename ' + json_message['Target'] \
-                                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3' \
-                                    + ' -movflags faststart+empty_moov\' -transcode \'' \
-                                    + json_message['Data'] + '\''
+                container_command = 'castnow --address ' + json_message['Target'] \
+                                    + ' --myip 192.168.1.8 ' + subtitle_command \
+                                    + ' --ffmpeg \'-c:v copy -c:a ac3' \
+                                    + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
+                                    + ' --tomp4 \'' + json_message['Data'] + '\''
             elif json_message['Sub'] == 'Web':
                 # stream to web
                 container_command = shlex.split("ffmpeg -v fatal {ss_string}"
