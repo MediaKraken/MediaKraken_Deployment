@@ -1,4 +1,5 @@
 docker tag mk_appserver:latest mediakraken/mkserver:latest
+#docker tag mk_basenode:latest mediakraken/mkbasenode:latest
 docker tag mk_broadcast:latest mediakraken/mkbroadcast:latest
 docker tag mk_database:latest mediakraken/mkdatabase:latest
 docker tag mk_download mediakraken/mkdownload:latest
