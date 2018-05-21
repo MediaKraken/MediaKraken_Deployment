@@ -63,16 +63,6 @@ cd ../ComposeMediaKrakenBaseFFMPEGNvidia
 cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
 #docker build -t mediakraken/mkbaseffmpegnvidiadebian .
 
-# Build the base slave images from other base images
-cd ../ComposeMediaKrakenSlave
-docker build -t mediakraken/mkslave .
-
-cd ../ComposeMediaKrakenSlaveNvidia
-#docker build -t mediakraken/mkslavenvidia .
-
-cd ../ComposeMediaKrakenSlaveNvidiaDebian
-#docker build -t mediakraken/mkslavenvidiadebian .
-
 # Build the nginx RTMP
 cd ../ComposeMediaKrakenNginxRTMP
 docker build -t mediakraken/mknginxrtmp .
@@ -112,6 +102,28 @@ docker build -t mediakraken/mkdebug .
 # build the wireshark
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark .
+
+# build the tmdb prefetch
+cd ../ComposeMediaKrakenPrefetchTMDB
+docker build -t mediakraken/mkprefetchtmdb .
+
+# build the tvamze prefetch
+cd ../ComposeMediaKrakenPrefetchTVMaze
+docker build -t mediakraken/mkprefetchtvmaze .
+
+# build the base node
+cd ../ComposeMediaKrakenBaseNodeFFMPEG
+docker build -t mediakraken/mkbasenodeffmpeg .
+
+# Build the base slave images from other base images
+cd ../ComposeMediaKrakenSlave
+docker build -t mediakraken/mkslave .
+
+cd ../ComposeMediaKrakenSlaveNvidia
+#docker build -t mediakraken/mkslavenvidia .
+
+cd ../ComposeMediaKrakenSlaveNvidiaDebian
+#docker build -t mediakraken/mkslavenvidiadebian .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

@@ -113,6 +113,7 @@ def db_media_duplicate_count(self):
     """
     # count the duplicates for pagination
     """
+    # TODO technically this will "dupe" things like subtitles atm
     self.db_cursor.execute('select count(*) from (select mm_media_metadata_guid'
                            ' from mm_media where mm_media_metadata_guid is not null'
                            ' group by mm_media_metadata_guid HAVING count(*) > 1) as total')
@@ -124,6 +125,7 @@ def db_media_duplicate(self, offset=None, records=None):
     """
     # list duplicates
     """
+    # TODO technically this will "dupe" things like subtitles atm
     if offset is None:
         self.db_cursor.execute('select mm_media_metadata_guid,mm_media_name,count(*)'
                                ' from mm_media,mm_metadata_movie'

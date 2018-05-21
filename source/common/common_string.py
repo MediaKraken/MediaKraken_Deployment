@@ -116,3 +116,12 @@ def com_string_unc_to_addr_path(unc_path):
                 '\\'.join(unc_path.split('\\', 5)[4:]))
     except:
         return None, None, None
+
+def com_string_guessit_list(guessit_list):
+    """
+    combine guessing lists
+    """
+    return_string = ''
+    for title_name in guessit_list:
+        return_string += title_name + ' '
+    return return_string.strip()

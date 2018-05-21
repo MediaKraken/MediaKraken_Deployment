@@ -23,14 +23,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 import urllib2
 
-from . import common_network_ssdp
+from . import common_hardware_roku_ssdp
 
 
 def com_roku_network_discovery():
     """
     Discover Roku device(s)
     """
-    return common_network_ssdp.roku_discover("roku:ecp")
+    return common_hardware_roku_ssdp.roku_discover("roku:ecp")
 
 
 def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):

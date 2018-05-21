@@ -101,9 +101,8 @@ class CommonNetworkYoutube(object):
     Class for interfacing with youtube
     """
 
-    def __init__(self):
-        self.youtube_inst = youtubeapi.YoutubeAPI(
-            {'key': '/* Your API key here */'})
+    def __init__(self, youtube_api_key):
+        self.youtube_inst = youtubeapi.YoutubeAPI({'key': youtube_api_key})
 
     def com_net_yt_video_info(self, video_id):
         return self.youtube_inst.get_video_info(video_id)

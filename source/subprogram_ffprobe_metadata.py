@@ -42,8 +42,7 @@ def on_message(channel, method_frame, header_frame, body):
         db_connection.db_media_ffmeg_update(json_message['Data'],
                                             json.dumps(common_ffmpeg.com_ffmpeg_media_attr(
                                                 db_connection.db_read_media(
-                                                    json_message['Data'])[
-                                                    'mm_media_path'])))
+                                                    json_message['Data'])['mm_media_path'])))
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
@@ -59,15 +58,14 @@ wait_pid.wait()
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex",
-                                    exchange_type="direct", durable=True)
+exchange = channel.exchange_declare(exchange="mkque_ffmpeg_ex", exchange_type="direct",
+                                    durable=True)
 queue = channel.queue_declare(queue='mkffmpeg', durable=True)
 channel.queue_bind(exchange="mkque_ffmpeg_ex", queue='mkffmpeg')
 channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
 
 while True:
     time.sleep(1)
@@ -78,6 +76,9 @@ while True:
         on_message(channel, method_frame, header_frame, body)
     except:
         pass
+
+# close the pika connection
+connection.cancel()
 
 # commit
 db_connection.db_commit()

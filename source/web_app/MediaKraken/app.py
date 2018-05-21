@@ -14,7 +14,6 @@ from MediaKraken.extensions import (
 from MediaKraken.settings import ProdConfig
 from flask import Flask, render_template
 from flask_kvsession import KVSessionExtension
-from flask_moment import Moment
 from flask_uwsgi_websocket import GeventWebSocket
 from simplekv.memory.redisstore import RedisStore
 
@@ -28,7 +27,6 @@ def create_app(config_object=ProdConfig):
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
-    moment = Moment(app)
     websocket = GeventWebSocket(app)
     return app
 
@@ -55,6 +53,8 @@ def register_blueprints(app):
     app.register_blueprint(user.views_images.blueprint)
     app.register_blueprint(user.views_internet.blueprint)
     app.register_blueprint(user.views_metadata_album.blueprint)
+    app.register_blueprint(user.views_metadata_game.blueprint)
+    app.register_blueprint(user.views_metadata_game_system.blueprint)
     app.register_blueprint(user.views_metadata_movie.blueprint)
     app.register_blueprint(user.views_metadata_music_video.blueprint)
     app.register_blueprint(user.views_metadata_people.blueprint)

@@ -29,6 +29,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_string
 from common.common_metadata_limiter import *
 from guessit import guessit
 from metadata import metadata_general
@@ -348,6 +349,7 @@ for class_data in thread_db.db_media_class_list(None, None):
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
 exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct",
@@ -432,10 +434,14 @@ while True:
             else:
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
+                if type(file_name['title']) == list:
+                    file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
                 common_global.es_inst.com_elastic_index('info', {'worker Z filename':
                                                                      str(file_name)})
                 if 'title' in file_name:
                     if 'year' in file_name:
+                        if type(file_name['year']) == list:
+                            file_name['year'] = file_name['year'][0]
                         if file_name['title'] == metadata_last_title \
                                 and file_name['year'] == metadata_last_year:
                             thread_db.db_download_delete(row_data['mdq_id'])

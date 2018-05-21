@@ -136,7 +136,7 @@
                         opacity: 0.25
                     Image:
                         id: main_home_demo_image
-                        source: './image_demo'
+                        source: './theater/images/theater.png'
                         y: self.parent.y
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
@@ -475,21 +475,25 @@
                                 Spinner:
                                     id: theater_media_video_play_local_spinner
                                     text: "This Device"
-                                    values: ["This Device", "Cast Second thing", "Cast Third thing"]
+                                    values: ["This Device"]
                                     size_hint: None, None
                                     size: self.parent.width * 0.5, self.parent.height
+                            Spinner:
+                                id: theater_media_video_spinner
+                                size_hint: None, None
+                                size: self.parent.width, self.parent.height * 0.75
                             Spinner:
                                 id: theater_media_video_audio_spinner
                                 text: "Audio First thing"
                                 values: ["Audio First thing", "Audio Second thing", "Audio Third thing"]
                                 size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
+                                size: self.parent.width, self.parent.height * 0.75
                             Spinner:
                                 id: theater_media_video_subtitle_spinner
                                 text: "Sub First thing"
                                 values: ["Sub First thing", "Sub Second thing", "Sub Third thing"]
                                 size_hint: None, None
-                                size: self.parent.width, self.parent.height * 0.5
+                                size: self.parent.width, self.parent.height * 0.75
             Screen:
                 name: 'Main_Theater_Media_Playback'
                 BoxLayout:
@@ -789,7 +793,7 @@
                             size_hint: None, None
                             size: 50, 50
                             Image:
-                                source: './theater_controller/images/button_mute.png'
+                                source: './theater_controller/images/navigation/sound_mute.png'
                                 y: self.parent.y + self.parent.height - 50
                                 x: self.parent.x
                                 size: 50, 50

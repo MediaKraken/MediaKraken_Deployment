@@ -191,8 +191,11 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkmusicbrainz',
                                        network='mk_mediakraken_network',
-                                       environment={'BRAINZCODE': brainzcode}
-                                       )
+                                       environment={'BRAINZCODE': brainzcode},
+                                       volumes={'/mediakraken/mbrainz/config':
+                                                    {'bind': '/config', 'mode': 'rw'},
+                                                '/mediakraken/mbrainz/data':
+                                                    {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self):
         return self.cli.containers.run(image='mediakraken/mkmumble',
@@ -227,10 +230,10 @@ class CommonDocker(object):
                                        name='mkportainer',
                                        ports={"9000": 9000},
                                        volumes={'/var/run/docker.sock':
-                                                        {'bind': '/var/run/docker.sock',
-                                                         'mode': 'ro'},
-                                                    '/var/opt/mediakraken/data':
-                                                        {'bind': '/ data', 'mode': 'rw'}})
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/var/opt/mediakraken/data':
+                                                    {'bind': '/ data', 'mode': 'rw'}})
 
     def com_docker_run_slave(self, hwaccel, name_container, container_command):
         """
@@ -242,7 +245,14 @@ class CommonDocker(object):
             image_name = 'mediakraken/mkslave:latest'
         return self.cli.containers.run(container_image_name=image_name,
                                        container_name=name_container,
-                                       container_command=container_command)
+                                       container_command=container_command,
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}}
+                                       )
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',

@@ -25,6 +25,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_metadata
 from common import common_metadata_tmdb
+from common import common_string
 from guessit import guessit
 
 from . import metadata_nfo_xml
@@ -49,6 +50,8 @@ def movie_search_tmdb(db_connection, file_name):
     except:
         pass
     file_name = guessit(file_name)
+    if type(file_name['title']) == list:
+        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     metadata_uuid = None
     match_result = None
     if TMDB_CONNECTION is not None:
@@ -86,9 +89,9 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code})
-    common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
-                                                         result_json.json()})
     if result_json.status_code == 200:
+        common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
+                                                             result_json.json()})
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
         # set and insert the record
@@ -96,8 +99,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
-                                          result_json['title'], json.dumps(
-                meta_json),
+                                          result_json['title'], json.dumps(meta_json),
                                           json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
@@ -107,7 +109,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
     elif result_json.status_code == 502:
-        time.sleep(30)
+        time.sleep(300)
         # redo fetch due to 502
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:

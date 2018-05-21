@@ -4,9 +4,9 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20180415-2245-stable
+ARG X264_VERSION=20180519-2245-stable
 ARG X265_VERSION=2.7
-ARG FFMPEG_VERSION="3.4.2"
+ARG FFMPEG_VERSION="4.0"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 ADD scripts /mediakraken
@@ -154,5 +154,4 @@ RUN apk add --update samba-client lame libass libmodplug libogg \
     ffmpeg -buildconf
 
 CMD ["--help"]
-ENTRYPOINT  ["ffmpeg"]
 WORKDIR /tmp/ffmpeg

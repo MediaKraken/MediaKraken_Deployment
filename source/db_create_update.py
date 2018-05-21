@@ -747,8 +747,7 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
                                                                        'imvdb': False,
                                                                        'omdb': False}},
                                                'Maintenance': None,
-                                               'API': {'mediabrainz': None,
-                                                       'anidb': None,
+                                               'API': {'anidb': None,
                                                        'thetvdb': '147CB43DCA8B61B7',
                                                        'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
                                                        'thesportsdb': '4352761817344',
@@ -757,13 +756,14 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
                                                        'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb',
                                                        'google': 'AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY',
                                                        'globalcache': None,
+                                                       'musicbrainz': None,
                                                        'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
                                                        'isbndb': '25C8IT4I',
                                                        'imvdb': None,
                                                        'shoutcast': None,
                                                        'soundcloud': None,
-                                                       'tvmaze': None},
-                                               'MediaBrainz': {'Host': None, 'Port': 5000,
+                                                       'tvmaze': 'mknotneeded'},
+                                               'MusicBrainz': {'Host': None, 'Port': 5000,
                                                                'User': None, 'Password': None,
                                                                'BrainzDBHost': None,
                                                                'BrainzDBPort': 5432,
@@ -803,7 +803,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
 # create table game_info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
                        ' CONSTRAINT gi_id_mpk PRIMARY KEY, gi_system_id uuid,'
-                       ' gi_game_info_name text, gi_game_info_json jsonb)')
+                       ' gi_game_info_short_name text, gi_game_info_name text, gi_game_info_json '
+                       'jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
                            ' on mm_metadata_game_software_info (gi_system_id);')  # so can match systems quickly
@@ -817,6 +818,9 @@ if db_connection.db_table_index_check('mm_game_info_idxgin_name') is None:
 if db_connection.db_table_index_check('gi_game_idx_name') is None:
     db_connection.db_query('CREATE INDEX gi_game_idx_name'
                            ' on mm_metadata_game_software_info (gi_game_info_name);')
+if db_connection.db_table_index_check('gi_game_idx_short_name') is None:
+    db_connection.db_query('CREATE INDEX gi_game_idx_short_name'
+                           ' on mm_metadata_game_software_info (gi_game_info_short_name);')
 
 # create table for games systems
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_systems_info (gs_id uuid'
