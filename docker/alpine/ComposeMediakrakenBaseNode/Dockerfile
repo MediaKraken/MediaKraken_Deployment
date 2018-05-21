@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM  mediakraken/mkbaseffmpeg:latest
 
 ENV NODE_VERSION 10.1.0
 
