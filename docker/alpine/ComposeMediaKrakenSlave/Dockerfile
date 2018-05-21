@@ -46,7 +46,7 @@ RUN apk add --update \
   py-setuptools \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/* \
-  && rm -r /root/.npm
+  && rm -r /root/.npm \
   && rc-update add netmount \
   && rc-update add rpcbind
 
