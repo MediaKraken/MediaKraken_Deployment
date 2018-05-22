@@ -218,39 +218,40 @@ class MKConsumer(object):
         msg = None
         if json_message['Type'] == "Play":
             if json_message['Sub'] == 'Cast':
-                if json_message['Command'] == "Chapter Back":
-                    pass
-                elif json_message['Command'] == "Chapter Forward":
-                    pass
-                elif json_message['Command'] == "Fast Forward":
-                    pass
-                elif json_message['Command'] == "Mute":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-mute'), shell=False)
-                elif json_message['Command'] == "Pause":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-pause'), shell=False)
-                elif json_message['Command'] == "Rewind":
-                    pass
-                elif json_message['Command'] == 'Stop':
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-stop'), shell=False)
-                elif json_message['Command'] == "Volume Down":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-voldown'), shell=False)
-                elif json_message['Command'] == "Volume Set":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-setvol', json_message['Data']),
-                        shell=False)
-                elif json_message['Command'] == "Volume Up":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-volup'), shell=False)
+                pass
+                # if json_message['Command'] == "Chapter Back":
+                #     pass
+                # elif json_message['Command'] == "Chapter Forward":
+                #     pass
+                # elif json_message['Command'] == "Fast Forward":
+                #     pass
+                # elif json_message['Command'] == "Mute":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-mute'), shell=False)
+                # elif json_message['Command'] == "Pause":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-pause'), shell=False)
+                # elif json_message['Command'] == "Rewind":
+                #     pass
+                # elif json_message['Command'] == 'Stop':
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-stop'), shell=False)
+                # elif json_message['Command'] == "Volume Down":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-voldown'), shell=False)
+                # elif json_message['Command'] == "Volume Set":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-setvol', json_message['Data']),
+                #         shell=False)
+                # elif json_message['Command'] == "Volume Up":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-volup'), shell=False)
             elif json_message['Sub'] == 'HDHomeRun':
                 pass
             elif json_message['Sub'] == 'Slave':
