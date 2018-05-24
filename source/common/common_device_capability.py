@@ -79,22 +79,22 @@ def com_device_compat_best_fit(device_type, device_model, video_container,
         if device_model in DEVICE_COMPATIBILITY[device_type]:
             # determine container to use
             if video_container in device_model['VidContainer']:
-                pass  # no change
+                return_video_container = video_container  # no change
             else:
                 return_video_container = device_model['VidContainer'][0]
             # determine vid codec to use
             if video_codec in device_model['VidCodec']:
-                pass  # no change
+                return_video_codec = video_codec  # no change
             else:
                 return_video_codec = device_model['VidCodec'][0]
             # determine audio codec to use
             if audio_codec in device_model['AudioCodec']:
-                pass  # no change
+                return_audio_codec = audio_codec  # no change
             else:
                 return_audio_codec = device_model['AudioCodec'][0]
             # determine audio channels to use
             if audio_channels in device_model['AudioChannel']:
-                pass  # no change
+                return_audio_channels = audio_channels  # no change
             else:
                 return_audio_channels = device_model['AudioChannel'][0]
     return return_video_container, return_video_codec, return_audio_codec, return_audio_channels
