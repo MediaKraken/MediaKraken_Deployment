@@ -71,3 +71,4 @@ uritemplate==3.0.0
 wcwidth==0.1.7
 httplib2.ca_certs_locater
 phue
+speedtest-cli

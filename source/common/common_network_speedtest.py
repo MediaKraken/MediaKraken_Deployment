@@ -18,22 +18,18 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import pyspeedtest
+from subprocess import Popen, PIPE
 
 
-class CommonNetworkSpeedtest(object):
-    """
-    Class for interfacing with speedtest
-    """
-
-    def __init__(self, access_token):
-        self.st = pyspeedtest.SpeedTest()
-
-    def com_net_st_ping(self):
-        return self.st.ping()
-
-    def com_net_st_dl(self):
-        return self.st.download()
-
-    def com_net_st_ul(self):
-        return self.st.upload()
+def com_net_speedtest():
+    p = Popen(['speedtest-cli'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate()
+    rc = p.returncode
+    speed_download = None
+    speed_upload = None
+    for speed_list in output.split('\n'):
+        if speed_list.find('Download: ') != -1:
+            speed_download = speed_list.split(' ', 1)[1]
+        if speed_list.find('Upload: ') != -1:
+            speed_upload = speed_list.split(' ', 1)[1]
+    return speed_download, speed_upload

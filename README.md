@@ -5,7 +5,7 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>mkdev - Current Dev branch
+        <li><b>mkdev - redo internet speed test - Current Dev branch
         <li><i>castnow - improved Chromecast device discovery, PostgreSQL 10.4, FFMPEG 4.0
         <li>videojs - 6.8 and update other plugins, letter navigation start, alot of misc fixes -
          Current Dev
