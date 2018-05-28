@@ -125,5 +125,9 @@ cd ../ComposeMediaKrakenSlaveNvidia
 cd ../ComposeMediaKrakenSlaveNvidiaDebian
 #docker build -t mediakraken/mkslavenvidiadebian .
 
+# build the stream container
+cd ../ComposeMediaKrakenStream
+docker build -t mediakraken/mkstream .
+
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

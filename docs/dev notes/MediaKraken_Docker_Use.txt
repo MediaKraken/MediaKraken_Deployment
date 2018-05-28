@@ -102,8 +102,25 @@ docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakr
 docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Snakes On A Train (2006)/Snakes On A Train (2006).mkv'
 
+
+
 docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
---myip 10.0.0.198 '/mediakraken/mnt/Movie_Misc/Vendetta (2013).mkv'
+--myip 10.0.0.198 '/mediakraken/mnt/DVD/Alien Prey (1978)/Alien Prey (1978).mkv'
+
+
+docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow  --address 10.0.0.220 \
+--myip 10.0.0.198 '/mediakraken/mnt/Movie_Misc/Touch of Death (1988).mp4'
+
+
+
+# no audio
+docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec copy --ffmpeg-vcodec copy --ffmpeg-movflags frag_keyframe+empty_moov+faststart \
+--address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/BluRay/Mirrors 2 (2010)/Mirrors 2 (2010).mkv'
+
+# works...and passthrough
+docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec ac3 --ffmpeg-vcodec copy --ffmpeg-movflags frag_keyframe+empty_moov+faststart \
+--address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/BluRay/Mirrors 2 (2010)/Mirrors 2 (2010).mkv'
+
 
 
 docker run --network=mk_mediakraken_dbnetwork -env POSTGRES_HOST=mk_database --env=POSTGRES_DB=metamandb --env=POSTGRES_USER=metamanpg --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_apps450 mk_appserver
