@@ -260,11 +260,8 @@ class CommonDocker(object):
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
                                        volumes={'/var/opt/mediakraken/teamspeak/data':
-                                                    {'bind': '/teamspeak/data',
+                                                    {'bind': 'ts3-data',
                                                      'mode': 'rw'},
-                                                '/var/opt/mediakraken/teamspeak/logs':
-                                                    {'bind': '/teamspeak/logs',
-                                                     'mode': 'rw'}
                                                 },
                                        name='mkteamspeak')
 
