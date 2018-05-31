@@ -139,23 +139,27 @@ def db_meta_album_list(self, offset=None, records=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                                   ' mm_metadata_album_json from mm_metadata_album'
+                                   ' mm_metadata_album_json, mm_metadata_album_image'
+                                   ' from mm_metadata_album'
                                    ' where mm_metadata_album_name %% %s'
                                    ' order by mm_metadata_album_name', (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                                   ' mm_metadata_album_json from mm_metadata_album'
+                                   ' mm_metadata_album_json, mm_metadata_album_image'
+                                   ' from mm_metadata_album'
                                    ' order by mm_metadata_album_name')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                                   ' mm_metadata_album_json from mm_metadata_album'
+                                   ' mm_metadata_album_json, mm_metadata_album_image'
+                                   ' from mm_metadata_album'
                                    ' where mm_metadata_album_name %% %s'
                                    ' order by mm_metadata_album_name'
                                    ' offset %s limit %s', (search_value, offset, records))
         else:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                                   ' mm_metadata_album_json from mm_metadata_album'
+                                   ' mm_metadata_album_json, mm_metadata_album_image'
+                                   ' from mm_metadata_album'
                                    ' order by mm_metadata_album_name'
                                    ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
