@@ -7,7 +7,9 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>mkdev - redo internet speed test - Current Dev branch</b>
+        <li><b>mkdev - redo internet speed test, improved chromecast playback, misc fixes - Current
+        Dev
+        branch</b>
         <li><i>castnow - improved Chromecast device discovery, PostgreSQL 10.4, FFMPEG 4.0
         <li>videojs - 6.8 and update other plugins, letter navigation start, alot of misc fixes
         <li>dev - Redis 4.0.9, FFMPEG version bumps, base images on 3.7 Alpine, RabbitMQ 3.7.4, Lightgallery 1.6.9, JQuery 3.3.1, Bootstrap 4.1, Wireshark container
