@@ -14,6 +14,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 from MediaKraken.user.forms import SearchForm
@@ -72,7 +73,28 @@ def metadata_music_album_list():
                                                        request.form['search_text'])
     else:
         mediadata = g.db_connection.db_meta_album_list(offset, per_page)
-
+    for album_data in mediadata:
+        common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
+                                                         'id': album_data['mm_metadata_album_guid'],
+                                                         'name': album_data[
+                                                             'mm_metadata_album_name'],
+                                                         'json': album_data[
+                                                             'mm_metadata_album_json']})
+        if album_data['mmp_person_image'] is not None:
+            if 'musicbrainz' in album_data['mm_metadata_album_image']['Images']:
+                try:
+                    album_image = album_data['mm_metadata_album_image']['Images'][
+                        'musicbrainz'].replace(
+                        '/mediakraken/web_app/MediaKraken', '')
+                except:
+                    album_image = "/static/images/music_album_missing.png"
+            else:
+                album_image = "/static/images/music_album_missing.png"
+        else:
+            album_image = "/static/images/music_album_missing.png"
+            media.append(
+                (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
+                 album_image))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -82,8 +104,7 @@ def metadata_music_album_list():
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_music_album_list.html', form=form,
-                           media_person=g.db_connection.db_meta_music_album_list(
-                               offset, per_page),
+                           media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
